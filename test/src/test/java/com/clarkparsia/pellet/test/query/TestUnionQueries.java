@@ -8,13 +8,13 @@
 
 package com.clarkparsia.pellet.test.query;
 
-import static com.clarkparsia.pellet.sparqldl.model.QueryAtomFactory.PropertyValueAtom;
-import static com.clarkparsia.pellet.sparqldl.model.QueryAtomFactory.TypeAtom;
-import static com.clarkparsia.pellet.sparqldl.model.QueryAtomFactory.UnionAtom;
+import static openllet.query.sparqldl.model.QueryAtomFactory.PropertyValueAtom;
+import static openllet.query.sparqldl.model.QueryAtomFactory.TypeAtom;
+import static openllet.query.sparqldl.model.QueryAtomFactory.UnionAtom;
 
-import com.clarkparsia.pellet.sparqldl.model.Query;
 import java.util.Arrays;
 import openllet.aterm.ATermAppl;
+import openllet.query.sparqldl.model.Query;
 import org.junit.Test;
 
 /**

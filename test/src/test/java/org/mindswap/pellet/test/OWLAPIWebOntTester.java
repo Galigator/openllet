@@ -9,10 +9,10 @@ package org.mindswap.pellet.test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import com.clarkparsia.owlapi.OWL;
-import com.clarkparsia.owlapi.OntologyUtils;
-import com.clarkparsia.pellet.owlapi.PelletReasoner;
-import com.clarkparsia.pellet.owlapi.PelletReasonerFactory;
+import openllet.owlapi.OWL;
+import openllet.owlapi.OntologyUtils;
+import openllet.owlapi.PelletReasoner;
+import openllet.owlapi.PelletReasonerFactory;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLOntology;

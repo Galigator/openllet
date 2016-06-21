@@ -9,10 +9,10 @@
 package org.mindswap.pellet.examples;
 
 import com.clarkparsia.modularity.IncrementalClassifier;
-import com.clarkparsia.owlapi.OWL;
 import java.util.stream.Collectors;
 import openllet.core.utils.Timer;
 import openllet.core.utils.Timers;
+import openllet.owlapi.OWL;
 import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;

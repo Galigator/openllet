@@ -10,12 +10,12 @@ import static openllet.core.utils.TermFactory.term;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import com.clarkparsia.pellet.owlapi.PelletReasoner;
-import com.clarkparsia.pellet.owlapi.PelletReasonerFactory;
 import junit.framework.JUnit4TestAdapter;
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
 import openllet.core.utils.ATermUtils;
+import openllet.owlapi.PelletReasoner;
+import openllet.owlapi.PelletReasonerFactory;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;

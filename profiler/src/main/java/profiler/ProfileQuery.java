@@ -6,7 +6,6 @@
 
 package profiler;
 
-import com.clarkparsia.pellet.sparqldl.jena.SparqlDLExecutionFactory;
 import gnu.getopt.Getopt;
 import gnu.getopt.LongOpt;
 import java.io.BufferedReader;
@@ -23,6 +22,7 @@ import openllet.core.utils.Timer;
 import openllet.core.utils.Timers;
 import openllet.core.utils.VersionInfo;
 import openllet.jena.JenaLoader;
+import openllet.query.sparqldl.jena.SparqlDLExecutionFactory;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryExecution;

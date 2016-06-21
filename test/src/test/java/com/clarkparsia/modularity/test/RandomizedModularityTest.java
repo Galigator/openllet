@@ -7,13 +7,13 @@
 package com.clarkparsia.modularity.test;
 
 import com.clarkparsia.modularity.ModularityUtils;
-import com.clarkparsia.owlapi.OWL;
-import com.clarkparsia.owlapi.OntologyUtils;
 import java.io.File;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.stream.Collectors;
+import openllet.owlapi.OWL;
+import openllet.owlapi.OntologyUtils;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLAxiom;

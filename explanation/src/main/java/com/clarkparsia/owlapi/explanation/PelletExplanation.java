@@ -6,9 +6,9 @@
 
 package com.clarkparsia.owlapi.explanation;
 
-import com.clarkparsia.pellet.owlapi.PelletReasoner;
-import com.clarkparsia.pellet.owlapi.PelletReasonerFactory;
 import java.util.Set;
+import openllet.owlapi.PelletReasoner;
+import openllet.owlapi.PelletReasonerFactory;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLClassExpression;

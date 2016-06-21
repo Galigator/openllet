@@ -5,7 +5,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
-import com.clarkparsia.owlapi.OWL;
 import com.clarkparsia.pellint.lintpattern.ontology.EquivalentAndSubclassAxiomPattern;
 import com.clarkparsia.pellint.model.Lint;
 import com.clarkparsia.pellint.model.LintFixer;
@@ -13,6 +12,7 @@ import com.clarkparsia.pellint.test.PellintTestCase;
 import com.clarkparsia.pellint.util.CollectionUtil;
 import java.util.List;
 import java.util.Set;
+import openllet.owlapi.OWL;
 import org.junit.Before;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.OWLAxiom;

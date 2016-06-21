@@ -4,11 +4,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import com.clarkparsia.pellet.sparqldl.jena.SparqlDLExecutionFactory;
 import java.util.Iterator;
 import openllet.core.PelletOptions;
 import openllet.jena.PelletReasoner;
 import openllet.jena.PelletReasonerFactory;
+import openllet.query.sparqldl.jena.SparqlDLExecutionFactory;
 import org.apache.jena.query.ARQ;
 import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryExecutionFactory;

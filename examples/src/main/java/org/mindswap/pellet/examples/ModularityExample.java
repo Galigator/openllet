@@ -9,9 +9,9 @@
 package org.mindswap.pellet.examples;
 
 import com.clarkparsia.modularity.ModularityUtils;
-import com.clarkparsia.owlapi.OWL;
 import java.util.HashSet;
 import java.util.Set;
+import openllet.owlapi.OWL;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;

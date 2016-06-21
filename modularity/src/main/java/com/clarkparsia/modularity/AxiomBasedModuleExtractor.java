@@ -6,7 +6,6 @@
 
 package com.clarkparsia.modularity;
 
-import com.clarkparsia.owlapi.OntologyUtils;
 import com.clarkparsia.owlapi.modularity.locality.LocalityClass;
 import com.clarkparsia.owlapi.modularity.locality.LocalityEvaluator;
 import com.clarkparsia.owlapi.modularity.locality.SyntacticLocalityEvaluator;
@@ -20,6 +19,7 @@ import java.util.stream.Collectors;
 import openllet.core.utils.DisjointSet;
 import openllet.core.utils.SetUtils;
 import openllet.core.utils.progress.ProgressMonitor;
+import openllet.owlapi.OntologyUtils;
 import openllet.shared.tools.Log;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;

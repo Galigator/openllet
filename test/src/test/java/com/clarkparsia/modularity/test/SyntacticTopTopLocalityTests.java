@@ -7,10 +7,10 @@
 package com.clarkparsia.modularity.test;
 
 import static com.clarkparsia.modularity.test.TestUtils.set;
-import static com.clarkparsia.owlapi.OWL.Class;
-import static com.clarkparsia.owlapi.OWL.ObjectProperty;
-import static com.clarkparsia.owlapi.OWL.Thing;
-import static com.clarkparsia.owlapi.OWL.domain;
+import static openllet.owlapi.OWL.Class;
+import static openllet.owlapi.OWL.ObjectProperty;
+import static openllet.owlapi.OWL.Thing;
+import static openllet.owlapi.OWL.domain;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 

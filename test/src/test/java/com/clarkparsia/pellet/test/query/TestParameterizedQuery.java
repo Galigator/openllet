@@ -12,11 +12,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import com.clarkparsia.pellet.sparqldl.jena.SparqlDLExecutionFactory;
-import com.clarkparsia.pellet.sparqldl.jena.SparqlDLExecutionFactory.QueryEngineType;
 import java.util.ArrayList;
 import java.util.List;
 import openllet.jena.PelletReasonerFactory;
+import openllet.query.sparqldl.jena.SparqlDLExecutionFactory;
+import openllet.query.sparqldl.jena.SparqlDLExecutionFactory.QueryEngineType;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.query.Dataset;
 import org.apache.jena.query.DatasetFactory;

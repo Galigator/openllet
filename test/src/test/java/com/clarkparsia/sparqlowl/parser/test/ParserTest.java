@@ -8,9 +8,6 @@ package com.clarkparsia.sparqlowl.parser.test;
 
 import static org.junit.Assert.assertEquals;
 
-import com.clarkparsia.pellet.sparqldl.parser.ARQParser;
-import com.clarkparsia.sparqlowl.parser.arq.ARQTerpParser;
-import com.clarkparsia.sparqlowl.parser.arq.TerpSyntax;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,6 +17,9 @@ import openllet.core.KnowledgeBase;
 import openllet.core.utils.FileUtils;
 import openllet.core.utils.SetUtils;
 import openllet.jena.JenaLoader;
+import openllet.query.sparqldl.parser.ARQParser;
+import openllet.query.sparqlowl.parser.arq.ARQTerpParser;
+import openllet.query.sparqlowl.parser.arq.TerpSyntax;
 import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryFactory;
 import org.apache.jena.query.Syntax;
@@ -117,10 +117,10 @@ public class ParserTest
 	public void compareQuery() throws FileNotFoundException, IOException
 	{
 		final Query sparql = QueryFactory.create(FileUtils.readFile(base + _sparqlFile), Syntax.syntaxSPARQL);
-		final com.clarkparsia.pellet.sparqldl.model.Query expected = _parser.parse(sparql, _kb);
+		final openllet.query.sparqldl.model.Query expected = _parser.parse(sparql, _kb);
 
 		final Query sparqlOWL = QueryFactory.create(FileUtils.readFile(base + _sparqlOWLFile), TerpSyntax.getInstance());
-		final com.clarkparsia.pellet.sparqldl.model.Query actual = _parser.parse(sparqlOWL, _kb);
+		final openllet.query.sparqldl.model.Query actual = _parser.parse(sparqlOWL, _kb);
 
 		assertEquals(expected.getAtoms(), actual.getAtoms());
 	}

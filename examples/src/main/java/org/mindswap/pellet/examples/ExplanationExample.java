@@ -8,14 +8,14 @@
 
 package org.mindswap.pellet.examples;
 
-import com.clarkparsia.owlapi.OWL;
 import com.clarkparsia.owlapi.explanation.PelletExplanation;
 import com.clarkparsia.owlapi.explanation.io.manchester.ManchesterSyntaxExplanationRenderer;
-import com.clarkparsia.pellet.owlapi.PelletReasoner;
-import com.clarkparsia.pellet.owlapi.PelletReasonerFactory;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Set;
+import openllet.owlapi.OWL;
+import openllet.owlapi.PelletReasoner;
+import openllet.owlapi.PelletReasonerFactory;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;

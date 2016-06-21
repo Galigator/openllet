@@ -4,12 +4,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import com.clarkparsia.owlapi.OWL;
 import com.clarkparsia.pellint.model.LintFixer;
 import com.clarkparsia.pellint.test.PellintTestCase;
 import com.clarkparsia.pellint.util.CollectionUtil;
 import java.util.Set;
 import java.util.stream.Collectors;
+import openllet.owlapi.OWL;
 import org.junit.Before;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.OWLAxiom;

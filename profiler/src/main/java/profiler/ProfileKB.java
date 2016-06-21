@@ -8,7 +8,6 @@ package profiler;
 
 import static profiler.ProfileUtils.error;
 
-import com.clarkparsia.pellet.owlapi.OWLAPILoader;
 import gnu.getopt.Getopt;
 import gnu.getopt.LongOpt;
 import java.io.BufferedReader;
@@ -26,6 +25,7 @@ import openllet.core.utils.FileUtils;
 import openllet.core.utils.MemUtils;
 import openllet.core.utils.VersionInfo;
 import openllet.jena.JenaLoader;
+import openllet.owlapi.OWLAPILoader;
 import profiler.utils.IObjectProfileNode;
 import profiler.utils.ObjectProfiler;
 

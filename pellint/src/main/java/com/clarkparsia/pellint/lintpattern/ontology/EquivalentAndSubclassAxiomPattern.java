@@ -6,7 +6,6 @@
 
 package com.clarkparsia.pellint.lintpattern.ontology;
 
-import com.clarkparsia.owlapi.OWL;
 import com.clarkparsia.pellint.format.CompactClassLintFormat;
 import com.clarkparsia.pellint.format.LintFormat;
 import com.clarkparsia.pellint.model.Lint;
@@ -17,6 +16,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import openllet.owlapi.OWL;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassAxiom;
 import org.semanticweb.owlapi.model.OWLClassExpression;

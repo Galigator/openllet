@@ -8,13 +8,13 @@
 
 package com.clarkparsia.pellet.test.query;
 
-import com.clarkparsia.pellet.sparqldl.jena.SparqlDLExecutionFactory.QueryEngineType;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import openllet.query.sparqldl.jena.SparqlDLExecutionFactory.QueryEngineType;
 import org.apache.jena.rdf.model.Resource;
 import org.junit.Test;
 import org.junit.runner.RunWith;

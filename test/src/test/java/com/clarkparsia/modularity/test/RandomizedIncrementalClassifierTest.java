@@ -6,11 +6,11 @@
 
 package com.clarkparsia.modularity.test;
 
-import com.clarkparsia.owlapi.OWL;
-import com.clarkparsia.owlapi.OntologyUtils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import openllet.owlapi.OWL;
+import openllet.owlapi.OntologyUtils;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;

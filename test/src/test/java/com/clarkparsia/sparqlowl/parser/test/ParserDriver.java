@@ -1,9 +1,9 @@
 package com.clarkparsia.sparqlowl.parser.test;
 
-import com.clarkparsia.sparqlowl.parser.antlr.SparqlOwlLexer;
-import com.clarkparsia.sparqlowl.parser.antlr.SparqlOwlParser;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import openllet.query.sparqlowl.parser.antlr.SparqlOwlLexer;
+import openllet.query.sparqlowl.parser.antlr.SparqlOwlParser;
 import org.antlr.runtime.ANTLRReaderStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;

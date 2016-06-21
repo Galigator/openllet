@@ -10,11 +10,11 @@ package com.clarkparsia.explanation.test;
 
 import static org.junit.Assert.assertEquals;
 
-import com.clarkparsia.owlapi.OWL;
-import com.clarkparsia.owlapi.XSD;
 import com.clarkparsia.owlapi.explanation.io.manchester.ManchesterSyntaxObjectRenderer;
 import com.clarkparsia.owlapi.explanation.io.manchester.TextBlockWriter;
 import java.io.StringWriter;
+import openllet.owlapi.OWL;
+import openllet.owlapi.XSD;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLIndividual;

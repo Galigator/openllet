@@ -6,10 +6,6 @@
 
 package com.clarkparsia.modularity;
 
-import com.clarkparsia.owlapi.OWL;
-import com.clarkparsia.owlapi.OntologyUtils;
-import com.clarkparsia.pellet.owlapi.PelletReasoner;
-import com.clarkparsia.pellet.owlapi.PelletReasonerFactory;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,6 +35,10 @@ import openllet.core.utils.SetUtils;
 import openllet.core.utils.TaxonomyUtils;
 import openllet.core.utils.Timer;
 import openllet.core.utils.Timers;
+import openllet.owlapi.OWL;
+import openllet.owlapi.OntologyUtils;
+import openllet.owlapi.PelletReasoner;
+import openllet.owlapi.PelletReasonerFactory;
 import openllet.shared.tools.Log;
 import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.AxiomType;

@@ -1,11 +1,5 @@
 package com.clarkparsia.pellet.test.query;
 
-import static com.clarkparsia.pellet.sparqldl.model.QueryAtomFactory.DatatypeAtom;
-import static com.clarkparsia.pellet.sparqldl.model.QueryAtomFactory.DomainAtom;
-import static com.clarkparsia.pellet.sparqldl.model.QueryAtomFactory.InverseOfAtom;
-import static com.clarkparsia.pellet.sparqldl.model.QueryAtomFactory.ObjectPropertyAtom;
-import static com.clarkparsia.pellet.sparqldl.model.QueryAtomFactory.PropertyValueAtom;
-import static com.clarkparsia.pellet.sparqldl.model.QueryAtomFactory.RangeAtom;
 import static openllet.core.utils.TermFactory.BOTTOM;
 import static openllet.core.utils.TermFactory.BOTTOM_DATA_PROPERTY;
 import static openllet.core.utils.TermFactory.BOTTOM_OBJECT_PROPERTY;
@@ -14,12 +8,18 @@ import static openllet.core.utils.TermFactory.TOP_DATA_PROPERTY;
 import static openllet.core.utils.TermFactory.TOP_OBJECT_PROPERTY;
 import static openllet.core.utils.TermFactory.literal;
 import static openllet.core.utils.TermFactory.var;
+import static openllet.query.sparqldl.model.QueryAtomFactory.DatatypeAtom;
+import static openllet.query.sparqldl.model.QueryAtomFactory.DomainAtom;
+import static openllet.query.sparqldl.model.QueryAtomFactory.InverseOfAtom;
+import static openllet.query.sparqldl.model.QueryAtomFactory.ObjectPropertyAtom;
+import static openllet.query.sparqldl.model.QueryAtomFactory.PropertyValueAtom;
+import static openllet.query.sparqldl.model.QueryAtomFactory.RangeAtom;
 
-import com.clarkparsia.pellet.sparqldl.model.Query;
-import com.clarkparsia.pellet.sparqldl.parser.ARQParser;
 import openllet.aterm.ATermAppl;
 import openllet.core.datatypes.Datatypes;
 import openllet.core.utils.Namespaces;
+import openllet.query.sparqldl.model.Query;
+import openllet.query.sparqldl.parser.ARQParser;
 import org.junit.Test;
 
 public class TestMiscQueries extends AbstractQueryTest

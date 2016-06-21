@@ -27,9 +27,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mindswap.pellet.test.PelletTestCase.assertIteratorValues;
 
-import com.clarkparsia.owlapi.OWL;
-import com.clarkparsia.owlapi.SWRL;
-import com.clarkparsia.pellet.owlapi.PelletReasoner;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -58,6 +55,9 @@ import openllet.core.rules.model.RuleAtom;
 import openllet.core.rules.model.SameIndividualAtom;
 import openllet.core.utils.TermFactory;
 import openllet.jena.PelletReasonerFactory;
+import openllet.owlapi.OWL;
+import openllet.owlapi.PelletReasoner;
+import openllet.owlapi.SWRL;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
@@ -452,7 +452,7 @@ public class MiscRuleTests extends AbstractKBTests
 
 		final OWLOntology mergedOntology = OWL.Ontology(Stream.concat(familyRef.axioms(), familyRules.axioms()));
 
-		final PelletReasoner reasoner = com.clarkparsia.pellet.owlapi.PelletReasonerFactory.getInstance().createReasoner(mergedOntology);
+		final PelletReasoner reasoner = openllet.owlapi.PelletReasonerFactory.getInstance().createReasoner(mergedOntology);
 
 		final OWLIndividual nella = OWL.Individual(_luigiFamily.resolve("#Nella"));
 		final OWLObjectProperty hasUncle = OWL.ObjectProperty(_luigiFamily.resolve("#hasUncle"));
@@ -1006,7 +1006,7 @@ public class MiscRuleTests extends AbstractKBTests
 
 		final OWLOntology ontology = OWL.Ontology(axioms);
 
-		final PelletReasoner reasoner = com.clarkparsia.pellet.owlapi.PelletReasonerFactory.getInstance().createNonBufferingReasoner(ontology);
+		final PelletReasoner reasoner = openllet.owlapi.PelletReasonerFactory.getInstance().createNonBufferingReasoner(ontology);
 
 		assertTrue(reasoner.isConsistent());
 		assertTrue(reasoner.isEntailed(OWL.classAssertion(individualA, classE)));
@@ -1061,7 +1061,7 @@ public class MiscRuleTests extends AbstractKBTests
 						")");
 
 		final OWLOntology ont = OWL._manager.loadOntologyFromOntologyDocument(source);
-		final PelletReasoner reasoner = com.clarkparsia.pellet.owlapi.PelletReasonerFactory.getInstance().createReasoner(ont);
+		final PelletReasoner reasoner = openllet.owlapi.PelletReasonerFactory.getInstance().createReasoner(ont);
 		reasoner.getKB().realize();
 	}
 

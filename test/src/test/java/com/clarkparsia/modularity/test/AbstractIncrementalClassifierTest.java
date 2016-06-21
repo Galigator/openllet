@@ -6,24 +6,24 @@
 
 package com.clarkparsia.modularity.test;
 
-import static com.clarkparsia.owlapi.OWL.Thing;
-import static com.clarkparsia.owlapi.OWL.all;
-import static com.clarkparsia.owlapi.OWL.and;
-import static com.clarkparsia.owlapi.OWL.classAssertion;
-import static com.clarkparsia.owlapi.OWL.declaration;
-import static com.clarkparsia.owlapi.OWL.disjointClasses;
-import static com.clarkparsia.owlapi.OWL.domain;
-import static com.clarkparsia.owlapi.OWL.equivalentClasses;
-import static com.clarkparsia.owlapi.OWL.label;
-import static com.clarkparsia.owlapi.OWL.not;
-import static com.clarkparsia.owlapi.OWL.or;
-import static com.clarkparsia.owlapi.OWL.propertyAssertion;
-import static com.clarkparsia.owlapi.OWL.range;
-import static com.clarkparsia.owlapi.OWL.some;
-import static com.clarkparsia.owlapi.OWL.subClassOf;
+import static openllet.owlapi.OWL.Thing;
+import static openllet.owlapi.OWL.all;
+import static openllet.owlapi.OWL.and;
+import static openllet.owlapi.OWL.classAssertion;
+import static openllet.owlapi.OWL.declaration;
+import static openllet.owlapi.OWL.disjointClasses;
+import static openllet.owlapi.OWL.domain;
+import static openllet.owlapi.OWL.equivalentClasses;
+import static openllet.owlapi.OWL.label;
+import static openllet.owlapi.OWL.not;
+import static openllet.owlapi.OWL.or;
+import static openllet.owlapi.OWL.propertyAssertion;
+import static openllet.owlapi.OWL.range;
+import static openllet.owlapi.OWL.some;
+import static openllet.owlapi.OWL.subClassOf;
 
-import com.clarkparsia.owlapi.OWL;
 import java.util.Arrays;
+import openllet.owlapi.OWL;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.AddImport;
 import org.semanticweb.owlapi.model.OWLAxiom;

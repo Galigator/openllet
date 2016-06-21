@@ -2,8 +2,8 @@ package com.clarkparsia.owlwg.runner.pellet;
 
 import com.clarkparsia.owlwg.owlapi.runner.impl.OwlApiAbstractRunner;
 import com.clarkparsia.owlwg.testrun.TestRunResult;
-import com.clarkparsia.pellet.owlapi.PelletReasoner;
-import com.clarkparsia.pellet.owlapi.PelletReasonerFactory;
+import openllet.owlapi.PelletReasoner;
+import openllet.owlapi.PelletReasonerFactory;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
 

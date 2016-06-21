@@ -1,6 +1,6 @@
 package openllet.owlapi.facet;
 
-import com.clarkparsia.pellet.owlapi.PelletReasoner;
+import openllet.owlapi.PelletReasoner;
 
 /**
  * @return a PelletReasoner that reason over this ontology.

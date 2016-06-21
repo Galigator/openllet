@@ -10,10 +10,10 @@ package com.clarkparsia.pellet.test.query;
 
 import static org.junit.Assert.assertEquals;
 
-import com.clarkparsia.pellet.sparqldl.jena.SparqlDLExecutionFactory;
-import com.clarkparsia.pellet.sparqldl.jena.SparqlDLExecutionFactory.QueryEngineType;
 import openllet.core.PelletOptions;
 import openllet.jena.PelletReasonerFactory;
+import openllet.query.sparqldl.jena.SparqlDLExecutionFactory;
+import openllet.query.sparqldl.jena.SparqlDLExecutionFactory.QueryEngineType;
 import org.apache.jena.ontology.Individual;
 import org.apache.jena.ontology.OntClass;
 import org.apache.jena.ontology.OntModel;

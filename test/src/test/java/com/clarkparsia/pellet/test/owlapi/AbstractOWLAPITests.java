@@ -8,17 +8,17 @@
 
 package com.clarkparsia.pellet.test.owlapi;
 
-import static com.clarkparsia.owlapi.OWL.AnonymousIndividual;
-import static com.clarkparsia.owlapi.OWL.Class;
-import static com.clarkparsia.owlapi.OWL.DataProperty;
-import static com.clarkparsia.owlapi.OWL.Individual;
-import static com.clarkparsia.owlapi.OWL.ObjectProperty;
-import static com.clarkparsia.owlapi.OWL.constant;
+import static openllet.owlapi.OWL.AnonymousIndividual;
+import static openllet.owlapi.OWL.Class;
+import static openllet.owlapi.OWL.DataProperty;
+import static openllet.owlapi.OWL.Individual;
+import static openllet.owlapi.OWL.ObjectProperty;
+import static openllet.owlapi.OWL.constant;
 
-import com.clarkparsia.owlapi.OWL;
-import com.clarkparsia.pellet.owlapi.PelletReasoner;
-import com.clarkparsia.pellet.owlapi.PelletReasonerFactory;
 import java.util.Collections;
+import openllet.owlapi.OWL;
+import openllet.owlapi.PelletReasoner;
+import openllet.owlapi.PelletReasonerFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.mindswap.pellet.test.PelletTestSuite;

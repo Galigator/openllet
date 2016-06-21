@@ -10,9 +10,6 @@ package com.clarkparsia.explanation.test;
 
 import static org.junit.Assume.assumeTrue;
 
-import com.clarkparsia.owlapi.OWL;
-import com.clarkparsia.owlapi.SWRL;
-import com.clarkparsia.owlapi.XSD;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Collection;
@@ -20,6 +17,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Stream;
 import openllet.core.utils.SetUtils;
+import openllet.owlapi.OWL;
+import openllet.owlapi.SWRL;
+import openllet.owlapi.XSD;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;

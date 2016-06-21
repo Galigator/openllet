@@ -11,10 +11,10 @@ package pellet;
 import static pellet.PelletCmdOptionArg.REQUIRED;
 
 import com.clarkparsia.modularity.ModularityUtils;
-import com.clarkparsia.owlapi.OntologyUtils;
-import com.clarkparsia.pellet.owlapi.OWLAPILoader;
 import java.util.HashSet;
 import java.util.Set;
+import openllet.owlapi.OWLAPILoader;
+import openllet.owlapi.OntologyUtils;
 import org.semanticweb.owlapi.formats.RDFXMLDocumentFormat;
 import org.semanticweb.owlapi.io.SystemOutDocumentTarget;
 import org.semanticweb.owlapi.model.OWLAxiom;

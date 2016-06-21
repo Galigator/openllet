@@ -1,12 +1,12 @@
 package org.mindswap.pellet.examples;
 
-import com.clarkparsia.pellet.sparqldl.jena.SparqlDLExecutionFactory;
 import java.util.logging.Logger;
 import openllet.core.PelletOptions;
 import openllet.core.exceptions.TimeoutException;
 import openllet.core.utils.Timers;
 import openllet.jena.PelletInfGraph;
 import openllet.jena.PelletReasonerFactory;
+import openllet.query.sparqldl.jena.SparqlDLExecutionFactory;
 import openllet.shared.tools.Log;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.query.Query;

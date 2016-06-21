@@ -6,13 +6,13 @@
 
 package com.clarkparsia.owlapi.explanation.io.rdfxml;
 
-import com.clarkparsia.owlapi.OWL;
 import com.clarkparsia.owlapi.explanation.io.ExplanationRenderer;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.HashSet;
 import java.util.Set;
+import openllet.owlapi.OWL;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.rdf.rdfxml.renderer.RDFXMLRenderer;

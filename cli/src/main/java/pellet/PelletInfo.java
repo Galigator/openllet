@@ -3,13 +3,13 @@ package pellet;
 import static pellet.PelletCmdOptionArg.NONE;
 import static pellet.PelletCmdOptionArg.REQUIRED;
 
-import com.clarkparsia.pellet.owlapi.LimitedMapIRIMapper;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import openllet.core.utils.FileUtils;
+import openllet.owlapi.LimitedMapIRIMapper;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.AddImport;

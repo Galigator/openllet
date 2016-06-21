@@ -10,11 +10,11 @@ package com.clarkparsia.sparqlowl.parser.test;
 
 import static java.lang.String.format;
 
-import com.clarkparsia.sparqlowl.parser.antlr.SparqlOwlLexer;
-import com.clarkparsia.sparqlowl.parser.antlr.SparqlOwlParser;
-import com.clarkparsia.sparqlowl.parser.antlr.SparqlOwlTreeARQ;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import openllet.query.sparqlowl.parser.antlr.SparqlOwlLexer;
+import openllet.query.sparqlowl.parser.antlr.SparqlOwlParser;
+import openllet.query.sparqlowl.parser.antlr.SparqlOwlTreeARQ;
 import org.antlr.runtime.ANTLRReaderStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;

@@ -1,7 +1,5 @@
 package openllet.owlapi;
 
-import com.clarkparsia.pellet.owlapi.PelletReasoner;
-import com.clarkparsia.pellet.owlapi.PelletReasonerFactory;
 import java.io.File;
 import java.io.InputStream;
 import java.util.Map;

@@ -8,9 +8,9 @@ package org.mindswap.pellet.test.rules;
 
 import static org.junit.Assert.assertTrue;
 
-import com.clarkparsia.owlapi.OntologyUtils;
-import com.clarkparsia.pellet.owlapi.PelletReasoner;
 import openllet.jena.PelletReasonerFactory;
+import openllet.owlapi.OntologyUtils;
+import openllet.owlapi.PelletReasoner;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
@@ -78,7 +78,7 @@ public class SWRLAbstract
 			manager = OWLManager.createOWLOntologyManager();
 			final OWLOntology conclusion = manager.loadOntology(IRI.create(conclusionURI));
 
-			final PelletReasoner reasoner = new com.clarkparsia.pellet.owlapi.PelletReasonerFactory().createReasoner(premise);
+			final PelletReasoner reasoner = new openllet.owlapi.PelletReasonerFactory().createReasoner(premise);
 			assertTrue(reasoner.isEntailed(conclusion.axioms()));
 		}
 		catch (final OWLOntologyCreationException e)

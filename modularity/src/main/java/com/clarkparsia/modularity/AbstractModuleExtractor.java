@@ -8,7 +8,6 @@ package com.clarkparsia.modularity;
 
 import com.clarkparsia.modularity.io.ModuleExtractorPersistence;
 import com.clarkparsia.modularity.io.UncloseableOutputStream;
-import com.clarkparsia.owlapi.OWL;
 import com.clarkparsia.owlapi.modularity.locality.LocalityClass;
 import com.clarkparsia.owlapi.modularity.locality.LocalityEvaluator;
 import com.clarkparsia.owlapi.modularity.locality.SyntacticLocalityEvaluator;
@@ -34,6 +33,7 @@ import openllet.core.utils.Timer;
 import openllet.core.utils.Timers;
 import openllet.core.utils.progress.ConsoleProgressMonitor;
 import openllet.core.utils.progress.ProgressMonitor;
+import openllet.owlapi.OWL;
 import openllet.shared.tools.Log;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;

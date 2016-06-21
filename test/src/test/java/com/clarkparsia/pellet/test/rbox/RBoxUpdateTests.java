@@ -8,22 +8,22 @@
 
 package com.clarkparsia.pellet.test.rbox;
 
-import static com.clarkparsia.owlapi.OWL.classAssertion;
-import static com.clarkparsia.owlapi.OWL.constant;
-import static com.clarkparsia.owlapi.OWL.declaration;
-import static com.clarkparsia.owlapi.OWL.domain;
-import static com.clarkparsia.owlapi.OWL.or;
-import static com.clarkparsia.owlapi.OWL.propertyAssertion;
-import static com.clarkparsia.owlapi.OWL.range;
+import static openllet.owlapi.OWL.classAssertion;
+import static openllet.owlapi.OWL.constant;
+import static openllet.owlapi.OWL.declaration;
+import static openllet.owlapi.OWL.domain;
+import static openllet.owlapi.OWL.or;
+import static openllet.owlapi.OWL.propertyAssertion;
+import static openllet.owlapi.OWL.range;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import com.clarkparsia.owlapi.XSD;
 import com.clarkparsia.pellet.test.owlapi.AbstractOWLAPITests;
 import java.util.Properties;
 import junit.framework.JUnit4TestAdapter;
 import openllet.core.PelletOptions;
 import openllet.core.utils.PropertiesBuilder;
+import openllet.owlapi.XSD;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;

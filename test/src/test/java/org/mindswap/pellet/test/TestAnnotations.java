@@ -5,8 +5,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import com.clarkparsia.pellet.owlapi.OWLAPILoader;
-import com.clarkparsia.pellet.sparqldl.jena.SparqlDLExecutionFactory;
 import java.io.File;
 import java.util.Collections;
 import java.util.HashSet;
@@ -20,6 +18,8 @@ import openllet.core.utils.ATermUtils;
 import openllet.core.utils.PropertiesBuilder;
 import openllet.jena.PelletInfGraph;
 import openllet.jena.PelletReasonerFactory;
+import openllet.owlapi.OWLAPILoader;
+import openllet.query.sparqldl.jena.SparqlDLExecutionFactory;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryExecution;

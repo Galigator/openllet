@@ -7,16 +7,16 @@
 package com.clarkparsia.modularity.test;
 
 import static com.clarkparsia.modularity.test.TestUtils.set;
-import static com.clarkparsia.owlapi.OWL.Class;
-import static com.clarkparsia.owlapi.OWL.Nothing;
-import static com.clarkparsia.owlapi.OWL.ObjectProperty;
-import static com.clarkparsia.owlapi.OWL.Thing;
-import static com.clarkparsia.owlapi.OWL.all;
-import static com.clarkparsia.owlapi.OWL.domain;
-import static com.clarkparsia.owlapi.OWL.max;
-import static com.clarkparsia.owlapi.OWL.not;
-import static com.clarkparsia.owlapi.OWL.some;
-import static com.clarkparsia.owlapi.OWL.subClassOf;
+import static openllet.owlapi.OWL.Class;
+import static openllet.owlapi.OWL.Nothing;
+import static openllet.owlapi.OWL.ObjectProperty;
+import static openllet.owlapi.OWL.Thing;
+import static openllet.owlapi.OWL.all;
+import static openllet.owlapi.OWL.domain;
+import static openllet.owlapi.OWL.max;
+import static openllet.owlapi.OWL.not;
+import static openllet.owlapi.OWL.some;
+import static openllet.owlapi.OWL.subClassOf;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 

@@ -86,7 +86,7 @@ public class JenaExplanationTest extends AbstractExplanationTest
 
 	private Graph convertOntology(final Collection<OWLAxiom> axioms, final boolean filterTypes) throws Exception
 	{
-		return convertOntology(com.clarkparsia.owlapi.OWL.Ontology(axioms), filterTypes);
+		return convertOntology(openllet.owlapi.OWL.Ontology(axioms), filterTypes);
 	}
 
 	private Graph convertOntology(final OWLOntology ontology, final boolean filterTypes) throws Exception
@@ -111,7 +111,7 @@ public class JenaExplanationTest extends AbstractExplanationTest
 	@Override
 	public void setupGenerators(final Stream<OWLAxiom> ontologyAxioms) throws Exception
 	{
-		final OWLOntology ontology = com.clarkparsia.owlapi.OWL.Ontology(ontologyAxioms);
+		final OWLOntology ontology = openllet.owlapi.OWL.Ontology(ontologyAxioms);
 
 		final Graph data = convertOntology(ontology, false);
 

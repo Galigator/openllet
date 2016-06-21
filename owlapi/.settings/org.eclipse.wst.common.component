@@ -2,5 +2,7 @@
     <wb-module deploy-name="com.github.openllet.openllet-owlapi-2.5.1">
         <wb-resource deploy-path="/" source-path="/src/main/java"/>
         <wb-resource deploy-path="/" source-path="/src/main/resources"/>
+        <wb-resource deploy-path="/" source-path="/src/main/javacc"/>
+        <wb-resource deploy-path="/" source-path="/src/main/javacc/openllet/owlapi/parser"/>
     </wb-module>
 </project-modules>

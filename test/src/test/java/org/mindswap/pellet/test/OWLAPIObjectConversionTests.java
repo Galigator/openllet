@@ -11,12 +11,12 @@ package org.mindswap.pellet.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-import com.clarkparsia.pellet.owlapi.ConceptConverter;
-import com.clarkparsia.pellet.owlapi.PelletVisitor;
 import junit.framework.JUnit4TestAdapter;
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
 import openllet.core.utils.SetUtils;
+import openllet.owlapi.ConceptConverter;
+import openllet.owlapi.PelletVisitor;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;

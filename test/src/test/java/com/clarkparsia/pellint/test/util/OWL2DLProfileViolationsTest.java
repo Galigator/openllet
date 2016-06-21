@@ -3,8 +3,8 @@ package com.clarkparsia.pellint.test.util;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import com.clarkparsia.owlapi.OWL;
 import java.io.File;
+import openllet.owlapi.OWL;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;

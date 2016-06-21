@@ -8,7 +8,6 @@
 
 package com.clarkparsia.modularity.io;
 
-import com.clarkparsia.owlapi.OWL;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -24,6 +23,7 @@ import java.util.stream.Stream;
 import openllet.core.taxonomy.Taxonomy;
 import openllet.core.taxonomy.TaxonomyNode;
 import openllet.core.utils.TaxonomyUtils;
+import openllet.owlapi.OWL;
 import openllet.shared.tools.Log;
 import org.semanticweb.owlapi.formats.OWLXMLDocumentFormat;
 import org.semanticweb.owlapi.io.StreamDocumentTarget;

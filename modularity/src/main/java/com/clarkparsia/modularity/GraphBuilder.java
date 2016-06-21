@@ -6,8 +6,6 @@
 
 package com.clarkparsia.modularity;
 
-import com.clarkparsia.owlapi.OWL;
-import com.clarkparsia.owlapi.OntologyUtils;
 import com.clarkparsia.reachability.Node;
 import com.clarkparsia.reachability.ReachabilityGraph;
 import java.util.HashSet;
@@ -17,6 +15,8 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import openllet.core.utils.SetUtils;
+import openllet.owlapi.OWL;
+import openllet.owlapi.OntologyUtils;
 import openllet.shared.tools.Log;
 import org.semanticweb.owlapi.model.AsOWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLAxiom;

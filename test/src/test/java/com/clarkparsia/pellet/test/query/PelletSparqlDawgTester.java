@@ -9,14 +9,14 @@
 package com.clarkparsia.pellet.test.query;
 
 import com.clarkparsia.jena.test.ResourceImportLoader;
-import com.clarkparsia.pellet.sparqldl.jena.SparqlDLExecutionFactory;
-import com.clarkparsia.pellet.sparqldl.jena.SparqlDLExecutionFactory.QueryEngineType;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import openllet.core.utils.URIUtils;
 import openllet.jena.PelletInfGraph;
 import openllet.jena.PelletReasonerFactory;
+import openllet.query.sparqldl.jena.SparqlDLExecutionFactory;
+import openllet.query.sparqldl.jena.SparqlDLExecutionFactory.QueryEngineType;
 import org.apache.jena.ontology.OntDocumentManager;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.query.Dataset;

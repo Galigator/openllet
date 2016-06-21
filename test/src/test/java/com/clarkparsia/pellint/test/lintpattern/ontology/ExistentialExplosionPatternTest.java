@@ -4,11 +4,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 
-import com.clarkparsia.owlapi.OWL;
 import com.clarkparsia.pellint.lintpattern.ontology.ExistentialExplosionPattern;
 import com.clarkparsia.pellint.model.Lint;
 import com.clarkparsia.pellint.test.PellintTestCase;
 import java.util.List;
+import openllet.owlapi.OWL;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;

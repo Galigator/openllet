@@ -6,22 +6,22 @@
 
 package com.clarkparsia.modularity.test;
 
-import static com.clarkparsia.owlapi.OWL.all;
-import static com.clarkparsia.owlapi.OWL.classAssertion;
-import static com.clarkparsia.owlapi.OWL.equivalentClasses;
-import static com.clarkparsia.owlapi.OWL.subClassOf;
+import static openllet.owlapi.OWL.all;
+import static openllet.owlapi.OWL.classAssertion;
+import static openllet.owlapi.OWL.equivalentClasses;
+import static openllet.owlapi.OWL.subClassOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import com.clarkparsia.modularity.IncrementalClassifier;
 import com.clarkparsia.modularity.PelletIncremantalReasonerFactory;
-import com.clarkparsia.owlapi.OWL;
-import com.clarkparsia.owlapi.OntologyUtils;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.stream.Collectors;
 import openllet.core.utils.SetUtils;
+import openllet.owlapi.OWL;
+import openllet.owlapi.OntologyUtils;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.OWLAxiom;
 

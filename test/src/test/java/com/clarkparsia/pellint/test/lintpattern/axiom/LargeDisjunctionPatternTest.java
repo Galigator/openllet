@@ -6,10 +6,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
-import com.clarkparsia.owlapi.OWL;
 import com.clarkparsia.pellint.lintpattern.axiom.LargeDisjunctionPattern;
 import com.clarkparsia.pellint.model.Lint;
 import com.clarkparsia.pellint.test.PellintTestCase;
+import openllet.owlapi.OWL;
 import org.junit.Before;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.OWLAxiom;

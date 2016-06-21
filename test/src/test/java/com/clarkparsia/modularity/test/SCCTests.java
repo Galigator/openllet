@@ -3,13 +3,13 @@ package com.clarkparsia.modularity.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import com.clarkparsia.owlapi.OWL;
 import com.clarkparsia.reachability.EntityNode;
 import com.clarkparsia.reachability.ReachabilityGraph;
 import com.clarkparsia.reachability.SCC;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import openllet.owlapi.OWL;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.OWLEntity;
 

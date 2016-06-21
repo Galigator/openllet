@@ -2,8 +2,6 @@ package com.clarkparsia.pellet.test.annotations;
 
 import static org.junit.Assert.assertEquals;
 
-import com.clarkparsia.pellet.owlapi.PelletReasoner;
-import com.clarkparsia.pellet.owlapi.PelletReasonerFactory;
 import java.util.HashSet;
 import java.util.Set;
 import junit.framework.JUnit4TestAdapter;
@@ -12,6 +10,8 @@ import openllet.core.KnowledgeBase;
 import openllet.core.PelletOptions;
 import openllet.core.utils.ATermUtils;
 import openllet.jena.PelletInfGraph;
+import openllet.owlapi.PelletReasoner;
+import openllet.owlapi.PelletReasonerFactory;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.Literal;
 import org.apache.jena.rdf.model.ModelFactory;

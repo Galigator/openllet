@@ -22,8 +22,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import com.clarkparsia.pellet.owlapi.OWLAPILoader;
 import junit.framework.JUnit4TestAdapter;
+import openllet.owlapi.OWLAPILoader;
 import org.junit.Test;
 import org.mindswap.pellet.test.AbstractKBTests;
 import org.mindswap.pellet.test.MiscTests;

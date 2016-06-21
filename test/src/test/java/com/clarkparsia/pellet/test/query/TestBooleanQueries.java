@@ -8,26 +8,26 @@
 
 package com.clarkparsia.pellet.test.query;
 
-import static com.clarkparsia.pellet.sparqldl.model.QueryAtomFactory.NotKnownAtom;
-import static com.clarkparsia.pellet.sparqldl.model.QueryAtomFactory.PropertyValueAtom;
-import static com.clarkparsia.pellet.sparqldl.model.QueryAtomFactory.SubClassOfAtom;
-import static com.clarkparsia.pellet.sparqldl.model.QueryAtomFactory.TypeAtom;
 import static openllet.core.utils.TermFactory.TOP;
 import static openllet.core.utils.TermFactory.not;
+import static openllet.query.sparqldl.model.QueryAtomFactory.NotKnownAtom;
+import static openllet.query.sparqldl.model.QueryAtomFactory.PropertyValueAtom;
+import static openllet.query.sparqldl.model.QueryAtomFactory.SubClassOfAtom;
+import static openllet.query.sparqldl.model.QueryAtomFactory.TypeAtom;
 import static org.junit.Assert.assertEquals;
 import static org.mindswap.pellet.test.PelletTestCase.assertIteratorValues;
 
-import com.clarkparsia.pellet.sparqldl.engine.QueryEngine;
-import com.clarkparsia.pellet.sparqldl.model.Query;
-import com.clarkparsia.pellet.sparqldl.model.Query.VarType;
-import com.clarkparsia.pellet.sparqldl.model.QueryAtom;
-import com.clarkparsia.pellet.sparqldl.model.QueryImpl;
-import com.clarkparsia.pellet.sparqldl.model.QueryResult;
-import com.clarkparsia.pellet.sparqldl.model.ResultBinding;
 import java.util.ArrayList;
 import java.util.List;
 import openllet.aterm.ATermAppl;
 import openllet.core.utils.ATermUtils;
+import openllet.query.sparqldl.engine.QueryEngine;
+import openllet.query.sparqldl.model.Query;
+import openllet.query.sparqldl.model.QueryAtom;
+import openllet.query.sparqldl.model.QueryImpl;
+import openllet.query.sparqldl.model.QueryResult;
+import openllet.query.sparqldl.model.ResultBinding;
+import openllet.query.sparqldl.model.Query.VarType;
 import org.junit.Test;
 import org.mindswap.pellet.test.AbstractKBTests;
 

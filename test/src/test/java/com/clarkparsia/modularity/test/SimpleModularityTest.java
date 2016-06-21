@@ -6,11 +6,11 @@
 
 package com.clarkparsia.modularity.test;
 
-import static com.clarkparsia.owlapi.OWL.all;
-import static com.clarkparsia.owlapi.OWL.and;
-import static com.clarkparsia.owlapi.OWL.equivalentClasses;
-import static com.clarkparsia.owlapi.OWL.or;
-import static com.clarkparsia.owlapi.OWL.some;
+import static openllet.owlapi.OWL.all;
+import static openllet.owlapi.OWL.and;
+import static openllet.owlapi.OWL.equivalentClasses;
+import static openllet.owlapi.OWL.or;
+import static openllet.owlapi.OWL.some;
 
 import com.clarkparsia.modularity.ModuleExtractor;
 import java.util.Arrays;

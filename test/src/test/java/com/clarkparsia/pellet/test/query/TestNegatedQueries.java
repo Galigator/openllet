@@ -8,15 +8,15 @@
 
 package com.clarkparsia.pellet.test.query;
 
-import static com.clarkparsia.pellet.sparqldl.model.QueryAtomFactory.NotKnownAtom;
-import static com.clarkparsia.pellet.sparqldl.model.QueryAtomFactory.PropertyValueAtom;
-import static com.clarkparsia.pellet.sparqldl.model.QueryAtomFactory.TypeAtom;
 import static openllet.core.utils.TermFactory.TOP;
 import static openllet.core.utils.TermFactory.not;
+import static openllet.query.sparqldl.model.QueryAtomFactory.NotKnownAtom;
+import static openllet.query.sparqldl.model.QueryAtomFactory.PropertyValueAtom;
+import static openllet.query.sparqldl.model.QueryAtomFactory.TypeAtom;
 
-import com.clarkparsia.pellet.sparqldl.model.Query;
 import openllet.aterm.ATermAppl;
 import openllet.core.utils.TermFactory;
+import openllet.query.sparqldl.model.Query;
 import org.junit.Test;
 
 /**

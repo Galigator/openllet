@@ -10,13 +10,13 @@ package com.clarkparsia.pellet.test.owlapi;
 
 import static org.junit.Assert.assertTrue;
 
-import com.clarkparsia.owlapi.OWL;
-import com.clarkparsia.owlapi.OntologyUtils;
-import com.clarkparsia.pellet.owlapi.PelletReasonerFactory;
 import java.util.Set;
 import java.util.stream.Collectors;
 import junit.framework.JUnit4TestAdapter;
 import openllet.core.utils.SetUtils;
+import openllet.owlapi.OWL;
+import openllet.owlapi.OntologyUtils;
+import openllet.owlapi.PelletReasonerFactory;
 import org.junit.Test;
 import org.mindswap.pellet.test.PelletTestSuite;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;

@@ -6,17 +6,17 @@
 
 package org.mindswap.pellet.examples;
 
-import com.clarkparsia.pellet.sparqldl.engine.QueryEngine;
-import com.clarkparsia.pellet.sparqldl.engine.QuerySubsumption;
-import com.clarkparsia.pellet.sparqldl.model.Query;
-import com.clarkparsia.pellet.sparqldl.model.QueryResult;
-import com.clarkparsia.pellet.sparqldl.model.ResultBinding;
-import com.clarkparsia.pellet.sparqldl.parser.QueryParser;
 import java.util.Iterator;
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
 import openllet.jena.PelletInfGraph;
 import openllet.jena.PelletReasonerFactory;
+import openllet.query.sparqldl.engine.QueryEngine;
+import openllet.query.sparqldl.engine.QuerySubsumption;
+import openllet.query.sparqldl.model.Query;
+import openllet.query.sparqldl.model.QueryResult;
+import openllet.query.sparqldl.model.ResultBinding;
+import openllet.query.sparqldl.parser.QueryParser;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.ModelFactory;
 

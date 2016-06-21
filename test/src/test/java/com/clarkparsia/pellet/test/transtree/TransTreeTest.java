@@ -3,8 +3,6 @@ package com.clarkparsia.pellet.test.transtree;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import com.clarkparsia.owlapi.OntologyUtils;
-import com.clarkparsia.pellet.owlapi.OWLAPILoader;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -15,6 +13,8 @@ import openllet.core.taxonomy.SubsumptionComparator;
 import openllet.core.taxonomy.Taxonomy;
 import openllet.core.taxonomy.printer.ClassTreePrinter;
 import openllet.core.utils.ATermUtils;
+import openllet.owlapi.OWLAPILoader;
+import openllet.owlapi.OntologyUtils;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObjectProperty;

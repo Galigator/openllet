@@ -6,12 +6,7 @@
 
 package com.clarkparsia.owlapi.explanation;
 
-import com.clarkparsia.owlapi.OWL;
-import com.clarkparsia.owlapi.OntologyUtils;
 import com.clarkparsia.owlapi.explanation.util.DefinitionTracker;
-import com.clarkparsia.pellet.owlapi.AxiomConverter;
-import com.clarkparsia.pellet.owlapi.PelletReasoner;
-import com.clarkparsia.pellet.owlapi.PelletReasonerFactory;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -23,6 +18,11 @@ import openllet.core.PelletOptions;
 import openllet.core.utils.Pair;
 import openllet.core.utils.SetUtils;
 import openllet.core.utils.TaxonomyUtils;
+import openllet.owlapi.AxiomConverter;
+import openllet.owlapi.OWL;
+import openllet.owlapi.OntologyUtils;
+import openllet.owlapi.PelletReasoner;
+import openllet.owlapi.PelletReasonerFactory;
 import openllet.shared.tools.Log;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;

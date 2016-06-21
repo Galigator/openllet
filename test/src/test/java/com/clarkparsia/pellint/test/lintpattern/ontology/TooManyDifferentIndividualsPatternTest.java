@@ -5,12 +5,12 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
-import com.clarkparsia.owlapi.OWL;
 import com.clarkparsia.pellint.lintpattern.ontology.TooManyDifferentIndividualsPattern;
 import com.clarkparsia.pellint.model.Lint;
 import com.clarkparsia.pellint.test.PellintTestCase;
 import com.clarkparsia.pellint.util.CollectionUtil;
 import java.util.List;
+import openllet.owlapi.OWL;
 import org.junit.Before;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.OWLException;

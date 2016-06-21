@@ -8,12 +8,12 @@
 
 package com.clarkparsia.pellet.test.owlapi;
 
-import static com.clarkparsia.owlapi.OWL.classAssertion;
+import static openllet.owlapi.OWL.classAssertion;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import com.clarkparsia.owlapi.OWL;
 import junit.framework.JUnit4TestAdapter;
+import openllet.owlapi.OWL;
 import org.junit.Test;
 
 /**

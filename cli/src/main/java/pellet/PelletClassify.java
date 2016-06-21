@@ -13,8 +13,6 @@ import static pellet.PelletCmdOptionArg.NONE;
 import com.clarkparsia.modularity.IncrementalClassifier;
 import com.clarkparsia.modularity.OntologyDiff;
 import com.clarkparsia.modularity.io.IncrementalClassifierPersistence;
-import com.clarkparsia.pellet.owlapi.OWLAPILoader;
-import com.clarkparsia.pellet.owlapi.OWLClassTreePrinter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -30,6 +28,8 @@ import openllet.core.KnowledgeBase;
 import openllet.core.PelletOptions;
 import openllet.core.taxonomy.printer.ClassTreePrinter;
 import openllet.core.taxonomy.printer.TaxonomyPrinter;
+import openllet.owlapi.OWLAPILoader;
+import openllet.owlapi.OWLClassTreePrinter;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLOntology;
 

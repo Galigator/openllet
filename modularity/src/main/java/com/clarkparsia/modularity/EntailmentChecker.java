@@ -6,7 +6,6 @@
 
 package com.clarkparsia.modularity;
 
-import com.clarkparsia.owlapi.OWL;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -14,6 +13,7 @@ import java.util.logging.Logger;
 import java.util.stream.Stream;
 import openllet.core.taxonomy.Taxonomy;
 import openllet.core.utils.TaxonomyUtils;
+import openllet.owlapi.OWL;
 import openllet.shared.tools.Log;
 import org.semanticweb.owlapi.model.OWLAsymmetricObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLAxiom;

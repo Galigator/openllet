@@ -6,12 +6,6 @@
 
 package com.clarkparsia.pellet.test.query;
 
-import com.clarkparsia.pellet.sparqldl.engine.QueryEngine;
-import com.clarkparsia.pellet.sparqldl.jena.JenaIOUtils;
-import com.clarkparsia.pellet.sparqldl.jena.SparqlDLResultSet;
-import com.clarkparsia.pellet.sparqldl.model.Query;
-import com.clarkparsia.pellet.sparqldl.model.QueryResult;
-import com.clarkparsia.pellet.sparqldl.model.ResultBinding;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -30,6 +24,12 @@ import openllet.core.utils.PermutationGenerator;
 import openllet.core.utils.Timer;
 import openllet.jena.PelletInfGraph;
 import openllet.jena.PelletReasonerFactory;
+import openllet.query.sparqldl.engine.QueryEngine;
+import openllet.query.sparqldl.jena.JenaIOUtils;
+import openllet.query.sparqldl.jena.SparqlDLResultSet;
+import openllet.query.sparqldl.model.Query;
+import openllet.query.sparqldl.model.QueryResult;
+import openllet.query.sparqldl.model.ResultBinding;
 import openllet.shared.tools.Log;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.query.QueryFactory;

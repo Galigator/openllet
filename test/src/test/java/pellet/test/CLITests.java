@@ -2,11 +2,11 @@ package pellet.test;
 
 import static org.junit.Assert.assertTrue;
 
-import com.clarkparsia.owlapi.OWL;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.Arrays;
 import junit.framework.JUnit4TestAdapter;
+import openllet.owlapi.OWL;
 import org.junit.Test;
 import pellet.PelletClassify;
 import pellet.PelletCmdApp;

@@ -8,7 +8,6 @@
 
 package com.clarkparsia.pellet.test.query;
 
-import com.clarkparsia.pellet.sparqldl.jena.JenaIOUtils;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,6 +18,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.core.utils.URIUtils;
+import openllet.query.sparqldl.jena.JenaIOUtils;
 import openllet.shared.tools.Log;
 import org.apache.jena.query.Dataset;
 import org.apache.jena.query.DatasetFactory;

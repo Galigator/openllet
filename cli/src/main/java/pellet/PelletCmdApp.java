@@ -11,7 +11,6 @@ package pellet;
 import static pellet.PelletCmdOptionArg.NONE;
 import static pellet.PelletCmdOptionArg.REQUIRED;
 
-import com.clarkparsia.pellet.owlapi.OWLAPILoader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -30,6 +29,7 @@ import openllet.core.PelletOptions;
 import openllet.core.utils.Timer;
 import openllet.core.utils.Timers;
 import openllet.jena.JenaLoader;
+import openllet.owlapi.OWLAPILoader;
 import openllet.shared.tools.Log;
 import openllet.shared.tools.Logging;
 import org.apache.jena.rdf.model.Model;

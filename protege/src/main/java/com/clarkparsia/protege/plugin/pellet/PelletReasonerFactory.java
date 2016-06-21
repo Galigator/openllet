@@ -26,7 +26,7 @@ public class PelletReasonerFactory extends AbstractProtegeOWLReasonerInfo
 	@Override
 	public OWLReasonerFactory getReasonerFactory()
 	{
-		return com.clarkparsia.pellet.owlapi.PelletReasonerFactory.getInstance();
+		return openllet.owlapi.PelletReasonerFactory.getInstance();
 	}
 
 	/**

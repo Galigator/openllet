@@ -11,11 +11,11 @@ package com.clarkparsia.pellet.test.classification;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import com.clarkparsia.owlapi.OWL;
-import com.clarkparsia.pellet.owlapi.PelletReasoner;
-import com.clarkparsia.pellet.owlapi.PelletReasonerFactory;
 import java.util.ArrayList;
 import java.util.List;
+import openllet.owlapi.OWL;
+import openllet.owlapi.PelletReasoner;
+import openllet.owlapi.PelletReasonerFactory;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;

@@ -1,6 +1,5 @@
 package openllet.owlapi;
 
-import com.clarkparsia.owlapi.OWL;
 import java.io.File;
 import java.util.Optional;
 import org.semanticweb.owlapi.model.OWLOntology;

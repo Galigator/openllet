@@ -11,8 +11,6 @@ package pellet;
 import static pellet.PelletCmdOptionArg.NONE;
 import static pellet.PelletCmdOptionArg.REQUIRED;
 
-import com.clarkparsia.owlapi.OntologyUtils;
-import com.clarkparsia.pellet.owlapi.OWLAPILoader;
 import java.util.HashSet;
 import java.util.Set;
 import openllet.aterm.ATermAppl;
@@ -22,6 +20,8 @@ import openllet.core.taxonomy.SubsumptionComparator;
 import openllet.core.taxonomy.Taxonomy;
 import openllet.core.taxonomy.printer.ClassTreePrinter;
 import openllet.core.utils.ATermUtils;
+import openllet.owlapi.OWLAPILoader;
+import openllet.owlapi.OntologyUtils;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObjectProperty;

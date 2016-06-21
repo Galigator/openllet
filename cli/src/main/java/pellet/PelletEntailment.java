@@ -13,13 +13,13 @@ import static pellet.PelletCmdOptionArg.REQUIRED;
 
 import com.clarkparsia.owlapi.explanation.io.manchester.ManchesterSyntaxObjectRenderer;
 import com.clarkparsia.owlapi.explanation.io.manchester.TextBlockWriter;
-import com.clarkparsia.pellet.owlapi.EntailmentChecker;
-import com.clarkparsia.pellet.owlapi.OWLAPILoader;
-import com.clarkparsia.pellet.owlapi.PelletReasoner;
 import java.io.PrintWriter;
 import java.util.Set;
 import java.util.stream.Collectors;
 import openllet.core.utils.FileUtils;
+import openllet.owlapi.EntailmentChecker;
+import openllet.owlapi.OWLAPILoader;
+import openllet.owlapi.PelletReasoner;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLLogicalAxiom;

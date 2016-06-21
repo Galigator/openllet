@@ -6,13 +6,13 @@
 
 package com.clarkparsia.modularity.test;
 
-import static com.clarkparsia.owlapi.OWL.Class;
-import static com.clarkparsia.owlapi.OWL.Individual;
-import static com.clarkparsia.owlapi.OWL.ObjectProperty;
+import static openllet.owlapi.OWL.Class;
+import static openllet.owlapi.OWL.Individual;
+import static openllet.owlapi.OWL.ObjectProperty;
 
 import com.clarkparsia.modularity.ModuleExtractor;
-import com.clarkparsia.owlapi.OWL;
-import com.clarkparsia.owlapi.OntologyUtils;
+import openllet.owlapi.OWL;
+import openllet.owlapi.OntologyUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.semanticweb.owlapi.model.OWLAxiom;

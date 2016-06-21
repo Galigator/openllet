@@ -1,8 +1,8 @@
 package com.clarkparsia.pellint.test;
 
-import com.clarkparsia.owlapi.OWL;
-import com.clarkparsia.owlapi.OntologyUtils;
 import java.util.Collections;
+import openllet.owlapi.OWL;
+import openllet.owlapi.OntologyUtils;
 import org.junit.Before;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
