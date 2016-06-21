@@ -18,6 +18,19 @@ We need a lot more tests, send your samples if you can.
 There are some  code samples in the examples/ directory.
 Issues are on [Github](http://github.com/galigator/openllet/issues).
 
+Openllet 2.6.X:
+-----------
+
+* Fullify strong typing in openllet core.
+* Add support for rdf4j, refactor modules dependencies.
+* Enforce interface usage in the core system.
+
+Changes :
+* Introduction of version support for latter situation calculus support.
+
+Migration :
+* lots of com.clarkparsia.* / com.mindswap.* are refactor into openllet.* to avoid conflict has typing change a lot.
+
 Openllet 2.5.X:
 -----------
 
