@@ -20,9 +20,6 @@ import java.util.Set;
  * Title: Collection Utilities
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2008
  * </p>
  * <p>

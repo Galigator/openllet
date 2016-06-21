@@ -25,7 +25,7 @@ import java.util.Set;
  * @param <K> key
  * @param <V> value
  */
-public class MultiValueMap<K, V> extends HashMap<K, Set<V>>
+public class MultiValueMap<K, V> extends HashMap<K, Set<V>> implements MultiMap<K, V>
 {
 	private static final long serialVersionUID = 2660982967886888197L;
 

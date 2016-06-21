@@ -19,7 +19,7 @@ import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
 import openllet.core.Role;
 import openllet.core.taxonomy.CDOptimizedTaxonomyBuilder;
-import openllet.core.taxonomy.POTaxonomyBuilder;
+import openllet.core.taxonomy.PartialOrderTaxonomyBuilder;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.CollectionUtils;
 import openllet.core.utils.MultiValueMap;
@@ -45,7 +45,6 @@ import openllet.shared.tools.Log;
  *
  * @author Evren Sirin
  */
-@SuppressWarnings("deprecation")
 public class ELClassifier extends CDOptimizedTaxonomyBuilder
 {
 	@SuppressWarnings("hiding")
@@ -56,14 +55,14 @@ public class ELClassifier extends CDOptimizedTaxonomyBuilder
 	public ConceptInfo TOP;
 	public ConceptInfo BOTTOM;
 
-	private boolean hasComplexRoles;
+	private boolean _hasComplexRoles;
 
-	private MultiValueMap<ConceptInfo, Trigger> queue;
+	private MultiValueMap<ConceptInfo, Trigger> _queue;
 
-	private Map<ATermAppl, ConceptInfo> concepts;
+	private Map<ATermAppl, ConceptInfo> _concepts;
 
-	private RoleChainCache roleChains;
-	private RoleRestrictionCache roleRestrictions;
+	private RoleChainCache _roleChains;
+	private RoleRestrictionCache _roleRestrictions;
 
 	private final PartialOrderComparator<ATermAppl> subsumptionComparator = (a, b) ->
 	{
@@ -98,13 +97,13 @@ public class ELClassifier extends CDOptimizedTaxonomyBuilder
 	{
 		super.reset();
 
-		hasComplexRoles = _kb.getExpressivity().hasTransitivity() || _kb.getExpressivity().hasComplexSubRoles();
+		_hasComplexRoles = _kb.getExpressivity().hasTransitivity() || _kb.getExpressivity().hasComplexSubRoles();
 
-		queue = new MultiValueMap<>();
-		concepts = CollectionUtils.makeMap();
+		_queue = new MultiValueMap<>();
+		_concepts = CollectionUtils.makeMap();
 
-		roleChains = new RoleChainCache(_kb);
-		roleRestrictions = new RoleRestrictionCache(_kb.getRBox());
+		_roleChains = new RoleChainCache(_kb);
+		_roleRestrictions = new RoleRestrictionCache(_kb.getRBox());
 	}
 
 	/**
@@ -124,7 +123,7 @@ public class ELClassifier extends CDOptimizedTaxonomyBuilder
 		t.stop();
 
 		_monitor.setProgressTitle("Classifiying");
-		_monitor.setProgressLength(queue.size());
+		_monitor.setProgressLength(_queue.size());
 		_monitor.taskStarted();
 
 		printStructures();
@@ -141,7 +140,7 @@ public class ELClassifier extends CDOptimizedTaxonomyBuilder
 		_logger.info("Building hierarchy");
 		t = _timers.startTimer("buildHierarchy");
 
-		_taxonomy = new ELTaxonomyBuilder().build(concepts);
+		_taxonomy = new ELTaxonomyBuilder().build(_concepts);
 		//		buildTaxonomyWithPO();
 
 		t.stop();
@@ -153,13 +152,12 @@ public class ELClassifier extends CDOptimizedTaxonomyBuilder
 	}
 
 	@SuppressWarnings("unused")
-	@Deprecated
-	private void buildTaxonomyWithPO()
+	private void buildPartialOrderTaxonomy()
 	{
-		final POTaxonomyBuilder builder = new POTaxonomyBuilder(_kb, subsumptionComparator);
+		final PartialOrderTaxonomyBuilder builder = new PartialOrderTaxonomyBuilder(_kb, subsumptionComparator);
 		_taxonomy = builder.getTaxonomy();
 
-		for (final ConceptInfo ci : concepts.values())
+		for (final ConceptInfo ci : _concepts.values())
 			classify(ci);
 	}
 
@@ -248,7 +246,7 @@ public class ELClassifier extends CDOptimizedTaxonomyBuilder
 			}
 		}
 
-		final ATermAppl propRange = roleRestrictions.getRange(prop);
+		final ATermAppl propRange = _roleRestrictions.getRange(prop);
 		if (propRange != null)
 		{
 			final ATermAppl some = ATermUtils.makeSomeValues(prop, propRange);
@@ -256,13 +254,13 @@ public class ELClassifier extends CDOptimizedTaxonomyBuilder
 			addSubsumer(ci, si);
 		}
 
-		if (hasComplexRoles)
+		if (_hasComplexRoles)
 		{
 			for (final Entry<ATermAppl, Set<ConceptInfo>> entry : ci.getPredecessors().entrySet())
 			{
 				final ATermAppl predProp = entry.getKey();
 				for (final ConceptInfo pred : entry.getValue())
-					for (final ATermAppl supProp : roleChains.getAllSuperRoles(predProp, prop))
+					for (final ATermAppl supProp : _roleChains.getAllSuperRoles(predProp, prop))
 						addExistential(pred, supProp, qi);
 			}
 
@@ -270,7 +268,7 @@ public class ELClassifier extends CDOptimizedTaxonomyBuilder
 			{
 				final ATermAppl succProp = entry.getKey();
 				for (final ConceptInfo succ : entry.getValue())
-					for (final ATermAppl supProp : roleChains.getAllSuperRoles(prop, succProp))
+					for (final ATermAppl supProp : _roleChains.getAllSuperRoles(prop, succProp))
 						addExistential(ci, supProp, succ);
 			}
 		}
@@ -278,7 +276,7 @@ public class ELClassifier extends CDOptimizedTaxonomyBuilder
 
 	private void addToQueue(final ConceptInfo ci, final Set<Trigger> triggers)
 	{
-		if (queue.addAll(ci, triggers))
+		if (_queue.addAll(ci, triggers))
 			if (_logger.isLoggable(Level.FINE))
 				_logger.fine("Add to _queue: " + ci + " " + triggers);
 	}
@@ -346,8 +344,8 @@ public class ELClassifier extends CDOptimizedTaxonomyBuilder
 		ConceptInfo ci = getInfo(c);
 		if (ci == null)
 		{
-			ci = new ConceptInfo(c, hasComplexRoles, false);
-			concepts.put(c, ci);
+			ci = new ConceptInfo(c, _hasComplexRoles, false);
+			_concepts.put(c, ci);
 			ci.addSuperClass(TOP);
 			addSubsumer(ci, ci);
 
@@ -428,7 +426,7 @@ public class ELClassifier extends CDOptimizedTaxonomyBuilder
 			toELSubClassAxioms(assertedAxiom);
 
 		//Convert Role Domains to axioms
-		for (final Entry<ATermAppl, ATermAppl> entry : roleRestrictions.getDomains().entrySet())
+		for (final Entry<ATermAppl, ATermAppl> entry : _roleRestrictions.getDomains().entrySet())
 		{
 			final ATermAppl roleName = entry.getKey();
 			final ATermAppl domain = entry.getValue();
@@ -439,7 +437,7 @@ public class ELClassifier extends CDOptimizedTaxonomyBuilder
 		for (final Role role : _kb.getRBox().getRoles())
 			if (role.isReflexive())
 			{
-				final ATermAppl range = roleRestrictions.getRange(role.getName());
+				final ATermAppl range = _roleRestrictions.getRange(role.getName());
 				if (range == null)
 					continue;
 
@@ -449,12 +447,12 @@ public class ELClassifier extends CDOptimizedTaxonomyBuilder
 
 	private void createConcepts()
 	{
-		TOP = new ConceptInfo(ATermUtils.TOP, hasComplexRoles, false);
-		concepts.put(ATermUtils.TOP, TOP);
+		TOP = new ConceptInfo(ATermUtils.TOP, _hasComplexRoles, false);
+		_concepts.put(ATermUtils.TOP, TOP);
 		TOP.addSuperClass(TOP);
 
-		BOTTOM = new ConceptInfo(ATermUtils.BOTTOM, hasComplexRoles, false);
-		concepts.put(ATermUtils.BOTTOM, BOTTOM);
+		BOTTOM = new ConceptInfo(ATermUtils.BOTTOM, _hasComplexRoles, false);
+		_concepts.put(ATermUtils.BOTTOM, BOTTOM);
 		BOTTOM.addSuperClass(BOTTOM);
 
 		for (final ATermAppl c : _kb.getClasses())
@@ -463,47 +461,47 @@ public class ELClassifier extends CDOptimizedTaxonomyBuilder
 		normalizeAxioms();
 
 		final Set<Trigger> TOP_TRIGGERS = TOP.getTriggers();
-		for (final ConceptInfo ci : concepts.values())
+		for (final ConceptInfo ci : _concepts.values())
 		{
 			final Set<Trigger> queueList = CollectionUtils.makeSet(TOP_TRIGGERS);
 			queueList.addAll(ci.getTriggers());
 
 			if (!queueList.isEmpty())
-				queue.addAll(ci, queueList);
+				_queue.addAll(ci, queueList);
 		}
 	}
 
 	private ConceptInfo getInfo(final ATermAppl concept)
 	{
-		return concepts.get(concept);
+		return _concepts.get(concept);
 	}
 
 	public void print()
 	{
-		for (final ConceptInfo ci : concepts.values())
+		for (final ConceptInfo ci : _concepts.values())
 			System.out.println(ci + " " + ci.getSuperClasses());
 		System.out.println();
-		roleChains.print();
+		_roleChains.print();
 	}
 
 	public void printStructures()
 	{
 		if (_logger.isLoggable(Level.FINE))
-			for (final ConceptInfo ci : concepts.values())
+			for (final ConceptInfo ci : _concepts.values())
 				_logger.fine(ci + "\t" + ci.getTriggers() + "\t" + ci.getSuperClasses());
 	}
 
 	private void processQueue()
 	{
-		final int startingSize = queue.size();
-		while (!queue.isEmpty())
+		final int startingSize = _queue.size();
+		while (!_queue.isEmpty())
 		{
-			final int processed = startingSize - queue.size();
+			final int processed = startingSize - _queue.size();
 			if (_monitor.getProgress() < processed)
 				_monitor.setProgress(processed);
 
-			final MultiValueMap<ConceptInfo, Trigger> localQueue = queue;
-			queue = new MultiValueMap<>();
+			final MultiValueMap<ConceptInfo, Trigger> localQueue = _queue;
+			_queue = new MultiValueMap<>();
 
 			for (final Entry<ConceptInfo, Set<Trigger>> entry : localQueue.entrySet())
 			{

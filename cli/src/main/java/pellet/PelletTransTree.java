@@ -15,9 +15,10 @@ import java.util.HashSet;
 import java.util.Set;
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
-import openllet.core.taxonomy.POTaxonomyBuilder;
+import openllet.core.taxonomy.PartialOrderTaxonomyBuilder;
 import openllet.core.taxonomy.SubsumptionComparator;
 import openllet.core.taxonomy.Taxonomy;
+import openllet.core.taxonomy.TaxonomyBuilder;
 import openllet.core.taxonomy.printer.ClassTreePrinter;
 import openllet.core.utils.ATermUtils;
 import openllet.owlapi.OWLAPILoader;
@@ -28,8 +29,18 @@ import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.search.EntitySearcher;
 
 /**
- * <_p> Title: PelletTransTree </_p> <_p> Description: Compute the hierarchy for part-of classes (or individuals) given a (transitive) property. </_p> <_p>
- * Copyright: Copyright (c) 2008 </_p> <_p> Company: Clark & Parsia, LLC. <http://www.clarkparsia.com> </_p>
+ * <p>
+ * Title: PelletTransTree
+ * </p>
+ * <p>
+ * Description: Compute the hierarchy for part-of classes (or individuals) given a (transitive) property.
+ * </p>
+ * <p>
+ * Copyright: Copyright (c) 2008
+ * </p>
+ * <p>
+ * Company: Clark & Parsia, LLC. <http://www.clarkparsia.com>
+ * </p>
  *
  * @author Markus Stocker
  */
@@ -138,14 +149,13 @@ public class PelletTransTree extends PelletCmdApp
 			filter = true;
 		}
 
-		POTaxonomyBuilder builder = null;
+		// Test first the individuals parameter, as per default the --classes option is true
+		final boolean indParam = _options.getOption("individuals").getValueAsBoolean();
 
-		// Test first the individuals parameter, as per default the --classes
-		// option is true
-		if (_options.getOption("individuals").getValueAsBoolean())
-		{
-			// Parts for individuals
-			builder = new POTaxonomyBuilder(kb, new PartIndividualsComparator(kb, p));
+		final TaxonomyBuilder builder = new PartialOrderTaxonomyBuilder(kb, indParam ? new PartIndividualsComparator(kb, p) : new PartClassesComparator(kb, p));
+
+		if (indParam)
+		{// Parts for individuals
 
 			Set<ATermAppl> individuals;
 			if (filter)
@@ -158,26 +168,22 @@ public class PelletTransTree extends PelletCmdApp
 					builder.classify(individual);
 		}
 		else
-		{
-			builder = new POTaxonomyBuilder(kb, new PartClassesComparator(kb, p));
-
 			if (filter)
 				for (final ATermAppl cl : getDistinctSubclasses(kb, c))
 					builder.classify(cl);
 			else
 				builder.classify();
-		}
 
 		final Taxonomy<ATermAppl> taxonomy = builder.getTaxonomy();
 
 		final ClassTreePrinter printer = new ClassTreePrinter();
 		printer.print(taxonomy);
 
-		publicTaxonomy = taxonomy;
+		_publicTaxonomy = taxonomy;
 	}
 
 	/** Unit testing access only */
-	public Taxonomy<ATermAppl> publicTaxonomy;
+	public Taxonomy<ATermAppl> _publicTaxonomy;
 
 	private Set<ATermAppl> getDistinctSubclasses(final KnowledgeBase kb, final ATermAppl c)
 	{
@@ -201,7 +207,7 @@ public class PelletTransTree extends PelletCmdApp
 		public PartClassesComparator(final KnowledgeBase kb, final ATermAppl p)
 		{
 			super(kb);
-			this._p = p;
+			_p = p;
 		}
 
 		@Override
@@ -221,7 +227,7 @@ public class PelletTransTree extends PelletCmdApp
 		public PartIndividualsComparator(final KnowledgeBase kb, final ATermAppl p)
 		{
 			super(kb);
-			this._p = p;
+			_p = p;
 		}
 
 		@Override

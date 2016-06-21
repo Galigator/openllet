@@ -15,20 +15,22 @@ import openllet.core.utils.PartialOrderBuilder;
 import openllet.core.utils.PartialOrderComparator;
 import openllet.core.utils.progress.ProgressMonitor;
 
-@Deprecated // Look like this class is unused.
-public class POTaxonomyBuilder implements TaxonomyBuilder
+/**
+ * Build partially order taxonomy (property or class). Used only by CLI.
+ */
+public class PartialOrderTaxonomyBuilder implements TaxonomyBuilder
 {
 
 	private final PartialOrderBuilder<ATermAppl> _builder;
 	private KnowledgeBase _kb;
 	private final Taxonomy<ATermAppl> _tax;
 
-	public POTaxonomyBuilder(final KnowledgeBase kb)
+	public PartialOrderTaxonomyBuilder(final KnowledgeBase kb)
 	{
 		this(kb, new SubsumptionComparator(kb));
 	}
 
-	public POTaxonomyBuilder(final KnowledgeBase kb, final PartialOrderComparator<ATermAppl> comparator)
+	public PartialOrderTaxonomyBuilder(final KnowledgeBase kb, final PartialOrderComparator<ATermAppl> comparator)
 	{
 		_kb = kb;
 		_tax = new Taxonomy<>(null, ATermUtils.TOP, ATermUtils.BOTTOM);
@@ -54,8 +56,10 @@ public class POTaxonomyBuilder implements TaxonomyBuilder
 	{
 		throw new UnsupportedOperationException();
 		/*
-		 * CDOptimizedTaxonomyBuilder b = new CDOptimizedTaxonomyBuilder();
-		 * b.setKB( _kb ); b.classify(); return b.realize();
+		CDOptimizedTaxonomyBuilder b = new CDOptimizedTaxonomyBuilder();
+		b.setKB( _kb );
+		b.classify();
+		return b.realize();
 		 */
 	}
 

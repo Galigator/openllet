@@ -14,12 +14,6 @@ import java.util.Set;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2008
  * </p>
  * <p>
@@ -33,22 +27,22 @@ public class IdentityHashSet<T> extends AbstractSet<T> implements Set<T>, Clonea
 {
 	private static final Object VALUE = new Object();
 
-	private transient IdentityHashMap<T, Object> map;
+	private transient IdentityHashMap<T, Object> _map;
 
 	public IdentityHashSet()
 	{
-		map = new IdentityHashMap<>();
+		_map = new IdentityHashMap<>();
 	}
 
 	public IdentityHashSet(final Collection<? extends T> c)
 	{
-		map = new IdentityHashMap<>(Math.max((int) (c.size() / .75f) + 1, 16));
+		_map = new IdentityHashMap<>(Math.max((int) (c.size() / .75f) + 1, 16));
 		addAll(c);
 	}
 
 	public IdentityHashSet(final int size)
 	{
-		map = new IdentityHashMap<>(size);
+		_map = new IdentityHashMap<>(size);
 	}
 
 	/**
@@ -57,7 +51,7 @@ public class IdentityHashSet<T> extends AbstractSet<T> implements Set<T>, Clonea
 	@Override
 	public boolean add(final T element)
 	{
-		return map.put(element, VALUE) == null;
+		return _map.put(element, VALUE) == null;
 	}
 
 	/**
@@ -66,7 +60,7 @@ public class IdentityHashSet<T> extends AbstractSet<T> implements Set<T>, Clonea
 	@Override
 	public void clear()
 	{
-		map.clear();
+		_map.clear();
 	}
 
 	@Override
@@ -76,7 +70,7 @@ public class IdentityHashSet<T> extends AbstractSet<T> implements Set<T>, Clonea
 		try
 		{
 			final IdentityHashSet<T> newSet = (IdentityHashSet<T>) super.clone();
-			newSet.map = (IdentityHashMap<T, Object>) map.clone();
+			newSet._map = (IdentityHashMap<T, Object>) _map.clone();
 			return newSet;
 		}
 		catch (final CloneNotSupportedException e)
@@ -91,7 +85,7 @@ public class IdentityHashSet<T> extends AbstractSet<T> implements Set<T>, Clonea
 	@Override
 	public boolean contains(final Object o)
 	{
-		return map.containsKey(o);
+		return _map.containsKey(o);
 	}
 
 	/**
@@ -100,7 +94,7 @@ public class IdentityHashSet<T> extends AbstractSet<T> implements Set<T>, Clonea
 	@Override
 	public boolean isEmpty()
 	{
-		return map.isEmpty();
+		return _map.isEmpty();
 	}
 
 	/**
@@ -109,7 +103,7 @@ public class IdentityHashSet<T> extends AbstractSet<T> implements Set<T>, Clonea
 	@Override
 	public Iterator<T> iterator()
 	{
-		return map.keySet().iterator();
+		return _map.keySet().iterator();
 	}
 
 	/**
@@ -118,7 +112,7 @@ public class IdentityHashSet<T> extends AbstractSet<T> implements Set<T>, Clonea
 	@Override
 	public boolean remove(final Object element)
 	{
-		return map.remove(element) != VALUE;
+		return _map.remove(element) != VALUE;
 	}
 
 	/**
@@ -127,7 +121,7 @@ public class IdentityHashSet<T> extends AbstractSet<T> implements Set<T>, Clonea
 	@Override
 	public int size()
 	{
-		return map.size();
+		return _map.size();
 	}
 
 }

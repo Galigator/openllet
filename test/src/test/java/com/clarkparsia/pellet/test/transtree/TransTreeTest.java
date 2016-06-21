@@ -8,7 +8,7 @@ import java.util.Iterator;
 import java.util.Set;
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
-import openllet.core.taxonomy.POTaxonomyBuilder;
+import openllet.core.taxonomy.PartialOrderTaxonomyBuilder;
 import openllet.core.taxonomy.SubsumptionComparator;
 import openllet.core.taxonomy.Taxonomy;
 import openllet.core.taxonomy.printer.ClassTreePrinter;
@@ -54,7 +54,7 @@ public class TransTreeTest
 
 	private void testDeprecatedTaxonomy(final KnowledgeBase kb, final ATermAppl p)
 	{
-		final POTaxonomyBuilder builder = new POTaxonomyBuilder(kb, new PartClassesComparator(kb, p));
+		final PartialOrderTaxonomyBuilder builder = new PartialOrderTaxonomyBuilder(kb, new PartClassesComparator(kb, p));
 		builder.classify();
 
 		final Taxonomy<ATermAppl> taxonomy = builder.getTaxonomy();
@@ -109,7 +109,7 @@ public class TransTreeTest
 		cli.parseArgs(new String[] { "trans-tree", "-p", "http://clarkparsia.com/pellet/tutorial/pops#subProjectOf", "-f", "http://clarkparsia.com/pellet/tutorial/pops#Employee", "test/data/trans-tree-tests/ontology-010.ttl" });
 		cli.run();
 
-		final Taxonomy<ATermAppl> taxonomy = cli.publicTaxonomy;
+		final Taxonomy<ATermAppl> taxonomy = cli._publicTaxonomy;
 
 		assertEquals(5, taxonomy.getClasses().size()); //TOP, not(TOP), Employee, CivilServant, Contractor
 
@@ -143,7 +143,7 @@ public class TransTreeTest
 		cli.parseArgs(new String[] { "trans-tree", "-p", "http://clarkparsia.com/pellet/tutorial/pops#subProjectOf", "-f", "http://clarkparsia.com/pellet/tutorial/pops#Employee", "--individuals", "test/data/trans-tree-tests/ontology-010.ttl" });
 		cli.run();
 
-		final Taxonomy<ATermAppl> taxonomy = cli.publicTaxonomy;
+		final Taxonomy<ATermAppl> taxonomy = cli._publicTaxonomy;
 
 		final Set<ATermAppl> classes = taxonomy.getClasses();
 		assertEquals(3, classes.size()); //TOP, not(TOP), 1 Employee
@@ -158,7 +158,7 @@ public class TransTreeTest
 		cli.parseArgs(new String[] { "trans-tree", "-p", "http://clarkparsia.com/pellet/tutorial/pops#subProjectOf", "-f", "http://clarkparsia.com/pellet/tutorial/pops#Contractor", "--individuals", "test/data/trans-tree-tests/ontology-010.ttl" });
 		cli.run();
 
-		final Taxonomy<ATermAppl> taxonomy = cli.publicTaxonomy;
+		final Taxonomy<ATermAppl> taxonomy = cli._publicTaxonomy;
 		assertEquals(2, taxonomy.getClasses().size()); //TOP, not(TOP) (no Contractors)
 	}
 }
