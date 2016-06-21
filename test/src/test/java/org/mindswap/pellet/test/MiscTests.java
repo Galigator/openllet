@@ -78,9 +78,9 @@ import openllet.core.utils.TaxonomyUtils;
 import openllet.core.utils.TermFactory;
 import openllet.core.utils.iterator.FlattenningIterator;
 import openllet.core.utils.iterator.IteratorUtils;
+import openllet.jena.JenaLoader;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.mindswap.pellet.jena.JenaLoader;
 
 public class MiscTests extends AbstractKBTests
 {
@@ -148,7 +148,6 @@ public class MiscTests extends AbstractKBTests
 	@Test
 	public void testFileUtilsToURI() throws MalformedURLException
 	{
-
 		assertEquals(new File("test").toURI().toURL().toString(), FileUtils.toURI("test"));
 		assertEquals("http://example.com/foo", FileUtils.toURI("http://example.com/foo"));
 		assertEquals("file:///foo", FileUtils.toURI("file:///foo"));

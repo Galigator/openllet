@@ -8,12 +8,12 @@ import com.clarkparsia.pellet.sparqldl.engine.QuerySubsumption;
 import com.clarkparsia.pellet.sparqldl.model.Query;
 import com.clarkparsia.pellet.sparqldl.parser.QueryParser;
 import openllet.core.KnowledgeBase;
+import openllet.jena.PelletInfGraph;
+import openllet.jena.PelletReasonerFactory;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.junit.Before;
 import org.junit.Test;
-import org.mindswap.pellet.jena.PelletInfGraph;
-import org.mindswap.pellet.jena.PelletReasonerFactory;
 
 /**
  * Test cases for the class QuerySubsumption

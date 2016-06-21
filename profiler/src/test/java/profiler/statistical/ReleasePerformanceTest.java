@@ -27,9 +27,9 @@ import profiler.ProfileKB.Task;
 import profiler.Result;
 
 /**
- * Executes several performance tests on the _current release, and compares the results with previous releases to see if there are statistically significant
+ * Executes several performance tests on the current release, and compares the results with previous releases to see if there are statistically significant
  * performance regressions
- * 
+ *
  * @author Pedro Oliveira <pedro@clarkparsia.com>
  */
 @RunWith(Parameterized.class)
@@ -50,7 +50,7 @@ public class ReleasePerformanceTest
 	 */
 	private static String ONTOLOGIES = ""; //File with the location of the ontologies on which we want to perform the tests and compare with previous releases
 
-	private static int[] RELEASES_TO_COMPARE = { 0, 1, 2 }; //Previous releases that we want to compare with. 0 means the latest one, etc...	
+	private static int[] RELEASES_TO_COMPARE = { 0, 1, 2 }; //Previous releases that we want to compare with. 0 means the latest one, etc...
 
 	private static int ITERATIONS = 30; //Number of iterations (at least >2, so statistical significance tests can work)
 
@@ -80,9 +80,7 @@ public class ReleasePerformanceTest
 		final List<Release> previousReleases = manager.getReleases();
 
 		if (!previousReleases.isEmpty())
-		{
-			for (final int revNumber : RELEASES_TO_COMPARE) //For all the previous releases that we want to compare
-			{
+			for (final int revNumber : RELEASES_TO_COMPARE)
 				if (revNumber >= 0 && revNumber < previousReleases.size()) //If they are available, try to compare
 				{
 					final Release previous = previousReleases.get(revNumber);
@@ -96,8 +94,6 @@ public class ReleasePerformanceTest
 						params.add(new Object[] { currStats.getValue(), previousStats, previous.getVersion(), currStats.getKey() });
 					}
 				}
-			}
-		}
 
 		try
 		{
@@ -110,7 +106,7 @@ public class ReleasePerformanceTest
 		return params;
 	}
 
-	private static void loadProperties(String filename)
+	private static void loadProperties(final String filename)
 	{
 		try
 		{
@@ -220,10 +216,8 @@ public class ReleasePerformanceTest
 					if (previousRes == null)
 						results.put(name, res);
 					else
-					{
 						for (int j = 0; j < res.size() && j < previousRes.size(); j++)
 							previousRes.get(j).addIteration(res.get(j));
-					}
 				}
 
 			}
@@ -243,11 +237,11 @@ public class ReleasePerformanceTest
 	/**
 	 * This logarithmic function behaves relatively well on estimating the number of warmup iterations. Goes from 85 iterations when estimatedTime=0.01s, to 1
 	 * iteration when estimatedTime ~>= 25s The function can be tuned using Wolfram Alpha: fit {{0.01,100},{0.1,50},{1,30},{10,10},{20,5},{30,1}}
-	 * 
+	 *
 	 * @param estimatedTime
 	 * @return
 	 */
-	private static int getNumberOfWarmupIterations(double estimatedTime)
+	private static int getNumberOfWarmupIterations(final double estimatedTime)
 	{
 		final int n = (int) Math.round(36 - 11 * Math.log(estimatedTime));
 		return n > 0 ? n : 1;
@@ -257,10 +251,10 @@ public class ReleasePerformanceTest
 	private final List<ReleaseStatistics> _previous;
 	private final String _message;
 
-	public ReleasePerformanceTest(List<ReleaseStatistics> current, List<ReleaseStatistics> previous, String previousReleaseVersion, String ontology)
+	public ReleasePerformanceTest(final List<ReleaseStatistics> current, final List<ReleaseStatistics> previous, final String previousReleaseVersion, final String ontology)
 	{
-		this._current = current;
-		this._previous = previous;
+		_current = current;
+		_previous = previous;
 		_message = "\tOntology: " + ontology + "\tRelease: " + previousReleaseVersion;
 	}
 
@@ -324,7 +318,7 @@ public class ReleasePerformanceTest
 		memoryIncrease(REALIZE);
 	}
 
-	private void timeIncrease(int task)
+	private void timeIncrease(final int task)
 	{
 		assumeTrue(_current.size() > task && _previous.size() > task);
 
@@ -336,7 +330,7 @@ public class ReleasePerformanceTest
 			fail(Task.values()[task] + " Time regression (from " + prev.getTimeStat("avg") + " to " + curr.getTimeStat("avg") + "). " + _message);
 	}
 
-	private void memoryIncrease(int task)
+	private void memoryIncrease(final int task)
 	{
 		assumeTrue(_current.size() > task && _previous.size() > task);
 
@@ -348,10 +342,9 @@ public class ReleasePerformanceTest
 			fail(Task.values()[task] + " Memory regression (from " + prev.getMemStat("avg") + " to " + curr.getMemStat("avg") + "). " + _message);
 	}
 
-	private boolean changeIsStatisticallySignificant(double m1, double m2, @SuppressWarnings("unused") double v1, double v2, @SuppressWarnings("unused") double n1, double n2)
+	private boolean changeIsStatisticallySignificant(final double m1, final double m2, @SuppressWarnings("unused") final double v1, final double v2, @SuppressWarnings("unused") final double n1, final double n2)
 	{
-		if (m1 > m2 && m1 > 0.01) //We only check for a change if the _current average is bigger than the previous one
-		{
+		if (m1 > m2 && m1 > 0.01)
 			try
 			{
 				//return math.tTest(m1, m2, v1, v2, n1, n2, ALPHA);	//2-sided, 2-sample t-test. returns true if they're different, i.e., it rejected the null hyphoteses that there is no difference between the means
@@ -366,7 +359,6 @@ public class ReleasePerformanceTest
 			{
 				e.printStackTrace();
 			}
-		}
 		return false;
 	}
 }

@@ -6,12 +6,12 @@ package com.clarkparsia.pellet.test.jena;
 import java.io.IOException;
 import java.io.InputStream;
 import openllet.core.PelletOptions;
+import openllet.jena.PelletInfGraph;
+import openllet.jena.PelletReasonerFactory;
 import org.apache.jena.ontology.Individual;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.junit.Test;
-import org.mindswap.pellet.jena.PelletInfGraph;
-import org.mindswap.pellet.jena.PelletReasonerFactory;
 
 /**
  * A simple check to see when classification and realization are triggered by ABox changes.

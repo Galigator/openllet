@@ -7,6 +7,7 @@
 package org.mindswap.pellet.examples;
 
 import java.util.Iterator;
+import openllet.jena.PelletReasonerFactory;
 import org.apache.jena.ontology.OntClass;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.InfModel;
@@ -16,7 +17,6 @@ import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.reasoner.Reasoner;
 import org.apache.jena.reasoner.ValidityReport;
 import org.apache.jena.vocabulary.RDFS;
-import org.mindswap.pellet.jena.PelletReasonerFactory;
 
 /**
  * An example to show how to use PelletReasoner as a Jena reasoner. The reasoner can be directly attached to a plain RDF <code>Model</code> or attached to an

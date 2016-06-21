@@ -11,6 +11,7 @@ package org.mindswap.pellet.examples;
 import com.clarkparsia.pellet.sparqldl.jena.SparqlDLExecutionFactory;
 import com.clarkparsia.sparqlowl.parser.arq.ARQTerpParser;
 import com.clarkparsia.sparqlowl.parser.arq.TerpSyntax;
+import openllet.jena.PelletReasonerFactory;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryExecution;
@@ -18,7 +19,6 @@ import org.apache.jena.query.QueryFactory;
 import org.apache.jena.query.ResultSet;
 import org.apache.jena.query.ResultSetFormatter;
 import org.apache.jena.rdf.model.ModelFactory;
-import org.mindswap.pellet.jena.PelletReasonerFactory;
 
 /**
  * <p>

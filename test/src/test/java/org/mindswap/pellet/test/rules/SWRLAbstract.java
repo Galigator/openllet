@@ -10,13 +10,13 @@ import static org.junit.Assert.assertTrue;
 
 import com.clarkparsia.owlapi.OntologyUtils;
 import com.clarkparsia.pellet.owlapi.PelletReasoner;
+import openllet.jena.PelletReasonerFactory;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
 import org.junit.After;
-import org.mindswap.pellet.jena.PelletReasonerFactory;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;

@@ -22,6 +22,8 @@ import java.util.logging.Logger;
 import openllet.aterm.ATermAppl;
 import openllet.core.exceptions.UnsupportedQueryException;
 import openllet.core.utils.ATermUtils;
+import openllet.jena.PelletInfGraph;
+import openllet.jena.graph.loader.GraphLoader;
 import openllet.shared.tools.Log;
 import org.apache.jena.graph.Graph;
 import org.apache.jena.graph.Node;
@@ -34,8 +36,6 @@ import org.apache.jena.sparql.engine.binding.Binding;
 import org.apache.jena.sparql.engine.iterator.QueryIterRepeatApply;
 import org.apache.jena.sparql.engine.iterator.QueryIteratorResultSet;
 import org.apache.jena.sparql.engine.main.StageGeneratorGeneric;
-import org.mindswap.pellet.jena.PelletInfGraph;
-import org.mindswap.pellet.jena.graph.loader.GraphLoader;
 
 /**
  * <p>

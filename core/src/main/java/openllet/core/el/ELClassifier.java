@@ -45,6 +45,7 @@ import openllet.shared.tools.Log;
  *
  * @author Evren Sirin
  */
+@SuppressWarnings("deprecation")
 public class ELClassifier extends CDOptimizedTaxonomyBuilder
 {
 	@SuppressWarnings("hiding")
@@ -152,6 +153,7 @@ public class ELClassifier extends CDOptimizedTaxonomyBuilder
 	}
 
 	@SuppressWarnings("unused")
+	@Deprecated
 	private void buildTaxonomyWithPO()
 	{
 		final POTaxonomyBuilder builder = new POTaxonomyBuilder(_kb, subsumptionComparator);

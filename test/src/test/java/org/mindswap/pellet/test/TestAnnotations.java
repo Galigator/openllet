@@ -18,6 +18,8 @@ import openllet.core.KnowledgeBase;
 import openllet.core.PelletOptions;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.PropertiesBuilder;
+import openllet.jena.PelletInfGraph;
+import openllet.jena.PelletReasonerFactory;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryExecution;
@@ -33,8 +35,6 @@ import org.apache.jena.vocabulary.RDFS;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.mindswap.pellet.jena.PelletInfGraph;
-import org.mindswap.pellet.jena.PelletReasonerFactory;
 
 /**
  * <p>

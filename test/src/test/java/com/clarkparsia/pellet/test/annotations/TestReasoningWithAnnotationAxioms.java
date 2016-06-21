@@ -11,6 +11,7 @@ import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
 import openllet.core.PelletOptions;
 import openllet.core.utils.ATermUtils;
+import openllet.jena.PelletInfGraph;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.Literal;
 import org.apache.jena.rdf.model.ModelFactory;
@@ -23,7 +24,6 @@ import org.apache.jena.vocabulary.RDFS;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.mindswap.pellet.jena.PelletInfGraph;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
@@ -54,7 +54,7 @@ public class TestReasoningWithAnnotationAxioms
 	OWLAnnotationProperty op3 = manager.getOWLDataFactory().getOWLAnnotationProperty(IRI.create("p3"));
 	OWLAnnotationValue oo1 = manager.getOWLDataFactory().getOWLLiteral("o1");
 
-	OntModel model = ModelFactory.createOntologyModel(org.mindswap.pellet.jena.PelletReasonerFactory.THE_SPEC);
+	OntModel model = ModelFactory.createOntologyModel(openllet.jena.PelletReasonerFactory.THE_SPEC);
 	Resource ji = ResourceFactory.createResource("http://example.org#i");
 	Property jp1 = ResourceFactory.createProperty("http://example.org#p1");
 	Property jp2 = ResourceFactory.createProperty("http://example.org#p2");

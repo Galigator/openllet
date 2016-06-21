@@ -16,9 +16,9 @@ import openllet.core.DependencySet;
 import openllet.core.Individual;
 import openllet.core.Node;
 import openllet.core.PelletOptions;
+import openllet.core.boxes.tbox.impl.Unfolding;
 import openllet.core.tableau.completion.CompletionStrategy;
 import openllet.core.tableau.completion.queue.NodeSelector;
-import openllet.core.tbox.impl.Unfolding;
 import openllet.core.utils.ATermUtils;
 import openllet.shared.tools.Log;
 

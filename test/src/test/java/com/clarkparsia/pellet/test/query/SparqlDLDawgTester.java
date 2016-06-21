@@ -28,6 +28,8 @@ import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
 import openllet.core.utils.PermutationGenerator;
 import openllet.core.utils.Timer;
+import openllet.jena.PelletInfGraph;
+import openllet.jena.PelletReasonerFactory;
 import openllet.shared.tools.Log;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.query.QueryFactory;
@@ -41,8 +43,6 @@ import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.sparql.engine.binding.Binding;
 import org.apache.jena.sparql.engine.binding.BindingBase;
-import org.mindswap.pellet.jena.PelletInfGraph;
-import org.mindswap.pellet.jena.PelletReasonerFactory;
 
 /**
  * <p>

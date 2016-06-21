@@ -14,10 +14,10 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import openllet.core.utils.SetUtils;
+import openllet.jena.ModelExtractor;
+import openllet.jena.ModelExtractor.StatementType;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
-import org.mindswap.pellet.jena.ModelExtractor;
-import org.mindswap.pellet.jena.ModelExtractor.StatementType;
 
 /**
  * <p>

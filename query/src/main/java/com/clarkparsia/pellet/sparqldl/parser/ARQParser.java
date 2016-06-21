@@ -46,6 +46,9 @@ import openllet.core.exceptions.UnsupportedFeatureException;
 import openllet.core.exceptions.UnsupportedQueryException;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.TermFactory;
+import openllet.jena.BuiltinTerm;
+import openllet.jena.JenaUtils;
+import openllet.jena.vocabulary.OWL2;
 import openllet.shared.tools.Log;
 import org.apache.jena.graph.Node;
 import org.apache.jena.graph.Triple;
@@ -64,9 +67,6 @@ import org.apache.jena.sparql.syntax.ElementTriplesBlock;
 import org.apache.jena.vocabulary.OWL;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
-import org.mindswap.pellet.jena.BuiltinTerm;
-import org.mindswap.pellet.jena.JenaUtils;
-import org.mindswap.pellet.jena.vocabulary.OWL2;
 
 /**
  * <p>

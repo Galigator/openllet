@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 import openllet.core.KnowledgeBase;
 import openllet.core.PelletOptions;
 import openllet.core.exceptions.UnsupportedQueryException;
+import openllet.jena.PelletInfGraph;
 import openllet.shared.tools.Log;
 import org.apache.jena.atlas.lib.NotImplemented;
 import org.apache.jena.graph.Graph;
@@ -46,7 +47,6 @@ import org.apache.jena.sparql.engine.binding.Binding;
 import org.apache.jena.sparql.syntax.Template;
 import org.apache.jena.sparql.util.Context;
 import org.apache.jena.sparql.util.ModelUtils;
-import org.mindswap.pellet.jena.PelletInfGraph;
 
 /**
  * <p>

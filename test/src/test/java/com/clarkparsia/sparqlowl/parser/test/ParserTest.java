@@ -19,6 +19,7 @@ import java.util.Set;
 import openllet.core.KnowledgeBase;
 import openllet.core.utils.FileUtils;
 import openllet.core.utils.SetUtils;
+import openllet.jena.JenaLoader;
 import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryFactory;
 import org.apache.jena.query.Syntax;
@@ -30,7 +31,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
-import org.mindswap.pellet.jena.JenaLoader;
 import org.mindswap.pellet.test.PelletTestSuite;
 
 /**

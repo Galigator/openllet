@@ -21,6 +21,7 @@ import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.search.EntitySearcher;
 import pellet.PelletTransTree;
 
+@SuppressWarnings("deprecation")
 public class TransTreeTest
 {
 
@@ -48,21 +49,12 @@ public class TransTreeTest
 
 		final ATermAppl p = ATermUtils.makeTermAppl(entity.getIRI().toString());
 
-		POTaxonomyBuilder builder = null;
+		testDeprecatedTaxonomy(kb, p);
+	}
 
-		// Parts for individuals
-		//builder = new POTaxonomyBuilder( _kb, new PartIndividualsComparator( _kb, p ) );
-
-		// Note: this is not an optimal solution
-		//for( ATermAppl _individual : _kb.getIndividuals() )
-		//	if (!ATermUtils.isBnode( _individual ))
-		//		builder.classify( _individual );
-
-		//Taxonomy<ATermAppl> taxonomy = builder.getTaxonomy();
-		//ClassTreePrinter printer = new ClassTreePrinter();
-		//printer.print( taxonomy );
-
-		builder = new POTaxonomyBuilder(kb, new PartClassesComparator(kb, p));
+	private void testDeprecatedTaxonomy(final KnowledgeBase kb, final ATermAppl p)
+	{
+		final POTaxonomyBuilder builder = new POTaxonomyBuilder(kb, new PartClassesComparator(kb, p));
 		builder.classify();
 
 		final Taxonomy<ATermAppl> taxonomy = builder.getTaxonomy();
@@ -78,7 +70,7 @@ public class TransTreeTest
 		public PartClassesComparator(final KnowledgeBase kb, final ATermAppl p)
 		{
 			super(kb);
-			this._p = p;
+			_p = p;
 		}
 
 		@Override
@@ -99,7 +91,7 @@ public class TransTreeTest
 		public PartIndividualsComparator(final KnowledgeBase kb, final ATermAppl p)
 		{
 			super(kb);
-			this._p = p;
+			_p = p;
 		}
 
 		@Override

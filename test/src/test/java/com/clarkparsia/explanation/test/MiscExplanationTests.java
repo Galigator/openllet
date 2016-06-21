@@ -22,6 +22,7 @@ import java.util.Properties;
 import java.util.Set;
 import openllet.core.PelletOptions;
 import openllet.core.utils.SetUtils;
+import openllet.jena.PelletInfGraph;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
@@ -32,7 +33,6 @@ import org.apache.jena.vocabulary.RDFS;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.mindswap.pellet.jena.PelletInfGraph;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLIndividual;
@@ -221,7 +221,7 @@ public class MiscExplanationTests
 		expected.add(i, RDF.type, A);
 		expected.add(i, RDF.type, B);
 
-		final OntModel model = ModelFactory.createOntologyModel(org.mindswap.pellet.jena.PelletReasonerFactory.THE_SPEC);
+		final OntModel model = ModelFactory.createOntologyModel(openllet.jena.PelletReasonerFactory.THE_SPEC);
 		model.add(expected);
 		model.add(i, RDF.type, C);
 
@@ -275,7 +275,7 @@ public class MiscExplanationTests
 		final Resource C = ResourceFactory.createResource("C");
 		final Resource i = ResourceFactory.createResource("i");
 
-		final OntModel model = ModelFactory.createOntologyModel(org.mindswap.pellet.jena.PelletReasonerFactory.THE_SPEC);
+		final OntModel model = ModelFactory.createOntologyModel(openllet.jena.PelletReasonerFactory.THE_SPEC);
 		model.add(i, RDF.type, A);
 		model.add(A, RDFS.subClassOf, B);
 
@@ -300,9 +300,9 @@ public class MiscExplanationTests
 		Resource subject = ResourceFactory.createResource("http://www.inmindcomputing.com/test/test-commands.owl#BOMType1");
 		Property predicate = ResourceFactory.createProperty("http://www.inmindcomputing.com/test/test-commands.owl#hasProduct");
 
-		OntModel rootModel = ModelFactory.createOntologyModel( org.mindswap.pellet.jena.PelletReasonerFactory.THE_SPEC );
+		OntModel rootModel = ModelFactory.createOntologyModel( openllet.jena.PelletReasonerFactory.THE_SPEC );
 
-		org.mindswap.pellet.jena.PelletReasonerFactory.THE_SPEC.setDocumentManager(new OntDocumentManager() {
+		openllet.jena.PelletReasonerFactory.THE_SPEC.setDocumentManager(new OntDocumentManager() {
 
 			@Override
 			protected void loadImport(OntModel model, String importURI, List<String> _queue) {

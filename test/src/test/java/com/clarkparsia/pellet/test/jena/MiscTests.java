@@ -6,6 +6,7 @@ package com.clarkparsia.pellet.test.jena;
 import java.util.logging.Logger;
 import openllet.core.PelletOptions;
 import openllet.core.exceptions.InconsistentOntologyException;
+import openllet.jena.PelletReasonerFactory;
 import openllet.shared.tools.Log;
 import org.apache.jena.ontology.DatatypeProperty;
 import org.apache.jena.ontology.Individual;
@@ -18,7 +19,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mindswap.pellet.jena.PelletReasonerFactory;
 
 /**
  * @author Pavel Klinov

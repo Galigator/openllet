@@ -31,6 +31,11 @@ import openllet.core.datatypes.DatatypeReasoner;
 import openllet.core.datatypes.DatatypeReasonerImpl;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.PropertiesBuilder;
+import openllet.jena.ModelExtractor;
+import openllet.jena.PelletInfGraph;
+import openllet.jena.PelletReasoner;
+import openllet.jena.PelletReasonerFactory;
+import openllet.jena.vocabulary.OWL2;
 import org.apache.jena.datatypes.TypeMapper;
 import org.apache.jena.graph.compose.Union;
 import org.apache.jena.ontology.AnnotationProperty;
@@ -63,11 +68,6 @@ import org.apache.jena.vocabulary.ReasonerVocabulary;
 import org.apache.jena.vocabulary.XSD;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.mindswap.pellet.jena.ModelExtractor;
-import org.mindswap.pellet.jena.PelletInfGraph;
-import org.mindswap.pellet.jena.PelletReasoner;
-import org.mindswap.pellet.jena.PelletReasonerFactory;
-import org.mindswap.pellet.jena.vocabulary.OWL2;
 
 public class JenaTests
 {

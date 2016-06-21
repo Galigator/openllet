@@ -75,7 +75,7 @@ import org.apache.jena.vocabulary.OWL;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
 import org.apache.jena.vocabulary.XSD;
-import org.mindswap.pellet.jena.vocabulary.OWL2;
+import openllet.jena.vocabulary.OWL2;
 
 import static com.clarkparsia.sparqlowl.parser.ParserUtilities.dropFirstAndLast;
 import static com.clarkparsia.sparqlowl.parser.ParserUtilities.dropFirstAndLast3;

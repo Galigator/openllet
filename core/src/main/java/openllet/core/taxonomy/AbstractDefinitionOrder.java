@@ -14,8 +14,8 @@ import java.util.Set;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
-import openllet.core.tbox.TBox;
-import openllet.core.tbox.impl.Unfolding;
+import openllet.core.boxes.tbox.TBox;
+import openllet.core.boxes.tbox.impl.Unfolding;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.CollectionUtils;
 

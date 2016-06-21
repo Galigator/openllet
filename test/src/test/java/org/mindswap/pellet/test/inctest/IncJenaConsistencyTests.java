@@ -22,6 +22,8 @@ import java.util.Properties;
 import junit.framework.JUnit4TestAdapter;
 import openllet.core.PelletOptions;
 import openllet.core.utils.PropertiesBuilder;
+import openllet.jena.PelletInfGraph;
+import openllet.jena.PelletReasonerFactory;
 import org.apache.jena.datatypes.TypeMapper;
 import org.apache.jena.ontology.DatatypeProperty;
 import org.apache.jena.ontology.Individual;
@@ -46,8 +48,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.mindswap.pellet.jena.PelletInfGraph;
-import org.mindswap.pellet.jena.PelletReasonerFactory;
 
 /**
  * Unit tests for incremental consistency checking using Jena API.

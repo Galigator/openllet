@@ -73,7 +73,7 @@ public class Individual extends Node implements CachedNode
 	{
 		super(name, abox);
 
-		this._parent = parent;
+		_parent = parent;
 
 		if (parent == null)
 		{
@@ -121,7 +121,7 @@ public class Individual extends Node implements CachedNode
 
 	public void setBlocked(final boolean isBlocked)
 	{
-		this._isBlocked = isBlocked;
+		_isBlocked = isBlocked;
 	}
 
 	public short getDepth()
@@ -273,8 +273,8 @@ public class Individual extends Node implements CachedNode
 			return;
 		}
 
-		//        if( ABox._logger.isLoggable( Level.FINE ) ) 
-		//            ABox._logger.fine( "TYPE: " + this + " " + c );        
+		//        if( ABox._logger.isLoggable( Level.FINE ) )
+		//            ABox._logger.fine( "TYPE: " + this + " " + c );
 
 		// if we are checking entailment using a precompleted ABox, _abox.branch
 		// is set to -1. however, since applyAllValues is done automatically
@@ -294,7 +294,7 @@ public class Individual extends Node implements CachedNode
 
 		// add to effected list
 		if (_abox.getBranch() >= 0 && PelletOptions.TRACK_BRANCH_EFFECTS)
-			_abox.getBranchEffectTracker().add(_abox.getBranch(), this.getName());
+			_abox.getBranchEffectTracker().add(_abox.getBranch(), getName());
 
 		//create new _queue element
 		final QueueElement qElement = new QueueElement(this, c);
@@ -376,7 +376,7 @@ public class Individual extends Node implements CachedNode
 									_types[SOME].add(c);
 
 									if (PelletOptions.USE_COMPLETION_QUEUE)
-										//update completion _queue					
+										//update completion _queue
 										_abox.getCompletionQueue().add(qElement, NodeSelector.EXISTENTIAL);
 								}
 								else
@@ -389,7 +389,7 @@ public class Individual extends Node implements CachedNode
 
 											if (PelletOptions.USE_COMPLETION_QUEUE)
 											{
-												//update completion _queue						
+												//update completion _queue
 												_abox.getCompletionQueue().add(qElement, NodeSelector.MAX_NUMBER);
 												_abox.getCompletionQueue().add(qElement, NodeSelector.CHOOSE);
 												_abox.getCompletionQueue().add(qElement, NodeSelector.GUESS);
@@ -410,7 +410,7 @@ public class Individual extends Node implements CachedNode
 											_types[ATOM].add(c);
 
 											if (PelletOptions.USE_COMPLETION_QUEUE)
-												//update completion _queue					
+												//update completion _queue
 												_abox.getCompletionQueue().add(qElement, NodeSelector.ATOM);
 										}
 										else
@@ -433,7 +433,7 @@ public class Individual extends Node implements CachedNode
 													_types[ATOM].add(c);
 
 													if (PelletOptions.USE_COMPLETION_QUEUE)
-														//update completion _queue					
+														//update completion _queue
 														_abox.getCompletionQueue().add(qElement, NodeSelector.ATOM);
 												}
 												else
@@ -446,7 +446,7 @@ public class Individual extends Node implements CachedNode
 								_types[NOM].add(c);
 
 								if (PelletOptions.USE_COMPLETION_QUEUE)
-									//update completion _queue				
+									//update completion _queue
 									_abox.getCompletionQueue().add(qElement, NodeSelector.NOMINAL);
 							}
 							else
@@ -795,7 +795,7 @@ public class Individual extends Node implements CachedNode
 	 */
 	public DependencySet hasDistinctRNeighborsForMax(final Role r, final int n, final ATermAppl c)
 	{
-		//	    Timer t = _abox.getKB().timers.startTimer("hasDistinctRNeighbors1"); 
+		//	    Timer t = _abox.getKB().timers.startTimer("hasDistinctRNeighbors1");
 
 		boolean hasNeighbors = false;
 
@@ -854,7 +854,7 @@ public class Individual extends Node implements CachedNode
 			return null;
 
 		// we are being overly cautious here by getting the union of all
-		// the edges to all r-neighbors 
+		// the edges to all r-neighbors
 		DependencySet ds = DependencySet.EMPTY;
 		for (final Edge edge : edges)
 		{
@@ -975,12 +975,12 @@ public class Individual extends Node implements CachedNode
 	}
 
 	/**
-	 * Check the property assertions to see if it is possible for this _individual to have the value for the given datatype property. This function is meaningful
-	 * only called for individuals in a completed ABox (a pseudo model for the KB). In a completed ABox, _individual will have some literal successors that may
-	 * or may not have a known value. The _individual has the _data property value only if it has a literal successor that has the exact given value and the edge
-	 * between the _individual and the literal does not depend on any non- deterministic _branch. If the literal value is there but the edge _depends on a
-	 * _branch then we cannot exactly say if the literal value is there or not. If there is no literal successor with the given value then we can for sure say
-	 * that _individual does not have the _data property value (because it does not have the value in at least one model)
+	 * Check the property assertions to see if it is possible for this _individual to have the value for the given datatype property. This function is
+	 * meaningful only called for individuals in a completed ABox (a pseudo model for the KB). In a completed ABox, _individual will have some literal
+	 * successors that may or may not have a known value. The _individual has the _data property value only if it has a literal successor that has the exact
+	 * given value and the edge between the _individual and the literal does not depend on any non- deterministic _branch. If the literal value is there but the
+	 * edge _depends on a _branch then we cannot exactly say if the literal value is there or not. If there is no literal successor with the given value then we
+	 * can for sure say that _individual does not have the _data property value (because it does not have the value in at least one model)
 	 *
 	 * @param r
 	 * @param value
@@ -1000,18 +1000,18 @@ public class Individual extends Node implements CachedNode
 			final Object literalValue = literal.getValue();
 			if (value != null && literalValue == null)
 				try
-			{
+				{
 					if (_abox._dtReasoner.isSatisfiable(literal.getTypes(), value))
 						hasValue = Bool.UNKNOWN;
 					else
 						hasValue = Bool.FALSE;
-			}
-			catch (final DatatypeReasonerException e)
-			{
-				final String msg = "Unexpected datatype reasoner exception while checking property value: " + e.getMessage();
-				_logger.severe(msg);
-				throw new InternalReasonerException(msg);
-			}
+				}
+				catch (final DatatypeReasonerException e)
+				{
+					final String msg = "Unexpected datatype reasoner exception while checking property value: " + e.getMessage();
+					_logger.severe(msg);
+					throw new InternalReasonerException(msg);
+				}
 			else
 				if (value == null || value.equals(literalValue))
 					if (ds.isIndependent())
@@ -1062,7 +1062,7 @@ public class Individual extends Node implements CachedNode
 		// add these _nodes to the effected list
 		if (_abox.getBranch() > 0 && PelletOptions.TRACK_BRANCH_EFFECTS)
 		{
-			_abox.getBranchEffectTracker().add(_abox.getBranch(), this.getName());
+			_abox.getBranchEffectTracker().add(_abox.getBranch(), getName());
 			_abox.getBranchEffectTracker().add(_abox.getBranch(), x.getName());
 		}
 
@@ -1144,7 +1144,7 @@ public class Individual extends Node implements CachedNode
 				if (_depends.get(c).getBranch() != DependencySet.NO_BRANCH)
 				{
 					// rather deleting the element from an ArrayList move
-					// it to the _end so we can purge everything from the 
+					// it to the _end so we can purge everything from the
 					// tail of the list (note: if we change the list impl
 					// used here to a LinkedList we can modify this bit)
 					Collections.swap(list, i--, --size);
@@ -1153,7 +1153,7 @@ public class Individual extends Node implements CachedNode
 				}
 			}
 
-			// remove everything from the _end of list 
+			// remove everything from the _end of list
 			if (size < list.size())
 				list.subList(size, list.size()).clear();
 		}
@@ -1253,7 +1253,7 @@ public class Individual extends Node implements CachedNode
 
 		// add to effected list
 		if (_abox.getBranch() >= 0 && PelletOptions.TRACK_BRANCH_EFFECTS)
-			_abox.getBranchEffectTracker().add(_abox.getBranch(), this.getName());
+			_abox.getBranchEffectTracker().add(_abox.getBranch(), getName());
 
 		pruned = ds;
 

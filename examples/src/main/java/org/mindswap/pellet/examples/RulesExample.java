@@ -6,6 +6,7 @@
 
 package org.mindswap.pellet.examples;
 
+import openllet.jena.PelletReasonerFactory;
 import org.apache.jena.ontology.Individual;
 import org.apache.jena.ontology.ObjectProperty;
 import org.apache.jena.ontology.OntClass;
@@ -15,7 +16,6 @@ import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.util.iterator.ExtendedIterator;
-import org.mindswap.pellet.jena.PelletReasonerFactory;
 
 /**
  * An example program that tests the DL-safe rules example from Table 3 in the paper: B. Motik, U. Sattler, R. Studer. Query Answering for OWL-DL with Rules.

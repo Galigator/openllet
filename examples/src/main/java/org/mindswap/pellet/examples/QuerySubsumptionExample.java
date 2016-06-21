@@ -15,10 +15,10 @@ import com.clarkparsia.pellet.sparqldl.parser.QueryParser;
 import java.util.Iterator;
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
+import openllet.jena.PelletInfGraph;
+import openllet.jena.PelletReasonerFactory;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.ModelFactory;
-import org.mindswap.pellet.jena.PelletInfGraph;
-import org.mindswap.pellet.jena.PelletReasonerFactory;
 
 /**
  * Example program to demonstrate the query subsumption (query containment) capabilities of Pellet. Query subsumption service reports if the answers to a query

@@ -25,7 +25,7 @@ import openllet.core.utils.ATermUtils;
 import openllet.core.utils.FileUtils;
 import openllet.core.utils.MemUtils;
 import openllet.core.utils.VersionInfo;
-import org.mindswap.pellet.jena.JenaLoader;
+import openllet.jena.JenaLoader;
 import profiler.utils.IObjectProfileNode;
 import profiler.utils.ObjectProfiler;
 

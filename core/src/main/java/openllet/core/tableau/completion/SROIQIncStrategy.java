@@ -44,7 +44,6 @@ import openllet.core.DefaultEdge;
 import openllet.core.DependencySet;
 import openllet.core.Edge;
 import openllet.core.EdgeList;
-import openllet.core.IncrementalChangeTracker;
 import openllet.core.Individual;
 import openllet.core.Node;
 import openllet.core.PelletOptions;
@@ -54,6 +53,7 @@ import openllet.core.tableau.blocking.BlockingFactory;
 import openllet.core.tableau.branch.Branch;
 import openllet.core.tableau.completion.queue.NodeSelector;
 import openllet.core.tableau.completion.queue.QueueElement;
+import openllet.core.tracker.IncrementalChangeTracker;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.Timer;
 

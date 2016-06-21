@@ -8,6 +8,7 @@ package org.mindswap.pellet.examples;
 
 import com.clarkparsia.pellet.sparqldl.jena.SparqlDLExecutionFactory;
 import openllet.core.PelletOptions;
+import openllet.jena.PelletReasonerFactory;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryExecution;
@@ -17,7 +18,6 @@ import org.apache.jena.query.ResultSet;
 import org.apache.jena.query.ResultSetFormatter;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Resource;
-import org.mindswap.pellet.jena.PelletReasonerFactory;
 
 /**
  * Bnodes used in a SPARQL query are treated as variables but different from ordinary SPARQL variables they are not required to be bound to existing

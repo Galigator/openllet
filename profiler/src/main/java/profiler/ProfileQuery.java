@@ -22,6 +22,7 @@ import openllet.core.utils.MemUtils;
 import openllet.core.utils.Timer;
 import openllet.core.utils.Timers;
 import openllet.core.utils.VersionInfo;
+import openllet.jena.JenaLoader;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryExecution;
@@ -29,7 +30,6 @@ import org.apache.jena.query.QueryFactory;
 import org.apache.jena.query.ResultSet;
 import org.apache.jena.query.ResultSetFormatter;
 import org.apache.jena.sparql.resultset.ResultSetMem;
-import org.mindswap.pellet.jena.JenaLoader;
 
 /**
  * @author Evren Sirin

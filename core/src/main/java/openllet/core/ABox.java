@@ -48,6 +48,7 @@ import java.util.logging.Logger;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
+import openllet.core.boxes.tbox.TBox;
 import openllet.core.datatypes.DatatypeReasoner;
 import openllet.core.datatypes.DatatypeReasonerImpl;
 import openllet.core.datatypes.exceptions.DatatypeReasonerException;
@@ -55,8 +56,6 @@ import openllet.core.datatypes.exceptions.InvalidLiteralException;
 import openllet.core.datatypes.exceptions.UnrecognizedDatatypeException;
 import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.expressivity.Expressivity;
-import openllet.core.impl.SimpleBranchEffectTracker;
-import openllet.core.impl.SimpleIncrementalChangeTracker;
 import openllet.core.tableau.branch.Branch;
 import openllet.core.tableau.cache.CachedNode;
 import openllet.core.tableau.cache.CachedNodeFactory;
@@ -69,7 +68,10 @@ import openllet.core.tableau.completion.queue.CompletionQueue;
 import openllet.core.tableau.completion.queue.NodeSelector;
 import openllet.core.tableau.completion.queue.OptimizedBasicCompletionQueue;
 import openllet.core.tableau.completion.queue.QueueElement;
-import openllet.core.tbox.TBox;
+import openllet.core.tracker.BranchEffectTracker;
+import openllet.core.tracker.IncrementalChangeTracker;
+import openllet.core.tracker.SimpleBranchEffectTracker;
+import openllet.core.tracker.SimpleIncrementalChangeTracker;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.Bool;
 import openllet.core.utils.CandidateSet;
@@ -137,7 +139,7 @@ public class ABox
 	// the table maps every atomic concept A (and also its negation not(A))
 	// to the root _node of its completed tree. If a concept is mapped to
 	// null value it means it is not satisfiable
-	protected ConceptCache _cache;
+	public ConceptCache _cache;
 
 	// pseudo model for this Abox. This is the ABox that results from
 	// completing to the original Abox
@@ -191,7 +193,7 @@ public class ABox
 
 	public ABox(final KnowledgeBase kb)
 	{
-		this._kb = kb;
+		_kb = kb;
 		_nodes = new HashMap<>();
 		_nodeList = new ArrayList<>();
 		_clash = null;
@@ -230,10 +232,10 @@ public class ABox
 
 	public ABox(final KnowledgeBase kb, final ABox abox, final ATermAppl extraIndividual, final boolean copyIndividuals)
 	{
-		this._kb = kb;
+		_kb = kb;
 		final Timer timer = kb.timers.startTimer("cloneABox");
 
-		this._rulesNotApplied = true;
+		_rulesNotApplied = true;
 		_initialized = abox._initialized;
 		setChanged(abox.isChanged());
 		setAnonCount(abox.getAnonCount());
@@ -420,10 +422,8 @@ public class ABox
 			_nodeList.addAll(currentNodeList.subList(1, currentSize));
 
 		for (final Node node : _nodes.values())
-		{
 			if (_sourceABox._nodes.containsKey(node.getName()))
 				node.updateNodeReferences();
-		}
 
 		for (int i = 0, n = _branches.size(); i < n; i++)
 		{
@@ -1141,9 +1141,7 @@ public class ABox
 				// propagate
 				final Set<Role> transRoles = SetUtils.intersection(edgeRole.getSuperRoles(), prop.getTransitiveSubRoles());
 				for (final Role transRole : transRoles)
-				{
 					getTransitivePropertyValues(value, transRole, knowns, unknowns, getSames, visited, isIndependent && ds.isIndependent());
-				}
 			}
 		}
 	}
@@ -1725,7 +1723,7 @@ public class ABox
 				{
 					// added for completion _queue
 					final QueueElement newElement = new QueueElement(node);
-					this._completionQueue.add(newElement, NodeSelector.LITERAL);
+					_completionQueue.add(newElement, NodeSelector.LITERAL);
 				}
 
 				if (getBranch() >= 0 && PelletOptions.TRACK_BRANCH_EFFECTS)
@@ -1758,7 +1756,7 @@ public class ABox
 		{
 			// added for completion _queue
 			final QueueElement newElement = new QueueElement(lit);
-			this._completionQueue.add(newElement, NodeSelector.LITERAL);
+			_completionQueue.add(newElement, NodeSelector.LITERAL);
 		}
 
 		if (getBranch() >= 0 && PelletOptions.TRACK_BRANCH_EFFECTS)
@@ -1950,7 +1948,7 @@ public class ABox
 	 */
 	public void setComplete(final boolean isComplete)
 	{
-		this._isComplete = isComplete;
+		_isComplete = isComplete;
 	}
 
 	/**
@@ -1982,20 +1980,20 @@ public class ABox
 			if (_branch == DependencySet.NO_BRANCH && clash.getDepends().getBranch() == DependencySet.NO_BRANCH)
 				_assertedClashes.add(clash);
 
-			if (this._clash != null)
+			if (_clash != null)
 			{
 				if (_logger.isLoggable(Level.FINER))
-					_logger.finer("Clash was already set \nExisting: " + this._clash + "\nNew     : " + clash);
+					_logger.finer("Clash was already set \nExisting: " + _clash + "\nNew     : " + clash);
 
-				if (this._clash.getDepends().max() < clash.getDepends().max())
+				if (_clash.getDepends().max() < clash.getDepends().max())
 					return;
 			}
 		}
 
-		this._clash = clash;
+		_clash = clash;
 		// CHW - added for incremental deletions
 		if (PelletOptions.USE_INCREMENTAL_DELETION)
-			_kb.getDependencyIndex().setClashDependencies(this._clash);
+			_kb.getDependencyIndex().setClashDependencies(_clash);
 
 	}
 
@@ -2048,7 +2046,7 @@ public class ABox
 	 */
 	public void setBranch(final int branch)
 	{
-		this._branch = branch;
+		_branch = branch;
 	}
 
 	/**
@@ -2060,9 +2058,9 @@ public class ABox
 	{
 
 		if (PelletOptions.USE_COMPLETION_QUEUE)
-			_completionQueue.incrementBranch(this._branch);
+			_completionQueue.incrementBranch(_branch);
 
-		this._branch++;
+		_branch++;
 	}
 
 	/**
@@ -2077,7 +2075,7 @@ public class ABox
 
 	public void setInitialized(final boolean initialized)
 	{
-		this._initialized = initialized;
+		_initialized = initialized;
 	}
 
 	/**
@@ -2097,7 +2095,7 @@ public class ABox
 	 */
 	public void setDoExplanation(final boolean doExplanation)
 	{
-		this._doExplanation = doExplanation;
+		_doExplanation = doExplanation;
 	}
 
 	public void setExplanation(final DependencySet ds)
@@ -2362,7 +2360,7 @@ public class ABox
 
 	public void setKeepLastCompletion(final boolean keepLastCompletion)
 	{
-		this._keepLastCompletion = keepLastCompletion;
+		_keepLastCompletion = keepLastCompletion;
 	}
 
 	/**
@@ -2468,7 +2466,7 @@ public class ABox
 	 */
 	public int setAnonCount(final int anonCount)
 	{
-		return this._anonCount = anonCount;
+		return _anonCount = anonCount;
 	}
 
 	/**
@@ -2484,7 +2482,7 @@ public class ABox
 	 */
 	public void setDisjBranchStats(final Map<ATermAppl, int[]> disjBranchStats)
 	{
-		this._disjBranchStats = disjBranchStats;
+		_disjBranchStats = disjBranchStats;
 	}
 
 	/**
@@ -2500,7 +2498,7 @@ public class ABox
 	 */
 	public void setChanged(final boolean changed)
 	{
-		this._changed = changed;
+		_changed = changed;
 	}
 
 	/**

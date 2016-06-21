@@ -34,9 +34,9 @@ import org.jgrapht.graph.DefaultEdge;
  */
 public class JGraphBasedDefinitionOrder extends AbstractDefinitionOrder
 {
-	private Map<ATermAppl, Set<ATermAppl>> equivalents;
+	private Map<ATermAppl, Set<ATermAppl>> _equivalents;
 
-	private DirectedGraph<ATermAppl, DefaultEdge> graph;
+	private DirectedGraph<ATermAppl, DefaultEdge> _graph;
 
 	public JGraphBasedDefinitionOrder(final KnowledgeBase kb, final Comparator<ATerm> comparator)
 	{
@@ -55,11 +55,11 @@ public class JGraphBasedDefinitionOrder extends AbstractDefinitionOrder
 
 	private boolean addEquivalent(final ATermAppl key, final ATermAppl value)
 	{
-		Set<ATermAppl> values = equivalents.get(key);
+		Set<ATermAppl> values = _equivalents.get(key);
 		if (values == null)
 		{
 			values = createSet();
-			equivalents.put(key, values);
+			_equivalents.put(key, values);
 		}
 
 		return values.add(value);
@@ -67,7 +67,7 @@ public class JGraphBasedDefinitionOrder extends AbstractDefinitionOrder
 
 	private Set<ATermAppl> getAllEquivalents(final ATermAppl key)
 	{
-		Set<ATermAppl> values = equivalents.get(key);
+		Set<ATermAppl> values = _equivalents.get(key);
 
 		if (values != null)
 			values.add(key);
@@ -79,20 +79,20 @@ public class JGraphBasedDefinitionOrder extends AbstractDefinitionOrder
 
 	private Set<ATermAppl> getEquivalents(final ATermAppl key)
 	{
-		final Set<ATermAppl> values = equivalents.get(key);
+		final Set<ATermAppl> values = _equivalents.get(key);
 		return values != null ? values : Collections.<ATermAppl> emptySet();
 	}
 
 	@Override
 	protected void initialize()
 	{
-		equivalents = CollectionUtils.makeIdentityMap();
+		_equivalents = CollectionUtils.makeIdentityMap();
 
-		graph = new DefaultDirectedGraph<>(DefaultEdge.class);
+		_graph = new DefaultDirectedGraph<>(DefaultEdge.class);
 
-		graph.addVertex(TOP);
+		_graph.addVertex(TOP);
 		for (final ATermAppl c : _kb.getClasses())
-			graph.addVertex(c);
+			_graph.addVertex(c);
 	}
 
 	@Override
@@ -102,7 +102,7 @@ public class JGraphBasedDefinitionOrder extends AbstractDefinitionOrder
 			addEquivalent(TOP, usedByC);
 		else
 			if (!c.equals(usedByC))
-				graph.addEdge(c, usedByC);
+				_graph.addEdge(c, usedByC);
 	}
 
 	@Override
@@ -112,8 +112,7 @@ public class JGraphBasedDefinitionOrder extends AbstractDefinitionOrder
 
 		cyclicConcepts.addAll(getEquivalents(TOP));
 
-		// TODO : see if deprecated code should be remove or not.
-		final StrongConnectivityAlgorithm<ATermAppl, DefaultEdge> scInspector = new KosarajuStrongConnectivityInspector<>(graph);
+		final StrongConnectivityAlgorithm<ATermAppl, DefaultEdge> scInspector = new KosarajuStrongConnectivityInspector<>(_graph);
 		final List<Set<ATermAppl>> sccList = scInspector.stronglyConnectedSets();
 		for (final Set<ATermAppl> scc : sccList)
 		{
@@ -139,21 +138,21 @@ public class JGraphBasedDefinitionOrder extends AbstractDefinitionOrder
 
 			addEquivalent(rep, node);
 
-			for (final DefaultEdge edge : graph.incomingEdgesOf(node))
+			for (final DefaultEdge edge : _graph.incomingEdgesOf(node))
 			{
-				final ATermAppl incoming = graph.getEdgeSource(edge);
+				final ATermAppl incoming = _graph.getEdgeSource(edge);
 				if (!incoming.equals(rep))
-					graph.addEdge(incoming, rep);
+					_graph.addEdge(incoming, rep);
 			}
 
-			for (final DefaultEdge edge : graph.outgoingEdgesOf(node))
+			for (final DefaultEdge edge : _graph.outgoingEdgesOf(node))
 			{
-				final ATermAppl outgoing = graph.getEdgeTarget(edge);
+				final ATermAppl outgoing = _graph.getEdgeTarget(edge);
 				if (!outgoing.equals(rep))
-					graph.addEdge(rep, outgoing);
+					_graph.addEdge(rep, outgoing);
 			}
 
-			graph.removeVertex(node);
+			_graph.removeVertex(node);
 		}
 	}
 
@@ -165,7 +164,7 @@ public class JGraphBasedDefinitionOrder extends AbstractDefinitionOrder
 		definitionOrder.add(TOP);
 		definitionOrder.addAll(getEquivalents(TOP));
 
-		graph.removeVertex(TOP);
+		_graph.removeVertex(TOP);
 
 		destructiveTopologocialSort(definitionOrder);
 
@@ -178,28 +177,28 @@ public class JGraphBasedDefinitionOrder extends AbstractDefinitionOrder
 	{
 		final Queue<ATermAppl> nodesPending = createQueue();
 
-		for (final ATermAppl node : graph.vertexSet())
-			if (graph.outDegreeOf(node) == 0)
+		for (final ATermAppl node : _graph.vertexSet())
+			if (_graph.outDegreeOf(node) == 0)
 				nodesPending.add(node);
 
 		while (!nodesPending.isEmpty())
 		{
 			final ATermAppl node = nodesPending.remove();
 
-			assert graph.outDegreeOf(node) == 0;
+			assert _graph.outDegreeOf(node) == 0;
 
 			nodesSorted.addAll(getAllEquivalents(node));
 
-			for (final DefaultEdge edge : graph.incomingEdgesOf(node))
+			for (final DefaultEdge edge : _graph.incomingEdgesOf(node))
 			{
-				final ATermAppl source = graph.getEdgeSource(edge);
-				if (graph.outDegreeOf(source) == 1)
+				final ATermAppl source = _graph.getEdgeSource(edge);
+				if (_graph.outDegreeOf(source) == 1)
 					nodesPending.add(source);
 			}
 
-			graph.removeVertex(node);
+			_graph.removeVertex(node);
 		}
 
-		assert graph.vertexSet().isEmpty() : "Failed to sort elements: " + graph.vertexSet();
+		assert _graph.vertexSet().isEmpty() : "Failed to sort elements: " + _graph.vertexSet();
 	}
 }

@@ -12,9 +12,9 @@ import java.util.Map;
 import java.util.Set;
 import openllet.aterm.ATermAppl;
 import openllet.core.utils.ATermUtils;
+import openllet.jena.JenaUtils;
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.QuerySolutionMap;
-import org.mindswap.pellet.jena.JenaUtils;
 
 /**
  * <p>

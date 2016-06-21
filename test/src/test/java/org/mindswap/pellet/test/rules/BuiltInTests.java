@@ -48,6 +48,7 @@ import openllet.core.utils.ATermUtils;
 import openllet.core.utils.Namespaces;
 import openllet.core.utils.NumberUtils;
 import openllet.core.utils.TermFactory;
+import openllet.jena.PelletReasonerFactory;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
@@ -57,7 +58,6 @@ import org.apache.jena.rdf.model.Resource;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.mindswap.pellet.jena.PelletReasonerFactory;
 import org.mindswap.pellet.test.PelletTestCase;
 
 /**

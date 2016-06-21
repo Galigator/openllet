@@ -556,10 +556,10 @@ public class PelletOptions
 
 	public static boolean USE_TRACING = false;
 
-	public static String DEFAULT_CONFIGURATION_FILE = "pellet.properties";
+	public static String DEFAULT_CONFIGURATION_FILE = "openllet.properties";
 
 	/**
-	 * With this option all triples that contains an unrecognized term from RDF, RDF-S, OWL, OWL 1.1, or XSD namespaces will be ignored.
+	 * With this option all triples that contains an unrecognized term from RDF, RDF-S, OWL, OWL 2, or XSD namespaces will be ignored.
 	 */
 	public static boolean FREEZE_BUILTIN_NAMESPACES = true;
 
@@ -688,7 +688,7 @@ public class PelletOptions
 
 	static
 	{
-		final String configFile = System.getProperty("pellet.configuration");
+		final String configFile = System.getProperty("openllet.configuration");
 
 		URL url = null;
 
@@ -712,7 +712,7 @@ public class PelletOptions
 			}
 
 			if (url == null)
-				_logger.severe("Cannot file Pellet configuration file " + configFile);
+				_logger.severe("Cannot file Openllet configuration file " + configFile);
 		}
 
 		if (url != null)
@@ -722,11 +722,11 @@ public class PelletOptions
 			}
 			catch (final FileNotFoundException e)
 			{
-				Log.error(_logger, "Pellet configuration file cannot be found", e);
+				Log.error(_logger, "Openllet configuration file cannot be found", e);
 			}
 			catch (final IOException e)
 			{
-				Log.error(_logger, "I/O error while reading Pellet configuration file", e);
+				Log.error(_logger, "I/O error while reading Openllet configuration file", e);
 			}
 	}
 }

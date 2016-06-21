@@ -6,7 +6,7 @@
 		<format>zip</format>
 	</formats>
 
-	<baseDirectory>pellet-${project.version}</baseDirectory>
+	<baseDirectory>openllet-${project.version}</baseDirectory>
 	<dependencySets>
 		<dependencySet>
 			<outputDirectory>/lib</outputDirectory>
@@ -42,7 +42,7 @@
 			</includes>
 		</fileSet>
 		<fileSet>
-			<directory>../cli/target/pelletcli/bin</directory>
+			<directory>../cli/target/openlletcli/bin</directory>
 			<outputDirectory>/bin</outputDirectory>
 			<includes>
 				<include>/**</include>
@@ -74,7 +74,7 @@
 			<directory>../examples</directory>
 			<outputDirectory>../core/src</outputDirectory>
 			<includes>
-				<include>**/pellet.properties</include>
+				<include>**/openllet.properties</include>
 			</includes>
 		</fileSet>
 		<fileSet>

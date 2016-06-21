@@ -7,6 +7,8 @@ import static org.junit.Assert.assertTrue;
 import com.clarkparsia.pellet.sparqldl.jena.SparqlDLExecutionFactory;
 import java.util.Iterator;
 import openllet.core.PelletOptions;
+import openllet.jena.PelletReasoner;
+import openllet.jena.PelletReasonerFactory;
 import org.apache.jena.query.ARQ;
 import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryExecutionFactory;
@@ -19,8 +21,6 @@ import org.apache.jena.sparql.core.Var;
 import org.apache.jena.sparql.engine.binding.Binding;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.mindswap.pellet.jena.PelletReasoner;
-import org.mindswap.pellet.jena.PelletReasonerFactory;
 import org.mindswap.pellet.test.PelletTestSuite;
 
 /**

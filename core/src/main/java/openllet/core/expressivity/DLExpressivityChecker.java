@@ -15,10 +15,10 @@ import openllet.aterm.ATermList;
 import openllet.core.Individual;
 import openllet.core.KnowledgeBase;
 import openllet.core.Role;
+import openllet.core.boxes.tbox.TBox;
+import openllet.core.boxes.tbox.impl.Unfolding;
 import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.output.ATermBaseVisitor;
-import openllet.core.tbox.TBox;
-import openllet.core.tbox.impl.Unfolding;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.SetUtils;
 

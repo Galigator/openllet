@@ -16,6 +16,8 @@ import openllet.aterm.ATermAppl;
 import openllet.core.datatypes.DatatypeReasonerImpl;
 import openllet.core.datatypes.Facet;
 import openllet.core.utils.Namespaces;
+import openllet.jena.vocabulary.OWL2;
+import openllet.jena.vocabulary.SWRL;
 import org.apache.jena.rdf.model.Literal;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.RDFNode;
@@ -25,8 +27,6 @@ import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.vocabulary.OWL;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
-import org.mindswap.pellet.jena.vocabulary.OWL2;
-import org.mindswap.pellet.jena.vocabulary.SWRL;
 import org.semanticweb.owlapi.vocab.SWRLBuiltInsVocabulary;
 
 /**
@@ -229,7 +229,7 @@ public class OWLSyntaxChecker
 		createList(head, list);
 	}
 
-	// We manage the org.mindswap.pellet.jena.vocabulary.OWL2 so we can manage the code when removing will occure.
+	// We manage the openllet.jena.vocabulary.OWL2 so we can manage the code when removing will occure.
 	@SuppressWarnings("deprecation")
 	private static Resource _selfRestriction = OWL2.SelfRestriction;
 

@@ -83,20 +83,28 @@ public class FileUtils
 
 	public static String toURI(final String fileName)
 	{
-		if (org.apache.jena.util.FileUtils.isURI(fileName))
-			return fileName;
-
-		final File localFile = new File(fileName);
-		if (!localFile.exists())
-			throw new RuntimeException(new FileNotFoundException(localFile.getAbsolutePath()));
-
 		try
 		{
-			return localFile.toURI().toURL().toExternalForm();
+			final URI uri = URI.create(fileName);
+			if (uri.isAbsolute())
+				return uri.toString();
+			else
+				return new File(fileName).toURI().toString();
 		}
-		catch (final MalformedURLException e)
+		catch (final IllegalArgumentException e1) // If the given string violates RFC 2396
 		{
-			throw new RuntimeException(fileName + " is not a valid URI", e);
+			final File localFile = new File(fileName);
+			if (!localFile.exists())
+				throw new RuntimeException(new FileNotFoundException(localFile.getAbsolutePath()));
+			try
+			{
+				return localFile.toURI().toURL().toString();
+			}
+			catch (final MalformedURLException e2)
+			{
+				throw new RuntimeException(e1.getMessage() + " " + e2.getMessage(), new FileNotFoundException(localFile.getAbsolutePath()));
+
+			}
 		}
 	}
 

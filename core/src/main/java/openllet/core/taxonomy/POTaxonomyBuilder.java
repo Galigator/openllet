@@ -15,6 +15,7 @@ import openllet.core.utils.PartialOrderBuilder;
 import openllet.core.utils.PartialOrderComparator;
 import openllet.core.utils.progress.ProgressMonitor;
 
+@Deprecated // Look like this class is unused.
 public class POTaxonomyBuilder implements TaxonomyBuilder
 {
 
@@ -29,9 +30,9 @@ public class POTaxonomyBuilder implements TaxonomyBuilder
 
 	public POTaxonomyBuilder(final KnowledgeBase kb, final PartialOrderComparator<ATermAppl> comparator)
 	{
-		this._kb = kb;
-		this._tax = new Taxonomy<>(null, ATermUtils.TOP, ATermUtils.BOTTOM);
-		this._builder = new PartialOrderBuilder<>(_tax, comparator);
+		_kb = kb;
+		_tax = new Taxonomy<>(null, ATermUtils.TOP, ATermUtils.BOTTOM);
+		_builder = new PartialOrderBuilder<>(_tax, comparator);
 	}
 
 	@Override
@@ -67,7 +68,7 @@ public class POTaxonomyBuilder implements TaxonomyBuilder
 	@Override
 	public void setKB(final KnowledgeBase kb)
 	{
-		this._kb = kb;
+		_kb = kb;
 	}
 
 	public PartialOrderComparator<ATermAppl> getComparator()

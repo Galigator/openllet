@@ -16,7 +16,6 @@ import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
 import openllet.core.Edge;
 import openllet.core.EdgeList;
-import openllet.core.IncrementalChangeTracker;
 import openllet.core.Individual;
 import openllet.core.KnowledgeBase;
 import openllet.core.Node;
@@ -24,6 +23,7 @@ import openllet.core.PelletOptions;
 import openllet.core.Role;
 import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.tableau.branch.Branch;
+import openllet.core.tracker.IncrementalChangeTracker;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.intset.IntSet;
 

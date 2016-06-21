@@ -32,10 +32,10 @@ import openllet.core.utils.PropertiesBuilder;
 import openllet.core.utils.SetUtils;
 import openllet.core.utils.TermFactory;
 import openllet.core.utils.progress.SilentProgressMonitor;
+import openllet.jena.JenaLoader;
 import openllet.shared.tools.Log;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.mindswap.pellet.jena.JenaLoader;
 import org.mindswap.pellet.test.AbstractKBTests;
 import org.mindswap.pellet.test.PelletTestSuite;
 

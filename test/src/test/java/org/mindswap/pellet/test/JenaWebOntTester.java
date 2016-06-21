@@ -9,6 +9,9 @@ package org.mindswap.pellet.test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import openllet.jena.PelletInfGraph;
+import openllet.jena.PelletReasonerFactory;
+import openllet.jena.graph.loader.GraphLoader;
 import org.apache.jena.graph.Graph;
 import org.apache.jena.graph.Triple;
 import org.apache.jena.ontology.OntDocumentManager;
@@ -20,9 +23,6 @@ import org.apache.jena.util.FileManager;
 import org.apache.jena.util.LocationMapper;
 import org.apache.jena.util.LocatorFile;
 import org.apache.jena.util.iterator.ExtendedIterator;
-import org.mindswap.pellet.jena.PelletInfGraph;
-import org.mindswap.pellet.jena.PelletReasonerFactory;
-import org.mindswap.pellet.jena.graph.loader.GraphLoader;
 
 public class JenaWebOntTester implements WebOntTester
 {
