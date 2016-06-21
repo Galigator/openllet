@@ -6,21 +6,21 @@ import static com.clarkparsia.pellet.sparqldl.model.QueryAtomFactory.InverseOfAt
 import static com.clarkparsia.pellet.sparqldl.model.QueryAtomFactory.ObjectPropertyAtom;
 import static com.clarkparsia.pellet.sparqldl.model.QueryAtomFactory.PropertyValueAtom;
 import static com.clarkparsia.pellet.sparqldl.model.QueryAtomFactory.RangeAtom;
-import static com.clarkparsia.pellet.utils.TermFactory.BOTTOM;
-import static com.clarkparsia.pellet.utils.TermFactory.BOTTOM_DATA_PROPERTY;
-import static com.clarkparsia.pellet.utils.TermFactory.BOTTOM_OBJECT_PROPERTY;
-import static com.clarkparsia.pellet.utils.TermFactory.TOP;
-import static com.clarkparsia.pellet.utils.TermFactory.TOP_DATA_PROPERTY;
-import static com.clarkparsia.pellet.utils.TermFactory.TOP_OBJECT_PROPERTY;
-import static com.clarkparsia.pellet.utils.TermFactory.literal;
-import static com.clarkparsia.pellet.utils.TermFactory.var;
+import static openllet.core.utils.TermFactory.BOTTOM;
+import static openllet.core.utils.TermFactory.BOTTOM_DATA_PROPERTY;
+import static openllet.core.utils.TermFactory.BOTTOM_OBJECT_PROPERTY;
+import static openllet.core.utils.TermFactory.TOP;
+import static openllet.core.utils.TermFactory.TOP_DATA_PROPERTY;
+import static openllet.core.utils.TermFactory.TOP_OBJECT_PROPERTY;
+import static openllet.core.utils.TermFactory.literal;
+import static openllet.core.utils.TermFactory.var;
 
-import com.clarkparsia.pellet.datatypes.Datatypes;
 import com.clarkparsia.pellet.sparqldl.model.Query;
 import com.clarkparsia.pellet.sparqldl.parser.ARQParser;
 import openllet.aterm.ATermAppl;
+import openllet.core.datatypes.Datatypes;
+import openllet.core.utils.Namespaces;
 import org.junit.Test;
-import org.mindswap.pellet.utils.Namespaces;
 
 public class TestMiscQueries extends AbstractQueryTest
 {

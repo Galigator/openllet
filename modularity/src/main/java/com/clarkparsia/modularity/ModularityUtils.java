@@ -12,7 +12,7 @@ import com.clarkparsia.owlapi.modularity.locality.LocalityClass;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.mindswap.pellet.utils.iterator.NestedIterator;
+import openllet.core.utils.iterator.NestedIterator;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;

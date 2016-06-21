@@ -2,6 +2,8 @@ package org.mindswap.pellet.jena.graph.converter;
 
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
+import openllet.core.KnowledgeBase;
+import openllet.core.utils.ATermUtils;
 import org.apache.jena.graph.BlankNodeId;
 import org.apache.jena.graph.Graph;
 import org.apache.jena.graph.Node;
@@ -11,11 +13,9 @@ import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.vocabulary.OWL;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
-import org.mindswap.pellet.KnowledgeBase;
 import org.mindswap.pellet.jena.JenaUtils;
 import org.mindswap.pellet.jena.vocabulary.OWL2;
 import org.mindswap.pellet.jena.vocabulary.SWRL;
-import org.mindswap.pellet.utils.ATermUtils;
 
 /**
  * <p>

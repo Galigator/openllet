@@ -6,7 +6,7 @@
 
 package org.mindswap.pellet.test;
 
-import static com.clarkparsia.pellet.utils.TermFactory.term;
+import static openllet.core.utils.TermFactory.term;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -14,9 +14,9 @@ import com.clarkparsia.pellet.owlapi.PelletReasoner;
 import com.clarkparsia.pellet.owlapi.PelletReasonerFactory;
 import junit.framework.JUnit4TestAdapter;
 import openllet.aterm.ATermAppl;
+import openllet.core.KnowledgeBase;
+import openllet.core.utils.ATermUtils;
 import org.junit.Test;
-import org.mindswap.pellet.KnowledgeBase;
-import org.mindswap.pellet.utils.ATermUtils;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;

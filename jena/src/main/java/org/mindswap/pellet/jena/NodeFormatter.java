@@ -13,6 +13,10 @@ import java.util.logging.Logger;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
+import openllet.core.output.ATermManchesterSyntaxRenderer;
+import openllet.core.output.ATermRenderer;
+import openllet.core.utils.ATermUtils;
+import openllet.core.utils.QNameProvider;
 import openllet.shared.tools.Log;
 import org.apache.jena.rdf.model.InfModel;
 import org.apache.jena.rdf.model.Model;
@@ -24,10 +28,6 @@ import org.apache.jena.reasoner.InfGraph;
 import org.apache.jena.vocabulary.OWL;
 import org.apache.jena.vocabulary.RDF;
 import org.mindswap.pellet.jena.vocabulary.OWL2;
-import org.mindswap.pellet.output.ATermManchesterSyntaxRenderer;
-import org.mindswap.pellet.output.ATermRenderer;
-import org.mindswap.pellet.utils.ATermUtils;
-import org.mindswap.pellet.utils.QNameProvider;
 
 /**
  * @author Evren Sirin

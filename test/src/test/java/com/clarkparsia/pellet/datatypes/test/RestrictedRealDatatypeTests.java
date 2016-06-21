@@ -1,27 +1,27 @@
 package com.clarkparsia.pellet.datatypes.test;
 
-import static com.clarkparsia.pellet.datatypes.Facet.XSD.MAX_EXCLUSIVE;
-import static com.clarkparsia.pellet.datatypes.Facet.XSD.MAX_INCLUSIVE;
-import static com.clarkparsia.pellet.datatypes.Facet.XSD.MIN_EXCLUSIVE;
-import static com.clarkparsia.pellet.datatypes.Facet.XSD.MIN_INCLUSIVE;
 import static java.util.Collections.singleton;
+import static openllet.core.datatypes.Facet.XSD.MAX_EXCLUSIVE;
+import static openllet.core.datatypes.Facet.XSD.MAX_INCLUSIVE;
+import static openllet.core.datatypes.Facet.XSD.MIN_EXCLUSIVE;
+import static openllet.core.datatypes.Facet.XSD.MIN_INCLUSIVE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import com.clarkparsia.pellet.datatypes.Datatype;
-import com.clarkparsia.pellet.datatypes.OWLRealUtils;
-import com.clarkparsia.pellet.datatypes.RestrictedDatatype;
-import com.clarkparsia.pellet.datatypes.exceptions.InvalidConstrainingFacetException;
-import com.clarkparsia.pellet.datatypes.types.real.ContinuousRealInterval;
-import com.clarkparsia.pellet.datatypes.types.real.IntegerInterval;
-import com.clarkparsia.pellet.datatypes.types.real.Rational;
-import com.clarkparsia.pellet.datatypes.types.real.RestrictedRealDatatype;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Iterator;
 import openllet.aterm.ATermAppl;
+import openllet.core.datatypes.Datatype;
+import openllet.core.datatypes.OWLRealUtils;
+import openllet.core.datatypes.RestrictedDatatype;
+import openllet.core.datatypes.exceptions.InvalidConstrainingFacetException;
+import openllet.core.datatypes.types.real.ContinuousRealInterval;
+import openllet.core.datatypes.types.real.IntegerInterval;
+import openllet.core.datatypes.types.real.Rational;
+import openllet.core.datatypes.types.real.RestrictedRealDatatype;
 import org.junit.Test;
 
 /**

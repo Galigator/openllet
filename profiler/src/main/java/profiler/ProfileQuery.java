@@ -16,6 +16,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import openllet.core.KnowledgeBase;
+import openllet.core.utils.FileUtils;
+import openllet.core.utils.MemUtils;
+import openllet.core.utils.Timer;
+import openllet.core.utils.Timers;
+import openllet.core.utils.VersionInfo;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryExecution;
@@ -23,13 +29,7 @@ import org.apache.jena.query.QueryFactory;
 import org.apache.jena.query.ResultSet;
 import org.apache.jena.query.ResultSetFormatter;
 import org.apache.jena.sparql.resultset.ResultSetMem;
-import org.mindswap.pellet.KnowledgeBase;
 import org.mindswap.pellet.jena.JenaLoader;
-import org.mindswap.pellet.utils.FileUtils;
-import org.mindswap.pellet.utils.MemUtils;
-import org.mindswap.pellet.utils.Timer;
-import org.mindswap.pellet.utils.Timers;
-import org.mindswap.pellet.utils.VersionInfo;
 
 /**
  * @author Evren Sirin

@@ -11,7 +11,7 @@ import java.io.FilenameFilter;
 import java.util.Arrays;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.mindswap.pellet.utils.AlphaNumericComparator;
+import openllet.core.utils.AlphaNumericComparator;
 
 public class DLTestSuite extends TestSuite
 {

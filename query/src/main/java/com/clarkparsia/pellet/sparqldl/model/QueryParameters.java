@@ -11,10 +11,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import openllet.aterm.ATermAppl;
+import openllet.core.utils.ATermUtils;
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.QuerySolutionMap;
 import org.mindswap.pellet.jena.JenaUtils;
-import org.mindswap.pellet.utils.ATermUtils;
 
 /**
  * <p>

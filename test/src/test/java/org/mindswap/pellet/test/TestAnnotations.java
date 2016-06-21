@@ -1,13 +1,12 @@
 package org.mindswap.pellet.test;
 
-import static com.clarkparsia.pellet.utils.TermFactory.term;
+import static openllet.core.utils.TermFactory.term;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import com.clarkparsia.pellet.owlapi.OWLAPILoader;
 import com.clarkparsia.pellet.sparqldl.jena.SparqlDLExecutionFactory;
-import com.clarkparsia.pellet.utils.PropertiesBuilder;
 import java.io.File;
 import java.util.Collections;
 import java.util.HashSet;
@@ -15,6 +14,10 @@ import java.util.Properties;
 import java.util.Set;
 import junit.framework.JUnit4TestAdapter;
 import openllet.aterm.ATermAppl;
+import openllet.core.KnowledgeBase;
+import openllet.core.PelletOptions;
+import openllet.core.utils.ATermUtils;
+import openllet.core.utils.PropertiesBuilder;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryExecution;
@@ -30,11 +33,8 @@ import org.apache.jena.vocabulary.RDFS;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.mindswap.pellet.KnowledgeBase;
-import org.mindswap.pellet.PelletOptions;
 import org.mindswap.pellet.jena.PelletInfGraph;
 import org.mindswap.pellet.jena.PelletReasonerFactory;
-import org.mindswap.pellet.utils.ATermUtils;
 
 /**
  * <p>

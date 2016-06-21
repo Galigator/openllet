@@ -9,8 +9,8 @@
 
 package org.mindswap.pellet.test;
 
-import static com.clarkparsia.pellet.utils.TermFactory.hasValue;
-import static com.clarkparsia.pellet.utils.TermFactory.or;
+import static openllet.core.utils.TermFactory.hasValue;
+import static openllet.core.utils.TermFactory.or;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 

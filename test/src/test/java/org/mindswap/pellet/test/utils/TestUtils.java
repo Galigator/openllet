@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import openllet.aterm.ATermAppl;
-import org.mindswap.pellet.Individual;
-import org.mindswap.pellet.KnowledgeBase;
-import org.mindswap.pellet.Role;
-import org.mindswap.pellet.utils.ATermUtils;
+import openllet.core.Individual;
+import openllet.core.KnowledgeBase;
+import openllet.core.Role;
+import openllet.core.utils.ATermUtils;
 
 public class TestUtils
 {

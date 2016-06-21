@@ -48,6 +48,9 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.WindowConstants;
+import openllet.core.PelletOptions;
+import openllet.core.exceptions.TimeoutException;
+import openllet.core.exceptions.UnsupportedFeatureException;
 import openllet.shared.tools.Log;
 import org.apache.jena.rdf.model.Literal;
 import org.apache.jena.rdf.model.Model;
@@ -60,9 +63,6 @@ import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
-import org.mindswap.pellet.PelletOptions;
-import org.mindswap.pellet.exceptions.TimeoutException;
-import org.mindswap.pellet.exceptions.UnsupportedFeatureException;
 
 public class WebOntTest
 {

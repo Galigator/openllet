@@ -8,7 +8,6 @@
 
 package com.clarkparsia.pellet.sparqldl.model;
 
-import com.clarkparsia.pellet.utils.TermFactory;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -18,10 +17,11 @@ import java.util.List;
 import java.util.Map.Entry;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
+import openllet.core.KnowledgeBase;
+import openllet.core.exceptions.InternalReasonerException;
+import openllet.core.utils.ATermUtils;
+import openllet.core.utils.TermFactory;
 import java.util.Set;
-import org.mindswap.pellet.KnowledgeBase;
-import org.mindswap.pellet.exceptions.InternalReasonerException;
-import org.mindswap.pellet.utils.ATermUtils;
 
 /**
  * <p>

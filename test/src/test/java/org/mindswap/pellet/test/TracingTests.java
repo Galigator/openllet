@@ -8,33 +8,25 @@
 
 package org.mindswap.pellet.test;
 
-import static com.clarkparsia.pellet.utils.TermFactory.TOP;
-import static com.clarkparsia.pellet.utils.TermFactory.all;
-import static com.clarkparsia.pellet.utils.TermFactory.and;
-import static com.clarkparsia.pellet.utils.TermFactory.list;
-import static com.clarkparsia.pellet.utils.TermFactory.literal;
-import static com.clarkparsia.pellet.utils.TermFactory.max;
-import static com.clarkparsia.pellet.utils.TermFactory.minInclusive;
-import static com.clarkparsia.pellet.utils.TermFactory.not;
-import static com.clarkparsia.pellet.utils.TermFactory.oneOf;
-import static com.clarkparsia.pellet.utils.TermFactory.or;
-import static com.clarkparsia.pellet.utils.TermFactory.restrict;
-import static com.clarkparsia.pellet.utils.TermFactory.some;
-import static com.clarkparsia.pellet.utils.TermFactory.term;
+import static openllet.core.utils.ATermUtils.makeList;
+import static openllet.core.utils.TermFactory.TOP;
+import static openllet.core.utils.TermFactory.all;
+import static openllet.core.utils.TermFactory.and;
+import static openllet.core.utils.TermFactory.list;
+import static openllet.core.utils.TermFactory.literal;
+import static openllet.core.utils.TermFactory.max;
+import static openllet.core.utils.TermFactory.minInclusive;
+import static openllet.core.utils.TermFactory.not;
+import static openllet.core.utils.TermFactory.oneOf;
+import static openllet.core.utils.TermFactory.or;
+import static openllet.core.utils.TermFactory.restrict;
+import static openllet.core.utils.TermFactory.some;
+import static openllet.core.utils.TermFactory.term;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mindswap.pellet.test.PelletTestCase.assertIteratorValues;
-import static org.mindswap.pellet.utils.ATermUtils.makeList;
 
-import com.clarkparsia.pellet.datatypes.Datatypes;
-import com.clarkparsia.pellet.datatypes.types.real.XSDInteger;
-import com.clarkparsia.pellet.rules.RulesToATermTranslator;
-import com.clarkparsia.pellet.rules.model.AtomIVariable;
-import com.clarkparsia.pellet.rules.model.ClassAtom;
-import com.clarkparsia.pellet.rules.model.IndividualPropertyAtom;
-import com.clarkparsia.pellet.rules.model.Rule;
-import com.clarkparsia.pellet.rules.model.RuleAtom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -44,15 +36,23 @@ import junit.framework.JUnit4TestAdapter;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
+import openllet.core.KnowledgeBase;
+import openllet.core.PelletOptions;
+import openllet.core.datatypes.Datatypes;
+import openllet.core.datatypes.types.real.XSDInteger;
+import openllet.core.rules.RulesToATermTranslator;
+import openllet.core.rules.model.AtomIVariable;
+import openllet.core.rules.model.ClassAtom;
+import openllet.core.rules.model.IndividualPropertyAtom;
+import openllet.core.rules.model.Rule;
+import openllet.core.rules.model.RuleAtom;
+import openllet.core.utils.ATermUtils;
+import openllet.core.utils.SetUtils;
 import org.apache.jena.vocabulary.XSD;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.mindswap.pellet.KnowledgeBase;
-import org.mindswap.pellet.PelletOptions;
-import org.mindswap.pellet.utils.ATermUtils;
-import org.mindswap.pellet.utils.SetUtils;
 
 public class TracingTests extends AbstractKBTests
 {

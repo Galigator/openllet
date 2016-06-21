@@ -1,22 +1,22 @@
 package com.clarkparsia.pellet.test.rbox;
 
-import static com.clarkparsia.pellet.utils.TermFactory.BOTTOM;
-import static com.clarkparsia.pellet.utils.TermFactory.BOTTOM_DATA_PROPERTY;
-import static com.clarkparsia.pellet.utils.TermFactory.BOTTOM_LIT;
-import static com.clarkparsia.pellet.utils.TermFactory.BOTTOM_OBJECT_PROPERTY;
-import static com.clarkparsia.pellet.utils.TermFactory.TOP;
-import static com.clarkparsia.pellet.utils.TermFactory.TOP_DATA_PROPERTY;
-import static com.clarkparsia.pellet.utils.TermFactory.TOP_LIT;
-import static com.clarkparsia.pellet.utils.TermFactory.TOP_OBJECT_PROPERTY;
-import static com.clarkparsia.pellet.utils.TermFactory.all;
-import static com.clarkparsia.pellet.utils.TermFactory.and;
-import static com.clarkparsia.pellet.utils.TermFactory.hasValue;
-import static com.clarkparsia.pellet.utils.TermFactory.literal;
-import static com.clarkparsia.pellet.utils.TermFactory.not;
-import static com.clarkparsia.pellet.utils.TermFactory.oneOf;
-import static com.clarkparsia.pellet.utils.TermFactory.or;
-import static com.clarkparsia.pellet.utils.TermFactory.some;
-import static com.clarkparsia.pellet.utils.TermFactory.term;
+import static openllet.core.utils.TermFactory.BOTTOM;
+import static openllet.core.utils.TermFactory.BOTTOM_DATA_PROPERTY;
+import static openllet.core.utils.TermFactory.BOTTOM_LIT;
+import static openllet.core.utils.TermFactory.BOTTOM_OBJECT_PROPERTY;
+import static openllet.core.utils.TermFactory.TOP;
+import static openllet.core.utils.TermFactory.TOP_DATA_PROPERTY;
+import static openllet.core.utils.TermFactory.TOP_LIT;
+import static openllet.core.utils.TermFactory.TOP_OBJECT_PROPERTY;
+import static openllet.core.utils.TermFactory.all;
+import static openllet.core.utils.TermFactory.and;
+import static openllet.core.utils.TermFactory.hasValue;
+import static openllet.core.utils.TermFactory.literal;
+import static openllet.core.utils.TermFactory.not;
+import static openllet.core.utils.TermFactory.oneOf;
+import static openllet.core.utils.TermFactory.or;
+import static openllet.core.utils.TermFactory.some;
+import static openllet.core.utils.TermFactory.term;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -26,8 +26,8 @@ import java.util.HashSet;
 import java.util.Set;
 import junit.framework.JUnit4TestAdapter;
 import openllet.aterm.ATermAppl;
+import openllet.core.KnowledgeBase;
 import org.junit.Test;
-import org.mindswap.pellet.KnowledgeBase;
 
 public class TestTopBottom
 {

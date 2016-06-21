@@ -23,23 +23,23 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import openllet.aterm.ATermAppl;
+import openllet.core.exceptions.PelletRuntimeException;
+import openllet.core.taxonomy.Taxonomy;
+import openllet.core.taxonomy.TaxonomyNode;
+import openllet.core.taxonomy.printer.ClassTreePrinter;
+import openllet.core.taxonomy.printer.TreeTaxonomyPrinter;
+import openllet.core.utils.ATermUtils;
+import openllet.core.utils.Bool;
+import openllet.core.utils.MultiValueMap;
+import openllet.core.utils.Namespaces;
+import openllet.core.utils.PartialOrderBuilder;
+import openllet.core.utils.PartialOrderComparator;
+import openllet.core.utils.PartialOrderRelation;
+import openllet.core.utils.SetUtils;
+import openllet.core.utils.TaxonomyUtils;
+import openllet.core.utils.Timer;
+import openllet.core.utils.Timers;
 import openllet.shared.tools.Log;
-import org.mindswap.pellet.exceptions.PelletRuntimeException;
-import org.mindswap.pellet.taxonomy.Taxonomy;
-import org.mindswap.pellet.taxonomy.TaxonomyNode;
-import org.mindswap.pellet.taxonomy.printer.ClassTreePrinter;
-import org.mindswap.pellet.taxonomy.printer.TreeTaxonomyPrinter;
-import org.mindswap.pellet.utils.ATermUtils;
-import org.mindswap.pellet.utils.Bool;
-import org.mindswap.pellet.utils.MultiValueMap;
-import org.mindswap.pellet.utils.Namespaces;
-import org.mindswap.pellet.utils.PartialOrderBuilder;
-import org.mindswap.pellet.utils.PartialOrderComparator;
-import org.mindswap.pellet.utils.PartialOrderRelation;
-import org.mindswap.pellet.utils.SetUtils;
-import org.mindswap.pellet.utils.TaxonomyUtils;
-import org.mindswap.pellet.utils.Timer;
-import org.mindswap.pellet.utils.Timers;
 import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.IRI;
@@ -1268,16 +1268,16 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 	private PelletRuntimeException convert(final PelletRuntimeException e) throws InconsistentOntologyException, ReasonerInterruptedException, TimeOutException, FreshEntitiesException
 	{
 
-		if (e instanceof org.mindswap.pellet.exceptions.TimeoutException)
+		if (e instanceof openllet.core.exceptions.TimeoutException)
 			throw new TimeOutException();
 
-		if (e instanceof org.mindswap.pellet.exceptions.TimerInterruptedException)
+		if (e instanceof openllet.core.exceptions.TimerInterruptedException)
 			throw new ReasonerInterruptedException(e);
 
-		if (e instanceof org.mindswap.pellet.exceptions.InconsistentOntologyException)
+		if (e instanceof openllet.core.exceptions.InconsistentOntologyException)
 			throw new InconsistentOntologyException();
 
-		if (e instanceof org.mindswap.pellet.exceptions.UndefinedEntityException)
+		if (e instanceof openllet.core.exceptions.UndefinedEntityException)
 		{
 			final Set<OWLEntity> unknown = Collections.emptySet();
 			throw new FreshEntitiesException(unknown);

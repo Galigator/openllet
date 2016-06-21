@@ -9,15 +9,15 @@
 
 package org.mindswap.pellet.test;
 
-import static com.clarkparsia.pellet.utils.TermFactory.term;
+import static openllet.core.utils.TermFactory.term;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import openllet.aterm.ATermAppl;
+import openllet.core.KnowledgeBase;
 import org.junit.After;
 import org.junit.Before;
-import org.mindswap.pellet.KnowledgeBase;
 
 public class AbstractKBTests
 {

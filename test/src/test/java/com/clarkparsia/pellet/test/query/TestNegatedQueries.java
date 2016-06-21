@@ -11,12 +11,12 @@ package com.clarkparsia.pellet.test.query;
 import static com.clarkparsia.pellet.sparqldl.model.QueryAtomFactory.NotKnownAtom;
 import static com.clarkparsia.pellet.sparqldl.model.QueryAtomFactory.PropertyValueAtom;
 import static com.clarkparsia.pellet.sparqldl.model.QueryAtomFactory.TypeAtom;
-import static com.clarkparsia.pellet.utils.TermFactory.TOP;
-import static com.clarkparsia.pellet.utils.TermFactory.not;
+import static openllet.core.utils.TermFactory.TOP;
+import static openllet.core.utils.TermFactory.not;
 
 import com.clarkparsia.pellet.sparqldl.model.Query;
-import com.clarkparsia.pellet.utils.TermFactory;
 import openllet.aterm.ATermAppl;
+import openllet.core.utils.TermFactory;
 import org.junit.Test;
 
 /**

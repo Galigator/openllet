@@ -6,8 +6,8 @@
 
 package org.mindswap.pellet.test;
 
-import static com.clarkparsia.pellet.utils.TermFactory.not;
-import static com.clarkparsia.pellet.utils.TermFactory.term;
+import static openllet.core.utils.TermFactory.not;
+import static openllet.core.utils.TermFactory.term;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -21,6 +21,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 import openllet.aterm.ATermAppl;
+import openllet.core.KnowledgeBase;
+import openllet.core.utils.ATermUtils;
+import openllet.core.utils.iterator.IteratorUtils;
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSet;
 import org.apache.jena.rdf.model.Model;
@@ -31,9 +34,6 @@ import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.ResourceFactory;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
-import org.mindswap.pellet.KnowledgeBase;
-import org.mindswap.pellet.utils.ATermUtils;
-import org.mindswap.pellet.utils.iterator.IteratorUtils;
 
 public final class PelletTestCase
 {

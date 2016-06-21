@@ -6,12 +6,16 @@
 
 package org.mindswap.pellet.jena;
 
-import com.clarkparsia.pellet.utils.CollectionUtils;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import openllet.aterm.ATermAppl;
+import openllet.core.KnowledgeBase;
+import openllet.core.PelletOptions;
+import openllet.core.utils.ATermUtils;
+import openllet.core.utils.CollectionUtils;
+import openllet.core.utils.iterator.IteratorUtils;
 import org.apache.jena.graph.Graph;
 import org.apache.jena.graph.GraphListener;
 import org.apache.jena.graph.Node;
@@ -20,10 +24,6 @@ import org.apache.jena.graph.compose.Dyadic;
 import org.apache.jena.graph.compose.Polyadic;
 import org.apache.jena.reasoner.InfGraph;
 import org.apache.jena.vocabulary.RDF;
-import org.mindswap.pellet.KnowledgeBase;
-import org.mindswap.pellet.PelletOptions;
-import org.mindswap.pellet.utils.ATermUtils;
-import org.mindswap.pellet.utils.iterator.IteratorUtils;
 
 /**
  * A graph listener that listens to graph change events and if possible processes the change event. The listener is passed a possibly union graph but the

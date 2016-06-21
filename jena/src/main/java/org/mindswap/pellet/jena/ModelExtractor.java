@@ -15,6 +15,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 import openllet.aterm.ATermAppl;
+import openllet.core.KnowledgeBase;
+import openllet.core.Role;
+import openllet.core.utils.iterator.IteratorUtils;
 import org.apache.jena.graph.Node;
 import org.apache.jena.graph.Triple;
 import org.apache.jena.rdf.model.Model;
@@ -23,10 +26,7 @@ import org.apache.jena.vocabulary.OWL;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
 import org.apache.jena.vocabulary.ReasonerVocabulary;
-import org.mindswap.pellet.KnowledgeBase;
-import org.mindswap.pellet.Role;
 import org.mindswap.pellet.jena.vocabulary.OWL2;
-import org.mindswap.pellet.utils.iterator.IteratorUtils;
 
 /**
  * Extract a Jena model that contains the information Pellet inferred. Models can be generated about classes, properties or individuals. Note that _individual

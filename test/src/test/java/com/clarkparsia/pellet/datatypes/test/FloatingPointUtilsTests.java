@@ -5,7 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
-import com.clarkparsia.pellet.datatypes.types.floating.FloatingPointUtils;
+import openllet.core.datatypes.types.floating.FloatingPointUtils;
 import org.junit.Test;
 
 /**

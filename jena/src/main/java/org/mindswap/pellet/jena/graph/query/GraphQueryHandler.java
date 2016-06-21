@@ -6,7 +6,6 @@
 
 package org.mindswap.pellet.jena.graph.query;
 
-import com.clarkparsia.pellet.utils.CollectionUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -18,6 +17,12 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.aterm.ATermAppl;
+import openllet.core.KnowledgeBase;
+import openllet.core.Role;
+import openllet.core.utils.CollectionUtils;
+import openllet.core.utils.iterator.FlattenningIterator;
+import openllet.core.utils.iterator.IteratorUtils;
+import openllet.core.utils.iterator.NestedIterator;
 import openllet.shared.tools.Log;
 import org.apache.jena.graph.Graph;
 import org.apache.jena.graph.Node;
@@ -32,17 +37,12 @@ import org.apache.jena.vocabulary.OWL;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
 import org.apache.jena.vocabulary.ReasonerVocabulary;
-import org.mindswap.pellet.KnowledgeBase;
-import org.mindswap.pellet.Role;
 import org.mindswap.pellet.jena.JenaUtils;
 import org.mindswap.pellet.jena.ModelExtractor;
 import org.mindswap.pellet.jena.ModelExtractor.StatementType;
 import org.mindswap.pellet.jena.PelletInfGraph;
 import org.mindswap.pellet.jena.graph.loader.GraphLoader;
 import org.mindswap.pellet.jena.vocabulary.OWL2;
-import org.mindswap.pellet.utils.iterator.FlattenningIterator;
-import org.mindswap.pellet.utils.iterator.IteratorUtils;
-import org.mindswap.pellet.utils.iterator.NestedIterator;
 
 public class GraphQueryHandler
 {

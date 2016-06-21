@@ -19,9 +19,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import openllet.core.utils.MultiValueMap;
 import org.junit.Assert;
 import org.junit.Test;
-import org.mindswap.pellet.utils.MultiValueMap;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 

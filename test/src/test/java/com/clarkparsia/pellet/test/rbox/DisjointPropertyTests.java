@@ -8,10 +8,10 @@
 
 package com.clarkparsia.pellet.test.rbox;
 
-import static com.clarkparsia.pellet.utils.TermFactory.TOP;
-import static com.clarkparsia.pellet.utils.TermFactory.TOP_LIT;
-import static com.clarkparsia.pellet.utils.TermFactory.some;
-import static com.clarkparsia.pellet.utils.TermFactory.term;
+import static openllet.core.utils.TermFactory.TOP;
+import static openllet.core.utils.TermFactory.TOP_LIT;
+import static openllet.core.utils.TermFactory.some;
+import static openllet.core.utils.TermFactory.term;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 

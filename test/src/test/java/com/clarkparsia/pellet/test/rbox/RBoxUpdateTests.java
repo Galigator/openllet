@@ -20,13 +20,13 @@ import static org.junit.Assert.assertTrue;
 
 import com.clarkparsia.owlapi.XSD;
 import com.clarkparsia.pellet.test.owlapi.AbstractOWLAPITests;
-import com.clarkparsia.pellet.utils.PropertiesBuilder;
 import java.util.Properties;
 import junit.framework.JUnit4TestAdapter;
+import openllet.core.PelletOptions;
+import openllet.core.utils.PropertiesBuilder;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.mindswap.pellet.PelletOptions;
 
 /**
  * <p>

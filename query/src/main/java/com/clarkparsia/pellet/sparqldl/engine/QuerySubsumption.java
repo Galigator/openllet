@@ -3,11 +3,11 @@ package com.clarkparsia.pellet.sparqldl.engine;
 import com.clarkparsia.pellet.sparqldl.model.Query;
 import com.clarkparsia.pellet.sparqldl.model.QueryAtom;
 import com.clarkparsia.pellet.sparqldl.model.QueryResult;
-import com.clarkparsia.pellet.utils.TermFactory;
 import java.util.List;
 import openllet.aterm.ATermAppl;
-import org.mindswap.pellet.KnowledgeBase;
-import org.mindswap.pellet.exceptions.UnsupportedQueryException;
+import openllet.core.KnowledgeBase;
+import openllet.core.exceptions.UnsupportedQueryException;
+import openllet.core.utils.TermFactory;
 
 /**
  * Implements various methods regarding conjunctive query subsumption based on the ABox freezing method.

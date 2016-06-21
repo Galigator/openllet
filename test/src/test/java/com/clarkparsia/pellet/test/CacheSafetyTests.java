@@ -9,15 +9,15 @@
 
 package com.clarkparsia.pellet.test;
 
-import static com.clarkparsia.pellet.utils.TermFactory.TOP;
-import static com.clarkparsia.pellet.utils.TermFactory.all;
-import static com.clarkparsia.pellet.utils.TermFactory.and;
-import static com.clarkparsia.pellet.utils.TermFactory.inv;
-import static com.clarkparsia.pellet.utils.TermFactory.list;
-import static com.clarkparsia.pellet.utils.TermFactory.max;
-import static com.clarkparsia.pellet.utils.TermFactory.not;
-import static com.clarkparsia.pellet.utils.TermFactory.some;
-import static com.clarkparsia.pellet.utils.TermFactory.term;
+import static openllet.core.utils.TermFactory.TOP;
+import static openllet.core.utils.TermFactory.all;
+import static openllet.core.utils.TermFactory.and;
+import static openllet.core.utils.TermFactory.inv;
+import static openllet.core.utils.TermFactory.list;
+import static openllet.core.utils.TermFactory.max;
+import static openllet.core.utils.TermFactory.not;
+import static openllet.core.utils.TermFactory.some;
+import static openllet.core.utils.TermFactory.term;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 

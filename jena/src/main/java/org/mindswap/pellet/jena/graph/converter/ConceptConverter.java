@@ -4,6 +4,8 @@ import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermInt;
 import openllet.aterm.ATermList;
+import openllet.core.output.ATermBaseVisitor;
+import openllet.core.utils.ATermUtils;
 import org.apache.jena.datatypes.xsd.XSDDatatype;
 import org.apache.jena.graph.Graph;
 import org.apache.jena.graph.Node;
@@ -14,8 +16,6 @@ import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
 import org.mindswap.pellet.jena.JenaUtils;
 import org.mindswap.pellet.jena.vocabulary.OWL2;
-import org.mindswap.pellet.output.ATermBaseVisitor;
-import org.mindswap.pellet.utils.ATermUtils;
 
 /**
  * <p>

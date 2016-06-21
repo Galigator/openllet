@@ -1,24 +1,24 @@
 package com.clarkparsia.pellet.datatypes.test;
 
-import static com.clarkparsia.pellet.datatypes.Datatypes.INTEGER;
-import static com.clarkparsia.pellet.datatypes.Datatypes.POSITIVE_INTEGER;
-import static com.clarkparsia.pellet.utils.TermFactory.list;
-import static com.clarkparsia.pellet.utils.TermFactory.literal;
-import static com.clarkparsia.pellet.utils.TermFactory.maxInclusive;
-import static com.clarkparsia.pellet.utils.TermFactory.minExclusive;
-import static com.clarkparsia.pellet.utils.TermFactory.minInclusive;
-import static com.clarkparsia.pellet.utils.TermFactory.oneOf;
-import static com.clarkparsia.pellet.utils.TermFactory.restrict;
-import static com.clarkparsia.pellet.utils.TermFactory.some;
-import static com.clarkparsia.pellet.utils.TermFactory.term;
+import static openllet.core.datatypes.Datatypes.INTEGER;
+import static openllet.core.datatypes.Datatypes.POSITIVE_INTEGER;
+import static openllet.core.utils.TermFactory.list;
+import static openllet.core.utils.TermFactory.literal;
+import static openllet.core.utils.TermFactory.maxInclusive;
+import static openllet.core.utils.TermFactory.minExclusive;
+import static openllet.core.utils.TermFactory.minInclusive;
+import static openllet.core.utils.TermFactory.oneOf;
+import static openllet.core.utils.TermFactory.restrict;
+import static openllet.core.utils.TermFactory.some;
+import static openllet.core.utils.TermFactory.term;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeTrue;
 
 import junit.framework.JUnit4TestAdapter;
 import openllet.aterm.ATermAppl;
+import openllet.core.PelletOptions;
 import org.junit.Test;
-import org.mindswap.pellet.PelletOptions;
 import org.mindswap.pellet.test.AbstractKBTests;
 
 public class DatatypeRestrictionTests extends AbstractKBTests

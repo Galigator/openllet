@@ -19,7 +19,7 @@ import com.clarkparsia.pellet.owlapi.PelletReasoner;
 import java.io.PrintWriter;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.mindswap.pellet.utils.FileUtils;
+import openllet.core.utils.FileUtils;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLLogicalAxiom;

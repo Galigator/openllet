@@ -6,38 +6,38 @@
 
 package com.clarkparsia.pellet.test.el;
 
-import static com.clarkparsia.pellet.utils.TermFactory.and;
-import static com.clarkparsia.pellet.utils.TermFactory.inv;
-import static com.clarkparsia.pellet.utils.TermFactory.list;
-import static com.clarkparsia.pellet.utils.TermFactory.some;
-import static com.clarkparsia.pellet.utils.TermFactory.term;
+import static openllet.core.utils.TermFactory.and;
+import static openllet.core.utils.TermFactory.inv;
+import static openllet.core.utils.TermFactory.list;
+import static openllet.core.utils.TermFactory.some;
+import static openllet.core.utils.TermFactory.term;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import com.clarkparsia.pellet.el.SimplifiedELClassifier;
-import com.clarkparsia.pellet.utils.PropertiesBuilder;
-import com.clarkparsia.pellet.utils.TermFactory;
 import java.util.Properties;
 import java.util.logging.Logger;
 import junit.framework.JUnit4TestAdapter;
 import openllet.aterm.ATermAppl;
+import openllet.core.KBLoader;
+import openllet.core.KnowledgeBase;
+import openllet.core.PelletOptions;
+import openllet.core.el.SimplifiedELClassifier;
+import openllet.core.taxonomy.Taxonomy;
+import openllet.core.taxonomy.TaxonomyBuilder;
+import openllet.core.utils.ATermUtils;
+import openllet.core.utils.PropertiesBuilder;
+import openllet.core.utils.SetUtils;
+import openllet.core.utils.TermFactory;
+import openllet.core.utils.progress.SilentProgressMonitor;
 import openllet.shared.tools.Log;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.mindswap.pellet.KBLoader;
-import org.mindswap.pellet.KnowledgeBase;
-import org.mindswap.pellet.PelletOptions;
 import org.mindswap.pellet.jena.JenaLoader;
-import org.mindswap.pellet.taxonomy.Taxonomy;
-import org.mindswap.pellet.taxonomy.TaxonomyBuilder;
 import org.mindswap.pellet.test.AbstractKBTests;
 import org.mindswap.pellet.test.PelletTestSuite;
-import org.mindswap.pellet.utils.ATermUtils;
-import org.mindswap.pellet.utils.SetUtils;
-import org.mindswap.pellet.utils.progress.SilentProgressMonitor;
 
 /**
  * <p>

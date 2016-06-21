@@ -11,6 +11,8 @@ package com.clarkparsia.pellet.sparqldl.jena;
 import com.clarkparsia.pellet.sparqldl.parser.ARQParser;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import openllet.core.KnowledgeBase;
+import openllet.core.exceptions.UnsupportedQueryException;
 import openllet.shared.tools.Log;
 import org.apache.jena.graph.Graph;
 import org.apache.jena.query.ARQ;
@@ -22,8 +24,6 @@ import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryExecutionFactory;
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.rdf.model.Model;
-import org.mindswap.pellet.KnowledgeBase;
-import org.mindswap.pellet.exceptions.UnsupportedQueryException;
 import org.mindswap.pellet.jena.PelletInfGraph;
 
 /**

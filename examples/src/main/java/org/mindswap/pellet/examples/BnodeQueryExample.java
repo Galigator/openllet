@@ -7,6 +7,7 @@
 package org.mindswap.pellet.examples;
 
 import com.clarkparsia.pellet.sparqldl.jena.SparqlDLExecutionFactory;
+import openllet.core.PelletOptions;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryExecution;
@@ -16,7 +17,6 @@ import org.apache.jena.query.ResultSet;
 import org.apache.jena.query.ResultSetFormatter;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Resource;
-import org.mindswap.pellet.PelletOptions;
 import org.mindswap.pellet.jena.PelletReasonerFactory;
 
 /**

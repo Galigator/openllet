@@ -8,13 +8,11 @@
 
 package com.clarkparsia.pellet.sparqldl.engine;
 
-import static com.clarkparsia.pellet.utils.TermFactory.TOP_OBJECT_PROPERTY;
-import static com.clarkparsia.pellet.utils.TermFactory.hasValue;
-import static com.clarkparsia.pellet.utils.TermFactory.not;
 import static java.lang.String.format;
+import static openllet.core.utils.TermFactory.TOP_OBJECT_PROPERTY;
+import static openllet.core.utils.TermFactory.hasValue;
+import static openllet.core.utils.TermFactory.not;
 
-import com.clarkparsia.pellet.datatypes.DatatypeReasoner;
-import com.clarkparsia.pellet.datatypes.exceptions.DatatypeReasonerException;
 import com.clarkparsia.pellet.sparqldl.model.MultiQueryResults;
 import com.clarkparsia.pellet.sparqldl.model.NotKnownQueryAtom;
 import com.clarkparsia.pellet.sparqldl.model.Query;
@@ -41,17 +39,19 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.aterm.ATermAppl;
+import openllet.core.ABox;
+import openllet.core.DependencySet;
+import openllet.core.KnowledgeBase;
+import openllet.core.PelletOptions;
+import openllet.core.Role;
+import openllet.core.datatypes.DatatypeReasoner;
+import openllet.core.datatypes.exceptions.DatatypeReasonerException;
+import openllet.core.exceptions.InternalReasonerException;
+import openllet.core.utils.ATermUtils;
+import openllet.core.utils.Bool;
+import openllet.core.utils.DisjointSet;
+import openllet.core.utils.SetUtils;
 import openllet.shared.tools.Log;
-import org.mindswap.pellet.ABox;
-import org.mindswap.pellet.DependencySet;
-import org.mindswap.pellet.KnowledgeBase;
-import org.mindswap.pellet.PelletOptions;
-import org.mindswap.pellet.Role;
-import org.mindswap.pellet.exceptions.InternalReasonerException;
-import org.mindswap.pellet.utils.ATermUtils;
-import org.mindswap.pellet.utils.Bool;
-import org.mindswap.pellet.utils.DisjointSet;
-import org.mindswap.pellet.utils.SetUtils;
 
 /**
  * <p>

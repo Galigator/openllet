@@ -12,12 +12,12 @@ import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asSet;
 
 import java.util.Set;
 import java.util.stream.Stream;
+import openllet.core.KBLoader;
+import openllet.core.KnowledgeBase;
+import openllet.core.PelletOptions;
 import openllet.owlapi.facet.FacetManagerOWL;
 import openllet.owlapi.facet.FacetOntologyOWL;
 import openllet.owlapi.facet.FacetReasonerOWL;
-import org.mindswap.pellet.KBLoader;
-import org.mindswap.pellet.KnowledgeBase;
-import org.mindswap.pellet.PelletOptions;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.AddImport;
 import org.semanticweb.owlapi.model.IRI;

@@ -14,9 +14,9 @@ import com.clarkparsia.pellet.sparqldl.model.ResultBinding;
 import com.clarkparsia.pellet.sparqldl.parser.QueryParser;
 import java.util.Iterator;
 import openllet.aterm.ATermAppl;
+import openllet.core.KnowledgeBase;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.ModelFactory;
-import org.mindswap.pellet.KnowledgeBase;
 import org.mindswap.pellet.jena.PelletInfGraph;
 import org.mindswap.pellet.jena.PelletReasonerFactory;
 

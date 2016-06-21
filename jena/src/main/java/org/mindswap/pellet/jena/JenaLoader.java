@@ -8,11 +8,11 @@
 
 package org.mindswap.pellet.jena;
 
+import openllet.core.KBLoader;
+import openllet.core.KnowledgeBase;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.util.FileManager;
-import org.mindswap.pellet.KBLoader;
-import org.mindswap.pellet.KnowledgeBase;
 
 /**
  * <p>

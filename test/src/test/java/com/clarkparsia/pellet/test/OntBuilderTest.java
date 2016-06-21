@@ -3,21 +3,21 @@
  */
 package com.clarkparsia.pellet.test;
 
-import static com.clarkparsia.pellet.utils.TermFactory.term;
+import static openllet.core.utils.TermFactory.term;
 
-import com.clarkparsia.pellet.rules.model.AtomIConstant;
-import com.clarkparsia.pellet.rules.model.ClassAtom;
-import com.clarkparsia.pellet.rules.model.Rule;
-import com.clarkparsia.pellet.utils.OntBuilder;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import openllet.aterm.ATermAppl;
+import openllet.core.KnowledgeBase;
+import openllet.core.PelletOptions;
+import openllet.core.rules.model.AtomIConstant;
+import openllet.core.rules.model.ClassAtom;
+import openllet.core.rules.model.Rule;
+import openllet.core.utils.ATermUtils;
+import openllet.core.utils.OntBuilder;
 import org.junit.Assert;
 import org.junit.Test;
-import org.mindswap.pellet.KnowledgeBase;
-import org.mindswap.pellet.PelletOptions;
-import org.mindswap.pellet.utils.ATermUtils;
 
 /**
  * @author Pavel Klinov

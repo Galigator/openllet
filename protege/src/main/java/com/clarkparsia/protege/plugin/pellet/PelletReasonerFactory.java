@@ -1,6 +1,6 @@
 package com.clarkparsia.protege.plugin.pellet;
 
-import org.mindswap.pellet.PelletOptions;
+import openllet.core.PelletOptions;
 import org.protege.editor.owl.model.inference.AbstractProtegeOWLReasonerInfo;
 import org.semanticweb.owlapi.reasoner.BufferingMode;
 import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;

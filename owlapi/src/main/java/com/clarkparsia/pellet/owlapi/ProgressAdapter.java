@@ -1,6 +1,6 @@
 package com.clarkparsia.pellet.owlapi;
 
-import org.mindswap.pellet.utils.progress.ProgressMonitor;
+import openllet.core.utils.progress.ProgressMonitor;
 import org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor;
 
 public class ProgressAdapter implements ProgressMonitor

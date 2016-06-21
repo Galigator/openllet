@@ -12,15 +12,15 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import openllet.aterm.ATermAppl;
+import openllet.core.KnowledgeBase;
+import openllet.core.exceptions.InternalReasonerException;
+import openllet.core.exceptions.PelletRuntimeException;
+import openllet.core.utils.ATermUtils;
+import openllet.core.utils.VersionInfo;
 import openllet.owlapi.facet.FacetFactoryOWL;
 import openllet.owlapi.facet.FacetManagerOWL;
 import openllet.owlapi.facet.FacetOntologyOWL;
 import openllet.shared.tools.Log;
-import org.mindswap.pellet.KnowledgeBase;
-import org.mindswap.pellet.exceptions.InternalReasonerException;
-import org.mindswap.pellet.exceptions.PelletRuntimeException;
-import org.mindswap.pellet.utils.ATermUtils;
-import org.mindswap.pellet.utils.VersionInfo;
 import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.AddImport;
 import org.semanticweb.owlapi.model.AxiomType;
@@ -349,7 +349,7 @@ public class PelletReasoner implements OWLReasoner, OWLOntologyChangeListener, F
 
 	public PelletReasoner(final OWLOntology ontology, final BufferingMode bufferingMode)
 	{
-		this(ontology, new SimpleConfiguration(new NullReasonerProgressMonitor(), org.mindswap.pellet.PelletOptions.SILENT_UNDEFINED_ENTITY_HANDLING ? FreshEntityPolicy.ALLOW : FreshEntityPolicy.DISALLOW, 0, IndividualNodeSetPolicy.BY_SAME_AS), bufferingMode);
+		this(ontology, new SimpleConfiguration(new NullReasonerProgressMonitor(), openllet.core.PelletOptions.SILENT_UNDEFINED_ENTITY_HANDLING ? FreshEntityPolicy.ALLOW : FreshEntityPolicy.DISALLOW, 0, IndividualNodeSetPolicy.BY_SAME_AS), bufferingMode);
 	}
 
 	/**
@@ -390,16 +390,16 @@ public class PelletReasoner implements OWLReasoner, OWLOntologyChangeListener, F
 	private PelletRuntimeException convert(final PelletRuntimeException e) throws InconsistentOntologyException, ReasonerInterruptedException, TimeOutException, FreshEntitiesException
 	{
 
-		if (e instanceof org.mindswap.pellet.exceptions.TimeoutException)
+		if (e instanceof openllet.core.exceptions.TimeoutException)
 			throw new TimeOutException();
 
-		if (e instanceof org.mindswap.pellet.exceptions.TimerInterruptedException)
+		if (e instanceof openllet.core.exceptions.TimerInterruptedException)
 			throw new ReasonerInterruptedException(e);
 
-		if (e instanceof org.mindswap.pellet.exceptions.InconsistentOntologyException)
+		if (e instanceof openllet.core.exceptions.InconsistentOntologyException)
 			throw new InconsistentOntologyException();
 
-		if (e instanceof org.mindswap.pellet.exceptions.UndefinedEntityException)
+		if (e instanceof openllet.core.exceptions.UndefinedEntityException)
 		{
 			final Set<OWLEntity> unknown = Collections.emptySet();
 			throw new FreshEntitiesException(unknown);
@@ -949,7 +949,7 @@ public class PelletReasoner implements OWLReasoner, OWLOntologyChangeListener, F
 	@Override
 	public FreshEntityPolicy getFreshEntityPolicy()
 	{
-		return org.mindswap.pellet.PelletOptions.SILENT_UNDEFINED_ENTITY_HANDLING ? FreshEntityPolicy.ALLOW : FreshEntityPolicy.DISALLOW;
+		return openllet.core.PelletOptions.SILENT_UNDEFINED_ENTITY_HANDLING ? FreshEntityPolicy.ALLOW : FreshEntityPolicy.DISALLOW;
 	}
 
 	@Override

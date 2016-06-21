@@ -6,11 +6,11 @@
 
 package com.clarkparsia.pellet.test.rbox;
 
-import static com.clarkparsia.pellet.utils.TermFactory.TOP;
-import static com.clarkparsia.pellet.utils.TermFactory.TOP_OBJECT_PROPERTY;
-import static com.clarkparsia.pellet.utils.TermFactory.inv;
-import static com.clarkparsia.pellet.utils.TermFactory.not;
-import static com.clarkparsia.pellet.utils.TermFactory.self;
+import static openllet.core.utils.TermFactory.TOP;
+import static openllet.core.utils.TermFactory.TOP_OBJECT_PROPERTY;
+import static openllet.core.utils.TermFactory.inv;
+import static openllet.core.utils.TermFactory.not;
+import static openllet.core.utils.TermFactory.self;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 

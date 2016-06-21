@@ -17,9 +17,6 @@ import static org.mindswap.pellet.test.PelletTestCase.assertIteratorContains;
 import static org.mindswap.pellet.test.PelletTestCase.assertIteratorValues;
 import static org.mindswap.pellet.test.PelletTestCase.assertPropertyValues;
 
-import com.clarkparsia.pellet.datatypes.DatatypeReasoner;
-import com.clarkparsia.pellet.datatypes.DatatypeReasonerImpl;
-import com.clarkparsia.pellet.utils.PropertiesBuilder;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,6 +25,12 @@ import java.util.List;
 import java.util.Properties;
 import junit.framework.JUnit4TestAdapter;
 import openllet.aterm.ATermAppl;
+import openllet.core.KnowledgeBase;
+import openllet.core.PelletOptions;
+import openllet.core.datatypes.DatatypeReasoner;
+import openllet.core.datatypes.DatatypeReasonerImpl;
+import openllet.core.utils.ATermUtils;
+import openllet.core.utils.PropertiesBuilder;
 import org.apache.jena.datatypes.TypeMapper;
 import org.apache.jena.graph.compose.Union;
 import org.apache.jena.ontology.AnnotationProperty;
@@ -60,14 +63,11 @@ import org.apache.jena.vocabulary.ReasonerVocabulary;
 import org.apache.jena.vocabulary.XSD;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.mindswap.pellet.KnowledgeBase;
-import org.mindswap.pellet.PelletOptions;
 import org.mindswap.pellet.jena.ModelExtractor;
 import org.mindswap.pellet.jena.PelletInfGraph;
 import org.mindswap.pellet.jena.PelletReasoner;
 import org.mindswap.pellet.jena.PelletReasonerFactory;
 import org.mindswap.pellet.jena.vocabulary.OWL2;
-import org.mindswap.pellet.utils.ATermUtils;
 
 public class JenaTests
 {

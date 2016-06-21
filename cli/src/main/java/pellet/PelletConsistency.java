@@ -8,7 +8,7 @@
 
 package pellet;
 
-import org.mindswap.pellet.KnowledgeBase;
+import openllet.core.KnowledgeBase;
 
 /**
  * <p>

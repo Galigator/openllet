@@ -11,8 +11,8 @@ import com.clarkparsia.pellet.sparqldl.model.QueryAtom;
 import java.util.HashSet;
 import java.util.Set;
 import openllet.aterm.ATermAppl;
-import org.mindswap.pellet.utils.ATermUtils;
-import org.mindswap.pellet.utils.SizeEstimate;
+import openllet.core.utils.ATermUtils;
+import openllet.core.utils.SizeEstimate;
 
 /**
  * <p>

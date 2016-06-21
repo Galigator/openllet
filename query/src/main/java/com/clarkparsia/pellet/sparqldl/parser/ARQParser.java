@@ -8,18 +8,17 @@
 
 package com.clarkparsia.pellet.sparqldl.parser;
 
-import static com.clarkparsia.pellet.utils.TermFactory.BOTTOM;
-import static com.clarkparsia.pellet.utils.TermFactory.BOTTOM_DATA_PROPERTY;
-import static com.clarkparsia.pellet.utils.TermFactory.BOTTOM_OBJECT_PROPERTY;
-import static com.clarkparsia.pellet.utils.TermFactory.TOP;
-import static com.clarkparsia.pellet.utils.TermFactory.TOP_DATA_PROPERTY;
-import static com.clarkparsia.pellet.utils.TermFactory.TOP_OBJECT_PROPERTY;
+import static openllet.core.utils.TermFactory.BOTTOM;
+import static openllet.core.utils.TermFactory.BOTTOM_DATA_PROPERTY;
+import static openllet.core.utils.TermFactory.BOTTOM_OBJECT_PROPERTY;
+import static openllet.core.utils.TermFactory.TOP;
+import static openllet.core.utils.TermFactory.TOP_DATA_PROPERTY;
+import static openllet.core.utils.TermFactory.TOP_OBJECT_PROPERTY;
 
 import com.clarkparsia.pellet.sparqldl.model.Query;
 import com.clarkparsia.pellet.sparqldl.model.Query.VarType;
 import com.clarkparsia.pellet.sparqldl.model.QueryAtomFactory;
 import com.clarkparsia.pellet.sparqldl.model.QueryImpl;
-import com.clarkparsia.pellet.utils.TermFactory;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,6 +38,14 @@ import java.util.logging.Logger;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
+import openllet.core.KnowledgeBase;
+import openllet.core.PelletOptions;
+import openllet.core.PropertyType;
+import openllet.core.Role;
+import openllet.core.exceptions.UnsupportedFeatureException;
+import openllet.core.exceptions.UnsupportedQueryException;
+import openllet.core.utils.ATermUtils;
+import openllet.core.utils.TermFactory;
 import openllet.shared.tools.Log;
 import org.apache.jena.graph.Node;
 import org.apache.jena.graph.Triple;
@@ -57,16 +64,9 @@ import org.apache.jena.sparql.syntax.ElementTriplesBlock;
 import org.apache.jena.vocabulary.OWL;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
-import org.mindswap.pellet.KnowledgeBase;
-import org.mindswap.pellet.PelletOptions;
-import org.mindswap.pellet.PropertyType;
-import org.mindswap.pellet.Role;
-import org.mindswap.pellet.exceptions.UnsupportedFeatureException;
-import org.mindswap.pellet.exceptions.UnsupportedQueryException;
 import org.mindswap.pellet.jena.BuiltinTerm;
 import org.mindswap.pellet.jena.JenaUtils;
 import org.mindswap.pellet.jena.vocabulary.OWL2;
-import org.mindswap.pellet.utils.ATermUtils;
 
 /**
  * <p>

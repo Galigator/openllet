@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import openllet.core.utils.URIUtils;
 import openllet.shared.tools.Log;
 import org.apache.jena.query.Dataset;
 import org.apache.jena.query.DatasetFactory;
@@ -31,7 +32,6 @@ import org.apache.jena.query.ResultSetFormatter;
 import org.apache.jena.query.ResultSetRewindable;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.util.FileManager;
-import org.mindswap.pellet.utils.URIUtils;
 
 /**
  * <p>

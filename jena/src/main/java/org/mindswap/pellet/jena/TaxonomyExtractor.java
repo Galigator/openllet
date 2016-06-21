@@ -9,6 +9,9 @@ package org.mindswap.pellet.jena;
 import java.util.Collection;
 import java.util.HashSet;
 import openllet.aterm.ATermAppl;
+import openllet.core.taxonomy.Taxonomy;
+import openllet.core.taxonomy.TaxonomyNode;
+import openllet.core.utils.TaxonomyUtils;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
@@ -17,9 +20,6 @@ import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.vocabulary.OWL;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
-import org.mindswap.pellet.taxonomy.Taxonomy;
-import org.mindswap.pellet.taxonomy.TaxonomyNode;
-import org.mindswap.pellet.utils.TaxonomyUtils;
 
 /**
  * Extracts a Jena Model from a Taxonomy (i.e., creates a Model that contains only the classes in the _taxonomy and the subclass relationships among them).

@@ -30,10 +30,13 @@
 
 package org.mindswap.pellet.jena;
 
-import com.clarkparsia.pellet.datatypes.Datatypes;
 import java.util.Iterator;
 import java.util.Map;
 import openllet.aterm.ATermAppl;
+import openllet.core.datatypes.Datatypes;
+import openllet.core.exceptions.InternalReasonerException;
+import openllet.core.utils.ATermUtils;
+import openllet.core.utils.QNameProvider;
 import org.apache.jena.datatypes.RDFDatatype;
 import org.apache.jena.datatypes.TypeMapper;
 import org.apache.jena.datatypes.xsd.XSDDatatype;
@@ -48,10 +51,7 @@ import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.ResourceFactory;
 import org.apache.jena.shared.PrefixMapping;
 import org.apache.jena.vocabulary.OWL;
-import org.mindswap.pellet.exceptions.InternalReasonerException;
 import org.mindswap.pellet.jena.vocabulary.OWL2;
-import org.mindswap.pellet.utils.ATermUtils;
-import org.mindswap.pellet.utils.QNameProvider;
 
 /**
  * Utility functions related to Jena structures. The functions here may have similar functionality to the ones in ATermUtils but they are provided here because

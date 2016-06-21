@@ -6,53 +6,53 @@
 
 package org.mindswap.pellet.test.inctest;
 
-import static com.clarkparsia.pellet.utils.TermFactory.TOP;
-import static com.clarkparsia.pellet.utils.TermFactory.all;
-import static com.clarkparsia.pellet.utils.TermFactory.and;
-import static com.clarkparsia.pellet.utils.TermFactory.literal;
-import static com.clarkparsia.pellet.utils.TermFactory.max;
-import static com.clarkparsia.pellet.utils.TermFactory.not;
-import static com.clarkparsia.pellet.utils.TermFactory.or;
-import static com.clarkparsia.pellet.utils.TermFactory.some;
-import static com.clarkparsia.pellet.utils.TermFactory.term;
-import static com.clarkparsia.pellet.utils.TermFactory.value;
 import static java.util.Collections.emptySet;
 import static java.util.Collections.singleton;
 import static java.util.Collections.singletonList;
+import static openllet.core.utils.ATermUtils.negate;
+import static openllet.core.utils.ATermUtils.normalize;
+import static openllet.core.utils.TermFactory.TOP;
+import static openllet.core.utils.TermFactory.all;
+import static openllet.core.utils.TermFactory.and;
+import static openllet.core.utils.TermFactory.literal;
+import static openllet.core.utils.TermFactory.max;
+import static openllet.core.utils.TermFactory.not;
+import static openllet.core.utils.TermFactory.or;
+import static openllet.core.utils.TermFactory.some;
+import static openllet.core.utils.TermFactory.term;
+import static openllet.core.utils.TermFactory.value;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeThat;
-import static org.mindswap.pellet.utils.ATermUtils.negate;
-import static org.mindswap.pellet.utils.ATermUtils.normalize;
 
-import com.clarkparsia.pellet.datatypes.Datatypes;
-import com.clarkparsia.pellet.rules.model.AtomIVariable;
-import com.clarkparsia.pellet.rules.model.ClassAtom;
-import com.clarkparsia.pellet.rules.model.IndividualPropertyAtom;
-import com.clarkparsia.pellet.rules.model.Rule;
-import com.clarkparsia.pellet.rules.model.RuleAtom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import junit.framework.JUnit4TestAdapter;
 import openllet.aterm.ATermAppl;
+import openllet.core.KnowledgeBase;
+import openllet.core.PelletOptions;
+import openllet.core.KnowledgeBase.ChangeType;
+import openllet.core.datatypes.Datatypes;
+import openllet.core.rules.model.AtomIVariable;
+import openllet.core.rules.model.ClassAtom;
+import openllet.core.rules.model.IndividualPropertyAtom;
+import openllet.core.rules.model.Rule;
+import openllet.core.rules.model.RuleAtom;
+import openllet.core.utils.ATermUtils;
+import openllet.core.utils.Bool;
+import openllet.core.utils.SetUtils;
+import openllet.core.utils.Timer;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.mindswap.pellet.KnowledgeBase;
-import org.mindswap.pellet.KnowledgeBase.ChangeType;
-import org.mindswap.pellet.PelletOptions;
 import org.mindswap.pellet.test.AbstractKBTests;
-import org.mindswap.pellet.utils.ATermUtils;
-import org.mindswap.pellet.utils.Bool;
-import org.mindswap.pellet.utils.SetUtils;
-import org.mindswap.pellet.utils.Timer;
 
 /**
  * <p>

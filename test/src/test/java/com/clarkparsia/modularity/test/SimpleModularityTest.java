@@ -14,8 +14,8 @@ import static com.clarkparsia.owlapi.OWL.some;
 
 import com.clarkparsia.modularity.ModuleExtractor;
 import java.util.Arrays;
+import openllet.core.utils.MultiValueMap;
 import org.junit.Test;
-import org.mindswap.pellet.utils.MultiValueMap;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
 

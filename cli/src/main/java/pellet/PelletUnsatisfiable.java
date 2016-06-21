@@ -12,11 +12,11 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 import openllet.aterm.ATermAppl;
-import org.mindswap.pellet.KnowledgeBase;
-import org.mindswap.pellet.PelletOptions;
-import org.mindswap.pellet.utils.Comparators;
-import org.mindswap.pellet.utils.QNameProvider;
-import org.mindswap.pellet.utils.progress.ProgressMonitor;
+import openllet.core.KnowledgeBase;
+import openllet.core.PelletOptions;
+import openllet.core.utils.Comparators;
+import openllet.core.utils.QNameProvider;
+import openllet.core.utils.progress.ProgressMonitor;
 
 /**
  * <p>

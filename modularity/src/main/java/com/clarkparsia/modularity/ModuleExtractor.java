@@ -6,15 +6,15 @@
 
 package com.clarkparsia.modularity;
 
-import com.clarkparsia.pellet.expressivity.Expressivity;
 import java.io.IOException;
 import java.util.Set;
 import java.util.stream.Stream;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
-import org.mindswap.pellet.taxonomy.Taxonomy;
-import org.mindswap.pellet.utils.MultiValueMap;
-import org.mindswap.pellet.utils.Timers;
+import openllet.core.expressivity.Expressivity;
+import openllet.core.taxonomy.Taxonomy;
+import openllet.core.utils.MultiValueMap;
+import openllet.core.utils.Timers;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLEntity;

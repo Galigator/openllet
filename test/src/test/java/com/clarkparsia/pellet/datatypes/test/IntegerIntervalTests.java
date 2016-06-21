@@ -4,8 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import com.clarkparsia.pellet.datatypes.types.real.IntegerInterval;
 import java.math.BigInteger;
+import openllet.core.datatypes.types.real.IntegerInterval;
 import org.junit.Test;
 
 /**

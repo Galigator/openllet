@@ -9,14 +9,14 @@ package org.mindswap.pellet.jena.graph.query;
 import java.util.Collection;
 import java.util.Iterator;
 import openllet.aterm.ATermAppl;
+import openllet.core.KnowledgeBase;
+import openllet.core.utils.iterator.NestedIterator;
 import org.apache.jena.graph.Node;
 import org.apache.jena.graph.Triple;
 import org.apache.jena.util.iterator.ExtendedIterator;
 import org.apache.jena.util.iterator.WrappedIterator;
-import org.mindswap.pellet.KnowledgeBase;
 import org.mindswap.pellet.jena.JenaUtils;
 import org.mindswap.pellet.jena.PelletInfGraph;
-import org.mindswap.pellet.utils.iterator.NestedIterator;
 
 abstract class SubjectObjectVarHandler extends TripleQueryHandler
 {

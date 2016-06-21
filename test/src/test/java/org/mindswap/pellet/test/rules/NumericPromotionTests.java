@@ -8,11 +8,11 @@ package org.mindswap.pellet.test.rules;
 
 import static org.junit.Assert.assertEquals;
 
-import com.clarkparsia.pellet.rules.builtins.NumericPromotion;
-import com.clarkparsia.pellet.rules.builtins.NumericVisitor;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import junit.framework.JUnit4TestAdapter;
+import openllet.core.rules.builtins.NumericPromotion;
+import openllet.core.rules.builtins.NumericVisitor;
 import org.junit.Before;
 import org.junit.Test;
 

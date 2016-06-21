@@ -14,8 +14,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import openllet.aterm.ATermAppl;
-import org.mindswap.pellet.KnowledgeBase;
-import org.mindswap.pellet.utils.ATermUtils;
+import openllet.core.KnowledgeBase;
+import openllet.core.utils.ATermUtils;
 
 /**
  * <p>

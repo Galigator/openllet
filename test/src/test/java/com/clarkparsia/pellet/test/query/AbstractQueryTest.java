@@ -22,9 +22,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import openllet.aterm.ATermAppl;
+import openllet.core.utils.ATermUtils;
 import org.junit.Assert;
 import org.mindswap.pellet.test.AbstractKBTests;
-import org.mindswap.pellet.utils.ATermUtils;
 
 /**
  * <p>

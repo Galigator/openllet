@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import openllet.aterm.ATermAppl;
-import org.mindswap.pellet.utils.ATermUtils;
+import openllet.core.utils.ATermUtils;
 
 /**
  * <p>

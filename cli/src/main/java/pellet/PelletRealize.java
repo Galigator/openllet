@@ -9,9 +9,9 @@
 package pellet;
 
 import openllet.aterm.ATermAppl;
-import org.mindswap.pellet.KnowledgeBase;
-import org.mindswap.pellet.taxonomy.printer.ClassTreePrinter;
-import org.mindswap.pellet.taxonomy.printer.TaxonomyPrinter;
+import openllet.core.KnowledgeBase;
+import openllet.core.taxonomy.printer.ClassTreePrinter;
+import openllet.core.taxonomy.printer.TaxonomyPrinter;
 
 /**
  * <p>

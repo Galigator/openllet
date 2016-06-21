@@ -38,14 +38,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import openllet.core.KRSSLoader;
+import openllet.core.KnowledgeBase;
+import openllet.core.exceptions.TimeoutException;
+import openllet.core.output.TableData;
+import openllet.core.utils.AlphaNumericComparator;
+import openllet.core.utils.PatternFilter;
+import openllet.core.utils.Timer;
 import openllet.shared.tools.Log;
-import org.mindswap.pellet.KRSSLoader;
-import org.mindswap.pellet.KnowledgeBase;
-import org.mindswap.pellet.exceptions.TimeoutException;
-import org.mindswap.pellet.output.TableData;
-import org.mindswap.pellet.utils.AlphaNumericComparator;
-import org.mindswap.pellet.utils.PatternFilter;
-import org.mindswap.pellet.utils.Timer;
 
 /**
  * Parse and test the cases from DL benchmark suite. This class provides parsing for KRSS files.

@@ -6,35 +6,35 @@
 
 package org.mindswap.pellet.test;
 
-import static com.clarkparsia.pellet.utils.TermFactory.all;
-import static com.clarkparsia.pellet.utils.TermFactory.and;
-import static com.clarkparsia.pellet.utils.TermFactory.literal;
-import static com.clarkparsia.pellet.utils.TermFactory.max;
-import static com.clarkparsia.pellet.utils.TermFactory.maxExclusive;
-import static com.clarkparsia.pellet.utils.TermFactory.min;
-import static com.clarkparsia.pellet.utils.TermFactory.minInclusive;
-import static com.clarkparsia.pellet.utils.TermFactory.not;
-import static com.clarkparsia.pellet.utils.TermFactory.or;
-import static com.clarkparsia.pellet.utils.TermFactory.restrict;
-import static com.clarkparsia.pellet.utils.TermFactory.self;
-import static com.clarkparsia.pellet.utils.TermFactory.some;
-import static com.clarkparsia.pellet.utils.TermFactory.term;
-import static com.clarkparsia.pellet.utils.TermFactory.value;
+import static openllet.core.utils.TermFactory.all;
+import static openllet.core.utils.TermFactory.and;
+import static openllet.core.utils.TermFactory.literal;
+import static openllet.core.utils.TermFactory.max;
+import static openllet.core.utils.TermFactory.maxExclusive;
+import static openllet.core.utils.TermFactory.min;
+import static openllet.core.utils.TermFactory.minInclusive;
+import static openllet.core.utils.TermFactory.not;
+import static openllet.core.utils.TermFactory.or;
+import static openllet.core.utils.TermFactory.restrict;
+import static openllet.core.utils.TermFactory.self;
+import static openllet.core.utils.TermFactory.some;
+import static openllet.core.utils.TermFactory.term;
+import static openllet.core.utils.TermFactory.value;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mindswap.pellet.test.PelletTestCase.assertIteratorValues;
 
-import com.clarkparsia.pellet.datatypes.DNF;
-import com.clarkparsia.pellet.datatypes.Datatypes;
 import java.util.ArrayList;
 import java.util.List;
 import junit.framework.JUnit4TestAdapter;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
+import openllet.core.datatypes.DNF;
+import openllet.core.datatypes.Datatypes;
+import openllet.core.utils.ATermUtils;
+import openllet.core.utils.Comparators;
 import org.junit.Test;
-import org.mindswap.pellet.utils.ATermUtils;
-import org.mindswap.pellet.utils.Comparators;
 
 public class ATermTests
 {

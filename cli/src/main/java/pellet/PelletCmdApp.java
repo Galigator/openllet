@@ -23,19 +23,19 @@ import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
+import openllet.core.KBLoader;
+import openllet.core.KRSSLoader;
+import openllet.core.KnowledgeBase;
+import openllet.core.PelletOptions;
+import openllet.core.utils.Timer;
+import openllet.core.utils.Timers;
 import openllet.shared.tools.Log;
 import openllet.shared.tools.Logging;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.RDFReaderF;
 import org.apache.jena.shared.NoReaderForLangException;
-import org.mindswap.pellet.KBLoader;
-import org.mindswap.pellet.KRSSLoader;
-import org.mindswap.pellet.KnowledgeBase;
-import org.mindswap.pellet.PelletOptions;
 import org.mindswap.pellet.jena.JenaLoader;
-import org.mindswap.pellet.utils.Timer;
-import org.mindswap.pellet.utils.Timers;
 
 /**
  * <p>

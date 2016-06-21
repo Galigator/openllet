@@ -5,11 +5,11 @@ package com.clarkparsia.pellet.test.jena;
 
 import java.io.IOException;
 import java.io.InputStream;
+import openllet.core.PelletOptions;
 import org.apache.jena.ontology.Individual;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.junit.Test;
-import org.mindswap.pellet.PelletOptions;
 import org.mindswap.pellet.jena.PelletInfGraph;
 import org.mindswap.pellet.jena.PelletReasonerFactory;
 

@@ -30,7 +30,6 @@
 
 package org.mindswap.pellet.jena;
 
-import com.clarkparsia.pellet.utils.OntBuilder;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -38,6 +37,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
+import openllet.core.KnowledgeBase;
+import openllet.core.PelletOptions;
+import openllet.core.utils.ATermUtils;
+import openllet.core.utils.OntBuilder;
 import openllet.shared.tools.Log;
 import org.apache.jena.graph.Factory;
 import org.apache.jena.graph.Graph;
@@ -59,14 +62,11 @@ import org.apache.jena.util.iterator.UniqueFilter;
 import org.apache.jena.vocabulary.OWL;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
-import org.mindswap.pellet.KnowledgeBase;
-import org.mindswap.pellet.PelletOptions;
 import org.mindswap.pellet.jena.ModelExtractor.StatementType;
 import org.mindswap.pellet.jena.graph.converter.AxiomConverter;
 import org.mindswap.pellet.jena.graph.loader.DefaultGraphLoader;
 import org.mindswap.pellet.jena.graph.loader.GraphLoader;
 import org.mindswap.pellet.jena.graph.query.GraphQueryHandler;
-import org.mindswap.pellet.utils.ATermUtils;
 
 /**
  * Implementation of Jena InfGraph interface which is backed by Pellet reasoner.

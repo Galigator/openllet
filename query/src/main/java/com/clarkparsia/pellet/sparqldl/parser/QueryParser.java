@@ -8,7 +8,7 @@ package com.clarkparsia.pellet.sparqldl.parser;
 
 import com.clarkparsia.pellet.sparqldl.model.Query;
 import java.io.InputStream;
-import org.mindswap.pellet.KnowledgeBase;
+import openllet.core.KnowledgeBase;
 
 /**
  * <p>

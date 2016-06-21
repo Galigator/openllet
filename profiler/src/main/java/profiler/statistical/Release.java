@@ -3,7 +3,7 @@ package profiler.statistical;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import org.mindswap.pellet.utils.VersionInfo;
+import openllet.core.utils.VersionInfo;
 
 /**
  * Contains information about the performance of a certain release

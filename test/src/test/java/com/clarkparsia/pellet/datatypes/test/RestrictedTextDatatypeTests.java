@@ -1,18 +1,18 @@
 package com.clarkparsia.pellet.datatypes.test;
 
-import static com.clarkparsia.pellet.utils.TermFactory.literal;
+import static openllet.core.utils.TermFactory.literal;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import com.clarkparsia.pellet.datatypes.DatatypeReasoner;
-import com.clarkparsia.pellet.datatypes.DatatypeReasonerImpl;
-import com.clarkparsia.pellet.datatypes.Datatypes;
-import com.clarkparsia.pellet.datatypes.exceptions.InvalidConstrainingFacetException;
-import com.clarkparsia.pellet.datatypes.exceptions.InvalidLiteralException;
-import com.clarkparsia.pellet.datatypes.exceptions.UnrecognizedDatatypeException;
 import java.util.Arrays;
 import java.util.Collection;
 import openllet.aterm.ATermAppl;
+import openllet.core.datatypes.DatatypeReasoner;
+import openllet.core.datatypes.DatatypeReasonerImpl;
+import openllet.core.datatypes.Datatypes;
+import openllet.core.datatypes.exceptions.InvalidConstrainingFacetException;
+import openllet.core.datatypes.exceptions.InvalidLiteralException;
+import openllet.core.datatypes.exceptions.UnrecognizedDatatypeException;
 import org.junit.Test;
 
 /**

@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
+import openllet.core.utils.ATermUtils;
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.QuerySolutionMap;
 import org.apache.jena.query.ResultSet;
@@ -26,7 +27,6 @@ import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.sparql.engine.binding.Binding;
 import org.apache.jena.sparql.engine.binding.BindingUtils;
 import org.mindswap.pellet.jena.JenaUtils;
-import org.mindswap.pellet.utils.ATermUtils;
 
 /**
  * <p>

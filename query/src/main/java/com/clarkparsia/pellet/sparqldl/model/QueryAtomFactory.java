@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import openllet.aterm.ATermAppl;
-import org.mindswap.pellet.KnowledgeBase;
+import openllet.core.KnowledgeBase;
 
 /**
  * <p>

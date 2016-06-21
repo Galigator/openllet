@@ -8,11 +8,11 @@ package org.mindswap.pellet.jena.graph.loader;
 
 import java.util.Set;
 import openllet.aterm.ATermAppl;
+import openllet.core.KnowledgeBase;
+import openllet.core.exceptions.UnsupportedFeatureException;
+import openllet.core.utils.progress.ProgressMonitor;
 import org.apache.jena.graph.Graph;
 import org.apache.jena.graph.Node;
-import org.mindswap.pellet.KnowledgeBase;
-import org.mindswap.pellet.exceptions.UnsupportedFeatureException;
-import org.mindswap.pellet.utils.progress.ProgressMonitor;
 
 /**
  * <p>

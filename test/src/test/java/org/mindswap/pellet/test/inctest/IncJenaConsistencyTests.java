@@ -16,11 +16,12 @@ import static org.mindswap.pellet.test.PelletTestCase.assertIteratorValues;
 import static org.mindswap.pellet.test.PelletTestCase.assertPropertyValues;
 
 import com.clarkparsia.jena.test.AbstractJenaTests;
-import com.clarkparsia.pellet.utils.PropertiesBuilder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Properties;
 import junit.framework.JUnit4TestAdapter;
+import openllet.core.PelletOptions;
+import openllet.core.utils.PropertiesBuilder;
 import org.apache.jena.datatypes.TypeMapper;
 import org.apache.jena.ontology.DatatypeProperty;
 import org.apache.jena.ontology.Individual;
@@ -45,7 +46,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.mindswap.pellet.PelletOptions;
 import org.mindswap.pellet.jena.PelletInfGraph;
 import org.mindswap.pellet.jena.PelletReasonerFactory;
 

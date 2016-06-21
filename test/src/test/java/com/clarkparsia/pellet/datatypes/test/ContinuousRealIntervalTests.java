@@ -5,9 +5,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import com.clarkparsia.pellet.datatypes.IntervalRelations;
-import com.clarkparsia.pellet.datatypes.types.real.ContinuousRealInterval;
 import java.math.BigDecimal;
+import openllet.core.datatypes.IntervalRelations;
+import openllet.core.datatypes.types.real.ContinuousRealInterval;
 import org.junit.Test;
 
 /**

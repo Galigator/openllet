@@ -6,13 +6,13 @@
 
 package com.clarkparsia.pellet.test.rbox;
 
-import static com.clarkparsia.pellet.utils.TermFactory.all;
-import static com.clarkparsia.pellet.utils.TermFactory.hasValue;
-import static com.clarkparsia.pellet.utils.TermFactory.inv;
-import static com.clarkparsia.pellet.utils.TermFactory.list;
-import static com.clarkparsia.pellet.utils.TermFactory.not;
-import static com.clarkparsia.pellet.utils.TermFactory.some;
-import static com.clarkparsia.pellet.utils.TermFactory.term;
+import static openllet.core.utils.TermFactory.all;
+import static openllet.core.utils.TermFactory.hasValue;
+import static openllet.core.utils.TermFactory.inv;
+import static openllet.core.utils.TermFactory.list;
+import static openllet.core.utils.TermFactory.not;
+import static openllet.core.utils.TermFactory.some;
+import static openllet.core.utils.TermFactory.term;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -23,6 +23,9 @@ import static org.mindswap.pellet.test.PelletTestCase.assertPropertyValues;
 import java.util.Arrays;
 import junit.framework.JUnit4TestAdapter;
 import openllet.aterm.ATermAppl;
+import openllet.core.KnowledgeBase;
+import openllet.core.Role;
+import openllet.core.utils.ATermUtils;
 import org.apache.jena.ontology.ObjectProperty;
 import org.apache.jena.ontology.OntClass;
 import org.apache.jena.ontology.OntModel;
@@ -31,13 +34,10 @@ import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Resource;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.mindswap.pellet.KnowledgeBase;
-import org.mindswap.pellet.Role;
 import org.mindswap.pellet.jena.PelletInfGraph;
 import org.mindswap.pellet.jena.PelletReasonerFactory;
 import org.mindswap.pellet.test.AbstractKBTests;
 import org.mindswap.pellet.test.PelletTestSuite;
-import org.mindswap.pellet.utils.ATermUtils;
 
 /**
  * <p>

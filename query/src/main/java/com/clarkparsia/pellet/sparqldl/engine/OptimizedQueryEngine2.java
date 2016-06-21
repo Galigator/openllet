@@ -20,9 +20,9 @@ import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.aterm.ATermAppl;
+import openllet.core.KnowledgeBase;
+import openllet.core.utils.ATermUtils;
 import openllet.shared.tools.Log;
-import org.mindswap.pellet.KnowledgeBase;
-import org.mindswap.pellet.utils.ATermUtils;
 
 /**
  * <p>

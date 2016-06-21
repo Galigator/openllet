@@ -4,8 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
-import com.clarkparsia.pellet.datatypes.OWLRealUtils;
-import com.clarkparsia.pellet.datatypes.types.real.Rational;
+import openllet.core.datatypes.OWLRealUtils;
+import openllet.core.datatypes.types.real.Rational;
 import org.junit.Test;
 
 public class RationalTests

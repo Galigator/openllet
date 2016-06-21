@@ -21,8 +21,8 @@ import com.clarkparsia.owlapi.OntologyUtils;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.stream.Collectors;
+import openllet.core.utils.SetUtils;
 import org.junit.Test;
-import org.mindswap.pellet.utils.SetUtils;
 import org.semanticweb.owlapi.model.OWLAxiom;
 
 /**

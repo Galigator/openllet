@@ -14,6 +14,7 @@ import com.clarkparsia.pellet.sparqldl.jena.SparqlDLExecutionFactory.QueryEngine
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import openllet.core.utils.URIUtils;
 import org.apache.jena.ontology.OntDocumentManager;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.query.Dataset;
@@ -24,7 +25,6 @@ import org.apache.jena.util.FileManager;
 import org.apache.jena.util.FileUtils;
 import org.mindswap.pellet.jena.PelletInfGraph;
 import org.mindswap.pellet.jena.PelletReasonerFactory;
-import org.mindswap.pellet.utils.URIUtils;
 
 /**
  * <p>

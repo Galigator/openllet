@@ -10,8 +10,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.EnumSet;
 import java.util.Properties;
+import openllet.core.PelletOptions;
 import org.apache.jena.rdf.model.Resource;
-import org.mindswap.pellet.PelletOptions;
 
 /**
  * <p>

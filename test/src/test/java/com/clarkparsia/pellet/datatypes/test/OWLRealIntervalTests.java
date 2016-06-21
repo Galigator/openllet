@@ -5,10 +5,10 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import com.clarkparsia.pellet.datatypes.IntervalRelations;
-import com.clarkparsia.pellet.datatypes.OWLRealInterval;
-import com.clarkparsia.pellet.datatypes.OWLRealInterval.LineType;
 import java.math.BigDecimal;
+import openllet.core.datatypes.IntervalRelations;
+import openllet.core.datatypes.OWLRealInterval;
+import openllet.core.datatypes.OWLRealInterval.LineType;
 import org.junit.Test;
 
 /**

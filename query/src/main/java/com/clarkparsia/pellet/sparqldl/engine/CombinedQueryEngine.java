@@ -8,9 +8,9 @@
 
 package com.clarkparsia.pellet.sparqldl.engine;
 
-import static com.clarkparsia.pellet.utils.TermFactory.hasValue;
-import static com.clarkparsia.pellet.utils.TermFactory.inv;
-import static com.clarkparsia.pellet.utils.TermFactory.not;
+import static openllet.core.utils.TermFactory.hasValue;
+import static openllet.core.utils.TermFactory.inv;
+import static openllet.core.utils.TermFactory.not;
 
 import com.clarkparsia.pellet.sparqldl.model.CoreNewImpl;
 import com.clarkparsia.pellet.sparqldl.model.NotKnownQueryAtom;
@@ -38,17 +38,17 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.aterm.ATermAppl;
+import openllet.core.KnowledgeBase;
+import openllet.core.PelletOptions;
+import openllet.core.exceptions.InternalReasonerException;
+import openllet.core.exceptions.UnsupportedQueryException;
+import openllet.core.taxonomy.Taxonomy;
+import openllet.core.taxonomy.TaxonomyNode;
+import openllet.core.utils.ATermUtils;
+import openllet.core.utils.CandidateSet;
+import openllet.core.utils.DisjointSet;
+import openllet.core.utils.Timer;
 import openllet.shared.tools.Log;
-import org.mindswap.pellet.KnowledgeBase;
-import org.mindswap.pellet.PelletOptions;
-import org.mindswap.pellet.exceptions.InternalReasonerException;
-import org.mindswap.pellet.exceptions.UnsupportedQueryException;
-import org.mindswap.pellet.taxonomy.Taxonomy;
-import org.mindswap.pellet.taxonomy.TaxonomyNode;
-import org.mindswap.pellet.utils.ATermUtils;
-import org.mindswap.pellet.utils.CandidateSet;
-import org.mindswap.pellet.utils.DisjointSet;
-import org.mindswap.pellet.utils.Timer;
 
 /**
  * <p>

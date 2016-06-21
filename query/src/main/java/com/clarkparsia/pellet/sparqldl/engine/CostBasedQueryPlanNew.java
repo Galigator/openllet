@@ -19,9 +19,9 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.aterm.ATermAppl;
+import openllet.core.exceptions.UnsupportedQueryException;
+import openllet.core.utils.ATermUtils;
 import openllet.shared.tools.Log;
-import org.mindswap.pellet.exceptions.UnsupportedQueryException;
-import org.mindswap.pellet.utils.ATermUtils;
 
 /**
  * <p>

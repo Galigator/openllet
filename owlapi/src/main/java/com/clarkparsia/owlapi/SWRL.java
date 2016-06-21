@@ -11,7 +11,7 @@ package com.clarkparsia.owlapi;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-import org.mindswap.pellet.utils.SetUtils;
+import openllet.core.utils.SetUtils;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLDataPropertyExpression;

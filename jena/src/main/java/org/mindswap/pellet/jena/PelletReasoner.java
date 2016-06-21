@@ -31,6 +31,7 @@
 package org.mindswap.pellet.jena;
 
 import java.util.logging.Logger;
+import openllet.core.KnowledgeBase;
 import openllet.shared.tools.Log;
 import org.apache.jena.graph.Capabilities;
 import org.apache.jena.graph.Graph;
@@ -43,7 +44,6 @@ import org.apache.jena.reasoner.BaseInfGraph.InfFindSafeCapabilities;
 import org.apache.jena.reasoner.Reasoner;
 import org.apache.jena.reasoner.ReasonerException;
 import org.apache.jena.vocabulary.ReasonerVocabulary;
-import org.mindswap.pellet.KnowledgeBase;
 import org.mindswap.pellet.jena.graph.loader.DefaultGraphLoader;
 
 /**

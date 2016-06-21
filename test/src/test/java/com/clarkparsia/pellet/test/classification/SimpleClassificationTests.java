@@ -6,10 +6,10 @@
 
 package com.clarkparsia.pellet.test.classification;
 
-import static com.clarkparsia.pellet.utils.TermFactory.all;
-import static com.clarkparsia.pellet.utils.TermFactory.inv;
-import static com.clarkparsia.pellet.utils.TermFactory.list;
-import static com.clarkparsia.pellet.utils.TermFactory.some;
+import static openllet.core.utils.TermFactory.all;
+import static openllet.core.utils.TermFactory.inv;
+import static openllet.core.utils.TermFactory.list;
+import static openllet.core.utils.TermFactory.some;
 import static org.junit.Assert.assertTrue;
 
 import junit.framework.JUnit4TestAdapter;

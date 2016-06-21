@@ -26,10 +26,10 @@ import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 import openllet.aterm.ATermAppl;
-import org.mindswap.pellet.KnowledgeBase;
-import org.mindswap.pellet.PelletOptions;
-import org.mindswap.pellet.taxonomy.printer.ClassTreePrinter;
-import org.mindswap.pellet.taxonomy.printer.TaxonomyPrinter;
+import openllet.core.KnowledgeBase;
+import openllet.core.PelletOptions;
+import openllet.core.taxonomy.printer.ClassTreePrinter;
+import openllet.core.taxonomy.printer.TaxonomyPrinter;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLOntology;
 

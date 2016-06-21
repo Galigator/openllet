@@ -18,6 +18,10 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import openllet.core.KnowledgeBase;
+import openllet.core.PelletOptions;
+import openllet.core.exceptions.InconsistentOntologyException;
+import openllet.core.output.TableData;
 import org.apache.jena.query.Dataset;
 import org.apache.jena.query.DatasetFactory;
 import org.apache.jena.query.Query;
@@ -33,12 +37,8 @@ import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.shared.NotFoundException;
 import org.apache.jena.util.FileManager;
-import org.mindswap.pellet.KnowledgeBase;
-import org.mindswap.pellet.PelletOptions;
-import org.mindswap.pellet.exceptions.InconsistentOntologyException;
 import org.mindswap.pellet.jena.JenaLoader;
 import org.mindswap.pellet.jena.NodeFormatter;
-import org.mindswap.pellet.output.TableData;
 
 /**
  * <p>

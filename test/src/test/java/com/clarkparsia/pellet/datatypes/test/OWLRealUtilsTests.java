@@ -1,14 +1,14 @@
 package com.clarkparsia.pellet.datatypes.test;
 
-import static com.clarkparsia.pellet.datatypes.OWLRealUtils.compare;
-import static com.clarkparsia.pellet.datatypes.OWLRealUtils.getCanonicalObject;
-import static com.clarkparsia.pellet.datatypes.OWLRealUtils.isInteger;
+import static openllet.core.datatypes.OWLRealUtils.compare;
+import static openllet.core.datatypes.OWLRealUtils.getCanonicalObject;
+import static openllet.core.datatypes.OWLRealUtils.isInteger;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import com.clarkparsia.pellet.datatypes.types.real.Rational;
 import java.math.BigDecimal;
+import openllet.core.datatypes.types.real.Rational;
 import org.junit.Test;
 
 /**

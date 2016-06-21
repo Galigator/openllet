@@ -6,8 +6,6 @@
 
 package com.clarkparsia.pellint.rdfxml;
 
-import com.clarkparsia.pellet.datatypes.DatatypeReasonerImpl;
-import com.clarkparsia.pellet.datatypes.Facet;
 import com.clarkparsia.pellint.util.CollectionUtil;
 import java.util.Arrays;
 import java.util.Collection;
@@ -15,6 +13,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import openllet.aterm.ATermAppl;
+import openllet.core.datatypes.DatatypeReasonerImpl;
+import openllet.core.datatypes.Facet;
+import openllet.core.utils.Namespaces;
 import org.apache.jena.rdf.model.Literal;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.RDFNode;
@@ -26,7 +27,6 @@ import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
 import org.mindswap.pellet.jena.vocabulary.OWL2;
 import org.mindswap.pellet.jena.vocabulary.SWRL;
-import org.mindswap.pellet.utils.Namespaces;
 import org.semanticweb.owlapi.vocab.SWRLBuiltInsVocabulary;
 
 /**

@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import openllet.core.exceptions.UnsupportedFeatureException;
+import openllet.core.utils.VersionInfo;
 import openllet.shared.tools.Log;
 import org.apache.jena.query.ARQ;
 import org.apache.jena.rdf.model.Model;
@@ -29,8 +31,6 @@ import org.apache.jena.sparql.vocabulary.FOAF;
 import org.apache.jena.util.FileManager;
 import org.apache.jena.util.LocatorFile;
 import org.apache.jena.vocabulary.RDF;
-import org.mindswap.pellet.exceptions.UnsupportedFeatureException;
-import org.mindswap.pellet.utils.VersionInfo;
 
 /**
  * <p>

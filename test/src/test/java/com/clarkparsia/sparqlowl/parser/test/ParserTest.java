@@ -16,6 +16,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
+import openllet.core.KnowledgeBase;
+import openllet.core.utils.FileUtils;
+import openllet.core.utils.SetUtils;
 import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryFactory;
 import org.apache.jena.query.Syntax;
@@ -27,11 +30,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
-import org.mindswap.pellet.KnowledgeBase;
 import org.mindswap.pellet.jena.JenaLoader;
 import org.mindswap.pellet.test.PelletTestSuite;
-import org.mindswap.pellet.utils.FileUtils;
-import org.mindswap.pellet.utils.SetUtils;
 
 /**
  * <p>

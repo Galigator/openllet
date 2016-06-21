@@ -5,6 +5,7 @@ import com.clarkparsia.pellet.sparqldl.jena.SparqlDLExecutionFactory;
 import com.clarkparsia.pellet.sparqldl.jena.SparqlDLExecutionFactory.QueryEngineType;
 import java.io.IOException;
 import java.io.InputStream;
+import openllet.core.PelletOptions;
 import org.apache.jena.ontology.OntDocumentManager;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.query.DatasetFactory;
@@ -15,7 +16,6 @@ import org.apache.jena.query.ResultSet;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.junit.Assert;
 import org.junit.Test;
-import org.mindswap.pellet.PelletOptions;
 import org.mindswap.pellet.jena.PelletReasonerFactory;
 
 /**

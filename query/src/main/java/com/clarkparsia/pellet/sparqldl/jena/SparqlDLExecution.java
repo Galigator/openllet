@@ -19,6 +19,9 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import openllet.core.KnowledgeBase;
+import openllet.core.PelletOptions;
+import openllet.core.exceptions.UnsupportedQueryException;
 import openllet.shared.tools.Log;
 import org.apache.jena.atlas.lib.NotImplemented;
 import org.apache.jena.graph.Graph;
@@ -43,9 +46,6 @@ import org.apache.jena.sparql.engine.binding.Binding;
 import org.apache.jena.sparql.syntax.Template;
 import org.apache.jena.sparql.util.Context;
 import org.apache.jena.sparql.util.ModelUtils;
-import org.mindswap.pellet.KnowledgeBase;
-import org.mindswap.pellet.PelletOptions;
-import org.mindswap.pellet.exceptions.UnsupportedQueryException;
 import org.mindswap.pellet.jena.PelletInfGraph;
 
 /**

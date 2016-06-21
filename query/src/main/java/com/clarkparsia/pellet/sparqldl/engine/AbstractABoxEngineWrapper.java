@@ -24,9 +24,9 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.aterm.ATermAppl;
+import openllet.core.KnowledgeBase;
+import openllet.core.utils.ATermUtils;
 import openllet.shared.tools.Log;
-import org.mindswap.pellet.KnowledgeBase;
-import org.mindswap.pellet.utils.ATermUtils;
 
 /**
  * <p>
@@ -82,7 +82,7 @@ public abstract class AbstractABoxEngineWrapper implements QueryExec
 				_logger.fine("Executing TBox query: " + schemaQuery);
 			result = distCombinedQueryExec.exec(schemaQuery);
 
-			shouldHaveBinding = org.mindswap.pellet.utils.SetUtils.intersects(query.getDistVarsForType(VarType.CLASS), query.getResultVars()) || org.mindswap.pellet.utils.SetUtils.intersects(query.getDistVarsForType(VarType.PROPERTY), query.getResultVars());
+			shouldHaveBinding = openllet.core.utils.SetUtils.intersects(query.getDistVarsForType(VarType.CLASS), query.getResultVars()) || openllet.core.utils.SetUtils.intersects(query.getDistVarsForType(VarType.PROPERTY), query.getResultVars());
 		}
 		if (shouldHaveBinding && result.isEmpty())
 			return result;

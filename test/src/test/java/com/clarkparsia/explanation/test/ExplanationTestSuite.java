@@ -8,11 +8,11 @@ package com.clarkparsia.explanation.test;
 
 import java.util.Properties;
 import junit.framework.JUnit4TestAdapter;
+import openllet.core.PelletOptions;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-import org.mindswap.pellet.PelletOptions;
 
 /**
  * <p>

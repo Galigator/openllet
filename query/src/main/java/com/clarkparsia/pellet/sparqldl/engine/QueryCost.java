@@ -18,11 +18,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import openllet.aterm.ATermAppl;
-import org.mindswap.pellet.KnowledgeBase;
-import org.mindswap.pellet.exceptions.UnsupportedFeatureException;
-import org.mindswap.pellet.utils.ATermUtils;
-import org.mindswap.pellet.utils.KBOperation;
-import org.mindswap.pellet.utils.SizeEstimate;
+import openllet.core.KnowledgeBase;
+import openllet.core.exceptions.UnsupportedFeatureException;
+import openllet.core.utils.ATermUtils;
+import openllet.core.utils.KBOperation;
+import openllet.core.utils.SizeEstimate;
 
 /**
  * <p>

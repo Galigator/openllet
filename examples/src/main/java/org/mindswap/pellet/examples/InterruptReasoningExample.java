@@ -2,6 +2,9 @@ package org.mindswap.pellet.examples;
 
 import com.clarkparsia.pellet.sparqldl.jena.SparqlDLExecutionFactory;
 import java.util.logging.Logger;
+import openllet.core.PelletOptions;
+import openllet.core.exceptions.TimeoutException;
+import openllet.core.utils.Timers;
 import openllet.shared.tools.Log;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.query.Query;
@@ -12,11 +15,8 @@ import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.ResourceFactory;
 import org.apache.jena.util.iterator.ExtendedIterator;
-import org.mindswap.pellet.PelletOptions;
-import org.mindswap.pellet.exceptions.TimeoutException;
 import org.mindswap.pellet.jena.PelletInfGraph;
 import org.mindswap.pellet.jena.PelletReasonerFactory;
-import org.mindswap.pellet.utils.Timers;
 
 /**
  * <p>

@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import openllet.core.utils.AlphaNumericComparator;
+import openllet.core.utils.Comparators;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -19,8 +21,6 @@ import org.junit.runners.Parameterized.Parameters;
 import org.mindswap.pellet.test.PelletTestSuite;
 import org.mindswap.pellet.test.WebOntTest;
 import org.mindswap.pellet.test.WebOntTestCase;
-import org.mindswap.pellet.utils.AlphaNumericComparator;
-import org.mindswap.pellet.utils.Comparators;
 
 /**
  * <p>

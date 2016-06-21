@@ -6,30 +6,30 @@
 
 package com.clarkparsia.pellet.test.tbox;
 
-import static com.clarkparsia.pellet.utils.TermFactory.and;
-import static com.clarkparsia.pellet.utils.TermFactory.inv;
-import static com.clarkparsia.pellet.utils.TermFactory.or;
-import static com.clarkparsia.pellet.utils.TermFactory.some;
-import static com.clarkparsia.pellet.utils.TermFactory.term;
+import static openllet.core.utils.ATermUtils.makeAnd;
+import static openllet.core.utils.ATermUtils.makeEqClasses;
+import static openllet.core.utils.ATermUtils.makeNot;
+import static openllet.core.utils.ATermUtils.makeOr;
+import static openllet.core.utils.ATermUtils.makeSub;
+import static openllet.core.utils.TermFactory.and;
+import static openllet.core.utils.TermFactory.inv;
+import static openllet.core.utils.TermFactory.or;
+import static openllet.core.utils.TermFactory.some;
+import static openllet.core.utils.TermFactory.term;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mindswap.pellet.utils.ATermUtils.makeAnd;
-import static org.mindswap.pellet.utils.ATermUtils.makeEqClasses;
-import static org.mindswap.pellet.utils.ATermUtils.makeNot;
-import static org.mindswap.pellet.utils.ATermUtils.makeOr;
-import static org.mindswap.pellet.utils.ATermUtils.makeSub;
 
 import java.util.Collections;
 import junit.framework.JUnit4TestAdapter;
 import openllet.aterm.ATermAppl;
+import openllet.core.PelletOptions;
+import openllet.core.tbox.TBox;
+import openllet.core.tbox.impl.Unfolding;
+import openllet.core.utils.iterator.IteratorUtils;
 import org.junit.Before;
 import org.junit.Test;
-import org.mindswap.pellet.PelletOptions;
-import org.mindswap.pellet.tbox.TBox;
-import org.mindswap.pellet.tbox.impl.Unfolding;
 import org.mindswap.pellet.test.AbstractKBTests;
-import org.mindswap.pellet.utils.iterator.IteratorUtils;
 
 /**
  * <p>

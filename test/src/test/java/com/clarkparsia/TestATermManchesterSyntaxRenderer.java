@@ -6,28 +6,28 @@
 
 package com.clarkparsia;
 
-import static com.clarkparsia.pellet.utils.TermFactory.all;
-import static com.clarkparsia.pellet.utils.TermFactory.and;
-import static com.clarkparsia.pellet.utils.TermFactory.hasValue;
-import static com.clarkparsia.pellet.utils.TermFactory.inv;
-import static com.clarkparsia.pellet.utils.TermFactory.literal;
-import static com.clarkparsia.pellet.utils.TermFactory.max;
-import static com.clarkparsia.pellet.utils.TermFactory.min;
-import static com.clarkparsia.pellet.utils.TermFactory.not;
-import static com.clarkparsia.pellet.utils.TermFactory.oneOf;
-import static com.clarkparsia.pellet.utils.TermFactory.or;
-import static com.clarkparsia.pellet.utils.TermFactory.self;
-import static com.clarkparsia.pellet.utils.TermFactory.some;
-import static com.clarkparsia.pellet.utils.TermFactory.term;
+import static openllet.core.utils.TermFactory.all;
+import static openllet.core.utils.TermFactory.and;
+import static openllet.core.utils.TermFactory.hasValue;
+import static openllet.core.utils.TermFactory.inv;
+import static openllet.core.utils.TermFactory.literal;
+import static openllet.core.utils.TermFactory.max;
+import static openllet.core.utils.TermFactory.min;
+import static openllet.core.utils.TermFactory.not;
+import static openllet.core.utils.TermFactory.oneOf;
+import static openllet.core.utils.TermFactory.or;
+import static openllet.core.utils.TermFactory.self;
+import static openllet.core.utils.TermFactory.some;
+import static openllet.core.utils.TermFactory.term;
 import static org.junit.Assert.assertEquals;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import junit.framework.JUnit4TestAdapter;
 import openllet.aterm.ATermAppl;
+import openllet.core.output.ATermManchesterSyntaxRenderer;
+import openllet.core.output.ATermRenderer;
 import org.junit.Test;
-import org.mindswap.pellet.output.ATermManchesterSyntaxRenderer;
-import org.mindswap.pellet.output.ATermRenderer;
 
 /**
  * <p>

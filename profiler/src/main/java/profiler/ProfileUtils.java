@@ -7,11 +7,11 @@
 package profiler;
 
 import java.util.logging.Logger;
+import openllet.core.ABox;
+import openllet.core.Individual;
+import openllet.core.KnowledgeBase;
+import openllet.core.Node;
 import openllet.shared.tools.Log;
-import org.mindswap.pellet.ABox;
-import org.mindswap.pellet.Individual;
-import org.mindswap.pellet.KnowledgeBase;
-import org.mindswap.pellet.Node;
 
 /**
  * <p>

@@ -8,12 +8,12 @@ package org.mindswap.pellet.test.utils;
 
 import junit.framework.TestCase;
 import openllet.aterm.ATermAppl;
-import org.mindswap.pellet.KnowledgeBase;
-import org.mindswap.pellet.tableau.cache.CachedNode;
-import org.mindswap.pellet.tableau.cache.CachedNodeFactory;
-import org.mindswap.pellet.tableau.cache.ConceptCache;
-import org.mindswap.pellet.tableau.cache.ConceptCacheLRU;
-import org.mindswap.pellet.utils.ATermUtils;
+import openllet.core.KnowledgeBase;
+import openllet.core.tableau.cache.CachedNode;
+import openllet.core.tableau.cache.CachedNodeFactory;
+import openllet.core.tableau.cache.ConceptCache;
+import openllet.core.tableau.cache.ConceptCacheLRU;
+import openllet.core.utils.ATermUtils;
 
 public class ConceptCacheTest extends TestCase
 {
