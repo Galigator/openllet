@@ -18,7 +18,7 @@ import openllet.core.Edge;
 import openllet.core.EdgeList;
 import openllet.core.Individual;
 import openllet.core.Node;
-import openllet.core.PelletOptions;
+import openllet.core.OpenlletOptions;
 import openllet.core.Role;
 import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.tableau.completion.CompletionStrategy;
@@ -59,7 +59,7 @@ public class AllValuesRule extends AbstractTableauRule
 			final ATermAppl av = i.next();
 			final DependencySet avDepends = x.getDepends(av);
 
-			if (!PelletOptions.MAINTAIN_COMPLETION_QUEUE && avDepends == null)
+			if (!OpenlletOptions.MAINTAIN_COMPLETION_QUEUE && avDepends == null)
 				continue;
 
 			applyAllValues(x, av, avDepends);
@@ -181,7 +181,7 @@ public class AllValuesRule extends AbstractTableauRule
 				_logger.fine("ALL : " + subj + " -> " + pred + " -> " + obj + " : " + ATermUtils.toString(c) + " - " + ds);
 
 			//because we do not maintain the _queue it could be the case that this _node is pruned, so return
-			if (PelletOptions.USE_COMPLETION_QUEUE && !PelletOptions.MAINTAIN_COMPLETION_QUEUE && obj.isPruned())
+			if (OpenlletOptions.USE_COMPLETION_QUEUE && !OpenlletOptions.MAINTAIN_COMPLETION_QUEUE && obj.isPruned())
 				return;
 
 			_strategy.addType(obj, c, ds);

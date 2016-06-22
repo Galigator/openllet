@@ -25,7 +25,7 @@ import openllet.aterm.AFun;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
 import openllet.core.KnowledgeBase;
-import openllet.core.PelletOptions;
+import openllet.core.OpenlletOptions;
 import openllet.core.boxes.tbox.TBox;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.CollectionUtils;
@@ -149,7 +149,7 @@ public class TBoxExpImpl implements TBox
 			_logger.fine("Axiom: " + ATermUtils.toString(axiom) + " Explanation: " + explain);
 
 		boolean added = false;
-		if (!PelletOptions.USE_TRACING)
+		if (!OpenlletOptions.USE_TRACING)
 			added = _tboxAxioms.put(axiom, SINGLE_EMPTY_SET) == null;
 		else
 			added = MultiMapUtils.add(_tboxAxioms, axiom, explain);
@@ -181,7 +181,7 @@ public class TBoxExpImpl implements TBox
 
 		List<ATermAppl> axioms = null;
 
-		final Set<ATermAppl> explain = PelletOptions.USE_TRACING ? Collections.singleton(axiom) : Collections.<ATermAppl> emptySet();
+		final Set<ATermAppl> explain = OpenlletOptions.USE_TRACING ? Collections.singleton(axiom) : Collections.<ATermAppl> emptySet();
 
 		if (axiom.getAFun().equals(ATermUtils.EQCLASSFUN))
 			axioms = Collections.singletonList(axiom);
@@ -234,7 +234,7 @@ public class TBoxExpImpl implements TBox
 		// absorb nominals on the fly because sometimes they might _end up in the
 		// _Tu directly without going into _Tg which is still less effective than
 		// absorbing
-		if (PelletOptions.USE_NOMINAL_ABSORPTION || PelletOptions.USE_PSEUDO_NOMINALS)
+		if (OpenlletOptions.USE_NOMINAL_ABSORPTION || OpenlletOptions.USE_PSEUDO_NOMINALS)
 			if (axiom.getAFun().equals(ATermUtils.EQCLASSFUN))
 			{
 				final ATermAppl c1 = (ATermAppl) axiom.getArgument(0);
@@ -313,7 +313,7 @@ public class TBoxExpImpl implements TBox
 	public boolean removeAxiom(final ATermAppl dependantAxiom, final ATermAppl explanationAxiom)
 	{
 
-		if (!PelletOptions.USE_TRACING)
+		if (!OpenlletOptions.USE_TRACING)
 		{
 			if (_logger.isLoggable(Level.FINE))
 				_logger.fine("Cannot remove axioms when PelletOptions.USE_TRACING is false");
@@ -355,7 +355,7 @@ public class TBoxExpImpl implements TBox
 	{
 		boolean success = false;
 
-		if (!PelletOptions.USE_TRACING)
+		if (!OpenlletOptions.USE_TRACING)
 		{
 			if (_logger.isLoggable(Level.FINE))
 				_logger.fine("Cannot remove axioms when PelletOptions.USE_TRACING is false");

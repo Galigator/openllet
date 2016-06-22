@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Set;
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
-import openllet.core.PelletOptions;
+import openllet.core.OpenlletOptions;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.CollectionUtils;
 import openllet.core.utils.iterator.IteratorUtils;
@@ -101,7 +101,7 @@ public class PelletGraphListener implements GraphListener
 	 */
 	private boolean canUpdateIncrementally(final Graph g)
 	{
-		return PelletOptions.PROCESS_JENA_UPDATES_INCREMENTALLY && !_statementDeleted && !_changedGraphs.contains(g);
+		return OpenlletOptions.PROCESS_JENA_UPDATES_INCREMENTALLY && !_statementDeleted && !_changedGraphs.contains(g);
 	}
 
 	private void collectLeafGraphs(final Graph graph, final Set<Graph> prevLeaves)

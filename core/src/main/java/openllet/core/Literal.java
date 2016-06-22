@@ -84,7 +84,7 @@ public class Literal extends Node
 				catch (final InvalidLiteralException e)
 				{
 					final String msg = format("Attempt to create literal from invalid literal (%s): %s", term, e.getMessage());
-					if (PelletOptions.INVALID_LITERAL_AS_INCONSISTENCY)
+					if (OpenlletOptions.INVALID_LITERAL_AS_INCONSISTENCY)
 					{
 						_logger.fine(msg);
 						_value = null;

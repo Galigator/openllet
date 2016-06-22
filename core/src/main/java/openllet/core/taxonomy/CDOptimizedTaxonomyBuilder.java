@@ -24,7 +24,7 @@ import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
 import openllet.core.Individual;
 import openllet.core.KnowledgeBase;
-import openllet.core.PelletOptions;
+import openllet.core.OpenlletOptions;
 import openllet.core.Role;
 import openllet.core.boxes.tbox.TBox;
 import openllet.core.boxes.tbox.impl.Unfolding;
@@ -72,7 +72,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 
 	private static final Set<ConceptFlag> PHASE1_FLAGS = EnumSet.of(ConceptFlag.COMPLETELY_DEFINED, ConceptFlag.PRIMITIVE, ConceptFlag.OTHER);
 
-	protected ProgressMonitor _monitor = PelletOptions.USE_CLASSIFICATION_MONITOR.create();
+	protected ProgressMonitor _monitor = OpenlletOptions.USE_CLASSIFICATION_MONITOR.create();
 
 	protected Collection<ATermAppl> _classes;
 
@@ -309,7 +309,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 
 		_classes = new ArrayList<>(_kb.getClasses());
 
-		_useCD = PelletOptions.USE_CD_CLASSIFICATION && !_kb.getTBox().unfold(ATermUtils.TOP).hasNext() && !_kb.getExpressivity().hasNominal();
+		_useCD = OpenlletOptions.USE_CD_CLASSIFICATION && !_kb.getTBox().unfold(ATermUtils.TOP).hasNext() && !_kb.getExpressivity().hasNominal();
 
 		_toldDisjoints = CollectionUtils.makeIdentityMap();
 		_unionClasses = CollectionUtils.makeIdentityMap();
@@ -780,7 +780,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 		if (!isSatisfiable)
 			_taxonomy.addEquivalentNode(c, _taxonomy.getBottom());
 
-		if (PelletOptions.USE_CACHING)
+		if (OpenlletOptions.USE_CACHING)
 		{
 			if (_logger.isLoggable(Level.FINER))
 				_logger.finer("...negation ");
@@ -1198,7 +1198,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 	{
 		_monitor.setProgressTitle("Realizing");
 
-		return PelletOptions.REALIZE_INDIVIDUAL_AT_A_TIME ? realizeByIndividuals() : realizeByConcepts();
+		return OpenlletOptions.REALIZE_INDIVIDUAL_AT_A_TIME ? realizeByIndividuals() : realizeByConcepts();
 	}
 
 	private boolean realizeByIndividuals()

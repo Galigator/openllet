@@ -45,7 +45,7 @@ import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermInt;
 import openllet.aterm.ATermList;
 import openllet.core.DependencySet;
-import openllet.core.PelletOptions;
+import openllet.core.OpenlletOptions;
 import openllet.core.utils.ATermUtils;
 import openllet.shared.tools.Log;
 
@@ -92,7 +92,7 @@ public class TgBox extends TBoxBase
 				final ATermAppl norm = ATermUtils.normalize(notC1orC2);
 
 				Set<ATermAppl> explanation;
-				if (PelletOptions.USE_TRACING)
+				if (OpenlletOptions.USE_TRACING)
 					explanation = _tbox.getAxiomExplanation(subClassAxiom);
 				else
 					explanation = Collections.emptySet();
@@ -109,7 +109,7 @@ public class TgBox extends TBoxBase
 				final ATermAppl notC1orC2 = ATermUtils.makeOr(notC1, c2);
 				final ATermAppl notC2orC1 = ATermUtils.makeOr(notC2, c1);
 				Set<ATermAppl> explanation;
-				if (PelletOptions.USE_TRACING)
+				if (OpenlletOptions.USE_TRACING)
 					explanation = _tbox.getAxiomExplanation(eqClassAxiom);
 				else
 					explanation = Collections.emptySet();
@@ -188,10 +188,10 @@ public class TgBox extends TBoxBase
 		while (true)
 		{
 			_subLogger.finer("Absorb rule");
-			if (PelletOptions.USE_RULE_ABSORPTION && ruleAbsorber.absorbRule(set, _explanation))
+			if (OpenlletOptions.USE_RULE_ABSORPTION && ruleAbsorber.absorbRule(set, _explanation))
 				return true;
 			_subLogger.finer("Absorb nominal");
-			if (!PelletOptions.USE_PSEUDO_NOMINALS && (PelletOptions.USE_NOMINAL_ABSORPTION || PelletOptions.USE_HASVALUE_ABSORPTION) && absorbNominal(set))
+			if (!OpenlletOptions.USE_PSEUDO_NOMINALS && (OpenlletOptions.USE_NOMINAL_ABSORPTION || OpenlletOptions.USE_HASVALUE_ABSORPTION) && absorbNominal(set))
 				return true;
 			_subLogger.finer("Absorb II");
 			if (absorbII(set))
@@ -223,7 +223,7 @@ public class TgBox extends TBoxBase
 				return true;
 			}
 			_subLogger.finer("Absorb role");
-			if (PelletOptions.USE_ROLE_ABSORPTION && absorbRole(set))
+			if (OpenlletOptions.USE_ROLE_ABSORPTION && absorbRole(set))
 			{
 				_subLogger.finer("Absorbed w/ Role");
 				return true;
@@ -240,7 +240,7 @@ public class TgBox extends TBoxBase
 		for (final Iterator<ATermAppl> i = set.iterator(); i.hasNext();)
 		{
 			final ATermAppl name = i.next();
-			if (PelletOptions.USE_NOMINAL_ABSORPTION && (ATermUtils.isOneOf(name) || ATermUtils.isNominal(name)))
+			if (OpenlletOptions.USE_NOMINAL_ABSORPTION && (ATermUtils.isOneOf(name) || ATermUtils.isNominal(name)))
 			{
 				i.remove();
 
@@ -257,7 +257,7 @@ public class TgBox extends TBoxBase
 				return true;
 			}
 			else
-				if (PelletOptions.USE_HASVALUE_ABSORPTION && ATermUtils.isHasValue(name))
+				if (OpenlletOptions.USE_HASVALUE_ABSORPTION && ATermUtils.isHasValue(name))
 				{
 					final ATermAppl p = (ATermAppl) name.getArgument(0);
 					if (!_kb.isObjectProperty(p))
@@ -294,7 +294,7 @@ public class TgBox extends TBoxBase
 
 	private void absorbOneOf(ATermList list, final ATermAppl c, final Set<ATermAppl> explain)
 	{
-		if (PelletOptions.USE_PSEUDO_NOMINALS)
+		if (OpenlletOptions.USE_PSEUDO_NOMINALS)
 		{
 			if (_subLogger.isLoggable(Level.WARNING))
 				_subLogger.warning("Ignoring axiom involving nominals: " + explain);

@@ -25,7 +25,7 @@ import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
 import openllet.core.KnowledgeBase;
-import openllet.core.PelletOptions;
+import openllet.core.OpenlletOptions;
 import openllet.core.Role;
 import openllet.core.datatypes.Facet;
 import openllet.core.exceptions.UnsupportedFeatureException;
@@ -209,7 +209,7 @@ public class PelletVisitor implements OWLObjectVisitor
 
 	private void addUnsupportedAxiom(final OWLAxiom axiom)
 	{
-		if (!PelletOptions.IGNORE_UNSUPPORTED_AXIOMS)
+		if (!OpenlletOptions.IGNORE_UNSUPPORTED_AXIOMS)
 			throw new UnsupportedFeatureException("Axiom: " + axiom);
 
 		if (_unsupportedAxioms.add(axiom))
@@ -1388,7 +1388,7 @@ public class PelletVisitor implements OWLObjectVisitor
 	@Override
 	public void visit(final SWRLRule rule)
 	{
-		if (!PelletOptions.DL_SAFE_RULES)
+		if (!OpenlletOptions.DL_SAFE_RULES)
 			return;
 
 		if (!_addAxioms)
@@ -1429,11 +1429,11 @@ public class PelletVisitor implements OWLObjectVisitor
 	{
 		if (!_addAxioms)
 		{
-			_reloadRequired = PelletOptions.USE_ANNOTATION_SUPPORT;
+			_reloadRequired = OpenlletOptions.USE_ANNOTATION_SUPPORT;
 			return;
 		}
 
-		if (PelletOptions.USE_ANNOTATION_SUPPORT)
+		if (OpenlletOptions.USE_ANNOTATION_SUPPORT)
 		{
 			axiom.getSubject().accept(this);
 			final ATermAppl s = _term;

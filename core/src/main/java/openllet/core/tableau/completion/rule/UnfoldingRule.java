@@ -15,7 +15,7 @@ import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
 import openllet.core.Individual;
 import openllet.core.Node;
-import openllet.core.PelletOptions;
+import openllet.core.OpenlletOptions;
 import openllet.core.boxes.tbox.impl.Unfolding;
 import openllet.core.tableau.completion.CompletionStrategy;
 import openllet.core.tableau.completion.queue.NodeSelector;
@@ -60,7 +60,7 @@ public class UnfoldingRule extends AbstractTableauRule
 		{
 			final ATermAppl c = types.get(j);
 
-			if (!PelletOptions.MAINTAIN_COMPLETION_QUEUE && node.getDepends(c) == null)
+			if (!OpenlletOptions.MAINTAIN_COMPLETION_QUEUE && node.getDepends(c) == null)
 				continue;
 
 			applyUnfoldingRule(node, c);
@@ -79,7 +79,7 @@ public class UnfoldingRule extends AbstractTableauRule
 	{
 		final DependencySet ds = node.getDepends(c);
 
-		if (!PelletOptions.MAINTAIN_COMPLETION_QUEUE && ds == null)
+		if (!OpenlletOptions.MAINTAIN_COMPLETION_QUEUE && ds == null)
 			return;
 
 		final Iterator<Unfolding> unfoldingList = _strategy.getTBox().unfold(c);

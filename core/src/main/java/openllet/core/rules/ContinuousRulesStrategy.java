@@ -25,7 +25,7 @@ import openllet.core.Edge;
 import openllet.core.Individual;
 import openllet.core.IndividualIterator;
 import openllet.core.Node;
-import openllet.core.PelletOptions;
+import openllet.core.OpenlletOptions;
 import openllet.core.Role;
 import openllet.core.expressivity.Expressivity;
 import openllet.core.rules.model.Rule;
@@ -127,7 +127,7 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 	public Collection<PartialBinding> applyRete()
 	{
 		Timer t;
-		if (PelletOptions.ALWAYS_REBUILD_RETE)
+		if (OpenlletOptions.ALWAYS_REBUILD_RETE)
 		{
 			t = _timers.startTimer("rule-rebuildRete");
 
@@ -280,7 +280,7 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 					_abox.setComplete(true);
 			}
 			else
-				if (PelletOptions.SATURATE_TABLEAU)
+				if (OpenlletOptions.SATURATE_TABLEAU)
 				{
 					Branch unexploredBranch = null;
 					for (int i = _abox.getBranches().size() - 1; i >= 0; i--)

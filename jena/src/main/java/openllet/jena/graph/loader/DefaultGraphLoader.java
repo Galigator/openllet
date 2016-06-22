@@ -54,7 +54,7 @@ import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
 import openllet.core.KnowledgeBase;
-import openllet.core.PelletOptions;
+import openllet.core.OpenlletOptions;
 import openllet.core.PropertyType;
 import openllet.core.Role;
 import openllet.core.exceptions.InternalReasonerException;
@@ -219,7 +219,7 @@ public class DefaultGraphLoader implements GraphLoader
 
 	protected void addUnsupportedFeature(final String msg)
 	{
-		if (!PelletOptions.IGNORE_UNSUPPORTED_AXIOMS)
+		if (!OpenlletOptions.IGNORE_UNSUPPORTED_AXIOMS)
 			throw new UnsupportedFeatureException(msg);
 
 		if (_unsupportedFeatures.add(msg))
@@ -1288,7 +1288,7 @@ public class DefaultGraphLoader implements GraphLoader
 
 		if (builtinTerm == null)
 		{
-			if (PelletOptions.FREEZE_BUILTIN_NAMESPACES && o.isURI())
+			if (OpenlletOptions.FREEZE_BUILTIN_NAMESPACES && o.isURI())
 			{
 				final String nameSpace = o.getNameSpace();
 				if (nameSpace != null)
@@ -1417,7 +1417,7 @@ public class DefaultGraphLoader implements GraphLoader
 				break;
 
 			case SWRL_Imp:
-				if (PelletOptions.DL_SAFE_RULES)
+				if (OpenlletOptions.DL_SAFE_RULES)
 					defineRule(s);
 				break;
 
@@ -1533,7 +1533,7 @@ public class DefaultGraphLoader implements GraphLoader
 				return;
 			}
 
-			if (PelletOptions.FREEZE_BUILTIN_NAMESPACES)
+			if (OpenlletOptions.FREEZE_BUILTIN_NAMESPACES)
 			{
 				final String nameSpace = p.getNameSpace();
 				if (nameSpace != null)
@@ -1906,7 +1906,7 @@ public class DefaultGraphLoader implements GraphLoader
 					{
 						final ATermAppl c = (ATermAppl) l.getFirst();
 
-						if (PelletOptions.USE_PSEUDO_NOMINALS)
+						if (OpenlletOptions.USE_PSEUDO_NOMINALS)
 						{
 							final ATermAppl nominal = ATermUtils.makeTermAppl(c.getName() + "_nominal");
 							resultList = resultList.insert(nominal);

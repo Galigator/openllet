@@ -43,7 +43,7 @@ import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
 import openllet.core.DependencySet;
 import openllet.core.KnowledgeBase;
-import openllet.core.PelletOptions;
+import openllet.core.OpenlletOptions;
 import openllet.core.Role;
 import openllet.core.boxes.tbox.TBox;
 import openllet.core.datatypes.Facet;
@@ -179,7 +179,7 @@ public class TBoxImpl implements TBox
 			_logger.fine("Add Axiom: " + ATermUtils.toString(axiom) + " Explanation: " + explain);
 
 		boolean added = false;
-		if (!PelletOptions.USE_TRACING)
+		if (!OpenlletOptions.USE_TRACING)
 			added = _tboxAxioms.put(axiom, SINGLE_EMPTY_SET) == null;
 		else
 			added = MultiMapUtils.add(_tboxAxioms, axiom, explain);
@@ -221,7 +221,7 @@ public class TBoxImpl implements TBox
 
 		List<ATermAppl> axioms = null;
 
-		final Set<ATermAppl> explain = PelletOptions.USE_TRACING ? Collections.singleton(axiom) : Collections.<ATermAppl> emptySet();
+		final Set<ATermAppl> explain = OpenlletOptions.USE_TRACING ? Collections.singleton(axiom) : Collections.<ATermAppl> emptySet();
 
 		if (axiom.getAFun().equals(ATermUtils.EQCLASSFUN))
 			axioms = Collections.singletonList(axiom);
@@ -381,7 +381,7 @@ public class TBoxImpl implements TBox
 		@Override
 		public boolean absorb(final Set<ATermAppl> terms, final Set<ATermAppl> explanation)
 		{
-			if (!PelletOptions.USE_NOMINAL_ABSORPTION)
+			if (!OpenlletOptions.USE_NOMINAL_ABSORPTION)
 				return false;
 
 			for (final ATermAppl term : terms)
@@ -418,7 +418,7 @@ public class TBoxImpl implements TBox
 
 		private void absorbOneOf(final Iterator<ATermAppl> list, final ATermAppl c, final Set<ATermAppl> explain)
 		{
-			if (PelletOptions.USE_PSEUDO_NOMINALS)
+			if (OpenlletOptions.USE_PSEUDO_NOMINALS)
 			{
 				if (_logger.isLoggable(Level.WARNING))
 					_logger.warning("Ignoring axiom involving nominals: " + explain);
@@ -447,7 +447,7 @@ public class TBoxImpl implements TBox
 		@Override
 		public boolean absorb(final Set<ATermAppl> terms, final Set<ATermAppl> explanation)
 		{
-			if (!PelletOptions.USE_HASVALUE_ABSORPTION)
+			if (!OpenlletOptions.USE_HASVALUE_ABSORPTION)
 				return false;
 
 			for (final Iterator<ATermAppl> i = terms.iterator(); i.hasNext();)
@@ -489,7 +489,7 @@ public class TBoxImpl implements TBox
 		@Override
 		public boolean absorb(final Set<ATermAppl> terms, final Set<ATermAppl> explanation)
 		{
-			if (!PelletOptions.USE_RULE_ABSORPTION)
+			if (!OpenlletOptions.USE_RULE_ABSORPTION)
 				return false;
 
 			int propertyAtoms = 0;
@@ -635,7 +635,7 @@ public class TBoxImpl implements TBox
 		@Override
 		public boolean absorb(final Set<ATermAppl> terms, final Set<ATermAppl> explanation)
 		{
-			if (!PelletOptions.USE_BINARY_ABSORPTION)
+			if (!OpenlletOptions.USE_BINARY_ABSORPTION)
 				return false;
 
 			if (_deterministic && terms.size() > 3)
@@ -875,7 +875,7 @@ public class TBoxImpl implements TBox
 	public boolean removeAxiom(final ATermAppl dependantAxiom, final ATermAppl explanationAxiom)
 	{
 
-		if (!PelletOptions.USE_TRACING)
+		if (!OpenlletOptions.USE_TRACING)
 		{
 			if (_logger.isLoggable(Level.FINE))
 				_logger.fine("Cannot remove axioms when PelletOptions.USE_TRACING is false");
@@ -917,7 +917,7 @@ public class TBoxImpl implements TBox
 	{
 		boolean removed = false;
 
-		if (!PelletOptions.USE_TRACING)
+		if (!OpenlletOptions.USE_TRACING)
 		{
 			if (_logger.isLoggable(Level.FINE))
 				_logger.fine("Cannot remove axioms when PelletOptions.USE_TRACING is false");

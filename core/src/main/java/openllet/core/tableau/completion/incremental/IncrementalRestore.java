@@ -19,7 +19,7 @@ import openllet.core.EdgeList;
 import openllet.core.Individual;
 import openllet.core.KnowledgeBase;
 import openllet.core.Node;
-import openllet.core.PelletOptions;
+import openllet.core.OpenlletOptions;
 import openllet.core.Role;
 import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.tableau.branch.Branch;
@@ -81,7 +81,7 @@ public class IncrementalRestore
 			if (DependencyIndex._logger.isLoggable(Level.FINE))
 				DependencyIndex._logger.fine("           Actually removing _branch!");
 
-			final Collection<ATermAppl> allEffects = PelletOptions.TRACK_BRANCH_EFFECTS ? _kb.getABox().getBranchEffectTracker().getAll(branch.getBranch().getBranch()) : _kb.getABox().getNodeNames();
+			final Collection<ATermAppl> allEffects = OpenlletOptions.TRACK_BRANCH_EFFECTS ? _kb.getABox().getBranchEffectTracker().getAll(branch.getBranch().getBranch()) : _kb.getABox().getNodeNames();
 
 			final List<IntSet> updatedList = new ArrayList<>();
 
@@ -191,7 +191,7 @@ public class IncrementalRestore
 				// }
 			}
 
-			if (PelletOptions.TRACK_BRANCH_EFFECTS)
+			if (OpenlletOptions.TRACK_BRANCH_EFFECTS)
 				_kb.getABox().getBranchEffectTracker().remove(branch.getBranch().getBranch() + 1);
 
 			// !!!!!!!!!!!!!!!! Next update _kb.getABox() branches !!!!!!!!!!!!!!

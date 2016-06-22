@@ -63,7 +63,7 @@ import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermFactory;
 import openllet.aterm.ATermList;
-import openllet.core.PelletOptions.InstanceRetrievalMethod;
+import openllet.core.OpenlletOptions.InstanceRetrievalMethod;
 import openllet.core.boxes.tbox.TBox;
 import openllet.core.boxes.tbox.TBoxFactory;
 import openllet.core.datatypes.DatatypeReasoner;
@@ -499,7 +499,7 @@ public class KnowledgeBase
 		timers.createTimer("complete");
 		_state = EnumSet.noneOf(ReasoningState.class);
 
-		if (PelletOptions.USE_INCREMENTAL_DELETION)
+		if (OpenlletOptions.USE_INCREMENTAL_DELETION)
 		{
 			_deletedAssertions = new HashSet<>();
 			_dependencyIndex = new DependencyIndex(this);
@@ -530,7 +530,7 @@ public class KnowledgeBase
 
 		_changes = kb._changes.clone();
 
-		if (PelletOptions.USE_INCREMENTAL_DELETION)
+		if (OpenlletOptions.USE_INCREMENTAL_DELETION)
 		{
 			_deletedAssertions = new HashSet<>();
 			_dependencyIndex = new DependencyIndex(this);
@@ -553,7 +553,7 @@ public class KnowledgeBase
 		{
 			_abox = kb._abox.copy(this);
 
-			if (PelletOptions.KEEP_ABOX_ASSERTIONS)
+			if (OpenlletOptions.KEEP_ABOX_ASSERTIONS)
 				for (final AssertionType assertionType : AssertionType.values())
 				{
 					final Set<ATermAppl> assertions = kb._aboxAssertions.get(assertionType);
@@ -568,7 +568,7 @@ public class KnowledgeBase
 			if (kb.getDeletedAssertions() != null)
 				_deletedAssertions = new HashSet<>(kb.getDeletedAssertions());
 
-			if (PelletOptions.USE_INCREMENTAL_CONSISTENCY && PelletOptions.USE_INCREMENTAL_DELETION)
+			if (OpenlletOptions.USE_INCREMENTAL_CONSISTENCY && OpenlletOptions.USE_INCREMENTAL_DELETION)
 				// copy the dependency _index
 				_dependencyIndex = new DependencyIndex(this, kb._dependencyIndex);
 
@@ -653,7 +653,7 @@ public class KnowledgeBase
 
 		_annotations.clear();
 
-		if (PelletOptions.USE_INCREMENTAL_DELETION)
+		if (OpenlletOptions.USE_INCREMENTAL_DELETION)
 		{
 			_deletedAssertions = new HashSet<>();
 			_dependencyIndex = new DependencyIndex(this);
@@ -865,7 +865,7 @@ public class KnowledgeBase
 
 		_abox.setSyntacticUpdate(false);
 
-		if (!PelletOptions.USE_PSEUDO_NOMINALS)
+		if (!OpenlletOptions.USE_PSEUDO_NOMINALS)
 		{
 			// add value(x) for nominal _node but do not apply UC yet
 			// because it might not be complete. it will be added
@@ -910,17 +910,17 @@ public class KnowledgeBase
 			return;
 
 		final ATermAppl typeAxiom = ATermUtils.makeTypeAtom(i, c);
-		final DependencySet ds = PelletOptions.USE_TRACING ? new DependencySet(typeAxiom) : DependencySet.INDEPENDENT;
+		final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(typeAxiom) : DependencySet.INDEPENDENT;
 
 		// add type assertion to syntactic assertions and update dependency
 		// _index
-		if (PelletOptions.USE_INCREMENTAL_DELETION)
+		if (OpenlletOptions.USE_INCREMENTAL_DELETION)
 		{
 			_syntacticAssertions.add(typeAxiom);
 			_dependencyIndex.addTypeDependency(i, c, ds);
 		}
 
-		if (PelletOptions.KEEP_ABOX_ASSERTIONS)
+		if (OpenlletOptions.KEEP_ABOX_ASSERTIONS)
 			_aboxAssertions.add(AssertionType.TYPE, typeAxiom);
 
 		addType(i, c, ds);
@@ -1076,7 +1076,7 @@ public class KnowledgeBase
 
 		final ATermAppl propAxiom = ATermUtils.makePropAtom(p, s, o);
 
-		DependencySet ds = PelletOptions.USE_TRACING ? new DependencySet(propAxiom) : DependencySet.INDEPENDENT;
+		DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(propAxiom) : DependencySet.INDEPENDENT;
 
 		if (role.isObjectRole())
 		{
@@ -1092,7 +1092,7 @@ public class KnowledgeBase
 					_logger.warning(o + " is not a known _individual!");
 					return false;
 				}
-			if (PelletOptions.KEEP_ABOX_ASSERTIONS)
+			if (OpenlletOptions.KEEP_ABOX_ASSERTIONS)
 				_aboxAssertions.add(AssertionType.OBJ_ROLE, propAxiom);
 		}
 		else
@@ -1104,7 +1104,7 @@ public class KnowledgeBase
 					return false;
 				}
 				obj = _abox.addLiteral(o, ds);
-				if (PelletOptions.KEEP_ABOX_ASSERTIONS)
+				if (OpenlletOptions.KEEP_ABOX_ASSERTIONS)
 					_aboxAssertions.add(AssertionType.DATA_ROLE, propAxiom);
 			}
 
@@ -1123,7 +1123,7 @@ public class KnowledgeBase
 				assert edge != null;
 			}
 
-			if (PelletOptions.USE_INCREMENTAL_DELETION)
+			if (OpenlletOptions.USE_INCREMENTAL_DELETION)
 			{
 				// add to syntactic assertions
 				_syntacticAssertions.add(propAxiom);
@@ -1157,7 +1157,7 @@ public class KnowledgeBase
 					subj2 = subj2.getSame();
 
 				// generate dependency for new edge
-				ds = PelletOptions.USE_TRACING ? new DependencySet(ATermUtils.makePropAtom(p, s, o)) : DependencySet.INDEPENDENT;
+				ds = OpenlletOptions.USE_TRACING ? new DependencySet(ATermUtils.makePropAtom(p, s, o)) : DependencySet.INDEPENDENT;
 
 				// add to pseudomodel - note _branch must be temporarily set to 0 to
 				// ensure that assertion
@@ -1200,7 +1200,7 @@ public class KnowledgeBase
 
 		final ATermAppl propAxiom = ATermUtils.makeNot(ATermUtils.makePropAtom(p, s, o));
 
-		final DependencySet ds = PelletOptions.USE_TRACING ? new DependencySet(propAxiom) : DependencySet.INDEPENDENT;
+		final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(propAxiom) : DependencySet.INDEPENDENT;
 
 		if (role.isObjectRole())
 		{
@@ -1306,7 +1306,7 @@ public class KnowledgeBase
 
 	public boolean addAnnotation(final ATermAppl s, final ATermAppl p, final ATermAppl o)
 	{
-		if (!PelletOptions.USE_ANNOTATION_SUPPORT)
+		if (!OpenlletOptions.USE_ANNOTATION_SUPPORT)
 			return false;
 
 		if (!isAnnotationProperty(p))
@@ -1427,7 +1427,7 @@ public class KnowledgeBase
 
 	public void addDisjointProperties(final ATermList properties)
 	{
-		final DependencySet ds = PelletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeDisjointProperties(properties)) : DependencySet.INDEPENDENT;
+		final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeDisjointProperties(properties)) : DependencySet.INDEPENDENT;
 
 		for (ATermList l1 = properties; !l1.isEmpty(); l1 = l1.getNext())
 		{
@@ -1449,7 +1449,7 @@ public class KnowledgeBase
 
 	public void addDisjointProperty(final ATermAppl p1, final ATermAppl p2)
 	{
-		final DependencySet ds = PelletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeDisjointProperty(p1, p2)) : DependencySet.INDEPENDENT;
+		final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeDisjointProperty(p1, p2)) : DependencySet.INDEPENDENT;
 
 		addDisjointProperty(p1, p2, ds);
 	}
@@ -1465,7 +1465,7 @@ public class KnowledgeBase
 
 	public void addInverseProperty(final ATermAppl p1, final ATermAppl p2)
 	{
-		if (PelletOptions.IGNORE_INVERSES)
+		if (OpenlletOptions.IGNORE_INVERSES)
 		{
 			_logger.warning("Ignoring inverseOf(" + p1 + " " + p2 + ") axiom due to the IGNORE_INVERSES option");
 			return;
@@ -1473,7 +1473,7 @@ public class KnowledgeBase
 
 		_changes.add(ChangeType.RBOX_ADD);
 
-		final DependencySet ds = PelletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeInvProp(p1, p2)) : DependencySet.INDEPENDENT;
+		final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeInvProp(p1, p2)) : DependencySet.INDEPENDENT;
 
 		_rbox.addInverseRole(p1, p2, ds);
 		if (_logger.isLoggable(Level.FINER))
@@ -1486,7 +1486,7 @@ public class KnowledgeBase
 
 		final Role r = _rbox.getDefinedRole(p);
 
-		final DependencySet ds = PelletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeTransitive(p)) : DependencySet.INDEPENDENT;
+		final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeTransitive(p)) : DependencySet.INDEPENDENT;
 
 		// r.setTransitive(true);
 		r.addSubRoleChain(ATermUtils.makeList(new ATerm[] { p, p }), ds);
@@ -1496,7 +1496,7 @@ public class KnowledgeBase
 
 	public void addSymmetricProperty(final ATermAppl p)
 	{
-		if (PelletOptions.IGNORE_INVERSES)
+		if (OpenlletOptions.IGNORE_INVERSES)
 		{
 			_logger.warning("Ignoring SymmetricProperty(" + p + ") axiom due to the IGNORE_INVERSES option");
 			return;
@@ -1504,7 +1504,7 @@ public class KnowledgeBase
 
 		_changes.add(ChangeType.RBOX_ADD);
 
-		final DependencySet ds = PelletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeSymmetric(p)) : DependencySet.INDEPENDENT;
+		final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeSymmetric(p)) : DependencySet.INDEPENDENT;
 
 		_rbox.addInverseRole(p, p, ds);
 		if (_logger.isLoggable(Level.FINER))
@@ -1525,7 +1525,7 @@ public class KnowledgeBase
 		_changes.add(ChangeType.RBOX_ADD);
 		final Role r = _rbox.getDefinedRole(p);
 
-		final DependencySet ds = PelletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeAsymmetric(p)) : DependencySet.INDEPENDENT;
+		final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeAsymmetric(p)) : DependencySet.INDEPENDENT;
 
 		r.setAsymmetric(true, ds);
 		if (_logger.isLoggable(Level.FINER))
@@ -1537,7 +1537,7 @@ public class KnowledgeBase
 		_changes.add(ChangeType.RBOX_ADD);
 		final Role r = _rbox.getDefinedRole(p);
 
-		final DependencySet ds = PelletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeReflexive(p)) : DependencySet.INDEPENDENT;
+		final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeReflexive(p)) : DependencySet.INDEPENDENT;
 
 		r.setReflexive(true, ds);
 		if (_logger.isLoggable(Level.FINER))
@@ -1549,7 +1549,7 @@ public class KnowledgeBase
 		_changes.add(ChangeType.RBOX_ADD);
 		final Role r = _rbox.getDefinedRole(p);
 
-		final DependencySet ds = PelletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeIrreflexive(p)) : DependencySet.INDEPENDENT;
+		final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeIrreflexive(p)) : DependencySet.INDEPENDENT;
 
 		r.setIrreflexive(true, ds);
 		if (_logger.isLoggable(Level.FINER))
@@ -1561,7 +1561,7 @@ public class KnowledgeBase
 		_changes.add(ChangeType.RBOX_ADD);
 		final Role r = _rbox.getDefinedRole(p);
 
-		final DependencySet ds = PelletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeFunctional(p)) : DependencySet.INDEPENDENT;
+		final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeFunctional(p)) : DependencySet.INDEPENDENT;
 
 		r.setFunctional(true, ds);
 		if (_logger.isLoggable(Level.FINER))
@@ -1570,7 +1570,7 @@ public class KnowledgeBase
 
 	public void addInverseFunctionalProperty(final ATerm p)
 	{
-		if (PelletOptions.IGNORE_INVERSES)
+		if (OpenlletOptions.IGNORE_INVERSES)
 		{
 			_logger.warning("Ignoring InverseFunctionalProperty(" + p + ") axiom due to the IGNORE_INVERSES option");
 			return;
@@ -1579,7 +1579,7 @@ public class KnowledgeBase
 		_changes.add(ChangeType.RBOX_ADD);
 		final Role role = _rbox.getDefinedRole(p);
 
-		final DependencySet ds = PelletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeInverseFunctional(p)) : DependencySet.INDEPENDENT;
+		final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeInverseFunctional(p)) : DependencySet.INDEPENDENT;
 
 		role.setInverseFunctional(true, ds);
 		if (_logger.isLoggable(Level.FINER))
@@ -1706,7 +1706,7 @@ public class KnowledgeBase
 		final Role role = getRole(p);
 
 		if (subj == null)
-			if (PelletOptions.SILENT_UNDEFINED_ENTITY_HANDLING)
+			if (OpenlletOptions.SILENT_UNDEFINED_ENTITY_HANDLING)
 				throw new UnsupportedFeatureException(i1 + " is not an _individual!");
 			else
 				return false;
@@ -1765,7 +1765,7 @@ public class KnowledgeBase
 				_abox.getIncrementalChangeTracker().addUpdatedIndividual((Individual) obj);
 		}
 
-		if (PelletOptions.KEEP_ABOX_ASSERTIONS)
+		if (OpenlletOptions.KEEP_ABOX_ASSERTIONS)
 		{
 			final ATermAppl propAxiom = ATermUtils.makePropAtom(p, i1, i2);
 			if (ATermUtils.isLiteral(i2))
@@ -1816,7 +1816,7 @@ public class KnowledgeBase
 		final Individual subj = _abox.getIndividual(ind);
 
 		if (subj == null)
-			if (PelletOptions.SILENT_UNDEFINED_ENTITY_HANDLING)
+			if (OpenlletOptions.SILENT_UNDEFINED_ENTITY_HANDLING)
 				return false;
 			else
 				throw new UnsupportedFeatureException(ind + " is not an _individual!");
@@ -1829,7 +1829,7 @@ public class KnowledgeBase
 
 		boolean removed = true;
 
-		if (!canUseIncConsistency() || !PelletOptions.USE_INCREMENTAL_DELETION)
+		if (!canUseIncConsistency() || !OpenlletOptions.USE_INCREMENTAL_DELETION)
 		{
 			_abox.reset();
 
@@ -1854,7 +1854,7 @@ public class KnowledgeBase
 			// updateExpressivity(i, c);
 		}
 
-		if (PelletOptions.KEEP_ABOX_ASSERTIONS)
+		if (OpenlletOptions.KEEP_ABOX_ASSERTIONS)
 		{
 			final ATermAppl typeAxiom = ATermUtils.makeTypeAtom(ind, c);
 			_aboxAssertions.remove(AssertionType.TYPE, typeAxiom);
@@ -1922,7 +1922,7 @@ public class KnowledgeBase
 						// RBox did not change since classification
 						&& !isRBoxChanged()
 						// there are no nominals
-						&& (!_expChecker.getExpressivity().hasNominal() || PelletOptions.USE_PSEUDO_NOMINALS);
+						&& (!_expChecker.getExpressivity().hasNominal() || OpenlletOptions.USE_PSEUDO_NOMINALS);
 
 		if (isRBoxChanged())
 		{
@@ -1974,7 +1974,7 @@ public class KnowledgeBase
 		}
 
 		_abox.clearCaches(!reuseTaxonomy);
-		_abox._cache.setMaxSize(PelletOptions.MAX_ANONYMOUS_CACHE);
+		_abox._cache.setMaxSize(OpenlletOptions.MAX_ANONYMOUS_CACHE);
 
 		if (!reuseTaxonomy)
 		{
@@ -2143,17 +2143,17 @@ public class KnowledgeBase
 
 		final boolean doExplanation = _abox.doExplanation();
 
-		if (PelletOptions.USE_TRACING && !_explainOnlyInconsistency)
+		if (OpenlletOptions.USE_TRACING && !_explainOnlyInconsistency)
 			_abox.setDoExplanation(true);
 
 		// perform the consistency check
 		_consistent = _canUseIncConsistency ? _abox.isIncConsistent() : _abox.isConsistent();
 
 		// final clean up
-		if (PelletOptions.USE_INCREMENTAL_CONSISTENCY)
+		if (OpenlletOptions.USE_INCREMENTAL_CONSISTENCY)
 			_abox.getIncrementalChangeTracker().clear();
 
-		if (PelletOptions.USE_INCREMENTAL_DELETION)
+		if (OpenlletOptions.USE_INCREMENTAL_DELETION)
 			getDeletedAssertions().clear();
 
 		if (!_consistent)
@@ -2173,7 +2173,7 @@ public class KnowledgeBase
 			// but only if we can generate it (i.e. tracing is turned on) and
 			// we haven't already done so (i.e. doExplanation flag was false at
 			// the beginning)
-			if (PelletOptions.USE_TRACING && _explainOnlyInconsistency && !_abox.doExplanation())
+			if (OpenlletOptions.USE_TRACING && _explainOnlyInconsistency && !_abox.doExplanation())
 			{
 				_abox.setDoExplanation(true);
 
@@ -2186,7 +2186,7 @@ public class KnowledgeBase
 			if (_logger.isLoggable(Level.FINE))
 				_logger.fine("Inconsistent ontology. Reason: " + getExplanation());
 
-			if (PelletOptions.USE_TRACING && _logger.isLoggable(Level.FINE))
+			if (OpenlletOptions.USE_TRACING && _logger.isLoggable(Level.FINE))
 				_logger.fine(renderExplanationSet());
 		}
 
@@ -2239,7 +2239,7 @@ public class KnowledgeBase
 	public void ensureConsistency()
 	{
 		if (!isConsistent())
-			throw new InconsistentOntologyException("Cannot do reasoning with inconsistent ontologies!\n" + "Reason for inconsistency: " + getExplanation() + (PelletOptions.USE_TRACING ? "\n" + renderExplanationSet() : ""));
+			throw new InconsistentOntologyException("Cannot do reasoning with inconsistent ontologies!\n" + "Reason for inconsistency: " + getExplanation() + (OpenlletOptions.USE_TRACING ? "\n" + renderExplanationSet() : ""));
 	}
 
 	public void classify()
@@ -3596,12 +3596,12 @@ public class KnowledgeBase
 			return Collections.emptySet();
 		}
 
-		if (PelletOptions.AUTO_REALIZE)
+		if (OpenlletOptions.AUTO_REALIZE)
 			realize();
 
 		Set<Set<ATermAppl>> types = isClassified() ? getPrimitiveTypes(ind, direct) : Collections.<Set<ATermAppl>> emptySet();
 
-		if (types.isEmpty() && !PelletOptions.AUTO_REALIZE)
+		if (types.isEmpty() && !OpenlletOptions.AUTO_REALIZE)
 		{
 			classify();
 			_builder.realize(ind);
@@ -4168,7 +4168,7 @@ public class KnowledgeBase
 		if (role.isTop())
 		{
 			final List<ATermAppl> literals = new ArrayList<>();
-			if (!PelletOptions.HIDE_TOP_PROPERTY_VALUES)
+			if (!OpenlletOptions.HIDE_TOP_PROPERTY_VALUES)
 				for (final Node node : _abox.getNodes())
 					if (node.isLiteral() && node.getTerm() != null)
 						literals.add(node.getTerm());
@@ -4250,7 +4250,7 @@ public class KnowledgeBase
 
 		if (role.isTop())
 		{
-			if (!PelletOptions.HIDE_TOP_PROPERTY_VALUES)
+			if (!OpenlletOptions.HIDE_TOP_PROPERTY_VALUES)
 				knowns = getIndividuals();
 		}
 		else
@@ -4506,11 +4506,11 @@ public class KnowledgeBase
 				}
 
 				if (!unknowns.isEmpty())
-					if (PelletOptions.INSTANCE_RETRIEVAL == InstanceRetrievalMethod.TRACING_BASED && PelletOptions.USE_TRACING)
+					if (OpenlletOptions.INSTANCE_RETRIEVAL == InstanceRetrievalMethod.TRACING_BASED && OpenlletOptions.USE_TRACING)
 						tracingBasedInstanceRetrieval(c, unknowns, knowns);
 					else
 						if (_abox.isType(unknowns, c))
-							if (PelletOptions.INSTANCE_RETRIEVAL == InstanceRetrievalMethod.BINARY)
+							if (OpenlletOptions.INSTANCE_RETRIEVAL == InstanceRetrievalMethod.BINARY)
 								binaryInstanceRetrieval(c, unknowns, knowns);
 							else
 								linearInstanceRetrieval(c, unknowns, knowns);
@@ -4521,7 +4521,7 @@ public class KnowledgeBase
 
 		final Set<ATermAppl> result = Collections.unmodifiableSet(new HashSet<>(knowns));
 
-		if (PelletOptions.CACHE_RETRIEVAL)
+		if (OpenlletOptions.CACHE_RETRIEVAL)
 			_instances.put(c, result);
 
 		return result;
@@ -4768,7 +4768,7 @@ public class KnowledgeBase
 		if (getRules().size() > 0 && (expressivity.hasNominal() || !conceptSatisfiability))
 			return new ContinuousRulesStrategy(abox);
 
-		final boolean fullDatatypeReasoning = PelletOptions.USE_FULL_DATATYPE_REASONING && (expressivity.hasCardinalityD() || expressivity.hasKeys());
+		final boolean fullDatatypeReasoning = OpenlletOptions.USE_FULL_DATATYPE_REASONING && (expressivity.hasCardinalityD() || expressivity.hasKeys());
 
 		if (!fullDatatypeReasoning)
 			if (conceptSatisfiability && !expressivity.hasNominal())
@@ -4813,7 +4813,7 @@ public class KnowledgeBase
 		{
 			prepare();
 
-			if (_expChecker.getExpressivity().isEL() && !PelletOptions.DISABLE_EL_CLASSIFIER)
+			if (_expChecker.getExpressivity().isEL() && !OpenlletOptions.DISABLE_EL_CLASSIFIER)
 				_builder = new SimplifiedELClassifier();
 			else
 				_builder = new CDOptimizedTaxonomyBuilder();
@@ -4977,11 +4977,11 @@ public class KnowledgeBase
 		if (expressivity == null)
 			return false;
 
-		final boolean canUseIncConsistency = !(expressivity.hasNominal() && expressivity.hasInverse()) && getRules().isEmpty() && !isTBoxChanged() && !isRBoxChanged() && _abox.isComplete() && PelletOptions.USE_INCREMENTAL_CONSISTENCY &&
+		final boolean canUseIncConsistency = !(expressivity.hasNominal() && expressivity.hasInverse()) && getRules().isEmpty() && !isTBoxChanged() && !isRBoxChanged() && _abox.isComplete() && OpenlletOptions.USE_INCREMENTAL_CONSISTENCY &&
 		// support additions only; also support deletions with or with
 		// additions, however tracing must be on to support incremental
 		// deletions
-				(!_changes.contains(ChangeType.ABOX_DEL) || PelletOptions.USE_INCREMENTAL_DELETION);
+				(!_changes.contains(ChangeType.ABOX_DEL) || OpenlletOptions.USE_INCREMENTAL_DELETION);
 
 		return canUseIncConsistency;
 	}
@@ -5009,7 +5009,7 @@ public class KnowledgeBase
 						if (isRBoxChanged())
 							msg += "RBox changed";
 						else
-							if (PelletOptions.USE_INCREMENTAL_CONSISTENCY)
+							if (OpenlletOptions.USE_INCREMENTAL_CONSISTENCY)
 								msg += "configuration option USE_INCREMENTAL_CONSISTENCY is not enabled";
 							else
 								if (aboxDeletion)
@@ -5042,7 +5042,7 @@ public class KnowledgeBase
 
 	protected static void handleUndefinedEntity(final String s)
 	{
-		if (!PelletOptions.SILENT_UNDEFINED_ENTITY_HANDLING)
+		if (!OpenlletOptions.SILENT_UNDEFINED_ENTITY_HANDLING)
 			throw new UndefinedEntityException(s);
 	}
 

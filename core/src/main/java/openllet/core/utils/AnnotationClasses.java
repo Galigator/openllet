@@ -12,7 +12,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import openllet.aterm.ATermAppl;
-import openllet.core.PelletOptions;
+import openllet.core.OpenlletOptions;
 
 /**
  * In some ontologies, such as the ones from OBO, annotations may be nested and contain type assertions on annotation values. Such type assertions will be
@@ -57,7 +57,7 @@ public class AnnotationClasses
 	 */
 	public static boolean contains(final ATermAppl cls)
 	{
-		return PelletOptions.IGNORE_ANNOTATION_CLASSES && INSTANCE.contains(cls);
+		return OpenlletOptions.IGNORE_ANNOTATION_CLASSES && INSTANCE.contains(cls);
 	}
 
 	/**

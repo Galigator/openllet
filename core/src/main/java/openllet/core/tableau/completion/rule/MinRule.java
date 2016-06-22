@@ -13,7 +13,7 @@ import openllet.aterm.ATermInt;
 import openllet.core.DependencySet;
 import openllet.core.Individual;
 import openllet.core.Node;
-import openllet.core.PelletOptions;
+import openllet.core.OpenlletOptions;
 import openllet.core.Role;
 import openllet.core.tableau.completion.CompletionStrategy;
 import openllet.core.tableau.completion.queue.NodeSelector;
@@ -79,7 +79,7 @@ public class MinRule extends AbstractTableauRule
 
 		final DependencySet ds = x.getDepends(mc);
 
-		if (!PelletOptions.MAINTAIN_COMPLETION_QUEUE && ds == null)
+		if (!OpenlletOptions.MAINTAIN_COMPLETION_QUEUE && ds == null)
 			return;
 
 		if (_logger.isLoggable(Level.FINE))

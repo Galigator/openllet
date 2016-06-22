@@ -209,14 +209,14 @@ public class ABox
 		_toBeMerged = new ArrayList<>();
 		_rulesNotApplied = true;
 
-		if (PelletOptions.TRACK_BRANCH_EFFECTS)
+		if (OpenlletOptions.TRACK_BRANCH_EFFECTS)
 			_branchEffects = new SimpleBranchEffectTracker();
 		else
 			_branchEffects = null;
 
-		if (PelletOptions.USE_COMPLETION_QUEUE)
+		if (OpenlletOptions.USE_COMPLETION_QUEUE)
 		{
-			if (PelletOptions.USE_OPTIMIZED_BASIC_COMPLETION_QUEUE)
+			if (OpenlletOptions.USE_OPTIMIZED_BASIC_COMPLETION_QUEUE)
 				_completionQueue = new OptimizedBasicCompletionQueue(this);
 			else
 				_completionQueue = new BasicCompletionQueue(this);
@@ -224,7 +224,7 @@ public class ABox
 		else
 			_completionQueue = null;
 
-		if (PelletOptions.USE_INCREMENTAL_CONSISTENCY)
+		if (OpenlletOptions.USE_INCREMENTAL_CONSISTENCY)
 			_incChangeTracker = new SimpleIncrementalChangeTracker();
 		else
 			_incChangeTracker = null;
@@ -251,7 +251,7 @@ public class ABox
 		_nodes = new HashMap<>(nodeCount);
 		_nodeList = new ArrayList<>(nodeCount);
 
-		if (PelletOptions.TRACK_BRANCH_EFFECTS)
+		if (OpenlletOptions.TRACK_BRANCH_EFFECTS)
 		{
 			if (copyIndividuals)
 				_branchEffects = abox._branchEffects.copy();
@@ -263,7 +263,7 @@ public class ABox
 
 		// copy the _queue - this must be done early so that the effects of
 		// adding the extra _individual do not get removed
-		if (PelletOptions.USE_COMPLETION_QUEUE)
+		if (OpenlletOptions.USE_COMPLETION_QUEUE)
 		{
 			if (copyIndividuals)
 			{
@@ -271,7 +271,7 @@ public class ABox
 				_completionQueue.setABox(this);
 			}
 			else
-				if (PelletOptions.USE_OPTIMIZED_BASIC_COMPLETION_QUEUE)
+				if (OpenlletOptions.USE_OPTIMIZED_BASIC_COMPLETION_QUEUE)
 					_completionQueue = new OptimizedBasicCompletionQueue(this);
 				else
 					_completionQueue = new BasicCompletionQueue(this);
@@ -288,7 +288,7 @@ public class ABox
 			_nodes.put(extraIndividual, n);
 			_nodeList.add(extraIndividual);
 
-			if (PelletOptions.COPY_ON_WRITE)
+			if (OpenlletOptions.COPY_ON_WRITE)
 				_sourceABox = abox;
 		}
 
@@ -320,7 +320,7 @@ public class ABox
 
 		// Copy of the _incChangeTracker looks up _nodes in the new ABox, so this
 		// copy must follow _node copying
-		if (PelletOptions.USE_INCREMENTAL_CONSISTENCY)
+		if (OpenlletOptions.USE_INCREMENTAL_CONSISTENCY)
 		{
 			if (copyIndividuals)
 				_incChangeTracker = abox._incChangeTracker.copy(this);
@@ -537,7 +537,7 @@ public class ABox
 
 	public boolean isSatisfiable(final ATermAppl c)
 	{
-		final boolean cacheModel = PelletOptions.USE_CACHING && (ATermUtils.isPrimitiveOrNegated(c) || PelletOptions.USE_ADVANCED_CACHING);
+		final boolean cacheModel = OpenlletOptions.USE_CACHING && (ATermUtils.isPrimitiveOrNegated(c) || OpenlletOptions.USE_ADVANCED_CACHING);
 		return isSatisfiable(c, cacheModel);
 	}
 
@@ -789,7 +789,7 @@ public class ABox
 		if (cached != null && cached.isComplete())
 			isType = _cache.isMergable(_kb, pNode, cached).not();
 
-		if (PelletOptions.CHECK_NOMINAL_EDGES && isType.isUnknown())
+		if (OpenlletOptions.CHECK_NOMINAL_EDGES && isType.isUnknown())
 		{
 			final CachedNode cNode = getCached(c);
 			if (cNode != null)
@@ -1334,7 +1334,7 @@ public class ABox
 
 		// Check if there are any nominals in the KB or nominal
 		// reasoning is disabled
-		final boolean hasNominal = expr.hasNominal() && !PelletOptions.USE_PSEUDO_NOMINALS;
+		final boolean hasNominal = expr.hasNominal() && !OpenlletOptions.USE_PSEUDO_NOMINALS;
 
 		// Use empty model only if this is concept satisfiability for a KB
 		// where there are no nominals
@@ -1396,7 +1396,7 @@ public class ABox
 			_lastClash = abox.getClash();
 			if (_logger.isLoggable(Level.FINE))
 				_logger.fine("Clash: " + abox.getClash().detailedString());
-			if (_doExplanation && PelletOptions.USE_TRACING)
+			if (_doExplanation && OpenlletOptions.USE_TRACING)
 			{
 				if (individuals.size() == 1)
 				{
@@ -1532,7 +1532,7 @@ public class ABox
 
 	public void addType(final ATermAppl x, final ATermAppl c)
 	{
-		final DependencySet ds = PelletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeTypeAtom(x, c)) : DependencySet.INDEPENDENT;
+		final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeTypeAtom(x, c)) : DependencySet.INDEPENDENT;
 
 		addType(x, c, ds);
 	}
@@ -1696,7 +1696,7 @@ public class ABox
 			catch (final InvalidLiteralException e)
 			{
 				final String msg = format("Attempt to create an invalid literal (%s): %s", dataValue, e.getMessage());
-				if (PelletOptions.INVALID_LITERAL_AS_INCONSISTENCY)
+				if (OpenlletOptions.INVALID_LITERAL_AS_INCONSISTENCY)
 				{
 					_logger.fine(msg);
 					name = dataValue;
@@ -1719,14 +1719,14 @@ public class ABox
 			if (node instanceof Literal)
 			{
 
-				if (((Literal) node).getValue() == null && PelletOptions.USE_COMPLETION_QUEUE)
+				if (((Literal) node).getValue() == null && OpenlletOptions.USE_COMPLETION_QUEUE)
 				{
 					// added for completion _queue
 					final QueueElement newElement = new QueueElement(node);
 					_completionQueue.add(newElement, NodeSelector.LITERAL);
 				}
 
-				if (getBranch() >= 0 && PelletOptions.TRACK_BRANCH_EFFECTS)
+				if (getBranch() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
 					_branchEffects.add(getBranch(), node.getName());
 
 				return (Literal) node;
@@ -1752,14 +1752,14 @@ public class ABox
 		_nodes.put(name, lit);
 		_nodeList.add(name);
 
-		if (lit.getValue() == null && PelletOptions.USE_COMPLETION_QUEUE)
+		if (lit.getValue() == null && OpenlletOptions.USE_COMPLETION_QUEUE)
 		{
 			// added for completion _queue
 			final QueueElement newElement = new QueueElement(lit);
 			_completionQueue.add(newElement, NodeSelector.LITERAL);
 		}
 
-		if (getBranch() >= 0 && PelletOptions.TRACK_BRANCH_EFFECTS)
+		if (getBranch() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
 			_branchEffects.add(getBranch(), lit.getName());
 
 		return lit;
@@ -1770,7 +1770,7 @@ public class ABox
 		final Individual ind = addIndividual(x, null, ds);
 
 		// update affected inds for this _branch
-		if (getBranch() >= 0 && PelletOptions.TRACK_BRANCH_EFFECTS)
+		if (getBranch() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
 			_branchEffects.add(getBranch(), ind.getName());
 
 		return ind;
@@ -1810,7 +1810,7 @@ public class ABox
 		//this must be performed after the _nodeList is updated as this call will update the completion queues
 		n.addType(ATermUtils.TOP, ds);
 
-		if (getBranch() > 0 && PelletOptions.TRACK_BRANCH_EFFECTS)
+		if (getBranch() > 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
 			_branchEffects.add(getBranch(), n.getName());
 
 		return n;
@@ -1830,10 +1830,10 @@ public class ABox
 		// dependency _index
 		// now, as it will be added during the actual merge when the completion
 		// is performed
-		if (PelletOptions.USE_INCREMENTAL_DELETION)
+		if (OpenlletOptions.USE_INCREMENTAL_DELETION)
 			_kb.getSyntacticAssertions().add(sameAxiom);
 
-		final DependencySet ds = PelletOptions.USE_TRACING ? new DependencySet(sameAxiom) : DependencySet.INDEPENDENT;
+		final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(sameAxiom) : DependencySet.INDEPENDENT;
 		getToBeMerged().add(new NodeMerge(ind1, ind2, ds));
 	}
 
@@ -1847,12 +1847,12 @@ public class ABox
 		// update syntactic assertions - currently i do not add this to the
 		// dependency _index
 		// now, as it will simply be used during the completion _strategy
-		if (PelletOptions.USE_INCREMENTAL_DELETION)
+		if (OpenlletOptions.USE_INCREMENTAL_DELETION)
 			_kb.getSyntacticAssertions().add(diffAxiom);
 
 		// ind1.setDifferent(ind2, new
 		// DependencySet(explanationTable.getCurrent()));
-		final DependencySet ds = PelletOptions.USE_TRACING ? new DependencySet(diffAxiom) : DependencySet.INDEPENDENT;
+		final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(diffAxiom) : DependencySet.INDEPENDENT;
 
 		// Temporarily reset the _branch so that this assertion survives resets
 		final int remember = _branch;
@@ -1879,10 +1879,10 @@ public class ABox
 				// the dependency _index
 				// now, as it will be added during the actual merge when the
 				// completion is performed
-				if (PelletOptions.USE_INCREMENTAL_DELETION)
+				if (OpenlletOptions.USE_INCREMENTAL_DELETION)
 					_kb.getSyntacticAssertions().add(allDifferent);
 
-				final DependencySet ds = PelletOptions.USE_TRACING ? new DependencySet(allDifferent) : DependencySet.INDEPENDENT;
+				final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(allDifferent) : DependencySet.INDEPENDENT;
 
 				final int remember = _branch;
 				setBranch(DependencySet.NO_BRANCH);
@@ -1958,7 +1958,7 @@ public class ABox
 	 */
 	public boolean isClosed()
 	{
-		return !PelletOptions.SATURATE_TABLEAU && _initialized && _clash != null;
+		return !OpenlletOptions.SATURATE_TABLEAU && _initialized && _clash != null;
 	}
 
 	public Clash getClash()
@@ -1992,7 +1992,7 @@ public class ABox
 
 		_clash = clash;
 		// CHW - added for incremental deletions
-		if (PelletOptions.USE_INCREMENTAL_DELETION)
+		if (OpenlletOptions.USE_INCREMENTAL_DELETION)
 			_kb.getDependencyIndex().setClashDependencies(_clash);
 
 	}
@@ -2057,7 +2057,7 @@ public class ABox
 	public void incrementBranch()
 	{
 
-		if (PelletOptions.USE_COMPLETION_QUEUE)
+		if (OpenlletOptions.USE_COMPLETION_QUEUE)
 			_completionQueue.incrementBranch(_branch);
 
 		_branch++;
@@ -2160,7 +2160,7 @@ public class ABox
 	 */
 	public void validate()
 	{
-		if (!PelletOptions.VALIDATE_ABOX)
+		if (!OpenlletOptions.VALIDATE_ABOX)
 			return;
 		System.out.print("VALIDATING...");
 		final Iterator<Individual> n = getIndIterator();
@@ -2217,7 +2217,7 @@ public class ABox
 		for (final ATermAppl c : node.getDepends().keySet())
 		{
 			final DependencySet ds = node.getDepends(c);
-			if (ds.max() > _branch || (!PelletOptions.USE_SMART_RESTORE && ds.getBranch() > _branch))
+			if (ds.max() > _branch || (!OpenlletOptions.USE_SMART_RESTORE && ds.getBranch() > _branch))
 				throw new InternalReasonerException("Invalid ds found: " + node + " " + c + " " + ds + " " + _branch);
 			// if( c.getAFun().equals( ATermUtils.VALUEFUN ) ) {
 			// if( !PelletOptions.USE_PSEUDO_NOMINALS ) {
@@ -2269,7 +2269,7 @@ public class ABox
 	 */
 	public void printTree()
 	{
-		if (!PelletOptions.PRINT_ABOX)
+		if (!OpenlletOptions.PRINT_ABOX)
 			return;
 		System.err.println("PRINTING... " + DependencySet.INDEPENDENT);
 		final Iterator<Node> n = _nodes.values().iterator();

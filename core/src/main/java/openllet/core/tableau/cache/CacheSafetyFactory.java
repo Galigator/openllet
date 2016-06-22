@@ -6,7 +6,7 @@
 
 package openllet.core.tableau.cache;
 
-import openllet.core.PelletOptions;
+import openllet.core.OpenlletOptions;
 import openllet.core.expressivity.Expressivity;
 
 /**
@@ -29,7 +29,7 @@ public class CacheSafetyFactory
 {
 	public static CacheSafety createCacheSafety(final Expressivity expr)
 	{
-		final CacheSafety cacheSafety = expr.hasInverse() ? expr.hasNominal() ? CacheSafetyNeverSafe.getInstance() : PelletOptions.USE_INVERSE_CACHING ? new CacheSafetyDynamic(expr) : CacheSafetyNeverSafe.getInstance() : expr.hasNominal() ? CacheSafetyNeverSafe.getInstance() : CacheSafetyAlwaysSafe.getInstance();
+		final CacheSafety cacheSafety = expr.hasInverse() ? expr.hasNominal() ? CacheSafetyNeverSafe.getInstance() : OpenlletOptions.USE_INVERSE_CACHING ? new CacheSafetyDynamic(expr) : CacheSafetyNeverSafe.getInstance() : expr.hasNominal() ? CacheSafetyNeverSafe.getInstance() : CacheSafetyAlwaysSafe.getInstance();
 
 		return cacheSafety;
 	}

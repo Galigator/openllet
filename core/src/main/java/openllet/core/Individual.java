@@ -199,7 +199,7 @@ public class Individual extends Node implements CachedNode
 	@Override
 	public boolean isDifferent(final Node node)
 	{
-		if (PelletOptions.USE_UNIQUE_NAME_ASSUMPTION)
+		if (OpenlletOptions.USE_UNIQUE_NAME_ASSUMPTION)
 			if (isNamedIndividual() && node.isNamedIndividual())
 				return !_name.equals(node._name);
 
@@ -215,7 +215,7 @@ public class Individual extends Node implements CachedNode
 	@Override
 	public DependencySet getDifferenceDependency(final Node node)
 	{
-		if (PelletOptions.USE_UNIQUE_NAME_ASSUMPTION)
+		if (OpenlletOptions.USE_UNIQUE_NAME_ASSUMPTION)
 			if (isNamedIndividual() && node.isNamedIndividual())
 				return DependencySet.INDEPENDENT;
 
@@ -293,7 +293,7 @@ public class Individual extends Node implements CachedNode
 		_abox.setChanged(true);
 
 		// add to effected list
-		if (_abox.getBranch() >= 0 && PelletOptions.TRACK_BRANCH_EFFECTS)
+		if (_abox.getBranch() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
 			_abox.getBranchEffectTracker().add(_abox.getBranch(), getName());
 
 		//create new _queue element
@@ -314,7 +314,7 @@ public class Individual extends Node implements CachedNode
 			setChanged(ATOM);
 			_types[ATOM].add(c);
 
-			if (PelletOptions.USE_COMPLETION_QUEUE)
+			if (OpenlletOptions.USE_COMPLETION_QUEUE)
 				//update completion _queue
 				_abox.getCompletionQueue().add(qElement, NodeSelector.ATOM);
 		}
@@ -332,7 +332,7 @@ public class Individual extends Node implements CachedNode
 					setChanged(ALL);
 					_types[ALL].add(c);
 
-					if (PelletOptions.USE_COMPLETION_QUEUE)
+					if (OpenlletOptions.USE_COMPLETION_QUEUE)
 						//update completion _queue
 						_abox.getCompletionQueue().add(qElement, NodeSelector.UNIVERSAL);
 				}
@@ -344,7 +344,7 @@ public class Individual extends Node implements CachedNode
 							_types[MIN].add(c);
 							setChanged(MIN);
 
-							if (PelletOptions.USE_COMPLETION_QUEUE)
+							if (OpenlletOptions.USE_COMPLETION_QUEUE)
 								//update completion _queue
 								_abox.getCompletionQueue().add(qElement, NodeSelector.MIN_NUMBER);
 
@@ -365,7 +365,7 @@ public class Individual extends Node implements CachedNode
 								setChanged(OR);
 								_types[OR].add(c);
 
-								if (PelletOptions.USE_COMPLETION_QUEUE)
+								if (OpenlletOptions.USE_COMPLETION_QUEUE)
 									//update completion _queue
 									_abox.getCompletionQueue().add(qElement, NodeSelector.DISJUNCTION);
 							}
@@ -375,7 +375,7 @@ public class Individual extends Node implements CachedNode
 									setChanged(SOME);
 									_types[SOME].add(c);
 
-									if (PelletOptions.USE_COMPLETION_QUEUE)
+									if (OpenlletOptions.USE_COMPLETION_QUEUE)
 										//update completion _queue
 										_abox.getCompletionQueue().add(qElement, NodeSelector.EXISTENTIAL);
 								}
@@ -387,7 +387,7 @@ public class Individual extends Node implements CachedNode
 											_types[MAX].add(c);
 											setChanged(MAX);
 
-											if (PelletOptions.USE_COMPLETION_QUEUE)
+											if (OpenlletOptions.USE_COMPLETION_QUEUE)
 											{
 												//update completion _queue
 												_abox.getCompletionQueue().add(qElement, NodeSelector.MAX_NUMBER);
@@ -409,7 +409,7 @@ public class Individual extends Node implements CachedNode
 											setChanged(ATOM);
 											_types[ATOM].add(c);
 
-											if (PelletOptions.USE_COMPLETION_QUEUE)
+											if (OpenlletOptions.USE_COMPLETION_QUEUE)
 												//update completion _queue
 												_abox.getCompletionQueue().add(qElement, NodeSelector.ATOM);
 										}
@@ -432,7 +432,7 @@ public class Individual extends Node implements CachedNode
 													setChanged(ATOM);
 													_types[ATOM].add(c);
 
-													if (PelletOptions.USE_COMPLETION_QUEUE)
+													if (OpenlletOptions.USE_COMPLETION_QUEUE)
 														//update completion _queue
 														_abox.getCompletionQueue().add(qElement, NodeSelector.ATOM);
 												}
@@ -445,7 +445,7 @@ public class Individual extends Node implements CachedNode
 								setChanged(NOM);
 								_types[NOM].add(c);
 
-								if (PelletOptions.USE_COMPLETION_QUEUE)
+								if (OpenlletOptions.USE_COMPLETION_QUEUE)
 									//update completion _queue
 									_abox.getCompletionQueue().add(qElement, NodeSelector.NOMINAL);
 							}
@@ -1060,7 +1060,7 @@ public class Individual extends Node implements CachedNode
 	{
 
 		// add these _nodes to the effected list
-		if (_abox.getBranch() > 0 && PelletOptions.TRACK_BRANCH_EFFECTS)
+		if (_abox.getBranch() > 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
 		{
 			_abox.getBranchEffectTracker().add(_abox.getBranch(), getName());
 			_abox.getBranchEffectTracker().add(_abox.getBranch(), x.getName());
@@ -1196,13 +1196,13 @@ public class Individual extends Node implements CachedNode
 
 				restored = true;
 				removed = true;
-				if (PelletOptions.USE_INCREMENTAL_CONSISTENCY)
+				if (OpenlletOptions.USE_INCREMENTAL_CONSISTENCY)
 					_abox.getIncrementalChangeTracker().addDeletedEdge(e);
 			}
 		}
 
 		//if we removed an edge the update the _queue
-		if (removed && PelletOptions.USE_COMPLETION_QUEUE)
+		if (removed && OpenlletOptions.USE_COMPLETION_QUEUE)
 		{
 			_abox.getCompletionQueue().add(new QueueElement(this), NodeSelector.EXISTENTIAL);
 			_abox.getCompletionQueue().add(new QueueElement(this), NodeSelector.MIN_NUMBER);
@@ -1252,7 +1252,7 @@ public class Individual extends Node implements CachedNode
 	{
 
 		// add to effected list
-		if (_abox.getBranch() >= 0 && PelletOptions.TRACK_BRANCH_EFFECTS)
+		if (_abox.getBranch() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
 			_abox.getBranchEffectTracker().add(_abox.getBranch(), getName());
 
 		pruned = ds;
@@ -1294,13 +1294,13 @@ public class Individual extends Node implements CachedNode
 					succ.addInEdge(edge);
 
 					// update affected
-					if (PelletOptions.TRACK_BRANCH_EFFECTS)
+					if (OpenlletOptions.TRACK_BRANCH_EFFECTS)
 					{
 						_abox.getBranchEffectTracker().add(d.getBranch(), succ._name);
 						_abox.getBranchEffectTracker().add(d.getBranch(), _name);
 					}
 
-					if (PelletOptions.USE_COMPLETION_QUEUE)
+					if (OpenlletOptions.USE_COMPLETION_QUEUE)
 					{
 						added = true;
 

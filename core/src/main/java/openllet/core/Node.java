@@ -201,11 +201,11 @@ public abstract class Node
 		final QueueElement newElement = new QueueElement(this);
 
 		//update the datatype _queue
-		if ((type == Node.ALL || type == Node.MIN) && PelletOptions.USE_COMPLETION_QUEUE)
+		if ((type == Node.ALL || type == Node.MIN) && OpenlletOptions.USE_COMPLETION_QUEUE)
 			_abox.getCompletionQueue().add(newElement, NodeSelector.DATATYPE);
 
 		// add _node to effected list
-		if (_abox.getBranch() >= 0 && PelletOptions.TRACK_BRANCH_EFFECTS)
+		if (_abox.getBranch() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
 			_abox.getBranchEffectTracker().add(_abox.getBranch(), this.getName());
 	}
 
@@ -277,7 +277,7 @@ public abstract class Node
 	{
 		assert onlyApplyTypes || isRootNominal() : "Only asserted individuals can be reset: " + this;
 
-		if (PelletOptions.USE_COMPLETION_QUEUE)
+		if (OpenlletOptions.USE_COMPLETION_QUEUE)
 			_abox.getCompletionQueue().add(new QueueElement(this));
 
 		if (onlyApplyTypes)
@@ -317,7 +317,7 @@ public abstract class Node
 	public Boolean restorePruned(final int branch)
 	{
 
-		if (PelletOptions.TRACK_BRANCH_EFFECTS)
+		if (OpenlletOptions.TRACK_BRANCH_EFFECTS)
 			_abox.getBranchEffectTracker().add(_abox.getBranch(), _name);
 
 		if (pruned != null)
@@ -331,7 +331,7 @@ public abstract class Node
 
 				unprune(branch);
 
-				if (PelletOptions.USE_INCREMENTAL_CONSISTENCY)
+				if (OpenlletOptions.USE_INCREMENTAL_CONSISTENCY)
 					_abox.getIncrementalChangeTracker().addUnprunedNode(this);
 
 				// we may need to remerge this _node
@@ -339,7 +339,7 @@ public abstract class Node
 				{
 					final Individual ind = (Individual) this;
 
-					if (PelletOptions.USE_COMPLETION_QUEUE)
+					if (OpenlletOptions.USE_COMPLETION_QUEUE)
 					{
 						ind._applyNext[Node.NOM] = 0;
 						_abox.getCompletionQueue().add(new QueueElement(this), NodeSelector.NOMINAL);
@@ -363,7 +363,7 @@ public abstract class Node
 	public boolean restore(final int branch)
 	{
 
-		if (PelletOptions.TRACK_BRANCH_EFFECTS)
+		if (OpenlletOptions.TRACK_BRANCH_EFFECTS)
 			_abox.getBranchEffectTracker().add(_abox.getBranch(), _name);
 
 		boolean restored = false;
@@ -377,7 +377,7 @@ public abstract class Node
 			final ATermAppl c = i.next();
 			final DependencySet d = getDepends(c);
 
-			final boolean removeType = PelletOptions.USE_SMART_RESTORE
+			final boolean removeType = OpenlletOptions.USE_SMART_RESTORE
 					//                ? ( !d.contains( _branch ) )
 					? (d.max() >= branch)
 							: (d.getBranch() > branch);
@@ -390,7 +390,7 @@ public abstract class Node
 							_logger.fine("RESTORE: " + this + " remove type " + c + " " + d + " " + branch);
 
 						//track that this _node is affected
-						if (PelletOptions.USE_INCREMENTAL_CONSISTENCY && this instanceof Individual)
+						if (OpenlletOptions.USE_INCREMENTAL_CONSISTENCY && this instanceof Individual)
 							_abox.getIncrementalChangeTracker().addDeletedType(this, c);
 
 						i.remove();
@@ -398,12 +398,12 @@ public abstract class Node
 						restored = true;
 					}
 					else
-						if (PelletOptions.USE_SMART_RESTORE && ATermUtils.isAnd(c))
+						if (OpenlletOptions.USE_SMART_RESTORE && ATermUtils.isAnd(c))
 							conjunctions.add(c);
 		}
 
 		//update the _queue with things that could readd this type
-		if (removed && PelletOptions.USE_COMPLETION_QUEUE && this instanceof Individual)
+		if (removed && OpenlletOptions.USE_COMPLETION_QUEUE && this instanceof Individual)
 		{
 			final Individual ind = (Individual) this;
 			ind._applyNext[Node.ATOM] = 0;
@@ -418,7 +418,7 @@ public abstract class Node
 		// but not the conjunction. this is the case if conjunct was added before
 		// the conjunction but depended on an earlier _branch. so we need to make
 		// sure all conjunctions are actually applied
-		if (PelletOptions.USE_SMART_RESTORE)
+		if (OpenlletOptions.USE_SMART_RESTORE)
 			for (final ATermAppl c : conjunctions)
 			{
 				final DependencySet d = getDepends(c);
@@ -456,7 +456,7 @@ public abstract class Node
 				if (_logger.isLoggable(Level.FINE))
 					_logger.fine("RESTORE: " + _name + " delete reverse edge " + e);
 
-				if (PelletOptions.USE_INCREMENTAL_CONSISTENCY)
+				if (OpenlletOptions.USE_INCREMENTAL_CONSISTENCY)
 					_abox.getIncrementalChangeTracker().addDeletedEdge(e);
 
 				i.remove();
@@ -465,7 +465,7 @@ public abstract class Node
 			}
 		}
 
-		if (removed && PelletOptions.USE_COMPLETION_QUEUE)
+		if (removed && OpenlletOptions.USE_COMPLETION_QUEUE)
 		{
 			final QueueElement qe = new QueueElement(this);
 			_abox.getCompletionQueue().add(qe, NodeSelector.EXISTENTIAL);
@@ -484,7 +484,7 @@ public abstract class Node
 				return;
 
 		// add to effected list
-		if (_abox.getBranch() >= 0 && PelletOptions.TRACK_BRANCH_EFFECTS)
+		if (_abox.getBranch() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
 			_abox.getBranchEffectTracker().add(_abox.getBranch(), this.getName());
 
 		int b = _abox.getBranch();
@@ -680,13 +680,13 @@ public abstract class Node
 					pred.addOutEdge(edge);
 
 					// update affected
-					if (PelletOptions.TRACK_BRANCH_EFFECTS)
+					if (OpenlletOptions.TRACK_BRANCH_EFFECTS)
 					{
 						_abox.getBranchEffectTracker().add(d.getBranch(), pred._name);
 						_abox.getBranchEffectTracker().add(d.getBranch(), _name);
 					}
 
-					if (PelletOptions.USE_COMPLETION_QUEUE)
+					if (OpenlletOptions.USE_COMPLETION_QUEUE)
 					{
 						added = true;
 						pred._applyNext[Node.MAX] = 0;
@@ -829,7 +829,7 @@ public abstract class Node
 		if (isDifferent(node))
 		{
 			//CHW - added for incremental reasoning support - this is needed as we will need to backjump if possible
-			if (PelletOptions.USE_INCREMENTAL_CONSISTENCY)
+			if (OpenlletOptions.USE_INCREMENTAL_CONSISTENCY)
 				_abox.setClash(Clash.nominal(this, ds.union(this._mergeDepends, _abox.doExplanation()).union(node._mergeDepends, _abox.doExplanation()), node.getName()));
 			else
 				_abox.setClash(Clash.nominal(this, ds, node.getName()));
@@ -867,7 +867,7 @@ public abstract class Node
 	{
 
 		// add to effected list
-		if (_abox.getBranch() >= 0 && PelletOptions.TRACK_BRANCH_EFFECTS)
+		if (_abox.getBranch() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
 			_abox.getBranchEffectTracker().add(_abox.getBranch(), node.getName());
 
 		if (isDifferent(node))

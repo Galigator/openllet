@@ -38,7 +38,7 @@ import java.util.logging.Logger;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
-import openllet.core.PelletOptions;
+import openllet.core.OpenlletOptions;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.OntBuilder;
 import openllet.jena.ModelExtractor.StatementType;
@@ -306,7 +306,7 @@ public class PelletInfGraph extends BaseInfGraph
 	@SuppressWarnings("deprecation")
 	public Graph getDeductionsGraph()
 	{
-		if (!PelletOptions.RETURN_DEDUCTIONS_GRAPH)
+		if (!OpenlletOptions.RETURN_DEDUCTIONS_GRAPH)
 			return null;
 
 		classify();

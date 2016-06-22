@@ -253,7 +253,7 @@ public class Role
 
 	public void addSubRole(final Role r)
 	{
-		final DependencySet ds = PelletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeSubProp(r.getName(), this.getName())) : DependencySet.INDEPENDENT;
+		final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeSubProp(r.getName(), this.getName())) : DependencySet.INDEPENDENT;
 		addSubRole(r, ds);
 	}
 
@@ -265,7 +265,7 @@ public class Role
 	 */
 	public void addSubRole(final Role r, final DependencySet ds)
 	{
-		if (PelletOptions.USE_TRACING && _explainSub.get(r.getName()) == null)
+		if (OpenlletOptions.USE_TRACING && _explainSub.get(r.getName()) == null)
 			_explainSub.put(r.getName(), ds);
 
 		_subRoles = SetUtils.add(r, _subRoles);
@@ -318,7 +318,7 @@ public class Role
 	 */
 	public void addSuperRole(final Role r)
 	{
-		final DependencySet ds = PelletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeSubProp(_name, r.getName())) : DependencySet.INDEPENDENT;
+		final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeSubProp(_name, r.getName())) : DependencySet.INDEPENDENT;
 		addSuperRole(r, ds);
 	}
 
@@ -583,7 +583,7 @@ public class Role
 
 	public void setTransitive(final boolean b)
 	{
-		final DependencySet ds = PelletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeTransitive(_name)) : DependencySet.INDEPENDENT;
+		final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeTransitive(_name)) : DependencySet.INDEPENDENT;
 
 		setTransitive(b, ds);
 	}

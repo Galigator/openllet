@@ -17,7 +17,7 @@ import openllet.core.Edge;
 import openllet.core.Individual;
 import openllet.core.Literal;
 import openllet.core.Node;
-import openllet.core.PelletOptions;
+import openllet.core.OpenlletOptions;
 import openllet.core.Role;
 import openllet.core.datatypes.exceptions.DatatypeReasonerException;
 import openllet.core.datatypes.exceptions.InvalidLiteralException;
@@ -133,7 +133,7 @@ public class DataSatisfiabilityRule extends AbstractTableauRule
 			catch (final InvalidLiteralException e)
 			{
 				final String msg = "Invalid literal encountered during satisfiability check: " + e.getMessage();
-				if (PelletOptions.INVALID_LITERAL_AS_INCONSISTENCY)
+				if (OpenlletOptions.INVALID_LITERAL_AS_INCONSISTENCY)
 				{
 					_logger.fine(msg);
 					for (final Node n : nodes)

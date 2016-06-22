@@ -56,11 +56,11 @@
 				<configuration>
 					<programs>
 						<program>
-							<mainClass>pellet.Pellet</mainClass>
-							<id>pellet</id>
+							<mainClass>openllet.Openllet</mainClass>
+							<id>openllet</id>
 						</program>
 					</programs>
-					<assembleDirectory>${project.build.directory}/pelletcli</assembleDirectory>
+					<assembleDirectory>${project.build.directory}/openlletcli</assembleDirectory>
 					<repositoryName>lib</repositoryName>
 					<repositoryLayout>flat</repositoryLayout>
 				</configuration>

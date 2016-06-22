@@ -15,7 +15,7 @@ import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
 import openllet.core.Individual;
 import openllet.core.Node;
-import openllet.core.PelletOptions;
+import openllet.core.OpenlletOptions;
 import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.tableau.branch.DisjunctionBranch;
 import openllet.core.tableau.completion.CompletionStrategy;
@@ -56,7 +56,7 @@ public class DisjunctionRule extends AbstractTableauRule
 		final int size = types.size();
 		final ATermAppl[] disjunctions = new ATermAppl[size - node._applyNext[Node.OR]];
 		types.subList(node._applyNext[Node.OR], size).toArray(disjunctions);
-		if (PelletOptions.USE_DISJUNCTION_SORTING != PelletOptions.NO_SORTING)
+		if (OpenlletOptions.USE_DISJUNCTION_SORTING != OpenlletOptions.NO_SORTING)
 			sortDisjunctions(node, disjunctions);
 
 		for (final ATermAppl disjunction : disjunctions)
@@ -71,14 +71,14 @@ public class DisjunctionRule extends AbstractTableauRule
 
 	private static void sortDisjunctions(final Individual node, final ATermAppl[] disjunctions)
 	{
-		if (PelletOptions.USE_DISJUNCTION_SORTING == PelletOptions.OLDEST_FIRST)
+		if (OpenlletOptions.USE_DISJUNCTION_SORTING == OpenlletOptions.OLDEST_FIRST)
 		{
 			final Comparator<ATermAppl> comparator = (d1, d2) -> node.getDepends(d1).max() - node.getDepends(d2).max();
 
 			Arrays.sort(disjunctions, comparator);
 		}
 		else
-			throw new InternalReasonerException("Unknown _disjunction sorting option " + PelletOptions.USE_DISJUNCTION_SORTING);
+			throw new InternalReasonerException("Unknown _disjunction sorting option " + OpenlletOptions.USE_DISJUNCTION_SORTING);
 	}
 
 	/**

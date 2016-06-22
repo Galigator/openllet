@@ -12,7 +12,7 @@ import openllet.core.ABox;
 import openllet.core.Clash;
 import openllet.core.DependencySet;
 import openllet.core.Individual;
-import openllet.core.PelletOptions;
+import openllet.core.OpenlletOptions;
 import openllet.core.Role;
 import openllet.core.tableau.completion.CompletionStrategy;
 import openllet.core.utils.ATermUtils;
@@ -129,7 +129,7 @@ public class GuessBranch extends IndividualBranch
 		ds = getCombinedClash();
 
 		//CHW - removed for rollback through deletions
-		if (!PelletOptions.USE_INCREMENTAL_DELETION)
+		if (!OpenlletOptions.USE_INCREMENTAL_DELETION)
 			ds.remove(getBranch());
 
 		_abox.setClash(Clash.unexplained(ind, ds));

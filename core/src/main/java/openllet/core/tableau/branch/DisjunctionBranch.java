@@ -39,7 +39,7 @@ import openllet.core.Clash;
 import openllet.core.DependencySet;
 import openllet.core.Individual;
 import openllet.core.Node;
-import openllet.core.PelletOptions;
+import openllet.core.OpenlletOptions;
 import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.tableau.completion.CompletionStrategy;
 import openllet.core.utils.ATermUtils;
@@ -130,7 +130,7 @@ public class DisjunctionBranch extends Branch
 		_abox.incrementBranch();
 
 		int[] stats = null;
-		if (PelletOptions.USE_DISJUNCT_SORTING)
+		if (OpenlletOptions.USE_DISJUNCT_SORTING)
 		{
 			stats = _abox.getDisjBranchStats().get(_disjunction);
 			if (stats == null)
@@ -172,26 +172,26 @@ public class DisjunctionBranch extends Branch
 		{
 			final ATermAppl d = _disj[getTryNext()];
 
-			if (PelletOptions.USE_SEMANTIC_BRANCHING)
+			if (OpenlletOptions.USE_SEMANTIC_BRANCHING)
 				for (int m = 0; m < getTryNext(); m++)
 					_strategy.addType(node, ATermUtils.negate(_disj[m]), _prevDS[m]);
 
 			DependencySet ds = null;
-			if (getTryNext() == getTryCount() - 1 && !PelletOptions.SATURATE_TABLEAU)
+			if (getTryNext() == getTryCount() - 1 && !OpenlletOptions.SATURATE_TABLEAU)
 			{
 				ds = getTermDepends();
 				for (int m = 0; m < getTryNext(); m++)
 					ds = ds.union(_prevDS[m], _abox.doExplanation());
 
 				//CHW - added for incremental reasoning and rollback through deletions
-				if (PelletOptions.USE_INCREMENTAL_DELETION)
+				if (OpenlletOptions.USE_INCREMENTAL_DELETION)
 					ds.setExplain(getTermDepends().getExplain());
 				else
 					ds.remove(getBranch());
 			}
 			else
 				//CHW - Changed for tracing purposes
-				if (PelletOptions.USE_INCREMENTAL_DELETION)
+				if (OpenlletOptions.USE_INCREMENTAL_DELETION)
 					ds = getTermDepends().union(new DependencySet(getBranch()), _abox.doExplanation());
 				else
 				{
@@ -206,7 +206,7 @@ public class DisjunctionBranch extends Branch
 				_logger.fine(getDebugMsg());
 
 			final ATermAppl notD = ATermUtils.negate(d);
-			DependencySet clashDepends = PelletOptions.SATURATE_TABLEAU ? null : node.getDepends(notD);
+			DependencySet clashDepends = OpenlletOptions.SATURATE_TABLEAU ? null : node.getDepends(notD);
 			if (clashDepends == null)
 			{
 				_strategy.addType(node, d, ds);
@@ -227,7 +227,7 @@ public class DisjunctionBranch extends Branch
 					_logger.fine("CLASH: Branch " + getBranch() + " " + clash + "!" + " " + clashDepends.getExplain());
 				}
 
-				if (PelletOptions.USE_DISJUNCT_SORTING)
+				if (OpenlletOptions.USE_DISJUNCT_SORTING)
 				{
 					if (stats == null)
 					{
@@ -277,7 +277,7 @@ public class DisjunctionBranch extends Branch
 						_abox.setClash(Clash.atomic(node, clashDepends.union(ds, _abox.doExplanation())));
 
 					//CHW - added for inc reasoning
-					if (PelletOptions.USE_INCREMENTAL_DELETION)
+					if (OpenlletOptions.USE_INCREMENTAL_DELETION)
 						_abox.getKB().getDependencyIndex().addCloseBranchDependency(this, _abox.getClash().getDepends());
 
 					return;
@@ -307,7 +307,7 @@ public class DisjunctionBranch extends Branch
 		//		DependencySet preDS = _prevDS[openIndex];
 
 		//TODO: also need to handle semantic branching
-		if (PelletOptions.USE_SEMANTIC_BRANCHING)
+		if (OpenlletOptions.USE_SEMANTIC_BRANCHING)
 		{
 			//			if(this.ind.getDepends(ATermUtils.makeNot(dis)) != null){
 			//				//check if the depedency is the same as preDS - if so, then we know that we added it

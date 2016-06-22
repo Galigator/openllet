@@ -14,7 +14,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 import openllet.core.KBLoader;
 import openllet.core.KnowledgeBase;
-import openllet.core.PelletOptions;
+import openllet.core.OpenlletOptions;
 import openllet.owlapi.facet.FacetManagerOWL;
 import openllet.owlapi.facet.FacetOntologyOWL;
 import openllet.owlapi.facet.FacetReasonerOWL;
@@ -147,7 +147,7 @@ public class OWLAPILoader extends KBLoader implements FacetReasonerOWL, FacetMan
 	public void load()
 	{
 		_pellet = new PelletReasonerFactory().createReasoner(_baseOntology);
-		_pellet.getKB().setTaxonomyBuilderProgressMonitor(PelletOptions.USE_CLASSIFICATION_MONITOR.create());
+		_pellet.getKB().setTaxonomyBuilderProgressMonitor(OpenlletOptions.USE_CLASSIFICATION_MONITOR.create());
 	}
 
 	/**

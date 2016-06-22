@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 import openllet.core.Individual;
 import openllet.core.IndividualIterator;
 import openllet.core.Node;
-import openllet.core.PelletOptions;
+import openllet.core.OpenlletOptions;
 import openllet.core.tableau.completion.CompletionStrategy;
 import openllet.core.tableau.completion.queue.NodeSelector;
 import openllet.core.tableau.completion.queue.QueueElement;
@@ -67,7 +67,7 @@ public abstract class AbstractTableauRule implements TableauRule
 
 			if (_strategy.getBlocking().isBlocked(node))
 			{
-				if (PelletOptions.USE_COMPLETION_QUEUE)
+				if (OpenlletOptions.USE_COMPLETION_QUEUE)
 					addQueueElement(node);
 			}
 			else

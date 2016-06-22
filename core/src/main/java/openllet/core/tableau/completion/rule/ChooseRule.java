@@ -13,7 +13,7 @@ import openllet.core.Edge;
 import openllet.core.EdgeList;
 import openllet.core.Individual;
 import openllet.core.Node;
-import openllet.core.PelletOptions;
+import openllet.core.OpenlletOptions;
 import openllet.core.Role;
 import openllet.core.tableau.branch.ChooseBranch;
 import openllet.core.tableau.completion.CompletionStrategy;
@@ -70,7 +70,7 @@ public class ChooseRule extends AbstractTableauRule
 		if (ATermUtils.isTop(c))
 			return;
 
-		if (!PelletOptions.MAINTAIN_COMPLETION_QUEUE && x.getDepends(maxCard) == null)
+		if (!OpenlletOptions.MAINTAIN_COMPLETION_QUEUE && x.getDepends(maxCard) == null)
 			return;
 
 		final EdgeList edges = x.getRNeighborEdges(r);

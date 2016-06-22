@@ -7,14 +7,9 @@
 package openllet.query.sparqldl.model;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import openllet.aterm.ATermAppl;
-import openllet.core.utils.ATermUtils;
-import openllet.jena.JenaUtils;
-import org.apache.jena.query.QuerySolution;
-import org.apache.jena.query.QuerySolutionMap;
 
 /**
  * <p>
@@ -40,23 +35,6 @@ public class QueryParameters
 	public QueryParameters()
 	{
 		_parameters = new HashMap<>();
-	}
-
-	public QueryParameters(QuerySolution initialBindingParam)
-	{
-		this();
-		QuerySolution initialBinding = initialBindingParam;
-
-		if (initialBinding == null)
-			initialBinding = new QuerySolutionMap();
-
-		for (final Iterator<String> iter = initialBinding.varNames(); iter.hasNext();)
-		{
-			final String varName = iter.next();
-			final ATermAppl key = ATermUtils.makeVar(varName);
-			final ATermAppl value = JenaUtils.makeATerm(initialBinding.get(varName));
-			_parameters.put(key, value);
-		}
 	}
 
 	public void add(final ATermAppl key, final ATermAppl value)

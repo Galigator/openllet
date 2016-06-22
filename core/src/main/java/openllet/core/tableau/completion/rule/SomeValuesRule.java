@@ -19,7 +19,7 @@ import openllet.core.EdgeList;
 import openllet.core.Individual;
 import openllet.core.Literal;
 import openllet.core.Node;
-import openllet.core.PelletOptions;
+import openllet.core.OpenlletOptions;
 import openllet.core.Role;
 import openllet.core.datatypes.exceptions.InvalidLiteralException;
 import openllet.core.datatypes.exceptions.UnrecognizedDatatypeException;
@@ -80,7 +80,7 @@ public class SomeValuesRule extends AbstractTableauRule
 
 		DependencySet ds = x.getDepends(sv);
 
-		if (!PelletOptions.MAINTAIN_COMPLETION_QUEUE && ds == null)
+		if (!OpenlletOptions.MAINTAIN_COMPLETION_QUEUE && ds == null)
 			return;
 
 		c = ATermUtils.negate(c);
@@ -125,7 +125,7 @@ public class SomeValuesRule extends AbstractTableauRule
 
 			y = edge.getNeighbor(x);
 
-			if (PelletOptions.USE_COMPLETION_QUEUE && y.isPruned())
+			if (OpenlletOptions.USE_COMPLETION_QUEUE && y.isPruned())
 			{
 				y = null;
 				continue;
@@ -148,7 +148,7 @@ public class SomeValuesRule extends AbstractTableauRule
 		if (role.isDatatypeRole())
 		{
 			Literal literal = (Literal) y;
-			if (ATermUtils.isNominal(c) && !PelletOptions.USE_PSEUDO_NOMINALS)
+			if (ATermUtils.isNominal(c) && !OpenlletOptions.USE_PSEUDO_NOMINALS)
 			{
 				_strategy.getABox().copyOnWrite();
 
@@ -193,7 +193,7 @@ public class SomeValuesRule extends AbstractTableauRule
 		}
 		// If it is an object property
 		else
-			if (ATermUtils.isNominal(c) && !PelletOptions.USE_PSEUDO_NOMINALS)
+			if (ATermUtils.isNominal(c) && !OpenlletOptions.USE_PSEUDO_NOMINALS)
 			{
 				_strategy.getABox().copyOnWrite();
 
@@ -260,7 +260,7 @@ public class SomeValuesRule extends AbstractTableauRule
 								if (useExistingNode)
 								{
 									DependencySet fds = DependencySet.INDEPENDENT;
-									if (PelletOptions.USE_TRACING)
+									if (OpenlletOptions.USE_TRACING)
 										if (role.isFunctional())
 											fds = role.getExplainSuper(f.getName());
 										else

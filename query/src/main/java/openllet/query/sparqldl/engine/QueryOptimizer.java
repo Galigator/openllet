@@ -8,7 +8,7 @@ package openllet.query.sparqldl.engine;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import openllet.core.PelletOptions;
+import openllet.core.OpenlletOptions;
 import openllet.query.sparqldl.model.Query;
 import openllet.shared.tools.Log;
 
@@ -35,10 +35,10 @@ public class QueryOptimizer
 
 	public QueryPlan getExecutionPlan(final Query query)
 	{
-		if (PelletOptions.SAMPLING_RATIO == 0)
+		if (OpenlletOptions.SAMPLING_RATIO == 0)
 			return new NoReorderingQueryPlan(query);
 
-		if (query.getAtoms().size() > PelletOptions.STATIC_REORDERING_LIMIT)
+		if (query.getAtoms().size() > OpenlletOptions.STATIC_REORDERING_LIMIT)
 		{
 			if (_logger.isLoggable(Level.FINE))
 				_logger.fine("Using incremental query plan.");

@@ -41,7 +41,7 @@ import openllet.core.EdgeList;
 import openllet.core.Individual;
 import openllet.core.Node;
 import openllet.core.NodeMerge;
-import openllet.core.PelletOptions;
+import openllet.core.OpenlletOptions;
 import openllet.core.Role;
 import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.tableau.completion.CompletionStrategy;
@@ -96,7 +96,7 @@ public class MaxBranch extends IndividualBranch
 		//normalize the label
 		maxCon = ATermUtils.normalize(maxCon);
 
-		if (PelletOptions.USE_COMPLETION_QUEUE)
+		if (OpenlletOptions.USE_COMPLETION_QUEUE)
 		{
 			final QueueElement qElement = new QueueElement(ind, maxCon);
 			_abox.getCompletionQueue().add(qElement, NodeSelector.MAX_NUMBER);
@@ -107,7 +107,7 @@ public class MaxBranch extends IndividualBranch
 		for (; getTryNext() < getTryCount(); _tryNext++)
 		{
 			this._abox.getKB().timers.mainTimer.check();
-			if (PelletOptions.USE_SEMANTIC_BRANCHING)
+			if (OpenlletOptions.USE_SEMANTIC_BRANCHING)
 				for (int m = 0; m < getTryNext(); m++)
 				{
 					final NodeMerge nm = _mergePairs.get(m);
@@ -215,7 +215,7 @@ public class MaxBranch extends IndividualBranch
 		ds = getCombinedClash();
 
 		//CHW - removed for rollback through deletions
-		if (!PelletOptions.USE_INCREMENTAL_DELETION)
+		if (!OpenlletOptions.USE_INCREMENTAL_DELETION)
 			ds.remove(getBranch());
 
 		if (_abox.doExplanation())

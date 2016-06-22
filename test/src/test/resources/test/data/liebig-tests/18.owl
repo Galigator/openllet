@@ -38,7 +38,7 @@
 <!-- for KAON2: SELECT ?x WHERE { ?x rdf:type a:AnotA } -->
 <!-- <owl:Thing rdf:ID="i1"/> -->
 <!-- only works when using <owl:MyTOP rdf:ID="i1"/> -->
-<!-- works for pellet:
+<!-- works for openllet:
 SELECT ?x WHERE (?x, rdf:type, a:AnotA)
 USING
    owl FOR <http://www.w3.org/2002/07/owl#>,

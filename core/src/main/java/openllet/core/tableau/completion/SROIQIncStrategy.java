@@ -46,7 +46,7 @@ import openllet.core.Edge;
 import openllet.core.EdgeList;
 import openllet.core.Individual;
 import openllet.core.Node;
-import openllet.core.PelletOptions;
+import openllet.core.OpenlletOptions;
 import openllet.core.Role;
 import openllet.core.expressivity.Expressivity;
 import openllet.core.tableau.blocking.BlockingFactory;
@@ -318,7 +318,7 @@ public class SROIQIncStrategy extends SROIQStrategy
 
 					for (final ATermAppl domain : pred.getDomains())
 						if (requiredAddType(ind, domain))
-							if (!PelletOptions.USE_TRACING)
+							if (!OpenlletOptions.USE_TRACING)
 								addType(ind, domain, ds.union(DependencySet.EMPTY, _abox.doExplanation()));
 							else
 								addType(ind, domain, ds.union(pred.getExplainDomain(domain), _abox.doExplanation()));
@@ -354,7 +354,7 @@ public class SROIQIncStrategy extends SROIQStrategy
 
 				for (final ATermAppl range : pred.getRanges())
 					if (requiredAddType(node, range))
-						if (!PelletOptions.USE_TRACING)
+						if (!OpenlletOptions.USE_TRACING)
 							addType(node, range, ds.union(DependencySet.EMPTY, _abox.doExplanation()));
 						else
 							addType(node, range, ds.union(pred.getExplainRange(range), _abox.doExplanation()));

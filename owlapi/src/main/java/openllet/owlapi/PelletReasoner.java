@@ -349,7 +349,7 @@ public class PelletReasoner implements OWLReasoner, OWLOntologyChangeListener, F
 
 	public PelletReasoner(final OWLOntology ontology, final BufferingMode bufferingMode)
 	{
-		this(ontology, new SimpleConfiguration(new NullReasonerProgressMonitor(), openllet.core.PelletOptions.SILENT_UNDEFINED_ENTITY_HANDLING ? FreshEntityPolicy.ALLOW : FreshEntityPolicy.DISALLOW, 0, IndividualNodeSetPolicy.BY_SAME_AS), bufferingMode);
+		this(ontology, new SimpleConfiguration(new NullReasonerProgressMonitor(), openllet.core.OpenlletOptions.SILENT_UNDEFINED_ENTITY_HANDLING ? FreshEntityPolicy.ALLOW : FreshEntityPolicy.DISALLOW, 0, IndividualNodeSetPolicy.BY_SAME_AS), bufferingMode);
 	}
 
 	/**
@@ -949,7 +949,7 @@ public class PelletReasoner implements OWLReasoner, OWLOntologyChangeListener, F
 	@Override
 	public FreshEntityPolicy getFreshEntityPolicy()
 	{
-		return openllet.core.PelletOptions.SILENT_UNDEFINED_ENTITY_HANDLING ? FreshEntityPolicy.ALLOW : FreshEntityPolicy.DISALLOW;
+		return openllet.core.OpenlletOptions.SILENT_UNDEFINED_ENTITY_HANDLING ? FreshEntityPolicy.ALLOW : FreshEntityPolicy.DISALLOW;
 	}
 
 	@Override

@@ -23,7 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
-import openllet.core.PelletOptions;
+import openllet.core.OpenlletOptions;
 import openllet.core.Role;
 import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.taxonomy.Taxonomy;
@@ -432,7 +432,7 @@ public class SizeEstimate
 			differents.put(ind, iCount); // TODO
 
 			final float random = randomGen.nextFloat();
-			if (random > PelletOptions.SAMPLING_RATIO)
+			if (random > OpenlletOptions.SAMPLING_RATIO)
 				continue;
 
 			if (_kb.isRealized())
@@ -519,7 +519,7 @@ public class SizeEstimate
 				if (size == 0)
 					instancesPC.put(c, 1);
 				else
-					instancesPC.put(c, (int) (size / PelletOptions.SAMPLING_RATIO));
+					instancesPC.put(c, (int) (size / OpenlletOptions.SAMPLING_RATIO));
 
 				size = directInstancesPC.get(c);
 
@@ -527,7 +527,7 @@ public class SizeEstimate
 				if (size == 0)
 					directInstancesPC.put(c, 1);
 				else
-					directInstancesPC.put(c, (int) (size / PelletOptions.SAMPLING_RATIO));
+					directInstancesPC.put(c, (int) (size / OpenlletOptions.SAMPLING_RATIO));
 			}
 
 			final int avgCPI = Double.valueOf(avgClassesPI).intValue();
@@ -544,7 +544,7 @@ public class SizeEstimate
 				if (size == 0)
 					classesPI.put(i, 1);
 				else
-					classesPI.put(i, (int) (size / PelletOptions.SAMPLING_RATIO));
+					classesPI.put(i, (int) (size / OpenlletOptions.SAMPLING_RATIO));
 
 				size = directClassesPI.get(i);
 
@@ -555,7 +555,7 @@ public class SizeEstimate
 				if (size == 0)
 					directClassesPI.put(i, 1);
 				else
-					directClassesPI.put(i, (int) (size / PelletOptions.SAMPLING_RATIO));
+					directClassesPI.put(i, (int) (size / OpenlletOptions.SAMPLING_RATIO));
 			}
 		}
 
@@ -565,7 +565,7 @@ public class SizeEstimate
 			if (size == 0)
 				pairsPP.put(p, 1);
 			else
-				pairsPP.put(p, (int) (size / PelletOptions.SAMPLING_RATIO));
+				pairsPP.put(p, (int) (size / OpenlletOptions.SAMPLING_RATIO));
 
 			final Role role = _kb.getRBox().getRole(p);
 			final ATermAppl invP = (role.getInverse() != null) ? role.getInverse().getName() : null;

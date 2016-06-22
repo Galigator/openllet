@@ -35,7 +35,7 @@ import java.util.logging.Logger;
 import openllet.core.Edge;
 import openllet.core.Individual;
 import openllet.core.Node;
-import openllet.core.PelletOptions;
+import openllet.core.OpenlletOptions;
 import openllet.core.utils.Timer;
 import openllet.shared.tools.Log;
 
@@ -122,7 +122,7 @@ public abstract class Blocking
 				return true;
 			}
 
-		if (PelletOptions.USE_ANYWHERE_BLOCKING)
+		if (OpenlletOptions.USE_ANYWHERE_BLOCKING)
 		{
 			assert cxt._blocker.isRoot();
 

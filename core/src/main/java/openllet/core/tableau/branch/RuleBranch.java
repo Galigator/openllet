@@ -16,7 +16,7 @@ import openllet.core.Clash;
 import openllet.core.DependencySet;
 import openllet.core.Individual;
 import openllet.core.Node;
-import openllet.core.PelletOptions;
+import openllet.core.OpenlletOptions;
 import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.rules.RuleAtomAsserter;
 import openllet.core.rules.VariableBinding;
@@ -127,7 +127,7 @@ public class RuleBranch extends Branch
 			//			}
 
 			DependencySet ds = null;
-			if (_tryNext == _tryCount - 1 && !PelletOptions.SATURATE_TABLEAU)
+			if (_tryNext == _tryCount - 1 && !OpenlletOptions.SATURATE_TABLEAU)
 			{
 				ds = getTermDepends();
 
@@ -136,14 +136,14 @@ public class RuleBranch extends Branch
 
 				// CHW - added for incremental reasoning and rollback through
 				// deletions
-				if (PelletOptions.USE_INCREMENTAL_DELETION)
+				if (OpenlletOptions.USE_INCREMENTAL_DELETION)
 					ds.setExplain(getTermDepends().getExplain());
 				else
 					ds.remove(getBranch());
 			}
 			else
 				// CHW - Changed for tracing purposes
-				if (PelletOptions.USE_INCREMENTAL_DELETION)
+				if (OpenlletOptions.USE_INCREMENTAL_DELETION)
 					ds = getTermDepends().union(new DependencySet(getBranch()), _abox.doExplanation());
 				else
 					ds = new DependencySet(getBranch());
@@ -195,7 +195,7 @@ public class RuleBranch extends Branch
 					_abox.setClash(Clash.unexplained(null, clashDepends.union(ds, _abox.doExplanation())));
 
 					// CHW - added for inc reasoning
-					if (PelletOptions.USE_INCREMENTAL_DELETION)
+					if (OpenlletOptions.USE_INCREMENTAL_DELETION)
 						_abox.getKB().getDependencyIndex().addCloseBranchDependency(this, _abox.getClash().getDepends());
 
 					return;

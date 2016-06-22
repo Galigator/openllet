@@ -47,7 +47,7 @@ import openllet.core.EdgeList;
 import openllet.core.Individual;
 import openllet.core.IndividualIterator;
 import openllet.core.Node;
-import openllet.core.PelletOptions;
+import openllet.core.OpenlletOptions;
 import openllet.core.expressivity.Expressivity;
 import openllet.core.tableau.blocking.BlockingFactory;
 import openllet.core.tableau.branch.Branch;
@@ -184,7 +184,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 		if (_logger.isLoggable(Level.FINE))
 			_abox.printTree();
 
-		if (PelletOptions.USE_ADVANCED_CACHING)
+		if (OpenlletOptions.USE_ADVANCED_CACHING)
 			// if completion tree is clash free _cache all sat concepts
 			if (!_abox.isClosed())
 				for (final Iterator<Individual> i = new IndividualIterator(_abox); i.hasNext();)
@@ -252,7 +252,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 	{
 		checkTimer();
 
-		if (!_abox.doExplanation() && PelletOptions.USE_ADVANCED_CACHING)
+		if (!_abox.doExplanation() && OpenlletOptions.USE_ADVANCED_CACHING)
 		{
 			final Timer t = _abox.getKB().timers.startTimer("cache");
 			final Bool cachedSat = isCachedSat(x);
@@ -338,7 +338,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 		_mayNeedExpanding.remove(0);
 
 		final EdgeList sortedSuccessors = x.getOutEdges().sort();
-		if (PelletOptions.SEARCH_TYPE == PelletOptions.DEPTH_FIRST)
+		if (OpenlletOptions.SEARCH_TYPE == OpenlletOptions.DEPTH_FIRST)
 			for (final Edge edge : sortedSuccessors)
 			{
 				final Node succ = edge.getTo();
@@ -533,7 +533,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 			{
 				_abox.removeNode(x);
 				final ATermAppl c = _cachedNodes.remove(node);
-				if (c != null && PelletOptions.USE_ADVANCED_CACHING)
+				if (c != null && OpenlletOptions.USE_ADVANCED_CACHING)
 					if (clashPath.contains(x))
 					{
 						if (_logger.isLoggable(Level.FINEST))

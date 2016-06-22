@@ -2,16 +2,16 @@
 
 
 #!/bin/bash
-# This script runs the Pellet CLI.
+# This script runs the Openllet CLI.
 # Before running this script for the first time
 # you may need to run:
-# chmod +x pellet.sh
+# chmod +x openllet.sh
 #
-# run ./pellet.sh for the usage
+# run ./openllet.sh for the usage
 
-if [ ! -d "cli/target/pelletcli/bin" ]; then
+if [ ! -d "cli/target/openlletcli/bin" ]; then
 mvn -quiet clean install -DskipTests
 fi
 
-chmod u+x cli/target/pelletcli/bin/*
-cli/target/pelletcli/bin/pellet $@
+chmod u+x cli/target/openlletcli/bin/*
+cli/target/openlletcli/bin/openllet $@

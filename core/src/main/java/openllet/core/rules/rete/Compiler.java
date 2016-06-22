@@ -20,7 +20,7 @@ import openllet.aterm.ATermAppl;
 import openllet.core.ABox;
 import openllet.core.DependencySet;
 import openllet.core.Individual;
-import openllet.core.PelletOptions;
+import openllet.core.OpenlletOptions;
 import openllet.core.Role;
 import openllet.core.datatypes.exceptions.InvalidLiteralException;
 import openllet.core.datatypes.exceptions.UnrecognizedDatatypeException;
@@ -481,7 +481,7 @@ public class Compiler
 			catch (final InvalidLiteralException e)
 			{
 				final String msg = format("Invalid literal (%s) in SWRL _data constant: %s", literal, e.getMessage());
-				if (PelletOptions.INVALID_LITERAL_AS_INCONSISTENCY)
+				if (OpenlletOptions.INVALID_LITERAL_AS_INCONSISTENCY)
 					canonical = literal;
 				else
 					throw new InternalReasonerException(msg, e);

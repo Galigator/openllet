@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
 import openllet.core.Literal;
-import openllet.core.PelletOptions;
+import openllet.core.OpenlletOptions;
 import openllet.core.datatypes.exceptions.InvalidConstrainingFacetException;
 import openllet.core.datatypes.exceptions.InvalidLiteralException;
 import openllet.core.datatypes.exceptions.UnrecognizedDatatypeException;
@@ -356,7 +356,7 @@ public class DatatypeReasonerImpl implements DatatypeReasoner
 		final ATermAppl dtName = getDatatypeName(literal);
 		final Datatype<?> dt = getDatatype(dtName);
 		if (dt == null)
-			switch (PelletOptions.UNDEFINED_DATATYPE_HANDLING)
+			switch (OpenlletOptions.UNDEFINED_DATATYPE_HANDLING)
 			{
 				case INFINITE_STRING:
 					return literal;
@@ -394,7 +394,7 @@ public class DatatypeReasonerImpl implements DatatypeReasoner
 		{
 			Datatype<?> dt = getDatatype(a);
 			if (dt == null)
-				switch (PelletOptions.UNDEFINED_DATATYPE_HANDLING)
+				switch (OpenlletOptions.UNDEFINED_DATATYPE_HANDLING)
 				{
 					case INFINITE_STRING:
 						dt = InfiniteNamedDatatype.get(a);
@@ -593,7 +593,7 @@ public class DatatypeReasonerImpl implements DatatypeReasoner
 		final ATermAppl dtName = getDatatypeName(literal);
 		final Datatype<?> dt = getDatatype(dtName);
 		if (dt == null)
-			switch (PelletOptions.UNDEFINED_DATATYPE_HANDLING)
+			switch (OpenlletOptions.UNDEFINED_DATATYPE_HANDLING)
 			{
 				case INFINITE_STRING:
 					return literal;

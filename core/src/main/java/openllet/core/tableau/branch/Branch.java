@@ -35,7 +35,7 @@ import openllet.core.ABox;
 import openllet.core.Clash;
 import openllet.core.DependencySet;
 import openllet.core.Node;
-import openllet.core.PelletOptions;
+import openllet.core.OpenlletOptions;
 import openllet.core.tableau.completion.CompletionStrategy;
 import openllet.shared.tools.Log;
 
@@ -92,7 +92,7 @@ public abstract class Branch
 		if (getTryNext() >= 0)
 		{
 			_prevDS = _prevDS.union(ds, _abox.doExplanation());
-			if (PelletOptions.USE_INCREMENTAL_DELETION)
+			if (OpenlletOptions.USE_INCREMENTAL_DELETION)
 				//CHW - added for incremental deletions support THIS SHOULD BE MOVED TO SUPER
 				_abox.getKB().getDependencyIndex().addCloseBranchDependency(this, ds);
 		}
@@ -124,7 +124,7 @@ public abstract class Branch
 		// there is a clash so there is no point in trying this
 		// _branch again. remove this _branch from clash dependency
 		if (_abox.isClosed())
-			if (!PelletOptions.USE_INCREMENTAL_DELETION)
+			if (!OpenlletOptions.USE_INCREMENTAL_DELETION)
 				_abox.getClash().getDepends().remove(getBranch());
 
 		return !_abox.isClosed();

@@ -15,7 +15,7 @@ import openllet.core.Edge;
 import openllet.core.EdgeList;
 import openllet.core.Individual;
 import openllet.core.Node;
-import openllet.core.PelletOptions;
+import openllet.core.OpenlletOptions;
 import openllet.core.Role;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.CollectionUtils;
@@ -128,7 +128,7 @@ public class CachedConceptNode implements CachedNode
 					final Edge cachedEdge = out ? new CachedOutEdge(edge) : new CachedInEdge(edge);
 							cachedEdges.addEdge(cachedEdge);
 
-			if (PelletOptions.CHECK_NOMINAL_EDGES)
+			if (OpenlletOptions.CHECK_NOMINAL_EDGES)
 			{
 								final Node neighbor = edge.getNeighbor(node);
 								final Map<Node, DependencySet> mergedNodes = neighbor.getAllMerged();

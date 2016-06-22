@@ -19,7 +19,7 @@ import openllet.core.EdgeList;
 import openllet.core.Individual;
 import openllet.core.Node;
 import openllet.core.NodeMerge;
-import openllet.core.PelletOptions;
+import openllet.core.OpenlletOptions;
 import openllet.core.Role;
 import openllet.core.tableau.branch.MaxBranch;
 import openllet.core.tableau.completion.CompletionStrategy;
@@ -86,7 +86,7 @@ public class MaxRule extends AbstractTableauRule
 
 		DependencySet ds = x.getDepends(mc);
 
-		if (!PelletOptions.MAINTAIN_COMPLETION_QUEUE && ds == null)
+		if (!OpenlletOptions.MAINTAIN_COMPLETION_QUEUE && ds == null)
 			return;
 
 		if (n == 1)
@@ -267,7 +267,7 @@ public class MaxRule extends AbstractTableauRule
 			functionalSupers = SetUtils.singleton(s);
 		LOOP: for (final Role r : functionalSupers)
 		{
-			if (PelletOptions.USE_TRACING)
+			if (OpenlletOptions.USE_TRACING)
 				ds = ds.union(s.getExplainSuper(r.getName()), _strategy.getABox().doExplanation()).union(r.getExplainFunctional(), _strategy.getABox().doExplanation());
 
 			final EdgeList edges = x.getRNeighborEdges(r);

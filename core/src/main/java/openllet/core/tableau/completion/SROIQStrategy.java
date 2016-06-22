@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.logging.Level;
 import openllet.core.ABox;
 import openllet.core.IndividualIterator;
-import openllet.core.PelletOptions;
+import openllet.core.OpenlletOptions;
 import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.expressivity.Expressivity;
 import openllet.core.tableau.branch.Branch;
@@ -58,7 +58,7 @@ public class SROIQStrategy extends CompletionStrategy
 				if (lastBranch > _abox.getBranches().size())
 					throw new InternalReasonerException("Backtrack: Trying to backtrack to _branch " + lastBranch + " but has only " + _abox.getBranches().size() + " branches. Clash found: " + _abox.getClash());
 				else
-					if (PelletOptions.USE_INCREMENTAL_DELETION)
+					if (OpenlletOptions.USE_INCREMENTAL_DELETION)
 					{
 						// get the last _branch
 						final Branch br = _abox.getBranches().get(lastBranch - 1);
@@ -78,7 +78,7 @@ public class SROIQStrategy extends CompletionStrategy
 			final List<Branch> branches = _abox.getBranches();
 			_abox.stats.backjumps += (branches.size() - lastBranch);
 			// CHW - added for incremental deletion support
-			if (PelletOptions.USE_TRACING && PelletOptions.USE_INCREMENTAL_CONSISTENCY)
+			if (OpenlletOptions.USE_TRACING && OpenlletOptions.USE_INCREMENTAL_CONSISTENCY)
 			{
 				// we must clean up the KB dependecny _index
 				final List<Branch> brList = branches.subList(lastBranch, branches.size());
@@ -144,10 +144,10 @@ public class SROIQStrategy extends CompletionStrategy
 					_abox.printTree();
 				}
 
-				final IndividualIterator i = (PelletOptions.USE_COMPLETION_QUEUE) ? _abox.getCompletionQueue() : _abox.getIndIterator();
+				final IndividualIterator i = (OpenlletOptions.USE_COMPLETION_QUEUE) ? _abox.getCompletionQueue() : _abox.getIndIterator();
 
 						// flush the _queue
-						if (PelletOptions.USE_COMPLETION_QUEUE)
+						if (OpenlletOptions.USE_COMPLETION_QUEUE)
 							_abox.getCompletionQueue().flushQueue();
 
 						for (final TableauRule tableauRule : _tableauRules)
@@ -163,7 +163,7 @@ public class SROIQStrategy extends CompletionStrategy
 						// still needed to be refired from backtracking
 						// so onle set that the _abox is clash free after we have applied
 						// all the rules once
-						if (PelletOptions.USE_COMPLETION_QUEUE)
+						if (OpenlletOptions.USE_COMPLETION_QUEUE)
 							_abox.getCompletionQueue().setClosed(_abox.isClosed());
 			}
 
@@ -176,7 +176,7 @@ public class SROIQStrategy extends CompletionStrategy
 				{
 					_abox.setClash(null);
 
-					if (PelletOptions.USE_COMPLETION_QUEUE)
+					if (OpenlletOptions.USE_COMPLETION_QUEUE)
 						_abox.getCompletionQueue().setClosed(false);
 				}
 				else
@@ -184,12 +184,12 @@ public class SROIQStrategy extends CompletionStrategy
 					_abox.setComplete(true);
 
 					// we need to flush the _queue to add the other elements
-					if (PelletOptions.USE_COMPLETION_QUEUE)
+					if (OpenlletOptions.USE_COMPLETION_QUEUE)
 						_abox.getCompletionQueue().flushQueue();
 				}
 			}
 			else
-				if (PelletOptions.SATURATE_TABLEAU)
+				if (OpenlletOptions.SATURATE_TABLEAU)
 				{
 					Branch unexploredBranch = null;
 					for (int i = _abox.getBranches().size() - 1; i >= 0; i--)

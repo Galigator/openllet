@@ -332,7 +332,7 @@ public class RBox
 
 	public boolean addSubRole(final ATerm sub, final ATerm sup)
 	{
-		final DependencySet ds = PelletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeSubProp(sub, sup)) : DependencySet.INDEPENDENT;
+		final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeSubProp(sub, sup)) : DependencySet.INDEPENDENT;
 		return addSubRole(sub, sup, ds);
 	}
 
@@ -362,7 +362,7 @@ public class RBox
 
 	public boolean addEquivalentRole(final ATerm s, final ATerm r)
 	{
-		final DependencySet ds = PelletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeEqProp(s, r)) : DependencySet.INDEPENDENT;
+		final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeEqProp(s, r)) : DependencySet.INDEPENDENT;
 		return addEquivalentRole(r, s, ds);
 	}
 
@@ -632,29 +632,29 @@ public class RBox
 				if (s.equals(r))
 					continue;
 
-				final DependencySet supDS = PelletOptions.USE_TRACING ? r.getExplainSuper(s.getName()) : DependencySet.INDEPENDENT;
+				final DependencySet supDS = OpenlletOptions.USE_TRACING ? r.getExplainSuper(s.getName()) : DependencySet.INDEPENDENT;
 
 				if (s.isFunctional())
 				{
-					final DependencySet ds = PelletOptions.USE_TRACING ? supDS.union(s.getExplainFunctional(), true) : DependencySet.INDEPENDENT;
+					final DependencySet ds = OpenlletOptions.USE_TRACING ? supDS.union(s.getExplainFunctional(), true) : DependencySet.INDEPENDENT;
 					r.setFunctional(true, ds);
 					r.addFunctionalSuper(s);
 				}
 				if (s.isIrreflexive() && !r.isIrreflexive())
 				{
-					final DependencySet ds = PelletOptions.USE_TRACING ? supDS.union(s.getExplainIrreflexive(), true) : DependencySet.INDEPENDENT;
+					final DependencySet ds = OpenlletOptions.USE_TRACING ? supDS.union(s.getExplainIrreflexive(), true) : DependencySet.INDEPENDENT;
 					r.setIrreflexive(true, ds);
 				}
 				if (s.isAsymmetric() && !r.isAsymmetric())
 				{
-					final DependencySet ds = PelletOptions.USE_TRACING ? supDS.union(s.getExplainAsymmetric(), true) : DependencySet.INDEPENDENT;
+					final DependencySet ds = OpenlletOptions.USE_TRACING ? supDS.union(s.getExplainAsymmetric(), true) : DependencySet.INDEPENDENT;
 					r.setAsymmetric(true, ds);
 				}
 
 				// create a duplicate array to avoid ConcurrentModificationException
 				for (final Role disjointR : s.getDisjointRoles().toArray(new Role[0]))
 				{
-					final DependencySet ds = PelletOptions.USE_TRACING ? supDS.union(s.getExplainDisjointRole(disjointR), true) : DependencySet.INDEPENDENT;
+					final DependencySet ds = OpenlletOptions.USE_TRACING ? supDS.union(s.getExplainDisjointRole(disjointR), true) : DependencySet.INDEPENDENT;
 					r.addDisjointRole(disjointR, ds);
 					disjointR.addDisjointRole(r, ds);
 				}
@@ -739,7 +739,7 @@ public class RBox
 
 	public boolean removeDomain(final ATerm p, final ATermAppl domain)
 	{
-		if (!PelletOptions.USE_TRACING)
+		if (!OpenlletOptions.USE_TRACING)
 			return false;
 
 		final Role r = getRole(p);
@@ -767,7 +767,7 @@ public class RBox
 
 	public boolean removeRange(final ATerm p, final ATermAppl range)
 	{
-		if (!PelletOptions.USE_TRACING)
+		if (!OpenlletOptions.USE_TRACING)
 			return false;
 
 		final Role r = getRole(p);
@@ -799,7 +799,7 @@ public class RBox
 
 		final String msg = "Unsupported axiom: Ignoring transitivity and/or complex subproperty axioms for " + namedRole;
 
-		if (!PelletOptions.IGNORE_UNSUPPORTED_AXIOMS)
+		if (!OpenlletOptions.IGNORE_UNSUPPORTED_AXIOMS)
 			throw new UnsupportedFeatureException(msg);
 
 		_logger.warning(msg);
@@ -882,7 +882,7 @@ public class RBox
 		for (final Entry<ATerm, DependencySet> entry : immSubs.entrySet())
 		{
 			final ATerm sub = entry.getKey();
-			final DependencySet subDS = PelletOptions.USE_TRACING ? ds.union(entry.getValue(), true) : DependencySet.INDEPENDENT;
+			final DependencySet subDS = OpenlletOptions.USE_TRACING ? ds.union(entry.getValue(), true) : DependencySet.INDEPENDENT;
 			if (sub instanceof ATermAppl)
 			{
 				final Role subRole = getRole(sub);
@@ -975,7 +975,7 @@ public class RBox
 		if (annotationTaxonomy == null)
 		{
 			final RoleTaxonomyBuilder builder = new RoleTaxonomyBuilder(this, PropertyType.ANNOTATION);
-			if (PelletOptions.USE_ANNOTATION_SUPPORT)
+			if (OpenlletOptions.USE_ANNOTATION_SUPPORT)
 				annotationTaxonomy = builder.classify();
 		}
 		return annotationTaxonomy;

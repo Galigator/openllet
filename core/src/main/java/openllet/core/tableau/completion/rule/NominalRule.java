@@ -15,7 +15,7 @@ import openllet.core.Clash;
 import openllet.core.DependencySet;
 import openllet.core.Individual;
 import openllet.core.Node;
-import openllet.core.PelletOptions;
+import openllet.core.OpenlletOptions;
 import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.tableau.completion.CompletionStrategy;
 import openllet.core.tableau.completion.queue.NodeSelector;
@@ -55,7 +55,7 @@ public class NominalRule extends AbstractTableauRule
 			final ATermAppl nc = types.get(j);
 			final DependencySet ds = y.getDepends(nc);
 
-			if (!PelletOptions.MAINTAIN_COMPLETION_QUEUE && ds == null)
+			if (!OpenlletOptions.MAINTAIN_COMPLETION_QUEUE && ds == null)
 				continue;
 
 			applyNominalRule(y, nc, ds);

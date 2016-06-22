@@ -27,7 +27,7 @@ import openllet.aterm.ATermAppl;
 import openllet.core.ABox;
 import openllet.core.DependencySet;
 import openllet.core.KnowledgeBase;
-import openllet.core.PelletOptions;
+import openllet.core.OpenlletOptions;
 import openllet.core.Role;
 import openllet.core.datatypes.DatatypeReasoner;
 import openllet.core.datatypes.exceptions.DatatypeReasonerException;
@@ -39,6 +39,7 @@ import openllet.core.utils.SetUtils;
 import openllet.query.sparqldl.model.MultiQueryResults;
 import openllet.query.sparqldl.model.NotKnownQueryAtom;
 import openllet.query.sparqldl.model.Query;
+import openllet.query.sparqldl.model.Query.VarType;
 import openllet.query.sparqldl.model.QueryAtom;
 import openllet.query.sparqldl.model.QueryAtomFactory;
 import openllet.query.sparqldl.model.QueryImpl;
@@ -48,9 +49,6 @@ import openllet.query.sparqldl.model.QueryResultImpl;
 import openllet.query.sparqldl.model.ResultBinding;
 import openllet.query.sparqldl.model.ResultBindingImpl;
 import openllet.query.sparqldl.model.UnionQueryAtom;
-import openllet.query.sparqldl.model.Query.VarType;
-import openllet.query.sparqldl.parser.ARQParser;
-import openllet.query.sparqldl.parser.QueryParser;
 import openllet.shared.tools.Log;
 
 /**
@@ -78,11 +76,6 @@ public class QueryEngine
 	public static QueryExec getQueryExec()
 	{
 		return new CombinedQueryEngine();
-	}
-
-	public static QueryParser getParser()
-	{
-		return new ARQParser();
 	}
 
 	public static boolean supports(final Query query, @SuppressWarnings("unused") final KnowledgeBase kb)
@@ -115,7 +108,7 @@ public class QueryEngine
 		final Query preprocessed = preprocess(query);
 
 		// SIMPLIFICATION
-		if (PelletOptions.SIMPLIFY_QUERY)
+		if (OpenlletOptions.SIMPLIFY_QUERY)
 		{
 			if (_logger.isLoggable(Level.FINE))
 				_logger.fine("Simplifying:\n" + preprocessed);

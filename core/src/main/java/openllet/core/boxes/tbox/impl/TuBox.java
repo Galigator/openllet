@@ -46,7 +46,7 @@ import java.util.logging.Level;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
-import openllet.core.PelletOptions;
+import openllet.core.OpenlletOptions;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.CollectionUtils;
 
@@ -173,7 +173,7 @@ public class TuBox extends TBoxBase
 		termsToNormalize = new HashSet<>();
 		// termsToNormalize = null;
 
-		if (PelletOptions.USE_ROLE_ABSORPTION)
+		if (OpenlletOptions.USE_ROLE_ABSORPTION)
 			absorbRanges(_tbox);
 	}
 

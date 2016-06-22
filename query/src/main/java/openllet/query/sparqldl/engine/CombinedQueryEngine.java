@@ -26,7 +26,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
-import openllet.core.PelletOptions;
+import openllet.core.OpenlletOptions;
 import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.exceptions.UnsupportedQueryException;
 import openllet.core.taxonomy.Taxonomy;
@@ -107,7 +107,7 @@ public class CombinedQueryEngine implements QueryExec
 		// warm up the reasoner by computing the satisfiability of classes
 		// used in the query so that cached models can be used for instance
 		// checking - TODO also non-named classes
-		if ((PelletOptions.USE_CACHING) && !_kb.isClassified())
+		if ((OpenlletOptions.USE_CACHING) && !_kb.isClassified())
 			for (final QueryAtom a : _oldQuery.getAtoms())
 				for (final ATermAppl arg : a.getArguments())
 					if (_kb.isClass(arg))
@@ -116,7 +116,7 @@ public class CombinedQueryEngine implements QueryExec
 						_kb.isSatisfiable(ATermUtils.makeNot(arg));
 					}
 
-		if (PelletOptions.OPTIMIZE_DOWN_MONOTONIC)
+		if (OpenlletOptions.OPTIMIZE_DOWN_MONOTONIC)
 		{
 			// TODO use down monotonic variables for implementation of
 			// DirectType atom
@@ -1401,7 +1401,7 @@ public class CombinedQueryEngine implements QueryExec
 		// well - Type and
 		// PropertyValue as well.
 
-		return PelletOptions.OPTIMIZE_DOWN_MONOTONIC && _downMonotonic.contains(scLHS);
+		return OpenlletOptions.OPTIMIZE_DOWN_MONOTONIC && _downMonotonic.contains(scLHS);
 	}
 
 	private void runNext(final ResultBinding binding, final List<ATermAppl> arguments, final ATermAppl... values)

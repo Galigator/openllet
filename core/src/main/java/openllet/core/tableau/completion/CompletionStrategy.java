@@ -30,7 +30,7 @@ import openllet.core.IndividualIterator;
 import openllet.core.Literal;
 import openllet.core.Node;
 import openllet.core.NodeMerge;
-import openllet.core.PelletOptions;
+import openllet.core.OpenlletOptions;
 import openllet.core.Role;
 import openllet.core.boxes.tbox.TBox;
 import openllet.core.exceptions.InternalReasonerException;
@@ -174,17 +174,17 @@ public abstract class CompletionStrategy
 
 	protected void configureTableauRules(final Expressivity expr)
 	{
-		if (!PelletOptions.USE_COMPLETION_STRATEGY)
+		if (!OpenlletOptions.USE_COMPLETION_STRATEGY)
 		{
 			addAllRules();
 			return;
 		}
 
-		final boolean fullDatatypeReasoning = PelletOptions.USE_FULL_DATATYPE_REASONING && (expr.hasUserDefinedDatatype() || expr.hasCardinalityD() || expr.hasKeys());
+		final boolean fullDatatypeReasoning = OpenlletOptions.USE_FULL_DATATYPE_REASONING && (expr.hasUserDefinedDatatype() || expr.hasCardinalityD() || expr.hasKeys());
 
 		_tableauRules = new ArrayList<>();
 
-		if ((!PelletOptions.USE_PSEUDO_NOMINALS && expr.hasNominal()) || implicitNominals())
+		if ((!OpenlletOptions.USE_PSEUDO_NOMINALS && expr.hasNominal()) || implicitNominals())
 		{
 			_tableauRules.add(_nominalRule);
 
@@ -435,7 +435,7 @@ public abstract class CompletionStrategy
 		}
 
 		// update dependency _index for this _node
-		if (PelletOptions.USE_INCREMENTAL_DELETION)
+		if (OpenlletOptions.USE_INCREMENTAL_DELETION)
 			_abox.getKB().getDependencyIndex().addTypeDependency(node.getName(), c, ds);
 
 		if (_logger.isLoggable(Level.FINER))
@@ -519,16 +519,16 @@ public abstract class CompletionStrategy
 		final Edge edge = subj.addEdge(pred, obj, ds);
 
 		// add to the kb dependencies
-		if (PelletOptions.USE_INCREMENTAL_DELETION)
+		if (OpenlletOptions.USE_INCREMENTAL_DELETION)
 			_abox.getKB().getDependencyIndex().addEdgeDependency(edge, ds);
 
-		if (PelletOptions.TRACK_BRANCH_EFFECTS)
+		if (OpenlletOptions.TRACK_BRANCH_EFFECTS)
 		{
 			_abox.getBranchEffectTracker().add(_abox.getBranch(), subj.getName());
 			_abox.getBranchEffectTracker().add(_abox.getBranch(), obj.getName());
 		}
 
-		if (PelletOptions.USE_COMPLETION_QUEUE)
+		if (OpenlletOptions.USE_COMPLETION_QUEUE)
 			// update the _queue as we are adding an edge - we must add
 			// elements to the MAXLIST
 			updateQueueAddEdge(subj, pred, obj);
@@ -675,7 +675,7 @@ public abstract class CompletionStrategy
 		{
 			final EdgeList edges = obj.getEdgesTo(subj, pred);
 			ds = ds.union(edges.edgeAt(0).getDepends(), _abox.doExplanation());
-			if (PelletOptions.USE_TRACING)
+			if (OpenlletOptions.USE_TRACING)
 				ds = ds.union(pred.getExplainAsymmetric(), _abox.doExplanation());
 			_abox.setClash(Clash.unexplained(subj, ds, "Antisymmetric property " + pred));
 		}
@@ -823,14 +823,14 @@ public abstract class CompletionStrategy
 	{
 
 		// add to effected list
-		if (_abox.getBranch() >= 0 && PelletOptions.TRACK_BRANCH_EFFECTS)
+		if (_abox.getBranch() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
 		{
 			_abox.getBranchEffectTracker().add(_abox.getBranch(), y.getName());
 			_abox.getBranchEffectTracker().add(_abox.getBranch(), z.getName());
 		}
 
 		// add to merge dependency to dependency _index
-		if (PelletOptions.USE_INCREMENTAL_DELETION)
+		if (OpenlletOptions.USE_INCREMENTAL_DELETION)
 			_abox.getKB().getDependencyIndex().addMergeDependency(y.getName(), z.getName(), ds);
 
 		if (y.isDifferent(z))
@@ -924,7 +924,7 @@ public abstract class CompletionStrategy
 			// if( _abox.getBranch() >= 0 && PelletOptions.USE_COMPLETION_QUEUE ) {
 			// _abox.getCompletionQueue().addEffected( _abox.getBranch(), z.getName() );
 			// }
-			if (_abox.getBranch() >= 0 && PelletOptions.TRACK_BRANCH_EFFECTS)
+			if (_abox.getBranch() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
 				_abox.getBranchEffectTracker().add(_abox.getBranch(), z.getName());
 
 		}
@@ -951,7 +951,7 @@ public abstract class CompletionStrategy
 				addEdge(x, r, z, finalDS);
 
 				// add to effected list
-				if (_abox.getBranch() >= 0 && PelletOptions.TRACK_BRANCH_EFFECTS)
+				if (_abox.getBranch() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
 					_abox.getBranchEffectTracker().add(_abox.getBranch(), z.getName());
 
 				// do not remove edge here because prune will take care of that
@@ -991,7 +991,7 @@ public abstract class CompletionStrategy
 			z.removeEdge(edge);
 
 			// add to effected list
-			if (_abox.getBranch() >= 0 && PelletOptions.TRACK_BRANCH_EFFECTS)
+			if (_abox.getBranch() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
 				_abox.getBranchEffectTracker().add(_abox.getBranch(), z.getName());
 		}
 
@@ -1083,7 +1083,7 @@ public abstract class CompletionStrategy
 		if (_logger.isLoggable(Level.FINE))
 			_logger.fine("RESTORE: Branch " + br.getBranch());
 
-		if (PelletOptions.USE_COMPLETION_QUEUE)
+		if (OpenlletOptions.USE_COMPLETION_QUEUE)
 		{
 			// clear the all values list as they must have already fired and blocking never prevents the all values rule
 			// from firing
@@ -1095,7 +1095,7 @@ public abstract class CompletionStrategy
 
 		// the restore may cause changes which require using the _allValuesRule -
 		// incremental change tracker will track those
-		if (PelletOptions.USE_INCREMENTAL_CONSISTENCY)
+		if (OpenlletOptions.USE_INCREMENTAL_CONSISTENCY)
 			_abox.getIncrementalChangeTracker().clear();
 
 		// for each _node we either need to restore the _node to the status it
@@ -1151,7 +1151,7 @@ public abstract class CompletionStrategy
 				}
 
 				// restore only if not tracking _branch effects
-				if (!PelletOptions.TRACK_BRANCH_EFFECTS)
+				if (!OpenlletOptions.TRACK_BRANCH_EFFECTS)
 					node.restore(br.getBranch());
 			}
 		}
@@ -1160,7 +1160,7 @@ public abstract class CompletionStrategy
 		if (deleteBlock > 0)
 			nodeList.subList(nodeCount - deleteBlock, nodeCount).clear();
 
-		if (PelletOptions.TRACK_BRANCH_EFFECTS)
+		if (OpenlletOptions.TRACK_BRANCH_EFFECTS)
 		{
 			// when tracking _branch effects only restore _nodes explicitly stored in the effected list
 			final Set<ATermAppl> effected = _abox.getBranchEffectTracker().removeAll(br.getBranch() + 1);
@@ -1193,7 +1193,7 @@ public abstract class CompletionStrategy
 		_completionTimer.check();
 
 		// CHW - added for incremental deletion support
-		if (PelletOptions.USE_INCREMENTAL_DELETION)
+		if (OpenlletOptions.USE_INCREMENTAL_DELETION)
 			_abox.getKB().getDependencyIndex().addBranchAddDependency(newBranch);
 	}
 

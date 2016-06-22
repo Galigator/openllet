@@ -7,7 +7,7 @@
 package openllet.core.boxes.tbox;
 
 import openllet.core.KnowledgeBase;
-import openllet.core.PelletOptions;
+import openllet.core.OpenlletOptions;
 import openllet.core.boxes.tbox.impl.TBoxExpImpl;
 import openllet.core.boxes.tbox.impl.TBoxImpl;
 
@@ -31,6 +31,6 @@ public class TBoxFactory
 {
 	public static TBox createTBox(final KnowledgeBase kb)
 	{
-		return PelletOptions.USE_LEGACY_TBOX ? new TBoxExpImpl(kb) : new TBoxImpl(kb);
+		return OpenlletOptions.USE_LEGACY_TBOX ? new TBoxExpImpl(kb) : new TBoxImpl(kb);
 	}
 }
