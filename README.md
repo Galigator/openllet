@@ -45,6 +45,17 @@ Migration :
 * pellet/owlapi/src/main/java/com/clarkparsia/owlapiv3/ is now  pellet/owlapi/src/main/java/com/clarkparsia/owlapiv/
 * groupId   com.clarkparsia.pellet   is now   com.github.galigator.openllet
 
+		<dependency>
+			<groupId>com.github.galigator.openllet</groupId>
+			<artifactId>openllet-owlapi</artifactId>
+			<version>2.5.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.galigator.openllet</groupId>
+			<artifactId>openllet-jena</artifactId>
+			<version>2.5.1</version>
+		</dependency>
+
 Pellet 1..2.3] Licences and supports: 
 -------------------------------------
  
