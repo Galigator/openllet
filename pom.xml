@@ -107,11 +107,13 @@
         <artifactId>jgrapht-ext</artifactId>
         <version>${org.jgrapht.jgrapht-ext}</version>
       </dependency>
+      <!--
       <dependency>
         <groupId>xerces</groupId>
         <artifactId>xercesImpl</artifactId>
         <version>${xerces.xercesImpl}</version>
       </dependency>
+      -->
       <dependency>
         <groupId>org.antlr</groupId>
         <artifactId>antlr-runtime</artifactId>

@@ -7,6 +7,7 @@ import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import openllet.owlwg.TestCollection;
 import openllet.owlwg.cli.FilterConditionParser;
 import openllet.owlwg.owlapi.testcase.impl.OwlApiTestCaseFactory;
@@ -35,10 +36,10 @@ public class OWLWGTestCase
 {
 
 	/**
-	 * Ensure that _test cases timeout after 30 seconds. This is in slightly broader than the 20 second timeout for each PelletOA3TestRunner.
+	 * Ensure that test cases timeout after 30 seconds. This is in slightly broader than the 20 second timeout for each PelletOA3TestRunner.
 	 */
 	@Rule
-	public Timeout timeout = new Timeout(30000);
+	public Timeout timeout = new Timeout(30, TimeUnit.SECONDS);
 
 	@Parameters
 	public static List<Object[]> data() throws OWLOntologyCreationException, OWLOntologyChangeException
