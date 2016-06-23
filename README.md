@@ -60,39 +60,69 @@ Migration :
 Dependencies and security of modules of openllet : 
 --------------------------------------------------
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/edu.stanford.swrl/swrlapi/badge.svg)](https://maven-badges.herokuapp.com/maven-central/edu.stanford.swrl/swrlapi)
+<table>
 
-Aterm : [![Dependency Status](https://www.versioneye.com/user/projects/576c2818cd6d51003e92093d/badge.svg?style=flat)](https://www.versioneye.com/user/projects/576c2818cd6d51003e92093d)
+<tr><td>Aterm</td><td>
+    <a href="https://www.versioneye.com/user/projects/576c2818cd6d51003e92093d"><img src="https://www.versioneye.com/user/projects/576c2818cd6d51003e92093d/badge.svg?style=flat"/></a>
+</td></tr>
 
-Cli : [![Dependency Status](https://www.versioneye.com/user/projects/576c2675cd6d5100479c7af0/badge.svg?style=flat)](https://www.versioneye.com/user/projects/576c2675cd6d5100479c7af0)
+<tr><td>Core</td><td>
+<a href="https://www.versioneye.com/user/projects/576c2675cd6d5100372eab63"><img src="https://www.versioneye.com/user/projects/576c2675cd6d5100372eab63/badge.svg?style=flat"/></a>
+</td></tr>
 
-Core :[![Dependency Status](https://www.versioneye.com/user/projects/576c2675cd6d5100372eab63/badge.svg?style=flat)](https://www.versioneye.com/user/projects/576c2675cd6d5100372eab63)
+<tr><td>Jena</td><td>
+<a href="https://www.versioneye.com/user/projects/576c2679cd6d5100372eab6c"><img src="https://www.versioneye.com/user/projects/576c2679cd6d5100372eab6c/badge.svg?style=flat"/></a>
+</td></tr>
 
-Explanation :[![Dependency Status](https://www.versioneye.com/user/projects/576c2678cd6d5100479c7afb/badge.svg?style=flat)](https://www.versioneye.com/user/projects/576c2678cd6d5100479c7afb)
+<tr><td>OwlApi</td><td>
+<a href="https://www.versioneye.com/user/projects/576c268dcd6d510048bab2a7"><img src="https://www.versioneye.com/user/projects/576c268dcd6d510048bab2a7/badge.svg?style=flat"/></a>
+</td></tr>
 
-Jena : [![Dependency Status](https://www.versioneye.com/user/projects/576c2679cd6d5100372eab6c/badge.svg?style=flat)](https://www.versioneye.com/user/projects/576c2679cd6d5100372eab6c)
+<tr><td>Cli</td><td>
+<a href="https://www.versioneye.com/user/projects/576c2675cd6d5100479c7af0"><img src="https://www.versioneye.com/user/projects/576c2675cd6d5100479c7af0/badge.svg?style=flat"/></a>
+</td></tr>
 
-Modularity : [![Dependency Status](https://www.versioneye.com/user/projects/576c268ccd6d51003e9207c1/badge.svg?style=flat)](https://www.versioneye.com/user/projects/576c268ccd6d51003e9207c1)
+<tr><td>Profiler</td><td>
+<a href="https://www.versioneye.com/user/projects/576c2690cd6d51003e9207c5"><img src="https://www.versioneye.com/user/projects/576c2690cd6d51003e9207c5/badge.svg?style=flat"/></a>
+</td></tr>
 
-OwlApi : [![Dependency Status](https://www.versioneye.com/user/projects/576c268dcd6d510048bab2a7/badge.svg?style=flat)](https://www.versioneye.com/user/projects/576c268dcd6d510048bab2a7)
+<tr><td>Query</td><td>
+<a href="https://www.versioneye.com/user/projects/576c2693cd6d5100479c7b05"><img src="https://www.versioneye.com/user/projects/576c2693cd6d5100479c7b05/badge.svg?style=flat"/></a>
+</td></tr>
 
-Pellint : [![Dependency Status](https://www.versioneye.com/user/projects/576c268fcd6d5100479c7b00/badge.svg?style=flat)](https://www.versioneye.com/user/projects/576c268fcd6d5100479c7b00)
+<tr><td>Explanation</td><td>
+<a href="https://www.versioneye.com/user/projects/576c2678cd6d5100479c7afb"><img src="https://www.versioneye.com/user/projects/576c2678cd6d5100479c7afb/badge.svg?style=flat"/></a>
+</td></tr>
 
-Profiler : [![Dependency Status](https://www.versioneye.com/user/projects/576c2690cd6d51003e9207c5/badge.svg?style=flat)](https://www.versioneye.com/user/projects/576c2690cd6d51003e9207c5)
+<tr><td>Modularity</td><td>
+<a href="https://www.versioneye.com/user/projects/576c268ccd6d51003e9207c1"><img src="https://www.versioneye.com/user/projects/576c268ccd6d51003e9207c1/badge.svg?style=flat"/></a>
+</td></tr>
 
-Protege : [![Dependency Status](https://www.versioneye.com/user/projects/576c2693cd6d510048bab2af/badge.svg?style=flat)](https://www.versioneye.com/user/projects/576c2693cd6d510048bab2af)
+<tr><td>Pellint</td><td>
+<a href="https://www.versioneye.com/user/projects/576c268fcd6d5100479c7b00"><img src="https://www.versioneye.com/user/projects/576c268fcd6d5100479c7b00/badge.svg?style=flat"/></a>
+</td></tr>
 
-Query : [![Dependency Status](https://www.versioneye.com/user/projects/576c2693cd6d5100479c7b05/badge.svg?style=flat)](https://www.versioneye.com/user/projects/576c2693cd6d5100479c7b05)
+<tr><td>Protege</td><td>
+<a href="https://www.versioneye.com/user/projects/576c2693cd6d510048bab2af"><img src="https://www.versioneye.com/user/projects/576c2693cd6d510048bab2af/badge.svg?style=flat"/></a>
+</td></tr>
 
-Test : [![Dependency Status](https://www.versioneye.com/user/projects/576c2694cd6d5100372eabcc/badge.svg?style=flat)](https://www.versioneye.com/user/projects/576c2694cd6d5100372eabcc)
+<tr><td>Test</td><td>
+<a href="https://www.versioneye.com/user/projects/576c2694cd6d5100372eabcc"><img src="https://www.versioneye.com/user/projects/576c2694cd6d5100372eabcc/badge.svg?style=flat"/></a>
+</td></tr>
 
-Distribution : [![Dependency Status](https://www.versioneye.com/user/projects/576c2676cd6d51003e9207b7/badge.svg?style=flat)](https://www.versioneye.com/user/projects/576c2676cd6d51003e9207b7)
+<tr><td>Distribution</td><td>
+<a href="https://www.versioneye.com/user/projects/576c2676cd6d51003e9207b7"><img src="https://www.versioneye.com/user/projects/576c2676cd6d51003e9207b7/badge.svg?style=flat"/></a>
+</td></tr>
 
-Examples : [![Dependency Status](https://www.versioneye.com/user/projects/576c2678cd6d510048bab29e/badge.svg?style=flat)](https://www.versioneye.com/user/projects/576c2678cd6d510048bab29e)
+<tr><td>Examples</td><td>
+<a href="https://www.versioneye.com/user/projects/576c2678cd6d510048bab29e"><img src="https://www.versioneye.com/user/projects/576c2678cd6d510048bab29e/badge.svg?style=flat"/></a>
+</td></tr>
 
-Parent : [![Dependency Status](https://www.versioneye.com/user/projects/576c2690cd6d5100372eab7d/badge.svg?style=flat)](https://www.versioneye.com/user/projects/576c2690cd6d5100372eab7d)
+<tr><td>Parent</td><td>
+<a href="https://www.versioneye.com/user/projects/576c2690cd6d5100372eab7d"><img src="https://www.versioneye.com/user/projects/576c2690cd6d5100372eab7d/badge.svg?style=flat"/></a>
+</td></tr>
 
-
+</table>
 
 Pellet 1..2.3] Licences and supports: 
 -------------------------------------
