@@ -5,6 +5,7 @@ Openllet: An Open Source OWL DL reasoner for Java
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Galigator/pelletEvolution?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 
+
 Openllet is the OWL 2 DL reasoner: 
 --------------------------------
 
@@ -55,6 +56,43 @@ Migration :
 			<artifactId>openllet-jena</artifactId>
 			<version>2.5.1</version>
 		</dependency>
+
+Dependencies and security of modules of openllet : 
+--------------------------------------------------
+
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/edu.stanford.swrl/swrlapi/badge.svg)](https://maven-badges.herokuapp.com/maven-central/edu.stanford.swrl/swrlapi)
+
+Aterm : [![Dependency Status](https://www.versioneye.com/user/projects/576c2672cd6d510048bab295/badge.svg?style=flat)](https://www.versioneye.com/user/projects/576c2672cd6d510048bab295)
+
+Cli : [![Dependency Status](https://www.versioneye.com/user/projects/576c2675cd6d5100479c7af0/badge.svg?style=flat)](https://www.versioneye.com/user/projects/576c2675cd6d5100479c7af0)
+
+Core :[![Dependency Status](https://www.versioneye.com/user/projects/576c2675cd6d5100372eab63/badge.svg?style=flat)](https://www.versioneye.com/user/projects/576c2675cd6d5100372eab63)
+
+Explanation :[![Dependency Status](https://www.versioneye.com/user/projects/576c2678cd6d5100479c7afb/badge.svg?style=flat)](https://www.versioneye.com/user/projects/576c2678cd6d5100479c7afb)
+
+Jena : [![Dependency Status](https://www.versioneye.com/user/projects/576c2679cd6d5100372eab6c/badge.svg?style=flat)](https://www.versioneye.com/user/projects/576c2679cd6d5100372eab6c)
+
+Modularity : [![Dependency Status](https://www.versioneye.com/user/projects/576c268ccd6d51003e9207c1/badge.svg?style=flat)](https://www.versioneye.com/user/projects/576c268ccd6d51003e9207c1)
+
+OwlApi : [![Dependency Status](https://www.versioneye.com/user/projects/576c268dcd6d510048bab2a7/badge.svg?style=flat)](https://www.versioneye.com/user/projects/576c268dcd6d510048bab2a7)
+
+Pellint : [![Dependency Status](https://www.versioneye.com/user/projects/576c268fcd6d5100479c7b00/badge.svg?style=flat)](https://www.versioneye.com/user/projects/576c268fcd6d5100479c7b00)
+
+Profiler : [![Dependency Status](https://www.versioneye.com/user/projects/576c2690cd6d51003e9207c5/badge.svg?style=flat)](https://www.versioneye.com/user/projects/576c2690cd6d51003e9207c5)
+
+Protege : [![Dependency Status](https://www.versioneye.com/user/projects/576c2693cd6d510048bab2af/badge.svg?style=flat)](https://www.versioneye.com/user/projects/576c2693cd6d510048bab2af)
+
+Query : [![Dependency Status](https://www.versioneye.com/user/projects/576c2693cd6d5100479c7b05/badge.svg?style=flat)](https://www.versioneye.com/user/projects/576c2693cd6d5100479c7b05)
+
+Test : [![Dependency Status](https://www.versioneye.com/user/projects/576c2694cd6d5100372eabcc/badge.svg?style=flat)](https://www.versioneye.com/user/projects/576c2694cd6d5100372eabcc)
+
+Distribution : [![Dependency Status](https://www.versioneye.com/user/projects/576c2676cd6d51003e9207b7/badge.svg?style=flat)](https://www.versioneye.com/user/projects/576c2676cd6d51003e9207b7)
+
+Examples : [![Dependency Status](https://www.versioneye.com/user/projects/576c2678cd6d510048bab29e/badge.svg?style=flat)](https://www.versioneye.com/user/projects/576c2678cd6d510048bab29e)
+
+Parent : [![Dependency Status](https://www.versioneye.com/user/projects/576c2690cd6d5100372eab7d/badge.svg?style=flat)](https://www.versioneye.com/user/projects/576c2690cd6d5100372eab7d)
+
+
 
 Pellet 1..2.3] Licences and supports: 
 -------------------------------------
