@@ -36,6 +36,7 @@ import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
 import openllet.aterm.ATermPlaceholder;
 import openllet.aterm.Visitor;
+import openllet.atom.SList;
 import openllet.shared.hash.SharedObject;
 
 public class ATermListImpl extends ATermImpl implements ATermList
@@ -74,7 +75,7 @@ public class ATermListImpl extends ATermImpl implements ATermList
 
 	/**
 	 * depricated Use the new constructor instead.
-	 * 
+	 *
 	 * @param hashCode x
 	 * @param annos x
 	 * @param first x
@@ -97,7 +98,7 @@ public class ATermListImpl extends ATermImpl implements ATermList
 
 	/**
 	 * depricated Use the new constructor instead.
-	 * 
+	 *
 	 * @param annos x
 	 * @param _first x
 	 * @param _next x
@@ -333,6 +334,15 @@ public class ATermListImpl extends ATermImpl implements ATermList
 
 		if (_first == el) { return 0; }
 		return -1;
+	}
+
+	@Override
+	public SList<ATerm> concat(final SList<ATerm> rhs)
+	{
+		if (isEmpty()) { return rhs; }
+		if (_next.isEmpty()) { return rhs.insert(_first); }
+
+		return _next.concat(rhs).insert(_first);
 	}
 
 	@Override

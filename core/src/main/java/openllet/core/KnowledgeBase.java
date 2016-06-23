@@ -61,7 +61,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
-import openllet.aterm.ATermFactory;
 import openllet.aterm.ATermList;
 import openllet.core.OpenlletOptions.InstanceRetrievalMethod;
 import openllet.core.boxes.tbox.TBox;
@@ -118,10 +117,11 @@ public class KnowledgeBase
 {
 	public final static Logger _logger = Log.getLogger(KnowledgeBase.class);
 
-	// This field is to ensure memory profiler will first process ATermFactory
-	// which makes it easier to analyze the results
-	@SuppressWarnings("unused")
-	private final ATermFactory _factory = ATermUtils.getFactory();
+	static
+	{
+		// Ensure memory profiler will first process ATermFactory which makes it easier to analyze the results
+		ATermUtils.getFactory();
+	}
 
 	protected ABox _abox;
 	protected TBox _tbox;
@@ -248,7 +248,7 @@ public class KnowledgeBase
 		@Override
 		public void visitNot(final ATermAppl term)
 		{
-			this.visit((ATermAppl) term.getArgument(0));
+			visit((ATermAppl) term.getArgument(0));
 		}
 
 		@Override
@@ -343,7 +343,7 @@ public class KnowledgeBase
 			{
 				final ATermAppl q = (ATermAppl) term.getArgument(2);
 				if (!isDatatype(q))
-					this.visit(q);
+					visit(q);
 			}
 		}
 
@@ -354,7 +354,7 @@ public class KnowledgeBase
 			{
 				final ATermAppl q = (ATermAppl) term.getArgument(1);
 				if (!isDatatype(q))
-					this.visit(q);
+					visit(q);
 			}
 		}
 
@@ -418,7 +418,7 @@ public class KnowledgeBase
 		@Override
 		public void visitNot(final ATermAppl term)
 		{
-			this.visit((ATermAppl) term.getArgument(0));
+			visit((ATermAppl) term.getArgument(0));
 		}
 
 		@Override
@@ -1367,8 +1367,8 @@ public class KnowledgeBase
 			final ATermAppl value = temp.remove(0);
 			values.add(value);
 
-			for (final ATermAppl property : this.getAnnotationProperties())
-				if (value != property && this.isSubPropertyOf(property, value))
+			for (final ATermAppl property : getAnnotationProperties())
+				if (value != property && isSubPropertyOf(property, value))
 					temp.add(property);
 		}
 
@@ -4736,7 +4736,7 @@ public class KnowledgeBase
 	 */
 	public void setRBox(final RBox rbox)
 	{
-		this._rbox = rbox;
+		_rbox = rbox;
 	}
 
 	/**
@@ -4744,7 +4744,7 @@ public class KnowledgeBase
 	 */
 	public void setTBox(final TBox tbox)
 	{
-		this._tbox = tbox;
+		_tbox = tbox;
 	}
 
 	CompletionStrategy chooseStrategy(final ABox abox)
@@ -5112,7 +5112,7 @@ public class KnowledgeBase
 	 */
 	public void setExplainOnlyInconsistency(final boolean explainOnlyInconsistency)
 	{
-		this._explainOnlyInconsistency = explainOnlyInconsistency;
+		_explainOnlyInconsistency = explainOnlyInconsistency;
 	}
 
 }

@@ -45,9 +45,10 @@ public class ATermApplImpl extends ATermImpl implements ATermAppl
 
 	/**
 	 * depricated Use the new constructor instead.
-	 * 
+	 *
 	 * @param factory x
 	 */
+	@Deprecated
 	protected ATermApplImpl(final PureFactory factory)
 	{
 		super(factory);
@@ -71,7 +72,7 @@ public class ATermApplImpl extends ATermImpl implements ATermAppl
 
 	/**
 	 * depricated Use the new constructor instead.
-	 * 
+	 *
 	 * @param hashCode x
 	 * @param annos x
 	 * @param _fun x
@@ -88,7 +89,7 @@ public class ATermApplImpl extends ATermImpl implements ATermAppl
 
 	/**
 	 * depricated Use the new constructor instead.
-	 * 
+	 *
 	 * @param annos x
 	 * @param _fun x
 	 * @param i_args x

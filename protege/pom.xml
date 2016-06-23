@@ -9,6 +9,8 @@
         
 	<artifactId>openllet-protege</artifactId>
 	<name>Openllet :: Protege</name>
+   <packaging>bundle</packaging>
+   
 	<properties>
 		<protege.version>4.3.0</protege.version>
 	</properties>
@@ -47,4 +49,47 @@
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
+
+   <build>
+      <plugins>
+            <plugin>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>maven-bundle-plugin</artifactId>
+            <version>2.3.7</version>
+            <extensions>true</extensions>
+            <configuration>
+               <instructions>
+                  <Bundle-ClassPath>.</Bundle-ClassPath>
+                  <Bundle-SymbolicName>${project.artifactId};singleton:=true</Bundle-SymbolicName>
+                  <Bundle-Vendor>Galigator</Bundle-Vendor>
+                  <Import-Package>
+                     org.apache.log4j.*;version="[1.2,2)", 
+                     org.protege.editor.core.*;version="4.3",
+                     org.protege.editor.owl.*;version="4.3",
+                     *
+                  </Import-Package>
+                  <Include-Resource>plugin.xml, {maven-resources}</Include-Resource>
+                  <Private-Package>skeleton</Private-Package>
+               </instructions>
+               <executions>
+                  <execution>
+                     <id>bundle-manifest</id>
+                     <phase>install</phase>
+                     <goals>    
+                        <goal>manifest</goal>
+                     </goals>   
+                  </execution>
+               </executions>
+            </configuration>
+            </plugin>
+            <plugin>
+              <artifactId>maven-eclipse-plugin</artifactId>
+              <version>2.9</version>
+              <configuration>
+                <pde>true</pde>
+              </configuration>
+            </plugin>
+      </plugins>
+   </build>
+
 </project>
