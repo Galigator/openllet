@@ -62,7 +62,7 @@ Dependencies and security of modules of openllet :
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/edu.stanford.swrl/swrlapi/badge.svg)](https://maven-badges.herokuapp.com/maven-central/edu.stanford.swrl/swrlapi)
 
-Aterm : [![Dependency Status](https://www.versioneye.com/user/projects/576c2672cd6d510048bab295/badge.svg?style=flat)](https://www.versioneye.com/user/projects/576c2672cd6d510048bab295)
+Aterm : [![Dependency Status](https://www.versioneye.com/user/projects/576c2818cd6d51003e92093d/badge.svg?style=flat)](https://www.versioneye.com/user/projects/576c2818cd6d51003e92093d)
 
 Cli : [![Dependency Status](https://www.versioneye.com/user/projects/576c2675cd6d5100479c7af0/badge.svg?style=flat)](https://www.versioneye.com/user/projects/576c2675cd6d5100479c7af0)
 
