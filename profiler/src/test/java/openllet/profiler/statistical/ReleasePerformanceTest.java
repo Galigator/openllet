@@ -33,7 +33,7 @@ import org.junit.runners.Parameterized.Parameters;
  */
 @RunWith(Parameterized.class)
 @Category(ReleaseTests.class)
-// @Ignore("Enable to test release performance")
+@Ignore("Enable to test release performance (maybe not compatible with Travis) ")
 public class ReleasePerformanceTest
 {
 
