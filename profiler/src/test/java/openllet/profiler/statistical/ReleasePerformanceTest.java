@@ -13,18 +13,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Properties;
 import openllet.profiler.ProfileKB;
-import openllet.profiler.Result;
 import openllet.profiler.ProfileKB.LoaderType;
 import openllet.profiler.ProfileKB.MemoryProfiling;
 import openllet.profiler.ProfileKB.Task;
-import openllet.profiler.statistical.MathStatUtils;
-import openllet.profiler.statistical.Release;
-import openllet.profiler.statistical.ReleaseManager;
-import openllet.profiler.statistical.ReleaseStatistics;
-import openllet.profiler.statistical.ReleaseUtils;
-import java.util.Properties;
-import org.junit.Ignore;
+import openllet.profiler.Result;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -39,7 +33,7 @@ import org.junit.runners.Parameterized.Parameters;
  */
 @RunWith(Parameterized.class)
 @Category(ReleaseTests.class)
-@Ignore("Enable to test release performance")
+// @Ignore("Enable to test release performance")
 public class ReleasePerformanceTest
 {
 
@@ -74,7 +68,7 @@ public class ReleasePerformanceTest
 	@Parameters
 	public static List<Object[]> params() throws IOException
 	{
-		loadProperties("profiler/releasetesting.properties");
+		loadProperties("src/main/resources/releasetesting.properties");
 
 		final List<Object[]> params = new ArrayList<>();
 

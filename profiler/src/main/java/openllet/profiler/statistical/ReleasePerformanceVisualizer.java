@@ -38,7 +38,7 @@ public class ReleasePerformanceVisualizer extends JFrame
 	public static void main(final String[] args) throws IOException
 	{
 		final Properties properties = new Properties();
-		properties.load(new FileInputStream("profiler/releasevisualizer.properties"));
+		properties.load(new FileInputStream("src/main/resources/releasevisualizer.properties"));
 		_REPOSITORY = properties.getProperty("REPOSITORY", "profiler/releases");
 
 		final ReleasePerformanceVisualizer viz = new ReleasePerformanceVisualizer("Release Performance Visualizer");
@@ -136,7 +136,7 @@ public class ReleasePerformanceVisualizer extends JFrame
 
 	/**
 	 * JPanel that encapsulates all the components in the menu
-	 * 
+	 *
 	 * @author Pedro Oliveira <pedro@clarkparsia.com>
 	 */
 	private class MenuPanel extends JPanel
