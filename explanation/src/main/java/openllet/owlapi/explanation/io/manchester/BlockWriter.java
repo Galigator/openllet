@@ -11,9 +11,6 @@ import java.io.Writer;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
  * Description: A convenience class that wraps a PrinWriter instance to provide support for generating nicely aligned attribute. This class is geared towards
  * textual outputs and is used for aligning the outputs in consecutive lines.
  * </p>

@@ -11,9 +11,6 @@ import java.util.ArrayList;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
  * Description: Concrete implementation of {@link BlockWriter} for purely textual output like console output. It can probably be used for any kind of output
  * where monospaced font is used.
  * </p>

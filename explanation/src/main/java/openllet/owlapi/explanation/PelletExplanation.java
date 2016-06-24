@@ -40,11 +40,11 @@ public class PelletExplanation
 		GlassBoxExplanation.setup();
 	}
 
-	private final OWLDataFactory factory;
+	private final OWLDataFactory _factory;
 
-	private final HSTExplanationGenerator expGen;
+	private final HSTExplanationGenerator _expGen;
 
-	private final SatisfiabilityConverter converter;
+	private final SatisfiabilityConverter _converter;
 
 	public PelletExplanation(final OWLOntology ontology)
 	{
@@ -64,84 +64,84 @@ public class PelletExplanation
 	private PelletExplanation(final PelletReasoner reasoner, final boolean useGlassBox)
 	{
 		// Get the _factory object
-		factory = reasoner.getManager().getOWLDataFactory();
+		_factory = reasoner.getManager().getOWLDataFactory();
 
 		// Create a single explanation generator
 		final TransactionAwareSingleExpGen singleExp = useGlassBox ? new GlassBoxExplanation(reasoner) : new BlackBoxExplanation(reasoner.getRootOntology(), new PelletReasonerFactory(), reasoner);
 
 		// Create multiple explanation generator
-				expGen = new HSTExplanationGenerator(singleExp);
+				_expGen = new HSTExplanationGenerator(singleExp);
 
 		// Create the converter that will translate axioms into class expressions
-				converter = new SatisfiabilityConverter(factory);
+				_converter = new SatisfiabilityConverter(_factory);
 	}
 
 	public Set<OWLAxiom> getEntailmentExplanation(final OWLAxiom axiom)
 	{
-		final OWLClassExpression unsatClass = converter.convert(axiom);
+		final OWLClassExpression unsatClass = _converter.convert(axiom);
 		return getUnsatisfiableExplanation(unsatClass);
 	}
 
 	public Set<Set<OWLAxiom>> getEntailmentExplanations(final OWLAxiom axiom)
 	{
-		final OWLClassExpression unsatClass = converter.convert(axiom);
+		final OWLClassExpression unsatClass = _converter.convert(axiom);
 		return getUnsatisfiableExplanations(unsatClass);
 	}
 
 	public Set<Set<OWLAxiom>> getEntailmentExplanations(final OWLAxiom axiom, final int maxExplanations)
 	{
-		final OWLClassExpression unsatClass = converter.convert(axiom);
+		final OWLClassExpression unsatClass = _converter.convert(axiom);
 		return getUnsatisfiableExplanations(unsatClass, maxExplanations);
 	}
 
 	public Set<OWLAxiom> getInconsistencyExplanation()
 	{
-		return getUnsatisfiableExplanation(factory.getOWLThing());
+		return getUnsatisfiableExplanation(_factory.getOWLThing());
 	}
 
 	public Set<Set<OWLAxiom>> getInconsistencyExplanations()
 	{
-		return getUnsatisfiableExplanations(factory.getOWLThing());
+		return getUnsatisfiableExplanations(_factory.getOWLThing());
 	}
 
 	public Set<Set<OWLAxiom>> getInconsistencyExplanations(final int maxExplanations)
 	{
-		return getUnsatisfiableExplanations(factory.getOWLThing(), maxExplanations);
+		return getUnsatisfiableExplanations(_factory.getOWLThing(), maxExplanations);
 	}
 
 	public Set<OWLAxiom> getInstanceExplanation(final OWLIndividual ind, final OWLClassExpression cls)
 	{
-		final OWLClassAssertionAxiom classAssertion = factory.getOWLClassAssertionAxiom(cls, ind);
+		final OWLClassAssertionAxiom classAssertion = _factory.getOWLClassAssertionAxiom(cls, ind);
 		return getEntailmentExplanation(classAssertion);
 	}
 
 	public Set<Set<OWLAxiom>> getInstanceExplanations(final OWLIndividual ind, final OWLClassExpression cls)
 	{
-		final OWLClassAssertionAxiom classAssertion = factory.getOWLClassAssertionAxiom(cls, ind);
+		final OWLClassAssertionAxiom classAssertion = _factory.getOWLClassAssertionAxiom(cls, ind);
 		return getEntailmentExplanations(classAssertion);
 	}
 
 	public Set<Set<OWLAxiom>> getInstanceExplanations(final OWLIndividual ind, final OWLClassExpression cls, final int maxExplanations)
 	{
-		final OWLClassAssertionAxiom classAssertion = factory.getOWLClassAssertionAxiom(cls, ind);
+		final OWLClassAssertionAxiom classAssertion = _factory.getOWLClassAssertionAxiom(cls, ind);
 		return getEntailmentExplanations(classAssertion, maxExplanations);
 	}
 
 	public Set<OWLAxiom> getSubClassExplanation(final OWLClassExpression subClass, final OWLClassExpression superClass)
 	{
-		final OWLSubClassOfAxiom subClassAxiom = factory.getOWLSubClassOfAxiom(subClass, superClass);
+		final OWLSubClassOfAxiom subClassAxiom = _factory.getOWLSubClassOfAxiom(subClass, superClass);
 		return getEntailmentExplanation(subClassAxiom);
 	}
 
 	public Set<Set<OWLAxiom>> getSubClassExplanations(final OWLClassExpression subClass, final OWLClassExpression superClass)
 	{
-		final OWLSubClassOfAxiom subClassAxiom = factory.getOWLSubClassOfAxiom(subClass, superClass);
+		final OWLSubClassOfAxiom subClassAxiom = _factory.getOWLSubClassOfAxiom(subClass, superClass);
 		return getEntailmentExplanations(subClassAxiom);
 	}
 
 	public Set<Set<OWLAxiom>> getSubClassExplanations(final OWLClassExpression subClass, final OWLClassExpression superClass, final int maxExplanations)
 	{
-		final OWLSubClassOfAxiom subClassAxiom = factory.getOWLSubClassOfAxiom(subClass, superClass);
+		final OWLSubClassOfAxiom subClassAxiom = _factory.getOWLSubClassOfAxiom(subClass, superClass);
 		return getEntailmentExplanations(subClassAxiom, maxExplanations);
 	}
 
@@ -153,7 +153,7 @@ public class PelletExplanation
 	 */
 	public Set<OWLAxiom> getUnsatisfiableExplanation(final OWLClassExpression unsatClass)
 	{
-		return expGen.getExplanation(unsatClass);
+		return _expGen.getExplanation(unsatClass);
 	}
 
 	/**
@@ -164,7 +164,7 @@ public class PelletExplanation
 	 */
 	public Set<Set<OWLAxiom>> getUnsatisfiableExplanations(final OWLClassExpression unsatClass)
 	{
-		return expGen.getExplanations(unsatClass);
+		return _expGen.getExplanations(unsatClass);
 	}
 
 	/**
@@ -177,6 +177,6 @@ public class PelletExplanation
 	 */
 	public Set<Set<OWLAxiom>> getUnsatisfiableExplanations(final OWLClassExpression unsatClass, final int maxExplanations)
 	{
-		return expGen.getExplanations(unsatClass, maxExplanations);
+		return _expGen.getExplanations(unsatClass, maxExplanations);
 	}
 }

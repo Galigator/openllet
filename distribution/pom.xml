@@ -11,11 +11,27 @@
 	</parent>
 
 	<artifactId>openllet-distribution</artifactId>
-	<packaging>pom</packaging>
+	<packaging>bundle</packaging>
 
 	<name>Openllet :: Distribution</name>
 	<description>Distribution module for Openllet</description>
+	
 	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>openllet-functions</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>openllet-core</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>openllet-query</artifactId>
+			<version>${project.version}</version>
+		</dependency>	
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>openllet-owlapi</artifactId>
@@ -23,12 +39,7 @@
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>openllet-pellint</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>openllet-modularity</artifactId>
+			<artifactId>openllet-jena</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
@@ -38,38 +49,104 @@
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>openllet-cli</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>openllet-examples</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>openllet-test</artifactId>
+			<artifactId>openllet-modularity</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
+	
 	<build>
 		<plugins>
-			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
+			<plugin> <!--  Allow the packaging as bundle (osgi) -->
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<version>2.5.3</version>
+				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+						<Implementation-Title>${project.name}</Implementation-Title>
+						<Implementation-Vendor>${project.organization.name}</Implementation-Vendor>
+						<Implementation-Version>${project.version}.${maven.build.timestamp}</Implementation-Version>
+						<Bundle-SymbolicName>com.github.galigator.openllet</Bundle-SymbolicName>
+						<Bundle-Version>${project.version}</Bundle-Version>
+						<Embed-Dependency>
+							groupId=${project.groupId};inline=true;scope=compile|runtime|provided
+						</Embed-Dependency>
+						<Embed-Directory>lib</Embed-Directory>
+						<Embed-Transitive>true</Embed-Transitive>
+						<_exportcontents>
+							!org.semanticweb.owlapi.test.*,
+							openllet.*;-split-package:=merge-first
+						</_exportcontents>
+						<Import-Package>
+							!sun.misc,
+							!com.google.inject.internal.*;resolution:=optional,
+							org.openrdf*;version="[4.0,5.0)",
+							info.aduna.iteration;version="[4.0,5.0)",
+							*
+						</Import-Package>
+					</instructions>
+				</configuration>
+			</plugin>
+			
+			<plugin> <!-- Transform the others module as sigle jar -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>2.3</version>
 				<executions>
 					<execution>
-						<id>distro-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<artifactSet>
+								<includes>
+									<include>com.github.galigator.openllet:openllet-functions</include>
+									<include>com.github.galigator.openllet:openllet-core</include>
+									<include>com.github.galigator.openllet:openllet-owlapi</include>
+									<include>com.github.galigator.openllet:openllet-jena</include>
+									<include>com.github.galigator.openllet:openllet-query</include>
+									<include>com.github.galigator.openllet:openllet-explanation</include>
+									<include>com.github.galigator.openllet:openllet-modularity</include>
+								</includes>
+								<excludes>
+									<exclude>org.apache.felix:org.osgi.core</exclude>
+									<exclude>commons-io:*</exclude>
+									<exclude>gnu.getopt:*</exclude>
+									<exclude>org.antlr:*</exclude>
+									<exclude>org.apache.commons:*</exclude>									
+									<exclude>org.apache.jena:*</exclude>
+									<exclude>org.jfree:*</exclude>
+									<exclude>org.jgrapht:*</exclude>
+									<exclude>org.slf4j:*</exclude>
+									<exclude>net.sourceforge.owlapi:*</exclude>
+								</excludes>
+							</artifactSet>
+							<transformers>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+							</transformers>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin> <!-- make an artifact with the sources/docs of the others package. -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<attach>true</attach>
+					<descriptors>
+						<descriptor>src/main/assembly/sources.xml</descriptor>
+					</descriptors>
+				</configuration>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
 						<phase>package</phase>
 						<goals>
 							<goal>single</goal>
 						</goals>
-						<configuration>
-							<finalName>openllet-${project.version}</finalName>
-							<descriptors>
-								<!-- descriptor>src/main/assembly/onejar.xml</descriptor -->
-								<descriptor>src/main/assembly/dist.xml</descriptor>
-							</descriptors>
-						</configuration>
 					</execution>
 				</executions>
 			</plugin>
