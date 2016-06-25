@@ -3,8 +3,10 @@ Openllet: An Open Source OWL DL reasoner for Java
 
 [![Build Status](https://api.travis-ci.org/Galigator/openllet.svg?branch=2.6.0-galigator)](https://travis-ci.org/Galigator/openllet)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Galigator/pelletEvolution?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Twitter](https://img.shields.io/badge/twitter-@openllet-blue.svg)](https://twitter.com/openllet)
-
+[![Twitter](https://img.shields.io/badge/twitter-openllet-blue.svg)](https://twitter.com/openllet)
+<!--
+[![codecov](https://codecov.io/gh/Galigator/openllet/branch/2.6.0-galigator/graph/badge.svg)](https://codecov.io/gh/Galigator/openllet)
+-->
 
 Openllet is the OWL 2 DL reasoner: 
 --------------------------------
