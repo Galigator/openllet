@@ -68,8 +68,17 @@
                      org.protege.editor.owl.*;version="4.3",
                      *
                   </Import-Package>
-                  <Include-Resource>plugin.xml, {maven-resources}</Include-Resource>
+                  <Include-Resource>
+		                  plugin.xml, 
+        		          {maven-resources},
+                  		lib/openllet-owlapi-${project.version}.jar=../owlapi/target/openllet-owlapi-${project.version}.jar,
+						lib/openllet-query-${project.version}.jar=../query/target/openllet-query-${project.version}.jar,
+						lib/openllet-core-${project.version}.jar=../core/target/openllet-core-${project.version}.jar,
+						lib/openllet-functions-${project.version}.jar=../aterm/target/openllet-functions-${project.version}.jar,
+						lib/openllet-modularity-${project.version}.jar=../modularity/target/openllet-modularity-${project.version}.jar
+                  </Include-Resource>
                   <Private-Package>skeleton</Private-Package>
+				  <Bundle-Activator>org.protege.editor.core.plugin.DefaultPluginActivator</Bundle-Activator>
                </instructions>
                <executions>
                   <execution>
