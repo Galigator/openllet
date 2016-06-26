@@ -63,14 +63,13 @@
                   <Bundle-SymbolicName>${project.artifactId};singleton:=true</Bundle-SymbolicName>
                   <Bundle-Vendor>Galigator</Bundle-Vendor>
                   <Import-Package>
-                     org.apache.log4j.*;version="[1.2,2)", 
-                     org.protege.editor.core.*;version="4.3",
-                     org.protege.editor.owl.*;version="4.3",
+                     org.protege.editor.core.*;version="${protege.version}",
+                     org.protege.editor.owl.*;version="${protege.version}",
                      *
                   </Import-Package>
                   <Include-Resource>
-		                  plugin.xml, 
-        		          {maven-resources},
+		                plugin.xml,
+        		        {maven-resources},
                   		lib/openllet-owlapi-${project.version}.jar=../owlapi/target/openllet-owlapi-${project.version}.jar,
 						lib/openllet-query-${project.version}.jar=../query/target/openllet-query-${project.version}.jar,
 						lib/openllet-core-${project.version}.jar=../core/target/openllet-core-${project.version}.jar,
