@@ -17,19 +17,19 @@
   </licenses>
 
   <modules>
-    <module>aterm</module>
-    <module>core</module>
-    <module>jena</module>
-    <module>query</module>
-    <module>owlapi</module>
-    <module>explanation</module>
-    <module>modularity</module>
-    <module>pellint</module>
-    <module>cli</module>
+    <module>module-shared</module>
+    <module>module-core</module>
+    <module>module-jena</module>
+    <module>module-query</module>
+    <module>module-owlapi</module>
+    <module>module-explanation</module>
+    <module>module-modularity</module>
+    <module>tools-pellint</module>
+    <module>tools-cli</module>
+    <module>tools-profiler</module>
     <module>examples</module>
-    <module>test</module>
-    <module>profiler</module>
-    <module>protege</module>
+    <module>tests</module>
+    <module>plugin-protege</module>
     <module>distribution</module>
   </modules>
 

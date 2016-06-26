@@ -80,7 +80,7 @@
 						<Import-Package>
 							!sun.misc,
 							!com.google.inject.internal.*;resolution:=optional,
-							org.openrdf*;version="[4.0,5.0)",
+							org.openrdf.*;version="[4.0,5.0)",
 							info.aduna.iteration;version="[4.0,5.0)",
 							*
 						</Import-Package>
@@ -123,8 +123,7 @@
 								</excludes>
 							</artifactSet>
 							<transformers>
-								<transformer
-									implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+								<transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
 							</transformers>
 						</configuration>
 					</execution>

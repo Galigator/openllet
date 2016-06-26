@@ -9,7 +9,7 @@
         
 	<artifactId>openllet-protege</artifactId>
 	<name>Openllet :: Protege</name>
-   <packaging>bundle</packaging>
+	<packaging>bundle</packaging>
    
 	<properties>
 		<protege.version>4.3.0</protege.version>
@@ -68,16 +68,16 @@
                      *
                   </Import-Package>
                   <Include-Resource>
-		                plugin.xml,
-        		        {maven-resources},
-                  		lib/openllet-owlapi-${project.version}.jar=../owlapi/target/openllet-owlapi-${project.version}.jar,
-						lib/openllet-query-${project.version}.jar=../query/target/openllet-query-${project.version}.jar,
-						lib/openllet-core-${project.version}.jar=../core/target/openllet-core-${project.version}.jar,
-						lib/openllet-functions-${project.version}.jar=../aterm/target/openllet-functions-${project.version}.jar,
-						lib/openllet-modularity-${project.version}.jar=../modularity/target/openllet-modularity-${project.version}.jar
+                        plugin.xml,
+                        {maven-resources},
+                        lib/openllet-owlapi-${project.version}.jar=../module-owlapi/target/openllet-owlapi-${project.version}.jar,
+                        lib/openllet-query-${project.version}.jar=../module-query/target/openllet-query-${project.version}.jar,
+                        lib/openllet-core-${project.version}.jar=../module-core/target/openllet-core-${project.version}.jar,
+                        lib/openllet-functions-${project.version}.jar=../module-shared/target/openllet-functions-${project.version}.jar,
+                        lib/openllet-modularity-${project.version}.jar=../module-modularity/target/openllet-modularity-${project.version}.jar
                   </Include-Resource>
                   <Private-Package>skeleton</Private-Package>
-				  <Bundle-Activator>org.protege.editor.core.plugin.DefaultPluginActivator</Bundle-Activator>
+                  <Bundle-Activator>org.protege.editor.core.plugin.DefaultPluginActivator</Bundle-Activator>
                </instructions>
                <executions>
                   <execution>

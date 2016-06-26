@@ -22,31 +22,31 @@
 			<useDefaultExcludes>false</useDefaultExcludes>
 		</fileSet>
 		<fileSet>
-			<directory>../aterm/src/main/java</directory>
+			<directory>../module-shared/src/main/java</directory>
 			<outputDirectory>.</outputDirectory>
 		</fileSet>
 		<fileSet>
-			<directory>../core/src/main/java</directory>
+			<directory>../module-core/src/main/java</directory>
 			<outputDirectory>.</outputDirectory>
 		</fileSet>
 		<fileSet>
-			<directory>../query/src/main/java</directory>
+			<directory>../module-query/src/main/java</directory>
 			<outputDirectory>.</outputDirectory>
 		</fileSet>
 		<fileSet>
-			<directory>../owlapi/src/main/java</directory>
+			<directory>../module-owlapi/src/main/java</directory>
 			<outputDirectory>.</outputDirectory>
 		</fileSet>
 		<fileSet>
-			<directory>../jena/src/main/java</directory>
+			<directory>../module-jena/src/main/java</directory>
 			<outputDirectory>.</outputDirectory>
 		</fileSet>
 		<fileSet>
-			<directory>../explanation/src/main/java</directory>
+			<directory>../module-explanation/src/main/java</directory>
 			<outputDirectory>.</outputDirectory>
 		</fileSet>
 		<fileSet>
-			<directory>../modularity/src/main/java</directory>
+			<directory>../module-modularity/src/main/java</directory>
 			<outputDirectory>.</outputDirectory>
 		</fileSet>
 	</fileSets>

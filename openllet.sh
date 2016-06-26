@@ -13,5 +13,5 @@ if [ ! -d "cli/target/openlletcli/bin" ]; then
 mvn -quiet clean install -DskipTests
 fi
 
-chmod u+x cli/target/openlletcli/bin/*
-cli/target/openlletcli/bin/openllet $@
+chmod u+x tools-cli/target/openlletcli/bin/*
+tools-cli/target/openlletcli/bin/openllet $@
