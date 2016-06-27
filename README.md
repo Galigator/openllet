@@ -63,66 +63,71 @@ Dependencies and security of modules of openllet :
 --------------------------------------------------
 
 <table>
-
-<tr><td>Aterm</td><td>
-    <a href="https://www.versioneye.com/user/projects/576c2818cd6d51003e92093d"><img src="https://www.versioneye.com/user/projects/576c2818cd6d51003e92093d/badge.svg?style=flat"/></a>
+<tr><td>Modules</td><td></td></tr>
+<tr><td>Functions</td><td>
+    <a href="https://www.versioneye.com/user/projects/577054ea67189400364490f2"><img src="https://www.versioneye.com/user/projects/577054ea67189400364490f2/badge.svg?style=flat"/></a>
 </td></tr>
 
 <tr><td>Core</td><td>
-<a href="https://www.versioneye.com/user/projects/576c2675cd6d5100372eab63"><img src="https://www.versioneye.com/user/projects/576c2675cd6d5100372eab63/badge.svg?style=flat"/></a>
+<a href="https://www.versioneye.com/user/projects/577054e06718940052ba8db8"><img src="https://www.versioneye.com/user/projects/577054e06718940052ba8db8/badge.svg?style=flat"/></a>
 </td></tr>
 
 <tr><td>Jena</td><td>
-<a href="https://www.versioneye.com/user/projects/576c2679cd6d5100372eab6c"><img src="https://www.versioneye.com/user/projects/576c2679cd6d5100372eab6c/badge.svg?style=flat"/></a>
+<a href="https://www.versioneye.com/user/projects/577054e467189400364490e3"><img src="https://www.versioneye.com/user/projects/577054e467189400364490e3/badge.svg?style=flat"/></a>
 </td></tr>
 
 <tr><td>OwlApi</td><td>
-<a href="https://www.versioneye.com/user/projects/576c268dcd6d510048bab2a7"><img src="https://www.versioneye.com/user/projects/576c268dcd6d510048bab2a7/badge.svg?style=flat"/></a>
-</td></tr>
-
-<tr><td>Cli</td><td>
-<a href="https://www.versioneye.com/user/projects/576c2675cd6d5100479c7af0"><img src="https://www.versioneye.com/user/projects/576c2675cd6d5100479c7af0/badge.svg?style=flat"/></a>
-</td></tr>
-
-<tr><td>Profiler</td><td>
-<a href="https://www.versioneye.com/user/projects/576c2690cd6d51003e9207c5"><img src="https://www.versioneye.com/user/projects/576c2690cd6d51003e9207c5/badge.svg?style=flat"/></a>
+<a href="https://www.versioneye.com/user/projects/577054e86718940052ba8dbf"><img src="https://www.versioneye.com/user/projects/577054e86718940052ba8dbf/badge.svg?style=flat"/></a>
 </td></tr>
 
 <tr><td>Query</td><td>
-<a href="https://www.versioneye.com/user/projects/576c2693cd6d5100479c7b05"><img src="https://www.versioneye.com/user/projects/576c2693cd6d5100479c7b05/badge.svg?style=flat"/></a>
+<a href="https://www.versioneye.com/user/projects/577054e9671894004e1a91f3"><img src="https://www.versioneye.com/user/projects/577054e9671894004e1a91f3/badge.svg?style=flat"/></a>
 </td></tr>
 
 <tr><td>Explanation</td><td>
-<a href="https://www.versioneye.com/user/projects/576c2678cd6d5100479c7afb"><img src="https://www.versioneye.com/user/projects/576c2678cd6d5100479c7afb/badge.svg?style=flat"/></a>
+<a href="https://www.versioneye.com/user/projects/577054e3671894004e1a91ee"><img src="https://www.versioneye.com/user/projects/577054e3671894004e1a91ee/badge.svg?style=flat"/></a>
 </td></tr>
 
 <tr><td>Modularity</td><td>
-<a href="https://www.versioneye.com/user/projects/576c268ccd6d51003e9207c1"><img src="https://www.versioneye.com/user/projects/576c268ccd6d51003e9207c1/badge.svg?style=flat"/></a>
+<a href="https://www.versioneye.com/user/projects/577054e6671894004fedd441"><img src="https://www.versioneye.com/user/projects/577054e6671894004fedd441/badge.svg?style=flat"/></a>
+</td></tr>
+
+<tr><td>Tools</td><td></td></tr>
+<tr><td>Cli</td><td>
+<a href="https://www.versioneye.com/user/projects/577054ee671894004e1a91f9"><img src="https://www.versioneye.com/user/projects/577054ee671894004e1a91f9/badge.svg?style=flat"/></a>
+</td></tr>
+
+<tr><td>Profiler</td><td>
+<a href="https://www.versioneye.com/user/projects/577054f1671894004fedd493"><img src="https://www.versioneye.com/user/projects/577054f1671894004fedd493/badge.svg?style=flat"/></a>
 </td></tr>
 
 <tr><td>Pellint</td><td>
-<a href="https://www.versioneye.com/user/projects/576c268fcd6d5100479c7b00"><img src="https://www.versioneye.com/user/projects/576c268fcd6d5100479c7b00/badge.svg?style=flat"/></a>
+<a href="https://www.versioneye.com/user/projects/577054f167189400364490fb"><img src="https://www.versioneye.com/user/projects/577054f167189400364490fb/badge.svg?style=flat"/></a>
 </td></tr>
 
+<tr><td>Plugins</td><td></td></tr>
 <tr><td>Protege</td><td>
-<a href="https://www.versioneye.com/user/projects/576c2693cd6d510048bab2af"><img src="https://www.versioneye.com/user/projects/576c2693cd6d510048bab2af/badge.svg?style=flat"/></a>
+<a href="https://www.versioneye.com/user/projects/577055026718940052ba8dd9"><img src="https://www.versioneye.com/user/projects/577055026718940052ba8dd9/badge.svg?style=flat"/></a>
 </td></tr>
 
-<tr><td>Test</td><td>
-<a href="https://www.versioneye.com/user/projects/576c2694cd6d5100372eabcc"><img src="https://www.versioneye.com/user/projects/576c2694cd6d5100372eabcc/badge.svg?style=flat"/></a>
-</td></tr>
-
-<tr><td>Distribution</td><td>
-<a href="https://www.versioneye.com/user/projects/576c2676cd6d51003e9207b7"><img src="https://www.versioneye.com/user/projects/576c2676cd6d51003e9207b7/badge.svg?style=flat"/></a>
-</td></tr>
-
-<tr><td>Examples</td><td>
-<a href="https://www.versioneye.com/user/projects/576c2678cd6d510048bab29e"><img src="https://www.versioneye.com/user/projects/576c2678cd6d510048bab29e/badge.svg?style=flat"/></a>
+<tr><td>Others</td><td></td></tr>
+<tr><td>Tests</td><td>
+<a href="https://www.versioneye.com/user/projects/577054ed6718940052ba8dc7"><img src="https://www.versioneye.com/user/projects/577054ed6718940052ba8dc7/badge.svg?style=flat"/></a>
 </td></tr>
 
 <tr><td>Parent</td><td>
-<a href="https://www.versioneye.com/user/projects/576c2690cd6d5100372eab7d"><img src="https://www.versioneye.com/user/projects/576c2690cd6d5100372eab7d/badge.svg?style=flat"/></a>
+<a href="https://www.versioneye.com/user/projects/577054ec671894004fedd445"><img src="https://www.versioneye.com/user/projects/577054ec671894004fedd445/badge.svg?style=flat"/></a>
 </td></tr>
+
+<tr><td>Distribution</td><td>
+<a href="https://www.versioneye.com/user/projects/57705509671894004e1a9204"><img src="https://www.versioneye.com/user/projects/57705509671894004e1a9204/badge.svg?style=flat"/></a>
+</td></tr>
+
+<tr><td>Examples</td><td>
+<a href="https://www.versioneye.com/user/projects/577054d1671894004fedd438"><img src="https://www.versioneye.com/user/projects/577054d1671894004fedd438/badge.svg?style=flat"/></a>
+</td></tr>
+
+
 
 </table>
 
