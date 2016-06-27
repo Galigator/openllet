@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.logging.Level;
 import openllet.aterm.ATermAppl;
-import openllet.core.ABox;
+import openllet.core.ABoxImpl;
 import openllet.core.Node;
 import openllet.core.rules.model.RuleAtom;
 import openllet.core.utils.ATermUtils;
@@ -23,9 +23,9 @@ public abstract class AlphaNode extends ReteNode
 
 	protected boolean _doExplanation;
 
-	protected final ABox _abox;
+	protected final ABoxImpl _abox;
 
-	public AlphaNode(final ABox abox)
+	public AlphaNode(final ABoxImpl abox)
 	{
 		this._abox = abox;
 	}

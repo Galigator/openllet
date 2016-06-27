@@ -123,7 +123,7 @@ public class KnowledgeBase
 		ATermUtils.getFactory();
 	}
 
-	protected ABox _abox;
+	protected ABoxImpl _abox;
 	protected TBox _tbox;
 	protected RBox _rbox;
 
@@ -539,7 +539,7 @@ public class KnowledgeBase
 
 		if (emptyABox)
 		{
-			_abox = new ABox(this);
+			_abox = new ABoxImpl(this);
 
 			_individuals = new HashSet<>();
 			_instances = new HashMap<>();
@@ -617,12 +617,12 @@ public class KnowledgeBase
 	{
 
 		if (_abox == null)
-			_abox = new ABox(this);
+			_abox = new ABoxImpl(this);
 		else
 		{
 			final boolean doExplanation = _abox.doExplanation();
 			final boolean keepLastCompletion = _abox.isKeepLastCompletion();
-			_abox = new ABox(this);
+			_abox = new ABoxImpl(this);
 			_abox.setDoExplanation(doExplanation);
 			_abox.setKeepLastCompletion(keepLastCompletion);
 		}
@@ -660,7 +660,7 @@ public class KnowledgeBase
 			_syntacticAssertions = new HashSet<>();
 		}
 
-		final ABox newABox = new ABox(this);
+		final ABoxImpl newABox = new ABoxImpl(this);
 		newABox._cache = _abox._cache;
 		_abox = newABox;
 
@@ -3376,7 +3376,7 @@ public class KnowledgeBase
 	/**
 	 * @return Returns the _abox.
 	 */
-	public ABox getABox()
+	public ABoxImpl getABox()
 	{
 		return _abox;
 	}
@@ -4169,7 +4169,7 @@ public class KnowledgeBase
 		{
 			final List<ATermAppl> literals = new ArrayList<>();
 			if (!OpenlletOptions.HIDE_TOP_PROPERTY_VALUES)
-				for (final Node node : _abox.getNodes())
+				for (final Node node : _abox.getNodes().values())
 					if (node.isLiteral() && node.getTerm() != null)
 						literals.add(node.getTerm());
 			return literals;
@@ -4747,7 +4747,7 @@ public class KnowledgeBase
 		_tbox = tbox;
 	}
 
-	CompletionStrategy chooseStrategy(final ABox abox)
+	CompletionStrategy chooseStrategy(final ABoxImpl abox)
 	{
 		return chooseStrategy(abox, getExpressivity());
 	}
@@ -4758,7 +4758,7 @@ public class KnowledgeBase
 	 *
 	 * @return
 	 */
-	CompletionStrategy chooseStrategy(final ABox abox, final Expressivity expressivity)
+	CompletionStrategy chooseStrategy(final ABoxImpl abox, final Expressivity expressivity)
 	{
 		final boolean conceptSatisfiability = (abox.size() == 1) && new IndividualIterator(abox).next().isConceptRoot();
 

@@ -8,7 +8,7 @@ package openllet.core.rules;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import openllet.core.ABox;
+import openllet.core.ABoxImpl;
 import openllet.core.Individual;
 import openllet.core.Node;
 
@@ -34,7 +34,7 @@ public class AllNamedIndividualsIterator implements Iterator<Individual>
 	private Individual nextIndividual;
 	private final Iterator<Individual> nodeIterator;
 
-	public AllNamedIndividualsIterator(final ABox abox)
+	public AllNamedIndividualsIterator(final ABoxImpl abox)
 	{
 		nodeIterator = abox.getIndIterator();
 	}

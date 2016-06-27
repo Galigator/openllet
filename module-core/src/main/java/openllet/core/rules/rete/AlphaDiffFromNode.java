@@ -7,7 +7,7 @@
 package openllet.core.rules.rete;
 
 import java.util.Iterator;
-import openllet.core.ABox;
+import openllet.core.ABoxImpl;
 import openllet.core.DependencySet;
 import openllet.core.Individual;
 import openllet.core.Node;
@@ -20,7 +20,7 @@ import openllet.core.utils.iterator.NestedIterator;
  */
 public class AlphaDiffFromNode extends AlphaNode
 {
-	public AlphaDiffFromNode(final ABox abox)
+	public AlphaDiffFromNode(final ABoxImpl abox)
 	{
 		super(abox);
 	}

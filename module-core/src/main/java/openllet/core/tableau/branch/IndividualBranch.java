@@ -30,7 +30,7 @@
 
 package openllet.core.tableau.branch;
 
-import openllet.core.ABox;
+import openllet.core.ABoxImpl;
 import openllet.core.DependencySet;
 import openllet.core.Individual;
 import openllet.core.Node;
@@ -40,7 +40,7 @@ public abstract class IndividualBranch extends Branch
 {
 	protected Individual ind;
 
-	protected IndividualBranch(final ABox abox, final CompletionStrategy strategy, final Individual x, final DependencySet ds, final int n)
+	protected IndividualBranch(final ABoxImpl abox, final CompletionStrategy strategy, final Individual x, final DependencySet ds, final int n)
 	{
 		super(abox, strategy, ds, n);
 

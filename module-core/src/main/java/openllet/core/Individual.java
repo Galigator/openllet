@@ -69,7 +69,7 @@ public class Individual extends Node implements CachedNode
 
 	private boolean _isBlocked;
 
-	Individual(final ATermAppl name, final ABox abox, final Individual parent)
+	Individual(final ATermAppl name, final ABoxImpl abox, final Individual parent)
 	{
 		super(name, abox);
 
@@ -95,7 +95,7 @@ public class Individual extends Node implements CachedNode
 		outEdges = new EdgeList();
 	}
 
-	Individual(final Individual ind, final ABox abox)
+	Individual(final Individual ind, final ABoxImpl abox)
 	{
 		super(ind, abox);
 
@@ -186,7 +186,7 @@ public class Individual extends Node implements CachedNode
 	}
 
 	@Override
-	public Node copyTo(final ABox abox)
+	public Node copyTo(final ABoxImpl abox)
 	{
 		return new Individual(this, abox);
 	}

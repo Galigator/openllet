@@ -99,9 +99,6 @@ import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
  * Description: Utility class to generate OWL concepts in a concise and readable way.
  * </p>
  * <p>

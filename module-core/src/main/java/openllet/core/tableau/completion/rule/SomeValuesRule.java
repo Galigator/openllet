@@ -91,7 +91,7 @@ public class SomeValuesRule extends AbstractTableauRule
 			if (ATermUtils.isNominal(c))
 				return;
 
-			for (final Node node : _strategy.getABox().getNodes())
+			for (final Node node : _strategy.getABox().getNodes().values())
 				if (node.isIndividual() && !node.isPruned() && node.hasType(c))
 					return;
 
@@ -158,19 +158,19 @@ public class SomeValuesRule extends AbstractTableauRule
 					canonical = input;
 				else
 					try
-				{
+					{
 						canonical = _strategy.getABox().getDatatypeReasoner().getCanonicalRepresentation(input);
-				}
-				catch (final InvalidLiteralException e)
-				{
-					final String msg = "Invalid literal encountered in nominal when attempting to apply some values rule: " + e.getMessage();
-					throw new InternalReasonerException(msg, e);
-				}
-				catch (final UnrecognizedDatatypeException e)
-				{
-					final String msg = "Unrecognized datatype for literal encountered in nominal when attempting to apply some values rule: " + e.getMessage();
-					throw new InternalReasonerException(msg, e);
-				}
+					}
+					catch (final InvalidLiteralException e)
+					{
+						final String msg = "Invalid literal encountered in nominal when attempting to apply some values rule: " + e.getMessage();
+						throw new InternalReasonerException(msg, e);
+					}
+					catch (final UnrecognizedDatatypeException e)
+					{
+						final String msg = "Unrecognized datatype for literal encountered in nominal when attempting to apply some values rule: " + e.getMessage();
+						throw new InternalReasonerException(msg, e);
+					}
 				literal = _strategy.getABox().addLiteral(canonical);
 			}
 			else
@@ -253,7 +253,7 @@ public class SomeValuesRule extends AbstractTableauRule
 						// need to merge them together
 						final Set<Role> fs = role.isFunctional() ? role.getFunctionalSupers() : role.getSubRoles();
 
-						for (Role f : fs)
+						for (final Role f : fs)
 						{
 							edges = x.getRNeighborEdges(f);
 							if (!edges.isEmpty())

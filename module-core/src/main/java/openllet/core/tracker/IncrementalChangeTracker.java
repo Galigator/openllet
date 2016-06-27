@@ -10,7 +10,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import openllet.aterm.ATermAppl;
-import openllet.core.ABox;
+import openllet.core.ABoxImpl;
 import openllet.core.Edge;
 import openllet.core.Individual;
 import openllet.core.Node;
@@ -94,7 +94,7 @@ public interface IncrementalChangeTracker
 	 * @param target The ABox for the copy
 	 * @return a copy, with individuals in the target ABox
 	 */
-	public IncrementalChangeTracker copy(ABox target);
+	public IncrementalChangeTracker copy(ABoxImpl target);
 
 	/**
 	 * Iterate over all edges deleted (see {@link #addDeletedEdge(Edge)}) since the previous {@link #clear()}

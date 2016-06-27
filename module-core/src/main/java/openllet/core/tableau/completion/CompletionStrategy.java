@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
-import openllet.core.ABox;
+import openllet.core.ABoxImpl;
 import openllet.core.Clash;
 import openllet.core.DependencySet;
 import openllet.core.Edge;
@@ -77,7 +77,7 @@ public abstract class CompletionStrategy
 	/**
 	 * ABox being completed
 	 */
-	protected ABox _abox;
+	protected ABoxImpl _abox;
 
 	/**
 	 * TBox associated with the _abox
@@ -133,7 +133,7 @@ public abstract class CompletionStrategy
 	/**
 	 *
 	 */
-	public CompletionStrategy(final ABox abox)
+	public CompletionStrategy(final ABoxImpl abox)
 	{
 		this._abox = abox;
 		this._tbox = abox.getTBox();
@@ -142,7 +142,7 @@ public abstract class CompletionStrategy
 		_completionTimer = _timers.getTimer("complete");
 	}
 
-	public ABox getABox()
+	public ABoxImpl getABox()
 	{
 		return _abox;
 	}

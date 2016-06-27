@@ -67,7 +67,7 @@ public class Literal extends Node
 
 	private boolean _clashed = false;
 
-	public Literal(final ATermAppl name, final ATermAppl term, final ABox abox, final DependencySet ds)
+	public Literal(final ATermAppl name, final ATermAppl term, final ABoxImpl abox, final DependencySet ds)
 	{
 
 		super(name, abox);
@@ -111,7 +111,7 @@ public class Literal extends Node
 			_hasValue = false;
 	}
 
-	public Literal(final Literal literal, final ABox abox)
+	public Literal(final Literal literal, final ABoxImpl abox)
 	{
 		super(literal, abox);
 
@@ -127,7 +127,7 @@ public class Literal extends Node
 	}
 
 	@Override
-	public Node copyTo(final ABox abox)
+	public Node copyTo(final ABoxImpl abox)
 	{
 		return new Literal(this, abox);
 	}

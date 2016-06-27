@@ -8,7 +8,7 @@ package openllet.core.tableau.branch;
 
 import java.util.logging.Level;
 import openllet.aterm.ATermAppl;
-import openllet.core.ABox;
+import openllet.core.ABoxImpl;
 import openllet.core.Clash;
 import openllet.core.DependencySet;
 import openllet.core.Individual;
@@ -40,7 +40,7 @@ public class GuessBranch extends IndividualBranch
 	private final int _minGuess;
 	private final ATermAppl _qualification;
 
-	public GuessBranch(final ABox abox, final CompletionStrategy strategy, final Individual x, final Role r, final int minGuess, final int maxGuess, final ATermAppl q, final DependencySet ds)
+	public GuessBranch(final ABoxImpl abox, final CompletionStrategy strategy, final Individual x, final Role r, final int minGuess, final int maxGuess, final ATermAppl q, final DependencySet ds)
 	{
 		super(abox, strategy, x, ds, maxGuess - minGuess + 1);
 
@@ -50,7 +50,7 @@ public class GuessBranch extends IndividualBranch
 	}
 
 	@Override
-	public IndividualBranch copyTo(final ABox abox)
+	public IndividualBranch copyTo(final ABoxImpl abox)
 	{
 		final Individual x = abox.getIndividual(ind.getName());
 		final IndividualBranch b = new GuessBranch(abox, null, x, _r, _minGuess, _minGuess + getTryCount() - 1, _qualification, getTermDepends());

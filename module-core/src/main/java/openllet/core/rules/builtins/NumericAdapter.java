@@ -6,7 +6,7 @@
 
 package openllet.core.rules.builtins;
 
-import openllet.core.ABox;
+import openllet.core.ABoxImpl;
 import openllet.core.Literal;
 
 /**
@@ -37,7 +37,7 @@ public class NumericAdapter implements Function
 	}
 
 	@Override
-	public Literal apply(final ABox abox, final Literal expected, final Literal... args)
+	public Literal apply(final ABoxImpl abox, final Literal expected, final Literal... args)
 	{
 		Number expectedNum = null;
 		Number result = null;
@@ -47,7 +47,7 @@ public class NumericAdapter implements Function
 		{
 			if (!(expected.getValue() instanceof Number))
 			{
-				ABox._logger.info("Testing non-numeric against the result of a numeric _function '" + _function + "': " + expected);
+				ABoxImpl._logger.info("Testing non-numeric against the result of a numeric _function '" + _function + "': " + expected);
 				return null;
 			}
 			expectedNum = (Number) expected.getValue();
@@ -59,7 +59,7 @@ public class NumericAdapter implements Function
 				numArgs[i] = (Number) args[i].getValue();
 			else
 			{
-				ABox._logger.info("Non numeric arguments to numeric _function '" + _function + "': " + args[i]);
+				ABoxImpl._logger.info("Non numeric arguments to numeric _function '" + _function + "': " + args[i]);
 				return null;
 			}
 

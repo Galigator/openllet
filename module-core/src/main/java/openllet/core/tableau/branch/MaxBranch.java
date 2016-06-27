@@ -33,7 +33,7 @@ package openllet.core.tableau.branch;
 import java.util.List;
 import java.util.logging.Level;
 import openllet.aterm.ATermAppl;
-import openllet.core.ABox;
+import openllet.core.ABoxImpl;
 import openllet.core.Clash;
 import openllet.core.DependencySet;
 import openllet.core.Edge;
@@ -57,7 +57,7 @@ public class MaxBranch extends IndividualBranch
 	private final ATermAppl _qualification;
 	private DependencySet[] _prevDS;
 
-	public MaxBranch(final ABox abox, final CompletionStrategy strategy, final Individual x, final Role r, final int n, final ATermAppl qualification, final List<NodeMerge> mergePairs, final DependencySet ds)
+	public MaxBranch(final ABoxImpl abox, final CompletionStrategy strategy, final Individual x, final Role r, final int n, final ATermAppl qualification, final List<NodeMerge> mergePairs, final DependencySet ds)
 	{
 		super(abox, strategy, x, ds, mergePairs.size());
 
@@ -69,7 +69,7 @@ public class MaxBranch extends IndividualBranch
 	}
 
 	@Override
-	public IndividualBranch copyTo(final ABox abox)
+	public IndividualBranch copyTo(final ABoxImpl abox)
 	{
 		final Individual x = abox.getIndividual(ind.getName());
 		final MaxBranch b = new MaxBranch(abox, null, x, _r, _n, _qualification, _mergePairs, getTermDepends());

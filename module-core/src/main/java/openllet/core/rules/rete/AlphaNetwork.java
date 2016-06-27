@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 import openllet.aterm.ATermAppl;
-import openllet.core.ABox;
+import openllet.core.ABoxImpl;
 import openllet.core.DependencySet;
 import openllet.core.Edge;
 import openllet.core.Individual;
@@ -54,9 +54,9 @@ public class AlphaNetwork implements Iterable<AlphaNode>
 	private final Map<Object, List<AlphaNode>> _map = new ConcurrentHashMap<>();
 	private final List<AlphaNode> _alphaNodes = new Vector<>();
 	private final AlphaNodeCreator _creator = new AlphaNodeCreator();
-	private final ABox _abox;
+	private final ABoxImpl _abox;
 
-	public AlphaNetwork(final ABox abox)
+	public AlphaNetwork(final ABoxImpl abox)
 	{
 		this._abox = abox;
 	}

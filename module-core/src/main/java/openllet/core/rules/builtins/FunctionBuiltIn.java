@@ -9,7 +9,7 @@ package openllet.core.rules.builtins;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import openllet.core.ABox;
+import openllet.core.ABoxImpl;
 import openllet.core.Literal;
 import openllet.core.rules.BindingHelper;
 import openllet.core.rules.VariableBinding;
@@ -152,7 +152,7 @@ public class FunctionBuiltIn implements BuiltIn
 	}
 
 	@Override
-	public boolean apply(final ABox abox, final Literal[] args)
+	public boolean apply(final ABoxImpl abox, final Literal[] args)
 	{
 		final Literal result = _function.apply(abox, args[0], Arrays.copyOfRange(args, 1, args.length));
 		args[0] = result;

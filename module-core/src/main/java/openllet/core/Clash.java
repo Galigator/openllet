@@ -78,7 +78,7 @@ public class Clash
 		this.clashExplanation = explanation;
 	}
 
-	public Clash copyTo(final ABox abox)
+	public Clash copyTo(final ABoxImpl abox)
 	{
 		return new Clash(abox.getNode(getNode().getName()), getType(), getDepends(), clashExplanation);
 	}

@@ -277,7 +277,7 @@ public class AllValuesRule extends AbstractTableauRule
 	 */
 	void applyAllValuesTop(final ATermAppl allTopC, final ATermAppl c, final DependencySet ds)
 	{
-		for (final Node node : _strategy.getABox().getNodes())
+		for (final Node node : _strategy.getABox().getNodes().values())
 			if (node.isIndividual() && !node.isPruned() && !node.hasType(c))
 			{
 				node.addType(c, ds);

@@ -7,7 +7,7 @@
 package openllet.core.tableau.branch;
 
 import openllet.aterm.ATermAppl;
-import openllet.core.ABox;
+import openllet.core.ABoxImpl;
 import openllet.core.DependencySet;
 import openllet.core.Node;
 import openllet.core.tableau.completion.CompletionStrategy;
@@ -15,7 +15,7 @@ import openllet.core.utils.ATermUtils;
 
 public class ChooseBranch extends DisjunctionBranch
 {
-	public ChooseBranch(final ABox abox, final CompletionStrategy completion, final Node node, final ATermAppl c, final DependencySet ds)
+	public ChooseBranch(final ABoxImpl abox, final CompletionStrategy completion, final Node node, final ATermAppl c, final DependencySet ds)
 	{
 		super(abox, completion, node, c, ds, new ATermAppl[] { ATermUtils.negate(c), c });
 	}

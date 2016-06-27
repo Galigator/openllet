@@ -85,7 +85,7 @@ public class ProfileUtils
 		int typeCount = 0;
 		int edgeCount = 0;
 		int literalCount = 0;
-		for (final Node node : abox.getNodes())
+		for (final Node node : abox.getNodes().values())
 			if (node.isLiteral())
 				literalCount++;
 			else

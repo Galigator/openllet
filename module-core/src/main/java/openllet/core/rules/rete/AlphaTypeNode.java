@@ -8,7 +8,7 @@ package openllet.core.rules.rete;
 
 import java.util.Iterator;
 import openllet.aterm.ATermAppl;
-import openllet.core.ABox;
+import openllet.core.ABoxImpl;
 import openllet.core.DependencySet;
 import openllet.core.Individual;
 import openllet.core.Node;
@@ -29,12 +29,12 @@ public class AlphaTypeNode extends AlphaNode
 	private final ATermAppl _name;
 	private Individual _node;
 
-	public AlphaTypeNode(final ABox abox, final ATermAppl predicate)
+	public AlphaTypeNode(final ABoxImpl abox, final ATermAppl predicate)
 	{
 		this(abox, predicate, null);
 	}
 
-	public AlphaTypeNode(final ABox abox, final ATermAppl predicate, final ATermAppl name)
+	public AlphaTypeNode(final ABoxImpl abox, final ATermAppl predicate, final ATermAppl name)
 	{
 		super(abox);
 		this._predicate = predicate;

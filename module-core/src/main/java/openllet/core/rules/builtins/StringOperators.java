@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import openllet.aterm.ATermAppl;
-import openllet.core.ABox;
+import openllet.core.ABoxImpl;
 import openllet.core.Literal;
 import openllet.core.rules.BindingHelper;
 import openllet.core.rules.VariableBinding;
@@ -128,7 +128,7 @@ public class StringOperators
 			}
 			catch (final PatternSyntaxException e)
 			{
-				ABox._logger.log(Level.INFO, "Bad regex from builtin rule: " + l2, e);
+				ABoxImpl._logger.log(Level.INFO, "Bad regex from builtin rule: " + l2, e);
 			}
 			return result;
 		}
@@ -213,7 +213,7 @@ public class StringOperators
 	{
 
 		@Override
-		public Literal apply(final ABox abox, final Literal expected, final Literal... args)
+		public Literal apply(final ABoxImpl abox, final Literal expected, final Literal... args)
 		{
 			if (args.length != 1)
 				return null;
@@ -427,7 +427,7 @@ public class StringOperators
 		}
 
 		@Override
-		public boolean apply(final ABox abox, final Literal[] args)
+		public boolean apply(final ABoxImpl abox, final Literal[] args)
 		{
 			return false;
 		}

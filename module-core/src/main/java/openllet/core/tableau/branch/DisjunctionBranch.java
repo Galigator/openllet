@@ -34,7 +34,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 import openllet.aterm.ATermAppl;
-import openllet.core.ABox;
+import openllet.core.ABoxImpl;
 import openllet.core.Clash;
 import openllet.core.DependencySet;
 import openllet.core.Individual;
@@ -52,7 +52,7 @@ public class DisjunctionBranch extends Branch
 	protected DependencySet[] _prevDS;
 	protected int[] _order;
 
-	public DisjunctionBranch(final ABox abox, final CompletionStrategy completion, final Node node, final ATermAppl disjunction, final DependencySet ds, final ATermAppl[] disj)
+	public DisjunctionBranch(final ABoxImpl abox, final CompletionStrategy completion, final Node node, final ATermAppl disjunction, final DependencySet ds, final ATermAppl[] disj)
 	{
 		super(abox, completion, ds, disj.length);
 
@@ -77,7 +77,7 @@ public class DisjunctionBranch extends Branch
 	}
 
 	@Override
-	public DisjunctionBranch copyTo(final ABox abox)
+	public DisjunctionBranch copyTo(final ABoxImpl abox)
 	{
 		final Node n = abox.getNode(_node.getName());
 		final DisjunctionBranch b = new DisjunctionBranch(abox, null, n, _disjunction, getTermDepends(), _disj);

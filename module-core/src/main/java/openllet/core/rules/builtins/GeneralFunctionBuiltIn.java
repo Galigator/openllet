@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
-import openllet.core.ABox;
+import openllet.core.ABoxImpl;
 import openllet.core.Literal;
 import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.rules.BindingHelper;
@@ -104,7 +104,7 @@ public class GeneralFunctionBuiltIn implements BuiltIn
 						// Oops, we overwrote an argument.
 						if (newBinding.get(arg) != null)
 							throw new InternalReasonerException("General Function implementation overwrote one of its arguments!");
-						ABox._logger.info("Function results in multiple simultaneous values for variable");
+						ABoxImpl._logger.info("Function results in multiple simultaneous values for variable");
 						return;
 					}
 					if (current == null)
@@ -156,7 +156,7 @@ public class GeneralFunctionBuiltIn implements BuiltIn
 	}
 
 	@Override
-	public boolean apply(final ABox abox, final Literal[] args)
+	public boolean apply(final ABoxImpl abox, final Literal[] args)
 	{
 		return _function.apply(abox, args);
 	}

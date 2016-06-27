@@ -31,7 +31,7 @@
 package openllet.core.tableau.branch;
 
 import java.util.logging.Logger;
-import openllet.core.ABox;
+import openllet.core.ABoxImpl;
 import openllet.core.Clash;
 import openllet.core.DependencySet;
 import openllet.core.Node;
@@ -59,7 +59,7 @@ public abstract class Branch
 {
 	public static final Logger _logger = Log.getLogger(Branch.class);
 
-	protected ABox _abox;
+	protected ABoxImpl _abox;
 	protected CompletionStrategy _strategy;
 	protected int _branch;
 	protected int _tryCount;
@@ -72,7 +72,7 @@ public abstract class Branch
 	protected int _anonCount;
 	protected int _nodeCount;
 
-	Branch(final ABox abox, final CompletionStrategy strategy, final DependencySet ds, final int n)
+	Branch(final ABoxImpl abox, final CompletionStrategy strategy, final DependencySet ds, final int n)
 	{
 		this._abox = abox;
 		this.setStrategy(strategy);
@@ -130,7 +130,7 @@ public abstract class Branch
 		return !_abox.isClosed();
 	}
 
-	public abstract Branch copyTo(ABox abox);
+	public abstract Branch copyTo(ABoxImpl abox);
 
 	protected abstract void tryBranch();
 

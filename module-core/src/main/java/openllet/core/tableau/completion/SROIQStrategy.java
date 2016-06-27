@@ -10,7 +10,7 @@ package openllet.core.tableau.completion;
 
 import java.util.List;
 import java.util.logging.Level;
-import openllet.core.ABox;
+import openllet.core.ABoxImpl;
 import openllet.core.IndividualIterator;
 import openllet.core.OpenlletOptions;
 import openllet.core.exceptions.InternalReasonerException;
@@ -36,7 +36,7 @@ import openllet.core.tableau.completion.rule.TableauRule;
  */
 public class SROIQStrategy extends CompletionStrategy
 {
-	public SROIQStrategy(final ABox abox)
+	public SROIQStrategy(final ABoxImpl abox)
 	{
 		super(abox);
 	}

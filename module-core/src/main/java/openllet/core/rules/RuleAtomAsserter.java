@@ -13,7 +13,7 @@ import static openllet.core.utils.TermFactory.not;
 import static openllet.core.utils.TermFactory.value;
 
 import openllet.aterm.ATermAppl;
-import openllet.core.ABox;
+import openllet.core.ABoxImpl;
 import openllet.core.DependencySet;
 import openllet.core.Individual;
 import openllet.core.Node;
@@ -47,7 +47,7 @@ import openllet.core.utils.ATermUtils;
  */
 public class RuleAtomAsserter implements RuleAtomVisitor
 {
-	private ABox _abox;
+	private ABoxImpl _abox;
 	private CompletionStrategy _strategy;
 
 	private VariableBinding _binding;
@@ -60,7 +60,7 @@ public class RuleAtomAsserter implements RuleAtomVisitor
 	{
 	}
 
-	public boolean assertAtom(final RuleAtom atom, final VariableBinding binding, final DependencySet ds, final boolean negated, final ABox abox, final CompletionStrategy strategy)
+	public boolean assertAtom(final RuleAtom atom, final VariableBinding binding, final DependencySet ds, final boolean negated, final ABoxImpl abox, final CompletionStrategy strategy)
 	{
 		_asserted = true;
 

@@ -39,7 +39,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
-import openllet.core.ABox;
+import openllet.core.ABoxImpl;
 import openllet.core.Clash;
 import openllet.core.DependencySet;
 import openllet.core.Edge;
@@ -89,7 +89,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 	//	private static int _cache = 0;
 	//	private static int block = 0;
 
-	public EmptySRIQStrategy(final ABox abox)
+	public EmptySRIQStrategy(final ABoxImpl abox)
 	{
 		super(abox);
 	}

@@ -18,7 +18,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.logging.Level;
 import openllet.aterm.ATermAppl;
-import openllet.core.ABox;
+import openllet.core.ABoxImpl;
 import openllet.core.Clash;
 import openllet.core.DependencySet;
 import openllet.core.Edge;
@@ -52,7 +52,7 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 	private final RuleAtomAsserter ruleAtomAsserter;
 	private final TrivialSatisfactionHelpers atomTester;
 
-	public ContinuousRulesStrategy(final ABox abox)
+	public ContinuousRulesStrategy(final ABoxImpl abox)
 	{
 		super(abox);
 		bindingStrategy = new BindingGeneratorStrategyImpl(abox);

@@ -11,7 +11,7 @@ package openllet.core.tableau.branch;
 
 import java.util.List;
 import java.util.logging.Level;
-import openllet.core.ABox;
+import openllet.core.ABoxImpl;
 import openllet.core.Clash;
 import openllet.core.DependencySet;
 import openllet.core.Individual;
@@ -35,7 +35,7 @@ public class RuleBranch extends Branch
 	private int[] _order;
 	private DependencySet[] _prevDS;
 
-	public RuleBranch(final ABox abox, final CompletionStrategy completion, final RuleAtomAsserter ruleAtomAsserter, final List<RuleAtom> atoms, final VariableBinding binding, final int bodyAtomCount, final DependencySet ds)
+	public RuleBranch(final ABoxImpl abox, final CompletionStrategy completion, final RuleAtomAsserter ruleAtomAsserter, final List<RuleAtom> atoms, final VariableBinding binding, final int bodyAtomCount, final DependencySet ds)
 	{
 		super(abox, completion, ds, atoms.size());
 
@@ -56,7 +56,7 @@ public class RuleBranch extends Branch
 	}
 
 	@Override
-	public RuleBranch copyTo(final ABox abox)
+	public RuleBranch copyTo(final ABoxImpl abox)
 	{
 		final RuleBranch b = new RuleBranch(abox, _strategy, _ruleAtomAsserter, _atoms, _binding, _bodyAtomCount, getTermDepends());
 

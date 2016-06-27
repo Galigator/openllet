@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import openllet.core.ABox;
+import openllet.core.ABoxImpl;
 
 /**
  * <p>
@@ -135,7 +135,7 @@ public class BindingGeneratorImpl implements BindingGenerator
 	 * Constructs a _binding generator with the given list of _helpers. The _helpers must be in such an _order that prerequisite variables of any helper are
 	 * bound by a helper before it.
 	 */
-	public BindingGeneratorImpl(@SuppressWarnings("unused") final ABox abox, final VariableBinding initialBinding, final Collection<BindingHelper> helpers)
+	public BindingGeneratorImpl(@SuppressWarnings("unused") final ABoxImpl abox, final VariableBinding initialBinding, final Collection<BindingHelper> helpers)
 	{
 		this._helpers = helpers;
 		this._initialBinding = initialBinding;

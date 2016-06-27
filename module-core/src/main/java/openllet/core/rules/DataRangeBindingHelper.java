@@ -9,7 +9,7 @@ package openllet.core.rules;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.logging.Logger;
-import openllet.core.ABox;
+import openllet.core.ABoxImpl;
 import openllet.core.Literal;
 import openllet.core.datatypes.DatatypeReasoner;
 import openllet.core.datatypes.exceptions.DatatypeReasonerException;
@@ -43,7 +43,7 @@ public class DataRangeBindingHelper implements BindingHelper
 	private final DataRangeAtom _atom;
 	private boolean _hasNext;
 
-	public DataRangeBindingHelper(final ABox abox, final DataRangeAtom atom)
+	public DataRangeBindingHelper(final ABoxImpl abox, final DataRangeAtom atom)
 	{
 		this._dtReasoner = abox.getDatatypeReasoner();
 		this._atom = atom;

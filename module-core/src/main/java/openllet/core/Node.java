@@ -76,7 +76,7 @@ public abstract class Node
 	public final static int NOM = 6;
 	public final static int TYPES = 7;
 
-	protected ABox _abox;
+	protected ABoxImpl _abox;
 	protected ATermAppl _name;
 	protected Map<ATermAppl, DependencySet> _depends;
 	private final boolean _isRoot;
@@ -105,7 +105,7 @@ public abstract class Node
 
 	protected Map<Node, DependencySet> _differents;
 
-	protected Node(final ATermAppl name, final ABox abox)
+	protected Node(final ATermAppl name, final ABoxImpl abox)
 	{
 		this._name = name;
 		this._abox = abox;
@@ -120,7 +120,7 @@ public abstract class Node
 		_inEdges = new EdgeList();
 	}
 
-	protected Node(final Node node, final ABox abox)
+	protected Node(final Node node, final ABoxImpl abox)
 	{
 		this._name = node.getName();
 		this._abox = abox;
@@ -246,7 +246,7 @@ public abstract class Node
 		return _isRoot && isNominal();
 	}
 
-	public abstract Node copyTo(ABox abox);
+	public abstract Node copyTo(ABoxImpl abox);
 
 	protected void addInEdge(final Edge edge)
 	{
@@ -960,7 +960,7 @@ public abstract class Node
 	 *
 	 * @return
 	 */
-	public ABox getABox()
+	public ABoxImpl getABox()
 	{
 		return _abox;
 	}

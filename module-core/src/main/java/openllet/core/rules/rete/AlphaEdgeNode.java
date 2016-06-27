@@ -9,7 +9,7 @@ package openllet.core.rules.rete;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import openllet.core.ABox;
+import openllet.core.ABoxImpl;
 import openllet.core.DefaultEdge;
 import openllet.core.DependencySet;
 import openllet.core.Edge;
@@ -33,7 +33,7 @@ public class AlphaEdgeNode extends AlphaNode
 {
 	protected final Role _role;
 
-	public AlphaEdgeNode(final ABox abox, final Role role)
+	public AlphaEdgeNode(final ABoxImpl abox, final Role role)
 	{
 		super(abox);
 		this._role = role;

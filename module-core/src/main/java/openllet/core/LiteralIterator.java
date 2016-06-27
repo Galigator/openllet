@@ -21,7 +21,7 @@ public class LiteralIterator implements Iterator<Literal>
 	/**
 	 * ABox where literals are stoired
 	 */
-	protected ABox _abox;
+	protected ABoxImpl _abox;
 	/**
 	 * List of _node names
 	 */
@@ -42,7 +42,7 @@ public class LiteralIterator implements Iterator<Literal>
 	/**
 	 * Create an iterator over all the individuals in the ABox
 	 */
-	public LiteralIterator(final ABox abox)
+	public LiteralIterator(final ABoxImpl abox)
 	{
 		this(abox, true);
 	}
@@ -53,7 +53,7 @@ public class LiteralIterator implements Iterator<Literal>
 	 * @param _abox
 	 * @param findNext
 	 */
-	protected LiteralIterator(final ABox abox, final boolean findNext)
+	protected LiteralIterator(final ABoxImpl abox, final boolean findNext)
 	{
 		this._abox = abox;
 		_nodeList = abox.getNodeNames();
@@ -72,7 +72,7 @@ public class LiteralIterator implements Iterator<Literal>
 	 * @param _start
 	 * @param _stop
 	 */
-	public LiteralIterator(final ABox abox, final int start, final int stop)
+	public LiteralIterator(final ABoxImpl abox, final int start, final int stop)
 	{
 		this._abox = abox;
 		this._nodeList = abox.getNodeNames();

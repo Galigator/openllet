@@ -13,7 +13,7 @@ import java.util.Iterator;
 import java.util.Set;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
-import openllet.core.ABox;
+import openllet.core.ABoxImpl;
 import openllet.core.Edge;
 import openllet.core.Individual;
 import openllet.core.KnowledgeBase;
@@ -58,7 +58,7 @@ public class CacheSafetyDynamic implements CacheSafety
 		final Role r = parentEdge.getRole();
 		final Individual parent = parentEdge.getFrom();
 
-		final ABox abox = parent.getABox();
+		final ABoxImpl abox = parent.getABox();
 
 		if (!isParentSafe(abox.getKB(), r, parent))
 			return false;
@@ -110,7 +110,7 @@ public class CacheSafetyDynamic implements CacheSafety
 		return result;
 	}
 
-	protected Iterator<CachedNode> getCachedNodes(final ABox abox, final ATermAppl c)
+	protected Iterator<CachedNode> getCachedNodes(final ABoxImpl abox, final ATermAppl c)
 	{
 		CachedNode node = abox.getCached(c);
 		if (node != null)

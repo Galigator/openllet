@@ -6,7 +6,7 @@
 
 package openllet.core.rules.builtins;
 
-import openllet.core.ABox;
+import openllet.core.ABoxImpl;
 import openllet.core.Literal;
 
 /**
@@ -31,7 +31,7 @@ public interface GeneralFunction
 	/**
 	 * Apply the function against a set of arguments. Set null values of argument array. Return true if function succeeded, false if it cannot.
 	 */
-	public boolean apply(ABox abox, Literal[] args);
+	public boolean apply(ABoxImpl abox, Literal[] args);
 
 	public boolean isApplicable(boolean[] boundPositions);
 

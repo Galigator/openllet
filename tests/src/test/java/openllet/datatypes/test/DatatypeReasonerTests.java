@@ -44,7 +44,7 @@ import java.util.Collections;
 import java.util.Random;
 import java.util.Set;
 import openllet.aterm.ATermAppl;
-import openllet.core.ABox;
+import openllet.core.ABoxImpl;
 import openllet.core.DependencySet;
 import openllet.core.KnowledgeBase;
 import openllet.core.Literal;
@@ -95,7 +95,7 @@ public class DatatypeReasonerTests
 		return dataranges;
 	}
 
-	private ABox abox;
+	private ABoxImpl abox;
 
 	private DatatypeReasoner reasoner;
 
@@ -171,7 +171,7 @@ public class DatatypeReasonerTests
 	public void reset()
 	{
 		reasoner = new DatatypeReasonerImpl();
-		abox = new ABox(null);
+		abox = new ABoxImpl(null);
 	}
 
 	/**

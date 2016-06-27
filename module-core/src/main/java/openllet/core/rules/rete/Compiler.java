@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import openllet.aterm.ATermAppl;
-import openllet.core.ABox;
+import openllet.core.ABoxImpl;
 import openllet.core.DependencySet;
 import openllet.core.Individual;
 import openllet.core.OpenlletOptions;
@@ -70,7 +70,7 @@ import openllet.core.utils.SetUtils;
 public class Compiler
 {
 	protected ContinuousRulesStrategy _strategy;
-	private final ABox _abox;
+	private final ABoxImpl _abox;
 	private final AlphaNetwork _alphaNet;
 
 	private final SafetyChecker _safetyChecker = new SafetyChecker();
@@ -438,11 +438,11 @@ public class Compiler
 		private DependencySet _dependency = DependencySet.INDEPENDENT;
 		private NodeProvider _result = null;
 
-		private final ABox _translatorAbox;
+		private final ABoxImpl _translatorAbox;
 		private final List<RuleAtom> _processed;
 		private final boolean _lastWME;
 
-		public AtomObjectTranslator(final ABox abox, final List<RuleAtom> processed, final boolean lastWME)
+		public AtomObjectTranslator(final ABoxImpl abox, final List<RuleAtom> processed, final boolean lastWME)
 		{
 			this._translatorAbox = abox;
 			this._processed = processed;
@@ -523,12 +523,12 @@ public class Compiler
 
 	private static class BuiltInCall
 	{
-		private final ABox _builtInCallAbox;
+		private final ABoxImpl _builtInCallAbox;
 		private final BuiltInAtom _atom;
 		private final BuiltIn _builtin;
 		private final BindingHelper _helper;
 
-		public BuiltInCall(final ABox abox, final BuiltInAtom atom)
+		public BuiltInCall(final ABoxImpl abox, final BuiltInAtom atom)
 		{
 			this._builtInCallAbox = abox;
 			this._atom = atom;

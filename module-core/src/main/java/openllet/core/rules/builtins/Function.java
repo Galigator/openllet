@@ -6,7 +6,7 @@
 
 package openllet.core.rules.builtins;
 
-import openllet.core.ABox;
+import openllet.core.ABoxImpl;
 import openllet.core.Literal;
 
 /**
@@ -32,6 +32,6 @@ public interface Function
 	 * Apply the function against a set of arguments. Test the _expected argument against the result. Return null if the arguments were invalid. If '_expected'
 	 * was not null and matched the result, return '_expected'. If '_expected' was not null and did not match, return null; Otherwise, return the result.
 	 */
-	public Literal apply(ABox abox, Literal expected, Literal... args);
+	public Literal apply(ABoxImpl abox, Literal expected, Literal... args);
 
 }

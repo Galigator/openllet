@@ -8,7 +8,7 @@ package openllet.core.rules.builtins;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import openllet.core.ABox;
+import openllet.core.ABoxImpl;
 import openllet.core.Literal;
 import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.utils.ATermUtils;
@@ -33,10 +33,10 @@ import openllet.core.utils.Namespaces;
 public class NumberToLiteralVisitor implements NumericVisitor
 {
 
-	private final ABox _abox;
+	private final ABoxImpl _abox;
 	private Literal _result;
 
-	public NumberToLiteralVisitor(final ABox abox)
+	public NumberToLiteralVisitor(final ABoxImpl abox)
 	{
 		this._abox = abox;
 	}

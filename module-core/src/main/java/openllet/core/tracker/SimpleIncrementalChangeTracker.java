@@ -13,7 +13,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import openllet.aterm.ATermAppl;
-import openllet.core.ABox;
+import openllet.core.ABoxImpl;
 import openllet.core.DefaultEdge;
 import openllet.core.Edge;
 import openllet.core.Individual;
@@ -56,7 +56,7 @@ public class SimpleIncrementalChangeTracker implements IncrementalChangeTracker
 		updatedIndividuals = new HashSet<>();
 	}
 
-	private SimpleIncrementalChangeTracker(final SimpleIncrementalChangeTracker src, final ABox target)
+	private SimpleIncrementalChangeTracker(final SimpleIncrementalChangeTracker src, final ABoxImpl target)
 	{
 
 		this.deletedEdges = new HashSet<>(src.deletedEdges.size());
@@ -246,7 +246,7 @@ public class SimpleIncrementalChangeTracker implements IncrementalChangeTracker
 	 * @see openllet.core.IncrementalChangeTracker#copy(org.mindswap.pellet.ABox)
 	 */
 	@Override
-	public SimpleIncrementalChangeTracker copy(final ABox target)
+	public SimpleIncrementalChangeTracker copy(final ABoxImpl target)
 	{
 		return new SimpleIncrementalChangeTracker(this, target);
 	}

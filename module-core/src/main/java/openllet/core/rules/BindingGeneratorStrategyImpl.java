@@ -13,7 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
-import openllet.core.ABox;
+import openllet.core.ABoxImpl;
 import openllet.core.rules.builtins.BuiltIn;
 import openllet.core.rules.builtins.BuiltInRegistry;
 import openllet.core.rules.model.AtomDVariable;
@@ -77,9 +77,9 @@ public class BindingGeneratorStrategyImpl implements BindingGeneratorStrategy
 
 	}
 
-	private final ABox _abox;
+	private final ABoxImpl _abox;
 
-	public BindingGeneratorStrategyImpl(final ABox abox)
+	public BindingGeneratorStrategyImpl(final ABoxImpl abox)
 	{
 		this._abox = abox;
 	}
@@ -127,7 +127,7 @@ public class BindingGeneratorStrategyImpl implements BindingGeneratorStrategy
 
 		if (!ensureOrdering(helpers, initialBinding))
 		{
-			ABox._logger.warning("IGNORING RULE " + rule + ": Could not generate safe ordering for body constraints.");
+			ABoxImpl._logger.warning("IGNORING RULE " + rule + ": Could not generate safe ordering for body constraints.");
 			return new BindingGeneratorImpl();
 		}
 		optimize(helpers);

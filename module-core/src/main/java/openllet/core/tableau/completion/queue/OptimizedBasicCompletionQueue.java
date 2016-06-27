@@ -28,7 +28,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import openllet.aterm.ATermAppl;
-import openllet.core.ABox;
+import openllet.core.ABoxImpl;
 import openllet.core.Individual;
 import openllet.core.Literal;
 import openllet.core.Node;
@@ -86,7 +86,7 @@ public class OptimizedBasicCompletionQueue extends CompletionQueue
 	 * @param _abox
 	 */
 	@SuppressWarnings("unchecked")
-	public OptimizedBasicCompletionQueue(final ABox abox)
+	public OptimizedBasicCompletionQueue(final ABoxImpl abox)
 	{
 		super(abox);
 		final int nSelectors = NodeSelector.numSelectors();
@@ -290,7 +290,7 @@ public class OptimizedBasicCompletionQueue extends CompletionQueue
 	 * @param ab
 	 */
 	@Override
-	public void setABox(final ABox ab)
+	public void setABox(final ABoxImpl ab)
 	{
 		this._abox = ab;
 	}

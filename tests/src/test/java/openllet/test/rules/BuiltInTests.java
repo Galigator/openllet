@@ -22,7 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import junit.framework.JUnit4TestAdapter;
 import openllet.aterm.ATermAppl;
-import openllet.core.ABox;
+import openllet.core.ABoxImpl;
 import openllet.core.DependencySet;
 import openllet.core.KnowledgeBase;
 import openllet.core.Literal;
@@ -89,7 +89,7 @@ public class BuiltInTests
 		return new BigDecimal(String.valueOf(d));
 	}
 
-	private ABox _abox;
+	private ABoxImpl _abox;
 	private KnowledgeBase _kb;
 
 	private final ATermAppl li_1 = literal("-1", Datatypes.INTEGER), li0 = literal("0", Datatypes.NON_NEGATIVE_INTEGER), lf0 = literal("0.0", Datatypes.FLOAT), lf00 = literal("0.00", Datatypes.FLOAT), lp0 = literal("0"), ls0 = literal("0", Datatypes.STRING), len0 = literal("0", "en");

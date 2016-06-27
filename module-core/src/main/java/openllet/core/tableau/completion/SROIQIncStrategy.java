@@ -39,7 +39,7 @@ import java.util.logging.Level;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
-import openllet.core.ABox;
+import openllet.core.ABoxImpl;
 import openllet.core.DefaultEdge;
 import openllet.core.DependencySet;
 import openllet.core.Edge;
@@ -70,7 +70,7 @@ public class SROIQIncStrategy extends SROIQStrategy
 	 *
 	 * @param _abox
 	 */
-	public SROIQIncStrategy(final ABox abox)
+	public SROIQIncStrategy(final ABoxImpl abox)
 	{
 		super(abox);
 	}

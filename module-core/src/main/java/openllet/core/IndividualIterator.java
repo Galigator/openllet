@@ -22,7 +22,7 @@ public class IndividualIterator implements Iterator<Individual>
 	/**
 	 * ABox where the individuals are stored
 	 */
-	protected ABox _abox;
+	protected ABoxImpl _abox;
 	/**
 	 * List of _node names
 	 */
@@ -40,7 +40,7 @@ public class IndividualIterator implements Iterator<Individual>
 	/**
 	 * Create an iterator over all the individuals in the ABox
 	 */
-	public IndividualIterator(final ABox abox)
+	public IndividualIterator(final ABoxImpl abox)
 	{
 		this._abox = abox;
 		_nodeList = abox.getNodeNames();
