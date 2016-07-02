@@ -435,4 +435,5 @@ public interface ABox extends Logging
 	 */
 	public List<NodeMerge> getToBeMerged();
 
+	public ABoxStats getStats();
 }

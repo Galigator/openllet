@@ -24,7 +24,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.aterm.ATermAppl;
-import openllet.core.ABoxImpl;
+import openllet.core.ABox;
 import openllet.core.DependencySet;
 import openllet.core.KnowledgeBase;
 import openllet.core.OpenlletOptions;
@@ -675,7 +675,7 @@ public class QueryEngine
 				final Role topObjectRole = kb.getRole(TOP_OBJECT_PROPERTY);
 				final boolean added = topObjectRole.addDomain(newUC, DependencySet.INDEPENDENT);
 
-				final ABoxImpl copy = kb.getABox().copy();
+				final ABox copy = kb.getABox().copy();
 				copy.setInitialized(false);
 				querySatisfied = !copy.isConsistent();
 

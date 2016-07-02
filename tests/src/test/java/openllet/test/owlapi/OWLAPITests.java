@@ -839,7 +839,7 @@ public class OWLAPITests extends AbstractOWLAPITests
 		final KnowledgeBase kb = reasoner.getKB();
 		kb.prepare();
 
-		for (final Role r : kb.getRBox().getRoles())
+		for (final Role r : kb.getRBox().getRoles().values())
 			if (!ATermUtils.isBuiltinProperty(r.getName()))
 			{
 				assertTrue(r.toString(), r.isSimple());

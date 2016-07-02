@@ -501,7 +501,7 @@ public class DefaultGraphLoader implements GraphLoader
 					else
 						if (restrictionType.equals(OWL.minCardinality.asNode()) || restrictionType.equals(OWL.maxCardinality.asNode()) || restrictionType.equals(OWL.cardinality.asNode()) || restrictionType.equals(OWL2.minQualifiedCardinality.asNode()) || restrictionType.equals(OWL2.maxQualifiedCardinality.asNode()) || restrictionType.equals(OWL2.qualifiedCardinality.asNode()))
 							try
-		{
+							{
 								ATermAppl c = null;
 								if (isObjectRestriction.isTrue())
 								{
@@ -540,12 +540,12 @@ public class DefaultGraphLoader implements GraphLoader
 										aTerm = ATermUtils.makeCard(pt, cardinality, c);
 
 								addSimpleProperty(pt, CARDINALITY);
-		}
-		catch (final Exception ex)
-		{
-			addUnsupportedFeature("Invalid value for the owl:" + restrictionType.getLocalName() + " restriction: " + filler);
-			_logger.log(Level.WARNING, "Invalid cardinality", ex);
-		}
+							}
+							catch (final Exception ex)
+							{
+								addUnsupportedFeature("Invalid value for the owl:" + restrictionType.getLocalName() + " restriction: " + filler);
+								_logger.log(Level.WARNING, "Invalid cardinality", ex);
+							}
 						else
 							addUnsupportedFeature("Ignoring invalid restriction on " + p);
 
@@ -1964,7 +1964,8 @@ public class DefaultGraphLoader implements GraphLoader
 	{
 		_logger.fine("processUntypedResource");
 
-		for (final Role r : _kb.getRBox().getRoles().toArray(new Role[0]))
+		// The copy into an array is here to avoid an ConcurrentModificationException
+		for (final Role r : _kb.getRBox().getRoles().values().toArray(new Role[0]))
 		{
 			final SimpleProperty why = _simpleProperties.get(r.getName());
 			if (why != null)

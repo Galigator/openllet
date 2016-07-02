@@ -227,7 +227,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 		_monitor.taskFinished();
 
 		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Satisfiability Count: " + (_kb.getABox().stats.satisfiabilityCount - (2 * _kb.getClasses().size())));
+			_logger.fine("Satisfiability Count: " + (_kb.getABox().getStats().satisfiabilityCount - (2 * _kb.getClasses().size())));
 
 		// Reset the definition _order, so the sorted copy can be gc'd
 		_definitionOrder = null;
@@ -390,7 +390,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 		/*
 		 * Use RBox domain axioms to _mark some concepts as complex
 		 */
-		for (final Role r : _kb.getRBox().getRoles())
+		for (final Role r : _kb.getRBox().getRoles().values())
 			for (final ATermAppl c : r.getDomains())
 				if (ATermUtils.isPrimitive(c))
 					_conceptFlags.put(c, ConceptFlag.OTHER);
@@ -712,7 +712,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 			// TODO just getting direct supers and letting recursion handle rest
 			// might be more efficient
 			for (final ATermAppl sup : _toldTaxonomy.getFlattenedSupers(c, /* direct = */true))
-				markToldSubsumers(sup);
+			markToldSubsumers(sup);
 	}
 
 	private void markToldSubsumeds(final ATermAppl c, final Boolean b)
@@ -912,7 +912,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 		}
 
 		if (_logger.isLoggable(Level.FINER))
-			_logger.finer("Subsumption Count: " + _kb.getABox().stats.satisfiabilityCount);
+			_logger.finer("Subsumption Count: " + _kb.getABox().getStats().satisfiabilityCount);
 
 		return node;
 	}
@@ -1166,7 +1166,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 		if (_logger.isLoggable(Level.FINER))
 		{
 			time = System.currentTimeMillis();
-			count = _kb.getABox().stats.satisfiabilityCount;
+			count = _kb.getABox().getStats().satisfiabilityCount;
 			_logger.finer("Subsumption testing for [" + format(sub) + "," + format(sup) + "]...");
 		}
 
@@ -1174,7 +1174,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 
 		if (_logger.isLoggable(Level.FINER))
 		{
-			final String sign = (_kb.getABox().stats.satisfiabilityCount > count) ? "+" : "-";
+			final String sign = (_kb.getABox().getStats().satisfiabilityCount > count) ? "+" : "-";
 			time = System.currentTimeMillis() - time;
 			_logger.finer(" done (" + (result ? "+" : "-") + ") (" + sign + time + "ms)");
 		}
@@ -1284,7 +1284,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 			if (_logger.isLoggable(Level.FINER))
 			{
 				time = System.currentTimeMillis();
-				count = _kb.getABox().stats.consistencyCount;
+				count = _kb.getABox().getStats().consistencyCount;
 				_logger.finer("Type checking for [" + format(n) + ", " + format(c) + "]...");
 			}
 
@@ -1295,7 +1295,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 
 			if (_logger.isLoggable(Level.FINER))
 			{
-				final String sign = (_kb.getABox().stats.consistencyCount > count) ? "+" : "-";
+				final String sign = (_kb.getABox().getStats().consistencyCount > count) ? "+" : "-";
 				time = System.currentTimeMillis() - time;
 				_logger.finer("done (" + (isType ? "+" : "-") + ") (" + sign + time + "ms)");
 			}

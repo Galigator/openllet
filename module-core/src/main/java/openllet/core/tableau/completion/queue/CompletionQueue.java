@@ -32,6 +32,7 @@ package openllet.core.tableau.completion.queue;
 
 import java.util.logging.Logger;
 import openllet.aterm.ATermAppl;
+import openllet.core.ABox;
 import openllet.core.ABoxImpl;
 import openllet.core.IndividualIterator;
 import openllet.core.Node;
@@ -74,7 +75,7 @@ public abstract class CompletionQueue extends IndividualIterator
 	 *
 	 * @param _abox
 	 */
-	protected CompletionQueue(final ABoxImpl abox)
+	protected CompletionQueue(final ABox abox)
 	{
 		super(abox);
 		closed = false;

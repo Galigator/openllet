@@ -18,12 +18,6 @@ import openllet.core.utils.iterator.IteratorUtils;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2008
  * </p>
  * <p>
@@ -47,7 +41,7 @@ public class RoleRestrictionCache
 
 	private void prepareDomainsRanges(final RBox rbox)
 	{
-		for (final Role role : rbox.getRoles())
+		for (final Role role : rbox.getRoles().values())
 		{
 			final Iterator<ATermAppl> assertedDomains = rbox.getAssertedDomains(role);
 			if (assertedDomains.hasNext())

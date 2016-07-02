@@ -465,7 +465,7 @@ public class ModelExtractor
 			}
 
 			if (dataValues || objValues)
-				for (final Role role : _kb.getRBox().getRoles())
+				for (final Role role : _kb.getRBox().getRoles().values())
 				{
 
 					if (role.isAnon())
@@ -540,7 +540,7 @@ public class ModelExtractor
 
 		final List<Triple> triples = new ArrayList<>();
 
-		for (final Role role : _kb.getRBox().getRoles())
+		for (final Role role : _kb.getRBox().getRoles().values())
 		{
 
 			triples.clear();

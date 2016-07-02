@@ -20,11 +20,11 @@ import java.util.logging.Logger;
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
 import openllet.query.sparqldl.model.Query;
+import openllet.query.sparqldl.model.Query.VarType;
 import openllet.query.sparqldl.model.QueryResult;
 import openllet.query.sparqldl.model.QueryResultImpl;
 import openllet.query.sparqldl.model.ResultBinding;
 import openllet.query.sparqldl.model.ResultBindingImpl;
-import openllet.query.sparqldl.model.Query.VarType;
 import openllet.shared.tools.Log;
 
 /**
@@ -60,8 +60,8 @@ public class OptimizedQueryEngine3 extends AbstractABoxEngineWrapper
 		final QueryResult results = new QueryResultImpl(q);
 		final KnowledgeBase kb = q.getKB();
 
-		final long satCount = kb.getABox().stats.satisfiabilityCount;
-		final long consCount = kb.getABox().stats.consistencyCount;
+		final long satCount = kb.getABox().getStats().satisfiabilityCount;
+		final long consCount = kb.getABox().getStats().consistencyCount;
 
 		if (q.getDistVars().isEmpty())
 		{
@@ -143,8 +143,8 @@ public class OptimizedQueryEngine3 extends AbstractABoxEngineWrapper
 			if (_logger.isLoggable(Level.FINE))
 			{
 				_logger.fine("Results: " + results);
-				_logger.fine("Total satisfiability operations: " + (kb.getABox().stats.satisfiabilityCount - satCount));
-				_logger.fine("Total consistency operations: " + (kb.getABox().stats.consistencyCount - consCount));
+				_logger.fine("Total satisfiability operations: " + (kb.getABox().getStats().satisfiabilityCount - satCount));
+				_logger.fine("Total consistency operations: " + (kb.getABox().getStats().consistencyCount - consCount));
 			}
 		}
 		return results;

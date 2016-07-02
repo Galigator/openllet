@@ -239,7 +239,7 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 
 				if (_logger.isLoggable(Level.FINE))
 				{
-					_logger.fine("Branch: " + _abox.getBranch() + ", Depth: " + _abox.stats.treeDepth + ", Size: " + _abox.getNodes().size() + ", Mem: " + (Runtime.getRuntime().freeMemory() / 1000) + "kb");
+					_logger.fine("Branch: " + _abox.getBranch() + ", Depth: " + _abox._stats.treeDepth + ", Size: " + _abox.getNodes().size() + ", Mem: " + (Runtime.getRuntime().freeMemory() / 1000) + "kb");
 					_abox.validate();
 					// printBlocked();
 					_abox.printTree();

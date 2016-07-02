@@ -19,12 +19,6 @@ import openllet.core.utils.MultiValueMap;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2008
  * </p>
  * <p>
@@ -45,7 +39,7 @@ public class RoleChainCache
 		_anonRoleCount = 0;
 		_binaryRoleInclusions = CollectionUtils.makeMap();
 
-		for (final Role supRole : kb.getRBox().getRoles())
+		for (final Role supRole : kb.getRBox().getRoles().values())
 		{
 			if (supRole.isAnon())
 				continue;

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import openllet.aterm.ATermAppl;
-import openllet.core.ABoxImpl;
+import openllet.core.ABox;
 import openllet.core.DependencySet;
 import openllet.core.Edge;
 import openllet.core.EdgeList;
@@ -438,9 +438,9 @@ public class TrivialSatisfactionHelpers
 		}
 	}
 
-	private final ABoxImpl _abox;
+	private final ABox _abox;
 
-	public TrivialSatisfactionHelpers(final ABoxImpl abox)
+	public TrivialSatisfactionHelpers(final ABox abox)
 	{
 		this._abox = abox;
 	}

@@ -123,7 +123,7 @@ public class KnowledgeBase
 		ATermUtils.getFactory();
 	}
 
-	protected ABoxImpl _abox;
+	protected ABox _abox;
 	protected TBox _tbox;
 	protected RBox _rbox;
 
@@ -629,7 +629,7 @@ public class KnowledgeBase
 
 		_tbox = TBoxFactory.createTBox(this);
 
-		_rbox = new RBox();
+		_rbox = new RBoxImpl();
 
 		_rules = new HashMap<>();
 
@@ -661,7 +661,7 @@ public class KnowledgeBase
 		}
 
 		final ABoxImpl newABox = new ABoxImpl(this);
-		newABox._cache = _abox._cache;
+		newABox._cache = _abox.getCache();
 		_abox = newABox;
 
 		_individuals.clear();
@@ -1974,7 +1974,7 @@ public class KnowledgeBase
 		}
 
 		_abox.clearCaches(!reuseTaxonomy);
-		_abox._cache.setMaxSize(OpenlletOptions.MAX_ANONYMOUS_CACHE);
+		_abox.getCache().setMaxSize(OpenlletOptions.MAX_ANONYMOUS_CACHE);
 
 		if (!reuseTaxonomy)
 		{
@@ -2321,7 +2321,7 @@ public class KnowledgeBase
 	public Set<ATermAppl> getProperties()
 	{
 		final Set<ATermAppl> set = new HashSet<>();
-		for (final Role role : _rbox.getRoles())
+		for (final Role role : _rbox.getRoles().values())
 		{
 			final ATermAppl p = role.getName();
 			if (ATermUtils.isPrimitive(p) && (role.isObjectRole() || role.isDatatypeRole() || role.isAnnotationRole()))
@@ -2338,7 +2338,7 @@ public class KnowledgeBase
 	public Set<ATermAppl> getObjectProperties()
 	{
 		final Set<ATermAppl> set = new HashSet<>();
-		for (final Role role : _rbox.getRoles())
+		for (final Role role : _rbox.getRoles().values())
 		{
 			final ATermAppl p = role.getName();
 			if (ATermUtils.isPrimitive(p) && role.isObjectRole())
@@ -2350,7 +2350,7 @@ public class KnowledgeBase
 	public Set<ATermAppl> getAnnotationProperties()
 	{
 		final Set<ATermAppl> set = new HashSet<>();
-		for (final Role role : _rbox.getRoles())
+		for (final Role role : _rbox.getRoles().values())
 		{
 			final ATermAppl p = role.getName();
 			if (ATermUtils.isPrimitive(p) && role.isAnnotationRole())
@@ -2362,7 +2362,7 @@ public class KnowledgeBase
 	public Set<ATermAppl> getTransitiveProperties()
 	{
 		final Set<ATermAppl> set = new HashSet<>();
-		for (final Role role : _rbox.getRoles())
+		for (final Role role : _rbox.getRoles().values())
 		{
 			final ATermAppl p = role.getName();
 			if (ATermUtils.isPrimitive(p) && role.isTransitive())
@@ -2375,7 +2375,7 @@ public class KnowledgeBase
 	public Set<ATermAppl> getSymmetricProperties()
 	{
 		final Set<ATermAppl> set = new HashSet<>();
-		for (final Role role : _rbox.getRoles())
+		for (final Role role : _rbox.getRoles().values())
 		{
 			final ATermAppl p = role.getName();
 			if (ATermUtils.isPrimitive(p) && role.isSymmetric())
@@ -2396,7 +2396,7 @@ public class KnowledgeBase
 	public Set<ATermAppl> getAsymmetricProperties()
 	{
 		final Set<ATermAppl> set = new HashSet<>();
-		for (final Role role : _rbox.getRoles())
+		for (final Role role : _rbox.getRoles().values())
 		{
 			final ATermAppl p = role.getName();
 			if (ATermUtils.isPrimitive(p) && role.isAsymmetric())
@@ -2408,7 +2408,7 @@ public class KnowledgeBase
 	public Set<ATermAppl> getReflexiveProperties()
 	{
 		final Set<ATermAppl> set = new HashSet<>();
-		for (final Role role : _rbox.getRoles())
+		for (final Role role : _rbox.getRoles().values())
 		{
 			final ATermAppl p = role.getName();
 			if (ATermUtils.isPrimitive(p) && role.isReflexive())
@@ -2420,7 +2420,7 @@ public class KnowledgeBase
 	public Set<ATermAppl> getIrreflexiveProperties()
 	{
 		final Set<ATermAppl> set = new HashSet<>();
-		for (final Role role : _rbox.getRoles())
+		for (final Role role : _rbox.getRoles().values())
 		{
 			final ATermAppl p = role.getName();
 			if (ATermUtils.isPrimitive(p) && role.isIrreflexive())
@@ -2432,7 +2432,7 @@ public class KnowledgeBase
 	public Set<ATermAppl> getFunctionalProperties()
 	{
 		final Set<ATermAppl> set = new HashSet<>();
-		for (final Role role : _rbox.getRoles())
+		for (final Role role : _rbox.getRoles().values())
 		{
 			final ATermAppl p = role.getName();
 			if (ATermUtils.isPrimitive(p) && role.isFunctional())
@@ -2445,13 +2445,14 @@ public class KnowledgeBase
 
 	public Set<ATermAppl> getInverseFunctionalProperties()
 	{
-		final Set<ATermAppl> set = new HashSet<>();
-		for (final Role role : _rbox.getRoles())
-		{
-			final ATermAppl p = role.getName();
-			if (ATermUtils.isPrimitive(p) && role.isInverseFunctional())
-				set.add(p);
-		}
+		final Set<ATermAppl> set = _rbox.getRoles().values().stream()//
+				.filter(role ->
+				{
+					final ATermAppl p = role.getName();
+					return (ATermUtils.isPrimitive(p) && role.isInverseFunctional());
+				})//
+				.map(Role::getName)//
+				.collect(Collectors.toSet());
 		set.add(ATermUtils.BOTTOM_OBJECT_PROPERTY);
 		return set;
 	}
@@ -2464,7 +2465,7 @@ public class KnowledgeBase
 	public Set<ATermAppl> getDataProperties()
 	{
 		final Set<ATermAppl> set = new HashSet<>();
-		for (final Role role : _rbox.getRoles())
+		for (final Role role : _rbox.getRoles().values())
 		{
 			final ATermAppl p = role.getName();
 			if (ATermUtils.isPrimitive(p) && role.isDatatypeRole())
@@ -3376,7 +3377,7 @@ public class KnowledgeBase
 	/**
 	 * @return Returns the _abox.
 	 */
-	public ABoxImpl getABox()
+	public ABox getABox()
 	{
 		return _abox;
 	}

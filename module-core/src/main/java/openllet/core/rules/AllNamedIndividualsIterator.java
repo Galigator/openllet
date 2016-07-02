@@ -8,7 +8,7 @@ package openllet.core.rules;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import openllet.core.ABoxImpl;
+import openllet.core.ABox;
 import openllet.core.Individual;
 import openllet.core.Node;
 
@@ -31,26 +31,26 @@ import openllet.core.Node;
 public class AllNamedIndividualsIterator implements Iterator<Individual>
 {
 
-	private Individual nextIndividual;
-	private final Iterator<Individual> nodeIterator;
+	private Individual _nextIndividual;
+	private final Iterator<Individual> _nodeIterator;
 
-	public AllNamedIndividualsIterator(final ABoxImpl abox)
+	public AllNamedIndividualsIterator(final ABox abox)
 	{
-		nodeIterator = abox.getIndIterator();
+		_nodeIterator = abox.getIndIterator();
 	}
 
 	@Override
 	public boolean hasNext()
 	{
-		if (nextIndividual != null)
+		if (_nextIndividual != null)
 			return true;
 
-		while (nodeIterator.hasNext())
+		while (_nodeIterator.hasNext())
 		{
-			final Node candidate = nodeIterator.next();
+			final Node candidate = _nodeIterator.next();
 			if ((candidate instanceof Individual) && candidate.isRootNominal())
 			{
-				nextIndividual = (Individual) candidate;
+				_nextIndividual = (Individual) candidate;
 				return true;
 			}
 		}
@@ -63,8 +63,8 @@ public class AllNamedIndividualsIterator implements Iterator<Individual>
 	{
 		if (!hasNext())
 			throw new NoSuchElementException();
-		final Individual result = nextIndividual;
-		nextIndividual = null;
+		final Individual result = _nextIndividual;
+		_nextIndividual = null;
 		return result;
 	}
 

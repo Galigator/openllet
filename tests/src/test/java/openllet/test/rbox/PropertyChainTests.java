@@ -408,7 +408,7 @@ public class PropertyChainTests extends AbstractKBTests
 
 		final KnowledgeBase kb = ((PelletInfGraph) model.getGraph()).getKB();
 
-		for (final Role r : kb.getRBox().getRoles())
+		for (final Role r : kb.getRBox().getRoles().values())
 			if (!ATermUtils.isBuiltinProperty(r.getName()))
 			{
 				assertTrue(r + " is not simple", r.isSimple());

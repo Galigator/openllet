@@ -28,6 +28,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import openllet.aterm.ATermAppl;
+import openllet.core.ABox;
 import openllet.core.ABoxImpl;
 import openllet.core.Individual;
 import openllet.core.Node;
@@ -83,7 +84,7 @@ public class BasicCompletionQueue extends CompletionQueue
 	 *
 	 * @param _abox
 	 */
-	public BasicCompletionQueue(final ABoxImpl abox)
+	public BasicCompletionQueue(final ABox abox)
 	{
 		super(abox);
 		_queue = new ArrayList<>();

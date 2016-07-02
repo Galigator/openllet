@@ -53,11 +53,11 @@ public class TestUtils
 	{
 
 		//get all classes
-		final List<?> roles = new ArrayList<Object>(kb.getRBox().getRoles());
+		final List<Role> roles = new ArrayList<>(kb.getRBox().getRoles().values());
 		Role role = null;
 		do
 		{
-			role = (Role) roles.get(_rand.nextInt(roles.size()));
+			role = roles.get(_rand.nextInt(roles.size()));
 		} while (!role.isObjectRole());
 
 		return role.getName();

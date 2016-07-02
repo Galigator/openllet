@@ -434,7 +434,7 @@ public class ELClassifier extends CDOptimizedTaxonomyBuilder
 		}
 
 		//Convert Reflexive Roles to axioms
-		for (final Role role : _kb.getRBox().getRoles())
+		for (final Role role : _kb.getRBox().getRoles().values())
 			if (role.isReflexive())
 			{
 				final ATermAppl range = _roleRestrictions.getRange(role.getName());

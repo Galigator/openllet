@@ -117,7 +117,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 		_mayNeedExpanding.add(root);
 
 		_abox.setBranch(1);
-		_abox.stats.treeDepth = 1;
+		_abox._stats.treeDepth = 1;
 		_abox.setChanged(true);
 		_abox.setComplete(false);
 		_abox.setInitialized(true);
@@ -494,7 +494,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 	{
 		final Timer timer = _timers.startTimer("restore");
 
-		_abox.stats.globalRestores++;
+		_abox._stats.globalRestores++;
 
 		final Node clashNode = _abox.getClash().getNode();
 		final List<ATermAppl> clashPath = clashNode.getPath();
@@ -571,7 +571,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 	{
 		boolean branchFound = false;
 
-		_abox.stats.backtracks++;
+		_abox._stats.backtracks++;
 
 		while (!branchFound)
 		{
@@ -583,7 +583,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 				return false;
 
 			final List<Branch> branches = _abox.getBranches();
-			_abox.stats.backjumps += (branches.size() - lastBranch);
+			_abox._stats.backjumps += (branches.size() - lastBranch);
 			Branch newBranch = null;
 			if (lastBranch <= branches.size())
 			{

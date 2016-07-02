@@ -6,6 +6,7 @@
 
 package openllet.core.rules.builtins;
 
+import openllet.core.ABox;
 import openllet.core.ABoxImpl;
 import openllet.core.Literal;
 
@@ -37,7 +38,7 @@ public class NumericAdapter implements Function
 	}
 
 	@Override
-	public Literal apply(final ABoxImpl abox, final Literal expected, final Literal... args)
+	public Literal apply(final ABox abox, final Literal expected, final Literal... args)
 	{
 		Number expectedNum = null;
 		Number result = null;

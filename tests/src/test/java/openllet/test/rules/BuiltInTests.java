@@ -22,7 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import junit.framework.JUnit4TestAdapter;
 import openllet.aterm.ATermAppl;
-import openllet.core.ABoxImpl;
+import openllet.core.ABox;
 import openllet.core.DependencySet;
 import openllet.core.KnowledgeBase;
 import openllet.core.Literal;
@@ -89,7 +89,7 @@ public class BuiltInTests
 		return new BigDecimal(String.valueOf(d));
 	}
 
-	private ABoxImpl _abox;
+	private ABox _abox;
 	private KnowledgeBase _kb;
 
 	private final ATermAppl li_1 = literal("-1", Datatypes.INTEGER), li0 = literal("0", Datatypes.NON_NEGATIVE_INTEGER), lf0 = literal("0.0", Datatypes.FLOAT), lf00 = literal("0.00", Datatypes.FLOAT), lp0 = literal("0"), ls0 = literal("0", Datatypes.STRING), len0 = literal("0", "en");
@@ -545,16 +545,16 @@ public class BuiltInTests
 		stringFunc(StringOperators.stringLength, (Literal) null, "abcde", "fgh");
 
 		/*
-
+		
 		  fn:substring("motor car", 6) returns " car".
-
+		
 		  Characters starting at position 6 to the _end of $sourceString are selected.
 		 */
 		stringFunc(StringOperators.substring, " car", "motor car", "6");
 
 		/*
 		  fn:substring("metadata", 4, 3) returns "ada".
-
+		
 		  Characters at positions greater than or equal to 4 and less than 7 are selected.
 		 */
 
@@ -562,7 +562,7 @@ public class BuiltInTests
 
 		/*
 		  fn:substring("12345", 1.5, 2.6) returns "234".
-
+		
 		  Characters at positions greater than or equal to 2 and less than 5 are selected.
 		 */
 
@@ -570,7 +570,7 @@ public class BuiltInTests
 
 		/*
 		  fn:substring("12345", 0, 3) returns "12".
-
+		
 		  Characters at positions greater than or equal to 0 and less than 3 are selected. Since the first position is 1, these are the characters at positions 1 and 2.
 		 */
 
@@ -578,7 +578,7 @@ public class BuiltInTests
 
 		/*
 		  fn:substring("12345", 5, -3) returns "".
-
+		
 		  Characters at positions greater than or equal to 5 and less than 2 are selected.
 		 */
 
@@ -586,7 +586,7 @@ public class BuiltInTests
 
 		/*
 		  fn:substring("12345", -3, 5) returns "1".
-
+		
 		  Characters at positions greater than or equal to -3 and less than 2 are selected. Since the first position is 1, this is the character at position 1.
 		 */
 
@@ -594,7 +594,7 @@ public class BuiltInTests
 
 		/*
 		  fn:substring("12345", 0 div 0E0, 3) returns "".
-
+		
 		  Since 0 div 0E0 returns NaN, and NaN compared to any other number returns false, no characters are selected.
 		 */
 
@@ -602,7 +602,7 @@ public class BuiltInTests
 
 		/*
 		  fn:substring("12345", 1, 0 div 0E0) returns "".
-
+		
 		  As above.
 		 */
 
@@ -616,7 +616,7 @@ public class BuiltInTests
 
 		/*
 		  fn:substring("12345", -42, 1 div 0E0) returns "12345".
-
+		
 		  Characters at positions greater than or equal to -42 and less than INF are selected.
 		 */
 
@@ -624,7 +624,7 @@ public class BuiltInTests
 
 		/*
 		  fn:substring("12345", -1 div 0E0, 1 div 0E0) returns "".
-
+		
 		  Since -INF + INF returns NaN, no characters are selected.
 		 */
 

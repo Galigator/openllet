@@ -44,7 +44,7 @@ public class SROIQStrategy extends CompletionStrategy
 	protected boolean backtrack()
 	{
 		boolean branchFound = false;
-		_abox.stats.backtracks++;
+		_abox._stats.backtracks++;
 		while (!branchFound)
 		{
 			_completionTimer.check();
@@ -76,7 +76,7 @@ public class SROIQStrategy extends CompletionStrategy
 					}
 
 			final List<Branch> branches = _abox.getBranches();
-			_abox.stats.backjumps += (branches.size() - lastBranch);
+			_abox._stats.backjumps += (branches.size() - lastBranch);
 			// CHW - added for incremental deletion support
 			if (OpenlletOptions.USE_TRACING && OpenlletOptions.USE_INCREMENTAL_CONSISTENCY)
 			{
@@ -138,7 +138,7 @@ public class SROIQStrategy extends CompletionStrategy
 
 				if (_logger.isLoggable(Level.FINE))
 				{
-					_logger.fine("Branch: " + _abox.getBranch() + ", Depth: " + _abox.stats.treeDepth + ", Size: " + _abox.getNodes().size() + ", Mem: " + (Runtime.getRuntime().freeMemory() / 1000) + "kb");
+					_logger.fine("Branch: " + _abox.getBranch() + ", Depth: " + _abox._stats.treeDepth + ", Size: " + _abox.getNodes().size() + ", Mem: " + (Runtime.getRuntime().freeMemory() / 1000) + "kb");
 					_abox.validate();
 					printBlocked();
 					_abox.printTree();

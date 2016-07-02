@@ -26,12 +26,6 @@ import openllet.core.utils.ATermUtils;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2008
  * </p>
  * <p>
@@ -131,7 +125,7 @@ public class ELExpressivityChecker extends ProfileBasedExpressivityChecker
 
 	private boolean processRoles()
 	{
-		final Collection<Role> roles = _KB.getRBox().getRoles();
+		final Collection<Role> roles = _KB.getRBox().getRoles().values();
 
 		for (final Role r : roles)
 		{

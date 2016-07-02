@@ -1,147 +1,61 @@
-// Portions Copyright (c) 2006 - 2008, Clark & Parsia, LLC. <http://www.clarkparsia.com>
-// Clark & Parsia, LLC parts of this source code are available under the terms of the Affero General Public License v3.
-//
-// Please see LICENSE.txt for full license terms, including the availability of proprietary exceptions.
-// Questions, comments, or requests for clarification: licensing@clarkparsia.com
-//
-// ---
-// Portions Copyright (c) 2003 Ron Alford, Mike Grove, Bijan Parsia, Evren Sirin
-// Alford, Grove, Parsia, Sirin parts of this source code are available under the terms of the MIT License.
-//
-// The MIT License
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to
-// deal in the Software without restriction, including without limitation the
-// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
-// sell copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-// IN THE SOFTWARE.
-
 package openllet.core;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
 import openllet.core.exceptions.UnsupportedFeatureException;
 import openllet.core.taxonomy.Taxonomy;
 import openllet.core.utils.ATermUtils;
-import openllet.core.utils.iterator.FilterIterator;
-import openllet.core.utils.iterator.IteratorUtils;
-import openllet.core.utils.iterator.MapIterator;
-import openllet.shared.tools.Log;
+import openllet.shared.tools.Logging;
 
 /**
- * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
- * Copyright: Copyright (c) 2007
- * </p>
- * <p>
- * Company: Clark & Parsia, LLC. <http://www.clarkparsia.com>
- * </p>
- *
- * @author Evren Sirin
+ * Definition of an rbox.
+ * 
+ * @since 2.6.0
  */
-public class RBox
+public interface RBox extends Logging
 {
-	public static Logger _logger = Log.getLogger(RBox.class);
+	public Taxonomy<ATermAppl> getObjectTaxonomy();
 
-	private static class ValueIterator extends MapIterator<Map.Entry<ATermAppl, Set<Set<ATermAppl>>>, ATermAppl>
+	public void setObjectTaxonomy(Taxonomy<ATermAppl> objectTaxonomy);
+
+	public Taxonomy<ATermAppl> getDataTaxonomy();
+
+	public void setDataTaxonomy(Taxonomy<ATermAppl> dataTaxonomy);
+
+	public Taxonomy<ATermAppl> getAnnotationTaxonomy();
+
+	public void setAnnotationTaxonomy(Taxonomy<ATermAppl> annotationTaxonomy);
+
+	public Map<ATermAppl, Role> getRoles();
+
+	public Set<Role> getReflexiveRoles();
+
+	public Map<Role, Map<ATermAppl, Set<Set<ATermAppl>>>> getDomainAssertions();
+
+	public Map<Role, Map<ATermAppl, Set<Set<ATermAppl>>>> getRangeAssertions();
+
+	public FSMBuilder getFsmBuilder();
+
+	/**
+	 * @return Returns the getRoles().
+	 */
+	default Set<ATermAppl> getRoleNames()
 	{
-		public ValueIterator(final Iterator<Entry<ATermAppl, Set<Set<ATermAppl>>>> iterator)
-		{
-			super(iterator);
-		}
-
-		@Override
-		public ATermAppl map(final Entry<ATermAppl, Set<Set<ATermAppl>>> e)
-		{
-			return e.getKey();
-		}
-
+		return getRoles().keySet();
 	}
 
-	private static class DomainRangeIterator extends FilterIterator<Map.Entry<ATermAppl, Set<Set<ATermAppl>>>>
-	{
-		final ATermAppl _p;
-		final boolean _isDomain;
+	public boolean isObjectTaxonomyPrepared();
 
-		public DomainRangeIterator(final Map<ATermAppl, Set<Set<ATermAppl>>> map, final Role role, final boolean isDomain)
-		{
-			super(map.entrySet().iterator());
-			this._p = role.getName();
-			this._isDomain = isDomain;
-		}
+	public boolean isDataTaxonomyPrepared();
 
-		@Override
-		public boolean filter(final Map.Entry<ATermAppl, Set<Set<ATermAppl>>> entry)
-		{
-			final Set<Set<ATermAppl>> allExplanations = entry.getValue();
-
-			final Set<ATermAppl> explanation = Collections.singleton(_isDomain ? ATermUtils.makeDomain(_p, entry.getKey()) : ATermUtils.makeRange(_p, entry.getKey()));
-			return !allExplanations.contains(explanation);
-		}
-	}
-
-	private final Map<ATermAppl, Role> _roles = new HashMap<>();
-	private final Set<Role> reflexiveRoles = new HashSet<>();
-
-	private final Map<Role, Map<ATermAppl, Set<Set<ATermAppl>>>> domainAssertions;
-	private final Map<Role, Map<ATermAppl, Set<Set<ATermAppl>>>> rangeAssertions;
-
-	private Taxonomy<ATermAppl> objectTaxonomy;
-	private Taxonomy<ATermAppl> dataTaxonomy;
-	private Taxonomy<ATermAppl> annotationTaxonomy;
-
-	private final FSMBuilder fsmBuilder;
-
-	public RBox()
-	{
-		domainAssertions = new HashMap<>();
-		rangeAssertions = new HashMap<>();
-
-		fsmBuilder = new FSMBuilder(this);
-
-		addDatatypeRole(ATermUtils.TOP_DATA_PROPERTY);
-		addDatatypeRole(ATermUtils.BOTTOM_DATA_PROPERTY);
-		final Role topObjProp = addObjectRole(ATermUtils.TOP_OBJECT_PROPERTY);
-		final Role bottomObjProp = addObjectRole(ATermUtils.BOTTOM_OBJECT_PROPERTY);
-
-		topObjProp.setTransitive(true, DependencySet.INDEPENDENT);
-		topObjProp.setReflexive(true, DependencySet.INDEPENDENT);
-
-		bottomObjProp.setIrreflexive(true, DependencySet.INDEPENDENT);
-		bottomObjProp.setAsymmetric(true, DependencySet.INDEPENDENT);
-
-		addEquivalentRole(topObjProp.getName(), topObjProp.getInverse().getName(), DependencySet.INDEPENDENT);
-		addEquivalentRole(bottomObjProp.getName(), bottomObjProp.getInverse().getName(), DependencySet.INDEPENDENT);
-
-	}
+	public boolean isAnnotationTaxonomyPrepared();
 
 	/**
 	 * Return the role with the given name
@@ -149,9 +63,9 @@ public class RBox
 	 * @param r Name (URI) of the role
 	 * @return
 	 */
-	public Role getRole(final ATerm r)
+	default Role getRole(final ATerm r)
 	{
-		return _roles.get(r);
+		return getRoles().get(r);
 	}
 
 	/**
@@ -160,9 +74,9 @@ public class RBox
 	 * @param r Name (URI) of the role
 	 * @return
 	 */
-	public Role getDefinedRole(final ATerm r)
+	default Role getDefinedRole(final ATerm r)
 	{
-		final Role role = _roles.get(r);
+		final Role role = getRoles().get(r);
 
 		if (role == null)
 			throw new RuntimeException(r + " is not defined as a property");
@@ -170,18 +84,26 @@ public class RBox
 		return role;
 	}
 
-	public Role addRole(final ATermAppl r)
+	default Role addRole(final ATermAppl r)
 	{
 		Role role = getRole(r);
 
 		if (role == null)
 		{
 			role = new Role(r, PropertyType.UNTYPED);
-			_roles.put(r, role);
+			getRoles().put(r, role);
 		}
 
 		return role;
 	}
+
+	abstract void propogateDomain(final Role role, final Map<ATermAppl, Set<Set<ATermAppl>>> domains);
+
+	abstract void propogateRange(final Role role, final Map<ATermAppl, Set<Set<ATermAppl>>> ranges);
+
+	abstract void computeImmediateSubRoles(final Role r, final Map<ATerm, DependencySet> subs);
+
+	abstract void computeSubRoles(final Role r, final Set<Role> subRoles, final Set<ATermList> subRoleChains, final Map<ATerm, DependencySet> dependencies, final DependencySet ds);
 
 	/**
 	 * Add a non-asserted property range axiom
@@ -192,17 +114,17 @@ public class RBox
 	 * @return <code>true</code> if range add was successful, <code>false</code> else
 	 * @throws IllegalArgumentException if <code>p</code> is not a defined property.
 	 */
-	public boolean addRange(final ATerm p, final ATermAppl range, final Set<ATermAppl> explanation)
+	default boolean addRange(final ATerm p, final ATermAppl range, final Set<ATermAppl> explanation)
 	{
 		final Role r = getRole(p);
 		if (r == null)
 			throw new IllegalArgumentException(p + " is not defined as a property");
 
-		Map<ATermAppl, Set<Set<ATermAppl>>> ranges = rangeAssertions.get(r);
+		Map<ATermAppl, Set<Set<ATermAppl>>> ranges = getRangeAssertions().get(r);
 		if (ranges == null)
 		{
 			ranges = new HashMap<>();
-			rangeAssertions.put(r, ranges);
+			getRangeAssertions().put(r, ranges);
 		}
 
 		Set<Set<ATermAppl>> allExplanations = ranges.get(range);
@@ -223,14 +145,14 @@ public class RBox
 	 * @return <code>true</code> if range add was successful, <code>false</code> else
 	 * @throws IllegalArgumentException if <code>p</code> is not a defined property.
 	 */
-	public boolean addRange(final ATerm p, final ATermAppl range)
+	default boolean addRange(final ATerm p, final ATermAppl range)
 	{
 		final Set<ATermAppl> ds = Collections.singleton(ATermUtils.makeRange(p, range));
 
 		return addRange(p, range, ds);
 	}
 
-	public Role addObjectRole(final ATermAppl r)
+	default Role addObjectRole(final ATermAppl r)
 	{
 		Role role = getRole(r);
 		final PropertyType roleType = (role == null) ? PropertyType.UNTYPED : role.getType();
@@ -246,14 +168,14 @@ public class RBox
 				if (role == null)
 				{
 					role = new Role(r, PropertyType.OBJECT);
-					_roles.put(r, role);
+					getRoles().put(r, role);
 				}
 				else
 					role.setType(PropertyType.OBJECT);
 
 				final ATermAppl invR = ATermUtils.makeInv(r);
 				final Role invRole = new Role(invR, PropertyType.OBJECT);
-				_roles.put(invR, invRole);
+				getRoles().put(invR, invRole);
 
 				role.setInverse(invRole);
 				invRole.setInverse(role);
@@ -269,14 +191,14 @@ public class RBox
 		return role;
 	}
 
-	public Role addDatatypeRole(final ATermAppl r)
+	default Role addDatatypeRole(final ATermAppl r)
 	{
 		Role role = getRole(r);
 
 		if (role == null)
 		{
 			role = new Role(r, PropertyType.DATATYPE);
-			_roles.put(r, role);
+			getRoles().put(r, role);
 
 			addSubRole(ATermUtils.BOTTOM_DATA_PROPERTY, role.getName(), DependencySet.INDEPENDENT);
 			addSubRole(role.getName(), ATermUtils.TOP_DATA_PROPERTY, DependencySet.INDEPENDENT);
@@ -299,14 +221,14 @@ public class RBox
 		return role;
 	}
 
-	public Role addAnnotationRole(final ATermAppl r)
+	default Role addAnnotationRole(final ATermAppl r)
 	{
 		Role role = getRole(r);
 
 		if (role == null)
 		{
 			role = new Role(r, PropertyType.ANNOTATION);
-			_roles.put(r, role);
+			getRoles().put(r, role);
 		}
 		else
 			switch (role.getType())
@@ -325,18 +247,18 @@ public class RBox
 	}
 
 	@Deprecated
-	public Role addOntologyRole(final ATermAppl r)
+	default Role addOntologyRole(final ATermAppl r)
 	{
 		return addAnnotationRole(r);
 	}
 
-	public boolean addSubRole(final ATerm sub, final ATerm sup)
+	default boolean addSubRole(final ATerm sub, final ATerm sup)
 	{
 		final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeSubProp(sub, sup)) : DependencySet.INDEPENDENT;
 		return addSubRole(sub, sup, ds);
 	}
 
-	public boolean addSubRole(final ATerm sub, final ATerm sup, final DependencySet ds)
+	default boolean addSubRole(final ATerm sub, final ATerm sup, final DependencySet ds)
 	{
 		final Role roleSup = getRole(sup);
 		final Role roleSub = getRole(sub);
@@ -360,13 +282,13 @@ public class RBox
 		return true;
 	}
 
-	public boolean addEquivalentRole(final ATerm s, final ATerm r)
+	default boolean addEquivalentRole(final ATerm s, final ATerm r)
 	{
 		final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeEqProp(s, r)) : DependencySet.INDEPENDENT;
 		return addEquivalentRole(r, s, ds);
 	}
 
-	public boolean addEquivalentRole(final ATerm s, final ATerm r, final DependencySet ds)
+	default boolean addEquivalentRole(final ATerm s, final ATerm r, final DependencySet ds)
 	{
 		final Role roleS = getRole(s);
 		final Role roleR = getRole(r);
@@ -390,7 +312,7 @@ public class RBox
 		return true;
 	}
 
-	public boolean addDisjointRole(final ATerm s, final ATerm r, final DependencySet ds)
+	default boolean addDisjointRole(final ATerm s, final ATerm r, final DependencySet ds)
 	{
 		final Role roleS = getRole(s);
 		final Role roleR = getRole(r);
@@ -413,17 +335,17 @@ public class RBox
 	 * @return <code>true</code> if domain add was successful, <code>false</code> else
 	 * @throws IllegalArgumentException if <code>p</code> is not a defined property.
 	 */
-	public boolean addDomain(final ATerm p, final ATermAppl domain, final Set<ATermAppl> explanation)
+	default boolean addDomain(final ATerm p, final ATermAppl domain, final Set<ATermAppl> explanation)
 	{
 		final Role r = getRole(p);
 		if (r == null)
 			throw new IllegalArgumentException(p + " is not defined as a property");
 
-		Map<ATermAppl, Set<Set<ATermAppl>>> domains = domainAssertions.get(r);
+		Map<ATermAppl, Set<Set<ATermAppl>>> domains = getDomainAssertions().get(r);
 		if (domains == null)
 		{
 			domains = new HashMap<>();
-			domainAssertions.put(r, domains);
+			getDomainAssertions().put(r, domains);
 		}
 
 		Set<Set<ATermAppl>> allExplanations = domains.get(domain);
@@ -444,14 +366,14 @@ public class RBox
 	 * @return <code>true</code> if domain add was successful, <code>false</code> else
 	 * @throws IllegalArgumentException if <code>p</code> is not a defined property.
 	 */
-	public boolean addDomain(final ATerm p, final ATermAppl a)
+	default boolean addDomain(final ATerm p, final ATermAppl a)
 	{
 		final Set<ATermAppl> explain = Collections.singleton(ATermUtils.makeDomain(p, a));
 
 		return addDomain(p, a, explain);
 	}
 
-	public boolean addInverseRole(final ATerm s, final ATerm r, final DependencySet ds)
+	default boolean addInverseRole(final ATerm s, final ATerm r, final DependencySet ds)
 	{
 		final Role roleS = getRole(s);
 		final Role roleR = getRole(r);
@@ -464,26 +386,18 @@ public class RBox
 		return true;
 	}
 
-	public Iterator<ATermAppl> getAssertedDomains(final Role r)
-	{
-		final Map<ATermAppl, Set<Set<ATermAppl>>> domains = domainAssertions.get(r);
-		return domains == null ? IteratorUtils.<ATermAppl> emptyIterator() : new ValueIterator(new DomainRangeIterator(domains, r, true));
-	}
+	public Iterator<ATermAppl> getAssertedDomains(final Role r);
 
-	public Iterator<ATermAppl> getAssertedRanges(final Role r)
-	{
-		final Map<ATermAppl, Set<Set<ATermAppl>>> ranges = rangeAssertions.get(r);
-		return ranges == null ? IteratorUtils.<ATermAppl> emptyIterator() : new ValueIterator(new DomainRangeIterator(ranges, r, false));
-	}
+	public Iterator<ATermAppl> getAssertedRanges(final Role r);
 
 	@Deprecated
-	public boolean isDomainAsserted(final ATerm p, final ATermAppl domain)
+	default boolean isDomainAsserted(final ATerm p, final ATermAppl domain)
 	{
 		final Role r = getRole(p);
 		if (r == null)
 			throw new IllegalArgumentException(p + " is not defined as a property");
 
-		final Map<ATermAppl, Set<Set<ATermAppl>>> domains = domainAssertions.get(r);
+		final Map<ATermAppl, Set<Set<ATermAppl>>> domains = getDomainAssertions().get(r);
 		if (domains == null)
 			return false;
 
@@ -497,13 +411,13 @@ public class RBox
 	}
 
 	@Deprecated
-	public boolean isRangeAsserted(final ATerm p, final ATermAppl range)
+	default boolean isRangeAsserted(final ATerm p, final ATermAppl range)
 	{
 		final Role r = getRole(p);
 		if (r == null)
 			throw new IllegalArgumentException(p + " is not defined as a property");
 
-		final Map<ATermAppl, Set<Set<ATermAppl>>> ranges = rangeAssertions.get(r);
+		final Map<ATermAppl, Set<Set<ATermAppl>>> ranges = getRangeAssertions().get(r);
 		if (ranges == null)
 			return false;
 
@@ -519,17 +433,17 @@ public class RBox
 	/**
 	 * check if the term is declared as a role
 	 */
-	public boolean isRole(final ATerm r)
+	default boolean isRole(final ATerm r)
 	{
-		return _roles.containsKey(r);
+		return getRoles().containsKey(r);
 	}
 
-	public void prepare()
+	default void prepare()
 	{
 
-		// first pass - compute sub _roles
+		// first pass - compute sub getRoles()
 		final Set<Role> complexRoles = new HashSet<>();
-		for (final Role role : _roles.values())
+		for (final Role role : getRoles().values())
 		{
 			final Map<ATerm, DependencySet> subExplain = new HashMap<>();
 			final Set<Role> subRoles = new HashSet<>();
@@ -554,13 +468,13 @@ public class RBox
 				}
 		}
 
-		// iterate over complex _roles to build DFAs - needs to be done after
+		// iterate over complex getRoles() to build DFAs - needs to be done after
 		// all subRoles are propagated above
 		for (final Role s : complexRoles)
-			fsmBuilder.build(s);
+			getFsmBuilder().build(s);
 
-		// second pass - set super _roles and propagate disjoint _roles through inverses
-		for (final Role role : _roles.values())
+		// second pass - set super getRoles() and propagate disjoint getRoles() through inverses
+		for (final Role role : getRoles().values())
 		{
 			final Role invR = role.getInverse();
 			if (invR != null)
@@ -598,8 +512,8 @@ public class RBox
 			}
 		}
 
-		// third pass - set transitivity and functionality and propagate disjoint _roles through subs
-		for (final Role r : _roles.values())
+		// third pass - set transitivity and functionality and propagate disjoint getRoles() through subs
+		for (final Role r : getRoles().values())
 		{
 			if (r.isForceSimple())
 			{
@@ -661,83 +575,42 @@ public class RBox
 			}
 
 			if (r.isReflexive() && !r.isAnon())
-				reflexiveRoles.add(r);
+				getReflexiveRoles().add(r);
 
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine(r.debugString());
+			getLogger().fine(() -> r.debugString());
 		}
 
 		// we will compute the taxonomy when we need it
-		objectTaxonomy = null;
-		dataTaxonomy = null;
-		annotationTaxonomy = null;
+		setObjectTaxonomy(null);
+		setDataTaxonomy(null);
+		setAnnotationTaxonomy(null);
 	}
 
-	public void propagateDomainRange()
+	default void propagateDomainRange()
 	{
-		for (final Role role : _roles.values())
+		for (final Role role : getRoles().values())
 			role.resetDomainRange();
 
-		for (final Role role : _roles.values())
+		for (final Role role : getRoles().values())
 		{
 			final Role invRole = role.getInverse();
 			if (invRole != null)
 			{
-				final Map<ATermAppl, Set<Set<ATermAppl>>> invDomains = domainAssertions.get(invRole);
-				final Map<ATermAppl, Set<Set<ATermAppl>>> invRanges = rangeAssertions.get(invRole);
+				final Map<ATermAppl, Set<Set<ATermAppl>>> invDomains = getDomainAssertions().get(invRole);
+				final Map<ATermAppl, Set<Set<ATermAppl>>> invRanges = getRangeAssertions().get(invRole);
 
 				propogateDomain(role, invRanges);
 				propogateRange(role, invDomains);
 			}
 
-			final Map<ATermAppl, Set<Set<ATermAppl>>> domains = domainAssertions.get(role);
-			final Map<ATermAppl, Set<Set<ATermAppl>>> ranges = rangeAssertions.get(role);
+			final Map<ATermAppl, Set<Set<ATermAppl>>> domains = getDomainAssertions().get(role);
+			final Map<ATermAppl, Set<Set<ATermAppl>>> ranges = getRangeAssertions().get(role);
 			propogateDomain(role, domains);
 			propogateRange(role, ranges);
 		}
 	}
 
-	private void propogateDomain(final Role role, final Map<ATermAppl, Set<Set<ATermAppl>>> domains)
-	{
-		if (domains == null || domains.isEmpty())
-			return;
-		for (final Map.Entry<ATermAppl, Set<Set<ATermAppl>>> e : domains.entrySet())
-		{
-			final Set<ATermAppl> explanation = e.getValue().iterator().next();
-			final ATermAppl domain = e.getKey();
-			final ATermAppl normalized = ATermUtils.normalize(domain);
-
-			for (final Role s : role.getSubRoles())
-			{
-				final DependencySet explainSub = role.getExplainSub(s.getName());
-				final DependencySet ds = explainSub.union(explanation, true);
-
-				s.addDomain(normalized, ds);
-			}
-		}
-	}
-
-	private void propogateRange(final Role role, final Map<ATermAppl, Set<Set<ATermAppl>>> ranges)
-	{
-		if (ranges == null || ranges.isEmpty())
-			return;
-		for (final Map.Entry<ATermAppl, Set<Set<ATermAppl>>> e : ranges.entrySet())
-		{
-			final Set<ATermAppl> explanation = e.getValue().iterator().next();
-			final ATermAppl range = e.getKey();
-			final ATermAppl normalized = ATermUtils.normalize(range);
-
-			for (final Role s : role.getSubRoles())
-			{
-				final DependencySet explainSub = role.getExplainSub(s.getName());
-				final DependencySet ds = explainSub.union(explanation, true);
-
-				s.addRange(normalized, ds);
-			}
-		}
-	}
-
-	public boolean removeDomain(final ATerm p, final ATermAppl domain)
+	default boolean removeDomain(final ATerm p, final ATermAppl domain)
 	{
 		if (!OpenlletOptions.USE_TRACING)
 			return false;
@@ -746,7 +619,7 @@ public class RBox
 		if (r == null)
 			return false;
 
-		final Map<ATermAppl, Set<Set<ATermAppl>>> domains = domainAssertions.get(r);
+		final Map<ATermAppl, Set<Set<ATermAppl>>> domains = getDomainAssertions().get(r);
 		if (domains == null)
 			return false;
 
@@ -765,7 +638,7 @@ public class RBox
 		return true;
 	}
 
-	public boolean removeRange(final ATerm p, final ATermAppl range)
+	default boolean removeRange(final ATerm p, final ATermAppl range)
 	{
 		if (!OpenlletOptions.USE_TRACING)
 			return false;
@@ -774,7 +647,7 @@ public class RBox
 		if (r == null)
 			return false;
 
-		final Map<ATermAppl, Set<Set<ATermAppl>>> ranges = rangeAssertions.get(r);
+		final Map<ATermAppl, Set<Set<ATermAppl>>> ranges = getRangeAssertions().get(r);
 		if (ranges == null)
 			return false;
 
@@ -793,7 +666,7 @@ public class RBox
 		return true;
 	}
 
-	void ignoreTransitivity(final Role role)
+	default void ignoreTransitivity(final Role role)
 	{
 		final Role namedRole = role.isAnon() ? role.getInverse() : role;
 
@@ -802,7 +675,7 @@ public class RBox
 		if (!OpenlletOptions.IGNORE_UNSUPPORTED_AXIOMS)
 			throw new UnsupportedFeatureException(msg);
 
-		_logger.warning(msg);
+		getLogger().warning(msg);
 
 		role.removeSubRoleChains();
 		role.setHasComplexSubRole(false);
@@ -815,101 +688,10 @@ public class RBox
 		role.getInverse().setFSM(null);
 	}
 
-	private void computeImmediateSubRoles(final Role r, final Map<ATerm, DependencySet> subs)
-	{
-
-		final Role invR = r.getInverse();
-		if (invR != null && invR != r)
-		{
-
-			for (final Role invSubR : invR.getSubRoles())
-			{
-				final Role subR = invSubR.getInverse();
-				if (subR == null)
-				{
-					if (_logger.isLoggable(Level.FINE))
-						_logger.fine("Property " + invSubR + " was supposed to be an ObjectProperty but it is not!");
-				}
-				else
-					if (subR != r)
-					{
-						// System.out.println("expsub:
-						// "+invR.getExplainSub(invSubR.getName()));
-						// System.out.println("expinv:
-						// "+invSubR.getExplainInverse());
-						final DependencySet subDS = invR.getExplainSub(invSubR.getName());
-						subs.put(subR.getName(), subDS);
-					}
-			}
-			for (final ATermList roleChain : invR.getSubRoleChains())
-			{
-				final DependencySet subDS = invR.getExplainSub(roleChain);
-
-				final ATermList subChain = inverse(roleChain);
-				subs.put(subChain, subDS);
-			}
-		}
-
-		for (final Role sub : r.getSubRoles())
-		{
-			final DependencySet subDS = r.getExplainSub(sub.getName());
-
-			subs.put(sub.getName(), subDS);
-		}
-
-		for (final ATermList subChain : r.getSubRoleChains())
-		{
-			final DependencySet subDS = r.getExplainSub(subChain);
-
-			subs.put(subChain, subDS);
-		}
-
-	}
-
-	private void computeSubRoles(final Role r, final Set<Role> subRoles, final Set<ATermList> subRoleChains, final Map<ATerm, DependencySet> dependencies, final DependencySet ds)
-	{
-		// check for loops
-		if (subRoles.contains(r))
-			return;
-
-		// reflexive
-		subRoles.add(r);
-		dependencies.put(r.getName(), ds);
-
-		// transitive closure
-		final Map<ATerm, DependencySet> immSubs = new HashMap<>();
-		computeImmediateSubRoles(r, immSubs);
-		for (final Entry<ATerm, DependencySet> entry : immSubs.entrySet())
-		{
-			final ATerm sub = entry.getKey();
-			final DependencySet subDS = OpenlletOptions.USE_TRACING ? ds.union(entry.getValue(), true) : DependencySet.INDEPENDENT;
-			if (sub instanceof ATermAppl)
-			{
-				final Role subRole = getRole(sub);
-
-				computeSubRoles(subRole, subRoles, subRoleChains, dependencies, subDS);
-			}
-			else
-			{
-				subRoleChains.add((ATermList) sub);
-				dependencies.put(sub, subDS);
-			}
-		}
-	}
-
-	/**
-	 * Returns a string representation of the RBox where for each role subroles, superroles, and isTransitive information is given
-	 */
-	@Override
-	public String toString()
-	{
-		return "[RBox " + _roles.values() + "]";
-	}
-
 	/**
 	 * for each role in the list finds an inverse role and returns the new list.
 	 */
-	public ATermList inverse(final ATermList roles)
+	default ATermList inverse(final ATermList roles)
 	{
 		ATermList invList = ATermUtils.EMPTY_LIST;
 
@@ -927,72 +709,4 @@ public class RBox
 		return invList;
 	}
 
-	/**
-	 * @return Returns the _roles.
-	 */
-	public Set<ATermAppl> getRoleNames()
-	{
-		return _roles.keySet();
-	}
-
-	public Set<Role> getReflexiveRoles()
-	{
-		return reflexiveRoles;
-	}
-
-	/**
-	 * getRoles
-	 *
-	 * @return
-	 */
-	public Collection<Role> getRoles()
-	{
-		return _roles.values();
-	}
-
-	public Taxonomy<ATermAppl> getObjectTaxonomy()
-	{
-		if (objectTaxonomy == null)
-		{
-			final RoleTaxonomyBuilder builder = new RoleTaxonomyBuilder(this, PropertyType.OBJECT);
-			objectTaxonomy = builder.classify();
-		}
-		return objectTaxonomy;
-	}
-
-	public Taxonomy<ATermAppl> getDataTaxonomy()
-	{
-		if (dataTaxonomy == null)
-		{
-			final RoleTaxonomyBuilder builder = new RoleTaxonomyBuilder(this, PropertyType.DATATYPE);
-			dataTaxonomy = builder.classify();
-		}
-		return dataTaxonomy;
-	}
-
-	public Taxonomy<ATermAppl> getAnnotationTaxonomy()
-	{
-		if (annotationTaxonomy == null)
-		{
-			final RoleTaxonomyBuilder builder = new RoleTaxonomyBuilder(this, PropertyType.ANNOTATION);
-			if (OpenlletOptions.USE_ANNOTATION_SUPPORT)
-				annotationTaxonomy = builder.classify();
-		}
-		return annotationTaxonomy;
-	}
-
-	public boolean isObjectTaxonomyPrepared()
-	{
-		return objectTaxonomy != null;
-	}
-
-	public boolean isDataTaxonomyPrepared()
-	{
-		return dataTaxonomy != null;
-	}
-
-	public boolean isAnnotationTaxonomyPrepared()
-	{
-		return annotationTaxonomy != null;
-	}
 }

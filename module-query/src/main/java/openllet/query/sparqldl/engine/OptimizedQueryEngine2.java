@@ -29,9 +29,6 @@ import openllet.shared.tools.Log;
  * Title: SimpleQueryEngine
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -109,15 +106,15 @@ public class OptimizedQueryEngine2 extends AbstractABoxEngineWrapper
 
 		this._kb = q.getKB();
 
-		final long satCount = _kb.getABox().stats.satisfiabilityCount;
-		final long consCount = _kb.getABox().stats.consistencyCount;
+		final long satCount = _kb.getABox().getStats().satisfiabilityCount;
+		final long consCount = _kb.getABox().getStats().consistencyCount;
 
 		exec(q, new ResultBindingImpl(), true);
 
 		if (_logger.isLoggable(Level.FINE))
 		{
-			_logger.fine("Total satisfiability operations: " + (_kb.getABox().stats.satisfiabilityCount - satCount));
-			_logger.fine("Total consistency operations: " + (_kb.getABox().stats.consistencyCount - consCount));
+			_logger.fine("Total satisfiability operations: " + (_kb.getABox().getStats().satisfiabilityCount - satCount));
+			_logger.fine("Total consistency operations: " + (_kb.getABox().getStats().consistencyCount - consCount));
 			_logger.fine("Results of ABox query : " + _results);
 		}
 

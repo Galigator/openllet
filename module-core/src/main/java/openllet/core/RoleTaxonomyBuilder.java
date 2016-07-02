@@ -78,7 +78,7 @@ public class RoleTaxonomyBuilder
 	{
 		this._rbox = rbox;
 		this._propertyType = type;
-		_properties = rbox.getRoles();
+		_properties = rbox.getRoles().values();
 
 		switch (this._propertyType)
 		{
@@ -106,7 +106,7 @@ public class RoleTaxonomyBuilder
 	{
 		this._rbox = rbox;
 
-		_properties = rbox.getRoles();
+		_properties = rbox.getRoles().values();
 		_taxonomy = objectRoles ? new Taxonomy<>(null, TOP_OBJECT_PROPERTY, BOTTOM_OBJECT_PROPERTY) : new Taxonomy<>(null, TOP_DATA_PROPERTY, BOTTOM_DATA_PROPERTY);
 		_topRole = rbox.getRole(_taxonomy.getTop().getName());
 		_bottomRole = rbox.getRole(_taxonomy.getBottom().getName());

@@ -9,7 +9,7 @@ package openllet.core.rules;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
-import openllet.core.ABoxImpl;
+import openllet.core.ABox;
 import openllet.core.Individual;
 import openllet.core.Literal;
 import openllet.core.Role;
@@ -34,7 +34,7 @@ import openllet.core.rules.model.DatavaluedPropertyAtom;
  */
 public class DatavaluePropertyBindingHelper implements BindingHelper
 {
-	private final ABoxImpl _abox;
+	private final ABox _abox;
 	private VariableBinding binding;
 	private Literal object;
 	private Iterator<Literal> objectIterator;
@@ -43,7 +43,7 @@ public class DatavaluePropertyBindingHelper implements BindingHelper
 	private Individual subject;
 	private Iterator<Individual> subjectIterator;
 
-	public DatavaluePropertyBindingHelper(final ABoxImpl abox, final DatavaluedPropertyAtom pattern)
+	public DatavaluePropertyBindingHelper(final ABox abox, final DatavaluedPropertyAtom pattern)
 	{
 		this._abox = abox;
 		this._pattern = pattern;

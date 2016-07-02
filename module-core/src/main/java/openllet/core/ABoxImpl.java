@@ -111,7 +111,13 @@ public class ABoxImpl implements ABox
 	// this prefix is not a root _node
 	private int _anonCount = 0;
 
-	public ABoxStats stats = new ABoxStats();
+	public ABoxStats _stats = new ABoxStats();
+
+	@Override
+	public ABoxStats getStats()
+	{
+		return _stats;
+	}
 
 	/**
 	 * datatype reasoner used for checking the satisfiability of datatypes
@@ -618,7 +624,7 @@ public class ABoxImpl implements ABox
 			}
 		}
 
-		stats.satisfiabilityCount++;
+		_stats.satisfiabilityCount++;
 
 		final Timer t = _kb.timers.startTimer("satisfiability");
 		final boolean isSat = isConsistent(SetUtils.<ATermAppl> emptySet(), c, cacheModel);
@@ -1452,7 +1458,7 @@ public class ABoxImpl implements ABox
 			cache(abox.getIndividual(x), c, consistent);
 
 		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Consistent: " + consistent + " Time: " + t.getElapsed() + " Branches " + abox._branches.size() + " Tree depth: " + abox.stats.treeDepth + " Tree size: " + abox.getNodes().size() + " Restores " + abox.stats.globalRestores + " global " + abox.stats.localRestores + " local" + " Backtracks " + abox.stats.backtracks + " avg backjump " + (abox.stats.backjumps / (double) abox.stats.backtracks));
+			_logger.fine("Consistent: " + consistent + " Time: " + t.getElapsed() + " Branches " + abox._branches.size() + " Tree depth: " + abox._stats.treeDepth + " Tree size: " + abox.getNodes().size() + " Restores " + abox._stats.globalRestores + " global " + abox._stats.localRestores + " local" + " Backtracks " + abox._stats.backtracks + " avg backjump " + (abox._stats.backjumps / (double) abox._stats.backtracks));
 
 		if (consistent)
 		{
@@ -1490,7 +1496,7 @@ public class ABoxImpl implements ABox
 			}
 		}
 
-		stats.consistencyCount++;
+		_stats.consistencyCount++;
 
 		if (_keepLastCompletion)
 			_lastCompletion = abox;
@@ -1541,7 +1547,7 @@ public class ABoxImpl implements ABox
 		final boolean consistent = !isClosed();
 
 		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Consistent: " + consistent + " Tree depth: " + stats.treeDepth + " Tree size: " + getNodes().size());
+			_logger.fine("Consistent: " + consistent + " Tree depth: " + _stats.treeDepth + " Tree size: " + getNodes().size());
 
 		if (!consistent)
 		{
@@ -1550,7 +1556,7 @@ public class ABoxImpl implements ABox
 				_logger.fine(getClash().detailedString());
 		}
 
-		stats.consistencyCount++;
+		_stats.consistencyCount++;
 
 		_lastCompletion = this;
 
@@ -1884,11 +1890,11 @@ public class ABoxImpl implements ABox
 		_nodes.put(x, n);
 		_nodeList.add(x);
 
-		if (n.getDepth() > stats.treeDepth)
+		if (n.getDepth() > _stats.treeDepth)
 		{
-			stats.treeDepth = n.getDepth();
+			_stats.treeDepth = n.getDepth();
 			if (_logger.isLoggable(Level.FINER))
-				_logger.finer("Depth: " + stats.treeDepth + " Size: " + size());
+				_logger.finer("Depth: " + _stats.treeDepth + " Size: " + size());
 		}
 
 		//this must be performed after the _nodeList is updated as this call will update the completion queues

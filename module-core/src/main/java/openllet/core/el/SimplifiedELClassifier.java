@@ -451,13 +451,13 @@ public class SimplifiedELClassifier extends CDOptimizedTaxonomyBuilder implement
 			//Convert ATermAppl Domains to axioms
 			for (final Entry<ATermAppl, ATermAppl> entry : _roleRestrictions.getDomains().entrySet())
 			{
-				final ATermAppl roleName = entry.getKey();
-				final ATermAppl domain = entry.getValue();
-				createConceptsFromAxiom(ATermUtils.makeSomeValues(roleName, ATermUtils.TOP), domain);
+			final ATermAppl roleName = entry.getKey();
+			final ATermAppl domain = entry.getValue();
+			createConceptsFromAxiom(ATermUtils.makeSomeValues(roleName, ATermUtils.TOP), domain);
 			}
 
 		//Convert Reflexive Roles to axioms
-		for (final Role role : _kb.getRBox().getRoles())
+		for (final Role role : _kb.getRBox().getRoles().values())
 			if (role.isReflexive())
 			{
 				final ATermAppl range = _roleRestrictions.getRange(role.getName());
