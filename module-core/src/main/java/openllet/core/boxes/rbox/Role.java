@@ -79,13 +79,13 @@ public class Role
 	private PropertyType _type = PropertyType.UNTYPED;
 	private Role _inverse = null;
 
-	private Set<Role> _subRoles = SetUtils.emptySet();
-	private Set<Role> _superRoles = SetUtils.emptySet();
+	private Set<Role> _subRoles = Collections.emptySet();
+	private Set<Role> _superRoles = Collections.emptySet();
 	private Map<Role, DependencySet> _disjointRoles = Collections.emptyMap();
-	private Set<ATermList> _subRoleChains = SetUtils.emptySet();
+	private Set<ATermList> _subRoleChains = Collections.emptySet();
 
-	private Set<Role> _functionalSupers = SetUtils.emptySet();
-	private Set<Role> _transitiveSubRoles = SetUtils.emptySet();
+	private Set<Role> _functionalSupers = Collections.emptySet();
+	private Set<Role> _transitiveSubRoles = Collections.emptySet();
 
 	private TransitionGraph<Role> _tg;
 

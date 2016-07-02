@@ -49,8 +49,6 @@ public class SizeEstimate
 {
 	protected static final Logger _logger = Log.getLogger(SizeEstimate.class);
 
-	private static final Set<ATermAppl> EMPTY_SET = SetUtils.emptySet();
-
 	public static double UNKNOWN_PROB = 0.5;
 
 	public static boolean CHECK_CONCEPT_SAT = false;
@@ -695,9 +693,9 @@ public class SizeEstimate
 			else
 			{
 				if (_kb.isProperty(c))
-					compute(EMPTY_SET, Collections.singleton(c));
+					compute(Collections.emptySet(), Collections.singleton(c));
 				else
-					compute(Collections.singleton(c), EMPTY_SET);
+					compute(Collections.singleton(c), Collections.emptySet());
 				return size(c);
 			}
 	}
@@ -715,7 +713,7 @@ public class SizeEstimate
 	public double avg(final ATermAppl pred)
 	{
 		if (!avgObjectsPP.containsKey(pred))
-			compute(EMPTY_SET, Collections.singleton(pred));
+			compute(Collections.emptySet(), Collections.singleton(pred));
 		return avgObjectsPP.get(pred);
 	}
 
@@ -850,7 +848,7 @@ public class SizeEstimate
 
 		if (!map.containsKey(sup))
 		{
-			compute(Collections.singleton(sup), EMPTY_SET);
+			compute(Collections.singleton(sup), Collections.emptySet());
 			if (_logger.isLoggable(Level.FINE))
 				_logger.fine("Computing additionally " + sup);
 		}
@@ -866,7 +864,7 @@ public class SizeEstimate
 
 		if (!map.containsKey(sup))
 		{
-			compute(EMPTY_SET, Collections.singleton(sup));
+			compute(Collections.emptySet(), Collections.singleton(sup));
 			if (_logger.isLoggable(Level.FINE))
 				_logger.fine("Computing additionally " + sup);
 		}
@@ -879,7 +877,7 @@ public class SizeEstimate
 
 		if (!map.containsKey(sup))
 		{
-			compute(Collections.singleton(sup), EMPTY_SET);
+			compute(Collections.singleton(sup), Collections.emptySet());
 			if (_logger.isLoggable(Level.FINE))
 				_logger.fine("Computing additionally " + sup);
 		}
@@ -892,7 +890,7 @@ public class SizeEstimate
 
 		if (!map.containsKey(sup))
 		{
-			compute(EMPTY_SET, Collections.singleton(sup));
+			compute(Collections.emptySet(), Collections.singleton(sup));
 			if (_logger.isLoggable(Level.FINE))
 				_logger.fine("Computing additionally " + sup);
 		}
@@ -903,7 +901,7 @@ public class SizeEstimate
 	{
 		if (!equivClasses.containsKey(sup))
 		{
-			compute(Collections.singleton(sup), EMPTY_SET);
+			compute(Collections.singleton(sup), Collections.emptySet());
 			if (_logger.isLoggable(Level.FINE))
 				_logger.fine("Computing additionally " + sup);
 		}
@@ -914,7 +912,7 @@ public class SizeEstimate
 	{
 		if (!equivProperties.containsKey(sup))
 		{
-			compute(EMPTY_SET, Collections.singleton(sup));
+			compute(Collections.emptySet(), Collections.singleton(sup));
 			if (_logger.isLoggable(Level.FINE))
 				_logger.fine("Computing additionally " + sup);
 		}
@@ -941,7 +939,7 @@ public class SizeEstimate
 	{
 		if (!disjoints.containsKey(sup))
 		{
-			compute(Collections.singleton(sup), EMPTY_SET);
+			compute(Collections.singleton(sup), Collections.emptySet());
 			if (_logger.isLoggable(Level.FINE))
 				_logger.fine("Computing additionally " + sup);
 		}
@@ -952,7 +950,7 @@ public class SizeEstimate
 	{
 		if (!complements.containsKey(sup))
 		{
-			compute(Collections.singleton(sup), EMPTY_SET);
+			compute(Collections.singleton(sup), Collections.emptySet());
 			if (_logger.isLoggable(Level.FINE))
 				_logger.fine("Computing additionally " + sup);
 		}
@@ -963,7 +961,7 @@ public class SizeEstimate
 	{
 		if (!inverses.containsKey(sup))
 		{
-			compute(EMPTY_SET, Collections.singleton(sup));
+			compute(Collections.emptySet(), Collections.singleton(sup));
 			if (_logger.isLoggable(Level.FINE))
 				_logger.fine("Computing additionally " + sup);
 		}
@@ -978,48 +976,48 @@ public class SizeEstimate
 		switch (operation)
 		{
 
-		// TODO
+			// TODO
 			case IS_DIRECT_TYPE:
 				cost = getCost(KBOperation.IS_TYPE);
 				break;
 
-				// if realized trivial, oth. 1 sat (more frq than hpv, but less than sc)
+			// if realized trivial, oth. 1 sat (more frq than hpv, but less than sc)
 			case IS_TYPE:
 				cost = (_kb.isRealized() ? noSatCost : oneSatCost);
 				break;
 
-				// rare sat (nonempty dependency set of an edge in Compl. G.)
+			// rare sat (nonempty dependency set of an edge in Compl. G.)
 			case HAS_PROPERTY_VALUE:
 				cost = noSatCost;
 				break;
 
-				// use told taxonomy - to be provided by KB - not to classify the whole
-				// KB
-				// now triv. if classified, otherwise 1 sat
+			// use told taxonomy - to be provided by KB - not to classify the whole
+			// KB
+			// now triv. if classified, otherwise 1 sat
 			case IS_SUBCLASS_OF:
 			case IS_EQUIVALENT_CLASS:
 				cost = oneSatCost;
 				break;
 
-				// 1 sat
+			// 1 sat
 			case IS_DISJOINT_WITH:
 			case IS_COMPLEMENT_OF:
 				cost = oneSatCost;
 				break;
 
-				// triv
+			// triv
 			case IS_SUBPROPERTY_OF:
 			case IS_EQUIVALENT_PROPERTY:
 				cost = noSatCost;
 				break;
 
-				// triv
+			// triv
 			case IS_OBJECT_PROPERTY:
 			case IS_DATATYPE_PROPERTY:
 				cost = noSatCost;
 				break;
 
-				// one sat. check if any
+			// one sat. check if any
 			case IS_FUNCTIONAL_PROPERTY:
 			case IS_INVERSE_FUNCTIONAL_PROPERTY:
 			case IS_TRANSITIVE_PROPERTY:
@@ -1028,7 +1026,7 @@ public class SizeEstimate
 				cost = oneSatCost;
 				break;
 
-				// triv.
+			// triv.
 			case IS_INVERSE_OF:
 				cost = noSatCost;
 				break;
@@ -1054,29 +1052,29 @@ public class SizeEstimate
 				cost = instanceRetrievalCost;
 				break;
 
-				// TODO
+			// TODO
 			case GET_DIRECT_INSTANCES:
 				cost = instanceRetrievalCost + classificationCost;
 				break;
 
-				// if realized triv, otherwise TODO
-				// binary class retrieval. Currently, realization
+			// if realized triv, otherwise TODO
+			// binary class retrieval. Currently, realization
 			case GET_TYPES:
 				cost = classRetrievalCost;
 				break;
 
-				// TODO
+			// TODO
 			case GET_DIRECT_TYPES:
 				cost = getCost(KBOperation.GET_TYPES);
 				break;
 
-				// instance retrieval for a small set of instances, meanwhile as
-				// instance retrieval.
+			// instance retrieval for a small set of instances, meanwhile as
+			// instance retrieval.
 			case GET_PROPERTY_VALUE:
 				cost = noSatCost;// (long) (0.01 * instanceRetrievalCost);
 				break;
 
-				// 1 sat (rare)
+			// 1 sat (rare)
 			case IS_SAME_AS:
 				cost = oneSatCost;
 				break;
@@ -1090,18 +1088,18 @@ public class SizeEstimate
 				cost = oneSatCost;
 				break;
 
-				// meanwhile instance retrieval
+			// meanwhile instance retrieval
 			case GET_DIFFERENTS:
 				cost = instanceRetrievalCost;
 				break;
 
-				// trivial
+			// trivial
 			case GET_OBJECT_PROPERTIES:
 			case GET_DATATYPE_PROPERTIES:
 				cost = noSatCost;
 				break;
 
-				// currently trivial - not complete impl.
+			// currently trivial - not complete impl.
 			case GET_FUNCTIONAL_PROPERTIES:
 			case GET_INVERSE_FUNCTIONAL_PROPERTIES:
 			case GET_TRANSITIVE_PROPERTIES:
@@ -1116,20 +1114,20 @@ public class SizeEstimate
 				cost = noSatCost;
 				break;
 
-				// trivial if classified and named, otherwise classification
+			// trivial if classified and named, otherwise classification
 			case GET_SUB_OR_SUPERCLASSES:
 			case GET_DIRECT_SUB_OR_SUPERCLASSES: // TODO
 			case GET_EQUIVALENT_CLASSES:
 				cost = classificationCost;
 				break;
 
-				// classification
+			// classification
 			case GET_DISJOINT_CLASSES:
 			case GET_COMPLEMENT_CLASSES:
 				cost = classificationCost;
 				break;
 
-				// trivial
+			// trivial
 			case GET_SUB_OR_SUPERPROPERTIES:
 			case GET_DIRECT_SUB_OR_SUPERPROPERTIES: // TODO
 			case GET_EQUIVALENT_PROPERTIES:

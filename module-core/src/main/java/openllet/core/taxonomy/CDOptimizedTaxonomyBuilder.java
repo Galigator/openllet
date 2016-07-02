@@ -32,7 +32,6 @@ import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.CollectionUtils;
 import openllet.core.utils.MemUtils;
-import openllet.core.utils.SetUtils;
 import openllet.core.utils.TaxonomyUtils;
 import openllet.core.utils.Timer;
 import openllet.core.utils.iterator.IteratorUtils;
@@ -1357,7 +1356,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 	private Set<ATermAppl> realizeByConcept(final ATermAppl c, final Collection<ATermAppl> individuals)
 	{
 		if (c.equals(ATermUtils.BOTTOM))
-			return SetUtils.emptySet();
+			return Collections.emptySet();
 
 		_kb.timers.getTimer("realize").check();
 

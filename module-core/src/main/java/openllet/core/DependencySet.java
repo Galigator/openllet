@@ -30,6 +30,7 @@
 
 package openllet.core;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
@@ -95,7 +96,7 @@ public class DependencySet
 	private DependencySet()
 	{
 		_depends = IntSetFactory.create();
-		setExplain(SetUtils.<ATermAppl> emptySet());
+		setExplain(Collections.emptySet());
 	}
 
 	/**
@@ -108,7 +109,7 @@ public class DependencySet
 		this._depends = IntSetFactory.create();
 
 		_depends.add(branch);
-		setExplain(SetUtils.<ATermAppl> emptySet());
+		setExplain(Collections.emptySet());
 	}
 
 	/**
@@ -245,7 +246,7 @@ public class DependencySet
 		if (doExplanation)
 			newExplain = SetUtils.union(_explain, ds._explain);
 		else
-			newExplain = SetUtils.emptySet();
+			newExplain = Collections.emptySet();
 
 		return new DependencySet(_branch, newDepends, newExplain);
 	}

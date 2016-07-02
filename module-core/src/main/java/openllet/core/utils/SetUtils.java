@@ -30,13 +30,11 @@
 
 package openllet.core.utils;
 
-import java.util.AbstractSet;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import openllet.core.utils.iterator.IteratorUtils;
 
 /**
  * Utility functions for {#link java.util.Set Set}s.
@@ -45,28 +43,34 @@ import openllet.core.utils.iterator.IteratorUtils;
  */
 public class SetUtils
 {
-	private static class EmptySet extends AbstractSet<Object>
-	{
-		@Override
-		public Iterator<Object> iterator()
-		{
-			return IteratorUtils.emptyIterator();
-		}
-
-		@Override
-		public int size()
-		{
-			return 0;
-		}
-
-		@Override
-		public boolean contains(final Object obj)
-		{
-			return false;
-		}
-	}
-
-	public final static Set<?> EMPTY_SET = new EmptySet();
+	//	private static class EmptySet extends AbstractSet<Object>
+	//	{
+	//		@Override
+	//		public Iterator<Object> iterator()
+	//		{
+	//			return IteratorUtils.emptyIterator();
+	//		}
+	//
+	//		@Override
+	//		public int size()
+	//		{
+	//			return 0;
+	//		}
+	//
+	//		@Override
+	//		public boolean contains(final Object obj)
+	//		{
+	//			return false;
+	//		}
+	//	}
+	//
+	//	public final static Set<?> EMPTY_SET = new EmptySet();
+	//
+	//	@SuppressWarnings("unchecked")
+	//	public final static <T> Set<T> emptySet()
+	//	{
+	//		return (Set<T>) EMPTY_SET;
+	//	}
 
 	/**
 	 * Adds the given object to the set but saves memory space by allocating only the required amount for small sets. The idea is to use the specialized empty
@@ -94,12 +98,6 @@ public class SetUtils
 				set.add(o);
 
 		return set;
-	}
-
-	@SuppressWarnings("unchecked")
-	public final static <T> Set<T> emptySet()
-	{
-		return (Set<T>) EMPTY_SET;
 	}
 
 	public static <T> Set<T> remove(final Object o, Set<T> set)

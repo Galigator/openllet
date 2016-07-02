@@ -31,7 +31,6 @@ import openllet.core.utils.Namespaces;
 import openllet.core.utils.PartialOrderBuilder;
 import openllet.core.utils.PartialOrderComparator;
 import openllet.core.utils.PartialOrderRelation;
-import openllet.core.utils.SetUtils;
 import openllet.core.utils.TaxonomyUtils;
 import openllet.core.utils.Timer;
 import openllet.core.utils.Timers;
@@ -1338,7 +1337,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 	private Set<ATermAppl> realizeByConcept(final ATermAppl c, final Collection<ATermAppl> individuals, final OWLDataFactory factory, final Set<OWLClass> visitedClasses)
 	{
 		if (c.equals(ATermUtils.BOTTOM))
-			return SetUtils.emptySet();
+			return Collections.emptySet();
 
 		if (_logger.isLoggable(Level.FINER))
 			_logger.finer("Realizing concept " + c);

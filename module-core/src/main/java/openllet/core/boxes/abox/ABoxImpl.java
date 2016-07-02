@@ -634,7 +634,7 @@ public class ABoxImpl implements ABox
 		_stats.satisfiabilityCount++;
 
 		final Timer t = _kb.timers.startTimer("satisfiability");
-		final boolean isSat = isConsistent(SetUtils.<ATermAppl> emptySet(), c, cacheModel);
+		final boolean isSat = isConsistent(Collections.emptySet(), c, cacheModel);
 		t.stop();
 
 		return isSat;
@@ -732,7 +732,7 @@ public class ABoxImpl implements ABox
 	@Override
 	public Bool isKnownType(final ATermAppl x, final ATermAppl c)
 	{
-		return isKnownType(x, c, SetUtils.<ATermAppl> emptySet());
+		return isKnownType(x, c, Collections.emptySet());
 	}
 
 	@Override
@@ -804,7 +804,7 @@ public class ABoxImpl implements ABox
 							while (i.hasNext() && knownType.isTrue())
 							{
 								term = i.next();
-								knownType = isKnownType(pNode, term, SetUtils.<ATermAppl> emptySet());
+								knownType = isKnownType(pNode, term, Collections.emptySet());
 							}
 							if (knownType.isTrue())
 							{
@@ -894,7 +894,7 @@ public class ABoxImpl implements ABox
 				subs.remove(ATermUtils.BOTTOM);
 			}
 			else
-				subs = SetUtils.emptySet();
+				subs = Collections.emptySet();
 
 			final Bool type = isKnownType(x, c, subs);
 			if (type.isKnown())
@@ -1303,7 +1303,7 @@ public class ABoxImpl implements ABox
 
 		checkAssertedClashes();
 
-		isConsistent = isConsistent(SetUtils.<ATermAppl> emptySet(), null, false);
+		isConsistent = isConsistent(Collections.emptySet(), null, false);
 
 		if (isConsistent)
 		{

@@ -22,12 +22,6 @@ import org.semanticweb.owlapi.model.OWLObjectAllValuesFrom;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2008
  * </p>
  * <p>

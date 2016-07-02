@@ -37,12 +37,6 @@ import openllet.shared.tools.Log;
 
 /**
  * <p>
- * Title: Lint Pattern Loader
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2008
  * </p>
  * <p>

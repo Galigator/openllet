@@ -32,6 +32,7 @@ package openllet.core.boxes.abox;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -55,7 +56,6 @@ import openllet.core.tableau.completion.queue.QueueElement;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.Bool;
 import openllet.core.utils.CollectionUtils;
-import openllet.core.utils.SetUtils;
 import openllet.shared.tools.Log;
 
 /**
@@ -104,7 +104,7 @@ public abstract class Node
 	 * Set of other _nodes that have been merged to this _node. Note that this is only the set of _nodes directly merged to this one. A recursive traversal is
 	 * required to get all the merged _nodes.
 	 */
-	protected Set<Node> merged;
+	protected Set<Node> _merged;
 
 	protected Map<Node, DependencySet> _differents;
 
@@ -133,7 +133,7 @@ public abstract class Node
 
 		_mergeDepends = node._mergeDepends;
 		mergedTo = node.mergedTo;
-		merged = node.merged;
+		_merged = node._merged;
 		pruned = node.pruned;
 
 		// do not copy _differents right now because we need to
@@ -169,12 +169,12 @@ public abstract class Node
 		}
 		_differents = diffs;
 
-		if (merged != null)
+		if (_merged != null)
 		{
-			final Set<Node> sames = new HashSet<>(merged.size());
-			for (final Node node : merged)
+			final Set<Node> sames = new HashSet<>(_merged.size());
+			for (final Node node : _merged)
 				sames.add(_abox.getNode(node.getName()));
-			merged = sames;
+			_merged = sames;
 		}
 
 		final EdgeList oldEdges = _inEdges;
@@ -291,7 +291,7 @@ public abstract class Node
 
 		mergedTo = this;
 		_mergeDepends = DependencySet.INDEPENDENT;
-		merged = null;
+		_merged = null;
 
 		final Iterator<DependencySet> i = _differents.values().iterator();
 		while (i.hasNext())
@@ -382,27 +382,26 @@ public abstract class Node
 
 			final boolean removeType = OpenlletOptions.USE_SMART_RESTORE
 					//                ? ( !d.contains( _branch ) )
-					? (d.max() >= branch)
-							: (d.getBranch() > branch);
+					? (d.max() >= branch) : (d.getBranch() > branch);
 
-					if (removeType)
-					{
-						removed = true;
+			if (removeType)
+			{
+				removed = true;
 
-						if (_logger.isLoggable(Level.FINE))
-							_logger.fine("RESTORE: " + this + " remove type " + c + " " + d + " " + branch);
+				if (_logger.isLoggable(Level.FINE))
+					_logger.fine("RESTORE: " + this + " remove type " + c + " " + d + " " + branch);
 
-						//track that this _node is affected
-						if (OpenlletOptions.USE_INCREMENTAL_CONSISTENCY && this instanceof Individual)
-							_abox.getIncrementalChangeTracker().addDeletedType(this, c);
+				//track that this _node is affected
+				if (OpenlletOptions.USE_INCREMENTAL_CONSISTENCY && this instanceof Individual)
+					_abox.getIncrementalChangeTracker().addDeletedType(this, c);
 
-						i.remove();
-						removeType(c);
-						restored = true;
-					}
-					else
-						if (OpenlletOptions.USE_SMART_RESTORE && ATermUtils.isAnd(c))
-							conjunctions.add(c);
+				i.remove();
+				removeType(c);
+				restored = true;
+			}
+			else
+				if (OpenlletOptions.USE_SMART_RESTORE && ATermUtils.isAnd(c))
+					conjunctions.add(c);
 		}
 
 		//update the _queue with things that could readd this type
@@ -530,9 +529,9 @@ public abstract class Node
 				if (isIndividual() && ATermUtils.isNominal(c))
 					// TODO probably redundant if : Bool.FALSE
 					if (!c.getArgument(0).equals(this.getName()))
-						return Bool.FALSE;
+					return Bool.FALSE;
 					else
-						return Bool.TRUE;
+					return Bool.TRUE;
 
 		if (isIndividual())
 		{
@@ -583,7 +582,7 @@ public abstract class Node
 					// TODO all this stuff in one method - this is only for
 					// handling AND
 					// clauses - they are implemented in _abox.isKnownType
-					ot = ot.or(_abox.isKnownType(y, d, SetUtils.<ATermAppl> emptySet()));// y.hasObviousType(d));
+					ot = ot.or(_abox.isKnownType(y, d, Collections.emptySet()));// y.hasObviousType(d));
 
 					if (ot.isTrue())
 						return ot;
@@ -786,16 +785,16 @@ public abstract class Node
 
 	private void addMerged(final Node node)
 	{
-		if (merged == null)
-			merged = new HashSet<>(3);
-		merged.add(node);
+		if (_merged == null)
+			_merged = new HashSet<>(3);
+		_merged.add(node);
 	}
 
 	public Set<Node> getMerged()
 	{
-		if (merged == null)
-			return SetUtils.emptySet();
-		return merged;
+		if (_merged == null)
+			return Collections.emptySet();
+		return _merged;
 	}
 
 	public Map<Node, DependencySet> getAllMerged()
@@ -807,10 +806,10 @@ public abstract class Node
 
 	private void getAllMerged(final DependencySet ds, final Map<Node, DependencySet> result)
 	{
-		if (merged == null)
+		if (_merged == null)
 			return;
 
-		for (final Node mergedNode : merged)
+		for (final Node mergedNode : _merged)
 		{
 			final DependencySet mergeDS = ds.union(mergedNode.getMergeDependency(false), false);
 			result.put(mergedNode, mergeDS);
@@ -820,9 +819,9 @@ public abstract class Node
 
 	private void removeMerged(final Node node)
 	{
-		merged.remove(node);
-		if (merged.isEmpty())
-			merged = null; // free space
+		_merged.remove(node);
+		if (_merged.isEmpty())
+			_merged = null; // free space
 	}
 
 	public boolean setSame(final Node node, final DependencySet ds)
