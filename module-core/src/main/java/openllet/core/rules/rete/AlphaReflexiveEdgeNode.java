@@ -7,12 +7,12 @@
 package openllet.core.rules.rete;
 
 import java.util.Iterator;
-import openllet.core.ABoxImpl;
 import openllet.core.Edge;
 import openllet.core.EdgeList;
-import openllet.core.Individual;
-import openllet.core.Node;
-import openllet.core.Role;
+import openllet.core.boxes.abox.ABoxImpl;
+import openllet.core.boxes.abox.Individual;
+import openllet.core.boxes.abox.Node;
+import openllet.core.boxes.rbox.Role;
 import openllet.core.rules.model.AtomVariable;
 import openllet.core.rules.model.BinaryAtom;
 import openllet.core.rules.model.DatavaluedPropertyAtom;

@@ -12,7 +12,7 @@ import java.util.Set;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
 import openllet.core.KnowledgeBase;
-import openllet.core.Role;
+import openllet.core.boxes.rbox.Role;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.CollectionUtils;
 import openllet.core.utils.MultiValueMap;

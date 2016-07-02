@@ -28,7 +28,7 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 
-package openllet.core;
+package openllet.core.boxes.abox;
 
 import static java.lang.String.format;
 
@@ -48,6 +48,17 @@ import java.util.logging.Logger;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
+import openllet.core.ABoxStats;
+import openllet.core.DefaultEdge;
+import openllet.core.DependencySet;
+import openllet.core.Edge;
+import openllet.core.EdgeList;
+import openllet.core.IndividualIterator;
+import openllet.core.KnowledgeBase;
+import openllet.core.NodeMerge;
+import openllet.core.OpenlletOptions;
+import openllet.core.boxes.rbox.RBox;
+import openllet.core.boxes.rbox.Role;
 import openllet.core.boxes.tbox.TBox;
 import openllet.core.datatypes.DatatypeReasoner;
 import openllet.core.datatypes.DatatypeReasonerImpl;

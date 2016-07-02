@@ -8,7 +8,7 @@ package openllet.core.utils.fsm;
 
 import java.util.HashSet;
 import java.util.Set;
-import openllet.core.Role;
+import openllet.core.boxes.rbox.Role;
 
 /**
  * <p>

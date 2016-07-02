@@ -8,10 +8,10 @@ package openllet.core.rules.rete;
 
 import java.util.Iterator;
 import openllet.aterm.ATermAppl;
-import openllet.core.ABoxImpl;
 import openllet.core.DependencySet;
-import openllet.core.Individual;
-import openllet.core.Node;
+import openllet.core.boxes.abox.ABoxImpl;
+import openllet.core.boxes.abox.Individual;
+import openllet.core.boxes.abox.Node;
 import openllet.core.rules.model.AtomIConstant;
 import openllet.core.rules.model.AtomObject;
 import openllet.core.rules.model.AtomVariable;

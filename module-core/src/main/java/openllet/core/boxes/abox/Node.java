@@ -28,7 +28,7 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 
-package openllet.core;
+package openllet.core.boxes.abox;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -46,6 +46,12 @@ import java.util.stream.Stream;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
+import openllet.core.DefaultEdge;
+import openllet.core.DependencySet;
+import openllet.core.Edge;
+import openllet.core.EdgeList;
+import openllet.core.OpenlletOptions;
+import openllet.core.boxes.rbox.Role;
 import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.tableau.completion.queue.NodeSelector;
 import openllet.core.tableau.completion.queue.QueueElement;

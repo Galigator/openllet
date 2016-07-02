@@ -63,6 +63,14 @@ import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
 import openllet.core.OpenlletOptions.InstanceRetrievalMethod;
+import openllet.core.boxes.abox.ABox;
+import openllet.core.boxes.abox.ABoxImpl;
+import openllet.core.boxes.abox.Individual;
+import openllet.core.boxes.abox.Literal;
+import openllet.core.boxes.abox.Node;
+import openllet.core.boxes.rbox.RBox;
+import openllet.core.boxes.rbox.RBoxImpl;
+import openllet.core.boxes.rbox.Role;
 import openllet.core.boxes.tbox.TBox;
 import openllet.core.boxes.tbox.TBoxFactory;
 import openllet.core.datatypes.DatatypeReasoner;
@@ -4748,7 +4756,7 @@ public class KnowledgeBase
 		_tbox = tbox;
 	}
 
-	CompletionStrategy chooseStrategy(final ABoxImpl abox)
+	public CompletionStrategy chooseStrategy(final ABoxImpl abox)
 	{
 		return chooseStrategy(abox, getExpressivity());
 	}
@@ -4759,7 +4767,7 @@ public class KnowledgeBase
 	 *
 	 * @return
 	 */
-	CompletionStrategy chooseStrategy(final ABoxImpl abox, final Expressivity expressivity)
+	public CompletionStrategy chooseStrategy(final ABoxImpl abox, final Expressivity expressivity)
 	{
 		final boolean conceptSatisfiability = (abox.size() == 1) && new IndividualIterator(abox).next().isConceptRoot();
 

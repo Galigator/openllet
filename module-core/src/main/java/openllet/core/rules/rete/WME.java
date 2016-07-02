@@ -10,9 +10,9 @@ import java.util.Arrays;
 import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
 import openllet.core.Edge;
-import openllet.core.Individual;
-import openllet.core.Literal;
-import openllet.core.Node;
+import openllet.core.boxes.abox.Individual;
+import openllet.core.boxes.abox.Literal;
+import openllet.core.boxes.abox.Node;
 import openllet.core.utils.ATermUtils;
 
 /**

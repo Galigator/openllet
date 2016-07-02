@@ -8,8 +8,8 @@ package openllet.core.rules.builtins;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import openllet.core.ABox;
-import openllet.core.Literal;
+import openllet.core.boxes.abox.ABox;
+import openllet.core.boxes.abox.Literal;
 import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.Namespaces;

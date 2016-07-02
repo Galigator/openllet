@@ -7,11 +7,11 @@
 package openllet.core;
 
 import openllet.aterm.ATermAppl;
+import openllet.core.boxes.abox.Individual;
+import openllet.core.boxes.abox.Node;
+import openllet.core.boxes.rbox.Role;
 
 /**
- * <p>
- * Title:
- * </p>
  * <p>
  * Description: Represents an edge in the tableau completion graph.
  * </p>
@@ -27,10 +27,10 @@ import openllet.aterm.ATermAppl;
 public interface Edge
 {
 	/**
-	 * Given a _node upon which this edge is incident, the opposite incident _node is returned.
+	 * Given a node upon which this edge is incident, the opposite incident _node is returned.
 	 *
-	 * @param _node a _node upon which this edge is incident
-	 * @return the other _node this edge is incident upon
+	 * @param node a node upon which this edge is incident
+	 * @return the other node this edge is incident upon
 	 */
 	public abstract Node getNeighbor(Node node);
 
@@ -47,7 +47,7 @@ public interface Edge
 	public abstract Individual getFrom();
 
 	/**
-	 * @return Returns the name of the source _node
+	 * @return Returns the name of the source node
 	 */
 	public abstract ATermAppl getFromName();
 
@@ -62,7 +62,7 @@ public interface Edge
 	public abstract Node getTo();
 
 	/**
-	 * @return Returns the name of the target _node
+	 * @return Returns the name of the target node
 	 */
 	public abstract ATermAppl getToName();
 }

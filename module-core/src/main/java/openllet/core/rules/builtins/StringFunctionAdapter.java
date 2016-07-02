@@ -9,8 +9,8 @@ package openllet.core.rules.builtins;
 import static openllet.core.rules.builtins.ComparisonTesters.expectedIfEquals;
 
 import openllet.aterm.ATermAppl;
-import openllet.core.ABox;
-import openllet.core.Literal;
+import openllet.core.boxes.abox.ABox;
+import openllet.core.boxes.abox.Literal;
 import openllet.core.utils.ATermUtils;
 
 /**

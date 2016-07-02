@@ -7,7 +7,7 @@
 package openllet.core.tableau.completion.incremental;
 
 import openllet.aterm.ATermAppl;
-import openllet.core.Clash;
+import openllet.core.boxes.abox.Clash;
 
 /**
  * A _clash dependency.

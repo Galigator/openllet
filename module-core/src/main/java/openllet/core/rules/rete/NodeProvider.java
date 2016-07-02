@@ -6,7 +6,7 @@
 
 package openllet.core.rules.rete;
 
-import openllet.core.Node;
+import openllet.core.boxes.abox.Node;
 import openllet.core.utils.ATermUtils;
 
 public abstract class NodeProvider

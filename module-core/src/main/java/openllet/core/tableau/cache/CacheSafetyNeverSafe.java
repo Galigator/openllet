@@ -9,7 +9,7 @@
 package openllet.core.tableau.cache;
 
 import openllet.aterm.ATermAppl;
-import openllet.core.Individual;
+import openllet.core.boxes.abox.Individual;
 import openllet.core.expressivity.Expressivity;
 
 /**

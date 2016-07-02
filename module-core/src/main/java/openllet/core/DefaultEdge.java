@@ -31,6 +31,9 @@
 package openllet.core;
 
 import openllet.aterm.ATermAppl;
+import openllet.core.boxes.abox.Individual;
+import openllet.core.boxes.abox.Node;
+import openllet.core.boxes.rbox.Role;
 
 /**
  * @author Evren Sirin

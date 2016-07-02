@@ -28,7 +28,7 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 
-package openllet.core;
+package openllet.core.boxes.rbox;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -38,6 +38,9 @@ import java.util.Set;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
+import openllet.core.DependencySet;
+import openllet.core.OpenlletOptions;
+import openllet.core.PropertyType;
 import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.CollectionUtils;

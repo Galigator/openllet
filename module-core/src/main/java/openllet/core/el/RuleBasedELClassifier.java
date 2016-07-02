@@ -14,7 +14,7 @@ import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
-import openllet.core.Role;
+import openllet.core.boxes.rbox.Role;
 import openllet.core.taxonomy.CDOptimizedTaxonomyBuilder;
 import openllet.core.taxonomy.TaxonomyBuilder;
 import openllet.core.utils.ATermUtils;

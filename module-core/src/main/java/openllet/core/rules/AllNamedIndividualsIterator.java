@@ -8,9 +8,9 @@ package openllet.core.rules;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import openllet.core.ABox;
-import openllet.core.Individual;
-import openllet.core.Node;
+import openllet.core.boxes.abox.ABox;
+import openllet.core.boxes.abox.Individual;
+import openllet.core.boxes.abox.Node;
 
 /**
  * <p>

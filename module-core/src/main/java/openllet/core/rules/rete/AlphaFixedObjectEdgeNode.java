@@ -8,11 +8,11 @@ package openllet.core.rules.rete;
 
 import java.util.Iterator;
 import openllet.aterm.ATermAppl;
-import openllet.core.ABoxImpl;
 import openllet.core.Edge;
-import openllet.core.Individual;
-import openllet.core.Node;
-import openllet.core.Role;
+import openllet.core.boxes.abox.ABoxImpl;
+import openllet.core.boxes.abox.Individual;
+import openllet.core.boxes.abox.Node;
+import openllet.core.boxes.rbox.Role;
 import openllet.core.rules.model.AtomIConstant;
 import openllet.core.rules.model.AtomVariable;
 import openllet.core.rules.model.BinaryAtom;

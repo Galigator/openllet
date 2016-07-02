@@ -30,7 +30,7 @@
 
 package openllet.core.tableau.blocking;
 
-import openllet.core.Individual;
+import openllet.core.boxes.abox.Individual;
 import openllet.core.utils.SetUtils;
 
 /**

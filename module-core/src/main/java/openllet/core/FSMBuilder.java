@@ -13,6 +13,8 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.aterm.ATermList;
+import openllet.core.boxes.rbox.RBox;
+import openllet.core.boxes.rbox.Role;
 import openllet.core.utils.Pair;
 import openllet.core.utils.fsm.State;
 import openllet.core.utils.fsm.Transition;

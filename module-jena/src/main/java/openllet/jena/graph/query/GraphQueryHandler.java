@@ -18,7 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
-import openllet.core.Role;
+import openllet.core.boxes.rbox.Role;
 import openllet.core.utils.CollectionUtils;
 import openllet.core.utils.iterator.FlattenningIterator;
 import openllet.core.utils.iterator.IteratorUtils;

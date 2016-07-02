@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
 import openllet.core.OpenlletOptions;
-import openllet.core.Role;
+import openllet.core.boxes.rbox.Role;
 import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.taxonomy.Taxonomy;
 import openllet.shared.tools.Log;

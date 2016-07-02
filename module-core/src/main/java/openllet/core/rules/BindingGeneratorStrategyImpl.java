@@ -13,7 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
-import openllet.core.ABoxImpl;
+import openllet.core.boxes.abox.ABoxImpl;
 import openllet.core.rules.builtins.BuiltIn;
 import openllet.core.rules.builtins.BuiltInRegistry;
 import openllet.core.rules.model.AtomDVariable;

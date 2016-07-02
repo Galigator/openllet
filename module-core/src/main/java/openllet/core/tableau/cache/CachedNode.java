@@ -10,7 +10,7 @@ import java.util.Map;
 import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
 import openllet.core.EdgeList;
-import openllet.core.Role;
+import openllet.core.boxes.rbox.Role;
 
 /**
  * <p>

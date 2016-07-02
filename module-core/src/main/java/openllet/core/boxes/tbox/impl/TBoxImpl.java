@@ -44,7 +44,7 @@ import openllet.aterm.ATermList;
 import openllet.core.DependencySet;
 import openllet.core.KnowledgeBase;
 import openllet.core.OpenlletOptions;
-import openllet.core.Role;
+import openllet.core.boxes.rbox.Role;
 import openllet.core.boxes.tbox.TBox;
 import openllet.core.datatypes.Facet;
 import openllet.core.exceptions.InternalReasonerException;

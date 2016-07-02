@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import openllet.core.ABox;
+import openllet.core.boxes.abox.ABox;
 
 /**
  * <p>

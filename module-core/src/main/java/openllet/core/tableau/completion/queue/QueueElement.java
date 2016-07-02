@@ -31,7 +31,7 @@
 package openllet.core.tableau.completion.queue;
 
 import openllet.aterm.ATermAppl;
-import openllet.core.Node;
+import openllet.core.boxes.abox.Node;
 
 /**
  * Structured stored on the completion _queue

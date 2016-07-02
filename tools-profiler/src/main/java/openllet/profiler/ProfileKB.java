@@ -31,12 +31,6 @@ import openllet.profiler.utils.ObjectProfiler;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -156,7 +150,7 @@ public class ProfileKB
 						System.exit(0);
 					}
 
-						//$FALL-THROUGH$
+					//$FALL-THROUGH$
 					case 'l':
 						final String interfaceName = g.getOptarg().toUpperCase();
 						try

@@ -9,10 +9,10 @@ package openllet.core.rules;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
-import openllet.core.ABox;
-import openllet.core.Individual;
-import openllet.core.Literal;
-import openllet.core.Role;
+import openllet.core.boxes.abox.ABox;
+import openllet.core.boxes.abox.Individual;
+import openllet.core.boxes.abox.Literal;
+import openllet.core.boxes.rbox.Role;
 import openllet.core.rules.model.AtomVariable;
 import openllet.core.rules.model.DatavaluedPropertyAtom;
 

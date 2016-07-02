@@ -36,6 +36,10 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import openllet.aterm.ATermAppl;
+import openllet.core.boxes.abox.Individual;
+import openllet.core.boxes.abox.Literal;
+import openllet.core.boxes.abox.Node;
+import openllet.core.boxes.rbox.Role;
 import openllet.core.utils.ATermUtils;
 
 /**

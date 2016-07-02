@@ -56,7 +56,7 @@ import openllet.aterm.ATermList;
 import openllet.core.KnowledgeBase;
 import openllet.core.OpenlletOptions;
 import openllet.core.PropertyType;
-import openllet.core.Role;
+import openllet.core.boxes.rbox.Role;
 import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.exceptions.UnsupportedFeatureException;
 import openllet.core.rules.model.AtomDConstant;

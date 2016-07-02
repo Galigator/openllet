@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import openllet.core.Node;
+import openllet.core.boxes.abox.Node;
 import openllet.core.utils.iterator.IteratorUtils;
 
 /**

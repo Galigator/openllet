@@ -9,6 +9,9 @@ package openllet.core;
 import java.util.Iterator;
 import java.util.List;
 import openllet.aterm.ATermAppl;
+import openllet.core.boxes.abox.ABoxImpl;
+import openllet.core.boxes.abox.Literal;
+import openllet.core.boxes.abox.Node;
 
 /**
  * An iterator to return _nodes in the _order they are added. Having a seperate iterator instead of using _nodes.iterator() allows to change the _nodes table

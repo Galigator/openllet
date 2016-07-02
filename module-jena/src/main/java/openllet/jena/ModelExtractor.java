@@ -16,7 +16,7 @@ import java.util.Set;
 import java.util.function.Predicate;
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
-import openllet.core.Role;
+import openllet.core.boxes.rbox.Role;
 import openllet.core.utils.iterator.IteratorUtils;
 import openllet.jena.vocabulary.OWL2;
 import org.apache.jena.graph.Node;

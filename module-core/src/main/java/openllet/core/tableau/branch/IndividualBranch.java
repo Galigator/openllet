@@ -30,10 +30,10 @@
 
 package openllet.core.tableau.branch;
 
-import openllet.core.ABoxImpl;
 import openllet.core.DependencySet;
-import openllet.core.Individual;
-import openllet.core.Node;
+import openllet.core.boxes.abox.ABoxImpl;
+import openllet.core.boxes.abox.Individual;
+import openllet.core.boxes.abox.Node;
 import openllet.core.tableau.completion.CompletionStrategy;
 
 public abstract class IndividualBranch extends Branch

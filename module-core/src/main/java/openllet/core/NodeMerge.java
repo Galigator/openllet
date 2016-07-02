@@ -31,6 +31,7 @@
 package openllet.core;
 
 import openllet.aterm.ATermAppl;
+import openllet.core.boxes.abox.Node;
 
 /**
  * Stores a pair of _nodes to be merged. Order of _nodes is important, always first _node is going to be merged to the second one.

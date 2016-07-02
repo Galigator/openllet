@@ -10,8 +10,8 @@ package openllet.core.rules.builtins;
 
 import java.util.Arrays;
 import openllet.aterm.ATermAppl;
-import openllet.core.ABox;
-import openllet.core.Literal;
+import openllet.core.boxes.abox.ABox;
+import openllet.core.boxes.abox.Literal;
 import openllet.core.utils.TermFactory;
 
 /**

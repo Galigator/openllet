@@ -37,7 +37,7 @@ import openllet.aterm.ATermList;
 import openllet.core.KnowledgeBase;
 import openllet.core.OpenlletOptions;
 import openllet.core.PropertyType;
-import openllet.core.Role;
+import openllet.core.boxes.rbox.Role;
 import openllet.core.exceptions.UnsupportedFeatureException;
 import openllet.core.exceptions.UnsupportedQueryException;
 import openllet.core.utils.ATermUtils;

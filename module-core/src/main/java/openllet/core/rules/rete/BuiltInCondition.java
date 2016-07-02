@@ -7,8 +7,8 @@
 package openllet.core.rules.rete;
 
 import java.util.Arrays;
-import openllet.core.ABoxImpl;
-import openllet.core.Literal;
+import openllet.core.boxes.abox.ABoxImpl;
+import openllet.core.boxes.abox.Literal;
 import openllet.core.rules.builtins.BuiltIn;
 import openllet.core.utils.ATermUtils;
 

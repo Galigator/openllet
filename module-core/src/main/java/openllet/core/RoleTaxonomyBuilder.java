@@ -46,6 +46,8 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.aterm.ATermAppl;
+import openllet.core.boxes.rbox.RBox;
+import openllet.core.boxes.rbox.Role;
 import openllet.core.taxonomy.Taxonomy;
 import openllet.core.taxonomy.TaxonomyNode;
 import openllet.core.utils.ATermUtils;

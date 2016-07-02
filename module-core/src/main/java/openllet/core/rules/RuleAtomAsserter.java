@@ -13,10 +13,10 @@ import static openllet.core.utils.TermFactory.not;
 import static openllet.core.utils.TermFactory.value;
 
 import openllet.aterm.ATermAppl;
-import openllet.core.ABoxImpl;
 import openllet.core.DependencySet;
-import openllet.core.Individual;
-import openllet.core.Node;
+import openllet.core.boxes.abox.ABoxImpl;
+import openllet.core.boxes.abox.Individual;
+import openllet.core.boxes.abox.Node;
 import openllet.core.rules.model.BuiltInAtom;
 import openllet.core.rules.model.ClassAtom;
 import openllet.core.rules.model.DataRangeAtom;

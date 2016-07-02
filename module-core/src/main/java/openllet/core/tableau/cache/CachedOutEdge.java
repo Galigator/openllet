@@ -9,12 +9,9 @@ package openllet.core.tableau.cache;
 import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
 import openllet.core.Edge;
-import openllet.core.Role;
+import openllet.core.boxes.rbox.Role;
 
 /**
- * <p>
- * Title:
- * </p>
  * <p>
  * Description: Represents a cached outgoing edge.
  * </p>

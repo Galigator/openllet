@@ -12,9 +12,9 @@ import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
 import openllet.core.Edge;
 import openllet.core.EdgeList;
-import openllet.core.Individual;
-import openllet.core.Node;
-import openllet.core.Role;
+import openllet.core.boxes.abox.Individual;
+import openllet.core.boxes.abox.Node;
+import openllet.core.boxes.rbox.Role;
 import openllet.core.tableau.completion.CompletionStrategy;
 import openllet.core.utils.ATermUtils;
 

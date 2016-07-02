@@ -32,7 +32,7 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 
-package openllet.core;
+package openllet.core.boxes.abox;
 
 import static java.lang.String.format;
 
@@ -42,6 +42,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
+import openllet.core.DependencySet;
+import openllet.core.NodeMerge;
+import openllet.core.OpenlletOptions;
 import openllet.core.datatypes.DatatypeReasoner;
 import openllet.core.datatypes.exceptions.DatatypeReasonerException;
 import openllet.core.datatypes.exceptions.InvalidLiteralException;

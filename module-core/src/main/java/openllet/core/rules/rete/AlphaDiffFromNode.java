@@ -7,10 +7,10 @@
 package openllet.core.rules.rete;
 
 import java.util.Iterator;
-import openllet.core.ABoxImpl;
 import openllet.core.DependencySet;
-import openllet.core.Individual;
-import openllet.core.Node;
+import openllet.core.boxes.abox.ABoxImpl;
+import openllet.core.boxes.abox.Individual;
+import openllet.core.boxes.abox.Node;
 import openllet.core.rules.model.DifferentIndividualsAtom;
 import openllet.core.rules.model.RuleAtom;
 import openllet.core.utils.iterator.MapIterator;

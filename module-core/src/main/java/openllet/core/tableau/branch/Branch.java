@@ -31,11 +31,11 @@
 package openllet.core.tableau.branch;
 
 import java.util.logging.Logger;
-import openllet.core.ABoxImpl;
-import openllet.core.Clash;
 import openllet.core.DependencySet;
-import openllet.core.Node;
 import openllet.core.OpenlletOptions;
+import openllet.core.boxes.abox.ABoxImpl;
+import openllet.core.boxes.abox.Clash;
+import openllet.core.boxes.abox.Node;
 import openllet.core.tableau.completion.CompletionStrategy;
 import openllet.shared.tools.Log;
 

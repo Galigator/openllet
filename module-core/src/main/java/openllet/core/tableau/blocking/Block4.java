@@ -8,8 +8,8 @@ package openllet.core.tableau.blocking;
 
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermInt;
-import openllet.core.Node;
-import openllet.core.Role;
+import openllet.core.boxes.abox.Node;
+import openllet.core.boxes.rbox.Role;
 import openllet.core.utils.ATermUtils;
 
 /**

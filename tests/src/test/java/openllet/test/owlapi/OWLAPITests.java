@@ -61,7 +61,7 @@ import junit.framework.JUnit4TestAdapter;
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
 import openllet.core.OpenlletOptions;
-import openllet.core.Role;
+import openllet.core.boxes.rbox.Role;
 import openllet.core.exceptions.TimeoutException;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.PropertiesBuilder;

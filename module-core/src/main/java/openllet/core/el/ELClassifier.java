@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 import openllet.aterm.AFun;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
-import openllet.core.Role;
+import openllet.core.boxes.rbox.Role;
 import openllet.core.taxonomy.CDOptimizedTaxonomyBuilder;
 import openllet.core.taxonomy.PartialOrderTaxonomyBuilder;
 import openllet.core.utils.ATermUtils;

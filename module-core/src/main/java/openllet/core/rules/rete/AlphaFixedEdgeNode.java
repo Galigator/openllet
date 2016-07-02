@@ -7,9 +7,9 @@
 package openllet.core.rules.rete;
 
 import openllet.aterm.ATermAppl;
-import openllet.core.ABoxImpl;
-import openllet.core.Node;
-import openllet.core.Role;
+import openllet.core.boxes.abox.ABoxImpl;
+import openllet.core.boxes.abox.Node;
+import openllet.core.boxes.rbox.Role;
 
 /**
  */

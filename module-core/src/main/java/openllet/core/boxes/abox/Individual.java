@@ -20,7 +20,7 @@
 //FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 //IN THE SOFTWARE.
 
-package openllet.core;
+package openllet.core.boxes.abox;
 
 import static openllet.core.utils.TermFactory.TOP;
 
@@ -35,6 +35,12 @@ import java.util.logging.Level;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermInt;
 import openllet.aterm.ATermList;
+import openllet.core.DefaultEdge;
+import openllet.core.DependencySet;
+import openllet.core.Edge;
+import openllet.core.EdgeList;
+import openllet.core.OpenlletOptions;
+import openllet.core.boxes.rbox.Role;
 import openllet.core.datatypes.exceptions.DatatypeReasonerException;
 import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.tableau.cache.CachedNode;
@@ -1001,7 +1007,7 @@ public class Individual extends Node implements CachedNode
 			if (value != null && literalValue == null)
 				try
 				{
-					if (_abox._dtReasoner.isSatisfiable(literal.getTypes(), value))
+					if (_abox.getDatatypeReasoner().isSatisfiable(literal.getTypes(), value))
 						hasValue = Bool.UNKNOWN;
 					else
 						hasValue = Bool.FALSE;

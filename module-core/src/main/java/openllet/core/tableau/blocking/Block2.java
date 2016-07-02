@@ -10,8 +10,8 @@ import java.util.Set;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
-import openllet.core.Node;
-import openllet.core.Role;
+import openllet.core.boxes.abox.Node;
+import openllet.core.boxes.rbox.Role;
 import openllet.core.utils.ATermUtils;
 
 /**

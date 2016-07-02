@@ -24,7 +24,7 @@ import java.util.Arrays;
 import junit.framework.JUnit4TestAdapter;
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
-import openllet.core.Role;
+import openllet.core.boxes.rbox.Role;
 import openllet.core.utils.ATermUtils;
 import openllet.jena.PelletInfGraph;
 import openllet.jena.PelletReasonerFactory;

@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.aterm.ATermAppl;
-import openllet.core.Literal;
+import openllet.core.boxes.abox.Literal;
 import openllet.core.datatypes.DatatypeReasoner;
 import openllet.core.datatypes.Facet;
 import openllet.core.datatypes.exceptions.DatatypeReasonerException;

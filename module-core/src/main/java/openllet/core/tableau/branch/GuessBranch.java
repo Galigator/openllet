@@ -8,12 +8,12 @@ package openllet.core.tableau.branch;
 
 import java.util.logging.Level;
 import openllet.aterm.ATermAppl;
-import openllet.core.ABoxImpl;
-import openllet.core.Clash;
 import openllet.core.DependencySet;
-import openllet.core.Individual;
 import openllet.core.OpenlletOptions;
-import openllet.core.Role;
+import openllet.core.boxes.abox.ABoxImpl;
+import openllet.core.boxes.abox.Clash;
+import openllet.core.boxes.abox.Individual;
+import openllet.core.boxes.rbox.Role;
 import openllet.core.tableau.completion.CompletionStrategy;
 import openllet.core.utils.ATermUtils;
 

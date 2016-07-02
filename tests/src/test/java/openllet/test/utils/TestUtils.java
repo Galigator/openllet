@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import openllet.aterm.ATermAppl;
-import openllet.core.Individual;
 import openllet.core.KnowledgeBase;
-import openllet.core.Role;
+import openllet.core.boxes.abox.Individual;
+import openllet.core.boxes.rbox.Role;
 import openllet.core.utils.ATermUtils;
 
 public class TestUtils

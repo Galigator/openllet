@@ -6,8 +6,8 @@
 
 package openllet.core.rules.builtins;
 
-import openllet.core.ABoxImpl;
-import openllet.core.Literal;
+import openllet.core.boxes.abox.ABoxImpl;
+import openllet.core.boxes.abox.Literal;
 import openllet.core.rules.BindingHelper;
 import openllet.core.rules.model.BuiltInAtom;
 

@@ -9,6 +9,9 @@ package openllet.core;
 import java.util.Iterator;
 import java.util.List;
 import openllet.aterm.ATermAppl;
+import openllet.core.boxes.abox.ABox;
+import openllet.core.boxes.abox.Individual;
+import openllet.core.boxes.abox.Node;
 import openllet.core.tableau.completion.queue.NodeSelector;
 
 /**

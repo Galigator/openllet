@@ -1,4 +1,4 @@
-package openllet.core;
+package openllet.core.boxes.abox;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -8,6 +8,15 @@ import java.util.Set;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
+import openllet.core.ABoxStats;
+import openllet.core.DependencySet;
+import openllet.core.Edge;
+import openllet.core.EdgeList;
+import openllet.core.IndividualIterator;
+import openllet.core.KnowledgeBase;
+import openllet.core.NodeMerge;
+import openllet.core.boxes.rbox.RBox;
+import openllet.core.boxes.rbox.Role;
 import openllet.core.boxes.tbox.TBox;
 import openllet.core.datatypes.DatatypeReasoner;
 import openllet.core.tableau.branch.Branch;

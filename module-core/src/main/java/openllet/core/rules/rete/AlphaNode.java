@@ -10,8 +10,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.logging.Level;
 import openllet.aterm.ATermAppl;
-import openllet.core.ABoxImpl;
-import openllet.core.Node;
+import openllet.core.boxes.abox.ABoxImpl;
+import openllet.core.boxes.abox.Node;
 import openllet.core.rules.model.RuleAtom;
 import openllet.core.utils.ATermUtils;
 

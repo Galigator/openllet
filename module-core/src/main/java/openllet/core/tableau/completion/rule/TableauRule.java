@@ -6,8 +6,8 @@
 
 package openllet.core.tableau.completion.rule;
 
-import openllet.core.Individual;
 import openllet.core.IndividualIterator;
+import openllet.core.boxes.abox.Individual;
 
 /**
  * <p>

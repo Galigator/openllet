@@ -28,10 +28,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import openllet.aterm.ATermAppl;
-import openllet.core.ABox;
-import openllet.core.ABoxImpl;
-import openllet.core.Individual;
-import openllet.core.Node;
+import openllet.core.boxes.abox.ABox;
+import openllet.core.boxes.abox.ABoxImpl;
+import openllet.core.boxes.abox.Individual;
+import openllet.core.boxes.abox.Node;
 
 /**
  * A basic _queue for individuals that need to have completion rules applied

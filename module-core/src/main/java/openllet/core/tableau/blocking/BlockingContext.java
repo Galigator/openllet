@@ -9,9 +9,9 @@ package openllet.core.tableau.blocking;
 import java.util.HashSet;
 import java.util.Set;
 import openllet.core.Edge;
-import openllet.core.Individual;
-import openllet.core.Node;
-import openllet.core.Role;
+import openllet.core.boxes.abox.Individual;
+import openllet.core.boxes.abox.Node;
+import openllet.core.boxes.rbox.Role;
 
 /**
  * A class to keep track of the _current _individual being tested for blocking conditions. Current context stores the _blocker candidate and caches the incoming

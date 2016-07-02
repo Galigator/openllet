@@ -7,10 +7,10 @@
 package openllet.profiler;
 
 import java.util.logging.Logger;
-import openllet.core.ABox;
-import openllet.core.Individual;
 import openllet.core.KnowledgeBase;
-import openllet.core.Node;
+import openllet.core.boxes.abox.ABox;
+import openllet.core.boxes.abox.Individual;
+import openllet.core.boxes.abox.Node;
 import openllet.shared.tools.Log;
 
 /**

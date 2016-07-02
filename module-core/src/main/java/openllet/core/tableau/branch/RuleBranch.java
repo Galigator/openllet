@@ -11,12 +11,12 @@ package openllet.core.tableau.branch;
 
 import java.util.List;
 import java.util.logging.Level;
-import openllet.core.ABoxImpl;
-import openllet.core.Clash;
 import openllet.core.DependencySet;
-import openllet.core.Individual;
-import openllet.core.Node;
 import openllet.core.OpenlletOptions;
+import openllet.core.boxes.abox.ABoxImpl;
+import openllet.core.boxes.abox.Clash;
+import openllet.core.boxes.abox.Individual;
+import openllet.core.boxes.abox.Node;
 import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.rules.RuleAtomAsserter;
 import openllet.core.rules.VariableBinding;

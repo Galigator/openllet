@@ -7,9 +7,9 @@
 package openllet.core.tableau.branch;
 
 import openllet.aterm.ATermAppl;
-import openllet.core.ABoxImpl;
 import openllet.core.DependencySet;
-import openllet.core.Node;
+import openllet.core.boxes.abox.ABoxImpl;
+import openllet.core.boxes.abox.Node;
 import openllet.core.tableau.completion.CompletionStrategy;
 import openllet.core.utils.ATermUtils;
 

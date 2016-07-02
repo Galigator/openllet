@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import openllet.aterm.ATermAppl;
-import openllet.core.Literal;
+import openllet.core.boxes.abox.Literal;
 import openllet.core.datatypes.exceptions.InvalidConstrainingFacetException;
 import openllet.core.datatypes.exceptions.InvalidLiteralException;
 import openllet.core.datatypes.exceptions.UnrecognizedDatatypeException;
