@@ -8,7 +8,7 @@ package openllet.core.tableau.cache;
 
 import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
-import openllet.core.Edge;
+import openllet.core.boxes.abox.Edge;
 import openllet.core.boxes.abox.Individual;
 import openllet.core.boxes.abox.Node;
 import openllet.core.boxes.rbox.Role;

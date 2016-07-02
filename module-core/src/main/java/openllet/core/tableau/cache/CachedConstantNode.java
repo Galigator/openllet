@@ -9,7 +9,7 @@ package openllet.core.tableau.cache;
 import java.util.Map;
 import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
-import openllet.core.EdgeList;
+import openllet.core.boxes.abox.EdgeList;
 import openllet.core.boxes.rbox.Role;
 
 /**

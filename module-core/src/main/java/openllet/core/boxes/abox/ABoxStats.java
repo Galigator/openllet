@@ -6,7 +6,7 @@
 // proprietary exceptions.
 // Questions, comments, or requests for clarification: licensing@clarkparsia.com
 
-package openllet.core;
+package openllet.core.boxes.abox;
 
 /**
  * <p>

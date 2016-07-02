@@ -8,7 +8,7 @@ package openllet.core.tableau.blocking;
 
 import java.util.HashSet;
 import java.util.Set;
-import openllet.core.Edge;
+import openllet.core.boxes.abox.Edge;
 import openllet.core.boxes.abox.Individual;
 import openllet.core.boxes.abox.Node;
 import openllet.core.boxes.rbox.Role;

@@ -10,8 +10,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import openllet.aterm.ATermAppl;
-import openllet.core.Edge;
 import openllet.core.boxes.abox.ABoxImpl;
+import openllet.core.boxes.abox.Edge;
 import openllet.core.boxes.abox.Individual;
 import openllet.core.boxes.abox.Node;
 

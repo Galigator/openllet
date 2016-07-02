@@ -9,8 +9,8 @@ package openllet.core.tableau.completion.incremental;
 import java.util.HashSet;
 import java.util.Set;
 import openllet.aterm.ATermAppl;
-import openllet.core.DefaultEdge;
-import openllet.core.Edge;
+import openllet.core.boxes.abox.DefaultEdge;
+import openllet.core.boxes.abox.Edge;
 import openllet.core.tableau.branch.Branch;
 
 /**

@@ -8,9 +8,9 @@ package openllet.core.rules.rete;
 
 import java.util.Iterator;
 import openllet.aterm.ATermAppl;
-import openllet.core.Edge;
-import openllet.core.EdgeList;
 import openllet.core.boxes.abox.ABoxImpl;
+import openllet.core.boxes.abox.Edge;
+import openllet.core.boxes.abox.EdgeList;
 import openllet.core.boxes.abox.Individual;
 import openllet.core.boxes.abox.Node;
 import openllet.core.boxes.rbox.Role;

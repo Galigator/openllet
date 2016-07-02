@@ -32,8 +32,8 @@ package openllet.core.tableau.blocking;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import openllet.core.Edge;
 import openllet.core.OpenlletOptions;
+import openllet.core.boxes.abox.Edge;
 import openllet.core.boxes.abox.Individual;
 import openllet.core.boxes.abox.Node;
 import openllet.core.utils.Timer;

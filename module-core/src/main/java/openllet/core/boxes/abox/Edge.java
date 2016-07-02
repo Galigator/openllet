@@ -4,11 +4,10 @@
 // Please see LICENSE.txt for full license terms, including the availability of proprietary exceptions.
 // Questions, comments, or requests for clarification: licensing@clarkparsia.com
 
-package openllet.core;
+package openllet.core.boxes.abox;
 
 import openllet.aterm.ATermAppl;
-import openllet.core.boxes.abox.Individual;
-import openllet.core.boxes.abox.Node;
+import openllet.core.DependencySet;
 import openllet.core.boxes.rbox.Role;
 
 /**
