@@ -101,7 +101,7 @@ public class DependencySet
 	/**
 	 * Create a dependency set that _depends on a single _branch
 	 *
-	 * @param _branch Branch number
+	 * @param branch Branch number
 	 */
 	public DependencySet(final int branch)
 	{
