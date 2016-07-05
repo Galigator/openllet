@@ -1003,11 +1003,8 @@ public class ATermUtils
 	public static Set<ATermAppl> listToSet(ATermList list)
 	{
 		final Set<ATermAppl> set = new HashSet<>();
-		while (!list.isEmpty())
-		{
-			set.add((ATermAppl) list.getFirst());
-			list = list.getNext();
-		}
+		for (final ATerm term : list)
+			set.add((ATermAppl) term);
 		return set;
 	}
 
