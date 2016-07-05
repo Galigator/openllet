@@ -39,6 +39,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.aterm.AFun;
+import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
 import openllet.core.DependencySet;
@@ -528,13 +529,15 @@ public class TBoxImpl implements TBox
 			return true;
 		}
 
-		protected int processClass(final AtomIObject var, final ATermAppl c, final List<RuleAtom> atoms, int varCount)
+		protected int processClass(final AtomIObject var, final ATermAppl c, final List<RuleAtom> atoms, int varCountInit)
 		{
+			int varCount = varCountInit;
+
 			final AFun afun = c.getAFun();
 			if (afun.equals(ATermUtils.ANDFUN))
-				for (ATermList list = (ATermList) c.getArgument(0); !list.isEmpty(); list = list.getNext())
+				for (final ATerm term : (ATermList) c.getArgument(0))
 				{
-					final ATermAppl conjunct = (ATermAppl) list.getFirst();
+					final ATermAppl conjunct = (ATermAppl) term;
 					varCount = processClass(var, conjunct, atoms, varCount);
 				}
 			else

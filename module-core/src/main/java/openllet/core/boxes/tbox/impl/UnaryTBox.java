@@ -7,12 +7,12 @@
 package openllet.core.boxes.tbox.impl;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.aterm.ATermAppl;
 import openllet.core.utils.ATermUtils;
@@ -21,12 +21,6 @@ import openllet.core.utils.iterator.IteratorUtils;
 import openllet.shared.tools.Log;
 
 /**
- * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
  * <p>
  * Copyright: Copyright (c) 2009
  * </p>
@@ -52,16 +46,12 @@ public class UnaryTBox
 		List<Unfolding> list = _unfoldings.get(sub);
 		if (list == null)
 		{
-			list = CollectionUtils.makeList();
+			list = new ArrayList<>();
 			_unfoldings.put(sub, list);
 		}
 
-		sup = ATermUtils.normalize(sup);
-
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Add sub: " + ATermUtils.toString(sub) + " < " + ATermUtils.toString(sup));
-
-		list.add(Unfolding.create(sup, explanation));
+		_logger.fine(() -> "Add sub: " + ATermUtils.toString(sub) + " < " + ATermUtils.toString(sup));
+		list.add(Unfolding.create(ATermUtils.normalize(sup), explanation));
 	}
 
 	public boolean remove(@SuppressWarnings("unused") final ATermAppl axiom)

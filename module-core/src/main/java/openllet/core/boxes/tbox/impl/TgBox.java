@@ -41,6 +41,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermInt;
 import openllet.aterm.ATermList;
@@ -307,14 +308,22 @@ public class TgBox extends TBoxBase
 		_tbox.getAbsorbedAxioms().addAll(explain);
 
 		final DependencySet ds = new DependencySet(explain);
-		while (!list.isEmpty())
+		for (final ATerm term : list)
 		{
-			final ATermAppl nominal = (ATermAppl) list.getFirst();
+			final ATermAppl nominal = (ATermAppl) term;
 			final ATermAppl ind = (ATermAppl) nominal.getArgument(0);
 			_kb.addIndividual(ind);
 			_kb.addType(ind, c, ds);
-			list = list.getNext();
 		}
+
+		//		while (!list.isEmpty())
+		//		{
+		//			final ATermAppl nominal = (ATermAppl) list.getFirst();
+		//			final ATermAppl ind = (ATermAppl) nominal.getArgument(0);
+		//			_kb.addIndividual(ind);
+		//			_kb.addType(ind, c, ds);
+		//			list = list.getNext();
+		//		}
 	}
 
 	private boolean absorbRole(final Set<ATermAppl> set)
@@ -378,7 +387,7 @@ public class TgBox extends TBoxBase
 				canAbsorb = term.getArity() == 0 && set.size() > 1;
 
 			if (canAbsorb)
-				{
+			{
 				set.remove(term);
 
 				final ATermList setlist = ATermUtils.makeList(set);
@@ -390,7 +399,7 @@ public class TgBox extends TBoxBase
 				if (_subLogger.isLoggable(Level.FINE))
 					_subLogger.fine("Absorb named: " + ATermUtils.toString(sub));
 
-					_tbox.addAxiomExplanation(sub, _explanation);
+				_tbox.addAxiomExplanation(sub, _explanation);
 
 				return true;
 			}
@@ -440,7 +449,7 @@ public class TgBox extends TBoxBase
 		return false;
 	}
 
-	private boolean absorbV(final Set<ATermAppl> set)
+	private static boolean absorbV(final Set<ATermAppl> set)
 	{
 		for (final ATermAppl term : set)
 		{

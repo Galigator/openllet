@@ -1,12 +1,15 @@
 package openllet.atom;
 
+import java.util.Iterator;
+
 /**
  * Standard List
  *
  * @since 2.6.0
  */
-public interface SList<Atom>
+public interface SList<Atom> extends Iterable<Atom>
 {
+
 	/**
 	 * Checks if this list is the empty list.
 	 *
@@ -227,4 +230,27 @@ public interface SList<Atom>
 	 * @return the new dictionary list
 	 */
 	public SList<Atom> dictRemove(Atom key);
+
+	@Override
+	default Iterator<Atom> iterator()
+	{
+		return new Iterator<Atom>()
+		{
+			private SList<Atom> _current = SList.this;
+
+			@Override
+			public boolean hasNext()
+			{
+				return !_current.isEmpty();
+			}
+
+			@Override
+			public Atom next()
+			{
+				final Atom atom = _current.getFirst();
+				_current = _current.getNext();
+				return atom;
+			}
+		};
+	}
 }

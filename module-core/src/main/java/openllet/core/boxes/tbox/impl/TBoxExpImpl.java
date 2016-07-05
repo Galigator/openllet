@@ -253,7 +253,7 @@ public class TBoxExpImpl implements TBox
 					else
 						// SubClassOf(c2,c1) is not absorbed so continue with
 						// addAxiom function
-						axiom = ATermUtils.makeSub(c2, c1);
+						ATermUtils.makeSub(c2, c1); // FIXME this look like buggy because result is discarded.
 				}
 				else
 					if (ATermUtils.isOneOf(c2))
