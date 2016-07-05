@@ -98,10 +98,9 @@ public class FSMBuilder
 		return tg;
 	}
 
-	private void setFSM(final Role s, final TransitionGraph<Role> tg)
+	private static void setFSM(final Role s, final TransitionGraph<Role> tg)
 	{
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("NFA for " + s + ":\n" + tg);
+		_logger.fine(() -> "NFA for " + s + ":\n" + tg);
 
 		s.setFSM(tg);
 

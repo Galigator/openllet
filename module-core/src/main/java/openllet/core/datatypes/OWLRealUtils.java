@@ -152,8 +152,10 @@ public class OWLRealUtils
 			return sa > sb ? 1 : -1;
 	}
 
-	private static Number convertFromTo(Number n, Type in, final Type out)
+	private static Number convertFromTo(Number nParam, Type inParam, final Type out)
 	{
+		Number n = nParam;
+		Type in = inParam;
 
 		if (Type.BIG_DECIMAL.equals(in) && out.isIntegerOnly())
 		{
@@ -326,28 +328,28 @@ public class OWLRealUtils
 			return shrinkBigInteger(bigInteger(n).subtract(BigInteger.ONE));
 		else
 			/**
-			 * For Java rules on type promotions during addition, see <a
-			 * href="http://java.sun.com/docs/books/jls/second_edition/html/conversions.doc.html#183628" >the spec</a>
+			 * For Java rules on type promotions during addition, see
+			 * <a href="http://java.sun.com/docs/books/jls/second_edition/html/conversions.doc.html#183628" >the spec</a>
 			 */
 			switch (t)
 			{
-				case BYTE:
-					final byte b = n.byteValue();
-					return (b > Byte.MIN_VALUE) ? Byte.valueOf((byte) (b - 1)) : Short.valueOf((short) (b - 1));
-				case SHORT:
-					final short s = n.shortValue();
-					return (s > Short.MIN_VALUE) ? Short.valueOf((short) (s - 1)) : Integer.valueOf(s - 1);
-				case INTEGER:
-					final int i = n.intValue();
-					return (i > Integer.MIN_VALUE) ? Integer.valueOf(i - 1) : Long.valueOf(i - 1l);
-				case LONG:
-					final long l = n.longValue();
-					return (l > Long.MIN_VALUE) ? Long.valueOf(l - 1) : BigInteger.valueOf(l).subtract(BigInteger.ONE);
-				case BIG_INTEGER:
-					final BigInteger bi = (BigInteger) n;
-					return bi.subtract(BigInteger.ONE);
-				default:
-					throw new IllegalStateException();
+			case BYTE:
+			final byte b = n.byteValue();
+			return (b > Byte.MIN_VALUE) ? Byte.valueOf((byte) (b - 1)) : Short.valueOf((short) (b - 1));
+			case SHORT:
+			final short s = n.shortValue();
+			return (s > Short.MIN_VALUE) ? Short.valueOf((short) (s - 1)) : Integer.valueOf(s - 1);
+			case INTEGER:
+			final int i = n.intValue();
+			return (i > Integer.MIN_VALUE) ? Integer.valueOf(i - 1) : Long.valueOf(i - 1l);
+			case LONG:
+			final long l = n.longValue();
+			return (l > Long.MIN_VALUE) ? Long.valueOf(l - 1) : BigInteger.valueOf(l).subtract(BigInteger.ONE);
+			case BIG_INTEGER:
+			final BigInteger bi = (BigInteger) n;
+			return bi.subtract(BigInteger.ONE);
+			default:
+			throw new IllegalStateException();
 			}
 	}
 
@@ -382,28 +384,28 @@ public class OWLRealUtils
 			return shrinkBigInteger(bigInteger(n).add(BigInteger.ONE));
 		else
 			/**
-			 * For Java rules on type promotions during addition, see <a
-			 * href="http://java.sun.com/docs/books/jls/second_edition/html/conversions.doc.html#183628" >the spec</a>
+			 * For Java rules on type promotions during addition, see
+			 * <a href="http://java.sun.com/docs/books/jls/second_edition/html/conversions.doc.html#183628" >the spec</a>
 			 */
 			switch (t)
 			{
-				case BYTE:
-					final byte b = n.byteValue();
-					return (b < Byte.MAX_VALUE) ? Byte.valueOf((byte) (b + 1)) : Short.valueOf((short) (b + 1));
-				case SHORT:
-					final short s = n.shortValue();
-					return (s < Short.MAX_VALUE) ? Short.valueOf((short) (s + 1)) : Integer.valueOf(s + 1);
-				case INTEGER:
-					final int i = n.intValue();
-					return (i < Integer.MAX_VALUE) ? Integer.valueOf(i + 1) : Long.valueOf(i + 1l);
-				case LONG:
-					final long l = n.longValue();
-					return (l < Long.MAX_VALUE) ? Long.valueOf(l + 1) : BigInteger.valueOf(l).add(BigInteger.ONE);
-				case BIG_INTEGER:
-					final BigInteger bi = (BigInteger) n;
-					return bi.add(BigInteger.ONE);
-				default:
-					throw new IllegalStateException();
+			case BYTE:
+			final byte b = n.byteValue();
+			return (b < Byte.MAX_VALUE) ? Byte.valueOf((byte) (b + 1)) : Short.valueOf((short) (b + 1));
+			case SHORT:
+			final short s = n.shortValue();
+			return (s < Short.MAX_VALUE) ? Short.valueOf((short) (s + 1)) : Integer.valueOf(s + 1);
+			case INTEGER:
+			final int i = n.intValue();
+			return (i < Integer.MAX_VALUE) ? Integer.valueOf(i + 1) : Long.valueOf(i + 1l);
+			case LONG:
+			final long l = n.longValue();
+			return (l < Long.MAX_VALUE) ? Long.valueOf(l + 1) : BigInteger.valueOf(l).add(BigInteger.ONE);
+			case BIG_INTEGER:
+			final BigInteger bi = (BigInteger) n;
+			return bi.add(BigInteger.ONE);
+			default:
+			throw new IllegalStateException();
 			}
 	}
 

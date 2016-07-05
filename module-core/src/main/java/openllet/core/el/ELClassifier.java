@@ -15,6 +15,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.aterm.AFun;
+import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
 import openllet.core.boxes.rbox.Role;
@@ -30,12 +31,6 @@ import openllet.core.utils.Timers;
 import openllet.shared.tools.Log;
 
 /**
- * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
  * <p>
  * Copyright: Copyright (c) 2007
  * </p>
@@ -371,8 +366,12 @@ public class ELClassifier extends CDOptimizedTaxonomyBuilder
 	{
 		final ConceptInfo[] a = new ConceptInfo[list.getLength()];
 
-		for (int i = 0; !list.isEmpty(); list = list.getNext())
-			a[i++] = createConcept((ATermAppl) list.getFirst());
+		int i = 0;
+		for (final ATerm term : list)
+		{
+			a[i] = createConcept((ATermAppl) term);
+			i++;
+		}
 
 		return a;
 	}

@@ -507,7 +507,7 @@ public class DatatypeReasonerImpl implements DatatypeReasoner
 		}
 	}
 
-	private DataRange<?> getDisjunction(final Collection<DataRange<?>> ranges)
+	private static DataRange<?> getDisjunction(final Collection<DataRange<?>> ranges)
 	{
 
 		if (ranges.size() == 1)

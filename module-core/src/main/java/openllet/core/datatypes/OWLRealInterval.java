@@ -309,13 +309,16 @@ public class OWLRealInterval
 	/**
 	 * Create an interval. <code>null</code> should be used to indicate unbound (i.e., infinite intervals).
 	 *
-	 * @param _lower Interval _lower bound
-	 * @param _upper Interval _upper bound
-	 * @param _inclusiveLower <code>true</code> if _lower bound is inclusive, <code>false</code> for exclusive. Ignored if <code>_lower == null</code>.
-	 * @param _inclusiveUpper <code>true</code> if _upper bound is inclusive, <code>false</code> for exclusive. Ignored if <code>_upper == null</code>.
+	 * @param lower Interval lower bound
+	 * @param upper Interval upper bound
+	 * @param inclusiveLower <code>true</code> if lower bound is inclusive, <code>false</code> for exclusive. Ignored if <code>lower == null</code>.
+	 * @param inclusiveUpper <code>true</code> if upper bound is inclusive, <code>false</code> for exclusive. Ignored if <code>upper == null</code>.
+	 * @param baseType
 	 */
-	public OWLRealInterval(final Number lower, final Number upper, final boolean inclusiveLower, final boolean inclusiveUpper, LineType type)
+	public OWLRealInterval(final Number lower, final Number upper, final boolean inclusiveLower, final boolean inclusiveUpper, LineType baseType)
 	{
+		LineType type = baseType;
+
 		if (lower != null && upper != null)
 		{
 			final int cmp = OWLRealUtils.compare(lower, upper);

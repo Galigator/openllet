@@ -34,12 +34,6 @@ import openllet.shared.tools.Log;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -321,8 +315,9 @@ public class SimplifiedELClassifier extends CDOptimizedTaxonomyBuilder implement
 		}
 	}
 
-	private ConceptInfo createConcept(ATermAppl c)
+	private ConceptInfo createConcept(final ATermAppl cParam)
 	{
+		ATermAppl c = cParam;
 		ConceptInfo concept = _concepts.get(c);
 		if (concept == null)
 		{

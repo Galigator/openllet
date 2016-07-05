@@ -52,8 +52,8 @@ public class UnionDataRange<T> implements DataRange<T>
 	@Override
 	public boolean containsAtLeast(int n)
 	{
-		n -= _values.size();
-		if (n <= 0)
+		int values = n - _values.size();
+		if (values <= 0)
 			return true;
 
 		for (final RestrictedDatatype<?> rd : _ranges)
@@ -61,10 +61,10 @@ public class UnionDataRange<T> implements DataRange<T>
 			if (rd.containsAtLeast(n))
 				return true;
 
-			n -= rd.size(); // FIXME This may crash.
+			values -= rd.size(); // FIXME This may crash.
 		}
 
-		return n <= 0;
+		return values <= 0;
 	}
 
 	@Override
