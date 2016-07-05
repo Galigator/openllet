@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
@@ -51,7 +52,6 @@ import openllet.core.datatypes.exceptions.InvalidLiteralException;
 import openllet.core.datatypes.exceptions.UnrecognizedDatatypeException;
 import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.utils.ATermUtils;
-import java.util.Set;
 
 /**
  * @author Evren Sirin
@@ -61,8 +61,6 @@ public class Literal extends Node
 	private ATermAppl _atermValue;
 
 	private Object _value;
-
-	// private Datatype datatype;
 
 	private boolean _hasValue;
 

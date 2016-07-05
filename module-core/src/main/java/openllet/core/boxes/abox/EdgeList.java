@@ -45,6 +45,9 @@ import openllet.core.utils.ATermUtils;
  */
 public class EdgeList implements Iterable<Edge>
 {
+	private Edge[] list;
+	private int size;
+
 	private class EdgeIterator implements Iterator<Edge>
 	{
 		private int curr = 0;
@@ -74,9 +77,6 @@ public class EdgeList implements Iterable<Edge>
 			removeEdge(--curr);
 		}
 	}
-
-	private Edge[] list;
-	private int size;
 
 	public EdgeList()
 	{
@@ -266,7 +266,7 @@ public class EdgeList implements Iterable<Edge>
 
 	/**
 	 * Find the neighbors of a _node that has a certain type. For literals, we collect only the ones with the same language tag.
-	 * 
+	 *
 	 * @param _node The _node whose neighbors are being sought
 	 * @param c The concept (or datatype) that each _neighbor should belong to
 	 * @return Set of _nodes

@@ -105,26 +105,18 @@ public class ABoxImpl implements ABox
 {
 	public final static Logger _logger = Log.getLogger(ABoxImpl.class);
 
-	@Override
-	public Logger getLogger()
-	{
-		return _logger;
-	}
-
-	// following two variables are used to generate names
-	// for newly generated individuals. so during rules are
-	// applied anon1, anon2, etc. will be generated. This prefix
-	// will also make sure that any _node whose name starts with
-	// this prefix is not a root _node
+	/**
+	 * following two variables are used to generate names for newly generated individuals. so during rules are applied anon1, anon2, etc. will be generated.
+	 * This prefix will also make sure that any node whose name starts with this prefix is not a root node
+	 */
 	private int _anonCount = 0;
 
 	public ABoxStats _stats = new ABoxStats();
 
-	@Override
-	public ABoxStats getStats()
-	{
-		return _stats;
-	}
+	/**
+	 * This is a list of _nodes. Each _node has a name expressed as an ATerm which is used as the key in the Hashtable. The value is the actual _node object
+	 */
+	protected Map<ATermAppl, Node> _nodes;
 
 	/**
 	 * datatype reasoner used for checking the satisfiability of datatypes
@@ -132,32 +124,9 @@ public class ABoxImpl implements ABox
 	protected final DatatypeReasoner _dtReasoner;
 
 	/**
-	 * This is a list of _nodes. Each _node has a name expressed as an ATerm which is used as the key in the Hashtable. The value is the actual _node object
-	 */
-	protected Map<ATermAppl, Node> _nodes;
-
-	@Override
-	public void setNodes(Map<ATermAppl, Node> nodes)
-	{
-		_nodes = nodes;
-	}
-
-	/**
 	 * This is a list of _node names. This list stores the individuals in the _order they are created
 	 */
 	protected List<ATermAppl> _nodeList;
-
-	@Override
-	public List<ATermAppl> getNodeList()
-	{
-		return _nodeList;
-	}
-
-	@Override
-	public void setNodeList(List<ATermAppl> nodeList)
-	{
-		_nodeList = nodeList;
-	}
 
 	/**
 	 * Indicates if any of the completion rules has been applied to modify ABox
@@ -166,20 +135,20 @@ public class ABoxImpl implements ABox
 
 	private boolean _doExplanation;
 
-	// cached satisfiability results
-	// the table maps every atomic concept A (and also its negation not(A))
-	// to the root _node of its completed tree. If a concept is mapped to
-	// null value it means it is not satisfiable
+	/**
+	 * cached satisfiability results the table maps every atomic concept A (and also its negation not(A)) to the root _node of its completed tree. If a concept
+	 * is mapped to null value it means it is not satisfiable
+	 */
 	public ConceptCache _cache;
 
 	// pseudo model for this Abox. This is the ABox that results from
 	// completing to the original Abox
 	// private ABox pseudoModel;
 
-	// _cache of the last completion. it may be different from the pseudo
-	// model, e.g. type checking for _individual adds one extra assertion
-	// last completion is stored for caching the root _nodes that was
-	// the result of
+	/**
+	 * cache of the last completion. it may be different from the pseudo model, e.g. type checking for individual adds one extra assertion last completion is
+	 * stored for caching the root nodes that was the result of
+	 */
 	private ABox _lastCompletion;
 	private boolean _keepLastCompletion;
 	private Clash _lastClash;
@@ -187,12 +156,12 @@ public class ABoxImpl implements ABox
 	// complete ABox means no more tableau rules are applicable
 	private boolean _isComplete = false;
 
-	// the last _clash recorded
+	/** the last clash recorded */
 	private Clash _clash;
 
 	private final Set<Clash> _assertedClashes;
 
-	// the _current _branch number
+	/** the _current _branch number */
 	private int _branch;
 	private List<Branch> _branches;
 
@@ -200,26 +169,15 @@ public class ABoxImpl implements ABox
 
 	private Map<ATermAppl, int[]> _disjBranchStats;
 
-	// if we are using copy on write, this is where to copy from
+	/** if we are using copy on write, this is where to copy from */
 	private ABox _sourceABox;
 
-	@Override
-	public ABox getSourceABox()
-	{
-		return _sourceABox;
-	}
-
-	@Override
-	public void setSourceABox(ABox sourceABox)
-	{
-		_sourceABox = sourceABox;
-	}
-
-	// return true if init() function is called. This indicates parsing
-	// is completed and ABox is ready for completion
+	/**
+	 * return true if init() function is called. This indicates parsing is completed and ABox is ready for completion
+	 */
 	private boolean _initialized = false;
 
-	// The KB to which this ABox belongs
+	/** The KB to which this ABox belongs */
 	private final KnowledgeBase _kb;
 
 	public boolean _rulesNotApplied;
@@ -231,8 +189,50 @@ public class ABoxImpl implements ABox
 	private CompletionQueue _completionQueue;
 	private IncrementalChangeTracker _incChangeTracker;
 
-	// flag set when incrementally updating the _abox with explicit assertions
+	/** flag set when incrementally updating the abox with explicit assertions */
 	private boolean _syntacticUpdate = false;
+
+	@Override
+	public Logger getLogger()
+	{
+		return _logger;
+	}
+
+	@Override
+	public ABoxStats getStats()
+	{
+		return _stats;
+	}
+
+	@Override
+	public void setNodes(final Map<ATermAppl, Node> nodes)
+	{
+		_nodes = nodes;
+	}
+
+	@Override
+	public List<ATermAppl> getNodeList()
+	{
+		return _nodeList;
+	}
+
+	@Override
+	public void setNodeList(final List<ATermAppl> nodeList)
+	{
+		_nodeList = nodeList;
+	}
+
+	@Override
+	public ABox getSourceABox()
+	{
+		return _sourceABox;
+	}
+
+	@Override
+	public void setSourceABox(final ABox sourceABox)
+	{
+		_sourceABox = sourceABox;
+	}
 
 	public ABoxImpl(final KnowledgeBase kb)
 	{
@@ -1291,10 +1291,8 @@ public class ABoxImpl implements ABox
 	}
 
 	/**
-	 * Return true if this ABox is consistent. Consistent ABox means after applying all the tableau completion rules at least one _branch with no clashes was
-	 * found
-	 *
-	 * @return
+	 * @return true if this ABox is consistent. Consistent ABox means after applying all the tableau completion rules at least one _branch with no clashes was
+	 *         found
 	 */
 	@Override
 	public boolean isConsistent()
@@ -1367,7 +1365,7 @@ public class ABoxImpl implements ABox
 	/**
 	 * Check the consistency of this ABox possibly after adding some type assertions. If <code>c</code> is null then nothing is added to ABox (pure consistency
 	 * test) and the individuals should be an empty collection. If <code>c</code> is not null but <code>individuals</code> is empty, this is a satisfiability
-	 * check for concept <code>c</code> so a new _individual will be added with type <code>c</code>. If individuals is not empty, this means we will add type
+	 * check for concept <code>c</code> so a new individual will be added with type <code>c</code>. If individuals is not empty, this means we will add type
 	 * <code>c</code> to each of the individuals in the collection and check the consistency.
 	 * <p>
 	 * The consistency checks will be done either on a copy of the ABox or its pseudo model depending on the situation. In either case this ABox will not be
@@ -1571,9 +1569,6 @@ public class ABoxImpl implements ABox
 		incT.stop();
 
 		// do not clear the _clash information
-
-		// ((Log4JLogger)ABox._logger).getLogger().setLevel(Level.OFF);
-		// ((Log4JLogger)DependencyIndex._logger).getLogger().setLevel(Level.OFF);
 
 		return consistent;
 	}

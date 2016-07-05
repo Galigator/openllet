@@ -16,12 +16,6 @@ import openllet.core.utils.ATermUtils;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -32,6 +26,12 @@ import openllet.core.utils.ATermUtils;
  */
 public class Clash
 {
+	private DependencySet _depends;
+	private Node _node;
+	private ClashType _type;
+	ATerm[] _args;
+	String clashExplanation;
+
 	public enum ClashType
 	{
 		ATOMIC("An _individual belongs to a _type and its complement"), MIN_MAX("An _individual contains a minCardinality restriction that is greater than a maxCardinality restriction"), MAX_CARD("The maxCardinality restriction is violated"), FUNC_MAX_CARD("An _individual contains a minCardinality restriction that is greater than a maxCardinality restriction"), MAX_ZERO("The maxCardinality(0) restriction is violated"), NOMINAL("An _individual is sameAs and differentFrom another _individual at the same time"), EMPTY_DATATYPE("Range restrictions on a literal is inconsistent"), VALUE_DATATYPE("The literal value does not satisfy the datatype restriction"), MISSING_DATATYPE("Plain literal does not satisfy the datatype restriction (literal may be missing the rdf:datatype attribute)"), INVALID_LITERAL("Invalid literal for the rdf:datatype attribute"), DISJOINT_PROPS("Two disjoint properties have the same value"), BOTTOM_PROP("An _individual has a value for bottom property"), UNEXPLAINED("Cannot explain");
@@ -40,7 +40,7 @@ public class Clash
 
 		private ClashType(final String explanation)
 		{
-			this._explanation = explanation;
+			_explanation = explanation;
 		}
 
 		public String getExplanation()
@@ -49,34 +49,28 @@ public class Clash
 		}
 	}
 
-	private DependencySet _depends;
-	private Node _node;
-	private ClashType _type;
-	ATerm[] _args;
-	String clashExplanation;
-
 	// TODO Make constructor privates and only use public creator functions
 	private Clash(final Node node, final ClashType type, final DependencySet depends)
 	{
-		this.setDepends(depends);
-		this.setNode(node);
-		this.setType(type);
+		setDepends(depends);
+		setNode(node);
+		setType(type);
 	}
 
 	private Clash(final Node node, final ClashType type, final DependencySet depends, final ATerm[] args)
 	{
-		this.setDepends(depends);
-		this.setNode(node);
-		this.setType(type);
-		this._args = args;
+		setDepends(depends);
+		setNode(node);
+		setType(type);
+		_args = args;
 	}
 
 	private Clash(final Node node, final ClashType type, final DependencySet depends, final String explanation)
 	{
-		this.setDepends(depends);
-		this.setNode(node);
-		this.setType(type);
-		this.clashExplanation = explanation;
+		setDepends(depends);
+		setNode(node);
+		setType(type);
+		clashExplanation = explanation;
 	}
 
 	public Clash copyTo(final ABoxImpl abox)
@@ -364,7 +358,7 @@ public class Clash
 	 */
 	public void setDepends(final DependencySet depends)
 	{
-		this._depends = depends;
+		_depends = depends;
 	}
 
 	/**
@@ -380,7 +374,7 @@ public class Clash
 	 */
 	public void setNode(final Node node)
 	{
-		this._node = node;
+		_node = node;
 	}
 
 	/**
@@ -396,7 +390,7 @@ public class Clash
 	 */
 	public void setType(final ClashType type)
 	{
-		this._type = type;
+		_type = type;
 	}
 
 	/**

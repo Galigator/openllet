@@ -10,12 +10,6 @@ package openllet.core.boxes.abox;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2009
  * </p>
  * <p>
