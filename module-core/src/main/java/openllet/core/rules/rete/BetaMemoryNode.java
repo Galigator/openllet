@@ -107,11 +107,11 @@ public class BetaMemoryNode extends BetaNode
 	}
 
 	@Override
-	public void print(String indent)
+	public void print(String indentLvl)
 	{
-		System.out.print(indent);
+		System.out.print(indentLvl);
 		System.out.println(_alpha);
-		indent += "  ";
+		final String indent = indentLvl + "  ";
 		System.out.print(indent);
 		System.out.print(this);
 		System.out.print(" ");

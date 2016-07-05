@@ -31,6 +31,7 @@
 package openllet.core.output;
 
 import openllet.aterm.AFun;
+import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
 import openllet.core.exceptions.InternalReasonerException;
@@ -120,13 +121,9 @@ public abstract class ATermBaseVisitor implements ATermVisitor
 	 * @see org.mindswap.pellet.utils.ATermVisitor#visitList(openllet.aterm.ATermAppl)
 	 */
 	@Override
-	public void visitList(ATermList list)
+	public void visitList(final ATermList list)
 	{
-		while (!list.isEmpty())
-		{
-			final ATermAppl term = (ATermAppl) list.getFirst();
-			visit(term);
-			list = list.getNext();
-		}
+		for (final ATerm term : list)
+			visit((ATermAppl) term);
 	}
 }

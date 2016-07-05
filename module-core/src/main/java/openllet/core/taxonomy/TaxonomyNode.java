@@ -195,12 +195,12 @@ public class TaxonomyNode<T>
 		print("");
 	}
 
-	public void print(String indent)
+	public void print(String indentLvl)
 	{
 		if (_subs.isEmpty())
 			return;
 
-		System.out.print(indent);
+		System.out.print(indentLvl);
 		final Iterator<T> i = _equivalents.iterator();
 		while (i.hasNext())
 		{
@@ -210,7 +210,7 @@ public class TaxonomyNode<T>
 		}
 		System.out.println();
 
-		indent += "  ";
+		final String indent = indentLvl + "  ";
 		for (final TaxonomyNode<T> sub : _subs)
 			sub.print(indent);
 	}

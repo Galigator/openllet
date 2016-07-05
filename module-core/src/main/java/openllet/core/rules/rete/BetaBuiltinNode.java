@@ -47,9 +47,9 @@ public class BetaBuiltinNode extends BetaNode
 	}
 
 	@Override
-	public void print(String indent)
+	public void print(String indentLvl)
 	{
-		indent += "  ";
+		final String indent = indentLvl + "  ";
 		System.out.print(indent);
 		System.out.println(this);
 		for (final BetaNode node : getBetas())

@@ -76,8 +76,10 @@ public class NumberUtils
 		return (Double) parse(str, DOUBLE);
 	}
 
-	public static Number parse(String str, final int type) throws NumberFormatException
+	public static Number parse(String strParam, final int type) throws NumberFormatException
 	{
+		String str = strParam;
+
 		if (0 > type || type >= TYPES)
 			throw new UnsupportedOperationException("Unknown numeric type " + type);
 

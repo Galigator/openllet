@@ -421,9 +421,12 @@ public class DateTimeOperators
 
 	private static String pad(final int p, String s)
 	{
-		while (s.length() < p)
-			s = "0" + s;
-		return s;
+		final StringBuilder padded = new StringBuilder();
+
+		for (int diff = p - s.length(); diff > 0; diff--)
+			padded.append('0');
+
+		return padded.append(s).toString();
 	}
 
 	private static boolean restBound(final Literal[] args)
@@ -440,8 +443,9 @@ public class DateTimeOperators
 		return pad(4, year) + "-" + pad(2, month) + "-" + pad(2, day);
 	}
 
-	private static String toTime(final String hour, final String minute, String second)
+	private static String toTime(final String hour, final String minute, String second_)
 	{
+		String second = second_;
 		String millis = "";
 		final int point = second.indexOf('.');
 		if (point >= 0)

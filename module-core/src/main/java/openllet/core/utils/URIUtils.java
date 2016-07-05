@@ -27,22 +27,22 @@ public class URIUtils
 		try
 		{
 			final URI u = URI.create(uri);
-			uri = u.getPath();
+			final String path = u.getPath();
+
+			//if(uri.length() == 0) return
+			final int begin = path.lastIndexOf("/");
+			int end = path.lastIndexOf(".");
+
+			if (end == -1 || begin > end)
+				end = path.length();
+
+			return path.substring(begin + 1, end);
 		}
 		catch (final Exception e)
 		{
 			_logger.log(Level.FINE, "", e);
 			return "http://invalid/uri/";
 		}
-
-		//if(uri.length() == 0) return
-		final int begin = uri.lastIndexOf("/");
-		int end = uri.lastIndexOf(".");
-
-		if (end == -1 || begin > end)
-			end = uri.length();
-
-		return uri.substring(begin + 1, end);
 	}
 
 	/**

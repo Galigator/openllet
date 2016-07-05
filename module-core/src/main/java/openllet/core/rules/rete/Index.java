@@ -119,16 +119,16 @@ public class Index<S, T> implements Iterable<T>
 			}
 		}
 
-		public void print(final StringBuilder buffer, String prefix)
+		public void print(final StringBuilder buffer, String indentLvl)
 		{
 			if (leaves.size() > 0)
 				buffer.append(leaves.toString());
 			buffer.append(":\n");
-			prefix = prefix + " ";
+			final String indent = indentLvl + " ";
 			for (final Map.Entry<I, IndexNode<I, J>> entry : children.entrySet())
 			{
-				buffer.append(prefix).append(entry.getKey()).append(" ");
-				entry.getValue().print(buffer, prefix);
+				buffer.append(indent).append(entry.getKey()).append(" ");
+				entry.getValue().print(buffer, indent);
 			}
 		}
 

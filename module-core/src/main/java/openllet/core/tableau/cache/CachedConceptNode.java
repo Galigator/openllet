@@ -44,11 +44,12 @@ public class CachedConceptNode implements CachedNode
 
 	/**
 	 * @param depends
-	 * @param _node
+	 * @param node
 	 */
-	public CachedConceptNode(final ATermAppl name, Individual node)
+	public CachedConceptNode(final ATermAppl name, Individual nodeParam)
 	{
-		this._name = name;
+		_name = name;
+		Individual node = nodeParam;
 
 		// if the _node is merged, get the representative _node and check
 		// also if the merge depends on a _branch

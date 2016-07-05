@@ -237,11 +237,11 @@ public class CacheSafetyDynamic implements CacheSafety
 
 		if (role.isObjectRole())
 		{
-			role = role.getInverse();
+			final Role invRole = role.getInverse();
 			for (final Edge edge : node.getInEdges())
 			{
 				final Role r = edge.getRole();
-				if (r.isSubRoleOf(role))
+				if (r.isSubRoleOf(invRole))
 					neighbors.add(edge.getFromName());
 			}
 		}

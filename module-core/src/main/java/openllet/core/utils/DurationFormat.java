@@ -59,21 +59,22 @@ public enum DurationFormat
 	 */
 	public String format(long durationInMilliseconds)
 	{
+		long duration = durationInMilliseconds;
 		long hours, minutes, seconds, milliseconds;
 
 		if (_hoursVisible)
 		{
-			hours = durationInMilliseconds / 3600000;
-			durationInMilliseconds = durationInMilliseconds - (hours * 3600000);
+			hours = duration / 3600000;
+			duration = duration - (hours * 3600000);
 		}
 		else
 			hours = 0;
 
-		minutes = durationInMilliseconds / 60000;
-		durationInMilliseconds = durationInMilliseconds - (minutes * 60000);
+		minutes = duration / 60000;
+		duration = duration - (minutes * 60000);
 
-		seconds = durationInMilliseconds / 1000;
-		milliseconds = durationInMilliseconds - (seconds * 1000);
+		seconds = duration / 1000;
+		milliseconds = duration - (seconds * 1000);
 
 		return String.format(_formatString, hours, minutes, seconds, milliseconds);
 	}

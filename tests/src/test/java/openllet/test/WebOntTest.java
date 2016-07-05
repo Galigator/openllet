@@ -91,10 +91,10 @@ public class WebOntTest
 
 	public static boolean DOUBLE_CHECK_ENTAILMENTS = false;
 
-	final static List<Resource> TYPES = Arrays.asList(new Resource[] { OWLTestVocabulary.NotOwlFeatureTest, OWLTestVocabulary.PositiveEntailmentTest, OWLTestVocabulary.NegativeEntailmentTest, OWLTestVocabulary.TrueTest, OWLTestVocabulary.OWLforOWLTest, OWLTestVocabulary.ConsistencyTest, OWLTestVocabulary.InconsistencyTest, OWLTestVocabulary.ImportEntailmentTest, OWLTestVocabulary.ImportLevelTest, OWLTestVocabulary.ClassificationTest });
+	public final static List<Resource> TYPES = Arrays.asList(new Resource[] { OWLTestVocabulary.NotOwlFeatureTest, OWLTestVocabulary.PositiveEntailmentTest, OWLTestVocabulary.NegativeEntailmentTest, OWLTestVocabulary.TrueTest, OWLTestVocabulary.OWLforOWLTest, OWLTestVocabulary.ConsistencyTest, OWLTestVocabulary.InconsistencyTest, OWLTestVocabulary.ImportEntailmentTest, OWLTestVocabulary.ImportLevelTest, OWLTestVocabulary.ClassificationTest });
 
-	final static List<Resource> LEVELS = Arrays.asList(new Resource[] { OWLTestVocabulary.Lite, OWLTestVocabulary.DL, OWLTestVocabulary.Full });
-	final static List<RDFNode> STATUS = Arrays.asList(new RDFNode[] { OWLTestVocabulary.Approved, OWLTestVocabulary.Proposed, OWLTestVocabulary.ExtraCredit, OWLTestVocabulary.Obsoleted });
+	public final static List<Resource> LEVELS = Arrays.asList(new Resource[] { OWLTestVocabulary.Lite, OWLTestVocabulary.DL, OWLTestVocabulary.Full });
+	public final static List<RDFNode> STATUS = Arrays.asList(new RDFNode[] { OWLTestVocabulary.Approved, OWLTestVocabulary.Proposed, OWLTestVocabulary.ExtraCredit, OWLTestVocabulary.Obsoleted });
 
 	public boolean _avoidFailTests = false;
 	/**
@@ -102,7 +102,7 @@ public class WebOntTest
 	 * large number restriction. Such cases are not very realistic and it is not considered to be a problem to fail those test cases. But if Pellet fails on one
 	 * of the other test cases then it indicates a problem.
 	 */
-	final static List<Resource> AVOID = Arrays.asList(new Resource[] { ResourceFactory.createResource("http://www.w3.org/2002/03owlt/AnnotationProperty/Manifest001#test"), //
+	private static final List<Resource> AVOID = Arrays.asList(new Resource[] { ResourceFactory.createResource("http://www.w3.org/2002/03owlt/AnnotationProperty/Manifest001#test"), //
 			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/AnnotationProperty/Manifest002#test"), //
 			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/Class/Manifest005#test"), //
 			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/DatatypeProperty/Manifest001#test"), //
@@ -148,8 +148,8 @@ public class WebOntTest
 			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/someValuesFrom/Manifest003#test"), //
 			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/Thing/Manifest005#test") });
 
-	int syntacticTestCount = 0;
-	int syntacticTestPass = 0;
+	//	private final int syntacticTestCount = 0;
+	//	private final int syntacticTestPass = 0;
 
 	final public static int TEST_PASS = 0;
 	final public static int TEST_FAIL = 1;
@@ -165,15 +165,15 @@ public class WebOntTest
 	// first column of these is count of passed tests, second column is
 	// count of failed tests, third column is for skipped tests
 
-	int[][][][] _stats = new int[LEVELS.size()][STATUS.size()][TYPES.size()][RESULTS.size()];
+	private final int[][][][] _stats = new int[LEVELS.size()][STATUS.size()][TYPES.size()][RESULTS.size()];
 
 	// a table showing the test results for each _individual test case
 	Vector<Vector<Object>> results = new Vector<>();
 
 	// maximum number of test cases to process
-	int MAX_TEST_COUNT = Integer.MAX_VALUE;
+	private static int MAX_TEST_COUNT = Integer.MAX_VALUE;
 
-	WebOntTester[] _testers = {
+	private static WebOntTester[] _testers = {
 			/** new JenaWebOntTester(), new OWLAPIWebOntTester() */
 	};
 
@@ -251,23 +251,23 @@ public class WebOntTest
 		{
 			final String arg = args[i];
 
-			if (arg.equals("-_timeout"))
+			if ("-timeout".equals(arg))
 				_timeout = Integer.parseInt(args[++i]);
 			else
-				if (arg.equals("-avoidFail"))
+				if ("-avoidFail".equals(arg))
 					_avoidFailTests = true;
 				else
-					if (arg.equals("-_manifest"))
+					if ("-manifest".equals(arg))
 					{
 						manifestFile = args[++i];
 						if (!manifestFile.startsWith("http://"))
 							manifestFile = "http://www.w3.org/2002/03owlt/" + manifestFile;
 					}
-					// else if(_arg.equals("-_base")) {
+					// else if("-base".equals(_arg)) {
 					// setBase( args[++i] );
 					// }
 					else
-						if (arg.equals("-validate"))
+						if ("-validate".equals(arg))
 							OpenlletOptions.VALIDATE_ABOX = true;
 						else
 							if (arg.equals("-n"))
@@ -280,19 +280,19 @@ public class WebOntTest
 									System.err.println(e);
 								}
 							else
-								if (arg.startsWith("-_stats"))
+								if (arg.startsWith("-stats"))
 								{
 									final String stats = args[++i].toLowerCase();
 									if (stats.equals("no"))
 										_showStats = NO_STATS;
 									else
-										if (stats.equals("short"))
+										if ("short".equals(stats))
 											_showStats = SHORT_STATS;
 										else
-											if (stats.equals("long"))
+											if ("long".equals(stats))
 												_showStats = LONG_STATS;
 											else
-												if (stats.equals("all"))
+												if ("all".equals(stats))
 													_showStats = ALL_STATS;
 								}
 		}
@@ -720,7 +720,7 @@ public class WebOntTest
 	/**
 	 * Given a filename converts it to file path on local machine if use_cache option is set. This is used when testing is done without network connection
 	 */
-	String getFileName(final String fileNameParam)
+	private String getFileName(final String fileNameParam)
 	{
 		String fileName = fileNameParam;
 		if (_newBase != null)
@@ -732,7 +732,7 @@ public class WebOntTest
 		return fileName;
 	}
 
-	int doConsistencyTest(final Resource testCase, final boolean isConsistent)
+	private int doConsistencyTest(final Resource testCase, final boolean isConsistent)
 	{
 		String inputFile = testCase.hasProperty(OWLTestVocabulary.inputDocument) ? testCase.getProperty(OWLTestVocabulary.inputDocument).getObject().toString() : null;
 
@@ -761,7 +761,7 @@ public class WebOntTest
 		return TEST_PASS;
 	}
 
-	int doEntailmentTest(final Resource testCase, final boolean isEntailed, final boolean classifyFirst)
+	private int doEntailmentTest(final Resource testCase, final boolean isEntailed, final boolean classifyFirst)
 	{
 		String inputFile = testCase.hasProperty(OWLTestVocabulary.premiseDocument) ? testCase.getProperty(OWLTestVocabulary.premiseDocument).getObject().toString() : null;
 		String conclusionsFile = testCase.getProperty(OWLTestVocabulary.conclusionDocument).getObject().toString();
@@ -810,7 +810,7 @@ public class WebOntTest
 		return TEST_PASS;
 	}
 
-	int doTestCase(final Resource testCase, final Resource testType)
+	private int doTestCase(final Resource testCase, final Resource testType)
 	{
 		if (testType.equals(OWLTestVocabulary.PositiveEntailmentTest))
 			return doEntailmentTest(testCase, true, false);

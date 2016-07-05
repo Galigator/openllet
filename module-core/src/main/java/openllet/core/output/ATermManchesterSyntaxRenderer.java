@@ -2,6 +2,7 @@ package openllet.core.output;
 
 import java.util.HashMap;
 import java.util.Map;
+import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermInt;
 import openllet.aterm.ATermList;
@@ -201,12 +202,12 @@ public class ATermManchesterSyntaxRenderer extends ATermBaseRenderer
 
 	public void visitList(ATermList list, final String op)
 	{
-		while (!list.isEmpty())
+		int size = list.getLength();
+		for (final ATerm term : list)
 		{
-			final ATermAppl term = (ATermAppl) list.getFirst();
-			visit(term);
-			list = list.getNext();
-			if (!list.isEmpty())
+			visit((ATermAppl) term);
+			size--;
+			if (size != 0)
 				_out.print(" " + op + " ");
 		}
 	}

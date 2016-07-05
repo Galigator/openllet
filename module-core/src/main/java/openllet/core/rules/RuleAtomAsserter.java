@@ -101,10 +101,7 @@ public class RuleAtomAsserter implements RuleAtomVisitor
 			node = node.getSame();
 		}
 
-		if (_negated)
-			cls = ATermUtils.negate(cls);
-
-		_strategy.addType(node, cls, nodeDS);
+		_strategy.addType(node, _negated ? ATermUtils.negate(cls) : cls, nodeDS);
 	}
 
 	private void addEdge(final ATermAppl p, final ATermAppl s, final ATermAppl o)

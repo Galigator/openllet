@@ -59,12 +59,18 @@ public class FileUtils
 
 	public static String readFile(final File file) throws FileNotFoundException, IOException
 	{
-		return readAll(new FileReader(file));
+		try (FileReader reader = new FileReader(file))
+		{
+			return readAll(reader);
+		}
 	}
 
 	public static String readFile(final String fileName) throws FileNotFoundException, IOException
 	{
-		return readAll(new FileReader(fileName));
+		try (FileReader reader = new FileReader(fileName))
+		{
+			return readAll(reader);
+		}
 	}
 
 	public static String readAll(final Reader reader) throws IOException

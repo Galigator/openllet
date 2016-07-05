@@ -133,6 +133,22 @@ public class KnowledgeBase
 		ATermUtils.getFactory();
 	}
 
+	// Error messages
+
+	public static final String _isNotAnIndividual = " is not an individual!";
+	public static final String _isNotAnKnowIndividual = " is not a known individual!";
+	public static final String _isNotAnProperty = " is not a property!";
+	public static final String _isNotAnPropertyNorAClass = " is not a property nor a class!";
+	public static final String _isNotAnKnowProperty = " is not a known property!";
+	public static final String _isNotAnClass = " is not a class!";
+	public static final String _isNotAnKnowClass = " is not a known class!";
+	public static final String _isNotAValidClassExpression = " is not a valid class expression";
+	public static final String _isNotAValidClassExpressionOrDataRange = " is not a valid class expression or data range";
+	public static final String _isNotAnKnowObjectProperty = " is not a known object property!";
+	public static final String _isNotAnKnowDataProperty = " is not a known data property!";
+
+	// Attributes
+
 	protected ABox _abox;
 	protected TBox _tbox;
 	protected RBox _rbox;
@@ -151,7 +167,7 @@ public class KnowledgeBase
 	private final Map<ATermAppl, Map<ATermAppl, Set<ATermAppl>>> _annotations;
 
 	/**
-	 * The state of KB w.r.t. reasoning. The state is not valid if KB is changed, i.e. !_changes.isEmpty(). These states are added in the _order CONSISTENCY <
+	 * The state of KB w.r.t. reasoning. The state is not valid if KB is changed, i.e. !changes.isEmpty(). These states are added in the _order CONSISTENCY <
 	 * CLASSIFY < REALIZE when the corresponding functions are called. If KB is modified after classification, calling prepare might remove CONSISTENCY but
 	 * leave CLASSIFY.
 	 */
@@ -168,7 +184,7 @@ public class KnowledgeBase
 
 	/**
 	 * Timers used in various different parts of KB. There may be many different _timers created here depending on the level of debugging or application
-	 * requirements. However, there are three major _timers that are guaranteed to exist.
+	 * requirements. However, there are three major timers that are guaranteed to exist.
 	 * <ul>
 	 * <li><b>main</b> - This is the main timer that exists in any Timers objects. All the other _timers defined in here will have this timer as its dependant
 	 * so setting a timeout on this timer will put a limit on every operation done inside KB.</li>
@@ -1071,13 +1087,13 @@ public class KnowledgeBase
 
 		if (subj == null)
 		{
-			_logger.warning(s + " is not a known _individual!");
+			_logger.warning(s + _isNotAnKnowIndividual);
 			return false;
 		}
 
 		if (role == null)
 		{
-			_logger.warning(p + " is not a known property!");
+			_logger.warning(p + _isNotAnKnowProperty);
 			return false;
 		}
 
@@ -1099,7 +1115,7 @@ public class KnowledgeBase
 				}
 				else
 				{
-					_logger.warning(o + " is not a known _individual!");
+					_logger.warning(o + _isNotAnKnowIndividual);
 					return false;
 				}
 			if (OpenlletOptions.KEEP_ABOX_ASSERTIONS)
@@ -1198,13 +1214,13 @@ public class KnowledgeBase
 
 		if (subj == null)
 		{
-			_logger.warning(s + " is not a known _individual!");
+			_logger.warning(s + _isNotAnKnowIndividual);
 			return false;
 		}
 
 		if (role == null)
 		{
-			_logger.warning(p + " is not a known property!");
+			_logger.warning(p + _isNotAnKnowProperty);
 			return false;
 		}
 
@@ -1222,7 +1238,7 @@ public class KnowledgeBase
 				}
 				else
 				{
-					_logger.warning(o + " is not a known _individual!");
+					_logger.warning(o + _isNotAnKnowIndividual);
 					return false;
 				}
 		}
@@ -1673,12 +1689,12 @@ public class KnowledgeBase
 		final Role role = getRole(p);
 		if (role == null)
 		{
-			handleUndefinedEntity(p + " is not a property!");
+			handleUndefinedEntity(p + _isNotAnProperty);
 			return false;
 		}
 		if (!isClass(c))
 		{
-			handleUndefinedEntity(c + " is not a valid class expression");
+			handleUndefinedEntity(c + _isNotAValidClassExpression);
 			return false;
 		}
 
@@ -1721,19 +1737,19 @@ public class KnowledgeBase
 
 		if (subj == null)
 			if (OpenlletOptions.SILENT_UNDEFINED_ENTITY_HANDLING)
-				throw new UnsupportedFeatureException(ind1 + " is not an individual!");
+				throw new UnsupportedFeatureException(ind1 + _isNotAnIndividual);
 			else
 				return false;
 
 		if (obj == null)
 		{
-			handleUndefinedEntity(ind2 + " is not an individual!");
+			handleUndefinedEntity(ind2 + _isNotAnIndividual);
 			return false;
 		}
 
 		if (role == null)
 		{
-			handleUndefinedEntity(p + " is not a property!");
+			handleUndefinedEntity(p + _isNotAnProperty);
 			return false;
 		}
 
@@ -1805,12 +1821,12 @@ public class KnowledgeBase
 		final Role role = getRole(p);
 		if (role == null)
 		{
-			handleUndefinedEntity(p + " is not a property!");
+			handleUndefinedEntity(p + _isNotAnProperty);
 			return false;
 		}
 		if (!isClass(c) && !isDatatype(c))
 		{
-			handleUndefinedEntity(c + " is not a valid class expression or _data range");
+			handleUndefinedEntity(c + _isNotAValidClassExpressionOrDataRange);
 			return false;
 		}
 
@@ -1833,7 +1849,7 @@ public class KnowledgeBase
 			if (OpenlletOptions.SILENT_UNDEFINED_ENTITY_HANDLING)
 				return false;
 			else
-				throw new UnsupportedFeatureException(ind + " is not an _individual!");
+				throw new UnsupportedFeatureException(ind + _isNotAnIndividual);
 
 		final ATermAppl normC = ATermUtils.normalize(c);
 		final DependencySet ds = subj.getDepends(normC);
@@ -2579,7 +2595,7 @@ public class KnowledgeBase
 
 		if (role == null)
 		{
-			handleUndefinedEntity(r + " is not a known property");
+			handleUndefinedEntity(r + _isNotAnKnowProperty);
 			return false;
 		}
 
@@ -2613,7 +2629,7 @@ public class KnowledgeBase
 
 		if (role == null)
 		{
-			handleUndefinedEntity(p + " is not a known property");
+			handleUndefinedEntity(p + _isNotAnKnowProperty);
 			return false;
 		}
 
@@ -2647,7 +2663,7 @@ public class KnowledgeBase
 
 		if (role == null)
 		{
-			handleUndefinedEntity(p + " is not a known property");
+			handleUndefinedEntity(p + _isNotAnKnowProperty);
 			return false;
 		}
 
@@ -2672,7 +2688,7 @@ public class KnowledgeBase
 
 		if (role == null)
 		{
-			handleUndefinedEntity(p + " is not a known property");
+			handleUndefinedEntity(p + _isNotAnKnowProperty);
 			return false;
 		}
 
@@ -2701,7 +2717,7 @@ public class KnowledgeBase
 
 		if (role == null)
 		{
-			handleUndefinedEntity(p + " is not a known property");
+			handleUndefinedEntity(p + _isNotAnKnowProperty);
 			return false;
 		}
 
@@ -2744,7 +2760,7 @@ public class KnowledgeBase
 
 		if (role == null)
 		{
-			handleUndefinedEntity(p + " is not a known property");
+			handleUndefinedEntity(p + _isNotAnKnowProperty);
 			return false;
 		}
 
@@ -2774,13 +2790,13 @@ public class KnowledgeBase
 
 		if (roleSub == null)
 		{
-			handleUndefinedEntity(sub + " is not a known property");
+			handleUndefinedEntity(sub + _isNotAnKnowProperty);
 			return false;
 		}
 
 		if (roleSup == null)
 		{
-			handleUndefinedEntity(sup + " is not a known property");
+			handleUndefinedEntity(sup + _isNotAnKnowProperty);
 			return false;
 		}
 
@@ -2825,13 +2841,13 @@ public class KnowledgeBase
 
 		if (role1 == null)
 		{
-			handleUndefinedEntity(p1 + " is not a known property");
+			handleUndefinedEntity(p1 + _isNotAnKnowProperty);
 			return false;
 		}
 
 		if (role2 == null)
 		{
-			handleUndefinedEntity(p2 + " is not a known property");
+			handleUndefinedEntity(p2 + _isNotAnKnowProperty);
 			return false;
 		}
 
@@ -2876,13 +2892,13 @@ public class KnowledgeBase
 
 		if (role1 == null)
 		{
-			handleUndefinedEntity(r1 + " is not a known property");
+			handleUndefinedEntity(r1 + _isNotAnKnowProperty);
 			return false;
 		}
 
 		if (role2 == null)
 		{
-			handleUndefinedEntity(r2 + " is not a known property");
+			handleUndefinedEntity(r2 + _isNotAnKnowProperty);
 			return false;
 		}
 
@@ -2912,13 +2928,13 @@ public class KnowledgeBase
 		final Role r = _rbox.getRole(p);
 		if (r == null)
 		{
-			handleUndefinedEntity(p + " is not a property!");
+			handleUndefinedEntity(p + _isNotAnProperty);
 			return false;
 		}
 
 		if (!isClass(c))
 		{
-			handleUndefinedEntity(c + " is not a valid class expression");
+			handleUndefinedEntity(c + _isNotAValidClassExpression);
 			return false;
 		}
 
@@ -2930,7 +2946,7 @@ public class KnowledgeBase
 	{
 		if (!isClass(c) && !isDatatype(c))
 		{
-			handleUndefinedEntity(c + " is not a valid class expression");
+			handleUndefinedEntity(c + _isNotAValidClassExpression);
 			return false;
 		}
 		final ATermAppl allValues = ATermUtils.makeAllValues(p, c);
@@ -2948,7 +2964,7 @@ public class KnowledgeBase
 
 		if (!isClass(c))
 		{
-			handleUndefinedEntity(c + " is not a known class!");
+			handleUndefinedEntity(c + _isNotAnKnowClass);
 			return false;
 		}
 
@@ -2974,7 +2990,7 @@ public class KnowledgeBase
 	{
 		if (!isClass(d))
 		{
-			handleUndefinedEntity(d + " is not a class!");
+			handleUndefinedEntity(d + _isNotAnClass);
 			return false;
 		}
 
@@ -3012,13 +3028,13 @@ public class KnowledgeBase
 
 		if (!isClass(c1))
 		{
-			handleUndefinedEntity(c1 + " is not a known class");
+			handleUndefinedEntity(c1 + _isNotAnKnowClass);
 			return false;
 		}
 
 		if (!isClass(c2))
 		{
-			handleUndefinedEntity(c2 + " is not a known class");
+			handleUndefinedEntity(c2 + _isNotAnKnowClass);
 			return false;
 		}
 
@@ -3050,13 +3066,13 @@ public class KnowledgeBase
 
 		if (!isClass(c1))
 		{
-			handleUndefinedEntity(c1 + " is not a known class");
+			handleUndefinedEntity(c1 + _isNotAnKnowClass);
 			return false;
 		}
 
 		if (!isClass(c2))
 		{
-			handleUndefinedEntity(c2 + " is not a known class");
+			handleUndefinedEntity(c2 + _isNotAnKnowClass);
 			return false;
 		}
 
@@ -3114,13 +3130,13 @@ public class KnowledgeBase
 
 		if (role1 == null)
 		{
-			handleUndefinedEntity(r1 + " is not a known property");
+			handleUndefinedEntity(r1 + _isNotAnKnowProperty);
 			return false;
 		}
 
 		if (role2 == null)
 		{
-			handleUndefinedEntity(r2 + " is not a known property");
+			handleUndefinedEntity(r2 + _isNotAnKnowProperty);
 			return false;
 		}
 
@@ -3175,12 +3191,12 @@ public class KnowledgeBase
 
 		if (!isIndividual(x))
 		{
-			handleUndefinedEntity(x + " is not an _individual!");
+			handleUndefinedEntity(x + _isNotAnIndividual);
 			return Bool.FALSE;
 		}
 		if (!isClass(c))
 		{
-			handleUndefinedEntity(c + " is not a valid class expression");
+			handleUndefinedEntity(c + _isNotAValidClassExpression);
 			return Bool.FALSE;
 		}
 
@@ -3193,12 +3209,12 @@ public class KnowledgeBase
 
 		if (!isIndividual(x))
 		{
-			handleUndefinedEntity(x + " is not an _individual!");
+			handleUndefinedEntity(x + _isNotAnIndividual);
 			return false;
 		}
 		if (!isClass(c))
 		{
-			handleUndefinedEntity(c + " is not a valid class expression");
+			handleUndefinedEntity(c + _isNotAValidClassExpression);
 			return false;
 		}
 
@@ -3225,12 +3241,12 @@ public class KnowledgeBase
 
 		if (!isIndividual(t1))
 		{
-			handleUndefinedEntity(t1 + " is not an _individual!");
+			handleUndefinedEntity(t1 + _isNotAnIndividual);
 			return false;
 		}
 		if (!isIndividual(t2))
 		{
-			handleUndefinedEntity(t2 + " is not an _individual!");
+			handleUndefinedEntity(t2 + _isNotAnIndividual);
 			return false;
 		}
 
@@ -3265,13 +3281,13 @@ public class KnowledgeBase
 
 		if (ind1 == null)
 		{
-			handleUndefinedEntity(t1 + " is not an _individual!");
+			handleUndefinedEntity(t1 + _isNotAnIndividual);
 			return false;
 		}
 
 		if (ind2 == null)
 		{
-			handleUndefinedEntity(t2 + " is not an _individual!");
+			handleUndefinedEntity(t2 + _isNotAnIndividual);
 			return false;
 		}
 
@@ -3291,7 +3307,7 @@ public class KnowledgeBase
 
 		if (ind == null)
 		{
-			handleUndefinedEntity(name + " is not an _individual!");
+			handleUndefinedEntity(name + _isNotAnIndividual);
 			return Collections.emptySet();
 		}
 
@@ -3327,13 +3343,13 @@ public class KnowledgeBase
 
 		if (!isIndividual(s))
 		{
-			handleUndefinedEntity(s + " is not an _individual!");
+			handleUndefinedEntity(s + _isNotAnIndividual);
 			return false;
 		}
 
 		if (!isProperty(p))
 		{
-			handleUndefinedEntity(p + " is not a known property!");
+			handleUndefinedEntity(p + _isNotAnKnowProperty);
 			return false;
 		}
 
@@ -3420,7 +3436,7 @@ public class KnowledgeBase
 		ATermAppl c = cParam;
 		if (!isClass(c))
 		{
-			handleUndefinedEntity(c + " is not a class!");
+			handleUndefinedEntity(c + _isNotAnClass);
 			return Collections.emptySet();
 		}
 
@@ -3464,7 +3480,7 @@ public class KnowledgeBase
 			if (isProperty(c))
 				return getDisjointProperties(c);
 			else
-				handleUndefinedEntity(c + " is not a property nor a class!");
+				handleUndefinedEntity(c + _isNotAnPropertyNorAClass);
 		return Collections.emptySet();
 	}
 
@@ -3477,7 +3493,7 @@ public class KnowledgeBase
 	{
 		if (!isClass(c))
 		{
-			handleUndefinedEntity(c + " is not a class!");
+			handleUndefinedEntity(c + _isNotAnClass);
 			return Collections.emptySet();
 		}
 
@@ -3506,7 +3522,7 @@ public class KnowledgeBase
 	{
 		if (!isProperty(p))
 		{
-			handleUndefinedEntity(p + " is not a property!");
+			handleUndefinedEntity(p + _isNotAnProperty);
 			return Collections.emptySet();
 		}
 
@@ -3561,7 +3577,7 @@ public class KnowledgeBase
 	{
 		if (!isClass(c))
 		{
-			handleUndefinedEntity(c + " is not a class!");
+			handleUndefinedEntity(c + _isNotAnClass);
 			return Collections.emptySet();
 		}
 
@@ -3585,7 +3601,7 @@ public class KnowledgeBase
 	{
 		if (!isIndividual(ind))
 		{
-			handleUndefinedEntity(ind + " is not an _individual!");
+			handleUndefinedEntity(ind + _isNotAnIndividual);
 			return Collections.emptySet();
 		}
 
@@ -3634,7 +3650,7 @@ public class KnowledgeBase
 	{
 		if (!isIndividual(ind))
 		{
-			handleUndefinedEntity(ind + " is not an _individual!");
+			handleUndefinedEntity(ind + _isNotAnIndividual);
 			return null;
 		}
 
@@ -3647,7 +3663,7 @@ public class KnowledgeBase
 	{
 		if (!isIndividual(ind))
 		{
-			handleUndefinedEntity(ind + " is not an _individual!");
+			handleUndefinedEntity(ind + _isNotAnIndividual);
 			return null;
 		}
 
@@ -3666,7 +3682,7 @@ public class KnowledgeBase
 	{
 		if (!isClass(c))
 		{
-			handleUndefinedEntity(c + " is not a class!");
+			handleUndefinedEntity(c + _isNotAnClass);
 			return Collections.emptySet();
 		}
 
@@ -3705,7 +3721,7 @@ public class KnowledgeBase
 	{
 		if (!isClass(c))
 		{
-			handleUndefinedEntity(c + " is not a class!");
+			handleUndefinedEntity(c + _isNotAnClass);
 			return Collections.emptySet();
 		}
 
@@ -3782,7 +3798,7 @@ public class KnowledgeBase
 	{
 		if (!isClass(c))
 		{
-			handleUndefinedEntity(c + " is not a class!");
+			handleUndefinedEntity(c + _isNotAnClass);
 			return Collections.emptySet();
 		}
 
@@ -3836,7 +3852,7 @@ public class KnowledgeBase
 	{
 		if (!isClass(c))
 		{
-			handleUndefinedEntity(c + " is not a class!");
+			handleUndefinedEntity(c + _isNotAnClass);
 			return Collections.emptySet();
 		}
 
@@ -3864,7 +3880,7 @@ public class KnowledgeBase
 	{
 		if (!isProperty(prop))
 		{
-			handleUndefinedEntity(prop + " is not a property!");
+			handleUndefinedEntity(prop + _isNotAnProperty);
 			return Collections.emptySet();
 		}
 
@@ -3897,7 +3913,7 @@ public class KnowledgeBase
 	{
 		if (!isProperty(prop))
 		{
-			handleUndefinedEntity(prop + " is not a property!");
+			handleUndefinedEntity(prop + _isNotAnProperty);
 			return Collections.emptySet();
 		}
 
@@ -3918,7 +3934,7 @@ public class KnowledgeBase
 	{
 		if (!isProperty(prop))
 		{
-			handleUndefinedEntity(prop + " is not a property!");
+			handleUndefinedEntity(prop + _isNotAnProperty);
 			return Collections.emptySet();
 		}
 
@@ -3950,7 +3966,7 @@ public class KnowledgeBase
 	{
 		if (!isProperty(prop))
 		{
-			handleUndefinedEntity(prop + " is not a property!");
+			handleUndefinedEntity(prop + _isNotAnProperty);
 			return Collections.emptySet();
 		}
 
@@ -3979,7 +3995,7 @@ public class KnowledgeBase
 	{
 		if (!isProperty(prop))
 		{
-			handleUndefinedEntity(prop + " is not a property!");
+			handleUndefinedEntity(prop + _isNotAnProperty);
 			return Collections.emptySet();
 		}
 
@@ -3991,7 +4007,7 @@ public class KnowledgeBase
 	{
 		if (!isProperty(prop))
 		{
-			handleUndefinedEntity(prop + " is not a property!");
+			handleUndefinedEntity(prop + _isNotAnProperty);
 			return Collections.emptySet();
 		}
 
@@ -4029,7 +4045,7 @@ public class KnowledgeBase
 		final Role prop = _rbox.getRole(name);
 		if (prop == null)
 		{
-			handleUndefinedEntity(name + " is not a property!");
+			handleUndefinedEntity(name + _isNotAnProperty);
 			return null;
 		}
 
@@ -4052,7 +4068,7 @@ public class KnowledgeBase
 		final Role prop = _rbox.getRole(name);
 		if (prop == null)
 		{
-			handleUndefinedEntity(name + " is not a property!");
+			handleUndefinedEntity(name + _isNotAnProperty);
 			return Collections.emptySet();
 		}
 
@@ -4074,7 +4090,7 @@ public class KnowledgeBase
 		final Role prop = _rbox.getRole(name);
 		if (prop == null)
 		{
-			handleUndefinedEntity(name + " is not a property!");
+			handleUndefinedEntity(name + _isNotAnProperty);
 			return set;
 		}
 
@@ -4097,7 +4113,7 @@ public class KnowledgeBase
 		final Individual ind = _abox.getIndividual(name);
 		if (ind == null)
 		{
-			handleUndefinedEntity(name + " is not an _individual!");
+			handleUndefinedEntity(name + _isNotAnIndividual);
 			return Collections.emptySet();
 		}
 
@@ -4148,13 +4164,13 @@ public class KnowledgeBase
 
 		if (ind == null)
 		{
-			handleUndefinedEntity(x + " is not an _individual!");
+			handleUndefinedEntity(x + _isNotAnIndividual);
 			return Collections.emptyList();
 		}
 
 		if (role == null || !role.isDatatypeRole())
 		{
-			handleUndefinedEntity(r + " is not a known _data property!");
+			handleUndefinedEntity(r + _isNotAnKnowDataProperty);
 			return Collections.emptyList();
 		}
 
@@ -4227,13 +4243,13 @@ public class KnowledgeBase
 
 		if (role == null || !role.isObjectRole())
 		{
-			handleUndefinedEntity(r + " is not a known object property!");
+			handleUndefinedEntity(r + _isNotAnKnowObjectProperty);
 			return Collections.emptyList();
 		}
 
 		if (!isIndividual(x))
 		{
-			handleUndefinedEntity(x + " is not a known _individual!");
+			handleUndefinedEntity(x + _isNotAnKnowIndividual);
 			return Collections.emptyList();
 		}
 
@@ -4274,7 +4290,7 @@ public class KnowledgeBase
 
 		if (role == null || role.isUntypedRole())
 		{
-			handleUndefinedEntity(r + " is not a known property!");
+			handleUndefinedEntity(r + _isNotAnKnowProperty);
 			return Collections.emptyList();
 		}
 
@@ -4307,7 +4323,7 @@ public class KnowledgeBase
 
 		if (role == null)
 		{
-			handleUndefinedEntity(r + " is not a known property!");
+			handleUndefinedEntity(r + _isNotAnKnowProperty);
 			return Collections.emptyList();
 		}
 
@@ -4396,7 +4412,7 @@ public class KnowledgeBase
 
 		if (!isIndividual(o))
 		{
-			handleUndefinedEntity(o + " is not an _individual!");
+			handleUndefinedEntity(o + _isNotAnIndividual);
 			return Collections.emptyList();
 		}
 
@@ -4414,13 +4430,13 @@ public class KnowledgeBase
 	{
 		if (!isIndividual(s))
 		{
-			handleUndefinedEntity(s + " is not an _individual!");
+			handleUndefinedEntity(s + _isNotAnIndividual);
 			return Collections.emptyList();
 		}
 
 		if (!isIndividual(o) && !ATermUtils.isLiteral(o))
 		{
-			handleUndefinedEntity(o + " is not an _individual!");
+			handleUndefinedEntity(o + _isNotAnIndividual);
 			return Collections.emptyList();
 		}
 
@@ -4530,7 +4546,7 @@ public class KnowledgeBase
 		final Role role = _rbox.getRole(r);
 		if (role == null)
 		{
-			handleUndefinedEntity(r + " is not a known property!");
+			handleUndefinedEntity(r + _isNotAnKnowProperty);
 			return Collections.emptyList();
 		}
 

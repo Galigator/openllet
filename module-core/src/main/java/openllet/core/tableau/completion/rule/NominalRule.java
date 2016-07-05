@@ -71,8 +71,9 @@ public class NominalRule extends AbstractTableauRule
 		}
 	}
 
-	void applyNominalRule(final Individual y, final ATermAppl nc, DependencySet ds)
+	void applyNominalRule(final Individual y, final ATermAppl nc, DependencySet dsParam)
 	{
+		DependencySet ds = dsParam;
 		_strategy.getABox().copyOnWrite();
 
 		final ATermAppl nominal = (ATermAppl) nc.getArgument(0);

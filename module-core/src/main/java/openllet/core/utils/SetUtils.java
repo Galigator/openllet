@@ -46,8 +46,8 @@ public class SetUtils
 	/**
 	 * Adds the given object to the set but saves memory space by allocating only the required amount for small sets. The idea is to use the specialized empty
 	 * set and singleton set implementations (which are immutable) for the sets of size 0 and 1. If the set is empty a new singleton set is created, if set has
-	 * one element we create a new set with two elements, otherwise we simply add the element to the given set.This technique is most useful if the _expected
-	 * set size is 0 or 1.
+	 * one element we create a new set with two elements, otherwise we simply add the element to the given set.This technique is most useful if the expected set
+	 * size is 0 or 1.
 	 * 
 	 * @param o
 	 * @param set
@@ -55,39 +55,43 @@ public class SetUtils
 	 */
 	public static <T> Set<T> add(final T o, Set<T> set)
 	{
-		final int size = set.size();
-		if (size == 0)
-			set = singleton(o);
-		else
-			if (size == 1)
+		switch (set.size())
+		{
+			case 0:
+				return Collections.singleton(o);
+			case 1:
 			{
 				final T existing = set.iterator().next();
-				if (!existing.equals(o))
-					set = binary(existing, o);
+				if (existing.equals(o))
+					return set;
+				return binary(existing, o);
 			}
-			else
+			default:
+			{
 				set.add(o);
-
-		return set;
+				return set;
+			}
+		}
 	}
 
 	public static <T> Set<T> remove(final Object o, Set<T> set)
 	{
-		final int size = set.size();
-		if (size == 0)
+		switch (set.size())
 		{
-			// do nothing
-		}
-		else
-			if (size == 1)
+			case 0:
+				return set;
+			case 1:
 			{
 				if (set.contains(o))
-					set = Collections.emptySet();
+					return Collections.emptySet();
+				return set;
 			}
-			else
+			default:
+			{
 				set.remove(o);
-
-		return set;
+				return set;
+			}
+		}
 	}
 
 	public final static <T> Set<T> singleton(final T o)

@@ -122,11 +122,12 @@ public class MaxRule extends AbstractTableauRule
 	 * @param x
 	 * @param r
 	 * @param k
-	 * @param ds
+	 * @param dsParam
 	 * @return true if more merges are required for this maxCardinality
 	 */
-	protected boolean applyMaxRule(final Individual x, final Role r, final ATermAppl c, final int k, DependencySet ds)
+	protected boolean applyMaxRule(final Individual x, final Role r, final ATermAppl c, final int k, DependencySet dsParam)
 	{
+		DependencySet ds = dsParam;
 
 		final EdgeList edges = x.getRNeighborEdges(r);
 		// find all distinct R-neighbors of x
@@ -244,14 +245,14 @@ public class MaxRule extends AbstractTableauRule
 				else
 					if (y.isNominal())
 						pairs.add(new NodeMerge(x, y));
-				// 3. if y is an ancestor of x, then Merge(x, y)
-				// Note: y is an ancestor of x iff the max cardinality
-				// on _node merges the "node"'s parent y with "node"'s
-				// child x
+					// 3. if y is an ancestor of x, then Merge(x, y)
+					// Note: y is an ancestor of x iff the max cardinality
+					// on _node merges the "node"'s parent y with "node"'s
+					// child x
 					else
 						if (y.hasSuccessor(node))
 							pairs.add(new NodeMerge(x, y));
-				// 4. else Merge(y, x)
+						// 4. else Merge(y, x)
 						else
 							pairs.add(new NodeMerge(y, x));
 			}
@@ -260,8 +261,10 @@ public class MaxRule extends AbstractTableauRule
 		return ds;
 	}
 
-	public void applyFunctionalMaxRule(final Individual x, final Role s, final ATermAppl c, DependencySet ds)
+	public void applyFunctionalMaxRule(final Individual x, final Role s, final ATermAppl c, DependencySet dsParam)
 	{
+		DependencySet ds = dsParam;
+
 		Set<Role> functionalSupers = s.getFunctionalSupers();
 		if (functionalSupers.isEmpty())
 			functionalSupers = SetUtils.singleton(s);
