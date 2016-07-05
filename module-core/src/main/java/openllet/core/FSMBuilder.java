@@ -178,9 +178,11 @@ public class FSMBuilder
 		return true;
 	}
 
-	private void addRoleChainTransition(final TransitionGraph<Role> tg, final State<Role> initialState, final State<Role> finalState, ATermList chain, final int length)
+	private void addRoleChainTransition(final TransitionGraph<Role> tg, final State<Role> initialState, final State<Role> finalState, ATermList list, final int length)
 	{
 		State<Role> prev = initialState;
+		ATermList chain = list;
+
 		for (int i = 0; i < length; i++, chain = chain.getNext())
 		{
 			final Role role = _rbox.getRole(chain.getFirst());

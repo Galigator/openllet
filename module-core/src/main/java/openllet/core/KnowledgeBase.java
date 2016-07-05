@@ -1695,10 +1695,12 @@ public class KnowledgeBase
 
 	public boolean removePropertyValue(final ATermAppl p, final ATermAppl i1, ATermAppl i2)
 	{
+		final ATermAppl ind1 = i1;
+		final ATermAppl ind2;
 		if (ATermUtils.isLiteral(i2))
 			try
 			{
-				i2 = _abox.getDatatypeReasoner().getCanonicalRepresentation(i2);
+				ind2 = _abox.getDatatypeReasoner().getCanonicalRepresentation(i2);
 			}
 			catch (final InvalidLiteralException e)
 			{
@@ -1710,20 +1712,22 @@ public class KnowledgeBase
 				_logger.warning(format("Unable to remove property value (%s,%s,%s) due to unrecognized datatype for literal: %s", p, i1, i2, e.getMessage()));
 				return false;
 			}
+		else
+			ind2 = i2;
 
-		final Individual subj = _abox.getIndividual(i1);
-		final Node obj = _abox.getNode(i2);
+		final Individual subj = _abox.getIndividual(ind1);
+		final Node obj = _abox.getNode(ind2);
 		final Role role = getRole(p);
 
 		if (subj == null)
 			if (OpenlletOptions.SILENT_UNDEFINED_ENTITY_HANDLING)
-				throw new UnsupportedFeatureException(i1 + " is not an _individual!");
+				throw new UnsupportedFeatureException(ind1 + " is not an individual!");
 			else
 				return false;
 
 		if (obj == null)
 		{
-			handleUndefinedEntity(i2 + " is not an _individual!");
+			handleUndefinedEntity(ind2 + " is not an individual!");
 			return false;
 		}
 
@@ -1734,7 +1738,7 @@ public class KnowledgeBase
 		}
 
 		if (_logger.isLoggable(Level.FINER))
-			_logger.finer("Remove ObjectPropertyValue " + i1 + " " + p + " " + i2);
+			_logger.finer("Remove ObjectPropertyValue " + ind1 + " " + p + " " + ind2);
 
 		// make sure edge exists in assertions
 		Edge edge = subj.getOutEdges().getExactEdge(subj, role, obj);
@@ -1764,7 +1768,7 @@ public class KnowledgeBase
 			// structures in ABox.isIncConsistent()
 
 			// add to deleted assertions
-			getDeletedAssertions().add(ATermUtils.makePropAtom(p, i1, i2));
+			getDeletedAssertions().add(ATermUtils.makePropAtom(p, ind1, ind2));
 
 			// add this _individual to the affected list
 			_abox.getIncrementalChangeTracker().addUpdatedIndividual(subj);
@@ -1777,8 +1781,8 @@ public class KnowledgeBase
 
 		if (OpenlletOptions.KEEP_ABOX_ASSERTIONS)
 		{
-			final ATermAppl propAxiom = ATermUtils.makePropAtom(p, i1, i2);
-			if (ATermUtils.isLiteral(i2))
+			final ATermAppl propAxiom = ATermUtils.makePropAtom(p, ind1, ind2);
+			if (ATermUtils.isLiteral(ind2))
 				_aboxAssertions.remove(AssertionType.DATA_ROLE, propAxiom);
 			else
 				_aboxAssertions.remove(AssertionType.OBJ_ROLE, propAxiom);
@@ -2948,16 +2952,16 @@ public class KnowledgeBase
 			return false;
 		}
 
-		c = ATermUtils.normalize(c);
+		final ATermAppl normalClass = ATermUtils.normalize(c);
 
 		if (isClassified() && !doExplanation())
 		{
-			final Bool equivToBottom = _builder.getTaxonomy().isEquivalent(ATermUtils.BOTTOM, c);
+			final Bool equivToBottom = _builder.getTaxonomy().isEquivalent(ATermUtils.BOTTOM, normalClass);
 			if (equivToBottom.isKnown())
 				return equivToBottom.isFalse();
 		}
 
-		return _abox.isSatisfiable(c);
+		return _abox.isSatisfiable(normalClass);
 	}
 
 	/**
@@ -2997,28 +3001,10 @@ public class KnowledgeBase
 		return hasInstance;
 	}
 
-	/*
-	public boolean isSubTypeOf(ATermAppl d1, ATermAppl d2) {
-		if( !_isDatatype( d1 ) ) {
-			handleUndefinedEntity( d1 + " is not a known datatype" );
-			return false;
-		}
-	
-		if( !_isDatatype( d2 ) ) {
-			handleUndefinedEntity( d2 + " is not a known datatype" );
-			return false;
-		}
-	
-		return getDatatypeReasoner().isSubTypeOf( d1, d2 );
-	}
-	 */
-
 	/**
-	 * Check if class c1 is subclass of class c2.
-	 *
 	 * @param c1
 	 * @param c2
-	 * @return
+	 * @return true if class c1 is subclass of class c2.
 	 */
 	public boolean isSubClassOf(ATermAppl c1, ATermAppl c2)
 	{
@@ -3040,25 +3026,23 @@ public class KnowledgeBase
 			return true;
 
 		// normalize concepts
-		c1 = ATermUtils.normalize(c1);
-		c2 = ATermUtils.normalize(c2);
+		final ATermAppl normalC1 = ATermUtils.normalize(c1);
+		final ATermAppl normalC2 = ATermUtils.normalize(c2);
 
 		if (isClassified() && !doExplanation())
 		{
-			final Bool isSubNode = _builder.getTaxonomy().isSubNodeOf(c1, c2);
+			final Bool isSubNode = _builder.getTaxonomy().isSubNodeOf(normalC1, normalC2);
 			if (isSubNode.isKnown())
 				return isSubNode.isTrue();
 		}
 
-		return _abox.isSubClassOf(c1, c2);
+		return _abox.isSubClassOf(normalC1, normalC2);
 	}
 
 	/**
-	 * Check if class c1 is equivalent to class c2.
-	 *
 	 * @param c1
 	 * @param c2
-	 * @return
+	 * @return true if class c1 is equivalent to class c2.
 	 */
 	public boolean isEquivalentClass(ATermAppl c1, ATermAppl c2)
 	{
@@ -3080,25 +3064,25 @@ public class KnowledgeBase
 			return true;
 
 		// normalize concepts
-		c1 = ATermUtils.normalize(c1);
-		c2 = ATermUtils.normalize(c2);
+		final ATermAppl normalC1 = ATermUtils.normalize(c1);
+		final ATermAppl normalC2 = ATermUtils.normalize(c2);
 
 		if (!doExplanation())
 		{
 			Bool isEquivalent = Bool.UNKNOWN;
 			if (isClassified())
-				isEquivalent = _builder.getTaxonomy().isEquivalent(c1, c2);
+				isEquivalent = _builder.getTaxonomy().isEquivalent(normalC1, normalC2);
 
 			if (isEquivalent.isUnknown())
-				isEquivalent = _abox.isKnownSubClassOf(c1, c2).and(_abox.isKnownSubClassOf(c2, c1));
+				isEquivalent = _abox.isKnownSubClassOf(normalC1, normalC2).and(_abox.isKnownSubClassOf(normalC2, normalC1));
 
 			if (isEquivalent.isKnown())
 				return isEquivalent.isTrue();
 		}
 
-		final ATermAppl notC2 = ATermUtils.negate(c2);
-		final ATermAppl notC1 = ATermUtils.negate(c1);
-		final ATermAppl c1NotC2 = ATermUtils.makeAnd(c1, notC2);
+		final ATermAppl notC2 = ATermUtils.negate(normalC2);
+		final ATermAppl notC1 = ATermUtils.negate(normalC1);
+		final ATermAppl c1NotC2 = ATermUtils.makeAnd(normalC1, notC2);
 		final ATermAppl c2NotC1 = ATermUtils.makeAnd(c2, notC1);
 		final ATermAppl test = ATermUtils.makeOr(c1NotC2, c2NotC1);
 
@@ -3200,9 +3184,7 @@ public class KnowledgeBase
 			return Bool.FALSE;
 		}
 
-		c = ATermUtils.normalize(c);
-
-		return _abox.isKnownType(x, c);
+		return _abox.isKnownType(x, ATermUtils.normalize(c));
 	}
 
 	public boolean isType(final ATermAppl x, final ATermAppl c)
@@ -3804,16 +3786,16 @@ public class KnowledgeBase
 			return Collections.emptySet();
 		}
 
-		c = ATermUtils.normalize(c);
+		final ATermAppl normalC = ATermUtils.normalize(c);
 
 		classify();
 
 		final Taxonomy<ATermAppl> taxonomy = _builder.getTaxonomy();
 
-		if (!taxonomy.contains(c))
-			_builder.classify(c);
+		if (!taxonomy.contains(normalC))
+			_builder.classify(normalC);
 
-		return ATermUtils.primitiveOrBottom(taxonomy.getAllEquivalents(c));
+		return ATermUtils.primitiveOrBottom(taxonomy.getAllEquivalents(normalC));
 	}
 
 	/**
@@ -3858,17 +3840,17 @@ public class KnowledgeBase
 			return Collections.emptySet();
 		}
 
-		c = ATermUtils.normalize(c);
+		final ATermAppl normalC = ATermUtils.normalize(c);
 
 		classify();
 
 		final Taxonomy<ATermAppl> taxonomy = _builder.getTaxonomy();
 
-		if (!taxonomy.contains(c))
-			_builder.classify(c);
+		if (!taxonomy.contains(normalC))
+			_builder.classify(normalC);
 
 		final Set<Set<ATermAppl>> subs = new HashSet<>();
-		for (final Set<ATermAppl> s : taxonomy.getSubs(c, direct))
+		for (final Set<ATermAppl> s : taxonomy.getSubs(normalC, direct))
 		{
 			final Set<ATermAppl> subEqSet = ATermUtils.primitiveOrBottom(s);
 			if (!subEqSet.isEmpty())
@@ -4560,13 +4542,14 @@ public class KnowledgeBase
 		return result;
 	}
 
-	public void tracingBasedInstanceRetrieval(final ATermAppl c, List<ATermAppl> candidates, final Collection<ATermAppl> results)
+	public void tracingBasedInstanceRetrieval(final ATermAppl c, final List<ATermAppl> candidates, final Collection<ATermAppl> results)
 	{
+		List<ATermAppl> individuals = candidates;
 		final boolean doExplanation = doExplanation();
 		setDoExplanation(true);
 
 		final ATermAppl notC = ATermUtils.negate(c);
-		while (_abox.isType(candidates, c))
+		while (_abox.isType(individuals, c))
 		{
 			final Set<ATermAppl> explanationSet = getExplanationSet();
 
@@ -4574,14 +4557,14 @@ public class KnowledgeBase
 				if (axiom.getAFun().equals(ATermUtils.TYPEFUN) && axiom.getArgument(1).equals(notC))
 				{
 					final ATermAppl ind = (ATermAppl) axiom.getArgument(0);
-					final int index = candidates.indexOf(ind);
+					final int index = individuals.indexOf(ind);
 					if (index >= 0)
 					{
 						if (_logger.isLoggable(Level.FINER))
 							_logger.finer("Filter instance " + axiom + " while retrieving " + c);
-						Collections.swap(candidates, index, 0);
+						Collections.swap(individuals, index, 0);
 						results.add(ind);
-						candidates = candidates.subList(1, candidates.size());
+						individuals = individuals.subList(1, individuals.size());
 						break;
 					}
 				}
@@ -4632,7 +4615,7 @@ public class KnowledgeBase
 	}
 
 	@SuppressWarnings("unchecked")
-	private List<ATermAppl>[] partition(final List<ATermAppl> candidates)
+	private static List<ATermAppl>[] partition(final List<ATermAppl> candidates)
 	{
 		final List<ATermAppl>[] partitions = new List[2];
 		final int n = candidates.size();
@@ -4649,39 +4632,6 @@ public class KnowledgeBase
 
 		return partitions;
 	}
-
-	// private List binarySubClassRetrieval(ATermAppl c, List candidates) {
-	// if(candidates.isEmpty())
-	// return new ArrayList();
-	// else{
-	// List[] partitions = partition(candidates);
-	// return partitionSubClassRetrieval(c, partitions);
-	// }
-	// }
-	//
-	// private List partitionSubClassRetrieval(ATermAppl c, List[] partitions) {
-	// if(partitions[0].size() == 1) {
-	// ATermAppl d = (ATermAppl) partitions[0].get(0);
-	// List l = binarySubClassRetrieval(c, partitions[1]);
-	//
-	// if(isSubclassOf(d, c))
-	// l.add(d);
-	//
-	// return l;
-	// }
-	// else if(!_abox.isSubClassOf(partitions[0], c))
-	// return binarySubClassRetrieval(c, partitions[1]);
-	// else if(!_abox.isSubClassOf(partitions[1], c))
-	// return binarySubClassRetrieval(c, partitions[0]);
-	// else {
-	// List l1 = binarySubClassRetrieval(c, partitions[0]);
-	// List l2 = binarySubClassRetrieval(c, partitions[1]);
-	//
-	// l1.addAll(l2);
-	//
-	// return l1;
-	// }
-	// }
 
 	/**
 	 * Print the class hierarchy on the standard output.
@@ -4743,7 +4693,7 @@ public class KnowledgeBase
 	}
 
 	/**
-	 * @param _rbox The _rbox to set.
+	 * @param rbox The rbox to set.
 	 */
 	public void setRBox(final RBox rbox)
 	{
@@ -4751,7 +4701,7 @@ public class KnowledgeBase
 	}
 
 	/**
-	 * @param _tbox The _tbox to set.
+	 * @param tbox The tbox to set.
 	 */
 	public void setTBox(final TBox tbox)
 	{
@@ -4884,8 +4834,7 @@ public class KnowledgeBase
 
 		_rules.put(rule, normalize(rule));
 
-		if (_logger.isLoggable(Level.FINER))
-			_logger.finer("rule " + rule);
+		_logger.finer(() -> "rule " + rule);
 
 		return true;
 	}
@@ -5032,9 +4981,7 @@ public class KnowledgeBase
 	}
 
 	/**
-	 * Get the dependency _index for syntactic assertions in this kb
-	 *
-	 * @return
+	 * @return the dependency index for syntactic assertions in this kb
 	 */
 	public DependencyIndex getDependencyIndex()
 	{
@@ -5042,9 +4989,7 @@ public class KnowledgeBase
 	}
 
 	/**
-	 * Get syntactic assertions in the kb
-	 *
-	 * @return
+	 * @return syntactic assertions in the kb
 	 */
 	public Set<ATermAppl> getSyntacticAssertions()
 	{
@@ -5065,6 +5010,38 @@ public class KnowledgeBase
 			return Collections.emptySet();
 		else
 			return Collections.unmodifiableSet(assertions);
+	}
+
+	/**
+	 * @return the deletedAssertions
+	 */
+	public Set<ATermAppl> getDeletedAssertions()
+	{
+		return _deletedAssertions;
+	}
+
+	/**
+	 * Returns _current value of explainOnlyInconsistency option.
+	 *
+	 * @see #setExplainOnlyInconsistency(boolean)
+	 * @return current value of explainOnlyInconsistency option
+	 */
+	public boolean isExplainOnlyInconsistency()
+	{
+		return _explainOnlyInconsistency;
+	}
+
+	/**
+	 * Controls what kind of explanations can be generated using this KB. With this option enabled explanations for inconsistent ontologies will be returned.
+	 * But if the ontology is _consistent, it will not be possible to retrieve explanations for inferences about _instances. This option is disabled by default.
+	 * It should be turned on if explanations are only needed for inconsistencies but not other inferences. Turning this option on improves the performance of
+	 * consistency checking for _consistent ontologies.
+	 *
+	 * @param _explainOnlyInconsistency new value for _explainOnlyInconsistency option
+	 */
+	public void setExplainOnlyInconsistency(final boolean explainOnlyInconsistency)
+	{
+		_explainOnlyInconsistency = explainOnlyInconsistency;
 	}
 
 	/**
@@ -5093,37 +5070,4 @@ public class KnowledgeBase
 	{
 		return getABoxAssertions(AssertionType.DATA_ROLE);
 	}
-
-	/**
-	 * @return the _deletedAssertions
-	 */
-	public Set<ATermAppl> getDeletedAssertions()
-	{
-		return _deletedAssertions;
-	}
-
-	/**
-	 * Returns _current value of _explainOnlyInconsistency option.
-	 *
-	 * @see #setExplainOnlyInconsistency(boolean)
-	 * @return _current value of _explainOnlyInconsistency option
-	 */
-	public boolean isExplainOnlyInconsistency()
-	{
-		return _explainOnlyInconsistency;
-	}
-
-	/**
-	 * Controls what kind of explanations can be generated using this KB. With this option enabled explanations for inconsistent ontologies will be returned.
-	 * But if the ontology is _consistent, it will not be possible to retrieve explanations for inferences about _instances. This option is disabled by default.
-	 * It should be turned on if explanations are only needed for inconsistencies but not other inferences. Turning this option on improves the performance of
-	 * consistency checking for _consistent ontologies.
-	 *
-	 * @param _explainOnlyInconsistency new value for _explainOnlyInconsistency option
-	 */
-	public void setExplainOnlyInconsistency(final boolean explainOnlyInconsistency)
-	{
-		_explainOnlyInconsistency = explainOnlyInconsistency;
-	}
-
 }

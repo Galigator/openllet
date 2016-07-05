@@ -272,7 +272,7 @@ public class RoleTaxonomyBuilder
 		}
 	}
 
-	private boolean subsumes(final Role sup, final Role sub)
+	private static boolean subsumes(final Role sup, final Role sub)
 	{
 		final boolean result = sup.isSuperRoleOf(sub);
 		ATermUtils.assertTrue(sub.isSubRoleOf(sup) == result);

@@ -36,7 +36,6 @@ package openllet.core;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StreamTokenizer;
@@ -469,10 +468,9 @@ public class KRSSLoader extends KBLoader
 	@Override
 	public void parseFile(final String fileURI)
 	{
-		try
+		try (InputStreamReader reader = new InputStreamReader(URI.create(fileURI).toURL().openStream()))
 		{
-			final InputStream stream = URI.create(fileURI).toURL().openStream();
-			parse(new InputStreamReader(stream));
+			parse(reader);
 		}
 		catch (final Exception e)
 		{
@@ -890,139 +888,144 @@ public class KRSSLoader extends KBLoader
 
 	public void verifyTBox(final String file, final KnowledgeBase kb) throws Exception
 	{
-		initTokenizer(new FileReader(file));
-
-		boolean failed = false;
-		int verifiedCount = 0;
-		int token = _in.nextToken();
-		while (token != ')' && token != StreamTokenizer.TT_EOF)
+		try (FileReader reader = new FileReader(file))
 		{
-			ATermUtils.assertTrue(token == '(');
 
-			verifiedCount++;
+			initTokenizer(reader);
 
-			ATermAppl c = null;
-			if (peekNext('('))
+			boolean failed = false;
+			int verifiedCount = 0;
+			int token = _in.nextToken();
+			while (token != ')' && token != StreamTokenizer.TT_EOF)
 			{
-				final ATermAppl[] list = parseExprList();
-				c = list[0];
-				final Set<ATermAppl> eqs = kb.getEquivalentClasses(c);
-				for (int i = 1; i < list.length; i++)
+				ATermUtils.assertTrue(token == '(');
+
+				verifiedCount++;
+
+				ATermAppl c = null;
+				if (peekNext('('))
 				{
-					final ATermAppl t = list[i];
-
-					if (!eqs.contains(t))
+					final ATermAppl[] list = parseExprList();
+					c = list[0];
+					final Set<ATermAppl> eqs = kb.getEquivalentClasses(c);
+					for (int i = 1; i < list.length; i++)
 					{
-						_logger.severe(t + " is not equivalent to " + c);
-						failed = true;
-					}
-				}
-			}
-			else
-				c = parseExpr();
+						final ATermAppl t = list[i];
 
-			final Set<ATermAppl> supers = SetUtils.union(kb.getSuperClasses(c, true));
-			final Set<ATermAppl> subs = SetUtils.union(kb.getSubClasses(c, true));
-
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("Verify (" + verifiedCount + ") " + c + " " + supers + " " + subs);
-
-			if (peekNext('('))
-			{
-				final ATermAppl[] terms = parseExprList();
-				for (final ATermAppl term : terms)
-				{
-					final ATerm t = term;
-
-					if (!supers.contains(t))
-					{
-						_logger.severe(t + " is not a superclass of " + c + " ");
-						failed = true;
-					}
-				}
-			}
-			else
-				skipNext();
-
-			if (peekNext('('))
-			{
-				final ATermAppl[] terms = parseExprList();
-				for (final ATermAppl term : terms)
-				{
-					final ATermAppl t = term;
-
-					if (!subs.contains(t))
-					{
-						final Set<ATermAppl> temp = new HashSet<>(subs);
-						final Set<ATermAppl> sames = kb.getEquivalentClasses(t);
-						temp.retainAll(sames);
-						if (temp.size() == 0)
+						if (!eqs.contains(t))
 						{
-							_logger.severe(t + " is not a subclass of " + c);
+							_logger.severe(t + " is not equivalent to " + c);
 							failed = true;
 						}
 					}
 				}
+				else
+					c = parseExpr();
+
+				final Set<ATermAppl> supers = SetUtils.union(kb.getSuperClasses(c, true));
+				final Set<ATermAppl> subs = SetUtils.union(kb.getSubClasses(c, true));
+
+				if (_logger.isLoggable(Level.FINE))
+					_logger.fine("Verify (" + verifiedCount + ") " + c + " " + supers + " " + subs);
+
+				if (peekNext('('))
+				{
+					final ATermAppl[] terms = parseExprList();
+					for (final ATermAppl term : terms)
+					{
+						final ATerm t = term;
+
+						if (!supers.contains(t))
+						{
+							_logger.severe(t + " is not a superclass of " + c + " ");
+							failed = true;
+						}
+					}
+				}
+				else
+					skipNext();
+
+				if (peekNext('('))
+				{
+					final ATermAppl[] terms = parseExprList();
+					for (final ATermAppl term : terms)
+					{
+						final ATermAppl t = term;
+
+						if (!subs.contains(t))
+						{
+							final Set<ATermAppl> temp = new HashSet<>(subs);
+							final Set<ATermAppl> sames = kb.getEquivalentClasses(t);
+							temp.retainAll(sames);
+							if (temp.size() == 0)
+							{
+								_logger.severe(t + " is not a subclass of " + c);
+								failed = true;
+							}
+						}
+					}
+				}
+
+				skipNext();
+
+				token = _in.nextToken();
 			}
 
-			skipNext();
+			ATermUtils.assertTrue(_in.nextToken() == StreamTokenizer.TT_EOF);
 
-			token = _in.nextToken();
+			if (failed)
+				throw new RuntimeException("Classification results are not correct!");
 		}
-
-		ATermUtils.assertTrue(_in.nextToken() == StreamTokenizer.TT_EOF);
-
-		if (failed)
-			throw new RuntimeException("Classification results are not correct!");
 	}
 
 	public void verifyABox(final String file, final KnowledgeBase kb) throws Exception
 	{
-		initTokenizer(new FileReader(file));
-
-		final boolean longFormat = !peekNext('(');
-
-		while (!peekNext(StreamTokenizer.TT_EOF))
+		try (FileReader reader = new FileReader(file))
 		{
-			if (longFormat)
+			initTokenizer(reader);
+
+			final boolean longFormat = !peekNext('(');
+
+			while (!peekNext(StreamTokenizer.TT_EOF))
 			{
-				skipNext("Command");
-				skipNext('=');
-			}
+				if (longFormat)
+				{
+					skipNext("Command");
+					skipNext('=');
+				}
 
-			skipNext('(');
-			skipNext("INDIVIDUAL-INSTANCE?");
+				skipNext('(');
+				skipNext("INDIVIDUAL-INSTANCE?");
 
-			final ATermAppl ind = nextTerm();
-			final ATermAppl c = parseExpr();
+				final ATermAppl ind = nextTerm();
+				final ATermAppl c = parseExpr();
 
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("INDIVIDUAL-INSTANCE? " + ind + " " + c);
+				_logger.fine(() -> "INDIVIDUAL-INSTANCE? " + ind + " " + c);
 
-			skipNext(')');
+				skipNext(')');
 
-			boolean isType;
-			if (longFormat)
-			{
-				skipNext('-');
-				skipNext('>');
-				final String result = nextString();
-				if (result.equalsIgnoreCase("T"))
-					isType = true;
-				else
-					if (result.equalsIgnoreCase("NIL"))
-						isType = false;
+				boolean isType;
+				if (longFormat)
+				{
+					skipNext('-');
+					skipNext('>');
+					final String result = nextString();
+					if (result.equalsIgnoreCase("T"))
+						isType = true;
 					else
-						throw new RuntimeException("Unknown result " + result);
+						if (result.equalsIgnoreCase("NIL"))
+							isType = false;
+						else
+							throw new RuntimeException("Unknown result " + result);
+				}
+				else
+					isType = true;
+
+				_logger.fine(() -> " -> " + isType);
+
+				if (kb.isType(ind, c) != isType)
+					throw new RuntimeException("Individual " + ind + " is " + (isType ? "not" : "") + " an instance of " + c);
 			}
-			else
-				isType = true;
-
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine(" -> " + isType);
-
-			if (kb.isType(ind, c) != isType)
-				throw new RuntimeException("Individual " + ind + " is " + (isType ? "not" : "") + " an instance of " + c);
 		}
 	}
 
