@@ -309,8 +309,9 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 		}
 	}
 
-	private int createDisjunctionsFromBinding(final VariableBinding binding, final Rule rule, DependencySet ds)
+	private int createDisjunctionsFromBinding(final VariableBinding binding, final Rule rule, DependencySet dsParam)
 	{
+		DependencySet ds = dsParam;
 		final List<RuleAtom> atoms = new ArrayList<>();
 
 		for (final RuleAtom atom : rule.getBody())

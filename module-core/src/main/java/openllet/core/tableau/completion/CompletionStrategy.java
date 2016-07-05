@@ -646,8 +646,9 @@ public abstract class CompletionStrategy
 
 	}
 
-	void applyDisjointness(final Individual subj, final Role pred, final Node obj, DependencySet ds)
+	void applyDisjointness(final Individual subj, final Role pred, final Node obj, DependencySet dsParam)
 	{
+		DependencySet ds = dsParam;
 		// TODO what about inv edges?
 		// TODO improve this check
 		final Set<Role> disjoints = pred.getDisjointRoles();
@@ -669,8 +670,9 @@ public abstract class CompletionStrategy
 
 	}
 
-	void checkReflexivitySymmetry(final Individual subj, final Role pred, final Individual obj, DependencySet ds)
+	void checkReflexivitySymmetry(final Individual subj, final Role pred, final Individual obj, DependencySet dsParam)
 	{
+		DependencySet ds = dsParam;
 		if (pred.isAsymmetric() && obj.hasRSuccessor(pred, subj))
 		{
 			final EdgeList edges = obj.getEdgesTo(subj, pred);
@@ -691,8 +693,9 @@ public abstract class CompletionStrategy
 				}
 	}
 
-	protected void applyFunctionalMaxRule(final Literal x, final Role r, DependencySet ds)
+	protected void applyFunctionalMaxRule(final Literal x, final Role r, DependencySet dsParam)
 	{
+		DependencySet ds = dsParam;
 		final EdgeList edges = x.getInEdges().getEdges(r);
 
 		// if there is not more than one edge then func max rule won't be triggered
@@ -817,11 +820,11 @@ public abstract class CompletionStrategy
 	 *
 	 * @param y Node being pruned
 	 * @param z Node that is being merged into
-	 * @param ds Dependency of this merge operation
+	 * @param dsParam Dependency of this merge operation
 	 */
-	public void mergeTo(final Node y, final Node z, DependencySet ds)
+	public void mergeTo(final Node y, final Node z, DependencySet dsParam)
 	{
-
+		DependencySet ds = dsParam;
 		// add to effected list
 		if (_abox.getBranch() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
 		{

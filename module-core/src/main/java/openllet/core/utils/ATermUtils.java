@@ -675,14 +675,11 @@ public class ATermUtils
 			return true;
 
 		ATerm curr = list.getFirst();
-		list = list.getNext();
-		while (!list.isEmpty())
+		for (final ATerm term : list)
 		{
-			final ATerm next = list.getFirst();
-			if (Comparators.termComparator.compare(curr, next) >= 0)
+			if (Comparators.termComparator.compare(curr, term) >= 0)
 				return false;
-			curr = next;
-			list = list.getNext();
+			curr = term;
 		}
 
 		return true;
@@ -951,12 +948,16 @@ public class ATermUtils
 								}
 	}
 
-	static public ATermAppl[] toArray(ATermList list) // TODO rewrite this.
+	static public ATermAppl[] toArray(ATermList list)
 	{
 		final ATermAppl[] a = new ATermAppl[list.getLength()];
 
-		for (int i = 0; !list.isEmpty(); list = list.getNext())
-			a[i++] = (ATermAppl) list.getFirst();
+		int i = 0;
+		for (final ATerm term : list)
+		{
+			a[i] = (ATermAppl) term;
+			i++;
+		}
 
 		return a;
 	}
@@ -1013,13 +1014,13 @@ public class ATermUtils
 	public static Set<ATermAppl> getPrimitives(ATermList list)
 	{
 		final Set<ATermAppl> set = new HashSet<>();
-		while (!list.isEmpty())
+		for (final ATerm term : list)
 		{
-			final ATermAppl term = (ATermAppl) list.getFirst();
-			if (isPrimitive(term))
-				set.add(term);
-			list = list.getNext();
+			final ATermAppl appl = (ATermAppl) term;
+			if (isPrimitive(appl))
+				set.add(appl);
 		}
+
 		return set;
 	}
 
