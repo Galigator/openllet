@@ -31,12 +31,6 @@ import openllet.shared.tools.Log;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -309,7 +303,7 @@ public class SizeEstimate
 		return instancesPC.containsKey(term) || pairsPP.containsKey(term) || classesPI.containsKey(term);
 	}
 
-	private double average(final Collection<Integer> x)
+	private static double average(final Collection<Integer> x)
 	{
 		int a = 0;
 

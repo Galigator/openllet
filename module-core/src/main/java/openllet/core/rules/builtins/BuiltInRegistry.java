@@ -112,17 +112,17 @@ public class BuiltInRegistry
 		return builtIn;
 	}
 
-	private BuiltIn function(final Function function)
+	private static BuiltIn function(final Function function)
 	{
 		return new FunctionBuiltIn(function);
 	}
 
-	private BuiltIn generalFunc(final GeneralFunction function)
+	private static BuiltIn generalFunc(final GeneralFunction function)
 	{
 		return new GeneralFunctionBuiltIn(function);
 	}
 
-	private BuiltIn numeric(final NumericFunction numeric)
+	private static BuiltIn numeric(final NumericFunction numeric)
 	{
 		return function(new NumericAdapter(numeric));
 	}
@@ -132,7 +132,7 @@ public class BuiltInRegistry
 		builtIns.put(name, builtIn);
 	}
 
-	private BuiltIn tester(final Tester tester)
+	private static BuiltIn tester(final Tester tester)
 	{
 		return new TesterBuiltIn(tester);
 	}

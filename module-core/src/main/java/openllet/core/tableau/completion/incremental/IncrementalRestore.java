@@ -263,7 +263,7 @@ public class IncrementalRestore
 	 * @param assertion
 	 * @param _branch
 	 */
-	private void restoreCloseBranch(@SuppressWarnings("unused") final ATermAppl assertion, final CloseBranchDependency branch)
+	private static void restoreCloseBranch(@SuppressWarnings("unused") final ATermAppl assertion, final CloseBranchDependency branch)
 	{
 		// only proceed if _tryNext is larger than 1!
 		if (branch.getTheBranch().getTryNext() > -1)

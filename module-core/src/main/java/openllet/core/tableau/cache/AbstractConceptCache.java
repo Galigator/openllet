@@ -108,7 +108,7 @@ public abstract class AbstractConceptCache implements ConceptCache
 		this._maxSize = maxSize;
 	}
 
-	private Bool checkTrivialClash(final CachedNode node1, final CachedNode node2)
+	private static Bool checkTrivialClash(final CachedNode node1, final CachedNode node2)
 	{
 		Bool result = null;
 
@@ -240,7 +240,7 @@ public abstract class AbstractConceptCache implements ConceptCache
 		return Bool.TRUE;
 	}
 
-	private Bool checkBinaryClash(final KnowledgeBase kb, final ATermAppl c, @SuppressWarnings("unused") final CachedNode root, final CachedNode otherRoot)
+	private static Bool checkBinaryClash(final KnowledgeBase kb, final ATermAppl c, @SuppressWarnings("unused") final CachedNode root, final CachedNode otherRoot)
 	{
 		final Iterator<Unfolding> unfoldingList = kb.getTBox().unfold(c);
 
@@ -256,7 +256,7 @@ public abstract class AbstractConceptCache implements ConceptCache
 		return null;
 	}
 
-	private Bool checkAllValuesClash(final KnowledgeBase kb, final ATermAppl av, final CachedNode root, final CachedNode otherRoot)
+	private static Bool checkAllValuesClash(final KnowledgeBase kb, final ATermAppl av, final CachedNode root, final CachedNode otherRoot)
 	{
 		ATerm r = av.getArgument(0);
 		if (r.getType() == ATerm.LIST)
@@ -289,7 +289,7 @@ public abstract class AbstractConceptCache implements ConceptCache
 		return null;
 	}
 
-	private Bool checkMaxClash(final KnowledgeBase kb, final ATermAppl mc, final CachedNode root, final CachedNode otherRoot)
+	private static Bool checkMaxClash(final KnowledgeBase kb, final ATermAppl mc, final CachedNode root, final CachedNode otherRoot)
 	{
 		final ATermAppl maxCard = (ATermAppl) mc.getArgument(0);
 
@@ -309,7 +309,7 @@ public abstract class AbstractConceptCache implements ConceptCache
 		return null;
 	}
 
-	private Bool checkSelfClash(final KnowledgeBase kb, final ATermAppl self, final CachedNode root, final CachedNode otherRoot)
+	private static Bool checkSelfClash(final KnowledgeBase kb, final ATermAppl self, final CachedNode root, final CachedNode otherRoot)
 	{
 		final Role r = kb.getRole(self.getArgument(0));
 
@@ -325,7 +325,7 @@ public abstract class AbstractConceptCache implements ConceptCache
 		return null;
 	}
 
-	private Bool checkFunctionalityClash(final CachedNode root, final CachedNode otherRoot)
+	private static Bool checkFunctionalityClash(final CachedNode root, final CachedNode otherRoot)
 	{
 		final Set<Role> checked = new HashSet<>();
 		for (final Edge edge : root.getOutEdges())
@@ -379,7 +379,7 @@ public abstract class AbstractConceptCache implements ConceptCache
 		return null;
 	}
 
-	private Bool checkFunctionalityClashWithDifferents(final Individual root, final Individual otherRoot)
+	private static Bool checkFunctionalityClashWithDifferents(final Individual root, final Individual otherRoot)
 	{
 		Bool result = null;
 		for (final Edge edge : root.getOutEdges())
@@ -431,7 +431,7 @@ public abstract class AbstractConceptCache implements ConceptCache
 		return result;
 	}
 
-	private MultiValueMap<ATermAppl, Role> collectNeighbors(final CachedNode ind)
+	private static MultiValueMap<ATermAppl, Role> collectNeighbors(final CachedNode ind)
 	{
 		final MultiValueMap<ATermAppl, Role> neighbors = new MultiValueMap<>();
 		for (final Edge edge : ind.getInEdges())
@@ -453,7 +453,7 @@ public abstract class AbstractConceptCache implements ConceptCache
 		return neighbors;
 	}
 
-	private boolean checkDisjointProperties(final Set<Role> roles1, final Set<Role> roles2)
+	private static boolean checkDisjointProperties(final Set<Role> roles1, final Set<Role> roles2)
 	{
 		final Set<Role> allDisjoints = new HashSet<>();
 		for (final Role role : roles1)
@@ -461,7 +461,7 @@ public abstract class AbstractConceptCache implements ConceptCache
 		return SetUtils.intersects(allDisjoints, roles2);
 	}
 
-	private Bool checkDisjointPropertyClash(final CachedNode root1, final CachedNode root2)
+	private static Bool checkDisjointPropertyClash(final CachedNode root1, final CachedNode root2)
 	{
 		final MultiValueMap<ATermAppl, Role> neighbors1 = collectNeighbors(root1);
 		if (neighbors1.isEmpty())
@@ -502,7 +502,7 @@ public abstract class AbstractConceptCache implements ConceptCache
 		return result;
 	}
 
-	private Bool checkNominalEdges(final KnowledgeBase kb, final CachedNode pNode, final CachedNode cNode, final boolean checkInverses)
+	private static Bool checkNominalEdges(final KnowledgeBase kb, final CachedNode pNode, final CachedNode cNode, final boolean checkInverses)
 	{
 		final EdgeList edges = checkInverses ? cNode.getInEdges() : cNode.getOutEdges();
 		for (final Edge edge : edges)
@@ -565,7 +565,7 @@ public abstract class AbstractConceptCache implements ConceptCache
 	 * @param val
 	 * @return
 	 */
-	private boolean isRootNominal(final KnowledgeBase kb, final ATermAppl val)
+	private static boolean isRootNominal(final KnowledgeBase kb, final ATermAppl val)
 	{
 		final Individual ind = kb.getABox().getIndividual(val);
 
@@ -575,7 +575,7 @@ public abstract class AbstractConceptCache implements ConceptCache
 	/**
 	 * {@inheritDoc}
 	 */
-	private Set<ATermAppl> getRNeighbors(final CachedNode node, Role role)
+	private static Set<ATermAppl> getRNeighbors(final CachedNode node, Role role)
 	{
 		final Set<ATermAppl> neighbors = new HashSet<>();
 

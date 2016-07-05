@@ -28,9 +28,6 @@ import openllet.core.rules.model.SameIndividualAtom;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
  * Description: Creates a KnowledgeBase from ATerm axioms.
  * </p>
  * <p>
@@ -548,7 +545,7 @@ public class OntBuilder
 		throw new InternalReasonerException("Unrecognized term: " + t);
 	}
 
-	private AtomDObject convertAtomDObject(final ATermAppl t)
+	private static AtomDObject convertAtomDObject(final ATermAppl t)
 	{
 		if (ATermUtils.isVar(t))
 			return new AtomDVariable(((ATermAppl) t.getArgument(0)).getName());

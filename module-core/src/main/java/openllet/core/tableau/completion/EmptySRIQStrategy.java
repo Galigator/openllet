@@ -187,15 +187,15 @@ public class EmptySRIQStrategy extends CompletionStrategy
 		if (OpenlletOptions.USE_ADVANCED_CACHING)
 			// if completion tree is clash free _cache all sat concepts
 			if (!_abox.isClosed())
-				for (final Iterator<Individual> i = new IndividualIterator(_abox); i.hasNext();)
-				{
-					final Individual ind = i.next();
-					final ATermAppl c = _cachedNodes.get(ind);
-					if (c == null)
-						continue;
+			for (final Iterator<Individual> i = new IndividualIterator(_abox); i.hasNext();)
+			{
+			final Individual ind = i.next();
+			final ATermAppl c = _cachedNodes.get(ind);
+			if (c == null)
+			continue;
 
-					addCacheSat(c);
-				}
+			addCacheSat(c);
+			}
 	}
 
 	private List<Individual> getDescendants(final Individual ind)
@@ -238,7 +238,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 		return _mayNeedExpanding.get(0);
 	}
 
-	private boolean parentNeedsExpanding(final Individual x)
+	private static boolean parentNeedsExpanding(final Individual x)
 	{
 		if (x.isRoot())
 			return false;
@@ -355,7 +355,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 			}
 	}
 
-	private ATermAppl createConcept(final Individual x)
+	private static ATermAppl createConcept(final Individual x)
 	{
 		int count = 0;
 		final ATermAppl[] terms = new ATermAppl[x.getTypes().size()];

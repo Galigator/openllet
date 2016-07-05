@@ -116,7 +116,7 @@ public class AlphaEdgeNode extends AlphaNode
 		return !i1.hasNext() ? i2 : !i2.hasNext() ? i1 : IteratorUtils.concat(i1, i2);
 	}
 
-	private EdgeList getEdges(final EdgeList edges, final Role r, final Node o)
+	private static EdgeList getEdges(final EdgeList edges, final Role r, final Node o)
 	{
 		return (o == null) ? edges.getEdges(r) : edges.getEdgesTo(r, o);
 	}
@@ -125,13 +125,13 @@ public class AlphaEdgeNode extends AlphaNode
 	public Iterator<WME> getMatches()
 	{
 		return new NestedIterator<Individual, WME>(_abox.getIndIterator())
-				{
+		{
 			@Override
 			public Iterator<WME> getInnerIterator(final Individual ind)
 			{
 				return toWMEs(ind.getOutEdges().getEdges(_role), EdgeDirection.FORWARD);
 			}
-				};
+		};
 	}
 
 	protected Iterator<WME> toWMEs(final EdgeList edges, final EdgeDirection dir)

@@ -41,7 +41,7 @@ public class NumberToLiteralVisitor implements NumericVisitor
 		this._abox = abox;
 	}
 
-	private void argCheck(final Number[] args)
+	private static void argCheck(final Number[] args)
 	{
 		if (args.length != 1)
 			throw new InternalReasonerException("Wrong number of arguments to visitor.");

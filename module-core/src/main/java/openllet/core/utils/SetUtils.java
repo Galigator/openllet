@@ -43,35 +43,6 @@ import java.util.Set;
  */
 public class SetUtils
 {
-	//	private static class EmptySet extends AbstractSet<Object>
-	//	{
-	//		@Override
-	//		public Iterator<Object> iterator()
-	//		{
-	//			return IteratorUtils.emptyIterator();
-	//		}
-	//
-	//		@Override
-	//		public int size()
-	//		{
-	//			return 0;
-	//		}
-	//
-	//		@Override
-	//		public boolean contains(final Object obj)
-	//		{
-	//			return false;
-	//		}
-	//	}
-	//
-	//	public final static Set<?> EMPTY_SET = new EmptySet();
-	//
-	//	@SuppressWarnings("unchecked")
-	//	public final static <T> Set<T> emptySet()
-	//	{
-	//		return (Set<T>) EMPTY_SET;
-	//	}
-
 	/**
 	 * Adds the given object to the set but saves memory space by allocating only the required amount for small sets. The idea is to use the specialized empty
 	 * set and singleton set implementations (which are immutable) for the sets of size 0 and 1. If the set is empty a new singleton set is created, if set has

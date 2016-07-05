@@ -138,7 +138,7 @@ public class BindingGeneratorStrategyImpl implements BindingGeneratorStrategy
 	/**
 	 * Reorder list so that each binding helper's prerequisites are satisfied by the helpers before it. If no such ordering exists, return false.
 	 */
-	private boolean ensureOrdering(final List<BindingHelper> helpers, @SuppressWarnings("unused") final VariableBinding initialBinding)
+	private static boolean ensureOrdering(final List<BindingHelper> helpers, @SuppressWarnings("unused") final VariableBinding initialBinding)
 	{
 		final List<BindingHelper> unsatList = new ArrayList<>();
 		final Set<AtomVariable> bound = new HashSet<>();
@@ -179,7 +179,7 @@ public class BindingGeneratorStrategyImpl implements BindingGeneratorStrategy
 	/**
 	 * Reorder the binding helpers so that completely bound binding helpers are push as far up the list as they can be
 	 */
-	private void optimize(final List<BindingHelper> helpers)
+	private static void optimize(final List<BindingHelper> helpers)
 	{
 		final Set<AtomVariable> bound = new HashSet<>();
 

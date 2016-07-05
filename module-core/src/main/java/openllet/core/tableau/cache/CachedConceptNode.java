@@ -116,7 +116,7 @@ public class CachedConceptNode implements CachedNode
 	 * @param edgeList
 	 * @return
 	 */
-	private EdgeList copyEdgeList(final Individual node, final boolean out)
+	private static EdgeList copyEdgeList(final Individual node, final boolean out)
 	{
 		final EdgeList edgeList = out ? node.getOutEdges() : node.getInEdges();
 		final EdgeList cachedEdges = new EdgeList(edgeList.size());

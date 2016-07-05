@@ -43,7 +43,7 @@ public class AlphaDiffFromNode extends AlphaNode
 		return toWMEs(arg);
 	}
 
-	private Iterator<WME> toWMEs(final Node arg)
+	private static Iterator<WME> toWMEs(final Node arg)
 	{
 		return new MapIterator<Node, WME>(arg.getDifferents().iterator())
 		{

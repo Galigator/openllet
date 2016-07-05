@@ -244,7 +244,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 		return completed;
 	}
 
-	private void logList(final Level level, final String header, final List<ATermAppl> list)
+	private static void logList(final Level level, final String header, final List<ATermAppl> list)
 	{
 		if (!_logger.isLoggable(Level.FINER))
 			return;
@@ -1181,7 +1181,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 		return result;
 	}
 
-	private void mark(final Set<ATermAppl> set, final Map<ATermAppl, Boolean> marked, final Boolean value)
+	private static void mark(final Set<ATermAppl> set, final Map<ATermAppl, Boolean> marked, final Boolean value)
 	{
 		for (final ATermAppl c : set)
 			marked.put(c, value);
@@ -1452,7 +1452,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 		}
 	}
 
-	private String format(final ATermAppl c)
+	private static String format(final ATermAppl c)
 	{
 		return ATermUtils.toString(c);
 	}

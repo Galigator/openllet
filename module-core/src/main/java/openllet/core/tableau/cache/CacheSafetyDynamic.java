@@ -138,17 +138,17 @@ public class CacheSafetyDynamic implements CacheSafety
 		return IteratorUtils.emptyIterator();
 	}
 
-	private boolean isParentSafe(final KnowledgeBase kb, final Role role, final Individual parent)
+	private static boolean isParentSafe(final KnowledgeBase kb, final Role role, final Individual parent)
 	{
 		return isParentFunctionalSafe(role, parent) && isParentMaxSafe(kb, role, parent);
 	}
 
-	private boolean isParentFunctionalSafe(final Role role, final Individual parent)
+	private static boolean isParentFunctionalSafe(final Role role, final Individual parent)
 	{
 		return !role.isFunctional() || parent.getRNeighbors(role).size() <= 1;
 	}
 
-	private boolean isParentMaxSafe(final KnowledgeBase kb, final Role role, final Individual parent)
+	private static boolean isParentMaxSafe(final KnowledgeBase kb, final Role role, final Individual parent)
 	{
 		for (final ATermAppl negatedMax : parent.getTypes(Node.MAX))
 		{
@@ -160,14 +160,14 @@ public class CacheSafetyDynamic implements CacheSafety
 		return true;
 	}
 
-	private boolean isParentMaxSafe(final KnowledgeBase kb, final Role role, final ATermAppl max)
+	private static boolean isParentMaxSafe(final KnowledgeBase kb, final Role role, final ATermAppl max)
 	{
 		final Role maxR = kb.getRole(max.getArgument(0));
 
 		return !role.isSubRoleOf(maxR);
 	}
 
-	private boolean isSafe(final KnowledgeBase kb, final Individual parent, final Role role, final CachedNode node)
+	private static boolean isSafe(final KnowledgeBase kb, final Individual parent, final Role role, final CachedNode node)
 	{
 		if (!isFunctionalSafe(role, node))
 			return false;
@@ -190,7 +190,7 @@ public class CacheSafetyDynamic implements CacheSafety
 		return true;
 	}
 
-	private boolean isAllValuesSafe(final KnowledgeBase kb, final Individual parent, final Role role, final ATermAppl term)
+	private static boolean isAllValuesSafe(final KnowledgeBase kb, final Individual parent, final Role role, final ATermAppl term)
 	{
 		final Role s = kb.getRole(term.getArgument(0));
 		if (!s.hasComplexSubRole())
@@ -212,19 +212,19 @@ public class CacheSafetyDynamic implements CacheSafety
 		return true;
 	}
 
-	private boolean isFunctionalSafe(final Role role, final CachedNode node)
+	private static boolean isFunctionalSafe(final Role role, final CachedNode node)
 	{
 		return !role.isFunctional() || getRNeighbors(node, role).isEmpty();
 	}
 
-	private boolean isMaxSafe(final KnowledgeBase kb, final Role role, final ATermAppl term)
+	private static boolean isMaxSafe(final KnowledgeBase kb, final Role role, final ATermAppl term)
 	{
 		final Role maxR = kb.getRole(term.getArgument(0));
 
 		return !role.isSubRoleOf(maxR);
 	}
 
-	private Set<ATermAppl> getRNeighbors(final CachedNode node, Role role)
+	private static Set<ATermAppl> getRNeighbors(final CachedNode node, Role role)
 	{
 		final Set<ATermAppl> neighbors = new HashSet<>();
 

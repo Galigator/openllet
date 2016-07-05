@@ -85,7 +85,7 @@ public class NumericPromotion
 	/**
 	 * Return the highest _type seen in an array of Numbers.
 	 */
-	private Type findHighestType(final Number[] nums)
+	private static Type findHighestType(final Number[] nums)
 	{
 		Type largest = Type.BYTE;
 
@@ -102,7 +102,7 @@ public class NumericPromotion
 	/**
 	 * Return the _type of the given number. Throw an InternalReasonerException if the number is not an _expected _type.
 	 */
-	private Type findType(final Number num)
+	private static Type findType(final Number num)
 	{
 		if (num instanceof Byte)
 			return Type.BYTE;
