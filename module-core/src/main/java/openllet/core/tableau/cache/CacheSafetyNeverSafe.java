@@ -28,6 +28,7 @@ public class CacheSafetyNeverSafe implements CacheSafety
 
 	private CacheSafetyNeverSafe()
 	{
+		// do not instantiate
 	}
 
 	/**

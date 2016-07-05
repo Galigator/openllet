@@ -32,6 +32,7 @@ package openllet.core.boxes.abox;
 
 import static java.lang.String.format;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -596,8 +597,9 @@ public class ABoxImpl implements ABox
 	}
 
 	@Override
-	public boolean isSatisfiable(ATermAppl c, final boolean cacheModel)
+	public boolean isSatisfiable(final ATermAppl cParam, final boolean cacheModel)
 	{
+		ATermAppl c = cParam;
 		c = ATermUtils.normalize(c);
 
 		// if normalization revealed an obvious unsatisfiability, return
@@ -647,8 +649,9 @@ public class ABoxImpl implements ABox
 	}
 
 	@Override
-	public CandidateSet<ATermAppl> getObviousInstances(ATermAppl c, final Collection<ATermAppl> individuals)
+	public CandidateSet<ATermAppl> getObviousInstances(final ATermAppl cParam, final Collection<ATermAppl> individuals)
 	{
+		ATermAppl c = cParam;
 		c = ATermUtils.normalize(c);
 		final Set<ATermAppl> subs = (_kb.isClassified() && _kb.getTaxonomy().contains(c)) ? _kb.getTaxonomy().getFlattenedSubs(c, false) : Collections.<ATermAppl> emptySet();
 		subs.remove(ATermUtils.BOTTOM);
@@ -716,8 +719,9 @@ public class ABoxImpl implements ABox
 	}
 
 	@Override
-	public void getObviousObjects(ATermAppl p, final CandidateSet<ATermAppl> candidates)
+	public void getObviousObjects(ATermAppl pParam, final CandidateSet<ATermAppl> candidates)
 	{
+		ATermAppl p = pParam;
 		p = getRole(p).getInverse().getName();
 		final Iterator<ATermAppl> i = candidates.iterator();
 		while (i.hasNext())
@@ -873,16 +877,15 @@ public class ABoxImpl implements ABox
 	}
 
 	/**
-	 * Returns true if _individual x belongs to type c. This is a logical consequence of the KB if in all possible models x belongs to C. This is checked by
-	 * trying to construct a model where x belongs to not(c).
-	 *
-	 * @param x
-	 * @param c
-	 * @return
+	 * @param x is an individual
+	 * @param c is a class
+	 * @return true if individual x belongs to type c. This is a logical consequence of the KB if in all possible models x belongs to C. This is checked by
+	 *         trying to construct a model where x belongs to not(c).
 	 */
 	@Override
-	public boolean isType(final ATermAppl x, ATermAppl c)
+	public boolean isType(final ATermAppl x, ATermAppl cParam)
 	{
+		ATermAppl c = cParam;
 		c = ATermUtils.normalize(c);
 
 		if (!doExplanation())
@@ -905,7 +908,7 @@ public class ABoxImpl implements ABox
 		// return list.contains( x );
 
 		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Checking type " + ATermUtils.toString(c) + " for _individual " + ATermUtils.toString(x));
+			_logger.fine("Checking type " + ATermUtils.toString(c) + " for individual " + ATermUtils.toString(x));
 
 		final ATermAppl notC = ATermUtils.negate(c);
 
@@ -914,21 +917,20 @@ public class ABoxImpl implements ABox
 		t.stop();
 
 		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Type " + isType + " " + ATermUtils.toString(c) + " for _individual " + ATermUtils.toString(x));
+			_logger.fine("Type " + isType + " " + ATermUtils.toString(c) + " for individual " + ATermUtils.toString(x));
 
 		return isType;
 	}
 
 	/**
-	 * Returns true if any of the individuals in the given list belongs to type c.
-	 *
-	 * @param c
-	 * @param inds
-	 * @return
+	 * @param c is a class
+	 * @param inds is a collection of individuals.
+	 * @return true if any of the individuals in the given list belongs to type c.
 	 */
 	@Override
-	public boolean isType(final List<ATermAppl> inds, ATermAppl c)
+	public boolean isType(final List<ATermAppl> inds, ATermAppl cParam)
 	{
+		ATermAppl c = cParam;
 		c = ATermUtils.normalize(c);
 
 		if (_logger.isLoggable(Level.FINE))
@@ -1372,11 +1374,14 @@ public class ABoxImpl implements ABox
 	 * modified at all. After the consistency check _lastCompletion points to the modified ABox.
 	 *
 	 * @param individuals
-	 * @param c
-	 * @return
+	 * @param cParam
+	 * @return true if consistent.
 	 */
-	private boolean isConsistent(Collection<ATermAppl> individuals, ATermAppl c, final boolean cacheModel)
+	private boolean isConsistent(Collection<ATermAppl> individualsParam, ATermAppl cParam, final boolean cacheModel)
 	{
+		Collection<ATermAppl> individuals = individualsParam;
+		ATermAppl c = cParam;
+
 		final Timer t = _kb.timers.startTimer("isConsistent");
 
 		if (_logger.isLoggable(Level.FINE))
@@ -1621,8 +1626,11 @@ public class ABoxImpl implements ABox
 	}
 
 	@Override
-	public void addType(final ATermAppl x, ATermAppl c, DependencySet ds)
+	public void addType(final ATermAppl x, ATermAppl cParam, DependencySet dsParam)
 	{
+		ATermAppl c = cParam;
+		DependencySet ds = dsParam;
+
 		c = ATermUtils.normalize(c);
 
 		// when a type is being added to
@@ -1648,8 +1656,10 @@ public class ABoxImpl implements ABox
 	}
 
 	@Override
-	public Edge addEdge(final ATermAppl p, final ATermAppl s, final ATermAppl o, DependencySet ds)
+	public Edge addEdge(final ATermAppl p, final ATermAppl s, final ATermAppl o, DependencySet dsParam)
 	{
+		DependencySet ds = dsParam;
+
 		final Role role = getRole(p);
 		Individual subj = getIndividual(s);
 		Node obj = getNode(o);
@@ -1703,10 +1713,10 @@ public class ABoxImpl implements ABox
 	}
 
 	/**
-	 * Remove the given _node from the _node map which maps names to _nodes. Does not remove the _node from the _node list or other _nodes' edge lists.
+	 * Remove the given node from the node map which maps names to nodes. Does not remove the node from the node list or other nodes' edge lists.
 	 *
-	 * @param x
-	 * @return
+	 * @param x is a node.
+	 * @return true if something have been remove. false if there was nothing to remove.
 	 */
 	@Override
 	public boolean removeNode(final ATermAppl x)
@@ -1717,10 +1727,7 @@ public class ABoxImpl implements ABox
 	@Override
 	public void removeType(final ATermAppl x, ATermAppl c)
 	{
-		c = ATermUtils.normalize(c);
-
-		final Node node = getNode(x);
-		node.removeType(c);
+		getNode(x).removeType(ATermUtils.normalize(c));
 	}
 
 	/**
@@ -2391,63 +2398,66 @@ public class ABoxImpl implements ABox
 	}
 
 	/**
-	 * Print the ABox as a completion tree (child _nodes are indented).
+	 * Print the ABox as a completion tree (child nodes are indented).
+	 * 
+	 * @param stream is where to print
 	 */
 	@Override
-	public void printTree()
+	public void printTree(PrintStream stream)
 	{
 		if (!OpenlletOptions.PRINT_ABOX)
 			return;
-		System.err.println("PRINTING... " + DependencySet.INDEPENDENT);
+		stream.println("PRINTING... " + DependencySet.INDEPENDENT);
 		final Iterator<Node> n = _nodes.values().iterator();
 		while (n.hasNext())
 		{
 			final Node node = n.next();
 			if (!node.isRoot() || node instanceof Literal)
 				continue;
-			printNode((Individual) node, new HashSet<Individual>(), "   ");
+			printNode(stream, (Individual) node, new HashSet<Individual>(), "   ");
 		}
 	}
 
 	/**
-	 * Print the _node in the completion tree.
+	 * Print the node in the completion tree.
 	 *
-	 * @param _node
+	 * @param stream
+	 * @param node
 	 * @param printed
-	 * @param indent
+	 * @param indentLvl
 	 */
-	private void printNode(final Individual node, final Set<Individual> printed, String indent)
+	private void printNode(PrintStream stream, final Individual node, final Set<Individual> printed, String indentLvl)
 	{
 		final boolean printOnlyName = (node.isNominal() && !printed.isEmpty());
 
-		System.err.print(node);
+		stream.print(node);
 		if (!printed.add(node))
 		{
-			System.err.println();
+			stream.println();
 			return;
 		}
 		if (node.isMerged())
 		{
-			System.err.println(" -> " + node.getMergedTo() + " " + node.getMergeDependency(false));
+			stream.println(" -> " + node.getMergedTo() + " " + node.getMergeDependency(false));
 			return;
 		}
 		else
 			if (node.isPruned())
-				throw new InternalReasonerException("Pruned _node: " + node);
+				throw new InternalReasonerException("Pruned node: " + node);
 
-		System.err.print(" = ");
+		stream.print(" = ");
 		for (int i = 0; i < Node.TYPES; i++)
 			for (final ATermAppl c : node.getTypes(i))
 			{
-				System.err.print(ATermUtils.toString(c));
-				System.err.print(", ");
+				stream.print(ATermUtils.toString(c));
+				stream.print(", ");
 			}
-		System.err.println(node.getDifferents());
+		stream.println(node.getDifferents());
 
 		if (printOnlyName)
 			return;
 
-		indent += "  ";
+		final String indent = indentLvl + "  ";
 		final Iterator<Edge> i = node.getOutEdges().iterator();
 		while (i.hasNext())
 		{
@@ -2455,18 +2465,18 @@ public class ABoxImpl implements ABox
 			final Node succ = edge.getTo();
 			final EdgeList edges = node.getEdgesTo(succ);
 
-			System.err.print(indent + "[");
+			stream.print(indent + "[");
 			for (int e = 0; e < edges.size(); e++)
 			{
 				if (e > 0)
-					System.err.print(", ");
-				System.err.print(edges.edgeAt(e).getRole());
+					stream.print(", ");
+				stream.print(edges.edgeAt(e).getRole());
 			}
-			System.err.print("] ");
+			stream.print("] ");
 			if (succ instanceof Individual)
-				printNode((Individual) succ, printed, indent);
+				printNode(stream, (Individual) succ, printed, indent);
 			else
-				System.err.println(" (Literal) " + ATermUtils.toString(succ.getName()) + " " + ATermUtils.toString(succ.getTypes()));
+				stream.println(" (Literal) " + ATermUtils.toString(succ.getName()) + " " + ATermUtils.toString(succ.getTypes()));
 		}
 	}
 

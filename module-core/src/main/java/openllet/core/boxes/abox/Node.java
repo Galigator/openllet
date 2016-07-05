@@ -477,8 +477,10 @@ public abstract class Node
 		return restored;
 	}
 
-	public void addType(final ATermAppl c, DependencySet ds)
+	public void addType(final ATermAppl c, DependencySet dsParam)
 	{
+		DependencySet ds = dsParam;
+
 		if (isPruned())
 			throw new InternalReasonerException("Adding type to a pruned _node " + this + " " + c);
 		else
@@ -865,8 +867,9 @@ public abstract class Node
 		return _differents.get(node);
 	}
 
-	public boolean setDifferent(final Node node, DependencySet ds)
+	public boolean setDifferent(final Node node, DependencySet dsParam)
 	{
+		DependencySet ds = dsParam;
 
 		// add to effected list
 		if (_abox.getBranch() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)

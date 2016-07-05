@@ -14,9 +14,6 @@ import openllet.core.boxes.rbox.Role;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
  * Description: Represent the cached information for a concept or an _individual. For concepts this represents the root _node of the tableau completion graph
  * built to check the satisfiability of the concept. For individuals, this is the _individual itself ({@link Individual} implements this interface}. The cached
  * _node for concepts may be incomplete if the satisfiability status was cached when the satisfiability of another concept was being computed. Incomplete cached
@@ -76,8 +73,8 @@ public interface CachedNode
 	public EdgeList getInEdges();
 
 	/**
-	 * Checks if this _node is connected to another _node with the given role (or one of its subproperties). The _node may have an incoming edge with the inverse
-	 * of this role which would count as an r-_neighbor.
+	 * Checks if this _node is connected to another _node with the given role (or one of its subproperties). The _node may have an incoming edge with the
+	 * inverse of this role which would count as an r-_neighbor.
 	 *
 	 * @return Outgoing edges of this _node
 	 */

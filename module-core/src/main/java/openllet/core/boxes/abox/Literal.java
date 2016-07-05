@@ -183,8 +183,10 @@ public class Literal extends Node
 	}
 
 	@Override
-	public boolean hasType(ATerm type)
+	public boolean hasType(ATerm typeParam)
 	{
+		ATerm type = typeParam;
+
 		if (type instanceof ATermAppl)
 		{
 			final ATermAppl a = (ATermAppl) type;

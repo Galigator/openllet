@@ -14,9 +14,6 @@ import openllet.core.boxes.rbox.Role;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
  * Description: Represents a cached _node that is used in different KBs.
  * </p>
  * <p>

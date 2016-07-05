@@ -38,9 +38,6 @@ import openllet.shared.tools.Log;
  * Title: Implementation of TBox interface to generate explanations efficiently and correctly.
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>

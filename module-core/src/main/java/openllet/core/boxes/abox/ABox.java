@@ -1,5 +1,6 @@
 package openllet.core.boxes.abox;
 
+import java.io.PrintStream;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -353,9 +354,16 @@ public interface ABox extends Logging
 	public void validate(final Individual node);
 
 	/**
-	 * Print the ABox as a completion tree (child _nodes are indented).
+	 * Print the ABox as a completion tree (child nodes are indented).
+	 * 
+	 * @param stream is where to print
 	 */
-	public void printTree();
+	public void printTree(PrintStream stream);
+
+	default void printTree()
+	{
+		printTree(System.err);
+	}
 
 	public Clash getLastClash();
 

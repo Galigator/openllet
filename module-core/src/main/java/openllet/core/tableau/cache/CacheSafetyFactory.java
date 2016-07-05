@@ -11,12 +11,6 @@ import openllet.core.expressivity.Expressivity;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2009
  * </p>
  * <p>
@@ -29,8 +23,15 @@ public class CacheSafetyFactory
 {
 	public static CacheSafety createCacheSafety(final Expressivity expr)
 	{
-		final CacheSafety cacheSafety = expr.hasInverse() ? expr.hasNominal() ? CacheSafetyNeverSafe.getInstance() : OpenlletOptions.USE_INVERSE_CACHING ? new CacheSafetyDynamic(expr) : CacheSafetyNeverSafe.getInstance() : expr.hasNominal() ? CacheSafetyNeverSafe.getInstance() : CacheSafetyAlwaysSafe.getInstance();
-
-		return cacheSafety;
+		return expr.hasInverse()
+				? expr.hasNominal() ? //
+						CacheSafetyNeverSafe.getInstance() : // 
+						OpenlletOptions.USE_INVERSE_CACHING ? // 
+								new CacheSafetyDynamic(expr) : // 
+								CacheSafetyNeverSafe.getInstance()
+				: // 
+				expr.hasNominal() ? // 
+						CacheSafetyNeverSafe.getInstance() : //
+						CacheSafetyAlwaysSafe.getInstance();
 	}
 }

@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.aterm.ATermAppl;
 import openllet.core.utils.ATermUtils;
@@ -25,12 +24,6 @@ import openllet.core.utils.iterator.IteratorUtils;
 import openllet.shared.tools.Log;
 
 /**
- * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
  * <p>
  * Copyright: Copyright (c) 2009
  * </p>
@@ -63,22 +56,6 @@ public class PrimitiveTBox
 		return _definitions.get(concept);
 	}
 
-	//	public boolean add(ATermAppl axiom, Set<ATermAppl> clashExplanation) {
-	//		boolean added = false;
-	//		
-	//		if( axiom.getAFun().equals( ATermUtils.EQCLASSFUN ) ) {
-	//			ATermAppl c1 = (ATermAppl) axiom.getArgument( 0 );
-	//			ATermAppl c2 = (ATermAppl) axiom.getArgument( 1 );
-	//		
-	//			added = addDefinition( c1, c2, clashExplanation );
-	//			if( !added ) {
-	//				added = addDefinition( c2, c1, clashExplanation );
-	//			}			
-	//		}
-	//		
-	//		return added;
-	//	}
-
 	public boolean add(final ATermAppl concept, final ATermAppl definition, final Set<ATermAppl> explanation)
 	{
 		if (!ATermUtils.isPrimitive(concept) || contains(concept))
@@ -103,13 +80,8 @@ public class PrimitiveTBox
 
 	protected void addDefinition(final ATermAppl concept, ATermAppl definition, final Set<ATermAppl> explanation)
 	{
-		definition = ATermUtils.normalize(definition);
-
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Def: " + ATermUtils.toString(concept) + " = " + ATermUtils.toString(definition));
-
-		_definitions.put(concept, Unfolding.create(definition, explanation));
-
+		_logger.fine(() -> "Def: " + ATermUtils.toString(concept) + " = " + ATermUtils.toString(definition));
+		_definitions.put(concept, Unfolding.create(ATermUtils.normalize(definition), explanation));
 	}
 
 	protected boolean findTarget(final ATermAppl term, final ATermAppl target, final Set<ATermAppl> seen)

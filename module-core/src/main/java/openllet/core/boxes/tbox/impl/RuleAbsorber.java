@@ -36,12 +36,6 @@ import openllet.core.utils.Namespaces;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2009
  * </p>
  * <p>
@@ -54,16 +48,14 @@ public class RuleAbsorber
 {
 	public static final Logger log = TBoxBase._logger;
 
-	public static final Map<ATermAppl, String> FACETS;
+	public static final Map<ATermAppl, String> FACETS = new HashMap<>();
 	static
 	{
-		FACETS = new HashMap<>();
 		FACETS.put(Facet.XSD.MIN_INCLUSIVE.getName(), Namespaces.SWRLB + "greaterThanOrEqual");
 		FACETS.put(Facet.XSD.MIN_EXCLUSIVE.getName(), Namespaces.SWRLB + "greaterThan");
 		FACETS.put(Facet.XSD.MAX_INCLUSIVE.getName(), Namespaces.SWRLB + "lessThanOrEqual");
 		FACETS.put(Facet.XSD.MAX_EXCLUSIVE.getName(), Namespaces.SWRLB + "lessThan");
 	}
-
 	private final KnowledgeBase _kb;
 	private final TuBox _Tu;
 
@@ -115,8 +107,10 @@ public class RuleAbsorber
 		return true;
 	}
 
-	protected int processClass(final AtomIObject var, final ATermAppl c, final List<RuleAtom> atoms, int varCount)
+	protected int processClass(final AtomIObject var, final ATermAppl c, final List<RuleAtom> atoms, int varCountInit)
 	{
+		int varCount = varCountInit;
+
 		final AFun afun = c.getAFun();
 		if (afun.equals(ATermUtils.ANDFUN))
 			for (ATermList list = (ATermList) c.getArgument(0); !list.isEmpty(); list = list.getNext())

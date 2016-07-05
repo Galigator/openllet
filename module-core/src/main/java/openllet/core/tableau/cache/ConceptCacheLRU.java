@@ -35,8 +35,8 @@ import openllet.core.utils.ATermUtils;
  */
 public class ConceptCacheLRU extends AbstractConceptCache
 {
-	private Map<ATermAppl, CachedNode> primitive;
-	private LinkedHashMap<ATermAppl, CachedNode> nonPrimitive;
+	private Map<ATermAppl, CachedNode> _primitive;
+	private LinkedHashMap<ATermAppl, CachedNode> _nonPrimitive;
 
 	private CacheSafety cacheSafety;
 
@@ -61,8 +61,8 @@ public class ConceptCacheLRU extends AbstractConceptCache
 
 		cacheSafety = CacheSafetyFactory.createCacheSafety(kb.getExpressivity());
 
-		primitive = new HashMap<>();
-		nonPrimitive = new LinkedHashMap<ATermAppl, CachedNode>(16, 0.75f, true)
+		_primitive = new HashMap<>();
+		_nonPrimitive = new LinkedHashMap<ATermAppl, CachedNode>(16, 0.75f, true)
 		{
 			/**
 			 * TODO
@@ -74,7 +74,7 @@ public class ConceptCacheLRU extends AbstractConceptCache
 			@Override
 			protected boolean removeEldestEntry(final Map.Entry<ATermAppl, CachedNode> eldest)
 			{
-				return nonPrimitive.size() > getMaxSize();
+				return _nonPrimitive.size() > getMaxSize();
 			}
 		};
 	}
@@ -88,54 +88,49 @@ public class ConceptCacheLRU extends AbstractConceptCache
 	@Override
 	public void clear()
 	{
-		primitive.clear();
-		nonPrimitive.clear();
+		_primitive.clear();
+		_nonPrimitive.clear();
 	}
 
 	@Override
 	public boolean containsKey(final Object key)
 	{
-		if (primitive.containsKey(key) || nonPrimitive.containsKey(key))
-			return true;
-		return false;
+		return _primitive.containsKey(key) || _nonPrimitive.containsKey(key);
 	}
 
 	@Override
 	public boolean containsValue(final Object value)
 	{
-		if (primitive.containsValue(value) || nonPrimitive.containsValue(value))
-			return true;
-		return false;
+		return _primitive.containsValue(value) || _nonPrimitive.containsValue(value);
 	}
 
 	@Override
 	public Set<java.util.Map.Entry<ATermAppl, CachedNode>> entrySet()
 	{
-		Set<java.util.Map.Entry<ATermAppl, CachedNode>> returnSet;
-		returnSet = new HashSet<>(primitive.entrySet());
-		returnSet.addAll(nonPrimitive.entrySet());
+		final Set<java.util.Map.Entry<ATermAppl, CachedNode>> returnSet = new HashSet<>(_primitive.entrySet());
+		returnSet.addAll(_nonPrimitive.entrySet());
 		return returnSet;
 	}
 
 	@Override
 	public CachedNode get(final Object key)
 	{
-		if (primitive.containsKey(key))
-			return primitive.get(key);
-		return nonPrimitive.get(key);
+		if (_primitive.containsKey(key))
+			return _primitive.get(key);
+		return _nonPrimitive.get(key);
 	}
 
 	@Override
 	public boolean isEmpty()
 	{
-		return primitive.isEmpty() && nonPrimitive.isEmpty();
+		return _primitive.isEmpty() && _nonPrimitive.isEmpty();
 	}
 
 	@Override
 	public Set<ATermAppl> keySet()
 	{
-		final Set<ATermAppl> keys = new HashSet<>(primitive.keySet());
-		keys.addAll(nonPrimitive.keySet());
+		final Set<ATermAppl> keys = new HashSet<>(_primitive.keySet());
+		keys.addAll(_nonPrimitive.keySet());
 		return keys;
 	}
 
@@ -144,13 +139,13 @@ public class ConceptCacheLRU extends AbstractConceptCache
 	{
 		if (ATermUtils.isPrimitiveOrNegated(key))
 		{
-			final CachedNode prev = primitive.put(key, value);
+			final CachedNode prev = _primitive.put(key, value);
 			if (isFull())
-				nonPrimitive.entrySet();
+				_nonPrimitive.entrySet();
 			return prev;
 		}
 
-		return nonPrimitive.put(key, value);
+		return _nonPrimitive.put(key, value);
 	}
 
 	@Override
@@ -163,29 +158,29 @@ public class ConceptCacheLRU extends AbstractConceptCache
 	@Override
 	public CachedNode remove(final Object key)
 	{
-		if (primitive.containsKey(key))
-			return primitive.remove(key);
-		return nonPrimitive.remove(key);
+		if (_primitive.containsKey(key))
+			return _primitive.remove(key);
+		return _nonPrimitive.remove(key);
 	}
 
 	@Override
 	public int size()
 	{
-		return primitive.size() + nonPrimitive.size();
+		return _primitive.size() + _nonPrimitive.size();
 	}
 
 	@Override
 	public Collection<CachedNode> values()
 	{
-		final Set<CachedNode> valueSet = new HashSet<>(primitive.values());
-		valueSet.addAll(nonPrimitive.values());
+		final Set<CachedNode> valueSet = new HashSet<>(_primitive.values());
+		valueSet.addAll(_nonPrimitive.values());
 		return valueSet;
 	}
 
 	@Override
 	public String toString()
 	{
-		return "[Cache size: " + primitive.size() + "," + nonPrimitive.size() + "]";
+		return "[Cache size: " + _primitive.size() + "," + _nonPrimitive.size() + "]";
 	}
 
 }

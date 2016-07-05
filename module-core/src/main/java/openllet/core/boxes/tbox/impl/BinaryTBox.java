@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.aterm.ATermAppl;
 import openllet.core.utils.ATermUtils;
@@ -22,12 +21,6 @@ import openllet.core.utils.iterator.IteratorUtils;
 import openllet.shared.tools.Log;
 
 /**
- * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
  * <p>
  * Copyright: Copyright (c) 2009
  * </p>
@@ -52,15 +45,14 @@ public class BinaryTBox
 
 	public void add(final BinarySet<ATermAppl> set, ATermAppl result, final Set<ATermAppl> explanation)
 	{
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Add sub: (" + ATermUtils.toString(set.first()) + ", " + ATermUtils.toString(set.second()) + ") < " + ATermUtils.toString(result));
+		_logger.fine(() -> "Add sub: (" + ATermUtils.toString(set.first()) + ", " + ATermUtils.toString(set.second()) + ") < " + ATermUtils.toString(result));
 
-		result = ATermUtils.normalize(result);
+		final ATermAppl normalizedResult = ATermUtils.normalize(result);
 
-		_unfoldings.put(set, Unfolding.create(result, explanation));
+		_unfoldings.put(set, Unfolding.create(normalizedResult, explanation));
 
-		addUnfolding(set.first(), set.second(), result, explanation);
-		addUnfolding(set.second(), set.first(), result, explanation);
+		addUnfolding(set.first(), set.second(), normalizedResult, explanation);
+		addUnfolding(set.second(), set.first(), normalizedResult, explanation);
 	}
 
 	private void addUnfolding(final ATermAppl c, final ATermAppl condition, final ATermAppl result, final Set<ATermAppl> explanation)

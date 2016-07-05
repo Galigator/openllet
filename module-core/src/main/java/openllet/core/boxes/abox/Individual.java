@@ -254,8 +254,10 @@ public class Individual extends Node implements CachedNode
 		addType(c, ds, true);
 	}
 
-	void addType(final ATermAppl c, DependencySet ds, final boolean checkForPruned)
+	void addType(final ATermAppl c, DependencySet dsParam, final boolean checkForPruned)
 	{
+		DependencySet ds = dsParam;
+
 		if (checkForPruned)
 		{
 			if (isPruned())
@@ -1059,8 +1061,9 @@ public class Individual extends Node implements CachedNode
 			outEdges.addEdge(edge);
 	}
 
-	public Edge addEdge(final Role r, final Node x, DependencySet ds)
+	public Edge addEdge(final Role r, final Node x, DependencySet dsParam)
 	{
+		DependencySet ds = dsParam;
 
 		// add these _nodes to the effected list
 		if (_abox.getBranch() > 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)

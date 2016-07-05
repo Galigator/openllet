@@ -9,6 +9,7 @@ package openllet.core.tableau.cache;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
 import openllet.core.OpenlletOptions;
@@ -19,12 +20,8 @@ import openllet.core.boxes.abox.Node;
 import openllet.core.boxes.rbox.Role;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.CollectionUtils;
-import java.util.Set;
 
 /**
- * <p>
- * Title:
- * </p>
  * <p>
  * Description: A _node cached as the result of satisfiability checking for a concept.
  * </p>
@@ -122,16 +119,16 @@ public class CachedConceptNode implements CachedNode
 	private EdgeList copyEdgeList(final Individual node, final boolean out)
 	{
 		final EdgeList edgeList = out ? node.getOutEdges() : node.getInEdges();
-				final EdgeList cachedEdges = new EdgeList(edgeList.size());
-				for (final Edge edge : edgeList)
+		final EdgeList cachedEdges = new EdgeList(edgeList.size());
+		for (final Edge edge : edgeList)
 		{
-					final Edge cachedEdge = out ? new CachedOutEdge(edge) : new CachedInEdge(edge);
-							cachedEdges.addEdge(cachedEdge);
+			final Edge cachedEdge = out ? new CachedOutEdge(edge) : new CachedInEdge(edge);
+			cachedEdges.addEdge(cachedEdge);
 
 			if (OpenlletOptions.CHECK_NOMINAL_EDGES)
 			{
-								final Node neighbor = edge.getNeighbor(node);
-								final Map<Node, DependencySet> mergedNodes = neighbor.getAllMerged();
+				final Node neighbor = edge.getNeighbor(node);
+				final Map<Node, DependencySet> mergedNodes = neighbor.getAllMerged();
 				final DependencySet edgeDepends = edge.getDepends();
 				for (final Entry<Node, DependencySet> entry : mergedNodes.entrySet())
 				{
@@ -145,7 +142,7 @@ public class CachedConceptNode implements CachedNode
 						cachedEdges.addEdge(e);
 					}
 				}
-							}
+			}
 		}
 
 		return cachedEdges;

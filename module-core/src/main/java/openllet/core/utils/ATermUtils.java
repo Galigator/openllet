@@ -1316,7 +1316,7 @@ public class ATermUtils
 	 * </ul>
 	 *
 	 * @param term
-	 * @return
+	 * @return the term normalized
 	 */
 	public static ATermAppl normalize(final ATermAppl term)
 	{
