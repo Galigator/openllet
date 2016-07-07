@@ -45,6 +45,11 @@ public class OWLWGTestCase
 	@Rule
 	public Timeout timeout = new Timeout(10, TimeUnit.SECONDS);
 
+	/**
+	 * The dockerVM that run Travis is this time slow my i5-3570K
+	 */
+	private static final long _travisLowSpeed = 7;
+
 	public static List<String> _failingTests = //
 			Stream.of(//
 					// G1
@@ -125,7 +130,7 @@ public class OWLWGTestCase
 		{
 			KnowledgeBase._logger.setLevel(Level.WARNING);
 
-			final Collection<TestRunResult> results = (new PelletOA3TestRunner()).run(_test, 1 * 1000); // One second of timeout : really enough if every thing work well.
+			final Collection<TestRunResult> results = (new PelletOA3TestRunner()).run(_test, 1 * 1000 * _travisLowSpeed); // One second of timeout : really enough if every thing work well.
 			for (final TestRunResult result : results)
 			{
 				final RunResultType resultType = result.getResultType();
