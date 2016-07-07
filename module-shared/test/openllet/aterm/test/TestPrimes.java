@@ -40,7 +40,7 @@ public class TestPrimes
 
 	private ATermFactory factory;
 
-	void assertTrue(boolean condition)
+	void assertTrue(final boolean condition)
 	{
 		if (!condition) { throw new AssertionError("assertion failed."); }
 	}
@@ -48,10 +48,10 @@ public class TestPrimes
 	@Before
 	public void setUp()
 	{
-		this.factory = new PureFactory();
+		factory = new PureFactory();
 	}
 
-	public final static void main(String[] args)
+	public final static void main(final String[] args)
 	{
 		final TestPrimes t = newTestPrimes(new PureFactory());
 
@@ -65,7 +65,7 @@ public class TestPrimes
 		assertTrue(getPrimes(500).getLength() == 96);
 	}
 
-	public static TestPrimes newTestPrimes(ATermFactory factory)
+	public static TestPrimes newTestPrimes(final ATermFactory factory)
 	{
 		final TestPrimes t = new TestPrimes();
 		t.factory = factory;
@@ -74,11 +74,11 @@ public class TestPrimes
 
 	/**
 	 * Compute the list of primes.
-	 * 
+	 *
 	 * @param max
 	 * @return List of primes.
 	 */
-	public ATermList getPrimes(int max)
+	public ATermList getPrimes(final int max)
 	{
 		ATermList primes;
 		primes = generateNumbers(max);
@@ -88,11 +88,11 @@ public class TestPrimes
 
 	/**
 	 * Generate a list of consecutive numbers.
-	 * 
+	 *
 	 * @param max
 	 * @return list of generated numbers.
 	 */
-	private ATermList generateNumbers(int max)
+	private ATermList generateNumbers(final int max)
 	{
 		ATermList numbers = factory.makeList();
 		for (int i = max; i > 0; i--)
@@ -102,12 +102,14 @@ public class TestPrimes
 
 	/**
 	 * Filter non-primes
-	 * 
+	 *
 	 * @param numbers
 	 * @return List of primes.
 	 */
-	private ATermList filterNonPrimes(ATermList numbers)
+	private ATermList filterNonPrimes(final ATermList listOfnumbers)
 	{
+		ATermList numbers = listOfnumbers;
+
 		ATermList primes = factory.makeList();
 		numbers = numbers.getNext();
 		while (!numbers.isEmpty())
@@ -121,13 +123,14 @@ public class TestPrimes
 
 	/**
 	 * Filter multiples of n.
-	 * 
+	 *
 	 * @param n
 	 * @param numbers
 	 * @return List from which the multiples of n are filtered out.
 	 */
-	private static ATermList filterMultiples(int n, ATermList numbers)
+	private static ATermList filterMultiples(final int n, final ATermList listOfnumbers)
 	{
+		ATermList numbers = listOfnumbers;
 		int nr, len = numbers.getLength();
 
 		for (int i = 0; i < len; i++)

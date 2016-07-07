@@ -10,7 +10,11 @@ import java.util.Arrays;
  */
 final class ObjectProfileNode extends AbstractProfileNode
 {
-	// public: ................................................................    
+	public final ILink _link;
+	public final Object _obj;
+	public int _refcount;
+	public AbstractShellProfileNode _shell;
+	public IObjectProfileNode[] _children;
 
 	@Override
 	public Object object()
@@ -60,10 +64,6 @@ final class ObjectProfileNode extends AbstractProfileNode
 
 		return false;
 	}
-
-	// protected: .............................................................
-
-	// package: ...............................................................
 
 	/*
 	 * This method manages the vector in m_children field for an unfinished _node.
@@ -119,14 +119,4 @@ final class ObjectProfileNode extends AbstractProfileNode
 		_refcount = 1;
 		_children = EMPTY_OBJECTPROFILENODE_ARRAY;
 	}
-
-	final ILink _link;
-	final Object _obj;
-	int _refcount;
-	AbstractShellProfileNode _shell;
-	IObjectProfileNode[] _children;
-
-	// private: ...............................................................
-
-} // _end of class
-// ----------------------------------------------------------------------------
+}

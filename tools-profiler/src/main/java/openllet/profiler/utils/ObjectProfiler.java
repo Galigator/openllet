@@ -21,7 +21,7 @@ import java.util.WeakHashMap;
  * <P>
  * Security: this implementation uses AccessController.doPrivileged() so it could be granted privileges to access non-public class fields separately from your
  * main application code. The minimum set of persmissions necessary for this class to function correctly follows:
- * 
+ *
  * <pre>
  *      permission java.lang.RuntimePermission "accessDeclaredMembers";
  *      permission java.lang.reflect.ReflectPermission "suppressAccessChecks";
@@ -55,7 +55,7 @@ public abstract class ObjectProfiler
 	public static final boolean SHORT_TYPE_NAMES = false;
 
 	/**
-	 * If this is 'true', _node names will use short class names for common classes in java.lang.* and java.util.*, regardless of {@link #SHORT_TYPE_NAMES}
+	 * If this is 'true', node names will use short class names for common classes in java.lang.* and java.util.*, regardless of {@link #SHORT_TYPE_NAMES}
 	 * setting.
 	 */
 	public static final boolean SHORT_COMMON_TYPE_NAMES = true;
@@ -64,7 +64,7 @@ public abstract class ObjectProfiler
 	 * Estimates the full size of the object graph rooted at 'obj'. Duplicate _data instances are correctly accounted for. The implementation is not recursive.
 	 * <P>
 	 * Invariant: sizeof(obj) == profile(obj).size() if 'obj' is not null
-	 * 
+	 *
 	 * @param obj input object instance to be measured
 	 * @return 'obj' size [0 if 'obj' is null']
 	 */
@@ -94,7 +94,7 @@ public abstract class ObjectProfiler
 	/**
 	 * Estimates the full size of the object graph rooted at 'obj' by pre-populating the "visited" set with the object graph rooted at 'base'. The net effect is
 	 * to compute the size of 'obj' by summing over all instance _data contained in 'obj' but not in 'base'.
-	 * 
+	 *
 	 * @param base graph boundary [may not be null]
 	 * @param obj input object instance to be measured
 	 * @return 'obj' size [0 if 'obj' is null']
@@ -115,7 +115,7 @@ public abstract class ObjectProfiler
 	/**
 	 * Creates a spanning tree representation for instance _data contained in 'obj'. The tree is produced using bread-first traversal over the full object graph
 	 * implied by non-null instance and array references originating in 'obj'.
-	 * 
+	 *
 	 * @see IObjectProfileNode
 	 * @param obj input object instance to be profiled [may not be null]
 	 * @return the profile tree root _node [never null]
@@ -154,7 +154,7 @@ public abstract class ObjectProfiler
 		return typeName(field.getDeclaringClass(), shortClassNames).concat("#").concat(field.getName());
 	}
 
-	public static String typeName(Class<?> clsParam, final boolean shortClassNames)
+	public static String typeName(final Class<?> clsParam, final boolean shortClassNames)
 	{
 		Class<?> cls = clsParam;
 		int dims = 0;
@@ -196,6 +196,10 @@ public abstract class ObjectProfiler
 	 */
 	private static final class ClassMetadata
 	{
+		public final int _primitiveFieldCount;
+		public final int _shellSize; // class shell size
+		public final Field[] _refFields; // cached non-static fields (made accessible)
+
 		ClassMetadata(final int primitiveFieldCount, final int shellSize, final Field[] refFields)
 		{
 			_primitiveFieldCount = primitiveFieldCount;
@@ -204,11 +208,6 @@ public abstract class ObjectProfiler
 		}
 
 		// all fields are inclusive of superclasses:
-
-		final int _primitiveFieldCount;
-		final int _shellSize; // class shell size
-		final Field[] _refFields; // cached non-static fields (made accessible)
-
 	} // _end of nested class
 
 	private static final class ClassAccessPrivilegedAction implements PrivilegedExceptionAction<Object>
@@ -254,7 +253,7 @@ public abstract class ObjectProfiler
 	/*
 	 * The main worker method for sizeof() and sizedelta().
 	 */
-	private static int computeSizeof(Object objParam, final IdentityHashMap<Object, Object> visited, final Map /* Class->ClassMetadata */<Class<?>, ClassMetadata> metadataMap)
+	private static int computeSizeof(final Object objParam, final IdentityHashMap<Object, Object> visited, final Map /* Class->ClassMetadata */<Class<?>, ClassMetadata> metadataMap)
 	{
 		Object obj = objParam;
 		// this uses _depth-first traversal; the exact graph traversal algorithm
@@ -293,17 +292,17 @@ public abstract class ObjectProfiler
 					// traverse each array slot:
 					for (int i = 0; i < arrayLength; ++i)
 					{
-						final Object ref = Array.get(obj, i);
+					final Object ref = Array.get(obj, i);
 
-						if ((ref != null) && !visited.containsKey(ref))
-						{
-							visited.put(ref, ref);
-							queue.addFirst(ref);
-						}
+					if ((ref != null) && !visited.containsKey(ref))
+					{
+					visited.put(ref, ref);
+					queue.addFirst(ref);
+					}
 					}
 			}
 			else
-				// the object is of a non-array type
+			// the object is of a non-array type
 			{
 				final ClassMetadata metadata = getClassMetadata(objClass, metadataMap, caAction, faAction);
 				final Field[] fields = metadata._refFields;
@@ -316,7 +315,7 @@ public abstract class ObjectProfiler
 				{
 					final Object ref;
 					try
-					// to get the field value: 
+					// to get the field value:
 					{
 						ref = field.get(obj);
 					}
@@ -341,7 +340,7 @@ public abstract class ObjectProfiler
 	 * Performs phase 1 of profile creation: bread-first traversal and _node
 	 * creation.
 	 */
-	private static ObjectProfileNode createProfileTree(Object objParam, final IdentityHashMap<Object, ObjectProfileNode> visited, final Map /* Class->ClassMetadata */<Class<?>, ClassMetadata> metadataMap)
+	private static ObjectProfileNode createProfileTree(final Object objParam, final IdentityHashMap<Object, ObjectProfileNode> visited, final Map /* Class->ClassMetadata */<Class<?>, ClassMetadata> metadataMap)
 	{
 		Object obj = objParam;
 
@@ -378,26 +377,26 @@ public abstract class ObjectProfiler
 					// traverse each array slot:
 					for (int i = 0; i < arrayLength; ++i)
 					{
-						final Object ref = Array.get(obj, i);
+					final Object ref = Array.get(obj, i);
 
-						if (ref != null)
-						{
-							ObjectProfileNode child = visited.get(ref);
-							if (child != null)
-								++child._refcount;
-							else
-							{
-								child = new ObjectProfileNode(node, ref, new ArrayIndexLink(node._link, i));
-								node.addFieldRef(child);
+					if (ref != null)
+					{
+					ObjectProfileNode child = visited.get(ref);
+					if (child != null)
+					++child._refcount;
+					else
+					{
+					child = new ObjectProfileNode(node, ref, new ArrayIndexLink(node._link, i));
+					node.addFieldRef(child);
 
-								queue.addLast(child);
-								visited.put(ref, child);
-							}
-						}
+					queue.addLast(child);
+					visited.put(ref, child);
+					}
+					}
 					}
 			}
 			else
-				// the object is of a non-array type
+			// the object is of a non-array type
 			{
 				final ClassMetadata metadata = getClassMetadata(objClass, metadataMap, caAction, faAction);
 				final Field[] fields = metadata._refFields;
@@ -414,7 +413,7 @@ public abstract class ObjectProfiler
 				{
 					final Object ref;
 					try
-					// to get the field value: 
+					// to get the field value:
 					{
 						ref = field.get(obj);
 					}
@@ -449,7 +448,7 @@ public abstract class ObjectProfiler
 	 * non-recursive post-_order traversal of the tree created in phase 1)
 	 * and 'locking down' of profile _nodes into their most compact form.
 	 */
-	private static void finishProfileTree(ObjectProfileNode nodeParam)
+	private static void finishProfileTree(final ObjectProfileNode nodeParam)
 	{
 		ObjectProfileNode node = nodeParam;
 		final LinkedList<IObjectProfileNode> queue = new LinkedList<>();
@@ -531,14 +530,14 @@ public abstract class ObjectProfiler
 				// prepare for graph traversal later:
 				if (!field.isAccessible())
 					try
-				{
+					{
 						faAction.setContext(field);
 						AccessController.doPrivileged(faAction);
-				}
-				catch (final PrivilegedActionException pae)
-				{
-					throw new RuntimeException("could not make field " + field + " accessible: " + pae.getException());
-				}
+					}
+					catch (final PrivilegedActionException pae)
+					{
+						throw new RuntimeException("could not make field " + field + " accessible: " + pae.getException());
+					}
 
 				// memory alignment ignored:
 				shellSize += OBJREF_SIZE;
@@ -615,4 +614,4 @@ public abstract class ObjectProfiler
 	private static final Map<Class<?>, ClassMetadata> CLASS_METADATA_CACHE = new WeakHashMap<>(101);
 
 } // _end of class
-// ----------------------------------------------------------------------------
+	// ----------------------------------------------------------------------------

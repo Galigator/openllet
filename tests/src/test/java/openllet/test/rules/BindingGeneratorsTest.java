@@ -71,7 +71,7 @@ public class BindingGeneratorsTest
 
 		public BindingToMapIterator(final Iterator<VariableBinding> iter)
 		{
-			this._iter = iter;
+			_iter = iter;
 		}
 
 		@Override
@@ -98,7 +98,7 @@ public class BindingGeneratorsTest
 
 	}
 
-	KnowledgeBase _kb;
+	private KnowledgeBase _kb;
 
 	private static final ATermAppl data1 = ATermUtils.makePlainLiteral("data1"), data2 = ATermUtils.makePlainLiteral("data2"), data3 = ATermUtils.makePlainLiteral("data3"), data4 = ATermUtils.makeTypedLiteral("4", Namespaces.XSD + "decimal"), dp1 = ATermUtils.makeTermAppl("dataProp1"), dp2 = ATermUtils.makeTermAppl("dataProp2"), mary = ATermUtils.makeTermAppl("Mary"), p = ATermUtils.makeTermAppl("p"), robert = ATermUtils.makeTermAppl("Robert"), victor = ATermUtils.makeTermAppl("Victor");
 

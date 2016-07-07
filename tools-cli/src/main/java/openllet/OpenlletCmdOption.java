@@ -208,10 +208,14 @@ public class OpenlletCmdOption
 
 		final OpenlletCmdOption other = (OpenlletCmdOption) o;
 
-		if (((_shortOption == null && other.getShortOption() == null) || (_shortOption != null && _shortOption.equals(other.getShortOption()))) && _longOption.equals(other.getLongOption()) && ((_type == null && other.getType() == null) || (_type != null && _type.equals(other.getType()))) && ((_description == null && other.getDescription() == null) || (_description != null && _description.equals(other.getDescription()))) && _isMandatory == other.isMandatory() && ((_value == null && other.getValue() == null) || (_value != null && _value.equals(other.getValue()))) && ((_defaultValue == null && other.getDefaultValue() == null) || (_defaultValue != null && _defaultValue.equals(other.getDefaultValue()))))
-			return true;
-
-		return false;
+		return (((_shortOption == null && other.getShortOption() == null) || //
+				(_shortOption != null && _shortOption.equals(other.getShortOption())))//
+				&& _longOption.equals(other.getLongOption()) //
+				&& ((_type == null && other.getType() == null) || (_type != null && _type.equals(other.getType()))) //
+				&& ((_description == null && other.getDescription() == null) || (_description != null && _description.equals(other.getDescription()))) //
+				&& _isMandatory == other.isMandatory() //
+				&& ((_value == null && other.getValue() == null) || (_value != null && _value.equals(other.getValue()))) //
+				&& ((_defaultValue == null && other.getDefaultValue() == null) || (_defaultValue != null && _defaultValue.equals(other.getDefaultValue()))));
 	}
 
 	@Override

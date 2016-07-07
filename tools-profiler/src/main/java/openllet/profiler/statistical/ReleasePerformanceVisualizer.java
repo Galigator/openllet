@@ -35,6 +35,11 @@ public class ReleasePerformanceVisualizer extends JFrame
 	private static final long serialVersionUID = 3529811414164984003L;
 	private static String _REPOSITORY;
 
+	private final JPanel _mainPanel;
+	private JPanel _chart;
+	private final MenuPanel _menu;
+	private final ReleaseManager _manager;
+
 	public static void main(final String[] args) throws IOException
 	{
 		final Properties properties = new Properties();
@@ -47,11 +52,6 @@ public class ReleasePerformanceVisualizer extends JFrame
 		RefineryUtilities.centerFrameOnScreen(viz);
 		viz.setVisible(true);
 	}
-
-	private final JPanel _mainPanel;
-	private JPanel _chart;
-	private final MenuPanel _menu;
-	private final ReleaseManager _manager;
 
 	public ReleasePerformanceVisualizer(final String title)
 	{
@@ -142,11 +142,11 @@ public class ReleasePerformanceVisualizer extends JFrame
 	private class MenuPanel extends JPanel
 	{
 		private static final long serialVersionUID = 8213647324959034612L;
-		JComboBox<?> _time;
-		JList<?> _tasks;
-		JComboBox<?> _ontology;
-		JList<?> _releases;
-		JButton _ok;
+		private final JComboBox<?> _time;
+		private final JList<?> _tasks;
+		private final JComboBox<?> _ontology;
+		private final JList<?> _releases;
+		private final JButton _ok;
 
 		public MenuPanel(final ReleaseManager manager)
 		{

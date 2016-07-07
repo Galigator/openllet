@@ -23,13 +23,13 @@ import org.junit.Test;
 
 public class TestQuerySubsumption
 {
-	String ont = "file:test/data/misc/family.owl";
-	String family = "http://www.example.org/family#";
-	String prefix = "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"//
+	private final String ont = "file:test/data/misc/family.owl";
+	private final String family = "http://www.example.org/family#";
+	private final String prefix = "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"//
 			+ "PREFIX family: <" + family + ">\r\n" + "SELECT * { ";
-	String suffix = " }";
-	KnowledgeBase kb;
-	QueryParser parser;
+	private final String suffix = " }";
+	private KnowledgeBase kb;
+	private QueryParser parser;
 
 	@Before
 	public void setUp()

@@ -31,12 +31,6 @@ import org.semanticweb.owlapi.vocab.SWRLBuiltInsVocabulary;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2008
  * </p>
  * <p>
@@ -53,19 +47,15 @@ public class OWLSyntaxChecker
 	 * predicates are stored in the following list so processTriples function
 	 * can ignore the triples with these predicates
 	 */
-	final static Collection<Property> RESTRICTION_PROPS;
-	final static Collection<Resource> DATA_RANGE_FACETS;
-	final static Collection<Resource> SWRL_BUILT_INS;
+	private final static Collection<Property> RESTRICTION_PROPS = Arrays.asList(OWL.onProperty, OWL.hasValue, OWL.allValuesFrom, OWL.someValuesFrom, OWL.minCardinality, OWL2.minQualifiedCardinality, OWL.maxCardinality, OWL2.maxQualifiedCardinality, OWL.cardinality, OWL2.qualifiedCardinality, OWL2.hasSelf);
+	private final static Collection<Resource> DATA_RANGE_FACETS = CollectionUtil.makeSet();
+	private final static Collection<Resource> SWRL_BUILT_INS = CollectionUtil.makeSet();
 
 	static
 	{
-		RESTRICTION_PROPS = Arrays.asList(OWL.onProperty, OWL.hasValue, OWL.allValuesFrom, OWL.someValuesFrom, OWL.minCardinality, OWL2.minQualifiedCardinality, OWL.maxCardinality, OWL2.maxQualifiedCardinality, OWL.cardinality, OWL2.qualifiedCardinality, OWL2.hasSelf);
-
-		DATA_RANGE_FACETS = CollectionUtil.makeSet();
 		for (final Facet v : Facet.XSD.values())
 			DATA_RANGE_FACETS.add(ResourceFactory.createResource(v.getName().getName()));
 
-		SWRL_BUILT_INS = CollectionUtil.makeSet();
 		for (final SWRLBuiltInsVocabulary v : SWRLBuiltInsVocabulary.values())
 			SWRL_BUILT_INS.add(ResourceFactory.createResource(v.getIRI().toString()));
 	}
@@ -932,7 +922,7 @@ public class OWLSyntaxChecker
 
 	/**
 	 * This method isn't implemented.
-	 * 
+	 *
 	 * @param theNode not used.
 	 */
 	private void processWithRestrictionNode(@SuppressWarnings("unused") final RDFNode theNode)
@@ -941,7 +931,7 @@ public class OWLSyntaxChecker
 		/*
 		for now, this will do nothing.
 		The intent here is that theNode is an item from the withRestriction.
-		collection for an owl datatype restriction.  
+		collection for an owl datatype restriction.
 		so we want this to validate that the facet described is valid.
 		 */
 	}

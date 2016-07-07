@@ -169,8 +169,9 @@ public class HashFunctions
 	}
 
 	@SuppressWarnings("incomplete-switch")
-	static public int doobs(final String s, int c)
+	static public int doobs(final String s, final int cBit)
 	{
+		int c = cBit;
 		// o[] = [name,Integer(arity), Boolean(isQuoted)]
 		// o[] = [value,offset,count,Integer(arity), Boolean(isQuoted)]
 
@@ -272,8 +273,10 @@ public class HashFunctions
 		return c;
 	}
 
-	public static int mix(int a, int b, int c)
+	public static int mix(final int aBit, final int bBit, final int cBit)
 	{
+		int a = aBit, b = bBit, c = cBit;
+
 		a -= b;
 		a -= c;
 		a ^= (c >> 13);

@@ -91,7 +91,7 @@ public class Openllet
 
 		final String arg = args[0];
 
-		if (arg.equals("h") || arg.equals("-h") || arg.equals("help") || arg.equals("--help"))
+		if ("h".equals(arg) || "-h".equals(arg) || "help".equals(arg) || "--help".equals(arg))
 		{
 			if (args.length == 1)
 				mainhelp();
@@ -102,7 +102,7 @@ public class Openllet
 			}
 		}
 		else
-			if (arg.equals("--version") || arg.equals("-V"))
+			if ("--version".equals(arg) || "-V".equals(arg))
 				version();
 			else
 			{

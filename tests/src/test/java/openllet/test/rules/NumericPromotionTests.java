@@ -21,9 +21,6 @@ import org.junit.Test;
  * Title: Numeric Promotion Tests
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -49,7 +46,7 @@ public class NumericPromotionTests
 
 		public EqualityAssertion(final Number[] charge)
 		{
-			this._charge = charge;
+			_charge = charge;
 		}
 
 		private void test(final Number[] args)
@@ -133,7 +130,7 @@ public class NumericPromotionTests
 	public void decimalAndDouble()
 	{
 		final double pi = Math.PI;
-		final BigDecimal pidec = new BigDecimal(pi).multiply(new BigDecimal(pi));
+		final BigDecimal pidec = new BigDecimal(Double.toString(pi)).multiply(new BigDecimal(Double.toString(pi)));
 
 		_promoter.promote(pidec, pi);
 		promotionTester(_promoter, pidec.doubleValue(), pi);
