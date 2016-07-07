@@ -49,7 +49,7 @@ public class SWRLAbstract
 		testOWLAPI(url(test + "-premise.rdf"), url(test + "-conclusion.rdf"));
 	}
 
-	private void testJena(final String premiseURI, final String conclusionURI)
+	private static void testJena(final String premiseURI, final String conclusionURI)
 	{
 		final OntModel premise = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
 		premise.read(premiseURI);
@@ -67,7 +67,7 @@ public class SWRLAbstract
 		}
 	}
 
-	private void testOWLAPI(final String premiseURI, final String conclusionURI)
+	private static void testOWLAPI(final String premiseURI, final String conclusionURI)
 	{
 		org.semanticweb.owlapi.model.OWLOntologyManager manager = null;
 
@@ -88,7 +88,7 @@ public class SWRLAbstract
 
 	}
 
-	private String url(final String filename)
+	private static String url(final String filename)
 	{
 		return _base + filename;
 	}

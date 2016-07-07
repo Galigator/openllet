@@ -29,7 +29,7 @@ public class MiscSPARQLDLTest
 	{
 		final String query = "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n" + "PREFIX food: <http://www.w3.org/2001/sw/WebOnt/guide-src/food#> \n" + "PREFIX wine: <http://www.w3.org/2001/sw/WebOnt/guide-src/wine#> \n" +
 
-		"SELECT ?Meal ?WineColor \n" + "WHERE {\n " + "?Meal rdf:type food:MealCourse . \n" + "?Meal food:hasDrink _:Wine . \n" + "_:Wine wine:hasColor ?WineColor }";
+				"SELECT ?Meal ?WineColor \n" + "WHERE {\n " + "?Meal rdf:type food:MealCourse . \n" + "?Meal food:hasDrink _:Wine . \n" + "_:Wine wine:hasColor ?WineColor }";
 		//String ontologyFile = "/test/data/misc/food2.owl";
 		final String ontologyFile = "/test/data/sparqldl-tests/simple/wine.rdf";
 
@@ -63,7 +63,7 @@ public class MiscSPARQLDLTest
 		}
 	}
 
-	private void assertNumberOfResults(final int expected, final ResultSet rs)
+	private static void assertNumberOfResults(final int expected, final ResultSet rs)
 	{
 		int cnt = 0;
 

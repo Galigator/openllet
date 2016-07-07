@@ -352,7 +352,7 @@ public class JenaBasedELClassifier extends RuleBasedELClassifier
 		return makeSubclassFact(_names.get(t1), _names.get(t2));
 	}
 
-	private Triple makeSubclassFact(final Node t1, final Node t2)
+	private static Triple makeSubclassFact(final Node t1, final Node t2)
 	{
 		return Triple.create(t1, PRED_SUB, t2);
 	}
@@ -362,7 +362,7 @@ public class JenaBasedELClassifier extends RuleBasedELClassifier
 		return Triple.create(_names.get(t1), _names.get(t2), _names.get(t3));
 	}
 
-	private TriplePattern makeSubclassTriple(final Node t1, final Node t2)
+	private static TriplePattern makeSubclassTriple(final Node t1, final Node t2)
 	{
 		return new TriplePattern(t1, PRED_SUB, t2);
 	}
@@ -372,12 +372,12 @@ public class JenaBasedELClassifier extends RuleBasedELClassifier
 		return makeSubOfSomeTriple(t1, _names.get(p), t2);
 	}
 
-	private TriplePattern makeSubOfSomeTriple(final Node t1, final Node p, final Node t2)
+	private static TriplePattern makeSubOfSomeTriple(final Node t1, final Node p, final Node t2)
 	{
 		return new TriplePattern(t1, p, t2);
 	}
 
-	private Functor makePropertyAssertionFunctor(final Node p)
+	private static Functor makePropertyAssertionFunctor(final Node p)
 	{
 		final Functor f = new Functor("isNotSubClass", new Node[] { p, PRED_SUB });
 		f.setImplementor(NOT_EQUAL);

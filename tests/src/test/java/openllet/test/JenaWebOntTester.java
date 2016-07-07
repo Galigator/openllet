@@ -97,7 +97,7 @@ public class JenaWebOntTester implements WebOntTester
 		_mapper.addAltEntry(fromURI, toURI);
 	}
 
-	private String fileType(final String fileURI)
+	private static String fileType(final String fileURI)
 	{
 		if (fileURI.endsWith(".n3"))
 			return "N3";

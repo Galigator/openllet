@@ -17,12 +17,12 @@ public class SimpleLogFormatter extends Formatter
 		final String stack = getStackTrace(record.getThrown());
 
 		return "[" + record.getLevel() + " "
-				//				+ className(record.getSourceClassName()) + "."
-				//				+ record.getSourceMethodName() + " - "
+		//				+ className(record.getSourceClassName()) + "."
+		//				+ record.getSourceMethodName() + " - "
 				+ TIME_FORMAT.format(record.getMillis()) + "] " + record.getMessage() + "\n" + stack;
 	}
 
-	private String getStackTrace(final Throwable t)
+	private static String getStackTrace(final Throwable t)
 	{
 		if (t == null)
 			return "";
@@ -33,7 +33,7 @@ public class SimpleLogFormatter extends Formatter
 	}
 
 	@SuppressWarnings("unused")
-	private String className(final String s)
+	private static String className(final String s)
 	{
 		return s.substring(s.lastIndexOf(".") + 1);
 	}

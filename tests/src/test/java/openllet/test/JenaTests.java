@@ -3236,7 +3236,7 @@ public class JenaTests
 
 		final Statement[] stmts = { ResourceFactory.createStatement(a, RDF.type, A), ResourceFactory.createStatement(a, p, b), ResourceFactory.createStatement(a, q, l),
 
-		ResourceFactory.createStatement(a, RDF.type, OWL.Thing), ResourceFactory.createStatement(a, RDF.type, B), ResourceFactory.createStatement(a, OWL.sameAs, a), ResourceFactory.createStatement(a, OWL.sameAs, c) };
+				ResourceFactory.createStatement(a, RDF.type, OWL.Thing), ResourceFactory.createStatement(a, RDF.type, B), ResourceFactory.createStatement(a, OWL.sameAs, a), ResourceFactory.createStatement(a, OWL.sameAs, c) };
 
 		final Model m = ModelFactory.createDefaultModel();
 		m.add(stmts[0]);
@@ -3266,7 +3266,7 @@ public class JenaTests
 		testAutoRealize(false);
 	}
 
-	private void testAutoRealize(final boolean autoRealize)
+	private static void testAutoRealize(final boolean autoRealize)
 	{
 		final Properties newOptions = PropertiesBuilder.singleton("AUTO_REALIZE", String.valueOf(autoRealize));
 		final Properties oldOptions = OpenlletOptions.setOptions(newOptions);

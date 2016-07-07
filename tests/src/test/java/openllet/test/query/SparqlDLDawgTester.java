@@ -47,12 +47,6 @@ import org.apache.jena.sparql.engine.binding.BindingBase;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -86,8 +80,8 @@ public class SparqlDLDawgTester implements SparqlDawgTester
 
 	public SparqlDLDawgTester(final boolean allOrderings, final boolean noCheck)
 	{
-		this._allOrderings = allOrderings;
-		this._noCheck = noCheck;
+		_allOrderings = allOrderings;
+		_noCheck = noCheck;
 	}
 
 	/**
@@ -96,11 +90,11 @@ public class SparqlDLDawgTester implements SparqlDawgTester
 	@Override
 	public void setDatasetURIs(final Set<String> graphURIs, final Set<String> namedGraphURIs)
 	{
-		if (this._graphURIs.equals(graphURIs) && this._namedGraphURIs.equals(namedGraphURIs))
+		if (_graphURIs.equals(graphURIs) && _namedGraphURIs.equals(namedGraphURIs))
 			return;
 
-		this._graphURIs = graphURIs;
-		this._namedGraphURIs = namedGraphURIs;
+		_graphURIs = graphURIs;
+		_namedGraphURIs = namedGraphURIs;
 
 		_model = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
 
@@ -118,13 +112,13 @@ public class SparqlDLDawgTester implements SparqlDawgTester
 	@Override
 	public void setQueryURI(final String queryURI)
 	{
-		if (this._queryURI.equals(queryURI))
+		if (_queryURI.equals(queryURI))
 			return;
 
-		this._queryURI = queryURI;
+		_queryURI = queryURI;
 		final org.apache.jena.query.Query query = QueryFactory.read(queryURI);
 
-		this._query = QueryEngineBuilder.getParser().parse(query.toString(Syntax.syntaxSPARQL), ((PelletInfGraph) _model.getGraph()).getKB());
+		_query = QueryEngineBuilder.getParser().parse(query.toString(Syntax.syntaxSPARQL), ((PelletInfGraph) _model.getGraph()).getKB());
 
 	}
 
@@ -134,7 +128,7 @@ public class SparqlDLDawgTester implements SparqlDawgTester
 	@Override
 	public void setResult(final String resultURI)
 	{
-		this._resultURI = resultURI;
+		_resultURI = resultURI;
 		if (resultURI == null)
 			_noCheck = true;
 	}
@@ -229,7 +223,7 @@ public class SparqlDLDawgTester implements SparqlDawgTester
 		}
 	}
 
-	private QueryResult runSingleTest(final Query query)
+	private static QueryResult runSingleTest(final Query query)
 	{
 		final Timer t = new Timer("Single _query execution");
 
@@ -324,7 +318,7 @@ public class SparqlDLDawgTester implements SparqlDawgTester
 	}
 
 	@SuppressWarnings("unused")
-	private void writeResults(final List<ATermAppl> resultVars, final Collection<ResultBinding> bindingCollection, final FileWriter fwre) throws IOException
+	private static void writeResults(final List<ATermAppl> resultVars, final Collection<ResultBinding> bindingCollection, final FileWriter fwre) throws IOException
 	{
 		for (final ATermAppl var : resultVars)
 			fwre.write(var.getName() + "\t");

@@ -549,7 +549,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 	 * @param moduleTaxonomy Change in _taxonomy state
 	 * @param affected Set of classes affected by changes
 	 */
-	private Taxonomy<OWLClass> updateClassHierarchy(final Taxonomy<OWLClass> taxonomy, final Taxonomy<OWLClass> moduleTaxonomy, final Set<OWLClass> affected)
+	private static Taxonomy<OWLClass> updateClassHierarchy(final Taxonomy<OWLClass> taxonomy, final Taxonomy<OWLClass> moduleTaxonomy, final Set<OWLClass> affected)
 	{
 		final Set<OWLClass> inTaxonomy = new HashSet<>(moduleTaxonomy.getClasses());
 		inTaxonomy.remove(OWL.Thing);
@@ -1258,7 +1258,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 		}
 	}
 
-	private PelletRuntimeException convert(final PelletRuntimeException e) throws InconsistentOntologyException, ReasonerInterruptedException, TimeOutException, FreshEntitiesException
+	private static PelletRuntimeException convert(final PelletRuntimeException e) throws InconsistentOntologyException, ReasonerInterruptedException, TimeOutException, FreshEntitiesException
 	{
 
 		if (e instanceof openllet.core.exceptions.TimeoutException)
@@ -1372,7 +1372,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 		return instances;
 	}
 
-	private Set<OWLNamedIndividual> toOWLNamedIndividuals(final Set<ATermAppl> terms, final OWLDataFactory factory)
+	private static Set<OWLNamedIndividual> toOWLNamedIndividuals(final Set<ATermAppl> terms, final OWLDataFactory factory)
 	{
 		final HashSet<OWLNamedIndividual> result = new HashSet<>();
 
@@ -1389,7 +1389,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 	private static final ATermAppl OWL_THING = ATermUtils.makeTermAppl(Namespaces.OWL + "Thing");
 	private static final ATermAppl OWL_NOTHING = ATermUtils.makeTermAppl(Namespaces.OWL + "Nothing");
 
-	private OWLClass termToOWLClass(final ATermAppl c, final OWLDataFactory factory)
+	private static OWLClass termToOWLClass(final ATermAppl c, final OWLDataFactory factory)
 	{
 		if (c.equals(ATermUtils.TOP))
 			return factory.getOWLThing();
@@ -1406,7 +1406,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 		return null;
 	}
 
-	private OWLNamedIndividual termToOWLNamedIndividual(final ATermAppl c, final OWLDataFactory factory)
+	private static OWLNamedIndividual termToOWLNamedIndividual(final ATermAppl c, final OWLDataFactory factory)
 	{
 		if (!ATermUtils.isBnode(c))
 			return factory.getOWLNamedIndividual(IRI.create(c.getName()));
@@ -1414,7 +1414,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 		return null;
 	}
 
-	private ATermAppl owlClassToTerm(final OWLClass c)
+	private static ATermAppl owlClassToTerm(final OWLClass c)
 	{
 		if (c.isOWLThing())
 			return ATermUtils.TOP;

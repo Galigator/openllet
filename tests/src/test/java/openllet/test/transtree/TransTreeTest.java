@@ -31,7 +31,7 @@ public class TransTreeTest
 				"http://purl.org/vocab/relationship/ancestorOf");
 	}
 
-	private void testProperty(final String ontologyURI, final String propertyURI)
+	private static void testProperty(final String ontologyURI, final String propertyURI)
 	{
 		final OWLAPILoader loader = new OWLAPILoader();
 		final KnowledgeBase kb = loader.createKB(new String[] { ontologyURI });
@@ -52,7 +52,7 @@ public class TransTreeTest
 		testDeprecatedTaxonomy(kb, p);
 	}
 
-	private void testDeprecatedTaxonomy(final KnowledgeBase kb, final ATermAppl p)
+	private static void testDeprecatedTaxonomy(final KnowledgeBase kb, final ATermAppl p)
 	{
 		final PartialOrderTaxonomyBuilder builder = new PartialOrderTaxonomyBuilder(kb, new PartClassesComparator(kb, p));
 		builder.classify();

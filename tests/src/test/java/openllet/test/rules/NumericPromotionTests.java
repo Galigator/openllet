@@ -86,7 +86,7 @@ public class NumericPromotionTests
 
 	}
 
-	private void promotionTester(final NumericPromotion promoter, final Number... results)
+	private static void promotionTester(final NumericPromotion promoter, final Number... results)
 	{
 		promoter.accept(new EqualityAssertion(results));
 	}

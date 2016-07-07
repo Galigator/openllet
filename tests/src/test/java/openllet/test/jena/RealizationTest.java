@@ -57,7 +57,7 @@ public class RealizationTest
 		System.err.println(z.listOntClasses(false).toList());
 	}
 
-	private OntModel loadOntologyModel(final String ontologyPath) throws IOException
+	private static OntModel loadOntologyModel(final String ontologyPath) throws IOException
 	{
 		final OntModel model = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
 		// read the file

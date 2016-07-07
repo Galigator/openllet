@@ -105,12 +105,6 @@ import org.semanticweb.owlapi.search.EntitySearcher;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2008
  * </p>
  * <p>
@@ -165,7 +159,7 @@ public class OWLAPITests extends AbstractOWLAPITests
 		}
 	}
 
-	private void testOWL2Reasoner(final String ns, final OWLReasoner reasoner)
+	private static void testOWL2Reasoner(final String ns, final OWLReasoner reasoner)
 	{
 		final OWLClass C = Class(ns + "C");
 		final OWLClass D = Class(ns + "D");
@@ -498,7 +492,7 @@ public class OWLAPITests extends AbstractOWLAPITests
 		}
 	}
 
-	private void testFamily(final String ns, final OWLReasoner reasoner)
+	private static void testFamily(final String ns, final OWLReasoner reasoner)
 	{
 		final OWLObjectProperty hasBrother = ObjectProperty(ns + "hasBrother");
 		final OWLObjectProperty hasSon = ObjectProperty(ns + "hasSon");
@@ -1286,7 +1280,7 @@ public class OWLAPITests extends AbstractOWLAPITests
 		assertTrue(pellet.getSubClasses(_C, false).nodes().count() == 3); // includes owl:Nothing
 	}
 
-	private PelletReasoner setupReasonerIndividualNodeSetPolicy(final IndividualNodeSetPolicy p)
+	private static PelletReasoner setupReasonerIndividualNodeSetPolicy(final IndividualNodeSetPolicy p)
 	{
 		final OWLAxiom[] axioms = { OWL.classAssertion(_a, _C), OWL.classAssertion(_b, _C), OWL.classAssertion(_c, _C), OWL.sameAs(_a, _b), OWL.differentFrom(_b, _c), OWL.differentFrom(_a, _c) };
 

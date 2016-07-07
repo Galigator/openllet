@@ -46,9 +46,9 @@ import openllet.jena.BuiltinTerm;
 import openllet.jena.JenaUtils;
 import openllet.jena.vocabulary.OWL2;
 import openllet.query.sparqldl.model.Query;
+import openllet.query.sparqldl.model.Query.VarType;
 import openllet.query.sparqldl.model.QueryAtomFactory;
 import openllet.query.sparqldl.model.QueryImpl;
-import openllet.query.sparqldl.model.Query.VarType;
 import openllet.shared.tools.Log;
 import org.apache.jena.graph.Node;
 import org.apache.jena.graph.Triple;
@@ -998,12 +998,12 @@ public class ARQParser implements QueryParser
 		_initialBinding = initialBinding;
 	}
 
-	private void ensureDistinguished(final Node pred)
+	private static void ensureDistinguished(final Node pred)
 	{
 		ensureDistinguished(pred, "Non-distinguished variables in class and predicate positions are not supported : ");
 	}
 
-	private void ensureDistinguished(final Node pred, final String errorNonDist)
+	private static void ensureDistinguished(final Node pred, final String errorNonDist)
 	{
 		if (!isDistinguishedVariable(pred))
 			throw new UnsupportedQueryException(errorNonDist + pred);

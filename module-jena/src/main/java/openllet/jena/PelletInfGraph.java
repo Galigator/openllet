@@ -105,8 +105,8 @@ public class PelletInfGraph extends BaseInfGraph
 	{
 		super(graph, pellet);
 
-		this._kb = kb;
-		this._loader = loader;
+		_kb = kb;
+		_loader = loader;
 
 		_extractor = new ModelExtractor(kb);
 		_extractor.setSelector(StatementType.ALL_PROPERTY_STATEMENTS);
@@ -491,7 +491,7 @@ public class PelletInfGraph extends BaseInfGraph
 		return GraphQueryHandler.containsTriple(_kb, _loader, subject, predicate, object);
 	}
 
-	private boolean isSyntaxTriple(final Triple t)
+	private static boolean isSyntaxTriple(final Triple t)
 	{
 		BuiltinTerm builtin = BuiltinTerm.find(t.getPredicate());
 
@@ -513,7 +513,7 @@ public class PelletInfGraph extends BaseInfGraph
 		return false;
 	}
 
-	private boolean isBnodeTypeQuery(final Triple t)
+	private static boolean isBnodeTypeQuery(final Triple t)
 	{
 		return t.getSubject().isBlank() && t.getPredicate().equals(RDF.type.asNode()) && (BuiltinTerm.find(t.getObject()) == null || t.getObject().equals(OWL.Thing.asNode()) || t.getObject().equals(OWL.Nothing.asNode()));
 	}
@@ -651,7 +651,7 @@ public class PelletInfGraph extends BaseInfGraph
 	 */
 	public void setAutoDetectChanges(final boolean autoDetectChanges)
 	{
-		this._autoDetectChanges = autoDetectChanges;
+		_autoDetectChanges = autoDetectChanges;
 
 		_graphListener.setEnabled(autoDetectChanges);
 	}
@@ -663,6 +663,6 @@ public class PelletInfGraph extends BaseInfGraph
 
 	public void setSkipBuiltinPredicates(final boolean skipBuiltinPredicates)
 	{
-		this._skipBuiltinPredicates = skipBuiltinPredicates;
+		_skipBuiltinPredicates = skipBuiltinPredicates;
 	}
 }

@@ -45,7 +45,7 @@ public abstract class RandomizedModularityTest extends AbstractModularityTest
 		}
 	}
 
-	private void modularityTest(final String file)
+	private static void modularityTest(final String file)
 	{
 		final OWLOntology ontology = OntologyUtils.loadOntology("file:" + file, false);
 
@@ -56,7 +56,7 @@ public abstract class RandomizedModularityTest extends AbstractModularityTest
 		OWL._manager.removeOntology(ontology);
 	}
 
-	private void modularityTest(final OWLOntology ontology, final Set<OWLEntity> signature)
+	private static void modularityTest(final OWLOntology ontology, final Set<OWLEntity> signature)
 	{
 		modularityTest(ontology, signature, ModuleType.BOT);
 		modularityTest(ontology, signature, ModuleType.TOP);
@@ -64,7 +64,7 @@ public abstract class RandomizedModularityTest extends AbstractModularityTest
 		//		modularityTest( ontology, signature, ModuleType.TOP_OF_BOT );
 	}
 
-	private void modularityTest(final OWLOntology ontology, final Set<OWLEntity> signature, final ModuleType moduleType)
+	private static void modularityTest(final OWLOntology ontology, final Set<OWLEntity> signature, final ModuleType moduleType)
 	{
 		final Set<OWLAxiom> computed = ModularityUtils.extractModule(ontology, signature, moduleType);
 

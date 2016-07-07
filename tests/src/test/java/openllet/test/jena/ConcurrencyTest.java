@@ -89,7 +89,7 @@ public class ConcurrencyTest
 		pool.awaitTermination(100, TimeUnit.SECONDS);
 	}
 
-	private OntModel loadOntologyModel(final String ontologyPath) throws IOException
+	private static OntModel loadOntologyModel(final String ontologyPath) throws IOException
 	{
 		final OntModel model = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
 

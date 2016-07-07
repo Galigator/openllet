@@ -23,21 +23,15 @@ import openllet.aterm.ATermAppl;
 import openllet.core.utils.ATermUtils;
 import openllet.query.sparqldl.engine.QueryEngine;
 import openllet.query.sparqldl.model.Query;
+import openllet.query.sparqldl.model.Query.VarType;
 import openllet.query.sparqldl.model.QueryAtom;
 import openllet.query.sparqldl.model.QueryImpl;
 import openllet.query.sparqldl.model.QueryResult;
 import openllet.query.sparqldl.model.ResultBinding;
-import openllet.query.sparqldl.model.Query.VarType;
 import openllet.test.AbstractKBTests;
 import org.junit.Test;
 
 /**
- * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
  * <p>
  * Copyright: Copyright (c) 2008
  * </p>
@@ -60,12 +54,12 @@ public class TestBooleanQueries extends AbstractKBTests
 		return q;
 	}
 
-	private void testQuery(final boolean expected, final Query query)
+	private static void testQuery(final boolean expected, final Query query)
 	{
 		assertEquals(expected, !QueryEngine.exec(query).isEmpty());
 	}
 
-	private void testABoxQuery(final boolean expected, final Query query)
+	private static void testABoxQuery(final boolean expected, final Query query)
 	{
 		assertEquals(expected, QueryEngine.execBooleanABoxQuery(query));
 	}

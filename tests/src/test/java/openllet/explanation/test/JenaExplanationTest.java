@@ -47,12 +47,6 @@ import org.semanticweb.owlapi.model.OWLOntology;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2008
  * </p>
  * <p>
@@ -84,12 +78,12 @@ public class JenaExplanationTest extends AbstractExplanationTest
 		super(classify);
 	}
 
-	private Graph convertOntology(final Collection<OWLAxiom> axioms, final boolean filterTypes) throws Exception
+	private static Graph convertOntology(final Collection<OWLAxiom> axioms, final boolean filterTypes) throws Exception
 	{
 		return convertOntology(openllet.owlapi.OWL.Ontology(axioms), filterTypes);
 	}
 
-	private Graph convertOntology(final OWLOntology ontology, final boolean filterTypes) throws Exception
+	private static Graph convertOntology(final OWLOntology ontology, final boolean filterTypes) throws Exception
 	{
 		final StringDocumentTarget output = new StringDocumentTarget();
 
@@ -169,7 +163,7 @@ public class JenaExplanationTest extends AbstractExplanationTest
 		assertTrue("Error in explanation, see the _logger file for details", success);
 	}
 
-	private boolean testExplanationWithJena(final Triple triple, final Graph actual, final Set<Set<OWLAxiom>> expectedExplanations) throws Exception
+	private static boolean testExplanationWithJena(final Triple triple, final Graph actual, final Set<Set<OWLAxiom>> expectedExplanations) throws Exception
 	{
 		boolean success = false;
 
@@ -209,7 +203,7 @@ public class JenaExplanationTest extends AbstractExplanationTest
 	}
 
 	@SuppressWarnings("unused")
-	private boolean testExplanationWithOWLAPI(final Triple triple, final Graph actual, final Set<Set<OWLAxiom>> expectedExplanations) throws Exception
+	private static boolean testExplanationWithOWLAPI(final Triple triple, final Graph actual, final Set<Set<OWLAxiom>> expectedExplanations) throws Exception
 	{
 		boolean success = true;
 

@@ -40,12 +40,6 @@ import org.semanticweb.owlapi.vocab.OWL2Datatype;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -110,7 +104,7 @@ public class OWLAPIAxiomConversionTests
 		OpenlletOptions.USE_TRACING = DEFAULT_TRACING;
 	}
 
-	private void testExplanation(final OWLAxiom axiom)
+	private static void testExplanation(final OWLAxiom axiom)
 	{
 		OWLOntology ont = null;
 		try

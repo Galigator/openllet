@@ -120,24 +120,24 @@ public class ARQSparqlDawgTester implements SparqlDawgTester
 	@Override
 	public void setDatasetURIs(final Set<String> graphURIs, final Set<String> namedGraphURIs)
 	{
-		this._graphURIs = graphURIs;
-		this._namedGraphURIs = namedGraphURIs;
+		_graphURIs = graphURIs;
+		_namedGraphURIs = namedGraphURIs;
 	}
 
 	@Override
 	public void setQueryURI(final String queryURI)
 	{
-		if (this._queryURI.equals(queryURI))
+		if (_queryURI.equals(queryURI))
 			return;
 
-		this._queryURI = queryURI;
+		_queryURI = queryURI;
 		_query = QueryFactory.read(queryURI);
 	}
 
 	@Override
 	public void setResult(final String resultURI)
 	{
-		this._resultURI = resultURI;
+		_resultURI = resultURI;
 	}
 
 	/**
@@ -238,7 +238,7 @@ public class ARQSparqlDawgTester implements SparqlDawgTester
 		}
 	}
 
-	private void logResults(final String name, final ResultSetRewindable results)
+	private static void logResults(final String name, final ResultSetRewindable results)
 	{
 		if (_logger.isLoggable(Level.WARNING))
 		{

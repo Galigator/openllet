@@ -65,9 +65,6 @@ import org.junit.Test;
  * Title: Built-In Tests
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -101,7 +98,7 @@ public class BuiltInTests
 		_abox = _kb.getABox();
 	}
 
-	private boolean equal(final Literal l1, final Literal l2)
+	private static boolean equal(final Literal l1, final Literal l2)
 	{
 		if (l1 == null && l2 == null)
 			return true;
@@ -142,32 +139,32 @@ public class BuiltInTests
 		}
 	}
 
-	private boolean greaterThan(final Literal l1, final Literal l2)
+	private static boolean greaterThan(final Literal l1, final Literal l2)
 	{
 		return ComparisonTesters.greaterThan.test(new Literal[] { l1, l2 });
 	}
 
-	private boolean greaterThanOrEqual(final Literal l1, final Literal l2)
+	private static boolean greaterThanOrEqual(final Literal l1, final Literal l2)
 	{
 		return ComparisonTesters.greaterThanOrEqual.test(new Literal[] { l1, l2 });
 	}
 
-	private boolean lessThan(final Literal l1, final Literal l2)
+	private static boolean lessThan(final Literal l1, final Literal l2)
 	{
 		return ComparisonTesters.lessThan.test(new Literal[] { l1, l2 });
 	}
 
-	private boolean lessThanOrEqual(final Literal l1, final Literal l2)
+	private static boolean lessThanOrEqual(final Literal l1, final Literal l2)
 	{
 		return ComparisonTesters.lessThanOrEqual.test(new Literal[] { l1, l2 });
 	}
 
-	private boolean notEqual(final Literal l1, final Literal l2)
+	private static boolean notEqual(final Literal l1, final Literal l2)
 	{
 		return ComparisonTesters.notEqual.test(new Literal[] { l1, l2 });
 	}
 
-	private void numeric(final NumericFunction f, final Number expected, final Number... args)
+	private static void numeric(final NumericFunction f, final Number expected, final Number... args)
 	{
 		final NumericPromotion promoter = new NumericPromotion();
 		promoter.promote(args);

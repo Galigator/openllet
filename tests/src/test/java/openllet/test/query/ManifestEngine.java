@@ -37,9 +37,6 @@ import org.apache.jena.vocabulary.RDF;
  * Title: Engine for processing DAWG test manifests
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -296,7 +293,7 @@ public class ManifestEngine
 		return result;
 	}
 
-	private List<Resource> parseList(final Resource start)
+	private static List<Resource> parseList(final Resource start)
 	{
 		final List<Resource> set = new ArrayList<>();
 		Resource list = start;
@@ -310,7 +307,7 @@ public class ManifestEngine
 		return set;
 	}
 
-	private SingleTestResult doSyntaxTest(final SparqlDawgTester tester, final Resource testCase, final boolean parsable)
+	private static SingleTestResult doSyntaxTest(final SparqlDawgTester tester, final Resource testCase, final boolean parsable)
 	{
 		final String queryFile = testCase.getProperty(SparqlDawgTestVocabulary.action).getResource().getURI();
 
@@ -336,7 +333,7 @@ public class ManifestEngine
 			return new SingleTestResult(URI.create(testCase.getURI()), ResultEnum.SKIP, 0);
 	}
 
-	private SingleTestResult doEvaluationTest(final SparqlDawgTester tester, final Resource testCase)
+	private static SingleTestResult doEvaluationTest(final SparqlDawgTester tester, final Resource testCase)
 	{
 		// more 'action' values are allowed !!!
 
@@ -413,7 +410,7 @@ public class ManifestEngine
 			return new SingleTestResult(URI.create(testCase.getURI()), ResultEnum.SKIP, 0);
 	}
 
-	private SingleTestResult doTestCase(final SparqlDawgTester tester, final Resource testCase, final Resource testType)
+	private static SingleTestResult doTestCase(final SparqlDawgTester tester, final Resource testCase, final Resource testType)
 	{
 		if (testType.equals(SparqlDawgTestVocabulary.PositiveSyntaxTest))
 			return doSyntaxTest(tester, testCase, true);

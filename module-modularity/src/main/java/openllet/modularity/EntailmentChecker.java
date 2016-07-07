@@ -59,12 +59,6 @@ import org.semanticweb.owlapi.reasoner.UnsupportedEntailmentTypeException;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2006
  * </p>
  * <p>
@@ -82,7 +76,7 @@ public class EntailmentChecker implements OWLAxiomVisitor
 
 	public EntailmentChecker(final IncrementalClassifier reasoner)
 	{
-		this._reasoner = reasoner;
+		_reasoner = reasoner;
 	}
 
 	public boolean isEntailed(final Set<? extends OWLAxiom> axioms)
@@ -243,7 +237,7 @@ public class EntailmentChecker implements OWLAxiomVisitor
 	 * @param classExpressions the list of class expressions to be checked
 	 * @return true if the collection contains at least one anonymous class
 	 */
-	private boolean containsAnonymousClasses(final Stream<OWLClassExpression> classExpressions)
+	private static boolean containsAnonymousClasses(final Stream<OWLClassExpression> classExpressions)
 	{
 		return classExpressions.filter(OWLClassExpression::isAnonymous).findAny().isPresent();
 	}

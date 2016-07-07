@@ -76,7 +76,7 @@ public class OWLPrimerTests extends AbstractOWLAPITests
 	}
 
 	@SafeVarargs
-	final protected <E extends OWLObject> void assertEquals(final NodeSet<E> actual, final Set<E>... expected)
+	final protected static <E extends OWLObject> void assertEquals(final NodeSet<E> actual, final Set<E>... expected)
 	{
 		final Set<Set<E>> expectedSet = SetUtils.create(expected);
 
@@ -101,8 +101,8 @@ public class OWLPrimerTests extends AbstractOWLAPITests
 		assertTrue(_reasoner.isEntailed(OWL.disjointProperties(hasParent, hasChild)));
 		assertTrue(_reasoner.isEntailed(OWL.disjointProperties(hasParent, OWL.bottomObjectProperty)));
 		assertEquals(//
-				_reasoner.getDisjointObjectProperties(hasParent),//
+				_reasoner.getDisjointObjectProperties(hasParent), //
 				nodeOP(hasSpouse), nodeOP(OWL.bottomObjectProperty), nodeOP(hasWife), nodeOP(hasChild, child)//
-				);
+		);
 	}
 }

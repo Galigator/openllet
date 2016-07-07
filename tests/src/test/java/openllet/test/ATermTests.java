@@ -94,7 +94,7 @@ public class ATermTests
 		testNNF(not(some(_p, and(_d1, _d3))), all(_p, or(not(_d1), not(_d3))));
 	}
 
-	private void testNNF(final ATermAppl c, final ATermAppl expected)
+	private static void testNNF(final ATermAppl c, final ATermAppl expected)
 	{
 		assertEquals(expected, ATermUtils.nnf(c));
 	}
@@ -125,7 +125,7 @@ public class ATermTests
 		testNormalize(all(_p, some(_q, _d1)), all(_p, not(all(_q, not(_d1)))));
 	}
 
-	private void testNormalize(final ATermAppl c, final ATermAppl expected)
+	private static void testNormalize(final ATermAppl c, final ATermAppl expected)
 	{
 		assertEquals(expected, ATermUtils.normalize(c));
 	}
@@ -143,7 +143,7 @@ public class ATermTests
 
 	}
 
-	private void testDoubleNormalize(final ATermAppl c1, final ATermAppl c2)
+	private static void testDoubleNormalize(final ATermAppl c1, final ATermAppl c2)
 	{
 		assertEquals(ATermUtils.normalize(c1), ATermUtils.normalize(c2));
 	}
@@ -198,7 +198,7 @@ public class ATermTests
 		testFindPrimitives(some(_p, and(_d1, _d3)), new ATermAppl[] { _d3 });
 	}
 
-	private void testFindPrimitives(final ATermAppl c, final ATermAppl[] expected)
+	private static void testFindPrimitives(final ATermAppl c, final ATermAppl[] expected)
 	{
 		assertIteratorValues(ATermUtils.findPrimitives(c).iterator(), expected);
 	}
