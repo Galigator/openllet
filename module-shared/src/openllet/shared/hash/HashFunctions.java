@@ -125,7 +125,7 @@ public class HashFunctions
 		/*------------------------------------- handle the last 11 bytes */
 		c += o.length;
 		switch (len)
-		/* all the case statements fall through */{
+		/* all the case statements fall through */ {
 			case 11:
 				c += (o[k + 10].hashCode() << 24);
 				//$FALL-THROUGH$

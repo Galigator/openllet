@@ -287,48 +287,44 @@ public class ATermListImpl extends ATermImpl implements ATermList
 	}
 
 	@Override
-	public int indexOf(final ATerm el, int start)
+	public int indexOf(final ATerm el, final int start)
 	{
+		int startPos = start;
 		int i;
 		ATermList cur;
 
-		if (start < 0)
-		{
-			start += _length + 1;
-		}
+		if (startPos < 0)
+			startPos += _length + 1;
 
-		if (start > _length) { throw new IllegalArgumentException("start (" + start + ") > _length of list (" + _length + ")"); }
+		if (startPos > _length) { throw new IllegalArgumentException("start (" + startPos + ") > length of list (" + _length + ")"); }
 
 		cur = this;
-		for (i = 0; i < start; i++)
-		{
+		for (i = 0; i < startPos; i++)
 			cur = cur.getNext();
-		}
 
 		while (!cur.isEmpty() && cur.getFirst() != el)
 		{
 			cur = cur.getNext();
-			++i;
+			i++;
 		}
 
 		return cur.isEmpty() ? -1 : i;
 	}
 
 	@Override
-	public int lastIndexOf(final ATerm el, int start)
+	public int lastIndexOf(final ATerm el, final int start)
 	{
+		int startPos = start;
 		int result;
 
-		if (start < 0)
-		{
-			start += _length + 1;
-		}
+		if (startPos < 0)
+			startPos += _length + 1;
 
-		if (start > _length) { throw new IllegalArgumentException("start (" + start + ") > _length of list (" + _length + ")"); }
+		if (startPos > _length) { throw new IllegalArgumentException("start (" + startPos + ") > _length of list (" + _length + ")"); }
 
-		if (start > 0)
+		if (startPos > 0)
 		{
-			result = _next.lastIndexOf(el, start - 1);
+			result = _next.lastIndexOf(el, startPos - 1);
 			if (result >= 0) { return result + 1; }
 		}
 

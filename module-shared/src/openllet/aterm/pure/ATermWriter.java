@@ -69,8 +69,9 @@ class ATermWriter extends ATermFwdVoid
 		return stream;
 	}
 
-	private void emitAbbrev(int abbrev)
+	private void emitAbbrev(final int abbrevTerm)
 	{
+		int abbrev = abbrevTerm;
 		stream.write('#');
 		position++;
 
@@ -170,13 +171,14 @@ class ATermWriter extends ATermFwdVoid
 	}
 
 	@Override
-	public void voidVisitList(ATermList list)
+	public void voidVisitList(final ATermList list)
 	{
-		while (!list.isEmpty())
+		int length = list.getLength();
+		for (final ATerm term : list)
 		{
-			voidVisitChild(list.getFirst());
-			list = list.getNext();
-			if (!list.isEmpty())
+			voidVisitChild(term);
+			length--;
+			if (length > 0)
 			{
 				stream.write(',');
 				position++;

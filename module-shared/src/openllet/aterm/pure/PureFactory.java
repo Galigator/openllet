@@ -66,8 +66,9 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 		return Character.isLetterOrDigit(c) || c == '+' || c == '/';
 	}
 
-	static public int abbrevSize(int abbrev)
+	static public int abbrevSize(final int strTerm)
 	{
+		int abbrev = strTerm;
 		int size = 1;
 
 		if (abbrev == 0) { return 2; }
@@ -202,18 +203,14 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 		return makeApplList(fun, list, empty);
 	}
 
-	public ATermAppl makeApplList(final AFun fun, ATermList list, final ATermList annos)
+	public ATermAppl makeApplList(final AFun fun, final ATermList list, final ATermList annos)
 	{
-		ATerm[] arg_array;
-
-		arg_array = new ATerm[list.getLength()];
+		final ATerm[] arg_array = new ATerm[list.getLength()];
 
 		int i = 0;
-		while (!list.isEmpty())
-		{
-			arg_array[i++] = list.getFirst();
-			list = list.getNext();
-		}
+		for (final ATerm term : list)
+			arg_array[i++] = term;
+
 		return makeAppl(fun, arg_array, annos);
 	}
 

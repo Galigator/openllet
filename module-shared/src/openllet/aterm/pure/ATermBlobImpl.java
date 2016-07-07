@@ -45,7 +45,7 @@ public class ATermBlobImpl extends ATermImpl implements ATermBlob
 
 	/**
 	 * depricated Use the new constructor instead.
-	 * 
+	 *
 	 * @param factory x
 	 */
 	protected ATermBlobImpl(final PureFactory factory)
@@ -70,7 +70,7 @@ public class ATermBlobImpl extends ATermImpl implements ATermBlob
 
 	/**
 	 * depricated Use the new constructor instead.
-	 * 
+	 *
 	 * @param hashCode x
 	 * @param annos x
 	 * @param _data x
