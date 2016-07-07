@@ -26,15 +26,9 @@ import org.semanticweb.owlapi.model.OWLOntology;
 public class PelletOA3TestRunner extends OwlApiAbstractRunner
 {
 
-	private static final PelletReasonerFactory _reasonerFactory;
+	private static final PelletReasonerFactory _reasonerFactory = new PelletReasonerFactory();
 
-	private static final IRI _iri;
-
-	static
-	{
-		_iri = IRI.create("http://clarkparsia.com/pellet");
-		_reasonerFactory = new PelletReasonerFactory();
-	}
+	private static final IRI _iri = IRI.create("http://clarkparsia.com/pellet");
 
 	@Override
 	public String getName()

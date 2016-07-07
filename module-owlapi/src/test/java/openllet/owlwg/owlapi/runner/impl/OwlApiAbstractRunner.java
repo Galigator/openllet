@@ -52,7 +52,13 @@ import org.semanticweb.owlapi.model.OWLOntology;
 public abstract class OwlApiAbstractRunner implements TestRunner<OWLOntology>
 {
 
-	private static final SerializationFormat[] formatList = new SerializationFormat[] { SerializationFormat.RDFXML, SerializationFormat.FUNCTIONAL, SerializationFormat.OWLXML };
+	private static final SerializationFormat[] formatList = new SerializationFormat[] { //
+			SerializationFormat.RDFXML, SerializationFormat.FUNCTIONAL, SerializationFormat.OWLXML };
+
+	protected static final Logger _logger = Log.getLogger(OwlApiAbstractRunner.class);
+
+	private final Runner _runner;
+	protected long _timeout;
 
 	protected abstract class AbstractTestAsRunnable<T extends TestCase<OWLOntology>> implements TestAsRunnable
 	{
@@ -102,43 +108,43 @@ public abstract class OwlApiAbstractRunner implements TestRunner<OWLOntology>
 	private class Runner implements TestCaseVisitor<OWLOntology>
 	{
 
-		private TestRunResult[] results;
+		private TestRunResult[] _results;
 
 		public List<TestRunResult> getResults(final OwlApiCase testcase)
 		{
-			results = null;
+			_results = null;
 			testcase.accept(this);
-			return Arrays.asList(results);
+			return Arrays.asList(_results);
 		}
 
 		@Override
 		public void visit(final ConsistencyTest<OWLOntology> testcase)
 		{
-			results = new TestRunResult[1];
-			results[0] = runConsistencyTest(testcase);
+			_results = new TestRunResult[1];
+			_results[0] = runConsistencyTest(testcase);
 		}
 
 		@Override
 		public void visit(final InconsistencyTest<OWLOntology> testcase)
 		{
-			results = new TestRunResult[1];
-			results[0] = runInconsistencyTest(testcase);
+			_results = new TestRunResult[1];
+			_results[0] = runInconsistencyTest(testcase);
 		}
 
 		@Override
 		public void visit(final NegativeEntailmentTest<OWLOntology> testcase)
 		{
-			results = new TestRunResult[2];
-			results[0] = runConsistencyTest(testcase);
-			results[1] = runEntailmentTest(testcase);
+			_results = new TestRunResult[2];
+			_results[0] = runConsistencyTest(testcase);
+			_results[1] = runEntailmentTest(testcase);
 		}
 
 		@Override
 		public void visit(final PositiveEntailmentTest<OWLOntology> testcase)
 		{
-			results = new TestRunResult[2];
-			results[0] = runConsistencyTest(testcase);
-			results[1] = runEntailmentTest(testcase);
+			_results = new TestRunResult[2];
+			_results[0] = runConsistencyTest(testcase);
+			_results[1] = runEntailmentTest(testcase);
 		}
 	}
 
@@ -279,11 +285,6 @@ public abstract class OwlApiAbstractRunner implements TestRunner<OWLOntology>
 		}
 	}
 
-	protected static final Logger _logger = Log.getLogger(OwlApiAbstractRunner.class);
-
-	private final Runner _runner;
-	protected long _timeout;
-
 	public OwlApiAbstractRunner()
 	{
 		_runner = new Runner();
@@ -314,7 +315,7 @@ public abstract class OwlApiAbstractRunner implements TestRunner<OWLOntology>
 			}
 			catch (final OutOfMemoryError oome)
 			{
-				_logger.log(Level.WARNING, "Out of memory allocating _timeout response. Retrying.", oome);
+				_logger.log(Level.WARNING, "Out of memory allocating timeout response. Retrying.", oome);
 				System.gc();
 				return runnable.getTimeoutResult();
 			}

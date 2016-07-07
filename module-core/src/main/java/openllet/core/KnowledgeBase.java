@@ -353,19 +353,19 @@ public class KnowledgeBase
 	class FullyDefinedClassVisitor extends ATermBaseVisitor
 	{
 
-		private boolean fullyDefined = true;
+		private boolean _fullyDefined = true;
 
 		public boolean isFullyDefined(final ATermAppl term)
 		{
-			fullyDefined = true;
+			_fullyDefined = true;
 			visit(term);
-			return fullyDefined;
+			return _fullyDefined;
 		}
 
 		private void visitQCR(final ATermAppl term)
 		{
 			visitRestr(term);
-			if (fullyDefined)
+			if (_fullyDefined)
 			{
 				final ATermAppl q = (ATermAppl) term.getArgument(2);
 				if (!isDatatype(q))
@@ -376,7 +376,7 @@ public class KnowledgeBase
 		private void visitQR(final ATermAppl term)
 		{
 			visitRestr(term);
-			if (fullyDefined)
+			if (_fullyDefined)
 			{
 				final ATermAppl q = (ATermAppl) term.getArgument(1);
 				if (!isDatatype(q))
@@ -386,7 +386,7 @@ public class KnowledgeBase
 
 		private void visitRestr(final ATermAppl term)
 		{
-			fullyDefined = fullyDefined && isProperty(term.getArgument(0));
+			_fullyDefined = _fullyDefined && isProperty(term.getArgument(0));
 		}
 
 		@Override
@@ -407,7 +407,7 @@ public class KnowledgeBase
 		@Override
 		public void visitAnd(final ATermAppl term)
 		{
-			if (fullyDefined)
+			if (_fullyDefined)
 				visitList((ATermList) term.getArgument(0));
 		}
 
@@ -450,14 +450,14 @@ public class KnowledgeBase
 		@Override
 		public void visitOneOf(final ATermAppl term)
 		{
-			if (fullyDefined)
+			if (_fullyDefined)
 				visitList((ATermList) term.getArgument(0));
 		}
 
 		@Override
 		public void visitOr(final ATermAppl term)
 		{
-			if (fullyDefined)
+			if (_fullyDefined)
 				visitList((ATermList) term.getArgument(0));
 		}
 
@@ -476,8 +476,8 @@ public class KnowledgeBase
 		@Override
 		public void visitTerm(final ATermAppl term)
 		{
-			fullyDefined = fullyDefined && _tbox.getClasses().contains(term);
-			if (!fullyDefined)
+			_fullyDefined = _fullyDefined && _tbox.getClasses().contains(term);
+			if (!_fullyDefined)
 				return;
 		}
 
@@ -486,10 +486,10 @@ public class KnowledgeBase
 		{
 			final ATermAppl nominal = (ATermAppl) term.getArgument(0);
 			if (ATermUtils.isLiteral(nominal))
-				fullyDefined = false;
+				_fullyDefined = false;
 			else
 				if (!ATermUtils.isLiteral(nominal))
-					fullyDefined = fullyDefined && _individuals.contains(nominal);
+					_fullyDefined = _fullyDefined && _individuals.contains(nominal);
 		}
 
 		@Override
@@ -497,7 +497,7 @@ public class KnowledgeBase
 		{
 			final ATermAppl p = (ATermAppl) term.getArgument(0);
 			if (ATermUtils.isPrimitive(p))
-				fullyDefined = fullyDefined && isProperty(p);
+				_fullyDefined = _fullyDefined && isProperty(p);
 			else
 				visitInverse(p);
 		}
@@ -508,7 +508,7 @@ public class KnowledgeBase
 		@Override
 		public void visitRestrictedDatatype(final ATermAppl dt)
 		{
-			fullyDefined = fullyDefined && isDatatype((ATermAppl) dt.getArgument(0));
+			_fullyDefined = _fullyDefined && isDatatype((ATermAppl) dt.getArgument(0));
 		}
 
 	}
@@ -4755,13 +4755,13 @@ public class KnowledgeBase
 	}
 
 	/**
-	 * Set a timeout for the main timer. Used to _stop an automated test after a reasonable amount of time has passed.
+	 * Set a timeout for the main timer. Used to stop an automated test after a reasonable amount of time has passed.
 	 *
 	 * @param timeout
 	 */
 	public void setTimeout(final long timeout)
 	{
-		_logger.info(() -> "Timeout @ " + timeout + "sec");
+		_logger.info(() -> "Timeout @ " + timeout + "ms");
 		timers.mainTimer.setTimeout(timeout);
 	}
 

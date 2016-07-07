@@ -7,7 +7,7 @@ import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 
 /**
  * <p>
- * Title: OWLAPI v3 Reasoner Test Runner
+ * Title: OWLAPI Reasoner Test Runner
  * </p>
  * <p>
  * Description: Wrapper to use any reasoner implementing the OWLAPI OWLReasoner interface to run reasoning test cases.
@@ -27,10 +27,10 @@ public class OwlApiReasonerTestRunner extends OwlApiAbstractRunner
 	private final OWLReasonerFactory _reasonerFactory;
 	private final IRI _iri;
 
-	public OwlApiReasonerTestRunner(OWLReasonerFactory reasonerFactory, IRI runnerUri)
+	public OwlApiReasonerTestRunner(final OWLReasonerFactory reasonerFactory, final IRI runnerUri)
 	{
-		this._reasonerFactory = reasonerFactory;
-		this._iri = runnerUri;
+		_reasonerFactory = reasonerFactory;
+		_iri = runnerUri;
 	}
 
 	@Override
@@ -46,14 +46,14 @@ public class OwlApiReasonerTestRunner extends OwlApiAbstractRunner
 	}
 
 	@Override
-	protected boolean isConsistent(OWLOntology o)
+	protected boolean isConsistent(final OWLOntology o)
 	{
 		final OWLReasoner reasoner = _reasonerFactory.createReasoner(o);
 		return reasoner.isConsistent();
 	}
 
 	@Override
-	protected boolean isEntailed(OWLOntology premise, OWLOntology conclusion)
+	protected boolean isEntailed(final OWLOntology premise, final OWLOntology conclusion)
 	{
 		final OWLReasoner reasoner = _reasonerFactory.createReasoner(premise);
 
