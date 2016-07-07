@@ -55,7 +55,7 @@ public class TransitionGraph<T>
 
 	/**
 	 * Returns the number of states in this transition graph
-	 * 
+	 *
 	 * @return
 	 */
 	public int size()
@@ -457,8 +457,10 @@ public class TransitionGraph<T>
 	// reachable by any number of edges labeled epsilon
 	// from only one state
 
-	public Set<State<T>> epsilonClosure(final State<T> s, Set<State<T>> result)
+	public Set<State<T>> epsilonClosure(final State<T> s, final Set<State<T>> init)
 	{
+		Set<State<T>> result = init;
+
 		// s is in the epsilon closure of itself
 		result.add(s);
 
@@ -690,7 +692,7 @@ public class TransitionGraph<T>
 							partitions.add(newPartition);
 						}
 
-						// remove _current state from this partition						
+						// remove _current state from this partition
 						i.remove();
 						// add it to the new partition
 						newPartition.add(t);
@@ -709,7 +711,7 @@ public class TransitionGraph<T>
 		// store the partition num of the start state
 		final int startPartition = partitionNumbers.get(initialState);
 
-		// for each partition the first state is marked as the representative 
+		// for each partition the first state is marked as the representative
 		// of that partition and rest is removed from states
 		for (int p = 0; p < partitions.size(); p++)
 		{
@@ -723,13 +725,13 @@ public class TransitionGraph<T>
 				final State<T> t = i.next();
 				allStates.remove(t);
 				finalStates.remove(t);
-				// set rep so that we can later update 
+				// set rep so that we can later update
 				// edges to this state
 				partitionRep.put(t, s);
 			}
 		}
 
-		// correct any edges that are going to states that are removed, 
+		// correct any edges that are going to states that are removed,
 		// by updating the target state to be the rep of partition which
 		// dead state belonged to
 		for (final State<T> t : allStates)

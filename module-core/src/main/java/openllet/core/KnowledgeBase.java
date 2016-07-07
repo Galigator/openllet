@@ -227,8 +227,8 @@ public class KnowledgeBase
 
 	protected boolean _canUseIncConsistency;
 
-	FullyDefinedClassVisitor _fullyDefinedVisitor = new FullyDefinedClassVisitor();
-	DatatypeVisitor _datatypeVisitor = new DatatypeVisitor();
+	private final FullyDefinedClassVisitor _fullyDefinedVisitor = new FullyDefinedClassVisitor();
+	private final DatatypeVisitor _datatypeVisitor = new DatatypeVisitor();
 
 	class DatatypeVisitor extends ATermBaseVisitor
 	{
@@ -1709,7 +1709,7 @@ public class KnowledgeBase
 		return removed;
 	}
 
-	public boolean removePropertyValue(final ATermAppl p, final ATermAppl i1, ATermAppl i2)
+	public boolean removePropertyValue(final ATermAppl p, final ATermAppl i1, final ATermAppl i2)
 	{
 		final ATermAppl ind1 = i1;
 		final ATermAppl ind2;
@@ -2958,7 +2958,7 @@ public class KnowledgeBase
 		return _datatypeVisitor.isDatatype(c);
 	}
 
-	public boolean isSatisfiable(ATermAppl c)
+	public boolean isSatisfiable(final ATermAppl c)
 	{
 		ensureConsistency();
 
@@ -3022,7 +3022,7 @@ public class KnowledgeBase
 	 * @param c2
 	 * @return true if class c1 is subclass of class c2.
 	 */
-	public boolean isSubClassOf(ATermAppl c1, ATermAppl c2)
+	public boolean isSubClassOf(final ATermAppl c1, final ATermAppl c2)
 	{
 		ensureConsistency();
 
@@ -3060,7 +3060,7 @@ public class KnowledgeBase
 	 * @param c2
 	 * @return true if class c1 is equivalent to class c2.
 	 */
-	public boolean isEquivalentClass(ATermAppl c1, ATermAppl c2)
+	public boolean isEquivalentClass(final ATermAppl c1, final ATermAppl c2)
 	{
 		ensureConsistency();
 
@@ -3185,7 +3185,7 @@ public class KnowledgeBase
 	 * @param c
 	 * @return
 	 */
-	public Bool isKnownType(final ATermAppl x, ATermAppl c)
+	public Bool isKnownType(final ATermAppl x, final ATermAppl c)
 	{
 		ensureConsistency();
 
@@ -3794,7 +3794,7 @@ public class KnowledgeBase
 	 * @param c class whose equivalent classes are found
 	 * @return A set of ATerm objects
 	 */
-	public Set<ATermAppl> getAllEquivalentClasses(ATermAppl c)
+	public Set<ATermAppl> getAllEquivalentClasses(final ATermAppl c)
 	{
 		if (!isClass(c))
 		{
@@ -3848,7 +3848,7 @@ public class KnowledgeBase
 	 * @param direct If true return only the direct subclasses, otherwise return all the subclasses
 	 * @return A set of sets, where each set in the collection represents an equivalence class. The elements of the inner class are ATermAppl objects.
 	 */
-	public Set<Set<ATermAppl>> getSubClasses(ATermAppl c, final boolean direct)
+	public Set<Set<ATermAppl>> getSubClasses(final ATermAppl c, final boolean direct)
 	{
 		if (!isClass(c))
 		{

@@ -491,15 +491,18 @@ public class ATermUtils
 		return factory.makeAppl(ORFUN, list);
 	}
 
-	final static public ATermAppl makeAllValues(ATerm r, final ATerm c)
+	final static public ATermAppl makeAllValues(final ATerm r, final ATerm c)
 	{
+		final ATerm arg1;
 		if (r.getType() == ATerm.LIST)
 		{
 			final ATermList list = (ATermList) r;
-			if (list.getLength() == 1)
-				r = list.getFirst();
+			arg1 = (list.getLength() == 1) ? list.getFirst() : r;
 		}
-		return factory.makeAppl(ALLFUN, r, c);
+		else
+			arg1 = r;
+
+		return factory.makeAppl(ALLFUN, arg1, c);
 	}
 
 	final static public ATermAppl makeSomeValues(final ATerm r, final ATerm c)
@@ -669,7 +672,7 @@ public class ATermUtils
 		return (list.indexOf(a, 0) != -1);
 	}
 
-	static public boolean isSet(ATermList list)
+	static public boolean isSet(final ATermList list)
 	{
 		if (list.isEmpty())
 			return true;
@@ -948,7 +951,7 @@ public class ATermUtils
 								}
 	}
 
-	static public ATermAppl[] toArray(ATermList list)
+	static public ATermAppl[] toArray(final ATermList list)
 	{
 		final ATermAppl[] a = new ATermAppl[list.getLength()];
 
@@ -1000,7 +1003,7 @@ public class ATermUtils
 		return false;
 	}
 
-	public static Set<ATermAppl> listToSet(ATermList list)
+	public static Set<ATermAppl> listToSet(final ATermList list)
 	{
 		final Set<ATermAppl> set = new HashSet<>();
 		for (final ATerm term : list)
@@ -1008,7 +1011,7 @@ public class ATermUtils
 		return set;
 	}
 
-	public static Set<ATermAppl> getPrimitives(ATermList list)
+	public static Set<ATermAppl> getPrimitives(final ATermList list)
 	{
 		final Set<ATermAppl> set = new HashSet<>();
 		for (final ATerm term : list)
@@ -1122,15 +1125,15 @@ public class ATermUtils
 		return a.getAFun().equals(MINFUN);
 	}
 
-	public final static boolean isCard(ATermAppl a)
+	public final static boolean isCard(final ATermAppl a)
 	{
 		if (isMin(a) || isMax(a))
 			return true;
 		else
 			if (isAnd(a))
 			{
-				a = (ATermAppl) a.getArgument(0);
-				return isMin(a) || isMax(a);
+				final ATermAppl arg0 = (ATermAppl) a.getArgument(0);
+				return isMin(arg0) || isMax(arg0);
 			}
 
 		return false;
@@ -1182,14 +1185,12 @@ public class ATermUtils
 		return null;
 	}
 
-	public static ATermList nnf(ATermList list)
+	public static ATermList nnf(final ATermList list)
 	{
 		ATermList newList = factory.makeList();
-		while (!list.isEmpty())
-		{
-			newList = newList.append(nnf((ATermAppl) list.getFirst()));
-			list = list.getNext();
-		}
+
+		for (final ATerm term : list)
+			newList = newList.append(nnf((ATermAppl) term));
 
 		return newList;
 	}
@@ -1290,19 +1291,18 @@ public class ATermUtils
 		return list;
 	}
 
-	public static ATermList normalize(ATermList list)
+	public static ATermList normalize(final ATermList list)
 	{
 		final int size = list.getLength();
 		final ATerm[] terms = new ATerm[size];
-		for (int i = 0; i < size; i++)
+		int i = 0;
+		for (final ATerm term : list)
 		{
-			terms[i] = normalize((ATermAppl) list.getFirst());
-			list = list.getNext();
+			terms[i] = normalize((ATermAppl) term);
+			i++;
 		}
 
-		final ATermList set = toSet(terms, size);
-
-		return set;
+		return toSet(terms, size);
 	}
 
 	/**

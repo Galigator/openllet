@@ -75,14 +75,15 @@ public class RoleTaxonomyBuilder
 	protected Role _topRole;
 	protected Role _bottomRole;
 	protected PropertyType _propertyType;
+	private int count = 0;
 
 	public RoleTaxonomyBuilder(final RBox rbox, final PropertyType type)
 	{
-		this._rbox = rbox;
-		this._propertyType = type;
+		_rbox = rbox;
+		_propertyType = type;
 		_properties = rbox.getRoles().values();
 
-		switch (this._propertyType)
+		switch (_propertyType)
 		{
 			case OBJECT:
 				_taxonomy = new Taxonomy<>(null, TOP_OBJECT_PROPERTY, BOTTOM_OBJECT_PROPERTY);
@@ -97,7 +98,7 @@ public class RoleTaxonomyBuilder
 				_taxonomy.getBottom().setHidden(true);
 				break;
 			default:
-				throw new AssertionError("Unknown property type: " + this._propertyType);
+				throw new AssertionError("Unknown property type: " + _propertyType);
 		}
 
 		_topRole = rbox.getRole(_taxonomy.getTop().getName());
@@ -106,7 +107,7 @@ public class RoleTaxonomyBuilder
 
 	public RoleTaxonomyBuilder(final RBox rbox, final boolean objectRoles)
 	{
-		this._rbox = rbox;
+		_rbox = rbox;
 
 		_properties = rbox.getRoles().values();
 		_taxonomy = objectRoles ? new Taxonomy<>(null, TOP_OBJECT_PROPERTY, BOTTOM_OBJECT_PROPERTY) : new Taxonomy<>(null, TOP_DATA_PROPERTY, BOTTOM_DATA_PROPERTY);
@@ -129,8 +130,6 @@ public class RoleTaxonomyBuilder
 
 		return _taxonomy;
 	}
-
-	int count = 0;
 
 	private void classify(final Role c)
 	{

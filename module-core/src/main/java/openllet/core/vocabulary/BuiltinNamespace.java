@@ -11,12 +11,6 @@ import java.util.Map;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2008
  * </p>
  * <p>
@@ -38,7 +32,7 @@ public enum BuiltinNamespace
 
 	BuiltinNamespace(final String uri)
 	{
-		this._uri = uri;
+		_uri = uri;
 	}
 
 	public String getURI()

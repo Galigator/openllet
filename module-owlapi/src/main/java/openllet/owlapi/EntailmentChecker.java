@@ -74,12 +74,6 @@ import org.semanticweb.owlapi.model.SWRLRule;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2006
  * </p>
  * <p>
@@ -95,11 +89,11 @@ public class EntailmentChecker implements OWLAxiomVisitor, FacetReasonerOWL
 	public static final Set<AxiomType<?>> UNSUPPORTED_ENTAILMENT = Collections.unmodifiableSet(new HashSet<>(Arrays.<AxiomType<?>> asList(AxiomType.DISJOINT_UNION, AxiomType.DATATYPE_DEFINITION, AxiomType.HAS_KEY, AxiomType.SUB_PROPERTY_CHAIN_OF, AxiomType.SWRL_RULE)));
 
 	private final KnowledgeBase _kb;
+	private final EntailmentQueryVisitor _queryVisitor;
+	private final PelletReasoner _reasoner;
+
 	private boolean _isDeferred = false;
 	private boolean _isEntailed = false;
-	private final EntailmentQueryVisitor _queryVisitor;
-
-	private final PelletReasoner _reasoner;
 
 	@Override
 	public PelletReasoner getReasoner()

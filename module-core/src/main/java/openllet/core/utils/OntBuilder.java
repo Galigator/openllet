@@ -88,7 +88,7 @@ public class OntBuilder
 		@Override
 		public void visitNot(final ATermAppl term)
 		{
-			this.visit((ATermAppl) term.getArgument(0));
+			visit((ATermAppl) term.getArgument(0));
 		}
 
 		@Override
@@ -181,10 +181,10 @@ public class OntBuilder
 
 	public OntBuilder(final KnowledgeBase originalKB)
 	{
-		this._originalKB = originalKB;
+		_originalKB = originalKB;
 	}
 
-	public void add(ATermAppl axiom)
+	public void add(final ATermAppl axiom)
 	{
 		final AFun afun = axiom.getAFun();
 		if (afun.equals(ATermUtils.EQCLASSFUN))
@@ -380,11 +380,11 @@ public class OntBuilder
 																					else
 																						if (afun.equals(ATermUtils.NOTFUN) && ((ATermAppl) axiom.getArgument(0)).getAFun().equals(ATermUtils.PROPFUN))
 																						{
-																							axiom = (ATermAppl) axiom.getArgument(0);
+																							final ATermAppl axiomArg0 = (ATermAppl) axiom.getArgument(0);
 
-																							final ATermAppl p = (ATermAppl) axiom.getArgument(0);
-																							final ATermAppl s = (ATermAppl) axiom.getArgument(1);
-																							final ATermAppl o = (ATermAppl) axiom.getArgument(2);
+																							final ATermAppl p = (ATermAppl) axiomArg0.getArgument(0);
+																							final ATermAppl s = (ATermAppl) axiomArg0.getArgument(1);
+																							final ATermAppl o = (ATermAppl) axiomArg0.getArgument(2);
 
 																							_kb.addIndividual(s);
 																							if (ATermUtils.isLiteral(o))

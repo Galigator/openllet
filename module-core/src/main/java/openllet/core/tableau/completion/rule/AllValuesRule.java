@@ -79,7 +79,7 @@ public class AllValuesRule extends AbstractTableauRule
 	/**
 	 * Apply the allValues rule for the given type with the given dependency. The concept is in the form all(r,C) and this function adds C to all r-neighbors of
 	 * x
-	 * 
+	 *
 	 * @param x
 	 * @param av
 	 * @param ds
@@ -188,11 +188,12 @@ public class AllValuesRule extends AbstractTableauRule
 		}
 	}
 
-	public void applyAllValues(final Individual subj, final Role pred, Node obj, final DependencySet ds)
+	public void applyAllValues(final Individual subj, final Role pred, final Node startNode, final DependencySet ds)
 	{
 		final List<ATermAppl> allValues = subj.getTypes(Node.ALL);
 		int allValuesSize = allValues.size();
 		Iterator<ATermAppl> i = allValues.iterator();
+		Node obj = startNode;
 		while (i.hasNext())
 		{
 			final ATermAppl av = i.next();
@@ -266,7 +267,7 @@ public class AllValuesRule extends AbstractTableauRule
 			// if there are self links then restart
 			if (allValuesSize != allValues.size())
 			{
-				i = allValues.iterator();
+				i = allValues.iterator(); // XXX This is ugly.
 				allValuesSize = allValues.size();
 			}
 		}

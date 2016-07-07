@@ -62,12 +62,6 @@ import org.semanticweb.owlapi.model.SetOntologyID;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -85,17 +79,6 @@ public class PelletLoader implements FacetManagerOWL
 	// private Set<URI> loadedFiles;
 
 	private OWLOntologyManager _manager;
-
-	@Override
-	public OWLOntologyManager getManager()
-	{
-		return _manager;
-	}
-
-	public void setManager(final OWLOntologyManager manager)
-	{
-		_manager = manager;
-	}
 
 	private final Set<OWLOntology> _ontologies;
 
@@ -118,6 +101,17 @@ public class PelletLoader implements FacetManagerOWL
 
 	private final ChangeVisitor _changeVisitor = new ChangeVisitor();
 
+	@Override
+	public OWLOntologyManager getManager()
+	{
+		return _manager;
+	}
+
+	public void setManager(final OWLOntologyManager manager)
+	{
+		_manager = manager;
+	}
+
 	private class ChangeVisitor implements OWLOntologyChangeVisitor
 	{
 		private boolean _reloadRequired;
@@ -135,7 +129,7 @@ public class PelletLoader implements FacetManagerOWL
 		 */
 		public boolean process(final OWLOntologyChange change)
 		{
-			this.reset();
+			reset();
 			change.accept(this);
 			return !isReloadRequired();
 		}
@@ -196,7 +190,7 @@ public class PelletLoader implements FacetManagerOWL
 
 	public PelletLoader(final KnowledgeBase kb)
 	{
-		this._kb = kb;
+		_kb = kb;
 
 		_visitor = new PelletVisitor(kb);
 
@@ -232,7 +226,7 @@ public class PelletLoader implements FacetManagerOWL
 
 	public void setProcessImports(final boolean processImports)
 	{
-		this._processImports = processImports;
+		_processImports = processImports;
 	}
 
 	public void clear()
@@ -256,7 +250,7 @@ public class PelletLoader implements FacetManagerOWL
 
 	public void setKB(final KnowledgeBase kb)
 	{
-		this._kb = kb;
+		_kb = kb;
 	}
 
 	public ATermAppl term(final OWLObject d)
@@ -371,23 +365,23 @@ public class PelletLoader implements FacetManagerOWL
 			// go over the imports
 			for (final OWLOntology importOnt : ontology.imports().collect(Collectors.toList()))
 			{
-				// see if the importedOnt is imported by any other ontology
-				final Set<OWLOntology> importees = _importDependencies.get(importOnt);
-				if (importees != null)
-				{
-					// remove the unloaded ontology from the dependencies
-					importees.remove(ontology);
-					// if nothing is left
-					if (importees.isEmpty())
-					{
-						// remove the empty set from dependencies
-						_importDependencies.remove(importOnt);
-						// only unload if this ontology was not loaded by the
-						// user explicitly
-						if (!_notImported.contains(importOnt))
-							unload(importOnt);
-					}
-				}
+			// see if the importedOnt is imported by any other ontology
+			final Set<OWLOntology> importees = _importDependencies.get(importOnt);
+			if (importees != null)
+			{
+			// remove the unloaded ontology from the dependencies
+			importees.remove(ontology);
+			// if nothing is left
+			if (importees.isEmpty())
+			{
+			// remove the empty set from dependencies
+			_importDependencies.remove(importOnt);
+			// only unload if this ontology was not loaded by the
+			// user explicitly
+			if (!_notImported.contains(importOnt))
+			unload(importOnt);
+			}
+			}
 			}
 	}
 

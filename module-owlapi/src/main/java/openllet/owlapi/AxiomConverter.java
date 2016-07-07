@@ -57,7 +57,7 @@ import org.semanticweb.owlapi.model.SWRLIArgument;
  */
 public class AxiomConverter implements FacetFactoryOWL
 {
-	public static Logger _logger = Log.getLogger(AxiomConverter.class);
+	public static final Logger _logger = Log.getLogger(AxiomConverter.class);
 
 	private final ConceptConverter _conceptConverter;
 	private final KnowledgeBase _kb;
@@ -82,8 +82,8 @@ public class AxiomConverter implements FacetFactoryOWL
 		if (factory == null)
 			throw new NullPointerException("OWLDataFactory is null");
 
-		this._kb = kb;
-		this._factory = factory;
+		_kb = kb;
+		_factory = factory;
 		_conceptConverter = new ConceptConverter(kb, factory);
 	}
 

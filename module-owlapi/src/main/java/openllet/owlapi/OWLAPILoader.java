@@ -32,12 +32,6 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -50,13 +44,25 @@ public class OWLAPILoader extends KBLoader implements FacetReasonerOWL, FacetMan
 {
 	private final OWLOntologyManager _manager;
 
+	private final LimitedMapIRIMapper _iriMapper;
+
+	private PelletReasoner _reasoner;
+
+	private OWLOntology _baseOntology;
+
+	private boolean _ignoreImports;
+
+	/**
+	 * A workaround for OWLAPI bug that does not let us import a loaded ontology so that we can minimize the warnings printed when
+	 * OWLOntologyManager.makeLoadImportRequest is called
+	 */
+	private boolean _loadSingleFile;
+
 	@Override
 	public OWLOntologyManager getManager()
 	{
 		return _manager;
 	}
-
-	private PelletReasoner _pellet;
 
 	/**
 	 * Returns the reasoner created by this loader. A <code>null</code> value is returned until {@link #load()} function is called (explicitly or implicitly).
@@ -66,12 +72,8 @@ public class OWLAPILoader extends KBLoader implements FacetReasonerOWL, FacetMan
 	@Override
 	public PelletReasoner getReasoner()
 	{
-		return _pellet;
+		return _reasoner;
 	}
-
-	private final LimitedMapIRIMapper iriMapper;
-
-	private OWLOntology _baseOntology;
 
 	@Override
 	public OWLOntology getOntology()
@@ -79,26 +81,18 @@ public class OWLAPILoader extends KBLoader implements FacetReasonerOWL, FacetMan
 		return _baseOntology;
 	}
 
-	private boolean _ignoreImports;
-
-	/**
-	 * A workaround for OWLAPI bug that does not let us import a loaded ontology so that we can minimize the warnings printed when
-	 * OWLOntologyManager.makeLoadImportRequest is called
-	 */
-	private boolean loadSingleFile;
-
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public KnowledgeBase getKB()
 	{
-		return _pellet.getKB();
+		return _reasoner.getKB();
 	}
 
 	public OWLAPILoader()
 	{
-		iriMapper = new LimitedMapIRIMapper();
+		_iriMapper = new LimitedMapIRIMapper();
 		_manager = OWLManager.createOWLOntologyManager();
 
 		_manager.setOntologyLoaderConfiguration(_manager.getOntologyLoaderConfiguration().setMissingImportHandlingStrategy(MissingImportHandlingStrategy.SILENT));
@@ -146,8 +140,8 @@ public class OWLAPILoader extends KBLoader implements FacetReasonerOWL, FacetMan
 	@Override
 	public void load()
 	{
-		_pellet = new PelletReasonerFactory().createReasoner(_baseOntology);
-		_pellet.getKB().setTaxonomyBuilderProgressMonitor(OpenlletOptions.USE_CLASSIFICATION_MONITOR.create());
+		_reasoner = new PelletReasonerFactory().createReasoner(_baseOntology);
+		_reasoner.getKB().setTaxonomyBuilderProgressMonitor(OpenlletOptions.USE_CLASSIFICATION_MONITOR.create());
 	}
 
 	/**
@@ -157,7 +151,7 @@ public class OWLAPILoader extends KBLoader implements FacetReasonerOWL, FacetMan
 	public void parse(final String... fileNames)
 	{
 		// note if we will load a single file
-		loadSingleFile = fileNames.length == 1;
+		_loadSingleFile = fileNames.length == 1;
 
 		super.parse(fileNames);
 	}
@@ -171,9 +165,9 @@ public class OWLAPILoader extends KBLoader implements FacetReasonerOWL, FacetMan
 		try
 		{
 			final IRI fileIRI = IRI.create(file);
-			iriMapper.addAllowedIRI(fileIRI);
+			_iriMapper.addAllowedIRI(fileIRI);
 
-			if (loadSingleFile)
+			if (_loadSingleFile)
 				// we are loading a single file so we can load it directly
 				_baseOntology = _manager.loadOntologyFromOntologyDocument(fileIRI);
 			else
@@ -208,7 +202,7 @@ public class OWLAPILoader extends KBLoader implements FacetReasonerOWL, FacetMan
 		_ignoreImports = ignoreImports;
 		_manager.getIRIMappers().clear();
 		if (ignoreImports)
-			_manager.getIRIMappers().add(iriMapper);
+			_manager.getIRIMappers().add(_iriMapper);
 	}
 
 	/**
@@ -218,7 +212,7 @@ public class OWLAPILoader extends KBLoader implements FacetReasonerOWL, FacetMan
 	public void clear()
 	{
 
-		iriMapper.clear();
+		_iriMapper.clear();
 		_manager.ontologies().forEach(_manager::removeOntology);
 
 		try

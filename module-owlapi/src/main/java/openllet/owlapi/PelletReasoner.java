@@ -81,6 +81,46 @@ public class PelletReasoner implements OWLReasoner, OWLOntologyChangeListener, F
 
 	private static final Version VERSION = createVersion();
 
+	private final OWLOntologyManager _manager;
+
+	private final OWLDataFactory _factory;
+
+	/**
+	 * Main ontology for reasoner
+	 */
+	private final OWLOntology _ontology;
+
+	private KnowledgeBase _kb;
+
+	private final ReasonerProgressMonitor _monitor;
+
+	/**
+	 * Imports closure for _ontology
+	 */
+	private Set<OWLOntology> _importsClosure;
+	private boolean _shouldRefresh;
+	private final PelletVisitor _visitor;
+
+	private final BufferingMode _bufferingMode;
+
+	private final List<OWLOntologyChange> _pendingChanges;
+
+	private final IndividualNodeSetPolicy _individualNodeSetPolicy;
+
+	private final ChangeVisitor _changeVisitor = new ChangeVisitor();
+
+	private final EntityMapper<OWLNamedIndividual> IND_MAPPER = new NamedIndividualMapper();
+
+	private final EntityMapper<OWLLiteral> LIT_MAPPER = new LiteralMapper();
+
+	private final EntityMapper<OWLObjectPropertyExpression> OP_MAPPER = new ObjectPropertyMapper();
+
+	private final EntityMapper<OWLDataProperty> DP_MAPPER = new DataPropertyMapper();
+
+	private final EntityMapper<OWLDatatype> DT_MAPPER = new DatatypeMapper();
+
+	private final EntityMapper<OWLClass> CLASS_MAPPER = new ClassMapper();
+
 	private static Version createVersion()
 	{
 		final String versionString = VersionInfo.getInstance().getVersionString();
@@ -127,7 +167,7 @@ public class PelletReasoner implements OWLReasoner, OWLOntologyChangeListener, F
 		 */
 		public boolean process(final OWLOntologyChange change)
 		{
-			this.reset();
+			reset();
 			change.accept(this);
 			return !isReloadRequired();
 		}
@@ -280,15 +320,11 @@ public class PelletReasoner implements OWLReasoner, OWLOntologyChangeListener, F
 		return IRI.create(term.getName());
 	}
 
-	private final OWLOntologyManager _manager;
-
 	@Override
 	public OWLOntologyManager getManager()
 	{
 		return _manager;
 	}
-
-	private final OWLDataFactory _factory;
 
 	@Override
 	public OWLDataFactory getFactory()
@@ -296,18 +332,11 @@ public class PelletReasoner implements OWLReasoner, OWLOntologyChangeListener, F
 		return _factory;
 	}
 
-	/**
-	 * Main _ontology for reasoner
-	 */
-	private final OWLOntology _ontology;
-
 	@Override
 	public OWLOntology getOntology()
 	{
 		return _ontology;
 	}
-
-	private KnowledgeBase _kb;
 
 	/**
 	 * Return the underlying Pellet knowledge base.
@@ -318,34 +347,6 @@ public class PelletReasoner implements OWLReasoner, OWLOntologyChangeListener, F
 	{
 		return _kb;
 	}
-
-	private final ReasonerProgressMonitor _monitor;
-
-	/**
-	 * Imports closure for _ontology
-	 */
-	private Set<OWLOntology> _importsClosure;
-	private boolean _shouldRefresh;
-	private final PelletVisitor _visitor;
-
-	private final BufferingMode _bufferingMode;
-	private final List<OWLOntologyChange> _pendingChanges;
-
-	private final IndividualNodeSetPolicy _individualNodeSetPolicy;
-
-	private final ChangeVisitor _changeVisitor = new ChangeVisitor();
-
-	private final EntityMapper<OWLNamedIndividual> IND_MAPPER = new NamedIndividualMapper();
-
-	private final EntityMapper<OWLLiteral> LIT_MAPPER = new LiteralMapper();
-
-	private final EntityMapper<OWLObjectPropertyExpression> OP_MAPPER = new ObjectPropertyMapper();
-
-	private final EntityMapper<OWLDataProperty> DP_MAPPER = new DataPropertyMapper();
-
-	private final EntityMapper<OWLDatatype> DT_MAPPER = new DatatypeMapper();
-
-	private final EntityMapper<OWLClass> CLASS_MAPPER = new ClassMapper();
 
 	public PelletReasoner(final OWLOntology ontology, final BufferingMode bufferingMode)
 	{
@@ -387,7 +388,7 @@ public class PelletReasoner implements OWLReasoner, OWLOntologyChangeListener, F
 		refresh();
 	}
 
-	private PelletRuntimeException convert(final PelletRuntimeException e) throws InconsistentOntologyException, ReasonerInterruptedException, TimeOutException, FreshEntitiesException
+	private static PelletRuntimeException convert(final PelletRuntimeException e) throws InconsistentOntologyException, ReasonerInterruptedException, TimeOutException, FreshEntitiesException
 	{
 
 		if (e instanceof openllet.core.exceptions.TimeoutException)

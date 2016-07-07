@@ -135,9 +135,9 @@ public abstract class CompletionStrategy
 	 */
 	public CompletionStrategy(final ABoxImpl abox)
 	{
-		this._abox = abox;
-		this._tbox = abox.getTBox();
-		this._timers = abox.getKB().timers;
+		_abox = abox;
+		_tbox = abox.getTBox();
+		_timers = abox.getKB().timers;
 
 		_completionTimer = _timers.getTimer("complete");
 	}
@@ -415,8 +415,10 @@ public abstract class CompletionStrategy
 
 	}
 
-	public void addType(Node node, final ATermAppl c, final DependencySet ds)
+	public void addType(final Node startNode, final ATermAppl c, final DependencySet ds)
 	{
+		Node node = startNode;
+
 		if (_abox.isClosed())
 			return;
 
@@ -646,7 +648,7 @@ public abstract class CompletionStrategy
 
 	}
 
-	void applyDisjointness(final Individual subj, final Role pred, final Node obj, DependencySet dsParam)
+	void applyDisjointness(final Individual subj, final Role pred, final Node obj, final DependencySet dsParam)
 	{
 		DependencySet ds = dsParam;
 		// TODO what about inv edges?
@@ -670,7 +672,7 @@ public abstract class CompletionStrategy
 
 	}
 
-	void checkReflexivitySymmetry(final Individual subj, final Role pred, final Individual obj, DependencySet dsParam)
+	void checkReflexivitySymmetry(final Individual subj, final Role pred, final Individual obj, final DependencySet dsParam)
 	{
 		DependencySet ds = dsParam;
 		if (pred.isAsymmetric() && obj.hasRSuccessor(pred, subj))
@@ -693,7 +695,7 @@ public abstract class CompletionStrategy
 				}
 	}
 
-	protected void applyFunctionalMaxRule(final Literal x, final Role r, DependencySet dsParam)
+	protected void applyFunctionalMaxRule(final Literal x, final Role r, final DependencySet dsParam)
 	{
 		DependencySet ds = dsParam;
 		final EdgeList edges = x.getInEdges().getEdges(r);
@@ -822,7 +824,7 @@ public abstract class CompletionStrategy
 	 * @param z Node that is being merged into
 	 * @param dsParam Dependency of this merge operation
 	 */
-	public void mergeTo(final Node y, final Node z, DependencySet dsParam)
+	public void mergeTo(final Node y, final Node z, final DependencySet dsParam)
 	{
 		DependencySet ds = dsParam;
 		// add to effected list

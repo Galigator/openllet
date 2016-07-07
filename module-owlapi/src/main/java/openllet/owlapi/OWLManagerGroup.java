@@ -14,12 +14,17 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 /**
  * Group of Owl Manager, volatile and persistent.
- * 
+ *
  * @since 2.5.1
  */
 public class OWLManagerGroup implements AutoCloseable
 {
 	private static final Logger _logger = Log.getLogger(OWLManagerGroup.class);
+
+	public volatile Optional<File> _ontologiesDirectory = Optional.empty();
+	public volatile OWLOntologyManager _volatileManager = null;
+	public volatile OWLOntologyManager _storageManager = null;
+	private OWLStorageManagerListener _storageListener;
 
 	public OWLManagerGroup()
 	{
@@ -37,8 +42,6 @@ public class OWLManagerGroup implements AutoCloseable
 		storageManager.ifPresent(m -> _storageManager = m);
 	}
 
-	public volatile Optional<File> _ontologiesDirectory = Optional.empty();
-
 	public boolean setOntologiesDirectory(final File directory)
 	{
 		_ontologiesDirectory = Optional.of(directory);
@@ -50,19 +53,13 @@ public class OWLManagerGroup implements AutoCloseable
 		return _ontologiesDirectory;
 	}
 
-	public volatile OWLOntologyManager _volatileManager = null;
-
 	public OWLOntologyManager getVolatileManager()
 	{
 		if (_volatileManager == null)
-		{
 			_volatileManager = OWLManager.createConcurrentOWLOntologyManager();
-		}
 
 		return _volatileManager;
 	}
-
-	public volatile OWLOntologyManager _storageManager = null;
 
 	/**
 	 * @return The storage manager if you have call setOntologiesDirectory() before; else it throw a RuntimeException.
@@ -95,21 +92,17 @@ public class OWLManagerGroup implements AutoCloseable
 		return _storageManager;
 	}
 
-	private OWLStorageManagerListener _storageListener;
-
 	public void loadDirectory(final File directory)
 	{
 		if (!directory.exists())
-		{
-			if (!directory.mkdir()) { throw new OWLException("Can't create the directory " + directory + " ."); }
-		}
+			if (!directory.mkdir())
+				throw new OWLException("Can't create the directory " + directory + " .");
 
-		if (!directory.isDirectory()) { throw new OWLException("The directory parameter must be a true existing directory. " + directory + " isn't."); }
+		if (!directory.isDirectory())
+			throw new OWLException("The directory parameter must be a true existing directory. " + directory + " isn't.");
 
 		for (final File file : directory.listFiles())
-		{
 			if (file.isFile() && file.canRead() && file.getName().endsWith(OWLHelper._fileExtention))
-			{
 				try
 				{
 					_logger.info("loading from " + file);
@@ -123,17 +116,13 @@ public class OWLManagerGroup implements AutoCloseable
 				{
 					_logger.log(Level.SEVERE, "Can't load ontology of file " + file, e);
 				}
-			}
 			else
-			{
 				_logger.info(file + " will not be load.");
-			}
-		}
 	}
 
 	/**
 	 * Seek the asked ontology. First in the volatile ontologies, then in the stored ontologies that are already stored.
-	 * 
+	 *
 	 * @param ontologyID the id of the ontology you are looking for.
 	 * @return an ontology if found.
 	 * @since 2.5.1
@@ -146,7 +135,7 @@ public class OWLManagerGroup implements AutoCloseable
 
 	/**
 	 * The standard 'getOntology' from the OWLManager don't really take care of versionning. This function is here to enforce the notion of version
-	 * 
+	 *
 	 * @param manager to look into (mainly storage or volatile)
 	 * @param ontologyID with version information
 	 * @return the ontology if already load into the given manager.
@@ -174,7 +163,8 @@ public class OWLManagerGroup implements AutoCloseable
 
 	public String ontology2filename(final OWLOntologyID ontId)
 	{
-		if (_ontologiesDirectory.isPresent()) { return OWLHelper.ontology2filename(_ontologiesDirectory.get(), ontId); }
+		if (_ontologiesDirectory.isPresent())
+			return OWLHelper.ontology2filename(_ontologiesDirectory.get(), ontId);
 		throw new OWLException("Storage directory should be define to enable loading of ontology by iri.");
 	}
 
@@ -185,14 +175,15 @@ public class OWLManagerGroup implements AutoCloseable
 
 	void check(final OWLOntologyManager manager)
 	{
-		if (manager == _volatileManager || manager == _storageManager) { return; }
+		if (manager == _volatileManager || manager == _storageManager)
+			return;
 		throw new OWLException("The given manager isn't know from in the OWLManagerGroup. Check your manager usage.");
 	}
 
 	/**
 	 * Free all in memory resource. The 'in memory' space taken by the persistent data is also free, but the persistent is maintain for future usage. The
 	 * storage system is disable.
-	 * 
+	 *
 	 * @since 2.5.1
 	 */
 	@Override
@@ -222,7 +213,7 @@ public class OWLManagerGroup implements AutoCloseable
 
 	/**
 	 * Connect to the speficied ontology.
-	 * 
+	 *
 	 * @param ontology is the pointer to the resource
 	 * @param version of the designated ontology
 	 * @param persistent or not.

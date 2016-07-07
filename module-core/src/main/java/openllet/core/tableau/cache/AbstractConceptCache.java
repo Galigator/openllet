@@ -56,7 +56,7 @@ public abstract class AbstractConceptCache implements ConceptCache
 	 */
 	public AbstractConceptCache(final int maxSize)
 	{
-		this._maxSize = maxSize;
+		_maxSize = maxSize;
 	}
 
 	protected boolean isFull()
@@ -105,7 +105,7 @@ public abstract class AbstractConceptCache implements ConceptCache
 	@Override
 	public void setMaxSize(final int maxSize)
 	{
-		this._maxSize = maxSize;
+		_maxSize = maxSize;
 	}
 
 	private static Bool checkTrivialClash(final CachedNode node1, final CachedNode node2)
@@ -575,7 +575,7 @@ public abstract class AbstractConceptCache implements ConceptCache
 	/**
 	 * {@inheritDoc}
 	 */
-	private static Set<ATermAppl> getRNeighbors(final CachedNode node, Role role)
+	private static Set<ATermAppl> getRNeighbors(final CachedNode node, final Role role)
 	{
 		final Set<ATermAppl> neighbors = new HashSet<>();
 
@@ -588,11 +588,11 @@ public abstract class AbstractConceptCache implements ConceptCache
 
 		if (role.isObjectRole())
 		{
-			role = role.getInverse();
+			final Role invRole = role.getInverse();
 			for (final Edge edge : node.getInEdges())
 			{
 				final Role r = edge.getRole();
-				if (r.isSubRoleOf(role))
+				if (r.isSubRoleOf(invRole))
 					neighbors.add(edge.getFromName());
 			}
 		}

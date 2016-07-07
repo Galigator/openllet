@@ -18,12 +18,27 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 /**
  * The main difference between OWLTools and OWLGenericTools is the usage of static resources by OWLTools.
- * 
+ *
  * @since 2.5.1
  */
 public class OWLGenericTools implements OWLHelper
 {
 	private static final Logger _logger = Log.getLogger(OWLGenericTools.class);
+
+	/**
+	 * Ontology denote the current ontology. So it can change in version of environment.
+	 *
+	 * @since 2.5.1
+	 */
+	protected volatile OWLOntology _ontology;
+
+	protected final OWLOntologyManager _manager;
+
+	protected final OWLManagerGroup _group;
+
+	protected boolean _isVolatile = true;
+
+	private Optional<PelletReasoner> _pelletReasoner = Optional.empty();
 
 	@Override
 	public Logger getLogger()
@@ -31,20 +46,11 @@ public class OWLGenericTools implements OWLHelper
 		return _logger;
 	}
 
-	/**
-	 * Ontology denote the current ontology. So it can change in version of environment.
-	 * 
-	 * @since 2.5.1
-	 */
-	protected volatile OWLOntology _ontology;
-
 	@Override
 	public OWLOntology getOntology()
 	{
 		return _ontology;
 	}
-
-	protected final OWLOntologyManager _manager;
 
 	@Override
 	public OWLOntologyManager getManager()
@@ -52,15 +58,11 @@ public class OWLGenericTools implements OWLHelper
 		return _manager;
 	}
 
-	protected final OWLManagerGroup _group;
-
 	@Override
 	public OWLManagerGroup getGroup()
 	{
 		return _group;
 	}
-
-	protected boolean _isVolatile = true;
 
 	@Override
 	public boolean isVolatile()
@@ -74,14 +76,11 @@ public class OWLGenericTools implements OWLHelper
 		return _manager.getOWLDataFactory();
 	}
 
-	private Optional<PelletReasoner> _pelletReasoner = Optional.empty();
-
 	@Override
 	public PelletReasoner getReasoner()
 	{
 
 		if (!_pelletReasoner.isPresent())
-		{
 			try
 			{
 
@@ -93,7 +92,6 @@ public class OWLGenericTools implements OWLHelper
 			{
 				_logger.log(Level.SEVERE, "", e);
 			}
-		}
 
 		_pelletReasoner.get().flush();
 		return _pelletReasoner.get();
@@ -101,7 +99,7 @@ public class OWLGenericTools implements OWLHelper
 
 	/**
 	 * Load the ontology ontologyId into the good manager or create it if it doesn't previously exist.
-	 * 
+	 *
 	 * @param group of managers.
 	 * @param ontologyID is the reference to the ontology
 	 * @throws OWLOntologyCreationException is raise when things goes baddly wrong.
@@ -110,37 +108,29 @@ public class OWLGenericTools implements OWLHelper
 	public OWLGenericTools(final OWLManagerGroup group, final OWLOntologyID ontologyID) throws OWLOntologyCreationException
 	{
 		if (ontologyID.getOntologyIRI().toString().indexOf(' ') != -1)
-		{
 			throw new OWLOntologyCreationException("Illegal character ' ' in name on [" + ontologyID.getOntologyIRI() + "]");
-		}
 		else
-			if (ontologyID.getVersionIRI() != null && ontologyID.getVersionIRI().toString().indexOf(' ') != -1) { throw new OWLOntologyCreationException("Illegal character ' ' in version on [" + ontologyID.getVersionIRI() + "]"); }
+			if (ontologyID.getVersionIRI() != null && ontologyID.getVersionIRI().toString().indexOf(' ') != -1)
+				throw new OWLOntologyCreationException("Illegal character ' ' in version on [" + ontologyID.getVersionIRI() + "]");
 		_group = group;
 
 		// Maybe already in a manager.
 		if (group.getOntologiesDirectory().isPresent())
-		{
 			_ontology = OWLManagerGroup.getOntology(group.getStorageManager(), ontologyID).orElse(null);
-		}
 
 		if (_ontology != null)
-		{
 			_manager = group.getStorageManager();
-		}
 		else
 		{ // Not in storage manager
 			_ontology = OWLManagerGroup.getOntology(group.getVolatileManager(), ontologyID).orElse(null);
 			if (_ontology != null)
-			{
 				_manager = group.getVolatileManager();
-			}
 			else
 			{ // Not in volatile manager.
-				// Maybe we should load it.
+					// Maybe we should load it.
 				_manager = group.getOntologiesDirectory().isPresent() ? group.getStorageManager() : group.getVolatileManager();
 				final File file = new File(group.ontology2filename(ontologyID));
 				if (file.exists())
-				{
 					try
 					{
 						_ontology = _manager.loadOntologyFromOntologyDocument(file);
@@ -149,7 +139,6 @@ public class OWLGenericTools implements OWLHelper
 					{
 						_logger.log(Level.INFO, "Ontology " + ontologyID + " couldn't be load", e);
 					}
-				}
 				if (_ontology == null) // Maybe we should create it.
 				{
 					_logger.log(Level.FINE, "Ontology " + ontologyID + " will be create now");
@@ -165,11 +154,10 @@ public class OWLGenericTools implements OWLHelper
 	public OWLGenericTools(final OWLManagerGroup group, final OWLOntologyID ontologyID, final boolean isVolatile) throws OWLOntologyCreationException
 	{
 		if (ontologyID.getOntologyIRI().toString().indexOf(' ') != -1)
-		{
 			throw new OWLOntologyCreationException("Illegal character ' ' in name on [" + ontologyID.getOntologyIRI() + "]");
-		}
 		else
-			if (ontologyID.getVersionIRI() != null && ontologyID.getVersionIRI().toString().indexOf(' ') != -1) { throw new OWLOntologyCreationException("Illegal character ' ' in version on [" + ontologyID.getVersionIRI() + "]"); }
+			if (ontologyID.getVersionIRI() != null && ontologyID.getVersionIRI().toString().indexOf(' ') != -1)
+				throw new OWLOntologyCreationException("Illegal character ' ' in version on [" + ontologyID.getVersionIRI() + "]");
 
 		_group = group;
 		_isVolatile = isVolatile;
@@ -179,20 +167,16 @@ public class OWLGenericTools implements OWLHelper
 		// Maybe we should load it.
 		if (_ontology == null && !_isVolatile)
 		{
-			{
-				final File file = new File(group.ontology2filename(ontologyID));
-				if (file.exists())
+			final File file = new File(group.ontology2filename(ontologyID));
+			if (file.exists())
+				try
 				{
-					try
-					{
-						_ontology = _manager.loadOntologyFromOntologyDocument(file);
-					}
-					catch (final Exception e)
-					{
-						_logger.log(Level.INFO, "Ontology " + ontologyID + " couldn't be load", e);
-					}
+					_ontology = _manager.loadOntologyFromOntologyDocument(file);
 				}
-			}
+				catch (final Exception e)
+				{
+					_logger.log(Level.INFO, "Ontology " + ontologyID + " couldn't be load", e);
+				}
 		}
 
 		if (_ontology == null)

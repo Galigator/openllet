@@ -18,11 +18,7 @@ import org.semanticweb.owlapi.model.OWLNamedIndividual;
  */
 public class OWLClassTreePrinter extends TreeTaxonomyPrinter<OWLClass>
 {
-	private final QNameProvider qnames = new QNameProvider();
-
-	public OWLClassTreePrinter()
-	{
-	}
+	private final QNameProvider _qnames = new QNameProvider();
 
 	@Override
 	protected void printNode(final Set<OWLClass> set)
@@ -59,7 +55,7 @@ public class OWLClassTreePrinter extends TreeTaxonomyPrinter<OWLClass>
 
 	private void printIRI(final PrintWriter out, final IRI iri)
 	{
-		out.print(qnames.shortForm(iri.toString()));
+		out.print(_qnames.shortForm(iri.toString()));
 	}
 
 	/**

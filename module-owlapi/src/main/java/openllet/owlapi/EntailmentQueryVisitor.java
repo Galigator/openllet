@@ -27,18 +27,17 @@ import org.semanticweb.owlapi.model.OWLSameIndividualAxiom;
 
 public class EntailmentQueryVisitor implements OWLAxiomVisitor, FacetReasonerOWL
 {
-
 	private final IndividualTermConverter _indConv;
 
 	private final PelletReasoner _reasoner;
+
+	private Query _query;
 
 	@Override
 	public PelletReasoner getReasoner()
 	{
 		return _reasoner;
 	}
-
-	private Query _query;
 
 	private class IndividualTermConverter implements OWLIndividualVisitor
 	{
@@ -70,8 +69,8 @@ public class EntailmentQueryVisitor implements OWLAxiomVisitor, FacetReasonerOWL
 
 	public EntailmentQueryVisitor(final PelletReasoner reasoner)
 	{
-		this._reasoner = reasoner;
-		this._indConv = new IndividualTermConverter();
+		_reasoner = reasoner;
+		_indConv = new IndividualTermConverter();
 		reset();
 	}
 

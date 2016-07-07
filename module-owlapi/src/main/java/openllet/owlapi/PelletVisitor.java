@@ -147,12 +147,6 @@ import org.semanticweb.owlapi.model.SWRLVariable;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -188,11 +182,12 @@ public class PelletVisitor implements OWLObjectVisitor
 	 * treated as simple
 	 */
 	private MultiValueMap<OWLObjectProperty, OWLObjectPropertyAxiom> _compositePropertyAxioms;
+
 	private Set<OWLObjectProperty> _simpleProperties;
 
 	public PelletVisitor(final KnowledgeBase kb)
 	{
-		this._kb = kb;
+		_kb = kb;
 
 		clear();
 	}
@@ -264,7 +259,7 @@ public class PelletVisitor implements OWLObjectVisitor
 
 	public void setAddAxiom(final boolean addAxioms)
 	{
-		this._addAxioms = addAxioms;
+		_addAxioms = addAxioms;
 	}
 
 	public boolean isReloadRequired()
@@ -1001,7 +996,7 @@ public class PelletVisitor implements OWLObjectVisitor
 		}
 
 		if (restrictions.isEmpty())
-			_logger.warning("A _data range is defined without facet restrictions " + node);
+			_logger.warning("A data range is defined without facet restrictions " + node);
 		else
 			_term = ATermUtils.makeRestrictedDatatype(baseDatatype, restrictions.toArray(new ATermAppl[restrictions.size()]));
 	}

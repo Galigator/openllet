@@ -11,6 +11,7 @@ package openllet.owlapi;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
 import openllet.core.KnowledgeBase;
@@ -35,9 +36,6 @@ import org.semanticweb.owlapi.vocab.OWLFacet;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
  * Description: Converts concepts expressed as ATerms to OWL-API structures.
  * </p>
  * <p>
@@ -52,10 +50,10 @@ import org.semanticweb.owlapi.vocab.OWLFacet;
 public class ConceptConverter extends ATermBaseVisitor implements FacetFactoryOWL
 {
 	private final KnowledgeBase _kb;
+	private final OWLDataFactory _factory;
+
 	private OWLObject _obj;
 	private Set<OWLObject> _set;
-
-	private final OWLDataFactory _factory;
 
 	@Override
 	public OWLDataFactory getFactory()
@@ -158,13 +156,9 @@ public class ConceptConverter extends ATermBaseVisitor implements FacetFactoryOW
 			throw new InternalReasonerException("Ontology does not contain: " + term);
 	}
 
-	private <Type, Tmp> Set<Type> dynamicCastTheSet(final Collection<Tmp> set, final Class<Type> c)
+	private static <Type, Tmp> Set<Type> dynamicCastTheSet(final Collection<Tmp> set, final Class<Type> c)
 	{
-		final Set<Type> exprs = new HashSet<>();
-		for (final Tmp o : set)
-			if (c.isInstance(o))
-				exprs.add(c.cast(o));
-		return exprs;
+		return set.stream().filter(c::isInstance).map(c::cast).collect(Collectors.toSet());
 	}
 
 	@Override

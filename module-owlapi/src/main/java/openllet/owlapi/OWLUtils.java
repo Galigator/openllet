@@ -7,12 +7,13 @@ import org.semanticweb.owlapi.model.OWLOntologyID;
 
 /**
  * Utils to play with singletons.
- * 
+ *
  * @since 2.5.1
  */
 public class OWLUtils
 {
 	//	private static final Logger _logger = Log.getLogger(OWLUtils.class);
+	static private OWLManagerGroup _owlManagerGroup = new OWLManagerGroup(Optional.of(OWL._manager), Optional.empty());
 
 	/**
 	 * @param iri an iri that is potentially valid or with a namespace separator.
@@ -23,8 +24,6 @@ public class OWLUtils
 	{
 		return (!iri.startsWith("{")) ? iri : iri.replaceAll("[\\{\\}]", "");
 	}
-
-	static private OWLManagerGroup _owlManagerGroup = new OWLManagerGroup(Optional.of(OWL._manager), Optional.empty());
 
 	static public OWLManagerGroup getOwlManagerGroup()
 	{

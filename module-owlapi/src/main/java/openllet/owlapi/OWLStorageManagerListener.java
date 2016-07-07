@@ -48,7 +48,7 @@ import uk.ac.manchester.cs.owl.owlapi.OWLImportsDeclarationImpl;
 
 /**
  * A listner that enable incremental storage of ontologies.
- * 
+ *
  * @since 2.5.1
  */
 public class OWLStorageManagerListener implements OWLOntologyChangeListener
@@ -118,21 +118,21 @@ public class OWLStorageManagerListener implements OWLOntologyChangeListener
 			}
 
 			_owlManagerGroup.getStorageManager().ontologies()//
-			.filter(ontology -> ontology.getOntologyID().getOntologyIRI().isPresent())//
-			.filter(ontology -> changed.contains(ontology.getOntologyID().getOntologyIRI().get()))//
-			.filter(ontology -> !ontology.isAnonymous())//
-			.filter(ontology -> !ontology.isEmpty())// todo : test this : Error or not ?
-			.forEach(ontology ->
-			{
-				try (final OutputStream stream = new FileOutputStream(ontology2filename(ontology)))
-				{
-					_owlManagerGroup.getStorageManager().saveOntology(ontology, stream); // All exceptions must be fatal to avoid loosing 'log' file. Re-apply a log isn't an issue.
-				}
-				catch (final Exception e)
-				{ // Do not make other ontologies crash at save time.
-					_logger.log(Level.SEVERE, "Crash when saving " + ontology.getOntologyID(), e);
-				}
-			});
+					.filter(ontology -> ontology.getOntologyID().getOntologyIRI().isPresent())//
+					.filter(ontology -> changed.contains(ontology.getOntologyID().getOntologyIRI().get()))//
+					.filter(ontology -> !ontology.isAnonymous())//
+					.filter(ontology -> !ontology.isEmpty())// todo : test this : Error or not ?
+					.forEach(ontology ->
+					{
+						try (final OutputStream stream = new FileOutputStream(ontology2filename(ontology)))
+						{
+							_owlManagerGroup.getStorageManager().saveOntology(ontology, stream); // All exceptions must be fatal to avoid loosing 'log' file. Re-apply a log isn't an issue.
+						}
+						catch (final Exception e)
+						{ // Do not make other ontologies crash at save time.
+							_logger.log(Level.SEVERE, "Crash when saving " + ontology.getOntologyID(), e);
+						}
+					});
 			_logger.info("flush done");
 
 			// Make sure to note catch the saveOntology exception.
@@ -144,13 +144,9 @@ public class OWLStorageManagerListener implements OWLOntologyChangeListener
 	private static byte[] bytesOfOntologyId(final OWLOntologyID ontologyID)
 	{
 		if (ontologyID.getVersionIRI() != null)
-		{
 			return (ontologyID.getOntologyIRI() + " " + ontologyID.getVersionIRI()).getBytes();
-		}
 		else
-		{
 			return ontologyID.getOntologyIRI().toString().getBytes();
-		}
 	}
 
 	private static void writeOntologyId(final OutputStream stream, final OWLOntologyID ontologyID) throws IOException
@@ -163,14 +159,10 @@ public class OWLStorageManagerListener implements OWLOntologyChangeListener
 		final String[] parts = ontologyId.split(" ");
 
 		if (parts.length == 2)
-		{
 			return new OWLOntologyID(IRI.create(parts[0]), IRI.create(parts[1]));
-		}
 		else
 			if (parts.length == 1)
-			{
 				return new OWLOntologyID(IRI.create(ontologyId));
-			}
 			else
 			{
 				_logger.log(Level.SEVERE, "Malformed OntologyID " + ontologyId);
@@ -178,7 +170,7 @@ public class OWLStorageManagerListener implements OWLOntologyChangeListener
 			}
 	}
 
-	private byte[] bytesOfChange(final OWLOntologyChange change)
+	private static byte[] bytesOfChange(final OWLOntologyChange change)
 	{
 		// There 4 basic cases, do them all. The other cases that does exists cover ontologies that already have a storage backend.
 		if (change instanceof OWLAxiomChange)
@@ -191,19 +183,13 @@ public class OWLStorageManagerListener implements OWLOntologyChangeListener
 		}
 		else
 			if (change instanceof AnnotationChange)
-			{
 				return ToStringRenderer.getInstance().render(((AnnotationChange) change).getAnnotation()).getBytes();
-			}
 			else
 				if (change instanceof ImportChange)
-				{
 					return (((ImportChange) change).getImportDeclaration()).getIRI().toString().getBytes();
-				}
 				else
 					if (change instanceof SetOntologyID)
-					{
 						return bytesOfOntologyId(((SetOntologyID) change).getNewOntologyID());
-					}
 					else
 					{
 						_logger.severe("No bytes available for " + change);
@@ -250,11 +236,11 @@ public class OWLStorageManagerListener implements OWLOntologyChangeListener
 
 	class MyReader extends Reader implements Iterator<OWLOntologyChange>
 	{
-		final BufferedReader _in;
+		private final BufferedReader _in;
 
-		volatile char[] _data;
-		volatile int _localOffset = 0;
-		volatile int _line = 0;
+		private volatile char[] _data;
+		private volatile int _localOffset = 0;
+		private volatile int _line = 0;
 
 		final OWLOntologyManager _manager = _owlManagerGroup.getStorageManager();
 
@@ -271,7 +257,6 @@ public class OWLStorageManagerListener implements OWLOntologyChangeListener
 				parser = new OWLFunctionalSyntaxParser(this);
 				OWLOntology ontology = _manager.getOntology(ontId);
 				if (ontology == null)
-				{
 					try
 					{
 						_logger.info("Creation of " + ontId.getOntologyIRI());
@@ -281,7 +266,6 @@ public class OWLStorageManagerListener implements OWLOntologyChangeListener
 					{
 						throw new OWLException("Ontology id lead to non existant ontology : " + ontId + ". And we can't create it.", exception);
 					}
-				}
 
 				parser.setUp(ontology, new OWLOntologyLoaderConfiguration());
 				_parsers.put(ontId, parser);
@@ -292,15 +276,14 @@ public class OWLStorageManagerListener implements OWLOntologyChangeListener
 		@Override
 		public int read(final char[] cbuf, final int off, final int len) throws IOException
 		{
-			if (_data == null) { return 0; }
+			if (_data == null)
+				return 0;
 
 			int i = _localOffset;
 			int j = off;
 			int wrote = 0;
 			for (; (j < cbuf.length) && wrote < len && i < _data.length; i++, j++, wrote++)
-			{
 				cbuf[j] = _data[i];
-			}
 
 			_localOffset = i;
 			return wrote;
@@ -354,9 +337,7 @@ public class OWLStorageManagerListener implements OWLOntologyChangeListener
 				return aa.annotations().findAny().orElseThrow(() -> new OWLException("Invalid annotation axiom : " + data));
 			}
 			else
-			{
 				throw new OWLException("Invalid annotation near " + (_line * 3) + "(line " + _line + ")" + " on axiom : " + data);
-			}
 		}
 
 		@Override
@@ -443,7 +424,6 @@ public class OWLStorageManagerListener implements OWLOntologyChangeListener
 			try (final BufferedReader in = new BufferedReader(new FileReader(_log)))
 			{
 				while (in.ready())
-				{
 					try
 					{
 						in.readLine(); // kind
@@ -456,7 +436,6 @@ public class OWLStorageManagerListener implements OWLOntologyChangeListener
 						_logger.log(Level.SEVERE, "Malformed File near " + (line * 3), e);
 						return null;
 					}
-				}
 			}
 			catch (final Exception e)
 			{
@@ -470,18 +449,14 @@ public class OWLStorageManagerListener implements OWLOntologyChangeListener
 	private void rebuild() throws OWLOntologyCreationException
 	{
 		if (_log.exists())
-		{
 			for (final String sIri : (new Builder()).scan())
-			{
 				if (sIri != null && !sIri.equals(""))
 				{
 					final String[] parts = sIri.split(" ");
 					// Aim at reload ontology before access.
 					final OWLOntologyID ontId;
 					if (parts.length == 2)
-					{
 						ontId = new OWLOntologyID(IRI.create(parts[0]), IRI.create(parts[1]));
-					}
 					else
 					{
 						final IRI iri = IRI.create(sIri);
@@ -495,8 +470,6 @@ public class OWLStorageManagerListener implements OWLOntologyChangeListener
 					// Add it to save list if just build.
 					_changed.add(ontId);
 				}
-			}
-		}
 	}
 
 	private void sync()
@@ -504,22 +477,18 @@ public class OWLStorageManagerListener implements OWLOntologyChangeListener
 		final List<OWLOntologyChange> changes = new ArrayList<>();
 
 		if (_log.exists())
-		{
 			try (final BufferedReader br = new BufferedReader(new FileReader(_log)))
 			{
 				try (final MyReader reader = new MyReader(br))
 				{
 					while (reader.hasNext())
-					{
 						changes.add(reader.next());
-					}
 				}
 			}
 			catch (final Exception e)
 			{
 				_logger.log(Level.SEVERE, "", e);
 			}
-		}
 
 		_owlManagerGroup.getStorageManager().applyChanges(changes); // XXX Is this useful ? Is this done by caller ?
 	}
