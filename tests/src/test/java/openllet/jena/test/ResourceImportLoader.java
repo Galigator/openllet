@@ -21,9 +21,6 @@ public class ResourceImportLoader implements ReadFailureHandler
 	@Override
 	public void handleFailedRead(final String url, final Model m, final Exception e)
 	{
-		//FIXME
-		System.out.println("+++" + url + "+++");
-
 		if (url.startsWith("resource:"))
 		{
 			final String resourceName = "/" + url.substring(9);
@@ -37,7 +34,5 @@ public class ResourceImportLoader implements ReadFailureHandler
 				exception.printStackTrace();
 			}
 		}
-
 	}
-
 }
