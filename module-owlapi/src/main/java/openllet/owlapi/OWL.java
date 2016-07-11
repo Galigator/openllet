@@ -287,7 +287,6 @@ public class OWL implements FacetManagerOWL, FacetFactoryOWL, Logging
 	public static OWLAnnotationAssertionAxiom comment(final OWLEntity entity, final String comment)
 	{
 		return _factory.getOWLAnnotationAssertionAxiom(entity.getIRI(), _factory.getOWLAnnotation(_factory.getOWLAnnotationProperty(OWLRDFVocabulary.RDFS_COMMENT.getIRI()), _factory.getOWLLiteral(comment)));
-
 	}
 
 	/**

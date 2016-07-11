@@ -181,7 +181,7 @@ public class OWLGenericTools implements OWLHelper
 
 		if (_ontology == null)
 		{
-			_logger.log(Level.INFO, "Ontology " + ontologyID + " will be create now");
+			_logger.log(Level.INFO, () -> "Ontology " + ontologyID + " will be create now");
 			_ontology = _manager.createOntology(ontologyID);// Maybe we should create it.
 		}
 

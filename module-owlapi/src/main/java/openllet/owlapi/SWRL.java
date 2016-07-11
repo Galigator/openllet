@@ -9,10 +9,12 @@
 package openllet.owlapi;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import openllet.core.utils.SetUtils;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotation;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLDataPropertyExpression;
 import org.semanticweb.owlapi.model.OWLDataRange;
@@ -34,6 +36,7 @@ import org.semanticweb.owlapi.model.SWRLObjectPropertyAtom;
 import org.semanticweb.owlapi.model.SWRLRule;
 import org.semanticweb.owlapi.model.SWRLSameIndividualAtom;
 import org.semanticweb.owlapi.model.SWRLVariable;
+import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 import org.semanticweb.owlapi.vocab.SWRLBuiltInsVocabulary;
 
 /**
@@ -50,12 +53,26 @@ public class SWRL
 {
 	public static Set<SWRLAtom> antecedent(final SWRLAtom... atoms)
 	{
-		return SetUtils.create(atoms);
+		final Set<SWRLAtom> out = new LinkedHashSet<>();
+		for (final SWRLAtom atom : atoms)
+			out.add(atom);
+		return out;
+	}
+
+	public static Set<SWRLAtom> consequent(final SWRLAtom... atoms)
+	{
+		final Set<SWRLAtom> out = new LinkedHashSet<>();
+		for (final SWRLAtom atom : atoms)
+			out.add(atom);
+		return out;
 	}
 
 	public static Set<SWRLAtom> atoms(final SWRLAtom... atoms)
 	{
-		return SetUtils.create(atoms);
+		final Set<SWRLAtom> out = new LinkedHashSet<>();
+		for (final SWRLAtom atom : atoms)
+			out.add(atom);
+		return out;
 	}
 
 	public static SWRLBuiltInAtom builtIn(final SWRLBuiltInsVocabulary builtIn, final SWRLDArgument... args)
@@ -71,11 +88,6 @@ public class SWRL
 	public static SWRLClassAtom classAtom(final OWLClassExpression desc, final SWRLIArgument arg)
 	{
 		return OWL._factory.getSWRLClassAtom(desc, arg);
-	}
-
-	public static Set<SWRLAtom> consequent(final SWRLAtom... atoms)
-	{
-		return SetUtils.create(atoms);
 	}
 
 	public static SWRLLiteralArgument constant(final boolean constant)
@@ -193,32 +205,48 @@ public class SWRL
 		return OWL._factory.getSWRLRule(antecendent, consequent);
 	}
 
-	public static SWRLRule rule(@SuppressWarnings("unused") final IRI uri, final Set<? extends SWRLAtom> antecendent, final Set<? extends SWRLAtom> consequent)
+	public static SWRLRule rule(final IRI uri, final Set<? extends SWRLAtom> antecendent, final Set<? extends SWRLAtom> consequent)
 	{
-		return OWL._factory.getSWRLRule(antecendent, consequent);
+		if (null == uri)
+			return OWL._factory.getSWRLRule(antecendent, consequent);
+		return OWL._factory.getSWRLRule(antecendent, consequent, Collections.singleton(labelAnnotation(uri)));
 	}
 
-	public static SWRLRule rule(@SuppressWarnings("unused") final IRI uri, final boolean anonymous, final Set<? extends SWRLAtom> antecendent, final Set<? extends SWRLAtom> consequent)
+	public static SWRLRule rule(final IRI uri, final boolean anonymous, final Set<? extends SWRLAtom> antecendent, final Set<? extends SWRLAtom> consequent)
 	{
 		if (anonymous)
 			return OWL._factory.getSWRLRule(antecendent, consequent);
-		return OWL._factory.getSWRLRule(antecendent, consequent);
+		return OWL._factory.getSWRLRule(antecendent, consequent, Collections.singleton(labelAnnotation(uri)));
 	}
 
-	public static SWRLRule rule(@SuppressWarnings("unused") final String uri, final Set<? extends SWRLAtom> antecendent, final Set<? extends SWRLAtom> consequent)
+	public static SWRLRule rule(final String label, final Set<? extends SWRLAtom> antecendent, final Set<? extends SWRLAtom> consequent)
 	{
-		return OWL._factory.getSWRLRule(antecendent, consequent);
+		if (null == label)
+			return OWL._factory.getSWRLRule(antecendent, consequent);
+
+		return OWL._factory.getSWRLRule(antecendent, consequent, Collections.singleton(labelAnnotation(label)));
 	}
 
-	public static SWRLRule rule(@SuppressWarnings("unused") final String uri, final boolean anonymous, final Set<? extends SWRLAtom> antecendent, final Set<? extends SWRLAtom> consequent)
+	public static SWRLRule rule(final String label, final boolean anonymous, final Set<? extends SWRLAtom> antecendent, final Set<? extends SWRLAtom> consequent)
 	{
 		if (anonymous)
 			return OWL._factory.getSWRLRule(antecendent, consequent);
-		return OWL._factory.getSWRLRule(antecendent, consequent);
+
+		return OWL._factory.getSWRLRule(antecendent, consequent, Collections.singleton(labelAnnotation(label)));
 	}
 
 	public static SWRLSameIndividualAtom sameAs(final SWRLIArgument ind1, final SWRLIArgument ind2)
 	{
 		return OWL._factory.getSWRLSameIndividualAtom(ind1, ind2);
+	}
+
+	private static OWLAnnotation labelAnnotation(final String label)
+	{
+		return OWL._factory.getOWLAnnotation(OWL._factory.getOWLAnnotationProperty(OWLRDFVocabulary.RDFS_LABEL.getIRI()), OWL._factory.getOWLLiteral(label));
+	}
+
+	private static OWLAnnotation labelAnnotation(final IRI label)
+	{
+		return OWL._factory.getOWLAnnotation(OWL._factory.getOWLAnnotationProperty(OWLRDFVocabulary.RDFS_LABEL.getIRI()), label);
 	}
 }

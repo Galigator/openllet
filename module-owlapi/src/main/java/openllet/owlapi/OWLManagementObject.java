@@ -723,7 +723,7 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	 * @param clazz that will be add
 	 * @since 2.5.1
 	 */
-	default public void addClass(final OWLNamedIndividual subject, final OWLClass clazz)
+	default public void addClass(final OWLNamedIndividual subject, final OWLClassExpression clazz)
 	{
 		addAxiom(getFactory().getOWLClassAssertionAxiom(clazz, subject));
 	}
