@@ -8,7 +8,6 @@ import openllet.shared.tools.Log;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
@@ -123,6 +122,41 @@ public class OWLManagerGroup implements AutoCloseable
 	/**
 	 * Seek the asked ontology. First in the volatile ontologies, then in the stored ontologies that are already stored.
 	 *
+	 * @param ontology the iri of the ontology you are looking for.
+	 * @param version of the ontology
+	 * @param isVolatile
+	 * @return an ontology if found.
+	 * @since 2.6.0
+	 */
+	public Optional<OWLHelper> getOntology(final IRI ontology, final double version, final boolean isVolatile)
+	{
+		return getOntology(OWLHelper.getVersion(ontology, version), isVolatile);
+	}
+
+	/**
+	 * Seek the asked ontology. First in the volatile ontologies, then in the stored ontologies that are already stored.
+	 *
+	 * @param ontologyID the id of the ontology you are looking for.
+	 * @param isVolatile
+	 * @return an ontology if found.
+	 * @since 2.6.0
+	 */
+	public Optional<OWLHelper> getOntology(final OWLOntologyID ontologyID, final boolean isVolatile)
+	{
+		try
+		{
+			return Optional.of(new OWLGenericTools(this, ontologyID));
+		}
+		catch (final Exception e)
+		{
+			_logger.log(Level.WARNING, "Can't load " + ontologyID + " in volatile=" + isVolatile + " mode", e);
+			return Optional.empty();
+		}
+	}
+
+	/**
+	 * Seek the asked ontology. First in the volatile ontologies, then in the stored ontologies that are already stored.
+	 *
 	 * @param ontologyID the id of the ontology you are looking for.
 	 * @return an ontology if found.
 	 * @since 2.5.1
@@ -209,41 +243,5 @@ public class OWLManagerGroup implements AutoCloseable
 			_storageManager.getIRIMappers().clear();
 			_storageManager = null; // Mark for GC.
 		}
-	}
-
-	/**
-	 * Connect to the speficied ontology.
-	 *
-	 * @param ontology is the pointer to the resource
-	 * @param version of the designated ontology
-	 * @param persistent or not.
-	 * @return An ontology tool set that allow you the management of the requested ontology.
-	 * @since 2.5.1
-	 */
-	public OWLHelper connect(final IRI ontology, final double version, final boolean persistent)
-	{
-		return connect(computeOwlApiOntologyId(ontology, version), persistent);
-	}
-
-	public OWLHelper connect(final IRI ontology, final boolean persistent)
-	{
-		return connect(ontology, 0., persistent);
-	}
-
-	public OWLHelper connect(final OWLOntologyID id, final boolean persistent)
-	{
-		try
-		{
-			return new OWLGenericTools(this, id, !persistent);
-		}
-		catch (final OWLOntologyCreationException exception)
-		{
-			throw new OWLException(exception);
-		}
-	}
-
-	public OWLOntologyID computeOwlApiOntologyId(final IRI ontologyIRI, final double version)
-	{
-		return new OWLOntologyID(ontologyIRI, OWLHelper.buildVersion(ontologyIRI, version));
 	}
 }

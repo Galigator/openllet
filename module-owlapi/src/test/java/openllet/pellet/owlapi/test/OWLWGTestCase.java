@@ -3,7 +3,6 @@ package openllet.pellet.owlapi.test;
 import static openllet.owlwg.Constants.OWLWG_TEST_CASES_IRI;
 import static openllet.owlwg.Constants.RESULTS_ONTOLOGY_PHYSICAL_IRI;
 import static openllet.owlwg.Constants.TEST_ONTOLOGY_PHYSICAL_IRI;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
@@ -122,7 +121,6 @@ public class OWLWGTestCase
 		if (_failingTests.contains(_test.getIdentifier()))
 		{
 			System.out.println("Failure of test " + _test.getIdentifier() + "\t" + _test.getIRI());
-			assertTrue(true);
 			return;
 		}
 

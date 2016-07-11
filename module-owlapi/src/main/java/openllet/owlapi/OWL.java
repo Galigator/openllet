@@ -10,7 +10,7 @@ package openllet.owlapi;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -816,7 +816,7 @@ public class OWL implements FacetManagerOWL, FacetFactoryOWL, Logging
 	@SafeVarargs
 	private static <T> Set<T> set(final T... elements)
 	{
-		final Set<T> set = new HashSet<>();
+		final Set<T> set = new LinkedHashSet<>();
 		for (final T e : elements)
 			set.add(e);
 
@@ -825,7 +825,7 @@ public class OWL implements FacetManagerOWL, FacetFactoryOWL, Logging
 
 	private static <T> Set<T> set(final T e1, final T e2)
 	{
-		final Set<T> set = new HashSet<>();
+		final Set<T> set = new LinkedHashSet<>();
 		set.add(e1);
 		set.add(e2);
 

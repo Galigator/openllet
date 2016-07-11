@@ -269,6 +269,21 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	 * Declare the individual and add it a given class
 	 * 
 	 * @param owlClazz already declare in this ontology.
+	 * @param individual to declare in this ontology.
+	 * @return the owl individual
+	 * @since 2.6.0
+	 */
+	default public OWLNamedIndividual declareIndividual(final OWLClass owlClazz, final OWLNamedIndividual individual)
+	{
+		addAxiom(getFactory().getOWLDeclarationAxiom(individual));
+		addClass(individual, owlClazz);
+		return individual;
+	}
+
+	/**
+	 * Declare the individual and add it a given class
+	 * 
+	 * @param owlClazz already declare in this ontology.
 	 * @param individual as full iri
 	 * @return the owl individual
 	 * @since 2.5.1

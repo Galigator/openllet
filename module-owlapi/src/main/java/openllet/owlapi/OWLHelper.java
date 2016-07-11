@@ -77,13 +77,25 @@ public interface OWLHelper extends Logging, OWLManagementObject
 	}
 
 	/**
+	 * @param ontologyIRI is the id of the ontology without version. The ontology name.
+	 * @param version is the short representation you want for this ontology.
+	 * @return the complete ontologyID
+	 * @since 2.6.0
+	 */
+	public static OWLOntologyID getVersion(final IRI ontologyIRI, final double version)
+	{
+		return new OWLOntologyID(ontologyIRI, buildVersion(ontologyIRI, version));
+	}
+
+	/**
 	 * @param iri that should be use to generate a filename
 	 * @return a relative path filename that reflect the iri.
 	 * @since 2.5.1
 	 */
 	public static String iri2filename(final IRI iri)
 	{
-		if (iri == null) { throw new OWLException("iri2filename(null)"); }
+		if (iri == null)
+			throw new OWLException("iri2filename(null)");
 
 		return iri.toString().replaceAll(_protocol, "").replaceAll(_secureProtocol, "").replaceAll(_webSeparator, _innerSeparator).replaceAll("&", _innerSeparator);
 	}
@@ -152,7 +164,7 @@ public interface OWLHelper extends Logging, OWLManagementObject
 	 * @return the NCNameSuffix
 	 * @since 2.5.1
 	 */
-	default public String getFragment(IRI iri)
+	default public String getFragment(final IRI iri)
 	{
 		return XMLUtils.getNCNameSuffix(iri);
 	}
@@ -176,7 +188,8 @@ public interface OWLHelper extends Logging, OWLManagementObject
 	default public double getVersion()
 	{
 		final IRI version = getOntology().getOntologyID().getVersionIRI().get();
-		if (version == null) { return 0; }
+		if (version == null)
+			return 0;
 		try
 		{
 			final String fragment = getFragment(version);
@@ -186,8 +199,18 @@ public interface OWLHelper extends Logging, OWLManagementObject
 		catch (final Exception e)
 		{
 			getLogger().log(Level.SEVERE, version.toString() + " isn't a standard version format", e);
-			throw new OWLException("Plz use OWLTools to manage your versions.", e);
+			throw new OWLException("Plz use " + OWLHelper.class.getSimpleName() + " to manage your versions.", e);
 		}
+	}
+
+	default public Optional<OWLHelper> look(final IRI ontology, final double version)
+	{
+		return getGroup().getOntology(ontology, version, isVolatile());
+	}
+
+	default public Optional<OWLHelper> look(final IRI ontology)
+	{
+		return getGroup().getOntology(new OWLOntologyID(ontology), isVolatile());
 	}
 
 	/**
@@ -201,12 +224,15 @@ public interface OWLHelper extends Logging, OWLManagementObject
 	 */
 	default public OWLHelper derivate(final double version) throws OWLOntologyCreationException
 	{
-		final OWLHelper result = new OWLGenericTools(this.getGroup(), this.getOntology().getOntologyID().getOntologyIRI().get(), version, isVolatile());
-		if (result.getOntology().getAxiomCount() != 0)
+		final Optional<OWLHelper> result = look(this.getOntology().getOntologyID().getOntologyIRI().get(), version);
+		if (!result.isPresent())
+			throw new OWLOntologyCreationException("Can't derivate to version " + version);
+
+		if (result.get().getOntology().getAxiomCount() != 0)
 			getLogger().warning(() -> "The ontology you try to derivate from " + getVersion() + " to version " + version + " already exist.");
 
-		result.addAxioms(getOntology().axioms());
-		return result;
+		result.get().addAxioms(getOntology().axioms());
+		return result.get();
 	}
 
 	/**
@@ -247,9 +273,7 @@ public interface OWLHelper extends Logging, OWLManagementObject
 		buff.append(parts[1]);
 
 		for (int i = 2; i < parts.length; i++)
-		{
 			buff.append(_entitySeparator).append(parts[i]);
-		}
 
 		return buff.toString();
 	}
@@ -275,9 +299,7 @@ public interface OWLHelper extends Logging, OWLManagementObject
 				return new String[] { space.get().getPrefix(parts[0]), path(parts) };
 		}
 		else
-		{
 			return new String[] { identifier };
-		}
 	}
 
 	/**
@@ -302,9 +324,7 @@ public interface OWLHelper extends Logging, OWLManagementObject
 			}
 		}
 		else
-		{
 			return resolvPrefix(identifier);
-		}
 	}
 
 	/**
@@ -315,9 +335,7 @@ public interface OWLHelper extends Logging, OWLManagementObject
 	default public IRI resolveToIRI(final String name)
 	{
 		if (IRIUtils.isIRI(name))
-		{
 			return IRI.create(name);
-		}
 		else
 		{
 			final String[] parts = getNameSpace(name);
@@ -454,9 +472,7 @@ public interface OWLHelper extends Logging, OWLManagementObject
 			return result;
 		}
 		else
-		{
 			return getReasoner().getTypes((OWLNamedIndividual) param, false);
-		}
 	}
 
 	/**

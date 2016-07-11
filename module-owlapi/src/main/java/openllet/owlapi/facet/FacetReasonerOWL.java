@@ -9,7 +9,7 @@ import openllet.owlapi.PelletReasoner;
 public interface FacetReasonerOWL
 {
 	/**
-	 * @return a PelletReasoner that reason over this ontology.
+	 * @return a PelletReasoner that reason over a previously registered ontology.
 	 * @since 2.5.1
 	 */
 	public abstract PelletReasoner getReasoner();
