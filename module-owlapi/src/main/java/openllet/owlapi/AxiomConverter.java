@@ -10,9 +10,11 @@ package openllet.owlapi;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
+import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
 import openllet.core.KnowledgeBase;
@@ -440,17 +442,17 @@ public class AxiomConverter implements FacetFactoryOWL
 																									else
 																										if (term.getAFun().equals(ATermUtils.RULEFUN))
 																										{
-																											final Set<SWRLAtom> antecedent = new HashSet<>(); // Body
-																											final Set<SWRLAtom> consequent = new HashSet<>(); // Head
+																											final Set<SWRLAtom> antecedent = new LinkedHashSet<>(); // Body
+																											final Set<SWRLAtom> consequent = new LinkedHashSet<>(); // Head
 
-																											ATermList head = (ATermList) term.getArgument(1);
-																											ATermList body = (ATermList) term.getArgument(2);
+																											final ATermList head = (ATermList) term.getArgument(1);
+																											final ATermList body = (ATermList) term.getArgument(2);
 
-																											for (; !body.isEmpty(); body = body.getNext())
-																												antecedent.add(parseToSWRLAtom((ATermAppl) body.getFirst()));
+																											for (final ATerm bodyTerm : body)
+																												antecedent.add(parseToSWRLAtom((ATermAppl) bodyTerm));
 
-																											for (; !head.isEmpty(); head = head.getNext())
-																												consequent.add(parseToSWRLAtom((ATermAppl) head.getFirst()));
+																											for (final ATerm headTerm : head)
+																												consequent.add(parseToSWRLAtom((ATermAppl) headTerm));
 
 																											if (!antecedent.contains(null) && !consequent.contains(null))
 																											{
@@ -461,7 +463,7 @@ public class AxiomConverter implements FacetFactoryOWL
 																													if (ATermUtils.isBnode(name))
 																														axiom = _factory.getSWRLRule(antecedent, consequent);
 																													else
-																														axiom = _factory.getSWRLRule(antecedent, consequent);
+																														axiom = SWRL.rule(name.getAFun().getName(), antecedent, consequent); // FIXME : make an SWRL producer that take an factory as parameter.
 																											}
 																										}
 																										else
