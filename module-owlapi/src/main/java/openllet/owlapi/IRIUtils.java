@@ -1,5 +1,6 @@
 package openllet.owlapi;
 
+import java.lang.reflect.Method;
 import java.util.Random;
 import org.semanticweb.owlapi.model.IRI;
 
@@ -72,6 +73,11 @@ public interface IRIUtils
 		return OWLHelper._protocol + clazz.getPackage().getName() + OWLHelper._entitySeparator + clazz.getSimpleName();
 	}
 
+	public static <T> String core(final Class<T> clazz, final Method method)
+	{
+		return OWLHelper._protocol + clazz.getPackage().getName() + OWLHelper._entitySeparator + method.getName();
+	}
+
 	/**
 	 * Work for property and individual
 	 * 
@@ -89,7 +95,7 @@ public interface IRIUtils
 	 * @param <T> type of the class
 	 * @param clazz of the individual use to general the iri of the individual
 	 * @return a random iri that fit the name of an individiual
-	 * @since 1.3
+	 * @since 2.5.1
 	 */
 	public static <T> IRI rand(final Class<T> clazz)
 	{
@@ -99,6 +105,11 @@ public interface IRIUtils
 	public static <T> IRI rand(final Class<T> clazz, final String entity)
 	{
 		return IRI.create(base(clazz) + OWLHelper._webSeparator + entity + OWLHelper._entitySeparator + randId(clazz.getSimpleName()));
+	}
+
+	public static <T> IRI method(final Class<T> clazz, final Method m)
+	{
+		return IRI.create(core(clazz, m));
 	}
 
 	public static <T> IRI clazz(final Class<T> clazz)

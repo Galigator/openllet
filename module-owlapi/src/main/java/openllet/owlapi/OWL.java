@@ -8,8 +8,10 @@
 
 package openllet.owlapi;
 
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -881,4 +883,75 @@ public class OWL implements FacetManagerOWL, FacetFactoryOWL, Logging
 		return _factory.getOWLObjectHasValue(property, value);
 	}
 
+	/**
+	 * Return a class expression that is a logical and between a set of properties (objets/datas) and classes.
+	 * 
+	 * @param objects to intersect
+	 * @param datas to intersect
+	 * @param classes to intersect
+	 * @return the intersection between objects properties and data properties and classes declarations.
+	 * @since 2.6.0
+	 */
+	public static OWLClassExpression and(final Set<OWLObjectPropertyExpression> objects, final Set<OWLDataPropertyExpression> datas, final Set<OWLClassExpression> classes)
+	{
+		final Set<OWLClassExpression> expr = new LinkedHashSet<>(objects.size() + datas.size() + classes.size());
+		for (final OWLObjectPropertyExpression ope : objects)
+			expr.add(_factory.getOWLObjectMaxCardinality(1, ope));
+		for (final OWLDataPropertyExpression ope : datas)
+			expr.add(_factory.getOWLDataMaxCardinality(1, ope));
+		expr.addAll(classes);
+		return _factory.getOWLObjectIntersectionOf(expr);
+	}
+
+	/**
+	 * Convert a java class into an owl schema for the class.
+	 * 
+	 * @param <T> is type of the class.
+	 * @param iface is the interface that define the java class.
+	 * @return a set of axiom that define the given class and it's inheritance hierarchy
+	 * @since 2.6.0
+	 */
+	public static <T> Set<OWLAxiom> schema(final Class<T> iface)
+	{
+		final Set<OWLObjectPropertyExpression> objectMethods = new LinkedHashSet<>();
+		final Set<OWLDataPropertyExpression> dataMethods = new LinkedHashSet<>();
+		for (final Method method : iface.getMethods())
+			if (method.getParameterCount() == 0 //
+					&& (method.getName().startsWith("get") //
+							|| method.getName().startsWith("is")) //
+					&& method.getName().length() > 3 //
+					&& !method.isVarArgs())
+			{
+				final String name = method.getGenericReturnType().getTypeName();
+				switch (name)
+				{
+					case "boolean":
+					case "int":
+					case "long":
+					case "float":
+					case "double":
+					case "Boolean":
+					case "Integer":
+					case "Long":
+					case "Float":
+					case "Double":
+					case "String":
+						dataMethods.add(DataProperty(IRIUtils.core(iface, method)));
+						break;
+					default:
+						objectMethods.add(ObjectProperty(IRIUtils.core(iface, method)));
+				}
+			}
+
+		final Set<OWLClassExpression> classes = new LinkedHashSet<>();
+		final Set<OWLAxiom> result = new HashSet<>();
+		for (final Class<?> clazz : iface.getInterfaces())
+		{
+			classes.add(Class(IRIUtils.clazz(clazz)));
+			result.addAll(schema(clazz));
+		}
+
+		result.add(OWL.subClassOf(Class(IRIUtils.clazz(iface)), and(objectMethods, dataMethods, classes)));
+		return result;
+	}
 }
