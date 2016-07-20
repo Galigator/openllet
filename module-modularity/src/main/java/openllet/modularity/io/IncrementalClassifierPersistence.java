@@ -13,7 +13,7 @@ import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
-import openllet.core.taxonomy.Taxonomy;
+import openllet.core.taxonomy.TaxonomyImpl;
 import openllet.modularity.IncrementalClassifier;
 import openllet.modularity.ModuleExtractor;
 import openllet.modularity.ModuleExtractorFactory;
@@ -103,7 +103,7 @@ public class IncrementalClassifierPersistence
 	public static IncrementalClassifier load(final InputStream inputStream, final OWLOntology loadedOntology) throws IOException
 	{
 		ModuleExtractor extractor = null;
-		Taxonomy<OWLClass> taxonomy = null;
+		TaxonomyImpl<OWLClass> taxonomy = null;
 
 		final ZipInputStream zipInputStream = new ZipInputStream(inputStream);
 

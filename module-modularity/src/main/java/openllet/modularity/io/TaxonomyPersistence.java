@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import openllet.core.taxonomy.Taxonomy;
+import openllet.core.taxonomy.TaxonomyImpl;
 import openllet.core.taxonomy.TaxonomyNode;
 import openllet.core.utils.TaxonomyUtils;
 import openllet.owlapi.OWL;
@@ -110,7 +111,7 @@ public class TaxonomyPersistence
 		final LinkedList<OWLOntologyChange> changes = new LinkedList<>();
 		final HashSet<OWLClass> processedEquivalentClasses = new HashSet<>();
 
-		for (final TaxonomyNode<OWLClass> taxonomyNode : taxonomy.getNodes())
+		for (final TaxonomyNode<OWLClass> taxonomyNode : taxonomy.getNodes().values())
 		{
 			if (processedEquivalentClasses.contains(taxonomyNode.getName()))
 				continue;
@@ -188,9 +189,9 @@ public class TaxonomyPersistence
 	 * @param ontology the ontology containing the _data which is the source for the taxonomy
 	 * @return the created taxonomy
 	 */
-	private static Taxonomy<OWLClass> createTaxonomy(final OWLOntology ontology)
+	private static TaxonomyImpl<OWLClass> createTaxonomy(final OWLOntology ontology)
 	{
-		final Taxonomy<OWLClass> taxonomy = new Taxonomy<>(null, OWL.Thing, OWL.Nothing);
+		final TaxonomyImpl<OWLClass> taxonomy = new TaxonomyImpl<>(null, OWL.Thing, OWL.Nothing);
 
 		final HashSet<OWLClass> processedEquivalentClasses = new HashSet<>();
 		processedEquivalentClasses.add(OWL.Thing);
@@ -235,12 +236,12 @@ public class TaxonomyPersistence
 		});
 
 		// post process the top and bottom _nodes
-		for (final TaxonomyNode<OWLClass> taxonomyNode : taxonomy.getNodes())
+		for (final TaxonomyNode<OWLClass> taxonomyNode : taxonomy.getNodes().values())
 			if (OWL.Nothing.equals(taxonomyNode.getName()) && taxonomyNode.getSupers().size() > 1 && taxonomyNode.getSupers().contains(taxonomy.getTop()))
 				taxonomy.getTop().removeSub(taxonomyNode);
 
 		// after all the _nodes are in the taxonomy, create subclass and superclass relationships among them
-		for (final TaxonomyNode<OWLClass> taxonomyNode : taxonomy.getNodes())
+		for (final TaxonomyNode<OWLClass> taxonomyNode : taxonomy.getNodes().values())
 		{
 			final OWLClass owlClass = taxonomyNode.getName();
 
@@ -251,14 +252,14 @@ public class TaxonomyPersistence
 		}
 
 		// read the instance _data (if available)
-		for (final TaxonomyNode<OWLClass> taxonomyNode : taxonomy.getNodes())
+		for (final TaxonomyNode<OWLClass> taxonomyNode : taxonomy.getNodes().values())
 		{
 			final Set<OWLNamedIndividual> individuals = //
-			ontology.classAssertionAxioms(taxonomyNode.getName())//
-					.map(classAssertionAxiom -> classAssertionAxiom.getIndividual())//
-					.filter(individual -> individual.isNamed() && individual instanceof OWLNamedIndividual) //
-					.map(x -> (OWLNamedIndividual) x)//
-					.collect(Collectors.toSet());//
+					ontology.classAssertionAxioms(taxonomyNode.getName())//
+							.map(classAssertionAxiom -> classAssertionAxiom.getIndividual())//
+							.filter(individual -> individual.isNamed() && individual instanceof OWLNamedIndividual) //
+							.map(x -> (OWLNamedIndividual) x)//
+							.collect(Collectors.toSet());//
 
 			if (!individuals.isEmpty())
 				taxonomyNode.putDatum(TaxonomyUtils.INSTANCES_KEY, individuals);
@@ -275,13 +276,13 @@ public class TaxonomyPersistence
 	 * @return the read taxonomy
 	 * @throws IOException if an I/O error should occur while reading the taxonomy
 	 */
-	public static Taxonomy<OWLClass> load(final InputStream is) throws IOException
+	public static TaxonomyImpl<OWLClass> load(final InputStream is) throws IOException
 	{
 		try
 		{
 			final OWLOntology ontology = OWL._manager.loadOntologyFromOntologyDocument(is);
 
-			final Taxonomy<OWLClass> result = createTaxonomy(ontology);
+			final TaxonomyImpl<OWLClass> result = createTaxonomy(ontology);
 
 			OWL._manager.removeOntology(ontology);
 

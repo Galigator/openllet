@@ -21,7 +21,7 @@ import openllet.core.utils.CollectionUtils;
  */
 public class TaxonomyBasedDefinitionOrder extends AbstractDefinitionOrder
 {
-	private Taxonomy<ATermAppl> _definitionOrderTaxonomy;
+	private TaxonomyImpl<ATermAppl> _definitionOrderTaxonomy;
 
 	public TaxonomyBasedDefinitionOrder(final KnowledgeBase kb, final Comparator<ATerm> comparator)
 	{
@@ -31,7 +31,7 @@ public class TaxonomyBasedDefinitionOrder extends AbstractDefinitionOrder
 	@Override
 	protected void initialize()
 	{
-		_definitionOrderTaxonomy = new Taxonomy<>(_kb.getClasses(), ATermUtils.TOP, ATermUtils.BOTTOM);
+		_definitionOrderTaxonomy = new TaxonomyImpl<>(_kb.getClasses(), ATermUtils.TOP, ATermUtils.BOTTOM);
 	}
 
 	@Override
@@ -58,7 +58,7 @@ public class TaxonomyBasedDefinitionOrder extends AbstractDefinitionOrder
 	protected Set<ATermAppl> computeCycles()
 	{
 		final Set<ATermAppl> cyclicConcepts = CollectionUtils.makeIdentitySet();
-		for (final TaxonomyNode<ATermAppl> node : _definitionOrderTaxonomy.getNodes())
+		for (final TaxonomyNode<ATermAppl> node : _definitionOrderTaxonomy.getNodes().values())
 		{
 			final Set<ATermAppl> names = node.getEquivalents();
 			if (names.size() > 1)

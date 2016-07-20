@@ -119,7 +119,7 @@ public abstract class RuleBasedELClassifier extends CDOptimizedTaxonomyBuilder i
 		//			}
 		//		}
 
-		_taxonomy = new GenericTaxonomyBuilder().build(subsumers);
+		_taxonomyImpl = new GenericTaxonomyBuilder().build(subsumers);
 	}
 
 	private void toELSubClassAxioms(final ATermAppl axiom)

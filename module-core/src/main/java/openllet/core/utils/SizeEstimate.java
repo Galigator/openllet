@@ -167,7 +167,7 @@ public class SizeEstimate
 
 	public SizeEstimate(final KnowledgeBase kb)
 	{
-		this._kb = kb;
+		_kb = kb;
 
 		init();
 	}

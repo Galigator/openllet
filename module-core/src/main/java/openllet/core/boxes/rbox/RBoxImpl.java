@@ -97,7 +97,7 @@ public class RBoxImpl implements RBox
 	}
 
 	@Override
-	public void setObjectTaxonomy(Taxonomy<ATermAppl> objectTaxonomy)
+	public void setObjectTaxonomy(final Taxonomy<ATermAppl> objectTaxonomy)
 	{
 		_objectTaxonomy = objectTaxonomy;
 	}
@@ -114,7 +114,7 @@ public class RBoxImpl implements RBox
 	}
 
 	@Override
-	public void setDataTaxonomy(Taxonomy<ATermAppl> dataTaxonomy)
+	public void setDataTaxonomy(final Taxonomy<ATermAppl> dataTaxonomy)
 	{
 		_dataTaxonomy = dataTaxonomy;
 	}
@@ -132,7 +132,7 @@ public class RBoxImpl implements RBox
 	}
 
 	@Override
-	public void setAnnotationTaxonomy(Taxonomy<ATermAppl> annotationTaxonomy)
+	public void setAnnotationTaxonomy(final Taxonomy<ATermAppl> annotationTaxonomy)
 	{
 		_annotationTaxonomy = annotationTaxonomy;
 	}
@@ -215,8 +215,8 @@ public class RBoxImpl implements RBox
 		public DomainRangeIterator(final Map<ATermAppl, Set<Set<ATermAppl>>> map, final Role role, final boolean isDomain)
 		{
 			super(map.entrySet().iterator());
-			this._p = role.getName();
-			this._isDomain = isDomain;
+			_p = role.getName();
+			_isDomain = isDomain;
 		}
 
 		@Override

@@ -25,7 +25,7 @@ public class OWLClassTreePrinter extends TreeTaxonomyPrinter<OWLClass>
 	{
 		super.printNode(set);
 
-		final Set<OWLNamedIndividual> instances = getDirectInstances(_taxonomy, set.iterator().next());
+		final Set<OWLNamedIndividual> instances = getDirectInstances(_taxonomyImpl, set.iterator().next());
 		if (instances.size() > 0)
 		{
 			_out.print(" - (");

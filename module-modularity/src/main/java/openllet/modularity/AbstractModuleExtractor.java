@@ -21,8 +21,8 @@ import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
-import openllet.core.OpenlletOptions;
 import openllet.core.KnowledgeBase.ChangeType;
+import openllet.core.OpenlletOptions;
 import openllet.core.expressivity.Expressivity;
 import openllet.core.taxonomy.Taxonomy;
 import openllet.core.taxonomy.TaxonomyNode;
@@ -41,12 +41,6 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 
 /**
- * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
  * <p>
  * Copyright: Copyright (c) 2007
  * </p>
@@ -244,7 +238,7 @@ public abstract class AbstractModuleExtractor implements ModuleExtractor
 	{
 		final Set<OWLEntity> roots = new HashSet<>();
 		final Set<TaxonomyNode<OWLClass>> visited = new HashSet<>();
-		visited.add(taxonomy.getBottom());
+		visited.add(taxonomy.getBottomNode());
 		getAffectedRoots(axiom, taxonomy.getTop(), roots, add, visited);
 
 		/*

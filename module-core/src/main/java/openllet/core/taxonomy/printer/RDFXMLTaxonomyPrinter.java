@@ -37,7 +37,7 @@ public class RDFXMLTaxonomyPrinter implements TaxonomyPrinter<ATermAppl>
 
 	protected boolean onlyDirectSubclass;
 
-	private Taxonomy<ATermAppl> _taxonomy;
+	private Taxonomy<ATermAppl> _taxonomyImpl;
 
 	private PrintWriter _out;
 
@@ -57,8 +57,8 @@ public class RDFXMLTaxonomyPrinter implements TaxonomyPrinter<ATermAppl>
 	@Override
 	public void print(final Taxonomy<ATermAppl> taxonomy, final PrintWriter out)
 	{
-		this._taxonomy = taxonomy;
-		this._out = out;
+		_taxonomyImpl = taxonomy;
+		_out = out;
 
 		out.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		out.println();
@@ -83,7 +83,7 @@ public class RDFXMLTaxonomyPrinter implements TaxonomyPrinter<ATermAppl>
 
 		printTree(ATermUtils.BOTTOM);
 
-		for (final ATermAppl c : _taxonomy.getClasses())
+		for (final ATermAppl c : _taxonomyImpl.getClasses())
 			printTree(c);
 	}
 
@@ -92,7 +92,7 @@ public class RDFXMLTaxonomyPrinter implements TaxonomyPrinter<ATermAppl>
 		if (_visited.contains(c))
 			return;
 
-		final Set<ATermAppl> eqClasses = ATermUtils.primitiveOrBottom(_taxonomy.getEquivalents(c));
+		final Set<ATermAppl> eqClasses = ATermUtils.primitiveOrBottom(_taxonomyImpl.getEquivalents(c));
 
 		_visited.add(c);
 		_visited.addAll(eqClasses);
@@ -103,7 +103,7 @@ public class RDFXMLTaxonomyPrinter implements TaxonomyPrinter<ATermAppl>
 
 		if (!c.equals(ATermUtils.BOTTOM))
 		{
-			final Set<Set<ATermAppl>> supers = _taxonomy.getSupers(c, onlyDirectSubclass);
+			final Set<Set<ATermAppl>> supers = _taxonomyImpl.getSupers(c, onlyDirectSubclass);
 			for (final Set<ATermAppl> equivalenceSet : supers)
 			{
 
@@ -123,7 +123,7 @@ public class RDFXMLTaxonomyPrinter implements TaxonomyPrinter<ATermAppl>
 
 		_out.println();
 
-		final Set<ATermAppl> instances = TaxonomyUtils.getDirectInstances(_taxonomy, c);
+		final Set<ATermAppl> instances = TaxonomyUtils.getDirectInstances(_taxonomyImpl, c);
 		for (final ATermAppl instance : instances)
 		{
 			if (ATermUtils.isBnode(instance))

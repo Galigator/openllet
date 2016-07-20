@@ -2277,8 +2277,7 @@ public class KnowledgeBase
 		if (isClassified())
 			return;
 
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Classifying...");
+		_logger.fine("Classifying...");
 
 		final Timer timer = timers.startTimer("classify");
 

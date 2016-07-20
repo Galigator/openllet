@@ -8,21 +8,16 @@ package openllet.core.el;
 
 import java.util.Collections;
 import java.util.Map.Entry;
+import java.util.Set;
 import openllet.aterm.ATermAppl;
 import openllet.core.taxonomy.Taxonomy;
+import openllet.core.taxonomy.TaxonomyImpl;
 import openllet.core.taxonomy.TaxonomyNode;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.CollectionUtils;
 import openllet.core.utils.MultiValueMap;
-import java.util.Set;
 
 /**
- * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
  * <p>
  * Copyright: Copyright (c) 2008
  * </p>
@@ -34,35 +29,35 @@ import java.util.Set;
  */
 public class GenericTaxonomyBuilder
 {
-	private Taxonomy<ATermAppl> _taxonomy;
+	private Taxonomy<ATermAppl> _taxonomyImpl;
 
 	private MultiValueMap<ATermAppl, ATermAppl> _subsumers;
 
 	public Taxonomy<ATermAppl> build(final MultiValueMap<ATermAppl, ATermAppl> subsumers)
 	{
-		this._subsumers = subsumers;
-		_taxonomy = new Taxonomy<>(null, ATermUtils.TOP, ATermUtils.BOTTOM);
+		_subsumers = subsumers;
+		_taxonomyImpl = new TaxonomyImpl<>(null, ATermUtils.TOP, ATermUtils.BOTTOM);
 
 		for (final ATermAppl subsumer : subsumers.get(ATermUtils.TOP))
 			if (ATermUtils.isPrimitive(subsumer))
-				_taxonomy.addEquivalentNode(subsumer, _taxonomy.getTop());
+				_taxonomyImpl.addEquivalentNode(subsumer, _taxonomyImpl.getTop());
 
 		for (final Entry<ATermAppl, Set<ATermAppl>> entry : subsumers.entrySet())
 		{
 			final ATermAppl c = entry.getKey();
 			if (ATermUtils.isPrimitive(c))
 				if (entry.getValue().contains(ATermUtils.BOTTOM))
-					_taxonomy.addEquivalentNode(c, _taxonomy.getBottom());
+					_taxonomyImpl.addEquivalentNode(c, _taxonomyImpl.getBottomNode());
 				else
 					add(c);
 		}
 
-		return _taxonomy;
+		return _taxonomyImpl;
 	}
 
 	private TaxonomyNode<ATermAppl> add(final ATermAppl c)
 	{
-		TaxonomyNode<ATermAppl> node = _taxonomy.getNode(c);
+		TaxonomyNode<ATermAppl> node = _taxonomyImpl.getNode(c);
 
 		if (node == null)
 		{
@@ -86,7 +81,7 @@ public class GenericTaxonomyBuilder
 			node = add(c, subsumerNodes);
 
 			for (final ATermAppl eq : equivalents)
-				_taxonomy.addEquivalentNode(eq, node);
+				_taxonomyImpl.addEquivalentNode(eq, node);
 		}
 
 		return node;
@@ -104,9 +99,9 @@ public class GenericTaxonomyBuilder
 		for (final TaxonomyNode<ATermAppl> parent : parents)
 		{
 			supers.add(parent.getName());
-			parent.removeSub(_taxonomy.getBottom());
+			parent.removeSub(_taxonomyImpl.getBottomNode());
 		}
 
-		return _taxonomy.addNode(Collections.singleton(c), supers, subs, false);
+		return _taxonomyImpl.addNode(Collections.singleton(c), supers, subs, false);
 	}
 }

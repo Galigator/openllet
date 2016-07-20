@@ -38,6 +38,7 @@ import openllet.core.utils.Timer;
 import openllet.query.sparqldl.model.CoreNewImpl;
 import openllet.query.sparqldl.model.NotKnownQueryAtom;
 import openllet.query.sparqldl.model.Query;
+import openllet.query.sparqldl.model.Query.VarType;
 import openllet.query.sparqldl.model.QueryAtom;
 import openllet.query.sparqldl.model.QueryAtomFactory;
 import openllet.query.sparqldl.model.QueryImpl;
@@ -47,7 +48,6 @@ import openllet.query.sparqldl.model.QueryResultImpl;
 import openllet.query.sparqldl.model.ResultBinding;
 import openllet.query.sparqldl.model.ResultBindingImpl;
 import openllet.query.sparqldl.model.UnionQueryAtom;
-import openllet.query.sparqldl.model.Query.VarType;
 import openllet.shared.tools.Log;
 
 /**
@@ -612,10 +612,10 @@ public class CombinedQueryEngine implements QueryExec
 								runNext(binding, arguments, subject, property, aIL);
 
 				break;
-				// throw new IllegalArgumentException("The annotation atom "
-				// + _current + " should be ground, but is not.");
+			// throw new IllegalArgumentException("The annotation atom "
+			// + _current + " should be ground, but is not.");
 
-				// TBOX ATOMS
+			// TBOX ATOMS
 			case DirectSubClassOf:
 				direct = true;
 				//$FALL-THROUGH$
@@ -629,7 +629,7 @@ public class CombinedQueryEngine implements QueryExec
 				if (scLHS.equals(scRHS))
 					// TODO optimization for _downMonotonic variables
 					for (final ATermAppl ic : _kb.getClasses())
-						runNext(binding, arguments, ic, ic);
+					runNext(binding, arguments, ic, ic);
 				else
 				{
 					final boolean lhsDM = isDownMonotonic(scLHS);
@@ -736,9 +736,9 @@ public class CombinedQueryEngine implements QueryExec
 				if (!dwLHS.equals(dwRHS))
 					// TODO optimizeTBox
 					for (final ATermAppl known : getSymmetricCandidates(VarType.CLASS, dwLHS, dwRHS))
-						for (final Set<ATermAppl> dependents : _kb.getDisjointClasses(known))
-							for (final ATermAppl dependent : dependents)
-								runSymetricCheck(current, dwLHS, known, dwRHS, dependent, binding);
+					for (final Set<ATermAppl> dependents : _kb.getDisjointClasses(known))
+					for (final ATermAppl dependent : dependents)
+					runSymetricCheck(current, dwLHS, known, dwRHS, dependent, binding);
 				else
 					_logger.finer("Atom " + current + "cannot be satisfied in any consistent ontology.");
 				break;
@@ -750,13 +750,13 @@ public class CombinedQueryEngine implements QueryExec
 				if (!coLHS.equals(coRHS))
 					// TODO optimizeTBox
 					for (final ATermAppl known : getSymmetricCandidates(VarType.CLASS, coLHS, coRHS))
-						for (final ATermAppl dependent : _kb.getComplements(known))
-							runSymetricCheck(current, coLHS, known, coRHS, dependent, binding);
+					for (final ATermAppl dependent : _kb.getComplements(known))
+					runSymetricCheck(current, coLHS, known, coRHS, dependent, binding);
 				else
 					_logger.finer("Atom " + current + "cannot be satisfied in any consistent ontology.");
 				break;
 
-				// RBOX ATOMS
+			// RBOX ATOMS
 			case DirectSubPropertyOf:
 				direct = true;
 				//$FALL-THROUGH$
@@ -770,7 +770,7 @@ public class CombinedQueryEngine implements QueryExec
 				if (spLHS.equals(spRHS))
 					// TODO optimization for _downMonotonic variables
 					for (final ATermAppl ic : _kb.getProperties())
-						runNext(binding, arguments, ic, ic);
+					runNext(binding, arguments, ic, ic);
 				else
 				{
 					final boolean lhsDM = isDownMonotonic(spLHS);
@@ -1145,9 +1145,9 @@ public class CombinedQueryEngine implements QueryExec
 				if (!dwLHSp.equals(dwRHSp))
 					// TODO optimizeTBox
 					for (final ATermAppl known : getSymmetricCandidates(VarType.PROPERTY, dwLHSp, dwRHSp))
-						for (final Set<ATermAppl> dependents : _kb.getDisjointProperties(known))
-							for (final ATermAppl dependent : dependents)
-								runSymetricCheck(current, dwLHSp, known, dwRHSp, dependent, binding);
+					for (final Set<ATermAppl> dependents : _kb.getDisjointProperties(known))
+					for (final ATermAppl dependent : dependents)
+					runSymetricCheck(current, dwLHSp, known, dwRHSp, dependent, binding);
 				else
 					_logger.finer("Atom " + current + "cannot be satisfied in any consistent ontology.");
 				break;
@@ -1448,8 +1448,7 @@ public class CombinedQueryEngine implements QueryExec
 	{
 		final int size = _result.size();
 
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Trying : " + rootCandidate + ", done=" + toDo);
+		_logger.fine(() -> "Trying : " + rootCandidate + ", done=" + toDo);
 
 		if (!strict)
 		{
@@ -1472,8 +1471,7 @@ public class CombinedQueryEngine implements QueryExec
 		}
 		else
 		{
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("Skipping subs of " + rootCandidate);
+			_logger.fine(() -> "Skipping subs of " + rootCandidate);
 			// toDo.removeAll(t.getFlattenedSubs(rootCandidate, false));
 			toDo.removeAll(flatten(t.getSubs(rootCandidate, false)));
 		}

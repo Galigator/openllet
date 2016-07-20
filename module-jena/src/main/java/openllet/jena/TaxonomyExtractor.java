@@ -28,13 +28,13 @@ import org.apache.jena.vocabulary.RDFS;
  */
 public class TaxonomyExtractor
 {
-	private final Taxonomy<ATermAppl> _taxonomy;
+	private final Taxonomy<ATermAppl> _taxonomyImpl;
 	private Model _model;
 	private boolean _includeIndividuals;
 
 	public TaxonomyExtractor(final Taxonomy<ATermAppl> taxonomy)
 	{
-		this._taxonomy = taxonomy;
+		this._taxonomyImpl = taxonomy;
 		this._includeIndividuals = false;
 	}
 
@@ -57,7 +57,7 @@ public class TaxonomyExtractor
 
 		final HashSet<ATermAppl> processedEquivalentClasses = new HashSet<>();
 
-		for (final TaxonomyNode<ATermAppl> taxonomyNode : _taxonomy.getNodes())
+		for (final TaxonomyNode<ATermAppl> taxonomyNode : _taxonomyImpl.getNodes().values())
 		{
 			if (processedEquivalentClasses.contains(taxonomyNode.getName()))
 				continue;

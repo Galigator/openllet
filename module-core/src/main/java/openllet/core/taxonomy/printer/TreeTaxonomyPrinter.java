@@ -45,7 +45,7 @@ public class TreeTaxonomyPrinter<T> implements TaxonomyPrinter<T>
 	// Indentation string used when classification tree is printed
 	final static String INDENT = "  ";
 
-	protected Taxonomy<T> _taxonomy;
+	protected Taxonomy<T> _taxonomyImpl;
 	protected PrintWriter _out;
 
 	public TreeTaxonomyPrinter()
@@ -61,7 +61,7 @@ public class TreeTaxonomyPrinter<T> implements TaxonomyPrinter<T>
 	@Override
 	public void print(final Taxonomy<T> taxonomy, final PrintWriter out)
 	{
-		this._taxonomy = taxonomy;
+		this._taxonomyImpl = taxonomy;
 		this._out = out;
 
 		out.println();
@@ -76,13 +76,13 @@ public class TreeTaxonomyPrinter<T> implements TaxonomyPrinter<T>
 	protected void printTree()
 	{
 		final Set<T> top = new TreeSet<>(Comparators.stringComparator);
-		top.add(_taxonomy.getTop().getName());
-		top.addAll(_taxonomy.getTop().getEquivalents());
+		top.add(_taxonomyImpl.getTop().getName());
+		top.addAll(_taxonomyImpl.getTop().getEquivalents());
 		printTree(top, " ");
 
 		final Set<T> bottom = new TreeSet<>(Comparators.stringComparator);
-		bottom.add(_taxonomy.getBottom().getName());
-		bottom.addAll(_taxonomy.getBottom().getEquivalents());
+		bottom.add(_taxonomyImpl.getBottomNode().getName());
+		bottom.addAll(_taxonomyImpl.getBottomNode().getEquivalents());
 
 		if (bottom.size() > 1)
 			printNode(bottom, " ");
@@ -96,13 +96,13 @@ public class TreeTaxonomyPrinter<T> implements TaxonomyPrinter<T>
 	 */
 	protected void printTree(final Set<T> set, final String indent)
 	{
-		if (set.contains(_taxonomy.getBottom().getName()))
+		if (set.contains(_taxonomyImpl.getBottomNode().getName()))
 			return;
 
 		printNode(set, indent);
 
 		final T c = set.iterator().next();
-		final Set<Set<T>> subs = ss(_taxonomy.getSubs(c, true));
+		final Set<Set<T>> subs = ss(_taxonomyImpl.getSubs(c, true));
 		final Iterator<Set<T>> j = subs.iterator();
 
 		while (j.hasNext())

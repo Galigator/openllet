@@ -21,6 +21,7 @@ import java.util.stream.Stream;
 import openllet.aterm.ATermAppl;
 import openllet.core.exceptions.PelletRuntimeException;
 import openllet.core.taxonomy.Taxonomy;
+import openllet.core.taxonomy.TaxonomyImpl;
 import openllet.core.taxonomy.TaxonomyNode;
 import openllet.core.taxonomy.printer.ClassTreePrinter;
 import openllet.core.taxonomy.printer.TreeTaxonomyPrinter;
@@ -108,7 +109,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 	 */
 	private ModuleExtractor _extractor = ModuleExtractorFactory.createModuleExtractor();
 
-	private Taxonomy<OWLClass> _taxonomy = null;
+	private Taxonomy<OWLClass> _taxonomyImpl = null;
 
 	/**
 	 * Do the regular classification and module extraction in two separate threads concurrently. Doing so might reduce overall processing time but increases the
@@ -160,7 +161,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 	public IncrementalClassifier(final PersistedState persistedState)
 	{
 		_extractor = persistedState.getModuleExtractor();
-		_taxonomy = persistedState.getTaxonomy();
+		_taxonomyImpl = persistedState.getTaxonomy();
 		_realized = persistedState.isRealized();
 
 		_modules = _extractor.getModules();
@@ -176,7 +177,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 	{
 		_reasoner = PelletReasonerFactory.getInstance().createReasoner(ontology);
 		_extractor = persistedState.getModuleExtractor();
-		_taxonomy = persistedState.getTaxonomy();
+		_taxonomyImpl = persistedState.getTaxonomy();
 		_realized = persistedState.isRealized();
 
 		_modules = _extractor.getModules();
@@ -212,7 +213,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 	static public Taxonomy<OWLClass> buildClassHierarchy(final PelletReasoner reasoner)
 	{
 
-		final Taxonomy<OWLClass> taxonomy = new Taxonomy<>(null, OWL.Thing, OWL.Nothing);
+		final Taxonomy<OWLClass> taxonomy = new TaxonomyImpl<>(null, OWL.Thing, OWL.Nothing);
 
 		final Set<OWLClass> things = reasoner.getEquivalentClasses(OWL.Thing).entities().collect(Collectors.toSet());
 		things.remove(OWL.Thing);
@@ -260,7 +261,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 				// TODO: maybe we should move these calls somewhere else but in general
 				// the users expect that all changes are applied after classify()
 				// and unapplied changes will prevent the classifie
-				_extractor.applyChanges(_taxonomy);
+				_extractor.applyChanges(_taxonomyImpl);
 			return;
 		}
 
@@ -288,7 +289,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 
 		classify();
 
-		return NodeFactory.getOWLClassNode(_taxonomy.getAllEquivalents((OWLClass) clsC));
+		return NodeFactory.getOWLClassNode(_taxonomyImpl.getAllEquivalents((OWLClass) clsC));
 	}
 
 	/**
@@ -316,7 +317,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 		classify();
 
 		final Set<Node<OWLClass>> values = new HashSet<>();
-		for (final Set<OWLClass> val : _taxonomy.getSubs((OWLClass) clsC, direct))
+		for (final Set<OWLClass> val : _taxonomyImpl.getSubs((OWLClass) clsC, direct))
 			values.add(NodeFactory.getOWLClassNode(val));
 
 		return new OWLClassNodeSet(values);
@@ -329,7 +330,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 	private void incClassifyAllModStrategy()
 	{
 		// Get the entities whose _modules are affected
-		final Set<OWLEntity> effects = _extractor.applyChanges(_taxonomy);
+		final Set<OWLEntity> effects = _extractor.applyChanges(_taxonomyImpl);
 
 		_logger.fine(() -> "Module entities " + effects);
 
@@ -357,12 +358,12 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 		for (final OWLEntity entity : effects)
 			if (entity instanceof OWLClass)
 				affectedCls.add((OWLClass) entity);
-		_taxonomy = updateClassHierarchy(_taxonomy, moduleTaxonomy, affectedCls);
+		_taxonomyImpl = updateClassHierarchy(_taxonomyImpl, moduleTaxonomy, affectedCls);
 
 		if (_logger.isLoggable(Level.FINE))
 		{
 			_logger.fine("Updated _taxonomy:");
-			new TreeTaxonomyPrinter<OWLClass>().print(_taxonomy, new PrintWriter(System.err));
+			new TreeTaxonomyPrinter<OWLClass>().print(_taxonomyImpl, new PrintWriter(System.err));
 			//			new FunctionalTaxonomyPrinter().print( _taxonomy, new OutputFormatter( System.err, false ) );
 		}
 
@@ -422,7 +423,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 
 		classify();
 
-		return _taxonomy.isEquivalent((OWLClass) clsC, (OWLClass) clsD) == Bool.TRUE;
+		return _taxonomyImpl.isEquivalent((OWLClass) clsC, (OWLClass) clsD) == Bool.TRUE;
 	}
 
 	@Override
@@ -493,14 +494,14 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 				}
 
 				timer = _timers.startTimer("buildClassHierarchy");
-				_taxonomy = buildClassHierarchy(_reasoner);
+				_taxonomyImpl = buildClassHierarchy(_reasoner);
 				timer.stop();
 
 				if (_logger.isLoggable(Level.FINE))
 				{
 					_logger.fine("Copied _taxonomy:");
 
-					new TreeTaxonomyPrinter<OWLClass>().print(_taxonomy, new PrintWriter(System.err));
+					new TreeTaxonomyPrinter<OWLClass>().print(_taxonomyImpl, new PrintWriter(System.err));
 				}
 			}
 		};
@@ -732,11 +733,11 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 		public PersistedState(final IncrementalClassifier incrementalClassifier)
 		{
 			_persistedExtractor = incrementalClassifier._extractor;
-			_persistedTaxonomy = incrementalClassifier._taxonomy;
+			_persistedTaxonomy = incrementalClassifier._taxonomyImpl;
 			_persistedRealized = incrementalClassifier._realized;
 		}
 
-		public PersistedState(final ModuleExtractor extractor, final Taxonomy<OWLClass> taxonomy, final boolean realized)
+		public PersistedState(final ModuleExtractor extractor, final TaxonomyImpl<OWLClass> taxonomy, final boolean realized)
 		{
 			_persistedExtractor = extractor;
 			_persistedTaxonomy = taxonomy;
@@ -842,19 +843,19 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 	@Override
 	public NodeSet<OWLClass> getDisjointClasses(final OWLClassExpression ce)
 	{
-		final DisjointClassComparator disjointClassComparator = new DisjointClassComparator(_taxonomy, ce);
+		final DisjointClassComparator disjointClassComparator = new DisjointClassComparator(_taxonomyImpl, ce);
 
-		if (!_taxonomy.contains(disjointClassComparator.getComplementRepresentation()))
+		if (!_taxonomyImpl.contains(disjointClassComparator.getComplementRepresentation()))
 		{
 			_reasoner.flush();
-			final PartialOrderBuilder<OWLClass> orderBuilder = new PartialOrderBuilder<>(_taxonomy, disjointClassComparator);
+			final PartialOrderBuilder<OWLClass> orderBuilder = new PartialOrderBuilder<>(_taxonomyImpl, disjointClassComparator);
 
 			orderBuilder.add(disjointClassComparator.getComplementRepresentation(), true);
 		}
 
 		final OWLClassNodeSet result = new OWLClassNodeSet();
 
-		for (final Set<OWLClass> equivSet : _taxonomy.getSubs(disjointClassComparator.getComplementRepresentation(), false))
+		for (final Set<OWLClass> equivSet : _taxonomyImpl.getSubs(disjointClassComparator.getComplementRepresentation(), false))
 			result.addSameEntities(equivSet);
 
 		return result;
@@ -972,7 +973,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 
 		realize();
 
-		final Set<OWLNamedIndividual> individuals = direct ? TaxonomyUtils.<OWLClass, OWLNamedIndividual> getDirectInstances(_taxonomy, (OWLClass) ce) : TaxonomyUtils.<OWLClass, OWLNamedIndividual> getAllInstances(_taxonomy, (OWLClass) ce);
+		final Set<OWLNamedIndividual> individuals = direct ? TaxonomyUtils.<OWLClass, OWLNamedIndividual> getDirectInstances(_taxonomyImpl, (OWLClass) ce) : TaxonomyUtils.<OWLClass, OWLNamedIndividual> getAllInstances(_taxonomyImpl, (OWLClass) ce);
 
 		return getIndividualNodeSet(individuals);
 	}
@@ -1114,7 +1115,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 		classify();
 
 		return new OWLClassNodeSet(//
-				_taxonomy.supers(namedClass, direct)//
+				_taxonomyImpl.supers(namedClass, direct)//
 						.map(NodeFactory::getOWLClassNode)//
 						.collect(Collectors.toSet())//
 		);
@@ -1186,7 +1187,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 		realize();
 
 		final OWLClassNodeSet types = new OWLClassNodeSet();
-		for (final Set<OWLClass> t : TaxonomyUtils.getTypes(_taxonomy, ind, direct))
+		for (final Set<OWLClass> t : TaxonomyUtils.getTypes(_taxonomyImpl, ind, direct))
 			//Set<OWLClass> eqSet = ATermUtils.primitiveOrBottom( t );
 			//if( !eqSet.isEmpty() )
 			types.addNode(new OWLClassNode(t));
@@ -1301,13 +1302,13 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 
 	public Taxonomy<OWLClass> getTaxonomy()
 	{
-		return _taxonomy;
+		return _taxonomyImpl;
 	}
 
 	private void resetRealization()
 	{
-		if (_taxonomy != null)
-			for (final TaxonomyNode<OWLClass> node : _taxonomy.getNodes())
+		if (_taxonomyImpl != null)
+			for (final TaxonomyNode<OWLClass> node : _taxonomyImpl.getNodes().values())
 				node.removeDatum(TaxonomyUtils.INSTANCES_KEY);
 
 		_realized = false;
@@ -1339,14 +1340,14 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 		final OWLClass owlClass = termToOWLClass(c, factory);
 
 		if (visitedClasses.contains(owlClass))
-			return TaxonomyUtils.getAllInstances(_taxonomy, owlClass);
+			return TaxonomyUtils.getAllInstances(_taxonomyImpl, owlClass);
 
 		final Set<ATermAppl> instances = new HashSet<>(_reasoner.getKB().retrieve(c, individuals));
 		final Set<ATermAppl> mostSpecificInstances = new HashSet<>(instances);
 
 		if (!instances.isEmpty())
 		{
-			final TaxonomyNode<OWLClass> node = _taxonomy.getNode(owlClass);
+			final TaxonomyNode<OWLClass> node = _taxonomyImpl.getNode(owlClass);
 
 			if (node == null)
 			{

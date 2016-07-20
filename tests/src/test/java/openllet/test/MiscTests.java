@@ -69,6 +69,7 @@ import openllet.core.datatypes.types.real.XSDDecimal;
 import openllet.core.datatypes.types.real.XSDInteger;
 import openllet.core.datatypes.types.text.XSDString;
 import openllet.core.taxonomy.Taxonomy;
+import openllet.core.taxonomy.TaxonomyImpl;
 import openllet.core.taxonomy.TaxonomyNode;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.FileUtils;
@@ -781,7 +782,7 @@ public class MiscTests extends AbstractKBTests
 	{
 		final List<ATermAppl> classes = Arrays.asList(term("C0"), term("C1"), term("C2"));
 
-		final Taxonomy<ATermAppl> taxonomy = new Taxonomy<>(classes, ATermUtils.TOP, ATermUtils.BOTTOM);
+		final Taxonomy<ATermAppl> taxonomy = new TaxonomyImpl<>(classes, ATermUtils.TOP, ATermUtils.BOTTOM);
 
 		final TaxonomyNode<ATermAppl> top = taxonomy.getTop();
 		@SuppressWarnings("unchecked")

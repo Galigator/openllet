@@ -39,7 +39,7 @@ import openllet.core.utils.Comparators;
 public class FunctionalTaxonomyPrinter<T> implements TaxonomyPrinter<T>
 {
 
-	private Taxonomy<T> _taxonomy;
+	private Taxonomy<T> _taxonomyImpl;
 
 	private PrintWriter _out;
 
@@ -61,7 +61,7 @@ public class FunctionalTaxonomyPrinter<T> implements TaxonomyPrinter<T>
 	public void print(final Taxonomy<T> taxonomy, final PrintWriter out)
 	{
 
-		this._taxonomy = taxonomy;
+		this._taxonomyImpl = taxonomy;
 		this._out = out;
 
 		/*
@@ -69,7 +69,7 @@ public class FunctionalTaxonomyPrinter<T> implements TaxonomyPrinter<T>
 		 * as a subclass if it is the *only* subclass.
 		 */
 		_bottomEquivalents = new TreeSet<>(Comparators.stringComparator);
-		_bottomEquivalents.addAll(taxonomy.getBottom().getEquivalents());
+		_bottomEquivalents.addAll(taxonomy.getBottomNode().getEquivalents());
 
 		_printed = new HashSet<>();
 
@@ -81,7 +81,7 @@ public class FunctionalTaxonomyPrinter<T> implements TaxonomyPrinter<T>
 		final Set<Set<T>> topGroup = Collections.singleton(sortedTop);
 		printGroup(topGroup);
 
-		this._taxonomy = null;
+		this._taxonomyImpl = null;
 		this._out = null;
 		this._bottomEquivalents = null;
 		this._printed = null;
@@ -95,14 +95,14 @@ public class FunctionalTaxonomyPrinter<T> implements TaxonomyPrinter<T>
 
 		final Set<Set<T>> nextGroup = new LinkedHashSet<>();
 
-		for (Collection<T> eqC : concepts)
+		for (final Collection<T> eqC : concepts)
 		{
 
 			final T firstC = eqC.iterator().next();
 
 			// Use supers to determine if this has been _printed before, if so
 			// skip it
-			final Set<Set<T>> supEqs = _taxonomy.getSupers(firstC, true);
+			final Set<Set<T>> supEqs = _taxonomyImpl.getSupers(firstC, true);
 			if ((supEqs.size() > 1) && _printed.contains(firstC))
 				continue;
 			else
@@ -129,7 +129,7 @@ public class FunctionalTaxonomyPrinter<T> implements TaxonomyPrinter<T>
 
 			// Print any direct subclasses
 			final Set<Set<T>> sortedSubEqs = new TreeSet<>(Comparators.stringComparator);
-			final Set<Set<T>> subEqs = _taxonomy.getSubs(firstC, true);
+			final Set<Set<T>> subEqs = _taxonomyImpl.getSubs(firstC, true);
 			for (final Set<T> set : subEqs)
 			{
 				final Set<T> group = new TreeSet<>(Comparators.stringComparator);

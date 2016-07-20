@@ -73,7 +73,7 @@ public class TaxonomyUtils
 
 	public static void clearAllInstances(final Taxonomy<?> t)
 	{
-		for (final TaxonomyNode<?> node : t.getNodes())
+		for (final TaxonomyNode<?> node : t.getNodes().values())
 			node.removeDatum(INSTANCES_KEY);
 	}
 

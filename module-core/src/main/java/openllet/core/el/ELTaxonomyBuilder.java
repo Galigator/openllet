@@ -12,13 +12,11 @@ import java.util.Map;
 import java.util.Set;
 import openllet.aterm.ATermAppl;
 import openllet.core.taxonomy.Taxonomy;
+import openllet.core.taxonomy.TaxonomyImpl;
 import openllet.core.taxonomy.TaxonomyNode;
 import openllet.core.utils.ATermUtils;
 
 /**
- * <p>
- * Title:
- * </p>
  * <p>
  * Description: Builds a fully classified taxonomy from existing classification results.
  * </p>
@@ -33,17 +31,17 @@ import openllet.core.utils.ATermUtils;
  */
 class ELTaxonomyBuilder
 {
-	private Taxonomy<ATermAppl> taxonomy;
+	private Taxonomy<ATermAppl> taxonomyImpl;
 
 	public Taxonomy<ATermAppl> build(final Map<ATermAppl, ConceptInfo> concepts)
 	{
-		taxonomy = new Taxonomy<>(null, ATermUtils.TOP, ATermUtils.BOTTOM);
+		taxonomyImpl = new TaxonomyImpl<>(null, ATermUtils.TOP, ATermUtils.BOTTOM);
 
 		for (final ConceptInfo ci : concepts.get(ATermUtils.TOP).getSuperClasses())
 		{
 			final ATermAppl eq = ci.getConcept();
 			if (ATermUtils.isPrimitive(eq))
-				taxonomy.addEquivalentNode(eq, taxonomy.getTop());
+				taxonomyImpl.addEquivalentNode(eq, taxonomyImpl.getTop());
 		}
 
 		final ConceptInfo BOTTOM = concepts.get(ATermUtils.BOTTOM);
@@ -54,18 +52,18 @@ class ELTaxonomyBuilder
 				continue;
 
 			if (ci.getSuperClasses().contains(BOTTOM))
-				taxonomy.addEquivalentNode(c, taxonomy.getBottom());
+				taxonomyImpl.addEquivalentNode(c, taxonomyImpl.getBottomNode());
 			else
 				classify(ci);
 		}
 
-		return taxonomy;
+		return taxonomyImpl;
 	}
 
 	private TaxonomyNode<ATermAppl> classify(final ConceptInfo ci)
 	{
 		final ATermAppl c = ci.getConcept();
-		TaxonomyNode<ATermAppl> node = taxonomy.getNode(c);
+		TaxonomyNode<ATermAppl> node = taxonomyImpl.getNode(c);
 
 		if (node == null)
 		{
@@ -95,7 +93,7 @@ class ELTaxonomyBuilder
 			for (final ConceptInfo eqInfo : equivalents)
 			{
 				final ATermAppl eq = eqInfo.getConcept();
-				taxonomy.addEquivalentNode(eq, node);
+				taxonomyImpl.addEquivalentNode(eq, node);
 			}
 		}
 
@@ -116,10 +114,10 @@ class ELTaxonomyBuilder
 		for (final TaxonomyNode<ATermAppl> parent : parents)
 		{
 			supers.add(parent.getName());
-			parent.removeSub(taxonomy.getBottom());
+			parent.removeSub(taxonomyImpl.getBottomNode());
 		}
 
-		return taxonomy.addNode(Collections.singleton(c), supers, subs, false);
+		return taxonomyImpl.addNode(Collections.singleton(c), supers, subs, false);
 	}
 
 }

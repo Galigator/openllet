@@ -49,6 +49,7 @@ import openllet.aterm.ATermAppl;
 import openllet.core.boxes.rbox.RBox;
 import openllet.core.boxes.rbox.Role;
 import openllet.core.taxonomy.Taxonomy;
+import openllet.core.taxonomy.TaxonomyImpl;
 import openllet.core.taxonomy.TaxonomyNode;
 import openllet.core.utils.ATermUtils;
 import openllet.shared.tools.Log;
@@ -58,7 +59,7 @@ import openllet.shared.tools.Log;
  */
 public class RoleTaxonomyBuilder
 {
-	protected static Logger _logger = Log.getLogger(Taxonomy.class);
+	protected static Logger _logger = Log.getLogger(RoleTaxonomyBuilder.class);
 
 	public static final ATermAppl TOP_ANNOTATION_PROPERTY = ATermUtils.makeTermAppl("_TOP_ANNOTATION_PROPERTY_");
 	public static final ATermAppl BOTTOM_ANNOTATION_PROPERTY = ATermUtils.makeTermAppl("_BOTTOM_ANNOTATION_PROPERTY_");
@@ -70,7 +71,7 @@ public class RoleTaxonomyBuilder
 
 	protected Collection<Role> _properties;
 
-	protected Taxonomy<ATermAppl> _taxonomy;
+	protected Taxonomy<ATermAppl> _taxonomyImpl;
 	protected RBox _rbox;
 	protected Role _topRole;
 	protected Role _bottomRole;
@@ -86,23 +87,23 @@ public class RoleTaxonomyBuilder
 		switch (_propertyType)
 		{
 			case OBJECT:
-				_taxonomy = new Taxonomy<>(null, TOP_OBJECT_PROPERTY, BOTTOM_OBJECT_PROPERTY);
+				_taxonomyImpl = new TaxonomyImpl<>(null, TOP_OBJECT_PROPERTY, BOTTOM_OBJECT_PROPERTY);
 				break;
 			case DATATYPE:
-				_taxonomy = new Taxonomy<>(null, TOP_DATA_PROPERTY, BOTTOM_DATA_PROPERTY);
+				_taxonomyImpl = new TaxonomyImpl<>(null, TOP_DATA_PROPERTY, BOTTOM_DATA_PROPERTY);
 				break;
 			case ANNOTATION:
-				_taxonomy = new Taxonomy<>(null, TOP_ANNOTATION_PROPERTY, BOTTOM_ANNOTATION_PROPERTY);
+				_taxonomyImpl = new TaxonomyImpl<>(null, TOP_ANNOTATION_PROPERTY, BOTTOM_ANNOTATION_PROPERTY);
 				//Hide the artificial roles TOP_ANNOTATION_PROPERTY and BOTTOM_ANNOTATION_PROPERTY
-				_taxonomy.getTop().setHidden(true);
-				_taxonomy.getBottom().setHidden(true);
+				_taxonomyImpl.getTop().setHidden(true);
+				_taxonomyImpl.getBottomNode().setHidden(true);
 				break;
 			default:
 				throw new AssertionError("Unknown property type: " + _propertyType);
 		}
 
-		_topRole = rbox.getRole(_taxonomy.getTop().getName());
-		_bottomRole = rbox.getRole(_taxonomy.getBottom().getName());
+		_topRole = rbox.getRole(_taxonomyImpl.getTop().getName());
+		_bottomRole = rbox.getRole(_taxonomyImpl.getBottomNode().getName());
 	}
 
 	public RoleTaxonomyBuilder(final RBox rbox, final boolean objectRoles)
@@ -110,9 +111,9 @@ public class RoleTaxonomyBuilder
 		_rbox = rbox;
 
 		_properties = rbox.getRoles().values();
-		_taxonomy = objectRoles ? new Taxonomy<>(null, TOP_OBJECT_PROPERTY, BOTTOM_OBJECT_PROPERTY) : new Taxonomy<>(null, TOP_DATA_PROPERTY, BOTTOM_DATA_PROPERTY);
-		_topRole = rbox.getRole(_taxonomy.getTop().getName());
-		_bottomRole = rbox.getRole(_taxonomy.getBottom().getName());
+		_taxonomyImpl = objectRoles ? new TaxonomyImpl<>(null, TOP_OBJECT_PROPERTY, BOTTOM_OBJECT_PROPERTY) : new TaxonomyImpl<>(null, TOP_DATA_PROPERTY, BOTTOM_DATA_PROPERTY);
+		_topRole = rbox.getRole(_taxonomyImpl.getTop().getName());
+		_bottomRole = rbox.getRole(_taxonomyImpl.getBottomNode().getName());
 	}
 
 	public Taxonomy<ATermAppl> classify()
@@ -128,12 +129,12 @@ public class RoleTaxonomyBuilder
 			classify(r);
 		}
 
-		return _taxonomy;
+		return _taxonomyImpl;
 	}
 
 	private void classify(final Role c)
 	{
-		if (_taxonomy.contains(c.getName()))
+		if (_taxonomyImpl.contains(c.getName()))
 			return;
 
 		if (_logger.isLoggable(Level.FINER))
@@ -141,25 +142,25 @@ public class RoleTaxonomyBuilder
 
 		if (c.getSubRoles().contains(_topRole))
 		{
-			_taxonomy.addEquivalentNode(c.getName(), _taxonomy.getTop());
+			_taxonomyImpl.addEquivalentNode(c.getName(), _taxonomyImpl.getTop());
 			return;
 		}
 		else
 			if (c.getSuperRoles().contains(_bottomRole))
 			{
-				_taxonomy.addEquivalentNode(c.getName(), _taxonomy.getBottom());
+				_taxonomyImpl.addEquivalentNode(c.getName(), _taxonomyImpl.getBottomNode());
 				return;
 			}
 
 		Map<TaxonomyNode<ATermAppl>, Boolean> marked = new HashMap<>();
-		mark(_taxonomy.getTop(), marked, Boolean.TRUE, Propagate.NONE);
-		mark(_taxonomy.getBottom(), marked, Boolean.FALSE, Propagate.NONE);
+		mark(_taxonomyImpl.getTop(), marked, Boolean.TRUE, Propagate.NONE);
+		mark(_taxonomyImpl.getBottomNode(), marked, Boolean.FALSE, Propagate.NONE);
 
-		final Collection<TaxonomyNode<ATermAppl>> superNodes = search(true, c, _taxonomy.getTop(), new HashSet<TaxonomyNode<ATermAppl>>(), new ArrayList<TaxonomyNode<ATermAppl>>(), marked);
+		final Collection<TaxonomyNode<ATermAppl>> superNodes = search(true, c, _taxonomyImpl.getTop(), new HashSet<TaxonomyNode<ATermAppl>>(), new ArrayList<TaxonomyNode<ATermAppl>>(), marked);
 
 		marked = new HashMap<>();
-		mark(_taxonomy.getTop(), marked, Boolean.FALSE, Propagate.NONE);
-		mark(_taxonomy.getBottom(), marked, Boolean.TRUE, Propagate.NONE);
+		mark(_taxonomyImpl.getTop(), marked, Boolean.FALSE, Propagate.NONE);
+		mark(_taxonomyImpl.getBottomNode(), marked, Boolean.TRUE, Propagate.NONE);
 
 		if (superNodes.size() == 1)
 		{
@@ -173,12 +174,12 @@ public class RoleTaxonomyBuilder
 				if (_logger.isLoggable(Level.FINER))
 					_logger.finer(ATermUtils.toString(c.getName()) + " = " + ATermUtils.toString(sup.getName()));
 
-				_taxonomy.addEquivalentNode(c.getName(), sup);
+				_taxonomyImpl.addEquivalentNode(c.getName(), sup);
 				return;
 			}
 		}
 
-		final Collection<TaxonomyNode<ATermAppl>> subNodes = search(false, c, _taxonomy.getBottom(), new HashSet<TaxonomyNode<ATermAppl>>(), new ArrayList<TaxonomyNode<ATermAppl>>(), marked);
+		final Collection<TaxonomyNode<ATermAppl>> subNodes = search(false, c, _taxonomyImpl.getBottomNode(), new HashSet<TaxonomyNode<ATermAppl>>(), new ArrayList<TaxonomyNode<ATermAppl>>(), marked);
 
 		final List<ATermAppl> supers = new ArrayList<>();
 		for (final TaxonomyNode<ATermAppl> n : superNodes)
@@ -188,7 +189,7 @@ public class RoleTaxonomyBuilder
 		for (final TaxonomyNode<ATermAppl> n : subNodes)
 			subs.add(n.getName());
 
-		_taxonomy.addNode(Collections.singleton(c.getName()), supers, subs, /* hidden = */false);
+		_taxonomyImpl.addNode(Collections.singleton(c.getName()), supers, subs, /* hidden = */false);
 	}
 
 	private Collection<TaxonomyNode<ATermAppl>> search(final boolean topSearch, final Role c, final TaxonomyNode<ATermAppl> x, final Set<TaxonomyNode<ATermAppl>> visited, final List<TaxonomyNode<ATermAppl>> result, final Map<TaxonomyNode<ATermAppl>, Boolean> marked)

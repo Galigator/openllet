@@ -15,14 +15,12 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 import openllet.core.taxonomy.Taxonomy;
+import openllet.core.taxonomy.TaxonomyImpl;
 import openllet.core.taxonomy.TaxonomyNode;
 
 /**
  * <p>
  * Title: Partial Order Builder
- * </p>
- * <p>
- * Description:
  * </p>
  * <p>
  * Copyright: Copyright (c) 2007
@@ -46,7 +44,7 @@ public class PartialOrderBuilder<T>
 
 	public static <T> Taxonomy<T> build(final Collection<? extends T> elements, final PartialOrderComparator<T> comparator, final T top, final T bottom)
 	{
-		final Taxonomy<T> hierarchy = new Taxonomy<>(null, top, bottom);
+		final Taxonomy<T> hierarchy = new TaxonomyImpl<>(null, top, bottom);
 		final PartialOrderBuilder<T> builder = new PartialOrderBuilder<>(hierarchy, comparator);
 		builder.addAll(elements);
 
@@ -55,14 +53,14 @@ public class PartialOrderBuilder<T>
 
 	private PartialOrderComparator<T> _comparator;
 
-	private Taxonomy<T> _taxonomy;
+	private Taxonomy<T> _taxonomyImpl;
 
 	/**
 	 * Initialize the builder with given _taxonomy and _comparator.
 	 */
 	public PartialOrderBuilder(final Taxonomy<T> taxonomy, final PartialOrderComparator<T> comparator)
 	{
-		this._taxonomy = taxonomy;
+		this._taxonomyImpl = taxonomy;
 		this._comparator = comparator;
 	}
 
@@ -79,13 +77,13 @@ public class PartialOrderBuilder<T>
 	public void add(final T toAdd, final boolean hidden)
 	{
 
-		final Set<T> elements = _taxonomy.getClasses();
+		final Set<T> elements = _taxonomyImpl.getClasses();
 		final int nElements = elements.size();
 
 		if (nElements == 0)
 		{
 			final Set<T> empty = Collections.emptySet();
-			_taxonomy.addNode(Collections.singleton(toAdd), empty, empty, /* hidden = */false);
+			_taxonomyImpl.addNode(Collections.singleton(toAdd), empty, empty, /* hidden = */false);
 		}
 		else
 		{
@@ -96,9 +94,9 @@ public class PartialOrderBuilder<T>
 			// From max, work down to find parents
 			{
 				final Collection<T> maxElements = new ArrayList<>();
-				for (final TaxonomyNode<T> n : _taxonomy.getTop().getSubs())
+				for (final TaxonomyNode<T> n : _taxonomyImpl.getTop().getSubs())
 					maxElements.add(n.getName());
-				parents = search(_taxonomy, toAdd, maxElements, _comparator, PARENTS_SEARCH);
+				parents = search(_taxonomyImpl, toAdd, maxElements, _comparator, PARENTS_SEARCH);
 
 				if (parents == null)
 					return;
@@ -113,17 +111,17 @@ public class PartialOrderBuilder<T>
 					final Set<T> visited = new HashSet<>();
 					final Queue<Set<T>> toVisit = new LinkedList<>();
 					if (parents.isEmpty())
-						for (final TaxonomyNode<T> n : _taxonomy.getBottom().getSupers())
+						for (final TaxonomyNode<T> n : _taxonomyImpl.getBottomNode().getSupers())
 							leaves.add(n.getName());
 					else
 						for (final T p : parents)
 						{
-							final Set<Set<T>> subs = _taxonomy.getSubs(p, /* direct = */true);
+							final Set<Set<T>> subs = _taxonomyImpl.getSubs(p, /* direct = */true);
 							if (!subs.isEmpty())
 								toVisit.addAll(subs);
 						}
 
-					final Set<Set<T>> bottoms = Collections.singleton(_taxonomy.getBottom().getEquivalents());
+					final Set<Set<T>> bottoms = Collections.singleton(_taxonomyImpl.getBottomNode().getEquivalents());
 
 					while (!toVisit.isEmpty())
 					{
@@ -134,7 +132,7 @@ public class PartialOrderBuilder<T>
 						if (visited.contains(rep))
 							continue;
 						visited.addAll(current);
-						final Set<Set<T>> subs = _taxonomy.getSubs(rep, /* direct = */true);
+						final Set<Set<T>> subs = _taxonomyImpl.getSubs(rep, /* direct = */true);
 						if (subs.equals(bottoms))
 							leaves.add(rep);
 						else
@@ -142,12 +140,12 @@ public class PartialOrderBuilder<T>
 					}
 				}
 
-				children = search(_taxonomy, toAdd, leaves, _comparator, CHILDREN_SEARCH);
+				children = search(_taxonomyImpl, toAdd, leaves, _comparator, CHILDREN_SEARCH);
 				if (children == null)
 					return;
 			}
 
-			_taxonomy.addNode(Collections.singleton(toAdd), parents, children, hidden);
+			_taxonomyImpl.addNode(Collections.singleton(toAdd), parents, children, hidden);
 		}
 	}
 
@@ -169,7 +167,7 @@ public class PartialOrderBuilder<T>
 
 	public Taxonomy<T> getTaxonomy()
 	{
-		return _taxonomy;
+		return _taxonomyImpl;
 	}
 
 	private Collection<T> search(final Taxonomy<T> tax, final T toInsert, final Collection<T> from, final PartialOrderComparator<T> comparator, final boolean direction)
@@ -251,8 +249,8 @@ public class PartialOrderBuilder<T>
 		this._comparator = comparator;
 	}
 
-	public void setTaxonomy(final Taxonomy<T> taxonomy)
+	public void setTaxonomy(final TaxonomyImpl<T> taxonomy)
 	{
-		this._taxonomy = taxonomy;
+		this._taxonomyImpl = taxonomy;
 	}
 }

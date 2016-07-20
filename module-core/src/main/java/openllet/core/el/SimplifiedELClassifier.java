@@ -24,6 +24,7 @@ import openllet.core.boxes.rbox.Role;
 import openllet.core.taxonomy.CDOptimizedTaxonomyBuilder;
 import openllet.core.taxonomy.Taxonomy;
 import openllet.core.taxonomy.TaxonomyBuilder;
+import openllet.core.taxonomy.TaxonomyImpl;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.CollectionUtils;
 import openllet.core.utils.MultiValueMap;
@@ -55,8 +56,8 @@ public class SimplifiedELClassifier extends CDOptimizedTaxonomyBuilder implement
 
 		public QueueElement(final ConceptInfo sub, final ConceptInfo sup)
 		{
-			this._sub = sub;
-			this._sup = sup;
+			_sub = sub;
+			_sup = sup;
 		}
 	}
 
@@ -137,7 +138,7 @@ public class SimplifiedELClassifier extends CDOptimizedTaxonomyBuilder implement
 		_logger.fine("Building hierarchy");
 		t = timers.startTimer("buildHierarchy");
 
-		_taxonomy = new ELTaxonomyBuilder().build(_concepts);
+		_taxonomyImpl = new ELTaxonomyBuilder().build(_concepts);
 
 		t.stop();
 		_logger.fine("Builded hierarchy");
@@ -512,6 +513,6 @@ public class SimplifiedELClassifier extends CDOptimizedTaxonomyBuilder implement
 	@Override
 	public Taxonomy<ATermAppl> getToldTaxonomy()
 	{
-		return new Taxonomy<>(_kb.getTBox().getClasses(), TermFactory.TOP, TermFactory.BOTTOM);
+		return new TaxonomyImpl<>(_kb.getTBox().getClasses(), TermFactory.TOP, TermFactory.BOTTOM);
 	}
 }

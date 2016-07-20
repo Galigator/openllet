@@ -23,7 +23,7 @@ public class PartialOrderTaxonomyBuilder implements TaxonomyBuilder
 
 	private final PartialOrderBuilder<ATermAppl> _builder;
 	private KnowledgeBase _kb;
-	private final Taxonomy<ATermAppl> _tax;
+	private final TaxonomyImpl<ATermAppl> _tax;
 
 	public PartialOrderTaxonomyBuilder(final KnowledgeBase kb)
 	{
@@ -33,7 +33,7 @@ public class PartialOrderTaxonomyBuilder implements TaxonomyBuilder
 	public PartialOrderTaxonomyBuilder(final KnowledgeBase kb, final PartialOrderComparator<ATermAppl> comparator)
 	{
 		_kb = kb;
-		_tax = new Taxonomy<>(null, ATermUtils.TOP, ATermUtils.BOTTOM);
+		_tax = new TaxonomyImpl<>(null, ATermUtils.TOP, ATermUtils.BOTTOM);
 		_builder = new PartialOrderBuilder<>(_tax, comparator);
 	}
 
@@ -104,13 +104,13 @@ public class PartialOrderTaxonomyBuilder implements TaxonomyBuilder
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Taxonomy<ATermAppl> getToldTaxonomy()
+	public TaxonomyImpl<ATermAppl> getToldTaxonomy()
 	{
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public Taxonomy<ATermAppl> getTaxonomy()
+	public TaxonomyImpl<ATermAppl> getTaxonomy()
 	{
 		return _tax;
 	}

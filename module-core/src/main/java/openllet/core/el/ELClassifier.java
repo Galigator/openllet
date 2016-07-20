@@ -135,7 +135,7 @@ public class ELClassifier extends CDOptimizedTaxonomyBuilder
 		_logger.info("Building hierarchy");
 		t = _timers.startTimer("buildHierarchy");
 
-		_taxonomy = new ELTaxonomyBuilder().build(_concepts);
+		_taxonomyImpl = new ELTaxonomyBuilder().build(_concepts);
 		//		buildTaxonomyWithPO();
 
 		t.stop();
@@ -150,7 +150,7 @@ public class ELClassifier extends CDOptimizedTaxonomyBuilder
 	private void buildPartialOrderTaxonomy()
 	{
 		final PartialOrderTaxonomyBuilder builder = new PartialOrderTaxonomyBuilder(_kb, subsumptionComparator);
-		_taxonomy = builder.getTaxonomy();
+		_taxonomyImpl = builder.getTaxonomy();
 
 		for (final ConceptInfo ci : _concepts.values())
 			classify(ci);
@@ -164,7 +164,7 @@ public class ELClassifier extends CDOptimizedTaxonomyBuilder
 
 		if (ci.getSuperClasses().contains(BOTTOM))
 		{
-			_taxonomy.addEquivalentNode(c, _taxonomy.getBottom());
+			_taxonomyImpl.addEquivalentNode(c, _taxonomyImpl.getBottomNode());
 			return;
 		}
 
@@ -183,7 +183,7 @@ public class ELClassifier extends CDOptimizedTaxonomyBuilder
 					classify(subsumer);
 		}
 
-		_taxonomy.addEquivalents(c, equivalents);
+		_taxonomyImpl.addEquivalents(c, equivalents);
 	}
 
 	private void addExistential(final ConceptInfo ci, final ATermAppl prop, final ConceptInfo qi)
@@ -362,7 +362,7 @@ public class ELClassifier extends CDOptimizedTaxonomyBuilder
 		return ci;
 	}
 
-	private ConceptInfo[] createConceptArray(ATermList list)
+	private ConceptInfo[] createConceptArray(final ATermList list)
 	{
 		final ConceptInfo[] a = new ConceptInfo[list.getLength()];
 

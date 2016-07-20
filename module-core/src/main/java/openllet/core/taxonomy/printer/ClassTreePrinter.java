@@ -67,7 +67,7 @@ public class ClassTreePrinter extends TreeTaxonomyPrinter<ATermAppl>
 	{
 		super.printNode(set);
 
-		final Set<ATermAppl> instances = TaxonomyUtils.getDirectInstances(_taxonomy, set.iterator().next());
+		final Set<ATermAppl> instances = TaxonomyUtils.getDirectInstances(_taxonomyImpl, set.iterator().next());
 		if (instances.size() > 0)
 		{
 			_out.print(" - (");

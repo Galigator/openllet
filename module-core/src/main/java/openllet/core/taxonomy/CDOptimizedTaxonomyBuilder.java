@@ -57,7 +57,7 @@ import openllet.shared.tools.Log;
  */
 public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 {
-	protected static Logger _logger = Log.getLogger(Taxonomy.class);
+	protected static Logger _logger = Log.getLogger(TaxonomyImpl.class);
 
 	private static enum Propogate
 	{
@@ -77,7 +77,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 
 	protected Taxonomy<ATermAppl> _toldTaxonomy;
 
-	protected Taxonomy<ATermAppl> _taxonomy;
+	protected Taxonomy<ATermAppl> _taxonomyImpl;
 
 	private Map<ATermAppl, Set<ATermAppl>> _toldDisjoints;
 
@@ -101,16 +101,16 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 	@Override
 	public void setKB(final KnowledgeBase kb)
 	{
-		this._kb = kb;
+		_kb = kb;
 	}
 
 	@Override
 	public void setProgressMonitor(final ProgressMonitor monitor)
 	{
 		if (monitor == null)
-			this._monitor = new SilentProgressMonitor();
+			_monitor = new SilentProgressMonitor();
 		else
-			this._monitor = monitor;
+			_monitor = monitor;
 	}
 
 	private boolean prepared = false;
@@ -118,7 +118,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 	@Override
 	public Taxonomy<ATermAppl> getTaxonomy()
 	{
-		return _taxonomy;
+		return _taxonomyImpl;
 	}
 
 	// TODO optimize();
@@ -167,7 +167,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 
 		if (_classes.isEmpty())
 		{
-			_taxonomy = new Taxonomy<>(null, ATermUtils.TOP, ATermUtils.BOTTOM);
+			_taxonomyImpl = new TaxonomyImpl<>(null, ATermUtils.TOP, ATermUtils.BOTTOM);
 			return true;
 		}
 
@@ -225,20 +225,19 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 
 		_monitor.taskFinished();
 
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Satisfiability Count: " + (_kb.getABox().getStats().satisfiabilityCount - (2 * _kb.getClasses().size())));
+		_logger.fine(() -> "Satisfiability Count: " + (_kb.getABox().getStats().satisfiabilityCount - (2 * _kb.getClasses().size())));
 
 		// Reset the definition _order, so the sorted copy can be gc'd
 		_definitionOrder = null;
 
-		_taxonomy.assertValid();
+		_taxonomyImpl.assertValid();
 
 		if (_logger.isLoggable(Level.FINER))
 		{
-			_logger.finer("Tax size : " + _taxonomy.getNodes().size());
-			_logger.finer("Tax _depth: " + _taxonomy._depth);
-			_logger.finer("Branching: " + ((double) _taxonomy.totalBranching) / _taxonomy.getNodes().size());
-			_logger.finer("Leaf size: " + _taxonomy.getBottom().getSupers().size());
+			_logger.finer("Tax size : " + _taxonomyImpl.getNodes().size());
+			_logger.finer("Tax _depth: " + _taxonomyImpl.getDepth());
+			_logger.finer("Branching: " + ((double) _taxonomyImpl.getTotalBranching()) / _taxonomyImpl.getNodes().size());
+			_logger.finer("Leaf size: " + _taxonomyImpl.getBottomNode().getSupers().size());
 		}
 
 		return completed;
@@ -267,7 +266,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 			final ATermAppl c = phase.next();
 
 			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("Classify (" + _taxonomy.getNodes().size() + ") " + format(c) + "...");
+				_logger.fine("Classify (" + _taxonomyImpl.getNodes().size() + ") " + format(c) + "...");
 
 			classify(c, requireTopSearch);
 			_monitor.incrementProgress();
@@ -314,9 +313,9 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 		_unionClasses = CollectionUtils.makeIdentityMap();
 		_markedNodes = CollectionUtils.makeList();
 
-		_taxonomy = new Taxonomy<>(null, ATermUtils.TOP, ATermUtils.BOTTOM);
+		_taxonomyImpl = new TaxonomyImpl<>(null, ATermUtils.TOP, ATermUtils.BOTTOM);
 
-		_toldTaxonomy = new Taxonomy<>();
+		_toldTaxonomy = new TaxonomyImpl<>();
 
 		_definitionOrder = null;
 
@@ -327,7 +326,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 	{
 		final Timer t = _kb.timers.startTimer("computeToldInformation");
 
-		_toldTaxonomy = new Taxonomy<>(_classes, ATermUtils.TOP, ATermUtils.BOTTOM);
+		_toldTaxonomy = new TaxonomyImpl<>(_classes, ATermUtils.TOP, ATermUtils.BOTTOM);
 
 		// compute told subsumers for each concept
 		final TBox tbox = _kb.getTBox();
@@ -696,7 +695,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 
 	private void markToldSubsumers(final ATermAppl c)
 	{
-		final TaxonomyNode<ATermAppl> node = _taxonomy.getNode(c);
+		final TaxonomyNode<ATermAppl> node = _taxonomyImpl.getNode(c);
 		if (node != null)
 		{
 			final boolean newMark = mark(node, Boolean.TRUE, Propogate.UP);
@@ -716,7 +715,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 
 	private void markToldSubsumeds(final ATermAppl c, final Boolean b)
 	{
-		final TaxonomyNode<ATermAppl> node = _taxonomy.getNode(c);
+		final TaxonomyNode<ATermAppl> node = _taxonomyImpl.getNode(c);
 		if (node != null)
 		{
 			final boolean newMark = mark(node, b, Propogate.DOWN);
@@ -737,8 +736,8 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 
 		for (final ATermAppl c : inputc)
 		{
-			if (_taxonomy.contains(c))
-				cset.addAll(_taxonomy.getFlattenedSupers(c, /* direct = */false));
+			if (_taxonomyImpl.contains(c))
+				cset.addAll(_taxonomyImpl.getFlattenedSupers(c, /* direct = */false));
 
 			if (_toldTaxonomy.contains(c))
 				cset.addAll(_toldTaxonomy.getFlattenedSupers(c, /* direct = */false));
@@ -755,7 +754,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 		if (topSearch)
 			for (final ATermAppl d : disjoints)
 			{
-				final TaxonomyNode<ATermAppl> node = _taxonomy.getNode(d);
+				final TaxonomyNode<ATermAppl> node = _taxonomyImpl.getNode(d);
 				if (node != null)
 					mark(node, Boolean.FALSE, Propogate.NONE);
 			}
@@ -777,7 +776,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 			_logger.finer((isSatisfiable ? "true" : "*****FALSE*****") + " (" + t.getLast() + "ms)");
 
 		if (!isSatisfiable)
-			_taxonomy.addEquivalentNode(c, _taxonomy.getBottom());
+			_taxonomyImpl.addEquivalentNode(c, _taxonomyImpl.getBottomNode());
 
 		if (OpenlletOptions.USE_CACHING)
 		{
@@ -790,13 +789,13 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 			t.stop();
 
 			if (!isSatisfiable)
-				_taxonomy.addEquivalentNode(c, _taxonomy.getTop());
+				_taxonomyImpl.addEquivalentNode(c, _taxonomyImpl.getTop());
 
 			if (_logger.isLoggable(Level.FINER))
 				_logger.finer(isSatisfiable + " (" + t.getLast() + "ms)");
 		}
 
-		return _taxonomy.getNode(c);
+		return _taxonomyImpl.getNode(c);
 	}
 
 	/**
@@ -813,7 +812,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 		boolean skipTopSearch;
 		boolean skipBottomSearch;
 
-		TaxonomyNode<ATermAppl> node = _taxonomy.getNode(c);
+		TaxonomyNode<ATermAppl> node = _taxonomyImpl.getNode(c);
 		if (node != null)
 			return node;
 
@@ -875,7 +874,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 					if (_logger.isLoggable(Level.FINER))
 						_logger.finer(format(c) + " = " + format(sup));
 
-					_taxonomy.addEquivalentNode(c, supNode);
+					_taxonomyImpl.addEquivalentNode(c, supNode);
 					return supNode;
 				}
 			}
@@ -886,7 +885,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 				subs.add(n.getName());
 		}
 
-		node = _taxonomy.addNode(Collections.singleton(c), supers, subs, /* hidden = */
+		node = _taxonomyImpl.addNode(Collections.singleton(c), supers, subs, /* hidden = */
 				!ATermUtils.isPrimitive(c));
 
 		/*
@@ -898,7 +897,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 			// Add the told equivalents to the taxonomy
 			final TaxonomyNode<ATermAppl> defOrder = _toldTaxonomy.getNode(c);
 			for (final ATermAppl eq : defOrder.getEquivalents())
-				_taxonomy.addEquivalentNode(eq, node);
+				_taxonomyImpl.addEquivalentNode(eq, node);
 
 			for (final TaxonomyNode<ATermAppl> n : superNodes)
 			{
@@ -906,12 +905,11 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 				if (exps != null)
 					for (final Set<ATermAppl> exp : exps)
 						if (!exp.isEmpty())
-							TaxonomyUtils.addSuperExplanation(_taxonomy, c, n.getName(), exp);
+							TaxonomyUtils.addSuperExplanation(_taxonomyImpl, c, n.getName(), exp);
 			}
 		}
 
-		if (_logger.isLoggable(Level.FINER))
-			_logger.finer("Subsumption Count: " + _kb.getABox().getStats().satisfiabilityCount);
+		_logger.finer(() -> "Subsumption Count: " + _kb.getABox().getStats().satisfiabilityCount);
 
 		return node;
 	}
@@ -923,12 +921,12 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 			collectLeafs(sup, searchFrom);
 
 		if (searchFrom.isEmpty())
-			return Collections.singletonList(_taxonomy.getBottom());
+			return Collections.singletonList(_taxonomyImpl.getBottomNode());
 
 		clearMarks();
 
-		mark(_taxonomy.getTop(), Boolean.FALSE, Propogate.NONE);
-		_taxonomy.getBottom()._mark = Boolean.TRUE;
+		mark(_taxonomyImpl.getTop(), Boolean.FALSE, Propogate.NONE);
+		_taxonomyImpl.getBottomNode()._mark = Boolean.TRUE;
 		markToldSubsumeds(c, Boolean.TRUE);
 		for (final TaxonomyNode<ATermAppl> sup : supers)
 			mark(sup, Boolean.FALSE, Propogate.NONE);
@@ -942,7 +940,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 				search( /* topSearch = */false, c, n, visited, subs);
 
 		if (subs.isEmpty())
-			return Collections.singletonList(_taxonomy.getBottom());
+			return Collections.singletonList(_taxonomyImpl.getBottomNode());
 
 		return subs;
 	}
@@ -960,14 +958,14 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 	{
 		final List<TaxonomyNode<ATermAppl>> supers = new ArrayList<>();
 
-		mark(_taxonomy.getTop(), Boolean.TRUE, Propogate.NONE);
-		_taxonomy.getBottom()._mark = Boolean.FALSE;
+		mark(_taxonomyImpl.getTop(), Boolean.TRUE, Propogate.NONE);
+		_taxonomyImpl.getBottomNode()._mark = Boolean.FALSE;
 		markToldSubsumers(c);
 		markToldDisjoints(Collections.singleton(c), true);
 
 		_logger.finer("Top search...");
 
-		search(true, c, _taxonomy.getTop(), new HashSet<TaxonomyNode<ATermAppl>>(), supers);
+		search(true, c, _taxonomyImpl.getTop(), new HashSet<TaxonomyNode<ATermAppl>>(), supers);
 
 		return supers;
 	}
@@ -993,7 +991,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 			{
 				if (def == _toldTaxonomy.getTop())
 					continue;
-				final TaxonomyNode<ATermAppl> parent = _taxonomy.getNode(def.getName());
+				final TaxonomyNode<ATermAppl> parent = _taxonomyImpl.getNode(def.getName());
 				if (parent == null)
 				{
 					_logger.warning("Possible tautological definition, assuming " + format(def.getName()) + " is equivalent to " + format(ATermUtils.TOP));
@@ -1010,7 +1008,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 			{
 				if (def == _toldTaxonomy.getTop())
 					continue;
-				final TaxonomyNode<ATermAppl> candidate = _taxonomy.getNode(def.getName());
+				final TaxonomyNode<ATermAppl> candidate = _taxonomyImpl.getNode(def.getName());
 				if (candidate == null)
 				{
 					_logger.warning("Possible tautological definition, assuming " + format(def.getName()) + " is equivalent to " + format(ATermUtils.TOP));
@@ -1025,7 +1023,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 			{
 				if (def == _toldTaxonomy.getTop())
 					continue;
-				final TaxonomyNode<ATermAppl> candidate = _taxonomy.getNode(def.getName());
+				final TaxonomyNode<ATermAppl> candidate = _taxonomyImpl.getNode(def.getName());
 				if (candidate._mark == null)
 				{
 					supers.add(candidate);
@@ -1036,7 +1034,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 		}
 
 		if (supers.isEmpty())
-			supers.add(_taxonomy.getTop());
+			supers.add(_taxonomyImpl.getTop());
 
 		return supers;
 	}
@@ -1247,11 +1245,11 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 		{
 			// since nominals can be returned by getObviousTypes
 			// we need the following check
-			if (!_taxonomy.contains(c))
+			if (!_taxonomyImpl.contains(c))
 				continue;
 
-			mark(_taxonomy.getAllEquivalents(c), marked, Boolean.TRUE);
-			mark(_taxonomy.getFlattenedSupers(c, /* direct = */true), marked, Boolean.TRUE);
+			mark(_taxonomyImpl.getAllEquivalents(c), marked, Boolean.TRUE);
+			mark(_taxonomyImpl.getFlattenedSupers(c, /* direct = */true), marked, Boolean.TRUE);
 
 			// FIXME: markToldDisjoints operates on a map key'd with
 			// TaxonomyNodes, not ATermAppls
@@ -1260,8 +1258,8 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 
 		for (final ATermAppl c : obviousNonTypes)
 		{
-			mark(_taxonomy.getAllEquivalents(c), marked, Boolean.FALSE);
-			mark(_taxonomy.getFlattenedSubs(c, /* direct = */true), marked, Boolean.FALSE);
+			mark(_taxonomyImpl.getAllEquivalents(c), marked, Boolean.FALSE);
+			mark(_taxonomyImpl.getFlattenedSubs(c, /* direct = */true), marked, Boolean.FALSE);
 		}
 
 		realize(x.getName(), ATermUtils.TOP, marked);
@@ -1302,7 +1300,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 
 		if (isType)
 		{
-			final TaxonomyNode<ATermAppl> node = _taxonomy.getNode(c);
+			final TaxonomyNode<ATermAppl> node = _taxonomyImpl.getNode(c);
 
 			for (final TaxonomyNode<ATermAppl> sub : node.getSubs())
 			{
@@ -1363,10 +1361,10 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 		if (_monitor.isCanceled())
 			return null;
 
-		final TaxonomyNode<ATermAppl> node = _taxonomy.getNode(c);
+		final TaxonomyNode<ATermAppl> node = _taxonomyImpl.getNode(c);
 
 		if (node._mark == Boolean.TRUE)
-			return TaxonomyUtils.getAllInstances(_taxonomy, c);
+			return TaxonomyUtils.getAllInstances(_taxonomyImpl, c);
 
 		_monitor.incrementProgress();
 		mark(node, Boolean.TRUE, Propogate.NONE);
@@ -1420,7 +1418,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 
 		@SuppressWarnings("unused")
 		int totalAxioms = 0; // TODO : remove this or print it
-		final Iterator<?> i = _taxonomy.depthFirstDatumOnly(ATermUtils.TOP, TaxonomyUtils.SUPER_EXPLANATION_KEY);
+		final Iterator<?> i = _taxonomyImpl.depthFirstDatumOnly(ATermUtils.TOP, TaxonomyUtils.SUPER_EXPLANATION_KEY);
 		while (i.hasNext())
 		{
 			@SuppressWarnings("unchecked")
