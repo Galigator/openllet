@@ -11,29 +11,29 @@ import openllet.core.rules.rete.NodeProvider.WMENodeProvider;
 
 public class JoinCondition implements FilterCondition
 {
-	private final WMENodeProvider wmeProvider;
-	private final TokenNodeProvider tokenProvider;
+	private final WMENodeProvider _wmeProvider;
+	private final TokenNodeProvider _tokenProvider;
 
 	public JoinCondition(final WMENodeProvider wme, final TokenNodeProvider token)
 	{
-		this.wmeProvider = wme;
-		this.tokenProvider = token;
+		_wmeProvider = wme;
+		_tokenProvider = token;
 	}
 
 	@Override
 	public boolean test(final WME wme, final Token token)
 	{
-		return wmeProvider.getNode(wme, token).getTerm().equals(tokenProvider.getNode(wme, token).getTerm());
+		return _wmeProvider.getNode(wme, token).getTerm().equals(_tokenProvider.getNode(wme, token).getTerm());
 	}
 
 	public WMENodeProvider getWME()
 	{
-		return wmeProvider;
+		return _wmeProvider;
 	}
 
 	public TokenNodeProvider getToken()
 	{
-		return tokenProvider;
+		return _tokenProvider;
 	}
 
 	@Override
@@ -41,8 +41,8 @@ public class JoinCondition implements FilterCondition
 	{
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + wmeProvider.hashCode();
-		result = prime * result + tokenProvider.hashCode();
+		result = prime * result + _wmeProvider.hashCode();
+		result = prime * result + _tokenProvider.hashCode();
 		return result;
 	}
 
@@ -54,12 +54,12 @@ public class JoinCondition implements FilterCondition
 		if (!(obj instanceof JoinCondition))
 			return false;
 		final JoinCondition other = (JoinCondition) obj;
-		return wmeProvider.equals(other.wmeProvider) && tokenProvider.equals(other.tokenProvider);
+		return _wmeProvider.equals(other._wmeProvider) && _tokenProvider.equals(other._tokenProvider);
 	}
 
 	@Override
 	public String toString()
 	{
-		return wmeProvider + "=" + tokenProvider;
+		return _wmeProvider + "=" + _tokenProvider;
 	}
 }

@@ -1,7 +1,6 @@
 package openllet.core.utils;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import openllet.aterm.AFun;
@@ -428,8 +427,8 @@ public class OntBuilder
 																									else
 																										if (afun.equals(ATermUtils.RULEFUN))
 																										{
-																											final Set<RuleAtom> antecedent = new HashSet<>(); // Body
-																											final Set<RuleAtom> consequent = new HashSet<>(); // Head
+																											final List<RuleAtom> antecedent = new ArrayList<>(); // Body
+																											final List<RuleAtom> consequent = new ArrayList<>(); // Head
 
 																											ATermList head = (ATermList) axiom.getArgument(1);
 																											ATermList body = (ATermList) axiom.getArgument(2);

@@ -32,7 +32,7 @@ public class Interpreter
 	{
 		super();
 
-		this._alphaNet = alphaNet;
+		_alphaNet = alphaNet;
 	}
 
 	/**

@@ -36,14 +36,8 @@ public class Index<S, T> implements Iterable<T>
 
 	private static class IndexNode<I, J>
 	{
-		private final Map<I, IndexNode<I, J>> children;
-		private final Collection<J> leaves;
-
-		public IndexNode()
-		{
-			children = new HashMap<>();
-			leaves = new HashSet<>();
-		}
+		private final Map<I, IndexNode<I, J>> children = new HashMap<>();
+		private final Collection<J> leaves = new HashSet<>();
 
 		public boolean add(final List<I> key, final J obj)
 		{
@@ -185,7 +179,7 @@ public class Index<S, T> implements Iterable<T>
 	}
 
 	/**
-	 * Remove all _nodes from the _index.
+	 * Remove all nodes from the _index.
 	 */
 	public void clear()
 	{

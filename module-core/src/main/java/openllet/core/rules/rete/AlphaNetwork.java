@@ -38,9 +38,6 @@ import openllet.core.rules.model.SameIndividualAtom;
  * Title: Alpha Store
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -49,7 +46,6 @@ import openllet.core.rules.model.SameIndividualAtom;
  */
 public class AlphaNetwork implements Iterable<AlphaNode>
 {
-	//	private final Map<ATermAppl, List<AlphaTypeNode>> typeNodes = new HashMap<Object, List<AlphaNode>>();
 
 	private final Map<Object, List<AlphaNode>> _map = new ConcurrentHashMap<>();
 	private final List<AlphaNode> _alphaNodes = new Vector<>();
@@ -242,15 +238,15 @@ public class AlphaNetwork implements Iterable<AlphaNode>
 
 	private class AlphaNodeCreator implements RuleAtomVisitor
 	{
-		private AlphaNode result;
+		private AlphaNode _result;
 
 		private AlphaNode create(final RuleAtom atom)
 		{
-			result = null;
+			_result = null;
 			atom.accept(this);
-			if (result == null)
+			if (_result == null)
 				throw new UnsupportedOperationException("Not supported " + atom);
-			return result;
+			return _result;
 		}
 
 		private void addPropertyAtom(final BinaryAtom<ATermAppl, ? extends AtomObject, ? extends AtomObject> atom)
@@ -262,20 +258,20 @@ public class AlphaNetwork implements Iterable<AlphaNode>
 			if (s instanceof AtomVariable && o instanceof AtomVariable)
 			{
 				if (s.equals(o))
-					result = new AlphaReflexiveEdgeNode(_abox, role);
+					_result = new AlphaReflexiveEdgeNode(_abox, role);
 				else
-					result = new AlphaEdgeNode(_abox, role);
+					_result = new AlphaEdgeNode(_abox, role);
 			}
 			else
 				if (s instanceof AtomConstant)
 				{
 					if (o instanceof AtomConstant)
-						result = new AlphaNoVarEdgeNode(_abox, role, ((AtomConstant) s).getValue(), ((AtomConstant) o).getValue());
+						_result = new AlphaNoVarEdgeNode(_abox, role, ((AtomConstant) s).getValue(), ((AtomConstant) o).getValue());
 					else
-						result = new AlphaFixedSubjectEdgeNode(_abox, role, ((AtomConstant) s).getValue());
+						_result = new AlphaFixedSubjectEdgeNode(_abox, role, ((AtomConstant) s).getValue());
 				}
 				else
-					result = new AlphaFixedObjectEdgeNode(_abox, role, ((AtomConstant) o).getValue());
+					_result = new AlphaFixedObjectEdgeNode(_abox, role, ((AtomConstant) o).getValue());
 		}
 
 		@Override
@@ -294,7 +290,7 @@ public class AlphaNetwork implements Iterable<AlphaNode>
 		@Override
 		public void visit(final DifferentIndividualsAtom atom)
 		{
-			result = new AlphaDiffFromNode(_abox);
+			_result = new AlphaDiffFromNode(_abox);
 		}
 
 		@Override
@@ -315,14 +311,13 @@ public class AlphaNetwork implements Iterable<AlphaNode>
 		{
 			final AtomObject arg = atom.getArgument();
 			final ATermAppl name = (arg instanceof AtomConstant) ? ((AtomConstant) arg).getValue() : null;
-			result = new AlphaTypeNode(_abox, atom.getPredicate(), name);
+			_result = new AlphaTypeNode(_abox, atom.getPredicate(), name);
 		}
 
 		@Override
 		public void visit(final BuiltInAtom atom)
 		{
 			// TODO Auto-generated method stub
-
 		}
 	}
 }

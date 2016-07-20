@@ -55,13 +55,13 @@ public class AlphaReflexiveEdgeNode extends AlphaEdgeNode
 	public Iterator<WME> getMatches()
 	{
 		return new NestedIterator<Individual, WME>(_abox.getIndIterator())
-				{
+		{
 			@Override
 			public Iterator<WME> getInnerIterator(final Individual ind)
 			{
 				return toWMEs(ind.getEdgesTo(ind), EdgeDirection.FORWARD);
 			}
-				};
+		};
 	}
 
 	@Override

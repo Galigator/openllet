@@ -254,14 +254,14 @@ public class Individual extends Node implements CachedNode
 		addType(c, ds, true);
 	}
 
-	void addType(final ATermAppl c, DependencySet dsParam, final boolean checkForPruned)
+	void addType(final ATermAppl c, final DependencySet dsParam, final boolean checkForPruned)
 	{
 		DependencySet ds = dsParam;
 
 		if (checkForPruned)
 		{
 			if (isPruned())
-				throw new InternalReasonerException("Adding type to a pruned _node " + this + " " + c);
+				throw new InternalReasonerException("Adding type to a pruned node " + this + " " + c);
 			else
 				if (isMerged())
 					return;
@@ -442,7 +442,7 @@ public class Individual extends Node implements CachedNode
 														_abox.getCompletionQueue().add(qElement, NodeSelector.ATOM);
 												}
 												else
-													throw new InternalReasonerException("Invalid type " + c + " for _individual " + _name);
+													throw new InternalReasonerException("Invalid type " + c + " for individual " + _name);
 						}
 						else
 							if (c.getAFun().equals(ATermUtils.VALUEFUN))

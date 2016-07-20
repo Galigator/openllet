@@ -41,9 +41,6 @@ import openllet.core.utils.ATermUtils;
  * Title: Trivial Satisfaction helper
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (_c) 2007
  * </p>
  * <p>

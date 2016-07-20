@@ -40,10 +40,9 @@ public enum BuiltinNamespace
 		return _uri;
 	}
 
-	public static final Map<String, BuiltinNamespace> _uriMap;
+	public static final Map<String, BuiltinNamespace> _uriMap = new HashMap<>();
 	static
 	{
-		_uriMap = new HashMap<>();
 		for (final BuiltinNamespace ns : BuiltinNamespace.values())
 			_uriMap.put(ns.getURI(), ns);
 	}

@@ -19,7 +19,7 @@ public abstract class NodeProvider
 
 		public ConstantNodeProvider(final Node node)
 		{
-			this._node = node;
+			_node = node;
 		}
 
 		@Override
@@ -59,8 +59,8 @@ public abstract class NodeProvider
 
 		public TokenNodeProvider(final int indexWME, final int indexArg)
 		{
-			this._indexWME = indexWME;
-			this._indexArg = indexArg;
+			_indexWME = indexWME;
+			_indexArg = indexArg;
 		}
 
 		@Override
@@ -103,7 +103,7 @@ public abstract class NodeProvider
 
 		public WMENodeProvider(final int indexArg)
 		{
-			this._indexArg = indexArg;
+			_indexArg = indexArg;
 		}
 
 		@Override

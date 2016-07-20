@@ -16,9 +16,6 @@ import openllet.aterm.ATermAppl;
  * Title: Node
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -28,30 +25,25 @@ import openllet.aterm.ATermAppl;
 public class Node
 {
 
-	private final List<BetaNode> betaNodes = new ArrayList<>();
-	public Index<ATermAppl, Fact> index;
-	public List<ATermAppl> svars = new ArrayList<>();
-	public List<ATermAppl> vars;
-
-	public Node()
-	{
-		index = new Index<>();
-	}
+	private final List<BetaNode> _betaNodes = new ArrayList<>();
+	public final Index<ATermAppl, Fact> _index = new Index<>();
+	public List<ATermAppl> _svars = new ArrayList<>();
+	public List<ATermAppl> _vars;
 
 	/**
-	 * Add a directly dependent beta _node.
+	 * Add a directly dependent beta node.
 	 */
 	public void add(final BetaNode beta)
 	{
-		betaNodes.add(beta);
+		_betaNodes.add(beta);
 	}
 
 	/**
-	 * Return any directly dependent beta _nodes.
+	 * Return any directly dependent beta nodes.
 	 */
 	public Collection<BetaNode> getBetas()
 	{
-		return betaNodes;
+		return _betaNodes;
 	}
 
 	/**
@@ -60,7 +52,7 @@ public class Node
 	protected List<ATermAppl> getKey()
 	{
 		List<ATermAppl> key;
-		key = Utils.concat(svars, vars);
+		key = Utils.concat(_svars, _vars);
 		key = Utils.removeDups(key);
 
 		return key;
@@ -73,7 +65,7 @@ public class Node
 
 	public void reset()
 	{
-		index.clear();
+		_index.clear();
 	}
 
 }

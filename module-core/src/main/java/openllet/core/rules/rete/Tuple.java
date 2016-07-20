@@ -18,9 +18,6 @@ import openllet.core.exceptions.InternalReasonerException;
  * Title: Tuple Implementation
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -39,7 +36,7 @@ public class Tuple<T>
 	{
 		if (ds == null)
 			throw new InternalReasonerException("Null dependencyset argument to rete tuple");
-		this._ds = ds;
+		_ds = ds;
 		this._elements = Collections.unmodifiableList(Arrays.asList(elementArgs));
 	}
 

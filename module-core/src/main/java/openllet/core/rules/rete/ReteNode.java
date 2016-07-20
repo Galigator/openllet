@@ -24,10 +24,6 @@ public abstract class ReteNode
 	@SuppressWarnings("unused")
 	private boolean _marked = false;
 
-	public ReteNode()
-	{
-	}
-
 	/**
 	 * Add a directly dependent _node.
 	 */

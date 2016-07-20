@@ -32,14 +32,14 @@ import openllet.core.utils.ATermUtils;
  */
 public abstract class ProductionNode extends BetaNode
 {
-	protected ContinuousRulesStrategy _strategy;
+	protected final ContinuousRulesStrategy _strategy;
 	protected Set<ATermAppl> _explain;
 	protected DependencySet _ds;
 
 	public ProductionNode(final ContinuousRulesStrategy strategy, final Set<ATermAppl> explain)
 	{
-		this._strategy = strategy;
-		this._explain = explain;
+		_strategy = strategy;
+		_explain = explain;
 	}
 
 	@Override
@@ -105,9 +105,9 @@ public abstract class ProductionNode extends BetaNode
 		public Type(final ContinuousRulesStrategy strategy, final Set<ATermAppl> explain, final NodeProvider subject, final ATermAppl type)
 		{
 			super(strategy, explain);
-			this._explain = explain;
-			this._subject = subject;
-			this._type = type;
+			_explain = explain;
+			_subject = subject;
+			_type = type;
 		}
 
 		@Override
@@ -134,9 +134,9 @@ public abstract class ProductionNode extends BetaNode
 		public Binary(final ContinuousRulesStrategy strategy, final Set<ATermAppl> explain, final NodeProvider subject, final NodeProvider object)
 		{
 			super(strategy, explain);
-			this._explain = explain;
-			this._subject = subject;
-			this._object = object;
+			_explain = explain;
+			_subject = subject;
+			_object = object;
 		}
 	}
 
@@ -147,7 +147,7 @@ public abstract class ProductionNode extends BetaNode
 		public Edge(final ContinuousRulesStrategy strategy, final Set<ATermAppl> explain, final NodeProvider subject, final Role role, final NodeProvider object)
 		{
 			super(strategy, explain, subject, object);
-			this._role = role;
+			_role = role;
 		}
 
 		@Override
@@ -222,8 +222,8 @@ public abstract class ProductionNode extends BetaNode
 		public ProduceBinding(final ContinuousRulesStrategy strategy, final Set<ATermAppl> explain, final Rule rule, final Map<AtomVariable, NodeProvider> args)
 		{
 			super(strategy, explain);
-			this._rule = rule;
-			this._args = args;
+			_rule = rule;
+			_args = args;
 		}
 
 		@Override

@@ -35,18 +35,18 @@ import openllet.core.rules.model.DatavaluedPropertyAtom;
 public class DatavaluePropertyBindingHelper implements BindingHelper
 {
 	private final ABox _abox;
-	private VariableBinding binding;
-	private Literal object;
-	private Iterator<Literal> objectIterator;
+	private VariableBinding _binding;
+	private Literal _object;
+	private Iterator<Literal> _objectIterator;
 	private final DatavaluedPropertyAtom _pattern;
-	private Role role;
-	private Individual subject;
-	private Iterator<Individual> subjectIterator;
+	private Role _role;
+	private Individual _subject;
+	private Iterator<Individual> _subjectIterator;
 
 	public DatavaluePropertyBindingHelper(final ABox abox, final DatavaluedPropertyAtom pattern)
 	{
-		this._abox = abox;
-		this._pattern = pattern;
+		_abox = abox;
+		_pattern = pattern;
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class DatavaluePropertyBindingHelper implements BindingHelper
 
 	private Literal getObject()
 	{
-		return binding.get(_pattern.getArgument2());
+		return _binding.get(_pattern.getArgument2());
 	}
 
 	@Override
@@ -68,14 +68,14 @@ public class DatavaluePropertyBindingHelper implements BindingHelper
 
 	private Role getRole()
 	{
-		if (role == null)
-			role = _abox.getRole(_pattern.getPredicate());
-		return role;
+		if (_role == null)
+			_role = _abox.getRole(_pattern.getPredicate());
+		return _role;
 	}
 
 	private Individual getSubject()
 	{
-		return binding.get(_pattern.getArgument1());
+		return _binding.get(_pattern.getArgument1());
 	}
 
 	/**
@@ -85,7 +85,7 @@ public class DatavaluePropertyBindingHelper implements BindingHelper
 	 */
 	private boolean isObjectSet()
 	{
-		return binding.get(_pattern.getArgument2()) != null;
+		return _binding.get(_pattern.getArgument2()) != null;
 	}
 
 	/**
@@ -96,12 +96,12 @@ public class DatavaluePropertyBindingHelper implements BindingHelper
 	@Override
 	public void rebind(final VariableBinding newBinding)
 	{
-		binding = new VariableBinding(newBinding);
+		_binding = new VariableBinding(newBinding);
 
 		if (getSubject() != null)
-			subjectIterator = Collections.singleton(getSubject()).iterator();
+			_subjectIterator = Collections.singleton(getSubject()).iterator();
 		else
-			subjectIterator = new AllNamedIndividualsIterator(_abox);
+			_subjectIterator = new AllNamedIndividualsIterator(_abox);
 
 	}
 
@@ -113,39 +113,39 @@ public class DatavaluePropertyBindingHelper implements BindingHelper
 	@Override
 	public boolean selectNextBinding()
 	{
-		if (binding == null)
+		if (_binding == null)
 			return false;
 
 		while (true)
 		{
-			if (subject == null || isObjectSet())
+			if (_subject == null || isObjectSet())
 			{
 				// Check to see if there are any more subjects to try
-				if (!subjectIterator.hasNext())
+				if (!_subjectIterator.hasNext())
 					return false;
-				subject = subjectIterator.next();
+				_subject = _subjectIterator.next();
 
 				if (!isObjectSet())
-					objectIterator = new LiteralFilter(subject.getRNeighbors(getRole()).iterator());
+					_objectIterator = new LiteralFilter(_subject.getRNeighbors(getRole()).iterator());
 			}
 
 			if (isObjectSet())
 			{
 				// Object of _pattern is already set; just test the _pattern
-				final boolean result = subject.getRNeighbors(getRole()).contains(getObject());
+				final boolean result = _subject.getRNeighbors(getRole()).contains(getObject());
 				if (result)
 					return true;
 			}
 			else
 				// Cycle through possible object bindings
-				if (objectIterator.hasNext())
+				if (_objectIterator.hasNext())
 				{
-					object = objectIterator.next();
+					_object = _objectIterator.next();
 					return true;
 				}
 				else
 					// no more bindings - need a new subject
-					subject = null;
+					_subject = null;
 		}
 	}
 
@@ -157,8 +157,8 @@ public class DatavaluePropertyBindingHelper implements BindingHelper
 	@Override
 	public void setCurrentBinding(final VariableBinding currentBinding)
 	{
-		currentBinding.set(_pattern.getArgument1(), subject);
-		currentBinding.set(_pattern.getArgument2(), object);
+		currentBinding.set(_pattern.getArgument1(), _subject);
+		currentBinding.set(_pattern.getArgument2(), _object);
 	}
 
 	@Override

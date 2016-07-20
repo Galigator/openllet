@@ -39,8 +39,8 @@ public class Utils
 	{
 		final List<ATermAppl> result = new ArrayList<>();
 
-		for (final ATermAppl node1var : node1.vars)
-			if (node2.vars.contains(node1var))
+		for (final ATermAppl node1var : node1._vars)
+			if (node2._vars.contains(node1var))
 				result.add(node1var);
 
 		return Utils.removeDups(result);

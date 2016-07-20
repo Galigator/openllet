@@ -9,6 +9,7 @@ package openllet.core.rules.model;
 import static java.util.Collections.singleton;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import openllet.aterm.ATermAppl;
 import openllet.core.rules.RulesToATermTranslator;
@@ -17,9 +18,6 @@ import openllet.core.utils.ATermUtils;
 /**
  * <p>
  * Title: Rule
- * </p>
- * <p>
- * Description:
  * </p>
  * <p>
  * Copyright: Copyright (c) 2007
@@ -35,32 +33,32 @@ public class Rule
 
 	private final ATermAppl _name;
 
-	private final Collection<? extends RuleAtom> _body;// FIXME : use an ordered collection here.
-	private final Collection<? extends RuleAtom> _head;
+	private final List<? extends RuleAtom> _body;// FIXME : use an ordered collection here.
+	private final List<? extends RuleAtom> _head;
 
 	private Set<ATermAppl> _explanation;
 
-	public Rule(final Collection<? extends RuleAtom> head, final Collection<? extends RuleAtom> body)
+	public Rule(final List<? extends RuleAtom> head, final List<? extends RuleAtom> body)
 	{
 		this(head, body, null);
 	}
 
-	public Rule(final Collection<? extends RuleAtom> head, final Collection<? extends RuleAtom> body, final Set<ATermAppl> explanation)
+	public Rule(final List<? extends RuleAtom> head, final List<? extends RuleAtom> body, final Set<ATermAppl> explanation)
 	{
 		this(null, head, body, explanation);
 	}
 
-	public Rule(final ATermAppl name, final Collection<? extends RuleAtom> head, final Collection<? extends RuleAtom> body)
+	public Rule(final ATermAppl name, final List<? extends RuleAtom> head, final List<? extends RuleAtom> body)
 	{
 		this(name, head, body, null);
 	}
 
-	public Rule(final ATermAppl name, final Collection<? extends RuleAtom> head, final Collection<? extends RuleAtom> body, final Set<ATermAppl> explanation)
+	public Rule(final ATermAppl name, final List<? extends RuleAtom> head, final List<? extends RuleAtom> body, final Set<ATermAppl> explanation)
 	{
-		this._name = name;
-		this._body = body;
-		this._head = head;
-		this._explanation = explanation;
+		_name = name;
+		_body = body;
+		_head = head;
+		_explanation = explanation;
 	}
 
 	public Set<ATermAppl> getExplanation(final RulesToATermTranslator translator)

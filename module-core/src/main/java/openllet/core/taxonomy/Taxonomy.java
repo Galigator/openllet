@@ -430,8 +430,7 @@ public class Taxonomy<T>
 	 */
 	public List<T> computeLCA(final List<T> list)
 	{
-		// FIXME does not work when one of the elements is an ancestor of the
-		// rest
+		// FIXME does not work when one of the elements is an ancestor of the rest
 		// TODO what to do with equivalent classes?
 		// TODO improve efficiency
 

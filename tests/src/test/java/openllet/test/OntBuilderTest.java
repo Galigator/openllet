@@ -45,7 +45,7 @@ public class OntBuilderTest
 		kb.addSubClass(C, D);
 		kb.addType(i, C);
 		kb.addType(j, D);
-		final Rule rule = new Rule(Collections.singleton(new ClassAtom(C, new AtomIConstant(i))), Collections.singleton(new ClassAtom(D, new AtomIConstant(j))));
+		final Rule rule = new Rule(Collections.singletonList(new ClassAtom(C, new AtomIConstant(i))), Collections.singletonList(new ClassAtom(D, new AtomIConstant(j))));
 
 		kb.addRule(rule);
 

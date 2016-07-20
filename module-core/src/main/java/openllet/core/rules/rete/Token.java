@@ -14,7 +14,6 @@ import openllet.core.DependencySet;
  */
 public abstract class Token
 {
-
 	public abstract WME get(int index);
 
 	public abstract DependencySet getDepends(boolean doExplanation);
@@ -30,9 +29,9 @@ public abstract class Token
 
 		public ListToken(final WME wme, final ListToken tok)
 		{
-			this._wme = wme;
-			this._next = tok;
-			this._index = (tok == null) ? 0 : tok._index + 1;
+			_wme = wme;
+			_next = tok;
+			_index = (tok == null) ? 0 : tok._index + 1;
 		}
 
 		/**
@@ -45,7 +44,7 @@ public abstract class Token
 				if (t._index == index)
 					return t._wme;
 
-			throw new IndexOutOfBoundsException(index + " > " + this._index);
+			throw new IndexOutOfBoundsException(index + " > " + _index);
 		}
 
 		/**
@@ -91,13 +90,13 @@ public abstract class Token
 
 	private static class ArrayToken extends Token
 	{
-		private final WME[] wmes;
+		private final WME[] _wmes;
 
 		public ArrayToken(final WME wme, final ArrayToken tok)
 		{
-			final int l = tok == null ? 0 : tok.wmes.length;
-			this.wmes = tok == null ? new WME[1] : Arrays.copyOf(tok.wmes, l + 1);
-			this.wmes[l] = wme;
+			final int l = tok == null ? 0 : tok._wmes.length;
+			_wmes = tok == null ? new WME[1] : Arrays.copyOf(tok._wmes, l + 1);
+			_wmes[l] = wme;
 		}
 
 		/**
@@ -106,9 +105,9 @@ public abstract class Token
 		@Override
 		public WME get(final int index)
 		{
-			if (index >= wmes.length)
+			if (index >= _wmes.length)
 				throw new ArrayIndexOutOfBoundsException();
-			return wmes[index];
+			return _wmes[index];
 		}
 
 		/**
@@ -119,7 +118,7 @@ public abstract class Token
 		{
 			DependencySet ds = DependencySet.INDEPENDENT;
 
-			for (final WME wme : wmes)
+			for (final WME wme : _wmes)
 				ds = ds.union(wme.getDepends(), doExplanation);
 
 			return ds;
@@ -131,7 +130,7 @@ public abstract class Token
 		@Override
 		public boolean dependsOn(final int branch)
 		{
-			for (final WME wme : wmes)
+			for (final WME wme : _wmes)
 				if (wme.dependsOn(branch))
 					return true;
 			return false;
@@ -140,7 +139,7 @@ public abstract class Token
 		@Override
 		public String toString()
 		{
-			return Arrays.toString(wmes);
+			return Arrays.toString(_wmes);
 		}
 	}
 

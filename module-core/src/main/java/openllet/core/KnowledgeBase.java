@@ -50,7 +50,6 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -110,7 +109,6 @@ import openllet.core.taxonomy.printer.ClassTreePrinter;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.AnnotationClasses;
 import openllet.core.utils.Bool;
-import openllet.core.utils.CollectionUtils;
 import openllet.core.utils.MultiMapUtils;
 import openllet.core.utils.MultiValueMap;
 import openllet.core.utils.SizeEstimate;
@@ -776,8 +774,8 @@ public class KnowledgeBase
 	public void addKey(final ATermAppl c, final Set<ATermAppl> properties)
 	{
 		int varId = 0;
-		final Collection<RuleAtom> head = CollectionUtils.makeSet();
-		final Collection<RuleAtom> body = CollectionUtils.makeSet();
+		final List<RuleAtom> head = new ArrayList<>();
+		final List<RuleAtom> body = new ArrayList<>();
 
 		final AtomIVariable x = new AtomIVariable("x");
 		final AtomIVariable y = new AtomIVariable("y");
@@ -4860,8 +4858,8 @@ public class KnowledgeBase
 		if (!UsableRuleFilter.isUsable(rule))
 			return null;
 
-		final Set<RuleAtom> head = new LinkedHashSet<>();
-		final Set<RuleAtom> body = new LinkedHashSet<>();
+		final List<RuleAtom> head = new ArrayList<>();
+		final List<RuleAtom> body = new ArrayList<>();
 
 		for (RuleAtom atom : rule.getHead())
 		{

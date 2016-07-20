@@ -39,28 +39,28 @@ public class VariableUtils
 	 */
 	private static class VisitingCollector implements AtomObjectVisitor
 	{
-		private final Collection<AtomVariable> variables;
+		private final Collection<AtomVariable> _variables;
 
 		public VisitingCollector()
 		{
-			variables = new HashSet<>();
+			_variables = new HashSet<>();
 		}
 
 		public Collection<AtomVariable> getVariables()
 		{
-			return variables;
+			return _variables;
 		}
 
 		@Override
 		public void visit(final AtomDVariable var)
 		{
-			variables.add(var);
+			_variables.add(var);
 		}
 
 		@Override
 		public void visit(final AtomIVariable var)
 		{
-			variables.add(var);
+			_variables.add(var);
 		}
 	}
 
@@ -69,22 +69,22 @@ public class VariableUtils
 	 */
 	private static class VisitingDCollector implements AtomObjectVisitor
 	{
-		private final Collection<AtomDVariable> variables;
+		private final Collection<AtomDVariable> _variables;
 
 		public VisitingDCollector()
 		{
-			variables = new HashSet<>();
+			_variables = new HashSet<>();
 		}
 
 		public Collection<AtomDVariable> getVariables()
 		{
-			return variables;
+			return _variables;
 		}
 
 		@Override
 		public void visit(final AtomDVariable var)
 		{
-			variables.add(var);
+			_variables.add(var);
 		}
 	}
 
@@ -93,22 +93,22 @@ public class VariableUtils
 	 */
 	private static class VisitingICollector implements AtomObjectVisitor
 	{
-		private final Collection<AtomIVariable> variables;
+		private final Collection<AtomIVariable> _variables;
 
 		public VisitingICollector()
 		{
-			variables = new HashSet<>();
+			_variables = new HashSet<>();
 		}
 
 		public Collection<AtomIVariable> getVariables()
 		{
-			return variables;
+			return _variables;
 		}
 
 		@Override
 		public void visit(final AtomIVariable var)
 		{
-			variables.add(var);
+			_variables.add(var);
 		}
 	}
 

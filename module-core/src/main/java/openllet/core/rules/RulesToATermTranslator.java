@@ -28,12 +28,6 @@ import openllet.core.utils.ATermUtils;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2008
  * </p>
  * <p>
@@ -44,27 +38,27 @@ import openllet.core.utils.ATermUtils;
  */
 public class RulesToATermTranslator implements RuleAtomVisitor, AtomObjectVisitor
 {
-	private ATermAppl term;
+	private ATermAppl _term;
 
 	public ATermAppl translate(final Rule rule)
 	{
-		term = null;
+		_term = null;
 		visit(rule);
-		return term;
+		return _term;
 	}
 
 	public ATermAppl translate(final RuleAtom ruleAtom)
 	{
-		term = null;
+		_term = null;
 		ruleAtom.accept(this);
-		return term;
+		return _term;
 	}
 
 	public ATermAppl translate(final AtomObject obj)
 	{
-		term = null;
+		_term = null;
 		obj.accept(this);
-		return term;
+		return _term;
 	}
 
 	public void visit(final Rule rule)
@@ -80,7 +74,7 @@ public class RulesToATermTranslator implements RuleAtomVisitor, AtomObjectVisito
 		for (final RuleAtom atom : rule.getBody())
 			body[i++] = translate(atom);
 
-		term = ATermUtils.makeRule(rule.getName(), head, body);
+		_term = ATermUtils.makeRule(rule.getName(), head, body);
 	}
 
 	/**
@@ -96,7 +90,7 @@ public class RulesToATermTranslator implements RuleAtomVisitor, AtomObjectVisito
 		for (final AtomDObject arg : atom.getAllArguments())
 			args[i++] = translate(arg);
 
-		term = ATermUtils.makeBuiltinAtom(args);
+		_term = ATermUtils.makeBuiltinAtom(args);
 	}
 
 	/**
@@ -108,7 +102,7 @@ public class RulesToATermTranslator implements RuleAtomVisitor, AtomObjectVisito
 		final ATermAppl c = atom.getPredicate();
 		final ATermAppl i = translate(atom.getArgument());
 
-		term = ATermUtils.makeTypeAtom(i, c);
+		_term = ATermUtils.makeTypeAtom(i, c);
 	}
 
 	/**
@@ -120,7 +114,7 @@ public class RulesToATermTranslator implements RuleAtomVisitor, AtomObjectVisito
 		final ATermAppl d = atom.getPredicate();
 		final ATermAppl l = translate(atom.getArgument());
 
-		term = ATermUtils.makeTypeAtom(l, d);
+		_term = ATermUtils.makeTypeAtom(l, d);
 	}
 
 	/**
@@ -133,7 +127,7 @@ public class RulesToATermTranslator implements RuleAtomVisitor, AtomObjectVisito
 		final ATermAppl s = translate(atom.getArgument1());
 		final ATermAppl o = translate(atom.getArgument2());
 
-		term = ATermUtils.makePropAtom(p, s, o);
+		_term = ATermUtils.makePropAtom(p, s, o);
 	}
 
 	/**
@@ -145,7 +139,7 @@ public class RulesToATermTranslator implements RuleAtomVisitor, AtomObjectVisito
 		final ATermAppl t1 = translate(atom.getArgument1());
 		final ATermAppl t2 = translate(atom.getArgument2());
 
-		term = ATermUtils.makeDifferent(t1, t2);
+		_term = ATermUtils.makeDifferent(t1, t2);
 	}
 
 	/**
@@ -158,7 +152,7 @@ public class RulesToATermTranslator implements RuleAtomVisitor, AtomObjectVisito
 		final ATermAppl s = translate(atom.getArgument1());
 		final ATermAppl o = translate(atom.getArgument2());
 
-		term = ATermUtils.makePropAtom(p, s, o);
+		_term = ATermUtils.makePropAtom(p, s, o);
 	}
 
 	/**
@@ -170,7 +164,7 @@ public class RulesToATermTranslator implements RuleAtomVisitor, AtomObjectVisito
 		final ATermAppl t1 = translate(atom.getArgument1());
 		final ATermAppl t2 = translate(atom.getArgument2());
 
-		term = ATermUtils.makeSameAs(t1, t2);
+		_term = ATermUtils.makeSameAs(t1, t2);
 	}
 
 	/**
@@ -179,7 +173,7 @@ public class RulesToATermTranslator implements RuleAtomVisitor, AtomObjectVisito
 	@Override
 	public void visit(final AtomDConstant constant)
 	{
-		term = constant.getValue();
+		_term = constant.getValue();
 	}
 
 	/**
@@ -188,7 +182,7 @@ public class RulesToATermTranslator implements RuleAtomVisitor, AtomObjectVisito
 	@Override
 	public void visit(final AtomDVariable variable)
 	{
-		term = ATermUtils.makeVar(variable.getName());
+		_term = ATermUtils.makeVar(variable.getName());
 	}
 
 	/**
@@ -197,7 +191,7 @@ public class RulesToATermTranslator implements RuleAtomVisitor, AtomObjectVisito
 	@Override
 	public void visit(final AtomIConstant constant)
 	{
-		term = constant.getValue();
+		_term = constant.getValue();
 	}
 
 	/**
@@ -206,7 +200,7 @@ public class RulesToATermTranslator implements RuleAtomVisitor, AtomObjectVisito
 	@Override
 	public void visit(final AtomIVariable variable)
 	{
-		term = ATermUtils.makeVar(variable.getName());
+		_term = ATermUtils.makeVar(variable.getName());
 	}
 
 }

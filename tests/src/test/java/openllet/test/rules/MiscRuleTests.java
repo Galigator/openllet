@@ -311,7 +311,7 @@ public class MiscRuleTests extends AbstractKBTests
 		final RuleAtom body1 = new IndividualPropertyAtom(r, x, y);
 		final RuleAtom body2 = new DatavaluedPropertyAtom(p, x, z), head = new DatavaluedPropertyAtom(p, y, z);
 
-		final Rule rule = new Rule(Collections.singleton(head), Arrays.asList(new RuleAtom[] { body1, body2 }));
+		final Rule rule = new Rule(Collections.singletonList(head), Arrays.asList(new RuleAtom[] { body1, body2 }));
 		_kb.addRule(rule);
 
 		_kb.realize();
@@ -347,7 +347,7 @@ public class MiscRuleTests extends AbstractKBTests
 		final RuleAtom body2 = new DatavaluedPropertyAtom(p, x, z);
 		final RuleAtom head = new DatavaluedPropertyAtom(p, y, z);
 
-		final Rule rule = new Rule(Collections.singleton(head), Arrays.asList(body1, body2));
+		final Rule rule = new Rule(Collections.singletonList(head), Arrays.asList(body1, body2));
 		_kb.addRule(rule);
 
 		_kb.realize();
@@ -377,7 +377,7 @@ public class MiscRuleTests extends AbstractKBTests
 		final RuleAtom body1 = new DatavaluedPropertyAtom(p, y, z);
 		final RuleAtom body2 = new IndividualPropertyAtom(r, x, y);
 
-		final Rule rule = new Rule(Collections.singleton(head), Arrays.asList(body1, body2));
+		final Rule rule = new Rule(Collections.singletonList(head), Arrays.asList(body1, body2));
 		_kb.addRule(rule);
 
 		_kb.ensureConsistency();
@@ -560,7 +560,7 @@ public class MiscRuleTests extends AbstractKBTests
 			final AtomIVariable v = new AtomIVariable("v");
 			final RuleAtom body = new ClassAtom(some(p, or(and(A, B), or(and(A, C), and(B, C)))), v);
 			final RuleAtom head = new IndividualPropertyAtom(q, v, new AtomIConstant(y));
-			final Rule rule = new Rule(Collections.singleton(head), Collections.singleton(body));
+			final Rule rule = new Rule(Collections.singletonList(head), Collections.singletonList(body));
 			_kb.addRule(rule);
 		}
 
@@ -568,7 +568,7 @@ public class MiscRuleTests extends AbstractKBTests
 			final AtomIVariable v = new AtomIVariable("v");
 			final RuleAtom body = new ClassAtom(G, v);
 			final RuleAtom head = new IndividualPropertyAtom(p, v, new AtomIConstant(y));
-			final Rule rule = new Rule(Collections.singleton(head), Collections.singleton(body));
+			final Rule rule = new Rule(Collections.singletonList(head), Collections.singletonList(body));
 			_kb.addRule(rule);
 		}
 
