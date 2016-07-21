@@ -46,7 +46,7 @@ public class OWLAPILoader extends KBLoader implements FacetReasonerOWL, FacetMan
 
 	private final LimitedMapIRIMapper _iriMapper;
 
-	private PelletReasoner _reasoner;
+	private OpenlletReasoner _reasoner;
 
 	private OWLOntology _baseOntology;
 
@@ -70,7 +70,7 @@ public class OWLAPILoader extends KBLoader implements FacetReasonerOWL, FacetMan
 	 * @return the reasoner created by this loader
 	 */
 	@Override
-	public PelletReasoner getReasoner()
+	public OpenlletReasoner getReasoner()
 	{
 		return _reasoner;
 	}
@@ -140,7 +140,7 @@ public class OWLAPILoader extends KBLoader implements FacetReasonerOWL, FacetMan
 	@Override
 	public void load()
 	{
-		_reasoner = new PelletReasonerFactory().createReasoner(_baseOntology);
+		_reasoner = new OpenlletReasonerFactory().createReasoner(_baseOntology);
 		_reasoner.getKB().setTaxonomyBuilderProgressMonitor(OpenlletOptions.USE_CLASSIFICATION_MONITOR.create());
 	}
 

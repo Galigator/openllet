@@ -22,8 +22,9 @@ import openllet.core.utils.TaxonomyUtils;
 import openllet.owlapi.AxiomConverter;
 import openllet.owlapi.OWL;
 import openllet.owlapi.OntologyUtils;
+import openllet.owlapi.OpenlletReasoner;
+import openllet.owlapi.OpenlletReasonerFactory;
 import openllet.owlapi.PelletReasoner;
-import openllet.owlapi.PelletReasonerFactory;
 import openllet.shared.tools.Log;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
@@ -73,23 +74,23 @@ public class GlassBoxExplanation extends SingleExplanationGeneratorImpl
 	/**
 	 * Alternative reasoner. We use a second reasoner because we do not want to lose the state in the original reasoner.
 	 */
-	private PelletReasoner _altReasoner = null;
+	private OpenlletReasoner _altReasoner = null;
 
 	private boolean _altReasonerEnabled = false;
 
 	private final AxiomConverter _axiomConverter;
 
-	public GlassBoxExplanation(final OWLOntology ontology, final PelletReasonerFactory factory)
+	public GlassBoxExplanation(final OWLOntology ontology, final OpenlletReasonerFactory factory)
 	{
 		this(factory, factory.createReasoner(ontology));
 	}
 
-	public GlassBoxExplanation(final PelletReasoner reasoner)
+	public GlassBoxExplanation(final OpenlletReasoner reasoner)
 	{
-		this(new PelletReasonerFactory(), reasoner);
+		this(new OpenlletReasonerFactory(), reasoner);
 	}
 
-	public GlassBoxExplanation(final PelletReasonerFactory factory, final PelletReasoner reasoner)
+	public GlassBoxExplanation(final OpenlletReasonerFactory factory, final OpenlletReasoner reasoner)
 	{
 		super(reasoner.getRootOntology(), factory, reasoner);
 
@@ -157,7 +158,7 @@ public class GlassBoxExplanation extends SingleExplanationGeneratorImpl
 
 	private Set<OWLAxiom> getCachedExplanation(final OWLClassExpression unsatClass)
 	{
-		final PelletReasoner pellet = getReasoner();
+		final OpenlletReasoner pellet = getReasoner();
 
 		if (!pellet.getKB().isClassified())
 			return null;
@@ -223,7 +224,7 @@ public class GlassBoxExplanation extends SingleExplanationGeneratorImpl
 
 	private Set<OWLAxiom> getPelletExplanation(final OWLClassExpression unsatClass)
 	{
-		final PelletReasoner pellet = getReasoner();
+		final OpenlletReasoner pellet = getReasoner();
 
 		pellet.getKB().prepare();
 
@@ -258,7 +259,7 @@ public class GlassBoxExplanation extends SingleExplanationGeneratorImpl
 		}
 	}
 
-	private boolean isSatisfiable(final PelletReasoner pellet, final OWLClassExpression unsatClass, final boolean doExplanation)
+	private boolean isSatisfiable(final OpenlletReasoner pellet, final OWLClassExpression unsatClass, final boolean doExplanation)
 	{
 		pellet.getKB().setDoExplanation(doExplanation);
 		final boolean sat = unsatClass.isOWLThing() ? pellet.isConsistent() : pellet.isSatisfiable(unsatClass);
@@ -315,7 +316,7 @@ public class GlassBoxExplanation extends SingleExplanationGeneratorImpl
 			// since explanation size is generally small we can create and use a
 			// completely new reasoner rather than destroying the state on already
 			// existing reasoner
-			PelletReasoner reasoner = getReasonerFactory().createNonBufferingReasoner(debuggingOntology);
+			OpenlletReasoner reasoner = getReasonerFactory().createNonBufferingReasoner(debuggingOntology);
 
 			if (!defTracker.isDefined(unsatClass))
 				_logger.warning("Some of the entities in " + unsatClass + " are not defined in the explanation " + explanation);
@@ -370,15 +371,15 @@ public class GlassBoxExplanation extends SingleExplanationGeneratorImpl
 	}
 
 	@Override
-	public PelletReasoner getReasoner()
+	public OpenlletReasoner getReasoner()
 	{
 		return _altReasonerEnabled ? _altReasoner : (PelletReasoner) super.getReasoner();
 	}
 
 	@Override
-	public PelletReasonerFactory getReasonerFactory()
+	public OpenlletReasonerFactory getReasonerFactory()
 	{
-		return (PelletReasonerFactory) super.getReasonerFactory();
+		return (OpenlletReasonerFactory) super.getReasonerFactory();
 	}
 
 	@Override

@@ -37,8 +37,8 @@ import openllet.core.utils.Timer;
 import openllet.core.utils.Timers;
 import openllet.owlapi.OWL;
 import openllet.owlapi.OntologyUtils;
-import openllet.owlapi.PelletReasoner;
-import openllet.owlapi.PelletReasonerFactory;
+import openllet.owlapi.OpenlletReasoner;
+import openllet.owlapi.OpenlletReasonerFactory;
 import openllet.shared.tools.Log;
 import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.AxiomType;
@@ -102,7 +102,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 	/**
 	 * Standard Pellet reasoner
 	 */
-	private final PelletReasoner _reasoner;
+	private final OpenlletReasoner _reasoner;
 
 	/**
 	 * Module _extractor
@@ -125,30 +125,30 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 
 	public IncrementalClassifier(final OWLOntology ontology)
 	{
-		this(PelletReasonerFactory.getInstance().createReasoner(ontology), ModuleExtractorFactory.createModuleExtractor());
+		this(OpenlletReasonerFactory.getInstance().createReasoner(ontology), ModuleExtractorFactory.createModuleExtractor());
 	}
 
 	public IncrementalClassifier(final OWLOntology ontology, final OWLReasonerConfiguration config)
 	{
-		this(PelletReasonerFactory.getInstance().createReasoner(ontology, config), ModuleExtractorFactory.createModuleExtractor());
+		this(OpenlletReasonerFactory.getInstance().createReasoner(ontology, config), ModuleExtractorFactory.createModuleExtractor());
 	}
 
 	public IncrementalClassifier(final OWLOntology ontology, final ModuleExtractor moduleExtractor)
 	{
-		this(PelletReasonerFactory.getInstance().createReasoner(ontology), moduleExtractor);
+		this(OpenlletReasonerFactory.getInstance().createReasoner(ontology), moduleExtractor);
 	}
 
 	public IncrementalClassifier(final OWLOntology ontology, final OWLReasonerConfiguration config, final ModuleExtractor moduleExtractor)
 	{
-		this(PelletReasonerFactory.getInstance().createReasoner(ontology, config), moduleExtractor);
+		this(OpenlletReasonerFactory.getInstance().createReasoner(ontology, config), moduleExtractor);
 	}
 
-	public IncrementalClassifier(final PelletReasoner reasoner)
+	public IncrementalClassifier(final OpenlletReasoner reasoner)
 	{
 		this(reasoner, ModuleExtractorFactory.createModuleExtractor());
 	}
 
-	public IncrementalClassifier(final PelletReasoner reasoner, final ModuleExtractor extractor)
+	public IncrementalClassifier(final OpenlletReasoner reasoner, final ModuleExtractor extractor)
 	{
 		_reasoner = reasoner;
 		_extractor = extractor;
@@ -168,14 +168,14 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 
 		final OWLOntology ontology = OWL.Ontology(_extractor.axioms());
 
-		_reasoner = PelletReasonerFactory.getInstance().createReasoner(ontology);
+		_reasoner = OpenlletReasonerFactory.getInstance().createReasoner(ontology);
 
 		_reasoner.getManager().addOntologyChangeListener(this);
 	}
 
 	public IncrementalClassifier(final PersistedState persistedState, final OWLOntology ontology)
 	{
-		_reasoner = PelletReasonerFactory.getInstance().createReasoner(ontology);
+		_reasoner = OpenlletReasonerFactory.getInstance().createReasoner(ontology);
 		_extractor = persistedState.getModuleExtractor();
 		_taxonomyImpl = persistedState.getTaxonomy();
 		_realized = persistedState.isRealized();
@@ -210,7 +210,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 	/**
 	 * Build the class hierarchy based on the results from the _reasoner
 	 */
-	static public Taxonomy<OWLClass> buildClassHierarchy(final PelletReasoner reasoner)
+	static public Taxonomy<OWLClass> buildClassHierarchy(final OpenlletReasoner reasoner)
 	{
 
 		final Taxonomy<OWLClass> taxonomy = new TaxonomyImpl<>(null, OWL.Thing, OWL.Nothing);
@@ -231,7 +231,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 		return taxonomy;
 	}
 
-	static private void recursiveBuild(final Taxonomy<OWLClass> taxonomy, final Node<OWLClass> eqClasses, final PelletReasoner reasoner)
+	static private void recursiveBuild(final Taxonomy<OWLClass> taxonomy, final Node<OWLClass> eqClasses, final OpenlletReasoner reasoner)
 	{
 		assert eqClasses.entities().findAny().isPresent() : "Equivalents empty as passed";
 
@@ -303,7 +303,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 	/**
 	 * Get the underlying _reasoner
 	 */
-	public PelletReasoner getReasoner()
+	public OpenlletReasoner getReasoner()
 	{
 		return _reasoner;
 	}
@@ -340,7 +340,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 		_logger.fine(() -> "Module axioms " + owlModule.logicalAxioms().map(OWLAxiom::toString).collect(Collectors.joining(" ")));
 
 		// load the extracted module to a new _reasoner
-		final PelletReasoner moduleReasoner = PelletReasonerFactory.getInstance().createReasoner(owlModule);
+		final OpenlletReasoner moduleReasoner = OpenlletReasonerFactory.getInstance().createReasoner(owlModule);
 
 		// classify the module
 		moduleReasoner.getKB().classify();

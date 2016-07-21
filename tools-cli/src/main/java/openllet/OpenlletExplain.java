@@ -32,8 +32,8 @@ import openllet.core.utils.progress.ProgressMonitor;
 import openllet.owlapi.OWL;
 import openllet.owlapi.OWLAPILoader;
 import openllet.owlapi.OntologyUtils;
-import openllet.owlapi.PelletReasoner;
-import openllet.owlapi.PelletReasonerFactory;
+import openllet.owlapi.OpenlletReasoner;
+import openllet.owlapi.OpenlletReasonerFactory;
 import openllet.owlapi.explanation.GlassBoxExplanation;
 import openllet.owlapi.explanation.io.manchester.ManchesterSyntaxExplanationRenderer;
 import org.semanticweb.owlapi.apibinding.OWLManager;
@@ -85,7 +85,7 @@ public class OpenlletExplain extends OpenlletCmdApp
 	 */
 	private int _multipleExpCount = 0;
 
-	private PelletReasoner _reasoner;
+	private OpenlletReasoner _reasoner;
 	private OWLEntity _name1;
 	private OWLEntity _name2;
 	private OWLObject _name3;
@@ -434,7 +434,7 @@ public class OpenlletExplain extends OpenlletCmdApp
 			if (_options.getOption("inconsistent") != null)
 			{
 				if (!_options.getOption("inconsistent").getValueAsBoolean())
-					return new BlackBoxExplanation(_reasoner.getRootOntology(), PelletReasonerFactory.getInstance(), _reasoner);
+					return new BlackBoxExplanation(_reasoner.getRootOntology(), OpenlletReasonerFactory.getInstance(), _reasoner);
 				else
 				{
 					output("WARNING: black method cannot be used to explain inconsistency. Switching to glass.");
@@ -442,7 +442,7 @@ public class OpenlletExplain extends OpenlletCmdApp
 				}
 			}
 			else
-				return new BlackBoxExplanation(_reasoner.getRootOntology(), PelletReasonerFactory.getInstance(), _reasoner);
+				return new BlackBoxExplanation(_reasoner.getRootOntology(), OpenlletReasonerFactory.getInstance(), _reasoner);
 		}
 		else
 			return new GlassBoxExplanation(_reasoner);

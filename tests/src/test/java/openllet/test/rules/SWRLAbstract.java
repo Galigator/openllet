@@ -10,7 +10,7 @@ import static org.junit.Assert.assertTrue;
 
 import openllet.jena.PelletReasonerFactory;
 import openllet.owlapi.OntologyUtils;
-import openllet.owlapi.PelletReasoner;
+import openllet.owlapi.OpenlletReasoner;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
@@ -78,7 +78,7 @@ public class SWRLAbstract
 			manager = OWLManager.createOWLOntologyManager();
 			final OWLOntology conclusion = manager.loadOntology(IRI.create(conclusionURI));
 
-			final PelletReasoner reasoner = new openllet.owlapi.PelletReasonerFactory().createReasoner(premise);
+			final OpenlletReasoner reasoner = new openllet.owlapi.OpenlletReasonerFactory().createReasoner(premise);
 			assertTrue(reasoner.isEntailed(conclusion.axioms()));
 		}
 		catch (final OWLOntologyCreationException e)

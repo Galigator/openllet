@@ -16,7 +16,7 @@ import junit.framework.JUnit4TestAdapter;
 import openllet.core.utils.SetUtils;
 import openllet.owlapi.OWL;
 import openllet.owlapi.OntologyUtils;
-import openllet.owlapi.PelletReasonerFactory;
+import openllet.owlapi.OpenlletReasonerFactory;
 import openllet.test.PelletTestSuite;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
@@ -62,7 +62,7 @@ public class OWLPrimerTests extends AbstractOWLAPITests
 		super.resetOntologyManager();
 
 		_ontology = OntologyUtils.loadOntology("file:" + PelletTestSuite.base + "modularity/OWL2Primer.owl");
-		_reasoner = PelletReasonerFactory.getInstance().createReasoner(_ontology);
+		_reasoner = OpenlletReasonerFactory.getInstance().createReasoner(_ontology);
 	}
 
 	protected <T> Set<T> node(@SuppressWarnings("unchecked") final T... inds)

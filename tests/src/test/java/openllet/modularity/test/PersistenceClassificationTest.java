@@ -19,19 +19,13 @@ import openllet.modularity.ModuleExtractor;
 import openllet.modularity.io.IncrementalClassifierPersistence;
 import openllet.owlapi.OWL;
 import openllet.owlapi.OntologyUtils;
-import openllet.owlapi.PelletReasoner;
-import openllet.owlapi.PelletReasonerFactory;
+import openllet.owlapi.OpenlletReasoner;
+import openllet.owlapi.OpenlletReasonerFactory;
 import openllet.test.PelletTestSuite;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.OWLOntology;
 
 /**
- * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
  * <p>
  * Copyright: Copyright (c) 2009
  * </p>
@@ -65,7 +59,7 @@ public class PersistenceClassificationTest
 
 		try
 		{
-			final PelletReasoner unified = PelletReasonerFactory.getInstance().createReasoner(ontology);
+			final OpenlletReasoner unified = OpenlletReasonerFactory.getInstance().createReasoner(ontology);
 			final ModuleExtractor moduleExtractor = createModuleExtractor();
 
 			final IncrementalClassifier modular = new IncrementalClassifier(unified, moduleExtractor);

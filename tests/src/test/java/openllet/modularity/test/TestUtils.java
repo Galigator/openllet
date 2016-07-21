@@ -30,8 +30,8 @@ import openllet.modularity.ModuleExtractor;
 import openllet.modularity.PelletIncremantalReasonerFactory;
 import openllet.owlapi.OWL;
 import openllet.owlapi.OntologyUtils;
-import openllet.owlapi.PelletReasoner;
-import openllet.owlapi.PelletReasonerFactory;
+import openllet.owlapi.OpenlletReasoner;
+import openllet.owlapi.OpenlletReasonerFactory;
 import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;
@@ -330,7 +330,7 @@ public class TestUtils
 
 	private static void runComparisonTest(final OWLOntology ontology, final ModuleExtractor modExtractor, final ReasonerComparisonMethod comparisonMethod)
 	{
-		final PelletReasoner unified = PelletReasonerFactory.getInstance().createNonBufferingReasoner(ontology);
+		final OpenlletReasoner unified = OpenlletReasonerFactory.getInstance().createNonBufferingReasoner(ontology);
 		final IncrementalClassifier modular = PelletIncremantalReasonerFactory.getInstance().createReasoner(ontology, modExtractor);
 
 		OpenlletOptions.USE_CLASSIFICATION_MONITOR = OpenlletOptions.MonitorType.CONSOLE;
@@ -345,7 +345,7 @@ public class TestUtils
 	private static void runComparisonUpdateTest(final OWLOntology ontology, final ModuleExtractor modExtractor, //
 			final Collection<OWLAxiom> additions, final Collection<OWLAxiom> deletions, final ReasonerComparisonMethod comparisonMethod)
 	{
-		final PelletReasoner unified = PelletReasonerFactory.getInstance().createNonBufferingReasoner(ontology);
+		final OpenlletReasoner unified = OpenlletReasonerFactory.getInstance().createNonBufferingReasoner(ontology);
 		final IncrementalClassifier modular = PelletIncremantalReasonerFactory.getInstance().createReasoner(ontology, modExtractor);
 
 		OpenlletOptions.USE_CLASSIFICATION_MONITOR = OpenlletOptions.MonitorType.CONSOLE;

@@ -12,8 +12,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Set;
 import openllet.owlapi.OWL;
-import openllet.owlapi.PelletReasoner;
-import openllet.owlapi.PelletReasonerFactory;
+import openllet.owlapi.OpenlletReasoner;
+import openllet.owlapi.OpenlletReasonerFactory;
 import openllet.owlapi.explanation.PelletExplanation;
 import openllet.owlapi.explanation.io.manchester.ManchesterSyntaxExplanationRenderer;
 import org.semanticweb.owlapi.model.IRI;
@@ -63,7 +63,7 @@ public class ExplanationExample
 		final OWLOntology ontology = manager.loadOntology(IRI.create(file));
 
 		// Create the reasoner and load the ontology
-		final PelletReasoner reasoner = PelletReasonerFactory.getInstance().createReasoner(ontology);
+		final OpenlletReasoner reasoner = OpenlletReasonerFactory.getInstance().createReasoner(ontology);
 
 		// Create an clashExplanation generator
 		final PelletExplanation expGen = new PelletExplanation(reasoner);

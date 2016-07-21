@@ -14,8 +14,8 @@ import static org.junit.Assert.fail;
 import java.util.ArrayList;
 import java.util.List;
 import openllet.owlapi.OWL;
-import openllet.owlapi.PelletReasoner;
-import openllet.owlapi.PelletReasonerFactory;
+import openllet.owlapi.OpenlletReasoner;
+import openllet.owlapi.OpenlletReasonerFactory;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;
@@ -40,7 +40,7 @@ public class OWLAPIClassificationTest extends AbstractClassificationTest
 
 		try
 		{
-			final PelletReasoner reasoner = PelletReasonerFactory.getInstance().createReasoner(premise);
+			final OpenlletReasoner reasoner = OpenlletReasonerFactory.getInstance().createReasoner(premise);
 			reasoner.getKB().classify();
 
 			final List<OWLAxiom> nonEntailments = new ArrayList<>();

@@ -18,8 +18,8 @@ import openllet.core.OpenlletOptions;
 import openllet.core.utils.SetUtils;
 import openllet.owlapi.AxiomConverter;
 import openllet.owlapi.OWL;
-import openllet.owlapi.PelletReasoner;
-import openllet.owlapi.PelletReasonerFactory;
+import openllet.owlapi.OpenlletReasoner;
+import openllet.owlapi.OpenlletReasonerFactory;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -111,7 +111,7 @@ public class OWLAPIAxiomConversionTests
 		{
 			ont = OWL.Ontology(axiom);
 
-			final PelletReasoner reasoner = PelletReasonerFactory.getInstance().createReasoner(ont);
+			final OpenlletReasoner reasoner = OpenlletReasonerFactory.getInstance().createReasoner(ont);
 			reasoner.getKB().setDoExplanation(true);
 
 			assertTrue("Entailment failed", reasoner.isEntailed(axiom));

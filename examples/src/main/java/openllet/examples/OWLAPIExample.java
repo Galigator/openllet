@@ -7,8 +7,9 @@
 package openllet.examples;
 
 import java.util.Set;
-import openllet.owlapi.PelletReasoner;
-import openllet.owlapi.PelletReasonerFactory;
+import openllet.owlapi.OWL;
+import openllet.owlapi.OpenlletReasoner;
+import openllet.owlapi.OpenlletReasonerFactory;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
@@ -38,16 +39,16 @@ public class OWLAPIExample
 		final OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
 		final OWLOntology ontology = manager.loadOntology(IRI.create(file));
 
-		final PelletReasoner reasoner = PelletReasonerFactory.getInstance().createReasoner(ontology);
+		final OpenlletReasoner reasoner = OpenlletReasonerFactory.getInstance().createReasoner(ontology);
 		System.out.println("done.");
 
 		reasoner.getKB().realize();
 		reasoner.getKB().printClassTree();
 
 		// create property and resources to query the reasoner
-		final OWLClass Person = manager.getOWLDataFactory().getOWLClass(IRI.create("http://xmlns.com/foaf/0.1/Person"));
-		final OWLObjectProperty workHomepage = manager.getOWLDataFactory().getOWLObjectProperty(IRI.create("http://xmlns.com/foaf/0.1/workInfoHomepage"));
-		final OWLDataProperty foafName = manager.getOWLDataFactory().getOWLDataProperty(IRI.create("http://xmlns.com/foaf/0.1/name"));
+		final OWLClass Person = OWL.Class("http://xmlns.com/foaf/0.1/Person");
+		final OWLObjectProperty workHomepage = OWL.ObjectProperty("http://xmlns.com/foaf/0.1/workInfoHomepage");
+		final OWLDataProperty foafName = OWL.DataProperty("http://xmlns.com/foaf/0.1/name");
 
 		// get all instances of Person class
 		final NodeSet<OWLNamedIndividual> individuals = reasoner.getInstances(Person, false);

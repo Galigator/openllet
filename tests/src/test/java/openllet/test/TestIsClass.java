@@ -15,8 +15,8 @@ import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
 import openllet.core.KnowledgeBaseImpl;
 import openllet.core.utils.ATermUtils;
-import openllet.owlapi.PelletReasoner;
-import openllet.owlapi.PelletReasonerFactory;
+import openllet.owlapi.OpenlletReasoner;
+import openllet.owlapi.OpenlletReasonerFactory;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
@@ -130,7 +130,7 @@ public class TestIsClass
 
 		manager.addAxiom(ontology, sc);
 
-		final PelletReasoner reasoner = PelletReasonerFactory.getInstance().createReasoner(ontology);
+		final OpenlletReasoner reasoner = OpenlletReasonerFactory.getInstance().createReasoner(ontology);
 
 		assertTrue(reasoner.isConsistent());
 

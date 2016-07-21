@@ -11,8 +11,8 @@ import com.clarkparsia.owlapi.explanation.HSTExplanationGenerator;
 import com.clarkparsia.owlapi.explanation.SatisfiabilityConverter;
 import com.clarkparsia.owlapi.explanation.TransactionAwareSingleExpGen;
 import java.util.Set;
-import openllet.owlapi.PelletReasoner;
-import openllet.owlapi.PelletReasonerFactory;
+import openllet.owlapi.OpenlletReasoner;
+import openllet.owlapi.OpenlletReasonerFactory;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLClassExpression;
@@ -53,27 +53,27 @@ public class PelletExplanation
 
 	public PelletExplanation(final OWLOntology ontology, final boolean useGlassBox)
 	{
-		this(new PelletReasonerFactory().createReasoner(ontology), useGlassBox);
+		this(new OpenlletReasonerFactory().createReasoner(ontology), useGlassBox);
 	}
 
-	public PelletExplanation(final PelletReasoner reasoner)
+	public PelletExplanation(final OpenlletReasoner reasoner)
 	{
 		this(reasoner, true);
 	}
 
-	private PelletExplanation(final PelletReasoner reasoner, final boolean useGlassBox)
+	private PelletExplanation(final OpenlletReasoner reasoner, final boolean useGlassBox)
 	{
 		// Get the _factory object
 		_factory = reasoner.getManager().getOWLDataFactory();
 
 		// Create a single explanation generator
-		final TransactionAwareSingleExpGen singleExp = useGlassBox ? new GlassBoxExplanation(reasoner) : new BlackBoxExplanation(reasoner.getRootOntology(), new PelletReasonerFactory(), reasoner);
+		final TransactionAwareSingleExpGen singleExp = useGlassBox ? new GlassBoxExplanation(reasoner) : new BlackBoxExplanation(reasoner.getRootOntology(), new OpenlletReasonerFactory(), reasoner);
 
 		// Create multiple explanation generator
-				_expGen = new HSTExplanationGenerator(singleExp);
+		_expGen = new HSTExplanationGenerator(singleExp);
 
 		// Create the converter that will translate axioms into class expressions
-				_converter = new SatisfiabilityConverter(_factory);
+		_converter = new SatisfiabilityConverter(_factory);
 	}
 
 	public Set<OWLAxiom> getEntailmentExplanation(final OWLAxiom axiom)

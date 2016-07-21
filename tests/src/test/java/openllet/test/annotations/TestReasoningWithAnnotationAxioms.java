@@ -11,8 +11,8 @@ import openllet.core.KnowledgeBaseImpl;
 import openllet.core.OpenlletOptions;
 import openllet.core.utils.ATermUtils;
 import openllet.jena.PelletInfGraph;
-import openllet.owlapi.PelletReasoner;
-import openllet.owlapi.PelletReasonerFactory;
+import openllet.owlapi.OpenlletReasoner;
+import openllet.owlapi.OpenlletReasonerFactory;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.Literal;
 import org.apache.jena.rdf.model.ModelFactory;
@@ -139,7 +139,7 @@ public class TestReasoningWithAnnotationAxioms
 		axioms.add(manager.getOWLDataFactory().getOWLAnnotationAssertionAxiom(op1, oi.getIRI(), oo1));
 
 		final OWLOntology ontology = manager.createOntology(axioms);
-		final PelletReasoner reasoner = PelletReasonerFactory.getInstance().createReasoner(ontology);
+		final OpenlletReasoner reasoner = OpenlletReasonerFactory.getInstance().createReasoner(ontology);
 
 		assertEquals(reasoner.getAnnotationPropertyValues(oi, op1), reasoner.getAnnotationPropertyValues(oi, op2));
 	}
@@ -154,7 +154,7 @@ public class TestReasoningWithAnnotationAxioms
 		axioms.add(manager.getOWLDataFactory().getOWLAnnotationAssertionAxiom(op1, oi.getIRI(), oo1));
 
 		final OWLOntology ontology = manager.createOntology(axioms);
-		final PelletReasoner reasoner = PelletReasonerFactory.getInstance().createReasoner(ontology);
+		final OpenlletReasoner reasoner = OpenlletReasonerFactory.getInstance().createReasoner(ontology);
 
 		assertEquals(reasoner.getAnnotationPropertyValues(oi, op1), reasoner.getAnnotationPropertyValues(oi, op3));
 	}

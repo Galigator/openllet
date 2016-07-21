@@ -18,9 +18,6 @@ import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.exceptions.PelletRuntimeException;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.VersionInfo;
-import openllet.owlapi.facet.FacetFactoryOWL;
-import openllet.owlapi.facet.FacetManagerOWL;
-import openllet.owlapi.facet.FacetOntologyOWL;
 import openllet.shared.tools.Log;
 import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.AddImport;
@@ -41,7 +38,6 @@ import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
-import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.model.OWLOntologyChangeVisitor;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLRuntimeException;
@@ -59,7 +55,6 @@ import org.semanticweb.owlapi.reasoner.InferenceType;
 import org.semanticweb.owlapi.reasoner.Node;
 import org.semanticweb.owlapi.reasoner.NodeSet;
 import org.semanticweb.owlapi.reasoner.NullReasonerProgressMonitor;
-import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.reasoner.OWLReasonerConfiguration;
 import org.semanticweb.owlapi.reasoner.ReasonerInterruptedException;
 import org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor;
@@ -73,7 +68,7 @@ import org.semanticweb.owlapi.reasoner.impl.OWLNamedIndividualNodeSet;
 import org.semanticweb.owlapi.reasoner.impl.OWLObjectPropertyNodeSet;
 import org.semanticweb.owlapi.util.Version;
 
-public class PelletReasoner implements OWLReasoner, OWLOntologyChangeListener, FacetManagerOWL, FacetOntologyOWL, FacetFactoryOWL
+public class PelletReasoner implements OpenlletReasoner
 {
 
 	public static final Logger _logger = Log.getLogger(PelletReasoner.class);
@@ -344,6 +339,7 @@ public class PelletReasoner implements OWLReasoner, OWLOntologyChangeListener, F
 	 *
 	 * @return the underlying Pellet knowledge base
 	 */
+	@Override
 	public KnowledgeBase getKB()
 	{
 		return _kb;
@@ -496,6 +492,7 @@ public class PelletReasoner implements OWLReasoner, OWLOntologyChangeListener, F
 		}
 	}
 
+	@Override
 	public Set<OWLLiteral> getAnnotationPropertyValues(final OWLNamedIndividual ind, final OWLAnnotationProperty pe) throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
 	{
 		refreshCheck();
@@ -777,7 +774,7 @@ public class PelletReasoner implements OWLReasoner, OWLOntologyChangeListener, F
 	@Override
 	public String getReasonerName()
 	{
-		return PelletReasonerFactory.getInstance().getReasonerName();
+		return OpenlletReasonerFactory.getInstance().getReasonerName();
 	}
 
 	/**
@@ -1070,6 +1067,7 @@ public class PelletReasoner implements OWLReasoner, OWLOntologyChangeListener, F
 	 * @return <code>true</code> if all changes have been processed successfully, <code>false</code> otherwise (indicates reasoner will reload the whole
 	 *         _ontology next time it needs to do reasoning)
 	 */
+	@Override
 	public boolean processChanges(final List<? extends OWLOntologyChange> changes)
 	{
 		if (_shouldRefresh)
@@ -1100,6 +1098,7 @@ public class PelletReasoner implements OWLReasoner, OWLOntologyChangeListener, F
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void prepareReasoner() throws ReasonerInterruptedException, TimeOutException
 	{
 		refreshCheck();
@@ -1110,6 +1109,7 @@ public class PelletReasoner implements OWLReasoner, OWLOntologyChangeListener, F
 	/**
 	 * Clears the reasoner and reloads all the axioms in the imports closure.
 	 */
+	@Override
 	public void refresh()
 	{
 		_visitor.clear();
@@ -1138,6 +1138,7 @@ public class PelletReasoner implements OWLReasoner, OWLOntologyChangeListener, F
 			refresh();
 	}
 
+	@Override
 	public ATermAppl term(final OWLObject d)
 	{
 		refreshCheck();

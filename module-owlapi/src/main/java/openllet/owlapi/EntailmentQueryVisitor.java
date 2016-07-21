@@ -29,12 +29,12 @@ public class EntailmentQueryVisitor implements OWLAxiomVisitor, FacetReasonerOWL
 {
 	private final IndividualTermConverter _indConv;
 
-	private final PelletReasoner _reasoner;
+	private final OpenlletReasoner _reasoner;
 
 	private Query _query;
 
 	@Override
-	public PelletReasoner getReasoner()
+	public OpenlletReasoner getReasoner()
 	{
 		return _reasoner;
 	}
@@ -67,7 +67,7 @@ public class EntailmentQueryVisitor implements OWLAxiomVisitor, FacetReasonerOWL
 
 	}
 
-	public EntailmentQueryVisitor(final PelletReasoner reasoner)
+	public EntailmentQueryVisitor(final OpenlletReasoner reasoner)
 	{
 		_reasoner = reasoner;
 		_indConv = new IndividualTermConverter();

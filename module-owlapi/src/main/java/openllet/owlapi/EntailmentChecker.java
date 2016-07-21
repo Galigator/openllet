@@ -90,18 +90,18 @@ public class EntailmentChecker implements OWLAxiomVisitor, FacetReasonerOWL
 
 	private final KnowledgeBase _kb;
 	private final EntailmentQueryVisitor _queryVisitor;
-	private final PelletReasoner _reasoner;
+	private final OpenlletReasoner _reasoner;
 
 	private boolean _isDeferred = false;
 	private boolean _isEntailed = false;
 
 	@Override
-	public PelletReasoner getReasoner()
+	public OpenlletReasoner getReasoner()
 	{
 		return _reasoner;
 	}
 
-	public EntailmentChecker(final PelletReasoner reasoner)
+	public EntailmentChecker(final OpenlletReasoner reasoner)
 	{
 		_reasoner = reasoner;
 		_kb = reasoner.getKB();

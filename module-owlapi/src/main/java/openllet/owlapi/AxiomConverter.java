@@ -72,7 +72,7 @@ public class AxiomConverter implements FacetFactoryOWL
 		return _factory;
 	}
 
-	public AxiomConverter(final PelletReasoner reasoner)
+	public AxiomConverter(final OpenlletReasoner reasoner)
 	{
 		this(reasoner.getKB(), reasoner.getManager().getOWLDataFactory());
 	}

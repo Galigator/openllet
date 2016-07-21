@@ -56,7 +56,7 @@ import openllet.core.rules.model.SameIndividualAtom;
 import openllet.core.utils.TermFactory;
 import openllet.jena.PelletReasonerFactory;
 import openllet.owlapi.OWL;
-import openllet.owlapi.PelletReasoner;
+import openllet.owlapi.OpenlletReasoner;
 import openllet.owlapi.SWRL;
 import openllet.test.AbstractKBTests;
 import openllet.test.PelletTestSuite;
@@ -452,7 +452,7 @@ public class MiscRuleTests extends AbstractKBTests
 
 		final OWLOntology mergedOntology = OWL.Ontology(Stream.concat(familyRef.axioms(), familyRules.axioms()));
 
-		final PelletReasoner reasoner = openllet.owlapi.PelletReasonerFactory.getInstance().createReasoner(mergedOntology);
+		final OpenlletReasoner reasoner = openllet.owlapi.OpenlletReasonerFactory.getInstance().createReasoner(mergedOntology);
 
 		final OWLIndividual nella = OWL.Individual(_luigiFamily.resolve("#Nella"));
 		final OWLObjectProperty hasUncle = OWL.ObjectProperty(_luigiFamily.resolve("#hasUncle"));
@@ -1006,7 +1006,7 @@ public class MiscRuleTests extends AbstractKBTests
 
 		final OWLOntology ontology = OWL.Ontology(axioms);
 
-		final PelletReasoner reasoner = openllet.owlapi.PelletReasonerFactory.getInstance().createNonBufferingReasoner(ontology);
+		final OpenlletReasoner reasoner = openllet.owlapi.OpenlletReasonerFactory.getInstance().createNonBufferingReasoner(ontology);
 
 		assertTrue(reasoner.isConsistent());
 		assertTrue(reasoner.isEntailed(OWL.classAssertion(individualA, classE)));
@@ -1061,7 +1061,7 @@ public class MiscRuleTests extends AbstractKBTests
 						")");
 
 		final OWLOntology ont = OWL._manager.loadOntologyFromOntologyDocument(source);
-		final PelletReasoner reasoner = openllet.owlapi.PelletReasonerFactory.getInstance().createReasoner(ont);
+		final OpenlletReasoner reasoner = openllet.owlapi.OpenlletReasonerFactory.getInstance().createReasoner(ont);
 		reasoner.getKB().realize();
 	}
 

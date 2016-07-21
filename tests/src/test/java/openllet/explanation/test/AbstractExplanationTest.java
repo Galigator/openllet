@@ -36,15 +36,20 @@ import org.semanticweb.owlapi.model.SWRLVariable;
 import org.semanticweb.owlapi.vocab.SWRLBuiltInsVocabulary;
 
 /**
- * <_p> Title: </_p> <_p> Description: </_p> <_p> Copyright: Copyright (_c) 2008 </_p> <_p> Company: Clark & Parsia, LLC. <http://www.clarkparsia.com> </_p>
+ * <p>
+ * Copyright: Copyright (_c) 2008
+ * </p>
+ * <p>
+ * Company: Clark & Parsia, LLC. <http://www.clarkparsia.com>
+ * </p>
  *
  * @author Evren Sirin
  */
 public abstract class AbstractExplanationTest
 {
-	static final String BASEPATH = "file:data/";
-	static final OWLOntologyManager _manager = OWL._manager;
-	static final URI ontologyURI = URI.create("http://www.example.org/test#");
+	public static final String BASEPATH = "file:data/";
+	public static final OWLOntologyManager _manager = OWL._manager;
+	public static final URI ontologyURI = URI.create("http://www.example.org/test#");
 
 	protected boolean _classify;
 
@@ -371,17 +376,17 @@ public abstract class AbstractExplanationTest
 		final OWLDataProperty month = OWL.DataProperty(ontologyURI + "month");
 		final OWLDataProperty day = OWL.DataProperty(ontologyURI + "day");
 
-		final OWLAxiom[] axioms = {// 
+		final OWLAxiom[] axioms = { // 
 				OWL.propertyAssertion(_a, dp, // 
 						OWL.constant("2009-01-02", XSD.DATE)), // 
-						SWRL.rule(//
-								SWRL.antecedent(SWRL.propertyAtom(dp, _x, _dx),// 
-										SWRL.builtIn(SWRLBuiltInsVocabulary.DATE, _dx, y, m, d)),// 
-										SWRL.consequent(SWRL.propertyAtom(year, _x, y), //
-												SWRL.propertyAtom(month, _x, m), //
-												SWRL.propertyAtom(day, _x, d)//
-												)//
-								) //
+				SWRL.rule(//
+						SWRL.antecedent(SWRL.propertyAtom(dp, _x, _dx), // 
+								SWRL.builtIn(SWRLBuiltInsVocabulary.DATE, _dx, y, m, d)), // 
+						SWRL.consequent(SWRL.propertyAtom(year, _x, y), //
+								SWRL.propertyAtom(month, _x, m), //
+								SWRL.propertyAtom(day, _x, d)//
+						)//
+				) //
 		};
 
 		setupGenerators(Arrays.asList(axioms));

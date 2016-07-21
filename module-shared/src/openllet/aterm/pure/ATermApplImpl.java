@@ -194,7 +194,7 @@ public class ATermApplImpl extends ATermImpl implements ATermAppl
 		return super.match(pattern, list);
 	}
 
-	boolean matchArguments(final ATerm[] pattern_args, final List<Object> list)
+	private boolean matchArguments(final ATerm[] pattern_args, final List<Object> list)
 	{
 		for (int i = 0; i < _args.length; i++)
 		{

@@ -20,8 +20,8 @@ import openllet.core.OpenlletOptions;
 import openllet.core.utils.SetUtils;
 import openllet.jena.PelletInfGraph;
 import openllet.owlapi.OWL;
-import openllet.owlapi.PelletReasoner;
-import openllet.owlapi.PelletReasonerFactory;
+import openllet.owlapi.OpenlletReasoner;
+import openllet.owlapi.OpenlletReasonerFactory;
 import openllet.owlapi.explanation.PelletExplanation;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.Model;
@@ -42,9 +42,6 @@ import org.semanticweb.owlapi.model.OWLOntology;
 /**
  * <p>
  * Title: ExplainationInconsistent
- * </p>
- * <p>
- * Description:
  * </p>
  * <p>
  * Copyright: Copyright (c) 2008
@@ -91,7 +88,7 @@ public class MiscExplanationTests
 		axioms.add(OWL.classAssertion(j, C));
 
 		final OWLOntology ontology = OWL.Ontology(axioms);
-		final PelletReasoner reasoner = PelletReasonerFactory.getInstance().createReasoner(ontology);
+		final OpenlletReasoner reasoner = OpenlletReasonerFactory.getInstance().createReasoner(ontology);
 		final PelletExplanation explain = new PelletExplanation(reasoner);
 
 		final Set<Set<OWLAxiom>> actual = explain.getInconsistencyExplanations();
@@ -126,7 +123,7 @@ public class MiscExplanationTests
 		axioms.add(OWL.classAssertion(i, B));
 
 		final OWLOntology ontology = OWL.Ontology(axioms);
-		final PelletReasoner reasoner = PelletReasonerFactory.getInstance().createReasoner(ontology);
+		final OpenlletReasoner reasoner = OpenlletReasonerFactory.getInstance().createReasoner(ontology);
 		final PelletExplanation explain = new PelletExplanation(reasoner);
 
 		assertFalse(explain.getInconsistencyExplanations().isEmpty());
@@ -146,7 +143,7 @@ public class MiscExplanationTests
 		axioms.add(OWL.propertyAssertion(i, S, i));
 
 		final OWLOntology ontology = OWL.Ontology(axioms);
-		final PelletReasoner reasoner = PelletReasonerFactory.getInstance().createReasoner(ontology);
+		final OpenlletReasoner reasoner = OpenlletReasonerFactory.getInstance().createReasoner(ontology);
 		final PelletExplanation explain = new PelletExplanation(reasoner);
 
 		assertFalse(explain.getInconsistencyExplanations().isEmpty());
@@ -169,7 +166,7 @@ public class MiscExplanationTests
 		axioms.add(OWL.sameAs(i, j));
 
 		final OWLOntology ontology = OWL.Ontology(axioms);
-		final PelletReasoner reasoner = PelletReasonerFactory.getInstance().createReasoner(ontology);
+		final OpenlletReasoner reasoner = OpenlletReasonerFactory.getInstance().createReasoner(ontology);
 		final PelletExplanation explain = new PelletExplanation(reasoner);
 
 		assertFalse(explain.getInconsistencyExplanations().isEmpty());
@@ -186,7 +183,7 @@ public class MiscExplanationTests
 		axioms.add(OWL.equivalentClasses(A, OWL.oneOf(a, b)));
 
 		final OWLOntology ontology = OWL.Ontology(axioms);
-		final PelletReasoner reasoner = PelletReasonerFactory.getInstance().createReasoner(ontology);
+		final OpenlletReasoner reasoner = OpenlletReasonerFactory.getInstance().createReasoner(ontology);
 		final PelletExplanation explain = new PelletExplanation(reasoner);
 
 		assertEquals(axioms, explain.getEntailmentExplanation(OWL.classAssertion(a, A)));
@@ -202,7 +199,7 @@ public class MiscExplanationTests
 		axioms.add(OWL.equivalentClasses(A, OWL.oneOf(a)));
 
 		final OWLOntology ontology = OWL.Ontology(axioms);
-		final PelletReasoner reasoner = PelletReasonerFactory.getInstance().createReasoner(ontology);
+		final OpenlletReasoner reasoner = OpenlletReasonerFactory.getInstance().createReasoner(ontology);
 		final PelletExplanation explain = new PelletExplanation(reasoner);
 
 		assertEquals(axioms, explain.getEntailmentExplanation(OWL.classAssertion(a, A)));
@@ -249,7 +246,7 @@ public class MiscExplanationTests
 		final OWLAxiom[] axioms = { OWL.subClassOf(VolcanicMountain, Mountain), OWL.subClassOf(VolcanicMountain, Volcano), OWL.subClassOf(Mountain, UplandArea), OWL.subClassOf(UplandArea, OWL.not(Volcano)), OWL.disjointClasses(UplandArea, Volcano) };
 
 		final OWLOntology ontology = OWL.Ontology(axioms);
-		final PelletReasoner reasoner = PelletReasonerFactory.getInstance().createReasoner(ontology);
+		final OpenlletReasoner reasoner = OpenlletReasonerFactory.getInstance().createReasoner(ontology);
 		final PelletExplanation explain = new PelletExplanation(reasoner);
 
 		// bug 453 manifested by throwing an OWLRuntimeException from the following statement
@@ -299,11 +296,11 @@ public class MiscExplanationTests
 	public void testExplanationWithSWRL() throws Exception {
 		Resource subject = ResourceFactory.createResource("http://www.inmindcomputing.com/test/test-commands.owl#BOMType1");
 		Property predicate = ResourceFactory.createProperty("http://www.inmindcomputing.com/test/test-commands.owl#hasProduct");
-
+	
 		OntModel rootModel = ModelFactory.createOntologyModel( openllet.jena.PelletReasonerFactory.THE_SPEC );
-
+	
 		openllet.jena.PelletReasonerFactory.THE_SPEC.setDocumentManager(new OntDocumentManager() {
-
+	
 			@Override
 			protected void loadImport(OntModel model, String importURI, List<String> _queue) {
 				if (importURI.startsWith("resource://")) {
@@ -314,33 +311,33 @@ public class MiscExplanationTests
 					super.loadImport(model, importURI, _queue);
 				}
 			}
-
+	
 		});
-
+	
 		loadFromResource(rootModel, "test/data/misc/test-commands.owl");
-
+	
 		PelletInfGraph graph = (PelletInfGraph) rootModel.getGraph();
 		NodeIterator iter = rootModel.listObjectsOfProperty(subject, predicate);
-
+	
 		while (iter.hasNext()) {
 			RDFNode object = iter.next();
 			Statement statement = ResourceFactory.createStatement(subject, predicate, object);
-
+	
 			Model explanation = graph.explain(statement);
-
+	
 			Assert.assertNotNull(explanation);
 			Assert.assertTrue(explanation.listStatements().hasNext());
 		}
-
+	
 		//String queryString = 	"PREFIX : <http://www.inmindcomputing.com/test/test-commands.owl#> \n"
 		//						+ "SELECT ?object WHERE \n "
 		//						+ "{ <http://www.inmindcomputing.com/test/test-commands.owl#BOMType1> <http://www.inmindcomputing.com/test/test-commands.owl#hasProduct> ?obj . }";
 		//Query query = QueryFactory.create( queryString );
-
+	
 		//QueryExecution qe = SparqlDLExecutionFactory.create( query, rootModel );
-
+	
 		//ResultSet rs = qe.execSelect();
-
+	
 		//ResultSetFormatter.out( rs );
 	}*/
 

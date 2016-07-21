@@ -111,7 +111,7 @@ public class DLBenchmarkTest
 			{
 				doTBoxTest(files[i].toString());
 				data.add(Integer.valueOf(_kb.getClasses().size())); // Adding an Integer. (Size)
-				data.add(_kb.getTimers().getTimer("test").getTotal() + ""); // Adding a String. (Time)
+				data.add(Long.toString(_kb.getTimers().getTimer("test").getTotal())); // Adding a String. (Time)
 			}
 			catch (final Exception | OutOfMemoryError | StackOverflowError e)
 			{
@@ -388,7 +388,7 @@ public class DLBenchmarkTest
 		final boolean singleTest = file.isFile();
 
 		final DLBenchmarkTest test = new DLBenchmarkTest();
-		if (type.equals("sat"))
+		if ("sat".equals(type))
 		{
 			if (singleTest)
 				test.doSatTest(in);
@@ -396,7 +396,7 @@ public class DLBenchmarkTest
 				test.doAllSatTests(in);
 		}
 		else
-			if (type.equals("tbox"))
+			if ("tbox".equals(type))
 			{
 				if (singleTest)
 					test.doTBoxTest(in);
@@ -404,7 +404,7 @@ public class DLBenchmarkTest
 					test.doAllTBoxTests(in);
 			}
 			else
-				if (type.equals("abox"))
+				if ("abox".equals(type))
 				{
 					if (singleTest)
 						test.doABoxTest(in);

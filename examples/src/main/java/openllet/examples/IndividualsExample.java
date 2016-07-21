@@ -9,7 +9,7 @@ package openllet.examples;
 import java.util.Iterator;
 import java.util.Set;
 import openllet.jena.PelletReasonerFactory;
-import openllet.owlapi.PelletReasoner;
+import openllet.owlapi.OpenlletReasoner;
 import org.apache.jena.ontology.Individual;
 import org.apache.jena.ontology.OntClass;
 import org.apache.jena.ontology.OntModel;
@@ -100,7 +100,7 @@ public class IndividualsExample
 		final OWLOntology ontology = manager.loadOntology(IRI.create(ont));
 
 		// load the ontology to the reasoner
-		final PelletReasoner reasoner = openllet.owlapi.PelletReasonerFactory.getInstance().createReasoner(ontology);
+		final OpenlletReasoner reasoner = openllet.owlapi.OpenlletReasonerFactory.getInstance().createReasoner(ontology);
 
 		// create property and resources to query the reasoner
 		final OWLClass Person = factory.getOWLClass(IRI.create("http://xmlns.com/foaf/0.1/Person"));

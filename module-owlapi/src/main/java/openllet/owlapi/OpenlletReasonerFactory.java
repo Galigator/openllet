@@ -24,17 +24,16 @@ import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
  *
  * @author Evren Sirin
  */
-@Deprecated
-public class PelletReasonerFactory implements OWLReasonerFactory
+public class OpenlletReasonerFactory implements OWLReasonerFactory
 {
-	private static final PelletReasonerFactory INSTANCE = new PelletReasonerFactory();
+	private static final OpenlletReasonerFactory INSTANCE = new OpenlletReasonerFactory();
 
 	/**
 	 * Returns a static factory instance that can be used to create reasoners.
 	 *
 	 * @return a static factory instance
 	 */
-	public static PelletReasonerFactory getInstance()
+	public static OpenlletReasonerFactory getInstance()
 	{
 		return INSTANCE;
 	}

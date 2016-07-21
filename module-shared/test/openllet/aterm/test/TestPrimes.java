@@ -37,7 +37,6 @@ import org.junit.Test;
 
 public class TestPrimes
 {
-
 	private ATermFactory factory;
 
 	void assertTrue(final boolean condition)

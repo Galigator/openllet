@@ -1,7 +1,7 @@
 package openllet.owlwg.runner.pellet;
 
-import openllet.owlapi.PelletReasoner;
-import openllet.owlapi.PelletReasonerFactory;
+import openllet.owlapi.OpenlletReasoner;
+import openllet.owlapi.OpenlletReasonerFactory;
 import openllet.owlwg.owlapi.runner.impl.OwlApiAbstractRunner;
 import openllet.owlwg.testrun.TestRunResult;
 import org.semanticweb.owlapi.model.IRI;
@@ -26,7 +26,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
 public class PelletOA3TestRunner extends OwlApiAbstractRunner
 {
 
-	private static final PelletReasonerFactory _reasonerFactory = new PelletReasonerFactory();
+	private static final OpenlletReasonerFactory _reasonerFactory = new OpenlletReasonerFactory();
 
 	private static final IRI _iri = IRI.create("http://clarkparsia.com/pellet");
 
@@ -45,7 +45,7 @@ public class PelletOA3TestRunner extends OwlApiAbstractRunner
 	@Override
 	protected boolean isConsistent(final OWLOntology o)
 	{
-		final PelletReasoner reasoner = _reasonerFactory.createReasoner(o);
+		final OpenlletReasoner reasoner = _reasonerFactory.createReasoner(o);
 		reasoner.getKB().setTimeout(_timeout);
 		return reasoner.isConsistent();
 	}
@@ -53,7 +53,7 @@ public class PelletOA3TestRunner extends OwlApiAbstractRunner
 	@Override
 	protected boolean isEntailed(final OWLOntology premise, final OWLOntology conclusion)
 	{
-		final PelletReasoner reasoner = _reasonerFactory.createReasoner(premise);
+		final OpenlletReasoner reasoner = _reasonerFactory.createReasoner(premise);
 		reasoner.getKB().setTimeout(_timeout);
 		return reasoner.isEntailed(conclusion.logicalAxioms());
 	}

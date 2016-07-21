@@ -41,6 +41,8 @@ import openllet.shared.hash.SharedObject;
 
 public class ATermListImpl extends ATermImpl implements ATermList
 {
+	public static final String _illegalListIndex = "illegal list index: ";
+
 	private ATerm _first;
 
 	private ATermList _next;
@@ -286,6 +288,11 @@ public class ATermListImpl extends ATermImpl implements ATermList
 		return cur.getFirst();
 	}
 
+	private void raiseArgumentException(final int startPos)
+	{
+		throw new IllegalArgumentException("start (" + startPos + ") > length of list (" + _length + ")");
+	}
+
 	@Override
 	public int indexOf(final ATerm el, final int start)
 	{
@@ -296,7 +303,8 @@ public class ATermListImpl extends ATermImpl implements ATermList
 		if (startPos < 0)
 			startPos += _length + 1;
 
-		if (startPos > _length) { throw new IllegalArgumentException("start (" + startPos + ") > length of list (" + _length + ")"); }
+		if (startPos > _length)
+			raiseArgumentException(startPos);
 
 		cur = this;
 		for (i = 0; i < startPos; i++)
@@ -320,7 +328,8 @@ public class ATermListImpl extends ATermImpl implements ATermList
 		if (startPos < 0)
 			startPos += _length + 1;
 
-		if (startPos > _length) { throw new IllegalArgumentException("start (" + startPos + ") > _length of list (" + _length + ")"); }
+		if (startPos > _length)
+			raiseArgumentException(startPos);
 
 		if (startPos > 0)
 		{
@@ -360,7 +369,7 @@ public class ATermListImpl extends ATermImpl implements ATermList
 	@Override
 	public ATerm elementAt(final int index)
 	{
-		if (0 > index || index >= _length) { throw new IllegalArgumentException("illegal list index: " + index); }
+		if (0 > index || index >= _length) { throw new IllegalArgumentException(_illegalListIndex + index); }
 
 		ATermList cur = this;
 		for (int i = 0; i < index; i++)
@@ -386,7 +395,7 @@ public class ATermListImpl extends ATermImpl implements ATermList
 	@Override
 	public ATermList removeElementAt(final int index)
 	{
-		if (0 > index || index > _length) { throw new IllegalArgumentException("illegal list index: " + index); }
+		if (0 > index || index > _length) { throw new IllegalArgumentException(_illegalListIndex + index); }
 
 		if (index == 0) { return _next; }
 
@@ -408,7 +417,7 @@ public class ATermListImpl extends ATermImpl implements ATermList
 	@Override
 	public ATermList insertAt(final ATerm el, final int i)
 	{
-		if (0 > i || i > _length) { throw new IllegalArgumentException("illegal list index: " + i); }
+		if (0 > i || i > _length) { throw new IllegalArgumentException(_illegalListIndex + i); }
 
 		if (i == 0) { return insert(el); }
 
@@ -472,7 +481,7 @@ public class ATermListImpl extends ATermImpl implements ATermList
 	{
 		int lcv;
 
-		if (0 > i || i > _length) { throw new IllegalArgumentException("illegal list index: " + i); }
+		if (0 > i || i > _length) { throw new IllegalArgumentException(_illegalListIndex + i); }
 
 		final List<ATerm> buffer = new ArrayList<>(i);
 		ATermList cur = this;

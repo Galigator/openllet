@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 import openllet.core.utils.FileUtils;
 import openllet.owlapi.EntailmentChecker;
 import openllet.owlapi.OWLAPILoader;
-import openllet.owlapi.PelletReasoner;
+import openllet.owlapi.OpenlletReasoner;
 import openllet.owlapi.explanation.io.manchester.ManchesterSyntaxObjectRenderer;
 import openllet.owlapi.explanation.io.manchester.TextBlockWriter;
 import org.semanticweb.owlapi.model.IRI;
@@ -98,7 +98,7 @@ public class OpenlletEntailment extends OpenlletCmdApp
 
 		getKB();
 
-		final PelletReasoner reasoner = loader.getReasoner();
+		final OpenlletReasoner reasoner = loader.getReasoner();
 
 		OWLOntology entailmentOntology = null;
 		try

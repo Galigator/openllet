@@ -11,8 +11,8 @@ import static org.junit.Assert.assertTrue;
 
 import openllet.owlapi.OWL;
 import openllet.owlapi.OntologyUtils;
-import openllet.owlapi.PelletReasoner;
-import openllet.owlapi.PelletReasonerFactory;
+import openllet.owlapi.OpenlletReasoner;
+import openllet.owlapi.OpenlletReasonerFactory;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -22,7 +22,7 @@ import uk.ac.manchester.cs.owl.owlapi.OWLOntologyIRIMapperImpl;
 public class OWLAPIWebOntTester implements WebOntTester
 {
 	private final OWLOntologyManager _manager;
-	private PelletReasoner _reasoner;
+	private OpenlletReasoner _reasoner;
 	private final OWLOntologyIRIMapperImpl _mapper;
 
 	public OWLAPIWebOntTester()
@@ -67,7 +67,7 @@ public class OWLAPIWebOntTester implements WebOntTester
 		{
 			_manager.getIRIMappers().add(_mapper);
 			ont = _manager.loadOntology(IRI.create(inputFileURI));
-			_reasoner = PelletReasonerFactory.getInstance().createReasoner(ont);
+			_reasoner = OpenlletReasonerFactory.getInstance().createReasoner(ont);
 		}
 		catch (final OWLException e)
 		{

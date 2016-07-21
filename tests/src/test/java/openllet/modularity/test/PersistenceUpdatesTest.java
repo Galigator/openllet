@@ -25,8 +25,8 @@ import openllet.modularity.PelletIncremantalReasonerFactory;
 import openllet.modularity.io.IncrementalClassifierPersistence;
 import openllet.owlapi.OWL;
 import openllet.owlapi.OntologyUtils;
-import openllet.owlapi.PelletReasoner;
-import openllet.owlapi.PelletReasonerFactory;
+import openllet.owlapi.OpenlletReasoner;
+import openllet.owlapi.OpenlletReasonerFactory;
 import openllet.shared.tools.Log;
 import openllet.test.PelletTestSuite;
 import org.junit.Test;
@@ -36,12 +36,6 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.RemoveAxiom;
 
 /**
- * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
  * <p>
  * Copyright: Copyright (c) 2009
  * </p>
@@ -271,7 +265,7 @@ public class PersistenceUpdatesTest
 
 			modular.classify();
 
-			final PelletReasoner expected = PelletReasonerFactory.getInstance().createReasoner(modular.getRootOntology());
+			final OpenlletReasoner expected = OpenlletReasonerFactory.getInstance().createReasoner(modular.getRootOntology());
 
 			assertClassificationEquals(expected, modular);
 		}
@@ -316,7 +310,7 @@ public class PersistenceUpdatesTest
 
 			modular.classify();
 
-			final PelletReasoner expected = PelletReasonerFactory.getInstance().createReasoner(ontology);
+			final OpenlletReasoner expected = OpenlletReasonerFactory.getInstance().createReasoner(ontology);
 
 			assertClassificationEquals(expected, modular);
 		}
@@ -353,7 +347,7 @@ public class PersistenceUpdatesTest
 				modular = IncrementalClassifierPersistence.load(fis, ontology);
 			}
 
-			final PelletReasoner expected = PelletReasonerFactory.getInstance().createReasoner(ontology);
+			final OpenlletReasoner expected = OpenlletReasonerFactory.getInstance().createReasoner(ontology);
 
 			assertClassificationEquals(expected, modular);
 		}

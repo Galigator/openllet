@@ -179,7 +179,7 @@ public abstract class ATermImpl extends ATermVisitableImpl implements ATerm, Sha
 		return (this == obj);
 	}
 
-	boolean match(final ATerm pattern, final List<Object> list)
+	protected boolean match(final ATerm pattern, final List<Object> list)
 	{
 		if (pattern.getType() == PLACEHOLDER)
 		{

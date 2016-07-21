@@ -38,7 +38,7 @@ public class OWLGenericTools implements OWLHelper
 
 	protected boolean _isVolatile = true;
 
-	private Optional<PelletReasoner> _pelletReasoner = Optional.empty();
+	private Optional<OpenlletReasoner> _pelletReasoner = Optional.empty();
 
 	@Override
 	public Logger getLogger()
@@ -77,14 +77,14 @@ public class OWLGenericTools implements OWLHelper
 	}
 
 	@Override
-	public PelletReasoner getReasoner()
+	public OpenlletReasoner getReasoner()
 	{
 
 		if (!_pelletReasoner.isPresent())
 			try
 			{
 
-				final PelletReasoner reasoner = PelletReasonerFactory.getInstance().createReasoner(getOntology());
+				final OpenlletReasoner reasoner = OpenlletReasonerFactory.getInstance().createReasoner(getOntology());
 				reasoner.isConsistent();
 				_pelletReasoner = Optional.of(reasoner);
 			}

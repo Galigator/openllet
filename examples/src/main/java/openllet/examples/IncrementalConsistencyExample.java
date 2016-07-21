@@ -12,7 +12,7 @@ import openllet.core.OpenlletOptions;
 import openllet.core.utils.ATermUtils;
 import openllet.jena.PelletInfGraph;
 import openllet.jena.PelletReasonerFactory;
-import openllet.owlapi.PelletReasoner;
+import openllet.owlapi.OpenlletReasoner;
 import org.apache.jena.ontology.Individual;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.ModelFactory;
@@ -119,7 +119,7 @@ public class IncrementalConsistencyExample
 		final OWLOntology ontology = manager.loadOntology(IRI.create(mindswappers));
 
 		// we want a non-buffering reasoner here (a buffering reasoner would not process any additions, until manually refreshed)
-		final PelletReasoner reasoner = openllet.owlapi.PelletReasonerFactory.getInstance().createNonBufferingReasoner(ontology);
+		final OpenlletReasoner reasoner = openllet.owlapi.OpenlletReasonerFactory.getInstance().createNonBufferingReasoner(ontology);
 		manager.addOntologyChangeListener(reasoner);
 
 		// perform initial consistency check

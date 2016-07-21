@@ -30,8 +30,8 @@ import java.util.stream.Stream;
 import openllet.core.KnowledgeBase;
 import openllet.core.OpenlletOptions;
 import openllet.owlapi.OWL;
-import openllet.owlapi.PelletReasoner;
-import openllet.owlapi.PelletReasonerFactory;
+import openllet.owlapi.OpenlletReasoner;
+import openllet.owlapi.OpenlletReasonerFactory;
 import openllet.owlapi.explanation.GlassBoxExplanation;
 import openllet.shared.tools.Log;
 import org.junit.After;
@@ -60,7 +60,7 @@ public class OWLAPIExplanationTest extends AbstractExplanationTest
 {
 	private static final Logger _logger = Log.getLogger(JenaExplanationTest.class);
 
-	private PelletReasoner _reasoner;
+	private OpenlletReasoner _reasoner;
 	private final boolean _useGlassBox;
 
 	private SatisfiabilityConverter _converter;
@@ -127,7 +127,7 @@ public class OWLAPIExplanationTest extends AbstractExplanationTest
 
 		final OWLOntology ontology = OWL.Ontology(ontologyAxioms);
 
-		final PelletReasonerFactory reasonerFactory = PelletReasonerFactory.getInstance();
+		final OpenlletReasonerFactory reasonerFactory = OpenlletReasonerFactory.getInstance();
 		_reasoner = reasonerFactory.createReasoner(ontology);
 
 		final TransactionAwareSingleExpGen singleExpGen = _useGlassBox ? new GlassBoxExplanation(_reasoner) : new BlackBoxExplanation(ontology, reasonerFactory, _reasoner)

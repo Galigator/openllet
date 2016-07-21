@@ -17,8 +17,8 @@ import static openllet.owlapi.OWL.constant;
 
 import java.util.Collections;
 import openllet.owlapi.OWL;
-import openllet.owlapi.PelletReasoner;
-import openllet.owlapi.PelletReasonerFactory;
+import openllet.owlapi.OpenlletReasoner;
+import openllet.owlapi.OpenlletReasonerFactory;
 import openllet.test.PelletTestSuite;
 import org.junit.After;
 import org.junit.Before;
@@ -73,12 +73,12 @@ public abstract class AbstractOWLAPITests
 	protected static final OWLLiteral _lit = constant("lit");
 
 	protected OWLOntology _ontology;
-	protected PelletReasoner _reasoner;
+	protected OpenlletReasoner _reasoner;
 
 	public void createReasoner(final OWLAxiom... axioms)
 	{
 		_ontology = OWL.Ontology(axioms);
-		_reasoner = PelletReasonerFactory.getInstance().createReasoner(_ontology);
+		_reasoner = OpenlletReasonerFactory.getInstance().createReasoner(_ontology);
 	}
 
 	@Before
