@@ -25,12 +25,6 @@ import openllet.shared.tools.Log;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2008
  * </p>
  * <p>
@@ -104,12 +98,12 @@ public abstract class RuleBasedELClassifier extends CDOptimizedTaxonomyBuilder i
 	protected void buildTaxonomy(final MultiValueMap<ATermAppl, ATermAppl> subsumers)
 	{
 		//		CachedSubsumptionComparator subsumptionComparator = new CachedSubsumptionComparator( subsumers );
-		//		
+		//
 		//		PartialOrderTaxonomyBuilder _builder = new PartialOrderTaxonomyBuilder( _kb, subsumptionComparator );
 		//		_builder.setKB( _kb );
-		//		
+		//
 		//		taxonomy = _builder.getTaxonomy();
-		//		
+		//
 		//		for( ATermAppl c : subsumers.keySet() ) {
 		//			if( subsumptionComparator.isSubsumedBy( c, ATermUtils.BOTTOM ) ) {
 		//				taxonomy.addEquivalentNode( c, taxonomy.getBottom() );

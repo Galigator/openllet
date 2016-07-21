@@ -19,7 +19,7 @@ import java.util.Set;
 import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
 import openllet.core.OpenlletOptions;
-import openllet.core.boxes.abox.ABoxImpl;
+import openllet.core.boxes.abox.ABox;
 import openllet.core.boxes.abox.Individual;
 import openllet.core.boxes.rbox.Role;
 import openllet.core.datatypes.exceptions.InvalidLiteralException;
@@ -58,9 +58,6 @@ import openllet.core.utils.SetUtils;
  * Title: Compiler
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -70,15 +67,15 @@ import openllet.core.utils.SetUtils;
 public class Compiler
 {
 	protected ContinuousRulesStrategy _strategy;
-	private final ABoxImpl _abox;
+	private final ABox _abox;
 	private final AlphaNetwork _alphaNet;
 
 	private final SafetyChecker _safetyChecker = new SafetyChecker();
 
 	public Compiler(final ContinuousRulesStrategy strategy)
 	{
-		this._strategy = strategy;
-		this._abox = strategy.getABox();
+		_strategy = strategy;
+		_abox = strategy.getABox();
 		_alphaNet = new AlphaNetwork(_abox);
 	}
 
@@ -364,8 +361,8 @@ public class Compiler
 
 		public ProductionNodeCreator(final List<RuleAtom> processed, final Set<ATermAppl> explain)
 		{
-			this._translator = new AtomObjectTranslator(_abox, processed, false);
-			this._explain = explain;
+			_translator = new AtomObjectTranslator(_abox, processed, false);
+			_explain = explain;
 		}
 
 		private ProductionNode create(final RuleAtom atom)
@@ -438,15 +435,15 @@ public class Compiler
 		private DependencySet _dependency = DependencySet.INDEPENDENT;
 		private NodeProvider _result = null;
 
-		private final ABoxImpl _translatorAbox;
+		private final ABox _translatorAbox;
 		private final List<RuleAtom> _processed;
 		private final boolean _lastWME;
 
-		public AtomObjectTranslator(final ABoxImpl abox, final List<RuleAtom> processed, final boolean lastWME)
+		public AtomObjectTranslator(final ABox abox, final List<RuleAtom> processed, final boolean lastWME)
 		{
-			this._translatorAbox = abox;
-			this._processed = processed;
-			this._lastWME = lastWME;
+			_translatorAbox = abox;
+			_processed = processed;
+			_lastWME = lastWME;
 		}
 
 		@SuppressWarnings("unused")
@@ -523,15 +520,15 @@ public class Compiler
 
 	private static class BuiltInCall
 	{
-		private final ABoxImpl _builtInCallAbox;
+		private final ABox _builtInCallAbox;
 		private final BuiltInAtom _atom;
 		private final BuiltIn _builtin;
 		private final BindingHelper _helper;
 
-		public BuiltInCall(final ABoxImpl abox, final BuiltInAtom atom)
+		public BuiltInCall(final ABox abox, final BuiltInAtom atom)
 		{
-			this._builtInCallAbox = abox;
-			this._atom = atom;
+			_builtInCallAbox = abox;
+			_atom = atom;
 			_builtin = BuiltInRegistry.instance.getBuiltIn(atom.getPredicate());
 			_helper = _builtin.createHelper(atom);
 		}

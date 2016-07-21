@@ -321,7 +321,7 @@ public class SizeEstimate
 		concepts.removeAll(instancesPC.keySet());
 		properties.removeAll(pairsPP.keySet());
 
-		final Timer timer = _kb.timers.startTimer("sizeEstimate");
+		final Timer timer = _kb.getTimers().startTimer("sizeEstimate");
 
 		_logger.fine("Size estimation started");
 

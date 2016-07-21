@@ -23,7 +23,7 @@ import java.util.List;
 import junit.framework.JUnit4TestAdapter;
 import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
-import openllet.core.KnowledgeBase;
+import openllet.core.KnowledgeBaseImpl;
 import openllet.core.boxes.abox.ABox;
 import openllet.core.boxes.abox.Literal;
 import openllet.core.datatypes.Datatypes;
@@ -87,14 +87,14 @@ public class BuiltInTests
 	}
 
 	private ABox _abox;
-	private KnowledgeBase _kb;
+	private KnowledgeBaseImpl _kb;
 
 	private final ATermAppl li_1 = literal("-1", Datatypes.INTEGER), li0 = literal("0", Datatypes.NON_NEGATIVE_INTEGER), lf0 = literal("0.0", Datatypes.FLOAT), lf00 = literal("0.00", Datatypes.FLOAT), lp0 = literal("0"), ls0 = literal("0", Datatypes.STRING), len0 = literal("0", "en");
 
 	@Before
 	public void setUp()
 	{
-		_kb = new KnowledgeBase();
+		_kb = new KnowledgeBaseImpl();
 		_abox = _kb.getABox();
 	}
 
@@ -675,7 +675,7 @@ public class BuiltInTests
 	@Test
 	public void testTokenizeBinding()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 		final AtomDConstant data = new AtomDConstant(literal("hi;bye;foo;bar"));
 
 		final AtomDVariable x = new AtomDVariable("x");
@@ -704,7 +704,7 @@ public class BuiltInTests
 	@Test
 	public void testTokenizeBindingEmpty()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 		final AtomDConstant data = new AtomDConstant(literal("hi;bye;foo;bar"));
 
 		final AtomDVariable x = new AtomDVariable("x");
@@ -733,7 +733,7 @@ public class BuiltInTests
 	@Test
 	public void testTokenizeSharedSuccess()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 		final AtomDConstant data = new AtomDConstant(literal("hi;bye;foo;bar"));
 
 		final AtomDVariable x = new AtomDVariable("x");
@@ -756,7 +756,7 @@ public class BuiltInTests
 	@Test
 	public void testTokenizeSharedFailure()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 		final AtomDConstant data = new AtomDConstant(literal("hi;bye;foo;bar"));
 
 		final AtomDVariable x = new AtomDVariable("x");

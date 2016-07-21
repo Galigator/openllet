@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
+import openllet.core.KnowledgeBaseImpl;
 import openllet.core.OpenlletOptions;
 import openllet.core.rules.model.AtomIConstant;
 import openllet.core.rules.model.ClassAtom;
@@ -31,7 +32,7 @@ public class OntBuilderTest
 	{
 		OpenlletOptions.KEEP_ABOX_ASSERTIONS = true;
 
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl C = term("C");
 		final ATermAppl D = term("D");

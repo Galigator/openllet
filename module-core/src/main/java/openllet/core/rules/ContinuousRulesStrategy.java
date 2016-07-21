@@ -21,7 +21,7 @@ import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
 import openllet.core.IndividualIterator;
 import openllet.core.OpenlletOptions;
-import openllet.core.boxes.abox.ABoxImpl;
+import openllet.core.boxes.abox.ABox;
 import openllet.core.boxes.abox.Clash;
 import openllet.core.boxes.abox.Edge;
 import openllet.core.boxes.abox.Individual;
@@ -52,7 +52,7 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 	private final RuleAtomAsserter ruleAtomAsser_ter;
 	private final TrivialSatisfactionHelpers _atomTester;
 
-	public ContinuousRulesStrategy(final ABoxImpl abox)
+	public ContinuousRulesStrategy(final ABox abox)
 	{
 		super(abox);
 		_bindingStrategy = new BindingGeneratorStrategyImpl(abox);
@@ -239,7 +239,10 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 
 				if (_logger.isLoggable(Level.FINE))
 				{
-					_logger.fine("Branch: " + _abox.getBranch() + ", Depth: " + _abox._stats.treeDepth + ", Size: " + _abox.getNodes().size() + ", Mem: " + (Runtime.getRuntime().freeMemory() / 1000) + "kb");
+					_logger.fine("Branch: " + _abox.getBranch()//
+							+ ", Depth: " + _abox.getStats().treeDepth//
+							+ ", Size: " + _abox.getNodes().size()//
+							+ ", Mem: " + (Runtime.getRuntime().freeMemory() / 1000) + "kb");
 					_abox.validate();
 					// printBlocked();
 					_abox.printTree();
@@ -309,7 +312,7 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 		}
 	}
 
-	private int createDisjunctionsFromBinding(final VariableBinding binding, final Rule rule, DependencySet dsParam)
+	private int createDisjunctionsFromBinding(final VariableBinding binding, final Rule rule, final DependencySet dsParam)
 	{
 		DependencySet ds = dsParam;
 		final List<RuleAtom> atoms = new ArrayList<>();

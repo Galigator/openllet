@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import openllet.core.KnowledgeBase;
+import openllet.core.KnowledgeBaseImpl;
 import openllet.owlwg.TestCollection;
 import openllet.owlwg.cli.FilterConditionParser;
 import openllet.owlwg.owlapi.testcase.impl.OwlApiTestCaseFactory;
@@ -126,7 +126,7 @@ public class OWLWGTestCase
 
 		try
 		{
-			KnowledgeBase._logger.setLevel(Level.WARNING);
+			KnowledgeBaseImpl._logger.setLevel(Level.WARNING);
 
 			final Collection<TestRunResult> results = (new PelletOA3TestRunner()).run(_test, 1 * 1000 * _travisLowSpeed); // One second of timeout : really enough if every thing work well.
 			for (final TestRunResult result : results)

@@ -24,7 +24,7 @@ import openllet.core.DependencySet;
 import openllet.core.IndividualIterator;
 import openllet.core.NodeMerge;
 import openllet.core.OpenlletOptions;
-import openllet.core.boxes.abox.ABoxImpl;
+import openllet.core.boxes.abox.ABox;
 import openllet.core.boxes.abox.Clash;
 import openllet.core.boxes.abox.Edge;
 import openllet.core.boxes.abox.EdgeList;
@@ -77,7 +77,7 @@ public abstract class CompletionStrategy
 	/**
 	 * ABox being completed
 	 */
-	protected ABoxImpl _abox;
+	protected ABox _abox;
 
 	/**
 	 * TBox associated with the _abox
@@ -133,16 +133,16 @@ public abstract class CompletionStrategy
 	/**
 	 *
 	 */
-	public CompletionStrategy(final ABoxImpl abox)
+	public CompletionStrategy(final ABox abox)
 	{
 		_abox = abox;
 		_tbox = abox.getTBox();
-		_timers = abox.getKB().timers;
+		_timers = abox.getKB().getTimers();
 
 		_completionTimer = _timers.getTimer("complete");
 	}
 
-	public ABoxImpl getABox()
+	public ABox getABox()
 	{
 		return _abox;
 	}
@@ -365,7 +365,7 @@ public abstract class CompletionStrategy
 			_logger.fine("Initialize finished");
 
 		_abox.setBranch(_abox.getBranches().size() + 1);
-		_abox._stats.treeDepth = 1;
+		_abox.getStats().treeDepth = 1;
 		_abox.setChanged(true);
 		_abox.setComplete(false);
 		_abox.setInitialized(true);
@@ -1015,7 +1015,7 @@ public abstract class CompletionStrategy
 
 	public void restoreLocal(final Individual ind, final Branch br)
 	{
-		_abox._stats.localRestores++;
+		_abox.getStats().localRestores++;
 		_abox.setClash(null);
 		_abox.setBranch(br.getBranch());
 
@@ -1069,18 +1069,18 @@ public abstract class CompletionStrategy
 		// Timer timer = _timers.startTimer("restore");
 		_abox.setBranch(br.getBranch());
 		_abox.setClash(null);
-		// Setting the _anonCount to the value at the time of _branch creation is incorrect
-		// when SMART_RESTORE option is turned on. If we create an anon _node after _branch
-		// creation but _node depends on an earlier _branch restore operation will not remove
-		// the _node. But setting _anonCount to a smaller number may mean the _anonCount will
-		// be incremented to that value and creating a fresh anon _node will actually reuse
-		// the not-removed _node. The only advantage of setting _anonCount to a smaller value
-		// is to keep the name of anon _nodes smaller to make debugging easier. For this reason,
+		// Setting the anonCount to the value at the time of _branch creation is incorrect
+		// when SMART_RESTORE option is turned on. If we create an anon node after branch
+		// creation but node depends on an earlier branch restore operation will not remove
+		// the _node. But setting _anonCount to a smaller number may mean the anonCount will
+		// be incremented to that value and creating a fresh anon node will actually reuse
+		// the not-removed node. The only advantage of setting anonCount to a smaller value
+		// is to keep the name of anon nodes smaller to make debugging easier. For this reason,
 		// the above line is not removed and under special circumstances may be uncommented
 		// to help debugging only with the intent that it will be commented again after
 		// debugging is complete
 		// _abox.setAnonCount( br.getAnonCount() );
-		_abox._rulesNotApplied = true;
+		_abox.setRulesNotApplied(true);
 		_mergeList.clear();
 
 		final List<ATermAppl> nodeList = _abox.getNodeNames();
@@ -1103,9 +1103,9 @@ public abstract class CompletionStrategy
 		if (OpenlletOptions.USE_INCREMENTAL_CONSISTENCY)
 			_abox.getIncrementalChangeTracker().clear();
 
-		// for each _node we either need to restore the _node to the status it
-		// had at the time _branch was created or remove the _node completely if
-		// it was created after the _branch. To optimize removing elements from
+		// for each node we either need to restore the node to the status it
+		// had at the time branch was created or remove the node completely if
+		// it was created after the branch. To optimize removing elements from
 		// the ArrayList we compute the block to be deleted and then remove all
 		// at once to utilize the underlying System.arraycopy operation.
 
@@ -1120,7 +1120,7 @@ public abstract class CompletionStrategy
 			// and the corresponding _node
 			final Node node = _abox.getNode(a);
 
-			// _node dependency tells us if the _node was created after the _branch
+			// node dependency tells us if the node was created after the _branch
 			// and if that is the case we remove it completely
 			// NOTE: for literals, _node.getNodeDepends() may be null when a literal value _branch is
 			// restored, in that case we can remove the literal since there is no other reference

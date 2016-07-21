@@ -50,8 +50,8 @@ public class TBoxBase implements Logging
 
 	public TBoxBase(final TBoxExpImpl tbox)
 	{
-		this._tbox = tbox;
-		this._kb = tbox.getKB();
+		_tbox = tbox;
+		_kb = tbox.getKB();
 	}
 
 	@Override

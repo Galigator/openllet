@@ -42,7 +42,7 @@ public class SWRLPerformanceTests
 		for (final Resource ind : ontModel.listIndividuals(OWL.Thing).toList())
 			System.out.println(ind.toString() + ": " + ontModel.getProperty(ind, uncle));
 
-		((PelletInfGraph) ontModel.getGraph()).getKB().timers.print();
+		((PelletInfGraph) ontModel.getGraph()).getKB().getTimers().print();
 
 		ontModel.close();
 	}
@@ -61,7 +61,7 @@ public class SWRLPerformanceTests
 		for (final Resource ind : ontModel.listIndividuals(OWL.Thing).toList())
 			System.out.println(ind.toString() + ": " + ontModel.getProperty(ind, exposedTo));
 
-		((PelletInfGraph) ontModel.getGraph()).getKB().timers.print();
+		((PelletInfGraph) ontModel.getGraph()).getKB().getTimers().print();
 
 		ontModel.close();
 	}
@@ -83,7 +83,7 @@ public class SWRLPerformanceTests
 			System.out.println(statement);
 		}
 
-		((PelletInfGraph) ontModel.getGraph()).getKB().timers.print();
+		((PelletInfGraph) ontModel.getGraph()).getKB().getTimers().print();
 
 		ontModel.close();
 	}

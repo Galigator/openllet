@@ -28,12 +28,6 @@ import openllet.core.utils.SetUtils;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2009
  * </p>
  * <p>
@@ -125,7 +119,7 @@ public class MaxRule extends AbstractTableauRule
 	 * @param dsParam
 	 * @return true if more merges are required for this maxCardinality
 	 */
-	protected boolean applyMaxRule(final Individual x, final Role r, final ATermAppl c, final int k, DependencySet dsParam)
+	protected boolean applyMaxRule(final Individual x, final Role r, final ATermAppl c, final int k, final DependencySet dsParam)
 	{
 		DependencySet ds = dsParam;
 
@@ -261,7 +255,7 @@ public class MaxRule extends AbstractTableauRule
 		return ds;
 	}
 
-	public void applyFunctionalMaxRule(final Individual x, final Role s, final ATermAppl c, DependencySet dsParam)
+	public void applyFunctionalMaxRule(final Individual x, final Role s, final ATermAppl c, final DependencySet dsParam)
 	{
 		DependencySet ds = dsParam;
 

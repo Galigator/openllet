@@ -78,8 +78,8 @@ public class CoreNewImpl implements Core
 
 	private CoreNewImpl(final Query query, final QueryAtom atom)
 	{
-		this._atom = atom;
-		this._query = query;
+		_atom = atom;
+		_query = query;
 	}
 
 	private void addI(final ATermAppl aa0, final List<ATermAppl> signature, final Collection<ATermAppl> uv)

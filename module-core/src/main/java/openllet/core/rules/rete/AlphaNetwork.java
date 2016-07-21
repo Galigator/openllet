@@ -14,7 +14,7 @@ import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
-import openllet.core.boxes.abox.ABoxImpl;
+import openllet.core.boxes.abox.ABox;
 import openllet.core.boxes.abox.Edge;
 import openllet.core.boxes.abox.Individual;
 import openllet.core.boxes.abox.Node;
@@ -50,11 +50,11 @@ public class AlphaNetwork implements Iterable<AlphaNode>
 	private final Map<Object, List<AlphaNode>> _map = new ConcurrentHashMap<>();
 	private final List<AlphaNode> _alphaNodes = new Vector<>();
 	private final AlphaNodeCreator _creator = new AlphaNodeCreator();
-	private final ABoxImpl _abox;
+	private final ABox _abox;
 
-	public AlphaNetwork(final ABoxImpl abox)
+	public AlphaNetwork(final ABox abox)
 	{
-		this._abox = abox;
+		_abox = abox;
 	}
 
 	@Override
@@ -188,7 +188,7 @@ public class AlphaNetwork implements Iterable<AlphaNode>
 	//				}
 	//				for (AlphaNode alpha : alphas) {
 	//					((AlphaEdgeNode) alpha).activate(edge);
-	//				}	
+	//				}
 	//			}
 	//        }
 	//    }

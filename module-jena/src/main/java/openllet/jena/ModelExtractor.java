@@ -675,7 +675,7 @@ public class ModelExtractor
 	 */
 	public void setSelector(final EnumSet<StatementType> selector)
 	{
-		this._selector = selector;
+		_selector = selector;
 	}
 
 	/**
@@ -691,7 +691,7 @@ public class ModelExtractor
 	 */
 	public void setKB(final KnowledgeBase kb)
 	{
-		this._kb = kb;
+		_kb = kb;
 	}
 
 	/**
@@ -715,6 +715,6 @@ public class ModelExtractor
 		if (filter == null)
 			throw new NullPointerException("Filter cannot be null");
 
-		this._filter = filter;
+		_filter = filter;
 	}
 }

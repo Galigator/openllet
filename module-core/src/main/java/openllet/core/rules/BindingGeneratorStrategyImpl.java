@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
+import openllet.core.boxes.abox.ABox;
 import openllet.core.boxes.abox.ABoxImpl;
 import openllet.core.rules.builtins.BuiltIn;
 import openllet.core.rules.builtins.BuiltInRegistry;
@@ -77,11 +78,11 @@ public class BindingGeneratorStrategyImpl implements BindingGeneratorStrategy
 
 	}
 
-	private final ABoxImpl _abox;
+	private final ABox _abox;
 
-	public BindingGeneratorStrategyImpl(final ABoxImpl abox)
+	public BindingGeneratorStrategyImpl(final ABox abox)
 	{
-		this._abox = abox;
+		_abox = abox;
 	}
 
 	@Override

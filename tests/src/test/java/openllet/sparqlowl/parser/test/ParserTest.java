@@ -35,12 +35,6 @@ import org.junit.runners.Parameterized.Parameters;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2009
  * </p>
  * <p>
@@ -82,9 +76,9 @@ public class ParserTest
 
 	public ParserTest(final String kbFile, final String sparqlFile, final String sparqlOWLFile)
 	{
-		this._kbFile = kbFile;
-		this._sparqlFile = sparqlFile;
-		this._sparqlOWLFile = sparqlOWLFile;
+		_kbFile = kbFile;
+		_sparqlFile = sparqlFile;
+		_sparqlOWLFile = sparqlOWLFile;
 	}
 
 	@BeforeClass

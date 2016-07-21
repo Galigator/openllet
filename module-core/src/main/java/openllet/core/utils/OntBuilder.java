@@ -8,6 +8,7 @@ import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
 import openllet.core.KnowledgeBase;
+import openllet.core.KnowledgeBaseImpl;
 import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.output.ATermBaseVisitor;
 import openllet.core.rules.model.AtomDConstant;
@@ -590,6 +591,6 @@ public class OntBuilder
 
 	public void reset()
 	{
-		_kb = new KnowledgeBase();
+		_kb = new KnowledgeBaseImpl();
 	}
 }

@@ -17,7 +17,7 @@ import java.util.HashSet;
 import java.util.Set;
 import junit.framework.JUnit4TestAdapter;
 import openllet.aterm.ATermAppl;
-import openllet.core.KnowledgeBase;
+import openllet.core.KnowledgeBaseImpl;
 import openllet.core.OpenlletOptions;
 import openllet.core.utils.TermFactory;
 import openllet.core.utils.progress.AbstractProgressMonitor;
@@ -60,7 +60,7 @@ public class TestKnowledgeBase
 	@Test
 	public void testGetInstances1()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		final ATermAppl C = term("C");
 		final ATermAppl i = term("i");
@@ -81,7 +81,7 @@ public class TestKnowledgeBase
 	@Test
 	public void testGetInstances2()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		final ATermAppl C = term("C");
 		final ATermAppl i = term("i");
@@ -106,7 +106,7 @@ public class TestKnowledgeBase
 	@Test
 	public void testGetInstances3()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		final ATermAppl C = term("C");
 		final ATermAppl D = term("D");
@@ -138,7 +138,7 @@ public class TestKnowledgeBase
 	@Test
 	public void testGetInstances4()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		final ATermAppl C = term("C");
 		final ATermAppl D = term("D");
@@ -169,7 +169,7 @@ public class TestKnowledgeBase
 	@Test
 	public void testGetInstances5()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		final ATermAppl C = term("C");
 		final ATermAppl D = term("D");
@@ -193,7 +193,7 @@ public class TestKnowledgeBase
 	@Test
 	public void testGetInstances6()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		final ATermAppl C = term("C");
 		final ATermAppl D = term("D");
@@ -218,7 +218,7 @@ public class TestKnowledgeBase
 	@Test
 	public void testGetInstances7()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		final ATermAppl C = term("C");
 		final ATermAppl D = term("D");
@@ -243,7 +243,7 @@ public class TestKnowledgeBase
 	@Test
 	public void testGetInstances8()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		final ATermAppl C = TermFactory.term("C");
 		final ATermAppl E = TermFactory.term("E");
@@ -267,7 +267,7 @@ public class TestKnowledgeBase
 	@Test
 	public void testGetInstances9()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		final ATermAppl C = term("C");
 		final ATermAppl E = term("E");
@@ -292,7 +292,7 @@ public class TestKnowledgeBase
 	@Test
 	public void testGetInstances10()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		final ATermAppl C = term("C");
 		final ATermAppl D = term("D");
@@ -315,7 +315,7 @@ public class TestKnowledgeBase
 	@Test
 	public void testGetInstances11()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		final ATermAppl C = term("C");
 		final ATermAppl D = term("D");
@@ -343,7 +343,7 @@ public class TestKnowledgeBase
 	@Test
 	public void testProgresMonitorRealization()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		final ATermAppl A = term("A");
 		final ATermAppl B = term("B");

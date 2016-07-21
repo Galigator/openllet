@@ -59,6 +59,7 @@ import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
 import openllet.core.KBLoader;
 import openllet.core.KnowledgeBase;
+import openllet.core.KnowledgeBaseImpl;
 import openllet.core.OpenlletOptions;
 import openllet.core.boxes.abox.Clash;
 import openllet.core.boxes.rbox.Role;
@@ -103,7 +104,7 @@ public class MiscTests extends AbstractKBTests
 	@Test
 	public void backtrackPreservesAssertedIndividuals()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		kb.addIndividual(term("x"));
 
@@ -187,7 +188,7 @@ public class MiscTests extends AbstractKBTests
 	@Test
 	public void testQualifiedCardinalityDataProperty()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl c = restrict(Datatypes.INTEGER, minInclusive(literal(10)));
 		final ATermAppl d = restrict(Datatypes.INTEGER, maxInclusive(literal(20)));
@@ -221,7 +222,7 @@ public class MiscTests extends AbstractKBTests
 	@Test
 	public void testQualifiedCardinality3()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl c = term("z");
 		final ATermAppl d = term("d");
@@ -256,7 +257,7 @@ public class MiscTests extends AbstractKBTests
 	@Test
 	public void testSelfRestrictions()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl c = term("c");
 		final ATermAppl d = term("d");
@@ -285,7 +286,7 @@ public class MiscTests extends AbstractKBTests
 	 */
 	public void testBooleanDatatypeConstructors()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl nni = Datatypes.NON_NEGATIVE_INTEGER;
 		final ATermAppl npi = Datatypes.NON_POSITIVE_INTEGER;
@@ -309,7 +310,7 @@ public class MiscTests extends AbstractKBTests
 	@Test
 	public void testSelfRestrictionRestore()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl C = term("c");
 		final ATermAppl D = term("d");
@@ -339,7 +340,7 @@ public class MiscTests extends AbstractKBTests
 	@Test
 	public void testReflexive1()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl c = term("c");
 		final ATermAppl d = term("d");
@@ -388,7 +389,7 @@ public class MiscTests extends AbstractKBTests
 	@Test
 	public void testReflexive2()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl a = term("a");
 		final ATermAppl c = term("c");
@@ -440,7 +441,7 @@ public class MiscTests extends AbstractKBTests
 	{
 		final ATermAppl p = term("p");
 
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 		kb.addObjectProperty(p);
 		kb.addAsymmetricProperty(p);
 
@@ -454,7 +455,7 @@ public class MiscTests extends AbstractKBTests
 		final byte MAX = 127;
 		final int COUNT = MAX - MIN + 1;
 
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl C = term("C");
 		final ATermAppl D = term("D");
@@ -493,7 +494,7 @@ public class MiscTests extends AbstractKBTests
 	@Test
 	public void testMaxCardinality()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		kb.addObjectProperty(term("p"));
 		kb.addObjectProperty(term("q"));
@@ -548,7 +549,7 @@ public class MiscTests extends AbstractKBTests
 	@Test
 	public void testDifferentFrom2()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		kb.addClass(term("C"));
 		kb.addClass(term("D"));
@@ -569,7 +570,7 @@ public class MiscTests extends AbstractKBTests
 	@Test
 	public void testSHOIN()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		kb.addObjectProperty(term("R1"));
 		kb.addObjectProperty(term("invR1"));
@@ -621,7 +622,7 @@ public class MiscTests extends AbstractKBTests
 	@Test
 	public void testCyclicTBox1()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl C = term("C");
 		kb.addEquivalentClass(C, not(C));
@@ -637,7 +638,7 @@ public class MiscTests extends AbstractKBTests
 	@Test
 	public void testTopClass2()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl A = term("A");
 		final ATermAppl B = term("B");
@@ -671,7 +672,7 @@ public class MiscTests extends AbstractKBTests
 	{
 		// This test was failing due to the issue explained in #157 at some point but not anymore
 		// The issue explained in #157 is still valid even though this test passes
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl A = term("A");
 		final ATermAppl B = term("B");
@@ -695,7 +696,7 @@ public class MiscTests extends AbstractKBTests
 	@Test
 	public void testTopClass3()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl A = term("A");
 		final ATermAppl B = term("B");
@@ -757,7 +758,7 @@ public class MiscTests extends AbstractKBTests
 	@Test
 	public void testCyclicTBox2()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl B = term("B");
 		final ATermAppl C = term("C");
@@ -803,7 +804,7 @@ public class MiscTests extends AbstractKBTests
 	@Test
 	public void testComplexTypes()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl a = term("a");
 		final ATermAppl p = term("p");
@@ -828,7 +829,7 @@ public class MiscTests extends AbstractKBTests
 
 		// See also: http://cvsdude.com/trac/clark-parsia/pellet-devel/ticket/7
 
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl c = term("c");
 		kb.addClass(c);
@@ -842,7 +843,7 @@ public class MiscTests extends AbstractKBTests
 	@Ignore("Known to fail because different lexical forms are stored in one canonical literal")
 	public void testCanonicalLiteral()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl a = term("a");
 		final ATermAppl p = term("p");
@@ -865,7 +866,7 @@ public class MiscTests extends AbstractKBTests
 	@Test
 	public void testSimpleABoxRemove()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl a = term("a");
 		final ATermAppl C = term("C");
@@ -888,7 +889,7 @@ public class MiscTests extends AbstractKBTests
 	@Test
 	public void testABoxRemovalWithAllValues()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl a = term("a");
 		final ATermAppl b = term("b");
@@ -933,7 +934,7 @@ public class MiscTests extends AbstractKBTests
 			final ATermAppl C = ATermUtils.makeTermAppl("C");
 			final ATermAppl x = ATermUtils.makeTermAppl("x");
 
-			final KnowledgeBase kb = new KnowledgeBase();
+			final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 			kb.addClass(A);
 			kb.addClass(B);
@@ -1091,7 +1092,7 @@ public class MiscTests extends AbstractKBTests
 			final ATermAppl B = ATermUtils.makeTermAppl("B");
 			final ATermAppl p = ATermUtils.makeTermAppl("p");
 
-			final KnowledgeBase kb = new KnowledgeBase();
+			final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 			kb.addClass(A);
 			kb.addClass(B);
@@ -1129,7 +1130,7 @@ public class MiscTests extends AbstractKBTests
 			final ATermAppl B = ATermUtils.makeTermAppl("B");
 			final ATermAppl p = ATermUtils.makeTermAppl("p");
 
-			final KnowledgeBase kb = new KnowledgeBase();
+			final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 			kb.addClass(A);
 			kb.addClass(B);
@@ -1165,7 +1166,7 @@ public class MiscTests extends AbstractKBTests
 			final ATermAppl A = ATermUtils.makeTermAppl("A");
 			final ATermAppl p = ATermUtils.makeTermAppl("p");
 
-			final KnowledgeBase kb = new KnowledgeBase();
+			final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 			kb.addClass(A);
 			kb.addObjectProperty(p);
@@ -1191,7 +1192,7 @@ public class MiscTests extends AbstractKBTests
 		// This test case is to test the processing of sameAs processing
 		// where there are redundancies in the assertions (see ticket 138)
 
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl a = term("a");
 		final ATermAppl b = term("b");
@@ -1224,7 +1225,7 @@ public class MiscTests extends AbstractKBTests
 		// This test case is to test the restoring of edges with
 		// subproperties (see ticket 109)
 
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl a = term("a");
 		final ATermAppl b = term("b");
@@ -1272,7 +1273,7 @@ public class MiscTests extends AbstractKBTests
 		// This test case is to test the retrieval of inverse
 		// properties (see ticket 117)
 
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl p = term("p");
 		final ATermAppl q = term("q");
@@ -1298,7 +1299,7 @@ public class MiscTests extends AbstractKBTests
 		// This test case is to test the retrieval of equivalences
 		// for undefined classes/properties (see ticket 90)
 
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl C = term("C");
 		kb.addClass(C);
@@ -1358,7 +1359,7 @@ public class MiscTests extends AbstractKBTests
 
 		try
 		{
-			final KnowledgeBase kb = new KnowledgeBase();
+			final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 			final ATermAppl p = term("p");
 			final ATermAppl c = and(all(p, value(literal("s"))), min(p, 2, value(literal("l"))));
@@ -1397,7 +1398,7 @@ public class MiscTests extends AbstractKBTests
 	@Test
 	public void testInternalization()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl A = term("A");
 		final ATermAppl B = term("B");
@@ -1424,7 +1425,7 @@ public class MiscTests extends AbstractKBTests
 		// either a or b with a dependency. if that dependency is not recorded
 		// isMergable returns incorrect results
 
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl A = term("A");
 		final ATermAppl B = term("B");
@@ -1462,7 +1463,7 @@ public class MiscTests extends AbstractKBTests
 	@Test
 	public void testNominalValueInteraction()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl t1 = term("T1");
 		final ATermAppl p = term("p");
@@ -1501,7 +1502,7 @@ public class MiscTests extends AbstractKBTests
 		// if we visit b before c we will miss the value e and if we visit c
 		// before b we miss the value d.
 
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl a = term("a");
 		final ATermAppl b = term("b");
@@ -1547,7 +1548,7 @@ public class MiscTests extends AbstractKBTests
 	public void testLiteralMerge()
 	{
 		// Tests the issue described in #250
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl a = term("a");
 		final ATermAppl b = term("b");
@@ -1585,7 +1586,7 @@ public class MiscTests extends AbstractKBTests
 		// datatype returned to be empty causing the reasoner to conclude
 		// subproperty relation hols even though it does not
 
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl p = term("p");
 		final ATermAppl q = term("q");
@@ -1621,7 +1622,7 @@ public class MiscTests extends AbstractKBTests
 		// Another variation of testDatatypeSubProperty1 where super
 		// property has a range but not the sub property
 
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl C = term("C");
 
@@ -1651,7 +1652,7 @@ public class MiscTests extends AbstractKBTests
 	@Test
 	public void testCachedNominalEdge()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl A = term("A");
 		final ATermAppl B = term("B");
@@ -1689,7 +1690,7 @@ public class MiscTests extends AbstractKBTests
 	@Test
 	public void testDisjoints()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl A = term("A");
 		final ATermAppl B = term("B");
@@ -1738,7 +1739,7 @@ public class MiscTests extends AbstractKBTests
 	@Test
 	public void testDisjointDataProperties()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl p = term("p");
 		final ATermAppl q = term("q");
@@ -1754,7 +1755,7 @@ public class MiscTests extends AbstractKBTests
 	@Test
 	public void testRemovePruned()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl A = term("A");
 		final ATermAppl B = term("B");
@@ -1789,7 +1790,7 @@ public class MiscTests extends AbstractKBTests
 	@Test
 	public void testDataAssertions()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl A = term("A");
 
@@ -1821,7 +1822,7 @@ public class MiscTests extends AbstractKBTests
 	@Test
 	public void testDatatypeIntersection()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl A = term("A");
 		final ATermAppl p = term("p");
@@ -1853,7 +1854,7 @@ public class MiscTests extends AbstractKBTests
 	@Test
 	public void testDataOneOf()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl A = term("A");
 
@@ -1891,7 +1892,7 @@ public class MiscTests extends AbstractKBTests
 	@Test
 	public void testDisjointSelf()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl A = term("A");
 		final ATermAppl p = term("p");
@@ -1911,7 +1912,7 @@ public class MiscTests extends AbstractKBTests
 	{
 		// test case for issue #336 to verify AbstractConceptCache.isMergable does
 		// not return incorrect results.
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl p1 = term("p1");
 		final ATermAppl p2 = term("p2");
@@ -1953,7 +1954,7 @@ public class MiscTests extends AbstractKBTests
 		// where one is primitive and the other is non-primitive CD classifier was
 		// picking primitive flag and returning incorrect classification results.
 
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl A = term("A");
 		final ATermAppl B = term("B");
@@ -1985,7 +1986,7 @@ public class MiscTests extends AbstractKBTests
 	{
 		// Test for #351. Calling getPropertyValues for an undefinde property should not throw NPE
 
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl p = term("p");
 		final ATermAppl q = term("q");
@@ -2284,7 +2285,7 @@ public class MiscTests extends AbstractKBTests
 	@Test
 	public void test553()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 		final KnowledgeBase copyKB = kb.copy();
 		assertTrue(copyKB != kb);
 		assertTrue(copyKB.getABox().getKB() == copyKB);

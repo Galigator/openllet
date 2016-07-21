@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
+import openllet.core.boxes.abox.ABox;
 import openllet.core.boxes.abox.ABoxImpl;
 import openllet.core.boxes.abox.Literal;
 import openllet.core.exceptions.InternalReasonerException;
@@ -50,7 +51,7 @@ public class GeneralFunctionBuiltIn implements BuiltIn
 
 		public GeneralFunctionHelper(final BuiltInAtom atom)
 		{
-			this._atom = atom;
+			_atom = atom;
 		}
 
 		@Override
@@ -146,7 +147,7 @@ public class GeneralFunctionBuiltIn implements BuiltIn
 
 	public GeneralFunctionBuiltIn(final GeneralFunction function)
 	{
-		this._function = function;
+		_function = function;
 	}
 
 	@Override
@@ -156,7 +157,7 @@ public class GeneralFunctionBuiltIn implements BuiltIn
 	}
 
 	@Override
-	public boolean apply(final ABoxImpl abox, final Literal[] args)
+	public boolean apply(final ABox abox, final Literal[] args)
 	{
 		return _function.apply(abox, args);
 	}

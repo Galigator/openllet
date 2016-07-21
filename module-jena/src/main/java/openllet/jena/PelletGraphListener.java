@@ -49,9 +49,9 @@ public class PelletGraphListener implements GraphListener
 
 	public PelletGraphListener(final Graph rootGraph, final KnowledgeBase kb, final boolean enabled)
 	{
-		this._rootGraph = rootGraph;
-		this._kb = kb;
-		this._enabled = enabled;
+		_rootGraph = rootGraph;
+		_kb = kb;
+		_enabled = enabled;
 
 		_leafGraphs = CollectionUtils.makeSet();
 		_changedGraphs = CollectionUtils.makeSet();
@@ -370,10 +370,10 @@ public class PelletGraphListener implements GraphListener
 
 	public void setEnabled(final boolean enabled)
 	{
-		if (this._enabled == enabled)
+		if (_enabled == enabled)
 			return;
 
-		this._enabled = enabled;
+		_enabled = enabled;
 
 		_leafGraphs.clear();
 		_changedGraphs.clear();

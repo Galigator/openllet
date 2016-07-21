@@ -32,12 +32,6 @@ import org.junit.runners.Parameterized.Parameters;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2009
  * </p>
  * <p>

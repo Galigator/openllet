@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.logging.Level;
 import openllet.aterm.ATermAppl;
-import openllet.core.boxes.abox.ABoxImpl;
+import openllet.core.boxes.abox.ABox;
 import openllet.core.boxes.abox.Node;
 import openllet.core.rules.model.RuleAtom;
 import openllet.core.utils.ATermUtils;
@@ -23,11 +23,11 @@ public abstract class AlphaNode extends ReteNode
 
 	protected boolean _doExplanation;
 
-	protected final ABoxImpl _abox;
+	protected final ABox _abox;
 
-	public AlphaNode(final ABoxImpl abox)
+	public AlphaNode(final ABox abox)
 	{
-		this._abox = abox;
+		_abox = abox;
 	}
 
 	public abstract Iterator<WME> getMatches(int argIndex, Node arg);
@@ -57,7 +57,7 @@ public abstract class AlphaNode extends ReteNode
 
 	public void setDoExplanation(final boolean doExplanation)
 	{
-		this._doExplanation = doExplanation;
+		_doExplanation = doExplanation;
 	}
 
 	@Override

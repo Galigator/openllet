@@ -73,7 +73,7 @@ public abstract class Blocking
 
 	public boolean isBlocked(final Individual blocked)
 	{
-		final Timer t = blocked.getABox().getKB().timers.startTimer("blocking");
+		final Timer t = blocked.getABox().getKB().getTimers().startTimer("blocking");
 		try
 		{
 			return !blocked.isRoot() && (isIndirectlyBlocked(blocked) || isDirectlyBlockedInt(blocked));
@@ -95,7 +95,7 @@ public abstract class Blocking
 
 	public boolean isDirectlyBlocked(final Individual blocked)
 	{
-		final Timer t = blocked.getABox().getKB().timers.startTimer("dBlocking");
+		final Timer t = blocked.getABox().getKB().getTimers().startTimer("dBlocking");
 		try
 		{
 			return isDirectlyBlockedInt(blocked);

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import openllet.aterm.ATermAppl;
-import openllet.core.KnowledgeBase;
+import openllet.core.KnowledgeBaseImpl;
 import openllet.core.boxes.abox.Individual;
 import openllet.core.boxes.rbox.Role;
 import openllet.core.utils.ATermUtils;
@@ -37,7 +37,7 @@ public class TestUtils
 		return clazz;
 	}
 
-	public static ATermAppl selectRandomConcept(final KnowledgeBase kb)
+	public static ATermAppl selectRandomConcept(final KnowledgeBaseImpl kb)
 	{
 		final ATermAppl[] classes = kb.getTBox().allClasses().toArray(ATermAppl[]::new);
 		ATermAppl clazz = null;
@@ -49,7 +49,7 @@ public class TestUtils
 		return clazz;
 	}
 
-	public static ATermAppl selectRandomObjectProperty(final KnowledgeBase kb)
+	public static ATermAppl selectRandomObjectProperty(final KnowledgeBaseImpl kb)
 	{
 
 		//get all classes
@@ -63,7 +63,7 @@ public class TestUtils
 		return role.getName();
 	}
 
-	public static ATermAppl selectRandomIndividual(final KnowledgeBase kb)
+	public static ATermAppl selectRandomIndividual(final KnowledgeBaseImpl kb)
 	{
 		final ATermAppl[] inds = kb.individuals().toArray(ATermAppl[]::new);
 		return inds[_rand.nextInt(inds.length)];

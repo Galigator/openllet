@@ -29,12 +29,6 @@ import openllet.core.utils.intset.IntSet;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2008
  * </p>
  * <p>
@@ -55,7 +49,7 @@ public class IncrementalRestore
 
 	private IncrementalRestore(final KnowledgeBase kb)
 	{
-		this._kb = kb;
+		_kb = kb;
 	}
 
 	/**

@@ -15,9 +15,6 @@ import openllet.query.sparqldl.model.Query;
  * Title: SPARQL-DL Query Parser Interface
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>

@@ -19,7 +19,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import openllet.aterm.ATermAppl;
-import openllet.core.KnowledgeBase;
+import openllet.core.KnowledgeBaseImpl;
 import openllet.core.boxes.abox.Individual;
 import openllet.core.boxes.abox.Literal;
 import openllet.core.boxes.abox.Node;
@@ -98,7 +98,7 @@ public class BindingGeneratorsTest
 
 	}
 
-	private KnowledgeBase _kb;
+	private KnowledgeBaseImpl _kb;
 
 	private static final ATermAppl data1 = ATermUtils.makePlainLiteral("data1"), data2 = ATermUtils.makePlainLiteral("data2"), data3 = ATermUtils.makePlainLiteral("data3"), data4 = ATermUtils.makeTypedLiteral("4", Namespaces.XSD + "decimal"), dp1 = ATermUtils.makeTermAppl("dataProp1"), dp2 = ATermUtils.makeTermAppl("dataProp2"), mary = ATermUtils.makeTermAppl("Mary"), p = ATermUtils.makeTermAppl("p"), robert = ATermUtils.makeTermAppl("Robert"), victor = ATermUtils.makeTermAppl("Victor");
 
@@ -108,7 +108,7 @@ public class BindingGeneratorsTest
 	@Before
 	public void setUp()
 	{
-		_kb = new KnowledgeBase();
+		_kb = new KnowledgeBaseImpl();
 		_x = new AtomIVariable("x");
 		_y = new AtomIVariable("y");
 		_z = new AtomDVariable("z");

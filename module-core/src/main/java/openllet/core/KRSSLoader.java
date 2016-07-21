@@ -83,12 +83,12 @@ public class KRSSLoader extends KBLoader
 
 	public KRSSLoader()
 	{
-		this(new KnowledgeBase());
+		this(new KnowledgeBaseImpl());
 	}
 
 	public KRSSLoader(final KnowledgeBase kb)
 	{
-		this._kb = kb;
+		_kb = kb;
 
 		_forceUppercase = false;
 	}
@@ -106,7 +106,7 @@ public class KRSSLoader extends KBLoader
 
 	public void setForceUppercase(final boolean forceUppercase)
 	{
-		this._forceUppercase = forceUppercase;
+		_forceUppercase = forceUppercase;
 	}
 
 	private void initTokenizer(final Reader reader)

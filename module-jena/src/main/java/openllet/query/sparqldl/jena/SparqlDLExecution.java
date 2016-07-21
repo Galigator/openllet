@@ -51,12 +51,6 @@ import org.apache.jena.sparql.util.ModelUtils;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -101,9 +95,9 @@ class SparqlDLExecution implements QueryExecution
 
 	public SparqlDLExecution(final Query query, final Dataset source, final boolean handleVariableSPO)
 	{
-		this._query = query;
-		this._source = source;
-		this._handleVariableSPO = handleVariableSPO;
+		_query = query;
+		_source = source;
+		_handleVariableSPO = handleVariableSPO;
 
 		final Graph graph = source.getDefaultModel().getGraph();
 		if (!(graph instanceof PelletInfGraph))
@@ -337,7 +331,7 @@ class SparqlDLExecution implements QueryExecution
 
 	public void setPurePelletQueryExec(final boolean purePelletQueryExec)
 	{
-		this._purePelletQueryExec = purePelletQueryExec;
+		_purePelletQueryExec = purePelletQueryExec;
 	}
 
 	/**

@@ -36,7 +36,7 @@ import junit.framework.JUnit4TestAdapter;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
-import openllet.core.KnowledgeBase;
+import openllet.core.KnowledgeBaseImpl;
 import openllet.core.OpenlletOptions;
 import openllet.core.datatypes.Datatypes;
 import openllet.core.datatypes.types.real.XSDInteger;
@@ -525,7 +525,7 @@ public class TracingTests extends AbstractKBTests
 	@Test
 	public void testTopBottom()
 	{
-		_kb = new KnowledgeBase();
+		_kb = new KnowledgeBaseImpl();
 		_kb.addSubClass(ATermUtils.TOP, ATermUtils.BOTTOM);
 
 		assertFalse(_kb.isConsistent());
@@ -566,7 +566,7 @@ public class TracingTests extends AbstractKBTests
 	@Test
 	public void testRuleExplanation()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		final ATermAppl C = ATermUtils.makeTermAppl("C");
 		final ATermAppl D = ATermUtils.makeTermAppl("D");

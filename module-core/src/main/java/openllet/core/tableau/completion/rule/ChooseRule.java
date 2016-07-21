@@ -22,12 +22,6 @@ import openllet.core.utils.ATermUtils;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2009
  * </p>
  * <p>
@@ -62,7 +56,7 @@ public class ChooseRule extends AbstractTableauRule
 
 	protected void apply(final Individual x, final ATermAppl maxCard)
 	{
-		// max(r, n, c) is in normalized form not(min(p, n + 1, c))       
+		// max(r, n, c) is in normalized form not(min(p, n + 1, c))
 		final ATermAppl max = (ATermAppl) maxCard.getArgument(0);
 		final Role r = _strategy.getABox().getRole(max.getArgument(0));
 		final ATermAppl c = (ATermAppl) max.getArgument(2);

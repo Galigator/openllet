@@ -36,7 +36,7 @@ import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
 import openllet.core.NodeMerge;
 import openllet.core.OpenlletOptions;
-import openllet.core.boxes.abox.ABoxImpl;
+import openllet.core.boxes.abox.ABox;
 import openllet.core.boxes.abox.Clash;
 import openllet.core.boxes.abox.Edge;
 import openllet.core.boxes.abox.EdgeList;
@@ -57,19 +57,19 @@ public class MaxBranch extends IndividualBranch
 	private final ATermAppl _qualification;
 	private DependencySet[] _prevDS;
 
-	public MaxBranch(final ABoxImpl abox, final CompletionStrategy strategy, final Individual x, final Role r, final int n, final ATermAppl qualification, final List<NodeMerge> mergePairs, final DependencySet ds)
+	public MaxBranch(final ABox abox, final CompletionStrategy strategy, final Individual x, final Role r, final int n, final ATermAppl qualification, final List<NodeMerge> mergePairs, final DependencySet ds)
 	{
 		super(abox, strategy, x, ds, mergePairs.size());
 
-		this._r = r;
-		this._n = n;
-		this._mergePairs = mergePairs;
-		this._qualification = qualification;
-		this._prevDS = new DependencySet[mergePairs.size()];
+		_r = r;
+		_n = n;
+		_mergePairs = mergePairs;
+		_qualification = qualification;
+		_prevDS = new DependencySet[mergePairs.size()];
 	}
 
 	@Override
-	public IndividualBranch copyTo(final ABoxImpl abox)
+	public IndividualBranch copyTo(final ABox abox)
 	{
 		final Individual x = abox.getIndividual(ind.getName());
 		final MaxBranch b = new MaxBranch(abox, null, x, _r, _n, _qualification, _mergePairs, getTermDepends());
@@ -92,7 +92,7 @@ public class MaxBranch extends IndividualBranch
 		//we must re-add this _individual to the max _queue. This is because we may still need to keep
 		//applying the max rule for additional merges
 		//recreate the label for the individuals
-		ATermAppl maxCon = ATermUtils.makeMax(this._r.getName(), this._n, this._qualification);
+		ATermAppl maxCon = ATermUtils.makeMax(_r.getName(), _n, _qualification);
 		//normalize the label
 		maxCon = ATermUtils.normalize(maxCon);
 
@@ -106,7 +106,7 @@ public class MaxBranch extends IndividualBranch
 		DependencySet ds = getTermDepends();
 		for (; getTryNext() < getTryCount(); _tryNext++)
 		{
-			this._abox.getKB().timers.mainTimer.check();
+			_abox.getKB().getTimers().mainTimer.check();
 			if (OpenlletOptions.USE_SEMANTIC_BRANCHING)
 				for (int m = 0; m < getTryNext(); m++)
 				{

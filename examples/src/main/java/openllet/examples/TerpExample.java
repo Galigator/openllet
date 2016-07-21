@@ -45,7 +45,7 @@ public class TerpExample
 
 	public void run()
 	{
-		// register the Terp parser
+		// register the Terp _parser
 		ARQTerpParser.registerFactory();
 
 		for (final String query : queries)

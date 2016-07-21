@@ -38,6 +38,7 @@ import java.util.logging.Logger;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
+import openllet.core.KnowledgeBaseImpl;
 import openllet.core.OpenlletOptions;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.OntBuilder;
@@ -98,7 +99,7 @@ public class PelletInfGraph extends BaseInfGraph
 
 	public PelletInfGraph(final Graph graph, final PelletReasoner pellet, final GraphLoader loader)
 	{
-		this(new KnowledgeBase(), graph, pellet, loader);
+		this(new KnowledgeBaseImpl(), graph, pellet, loader);
 	}
 
 	private PelletInfGraph(final KnowledgeBase kb, final Graph graph, final PelletReasoner pellet, final GraphLoader loader)

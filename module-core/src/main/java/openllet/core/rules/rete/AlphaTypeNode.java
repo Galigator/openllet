@@ -9,7 +9,7 @@ package openllet.core.rules.rete;
 import java.util.Iterator;
 import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
-import openllet.core.boxes.abox.ABoxImpl;
+import openllet.core.boxes.abox.ABox;
 import openllet.core.boxes.abox.Individual;
 import openllet.core.boxes.abox.Node;
 import openllet.core.rules.model.AtomIConstant;
@@ -21,24 +21,22 @@ import openllet.core.utils.ATermUtils;
 import openllet.core.utils.iterator.IteratorUtils;
 import openllet.core.utils.iterator.NestedIterator;
 
-/**
- */
 public class AlphaTypeNode extends AlphaNode
 {
 	private final ATermAppl _predicate;
 	private final ATermAppl _name;
 	private Individual _node;
 
-	public AlphaTypeNode(final ABoxImpl abox, final ATermAppl predicate)
+	public AlphaTypeNode(final ABox abox, final ATermAppl predicate)
 	{
 		this(abox, predicate, null);
 	}
 
-	public AlphaTypeNode(final ABoxImpl abox, final ATermAppl predicate, final ATermAppl name)
+	public AlphaTypeNode(final ABox abox, final ATermAppl predicate, final ATermAppl name)
 	{
 		super(abox);
-		this._predicate = predicate;
-		this._name = name;
+		_predicate = predicate;
+		_name = name;
 	}
 
 	protected Individual initNode()

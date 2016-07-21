@@ -13,12 +13,6 @@ import openllet.core.boxes.tbox.impl.TBoxImpl;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>

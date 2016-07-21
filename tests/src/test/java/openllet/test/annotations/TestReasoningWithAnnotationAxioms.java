@@ -7,6 +7,7 @@ import java.util.Set;
 import junit.framework.JUnit4TestAdapter;
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
+import openllet.core.KnowledgeBaseImpl;
 import openllet.core.OpenlletOptions;
 import openllet.core.utils.ATermUtils;
 import openllet.jena.PelletInfGraph;
@@ -38,7 +39,7 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 public class TestReasoningWithAnnotationAxioms
 {
 
-	KnowledgeBase kb = new KnowledgeBase();
+	KnowledgeBase kb = new KnowledgeBaseImpl();
 
 	ATermAppl i = ATermUtils.makeTermAppl("i");
 	ATermAppl p1 = ATermUtils.makeTermAppl("p1");

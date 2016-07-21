@@ -178,9 +178,9 @@ public class DefaultGraphLoader implements GraphLoader
 	public void setProgressMonitor(final ProgressMonitor monitor)
 	{
 		if (monitor == null)
-			this._monitor = new SilentProgressMonitor();
+			_monitor = new SilentProgressMonitor();
 		else
-			this._monitor = monitor;
+			_monitor = monitor;
 	}
 
 	/**
@@ -189,7 +189,7 @@ public class DefaultGraphLoader implements GraphLoader
 	@Override
 	public void setGraph(final Graph graph)
 	{
-		this._graph = graph;
+		_graph = graph;
 	}
 
 	/**
@@ -277,7 +277,7 @@ public class DefaultGraphLoader implements GraphLoader
 
 		public RDFListIterator(final Node list)
 		{
-			this._list = list;
+			_list = list;
 		}
 
 		@Override
@@ -793,7 +793,7 @@ public class DefaultGraphLoader implements GraphLoader
 		}
 	}
 
-	private List<RuleAtom> parseAtomList(Node atomListParam)
+	private List<RuleAtom> parseAtomList(final Node atomListParam)
 	{
 		Node atomList = atomListParam;
 
@@ -985,7 +985,7 @@ public class DefaultGraphLoader implements GraphLoader
 		return atoms;
 	}
 
-	private List<AtomDObject> parseArgumentList(Node argumentListParam)
+	private List<AtomDObject> parseArgumentList(final Node argumentListParam)
 	{
 		Node argumentList = argumentListParam;
 		final List<AtomDObject> arguments = new ArrayList<>();
@@ -2033,7 +2033,7 @@ public class DefaultGraphLoader implements GraphLoader
 	@Override
 	public void setKB(final KnowledgeBase kb)
 	{
-		this._kb = kb;
+		_kb = kb;
 	}
 
 	private void defineBuiltinProperties()
@@ -2055,7 +2055,7 @@ public class DefaultGraphLoader implements GraphLoader
 	@Override
 	public void load(final Iterable<Graph> graphs) throws UnsupportedFeatureException
 	{
-		final Timer timer = _kb.timers.startTimer("load");
+		final Timer timer = _kb.getTimers().startTimer("load");
 
 		_monitor.setProgressTitle("Loading");
 		_monitor.taskStarted();
@@ -2100,7 +2100,7 @@ public class DefaultGraphLoader implements GraphLoader
 	@Override
 	public void setLoadABox(final boolean loadABox)
 	{
-		this._loadABox = loadABox;
+		_loadABox = loadABox;
 	}
 
 	@Override
@@ -2112,7 +2112,7 @@ public class DefaultGraphLoader implements GraphLoader
 	@Override
 	public void setLoadTBox(final boolean loadTBox)
 	{
-		this._loadTBox = loadTBox;
+		_loadTBox = loadTBox;
 	}
 
 	@Override
@@ -2124,6 +2124,6 @@ public class DefaultGraphLoader implements GraphLoader
 	@Override
 	public void setPreprocessTypeTriples(final boolean preprocessTypeTriples)
 	{
-		this._preprocessTypeTriples = preprocessTypeTriples;
+		_preprocessTypeTriples = preprocessTypeTriples;
 	}
 }

@@ -30,13 +30,13 @@ import org.apache.jena.rdf.model.ModelFactory;
  */
 public class QuerySubsumptionExample
 {
-	String ont = "http://owldl.com/ontologies/family.owl";
-	String family = "http://www.example.org/family#";
-	String prefix = "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"// 
+	private static final String ont = "http://owldl.com/ontologies/family.owl";
+	private static final String family = "http://www.example.org/family#";
+	private static final String prefix = "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"//
 			+ "PREFIX family: <" + family + ">\r\n" + "SELECT * { ";
-	String suffix = " }";
-	KnowledgeBase kb;
-	QueryParser parser;
+	private static final String suffix = " }";
+	private final KnowledgeBase _kb;
+	private final QueryParser _parser;
 
 	public static void main(final String[] args)
 	{
@@ -49,13 +49,13 @@ public class QuerySubsumptionExample
 		model.read(ont);
 		model.prepare();
 
-		kb = ((PelletInfGraph) model.getGraph()).getKB();
-		parser = QueryEngineBuilder.getParser();
+		_kb = ((PelletInfGraph) model.getGraph()).getKB();
+		_parser = QueryEngineBuilder.getParser();
 	}
 
 	public Query query(final String queryStr)
 	{
-		return parser.parse(prefix + queryStr + suffix, kb);
+		return _parser.parse(prefix + queryStr + suffix, _kb);
 	}
 
 	public void run()
@@ -147,7 +147,6 @@ public class QuerySubsumptionExample
 		System.out.print("Subsumption mappings: ");
 		final QueryResult mappings = QuerySubsumption.getSubsumptionMappings(q7, q8);
 		for (final ResultBinding mapping : mappings)
-		{
 			for (final Iterator<?> j = q8.getVars().iterator(); j.hasNext();)
 			{
 				final ATermAppl var = (ATermAppl) j.next();
@@ -155,7 +154,6 @@ public class QuerySubsumptionExample
 				if (j.hasNext())
 					System.out.print(", ");
 			}
-		}
 		System.out.println();
 	}
 }

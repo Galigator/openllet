@@ -11,12 +11,6 @@ import openllet.core.KnowledgeBase;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2008
  * </p>
  * <p>
@@ -35,8 +29,7 @@ public abstract class ProfileBasedExpressivityChecker
 	}
 
 	/**
-	 * Compute the expressivity from the {@link org.mindswap.pellet.KnowledgeBase} and update it to the given
-	 * {@link openllet.core.expressivity.Expressivity}.
+	 * Compute the expressivity from the {@link org.mindswap.pellet.KnowledgeBase} and update it to the given {@link openllet.core.expressivity.Expressivity}.
 	 *
 	 * @return <code>true</code> if the expressivity is within the profile defined by the implementation, <code>false</code> otherwise.
 	 */

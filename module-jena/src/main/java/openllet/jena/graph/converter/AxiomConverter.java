@@ -19,9 +19,6 @@ import org.apache.jena.vocabulary.RDFS;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
  * Description: Converts axioms from ATerms to Jena triples.
  * </p>
  * <p>
@@ -41,12 +38,12 @@ public class AxiomConverter
 
 	public AxiomConverter(final KnowledgeBase kb, final Graph g)
 	{
-		this._kb = kb;
+		_kb = kb;
 		_graph = g;
 		_converter = new ConceptConverter(_graph);
 	}
 
-	public void convert(ATermAppl axiomParam)
+	public void convert(final ATermAppl axiomParam)
 	{
 		ATermAppl axiom = axiomParam;
 

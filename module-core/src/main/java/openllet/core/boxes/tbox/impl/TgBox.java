@@ -134,7 +134,7 @@ public class TgBox extends TBoxBase
 
 		for (final TermDefinition def : terms)
 		{
-			_kb.timers.checkTimer("preprocessing");
+			_kb.getTimers().checkTimer("preprocessing");
 
 			for (final ATermAppl subClassAxiom : def.getSubClassAxioms())
 			{
@@ -293,7 +293,7 @@ public class TgBox extends TBoxBase
 		absorbOneOf((ATermList) oneOf.getArgument(0), c, explain);
 	}
 
-	private void absorbOneOf(ATermList list, final ATermAppl c, final Set<ATermAppl> explain)
+	private void absorbOneOf(final ATermList list, final ATermAppl c, final Set<ATermAppl> explain)
 	{
 		if (OpenlletOptions.USE_PSEUDO_NOMINALS)
 		{

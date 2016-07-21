@@ -13,6 +13,7 @@ import static org.junit.Assert.assertTrue;
 import junit.framework.JUnit4TestAdapter;
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
+import openllet.core.KnowledgeBaseImpl;
 import openllet.core.utils.ATermUtils;
 import openllet.owlapi.PelletReasoner;
 import openllet.owlapi.PelletReasonerFactory;
@@ -60,7 +61,7 @@ public class TestIsClass
 	@Test
 	public void testIsClass1()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl p = term("p");
 		final ATermAppl l = ATermUtils.makeTermAppl("l");
@@ -75,7 +76,7 @@ public class TestIsClass
 	@Test
 	public void testIsClass2()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl l = ATermUtils.makeTermAppl("l");
 		final ATermAppl v = ATermUtils.makeValue(ATermUtils.makeLiteral(l));
@@ -86,7 +87,7 @@ public class TestIsClass
 	@Test
 	public void testIsClass3()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl l1 = ATermUtils.makeTermAppl("l1");
 		final ATermAppl l2 = ATermUtils.makeTermAppl("l2");
@@ -100,7 +101,7 @@ public class TestIsClass
 	@Test
 	public void testIsClass4()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl l = ATermUtils.makeTermAppl("l");
 		final ATermAppl v = ATermUtils.makeValue(ATermUtils.makeLiteral(l));

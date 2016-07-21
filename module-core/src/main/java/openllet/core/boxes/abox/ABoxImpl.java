@@ -52,6 +52,7 @@ import openllet.aterm.ATermList;
 import openllet.core.DependencySet;
 import openllet.core.IndividualIterator;
 import openllet.core.KnowledgeBase;
+import openllet.core.KnowledgeBaseImpl;
 import openllet.core.NodeMerge;
 import openllet.core.OpenlletOptions;
 import openllet.core.boxes.rbox.RBox;
@@ -235,7 +236,19 @@ public class ABoxImpl implements ABox
 		_sourceABox = sourceABox;
 	}
 
-	public ABoxImpl(final KnowledgeBase kb)
+	@Override
+	public boolean isRulesNotApplied()
+	{
+		return _rulesNotApplied;
+	}
+
+	@Override
+	public void setRulesNotApplied(final boolean rulesNotApplied)
+	{
+		_rulesNotApplied = rulesNotApplied;
+	}
+
+	public ABoxImpl(final KnowledgeBaseImpl kb)
 	{
 		_kb = kb;
 		_nodes = new HashMap<>();
@@ -277,7 +290,7 @@ public class ABoxImpl implements ABox
 	public ABoxImpl(final KnowledgeBase kb, final ABoxImpl abox, final ATermAppl extraIndividual, final boolean copyIndividuals)
 	{
 		_kb = kb;
-		final Timer timer = kb.timers.startTimer("cloneABox");
+		final Timer timer = kb.getTimers().startTimer("cloneABox");
 
 		_rulesNotApplied = true;
 		_initialized = abox._initialized;
@@ -448,7 +461,7 @@ public class ABoxImpl implements ABox
 		if (_sourceABox == null)
 			return;
 
-		final Timer t = _kb.timers.startTimer("copyOnWrite");
+		final Timer t = _kb.getTimers().startTimer("copyOnWrite");
 
 		final List<ATermAppl> currentNodeList = new ArrayList<>(_nodeList);
 		final int currentSize = currentNodeList.size();
@@ -573,13 +586,13 @@ public class ABoxImpl implements ABox
 
 		if (_logger.isLoggable(Level.FINE))
 		{
-			final long count = _kb.timers.getTimer("subClassSat") == null ? 0 : _kb.timers.getTimer("subClassSat").getCount();
+			final long count = _kb.getTimers().getTimer("subClassSat") == null ? 0 : _kb.getTimers().getTimer("subClassSat").getCount();
 			_logger.fine(count + ") Checking subclass [" + ATermUtils.toString(c1) + " " + ATermUtils.toString(c2) + "]");
 		}
 
 		final ATermAppl notC2 = ATermUtils.negate(c2);
 		final ATermAppl c = ATermUtils.makeAnd(c1, notC2);
-		final Timer t = _kb.timers.startTimer("subClassSat");
+		final Timer t = _kb.getTimers().startTimer("subClassSat");
 		final boolean sub = !isSatisfiable(c, false);
 		t.stop();
 
@@ -635,7 +648,7 @@ public class ABoxImpl implements ABox
 
 		_stats.satisfiabilityCount++;
 
-		final Timer t = _kb.timers.startTimer("satisfiability");
+		final Timer t = _kb.getTimers().startTimer("satisfiability");
 		final boolean isSat = isConsistent(Collections.emptySet(), c, cacheModel);
 		t.stop();
 
@@ -719,7 +732,7 @@ public class ABoxImpl implements ABox
 	}
 
 	@Override
-	public void getObviousObjects(ATermAppl pParam, final CandidateSet<ATermAppl> candidates)
+	public void getObviousObjects(final ATermAppl pParam, final CandidateSet<ATermAppl> candidates)
 	{
 		ATermAppl p = pParam;
 		p = getRole(p).getInverse().getName();
@@ -883,7 +896,7 @@ public class ABoxImpl implements ABox
 	 *         trying to construct a model where x belongs to not(c).
 	 */
 	@Override
-	public boolean isType(final ATermAppl x, ATermAppl cParam)
+	public boolean isType(final ATermAppl x, final ATermAppl cParam)
 	{
 		ATermAppl c = cParam;
 		c = ATermUtils.normalize(c);
@@ -912,7 +925,7 @@ public class ABoxImpl implements ABox
 
 		final ATermAppl notC = ATermUtils.negate(c);
 
-		final Timer t = _kb.timers.startTimer("isType");
+		final Timer t = _kb.getTimers().startTimer("isType");
 		final boolean isType = !isConsistent(SetUtils.singleton(x), notC, false);
 		t.stop();
 
@@ -928,7 +941,7 @@ public class ABoxImpl implements ABox
 	 * @return true if any of the individuals in the given list belongs to type c.
 	 */
 	@Override
-	public boolean isType(final List<ATermAppl> inds, ATermAppl cParam)
+	public boolean isType(final List<ATermAppl> inds, final ATermAppl cParam)
 	{
 		ATermAppl c = cParam;
 		c = ATermUtils.normalize(c);
@@ -1377,12 +1390,12 @@ public class ABoxImpl implements ABox
 	 * @param cParam
 	 * @return true if consistent.
 	 */
-	private boolean isConsistent(Collection<ATermAppl> individualsParam, ATermAppl cParam, final boolean cacheModel)
+	private boolean isConsistent(final Collection<ATermAppl> individualsParam, final ATermAppl cParam, final boolean cacheModel)
 	{
 		Collection<ATermAppl> individuals = individualsParam;
 		ATermAppl c = cParam;
 
-		final Timer t = _kb.timers.startTimer("isConsistent");
+		final Timer t = _kb.getTimers().startTimer("isConsistent");
 
 		if (_logger.isLoggable(Level.FINE))
 			if (c == null)
@@ -1434,7 +1447,7 @@ public class ABoxImpl implements ABox
 		if (emptyConsistencyCheck)
 			c = ATermUtils.TOP;
 
-		final ABoxImpl abox = canUseEmptyABox ? this.copy(x, false) : initialConsistencyCheck ? this : this.copy(x, true);
+		final ABox abox = canUseEmptyABox ? this.copy(x, false) : initialConsistencyCheck ? this : this.copy(x, true);
 
 		for (final ATermAppl ind : individuals)
 		{
@@ -1451,7 +1464,7 @@ public class ABoxImpl implements ABox
 		if (_logger.isLoggable(Level.FINE))
 			_logger.fine("Strategy: " + strategy.getClass().getName());
 
-		final Timer completionTimer = _kb.timers.getTimer("complete");
+		final Timer completionTimer = _kb.getTimers().getTimer("complete");
 		completionTimer.start();
 		try
 		{
@@ -1468,7 +1481,16 @@ public class ABoxImpl implements ABox
 			cache(abox.getIndividual(x), c, consistent);
 
 		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Consistent: " + consistent + " Time: " + t.getElapsed() + " Branches " + abox._branches.size() + " Tree depth: " + abox._stats.treeDepth + " Tree size: " + abox.getNodes().size() + " Restores " + abox._stats.globalRestores + " global " + abox._stats.localRestores + " local" + " Backtracks " + abox._stats.backtracks + " avg backjump " + (abox._stats.backjumps / (double) abox._stats.backtracks));
+			_logger.fine("Consistent: " + consistent //
+					+ " Time: " + t.getElapsed()//
+					+ " Branches " + abox.getBranches().size()//
+					+ " Tree depth: " + abox.getStats().treeDepth//
+					+ " Tree size: " + abox.getNodes().size()//
+					+ " Restores " + abox.getStats().globalRestores//
+					+ " global " + abox.getStats().localRestores//
+					+ " local"// FIXME something missing here ?
+					+ " Backtracks " + abox.getStats().backtracks//
+					+ " avg backjump " + (abox.getStats().backjumps / (double) abox.getStats().backtracks));
 
 		if (consistent)
 		{
@@ -1526,8 +1548,8 @@ public class ABoxImpl implements ABox
 	{
 		assert isComplete() : "Initial consistency check has not been performed!";
 
-		final Timer incT = _kb.timers.startTimer("isIncConsistent");
-		final Timer t = _kb.timers.startTimer("isConsistent");
+		final Timer incT = _kb.getTimers().startTimer("isIncConsistent");
+		final Timer t = _kb.getTimers().startTimer("isConsistent");
 
 		// throw away old information to let gc do its work
 		_lastCompletion = null;
@@ -1543,7 +1565,7 @@ public class ABoxImpl implements ABox
 
 		// set _abox to not being complete
 		setComplete(false);
-		final Timer completionTimer = _kb.timers.getTimer("complete");
+		final Timer completionTimer = _kb.getTimers().getTimer("complete");
 		completionTimer.start();
 		try
 		{
@@ -1626,7 +1648,7 @@ public class ABoxImpl implements ABox
 	}
 
 	@Override
-	public void addType(final ATermAppl x, ATermAppl cParam, DependencySet dsParam)
+	public void addType(final ATermAppl x, final ATermAppl cParam, final DependencySet dsParam)
 	{
 		ATermAppl c = cParam;
 		DependencySet ds = dsParam;
@@ -1656,7 +1678,7 @@ public class ABoxImpl implements ABox
 	}
 
 	@Override
-	public Edge addEdge(final ATermAppl p, final ATermAppl s, final ATermAppl o, DependencySet dsParam)
+	public Edge addEdge(final ATermAppl p, final ATermAppl s, final ATermAppl o, final DependencySet dsParam)
 	{
 		DependencySet ds = dsParam;
 
@@ -1725,7 +1747,7 @@ public class ABoxImpl implements ABox
 	}
 
 	@Override
-	public void removeType(final ATermAppl x, ATermAppl c)
+	public void removeType(final ATermAppl x, final ATermAppl c)
 	{
 		getNode(x).removeType(ATermUtils.normalize(c));
 	}
@@ -2399,11 +2421,11 @@ public class ABoxImpl implements ABox
 
 	/**
 	 * Print the ABox as a completion tree (child nodes are indented).
-	 * 
+	 *
 	 * @param stream is where to print
 	 */
 	@Override
-	public void printTree(PrintStream stream)
+	public void printTree(final PrintStream stream)
 	{
 		if (!OpenlletOptions.PRINT_ABOX)
 			return;
@@ -2426,7 +2448,7 @@ public class ABoxImpl implements ABox
 	 * @param printed
 	 * @param indentLvl
 	 */
-	private void printNode(PrintStream stream, final Individual node, final Set<Individual> printed, String indentLvl)
+	private void printNode(final PrintStream stream, final Individual node, final Set<Individual> printed, final String indentLvl)
 	{
 		final boolean printOnlyName = (node.isNominal() && !printed.isEmpty());
 

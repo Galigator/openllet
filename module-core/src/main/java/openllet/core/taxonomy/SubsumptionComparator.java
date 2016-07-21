@@ -16,9 +16,6 @@ import openllet.core.utils.PartialOrderRelation;
  * Title: SubsumptionComparator
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2008
  * </p>
  * <p>
@@ -34,7 +31,7 @@ public class SubsumptionComparator implements PartialOrderComparator<ATermAppl>
 
 	public SubsumptionComparator(final KnowledgeBase kb)
 	{
-		this._kb = kb;
+		_kb = kb;
 	}
 
 	protected boolean isSubsumedBy(final ATermAppl a, final ATermAppl b)
@@ -61,7 +58,7 @@ public class SubsumptionComparator implements PartialOrderComparator<ATermAppl>
 
 	public void setKB(final KnowledgeBase kb)
 	{
-		this._kb = kb;
+		_kb = kb;
 	}
 
 }

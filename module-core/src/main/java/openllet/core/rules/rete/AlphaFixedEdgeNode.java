@@ -7,21 +7,19 @@
 package openllet.core.rules.rete;
 
 import openllet.aterm.ATermAppl;
-import openllet.core.boxes.abox.ABoxImpl;
+import openllet.core.boxes.abox.ABox;
 import openllet.core.boxes.abox.Node;
 import openllet.core.boxes.rbox.Role;
 
-/**
- */
 public class AlphaFixedEdgeNode extends AlphaEdgeNode
 {
 	protected final ATermAppl name;
 	private Node node;
 
-	public AlphaFixedEdgeNode(final ABoxImpl abox, final Role role, final ATermAppl subjectName)
+	public AlphaFixedEdgeNode(final ABox abox, final Role role, final ATermAppl subjectName)
 	{
 		super(abox, role);
-		this.name = subjectName;
+		name = subjectName;
 	}
 
 	@SuppressWarnings("unchecked")

@@ -274,7 +274,7 @@ public class TuBox extends TBoxBase
 
 		while (!queue.isEmpty())
 		{
-			_kb.timers.checkTimer("preprocessing");
+			_kb.getTimers().checkTimer("preprocessing");
 			final ATermAppl current = queue.remove(queue.size() - 1);
 
 			if (!seen.add(current))
@@ -283,7 +283,7 @@ public class TuBox extends TBoxBase
 			if (current.equals(target))
 				return true;
 
-			final TermDefinition td = this.getTD(current);
+			final TermDefinition td = getTD(current);
 			if (td != null)
 			{
 				// Shortcut

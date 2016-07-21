@@ -23,6 +23,7 @@ import junit.framework.JUnit4TestAdapter;
 import openllet.aterm.ATermAppl;
 import openllet.core.KBLoader;
 import openllet.core.KnowledgeBase;
+import openllet.core.KnowledgeBaseImpl;
 import openllet.core.OpenlletOptions;
 import openllet.core.el.SimplifiedELClassifier;
 import openllet.core.taxonomy.Taxonomy;
@@ -583,7 +584,7 @@ public class ELTests extends AbstractKBTests
 		classes(_A, _B, _C, _D, _E, _F, _G);
 		objectProperties(_p, _q, _r, _s);
 
-		_kb = new KnowledgeBase();
+		_kb = new KnowledgeBaseImpl();
 		final ATermAppl endocardium = term("Endocardium");
 		final ATermAppl tissue = term("Tissue");
 		final ATermAppl heartWall = term("HeartWall");

@@ -82,12 +82,12 @@ public class TBoxExpImpl implements TBox
 
 	public TBoxExpImpl(final KnowledgeBase kb)
 	{
-		this._kb = kb;
+		_kb = kb;
 
 		_Tu = new TuBox(this);
 		_Tg = new TgBox(this);
 
-		this._kb = kb;
+		_kb = kb;
 	}
 
 	public KnowledgeBase getKB()
@@ -226,7 +226,7 @@ public class TBoxExpImpl implements TBox
 		return added;
 	}
 
-	protected boolean absorbNominals(ATermAppl axiom, final Set<ATermAppl> explain)
+	protected boolean absorbNominals(final ATermAppl axiom, final Set<ATermAppl> explain)
 	{
 		// absorb nominals on the fly because sometimes they might _end up in the
 		// _Tu directly without going into _Tg which is still less effective than

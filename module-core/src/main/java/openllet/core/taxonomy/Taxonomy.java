@@ -17,19 +17,13 @@ import openllet.core.utils.Bool;
 import openllet.shared.tools.Logging;
 
 /**
- * Defintion of taxonomies
- * 
+ * Definition of taxonomies
+ *
  * @since 2.6.0
  */
 public interface Taxonomy<T> extends Logging
 {
 	public TaxonomyNode<T> getBottomNode();
-
-	@Deprecated
-	public default TaxonomyNode<T> getBottom()
-	{
-		return getBottomNode();
-	}
 
 	public void setBottomNode(final TaxonomyNode<T> bottomNode);
 

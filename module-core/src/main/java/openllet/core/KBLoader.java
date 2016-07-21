@@ -94,7 +94,7 @@ public abstract class KBLoader
 
 	/**
 	 * Instruct loader to respect or ignore imports.
-	 * 
+	 *
 	 * @param valueAsBoolean
 	 */
 	public abstract void setIgnoreImports(boolean valueAsBoolean);

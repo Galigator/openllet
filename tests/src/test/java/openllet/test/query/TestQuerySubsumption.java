@@ -23,28 +23,28 @@ import org.junit.Test;
 
 public class TestQuerySubsumption
 {
-	private final String ont = "file:test/data/misc/family.owl";
-	private final String family = "http://www.example.org/family#";
-	private final String prefix = "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"//
-			+ "PREFIX family: <" + family + ">\r\n" + "SELECT * { ";
+	private final String _ont = "file:test/data/misc/family.owl";
+	private final String _family = "http://www.example.org/family#";
+	private final String _prefix = "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"//
+			+ "PREFIX family: <" + _family + ">\r\n" + "SELECT * { ";
 	private final String suffix = " }";
-	private KnowledgeBase kb;
-	private QueryParser parser;
+	private KnowledgeBase _kb;
+	private QueryParser _parser;
 
 	@Before
 	public void setUp()
 	{
 		final OntModel model = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
-		model.read(ont);
+		model.read(_ont);
 		model.prepare();
 
-		kb = ((PelletInfGraph) model.getGraph()).getKB();
-		parser = QueryEngineBuilder.getParser();
+		_kb = ((PelletInfGraph) model.getGraph()).getKB();
+		_parser = QueryEngineBuilder.getParser();
 	}
 
 	private Query query(final String queryStr)
 	{
-		return parser.parse(prefix + queryStr + suffix, kb);
+		return _parser.parse(_prefix + queryStr + suffix, _kb);
 	}
 
 	@Test

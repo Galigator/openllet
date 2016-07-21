@@ -28,9 +28,6 @@ import openllet.shared.tools.Log;
  * Title: SimpleQueryEngine
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>

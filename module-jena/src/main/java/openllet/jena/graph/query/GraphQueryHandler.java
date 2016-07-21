@@ -25,8 +25,8 @@ import openllet.core.utils.iterator.IteratorUtils;
 import openllet.core.utils.iterator.NestedIterator;
 import openllet.jena.JenaUtils;
 import openllet.jena.ModelExtractor;
-import openllet.jena.PelletInfGraph;
 import openllet.jena.ModelExtractor.StatementType;
+import openllet.jena.PelletInfGraph;
 import openllet.jena.graph.loader.GraphLoader;
 import openllet.jena.vocabulary.OWL2;
 import openllet.shared.tools.Log;
@@ -54,25 +54,25 @@ public class GraphQueryHandler
 	@SuppressWarnings("unused")
 	private static final Node[] EMPTY = new Node[0];
 
-	private static final Node[] BUILTIN_PREDICATES = new Node[] {//
-		RDF.type.asNode(), OWL.sameAs.asNode(), OWL.differentFrom.asNode(),//
-			RDFS.subClassOf.asNode(), OWL.equivalentClass.asNode(), OWL.complementOf.asNode(), OWL.disjointWith.asNode(),//
-			RDFS.subPropertyOf.asNode(), OWL.equivalentProperty.asNode(), OWL.inverseOf.asNode(), OWL2.propertyDisjointWith.asNode(),//
-			RDFS.domain.asNode(), RDFS.range.asNode() // 
+	private static final Node[] BUILTIN_PREDICATES = new Node[] { //
+			RDF.type.asNode(), OWL.sameAs.asNode(), OWL.differentFrom.asNode(), //
+			RDFS.subClassOf.asNode(), OWL.equivalentClass.asNode(), OWL.complementOf.asNode(), OWL.disjointWith.asNode(), //
+			RDFS.subPropertyOf.asNode(), OWL.equivalentProperty.asNode(), OWL.inverseOf.asNode(), OWL2.propertyDisjointWith.asNode(), //
+			RDFS.domain.asNode(), RDFS.range.asNode() //
 	};
 
-	private static final Node[] BUILTIN_QUERY_PREDICATES = new Node[] {//
-	ReasonerVocabulary.directRDFType.asNode(), //
-			ReasonerVocabulary.directSubClassOf.asNode(),// 
-			ReasonerVocabulary.directSubPropertyOf.asNode() // 
+	private static final Node[] BUILTIN_QUERY_PREDICATES = new Node[] { //
+			ReasonerVocabulary.directRDFType.asNode(), //
+			ReasonerVocabulary.directSubClassOf.asNode(), //
+			ReasonerVocabulary.directSubPropertyOf.asNode() //
 	};
 
-	private static final Node[] BUILTIN_TYPES = new Node[] { OWL.Class.asNode(),//
-		OWL.AnnotationProperty.asNode(), OWL.ObjectProperty.asNode(),//
-		OWL.DatatypeProperty.asNode(), OWL.FunctionalProperty.asNode(),//
-		OWL.InverseFunctionalProperty.asNode(), OWL.TransitiveProperty.asNode(),//
-		OWL.SymmetricProperty.asNode(), OWL2.AsymmetricProperty.asNode(),//
-		OWL2.ReflexiveProperty.asNode(), OWL2.IrreflexiveProperty.asNode() //
+	private static final Node[] BUILTIN_TYPES = new Node[] { OWL.Class.asNode(), //
+			OWL.AnnotationProperty.asNode(), OWL.ObjectProperty.asNode(), //
+			OWL.DatatypeProperty.asNode(), OWL.FunctionalProperty.asNode(), //
+			OWL.InverseFunctionalProperty.asNode(), OWL.TransitiveProperty.asNode(), //
+			OWL.SymmetricProperty.asNode(), OWL2.AsymmetricProperty.asNode(), //
+			OWL2.ReflexiveProperty.asNode(), OWL2.IrreflexiveProperty.asNode() //
 	};
 
 	private static final Node[] BUILTIN_QUERY_TYPES = new Node[] { RDFS.Class.asNode(), RDF.Property.asNode() };
@@ -1540,7 +1540,7 @@ public class GraphQueryHandler
 		return node == VAR || node.isVariable() ? VAR : isBuiltin(node) ? node : CONST;
 	}
 
-	public static ExtendedIterator<Triple> findTriple(final KnowledgeBase kb, final PelletInfGraph openllet, final Node subj, Node predParam, final Node obj)
+	public static ExtendedIterator<Triple> findTriple(final KnowledgeBase kb, final PelletInfGraph openllet, final Node subj, final Node predParam, final Node obj)
 	{
 		Node pred = predParam;
 
@@ -1560,7 +1560,7 @@ public class GraphQueryHandler
 		return qh == null ? NullIterator.<Triple> instance() : qh.find(kb, openllet, subj, pred, obj);
 	}
 
-	public static boolean containsTriple(final KnowledgeBase kb, final GraphLoader loader, final Node subj, Node predParam, final Node obj)
+	public static boolean containsTriple(final KnowledgeBase kb, final GraphLoader loader, final Node subj, final Node predParam, final Node obj)
 	{
 		Node pred = predParam;
 

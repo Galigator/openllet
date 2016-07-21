@@ -61,8 +61,8 @@ public class RuleAbsorber
 
 	public RuleAbsorber(final TBoxExpImpl tbox)
 	{
-		this._kb = tbox.getKB();
-		this._Tu = tbox._Tu;
+		_kb = tbox.getKB();
+		_Tu = tbox._Tu;
 	}
 
 	public boolean absorbRule(final Set<ATermAppl> set, final Set<ATermAppl> explanation)
@@ -107,7 +107,7 @@ public class RuleAbsorber
 		return true;
 	}
 
-	protected int processClass(final AtomIObject var, final ATermAppl c, final List<RuleAtom> atoms, int varCountInit)
+	protected int processClass(final AtomIObject var, final ATermAppl c, final List<RuleAtom> atoms, final int varCountInit)
 	{
 		int varCount = varCountInit;
 

@@ -36,7 +36,7 @@ import java.util.logging.Level;
 import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
 import openllet.core.OpenlletOptions;
-import openllet.core.boxes.abox.ABoxImpl;
+import openllet.core.boxes.abox.ABox;
 import openllet.core.boxes.abox.Clash;
 import openllet.core.boxes.abox.Individual;
 import openllet.core.boxes.abox.Node;
@@ -52,15 +52,15 @@ public class DisjunctionBranch extends Branch
 	protected DependencySet[] _prevDS;
 	protected int[] _order;
 
-	public DisjunctionBranch(final ABoxImpl abox, final CompletionStrategy completion, final Node node, final ATermAppl disjunction, final DependencySet ds, final ATermAppl[] disj)
+	public DisjunctionBranch(final ABox abox, final CompletionStrategy completion, final Node node, final ATermAppl disjunction, final DependencySet ds, final ATermAppl[] disj)
 	{
 		super(abox, completion, ds, disj.length);
 
-		this._node = node;
-		this._disjunction = disjunction;
-		this.setDisj(disj);
-		this._prevDS = new DependencySet[disj.length];
-		this._order = new int[disj.length];
+		_node = node;
+		_disjunction = disjunction;
+		setDisj(disj);
+		_prevDS = new DependencySet[disj.length];
+		_order = new int[disj.length];
 		for (int i = 0; i < disj.length; i++)
 			_order[i] = i;
 	}
@@ -77,7 +77,7 @@ public class DisjunctionBranch extends Branch
 	}
 
 	@Override
-	public DisjunctionBranch copyTo(final ABoxImpl abox)
+	public DisjunctionBranch copyTo(final ABox abox)
 	{
 		final Node n = abox.getNode(_node.getName());
 		final DisjunctionBranch b = new DisjunctionBranch(abox, null, n, _disjunction, getTermDepends(), _disj);
@@ -166,7 +166,7 @@ public class DisjunctionBranch extends Branch
 			}
 		}
 
-		final Node node = this._node.getSame();
+		final Node node = _node.getSame();
 
 		for (; getTryNext() < getTryCount(); _tryNext++)
 		{
@@ -244,7 +244,7 @@ public class DisjunctionBranch extends Branch
 				// importantly restore clears the clash info causing exceptions
 				if (getTryNext() < getTryCount() - 1 && clashDepends.contains(getBranch()))
 				{
-					// do not restore if we find the problem without adding the concepts 
+					// do not restore if we find the problem without adding the concepts
 					if (_abox.isClosed())
 						if (node.isLiteral())
 						{
@@ -254,7 +254,7 @@ public class DisjunctionBranch extends Branch
 						}
 						else
 						{
-							// restoring a single _node is not enough here because one of the disjuncts could be an 
+							// restoring a single _node is not enough here because one of the disjuncts could be an
 							// all(r,C) that changed the r-neighbors
 							_strategy.restoreLocal((Individual) node, this);
 
@@ -353,7 +353,7 @@ public class DisjunctionBranch extends Branch
 	 */
 	public void setDisj(final ATermAppl[] disj)
 	{
-		this._disj = disj;
+		_disj = disj;
 	}
 
 	/**

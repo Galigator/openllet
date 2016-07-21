@@ -28,9 +28,6 @@ import openllet.shared.tools.Log;
  * Title: Query Plan the Uses Full Query Reordering.
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -94,7 +91,7 @@ public class CostBasedQueryPlanNew extends QueryPlan
 	 * @param minCost Minimum _cost found so far
 	 * @return Minimum _cost found from an ordering that has the given ordered list as the prefix
 	 */
-	private double chooseOrdering(final List<QueryAtom> atoms, final List<QueryAtom> orderedAtoms, final Set<ATermAppl> boundVars, final boolean notOptimal, double minCostParam)
+	private double chooseOrdering(final List<QueryAtom> atoms, final List<QueryAtom> orderedAtoms, final Set<ATermAppl> boundVars, final boolean notOptimal, final double minCostParam)
 	{
 		double minCost = minCostParam;
 		if (atoms.isEmpty())

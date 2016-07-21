@@ -40,6 +40,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.core.KRSSLoader;
 import openllet.core.KnowledgeBase;
+import openllet.core.KnowledgeBaseImpl;
 import openllet.core.exceptions.TimeoutException;
 import openllet.core.output.TableData;
 import openllet.core.utils.AlphaNumericComparator;
@@ -83,7 +84,7 @@ public class DLBenchmarkTest
 
 	public KnowledgeBase initKB(final long timeout)
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 		kb.setTimeout(timeout * 1000);
 		return kb;
 	}
@@ -110,7 +111,7 @@ public class DLBenchmarkTest
 			{
 				doTBoxTest(files[i].toString());
 				data.add(Integer.valueOf(_kb.getClasses().size())); // Adding an Integer. (Size)
-				data.add(_kb.timers.getTimer("test").getTotal() + ""); // Adding a String. (Time)
+				data.add(_kb.getTimers().getTimer("test").getTotal() + ""); // Adding a String. (Time)
 			}
 			catch (final Exception | OutOfMemoryError | StackOverflowError e)
 			{
@@ -143,11 +144,11 @@ public class DLBenchmarkTest
 			System.out.print(displayName + " ");
 
 		_loader.clear();
-		_loader.getKB().timers.resetAll();
+		_loader.getKB().getTimers().resetAll();
 		_kb = _loader.createKB(file + ext);
 		_kb.setTimeout(TBOX_LIMIT * 1000);
 
-		final Timer t = _kb.timers.startTimer("test");
+		final Timer t = _kb.getTimers().startTimer("test");
 
 		if (_logger.isLoggable(Level.INFO))
 			System.out.print("preparing...");
@@ -174,14 +175,14 @@ public class DLBenchmarkTest
 
 		if (_logger.isLoggable(Level.INFO))
 		{
-			System.out.print(" Prepare " + _kb.timers.getTimer("preprocessing").getTotal());
-			System.out.print(" Classify " + _kb.timers.getTimer("classify").getTotal());
+			System.out.print(" Prepare " + _kb.getTimers().getTimer("preprocessing").getTotal());
+			System.out.print(" Classify " + _kb.getTimers().getTimer("classify").getTotal());
 
 			System.out.println(" " + t.getTotal());
 		}
 
 		if (PRINT_TIME)
-			_kb.timers.print();
+			_kb.getTimers().print();
 
 		return true;
 	}
@@ -269,10 +270,10 @@ public class DLBenchmarkTest
 		System.out.print(displayName + " ");
 
 		_kb = _loader.createKB(file + ext);
-		_kb.timers.resetAll();
+		_kb.getTimers().resetAll();
 		_kb.setTimeout(ABOX_LIMIT * 1000);
 
-		final Timer t = _kb.timers.startTimer("test");
+		final Timer t = _kb.getTimers().startTimer("test");
 
 		System.out.print("preparing...");
 
@@ -291,13 +292,13 @@ public class DLBenchmarkTest
 
 		System.out.print("done");
 
-		System.out.print(" Prepare " + _kb.timers.getTimer("preprocessing").getTotal());
-		System.out.print(" Classify " + _kb.timers.getTimer("classify").getTotal());
+		System.out.print(" Prepare " + _kb.getTimers().getTimer("preprocessing").getTotal());
+		System.out.print(" Classify " + _kb.getTimers().getTimer("classify").getTotal());
 
 		System.out.println(" " + t.getTotal());
 
 		if (PRINT_TIME)
-			_kb.timers.print();
+			_kb.getTimers().print();
 
 		return true;
 	}

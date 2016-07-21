@@ -7,7 +7,7 @@
 package openllet.core.utils;
 
 /**
- * @author Evren Sirin
+ * Implementation of boolean that can be in unknow state : TRUE/FALSE/UNKNOWN
  */
 public class Bool
 {

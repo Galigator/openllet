@@ -31,7 +31,7 @@ import openllet.shared.tools.Logging;
 
 /**
  * Definition of an abox.
- * 
+ *
  * @since 2.6.0
  */
 public interface ABox extends Logging
@@ -44,7 +44,7 @@ public interface ABox extends Logging
 	public ABox copy();
 
 	/**
-	 * Create a copy of this ABox with all the _nodes and edges and the given KB.
+	 * Create a copy of this ABox with all the nodes and edges and the given KB.
 	 */
 	public ABox copy(final KnowledgeBase kb);
 
@@ -292,6 +292,10 @@ public interface ABox extends Logging
 
 	public void setSourceABox(final ABox sourceABox);
 
+	public boolean isRulesNotApplied();
+
+	public void setRulesNotApplied(final boolean rulesNotApplied);
+
 	/**
 	 * Increment the _branch number (should only be called when a non-deterministic rule, e.g. _disjunction or max rule, is being applied)
 	 *
@@ -355,7 +359,7 @@ public interface ABox extends Logging
 
 	/**
 	 * Print the ABox as a completion tree (child nodes are indented).
-	 * 
+	 *
 	 * @param stream is where to print
 	 */
 	public void printTree(PrintStream stream);

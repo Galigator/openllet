@@ -428,7 +428,7 @@ public class StringOperators
 		}
 
 		@Override
-		public boolean apply(final ABoxImpl abox, final Literal[] args)
+		public boolean apply(final ABox abox, final Literal[] args)
 		{
 			return false;
 		}

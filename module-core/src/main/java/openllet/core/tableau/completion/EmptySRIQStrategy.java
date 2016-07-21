@@ -42,7 +42,7 @@ import openllet.aterm.ATermList;
 import openllet.core.DependencySet;
 import openllet.core.IndividualIterator;
 import openllet.core.OpenlletOptions;
-import openllet.core.boxes.abox.ABoxImpl;
+import openllet.core.boxes.abox.ABox;
 import openllet.core.boxes.abox.Clash;
 import openllet.core.boxes.abox.Edge;
 import openllet.core.boxes.abox.EdgeList;
@@ -89,7 +89,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 	//	private static int _cache = 0;
 	//	private static int block = 0;
 
-	public EmptySRIQStrategy(final ABoxImpl abox)
+	public EmptySRIQStrategy(final ABox abox)
 	{
 		super(abox);
 	}
@@ -117,7 +117,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 		_mayNeedExpanding.add(root);
 
 		_abox.setBranch(1);
-		_abox._stats.treeDepth = 1;
+		_abox.getStats().treeDepth = 1;
 		_abox.setChanged(true);
 		_abox.setComplete(false);
 		_abox.setInitialized(true);
@@ -254,7 +254,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 
 		if (!_abox.doExplanation() && OpenlletOptions.USE_ADVANCED_CACHING)
 		{
-			final Timer t = _abox.getKB().timers.startTimer("cache");
+			final Timer t = _abox.getKB().getTimers().startTimer("cache");
 			final Bool cachedSat = isCachedSat(x);
 			t.stop();
 			if (cachedSat.isKnown())
@@ -494,7 +494,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 	{
 		final Timer timer = _timers.startTimer("restore");
 
-		_abox._stats.globalRestores++;
+		_abox.getStats().globalRestores++;
 
 		final Node clashNode = _abox.getClash().getNode();
 		final List<ATermAppl> clashPath = clashNode.getPath();
@@ -571,7 +571,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 	{
 		boolean branchFound = false;
 
-		_abox._stats.backtracks++;
+		_abox.getStats().backtracks++;
 
 		while (!branchFound)
 		{
@@ -583,7 +583,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 				return false;
 
 			final List<Branch> branches = _abox.getBranches();
-			_abox._stats.backjumps += (branches.size() - lastBranch);
+			_abox.getStats().backjumps += (branches.size() - lastBranch);
 			Branch newBranch = null;
 			if (lastBranch <= branches.size())
 			{

@@ -13,6 +13,7 @@ import java.util.Set;
 import junit.framework.JUnit4TestAdapter;
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
+import openllet.core.KnowledgeBaseImpl;
 import openllet.core.OpenlletOptions;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.PropertiesBuilder;
@@ -39,9 +40,6 @@ import org.junit.Test;
 /**
  * <p>
  * Title: TestAnnotationsKnowledgeBase
- * </p>
- * <p>
- * Description:
  * </p>
  * <p>
  * Copyright: Copyright (c) 2008
@@ -97,7 +95,7 @@ public class TestAnnotations
 	@Test
 	public void addAnnotation1()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl s = ATermUtils.makeTermAppl("i");
 		final ATermAppl p = ATermUtils.makeTermAppl("p");
@@ -115,7 +113,7 @@ public class TestAnnotations
 	@Test
 	public void addAnnotation2()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl s = ATermUtils.makeTermAppl("i");
 		final ATermAppl p = ATermUtils.makeTermAppl("p");
@@ -134,7 +132,7 @@ public class TestAnnotations
 	@Test
 	public void addAnnotation3()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl s = ATermUtils.makeTermAppl("i");
 		final ATermAppl p = ATermUtils.makeTermAppl("p");
@@ -152,7 +150,7 @@ public class TestAnnotations
 	@Test
 	public void addAnnotations()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl s = ATermUtils.makeTermAppl("i");
 		final ATermAppl p = ATermUtils.makeTermAppl("p");
@@ -173,7 +171,7 @@ public class TestAnnotations
 	@Test
 	public void getAnnotations1()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl s = ATermUtils.makeTermAppl("i");
 		final ATermAppl p = ATermUtils.makeTermAppl("p");
@@ -199,7 +197,7 @@ public class TestAnnotations
 	@Test
 	public void getAnnotations2()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl s = ATermUtils.makeTermAppl("i");
 		final ATermAppl p = ATermUtils.makeTermAppl("p");
@@ -228,7 +226,7 @@ public class TestAnnotations
 	@Test
 	public void getAnnotations3()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl s1 = ATermUtils.makeTermAppl("s1");
 		final ATermAppl p1 = ATermUtils.makeTermAppl("p1");
@@ -265,7 +263,7 @@ public class TestAnnotations
 	public void getAnnotations4()
 	{
 		// Test _kb.getAnnotationProperties()
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl s = ATermUtils.makeTermAppl("s");
 		final ATermAppl p = ATermUtils.makeTermAppl("p");
@@ -287,7 +285,7 @@ public class TestAnnotations
 	public void getAnnotations5()
 	{
 		// Test _kb.getProperties()
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl s = ATermUtils.makeTermAppl("s");
 		final ATermAppl p = ATermUtils.makeTermAppl("p");
@@ -312,7 +310,7 @@ public class TestAnnotations
 	@Test
 	public void getAnnotations6()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl s = ATermUtils.makeTermAppl("s");
 		final ATermAppl p = ATermUtils.makeTermAppl("p");
@@ -444,7 +442,7 @@ public class TestAnnotations
 	@Test
 	public void test412()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl p = term("p");
 		final ATermAppl q = term("q");
@@ -467,7 +465,7 @@ public class TestAnnotations
 	@Test
 	public void getAnnotationsCopy()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl s = ATermUtils.makeTermAppl("s");
 		final ATermAppl p = ATermUtils.makeTermAppl("p");

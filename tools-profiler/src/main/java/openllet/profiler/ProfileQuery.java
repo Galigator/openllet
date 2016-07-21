@@ -60,7 +60,7 @@ public class ProfileQuery
 
 	public void setPrintQuery(final boolean printQuery)
 	{
-		this._printQuery = printQuery;
+		_printQuery = printQuery;
 	}
 
 	public boolean isClassify()
@@ -70,7 +70,7 @@ public class ProfileQuery
 
 	public void setClassify(final boolean classify)
 	{
-		this._classify = classify;
+		_classify = classify;
 	}
 
 	public boolean isRealize()
@@ -80,7 +80,7 @@ public class ProfileQuery
 
 	public void setRealize(final boolean realize)
 	{
-		this._realize = realize;
+		_realize = realize;
 	}
 
 	public boolean isPrintQueryResults()
@@ -90,7 +90,7 @@ public class ProfileQuery
 
 	public void setPrintQueryResults(final boolean quiet)
 	{
-		this._printQueryResults = quiet;
+		_printQueryResults = quiet;
 	}
 
 	public boolean isDetailedTime()
@@ -100,7 +100,7 @@ public class ProfileQuery
 
 	public void setDetailedTime(final boolean detailedTime)
 	{
-		this._detailedTime = detailedTime;
+		_detailedTime = detailedTime;
 	}
 
 	public boolean isSizeEstimateAll()
@@ -110,7 +110,7 @@ public class ProfileQuery
 
 	public void setSizeEstimateAll(final boolean sizeEstimateAll)
 	{
-		this._sizeEstimateAll = sizeEstimateAll;
+		_sizeEstimateAll = sizeEstimateAll;
 	}
 
 	public int getMaxIteration()
@@ -120,7 +120,7 @@ public class ProfileQuery
 
 	public void setMaxIteration(final int maxIteration)
 	{
-		this._maxIteration = maxIteration;
+		_maxIteration = maxIteration;
 	}
 
 	public void profile(final String[] dataset, final String queryset) throws Exception
@@ -234,7 +234,7 @@ public class ProfileQuery
 		{
 			System.out.println();
 			System.out.println("Detailed timing about reasoner internals:");
-			kb.timers.print();
+			kb.getTimers().print();
 		}
 	}
 

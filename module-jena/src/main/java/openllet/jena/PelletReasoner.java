@@ -78,8 +78,8 @@ public class PelletReasoner implements Reasoner
 
 	protected PelletReasoner(final Graph schema, final Model reasonerCapabilities)
 	{
-		this._schema = schema;
-		this._reasonerCapabilities = reasonerCapabilities;
+		_schema = schema;
+		_reasonerCapabilities = reasonerCapabilities;
 
 		_graphCapabilities = new InfFindSafeCapabilities();
 	}
@@ -96,7 +96,7 @@ public class PelletReasoner implements Reasoner
 
 	public void setFixedSchema(final boolean fixedSchema)
 	{
-		this._fixedSchema = fixedSchema;
+		_fixedSchema = fixedSchema;
 	}
 
 	@Override

@@ -45,7 +45,7 @@ import java.util.Random;
 import java.util.Set;
 import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
-import openllet.core.KnowledgeBase;
+import openllet.core.KnowledgeBaseImpl;
 import openllet.core.boxes.abox.ABoxImpl;
 import openllet.core.boxes.abox.Literal;
 import openllet.core.datatypes.DatatypeReasoner;
@@ -677,7 +677,7 @@ public class DatatypeReasonerTests
 		final ATermAppl i = TermFactory.term("i");
 		final ATermAppl one = TermFactory.literal(1);
 
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 		kb.addClass(c);
 		kb.addDatatypeProperty(v);
 		kb.addIndividual(i);
@@ -699,7 +699,7 @@ public class DatatypeReasonerTests
 		final ATermAppl i = TermFactory.term("i");
 		final ATermAppl one = TermFactory.literal(1);
 
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 		kb.addClass(c);
 		kb.addDatatypeProperty(v);
 		kb.addIndividual(i);
@@ -720,7 +720,7 @@ public class DatatypeReasonerTests
 		final ATermAppl p = TermFactory.term("p");
 		final ATermAppl uri = TermFactory.literal(URI.create("http://www.example.org"));
 
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 		kb.addClass(C);
 		kb.addClass(D);
 		kb.addDatatypeProperty(p);

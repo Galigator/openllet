@@ -6,7 +6,7 @@
 
 package openllet.core.rules.builtins;
 
-import openllet.core.boxes.abox.ABoxImpl;
+import openllet.core.boxes.abox.ABox;
 import openllet.core.boxes.abox.Literal;
 import openllet.core.rules.BindingHelper;
 import openllet.core.rules.model.BuiltInAtom;
@@ -14,9 +14,6 @@ import openllet.core.rules.model.BuiltInAtom;
 /**
  * <p>
  * Title: Built-In
- * </p>
- * <p>
- * Description:
  * </p>
  * <p>
  * Copyright: Copyright (c) 2007
@@ -33,6 +30,6 @@ public interface BuiltIn
 
 	public BindingHelper createHelper(BuiltInAtom atom);
 
-	public boolean apply(ABoxImpl abox, Literal[] args);
+	public boolean apply(ABox abox, Literal[] args);
 
 }

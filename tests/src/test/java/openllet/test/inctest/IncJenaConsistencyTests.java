@@ -141,12 +141,12 @@ public class IncJenaConsistencyTests extends AbstractJenaTests
 
 		// check that the update occurred and that the incremental consistency
 		// was used
-		assertTrue(graph.getKB().timers.getTimer("isIncConsistent") == null);
+		assertTrue(graph.getKB().getTimers().getTimer("isIncConsistent") == null);
 		assertIteratorValues(model.listIndividuals(), new Resource[] { i1, i2, i3, i4 });
 
 		i4.addRDFType(C);
 		model.prepare();
-		assertTrue(!OpenlletOptions.USE_INCREMENTAL_CONSISTENCY || graph.getKB().timers.getTimer("isIncConsistent").getCount() == 1);
+		assertTrue(!OpenlletOptions.USE_INCREMENTAL_CONSISTENCY || graph.getKB().getTimers().getTimer("isIncConsistent").getCount() == 1);
 	}
 
 	@Ignore("This test is know to fail when the processing _order of disjoint axiom changes.")
@@ -190,34 +190,34 @@ public class IncJenaConsistencyTests extends AbstractJenaTests
 
 		// check that the update occurred and that the incremental consistency
 		// was used
-		assertTrue(graph.getKB().timers.getTimer("isIncConsistent").getCount() > 0);
+		assertTrue(graph.getKB().getTimers().getTimer("isIncConsistent").getCount() > 0);
 		assertIteratorValues(model.listIndividuals(), new Resource[] { i1, i2, i3, i4 });
 
 		i4.addRDFType(model.createCardinalityRestriction(null, p, 1));
-		graph.getKB().timers.getTimer("isIncConsistent").reset();
+		graph.getKB().getTimers().getTimer("isIncConsistent").reset();
 
 		model.prepare();
 
 		// check that incremental consistency was not used
-		assertTrue(graph.getKB().timers.getTimer("isIncConsistent").getCount() == 0);
+		assertTrue(graph.getKB().getTimers().getTimer("isIncConsistent").getCount() == 0);
 
 		i4.addRDFType(E);
 
 		// check that the kb is now inconsistent and that incremental
 		// consistency was used
 		assertFalse(((PelletInfGraph) model.getGraph()).isConsistent());
-		assertTrue(graph.getKB().timers.getTimer("isIncConsistent").getCount() > 0);
+		assertTrue(graph.getKB().getTimers().getTimer("isIncConsistent").getCount() > 0);
 
 		i4.removeRDFType(E);
 
-		graph.getKB().timers.getTimer("isIncConsistent").reset();
+		graph.getKB().getTimers().getTimer("isIncConsistent").reset();
 
 		model.prepare();
 
 		// check that the kb is now inconsistent and that incremental
 		// consistency was used
 		assertTrue(((PelletInfGraph) model.getGraph()).isConsistent());
-		assertTrue(graph.getKB().timers.getTimer("isIncConsistent").getCount() == 0);
+		assertTrue(graph.getKB().getTimers().getTimer("isIncConsistent").getCount() == 0);
 
 		final ObjectProperty op = model.createObjectProperty(ns + "op");
 		i2.addProperty(op, i4);
@@ -227,7 +227,7 @@ public class IncJenaConsistencyTests extends AbstractJenaTests
 		// check that the kb is now inconsistent and that incremental
 		// consistency was used
 		assertTrue(((PelletInfGraph) model.getGraph()).isConsistent());
-		assertTrue(graph.getKB().timers.getTimer("isIncConsistent").getCount() == 0);
+		assertTrue(graph.getKB().getTimers().getTimer("isIncConsistent").getCount() == 0);
 
 		i2.addRDFType(CONJ);
 
@@ -236,7 +236,7 @@ public class IncJenaConsistencyTests extends AbstractJenaTests
 		// check that the kb is now inconsistent and that incremental
 		// consistency was used
 		assertTrue(((PelletInfGraph) model.getGraph()).isConsistent());
-		assertTrue(graph.getKB().timers.getTimer("isIncConsistent").getCount() == 0);
+		assertTrue(graph.getKB().getTimers().getTimer("isIncConsistent").getCount() == 0);
 	}
 
 	@Test
@@ -262,7 +262,7 @@ public class IncJenaConsistencyTests extends AbstractJenaTests
 
 		final PelletInfGraph graph = (PelletInfGraph) model.getGraph();
 
-		assertTrue(graph.getKB().timers.getTimer("isIncConsistent") == null);
+		assertTrue(graph.getKB().getTimers().getTimer("isIncConsistent") == null);
 		assertIteratorValues(a.listPropertyValues(dp), new Literal[] { one });
 
 		a.addProperty(op, b);
@@ -273,7 +273,7 @@ public class IncJenaConsistencyTests extends AbstractJenaTests
 		assertIteratorValues(a.listPropertyValues(op), new Resource[] { b });
 		// check that the update occurred and that the incremental consistency
 		// was used
-		assertTrue(!OpenlletOptions.USE_INCREMENTAL_CONSISTENCY || graph.getKB().timers.getTimer("isIncConsistent").getCount() == 1);
+		assertTrue(!OpenlletOptions.USE_INCREMENTAL_CONSISTENCY || graph.getKB().getTimers().getTimer("isIncConsistent").getCount() == 1);
 
 		final Literal two = model.createTypedLiteral("2", TypeMapper.getInstance().getTypeByName(XSD.positiveInteger.getURI()));
 		b.addProperty(dp, two);
@@ -283,7 +283,7 @@ public class IncJenaConsistencyTests extends AbstractJenaTests
 		assertIteratorValues(b.listPropertyValues(dp), new Literal[] { two });
 		// check that the update occurred and that the incremental consistency
 		// was used
-		assertTrue(!OpenlletOptions.USE_INCREMENTAL_CONSISTENCY || graph.getKB().timers.getTimer("isIncConsistent").getCount() == 2);
+		assertTrue(!OpenlletOptions.USE_INCREMENTAL_CONSISTENCY || graph.getKB().getTimers().getTimer("isIncConsistent").getCount() == 2);
 	}
 
 	@Test
@@ -309,7 +309,7 @@ public class IncJenaConsistencyTests extends AbstractJenaTests
 
 		final PelletInfGraph graph = (PelletInfGraph) model.getGraph();
 
-		assertTrue(graph.getKB().timers.getTimer("isIncConsistent") == null);
+		assertTrue(graph.getKB().getTimers().getTimer("isIncConsistent") == null);
 		assertIteratorValues(a.listPropertyValues(dp), new Literal[] { one });
 
 		a.addProperty(op, anon1);
@@ -320,7 +320,7 @@ public class IncJenaConsistencyTests extends AbstractJenaTests
 		assertIteratorValues(a.listPropertyValues(op), new Resource[] { anon1 });
 		// check that the update occurred and that the incremental consistency
 		// was used
-		assertTrue(!OpenlletOptions.USE_INCREMENTAL_CONSISTENCY || graph.getKB().timers.getTimer("isIncConsistent").getCount() > 0);
+		assertTrue(!OpenlletOptions.USE_INCREMENTAL_CONSISTENCY || graph.getKB().getTimers().getTimer("isIncConsistent").getCount() > 0);
 
 		final Individual anon2 = model.createIndividual(C);
 		anon2.addProperty(op, a);
@@ -331,7 +331,7 @@ public class IncJenaConsistencyTests extends AbstractJenaTests
 		assertIteratorValues(anon2.listPropertyValues(op), new Resource[] { a });
 		// check that the update occurred and that the incremental consistency
 		// was used
-		assertTrue(!OpenlletOptions.USE_INCREMENTAL_CONSISTENCY || graph.getKB().timers.getTimer("isIncConsistent").getCount() == 2);
+		assertTrue(!OpenlletOptions.USE_INCREMENTAL_CONSISTENCY || graph.getKB().getTimers().getTimer("isIncConsistent").getCount() == 2);
 	}
 
 	@Test
@@ -369,7 +369,7 @@ public class IncJenaConsistencyTests extends AbstractJenaTests
 		final PelletInfGraph graph = (PelletInfGraph) ontmodel.getGraph();
 
 		//assertTrue( graph.getKB().timers.getTimer( "isIncConsistent" ) == null );
-		final long prevCount = graph.getKB().timers.getTimer("isIncConsistent") == null ? 0 : graph.getKB().timers.getTimer("isIncConsistent").getCount();
+		final long prevCount = graph.getKB().getTimers().getTimer("isIncConsistent") == null ? 0 : graph.getKB().getTimers().getTimer("isIncConsistent").getCount();
 
 		inds[4].addRDFType(class1);
 		inds[5].addRDFType(class1);
@@ -378,9 +378,9 @@ public class IncJenaConsistencyTests extends AbstractJenaTests
 
 		assertIteratorValues(class1.listInstances(), new Resource[] { inds[0], inds[1], inds[2], inds[3], inds[4], inds[5] });
 
-		assertTrue(prevCount < graph.getKB().timers.getTimer("isIncConsistent").getCount());
+		assertTrue(prevCount < graph.getKB().getTimers().getTimer("isIncConsistent").getCount());
 
-		graph.getKB().timers.getTimer("isIncConsistent").reset();
+		graph.getKB().getTimers().getTimer("isIncConsistent").reset();
 
 		final RDFList list = ontmodel.createList(new RDFNode[] { class1, class2 });
 
@@ -388,7 +388,7 @@ public class IncJenaConsistencyTests extends AbstractJenaTests
 
 		final UnionClass class4 = ontmodel.createUnionClass(null, list);
 
-		graph.getKB().timers.getTimer("isIncConsistent").reset();
+		graph.getKB().getTimers().getTimer("isIncConsistent").reset();
 
 		ontmodel.prepare();
 
@@ -396,7 +396,7 @@ public class IncJenaConsistencyTests extends AbstractJenaTests
 
 		assertIteratorValues(class4.listInstances(), new Resource[] { inds[0], inds[1], inds[2], inds[3], inds[4], inds[5] });
 
-		assertEquals(0, graph.getKB().timers.getTimer("isIncConsistent").getCount());
+		assertEquals(0, graph.getKB().getTimers().getTimer("isIncConsistent").getCount());
 
 		final Individual newind = ontmodel.createIndividual(nc + "Ind7", class4);
 

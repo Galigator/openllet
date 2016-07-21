@@ -105,8 +105,8 @@ public class InterruptReasoningExample
 	// the Jena model we are using
 	private final OntModel model;
 
-	// underlying pellet graph
-	private final PelletInfGraph pellet;
+	// underlying openllet graph
+	private final PelletInfGraph openllet;
 
 	// the _timers associated with the Pellet KB
 	private final Timers timers;
@@ -133,10 +133,10 @@ public class InterruptReasoningExample
 		// create the Jena model
 		model = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
 
-		pellet = (PelletInfGraph) model.getGraph();
+		openllet = (PelletInfGraph) model.getGraph();
 
-		// get the underlying Pellet _timers
-		timers = pellet.getKB().timers;
+		// get the underlying openllet timers
+		timers = openllet.getKB().getTimers();
 
 		// set the timeout for main reasoning tasks
 		timers.createTimer("complete").setTimeout(Timeouts.CONSISTENCY);
@@ -187,14 +187,14 @@ public class InterruptReasoningExample
 			System.out.println("interrupted after " + timers.getTimer("classify").getElapsed() + "ms");
 		}
 
-		System.out.println("Classified: " + pellet.isClassified());
+		System.out.println("Classified: " + openllet.isClassified());
 		System.out.println();
 	}
 
 	public void realize()
 	{
 		// realization can only be done if classification is completed
-		if (!pellet.isClassified())
+		if (!openllet.isClassified())
 			return;
 
 		System.out.println("Realize Timeout: " + Timeouts.REALIZE + "ms");
@@ -202,7 +202,7 @@ public class InterruptReasoningExample
 
 		try
 		{
-			pellet.realize();
+			openllet.realize();
 			System.out.println("finished in " + timers.getTimer("realize").getLast() + "ms");
 		}
 		catch (final TimeoutException e)
@@ -211,7 +211,7 @@ public class InterruptReasoningExample
 			System.out.println("interrupted after " + timers.getTimer("realize").getElapsed() + "ms");
 		}
 
-		System.out.println("Realized: " + pellet.isRealized());
+		System.out.println("Realized: " + openllet.isRealized());
 		System.out.println();
 	}
 

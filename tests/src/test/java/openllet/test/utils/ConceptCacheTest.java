@@ -8,7 +8,7 @@ package openllet.test.utils;
 
 import junit.framework.TestCase;
 import openllet.aterm.ATermAppl;
-import openllet.core.KnowledgeBase;
+import openllet.core.KnowledgeBaseImpl;
 import openllet.core.tableau.cache.CachedNode;
 import openllet.core.tableau.cache.CachedNodeFactory;
 import openllet.core.tableau.cache.ConceptCache;
@@ -34,7 +34,7 @@ public class ConceptCacheTest extends TestCase
 	@Override
 	public void setUp()
 	{
-		_cache = new ConceptCacheLRU(new KnowledgeBase(), 3);
+		_cache = new ConceptCacheLRU(new KnowledgeBaseImpl(), 3);
 	}
 
 	public void testPut()

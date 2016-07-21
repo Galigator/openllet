@@ -57,7 +57,7 @@ public class DependencyIndex
 	 */
 	public DependencyIndex(final KnowledgeBase kb)
 	{
-		this._kb = kb;
+		_kb = kb;
 	}
 
 	/**
@@ -98,7 +98,7 @@ public class DependencyIndex
 
 	/**
 	 * Add a new type dependency
-	 * 
+	 *
 	 * @param ind
 	 * @param type
 	 * @param ds
@@ -127,7 +127,7 @@ public class DependencyIndex
 
 	/**
 	 * Add a new merge dependency
-	 * 
+	 *
 	 * @param ind
 	 * @param type
 	 * @param ds
@@ -156,7 +156,7 @@ public class DependencyIndex
 
 	/**
 	 * Add a new edge dependency
-	 * 
+	 *
 	 * @param edge
 	 * @param ds
 	 */
@@ -184,7 +184,7 @@ public class DependencyIndex
 
 	/**
 	 * Add a new _branch dependency
-	 * 
+	 *
 	 * @param ind
 	 * @param type
 	 * @param ds
@@ -220,7 +220,7 @@ public class DependencyIndex
 
 	/**
 	 * Add a new _branch ds removal dependency
-	 * 
+	 *
 	 * @param ind
 	 * @param type
 	 * @param ds
@@ -260,7 +260,7 @@ public class DependencyIndex
 
 	/**
 	 * Remove the _dependencies for a given assertion
-	 * 
+	 *
 	 * @param assertion
 	 */
 	public void removeDependencies(final ATermAppl assertion)
@@ -270,7 +270,7 @@ public class DependencyIndex
 
 	/**
 	 * Remove _branch _dependencies - this is needed due to backjumping!
-	 * 
+	 *
 	 * @param b
 	 */
 	public void removeBranchDependencies(final Branch b)

@@ -104,7 +104,7 @@ public class OptimizedQueryEngine2 extends AbstractABoxEngineWrapper
 	{
 		_results = new QueryResultImpl(q);
 
-		this._kb = q.getKB();
+		_kb = q.getKB();
 
 		final long satCount = _kb.getABox().getStats().satisfiabilityCount;
 		final long consCount = _kb.getABox().getStats().consistencyCount;

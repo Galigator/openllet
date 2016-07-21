@@ -24,6 +24,7 @@ import java.util.Arrays;
 import junit.framework.JUnit4TestAdapter;
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
+import openllet.core.KnowledgeBaseImpl;
 import openllet.core.boxes.rbox.Role;
 import openllet.core.utils.ATermUtils;
 import openllet.jena.PelletInfGraph;
@@ -40,12 +41,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 /**
- * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
  * <p>
  * Copyright: Copyright (c) 2009
  * </p>
@@ -174,7 +169,7 @@ public class PropertyChainTests extends AbstractKBTests
 	@Test
 	public void testSimplePropertyChain()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl C = term("C");
 		final ATermAppl D = term("D");
@@ -208,7 +203,7 @@ public class PropertyChainTests extends AbstractKBTests
 	@Test
 	public void invalidCycle1()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl B = term("B");
 		final ATermAppl C = term("C");
@@ -252,7 +247,7 @@ public class PropertyChainTests extends AbstractKBTests
 	@Test
 	public void validCycle1()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl C = term("C");
 		final ATermAppl D = term("D");
@@ -293,7 +288,7 @@ public class PropertyChainTests extends AbstractKBTests
 	@Test
 	public void validCycle3()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl C = term("C");
 		final ATermAppl D = term("D");
@@ -474,7 +469,7 @@ public class PropertyChainTests extends AbstractKBTests
 	@Test
 	public void invalidCycle2()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl B = term("B");
 		final ATermAppl C = term("C");
@@ -522,7 +517,7 @@ public class PropertyChainTests extends AbstractKBTests
 	@Test
 	public void validCycle2()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl C = term("C");
 		final ATermAppl D = term("D");

@@ -34,8 +34,9 @@ import java.util.List;
 import junit.framework.JUnit4TestAdapter;
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
-import openllet.core.OpenlletOptions;
 import openllet.core.KnowledgeBase.ChangeType;
+import openllet.core.KnowledgeBaseImpl;
+import openllet.core.OpenlletOptions;
 import openllet.core.datatypes.Datatypes;
 import openllet.core.rules.model.AtomIVariable;
 import openllet.core.rules.model.ClassAtom;
@@ -99,18 +100,18 @@ public class IncConsistencyTests extends AbstractKBTests
 			_chris = term("Chris"), //
 			_john = term("John"), //
 			_bill = term("Bill"), //
-			_victor = term("Victor"), // 
+			_victor = term("Victor"), //
 			_mbox = term("mbox"), //
 			_relative = term("relative"), //
 			_sibling = term("sibling"), //
-			_person = term("person"), // 
-			_animalOwner = term("animalOwner"), // 
+			_person = term("person"), //
+			_animalOwner = term("animalOwner"), //
 			_owns = term("owns"), //
-			_ownedBy = term("ownedBy"), // 
+			_ownedBy = term("ownedBy"), //
 			_knows = term("knows"), //
 			_notPerson = not(_person), //
 			_man = term("man"), //
-			_woman = term("woman"), // 
+			_woman = term("woman"), //
 			_animal = term("animal"), //
 			_dog = term("dog"), //
 			_cat = term("cat"), //
@@ -126,9 +127,9 @@ public class IncConsistencyTests extends AbstractKBTests
 
 	public IncConsistencyTests(final boolean ucq, final boolean uic, final boolean uid)
 	{
-		this._ucq = ucq;
-		this._uic = uic;
-		this._uid = uid;
+		_ucq = ucq;
+		_uic = uic;
+		_uid = uid;
 	}
 
 	/**
@@ -1248,7 +1249,7 @@ public class IncConsistencyTests extends AbstractKBTests
 	@Test
 	public void testSimpleABoxRemove()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl a = term("a");
 		final ATermAppl C = term("C");
@@ -1459,7 +1460,7 @@ public class IncConsistencyTests extends AbstractKBTests
 		// check if consistency check will be performed after
 		// a classified ABox is changed
 
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl C = term("C");
 		final ATermAppl D = term("D");
@@ -1582,7 +1583,7 @@ public class IncConsistencyTests extends AbstractKBTests
 	public void testClassificationStatus1()
 	{
 		// Related to ticket #193
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl C = term("C");
 		final ATermAppl D = term("D");
@@ -1613,7 +1614,7 @@ public class IncConsistencyTests extends AbstractKBTests
 	{
 		// Same as testClassificationStatus1 but with EL
 		// classifier
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl C = term("C");
 		final ATermAppl D = term("D");
@@ -1645,11 +1646,11 @@ public class IncConsistencyTests extends AbstractKBTests
 		// IMPORTANT: this test case is written with the _current _expected
 		// behavior of Pellet. it is possible that this behavior will
 		// change in the future and this test case can be modified
-		// accordingly		
+		// accordingly
 
-		final KnowledgeBase kb = new KnowledgeBase();
-		final Timer classifyTimer = kb.timers.createTimer("classify");
-		final Timer realizeTimer = kb.timers.createTimer("realize");
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
+		final Timer classifyTimer = kb.getTimers().createTimer("classify");
+		final Timer realizeTimer = kb.getTimers().createTimer("realize");
 
 		final ATermAppl a = term("a");
 		final ATermAppl b = term("b");
@@ -1764,9 +1765,9 @@ public class IncConsistencyTests extends AbstractKBTests
 	public void testCopyKB()
 	{
 		// this test case is to verify that when a KB is copied the ABox
-		// will be duplicated but TBox and RBox is openllet.shared.hash	
+		// will be duplicated but TBox and RBox is openllet.shared.hash
 
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl a = term("a");
 		final ATermAppl b = term("b");
@@ -1861,7 +1862,7 @@ public class IncConsistencyTests extends AbstractKBTests
 		// 5) there is a literal in the ABox without rdfs:Literal
 		//    type invalidating the main assumption about literals
 
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl a = term("a");
 		final ATermAppl b = term("b");
@@ -1893,7 +1894,7 @@ public class IncConsistencyTests extends AbstractKBTests
 	@Test
 	public void testPrunedNode()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl A = term("A");
 		final ATermAppl B = term("B");
@@ -1928,7 +1929,7 @@ public class IncConsistencyTests extends AbstractKBTests
 	@Test
 	public void aboxChangeWithRules()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 
 		final ATermAppl A = term("A");
 		final ATermAppl B = term("B");

@@ -17,6 +17,7 @@ import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
 import openllet.core.utils.ATermUtils;
 import openllet.query.sparqldl.model.Query;
+import openllet.query.sparqldl.model.Query.VarType;
 import openllet.query.sparqldl.model.QueryAtom;
 import openllet.query.sparqldl.model.QueryAtomFactory;
 import openllet.query.sparqldl.model.QueryImpl;
@@ -25,7 +26,6 @@ import openllet.query.sparqldl.model.QueryResult;
 import openllet.query.sparqldl.model.QueryResultImpl;
 import openllet.query.sparqldl.model.ResultBinding;
 import openllet.query.sparqldl.model.ResultBindingImpl;
-import openllet.query.sparqldl.model.Query.VarType;
 import openllet.shared.tools.Log;
 
 /**
@@ -271,8 +271,8 @@ class LiteralIterator implements Iterator<ResultBinding>
 	public LiteralIterator(final Query q, final ResultBinding binding)
 	{
 		final KnowledgeBase kb = q.getKB();
-		this._binding = binding;
-		this._litVars = q.getDistVarsForType(VarType.LITERAL);
+		_binding = binding;
+		_litVars = q.getDistVarsForType(VarType.LITERAL);
 
 		_indices = new int[_litVars.size()];
 		int index = 0;

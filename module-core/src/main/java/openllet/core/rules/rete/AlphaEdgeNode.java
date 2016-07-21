@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import openllet.core.DependencySet;
-import openllet.core.boxes.abox.ABoxImpl;
+import openllet.core.boxes.abox.ABox;
 import openllet.core.boxes.abox.DefaultEdge;
 import openllet.core.boxes.abox.Edge;
 import openllet.core.boxes.abox.EdgeList;
@@ -33,10 +33,10 @@ public class AlphaEdgeNode extends AlphaNode
 {
 	protected final Role _role;
 
-	public AlphaEdgeNode(final ABoxImpl abox, final Role role)
+	public AlphaEdgeNode(final ABox abox, final Role role)
 	{
 		super(abox);
-		this._role = role;
+		_role = role;
 	}
 
 	public Role getRole()

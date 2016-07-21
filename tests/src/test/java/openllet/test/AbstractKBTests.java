@@ -16,6 +16,7 @@ import java.util.HashSet;
 import java.util.Set;
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
+import openllet.core.KnowledgeBaseImpl;
 import org.junit.After;
 import org.junit.Before;
 
@@ -48,7 +49,7 @@ public class AbstractKBTests
 	@Before
 	public void initializeKB()
 	{
-		_kb = new KnowledgeBase();
+		_kb = new KnowledgeBaseImpl();
 	}
 
 	@After

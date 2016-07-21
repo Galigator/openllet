@@ -10,7 +10,7 @@ import java.util.logging.Level;
 import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
 import openllet.core.OpenlletOptions;
-import openllet.core.boxes.abox.ABoxImpl;
+import openllet.core.boxes.abox.ABox;
 import openllet.core.boxes.abox.Clash;
 import openllet.core.boxes.abox.Individual;
 import openllet.core.boxes.rbox.Role;
@@ -40,17 +40,17 @@ public class GuessBranch extends IndividualBranch
 	private final int _minGuess;
 	private final ATermAppl _qualification;
 
-	public GuessBranch(final ABoxImpl abox, final CompletionStrategy strategy, final Individual x, final Role r, final int minGuess, final int maxGuess, final ATermAppl q, final DependencySet ds)
+	public GuessBranch(final ABox abox, final CompletionStrategy strategy, final Individual x, final Role r, final int minGuess, final int maxGuess, final ATermAppl q, final DependencySet ds)
 	{
 		super(abox, strategy, x, ds, maxGuess - minGuess + 1);
 
-		this._r = r;
-		this._minGuess = minGuess;
-		this._qualification = q;
+		_r = r;
+		_minGuess = minGuess;
+		_qualification = q;
 	}
 
 	@Override
-	public IndividualBranch copyTo(final ABoxImpl abox)
+	public IndividualBranch copyTo(final ABox abox)
 	{
 		final Individual x = abox.getIndividual(ind.getName());
 		final IndividualBranch b = new GuessBranch(abox, null, x, _r, _minGuess, _minGuess + getTryCount() - 1, _qualification, getTermDepends());
@@ -71,7 +71,7 @@ public class GuessBranch extends IndividualBranch
 		DependencySet ds = getTermDepends();
 		for (; getTryNext() < getTryCount(); _tryNext++)
 		{
-			// start with max possibility and decrement at each try  
+			// start with max possibility and decrement at each try
 			final int n = _minGuess + getTryCount() - getTryNext() - 1;
 
 			if (_logger.isLoggable(Level.FINE))

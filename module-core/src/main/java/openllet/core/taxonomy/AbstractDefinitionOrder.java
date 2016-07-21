@@ -32,8 +32,8 @@ public abstract class AbstractDefinitionOrder implements DefinitionOrder
 
 	public AbstractDefinitionOrder(final KnowledgeBase kb, final Comparator<ATerm> comparator)
 	{
-		this._kb = kb;
-		this._comparator = comparator;
+		_kb = kb;
+		_comparator = comparator;
 
 		_cyclicConcepts = CollectionUtils.makeIdentitySet();
 		_definitionOrder = new ArrayList<>(kb.getClasses().size() + 2);

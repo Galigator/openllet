@@ -47,12 +47,6 @@ import org.semanticweb.owlapi.model.SWRLRule;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2008
  * </p>
  * <p>
@@ -90,7 +84,7 @@ public class OWLAPIExplanationTest extends AbstractExplanationTest
 	{
 		super(classify);
 
-		this._useGlassBox = useGlassBox;
+		_useGlassBox = useGlassBox;
 	}
 
 	@BeforeClass
@@ -183,21 +177,21 @@ public class OWLAPIExplanationTest extends AbstractExplanationTest
 		{
 			if (null == _representation) // Sort the axiom to get a easy common representation of this sub ontology.
 				_representation = _base.stream()//
-				.map(axiom ->
-				{ // Inside of the SWRLRule, the representation can vary because they are 'Set'.
-					// So test can pass on some java-vm but not on some other.
-					// The solution is to sort everything.
-					if (axiom instanceof SWRLRule)
-					{
-						final SWRLRule rule = (SWRLRule) axiom;
-						return "DLSafeRule( " + //
-						"Body(" + rule.body().map(SWRLAtom::toString).sorted().collect(Collectors.joining(" ")) + ") " + //
-						"Head(" + rule.head().map(SWRLAtom::toString).sorted().collect(Collectors.joining(" ")) + ") " + //
-						" )";//
-					}
-					return axiom.toString();
-				})//
-				.sorted().collect(Collectors.joining("\n"));
+						.map(axiom ->
+						{ // Inside of the SWRLRule, the representation can vary because they are 'Set'.
+						// So test can pass on some java-vm but not on some other.
+							// The solution is to sort everything.
+							if (axiom instanceof SWRLRule)
+							{
+								final SWRLRule rule = (SWRLRule) axiom;
+								return "DLSafeRule( " + //
+								"Body(" + rule.body().map(SWRLAtom::toString).sorted().collect(Collectors.joining(" ")) + ") " + //
+								"Head(" + rule.head().map(SWRLAtom::toString).sorted().collect(Collectors.joining(" ")) + ") " + //
+								" )";//
+							}
+							return axiom.toString();
+						})//
+						.sorted().collect(Collectors.joining("\n"));
 			return _representation;
 		}
 
@@ -214,14 +208,14 @@ public class OWLAPIExplanationTest extends AbstractExplanationTest
 		@Override
 		public int compareTo(final Explanation that)
 		{
-			return this.getRepresentation().compareTo(that.getRepresentation()); // Have fun coding the tree exploration instead of this.
+			return getRepresentation().compareTo(that.getRepresentation()); // Have fun coding the tree exploration instead of this.
 		}
 	}
 
 	private static void compareExplanations(//
-			final List<Explanation> unexpectedExplanations,//
-			final List<Explanation> notFoundExplanations,//
-			final List<Explanation> generatedExplanations,//
+			final List<Explanation> unexpectedExplanations, //
+			final List<Explanation> notFoundExplanations, //
+			final List<Explanation> generatedExplanations, //
 			final List<Explanation> expectedExplanations)
 	{
 		final Map<String, Explanation> gen = new HashMap<>();

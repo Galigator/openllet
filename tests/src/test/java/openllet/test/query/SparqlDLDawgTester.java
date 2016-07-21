@@ -19,7 +19,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.aterm.ATermAppl;
-import openllet.core.KnowledgeBase;
+import openllet.core.KnowledgeBaseImpl;
 import openllet.core.utils.PermutationGenerator;
 import openllet.core.utils.Timer;
 import openllet.jena.PelletInfGraph;
@@ -141,7 +141,7 @@ public class SparqlDLDawgTester implements SparqlDawgTester
 	{
 		try
 		{
-			QueryEngineBuilder.getParser().parse(new FileInputStream(_queryURI.substring(5)), new KnowledgeBase());
+			QueryEngineBuilder.getParser().parse(new FileInputStream(_queryURI.substring(5)), new KnowledgeBaseImpl());
 
 			return true;
 		}

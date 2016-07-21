@@ -18,9 +18,6 @@ import openllet.core.utils.ATermUtils;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
  * Description: LRU implementation of ConceptCache. Primitive concepts and their negation are always kept in the _cache. The least recently used complex concept
  * will be removed from the _cache if the max size is reached.
  * </p>

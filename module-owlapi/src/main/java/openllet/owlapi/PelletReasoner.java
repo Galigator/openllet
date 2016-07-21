@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
+import openllet.core.KnowledgeBaseImpl;
 import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.exceptions.PelletRuntimeException;
 import openllet.core.utils.ATermUtils;
@@ -369,10 +370,10 @@ public class PelletReasoner implements OWLReasoner, OWLOntologyChangeListener, F
 		_ontology = ontology;
 		_monitor = config.getProgressMonitor();
 
-		_kb = new KnowledgeBase();
+		_kb = new KnowledgeBaseImpl();
 		_kb.setTaxonomyBuilderProgressMonitor(new ProgressAdapter(_monitor));
 		if (config.getTimeOut() > 0)
-			_kb.timers.mainTimer.setTimeout(config.getTimeOut());
+			_kb.getTimers().mainTimer.setTimeout(config.getTimeOut());
 
 		_manager = ontology.getOWLOntologyManager();
 		_factory = _manager.getOWLDataFactory();
@@ -908,7 +909,7 @@ public class PelletReasoner implements OWLReasoner, OWLOntologyChangeListener, F
 	@Override
 	public long getTimeOut()
 	{
-		return _kb.timers.mainTimer.getTimeout();
+		return _kb.getTimers().mainTimer.getTimeout();
 	}
 
 	@Override
@@ -970,7 +971,7 @@ public class PelletReasoner implements OWLReasoner, OWLOntologyChangeListener, F
 	@Override
 	public void interrupt()
 	{
-		_kb.timers.interrupt();
+		_kb.getTimers().interrupt();
 	}
 
 	@Override

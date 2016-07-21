@@ -56,9 +56,6 @@ import openllet.shared.tools.Log;
  * Title: Query Engine for SPARQL-DL
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>

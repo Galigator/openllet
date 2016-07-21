@@ -117,7 +117,7 @@ public class TBoxImpl implements TBox
 
 	public TBoxImpl(final KnowledgeBase kb)
 	{
-		this._kb = kb;
+		_kb = kb;
 
 		_primitiveTbox = new PrimitiveTBox();
 		_unaryTbox = new UnaryTBox();
@@ -529,7 +529,7 @@ public class TBoxImpl implements TBox
 			return true;
 		}
 
-		protected int processClass(final AtomIObject var, final ATermAppl c, final List<RuleAtom> atoms, int varCountInit)
+		protected int processClass(final AtomIObject var, final ATermAppl c, final List<RuleAtom> atoms, final int varCountInit)
 		{
 			int varCount = varCountInit;
 
@@ -632,7 +632,7 @@ public class TBoxImpl implements TBox
 
 		BinaryAbsorption(final boolean deterministic)
 		{
-			this._deterministic = deterministic;
+			_deterministic = deterministic;
 		}
 
 		@Override

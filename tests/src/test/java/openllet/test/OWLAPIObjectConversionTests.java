@@ -14,6 +14,7 @@ import static org.junit.Assert.fail;
 import junit.framework.JUnit4TestAdapter;
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
+import openllet.core.KnowledgeBaseImpl;
 import openllet.core.utils.SetUtils;
 import openllet.owlapi.ConceptConverter;
 import openllet.owlapi.PelletVisitor;
@@ -84,7 +85,7 @@ public class OWLAPIObjectConversionTests
 
 	private static OWLDatatype _d1 = _factory.getOWLDatatype(IRI.create(_ns + "d1"));
 
-	private final KnowledgeBase _kb = new KnowledgeBase();
+	private final KnowledgeBase _kb = new KnowledgeBaseImpl();
 
 	private final PelletVisitor _atermConverter = new PelletVisitor(_kb);
 

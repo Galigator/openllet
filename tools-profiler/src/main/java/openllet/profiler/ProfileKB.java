@@ -396,7 +396,7 @@ public class ProfileKB
 			final double mem = task.requiresInstances() && kb.getABox().isEmpty() ? results.get(results.size() - 1).getAvgMemory() : printProfile(kb, loader, "After " + task);
 			results.add(new Result<>(task, mem, time));
 		}
-		kb.timers.print();
+		kb.getTimers().print();
 
 		loader.clear();
 

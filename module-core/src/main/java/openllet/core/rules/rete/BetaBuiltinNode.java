@@ -8,7 +8,7 @@ package openllet.core.rules.rete;
 
 import java.util.Arrays;
 import openllet.core.DependencySet;
-import openllet.core.boxes.abox.ABoxImpl;
+import openllet.core.boxes.abox.ABox;
 import openllet.core.boxes.abox.Literal;
 import openllet.core.rules.builtins.BuiltIn;
 import openllet.core.utils.ATermUtils;
@@ -17,17 +17,17 @@ import openllet.core.utils.ATermUtils;
  */
 public class BetaBuiltinNode extends BetaNode
 {
-	private final ABoxImpl _abox;
+	private final ABox _abox;
 	private final String _name;
 	private final BuiltIn _builtin;
 	private final NodeProvider[] _args;
 
-	public BetaBuiltinNode(final ABoxImpl abox, final String name, final BuiltIn builtin, final NodeProvider[] args)
+	public BetaBuiltinNode(final ABox abox, final String name, final BuiltIn builtin, final NodeProvider[] args)
 	{
-		this._abox = abox;
-		this._name = name;
-		this._builtin = builtin;
-		this._args = args;
+		_abox = abox;
+		_name = name;
+		_builtin = builtin;
+		_args = args;
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class BetaBuiltinNode extends BetaNode
 	}
 
 	@Override
-	public void print(String indentLvl)
+	public void print(final String indentLvl)
 	{
 		final String indent = indentLvl + "  ";
 		System.out.print(indent);

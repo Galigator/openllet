@@ -16,12 +16,6 @@ import org.apache.jena.util.FileManager;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -99,7 +93,7 @@ public class JenaLoader extends KBLoader
 	 */
 	public void setInputFormat(final String inputFormat)
 	{
-		this._inputFormat = inputFormat.toUpperCase();
+		_inputFormat = inputFormat.toUpperCase();
 	}
 
 	/**

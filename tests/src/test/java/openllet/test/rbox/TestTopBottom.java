@@ -26,7 +26,7 @@ import java.util.HashSet;
 import java.util.Set;
 import junit.framework.JUnit4TestAdapter;
 import openllet.aterm.ATermAppl;
-import openllet.core.KnowledgeBase;
+import openllet.core.KnowledgeBaseImpl;
 import org.junit.Test;
 
 public class TestTopBottom
@@ -39,7 +39,7 @@ public class TestTopBottom
 	@Test
 	public void bottomDataAssertion()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		final ATermAppl x = term("x");
 		final ATermAppl y = literal("y");
@@ -58,7 +58,7 @@ public class TestTopBottom
 	@Test
 	public void bottomDataDomain()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		assertTrue(kb.hasDomain(BOTTOM_DATA_PROPERTY, BOTTOM));
 	}
@@ -66,7 +66,7 @@ public class TestTopBottom
 	@Test
 	public void bottomDataFunctional()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		assertTrue(kb.isFunctionalProperty(BOTTOM_DATA_PROPERTY));
 	}
@@ -74,7 +74,7 @@ public class TestTopBottom
 	@Test
 	public void bottomDataRange()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		assertTrue(kb.hasRange(BOTTOM_DATA_PROPERTY, BOTTOM_LIT));
 	}
@@ -82,7 +82,7 @@ public class TestTopBottom
 	@Test
 	public void bottomDataSuper()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		final ATermAppl p = term("p");
 		kb.addDatatypeProperty(p);
@@ -93,7 +93,7 @@ public class TestTopBottom
 	@Test
 	public void bottomObjectAssertion()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		final ATermAppl x = term("x");
 		final ATermAppl y = term("y");
@@ -121,7 +121,7 @@ public class TestTopBottom
 	@Test
 	public void bottomObjectAsymm()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		assertTrue(kb.isAsymmetricProperty(BOTTOM_OBJECT_PROPERTY));
 	}
@@ -129,7 +129,7 @@ public class TestTopBottom
 	@Test
 	public void bottomObjectFunc()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		assertTrue(kb.isFunctionalProperty(BOTTOM_OBJECT_PROPERTY));
 		assertTrue(kb.getFunctionalProperties().contains(BOTTOM_OBJECT_PROPERTY));
@@ -138,7 +138,7 @@ public class TestTopBottom
 	@Test
 	public void bottomObjectInverse()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		assertTrue(kb.isInverse(BOTTOM_OBJECT_PROPERTY, BOTTOM_OBJECT_PROPERTY));
 	}
@@ -146,7 +146,7 @@ public class TestTopBottom
 	@Test
 	public void bottomObjectInverseManual()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		final ATermAppl c = term("_C_");
 		final ATermAppl notC = not(c);
@@ -159,7 +159,7 @@ public class TestTopBottom
 	@Test
 	public void bottomObjectInvFunc()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		assertTrue(kb.isInverseFunctionalProperty(BOTTOM_OBJECT_PROPERTY));
 	}
@@ -167,7 +167,7 @@ public class TestTopBottom
 	@Test
 	public void bottomObjectIrreflexive()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		assertTrue(kb.isIrreflexiveProperty(BOTTOM_OBJECT_PROPERTY));
 	}
@@ -175,7 +175,7 @@ public class TestTopBottom
 	@Test
 	public void bottomObjectReflexive()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		assertFalse(kb.isReflexiveProperty(BOTTOM_OBJECT_PROPERTY));
 	}
@@ -183,7 +183,7 @@ public class TestTopBottom
 	@Test
 	public void bottomObjectSuper()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		final ATermAppl p = term("p");
 		kb.addObjectProperty(p);
@@ -194,7 +194,7 @@ public class TestTopBottom
 	@Test
 	public void topEquivalent()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		final ATermAppl p = term("concrete");
 		final ATermAppl r = term("abstract");
@@ -218,7 +218,7 @@ public class TestTopBottom
 	@Test
 	public void bottomObjectSymm()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		assertTrue(kb.isSymmetricProperty(BOTTOM_OBJECT_PROPERTY));
 	}
@@ -226,7 +226,7 @@ public class TestTopBottom
 	@Test
 	public void bottomObjectTransitive()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		assertTrue(kb.isTransitiveProperty(BOTTOM_OBJECT_PROPERTY));
 	}
@@ -234,7 +234,7 @@ public class TestTopBottom
 	@Test
 	public void topDataAssertion()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		final ATermAppl r = term("r");
 		final ATermAppl x = term("x");
@@ -250,7 +250,7 @@ public class TestTopBottom
 	@Test
 	public void topDataFunctional()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		assertFalse(kb.isFunctionalProperty(TOP_DATA_PROPERTY));
 	}
@@ -258,7 +258,7 @@ public class TestTopBottom
 	@Test
 	public void topDataSuper()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		final ATermAppl p = term("p");
 		kb.addDatatypeProperty(p);
@@ -269,7 +269,7 @@ public class TestTopBottom
 	@Test
 	public void topObjectAllValues()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		final ATermAppl c = term("C");
 		final ATermAppl x = term("x");
@@ -292,7 +292,7 @@ public class TestTopBottom
 	@Test
 	public void topObjectallValuesFreshInd()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		final ATermAppl c = term("_C_");
 		final ATermAppl notC = not(c);
@@ -311,7 +311,7 @@ public class TestTopBottom
 	@Test
 	public void topObjectAssertion()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		final ATermAppl x = term("x");
 		final ATermAppl y = term("y");
@@ -328,7 +328,7 @@ public class TestTopBottom
 	@Test
 	public void topObjectAsymm()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		assertFalse(kb.isAsymmetricProperty(TOP_OBJECT_PROPERTY));
 	}
@@ -336,7 +336,7 @@ public class TestTopBottom
 	@Test
 	public void topObjectDomain()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		final ATermAppl c = term("C");
 		final ATermAppl x = term("x");
@@ -359,7 +359,7 @@ public class TestTopBottom
 	@Test
 	public void topObjectFunc()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		assertFalse(kb.isFunctionalProperty(TOP_OBJECT_PROPERTY));
 	}
@@ -367,7 +367,7 @@ public class TestTopBottom
 	@Test
 	public void topObjectInverse()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		assertTrue(kb.isInverse(TOP_OBJECT_PROPERTY, TOP_OBJECT_PROPERTY));
 	}
@@ -375,7 +375,7 @@ public class TestTopBottom
 	@Test
 	public void topObjectInverseManual()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		final ATermAppl c = term("_C_");
 		final ATermAppl notC = not(c);
@@ -388,7 +388,7 @@ public class TestTopBottom
 	@Test
 	public void topObjectInvFunc()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		assertFalse(kb.isInverseFunctionalProperty(TOP_OBJECT_PROPERTY));
 	}
@@ -396,7 +396,7 @@ public class TestTopBottom
 	@Test
 	public void topObjectIrreflexive()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		assertFalse(kb.isIrreflexiveProperty(TOP_OBJECT_PROPERTY));
 	}
@@ -404,7 +404,7 @@ public class TestTopBottom
 	@Test
 	public void topObjectRange()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		final ATermAppl c = term("C");
 		final ATermAppl x = term("x");
@@ -427,7 +427,7 @@ public class TestTopBottom
 	@Test
 	public void topObjectReflexive()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		assertTrue(kb.isReflexiveProperty(TOP_OBJECT_PROPERTY));
 	}
@@ -435,7 +435,7 @@ public class TestTopBottom
 	@Test
 	public void topObjectSomeValuesBottom()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 		kb.addSubClass(TOP, some(TOP_OBJECT_PROPERTY, BOTTOM));
 
 		assertFalse(kb.isConsistent());
@@ -444,7 +444,7 @@ public class TestTopBottom
 	@Test
 	public void topObjectSuper()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		final ATermAppl p = term("p");
 		kb.addObjectProperty(p);
@@ -455,7 +455,7 @@ public class TestTopBottom
 	@Test
 	public void topObjectSymm()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		assertTrue(kb.isSymmetricProperty(TOP_OBJECT_PROPERTY));
 	}
@@ -463,7 +463,7 @@ public class TestTopBottom
 	@Test
 	public void topObjectTransitive()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		assertTrue(kb.isTransitiveProperty(TOP_OBJECT_PROPERTY));
 	}
@@ -471,7 +471,7 @@ public class TestTopBottom
 	@Test
 	public void topObjectDisjoints()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBaseImpl kb = new KnowledgeBaseImpl();
 
 		final ATermAppl p = term("p");
 		final ATermAppl subP = term("subP");

@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.logging.Level;
 import openllet.core.DependencySet;
 import openllet.core.OpenlletOptions;
-import openllet.core.boxes.abox.ABoxImpl;
+import openllet.core.boxes.abox.ABox;
 import openllet.core.boxes.abox.Clash;
 import openllet.core.boxes.abox.Individual;
 import openllet.core.boxes.abox.Node;
@@ -35,16 +35,16 @@ public class RuleBranch extends Branch
 	private int[] _order;
 	private DependencySet[] _prevDS;
 
-	public RuleBranch(final ABoxImpl abox, final CompletionStrategy completion, final RuleAtomAsserter ruleAtomAsserter, final List<RuleAtom> atoms, final VariableBinding binding, final int bodyAtomCount, final DependencySet ds)
+	public RuleBranch(final ABox abox, final CompletionStrategy completion, final RuleAtomAsserter ruleAtomAsserter, final List<RuleAtom> atoms, final VariableBinding binding, final int bodyAtomCount, final DependencySet ds)
 	{
 		super(abox, completion, ds, atoms.size());
 
-		this._ruleAtomAsserter = ruleAtomAsserter;
-		this._atoms = atoms;
-		this._bodyAtomCount = bodyAtomCount;
-		this._binding = binding;
-		this._prevDS = new DependencySet[atoms.size()];
-		this._order = new int[atoms.size()];
+		_ruleAtomAsserter = ruleAtomAsserter;
+		_atoms = atoms;
+		_bodyAtomCount = bodyAtomCount;
+		_binding = binding;
+		_prevDS = new DependencySet[atoms.size()];
+		_order = new int[atoms.size()];
 		for (int i = 0; i < _order.length; i++)
 			_order[i] = i;
 	}
@@ -56,7 +56,7 @@ public class RuleBranch extends Branch
 	}
 
 	@Override
-	public RuleBranch copyTo(final ABoxImpl abox)
+	public RuleBranch copyTo(final ABox abox)
 	{
 		final RuleBranch b = new RuleBranch(abox, _strategy, _ruleAtomAsserter, _atoms, _binding, _bodyAtomCount, getTermDepends());
 

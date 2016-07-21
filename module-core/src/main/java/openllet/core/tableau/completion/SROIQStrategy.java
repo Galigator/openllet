@@ -12,19 +12,13 @@ import java.util.List;
 import java.util.logging.Level;
 import openllet.core.IndividualIterator;
 import openllet.core.OpenlletOptions;
-import openllet.core.boxes.abox.ABoxImpl;
+import openllet.core.boxes.abox.ABox;
 import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.expressivity.Expressivity;
 import openllet.core.tableau.branch.Branch;
 import openllet.core.tableau.completion.rule.TableauRule;
 
 /**
- * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
  * <p>
  * Copyright: Copyright (c) 2006
  * </p>
@@ -36,7 +30,7 @@ import openllet.core.tableau.completion.rule.TableauRule;
  */
 public class SROIQStrategy extends CompletionStrategy
 {
-	public SROIQStrategy(final ABoxImpl abox)
+	public SROIQStrategy(final ABox abox)
 	{
 		super(abox);
 	}
@@ -44,7 +38,7 @@ public class SROIQStrategy extends CompletionStrategy
 	protected boolean backtrack()
 	{
 		boolean branchFound = false;
-		_abox._stats.backtracks++;
+		_abox.getStats().backtracks++;
 		while (!branchFound)
 		{
 			_completionTimer.check();
@@ -76,7 +70,7 @@ public class SROIQStrategy extends CompletionStrategy
 					}
 
 			final List<Branch> branches = _abox.getBranches();
-			_abox._stats.backjumps += (branches.size() - lastBranch);
+			_abox.getStats().backjumps += (branches.size() - lastBranch);
 			// CHW - added for incremental deletion support
 			if (OpenlletOptions.USE_TRACING && OpenlletOptions.USE_INCREMENTAL_CONSISTENCY)
 			{
@@ -138,7 +132,7 @@ public class SROIQStrategy extends CompletionStrategy
 
 				if (_logger.isLoggable(Level.FINE))
 				{
-					_logger.fine("Branch: " + _abox.getBranch() + ", Depth: " + _abox._stats.treeDepth + ", Size: " + _abox.getNodes().size() + ", Mem: " + (Runtime.getRuntime().freeMemory() / 1000) + "kb");
+					_logger.fine("Branch: " + _abox.getBranch() + ", Depth: " + _abox.getStats().treeDepth + ", Size: " + _abox.getNodes().size() + ", Mem: " + (Runtime.getRuntime().freeMemory() / 1000) + "kb");
 					_abox.validate();
 					printBlocked();
 					_abox.printTree();
@@ -146,25 +140,25 @@ public class SROIQStrategy extends CompletionStrategy
 
 				final IndividualIterator i = (OpenlletOptions.USE_COMPLETION_QUEUE) ? _abox.getCompletionQueue() : _abox.getIndIterator();
 
-						// flush the _queue
-						if (OpenlletOptions.USE_COMPLETION_QUEUE)
-							_abox.getCompletionQueue().flushQueue();
+				// flush the _queue
+				if (OpenlletOptions.USE_COMPLETION_QUEUE)
+					_abox.getCompletionQueue().flushQueue();
 
-						for (final TableauRule tableauRule : _tableauRules)
+				for (final TableauRule tableauRule : _tableauRules)
 				{
-							tableauRule.apply(i);
-							if (_abox.isClosed())
-								break;
-						}
+					tableauRule.apply(i);
+					if (_abox.isClosed())
+						break;
+				}
 
-						// it could be the case that there was a clash and we had a
-						// deletion update that retracted it
-						// however there could have been some thing on the _queue that
-						// still needed to be refired from backtracking
-						// so onle set that the _abox is clash free after we have applied
-						// all the rules once
-						if (OpenlletOptions.USE_COMPLETION_QUEUE)
-							_abox.getCompletionQueue().setClosed(_abox.isClosed());
+				// it could be the case that there was a clash and we had a
+				// deletion update that retracted it
+				// however there could have been some thing on the _queue that
+				// still needed to be refired from backtracking
+				// so onle set that the _abox is clash free after we have applied
+				// all the rules once
+				if (OpenlletOptions.USE_COMPLETION_QUEUE)
+					_abox.getCompletionQueue().setClosed(_abox.isClosed());
 			}
 
 			if (_abox.isClosed())

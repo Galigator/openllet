@@ -89,20 +89,20 @@ public class CombinedQueryEngine implements QueryExec
 		if (_logger.isLoggable(Level.FINE))
 			_logger.fine("Preparing plan ...");
 
-		this._kb = query.getKB();
+		_kb = query.getKB();
 		if (_kb == null)
 			throw new RuntimeException("No input _data set is given for query!");
 
-		this._result = new QueryResultImpl(query);
+		_result = new QueryResultImpl(query);
 
-		this._oldQuery = query;
-		this._query = setupCores(query);
+		_oldQuery = query;
+		_query = setupCores(query);
 
 		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("After setting-up cores : " + this._query);
+			_logger.fine("After setting-up cores : " + _query);
 
-		this._plan = _optimizer.getExecutionPlan(this._query);
-		this._plan.reset();
+		_plan = _optimizer.getExecutionPlan(_query);
+		_plan.reset();
 
 		// warm up the reasoner by computing the satisfiability of classes
 		// used in the query so that cached models can be used for instance
@@ -121,7 +121,7 @@ public class CombinedQueryEngine implements QueryExec
 			// TODO use down monotonic variables for implementation of
 			// DirectType atom
 			_downMonotonic = new HashSet<>();
-			setupDownMonotonicVariables(this._query);
+			setupDownMonotonicVariables(_query);
 			if (_logger.isLoggable(Level.FINE))
 				_logger.fine("Variables to be optimized : " + _downMonotonic);
 		}

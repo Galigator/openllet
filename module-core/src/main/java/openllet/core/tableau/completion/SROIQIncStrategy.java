@@ -77,7 +77,7 @@ public class SROIQIncStrategy extends SROIQStrategy
 
 	/**
 	 * Return individuals to which we need to apply the initialization rules
-	 * 
+	 *
 	 * @return
 	 */
 	@Override
@@ -88,7 +88,7 @@ public class SROIQIncStrategy extends SROIQStrategy
 
 	/**
 	 * Return individuals that were newly added
-	 * 
+	 *
 	 * @return
 	 */
 	public Iterator<Individual> getNewIterator()
@@ -144,7 +144,7 @@ public class SROIQIncStrategy extends SROIQStrategy
 	public void initialize(final Expressivity expr)
 	{
 
-		final Timer t = _abox.getKB().timers.startTimer("initialize");
+		final Timer t = _abox.getKB().getTimers().startTimer("initialize");
 
 		if (_logger.isLoggable(Level.FINE))
 			_logger.fine("Initialize Started");
@@ -249,7 +249,7 @@ public class SROIQIncStrategy extends SROIQStrategy
 		_abox.setBranch(_abox.getBranches().size() + 1);
 
 		// we will also need to add stuff to the _queue in the event of a
-		// deletion		
+		// deletion
 
 		//Handle removed edges
 		Iterator<Edge> i = getRemovedEdgeIterator();
@@ -571,7 +571,7 @@ public class SROIQIncStrategy extends SROIQStrategy
 
 	/**
 	 * Method to find the edges which an all values could be applied to
-	 * 
+	 *
 	 * @param _node
 	 * @param _neighbor
 	 * @param removedTypes
@@ -613,10 +613,10 @@ public class SROIQIncStrategy extends SROIQStrategy
 			//get all edges to this _node
 			for (int i = 0; i < applicableRoles.size(); i++)
 			{
-				final ATerm p = applicableRoles.get(i);
-				final Role role = _abox.getRole(p);
+			final ATerm p = applicableRoles.get(i);
+			final Role role = _abox.getRole(p);
 
-				edges.addEdgeList(neighbor.getRNeighborEdges(role, node));
+			edges.addEdgeList(neighbor.getRNeighborEdges(role, node));
 			}
 		else
 			edges.addEdge(edge);
@@ -626,7 +626,7 @@ public class SROIQIncStrategy extends SROIQStrategy
 
 	/**
 	 * Check if a _node contains a particular type that has been removed
-	 * 
+	 *
 	 * @param type
 	 * @param removedTypes
 	 * @return

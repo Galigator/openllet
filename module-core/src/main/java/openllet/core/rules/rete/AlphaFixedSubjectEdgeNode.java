@@ -8,7 +8,7 @@ package openllet.core.rules.rete;
 
 import java.util.Iterator;
 import openllet.aterm.ATermAppl;
-import openllet.core.boxes.abox.ABoxImpl;
+import openllet.core.boxes.abox.ABox;
 import openllet.core.boxes.abox.Edge;
 import openllet.core.boxes.abox.Individual;
 import openllet.core.boxes.abox.Node;
@@ -26,7 +26,7 @@ import openllet.core.utils.ATermUtils;
  */
 public class AlphaFixedSubjectEdgeNode extends AlphaFixedEdgeNode
 {
-	public AlphaFixedSubjectEdgeNode(final ABoxImpl abox, final Role role, final ATermAppl subjectName)
+	public AlphaFixedSubjectEdgeNode(final ABox abox, final Role role, final ATermAppl subjectName)
 	{
 		super(abox, role, subjectName);
 	}

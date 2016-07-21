@@ -14,13 +14,12 @@ import openllet.query.sparqldl.model.QueryResult;
  *
  * @author Hector Perez-Urbina
  */
-
 public class QuerySubsumption
 {
 
 	/**
 	 * Checks whether sub is equivalent to sup
-	 * 
+	 *
 	 * @param sub
 	 * @param sup
 	 * @return
@@ -32,7 +31,7 @@ public class QuerySubsumption
 
 	/**
 	 * Checks whether sub is subsumed by sup
-	 * 
+	 *
 	 * @param sub
 	 * @param sup
 	 * @return
@@ -44,7 +43,7 @@ public class QuerySubsumption
 
 	/**
 	 * Computes the subsumption mappings between sub and sup
-	 * 
+	 *
 	 * @param sub
 	 * @param sup
 	 * @param backgroundKB

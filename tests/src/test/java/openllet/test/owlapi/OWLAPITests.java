@@ -60,6 +60,7 @@ import java.util.stream.Stream;
 import junit.framework.JUnit4TestAdapter;
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
+import openllet.core.KnowledgeBaseImpl;
 import openllet.core.OpenlletOptions;
 import openllet.core.boxes.rbox.Role;
 import openllet.core.exceptions.TimeoutException;
@@ -1001,7 +1002,7 @@ public class OWLAPITests extends AbstractOWLAPITests
 		final PelletReasoner pellet = PelletReasonerFactory.getInstance().createReasoner(ont);
 		final KnowledgeBase kb = pellet.getKB();
 
-		final Timer timer = kb.timers.createTimer("classify");
+		final Timer timer = kb.getTimers().createTimer("classify");
 		timer.setTimeout(1);
 
 		try
@@ -1031,7 +1032,7 @@ public class OWLAPITests extends AbstractOWLAPITests
 		final PelletReasoner pellet = PelletReasonerFactory.getInstance().createReasoner(ont);
 		final KnowledgeBase kb = pellet.getKB();
 
-		final Timer timer = kb.timers.createTimer("realize");
+		final Timer timer = kb.getTimers().createTimer("realize");
 		timer.setTimeout(1);
 
 		try
@@ -1059,14 +1060,14 @@ public class OWLAPITests extends AbstractOWLAPITests
 			timeout = true;
 		}
 
-		assertTrue("Timeout failed: " + timer + "\nAll _timers:\n" + kb.timers, timeout);
+		assertTrue("Timeout failed: " + timer + "\nAll getTimers():\n" + kb.getTimers(), timeout);
 		assertFalse(kb.isRealized());
 	}
 
 	@Test
 	public void testAxiomConverterRules1()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 		final AxiomConverter converter = new AxiomConverter(kb, OWL._manager.getOWLDataFactory());
 
 		final ATermAppl C = ATermUtils.makeTermAppl("C");
@@ -1097,7 +1098,7 @@ public class OWLAPITests extends AbstractOWLAPITests
 	@Test
 	public void testAxiomConverterRules1b()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 		final AxiomConverter converter = new AxiomConverter(kb, OWL._manager.getOWLDataFactory());
 
 		final ATermAppl C = ATermUtils.makeTermAppl("C");
@@ -1128,7 +1129,7 @@ public class OWLAPITests extends AbstractOWLAPITests
 
 	public void testAxiomConverterRules1c()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 		final AxiomConverter converter = new AxiomConverter(kb, OWL._manager.getOWLDataFactory());
 
 		final ATermAppl C = ATermUtils.makeTermAppl("C");
@@ -1160,7 +1161,7 @@ public class OWLAPITests extends AbstractOWLAPITests
 	@Test
 	public void testAxiomConverterRules2()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 		final AxiomConverter converter = new AxiomConverter(kb, OWL._manager.getOWLDataFactory());
 
 		final ATermAppl C = ATermUtils.makeTermAppl("C");
@@ -1192,7 +1193,7 @@ public class OWLAPITests extends AbstractOWLAPITests
 	@Test
 	public void testAxiomConverterRules3()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 		final OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
 		final OWLDataFactory df = manager.getOWLDataFactory();
 		final AxiomConverter converter = new AxiomConverter(kb, df);
@@ -1226,7 +1227,7 @@ public class OWLAPITests extends AbstractOWLAPITests
 	@Test
 	public void testAxiomConverterRules4()
 	{
-		final KnowledgeBase kb = new KnowledgeBase();
+		final KnowledgeBase kb = new KnowledgeBaseImpl();
 		final AxiomConverter converter = new AxiomConverter(kb, OWL._manager.getOWLDataFactory());
 
 		final ATermAppl r = ATermUtils.makeTermAppl("r");

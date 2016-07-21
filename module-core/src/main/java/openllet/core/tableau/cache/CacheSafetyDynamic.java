@@ -14,7 +14,7 @@ import java.util.Set;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
 import openllet.core.KnowledgeBase;
-import openllet.core.boxes.abox.ABoxImpl;
+import openllet.core.boxes.abox.ABox;
 import openllet.core.boxes.abox.Edge;
 import openllet.core.boxes.abox.Individual;
 import openllet.core.boxes.abox.Node;
@@ -36,7 +36,7 @@ public class CacheSafetyDynamic implements CacheSafety
 
 	CacheSafetyDynamic(final Expressivity e)
 	{
-		this._expressivity = new Expressivity(e);
+		_expressivity = new Expressivity(e);
 	}
 
 	/**
@@ -45,7 +45,7 @@ public class CacheSafetyDynamic implements CacheSafety
 	@Override
 	public boolean canSupport(final Expressivity expressivity)
 	{
-		return !expressivity.hasNominal() && this._expressivity.getAnonInverses().equals(expressivity.getAnonInverses());
+		return !expressivity.hasNominal() && _expressivity.getAnonInverses().equals(expressivity.getAnonInverses());
 	}
 
 	/**
@@ -58,7 +58,7 @@ public class CacheSafetyDynamic implements CacheSafety
 		final Role r = parentEdge.getRole();
 		final Individual parent = parentEdge.getFrom();
 
-		final ABoxImpl abox = parent.getABox();
+		final ABox abox = parent.getABox();
 
 		if (!isParentSafe(abox.getKB(), r, parent))
 			return false;
@@ -110,7 +110,7 @@ public class CacheSafetyDynamic implements CacheSafety
 		return result;
 	}
 
-	protected Iterator<CachedNode> getCachedNodes(final ABoxImpl abox, final ATermAppl c)
+	protected Iterator<CachedNode> getCachedNodes(final ABox abox, final ATermAppl c)
 	{
 		CachedNode node = abox.getCached(c);
 		if (node != null)
@@ -224,7 +224,7 @@ public class CacheSafetyDynamic implements CacheSafety
 		return !role.isSubRoleOf(maxR);
 	}
 
-	private static Set<ATermAppl> getRNeighbors(final CachedNode node, Role role)
+	private static Set<ATermAppl> getRNeighbors(final CachedNode node, final Role role)
 	{
 		final Set<ATermAppl> neighbors = new HashSet<>();
 

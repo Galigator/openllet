@@ -283,7 +283,7 @@ public class PelletLoader implements FacetManagerOWL
 
 	public void load(final Set<OWLOntology> ontologies)
 	{
-		final Timer timer = _kb.timers.startTimer("load");
+		final Timer timer = _kb.getTimers().startTimer("load");
 
 		final Collection<OWLOntology> toBeLoaded = new LinkedHashSet<>();
 		for (final OWLOntology ontology : ontologies)

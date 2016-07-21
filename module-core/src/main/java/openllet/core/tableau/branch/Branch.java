@@ -33,19 +33,13 @@ package openllet.core.tableau.branch;
 import java.util.logging.Logger;
 import openllet.core.DependencySet;
 import openllet.core.OpenlletOptions;
-import openllet.core.boxes.abox.ABoxImpl;
+import openllet.core.boxes.abox.ABox;
 import openllet.core.boxes.abox.Clash;
 import openllet.core.boxes.abox.Node;
 import openllet.core.tableau.completion.CompletionStrategy;
 import openllet.shared.tools.Log;
 
 /**
- * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
  * <p>
  * Copyright: Copyright (c) 2009
  * </p>
@@ -59,7 +53,7 @@ public abstract class Branch
 {
 	public static final Logger _logger = Log.getLogger(Branch.class);
 
-	protected ABoxImpl _abox;
+	protected ABox _abox;
 	protected CompletionStrategy _strategy;
 	protected int _branch;
 	protected int _tryCount;
@@ -72,10 +66,10 @@ public abstract class Branch
 	protected int _anonCount;
 	protected int _nodeCount;
 
-	Branch(final ABoxImpl abox, final CompletionStrategy strategy, final DependencySet ds, final int n)
+	Branch(final ABox abox, final CompletionStrategy strategy, final DependencySet ds, final int n)
 	{
-		this._abox = abox;
-		this.setStrategy(strategy);
+		_abox = abox;
+		setStrategy(strategy);
 
 		setTermDepends(ds);
 		setTryCount(n);
@@ -105,7 +99,7 @@ public abstract class Branch
 
 	public void setStrategy(final CompletionStrategy strategy)
 	{
-		this._strategy = strategy;
+		_strategy = strategy;
 	}
 
 	public boolean tryNext()
@@ -130,7 +124,7 @@ public abstract class Branch
 		return !_abox.isClosed();
 	}
 
-	public abstract Branch copyTo(ABoxImpl abox);
+	public abstract Branch copyTo(ABox abox);
 
 	protected abstract void tryBranch();
 
@@ -155,7 +149,7 @@ public abstract class Branch
 	 */
 	public void setNodeCount(final int nodeCount)
 	{
-		this._nodeCount = nodeCount;
+		_nodeCount = nodeCount;
 	}
 
 	/**
@@ -168,7 +162,7 @@ public abstract class Branch
 
 	public void setBranch(final int branch)
 	{
-		this._branch = branch;
+		_branch = branch;
 	}
 
 	/**
@@ -192,7 +186,7 @@ public abstract class Branch
 	 */
 	public void setTryNext(final int tryNext)
 	{
-		this._tryNext = tryNext;
+		_tryNext = tryNext;
 	}
 
 	/**
@@ -208,7 +202,7 @@ public abstract class Branch
 	 */
 	public void setTryCount(final int tryCount)
 	{
-		this._tryCount = tryCount;
+		_tryCount = tryCount;
 	}
 
 	/**
@@ -224,7 +218,7 @@ public abstract class Branch
 	 */
 	public void setTermDepends(final DependencySet termDepends)
 	{
-		this._termDepends = termDepends;
+		_termDepends = termDepends;
 	}
 
 	/**
@@ -240,7 +234,7 @@ public abstract class Branch
 	 */
 	public void setAnonCount(final int anonCount)
 	{
-		this._anonCount = anonCount;
+		_anonCount = anonCount;
 	}
 
 }
