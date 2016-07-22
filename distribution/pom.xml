@@ -20,37 +20,37 @@
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>openllet-functions</artifactId>
-			<version>${project.version}</version>
+			<version>[${project.version}]</version>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>openllet-core</artifactId>
-			<version>${project.version}</version>
+			<version>[${project.version}]</version>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>openllet-query</artifactId>
-			<version>${project.version}</version>
+			<version>[${project.version}]</version>
 		</dependency>	
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>openllet-owlapi</artifactId>
-			<version>${project.version}</version>
+			<version>[${project.version}]</version>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>openllet-jena</artifactId>
-			<version>${project.version}</version>
+			<version>[${project.version}]</version>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>openllet-explanation</artifactId>
-			<version>${project.version}</version>
+			<version>[${project.version}]</version>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>openllet-modularity</artifactId>
-			<version>${project.version}</version>
+			<version>[${project.version}]</version>
 		</dependency>
 	</dependencies>
 	

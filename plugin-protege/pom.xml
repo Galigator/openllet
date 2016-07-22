@@ -18,17 +18,17 @@
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>openllet-core</artifactId>
-			<version>${project.version}</version>
+			<version>[${project.version}]</version>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>openllet-owlapi</artifactId>
-			<version>${project.version}</version>
+			<version>[${project.version}]</version>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>openllet-modularity</artifactId>
-			<version>${project.version}</version>
+			<version>[${project.version}]</version>
 		</dependency>
 		<dependency>
 			<groupId>edu.stanford.protege</groupId>

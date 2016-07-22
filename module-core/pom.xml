@@ -13,18 +13,12 @@
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>openllet-functions</artifactId>
-			<version>${project.version}</version>
+			<version>[${project.version}]</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jgrapht</groupId>
 			<artifactId>jgrapht-ext</artifactId>
 		</dependency>
-		<!-- 
-		<dependency>
-			<groupId>xerces</groupId>
-			<artifactId>xercesImpl</artifactId>
-		</dependency>
-		 -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>

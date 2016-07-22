@@ -12,7 +12,7 @@
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>openllet-owlapi</artifactId>
-			<version>${project.version}</version>
+			<version>[${project.version}]</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>

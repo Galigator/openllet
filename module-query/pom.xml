@@ -13,7 +13,7 @@
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>openllet-core</artifactId>
-			<version>${project.version}</version>
+			<version>[${project.version}]</version>
 		</dependency>
 		<dependency>
 			<groupId>org.antlr</groupId>
