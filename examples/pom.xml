@@ -30,15 +30,17 @@
 			<artifactId>openllet-explanation</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<!--
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.2</version>
+		</dependency>
+		-->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-	    	<groupId>commons-logging</groupId>
-	    	<artifactId>commons-logging</artifactId>
-	    	<version>1.2</version>
 		</dependency>
 	</dependencies>
 </project>

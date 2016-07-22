@@ -37,7 +37,7 @@
     <system>GitHub</system>
     <url>https://github.com/Galigator/openllet/issues</url>
   </issueManagement>
-  
+
   <distributionManagement>
     <snapshotRepository>
        <id>ossrh</id>
@@ -48,15 +48,15 @@
        <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
     </repository>
   </distributionManagement>
-  
-  
+
+
   <scm>
     <connection>scm:git:git://github.com:Galigator/openllet.git</connection>
     <developerConnection>scm:git:git@github.com:Galigator/openllet.git</developerConnection>
     <url>https://github.com/Galigator/openllet</url>
   </scm>
-  
-  
+
+
   <developers>
     <developer>
        <id>galigator</id>
@@ -64,7 +64,7 @@
        <email>openllet@gmail.com</email>
     </developer>
   </developers>
-  
+
   <properties>
     <junit.version>4.12</junit.version>
     <slf4j.version>1.7.21</slf4j.version>
@@ -161,10 +161,102 @@
         <artifactId>java-getopt</artifactId>
         <version>${gnu.getopt.java-getopt}</version>
       </dependency>
+
+
+      <!-- maven-enforcer-plugin : dependencyConvergence -->
+      <dependency> <!-- jena arq -->
+      	<groupId>org.apache.thrift</groupId>
+		<artifactId>libthrift</artifactId>
+		<version>0.9.3</version>
+      </dependency>
+      <dependency> <!-- jena arq -->
+      	<groupId>org.apache.httpcomponents</groupId>
+		<artifactId>httpcore</artifactId>
+		<version>4.4.1</version>
+      </dependency>
+      <dependency> <!-- jena arq -->
+      	<groupId>org.apache.httpcomponents</groupId>
+		<artifactId>httpclient</artifactId>
+		<version>4.4.1</version>
+      </dependency>
+      <dependency> <!-- jena arq vs owl-api via json-ld -->
+      	<groupId>org.apache.httpcomponents</groupId>
+		<artifactId>httpclient-cache</artifactId>
+		<version>4.5.1</version>
+      </dependency>
+      <dependency> <!-- owl-api -->
+      	<groupId>org.openrdf.sesame</groupId>
+		<artifactId>sesame-rio-api</artifactId>
+		<version>4.0.2</version>
+      </dependency>
+      <dependency> <!-- owl-api -->
+      	<groupId>com.fasterxml.jackson.core</groupId>
+		<artifactId>jackson-core</artifactId>
+		<version>2.8.0</version>
+      </dependency>
+      <dependency> <!-- owl-api -->
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-annotations</artifactId>
+        <version>2.8.0</version>
+      </dependency>
+      <dependency> <!-- owl-api -->
+      	<groupId>com.github.jsonld-java</groupId>
+		<artifactId>jsonld-java</artifactId>
+		<version>0.8.0</version>
+      </dependency>
+      <dependency> <!-- owl-api -->
+      	<groupId>com.google.inject</groupId>
+		<artifactId>guice</artifactId>
+		<version>4.1.0</version>
+      </dependency>
+      <dependency> <!-- owl-api -->
+      	<groupId>com.google.guava</groupId>
+		<artifactId>guava</artifactId>
+		<version>19.0</version>
+      </dependency>
+
     </dependencies>
   </dependencyManagement>
 
   <build>
+  		<plugins>
+			<!-- Enforcer -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<version>1.4.1</version>
+				<executions>
+					<execution>
+						<id>enforce</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<requireJavaVersion><!-- Check Java version -->
+									<version>[1.8.0-101,1.9)</version>
+								</requireJavaVersion>
+
+								<requireReleaseDeps><!-- Ensure that release module does not depend on any snapshot module -->
+									<onlyWhenRelease>true</onlyWhenRelease>
+									<message>Snapshots are not allowed for final versions !</message>
+								</requireReleaseDeps>
+
+								<bannedDependencies>
+									<excludes>
+										<exclude>com.sun.xml.bind</exclude><!-- Ban legacy JAXB implementation -->
+										<exclude>commons-logging:commons-logging</exclude><!-- Ban commons logging -->
+									</excludes>
+								</bannedDependencies>
+
+								<dependencyConvergence /><!-- Ensure that there are no dependency conflict -->
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+
     <pluginManagement>
       <plugins>
 
@@ -190,7 +282,7 @@
             <autoReleaseAfterClose>true</autoReleaseAfterClose>
           </configuration>
         </plugin>
-        
+
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jar-plugin</artifactId>
@@ -215,7 +307,7 @@
             </execution>
           </executions>
         </plugin>
-        
+
         <plugin> <!-- Deployement on the maven central (sonatype : source) -->
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-source-plugin</artifactId>
@@ -249,7 +341,7 @@
             </execution>
           </executions>
         </plugin>
-        
+
         <plugin> <!-- Deployement on the maven central (sonatype : signature) -->
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-gpg-plugin</artifactId>
@@ -263,7 +355,7 @@
               </goals>
             </execution>
           </executions>
-        </plugin>        
+        </plugin>
 
         <plugin>
             <groupId>org.sonatype.plugins</groupId>
@@ -282,7 +374,7 @@
           <artifactId>maven-dependency-plugin</artifactId>
           <version>2.10</version>
         </plugin>
-        
+
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
@@ -300,7 +392,7 @@
             <argLine></argLine>
           </configuration>
         </plugin>
-        
+
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-failsafe-plugin</artifactId>
@@ -341,7 +433,7 @@
           <artifactId>maven-site-plugin</artifactId>
           <version>3.5.1</version>
         </plugin>
-        
+
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>findbugs-maven-plugin</artifactId>
@@ -364,7 +456,7 @@
   </build>
 
   <profiles>
-      
+
     <profile>
       <id>ossrh</id>
       <activation>
@@ -377,7 +469,7 @@
       <build>
         <plugins>
 
-          <!-- We need the GPG Plugin to self-sign the jar files. A valid signature 
+          <!-- We need the GPG Plugin to self-sign the jar files. A valid signature
             for the jar files is a requirement for deploying to Sonatype. -->
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
@@ -434,7 +526,7 @@
         </plugins>
       </build>
     </profile>
-    
+
     <profile> <!-- Someone use this ? -->
       <id>findbugs</id>
       <build>
@@ -446,7 +538,7 @@
         </plugins>
       </build>
     </profile>
-    
+
   </profiles>
 
 </project>
