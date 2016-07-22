@@ -13,22 +13,70 @@
 			<groupId>${project.groupId}</groupId>
 			<artifactId>openllet-owlapi</artifactId>
 			<version>${project.version}</version>
+         <exclusions>
+           <exclusion>
+                  <groupId>org.apache.httpcomponents</groupId>
+                  <artifactId>httpclient</artifactId>
+           </exclusion>
+           <exclusion>
+                  <groupId>org.apache.httpcomponents</groupId>
+                  <artifactId>httpcore</artifactId>
+           </exclusion>
+            <exclusion> <!-- commons-logging is globally banned. -->
+                     <groupId>commons-logging</groupId>
+                      <artifactId>commons-logging</artifactId>
+            </exclusion>
+         </exclusions>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>openllet-pellint</artifactId>
 			<version>${project.version}</version>
+         <exclusions>
+           <exclusion>
+                  <groupId>org.apache.httpcomponents</groupId>
+                  <artifactId>httpclient</artifactId>
+           </exclusion>
+           <exclusion>
+                  <groupId>org.apache.httpcomponents</groupId>
+                  <artifactId>httpcore</artifactId>
+           </exclusion>
+            <exclusion> <!-- commons-logging is globally banned. -->
+                     <groupId>commons-logging</groupId>
+                      <artifactId>commons-logging</artifactId>
+            </exclusion>
+         </exclusions>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>openllet-modularity</artifactId>
 			<version>${project.version}</version>
+         <exclusions>
+            <exclusion> <!-- commons-logging is globally banned. -->
+                     <groupId>commons-logging</groupId>
+                      <artifactId>commons-logging</artifactId>
+            </exclusion>
+           </exclusions>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>openllet-explanation</artifactId>
 			<version>${project.version}</version>
+         <exclusions>
+            <exclusion> <!-- commons-logging is globally banned. -->
+                     <groupId>commons-logging</groupId>
+                      <artifactId>commons-logging</artifactId>
+            </exclusion>
+           </exclusions>
 		</dependency>
+      <dependency> <!-- Re-include the exclusion but with the correct version .-->
+                  <groupId>org.apache.httpcomponents</groupId>
+                  <artifactId>httpclient</artifactId>
+      </dependency>
+      <dependency>
+                  <groupId>org.apache.httpcomponents</groupId>
+                  <artifactId>httpcore</artifactId>
+      </dependency>      
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
