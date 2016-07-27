@@ -14,9 +14,9 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
@@ -1104,41 +1104,60 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 
 		if (others.size() > 1)
 		{
-			final Map<TaxonomyNode<ATermAppl>, TaxonomyNode<ATermAppl>> visited = new LinkedHashMap<>();
-			visited.put(node, null);
+			final Map<TaxonomyNode<ATermAppl>, TaxonomyNode<ATermAppl>> visited = new HashMap<>();
+			Map<TaxonomyNode<ATermAppl>, TaxonomyNode<ATermAppl>> toBeVisited = new HashMap<>(); // used as a Set of Pair where the second par isn't part of the key.
+			Map<TaxonomyNode<ATermAppl>, TaxonomyNode<ATermAppl>> nextVisit = new HashMap<>();
 
-			final Map<TaxonomyNode<ATermAppl>, TaxonomyNode<ATermAppl>> toBeVisited = new LinkedHashMap<>();
+			visited.put(node, null); // Null is the stop signal for the path marking.
+
 			for (final TaxonomyNode<ATermAppl> n : others)
 				toBeVisited.put(n, node);
 
+			// Look for "FALSE" mark in all relatives
 			while (!toBeVisited.isEmpty())
 			{
-				final TaxonomyNode<ATermAppl> relative = toBeVisited.keySet().iterator().next();
-				final TaxonomyNode<ATermAppl> reachedFrom = toBeVisited.get(relative);
-
-				final Boolean ancestorMark = relative._mark;
-				if (Boolean.FALSE.equals(ancestorMark))
+				for (final Entry<TaxonomyNode<ATermAppl>, TaxonomyNode<ATermAppl>> entry : toBeVisited.entrySet())
 				{
-					for (TaxonomyNode<ATermAppl> n = reachedFrom; n != null; n = visited.get(n))
-						mark(n, Boolean.FALSE, Propogate.NONE);
-					return false;
+					final TaxonomyNode<ATermAppl> relative = entry.getKey();
+
+					final Boolean ancestorMark = relative._mark;
+					if (Boolean.FALSE.equals(ancestorMark))
+					{ // Mark the path as False
+						final TaxonomyNode<ATermAppl> reachedFrom = entry.getValue();
+						for (TaxonomyNode<ATermAppl> n = reachedFrom; n != null; n = visited.get(n))
+							mark(n, Boolean.FALSE, Propogate.NONE);
+						return false; // XXX This middle return make hard the parallel implementation here.
+					}
+
+					if (ancestorMark == null) // XXX this usage of null is dangerous.
+					{
+						final Collection<TaxonomyNode<ATermAppl>> moreRelatives = topDown ? relative.getSupers() : relative.getSubs();
+						for (final TaxonomyNode<ATermAppl> n : moreRelatives)
+							if (!visited.containsKey(n) && !toBeVisited.containsKey(n))
+								nextVisit.put(n, relative); // XXX This side effect is another obstacle to parallel implementation here.
+					}
+				}
+				visited.putAll(toBeVisited);
+
+				{ // Swap - XXX swap implementation make data non 'final' so we can't we stream parallel implementation any more...
+					toBeVisited.clear(); // Didn't purge the memory of the underlying array (wanted effect).
+					final Map<TaxonomyNode<ATermAppl>, TaxonomyNode<ATermAppl>> tmp = nextVisit;
+					nextVisit = toBeVisited;
+					toBeVisited = tmp;
 				}
 
-				if (ancestorMark == null)
-				{
-					final Collection<TaxonomyNode<ATermAppl>> moreRelatives = topDown ? relative.getSupers() : relative.getSubs();
-					for (final TaxonomyNode<ATermAppl> n : moreRelatives)
-						if (!visited.keySet().contains(n) && !toBeVisited.keySet().contains(n))
-							toBeVisited.put(n, relative);
-				}
-				toBeVisited.remove(relative);
-				visited.put(relative, reachedFrom);
+				//				{ // Non swap XXX allow stream parallel implementation but force more operations on hash and cleaning.
+				//					toBeVisited.clear();
+				//					toBeVisited.putAll(nextVisit);
+				//					nextVisit.clear();
+				//				}
+
 			}
 		}
 
 		// check subsumption
 		final boolean calcdMark = topDown ? subsumes(node.getName(), c) : subsumes(c, node.getName());
-		// _mark the _node appropriately
+		// mark the node appropriately
 		mark(node, Boolean.valueOf(calcdMark), Propogate.NONE);
 
 		return calcdMark;
