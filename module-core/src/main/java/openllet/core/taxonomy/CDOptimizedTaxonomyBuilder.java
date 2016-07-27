@@ -266,8 +266,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 
 			final ATermAppl c = phase.next();
 
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("Classify (" + _taxonomyImpl.getNodes().size() + ") " + format(c) + "...");
+			_logger.fine(() -> "Classify (" + _taxonomyImpl.getNodes().size() + ") " + format(c) + "...");
 
 			classify(c, requireTopSearch);
 			_monitor.incrementProgress();
@@ -1071,7 +1070,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 		for (final TaxonomyNode<ATermAppl> next : list)
 			if (topSearch)
 			{
-				if (subsumes(next, c))
+				if (nodeSubsumes(next, c))
 					posSucc.add(next);
 			}
 			else
@@ -1163,7 +1162,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 		return calcdMark;
 	}
 
-	private boolean subsumes(final TaxonomyNode<ATermAppl> node, final ATermAppl c)
+	private boolean nodeSubsumes(final TaxonomyNode<ATermAppl> node, final ATermAppl c)
 	{
 		return subCheckWithCache(node, c, true);
 	}
@@ -1196,23 +1195,25 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 		return true;
 	}
 
-	private boolean subsumes(final ATermAppl sup, final ATermAppl sub)
+	private boolean subsumes(final ATermAppl sup, final ATermAppl sub) // CPU hot spot.
 	{
+		/*
 		if (_logger.isLoggable(Level.FINER))
 		{
 			long time = System.currentTimeMillis();
 			final long count = _kb.getABox().getStats().satisfiabilityCount;
 			_logger.finer("Subsumption testing for [" + format(sub) + "," + format(sup) + "]...");
-
+		
 			final boolean result = _kb.getABox().isSubClassOf(sub, sup);
-
+		
 			final String sign = (_kb.getABox().getStats().satisfiabilityCount > count) ? "+" : "-";
 			time = System.currentTimeMillis() - time;
 			_logger.finer(" done (" + (result ? "+" : "-") + ") (" + sign + time + "ms)");
 			return result;
 		}
 		else
-			return _kb.getABox().isSubClassOf(sub, sup);
+		*/
+		return _kb.getABox().isSubClassOf(sub, sup);
 	}
 
 	private static void mark(final Set<ATermAppl> set, final Map<ATermAppl, Boolean> marked, final Boolean value)

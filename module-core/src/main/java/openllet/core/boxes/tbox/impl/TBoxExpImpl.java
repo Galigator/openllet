@@ -558,9 +558,13 @@ public class TBoxExpImpl implements TBox
 	}
 
 	@Override
-	public boolean isPrimitive(final ATermAppl c)
+	public boolean isPrimitive(final ATermAppl c) // CPU hot spot.
 	{
-		final TermDefinition td = _Tu.getTD(c);
-		return ATermUtils.isPrimitive(c) && (td == null || td.isPrimitive());
+		if (ATermUtils.isPrimitive(c))
+		{
+			final TermDefinition td = _Tu.getTD(c); // Time consuming so we avoid to do it if possible.
+			return (td == null || td.isPrimitive());
+		}
+		return false;
 	}
 }
