@@ -155,29 +155,29 @@
 
       <!-- Dependencies of dependencies -->
       <dependency>
-      	<groupId>org.apache.thrift</groupId>
-		<artifactId>libthrift</artifactId>
-		<version>[0.9.3,)</version>
+         <groupId>org.apache.thrift</groupId>
+         <artifactId>libthrift</artifactId>
+         <version>[0.9.3,)</version>
       </dependency>
       <dependency>
-      	<groupId>org.apache.httpcomponents</groupId>
-		<artifactId>httpcore</artifactId>
-		<version>4.4.5</version>
+         <groupId>org.apache.httpcomponents</groupId>
+         <artifactId>httpcore</artifactId>
+         <version>4.4.5</version>
       </dependency>
       <dependency>
-      	<groupId>org.apache.httpcomponents</groupId>
-		<artifactId>httpclient</artifactId>
-		<version>[4.5.2,)</version>
+         <groupId>org.apache.httpcomponents</groupId>
+         <artifactId>httpclient</artifactId>
+         <version>[4.5.2,)</version>
       </dependency>
       <dependency>
-      	<groupId>org.apache.httpcomponents</groupId>
-		<artifactId>httpclient-cache</artifactId>
-		<version>[4.5.2,)</version>
+         <groupId>org.apache.httpcomponents</groupId>
+         <artifactId>httpclient-cache</artifactId>
+         <version>[4.5.2,)</version>
       </dependency>
       <dependency>
-      	<groupId>org.openrdf.sesame</groupId>
-		   <artifactId>sesame-rio-api</artifactId>
-		   <version>4.1.2</version>
+         <groupId>org.openrdf.sesame</groupId>
+         <artifactId>sesame-rio-api</artifactId>
+         <version>4.1.2</version>
       </dependency>
       <dependency>
          <groupId>org.openrdf.sesame</groupId>
@@ -190,9 +190,9 @@
          <version>4.1.2</version>
       </dependency>
       <dependency>
-      	<groupId>com.fasterxml.jackson.core</groupId>
-		<artifactId>jackson-core</artifactId>
-		<version>2.8.0</version>
+         <groupId>com.fasterxml.jackson.core</groupId>
+         <artifactId>jackson-core</artifactId>
+         <version>2.8.1</version>
       </dependency>
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
@@ -205,24 +205,24 @@
         <version>2.8.0</version>
       </dependency>
       <dependency>
-      	<groupId>com.github.jsonld-java</groupId>
-		<artifactId>jsonld-java</artifactId>
-		<version>0.8.3</version>
+         <groupId>com.github.jsonld-java</groupId>
+         <artifactId>jsonld-java</artifactId>
+         <version>0.8.3</version>
       </dependency>
       <dependency>
-      	<groupId>com.google.inject</groupId>
-		<artifactId>guice</artifactId>
-		<version>4.1.0</version>
+         <groupId>com.google.inject</groupId>
+         <artifactId>guice</artifactId>
+         <version>4.1.0</version>
       </dependency>
       <dependency>
-      	<groupId>com.google.guava</groupId>
-		<artifactId>guava</artifactId>
-		<version>19.0</version>
+         <groupId>com.google.guava</groupId>
+         <artifactId>guava</artifactId>
+         <version>19.0</version>
       </dependency>
       <dependency>
-      	<groupId>commons-io</groupId>
-		<artifactId>commons-io</artifactId>
-		<version>[2.5,)</version>
+         <groupId>commons-io</groupId>
+         <artifactId>commons-io</artifactId>
+         <version>[2.5,)</version>
       </dependency>
 
     </dependencies>
