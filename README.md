@@ -25,9 +25,10 @@ Issues are on [Github](http://github.com/galigator/openllet/issues).
 Openllet 2.6.X:
 -----------
 
-* Fullify strong typing in openllet core.
-* Add support for rdf4j, refactor modules dependencies.
+* Refactor modules dependencies.
 * Enforce interface usage in the core system.
+* Fullify strong typing in openllet core (2.6.1).
+* Add support for rdf4j (2.6.2)
 
 Changes :
 * Introduction of version support for latter situation calculus support.
