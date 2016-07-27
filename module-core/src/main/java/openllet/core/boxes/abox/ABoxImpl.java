@@ -126,7 +126,7 @@ public class ABoxImpl implements ABox
 	protected final DatatypeReasoner _dtReasoner;
 
 	/**
-	 * This is a list of _node names. This list stores the individuals in the _order they are created
+	 * This is a list of node names. This list stores the individuals in the order they are created
 	 */
 	protected List<ATermAppl> _nodeList;
 
@@ -138,7 +138,7 @@ public class ABoxImpl implements ABox
 	private boolean _doExplanation;
 
 	/**
-	 * cached satisfiability results the table maps every atomic concept A (and also its negation not(A)) to the root _node of its completed tree. If a concept
+	 * cached satisfiability results the table maps every atomic concept A (and also its negation not(A)) to the root node of its completed tree. If a concept
 	 * is mapped to null value it means it is not satisfiable
 	 */
 	public ConceptCache _cache;
@@ -596,8 +596,7 @@ public class ABoxImpl implements ABox
 		final boolean sub = !isSatisfiable(c, false);
 		t.stop();
 
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine(" Result: " + sub + " (" + t.getLast() + "ms)");
+		_logger.fine(() -> " Result: " + sub + " (" + t.getLast() + "ms)");
 
 		return sub;
 	}

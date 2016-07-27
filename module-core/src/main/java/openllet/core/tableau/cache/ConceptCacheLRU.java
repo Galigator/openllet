@@ -18,8 +18,8 @@ import openllet.core.utils.ATermUtils;
 
 /**
  * <p>
- * Description: LRU implementation of ConceptCache. Primitive concepts and their negation are always kept in the _cache. The least recently used complex concept
- * will be removed from the _cache if the max size is reached.
+ * Description: Least Recently Used implementation of ConceptCache. Primitive concepts and their negation are always kept in the cache. The least recently used
+ * complex concept will be removed from the cache if the max size is reached.
  * </p>
  * <p>
  * Copyright: Copyright (c) 2007
@@ -33,14 +33,14 @@ import openllet.core.utils.ATermUtils;
 public class ConceptCacheLRU extends AbstractConceptCache
 {
 	private Map<ATermAppl, CachedNode> _primitive;
-	private LinkedHashMap<ATermAppl, CachedNode> _nonPrimitive;
+	private Map<ATermAppl, CachedNode> _nonPrimitive;
 
-	private CacheSafety cacheSafety;
+	private CacheSafety _cacheSafety;
 
 	/**
-	 * Creates an empty ConceptCacheImpl with no size restrictions
+	 * Creates an empty ConceptCacheImpl with no size restrictions Using this constructor is equivalent to break the auto-flush LRU policy of this cache.
 	 *
-	 * @param maxSize
+	 * @param kb
 	 */
 	public ConceptCacheLRU(final KnowledgeBase kb)
 	{
@@ -50,36 +50,35 @@ public class ConceptCacheLRU extends AbstractConceptCache
 	/**
 	 * Creates an empty _cache with at most <code>maxSize</code> elements which are neither named or negations of names.
 	 *
+	 * @param kb
 	 * @param maxSize
 	 */
 	public ConceptCacheLRU(final KnowledgeBase kb, final int maxSize)
 	{
 		super(maxSize);
 
-		cacheSafety = CacheSafetyFactory.createCacheSafety(kb.getExpressivity());
+		_cacheSafety = CacheSafetyFactory.createCacheSafety(kb.getExpressivity());
 
 		_primitive = new HashMap<>();
-		_nonPrimitive = new LinkedHashMap<ATermAppl, CachedNode>(16, 0.75f, true)
-		{
-			/**
-			 * TODO
-			 *
-			 * @since
-			 */
-			private static final long serialVersionUID = 3701638684292370398L;
 
-			@Override
-			protected boolean removeEldestEntry(final Map.Entry<ATermAppl, CachedNode> eldest)
-			{
-				return _nonPrimitive.size() > getMaxSize();
-			}
-		};
+		_nonPrimitive = (Integer.MAX_VALUE == maxSize) ? //
+				new HashMap<>() : // as "size" is an integer and so size() can be greater than max-int, then the predicate removeEldestEntry will always be false. So we use a simpler data structure.
+				new LinkedHashMap<ATermAppl, CachedNode>(16, 0.75f, true)
+				{
+					private static final long serialVersionUID = 3701638684292370398L;
+
+					@Override
+					protected boolean removeEldestEntry(final Map.Entry<ATermAppl, CachedNode> eldest)
+					{
+						return _nonPrimitive.size() > getMaxSize();
+					}
+				};
 	}
 
 	@Override
 	public CacheSafety getSafety()
 	{
-		return cacheSafety;
+		return _cacheSafety;
 	}
 
 	@Override
@@ -109,11 +108,20 @@ public class ConceptCacheLRU extends AbstractConceptCache
 		return returnSet;
 	}
 
+	//	@Override
+	//	public CachedNode get(final Object key)
+	//	{
+	//		if (_primitive.containsKey(key))
+	//			return _primitive.get(key);
+	//		return _nonPrimitive.get(key);
+	//	}
+
 	@Override
 	public CachedNode get(final Object key)
 	{
-		if (_primitive.containsKey(key))
-			return _primitive.get(key);
+		final CachedNode node = _primitive.get(key);
+		if (node != null)
+			return node;
 		return _nonPrimitive.get(key);
 	}
 
@@ -131,6 +139,9 @@ public class ConceptCacheLRU extends AbstractConceptCache
 		return keys;
 	}
 
+	/**
+	 * key can't be null, value can't be null.
+	 */
 	@Override
 	public CachedNode put(final ATermAppl key, final CachedNode value)
 	{

@@ -18,6 +18,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.aterm.ATermAppl;
@@ -916,9 +917,18 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 
 	private List<TaxonomyNode<ATermAppl>> doBottomSearch(final ATermAppl c, final List<TaxonomyNode<ATermAppl>> supers)
 	{
-		final Set<TaxonomyNode<ATermAppl>> searchFrom = new HashSet<>();
-		for (final TaxonomyNode<ATermAppl> sup : supers)
-			collectLeafs(sup, searchFrom);
+		final Set<TaxonomyNode<ATermAppl>> searchFrom;
+		if (supers.size() > 1)
+		{
+			searchFrom = Collections.newSetFromMap(new ConcurrentHashMap<>());
+			supers.parallelStream().forEach(sup -> collectLeafs(sup, searchFrom));
+		}
+		else
+		{
+			searchFrom = new HashSet<>();
+			for (final TaxonomyNode<ATermAppl> sup : supers)
+				collectLeafs(sup, searchFrom);
+		}
 
 		if (searchFrom.isEmpty())
 			return Collections.singletonList(_taxonomyImpl.getBottomNode());
@@ -945,13 +955,23 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 		return subs;
 	}
 
-	private void collectLeafs(final TaxonomyNode<ATermAppl> node, final Collection<TaxonomyNode<ATermAppl>> leafs)
+	private static void collectLeafs(final TaxonomyNode<ATermAppl> node, final Collection<TaxonomyNode<ATermAppl>> leafs)
 	{
-		for (final TaxonomyNode<ATermAppl> sub : node.getSubs())
-			if (sub.isLeaf())
-				leafs.add(sub);
-			else
-				collectLeafs(sub, leafs);
+		if (node.isLeaf())
+		{
+			leafs.add(node);
+			return;
+		}
+
+		final ArrayList<TaxonomyNode<ATermAppl>> nodes = new ArrayList<>();
+		nodes.add(node);
+
+		do
+		{
+			final TaxonomyNode<ATermAppl> child = nodes.remove(nodes.size() - 1); // Last is remove first to avoid reallocation of the array.
+			for (final TaxonomyNode<ATermAppl> loc : child.getSubs())
+				((loc.isLeaf()) ? leafs : nodes).add(loc);
+		} while (!nodes.isEmpty());
 	}
 
 	private List<TaxonomyNode<ATermAppl>> doTopSearch(final ATermAppl c)
@@ -1159,24 +1179,21 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 
 	private boolean subsumes(final ATermAppl sup, final ATermAppl sub)
 	{
-		long time = 0, count = 0;
 		if (_logger.isLoggable(Level.FINER))
 		{
-			time = System.currentTimeMillis();
-			count = _kb.getABox().getStats().satisfiabilityCount;
+			long time = System.currentTimeMillis();
+			final long count = _kb.getABox().getStats().satisfiabilityCount;
 			_logger.finer("Subsumption testing for [" + format(sub) + "," + format(sup) + "]...");
-		}
 
-		final boolean result = _kb.getABox().isSubClassOf(sub, sup);
+			final boolean result = _kb.getABox().isSubClassOf(sub, sup);
 
-		if (_logger.isLoggable(Level.FINER))
-		{
 			final String sign = (_kb.getABox().getStats().satisfiabilityCount > count) ? "+" : "-";
 			time = System.currentTimeMillis() - time;
 			_logger.finer(" done (" + (result ? "+" : "-") + ") (" + sign + time + "ms)");
+			return result;
 		}
-
-		return result;
+		else
+			return _kb.getABox().isSubClassOf(sub, sup);
 	}
 
 	private static void mark(final Set<ATermAppl> set, final Map<ATermAppl, Boolean> marked, final Boolean value)
