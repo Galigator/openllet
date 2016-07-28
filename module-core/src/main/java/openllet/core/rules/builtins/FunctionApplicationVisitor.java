@@ -28,8 +28,8 @@ import java.math.BigInteger;
 public class FunctionApplicationVisitor implements NumericVisitor
 {
 
-	NumericFunction _function;
-	Number _result;
+	private final NumericFunction _function;
+	private Number _result;
 
 	public FunctionApplicationVisitor(final NumericFunction function)
 	{
@@ -42,13 +42,13 @@ public class FunctionApplicationVisitor implements NumericVisitor
 	 */
 	public FunctionApplicationVisitor(final NumericFunction function, final Number expected)
 	{
-		this._function = function;
-		this._result = expected;
+		_function = function;
+		_result = expected;
 	}
 
 	/**
-	 * Returns the result of the function application. If the application was a failure, the result will be null. If the _expected value was non-null and matched
-	 * the result once both were promoted, the result will be the _expected value (unpromoted).
+	 * Returns the result of the function application. If the application was a failure, the result will be null. If the _expected value was non-null and
+	 * matched the result once both were promoted, the result will be the _expected value (unpromoted).
 	 */
 	public Number getResult()
 	{

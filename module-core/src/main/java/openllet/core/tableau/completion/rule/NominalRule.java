@@ -23,12 +23,6 @@ import openllet.core.utils.ATermUtils;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2009
  * </p>
  * <p>
@@ -71,7 +65,7 @@ public class NominalRule extends AbstractTableauRule
 		}
 	}
 
-	void applyNominalRule(final Individual y, final ATermAppl nc, DependencySet dsParam)
+	private void applyNominalRule(final Individual y, final ATermAppl nc, final DependencySet dsParam)
 	{
 		DependencySet ds = dsParam;
 		_strategy.getABox().copyOnWrite();

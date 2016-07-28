@@ -5,12 +5,6 @@ import openllet.test.TestAnnotations;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2010
  * </p>
  * <p>

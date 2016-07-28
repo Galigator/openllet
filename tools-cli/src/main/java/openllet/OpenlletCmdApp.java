@@ -132,7 +132,7 @@ public abstract class OpenlletCmdApp implements Logging
 		final Set<OpenlletCmdOption> mandatory = _options.getMandatoryOptions();
 
 		for (final OpenlletCmdOption option : mandatory)
-			ret.append("-" + option.getShortOption() + " _arg ");
+			ret.append("-" + option.getShortOption() + " arg ");
 
 		return ret.toString();
 	}
@@ -317,13 +317,13 @@ public abstract class OpenlletCmdApp implements Logging
 	{
 		final HashSet<String> seenOptions = new HashSet<>();
 
-		// skip first _arg which is the name of the subcommand
+		// skip first arg which is the name of the subcommand
 		int i = 1;
 		for (; i < args.length; i++)
 		{
 			String arg = args[i];
 
-			if (arg.equals("--"))
+			if ("--".equals(arg))
 				return;
 
 			if (arg.charAt(0) == '-')
@@ -334,7 +334,7 @@ public abstract class OpenlletCmdApp implements Logging
 					arg = arg.substring(1);
 			}
 			else
-				// no more _options to parse
+				// no more options to parse
 				break;
 
 			final OpenlletCmdOption option = _options.getOption(arg);
@@ -378,7 +378,7 @@ public abstract class OpenlletCmdApp implements Logging
 			}
 		}
 
-		// Check if all mandatory _options are set
+		// Check if all mandatory options are set
 		for (final OpenlletCmdOption option : _options.getOptions())
 			if (option.isMandatory())
 				if (option.getValue() == null)
@@ -386,7 +386,7 @@ public abstract class OpenlletCmdApp implements Logging
 
 		loadConfig();
 
-		// Input files are given as a list of file URIs at the _end
+		// Input files are given as a list of file URIs at the end
 		for (; i < args.length; i++)
 			_inputFiles.add(args[i]);
 

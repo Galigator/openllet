@@ -17,7 +17,7 @@ import openllet.core.utils.ATermUtils;
 
 public class TestUtils
 {
-	static Random _rand = new Random(System.currentTimeMillis());
+	public static Random _rand = new Random(System.currentTimeMillis());
 
 	public static ATermAppl selectRandomConcept(final Individual ind)
 	{

@@ -271,7 +271,7 @@ public class WebOntTest
 						if ("-validate".equals(arg))
 							OpenlletOptions.VALIDATE_ABOX = true;
 						else
-							if (arg.equals("-n"))
+							if ("-n".equals(arg))
 								try
 								{
 									MAX_TEST_COUNT = Integer.parseInt(args[++i]);
@@ -281,10 +281,10 @@ public class WebOntTest
 									System.err.println(e);
 								}
 							else
-								if (arg.startsWith("-stats"))
+								if ("-stats".startsWith(arg))
 								{
 									final String stats = args[++i].toLowerCase();
-									if (stats.equals("no"))
+									if ("no".equals(stats))
 										_showStats = NO_STATS;
 									else
 										if ("short".equals(stats))

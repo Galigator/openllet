@@ -68,7 +68,7 @@ final class ObjectProfileNode extends AbstractProfileNode
 	/*
 	 * This method manages the vector in m_children field for an unfinished _node.
 	 */
-	void addFieldRef(final IObjectProfileNode node)
+	public void addFieldRef(final IObjectProfileNode node)
 	{
 		// [m_size is the child count]
 
@@ -88,7 +88,7 @@ final class ObjectProfileNode extends AbstractProfileNode
 	 * immutable and most compact representation during phase 2 of profile
 	 * tree construction.
 	 */
-	void finish()
+	public void finish()
 	{
 		final int childCount = _size; // m_size is the child count for a non-shell _node
 		if (childCount > 0)
@@ -110,7 +110,7 @@ final class ObjectProfileNode extends AbstractProfileNode
 		}
 	}
 
-	ObjectProfileNode(final ObjectProfileNode parent, final Object obj, final ILink link)
+	public ObjectProfileNode(final ObjectProfileNode parent, final Object obj, final ILink link)
 	{
 		super(parent);
 
