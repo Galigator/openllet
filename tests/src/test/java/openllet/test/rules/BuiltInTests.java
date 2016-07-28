@@ -617,7 +617,7 @@ public class BuiltInTests
 		  Characters at positions greater than or equal to -42 and less than INF are selected.
 		 */
 
-		stringFunc(StringOperators.substring, "12345", "12345", "-42", new Double(1 / 0E0).toString());
+		stringFunc(StringOperators.substring, "12345", "12345", "-42", Double.toString(Double.POSITIVE_INFINITY));
 
 		/*
 		  fn:substring("12345", -1 div 0E0, 1 div 0E0) returns "".
@@ -625,7 +625,7 @@ public class BuiltInTests
 		  Since -INF + INF returns NaN, no characters are selected.
 		 */
 
-		stringFunc(StringOperators.substring, "", "12345", new Double(-1 / 0E0).toString(), new Double(1 / 0E0).toString());
+		stringFunc(StringOperators.substring, "", "12345", Double.toString(Double.NEGATIVE_INFINITY), Double.toString(Double.POSITIVE_INFINITY));
 
 		stringFunc(StringOperators.substring, "g", "abcdefg", "7", "9");
 

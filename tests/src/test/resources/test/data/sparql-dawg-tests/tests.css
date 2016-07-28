@@ -19,7 +19,7 @@ table.results>tbody td {
 	font-family: courier, monospace;
 }
 
-div.query {
+query {
 	white-space: pre;
 	border: 1px solid #8888aa;
 	font-family: courier, monospace;
@@ -32,6 +32,6 @@ div.query {
 	color: black;
 }
 
-div.approval {
+approval {
 	font-weight: bold;
 }
