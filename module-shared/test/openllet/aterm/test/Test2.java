@@ -40,6 +40,7 @@ import openllet.aterm.ATermInt;
 import openllet.aterm.ATermList;
 import openllet.aterm.ATermReal;
 import openllet.aterm.pure.PureFactory;
+import openllet.atom.OpenError;
 
 public class Test2
 {
@@ -62,7 +63,7 @@ public class Test2
 
 	void test_assert(final boolean condition)
 	{
-		if (!condition) { throw new RuntimeException("assertion failed."); }
+		if (!condition) { throw new OpenError("assertion failed."); }
 	}
 
 	public void testMakeInt()

@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import openllet.aterm.ATermAppl;
+import openllet.atom.OpenError;
 import openllet.core.taxonomy.Taxonomy;
 import openllet.core.taxonomy.TaxonomyNode;
 
@@ -52,7 +53,7 @@ public class TaxonomyUtils
 				explanations = null;
 			}
 			else
-				throw new RuntimeException(sub + " is an unknown class!");
+				throw new OpenError(sub + " is an unknown class!");
 		}
 		else
 			explanations = map.get(sup);
@@ -88,7 +89,7 @@ public class TaxonomyUtils
 	{
 		final Iterator<Object> i = t.depthFirstDatumOnly(c, INSTANCES_KEY);
 		if (!i.hasNext())
-			throw new RuntimeException(c + " is an unknown class!");
+			throw new OpenError(c + " is an unknown class!");
 
 		final Set<I> instances = new HashSet<>();
 		do
@@ -119,7 +120,7 @@ public class TaxonomyUtils
 			if (t.contains(c))
 				return Collections.emptySet();
 
-			throw new RuntimeException(c + " is an unknown class!");
+			throw new OpenError(c + " is an unknown class!");
 		}
 
 		return Collections.unmodifiableSet(instances);
@@ -181,7 +182,7 @@ public class TaxonomyUtils
 	{
 		final Iterator<Object> i = t.depthFirstDatumOnly(c, INSTANCES_KEY);
 		if (!i.hasNext())
-			throw new RuntimeException(c + " is an unknown class!");
+			throw new OpenError(c + " is an unknown class!");
 
 		do
 		{

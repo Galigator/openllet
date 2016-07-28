@@ -8,6 +8,8 @@
 
 package openllet;
 
+import openllet.atom.OpenError;
+
 /**
  * <p>
  * Copyright: Copyright (c) 2008
@@ -18,7 +20,7 @@ package openllet;
  *
  * @author Markus Stocker
  */
-public class OpenlletCmdException extends RuntimeException
+public class OpenlletCmdException extends OpenError
 {
 	private static final long serialVersionUID = -5472994436987740189L;
 

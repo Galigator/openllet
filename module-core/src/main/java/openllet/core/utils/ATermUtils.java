@@ -45,6 +45,7 @@ import openllet.aterm.ATermFactory;
 import openllet.aterm.ATermInt;
 import openllet.aterm.ATermList;
 import openllet.aterm.pure.PureFactory;
+import openllet.atom.OpenError;
 import openllet.core.boxes.rbox.Role;
 import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.output.ATermManchesterSyntaxRenderer;
@@ -968,7 +969,7 @@ public class ATermUtils
 	public final static void assertTrue(final boolean condition)
 	{
 		if (!condition)
-			throw new RuntimeException("assertion failed.");
+			throw new OpenError("assertion failed.");
 	}
 
 	public static final boolean isPrimitive(final ATermAppl c)

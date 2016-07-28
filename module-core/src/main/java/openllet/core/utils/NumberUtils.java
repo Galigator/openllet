@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
+import openllet.atom.OpenError;
 
 public class NumberUtils
 {
@@ -76,7 +77,7 @@ public class NumberUtils
 		return (Double) parse(str, DOUBLE);
 	}
 
-	public static Number parse(String strParam, final int type) throws NumberFormatException
+	public static Number parse(final String strParam, final int type) throws NumberFormatException
 	{
 		String str = strParam;
 
@@ -370,7 +371,7 @@ public class NumberUtils
 			final int cmp = compare(number1, number2);
 
 			if (cmp != result)
-				throw new RuntimeException(val1 + " " + val2 + " " + cmp + " " + result);
+				throw new OpenError(val1 + " " + val2 + " " + cmp + " " + result);
 
 			final String op = (cmp < 0) ? "<" : ((cmp == 0) ? "=" : ">");
 			System.out.println(number1 + " (" + getTypeName(number1) + ") " + op + " " + number2 + " (" + getTypeName(number2) + ")");

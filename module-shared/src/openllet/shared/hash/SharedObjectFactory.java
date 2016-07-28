@@ -20,6 +20,7 @@
 package openllet.shared.hash;
 
 import java.lang.ref.WeakReference;
+import openllet.atom.OpenError;
 
 /**
  * The SharedObjectsFactory is a 'weak' constant pool for uniquely represented objects.
@@ -520,7 +521,7 @@ public class SharedObjectFactory
 				return _freeIDs[--_freeIDsIndex];
 
 			// If we still can't get a free id throw an exception.
-			throw new RuntimeException("No more unique identifiers available for segment(" + _segmentID + ").");
+			throw new OpenError("No more unique identifiers available for segment(" + _segmentID + ").");
 		}
 
 		/**
@@ -685,8 +686,8 @@ public class SharedObjectFactory
 			{
 				super(sharedObject);
 
-				this._next = next;
-				this._hash = hash;
+				_next = next;
+				_hash = hash;
 			}
 		}
 
@@ -711,7 +712,7 @@ public class SharedObjectFactory
 			{
 				super(next, sharedObjectWithID, hash);
 
-				this._id = id;
+				_id = id;
 			}
 		}
 	}

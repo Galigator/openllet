@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
+import openllet.atom.OpenError;
 
 // ----------------------------------------------------------------------------
 /**
@@ -321,7 +322,7 @@ public abstract class ObjectProfiler
 					}
 					catch (final Exception e)
 					{
-						throw new RuntimeException("cannot get field [" + field.getName() + "] of class [" + field.getDeclaringClass().getName() + "]: " + e.toString());
+						throw new OpenError("cannot get field [" + field.getName() + "] of class [" + field.getDeclaringClass().getName() + "]: " + e.toString());
 					}
 
 					if ((ref != null) && !visited.containsKey(ref))
@@ -419,7 +420,7 @@ public abstract class ObjectProfiler
 					}
 					catch (final Exception e)
 					{
-						throw new RuntimeException("cannot get field [" + field.getName() + "] of class [" + field.getDeclaringClass().getName() + "]: " + e.toString());
+						throw new OpenError("cannot get field [" + field.getName() + "] of class [" + field.getDeclaringClass().getName() + "]: " + e.toString());
 					}
 
 					if (ref != null)
@@ -509,7 +510,7 @@ public abstract class ObjectProfiler
 		}
 		catch (final PrivilegedActionException pae)
 		{
-			throw new RuntimeException("could not access declared fields of class " + cls.getName() + ": " + pae.getException());
+			throw new OpenError("could not access declared fields of class " + cls.getName() + ": " + pae.getException());
 		}
 
 		for (final Field declaredField : declaredFields)
@@ -536,7 +537,7 @@ public abstract class ObjectProfiler
 					}
 					catch (final PrivilegedActionException pae)
 					{
-						throw new RuntimeException("could not make field " + field + " accessible: " + pae.getException());
+						throw new OpenError("could not make field " + field + " accessible: " + pae.getException());
 					}
 
 				// memory alignment ignored:

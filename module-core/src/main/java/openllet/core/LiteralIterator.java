@@ -9,6 +9,7 @@ package openllet.core;
 import java.util.Iterator;
 import java.util.List;
 import openllet.aterm.ATermAppl;
+import openllet.atom.OpenError;
 import openllet.core.boxes.abox.ABoxImpl;
 import openllet.core.boxes.abox.Literal;
 import openllet.core.boxes.abox.Node;
@@ -58,7 +59,7 @@ public class LiteralIterator implements Iterator<Literal>
 	 */
 	protected LiteralIterator(final ABoxImpl abox, final boolean findNext)
 	{
-		this._abox = abox;
+		_abox = abox;
 		_nodeList = abox.getNodeNames();
 		_start = 0;
 		_stop = _nodeList.size();
@@ -69,7 +70,8 @@ public class LiteralIterator implements Iterator<Literal>
 	}
 
 	/**
-	 * Create a limited iterator over the individuals in the ABox that only covers the individuals whose _index in _nodeList is between _start ans _stop indices.
+	 * Create a limited iterator over the individuals in the ABox that only covers the individuals whose _index in _nodeList is between _start ans _stop
+	 * indices.
 	 *
 	 * @param _abox
 	 * @param _start
@@ -77,10 +79,10 @@ public class LiteralIterator implements Iterator<Literal>
 	 */
 	public LiteralIterator(final ABoxImpl abox, final int start, final int stop)
 	{
-		this._abox = abox;
-		this._nodeList = abox.getNodeNames();
-		this._start = start;
-		this._stop = Math.max(stop, _nodeList.size());
+		_abox = abox;
+		_nodeList = abox.getNodeNames();
+		_start = start;
+		_stop = Math.max(stop, _nodeList.size());
 		_index = start;
 
 		findNext();
@@ -131,7 +133,7 @@ public class LiteralIterator implements Iterator<Literal>
 	@Override
 	public void remove()
 	{
-		throw new RuntimeException("Remove is not supported");
+		throw new OpenError("Remove is not supported");
 	}
 
 }

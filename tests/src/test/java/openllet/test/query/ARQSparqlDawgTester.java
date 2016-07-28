@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import openllet.atom.OpenError;
 import openllet.core.utils.URIUtils;
 import openllet.query.sparqldl.jena.JenaIOUtils;
 import openllet.shared.tools.Log;
@@ -225,7 +226,7 @@ public class ARQSparqlDawgTester implements SparqlDawgTester
 							return real.isIsomorphicWith(expected);
 						}
 						else
-							throw new RuntimeException("The query has invalid type.");
+							throw new OpenError("The query has invalid type.");
 		}
 		catch (final IOException e)
 		{

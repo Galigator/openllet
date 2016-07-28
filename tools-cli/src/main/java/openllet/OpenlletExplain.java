@@ -26,6 +26,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import openllet.atom.OpenError;
 import openllet.core.utils.Timer;
 import openllet.core.utils.progress.ConsoleProgressMonitor;
 import openllet.core.utils.progress.ProgressMonitor;
@@ -264,7 +265,7 @@ public class OpenlletExplain extends OpenlletCmdApp
 		}
 		catch (final OWLException e)
 		{
-			throw new RuntimeException(e);
+			throw new OpenError(e);
 		}
 	}
 

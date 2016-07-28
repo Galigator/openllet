@@ -12,6 +12,7 @@ import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asSet;
 
 import java.util.Set;
 import java.util.stream.Stream;
+import openllet.atom.OpenError;
 import openllet.core.KBLoader;
 import openllet.core.KnowledgeBase;
 import openllet.core.OpenlletOptions;
@@ -181,15 +182,15 @@ public class OWLAPILoader extends KBLoader implements FacetReasonerOWL, FacetMan
 		}
 		catch (final IllegalArgumentException e)
 		{
-			throw new RuntimeException(file, e);
+			throw new OpenError(file, e);
 		}
 		catch (final OWLOntologyCreationException e)
 		{
-			throw new RuntimeException(file, e);
+			throw new OpenError(file, e);
 		}
 		catch (final OWLOntologyChangeException e)
 		{
-			throw new RuntimeException(file, e);
+			throw new OpenError(file, e);
 		}
 	}
 
@@ -221,7 +222,7 @@ public class OWLAPILoader extends KBLoader implements FacetReasonerOWL, FacetMan
 		}
 		catch (final OWLOntologyCreationException e)
 		{
-			throw new RuntimeException(e);
+			throw new OpenError(e);
 		}
 	}
 

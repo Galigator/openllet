@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
+import openllet.atom.OpenError;
 import openllet.core.DependencySet;
 import openllet.core.IndividualIterator;
 import openllet.core.NodeMerge;
@@ -1193,7 +1194,7 @@ public abstract class CompletionStrategy
 		_abox.getBranches().add(newBranch);
 
 		if (newBranch.getBranch() != _abox.getBranches().size())
-			throw new RuntimeException("Invalid _branch created: " + newBranch.getBranch() + " != " + _abox.getBranches().size());
+			throw new OpenError("Invalid _branch created: " + newBranch.getBranch() + " != " + _abox.getBranches().size());
 
 		_completionTimer.check();
 

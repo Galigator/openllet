@@ -34,6 +34,7 @@ import java.io.InputStream;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermFactory;
 import openllet.aterm.pure.PureFactory;
+import openllet.atom.OpenError;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -54,7 +55,7 @@ public class TestReaders
 	private String _srcdir;
 	private ATerm _baseline;
 
-	public final static void main(String[] args) throws IOException
+	public final static void main(final String[] args) throws IOException
 	{
 		final TestReaders pureSuite = newTestReaders(new PureFactory(), args[0]);
 		pureSuite.testAll();
@@ -63,10 +64,10 @@ public class TestReaders
 	@Before
 	public void setUp()
 	{
-		this._factory = new PureFactory();
+		_factory = new PureFactory();
 	}
 
-	public static TestReaders newTestReaders(ATermFactory factory, String srcdir)
+	public static TestReaders newTestReaders(final ATermFactory factory, final String srcdir)
 	{
 		final TestReaders t = new TestReaders();
 		t._factory = factory;
@@ -74,9 +75,9 @@ public class TestReaders
 		return t;
 	}
 
-	void test_assert(boolean condition)
+	void test_assert(final boolean condition)
 	{
-		if (!condition) { throw new RuntimeException("assertion failed."); }
+		if (!condition) { throw new OpenError("assertion failed."); }
 	}
 
 	public void testReadText() throws FileNotFoundException, IOException

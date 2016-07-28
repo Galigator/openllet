@@ -39,6 +39,7 @@ import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermList;
 import openllet.aterm.pure.PureFactory;
+import openllet.atom.OpenError;
 
 /**
  * Reconstructs an ATerm from the given (series of) buffer(s). It can be retrieved when the
@@ -191,7 +192,7 @@ public class BinaryReader
 						touchPlaceholder();
 						break TYPECHECK;
 					default:
-						throw new RuntimeException("Unknown type id: " + type + ". Current buffer position: " + _currentBuffer.position());
+						throw new OpenError("Unknown type id: " + type + ". Current buffer position: " + _currentBuffer.position());
 				}
 			}
 
@@ -234,7 +235,7 @@ public class BinaryReader
 	public ATerm getRoot()
 	{
 		if (!_isDone)
-			throw new RuntimeException("Can't retrieve the root of the tree while it's still being constructed.");
+			throw new OpenError("Can't retrieve the root of the tree while it's still being constructed.");
 
 		return _sharedTerms[0];
 	}
@@ -302,7 +303,7 @@ public class BinaryReader
 				}
 				else
 				{
-					throw new RuntimeException("Unsupported chunkified type: " + _tempType);
+					throw new OpenError("Unsupported chunkified type: " + _tempType);
 				}
 
 			resetTemp();
@@ -513,7 +514,7 @@ public class BinaryReader
 					}
 					else
 					{
-						throw new RuntimeException("Unable to construct term.\n");
+						throw new OpenError("Unable to construct term.\n");
 					}
 
 		return constructedTerm;
@@ -552,7 +553,7 @@ public class BinaryReader
 				}
 				else
 				{
-					throw new RuntimeException("Encountered a term that didn't fit anywhere. Type: " + term.getType());
+					throw new OpenError("Encountered a term that didn't fit anywhere. Type: " + term.getType());
 				}
 
 			term = buildTerm(parent);
@@ -684,7 +685,7 @@ public class BinaryReader
 				} while (bytesRead > 0);
 
 				if (!binaryReader.isDone())
-					throw new RuntimeException("Term incomplete, missing data.\n");
+					throw new OpenError("Term incomplete, missing data.\n");
 			}
 		}
 
@@ -724,7 +725,7 @@ public class BinaryReader
 		} while (position < length);
 
 		if (!binaryReader.isDone())
-			throw new RuntimeException("Term incomplete, missing data.\n");
+			throw new OpenError("Term incomplete, missing data.\n");
 
 		return binaryReader.getRoot();
 	}

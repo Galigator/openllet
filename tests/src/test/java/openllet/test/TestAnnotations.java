@@ -12,6 +12,7 @@ import java.util.Properties;
 import java.util.Set;
 import junit.framework.JUnit4TestAdapter;
 import openllet.aterm.ATermAppl;
+import openllet.atom.OpenError;
 import openllet.core.KnowledgeBase;
 import openllet.core.KnowledgeBaseImpl;
 import openllet.core.OpenlletOptions;
@@ -60,7 +61,7 @@ public class TestAnnotations
 			final String localPath = "src/test/resources/" + path;
 
 			if (!new File(localPath).exists())//
-				throw new RuntimeException("Path to _data files is not correct: " + path);
+				throw new OpenError("Path to _data files is not correct: " + path);
 
 			return localPath;
 		}

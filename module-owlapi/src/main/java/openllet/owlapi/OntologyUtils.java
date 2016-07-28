@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import openllet.atom.OpenError;
 import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;
@@ -363,7 +364,7 @@ public class OntologyUtils
 				IRI iri = IRI.create(name);
 
 				if (iri == null)
-					throw new RuntimeException("Invalid IRI: " + iri);
+					throw new OpenError("Invalid IRI: " + iri);
 
 				if (!iri.isAbsolute())
 				{

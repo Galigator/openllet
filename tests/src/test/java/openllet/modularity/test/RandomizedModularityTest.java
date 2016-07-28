@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.stream.Collectors;
+import openllet.atom.OpenError;
 import openllet.modularity.ModularityUtils;
 import openllet.owlapi.OWL;
 import openllet.owlapi.OntologyUtils;
@@ -41,7 +42,7 @@ public abstract class RandomizedModularityTest extends AbstractModularityTest
 			_path = "src/test/resources/" + path;
 
 			if (!new File(_path).exists())//
-				throw new RuntimeException("Path to _data files is not correct: " + path);
+				throw new OpenError("Path to _data files is not correct: " + path);
 		}
 	}
 

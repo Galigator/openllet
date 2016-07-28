@@ -10,6 +10,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
+import openllet.atom.OpenError;
 import org.apache.jena.query.ResultSet;
 import org.apache.jena.query.ResultSetFactory;
 import org.apache.jena.rdf.model.ResourceFactory;
@@ -65,7 +66,7 @@ public class JenaIOUtils
 				if (resultURI.endsWith("rdf"))
 					return ResultSetFactory.load(resultURI, ResultsFormat.FMT_RDF_XML);
 				else
-					throw new RuntimeException("Unknown format.");
+					throw new OpenError("Unknown format.");
 	}
 
 	// TODO meanwhile just for files
@@ -78,7 +79,7 @@ public class JenaIOUtils
 			if (resultURI.endsWith("ttl") || resultURI.endsWith("rdf"))
 				return FileManager.get().loadModel(resultURI.substring(5)).getProperty(null, ResourceFactory.createProperty("http://www.w3.org/2001/sw/DataAccess/tests/result-set#boolean")).getBoolean();
 			else
-				throw new RuntimeException("Unknown format.");
+				throw new OpenError("Unknown format.");
 	}
 
 	public static RDFFormatType fileType(final String fileURI)

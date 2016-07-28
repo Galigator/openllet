@@ -35,6 +35,7 @@ import java.util.logging.Level;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermInt;
 import openllet.aterm.ATermList;
+import openllet.atom.OpenError;
 import openllet.core.DependencySet;
 import openllet.core.OpenlletOptions;
 import openllet.core.boxes.rbox.Role;
@@ -701,7 +702,7 @@ public class Individual extends Node implements CachedNode
 							if (c.getAFun().equals(ATermUtils.VALUEFUN))
 								_types[NOM].remove(c);
 							else
-								throw new RuntimeException("Invalid concept " + c);
+								throw new OpenError("Invalid concept " + c);
 
 		return removed;
 	}
@@ -1061,7 +1062,7 @@ public class Individual extends Node implements CachedNode
 			outEdges.addEdge(edge);
 	}
 
-	public Edge addEdge(final Role r, final Node x, DependencySet dsParam)
+	public Edge addEdge(final Role r, final Node x, final DependencySet dsParam)
 	{
 		DependencySet ds = dsParam;
 

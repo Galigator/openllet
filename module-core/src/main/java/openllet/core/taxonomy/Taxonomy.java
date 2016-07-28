@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Stream;
+import openllet.atom.OpenError;
 import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.utils.Bool;
 import openllet.shared.tools.Logging;
@@ -511,7 +512,7 @@ public interface Taxonomy<T> extends Logging
 	{
 		final TaxonomyNode<T> node = getNodes().get(t);
 		if (node == null)
-			throw new RuntimeException(t + " is an unknown class!");
+			throw new OpenError(t + " is an unknown class!");
 
 		return node.putDatum(key, value);
 	}

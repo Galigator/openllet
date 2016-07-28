@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
+import openllet.atom.OpenError;
 import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.utils.Pair;
 
@@ -108,10 +109,10 @@ public class TransitionGraph<T>
 		final int size = finalStates.size();
 
 		if (size == 0)
-			throw new RuntimeException("There are no final states!");
+			throw new OpenError("There are no final states!");
 		else
 			if (size > 1)
-				throw new RuntimeException("There is more than one final state!");
+				throw new OpenError("There is more than one final state!");
 
 		return finalStates.iterator().next();
 	}

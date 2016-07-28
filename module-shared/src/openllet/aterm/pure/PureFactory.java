@@ -54,6 +54,7 @@ import openllet.aterm.ATermReal;
 import openllet.aterm.ParseError;
 import openllet.aterm.pure.binary.BAFReader;
 import openllet.aterm.pure.binary.BinaryReader;
+import openllet.atom.OpenError;
 import openllet.shared.hash.SharedObject;
 import openllet.shared.hash.SharedObjectFactory;
 
@@ -310,7 +311,7 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 							}
 							else
 							{
-								throw new RuntimeException("not a base-64 digit: " + c);
+								throw new OpenError("not a base-64 digit: " + c);
 							}
 
 			c = reader.read();
@@ -944,7 +945,7 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 			}
 		}
 
-		throw new RuntimeException("Unsupported file type : " + typeByte);
+		throw new OpenError("Unsupported file type : " + typeByte);
 	}
 
 	private ATerm readShiftFromFile(final InputStream stream, final char typeByte) throws IOException
@@ -1031,7 +1032,7 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 
 				return makeAFun(afun.getName(), afun.getArity(), afun.isQuoted());
 			default:
-				throw new RuntimeException("Unknown term type id: " + term.getType());
+				throw new OpenError("Unknown term type id: " + term.getType());
 		}
 
 		if (term.hasAnnotations())
@@ -1106,7 +1107,7 @@ class ATermReader
 
 	public ATerm getTerm(final int index)
 	{
-		if (index < 0 || index >= nr_terms) { throw new RuntimeException("illegal index"); }
+		if (index < 0 || index >= nr_terms) { throw new OpenError("illegal index"); }
 		return table[index];
 	}
 

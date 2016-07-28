@@ -34,6 +34,7 @@ import java.util.logging.Logger;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
+import openllet.atom.OpenError;
 import openllet.core.KnowledgeBase;
 import openllet.core.OpenlletOptions;
 import openllet.core.PropertyType;
@@ -126,7 +127,7 @@ public class ARQParser implements QueryParser
 		{
 			final String message = "Error creating a reader from the input stream.";
 			_logger.log(Level.SEVERE, message, e);
-			throw new RuntimeException(message);
+			throw new OpenError(message);
 		}
 	}
 

@@ -46,6 +46,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.aterm.ATermAppl;
+import openllet.atom.OpenError;
 import openllet.core.boxes.rbox.RBox;
 import openllet.core.boxes.rbox.Role;
 import openllet.core.taxonomy.Taxonomy;
@@ -259,7 +260,7 @@ public class RoleTaxonomyBuilder
 		final Boolean exists = marked.get(node);
 		if (exists != null)
 			if (!exists.equals(value))
-				throw new RuntimeException("Inconsistent classification result " + node.getName() + " " + exists + " " + value);
+				throw new OpenError("Inconsistent classification result " + node.getName() + " " + exists + " " + value);
 			else
 				return;
 		marked.put(node, value);

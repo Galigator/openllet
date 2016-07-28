@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
+import openllet.atom.OpenError;
 import openllet.core.OpenlletOptions;
 import openllet.core.boxes.abox.Literal;
 import openllet.core.datatypes.exceptions.InvalidConstrainingFacetException;
@@ -503,7 +504,7 @@ public class DatatypeReasonerImpl implements DatatypeReasoner
 		}
 		catch (final Exception e)
 		{
-			throw new RuntimeException(e);
+			throw new OpenError(e);
 		}
 	}
 

@@ -28,6 +28,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import openllet.aterm.ATermAppl;
+import openllet.atom.OpenError;
 import openllet.core.boxes.abox.ABox;
 import openllet.core.boxes.abox.ABoxImpl;
 import openllet.core.boxes.abox.Individual;
@@ -258,22 +259,22 @@ public class OptimizedBasicCompletionQueue extends CompletionQueue
 	@Override
 	public OptimizedBasicCompletionQueue copy()
 	{
-		final OptimizedBasicCompletionQueue copy = new OptimizedBasicCompletionQueue(this._abox);
+		final OptimizedBasicCompletionQueue copy = new OptimizedBasicCompletionQueue(_abox);
 
 		for (int i = 0; i < NodeSelector.numSelectors(); i++)
 		{
-			copy.queue[i] = new ArrayList<>(this.queue[i]);
-			copy.newQueue[i] = new HashSet<>(this.newQueue[i]);
-			copy.newQueueList[i] = new ArrayList<>(this.newQueueList[i]);
+			copy.queue[i] = new ArrayList<>(queue[i]);
+			copy.newQueue[i] = new HashSet<>(newQueue[i]);
+			copy.newQueueList[i] = new ArrayList<>(newQueueList[i]);
 
-			copy.current[i] = this.current[i];
-			copy.cutOff[i] = this.cutOff[i];
-			copy.end[i] = this.end[i];
+			copy.current[i] = current[i];
+			copy.cutOff[i] = cutOff[i];
+			copy.end[i] = end[i];
 		}
 
-		copy.backtracked = this.backtracked;
+		copy.backtracked = backtracked;
 
-		copy.setAllowLiterals(this.allowLiterals());
+		copy.setAllowLiterals(allowLiterals());
 
 		//copy _branch effects
 		//		for(int i = 0; i < branchEffects.size(); i++){
@@ -293,7 +294,7 @@ public class OptimizedBasicCompletionQueue extends CompletionQueue
 	@Override
 	public void setABox(final ABoxImpl ab)
 	{
-		this._abox = ab;
+		_abox = ab;
 	}
 
 	/**
@@ -325,7 +326,7 @@ public class OptimizedBasicCompletionQueue extends CompletionQueue
 	@Override
 	public void remove()
 	{
-		throw new RuntimeException("Remove is not supported");
+		throw new OpenError("Remove is not supported");
 	}
 
 	@Override

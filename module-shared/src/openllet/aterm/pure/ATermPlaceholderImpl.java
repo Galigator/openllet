@@ -35,6 +35,7 @@ import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
 import openllet.aterm.ATermPlaceholder;
 import openllet.aterm.Visitor;
+import openllet.atom.OpenError;
 import openllet.shared.hash.HashFunctions;
 import openllet.shared.hash.SharedObject;
 
@@ -199,7 +200,7 @@ public class ATermPlaceholderImpl extends ATermImpl implements ATermPlaceholder
 					}
 					default:
 					{
-						throw new RuntimeException("Unknow ATerm function name : " + name);
+						throw new OpenError("Unknow ATerm function name : " + name);
 					}
 				}
 			}
@@ -213,7 +214,7 @@ public class ATermPlaceholderImpl extends ATermImpl implements ATermPlaceholder
 				return _factory.makeApplList(newfun, newargs);
 			}
 		}
-		throw new RuntimeException("illegal pattern: " + this);
+		throw new OpenError("illegal pattern: " + this);
 	}
 
 	@Override
@@ -255,7 +256,7 @@ public class ATermPlaceholderImpl extends ATermImpl implements ATermPlaceholder
 	public ATerm setSubTerm(final int index, final ATerm t)
 	{
 		if (index == 1) { return setPlaceholder(t); }
-		throw new RuntimeException("no " + index + "-th child!");
+		throw new OpenError("no " + index + "-th child!");
 	}
 
 }

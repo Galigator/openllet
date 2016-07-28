@@ -12,6 +12,7 @@ import static openllet.OpenlletCmdOptionArg.REQUIRED;
 
 import java.util.HashSet;
 import java.util.Set;
+import openllet.atom.OpenError;
 import openllet.modularity.ModularityUtils;
 import openllet.owlapi.OWLAPILoader;
 import openllet.owlapi.OntologyUtils;
@@ -152,7 +153,7 @@ public class OpenlletModularity extends OpenlletCmdApp
 		}
 		catch (final OWLException e)
 		{
-			throw new RuntimeException(e);
+			throw new OpenError(e);
 		}
 	}
 }

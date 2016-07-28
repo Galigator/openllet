@@ -39,6 +39,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
+import openllet.atom.OpenError;
 import openllet.core.DependencySet;
 import openllet.core.IndividualIterator;
 import openllet.core.OpenlletOptions;
@@ -136,7 +137,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 		}
 		else
 			if (_abox.getNodes().size() > 1)
-				throw new RuntimeException("This _strategy can only be used with an ABox that has a single _individual.");
+				throw new OpenError("This _strategy can only be used with an ABox that has a single _individual.");
 
 		_cacheSafety = _abox.getCache().getSafety().canSupport(expr) ? _abox.getCache().getSafety() : CacheSafetyFactory.createCacheSafety(expr);
 
@@ -593,7 +594,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 				if (_logger.isLoggable(Level.FINE))
 					_logger.fine("JUMP: " + lastBranch);
 				if (newBranch == null || lastBranch != newBranch.getBranch())
-					throw new RuntimeException("Internal error in reasoner: Trying to backtrack _branch " + lastBranch + " but got " + newBranch);
+					throw new OpenError("Internal error in reasoner: Trying to backtrack _branch " + lastBranch + " but got " + newBranch);
 
 				if (newBranch.getTryNext() < newBranch.getTryCount())
 					newBranch.setLastClash(_abox.getClash().getDepends());

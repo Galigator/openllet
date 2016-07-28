@@ -17,6 +17,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
+import openllet.atom.OpenError;
 import openllet.core.utils.Namespaces;
 import openllet.owlapi.facet.FacetFactoryOWL;
 import openllet.owlapi.facet.FacetManagerOWL;
@@ -179,11 +180,11 @@ public class OWL implements FacetManagerOWL, FacetFactoryOWL, Logging
 		}
 		catch (final OWLOntologyCreationException e)
 		{
-			throw new RuntimeException(e);
+			throw new OpenError(e);
 		}
 		catch (final OWLOntologyChangeException e)
 		{
-			throw new RuntimeException(e);
+			throw new OpenError(e);
 		}
 
 		return ontology;

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import openllet.aterm.ATermAppl;
+import openllet.atom.OpenError;
 import openllet.core.utils.ATermUtils;
 
 /**
@@ -47,7 +48,7 @@ public class QueryAtomImpl implements QueryAtom
 	public QueryAtomImpl(final QueryPredicate predicate, final List<ATermAppl> arguments)
 	{
 		if (predicate == null)
-			throw new RuntimeException("Predicate cannot be null.");
+			throw new OpenError("Predicate cannot be null.");
 
 		this._predicate = predicate;
 		this._arguments = arguments;

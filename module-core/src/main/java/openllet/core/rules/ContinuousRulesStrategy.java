@@ -18,6 +18,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.logging.Level;
 import openllet.aterm.ATermAppl;
+import openllet.atom.OpenError;
 import openllet.core.DependencySet;
 import openllet.core.IndividualIterator;
 import openllet.core.OpenlletOptions;
@@ -210,7 +211,7 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 			}
 			catch (final UnsupportedOperationException uoe)
 			{
-				throw new RuntimeException("Unsupported rule " + normalizedRule, uoe);
+				throw new OpenError("Unsupported rule " + normalizedRule, uoe);
 			}
 		}
 		t.stop();

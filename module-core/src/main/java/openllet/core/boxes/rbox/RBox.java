@@ -9,6 +9,7 @@ import java.util.Set;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
+import openllet.atom.OpenError;
 import openllet.core.DependencySet;
 import openllet.core.FSMBuilder;
 import openllet.core.OpenlletOptions;
@@ -83,7 +84,7 @@ public interface RBox extends Logging
 		final Role role = getRoles().get(r);
 
 		if (role == null)
-			throw new RuntimeException(r + " is not defined as a property");
+			throw new OpenError(r + " is not defined as a property");
 
 		return role;
 	}

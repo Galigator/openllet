@@ -40,6 +40,7 @@ import openllet.aterm.ATermFactory;
 import openllet.aterm.ATermList;
 import openllet.aterm.ATermPlaceholder;
 import openllet.aterm.VisitFailure;
+import openllet.atom.OpenError;
 import openllet.shared.hash.SharedObjectWithID;
 
 public abstract class ATermImpl extends ATermVisitableImpl implements ATerm, SharedObjectWithID
@@ -246,7 +247,7 @@ public abstract class ATermImpl extends ATermVisitableImpl implements ATerm, Sha
 		}
 		catch (final IOException e)
 		{
-			throw new RuntimeException("IOException: " + e.getMessage());
+			throw new OpenError("IOException: " + e.getMessage());
 		}
 	}
 
@@ -259,13 +260,13 @@ public abstract class ATermImpl extends ATermVisitableImpl implements ATerm, Sha
 	@Override
 	public ATerm getSubTerm(final int index)
 	{
-		throw new RuntimeException("no children!");
+		throw new OpenError("no children!");
 	}
 
 	@Override
 	public ATerm setSubTerm(final int index, final ATerm t)
 	{
-		throw new RuntimeException("no children!");
+		throw new OpenError("no children!");
 	}
 
 	@Override

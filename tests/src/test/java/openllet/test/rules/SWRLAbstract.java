@@ -8,6 +8,7 @@ package openllet.test.rules;
 
 import static org.junit.Assert.assertTrue;
 
+import openllet.atom.OpenError;
 import openllet.jena.PelletReasonerFactory;
 import openllet.owlapi.OntologyUtils;
 import openllet.owlapi.OpenlletReasoner;
@@ -83,7 +84,7 @@ public class SWRLAbstract
 		}
 		catch (final OWLOntologyCreationException e)
 		{
-			throw new RuntimeException(e);
+			throw new OpenError(e);
 		}
 
 	}

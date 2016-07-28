@@ -51,6 +51,7 @@ import java.util.logging.Logger;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
+import openllet.atom.OpenError;
 import openllet.core.datatypes.Facet;
 import openllet.core.datatypes.types.real.XSDInteger;
 import openllet.core.utils.ATermUtils;
@@ -160,7 +161,7 @@ public class KRSSLoader extends KBLoader
 			case StreamTokenizer.TT_NUMBER:
 				return String.valueOf(_in.nval);
 			default:
-				throw new RuntimeException("Expecting string found " + (char) _in.ttype);
+				throw new OpenError("Expecting string found " + (char) _in.ttype);
 		}
 	}
 
@@ -252,7 +253,7 @@ public class KRSSLoader extends KBLoader
 						if (s.equalsIgnoreCase("BOTTOM"))
 							a = ATermUtils.BOTTOM;
 						else
-							throw new RuntimeException("Parse exception after ':' " + s);
+							throw new OpenError("Parse exception after ':' " + s);
 				}
 				else
 					if (token == '(')
@@ -417,7 +418,7 @@ public class KRSSLoader extends KBLoader
 																				a = _kb.getProperty(r).getInverse().getName();
 																			}
 																			else
-																				throw new RuntimeException("Unknown expression " + s);
+																				throw new OpenError("Unknown expression " + s);
 
 						if (_in.nextToken() != ')')
 							// if( s.equalsIgnoreCase( "AT-LEAST" ) || s.equalsIgnoreCase(
@@ -434,7 +435,7 @@ public class KRSSLoader extends KBLoader
 							// restrictions" );
 							// }
 							// else
-							throw new RuntimeException("Parse exception at term " + s);
+							throw new OpenError("Parse exception at term " + s);
 					}
 					else
 						if (token == '#')
@@ -445,7 +446,7 @@ public class KRSSLoader extends KBLoader
 								skipNext();
 								a = _terms.get(n);
 								if (a == null)
-									throw new RuntimeException("Parse exception: #" + n + "# is not defined");
+									throw new OpenError("Parse exception: #" + n + "# is not defined");
 							}
 							else
 							{
@@ -460,7 +461,7 @@ public class KRSSLoader extends KBLoader
 						}
 						else
 							if (token != StreamTokenizer.TT_EOF)
-								throw new RuntimeException("Invalid token");
+								throw new OpenError("Invalid token");
 
 		return a;
 	}
@@ -474,7 +475,7 @@ public class KRSSLoader extends KBLoader
 		}
 		catch (final Exception e)
 		{
-			throw new RuntimeException(e);
+			throw new OpenError(e);
 		}
 	}
 
@@ -500,7 +501,7 @@ public class KRSSLoader extends KBLoader
 					break;
 			}
 			if (token != '(')
-				throw new RuntimeException("Parsing error: Expecting '(' but found " + _in);
+				throw new OpenError("Parsing error: Expecting '(' but found " + _in);
 
 			final String str = nextString();
 			if (str.equalsIgnoreCase("DEFINE-ROLE") || str.equalsIgnoreCase("DEFINE-PRIMITIVE-ROLE") || str.equalsIgnoreCase("DEFPRIMROLE") || str.equalsIgnoreCase("DEFINE-ATTRIBUTE") || str.equalsIgnoreCase("DEFINE-PRIMITIVE-ATTRIBUTE") || str.equalsIgnoreCase("DEFPRIMATTRIBUTE") || str.equalsIgnoreCase("DEFINE-DATATYPE-PROPERTY"))
@@ -628,7 +629,7 @@ public class KRSSLoader extends KBLoader
 									_logger.fine("DOMAIN-RANGE " + r + " " + domain + " " + range);
 							}
 							else
-								throw new RuntimeException("Parsing error: Unrecognized keyword _in role definition");
+								throw new OpenError("Parsing error: Unrecognized keyword _in role definition");
 							skipNext(')');
 						}
 						else
@@ -870,7 +871,7 @@ public class KRSSLoader extends KBLoader
 																					_logger.fine("DATATYPE-ROLE-FILLER " + x + " - " + r + " -> " + y);
 																			}
 																			else
-																				throw new RuntimeException("Parsing error: Unknown command " + str);
+																				throw new OpenError("Parsing error: Unknown command " + str);
 			skipNext(')');
 
 			token = _in.nextToken();
@@ -974,7 +975,7 @@ public class KRSSLoader extends KBLoader
 			ATermUtils.assertTrue(_in.nextToken() == StreamTokenizer.TT_EOF);
 
 			if (failed)
-				throw new RuntimeException("Classification results are not correct!");
+				throw new OpenError("Classification results are not correct!");
 		}
 	}
 
@@ -1016,7 +1017,7 @@ public class KRSSLoader extends KBLoader
 						if (result.equalsIgnoreCase("NIL"))
 							isType = false;
 						else
-							throw new RuntimeException("Unknown result " + result);
+							throw new OpenError("Unknown result " + result);
 				}
 				else
 					isType = true;
@@ -1024,7 +1025,7 @@ public class KRSSLoader extends KBLoader
 				_logger.fine(() -> " -> " + isType);
 
 				if (kb.isType(ind, c) != isType)
-					throw new RuntimeException("Individual " + ind + " is " + (isType ? "not" : "") + " an instance of " + c);
+					throw new OpenError("Individual " + ind + " is " + (isType ? "not" : "") + " an instance of " + c);
 			}
 		}
 	}

@@ -6,6 +6,8 @@
 
 package openllet.query.sparqldl.model;
 
+import openllet.atom.OpenError;
+
 /**
  * <p>
  * Title:
@@ -55,7 +57,7 @@ public class MultiFilterWrapper implements Filter
 						return true;
 				return false;
 			default:
-				throw new RuntimeException("Filter _type not supported : " + _type);
+				throw new OpenError("Filter _type not supported : " + _type);
 		}
 	}
 

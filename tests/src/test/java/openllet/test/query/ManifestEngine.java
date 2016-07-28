@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import openllet.atom.OpenError;
 import openllet.core.exceptions.UnsupportedFeatureException;
 import openllet.core.utils.VersionInfo;
 import openllet.shared.tools.Log;
@@ -421,7 +422,7 @@ public class ManifestEngine
 				if (testType.equals(SparqlDawgTestVocabulary.QueryEvaluationTest))
 					return doEvaluationTest(tester, testCase);
 
-		throw new RuntimeException("Unknown test type " + testType.getLocalName() + " for " + testCase);
+		throw new OpenError("Unknown test type " + testType.getLocalName() + " for " + testCase);
 	}
 
 	public boolean isWriteResults()

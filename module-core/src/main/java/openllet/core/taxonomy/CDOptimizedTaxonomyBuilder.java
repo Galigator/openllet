@@ -23,6 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
+import openllet.atom.OpenError;
 import openllet.core.KnowledgeBase;
 import openllet.core.OpenlletOptions;
 import openllet.core.boxes.abox.Individual;
@@ -1179,7 +1180,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 
 		if (node._mark != null)
 			if (!node._mark.equals(value))
-				throw new RuntimeException("Inconsistent classification result " + node.getName() + " " + node._mark + " " + value);
+				throw new OpenError("Inconsistent classification result " + node.getName() + " " + node._mark + " " + value);
 			else
 				return false;
 		node._mark = value;

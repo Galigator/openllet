@@ -44,6 +44,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import openllet.atom.OpenError;
 
 public class FileUtils
 {
@@ -101,14 +102,14 @@ public class FileUtils
 		{
 			final File localFile = new File(fileName);
 			if (!localFile.exists())
-				throw new RuntimeException(new FileNotFoundException(localFile.getAbsolutePath()));
+				throw new OpenError(new FileNotFoundException(localFile.getAbsolutePath()));
 			try
 			{
 				return localFile.toURI().toURL().toString();
 			}
 			catch (final MalformedURLException e2)
 			{
-				throw new RuntimeException(e1.getMessage() + " " + e2.getMessage(), new FileNotFoundException(localFile.getAbsolutePath()));
+				throw new OpenError(e1.getMessage() + " " + e2.getMessage(), new FileNotFoundException(localFile.getAbsolutePath()));
 
 			}
 		}
@@ -143,7 +144,7 @@ public class FileUtils
 				final File[] files = dir.listFiles((FilenameFilter) (dir1, name) -> dir1 != null && name.matches(filter));
 
 				if (files.length == 0)
-					throw new RuntimeException("File not found: " + fileNameRegex);
+					throw new OpenError("File not found: " + fileNameRegex);
 
 				Arrays.sort(files, AlphaNumericComparator.CASE_INSENSITIVE);
 
@@ -155,7 +156,7 @@ public class FileUtils
 					uris.add(file.toURI().toString());
 				else
 					if (URI.create(fileNameRegex) == null)
-						throw new RuntimeException(new FileNotFoundException(fileNameRegex));
+						throw new OpenError(new FileNotFoundException(fileNameRegex));
 					else
 						uris.add(fileNameRegex);
 		}
@@ -194,10 +195,10 @@ public class FileUtils
 			return file.toURI().toString();
 		else
 			if (dir != null && dir.exists())
-				throw new RuntimeException(new FileNotFoundException(fileName));
+				throw new OpenError(new FileNotFoundException(fileName));
 			else
 				if (URI.create(fileName) == null)
-					throw new RuntimeException(new FileNotFoundException(fileName));
+					throw new OpenError(new FileNotFoundException(fileName));
 				else
 					return fileName;
 	}

@@ -49,6 +49,7 @@ import java.util.logging.Logger;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
+import openllet.atom.OpenError;
 import openllet.core.DependencySet;
 import openllet.core.IndividualIterator;
 import openllet.core.KnowledgeBase;
@@ -2263,7 +2264,7 @@ public class ABoxImpl implements ABox
 	public Set<ATermAppl> getExplanationSet()
 	{
 		if (_lastClash == null)
-			throw new RuntimeException("No clashExplanation was generated!");
+			throw new OpenError("No clashExplanation was generated!");
 
 		return _lastClash.getDepends().getExplain();
 	}

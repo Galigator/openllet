@@ -28,6 +28,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import openllet.aterm.ATermAppl;
+import openllet.atom.OpenError;
 import openllet.core.boxes.abox.ABox;
 import openllet.core.boxes.abox.ABoxImpl;
 import openllet.core.boxes.abox.Individual;
@@ -232,17 +233,17 @@ public class BasicCompletionQueue extends CompletionQueue
 	@Override
 	public BasicCompletionQueue copy()
 	{
-		final BasicCompletionQueue copy = new BasicCompletionQueue(this._abox);
+		final BasicCompletionQueue copy = new BasicCompletionQueue(_abox);
 
-		copy._queue = new ArrayList<>(this._queue);
-		copy._newQueue = new HashSet<>(this._newQueue);
-		copy._newQueueList = new ArrayList<>(this._newQueueList);
+		copy._queue = new ArrayList<>(_queue);
+		copy._newQueue = new HashSet<>(_newQueue);
+		copy._newQueueList = new ArrayList<>(_newQueueList);
 
-		copy._current = this._current;
-		copy._cutOff = this._cutOff;
-		copy._backtracked = this._backtracked;
-		copy._end = this._end;
-		copy.setAllowLiterals(this.allowLiterals());
+		copy._current = _current;
+		copy._cutOff = _cutOff;
+		copy._backtracked = _backtracked;
+		copy._end = _end;
+		copy.setAllowLiterals(allowLiterals());
 
 		return copy;
 	}
@@ -255,7 +256,7 @@ public class BasicCompletionQueue extends CompletionQueue
 	@Override
 	public void setABox(final ABoxImpl ab)
 	{
-		this._abox = ab;
+		_abox = ab;
 	}
 
 	/**
@@ -284,7 +285,7 @@ public class BasicCompletionQueue extends CompletionQueue
 	@Override
 	public void remove()
 	{
-		throw new RuntimeException("Remove is not supported");
+		throw new OpenError("Remove is not supported");
 	}
 
 	@Override

@@ -48,6 +48,7 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.WindowConstants;
+import openllet.atom.OpenError;
 import openllet.core.OpenlletOptions;
 import openllet.core.exceptions.TimeoutException;
 import openllet.core.exceptions.UnsupportedFeatureException;
@@ -504,7 +505,7 @@ public class WebOntTest
 			allPassed = false;
 
 			if (testCount == 2)
-				throw new RuntimeException(e);
+				throw new OpenError(e);
 		}
 
 		return allPassed;
@@ -839,7 +840,7 @@ public class WebOntTest
 										if (testType.equals(OWLTestVocabulary.ClassificationTest))
 											return doEntailmentTest(testCase, true, true);
 
-		throw new RuntimeException("Unknown test type " + testType.getLocalName() + " for " + testCase);
+		throw new OpenError("Unknown test type " + testType.getLocalName() + " for " + testCase);
 	}
 
 	public static void printStackTrace(final Throwable e)

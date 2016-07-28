@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.stream.Stream;
+import openllet.atom.OpenError;
 import openllet.shared.tools.Logging;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.dlsyntax.renderer.DLSyntaxObjectRenderer;
@@ -314,7 +315,7 @@ public interface OWLHelper extends Logging, OWLManagementObject
 			switch (parts.length)
 			{
 				case 0:
-					throw new RuntimeException("Error processing : " + identifier);
+					throw new OpenError("Error processing : " + identifier);
 				case 1:
 					return new String[] { identifier, "" };
 				default:

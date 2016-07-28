@@ -21,6 +21,7 @@ import java.util.Properties;
 import java.util.logging.Logger;
 import junit.framework.JUnit4TestAdapter;
 import openllet.aterm.ATermAppl;
+import openllet.atom.OpenError;
 import openllet.core.KBLoader;
 import openllet.core.KnowledgeBase;
 import openllet.core.KnowledgeBaseImpl;
@@ -87,7 +88,7 @@ public class ELTests extends AbstractKBTests
 		}
 		catch (final Exception e)
 		{
-			throw new RuntimeException(e);
+			throw new OpenError(e);
 		}
 		builder.setProgressMonitor(new SilentProgressMonitor());
 		builder.classify();

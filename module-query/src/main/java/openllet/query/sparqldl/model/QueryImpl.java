@@ -18,6 +18,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
+import openllet.atom.OpenError;
 import openllet.core.KnowledgeBase;
 import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.utils.ATermUtils;
@@ -404,7 +405,7 @@ public class QueryImpl implements Query
 
 					}
 			default:
-				throw new RuntimeException("This atom cannot be included to rolling-up : " + atom);
+				throw new OpenError("This atom cannot be included to rolling-up : " + atom);
 		}
 	}
 
@@ -487,7 +488,7 @@ public class QueryImpl implements Query
 
 					}
 			default:
-				throw new RuntimeException("This atom cannot be included to rolling-up : " + atom);
+				throw new OpenError("This atom cannot be included to rolling-up : " + atom);
 
 		}
 	}

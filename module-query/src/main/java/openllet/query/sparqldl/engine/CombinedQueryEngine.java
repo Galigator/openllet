@@ -25,6 +25,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.aterm.ATermAppl;
+import openllet.atom.OpenError;
 import openllet.core.KnowledgeBase;
 import openllet.core.OpenlletOptions;
 import openllet.core.exceptions.InternalReasonerException;
@@ -91,7 +92,7 @@ public class CombinedQueryEngine implements QueryExec
 
 		_kb = query.getKB();
 		if (_kb == null)
-			throw new RuntimeException("No input _data set is given for query!");
+			throw new OpenError("No input data set is given for query!");
 
 		_result = new QueryResultImpl(query);
 
@@ -192,8 +193,7 @@ public class CombinedQueryEngine implements QueryExec
 
 			transformedQuery.add(c);
 
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine(c.getUndistVars() + " : " + c.getDistVars() + " : " + c.getQuery().getAtoms());
+			_logger.fine(() -> c.getUndistVars() + " : " + c.getDistVars() + " : " + c.getQuery().getAtoms());
 		}
 
 		for (final QueryAtom atom : toRemove)
@@ -296,8 +296,7 @@ public class CombinedQueryEngine implements QueryExec
 
 		final QueryAtom current = _plan.next(binding);
 
-		if (_logger.isLoggable(Level.FINER))
-			_logger.finer("Evaluating " + current);
+		_logger.finer(() -> "Evaluating " + current);
 
 		if (current.isGround() && !current.getPredicate().equals(QueryPredicate.UndistVarCore))
 		{
@@ -1000,7 +999,7 @@ public class CombinedQueryEngine implements QueryExec
 					{
 						if (QueryEngine.execBooleanABoxQuery(core.getQuery()))
 							_result.add(binding);
-						// throw new RuntimeException(
+						// throw new OpenError(
 						// "The query contains neither dist vars, nor constants,
 						// yet evaluated by the CombinedQueryEngine !!! ");
 					}
@@ -1438,7 +1437,7 @@ public class CombinedQueryEngine implements QueryExec
 						candidates = _kb.getIndividuals();
 						break;
 					default:
-						throw new RuntimeException("Uknown variable type : " + forType);
+						throw new OpenError("Uknown variable type : " + forType);
 				}
 
 		return candidates;

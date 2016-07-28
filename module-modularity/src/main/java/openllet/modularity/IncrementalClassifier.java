@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import openllet.aterm.ATermAppl;
+import openllet.atom.OpenError;
 import openllet.core.exceptions.PelletRuntimeException;
 import openllet.core.taxonomy.Taxonomy;
 import openllet.core.taxonomy.TaxonomyImpl;
@@ -538,7 +539,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 		}
 		catch (final InterruptedException e)
 		{
-			throw new RuntimeException(e);
+			throw new OpenError(e);
 		}
 
 		if (_logger.isLoggable(Level.FINE))

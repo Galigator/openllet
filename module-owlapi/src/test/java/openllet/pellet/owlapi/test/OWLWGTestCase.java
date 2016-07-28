@@ -12,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import openllet.atom.OpenError;
 import openllet.core.KnowledgeBaseImpl;
 import openllet.owlwg.TestCollection;
 import openllet.owlwg.cli.FilterConditionParser;
@@ -137,7 +138,7 @@ public class OWLWGTestCase
 					{
 						// FIXME Can get rid of conditional once #295 is fixed.
 						if (!(result.getCause() instanceof FreshEntitiesException))
-							throw new RuntimeException(_test.getIdentifier(), result.getCause());
+							throw new OpenError(_test.getIdentifier(), result.getCause());
 					}
 					else
 					{

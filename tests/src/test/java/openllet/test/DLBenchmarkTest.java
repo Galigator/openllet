@@ -247,7 +247,7 @@ public class DLBenchmarkTest
 		//			time = System.currentTimeMillis() - time;
 		//
 		//			if (sat != result)
-		//				throw new RuntimeException("Consistency error");
+		//				throw new OpenError("Consistency error");
 		//			else
 		//				System.out.print("(" + (count + 1) + ":" + time + ")");
 		//		}

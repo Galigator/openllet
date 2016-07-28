@@ -9,6 +9,7 @@ package openllet.test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import openllet.atom.OpenError;
 import openllet.owlapi.OWL;
 import openllet.owlapi.OntologyUtils;
 import openllet.owlapi.OpenlletReasoner;
@@ -54,7 +55,7 @@ public class OWLAPIWebOntTester implements WebOntTester
 		}
 		catch (final OWLException e)
 		{
-			throw new RuntimeException(e);
+			throw new OpenError(e);
 		}
 	}
 
@@ -71,7 +72,7 @@ public class OWLAPIWebOntTester implements WebOntTester
 		}
 		catch (final OWLException e)
 		{
-			throw new RuntimeException(e);
+			throw new OpenError(e);
 		}
 		finally
 		{

@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Set;
 import openllet.aterm.AFun;
 import openllet.aterm.ATermAppl;
+import openllet.atom.OpenError;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.CollectionUtils;
 
@@ -88,7 +89,7 @@ public class TermDefinition
 			if (fun.equals(ATermUtils.EQCLASSFUN))
 				added = eqClassAxioms.contains(appl) ? false : eqClassAxioms.add(appl);
 			else
-				throw new RuntimeException("Cannot add non-definition!");
+				throw new OpenError("Cannot add non-definition!");
 
 		if (added)
 			updateDependencies();
@@ -107,7 +108,7 @@ public class TermDefinition
 			if (fun.equals(ATermUtils.EQCLASSFUN))
 				removed = eqClassAxioms.remove(axiom);
 			else
-				throw new RuntimeException("Cannot remove non-definition!");
+				throw new OpenError("Cannot remove non-definition!");
 
 		updateDependencies();
 

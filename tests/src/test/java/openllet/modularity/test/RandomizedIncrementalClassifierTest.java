@@ -9,6 +9,7 @@ package openllet.modularity.test;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import openllet.atom.OpenError;
 import openllet.owlapi.OWL;
 import openllet.owlapi.OntologyUtils;
 import org.junit.Test;
@@ -43,7 +44,7 @@ public abstract class RandomizedIncrementalClassifierTest extends AbstractModula
 			_path = "src/test/resources/" + path;
 
 			if (!new File(_path).exists())//
-				throw new RuntimeException("Path to _data files is not correct: " + path);
+				throw new OpenError("Path to _data files is not correct: " + path);
 		}
 	}
 
