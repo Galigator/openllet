@@ -57,7 +57,7 @@ public class VariableBinding
 	 */
 	private class DataValueCollector implements AtomObjectVisitor
 	{
-		Literal value = null;
+		private Literal value = null;
 
 		public Literal getValue()
 		{
@@ -139,13 +139,13 @@ public class VariableBinding
 	private class ValueSettingVisitor implements AtomObjectVisitor
 	{
 
-		Literal _data;
-		Individual _individual;
+		private Literal _data;
+		private Individual _individual;
 
 		public ValueSettingVisitor(final Individual individual, final Literal data)
 		{
-			this._data = data;
-			this._individual = individual;
+			_data = data;
+			_individual = individual;
 		}
 
 		public Literal getData()
@@ -194,7 +194,7 @@ public class VariableBinding
 
 	public VariableBinding(final ABox abox)
 	{
-		this._abox = abox;
+		_abox = abox;
 		_dataVars = new HashMap<>();
 		_instanceVars = new HashMap<>();
 	}

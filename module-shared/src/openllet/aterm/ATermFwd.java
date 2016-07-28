@@ -31,11 +31,11 @@ package openllet.aterm;
 public class ATermFwd implements Visitor<ATerm>
 {
 
-	Visitor<ATerm> any;
+	private final Visitor<ATerm> _any;
 
 	public ATermFwd(final Visitor<ATerm> any)
 	{
-		this.any = any;
+		this._any = any;
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class ATermFwd implements Visitor<ATerm>
 	@Override
 	public ATerm visitATerm(final ATerm arg)
 	{
-		return any.visit(arg);
+		return _any.visit(arg);
 	}
 
 	@Override

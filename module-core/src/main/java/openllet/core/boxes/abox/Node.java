@@ -110,8 +110,8 @@ public abstract class Node
 
 	protected Node(final ATermAppl name, final ABoxImpl abox)
 	{
-		this._name = name;
-		this._abox = abox;
+		_name = name;
+		_abox = abox;
 
 		_isRoot = !ATermUtils.isAnon(name);
 		_isConceptRoot = false;
@@ -125,8 +125,8 @@ public abstract class Node
 
 	protected Node(final Node node, final ABoxImpl abox)
 	{
-		this._name = node.getName();
-		this._abox = abox;
+		_name = node.getName();
+		_abox = abox;
 
 		_isRoot = node._isRoot;
 		_isConceptRoot = node._isConceptRoot;
@@ -209,7 +209,7 @@ public abstract class Node
 
 		// add _node to effected list
 		if (_abox.getBranch() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
-			_abox.getBranchEffectTracker().add(_abox.getBranch(), this.getName());
+			_abox.getBranchEffectTracker().add(_abox.getBranch(), getName());
 	}
 
 	/**
@@ -224,7 +224,7 @@ public abstract class Node
 
 	public void setConceptRoot(final boolean isConceptRoot)
 	{
-		this._isConceptRoot = isConceptRoot;
+		_isConceptRoot = isConceptRoot;
 	}
 
 	public boolean isBnode()
@@ -477,7 +477,7 @@ public abstract class Node
 		return restored;
 	}
 
-	public void addType(final ATermAppl c, DependencySet dsParam)
+	public void addType(final ATermAppl c, final DependencySet dsParam)
 	{
 		DependencySet ds = dsParam;
 
@@ -489,7 +489,7 @@ public abstract class Node
 
 		// add to effected list
 		if (_abox.getBranch() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
-			_abox.getBranchEffectTracker().add(_abox.getBranch(), this.getName());
+			_abox.getBranchEffectTracker().add(_abox.getBranch(), getName());
 
 		int b = _abox.getBranch();
 
@@ -530,7 +530,7 @@ public abstract class Node
 			else
 				if (isIndividual() && ATermUtils.isNominal(c))
 					// TODO probably redundant if : Bool.FALSE
-					if (!c.getArgument(0).equals(this.getName()))
+					if (!c.getArgument(0).equals(getName()))
 					return Bool.FALSE;
 					else
 					return Bool.TRUE;
@@ -609,7 +609,7 @@ public abstract class Node
 		return false;
 	}
 
-	boolean hasPredecessor(final Individual x)
+	protected boolean hasPredecessor(final Individual x)
 	{
 		return x.hasSuccessor(this);
 	}
@@ -834,7 +834,7 @@ public abstract class Node
 		{
 			//CHW - added for incremental reasoning support - this is needed as we will need to backjump if possible
 			if (OpenlletOptions.USE_INCREMENTAL_CONSISTENCY)
-				_abox.setClash(Clash.nominal(this, ds.union(this._mergeDepends, _abox.doExplanation()).union(node._mergeDepends, _abox.doExplanation()), node.getName()));
+				_abox.setClash(Clash.nominal(this, ds.union(_mergeDepends, _abox.doExplanation()).union(node._mergeDepends, _abox.doExplanation()), node.getName()));
 			else
 				_abox.setClash(Clash.nominal(this, ds, node.getName()));
 
@@ -867,7 +867,7 @@ public abstract class Node
 		return _differents.get(node);
 	}
 
-	public boolean setDifferent(final Node node, DependencySet dsParam)
+	public boolean setDifferent(final Node node, final DependencySet dsParam)
 	{
 		DependencySet ds = dsParam;
 
@@ -879,7 +879,7 @@ public abstract class Node
 			return false;
 		if (isSame(node))
 		{
-			ds = ds.union(this.getMergeDependency(true), _abox.doExplanation());
+			ds = ds.union(getMergeDependency(true), _abox.doExplanation());
 			ds = ds.union(node.getMergeDependency(true), _abox.doExplanation());
 			_abox.setClash(Clash.nominal(this, ds, node.getName()));
 

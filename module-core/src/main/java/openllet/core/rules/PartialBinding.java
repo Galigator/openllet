@@ -17,27 +17,27 @@ public class PartialBinding
 
 	public PartialBinding(final Rule rule, final VariableBinding binding, final DependencySet ds)
 	{
-		this._rule = rule;
-		this._binding = binding;
-		this._ds = ds;
+		_rule = rule;
+		_binding = binding;
+		_ds = ds;
 	}
 
-	Rule getRule()
+	public Rule getRule()
 	{
 		return _rule;
 	}
 
-	VariableBinding getBinding()
+	public VariableBinding getBinding()
 	{
 		return _binding;
 	}
 
-	DependencySet getDependencySet()
+	public DependencySet getDependencySet()
 	{
 		return _ds;
 	}
 
-	int getBranch()
+	public int getBranch()
 	{
 		return _ds.max();
 	}

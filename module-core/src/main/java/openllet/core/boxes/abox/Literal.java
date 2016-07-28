@@ -183,7 +183,7 @@ public class Literal extends Node
 	}
 
 	@Override
-	public boolean hasType(ATerm typeParam)
+	public boolean hasType(final ATerm typeParam)
 	{
 		ATerm type = typeParam;
 
@@ -311,7 +311,7 @@ public class Literal extends Node
 		return null;
 	}
 
-	void reportClash(final Clash clash)
+	public void reportClash(final Clash clash)
 	{
 		_clashed = true;
 		_abox.setClash(clash);

@@ -167,12 +167,12 @@ public class ClassTree
 	}
 
 	/**
-	 * Create a root _node for the given concepts and add child _nodes for the subclasses. Return null for owl:Nothing
+	 * Create a root node for the given concepts and add child nodes for the subclasses.
 	 * 
-	 * @param concepts
-	 * @return
+	 * @param cls are classes of the tree.
+	 * @return null for owl:Nothing
 	 */
-	DefaultMutableTreeNode createTree(final OntClass cls)
+	private DefaultMutableTreeNode createTree(final OntClass cls)
 	{
 		if (_unsatConcepts.contains(cls))
 			return null;
@@ -212,23 +212,19 @@ public class ClassTree
 	}
 
 	/**
-	 * Create a TreeNode for the given class
-	 * 
 	 * @param entity
-	 * @return
+	 * @return a new TreeNode for the given class
 	 */
-	DefaultMutableTreeNode createSingletonNode(final OntResource cls)
+	private DefaultMutableTreeNode createSingletonNode(final OntResource cls)
 	{
 		return new DefaultMutableTreeNode(Collections.singleton(cls));
 	}
 
 	/**
-	 * Create a TreeNode for the given set of classes
-	 * 
 	 * @param entity
-	 * @return
+	 * @return a new TreeNode for the given set of classes
 	 */
-	DefaultMutableTreeNode createNode(final OntClass cls)
+	private DefaultMutableTreeNode createNode(final OntClass cls)
 	{
 		final Set<OntResource> eqs = collect(cls.listEquivalentClasses());
 

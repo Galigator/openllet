@@ -255,7 +255,7 @@ public class Individual extends Node implements CachedNode
 		addType(c, ds, true);
 	}
 
-	void addType(final ATermAppl c, final DependencySet dsParam, final boolean checkForPruned)
+	public void addType(final ATermAppl c, final DependencySet dsParam, final boolean checkForPruned)
 	{
 		DependencySet ds = dsParam;
 

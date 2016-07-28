@@ -4,7 +4,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.LinkedList;
 
-// ----------------------------------------------------------------------------
 /**
  * Abstract base class for all _node implementations in this package.
  *
@@ -12,9 +11,8 @@ import java.util.LinkedList;
  */
 abstract class AbstractProfileNode implements IObjectProfileNode, Comparable<AbstractProfileNode>
 {
-	// public: ................................................................
-
-	// IObjectProfileNode:
+	public static final IObjectProfileNode[] EMPTY_OBJECTPROFILENODE_ARRAY = new IObjectProfileNode[0];
+	public int _size;
 
 	@Override
 	public final int size()
@@ -105,23 +103,12 @@ abstract class AbstractProfileNode implements IObjectProfileNode, Comparable<Abs
 		return super.toString() + ": name = " + name() + ", size = " + size();
 	}
 
-	// protected: .............................................................
-
-	// package: ...............................................................
-
-	AbstractProfileNode(final IObjectProfileNode parent)
+	public AbstractProfileNode(final IObjectProfileNode parent)
 	{
 		_parent = parent;
 	}
 
-	int _size;
-
-	static final IObjectProfileNode[] EMPTY_OBJECTPROFILENODE_ARRAY = new IObjectProfileNode[0];
-
-	// private: ...............................................................
-
 	private final IObjectProfileNode _parent;
 	private transient IObjectProfileNode[] _profilePath;
 
-} // _end of class
-// ----------------------------------------------------------------------------
+}

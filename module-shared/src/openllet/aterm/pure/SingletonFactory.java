@@ -43,6 +43,6 @@ public class SingletonFactory
 
 	private static class InstanceKeeper
 	{
-		final static PureFactory instance = new PureFactory();
+		public static final PureFactory instance = new PureFactory();
 	}
 }

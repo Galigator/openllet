@@ -40,7 +40,7 @@ package openllet.aterm;
  */
 public class ParseError extends RuntimeException
 {
-	static final long serialVersionUID = 3638731523325353017L;
+	private static final long serialVersionUID = 3638731523325353017L;
 
 	/**
 	 * Constructs a ParseError given a description of the error

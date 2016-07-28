@@ -15,12 +15,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
@@ -141,11 +139,6 @@ public class Openllint extends OpenlletCmdApp
 		final String lb = System.getProperty("line.separator");
 		final String s = s1 + lb + lb + s2;
 		return s;
-	}
-
-	<T extends Serializable> void f(@SuppressWarnings("unused") final Map<T, T> arg)
-	{
-		//
 	}
 
 	@Override
@@ -276,27 +269,7 @@ public class Openllint extends OpenlletCmdApp
 			if (_doOWL)
 				runLintForOWL();
 		}
-		catch (final IllegalPellintArgumentException e)
-		{
-			e.printStackTrace();
-		}
-		catch (final MalformedURLException e)
-		{
-			e.printStackTrace();
-		}
-		catch (final IOException e)
-		{
-			e.printStackTrace();
-		}
-		catch (final OWLOntologyCreationException e)
-		{
-			e.printStackTrace();
-		}
-		catch (final OWLOntologyStorageException e)
-		{
-			e.printStackTrace();
-		}
-		catch (final OWLOntologyChangeException e)
+		catch (final Exception e)
 		{
 			e.printStackTrace();
 		}

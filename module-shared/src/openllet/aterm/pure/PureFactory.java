@@ -62,12 +62,12 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 {
 	private final ATermList empty;
 
-	static boolean isBase64(final int c)
+	private static boolean isBase64(final int c)
 	{
 		return Character.isLetterOrDigit(c) || c == '+' || c == '/';
 	}
 
-	static public int abbrevSize(final int strTerm)
+	public static int abbrevSize(final int strTerm)
 	{
 		int abbrev = strTerm;
 		int size = 1;
@@ -811,7 +811,7 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 		return pattern.make(args);
 	}
 
-	ATerm parsePattern(final String pattern) throws ParseError
+	public ATerm parsePattern(final String pattern) throws ParseError
 	{
 		return parse(pattern);
 	}
@@ -1054,7 +1054,7 @@ class ATermReader
 
 	private final Reader reader;
 
-	int last_char;
+	public int last_char;
 	private int pos;
 
 	private int nr_terms;

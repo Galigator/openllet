@@ -169,7 +169,7 @@ public class WebOntTest
 	private final int[][][][] _stats = new int[LEVELS.size()][STATUS.size()][TYPES.size()][RESULTS.size()];
 
 	// a table showing the test results for each _individual test case
-	Vector<Vector<Object>> results = new Vector<>();
+	private final Vector<Vector<Object>> results = new Vector<>();
 
 	// maximum number of test cases to process
 	private static int MAX_TEST_COUNT = Integer.MAX_VALUE;

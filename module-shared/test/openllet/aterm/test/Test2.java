@@ -61,7 +61,7 @@ public class Test2
 		this.srcdir = srcdir;
 	}
 
-	void test_assert(final boolean condition)
+	public void test_assert(final boolean condition)
 	{
 		if (!condition) { throw new OpenError("assertion failed."); }
 	}

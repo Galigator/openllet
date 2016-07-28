@@ -18,7 +18,7 @@ import openllet.atom.OpenError;
 /**
  * This non-instantiable class presents an API for object sizing and profiling as described in the article. See _individual methods for details.
  * <P>
- * This implementation is J2SE 1.4+ only. You would need to code your own identity hashmap to port this to earlier Java versions.
+ * You would need to code your own identity hashmap to port this to earlier Java versions.
  * <P>
  * Security: this implementation uses AccessController.doPrivileged() so it could be granted privileges to access non-public class fields separately from your
  * main application code. The minimum set of persmissions necessary for this class to function correctly follows:
@@ -33,7 +33,7 @@ import openllet.atom.OpenError;
  */
 public abstract class ObjectProfiler
 {
-	// public: ................................................................
+	public static final String INPUT_OBJECT_NAME = "<INPUT>"; // root _node name
 
 	// the following constants are physical sizes (in bytes) and are JVM-dependent:
 	// [the _current values are Ok for most 32-bit JVMs]
@@ -49,6 +49,9 @@ public abstract class ObjectProfiler
 	public static final int BOOLEAN_FIELD_SIZE = 1;
 	public static final int DOUBLE_FIELD_SIZE = 8;
 	public static final int FLOAT_FIELD_SIZE = 4;
+
+	// class metadata _cache:
+	private static final Map<Class<?>, ClassMetadata> CLASS_METADATA_CACHE = new WeakHashMap<>(101);
 
 	/**
 	 * Set this to 'true' to make the _node names default to using class names without package prefixing for more compact dumps
@@ -184,15 +187,7 @@ public abstract class ObjectProfiler
 		return clsName;
 	}
 
-	// protected: .............................................................
-
-	// package: ...............................................................
-
-	static final String INPUT_OBJECT_NAME = "<INPUT>"; // root _node name
-
-	// private: ...............................................................
-
-	/*
+	/**
 	 * Internal class used to _cache class metadata information.
 	 */
 	private static final class ClassMetadata
@@ -201,15 +196,13 @@ public abstract class ObjectProfiler
 		public final int _shellSize; // class shell size
 		public final Field[] _refFields; // cached non-static fields (made accessible)
 
-		ClassMetadata(final int primitiveFieldCount, final int shellSize, final Field[] refFields)
+		public ClassMetadata(final int primitiveFieldCount, final int shellSize, final Field[] refFields)
 		{
 			_primitiveFieldCount = primitiveFieldCount;
 			_shellSize = shellSize;
 			_refFields = refFields;
 		}
-
-		// all fields are inclusive of superclasses:
-	} // _end of nested class
+	}
 
 	private static final class ClassAccessPrivilegedAction implements PrivilegedExceptionAction<Object>
 	{
@@ -219,14 +212,14 @@ public abstract class ObjectProfiler
 			return _cls.getDeclaredFields();
 		}
 
-		void setContext(final Class<?> cls)
+		public void setContext(final Class<?> cls)
 		{
 			_cls = cls;
 		}
 
 		private Class<?> _cls;
 
-	} // _end of nested class
+	}
 
 	private static final class FieldAccessPrivilegedAction implements PrivilegedExceptionAction<Object>
 	{
@@ -238,18 +231,19 @@ public abstract class ObjectProfiler
 			return null;
 		}
 
-		void setContext(final Field field)
+		public void setContext(final Field field)
 		{
 			_field = field;
 		}
 
 		private Field _field;
 
-	} // _end of nested class
+	}
 
 	private ObjectProfiler()
 	{
-	} // this class is not extendible
+		// prevent instance.
+	}
 
 	/*
 	 * The main worker method for sizeof() and sizedelta().
@@ -337,9 +331,8 @@ public abstract class ObjectProfiler
 		return result;
 	}
 
-	/*
-	 * Performs phase 1 of profile creation: bread-first traversal and _node
-	 * creation.
+	/**
+	 * Performs phase 1 of profile creation: bread-first traversal and node creation.
 	 */
 	private static ObjectProfileNode createProfileTree(final Object objParam, final IdentityHashMap<Object, ObjectProfileNode> visited, final Map /* Class->ClassMetadata */<Class<?>, ClassMetadata> metadataMap)
 	{
@@ -444,10 +437,9 @@ public abstract class ObjectProfiler
 		return root;
 	}
 
-	/*
-	 * Performs phase 2 of profile creation: totalling of _node sizes (via
-	 * non-recursive post-_order traversal of the tree created in phase 1)
-	 * and 'locking down' of profile _nodes into their most compact form.
+	/**
+	 * Performs phase 2 of profile creation: totalling of _node sizes (via non-recursive post-order traversal of the tree created in phase 1) and 'locking down'
+	 * of profile nodes into their most compact form.
 	 */
 	private static void finishProfileTree(final ObjectProfileNode nodeParam)
 	{
@@ -482,8 +474,8 @@ public abstract class ObjectProfiler
 		}
 	}
 
-	/*
-	 * A helper method for manipulating a class metadata _cache.
+	/**
+	 * A helper method for manipulating a class metadata cache.
 	 */
 	private static ClassMetadata getClassMetadata(final Class<?> cls, final Map /* Class->ClassMetadata */<Class<?>, ClassMetadata> metadataMap, final ClassAccessPrivilegedAction caAction, final FieldAccessPrivilegedAction faAction)
 	{
@@ -567,7 +559,7 @@ public abstract class ObjectProfiler
 		return result;
 	}
 
-	/*
+	/**
 	 * Computes the "shallow" size of an array instance.
 	 */
 	private static int sizeofArrayShell(final int length, final Class<?> componentType)
@@ -579,7 +571,7 @@ public abstract class ObjectProfiler
 		return OBJECT_SHELL_SIZE + INT_FIELD_SIZE + OBJREF_SIZE + length * slotSize;
 	}
 
-	/*
+	/**
 	 * Returns the JVM-specific size of a primitive type.
 	 */
 	private static int sizeofPrimitiveType(final Class<?> type)
@@ -611,8 +603,4 @@ public abstract class ObjectProfiler
 										throw new IllegalArgumentException("not primitive: " + type);
 	}
 
-	// class metadata _cache:
-	private static final Map<Class<?>, ClassMetadata> CLASS_METADATA_CACHE = new WeakHashMap<>(101);
-
-} // _end of class
-	// ----------------------------------------------------------------------------
+}

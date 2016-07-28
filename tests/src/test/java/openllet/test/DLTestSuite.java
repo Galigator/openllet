@@ -21,8 +21,8 @@ public class DLTestSuite extends TestSuite
 
 	class DLTestCase extends TestCase
 	{
-		File _name;
-		boolean _tbox;
+		private final File _name;
+		private final boolean _tbox;
 
 		DLTestCase(final File name, final boolean tbox)
 		{

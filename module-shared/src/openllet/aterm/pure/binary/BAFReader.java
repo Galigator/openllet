@@ -45,50 +45,51 @@ public class BAFReader
 	private static final int BAF_MAGIC = 0xBAF;
 	private static final int BAF_VERSION = 0x300;
 	private static final int HEADER_BITS = 32;
-	private final BitStream reader;
-	private int nrUniqueSymbols = -1;
-	private SymEntry[] symbols;
-	private final PureFactory factory;
-	public static boolean isDebugging = false;
+	private final BitStream _reader;
+	private int _nrUniqueSymbols = -1;
+	private SymEntry[] _symbols;
+	private final PureFactory _factory;
+	public static boolean _isDebugging = false;
+	private int _level = 0;
 
 	public BAFReader(final PureFactory factory, final InputStream inputStream)
 	{
-		this.factory = factory;
-		reader = new BitStream(inputStream);
+		_factory = factory;
+		_reader = new BitStream(inputStream);
 	}
 
 	public ATerm readFromBinaryFile(final boolean headerAlreadyRead) throws ParseError, IOException
 	{
 
-		if (!headerAlreadyRead && !isBinaryATerm(reader))
+		if (!headerAlreadyRead && !isBinaryATerm(_reader))
 			throw new ParseError("Input is not a BAF file");
 
-		final int val = reader.readInt();
+		final int val = _reader.readInt();
 
 		if (val != BAF_VERSION)
 			throw new ParseError("Wrong BAF version (wanted " + BAF_VERSION + ", got " + val + "), giving up");
 
-		nrUniqueSymbols = reader.readInt();
-		final int nrUniqueTerms = reader.readInt();
+		_nrUniqueSymbols = _reader.readInt();
+		final int nrUniqueTerms = _reader.readInt();
 
 		if (isDebugging())
 		{
-			debug("" + nrUniqueSymbols + " unique symbols");
+			debug("" + _nrUniqueSymbols + " unique symbols");
 			debug("" + nrUniqueTerms + " unique terms");
 		}
 
-		symbols = new SymEntry[nrUniqueSymbols];
+		_symbols = new SymEntry[_nrUniqueSymbols];
 
 		readAllSymbols();
 
-		final int i = reader.readInt();
+		final int i = _reader.readInt();
 
-		return readTerm(symbols[i]);
+		return readTerm(_symbols[i]);
 	}
 
 	private static boolean isDebugging()
 	{
-		return isDebugging;
+		return _isDebugging;
 	}
 
 	public static boolean isBinaryATerm(final BufferedInputStream in) throws IOException
@@ -119,29 +120,27 @@ public class BAFReader
 		_logger.info(s);
 	}
 
-	int level = 0;
-
 	private ATerm readTerm(final SymEntry e) throws ParseError, IOException
 	{
 		final int arity = e.arity;
 		final ATerm[] args = new ATerm[arity];
 
-		level++;
+		_level++;
 
 		if (isDebugging())
-			debug("readTerm()/" + level + " - " + e.fun.getName() + "[" + arity + "]");
+			debug("readTerm()/" + _level + " - " + e.fun.getName() + "[" + arity + "]");
 
 		for (int i = 0; i < arity; i++)
 		{
-			int val = reader.readBits(e.symWidth[i]);
+			int val = _reader.readBits(e.symWidth[i]);
 			if (isDebugging())
 			{
 				debug(" [" + i + "] - " + val);
 				debug(" [" + i + "] - " + e.topSyms[i].length);
 			}
-			final SymEntry argSym = symbols[e.topSyms[i][val]];
+			final SymEntry argSym = _symbols[e.topSyms[i][val]];
 
-			val = reader.readBits(argSym.termWidth);
+			val = _reader.readBits(argSym.termWidth);
 			if (argSym.terms[val] == null)
 			{
 				if (isDebugging())
@@ -160,16 +159,16 @@ public class BAFReader
 		{
 			case "<int>":
 			{
-				final int val = reader.readBits(HEADER_BITS);
-				level--;
-				return factory.makeInt(val);
+				final int val = _reader.readBits(HEADER_BITS);
+				_level--;
+				return _factory.makeInt(val);
 			}
 			case "<real>":
 			{
-				reader.flushBitsFromReader();
-				final String s = reader.readString();
-				level--;
-				return factory.makeReal(new Double(s).doubleValue());
+				_reader.flushBitsFromReader();
+				final String s = _reader.readString();
+				_level--;
+				return _factory.makeReal(new Double(s).doubleValue());
 			}
 			case "[_,_]":
 			{
@@ -179,13 +178,13 @@ public class BAFReader
 					for (final ATerm arg : args)
 						debug(" + " + arg.getClass());
 				}
-				level--;
+				_level--;
 				return ((ATermList) args[1]).insert(args[0]);
 			}
 			case "[]":
 			{
-				level--;
-				return factory.makeList();
+				_level--;
+				return _factory.makeList();
 			}
 			case "{_}":
 			{
@@ -193,7 +192,7 @@ public class BAFReader
 			}
 			case "<_>":
 			{
-				return factory.makePlaceholder(args[0]);
+				return _factory.makePlaceholder(args[0]);
 			}
 			default:
 			{
@@ -210,23 +209,23 @@ public class BAFReader
 			for (final ATerm arg : args)
 				debug("" + arg);
 		}
-		level--;
-		return factory.makeAppl(e.fun, args);
+		_level--;
+		return _factory.makeAppl(e.fun, args);
 	}
 
 	private void readAllSymbols() throws IOException
 	{
 
-		for (int i = 0; i < nrUniqueSymbols; i++)
+		for (int i = 0; i < _nrUniqueSymbols; i++)
 		{
 			final SymEntry e = new SymEntry();
-			symbols[i] = e;
+			_symbols[i] = e;
 
 			final AFun fun = readSymbol();
 			e.fun = fun;
 			final int arity = e.arity = fun.getArity();
 
-			int v = reader.readInt();
+			int v = _reader.readInt();
 			e.nrTerms = v;
 			e.termWidth = bitWidth(v);
 			// FIXME: original code is inconsistent at this point!
@@ -247,14 +246,14 @@ public class BAFReader
 			}
 			for (int j = 0; j < arity; j++)
 			{
-				v = reader.readInt();
+				v = _reader.readInt();
 				e.nrTopSyms[j] = v;
 				e.symWidth[j] = bitWidth(v);
 				e.topSyms[j] = new int[v];
 
 				for (int k = 0; k < e.nrTopSyms[j]; k++)
 				{
-					v = reader.readInt();
+					v = _reader.readInt();
 					e.topSyms[j][k] = v;
 				}
 			}
@@ -280,26 +279,25 @@ public class BAFReader
 
 	private AFun readSymbol() throws IOException
 	{
-		final String s = reader.readString();
-		final int arity = reader.readInt();
-		final int quoted = reader.readInt();
+		final String s = _reader.readString();
+		final int arity = _reader.readInt();
+		final int quoted = _reader.readInt();
 
 		if (isDebugging())
 			debug(s + " / " + arity + " / " + quoted);
 
-		return factory.makeAFun(s, arity, quoted != 0);
+		return _factory.makeAFun(s, arity, quoted != 0);
 	}
 
 	public static class BitStream
 	{
-
-		InputStream stream;
-		private int bitsInBuffer;
-		private int bitBuffer;
+		private final InputStream _stream;
+		private int _bitsInBuffer;
+		private int _bitBuffer;
 
 		public BitStream(final InputStream inputStream)
 		{
-			stream = inputStream;
+			_stream = inputStream;
 		}
 
 		public int readInt() throws IOException
@@ -337,7 +335,7 @@ public class BAFReader
 
 		private int readByte() throws IOException
 		{
-			final int c = stream.read();
+			final int c = _stream.read();
 			if (c == -1)
 				throw new EOFException();
 			return c;
@@ -350,7 +348,7 @@ public class BAFReader
 			int v = 0;
 			while (v < b.length)
 			{
-				v += stream.read(b, v, b.length - v);
+				v += _stream.read(b, v, b.length - v);
 			}
 			return new String(b);
 		}
@@ -362,18 +360,18 @@ public class BAFReader
 
 			for (int i = 0; i < nrBits; i++)
 			{
-				if (bitsInBuffer == 0)
+				if (_bitsInBuffer == 0)
 				{
 					final int v = readByte();
 					if (v == -1)
 						return -1;
-					bitBuffer = v;
-					bitsInBuffer = 8;
+					_bitBuffer = v;
+					_bitsInBuffer = 8;
 				}
-				val |= (((bitBuffer & 0x80) != 0) ? mask : 0);
+				val |= (((_bitBuffer & 0x80) != 0) ? mask : 0);
 				mask <<= 1;
-				bitBuffer <<= 1;
-				bitsInBuffer--;
+				_bitBuffer <<= 1;
+				_bitsInBuffer--;
 			}
 
 			return val;
@@ -381,7 +379,7 @@ public class BAFReader
 
 		public void flushBitsFromReader()
 		{
-			bitsInBuffer = 0;
+			_bitsInBuffer = 0;
 		}
 	}
 }

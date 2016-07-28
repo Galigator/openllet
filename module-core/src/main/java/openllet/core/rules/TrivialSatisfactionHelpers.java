@@ -68,8 +68,8 @@ public class TrivialSatisfactionHelpers
 
 	private abstract class BinaryBindingTester<R extends AtomObject, S extends AtomObject> implements BindingTester
 	{
-		R _arg1;
-		S _arg2;
+		public R _arg1;
+		public S _arg2;
 
 		public BinaryBindingTester(final R arg1, final S arg2)
 		{
@@ -165,8 +165,8 @@ public class TrivialSatisfactionHelpers
 
 		public FilterHelper(final BindingTester tester, final Collection<? extends AtomVariable> vars)
 		{
-			this._tester = tester;
-			this._vars = vars;
+			_tester = tester;
+			_vars = vars;
 		}
 
 		@Override
@@ -190,8 +190,8 @@ public class TrivialSatisfactionHelpers
 		@Override
 		public boolean selectNextBinding()
 		{
-			final boolean result = this._result;
-			this._result = false;
+			final boolean result = _result;
+			_result = false;
 			return result;
 		}
 
@@ -276,7 +276,7 @@ public class TrivialSatisfactionHelpers
 		public TestClass(final ATermAppl c, final AtomIObject arg)
 		{
 			super(arg);
-			this._c = c;
+			_c = c;
 		}
 
 		@Override
@@ -362,19 +362,19 @@ public class TrivialSatisfactionHelpers
 	 */
 	private abstract class TestProperty<S extends AtomObject> extends BinaryBindingTester<AtomIObject, S>
 	{
-		Role r;
+		public Role _role;
 
 		public TestProperty(final ATermAppl p, final AtomIObject arg1, final S arg2)
 		{
 			super(arg1, arg2);
-			r = _abox.getRole(p);
-			if (r == null)
+			_role = _abox.getRole(p);
+			if (_role == null)
 				throw new InternalReasonerException("Cannot retreive role!: " + p);
 		}
 
 		public DependencySet check(final Individual node1, final Node node2)
 		{
-			final EdgeList list = node1.getRNeighborEdges(r);
+			final EdgeList list = node1.getRNeighborEdges(_role);
 			for (int i = 0, n = list.size(); i < n; i++)
 			{
 				final Edge edge = list.edgeAt(i);
@@ -422,7 +422,7 @@ public class TrivialSatisfactionHelpers
 
 	private abstract class UnaryBindingTester<R extends AtomObject> implements BindingTester
 	{
-		R _arg;
+		public R _arg;
 
 		public UnaryBindingTester(final R arg)
 		{
@@ -439,7 +439,7 @@ public class TrivialSatisfactionHelpers
 
 	public TrivialSatisfactionHelpers(final ABox abox)
 	{
-		this._abox = abox;
+		_abox = abox;
 	}
 
 	public Collection<BindingHelper> getHelpers(final Rule rule)

@@ -5,7 +5,7 @@ package openllet.atom;
  */
 public class OpenError extends RuntimeException
 {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 3127335636382782538L;
 
 	/**
 	 * Instantiates a new exception.

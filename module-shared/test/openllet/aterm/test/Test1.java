@@ -61,7 +61,7 @@ public class Test1
 	{
 	}
 
-	void assertTrue(final boolean condition)
+	public void assertTrue(final boolean condition)
 	{
 		if (!condition) { throw new AssertionError("assertion failed."); }
 	}
