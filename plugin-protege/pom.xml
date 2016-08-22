@@ -9,10 +9,11 @@
         
 	<artifactId>openllet-protege</artifactId>
 	<name>Openllet :: Protege</name>
+   <description>Integrates the Openllet reasoner with Protege Desktop.</description>
 	<packaging>bundle</packaging>
    
 	<properties>
-		<protege.version>4.3.0</protege.version>
+		<protege.version>[4.3.0, 5)</protege.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -30,6 +31,11 @@
 			<artifactId>openllet-modularity</artifactId>
 			<version>[${project.version}]</version>
 		</dependency>
+      <dependency>
+         <groupId>${project.groupId}</groupId>
+         <artifactId>openllet-query</artifactId>
+         <version>[${project.version}]</version>
+      </dependency>
 		<dependency>
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>org.protege.common</artifactId>
@@ -52,43 +58,91 @@
 
    <build>
       <plugins>
+
+        <plugin>
+           <groupId>org.apache.maven.plugins</groupId>
+           <artifactId>maven-compiler-plugin</artifactId>
+           <version>3.5.1</version>
+           <configuration>
+              <source>1.8</source>
+              <target>1.8</target>
+           </configuration>
+        </plugin>
             <plugin>
-            <groupId>org.apache.felix</groupId>
-            <artifactId>maven-bundle-plugin</artifactId>
-            <version>3.2.0</version>
-            <extensions>true</extensions>
-            <configuration>
-               <instructions>
-                  <Bundle-ClassPath>.</Bundle-ClassPath>
-                  <Bundle-SymbolicName>${project.artifactId};singleton:=true</Bundle-SymbolicName>
-                  <Bundle-Vendor>Galigator</Bundle-Vendor>
-                  <Import-Package>
-                     org.protege.editor.core.*;version="${protege.version}",
-                     org.protege.editor.owl.*;version="${protege.version}",
-                     *
-                  </Import-Package>
-                  <Include-Resource>
-                        plugin.xml,
-                        {maven-resources},
-                        lib/openllet-owlapi-${project.version}.jar=../module-owlapi/target/openllet-owlapi-${project.version}.jar,
-                        lib/openllet-query-${project.version}.jar=../module-query/target/openllet-query-${project.version}.jar,
-                        lib/openllet-core-${project.version}.jar=../module-core/target/openllet-core-${project.version}.jar,
-                        lib/openllet-functions-${project.version}.jar=../module-shared/target/openllet-functions-${project.version}.jar,
-                        lib/openllet-modularity-${project.version}.jar=../module-modularity/target/openllet-modularity-${project.version}.jar
-                  </Include-Resource>
-                  <Private-Package>skeleton</Private-Package>
-                  <Bundle-Activator>org.protege.editor.core.plugin.DefaultPluginActivator</Bundle-Activator>
-               </instructions>
-               <executions>
-                  <execution>
-                     <id>bundle-manifest</id>
-                     <phase>install</phase>
-                     <goals>    
-                        <goal>manifest</goal>
-                     </goals>   
-                  </execution>
-               </executions>
-            </configuration>
+              <groupId>org.apache.felix</groupId>
+              <artifactId>maven-bundle-plugin</artifactId>
+              <version>3.2.0</version>
+              <extensions>true</extensions>
+              <configuration>
+                <instructions>
+                    <Bundle-ClassPath>.</Bundle-ClassPath>
+                    <Bundle-SymbolicName>${project.artifactId};singleton:=true</Bundle-SymbolicName>
+                    <Bundle-Vendor>Galigator</Bundle-Vendor>
+                    <Bundle-Name>${project.artifactId}</Bundle-Name>
+                    <Bundle-Activator>org.protege.editor.core.plugin.DefaultPluginActivator</Bundle-Activator>
+<!--
+                    <Import-Package>
+                      org.protege.editor.core.*;version="${protege.version}",
+                      org.protege.editor.owl.*;version="${protege.version}",
+                      *
+                    </Import-Package>
+                    <Include-Resource>
+                          plugin.xml,
+                          {maven-resources},
+                          lib/openllet-owlapi-${project.version}.jar=../module-owlapi/target/openllet-owlapi-${project.version}.jar,
+                          lib/openllet-query-${project.version}.jar=../module-query/target/openllet-query-${project.version}.jar,
+                          lib/openllet-core-${project.version}.jar=../module-core/target/openllet-core-${project.version}.jar,
+                          lib/openllet-functions-${project.version}.jar=../module-shared/target/openllet-functions-${project.version}.jar,
+                          lib/openllet-modularity-${project.version}.jar=../module-modularity/target/openllet-modularity-${project.version}.jar
+                    </Include-Resource>
+                    <Private-Package>skeleton</Private-Package>
+-->
+                 <Require-Bundle>org.eclipse.equinox.registry,
+                    org.eclipse.equinox.common,
+                    org.protege.common,
+                    org.protege.editor.core.application;bundle-version="4.3.0",
+                    org.protege.editor.owl;bundle-version="4.3.0",
+                    org.semanticweb.owl.owlapi;bundle-version="5.0.2"</Require-Bundle><!-- TODO : link version to parent pom.xml -->
+                 <Embed-Dependency>
+                    openllet*;inline=true;scope=compile|runtime|provided,
+                    jena-*;inline=false;scope=compile|runtime|provided,
+                    jgrapht-ext;inline=false;scope=compile|runtime|provided,
+                    slf4j*;inline=false;scope=compile|runtime|provided,
+                    jcl-over*;inline=false;scope=compile|runtime|provided,
+                    xml-apis;inline=false;scope=compile|runtime|provided,
+                    httpclient;inline=false;scope=compile|runtime|provided,
+                    antlr*;inline=false;scope=compile|runtime|provided,
+                    !sesame*,
+                    !org.apache.felix*,
+                    !jackson*,
+                    !trove4j*,
+                    !org.eclipse*,
+                    !org.protege*,
+                    !protege*,
+                    !owlapi*,
+                    !aopalliance*,
+                    !javax*,
+                    !json*,
+                    !semargl*,
+                    !guava*,
+                    !guice*,
+                    !jsr305
+                 </Embed-Dependency>
+                 <Embed-Transitive>true</Embed-Transitive>
+                 <Embed-Directory>lib</Embed-Directory>
+                 <Export-Package>openllet.*</Export-Package>
+                 <Import-Package>org.protege.*, javax.xml.bind, org.w3c.dom.*,org.semanticweb.*</Import-Package>
+                </instructions>
+                <executions>
+                    <execution>
+                      <id>bundle-manifest</id>
+                      <phase>install</phase>
+                      <goals>    
+                          <goal>manifest</goal>
+                      </goals>   
+                    </execution>
+                </executions>
+              </configuration>
             </plugin>
             <plugin>
               <artifactId>maven-eclipse-plugin</artifactId>
