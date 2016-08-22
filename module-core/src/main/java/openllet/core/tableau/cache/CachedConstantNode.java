@@ -40,7 +40,7 @@ public class CachedConstantNode implements CachedNode
 
 	private CachedConstantNode(final CachedNodeType type)
 	{
-		this._type = type;
+		_type = type;
 	}
 
 	/**

@@ -46,7 +46,7 @@ public class CachedConceptNode implements CachedNode
 	 * @param depends
 	 * @param node
 	 */
-	public CachedConceptNode(final ATermAppl name, Individual nodeParam)
+	public CachedConceptNode(final ATermAppl name, final Individual nodeParam)
 	{
 		_name = name;
 		Individual node = nodeParam;

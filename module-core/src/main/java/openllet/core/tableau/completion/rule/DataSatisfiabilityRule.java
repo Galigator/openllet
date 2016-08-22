@@ -27,12 +27,6 @@ import openllet.core.tableau.completion.queue.NodeSelector;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2009
  * </p>
  * <p>

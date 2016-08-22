@@ -95,7 +95,7 @@ public interface RBox extends Logging
 
 		if (role == null)
 		{
-			role = new Role(r, PropertyType.UNTYPED);
+			role = new RoleImpl(r, PropertyType.UNTYPED);
 			getRoles().put(r, role);
 		}
 
@@ -172,14 +172,14 @@ public interface RBox extends Logging
 			default:
 				if (role == null)
 				{
-					role = new Role(r, PropertyType.OBJECT);
+					role = new RoleImpl(r, PropertyType.OBJECT);
 					getRoles().put(r, role);
 				}
 				else
 					role.setType(PropertyType.OBJECT);
 
 				final ATermAppl invR = ATermUtils.makeInv(r);
-				final Role invRole = new Role(invR, PropertyType.OBJECT);
+				final Role invRole = new RoleImpl(invR, PropertyType.OBJECT);
 				getRoles().put(invR, invRole);
 
 				role.setInverse(invRole);
@@ -202,7 +202,7 @@ public interface RBox extends Logging
 
 		if (role == null)
 		{
-			role = new Role(r, PropertyType.DATATYPE);
+			role = new RoleImpl(r, PropertyType.DATATYPE);
 			getRoles().put(r, role);
 
 			addSubRole(ATermUtils.BOTTOM_DATA_PROPERTY, role.getName(), DependencySet.INDEPENDENT);
@@ -232,7 +232,7 @@ public interface RBox extends Logging
 
 		if (role == null)
 		{
-			role = new Role(r, PropertyType.ANNOTATION);
+			role = new RoleImpl(r, PropertyType.ANNOTATION);
 			getRoles().put(r, role);
 		}
 		else
@@ -571,7 +571,7 @@ public interface RBox extends Logging
 				}
 
 				// create a duplicate array to avoid ConcurrentModificationException
-				for (final Role disjointR : s.getDisjointRoles().toArray(new Role[0]))
+				for (final Role disjointR : s.getDisjointRoles().toArray(new RoleImpl[0]))
 				{
 					final DependencySet ds = OpenlletOptions.USE_TRACING ? supDS.union(s.getExplainDisjointRole(disjointR), true) : DependencySet.INDEPENDENT;
 					r.addDisjointRole(disjointR, ds);

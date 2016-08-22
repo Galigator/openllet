@@ -13,8 +13,8 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.aterm.ATermList;
-import openllet.core.boxes.rbox.RBox;
 import openllet.core.boxes.rbox.Role;
+import openllet.core.boxes.rbox.RBox;
 import openllet.core.utils.Pair;
 import openllet.core.utils.fsm.State;
 import openllet.core.utils.fsm.Transition;
@@ -32,7 +32,7 @@ public class FSMBuilder
 
 	public FSMBuilder(final RBox rbox)
 	{
-		this._rbox = rbox;
+		_rbox = rbox;
 	}
 
 	public boolean build(final Role s)
@@ -178,7 +178,7 @@ public class FSMBuilder
 		return true;
 	}
 
-	private void addRoleChainTransition(final TransitionGraph<Role> tg, final State<Role> initialState, final State<Role> finalState, ATermList list, final int length)
+	private void addRoleChainTransition(final TransitionGraph<Role> tg, final State<Role> initialState, final State<Role> finalState, final ATermList list, final int length)
 	{
 		State<Role> prev = initialState;
 		ATermList chain = list;

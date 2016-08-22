@@ -57,6 +57,7 @@ import openllet.core.KnowledgeBase;
 import openllet.core.OpenlletOptions;
 import openllet.core.PropertyType;
 import openllet.core.boxes.rbox.Role;
+import openllet.core.boxes.rbox.RoleImpl;
 import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.exceptions.UnsupportedFeatureException;
 import openllet.core.rules.model.AtomDConstant;
@@ -1965,7 +1966,7 @@ public class DefaultGraphLoader implements GraphLoader
 		_logger.fine("processUntypedResource");
 
 		// The copy into an array is here to avoid an ConcurrentModificationException
-		for (final Role r : _kb.getRBox().getRoles().values().toArray(new Role[0]))
+		for (final Role r : _kb.getRBox().getRoles().values().toArray(new RoleImpl[0]))
 		{
 			final SimpleProperty why = _simpleProperties.get(r.getName());
 			if (why != null)

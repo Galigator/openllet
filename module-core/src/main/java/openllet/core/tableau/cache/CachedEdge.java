@@ -37,9 +37,9 @@ public abstract class CachedEdge implements Edge
 
 	public CachedEdge(final Role role, final ATermAppl neighbor, final DependencySet ds)
 	{
-		this._role = role;
-		this._neighbor = neighbor;
-		this._depends = ds.cache();
+		_role = role;
+		_neighbor = neighbor;
+		_depends = ds.cache();
 	}
 
 	/**

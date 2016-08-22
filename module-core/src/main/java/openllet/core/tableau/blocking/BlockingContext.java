@@ -27,26 +27,27 @@ public class BlockingContext
 
 	public BlockingContext(final Individual blocked)
 	{
-		this._blocked = blocked;
-		this._blocker = blocked;
+		_blocked = blocked;
+		_blocker = blocked;
 	}
 
 	/**
-	 * Sets the _blocker to the parent of _current _blocker and checks if if the new _blocker candidate is allowed to block. Root _nodes are not allowed to block.
+	 * Sets the _blocker to the parent of _current _blocker and checks if if the new _blocker candidate is allowed to block. Root _nodes are not allowed to
+	 * block.
 	 *
 	 * @return <code>true</code> if the new _blocker candidate is allowed to block
 	 */
 	public boolean moveBlockerUp()
 	{
-		this._blocker = _blocker.getParent();
-		this._rolesToBlocked = null;
+		_blocker = _blocker.getParent();
+		_rolesToBlocked = null;
 
 		return !_blocker.isRoot();
 	}
 
 	/**
-	 * Sets the _blocker to the specified child of the _current _blocker and returns if the new _blocker candidate is allowed to block. The child is not allowed to
-	 * block if it is a literal, or a root, or pruned/merged, or is _blocked itself.
+	 * Sets the _blocker to the specified child of the _current _blocker and returns if the new _blocker candidate is allowed to block. The child is not allowed
+	 * to block if it is a literal, or a root, or pruned/merged, or is _blocked itself.
 	 *
 	 * @param child child of the _current _blocker
 	 * @return <code>true</code> if the new _blocker candidate is allowed to block
@@ -56,8 +57,8 @@ public class BlockingContext
 		if (child.isLiteral() || child.isRoot() || child.isPruned() || child.isMerged() || ((Individual) child).isBlocked() || child.equals(_blocker))
 			return false;
 
-		this._blocker = (Individual) child;
-		this._rolesToBlocked = null;
+		_blocker = (Individual) child;
+		_rolesToBlocked = null;
 
 		return true;
 	}

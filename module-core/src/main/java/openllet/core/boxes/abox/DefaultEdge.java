@@ -47,17 +47,17 @@ public class DefaultEdge implements Edge
 
 	public DefaultEdge(final Role name, final Individual from, final Node to)
 	{
-		this._role = name;
-		this._from = from;
-		this._to = to;
+		_role = name;
+		_from = from;
+		_to = to;
 	}
 
 	public DefaultEdge(final Role name, final Individual from, final Node to, final DependencySet d)
 	{
-		this._role = name;
-		this._from = from;
-		this._to = to;
-		this._depends = d;
+		_role = name;
+		_from = from;
+		_to = to;
+		_depends = d;
 	}
 
 	/**
