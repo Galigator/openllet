@@ -17,6 +17,7 @@ import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 import org.semanticweb.owlapi.model.parameters.ChangeApplied;
 
 public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, FacetOntologyOWL, FacetReasonerOWL
@@ -405,7 +406,7 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	 * @return all objects
 	 * @since 2.5.1
 	 */
-	default Stream<OWLNamedIndividual> getObjects(final OWLNamedIndividual subject, final OWLObjectProperty property)
+	default Stream<OWLNamedIndividual> getObjects(final OWLNamedIndividual subject, final OWLObjectPropertyExpression property)
 	{
 		return getReasoner().getObjectPropertyValues(subject, property).entities();
 	}
