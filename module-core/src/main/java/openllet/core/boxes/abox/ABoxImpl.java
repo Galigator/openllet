@@ -53,11 +53,10 @@ import openllet.atom.OpenError;
 import openllet.core.DependencySet;
 import openllet.core.IndividualIterator;
 import openllet.core.KnowledgeBase;
-import openllet.core.KnowledgeBaseImpl;
 import openllet.core.NodeMerge;
 import openllet.core.OpenlletOptions;
-import openllet.core.boxes.rbox.Role;
 import openllet.core.boxes.rbox.RBox;
+import openllet.core.boxes.rbox.Role;
 import openllet.core.boxes.tbox.TBox;
 import openllet.core.datatypes.DatatypeReasoner;
 import openllet.core.datatypes.DatatypeReasonerImpl;
@@ -249,7 +248,7 @@ public class ABoxImpl implements ABox
 		_rulesNotApplied = rulesNotApplied;
 	}
 
-	public ABoxImpl(final KnowledgeBaseImpl kb)
+	public ABoxImpl(final KnowledgeBase kb)
 	{
 		_kb = kb;
 		_nodes = new HashMap<>();
