@@ -9,7 +9,7 @@
 #
 # run ./openllet.sh for the usage
 
-if [ ! -d "cli/target/openlletcli/bin" ]; then
+if [ ! -d "tools-cli/target/openlletcli/bin" ]; then
 mvn -quiet clean install -DskipTests
 fi
 
