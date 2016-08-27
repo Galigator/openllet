@@ -60,6 +60,7 @@ import org.junit.runners.Suite.SuiteClasses;
 		DLTestSuite.class, //
 		ClassificationTestSuite.class, //
 		ModularityTestSuite.class, //
+		LiteralComparisonTest.class, //
 		// CLI Tests must go last, since some of them muck with PelletOptions!
 		openllet.test.CLITests.class })
 public class PelletTestSuite

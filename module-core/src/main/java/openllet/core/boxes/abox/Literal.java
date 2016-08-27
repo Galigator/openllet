@@ -47,6 +47,7 @@ import openllet.core.DependencySet;
 import openllet.core.NodeMerge;
 import openllet.core.OpenlletOptions;
 import openllet.core.datatypes.DatatypeReasoner;
+import openllet.core.datatypes.OWLRealUtils;
 import openllet.core.datatypes.exceptions.DatatypeReasonerException;
 import openllet.core.datatypes.exceptions.InvalidLiteralException;
 import openllet.core.datatypes.exceptions.UnrecognizedDatatypeException;
@@ -148,13 +149,13 @@ public class Literal extends Node
 	@Override
 	public boolean isNominal()
 	{
-		return (_value != null);
+		return _value != null;
 	}
 
 	@Override
 	public boolean isBlockable()
 	{
-		return (_value == null);
+		return _value == null;
 	}
 
 	@Override
@@ -177,9 +178,24 @@ public class Literal extends Node
 
 		final Literal literal = (Literal) node;
 		if (_hasValue && literal._hasValue)
-			return _value.getClass().equals(literal._value.getClass()) && !_value.equals(literal._value);
+		{
+			final Class<? extends Object> thisvalueClass = _value.getClass();
+			final Class<? extends Object> thatValueClass = literal._value.getClass();
+
+			// XXX due to simplification of numeric types in openllet a special case is needed to compare values of numeric literals
+			if (isAcceptableNumber(thisvalueClass) && isAcceptableNumber(thatValueClass))
+				return OWLRealUtils.compare((Number) _value, (Number) literal._value) != 0;
+			else
+				return thisvalueClass.equals(thatValueClass) && !_value.equals(literal._value);
+		}
 
 		return false;
+	}
+
+	@SuppressWarnings("unchecked")
+	private static boolean isAcceptableNumber(final Class<? extends Object> cls)
+	{
+		return OWLRealUtils.acceptable((Class<? extends Number>) cls);
 	}
 
 	@Override
