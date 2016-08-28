@@ -29,6 +29,7 @@
 package openllet.aterm.pure;
 
 import java.util.List;
+
 import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
@@ -39,20 +40,9 @@ import openllet.shared.hash.SharedObject;
 
 public class ATermApplImpl extends ATermImpl implements ATermAppl
 {
-	private AFun _fun;
+	private final AFun _fun;
 
-	private ATerm[] _args;
-
-	/**
-	 * depricated Use the new constructor instead.
-	 *
-	 * @param factory x
-	 */
-	@Deprecated
-	protected ATermApplImpl(final PureFactory factory)
-	{
-		super(factory);
-	}
+	private final ATerm[] _args;
 
 	protected ATermApplImpl(final PureFactory factory, final ATermList annos, final AFun fun, final ATerm[] i_args)
 	{
@@ -68,38 +58,6 @@ public class ATermApplImpl extends ATermImpl implements ATermAppl
 	public int getType()
 	{
 		return ATerm.APPL;
-	}
-
-	/**
-	 * depricated Use the new constructor instead.
-	 *
-	 * @param hashCode x
-	 * @param annos x
-	 * @param _fun x
-	 * @param i_args x
-	 */
-	protected void init(final int hashCode, final ATermList annos, final AFun fun, final ATerm[] i_args)
-	{
-		super.init(hashCode, annos);
-		_fun = fun;
-		_args = new ATerm[i_args.length];
-
-		System.arraycopy(i_args, 0, _args, 0, _args.length);
-	}
-
-	/**
-	 * depricated Use the new constructor instead.
-	 *
-	 * @param annos x
-	 * @param _fun x
-	 * @param i_args x
-	 */
-	protected void initHashCode(final ATermList annos, final AFun fun, final ATerm[] i_args)
-	{
-		_fun = fun;
-		_args = i_args;
-		internSetAnnotations(annos);
-		setHashCode(hashFunction());
 	}
 
 	@Override
@@ -130,9 +88,8 @@ public class ATermApplImpl extends ATermImpl implements ATermAppl
 			if (peer.getAFun().equals(_fun))
 			{
 				for (int i = 0; i < _args.length; i++)
-				{
-					if (!peer.getArgument(i).equals(_args[i])) { return false; }
-				}
+					if (!peer.getArgument(i).equals(_args[i]))
+						return false;
 				return peer.getAnnotations().equals(getAnnotations());
 			}
 		}
@@ -145,7 +102,8 @@ public class ATermApplImpl extends ATermImpl implements ATermAppl
 		if (pattern.getType() == APPL)
 		{
 			final ATermAppl appl = (ATermAppl) pattern;
-			if (_fun.equals(appl.getAFun())) { return matchArguments(appl.getArgumentArray(), list); }
+			if (_fun.equals(appl.getAFun()))
+				return matchArguments(appl.getArgumentArray(), list);
 			return false;
 		}
 
@@ -181,13 +139,11 @@ public class ATermApplImpl extends ATermImpl implements ATermAppl
 						}
 						else
 							if (afun.getName().equals("id") && !afun.isQuoted())
-							{
 								if (!_fun.isQuoted())
 								{
 									list.add(_fun.getName());
 									return matchArguments(appl.getArgumentArray(), list);
 								}
-							}
 			}
 		}
 
@@ -248,9 +204,7 @@ public class ATermApplImpl extends ATermImpl implements ATermAppl
 		ATermList result = getPureFactory().getEmpty();
 
 		for (int i = _args.length - 1; i >= 0; i--)
-		{
 			result = result.insert(_args[i]);
-		}
 
 		return result;
 	}
@@ -293,9 +247,7 @@ public class ATermApplImpl extends ATermImpl implements ATermAppl
 	{
 		final ATerm[] newargs = new ATerm[_args.length];
 		for (int i = 0; i < _args.length; i++)
-		{
 			newargs[i] = _args[i].make(arguments);
-		}
 
 		final PureFactory pf = getPureFactory();
 		final ATermList empty = pf.getEmpty();
@@ -342,211 +294,54 @@ public class ATermApplImpl extends ATermImpl implements ATermAppl
 		return setArgument(t, index);
 	}
 
-	private Object[] serialize()
-	{
-		final int arity = getArity();
-		final Object[] o = new Object[arity + 2];
-		for (int i = 0; i < arity; i++)
-		{
-			o[i] = getArgument(i);
-		}
-		o[arity] = getAnnotations();
-		o[arity + 1] = getAFun();
-		return o;
-	}
-
 	@SuppressWarnings({ "incomplete-switch", "fallthrough" })
 	protected int hashFunction()
 	{
-		final int initval = 0; /* the previous hash value */
-		int a, b, c, len;
-
-		/* Set up the internal state */
-		len = getArity();
+		final int len = getArity();
+		int a, b;
 		a = b = 0x9e3779b9; /* the golden ratio; an arbitrary value */
-		c = initval; /* the previous hash value */
-		/*---------------------------------------- handle most of the key */
-		if (len >= 12) { return staticDoobs_hashFuntion(serialize());
-		// return PureFactory.doobs_hashFunction(serialize());
-		}
+		int c = len;
 
-		/*------------------------------------- handle the last 11 bytes */
-		c += len;
-		c += (getAnnotations().hashCode() << 8);
-		b += (getAFun().hashCode() << 8);
+		c += getAnnotations().hashCode() << 8;
+		b += getAFun().hashCode() << 8;
 
 		switch (len)
 		{
-			case 11:
-				c += (getArgument(10).hashCode() << 24);
-			case 10:
-				c += (getArgument(9).hashCode() << 16);
-			case 9:
-				c += (getArgument(8).hashCode() << 8);
-			case 8:
-				b += (getArgument(7).hashCode() << 24);
-			case 7:
-				b += (getArgument(6).hashCode() << 16);
-			case 6:
-				b += (getArgument(5).hashCode() << 8);
-			case 5:
-				b += (getArgument(4).hashCode());
-			case 4:
-				a += (getArgument(3).hashCode() << 24);
 			case 3:
-				a += (getArgument(2).hashCode() << 16);
+				a += getArgument(2).hashCode() << 16;
 			case 2:
-				a += (getArgument(1).hashCode() << 8);
+				a += getArgument(1).hashCode() << 8;
 			case 1:
-				a += (getArgument(0).hashCode());
-				/* case 0: nothing left to add */
+				a += getArgument(0).hashCode();
 		}
 		a -= b;
 		a -= c;
-		a ^= (c >> 13);
+		a ^= c >> 13;
 		b -= c;
 		b -= a;
-		b ^= (a << 8);
+		b ^= a << 8;
 		c -= a;
 		c -= b;
-		c ^= (b >> 13);
+		c ^= b >> 13;
 		a -= b;
 		a -= c;
-		a ^= (c >> 12);
+		a ^= c >> 12;
 		b -= c;
 		b -= a;
-		b ^= (a << 16);
+		b ^= a << 16;
 		c -= a;
 		c -= b;
-		c ^= (b >> 5);
+		c ^= b >> 5;
 		a -= b;
 		a -= c;
-		a ^= (c >> 3);
+		a ^= c >> 3;
 		b -= c;
 		b -= a;
-		b ^= (a << 10);
+		b ^= a << 10;
 		c -= a;
 		c -= b;
-		c ^= (b >> 15);
+		c ^= b >> 15;
 
-		/*-------------------------------------------- report the result */
 		return c;
 	}
-
-	@SuppressWarnings({ "incomplete-switch", "fallthrough" })
-	static private int staticDoobs_hashFuntion(final Object[] o)
-	{
-		// System.out.println("static doobs_hashFuntion");
-
-		final int initval = 0; /* the previous hash value */
-		int a, b, c, len;
-
-		/* Set up the internal state */
-		len = o.length;
-		a = b = 0x9e3779b9; /* the golden ratio; an arbitrary value */
-		c = initval; /* the previous hash value */
-
-		/*---------------------------------------- handle most of the key */
-		int k = 0;
-		while (len >= 12)
-		{
-			a += (o[k + 0].hashCode() + (o[k + 1].hashCode() << 8) + (o[k + 2].hashCode() << 16) + (o[k + 3].hashCode() << 24));
-			b += (o[k + 4].hashCode() + (o[k + 5].hashCode() << 8) + (o[k + 6].hashCode() << 16) + (o[k + 7].hashCode() << 24));
-			c += (o[k + 8].hashCode() + (o[k + 9].hashCode() << 8) + (o[k + 10].hashCode() << 16) + (o[k + 11].hashCode() << 24));
-			// mix(a,b,c);
-			a -= b;
-			a -= c;
-			a ^= (c >> 13);
-			b -= c;
-			b -= a;
-			b ^= (a << 8);
-			c -= a;
-			c -= b;
-			c ^= (b >> 13);
-			a -= b;
-			a -= c;
-			a ^= (c >> 12);
-			b -= c;
-			b -= a;
-			b ^= (a << 16);
-			c -= a;
-			c -= b;
-			c ^= (b >> 5);
-			a -= b;
-			a -= c;
-			a ^= (c >> 3);
-			b -= c;
-			b -= a;
-			b ^= (a << 10);
-			c -= a;
-			c -= b;
-			c ^= (b >> 15);
-
-			k += 12;
-			len -= 12;
-		}
-
-		/*------------------------------------- handle the last 11 bytes */
-		c += o.length;
-		switch (len)
-		/* all the case statements fall through */
-		{
-			case 11:
-				c += (o[k + 10].hashCode() << 24);
-			case 10:
-				c += (o[k + 9].hashCode() << 16);
-			case 9:
-				c += (o[k + 8].hashCode() << 8);
-				/* the first byte of c is reserved for the length */
-			case 8:
-				b += (o[k + 7].hashCode() << 24);
-			case 7:
-				b += (o[k + 6].hashCode() << 16);
-			case 6:
-				b += (o[k + 5].hashCode() << 8);
-			case 5:
-				b += o[k + 4].hashCode();
-			case 4:
-				a += (o[k + 3].hashCode() << 24);
-			case 3:
-				a += (o[k + 2].hashCode() << 16);
-			case 2:
-				a += (o[k + 1].hashCode() << 8);
-			case 1:
-				a += o[k + 0].hashCode();
-				/* case 0: nothing left to add */
-		}
-		// mix(a,b,c);
-		a -= b;
-		a -= c;
-		a ^= (c >> 13);
-		b -= c;
-		b -= a;
-		b ^= (a << 8);
-		c -= a;
-		c -= b;
-		c ^= (b >> 13);
-		a -= b;
-		a -= c;
-		a ^= (c >> 12);
-		b -= c;
-		b -= a;
-		b ^= (a << 16);
-		c -= a;
-		c -= b;
-		c ^= (b >> 5);
-		a -= b;
-		a -= c;
-		a ^= (c >> 3);
-		b -= c;
-		b -= a;
-		b ^= (a << 10);
-		c -= a;
-		c -= b;
-		c ^= (b >> 15);
-
-		/*-------------------------------------------- report the result */
-		return c;
-	}
-
 }

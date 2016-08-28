@@ -29,6 +29,7 @@
 package openllet.aterm.pure;
 
 import java.io.IOException;
+
 import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermList;
@@ -46,7 +47,7 @@ public class AFunImpl extends ATermImpl implements AFun
 
 	/**
 	 * depricated Use the new constructor instead.
-	 * 
+	 *
 	 * @param _factory x
 	 */
 	protected AFunImpl(final PureFactory factory)
@@ -58,16 +59,16 @@ public class AFunImpl extends ATermImpl implements AFun
 	{
 		super(factory, null);
 
-		this._name = name.intern();
-		this._arity = arity;
-		this._isQuoted = isQuoted;
+		_name = name.intern();
+		_arity = arity;
+		_isQuoted = isQuoted;
 
 		setHashCode(hashFunction());
 	}
 
 	/**
 	 * depricated Use the new constructor instead.
-	 * 
+	 *
 	 * @param hashCode x
 	 * @param _name x
 	 * @param _arity x
@@ -77,23 +78,23 @@ public class AFunImpl extends ATermImpl implements AFun
 	{
 		super.init(hashCode, null);
 
-		this._name = name.intern();
-		this._arity = arity;
-		this._isQuoted = isQuoted;
+		_name = name.intern();
+		_arity = arity;
+		_isQuoted = isQuoted;
 	}
 
 	/**
 	 * depricated Use the new constructor instead.
-	 * 
+	 *
 	 * @param _name x
 	 * @param _arity x
 	 * @param _isQuoted x
 	 */
 	protected void initHashCode(final String name, final int arity, final boolean isQuoted)
 	{
-		this._name = name.intern();
-		this._arity = arity;
-		this._isQuoted = isQuoted;
+		_name = name.intern();
+		_arity = arity;
+		_isQuoted = isQuoted;
 		setHashCode(hashFunction());
 	}
 
@@ -248,17 +249,15 @@ public class AFunImpl extends ATermImpl implements AFun
 
 				default:
 					if (Character.isLetterOrDigit(c))
-					{
 						writer.write(c);
-					}
 					else
 					{
 						writer.write('\\');
-						writer.write(('0' + c / 64));
+						writer.write('0' + c / 64);
 						c = (char) (c % 64);
-						writer.write(('0' + c / 8));
+						writer.write('0' + c / 8);
 						c = (char) (c % 8);
-						writer.write(('0' + c));
+						writer.write('0' + c);
 
 						bytesWritten += 3;
 					}
@@ -280,9 +279,7 @@ public class AFunImpl extends ATermImpl implements AFun
 		final StringBuilder result = new StringBuilder(_name.length());
 
 		if (_isQuoted)
-		{
 			result.append('"');
-		}
 
 		for (int i = 0; i < _name.length(); i++)
 		{
@@ -356,9 +353,7 @@ public class AFunImpl extends ATermImpl implements AFun
 
 				default:
 					if (Character.isLetterOrDigit(c))
-					{
 						result.append(c);
-					}
 					else
 					{
 						result.append('\\');
@@ -372,9 +367,7 @@ public class AFunImpl extends ATermImpl implements AFun
 		}
 
 		if (_isQuoted)
-		{
 			result.append('"');
-		}
 
 		return result.toString();
 	}
@@ -393,65 +386,65 @@ public class AFunImpl extends ATermImpl implements AFun
 		a = b = 0x9e3779b9; /* the golden ratio; an arbitrary value */
 		/*------------------------------------- handle the last 11 bytes */
 		final int len = _name.length();
-		if (len >= 12) { return hashFunction2(); }
-		c = (_isQuoted) ? 7 * _arity + 1 : _arity + 1;
+		if (len >= 12)
+			return hashFunction2();
+		c = _isQuoted ? 7 * _arity + 1 : _arity + 1;
 		c += len;
 		switch (len)
 		{
 			case 11:
-				c += (_name.charAt(10) << 24);
+				c += _name.charAt(10) << 24;
 			case 10:
-				c += (_name.charAt(9) << 16);
+				c += _name.charAt(9) << 16;
 			case 9:
-				c += (_name.charAt(8) << 8);
+				c += _name.charAt(8) << 8;
 				/* the first byte of c is reserved for the length */
 			case 8:
-				b += (_name.charAt(7) << 24);
+				b += _name.charAt(7) << 24;
 			case 7:
-				b += (_name.charAt(6) << 16);
+				b += _name.charAt(6) << 16;
 			case 6:
-				b += (_name.charAt(5) << 8);
+				b += _name.charAt(5) << 8;
 			case 5:
 				b += _name.charAt(4);
 			case 4:
-				a += (_name.charAt(3) << 24);
+				a += _name.charAt(3) << 24;
 			case 3:
-				a += (_name.charAt(2) << 16);
+				a += _name.charAt(2) << 16;
 			case 2:
-				a += (_name.charAt(1) << 8);
+				a += _name.charAt(1) << 8;
 			case 1:
 				a += _name.charAt(0);
 				/* case 0: nothing left to add */
 		}
-		// mix(a,b,c);
 
 		a -= b;
 		a -= c;
-		a ^= (c >> 13);
+		a ^= c >> 13;
 		b -= c;
 		b -= a;
-		b ^= (a << 8);
+		b ^= a << 8;
 		c -= a;
 		c -= b;
-		c ^= (b >> 13);
+		c ^= b >> 13;
 		a -= b;
 		a -= c;
-		a ^= (c >> 12);
+		a ^= c >> 12;
 		b -= c;
 		b -= a;
-		b ^= (a << 16);
+		b ^= a << 16;
 		c -= a;
 		c -= b;
-		c ^= (b >> 5);
+		c ^= b >> 5;
 		a -= b;
 		a -= c;
-		a ^= (c >> 3);
+		a ^= c >> 3;
 		b -= c;
 		b -= a;
-		b ^= (a << 10);
+		b ^= a << 10;
 		c -= a;
 		c -= b;
-		c ^= (b >> 15);
+		c ^= b >> 15;
 
 		return c;
 	}
@@ -469,43 +462,43 @@ public class AFunImpl extends ATermImpl implements AFun
 		/* Set up the internal state */
 		int len = count;
 		a = b = 0x9e3779b9; /* the golden ratio; an arbitrary value */
-		c = (_isQuoted) ? 7 * (_arity + 1) : _arity + 1; // to avoid collison
+		c = _isQuoted ? 7 * (_arity + 1) : _arity + 1; // to avoid collison
 		/*------------------------------------- handle the last 11 bytes */
 		int k = offset;
 
 		while (len >= 12)
 		{
-			a += (source[k + 0] + (source[k + 1] << 8) + (source[k + 2] << 16) + (source[k + 3] << 24));
-			b += (source[k + 4] + (source[k + 5] << 8) + (source[k + 6] << 16) + (source[k + 7] << 24));
-			c += (source[k + 8] + (source[k + 9] << 8) + (source[k + 10] << 16) + (source[k + 11] << 24));
+			a += source[k + 0] + (source[k + 1] << 8) + (source[k + 2] << 16) + (source[k + 3] << 24);
+			b += source[k + 4] + (source[k + 5] << 8) + (source[k + 6] << 16) + (source[k + 7] << 24);
+			c += source[k + 8] + (source[k + 9] << 8) + (source[k + 10] << 16) + (source[k + 11] << 24);
 			// mix(a,b,c);
 			a -= b;
 			a -= c;
-			a ^= (c >> 13);
+			a ^= c >> 13;
 			b -= c;
 			b -= a;
-			b ^= (a << 8);
+			b ^= a << 8;
 			c -= a;
 			c -= b;
-			c ^= (b >> 13);
+			c ^= b >> 13;
 			a -= b;
 			a -= c;
-			a ^= (c >> 12);
+			a ^= c >> 12;
 			b -= c;
 			b -= a;
-			b ^= (a << 16);
+			b ^= a << 16;
 			c -= a;
 			c -= b;
-			c ^= (b >> 5);
+			c ^= b >> 5;
 			a -= b;
 			a -= c;
-			a ^= (c >> 3);
+			a ^= c >> 3;
 			b -= c;
 			b -= a;
-			b ^= (a << 10);
+			b ^= a << 10;
 			c -= a;
 			c -= b;
-			c ^= (b >> 15);
+			c ^= b >> 15;
 
 			k += 12;
 			len -= 12;
@@ -515,60 +508,58 @@ public class AFunImpl extends ATermImpl implements AFun
 		switch (len)
 		{
 			case 11:
-				c += (source[k + 10] << 24);
+				c += source[k + 10] << 24;
 			case 10:
-				c += (source[k + 9] << 16);
+				c += source[k + 9] << 16;
 			case 9:
-				c += (source[k + 8] << 8);
+				c += source[k + 8] << 8;
 				/* the first byte of c is reserved for the length */
 			case 8:
-				b += (source[k + 7] << 24);
+				b += source[k + 7] << 24;
 			case 7:
-				b += (source[k + 6] << 16);
+				b += source[k + 6] << 16;
 			case 6:
-				b += (source[k + 5] << 8);
+				b += source[k + 5] << 8;
 			case 5:
 				b += source[k + 4];
 			case 4:
-				a += (source[k + 3] << 24);
+				a += source[k + 3] << 24;
 			case 3:
-				a += (source[k + 2] << 16);
+				a += source[k + 2] << 16;
 			case 2:
-				a += (source[k + 1] << 8);
+				a += source[k + 1] << 8;
 			case 1:
 				a += source[k + 0];
 				/* case 0: nothing left to add */
 		}
-		// mix(a,b,c);
 		a -= b;
 		a -= c;
-		a ^= (c >> 13);
+		a ^= c >> 13;
 		b -= c;
 		b -= a;
-		b ^= (a << 8);
+		b ^= a << 8;
 		c -= a;
 		c -= b;
-		c ^= (b >> 13);
+		c ^= b >> 13;
 		a -= b;
 		a -= c;
-		a ^= (c >> 12);
+		a ^= c >> 12;
 		b -= c;
 		b -= a;
-		b ^= (a << 16);
+		b ^= a << 16;
 		c -= a;
 		c -= b;
-		c ^= (b >> 5);
+		c ^= b >> 5;
 		a -= b;
 		a -= c;
-		a ^= (c >> 3);
+		a ^= c >> 3;
 		b -= c;
 		b -= a;
-		b ^= (a << 10);
+		b ^= a << 10;
 		c -= a;
 		c -= b;
-		c ^= (b >> 15);
+		c ^= b >> 15;
 
-		//System.out.println("static doobs_hashFunctionAFun = " + c + ": " + _name);
 		return c;
 	}
 
