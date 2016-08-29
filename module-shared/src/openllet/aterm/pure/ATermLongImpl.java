@@ -29,6 +29,7 @@
 package openllet.aterm.pure;
 
 import java.util.List;
+
 import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
@@ -41,17 +42,6 @@ import openllet.shared.hash.SharedObject;
 public class ATermLongImpl extends ATermImpl implements ATermLong
 {
 	private long _value;
-
-	/**
-	 * depricated Use the new constructor instead.
-	 * 
-	 * @param factory x
-	 */
-	@Deprecated
-	protected ATermLongImpl(final PureFactory factory)
-	{
-		super(factory);
-	}
 
 	protected ATermLongImpl(final PureFactory factory, final ATermList annos, final long value)
 	{
@@ -70,11 +60,12 @@ public class ATermLongImpl extends ATermImpl implements ATermLong
 
 	/**
 	 * depricated Use the new constructor instead.
-	 * 
+	 *
 	 * @param hashCode x
 	 * @param annos x
-	 * @param _value x
+	 * @param value x
 	 */
+	@Deprecated
 	protected void init(final int hashCode, final ATermList annos, final long value)
 	{
 		super.init(hashCode, annos);
@@ -83,7 +74,7 @@ public class ATermLongImpl extends ATermImpl implements ATermLong
 
 	/**
 	 * depricated Use the new constructor instead.
-	 * 
+	 *
 	 * @param annos x
 	 * @param _value x
 	 */
@@ -109,7 +100,7 @@ public class ATermLongImpl extends ATermImpl implements ATermLong
 			if (peer.getType() != getType())
 				return false;
 
-			return (peer.getLong() == _value && peer.getAnnotations().equals(getAnnotations()));
+			return peer.getLong() == _value && peer.getAnnotations().equals(getAnnotations());
 		}
 
 		return false;
@@ -118,7 +109,8 @@ public class ATermLongImpl extends ATermImpl implements ATermLong
 	@Override
 	protected boolean match(final ATerm pattern, final List<Object> list)
 	{
-		if (equals(pattern)) { return true; }
+		if (equals(pattern))
+			return true;
 
 		if (pattern.getType() == ATerm.PLACEHOLDER)
 		{
@@ -159,41 +151,41 @@ public class ATermLongImpl extends ATermImpl implements ATermLong
 	private int hashFunction()
 	{
 		/* Set up the internal state */
-		int a = 0x9e3779b9; /* the golden ratio; an arbitrary _value */
-		int b = 0x9e3779b9; /* the golden ratio; an arbitrary _value */
+		int a = GOLDEN_RATIO; /* the golden ratio; an arbitrary _value */
+		int b = GOLDEN_RATIO; /* the golden ratio; an arbitrary _value */
 		int c = 2; /* the previous hash _value */
 
 		/*------------------------------------- handle the last 11 bytes */
-		a += (getAnnotations().hashCode() << 8);
-		a += (_value);
+		a += getAnnotations().hashCode() << 8;
+		a += _value;
 
 		a -= b;
 		a -= c;
-		a ^= (c >> 13);
+		a ^= c >> 13;
 		b -= c;
 		b -= a;
-		b ^= (a << 8);
+		b ^= a << 8;
 		c -= a;
 		c -= b;
-		c ^= (b >> 13);
+		c ^= b >> 13;
 		a -= b;
 		a -= c;
-		a ^= (c >> 12);
+		a ^= c >> 12;
 		b -= c;
 		b -= a;
-		b ^= (a << 16);
+		b ^= a << 16;
 		c -= a;
 		c -= b;
-		c ^= (b >> 5);
+		c ^= b >> 5;
 		a -= b;
 		a -= c;
-		a ^= (c >> 3);
+		a ^= c >> 3;
 		b -= c;
 		b -= a;
-		b ^= (a << 10);
+		b ^= a << 10;
 		c -= a;
 		c -= b;
-		c ^= (b >> 15);
+		c ^= b >> 15;
 
 		/*-------------------------------------------- report the result */
 		return c;

@@ -29,6 +29,7 @@
 package openllet.aterm.pure;
 
 import java.util.List;
+
 import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
@@ -41,18 +42,7 @@ import openllet.shared.hash.SharedObject;
 
 public class ATermPlaceholderImpl extends ATermImpl implements ATermPlaceholder
 {
-	private ATerm _type;
-
-	/**
-	 * depricated Use the new constructor instead.
-	 * 
-	 * @param factory x
-	 */
-	@Deprecated
-	protected ATermPlaceholderImpl(final PureFactory factory)
-	{
-		super(factory);
-	}
+	private final ATerm _type;
 
 	protected ATermPlaceholderImpl(final PureFactory factory, final ATermList annos, final ATerm type)
 	{
@@ -67,20 +57,6 @@ public class ATermPlaceholderImpl extends ATermImpl implements ATermPlaceholder
 	public int getType()
 	{
 		return ATerm.PLACEHOLDER;
-	}
-
-	/**
-	 * depricated Use the new constructor instead.
-	 * 
-	 * @param hashCode x
-	 * @param annos x
-	 * @param _type x
-	 */
-	@Deprecated
-	protected void init(final int hashCode, final ATermList annos, final ATerm type)
-	{
-		super.init(hashCode, annos);
-		_type = type;
 	}
 
 	@Override
@@ -98,7 +74,7 @@ public class ATermPlaceholderImpl extends ATermImpl implements ATermPlaceholder
 			if (peer.getType() != getType())
 				return false;
 
-			return (peer.getPlaceholder() == _type && peer.getAnnotations().equals(getAnnotations()));
+			return peer.getPlaceholder() == _type && peer.getAnnotations().equals(getAnnotations());
 		}
 
 		return false;
@@ -135,7 +111,6 @@ public class ATermPlaceholderImpl extends ATermImpl implements ATermPlaceholder
 		if (!fun.isQuoted())
 		{
 			if (fun.getArity() == 0)
-			{
 				switch (name)
 				{
 					case "term":
@@ -203,7 +178,6 @@ public class ATermPlaceholderImpl extends ATermImpl implements ATermPlaceholder
 						throw new OpenError("Unknow ATerm function name : " + name);
 					}
 				}
-			}
 			if (name.equals("appl"))
 			{
 				final ATermList oldargs = appl.getArguments();
@@ -255,7 +229,8 @@ public class ATermPlaceholderImpl extends ATermImpl implements ATermPlaceholder
 	@Override
 	public ATerm setSubTerm(final int index, final ATerm t)
 	{
-		if (index == 1) { return setPlaceholder(t); }
+		if (index == 1)
+			return setPlaceholder(t);
 		throw new OpenError("no " + index + "-th child!");
 	}
 

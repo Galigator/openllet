@@ -31,7 +31,6 @@ package openllet.shared.hash;
 
 public interface SharedObjectWithID extends SharedObject
 {
-
 	int getUniqueIdentifier();
 
 	void setUniqueIdentifier(int uniqueId);

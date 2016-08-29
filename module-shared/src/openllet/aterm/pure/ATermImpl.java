@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.LinkedList;
 import java.util.List;
+
 import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
@@ -55,7 +56,7 @@ public abstract class ATermImpl extends ATermVisitableImpl implements ATerm, Sha
 
 	/**
 	 * depricated Use the new constructor instead.
-	 * 
+	 *
 	 * @param factory x
 	 */
 	protected ATermImpl(final PureFactory factory)
@@ -89,11 +90,13 @@ public abstract class ATermImpl extends ATermVisitableImpl implements ATerm, Sha
 	}
 
 	/**
-	 * depricated Just here for backwards compatibility.
-	 * 
-	 * @param _hashCode x
+	 * Deprecated Just here for backwards compatibility : use new ATermImpl instead (or super)
+	 *
+	 *
+	 * @param hashCode x
 	 * @param annos x
 	 */
+	@Deprecated
 	protected void init(final int hashCode, final ATermList annos)
 	{
 		_hashCode = hashCode;
@@ -114,7 +117,7 @@ public abstract class ATermImpl extends ATermVisitableImpl implements ATerm, Sha
 	@Override
 	public boolean hasAnnotations()
 	{
-		return (_annotations != null && !_annotations.isEmpty());
+		return _annotations != null && !_annotations.isEmpty();
 	}
 
 	@Override
@@ -177,7 +180,7 @@ public abstract class ATermImpl extends ATermVisitableImpl implements ATerm, Sha
 	@Override
 	public boolean equals(final Object obj)
 	{
-		return (this == obj);
+		return this == obj;
 	}
 
 	protected boolean match(final ATerm pattern, final List<Object> list)

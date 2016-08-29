@@ -20,6 +20,7 @@
 package openllet.shared.hash;
 
 import java.lang.ref.WeakReference;
+
 import openllet.atom.OpenError;
 
 /**
@@ -85,7 +86,7 @@ public class SharedObjectFactory
 		for (int i = 0; i < nrOfSegments; i++)
 		{
 			final int startHash = i << Segment.MAX_SEGMENT_BITSIZE;
-			final int endHash = ((i + 1) << Segment.MAX_SEGMENT_BITSIZE) - 1;
+			final int endHash = (i + 1 << Segment.MAX_SEGMENT_BITSIZE) - 1;
 
 			sb.append("Segment hash range: ");
 			sb.append(startHash);
@@ -101,14 +102,13 @@ public class SharedObjectFactory
 	/**
 	 * Finds or creates the unique version of the given openllet.shared.hash object prototype.
 	 *
-	 * @param prototype
-	 *            The prototype of the openllet.shared.hash object we want the unique reference too.
+	 * @param prototype of the openllet.shared.hash object we want the unique reference too.
 	 * @return The reference to the unique openllet.shared.hash object associated with the argument.
 	 */
 	public SharedObject build(final SharedObject prototype)
 	{
 		final int hash = prototype.hashCode();
-		final int segmentNr = hash >>> (32 - DEFAULT_NR_OF_SEGMENTS_BITSIZE);
+		final int segmentNr = hash >>> 32 - DEFAULT_NR_OF_SEGMENTS_BITSIZE;
 
 		return _segments[segmentNr].get(prototype, hash);
 	}
@@ -116,14 +116,13 @@ public class SharedObjectFactory
 	/**
 	 * Checks if the given openllet.shared.hash object is present in this factory.
 	 *
-	 * @param object
-	 *            The openllet.shared.hash object.
+	 * @param object is the openllet.shared.hash object.
 	 * @return True if this factory contains the given openllet.shared.hash object; false otherwise.
 	 */
 	public boolean contains(final SharedObject object)
 	{
 		final int hash = object.hashCode();
-		final int segmentNr = hash >>> (32 - DEFAULT_NR_OF_SEGMENTS_BITSIZE);
+		final int segmentNr = hash >>> 32 - DEFAULT_NR_OF_SEGMENTS_BITSIZE;
 
 		return _segments[segmentNr].contains(object, hash);
 	}
@@ -185,7 +184,7 @@ public class SharedObjectFactory
 			_freeIDs = new int[_numberOfFreeIDs];
 			_freeIDsIndex = 0;
 			_nextFreeID = segmentID << MAX_SEGMENT_BITSIZE;
-			_maxFreeIDPlusOne = (segmentID + 1) << MAX_SEGMENT_BITSIZE;
+			_maxFreeIDPlusOne = segmentID + 1 << MAX_SEGMENT_BITSIZE;
 		}
 
 		/**
@@ -241,7 +240,7 @@ public class SharedObjectFactory
 		 */
 		private void rehash()
 		{
-			final int nrOfEntries = 1 << (++_bitSize);
+			final int nrOfEntries = 1 << ++_bitSize;
 			final int newHashMask = nrOfEntries - 1;
 
 			final Entry[] oldEntries = _entries;
@@ -345,8 +344,8 @@ public class SharedObjectFactory
 							if (oldLoad == 0)
 								cleanupPercentate = 50; // This prevents division by zero errors in case the table is still empty (keep the cleanup percentage that 50% in this case).
 							else
-								cleanupPercentate = 100 - ((_load * 100) / oldLoad); // Calculate the percentage of entries that has been cleaned.
-							_cleanupScaler = (((_cleanupScaler * 25) + (cleanupPercentate * 7)) >> 5); // Modify the scaler, depending on the history (weight = 25) and how much we cleaned up this time (weight = 7).
+								cleanupPercentate = 100 - _load * 100 / oldLoad; // Calculate the percentage of entries that has been cleaned.
+							_cleanupScaler = _cleanupScaler * 25 + cleanupPercentate * 7 >> 5; // Modify the scaler, depending on the history (weight = 25) and how much we cleaned up this time (weight = 7).
 							if (_cleanupScaler > 0)
 								_cleanupThreshold = _cleanupScaler;
 							else
@@ -451,7 +450,7 @@ public class SharedObjectFactory
 
 			// Find the object (lock free).
 			int position = hash & hashMask;
-			Entry e = currentEntries[position];
+			Entry e = currentEntries[position]; 
 			if (e != null)
 				do
 				{
@@ -501,7 +500,7 @@ public class SharedObjectFactory
 		{
 			if (_freeIDsIndex > 0)
 			{// Half the size of the freeIDs array when it is empty for three quarters.
-				if (_freeIDsIndex < (_numberOfFreeIDs >> 2) && _numberOfFreeIDs > 32)
+				if (_freeIDsIndex < _numberOfFreeIDs >> 2 && _numberOfFreeIDs > 32)
 				{
 					final int newNumberOfFreeIDs = _numberOfFreeIDs >> 1;
 					final int[] newFreeIds = new int[newNumberOfFreeIDs];
@@ -594,8 +593,8 @@ public class SharedObjectFactory
 				double distribution = 100;
 				if (nrOfFilledBuckets != 0)
 				{
-					averageBucketLength = (((double) ((totalNrOfCollisions * 1000) / nrOfFilledBuckets)) / 1000) + 1;
-					distribution = 100 - (((double) (((totalNrOfCollisions * 1000) / nrOfFilledBuckets) / DEFAULT_LOAD_FACTOR)) / 10);
+					averageBucketLength = (double) (totalNrOfCollisions * 1000 / nrOfFilledBuckets) / 1000 + 1;
+					distribution = 100 - (double) (totalNrOfCollisions * 1000 / nrOfFilledBuckets / DEFAULT_LOAD_FACTOR) / 10;
 				}
 
 				sb.append("Number of filled buckets: ");

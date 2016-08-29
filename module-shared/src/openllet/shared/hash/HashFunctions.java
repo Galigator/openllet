@@ -31,6 +31,7 @@ package openllet.shared.hash;
 
 public class HashFunctions
 {
+	public static final int GOLDEN_RATIO = 0x9e3779b9;
 
 	static public int oneAtATime(final Object[] o)
 	{
@@ -67,7 +68,7 @@ public class HashFunctions
 	{
 		int a, b;
 
-		a = b = 0x9e3779b9; /* The golden ratio; an arbitrary value */
+		a = b = GOLDEN_RATIO; /* The golden ratio; an arbitrary value */
 		a += (o[1].hashCode() << 8) + o[0].hashCode();
 
 		return mix(a, b, o.length/* the previous hash value */);

@@ -32,6 +32,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
+import openllet.shared.hash.HashFunctions;
+
 /**
  * This is the base interface for all ATerm interfaces,
  * which will ultimately be implemented by two separate
@@ -42,6 +44,8 @@ import java.util.List;
  */
 public interface ATerm extends Visitable, Identifiable
 {
+	public static final int GOLDEN_RATIO = HashFunctions.GOLDEN_RATIO;
+
 	/**
 	 * A term of type INT
 	 */

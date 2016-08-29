@@ -35,6 +35,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
+
 import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermList;
@@ -44,9 +45,9 @@ import openllet.atom.OpenError;
 /**
  * Reconstructs an ATerm from the given (series of) buffer(s). It can be retrieved when the
  * construction of the term is done / when _isDone() returns true.
- * 
+ *
  * For example (yes I know this code is crappy, but it's simple):<blockquote>
- * 
+ *
  * <pre>
  * ByteBuffer buffer = ByteBuffer.allocate(8192);
  * BinaryWriter bw = new BinaryWriter(openllet.aterm);
@@ -60,9 +61,9 @@ import openllet.atom.OpenError;
  * 	}
  * }
  * </pre>
- * 
+ *
  * </blockquote>
- * 
+ *
  * @author Arnold Lankamp
  */
 public class BinaryReader
@@ -78,7 +79,7 @@ public class BinaryReader
 
 	private final static int STACKSIZE = 256;
 
-	private final PureFactory factory;
+	private final PureFactory _factory;
 
 	private int _sharedTermIndex;
 	private ATerm[] _sharedTerms;
@@ -99,15 +100,14 @@ public class BinaryReader
 
 	/**
 	 * Constructor.
-	 * 
-	 * @param factory
-	 *            The factory to use for reconstruction of the ATerm.
+	 *
+	 * @param factory to use for reconstruction of the ATerm.
 	 */
 	public BinaryReader(final PureFactory factory)
 	{
 		super();
 
-		this.factory = factory;
+		_factory = factory;
 
 		_sharedTerms = new ATerm[INITIALSHAREDTERMSARRAYSIZE];
 		_applSignatures = new ArrayList<>();
@@ -135,7 +135,7 @@ public class BinaryReader
 	/**
 	 * Constructs (a part of) the ATerm from the binary representation present in the given buffer.
 	 * This method will 'remember' where it was left.
-	 * 
+	 *
 	 * @param buffer
 	 *            The buffer that contains (a part of) the binary representation of the ATerm.
 	 */
@@ -160,9 +160,9 @@ public class BinaryReader
 			}
 			else
 			{
-				final int type = (header & TYPEMASK);
+				final int type = header & TYPEMASK;
 
-				final ATermConstruct ac = new ATermConstruct(type, ((header & ANNOSFLAG) == ANNOSFLAG), _sharedTermIndex++);
+				final ATermConstruct ac = new ATermConstruct(type, (header & ANNOSFLAG) == ANNOSFLAG, _sharedTermIndex++);
 
 				ensureSharedTermsCapacity();
 
@@ -210,7 +210,7 @@ public class BinaryReader
 		final int stackSize = _stack.length;
 		if (_stackPosition + 1 >= stackSize)
 		{
-			final ATermConstruct[] newStack = new ATermConstruct[(stackSize << 1)];
+			final ATermConstruct[] newStack = new ATermConstruct[stackSize << 1];
 			System.arraycopy(_stack, 0, newStack, 0, _stack.length);
 			_stack = newStack;
 		}
@@ -218,7 +218,7 @@ public class BinaryReader
 
 	/**
 	 * Checks if we are done serializing.
-	 * 
+	 *
 	 * @return True if we are done; false otherwise.
 	 */
 	public boolean isDone()
@@ -229,7 +229,7 @@ public class BinaryReader
 	/**
 	 * Returns the reconstructed ATerm. A RuntimeException will be thrown when we are not yet done
 	 * with the reconstruction of the ATerm.
-	 * 
+	 *
 	 * @return The reconstructed ATerm.
 	 */
 	public ATerm getRoot()
@@ -257,7 +257,7 @@ public class BinaryReader
 	private void readData()
 	{
 		final int length = _tempBytes.length;
-		int bytesToRead = (length - _tempBytesIndex);
+		int bytesToRead = length - _tempBytesIndex;
 		final int remaining = _currentBuffer.remaining();
 		if (remaining < bytesToRead)
 			bytesToRead = remaining;
@@ -269,13 +269,13 @@ public class BinaryReader
 		{
 			if (_tempType == ATerm.APPL)
 			{
-				final AFun fun = factory.makeAFun(new String(_tempBytes), _tempArity, _tempIsQuoted);
+				final AFun fun = _factory.makeAFun(new String(_tempBytes), _tempArity, _tempIsQuoted);
 				_applSignatures.add(fun);
 
 				final ATermConstruct ac = _stack[_stackPosition];
 				if (_tempArity == 0 && !ac.hasAnnos)
 				{
-					final ATerm term = factory.makeAppl(fun);
+					final ATerm term = _factory.makeAppl(fun);
 					_sharedTerms[ac.termIndex] = term;
 					linkTerm(term);
 				}
@@ -289,7 +289,7 @@ public class BinaryReader
 				if (_tempType == ATerm.BLOB)
 				{
 					final ATermConstruct ac = _stack[_stackPosition];
-					final ATerm term = factory.makeBlob(_tempBytes);
+					final ATerm term = _factory.makeBlob(_tempBytes);
 
 					if (!ac.hasAnnos)
 					{
@@ -297,14 +297,10 @@ public class BinaryReader
 						linkTerm(term);
 					}
 					else
-					{
 						ac.tempTerm = term;
-					}
 				}
 				else
-				{
 					throw new OpenError("Unsupported chunkified type: " + _tempType);
-				}
 
 			resetTemp();
 		}
@@ -312,7 +308,7 @@ public class BinaryReader
 
 	/**
 	 * Starts the deserialization process of a appl.
-	 * 
+	 *
 	 * @param header
 	 *            The header of the appl.
 	 */
@@ -330,7 +326,7 @@ public class BinaryReader
 
 			if (arity == 0 && !ac.hasAnnos)
 			{
-				final ATerm term = factory.makeAppl(fun);
+				final ATerm term = _factory.makeAppl(fun);
 				_sharedTerms[ac.termIndex] = term;
 				linkTerm(term);
 			}
@@ -342,7 +338,7 @@ public class BinaryReader
 		}
 		else
 		{
-			_tempIsQuoted = ((header & APPLQUOTED) == APPLQUOTED);
+			_tempIsQuoted = (header & APPLQUOTED) == APPLQUOTED;
 			_tempArity = readInt();
 			final int nameLength = readInt();
 
@@ -366,7 +362,7 @@ public class BinaryReader
 
 		if (size == 0)
 		{
-			final ATerm term = factory.makeList();
+			final ATerm term = _factory.makeList();
 
 			if (!ac.hasAnnos)
 			{
@@ -374,9 +370,7 @@ public class BinaryReader
 				linkTerm(term);
 			}
 			else
-			{
 				ac.tempTerm = term;
-			}
 		}
 	}
 
@@ -388,7 +382,7 @@ public class BinaryReader
 		final int value = readInt();
 
 		final ATermConstruct ac = _stack[_stackPosition];
-		final ATerm term = factory.makeInt(value);
+		final ATerm term = _factory.makeInt(value);
 
 		if (!ac.hasAnnos)
 		{
@@ -396,9 +390,7 @@ public class BinaryReader
 			linkTerm(term);
 		}
 		else
-		{
 			ac.tempTerm = term;
-		}
 	}
 
 	/**
@@ -409,7 +401,7 @@ public class BinaryReader
 		final double value = readDouble();
 
 		final ATermConstruct ac = _stack[_stackPosition];
-		final ATerm term = factory.makeReal(value);
+		final ATerm term = _factory.makeReal(value);
 
 		if (!ac.hasAnnos)
 		{
@@ -417,9 +409,7 @@ public class BinaryReader
 			linkTerm(term);
 		}
 		else
-		{
 			ac.tempTerm = term;
-		}
 	}
 
 	/**
@@ -430,7 +420,7 @@ public class BinaryReader
 		final long value = readLong();
 
 		final ATermConstruct ac = _stack[_stackPosition];
-		final ATerm term = factory.makeLong(value);
+		final ATerm term = _factory.makeLong(value);
 
 		if (!ac.hasAnnos)
 		{
@@ -438,9 +428,7 @@ public class BinaryReader
 			linkTerm(term);
 		}
 		else
-		{
 			ac.tempTerm = term;
-		}
 	}
 
 	/**
@@ -470,7 +458,7 @@ public class BinaryReader
 
 	/**
 	 * Constructs a term from the given structure.
-	 * 
+	 *
 	 * @param ac
 	 *            A structure that contains all the nessecary data to contruct the associated term.
 	 * @return The constructed openllet.aterm.
@@ -484,16 +472,14 @@ public class BinaryReader
 		if (type == ATerm.APPL)
 		{
 			final AFun fun = (AFun) ac.tempTerm;
-			constructedTerm = factory.makeAppl(fun, subTerms, ac.annos);
+			constructedTerm = _factory.makeAppl(fun, subTerms, ac.annos);
 		}
 		else
 			if (type == ATerm.LIST)
 			{
-				ATermList list = factory.makeList();
+				ATermList list = _factory.makeList();
 				for (int i = subTerms.length - 1; i >= 0; i--)
-				{
-					list = factory.makeList(subTerms[i], list);
-				}
+					list = _factory.makeList(subTerms[i], list);
 
 				if (ac.hasAnnos)
 					list = (ATermList) list.setAnnotations(ac.annos);
@@ -503,26 +489,22 @@ public class BinaryReader
 			else
 				if (type == ATerm.PLACEHOLDER)
 				{
-					final ATerm placeholder = factory.makePlaceholder(subTerms[0]);
+					final ATerm placeholder = _factory.makePlaceholder(subTerms[0]);
 
 					constructedTerm = placeholder;
 				}
 				else
 					if (ac.hasAnnos)
-					{
 						constructedTerm = ac.tempTerm.setAnnotations(ac.annos);
-					}
 					else
-					{
 						throw new OpenError("Unable to construct term.\n");
-					}
 
 		return constructedTerm;
 	}
 
 	/**
 	 * Links the given term with it's parent.
-	 * 
+	 *
 	 * @param aTerm
 	 *            The term that needs to be linked.
 	 */
@@ -544,17 +526,13 @@ public class BinaryReader
 					return;
 
 				if (!hasAnnos)
-					parent.annos = factory.makeList();
+					parent.annos = _factory.makeList();
 			}
 			else
-				if (hasAnnos && (term instanceof ATermList))
-				{
+				if (hasAnnos && term instanceof ATermList)
 					parent.annos = (ATermList) term;
-				}
 				else
-				{
 					throw new OpenError("Encountered a term that didn't fit anywhere. Type: " + term.getType());
-				}
 
 			term = buildTerm(parent);
 
@@ -575,40 +553,40 @@ public class BinaryReader
 	 * Reconstructs an integer from the following 1 to 5 bytes in the buffer (depending on how many
 	 * we used to represent the value). See the documentation of
 	 * openllet.aterm.binary.BinaryWriter#writeInt(int) for more information.
-	 * 
+	 *
 	 * @return The reconstructed integer.
 	 */
 	private int readInt()
 	{
 		byte part = _currentBuffer.get();
-		int result = (part & SEVENBITS);
+		int result = part & SEVENBITS;
 
 		if ((part & SIGNBIT) == 0)
 			return result;
 
 		part = _currentBuffer.get();
-		result |= ((part & SEVENBITS) << 7);
+		result |= (part & SEVENBITS) << 7;
 		if ((part & SIGNBIT) == 0)
 			return result;
 
 		part = _currentBuffer.get();
-		result |= ((part & SEVENBITS) << 14);
+		result |= (part & SEVENBITS) << 14;
 		if ((part & SIGNBIT) == 0)
 			return result;
 
 		part = _currentBuffer.get();
-		result |= ((part & SEVENBITS) << 21);
+		result |= (part & SEVENBITS) << 21;
 		if ((part & SIGNBIT) == 0)
 			return result;
 
 		part = _currentBuffer.get();
-		result |= ((part & SEVENBITS) << 28);
+		result |= (part & SEVENBITS) << 28;
 		return result;
 	}
 
 	/**
 	 * Reconstructs a double from the following 8 bytes in the buffer.
-	 * 
+	 *
 	 * @return The reconstructed double.
 	 */
 	private double readDouble()
@@ -619,22 +597,20 @@ public class BinaryReader
 
 	/**
 	 * Reconstructs a long from the following 8 bytes in the buffer.
-	 * 
+	 *
 	 * @return The reconstructed long.
 	 */
 	private long readLong()
 	{
 		long result = 0;
 		for (int i = 0; i < LONGBITS; i++)
-		{
-			result |= ((((long) _currentBuffer.get()) & BYTEMASK) << (i * BYTEBITS));
-		}
+			result |= ((long) _currentBuffer.get() & BYTEMASK) << i * BYTEBITS;
 		return result;
 	}
 
 	/**
 	 * Reads the ATerm from the given SAF encoded file.
-	 * 
+	 *
 	 * @param pureFactory
 	 *            The factory to use.
 	 * @param file
@@ -694,7 +670,7 @@ public class BinaryReader
 
 	/**
 	 * Reads the ATerm from the given SAF encoded data.
-	 * 
+	 *
 	 * @param pureFactory
 	 *            The factory to use.
 	 * @param data

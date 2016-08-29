@@ -36,6 +36,7 @@ import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
 import openllet.aterm.ATermPlaceholder;
 import openllet.aterm.Visitor;
+import openllet.shared.hash.HashFunctions;
 import openllet.shared.hash.SharedObject;
 
 public class ATermApplImpl extends ATermImpl implements ATermAppl
@@ -298,50 +299,20 @@ public class ATermApplImpl extends ATermImpl implements ATermAppl
 	protected int hashFunction()
 	{
 		final int len = getArity();
-		int a, b;
-		a = b = 0x9e3779b9; /* the golden ratio; an arbitrary value */
-		int c = len;
-
-		c += getAnnotations().hashCode() << 8;
-		b += getAFun().hashCode() << 8;
+		int alpha = GOLDEN_RATIO;
+		final int b = GOLDEN_RATIO + (getAFun().hashCode() << 8);
+		final int c = len + (getAnnotations().hashCode() << 8);
 
 		switch (len)
 		{
 			case 3:
-				a += getArgument(2).hashCode() << 16;
+				alpha += getArgument(2).hashCode() << 16;
 			case 2:
-				a += getArgument(1).hashCode() << 8;
+				alpha += getArgument(1).hashCode() << 8;
 			case 1:
-				a += getArgument(0).hashCode();
+				alpha += getArgument(0).hashCode();
 		}
-		a -= b;
-		a -= c;
-		a ^= c >> 13;
-		b -= c;
-		b -= a;
-		b ^= a << 8;
-		c -= a;
-		c -= b;
-		c ^= b >> 13;
-		a -= b;
-		a -= c;
-		a ^= c >> 12;
-		b -= c;
-		b -= a;
-		b ^= a << 16;
-		c -= a;
-		c -= b;
-		c ^= b >> 5;
-		a -= b;
-		a -= c;
-		a ^= c >> 3;
-		b -= c;
-		b -= a;
-		b ^= a << 10;
-		c -= a;
-		c -= b;
-		c ^= b >> 15;
 
-		return c;
+		return HashFunctions.mix(alpha, b, c);
 	}
 }

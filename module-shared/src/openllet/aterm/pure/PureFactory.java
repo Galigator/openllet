@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+
 import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
@@ -60,7 +61,14 @@ import openllet.shared.hash.SharedObjectFactory;
 
 public class PureFactory extends SharedObjectFactory implements ATermFactory
 {
-	private final ATermList empty;
+	/**
+	 * This is a fix-point hash-code such that
+	 * empty.hashcode = empty.getAnnotations().hashCode
+	 * this magic value can be found using: findEmptyHashCode()
+	 */
+	public final static int _fixPoint = 240146486;
+
+	private final ATermList _empty;
 
 	private static boolean isBase64(final int c)
 	{
@@ -72,7 +80,8 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 		int abbrev = strTerm;
 		int size = 1;
 
-		if (abbrev == 0) { return 2; }
+		if (abbrev == 0)
+			return 2;
 
 		while (abbrev > 0)
 		{
@@ -86,67 +95,59 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 	public PureFactory()
 	{
 		super();
-
 		final ATermListImpl protoList = new ATermListImpl(this);
 
-		/*
-		 * 240146486 is a fix-point hashcode such that
-		 * empty.hashcode = empty.getAnnotations().hashCode
-		 * this magic value can be found using: findEmptyHashCode()
-		 */
-		protoList.init(240146486, null, null, null);
-		empty = (ATermList) build(protoList);
-		//int magicHash = ((ATermListImpl) empty).findEmptyHashCode();
-		((ATermListImpl) empty).init(240146486, empty, null, null);
-
+		protoList.init(_fixPoint, null, null, null);
+		_empty = (ATermList) build(protoList);
+		((ATermListImpl) _empty).init(_fixPoint, _empty, null, null);
 	}
 
 	@Override
 	public ATermInt makeInt(final int val)
 	{
-		return makeInt(val, empty);
+		return makeInt(val, _empty);
 	}
 
 	@Override
 	public ATermLong makeLong(final long val)
 	{
-		return makeLong(val, empty);
+		return makeLong(val, _empty);
 	}
 
 	@Override
 	public ATermReal makeReal(final double val)
 	{
-		return makeReal(val, empty);
+		return makeReal(val, _empty);
 	}
 
 	@Override
 	public ATermList makeList()
 	{
-		return empty;
+		return _empty;
 	}
 
 	@Override
 	public ATermList makeList(final ATerm singleton)
 	{
-		return makeList(singleton, empty, empty);
+		return makeList(singleton, _empty, _empty);
 	}
 
 	@Override
 	public ATermList makeList(final ATerm first, final ATermList next)
 	{
-		return makeList(first, next, empty);
+		return makeList(first, next, _empty);
 	}
 
 	@Override
 	public ATermPlaceholder makePlaceholder(final ATerm type)
 	{
-		return makePlaceholder(type, empty);
+		return makePlaceholder(type, _empty);
 	}
 
 	@Override
 	public ATermBlob makeBlob(final byte[] data)
 	{
-		return makeBlob(data, empty);
+		return makeBlob(data, _empty);
 	}
 
 	@Override
@@ -190,7 +191,7 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 	@Override
 	public ATermAppl makeAppl(final AFun fun, final ATerm[] args)
 	{
-		return makeAppl(fun, args, empty);
+		return makeAppl(fun, args, _empty);
 	}
 
 	public ATermAppl makeAppl(final AFun fun, final ATerm[] args, final ATermList annos)
@@ -201,7 +202,7 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 	@Override
 	public ATermAppl makeApplList(final AFun fun, final ATermList list)
 	{
-		return makeApplList(fun, list, empty);
+		return makeApplList(fun, list, _empty);
 	}
 
 	public ATermAppl makeApplList(final AFun fun, final ATermList list, final ATermList annos)
@@ -271,7 +272,7 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 
 	public ATermList getEmpty()
 	{
-		return empty;
+		return _empty;
 	}
 
 	private static ATerm parseAbbrev(final ATermReader reader) throws IOException
@@ -286,33 +287,21 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 		{
 			abbrev *= 64;
 			if (c >= 'A' && c <= 'Z')
-			{
 				abbrev += c - 'A';
-			}
 			else
 				if (c >= 'a' && c <= 'z')
-				{
 					abbrev += c - 'a' + 26;
-				}
 				else
 					if (c >= '0' && c <= '9')
-					{
 						abbrev += c - '0' + 52;
-					}
 					else
 						if (c == '+')
-						{
 							abbrev += 62;
-						}
 						else
 							if (c == '/')
-							{
 								abbrev += 63;
-							}
 							else
-							{
 								throw new OpenError("not a base-64 digit: " + c);
-							}
 
 			c = reader.read();
 		}
@@ -328,9 +317,8 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 		ATerm result;
 
 		do
-		{
 			str.append((char) reader.getLastChar());
-		} while (Character.isDigit(reader.read()));
+		while (Character.isDigit(reader.read()));
 
 		if (reader.getLastChar() != '.' && reader.getLastChar() != 'e' && reader.getLastChar() != 'E' && reader.getLastChar() != 'l' && reader.getLastChar() != 'L')
 		{
@@ -367,11 +355,10 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 					str.append('.');
 					reader.read();
 					if (!Character.isDigit(reader.getLastChar()))
-						throw new ParseError("digit _expected");
+						throw new ParseError("digit expected");
 					do
-					{
 						str.append((char) reader.getLastChar());
-					} while (Character.isDigit(reader.read()));
+					while (Character.isDigit(reader.read()));
 				}
 				if (reader.getLastChar() == 'e' || reader.getLastChar() == 'E')
 				{
@@ -383,11 +370,10 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 						reader.read();
 					}
 					if (!Character.isDigit(reader.getLastChar()))
-						throw new ParseError("digit _expected!");
+						throw new ParseError("digit expected!");
 					do
-					{
 						str.append((char) reader.getLastChar());
-					} while (Character.isDigit(reader.read()));
+					while (Character.isDigit(reader.read()));
 				}
 				double val;
 				try
@@ -437,7 +423,6 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 				throw new ParseError("Unterminated quoted function symbol: " + str);
 
 			if (escaped)
-			{
 				switch (lastChar)
 				{
 					case 'n':
@@ -477,12 +462,9 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 					default:
 						str.append('\\').append((char) reader.getLastChar());
 				}
-			}
 			else
 				if (lastChar != '\"')
-				{
 					str.append((char) lastChar);
-				}
 		} while (escaped || reader.getLastChar() != '"');
 
 		return str.toString();
@@ -491,11 +473,9 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 	private ATermList parseATerms(final ATermReader reader) throws IOException
 	{
 		final ATerm[] terms = parseATermsArray(reader);
-		ATermList result = empty;
+		ATermList result = _empty;
 		for (int i = terms.length - 1; i >= 0; i--)
-		{
 			result = makeList(terms[i], result);
-		}
 
 		return result;
 	}
@@ -517,9 +497,7 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 		final ListIterator<ATerm> iter = list.listIterator();
 		int index = 0;
 		while (iter.hasNext())
-		{
 			array[index++] = iter.next();
-		}
 		return array;
 	}
 
@@ -540,17 +518,19 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 
 			case '[':
 				c = reader.readSkippingWS();
-				if (c == -1) { throw new ParseError("premature EOF encountered."); }
+				if (c == -1)
+					throw new ParseError("premature EOF encountered.");
 
 				if (c == ']')
 				{
 					c = reader.readSkippingWS();
-					result = empty;
+					result = _empty;
 				}
 				else
 				{
 					result = parseATerms(reader);
-					if (reader.getLastChar() != ']') { throw new ParseError("_expected ']' but got '" + (char) reader.getLastChar() + "'"); }
+					if (reader.getLastChar() != ']')
+						throw new ParseError("_expected ']' but got '" + (char) reader.getLastChar() + "'");
 					c = reader.readSkippingWS();
 				}
 
@@ -560,7 +540,8 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 				c = reader.readSkippingWS();
 				final ATerm ph = parseFromReader(reader);
 
-				if (reader.getLastChar() != '>') { throw new ParseError("_expected '>' but got '" + (char) reader.getLastChar() + "'"); }
+				if (reader.getLastChar() != '>')
+					throw new ParseError("_expected '>' but got '" + (char) reader.getLastChar() + "'");
 
 				c = reader.readSkippingWS();
 
@@ -575,39 +556,37 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 				if (reader.getLastChar() == '(')
 				{
 					c = reader.readSkippingWS();
-					if (c == -1) { throw new ParseError("premature EOF encountered."); }
+					if (c == -1)
+						throw new ParseError("premature EOF encountered.");
 					if (reader.getLastChar() == ')')
-					{
 						result = makeAppl(makeAFun(funname, 0, true));
-					}
 					else
 					{
 						final ATerm[] list = parseATermsArray(reader);
 
-						if (reader.getLastChar() != ')') { throw new ParseError("_expected ')' but got '" + reader.getLastChar() + "'"); }
+						if (reader.getLastChar() != ')')
+							throw new ParseError("_expected ')' but got '" + reader.getLastChar() + "'");
 						result = makeAppl(makeAFun(funname, list.length, true), list);
 					}
 					c = reader.readSkippingWS();
 				}
 				else
-				{
 					result = makeAppl(makeAFun(funname, 0, true));
-				}
 
 				break;
 
 			case '(':
 				c = reader.readSkippingWS();
-				if (c == -1) { throw new ParseError("premature EOF encountered."); }
+				if (c == -1)
+					throw new ParseError("premature EOF encountered.");
 				if (reader.getLastChar() == ')')
-				{
 					result = makeAppl(makeAFun("", 0, false));
-				}
 				else
 				{
 					final ATerm[] list = parseATermsArray(reader);
 
-					if (reader.getLastChar() != ')') { throw new ParseError("_expected ')' but got '" + (char) reader.getLastChar() + "'"); }
+					if (reader.getLastChar() != ')')
+						throw new ParseError("_expected ')' but got '" + (char) reader.getLastChar() + "'");
 					result = makeAppl(makeAFun("", list.length, false), list);
 				}
 				c = reader.readSkippingWS();
@@ -638,29 +617,25 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 					if (reader.getLastChar() == '(')
 					{
 						c = reader.readSkippingWS();
-						if (c == -1) { throw new ParseError("premature EOF encountered."); }
+						if (c == -1)
+							throw new ParseError("premature EOF encountered.");
 						if (reader.getLastChar() == ')')
-						{
 							result = makeAppl(makeAFun(funname, 0, false));
-						}
 						else
 						{
 							final ATerm[] list = parseATermsArray(reader);
 
-							if (reader.getLastChar() != ')') { throw new ParseError("_expected ')' but got '" + (char) reader.getLastChar() + "'"); }
+							if (reader.getLastChar() != ')')
+								throw new ParseError("_expected ')' but got '" + (char) reader.getLastChar() + "'");
 							result = makeAppl(makeAFun(funname, list.length, false), list);
 						}
 						c = reader.readSkippingWS();
 					}
 					else
-					{
 						result = makeAppl(makeAFun(funname, 0, false));
-					}
 				}
 				else
-				{
 					throw new ParseError("illegal character: '" + (char) reader.getLastChar() + "'");
-				}
 		}
 
 		if (reader.getLastChar() == '{')
@@ -669,12 +644,13 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 			if (reader.readSkippingWS() == '}')
 			{
 				reader.readSkippingWS();
-				annos = empty;
+				annos = _empty;
 			}
 			else
 			{
 				annos = parseATerms(reader);
-				if (reader.getLastChar() != '}') { throw new ParseError("'}' _expected '" + (char) reader.getLastChar() + "'"); }
+				if (reader.getLastChar() != '}')
+					throw new ParseError("'}' _expected '" + (char) reader.getLastChar() + "'");
 				reader.readSkippingWS();
 			}
 			result = result.setAnnotations(annos);
@@ -869,7 +845,8 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 		final ATermReader reader = new ATermReader(new BufferedReader(new InputStreamReader(stream)));
 		reader.readSkippingWS();
 
-		if (reader.getLastChar() != '!') { throw new IOException("not a openllet.shared.hash text file!"); }
+		if (reader.getLastChar() != '!')
+			throw new IOException("not a openllet.shared.hash text file!");
 
 		reader.readSkippingWS();
 
@@ -894,9 +871,7 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 		final byte[] buffer = new byte[4096];
 		int nrOfBytesRead;
 		while ((nrOfBytesRead = stream.read(buffer, 0, buffer.length)) != -1)
-		{
 			baos.write(buffer, 0, nrOfBytesRead);
-		}
 		return BinaryReader.readTermFromSAFString(this, baos.toByteArray());
 	}
 
@@ -935,13 +910,11 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 					return readShiftFromFile(stream, typeByte);
 				else
 					if (firstToken == 0)
-					{
 						try (final BufferedInputStream bis = new BufferedInputStream(stream))
 						{
 							if (BAFReader.isBinaryATerm(bis))
 								return readFromBinaryFile(bis, true);
 						}
-					}
 			}
 		}
 
@@ -989,9 +962,7 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 				final int nrOfArguments = appl.getArity();
 				final ATerm[] newArguments = new ATerm[nrOfArguments];
 				for (int i = nrOfArguments - 1; i >= 0; i--)
-				{
 					newArguments[i] = importTerm(appl.getArgument(i));
-				}
 
 				result = makeAppl(fun, newArguments);
 				break;
@@ -999,7 +970,7 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 				final ATermList list = (ATermList) term;
 				if (list.isEmpty())
 				{
-					result = empty;
+					result = _empty;
 					break;
 				}
 				final ATerm first = importTerm(list.getFirst());
@@ -1091,9 +1062,11 @@ class ATermReader
 
 	public void storeNextTerm(final ATerm t, final int size)
 	{
-		if (table == null) { return; }
+		if (table == null)
+			return;
 
-		if (size <= PureFactory.abbrevSize(nr_terms)) { return; }
+		if (size <= PureFactory.abbrevSize(nr_terms))
+			return;
 
 		if (nr_terms == table.length)
 		{
@@ -1107,7 +1080,8 @@ class ATermReader
 
 	public ATerm getTerm(final int index)
 	{
-		if (index < 0 || index >= nr_terms) { throw new OpenError("illegal index"); }
+		if (index < 0 || index >= nr_terms)
+			throw new OpenError("illegal index");
 		return table[index];
 	}
 
@@ -1120,9 +1094,7 @@ class ATermReader
 		}
 
 		if (limit == -1)
-		{
 			last_char = -1;
-		}
 		else
 		{
 			last_char = buffer[bufferPos++];
@@ -1135,9 +1107,8 @@ class ATermReader
 	public int readSkippingWS() throws IOException
 	{
 		do
-		{
 			last_char = read();
-		} while (Character.isWhitespace(last_char));
+		while (Character.isWhitespace(last_char));
 
 		return last_char;
 
@@ -1146,9 +1117,7 @@ class ATermReader
 	public int skipWS() throws IOException
 	{
 		while (Character.isWhitespace(last_char))
-		{
 			last_char = read();
-		}
 
 		return last_char;
 	}
@@ -1158,11 +1127,13 @@ class ATermReader
 		int val = Character.digit(last_char, 8);
 		val += Character.digit(read(), 8);
 
-		if (val < 0) { throw new ParseError("octal must have 3 octdigits."); }
+		if (val < 0)
+			throw new ParseError("octal must have 3 octdigits.");
 
 		val += Character.digit(read(), 8);
 
-		if (val < 0) { throw new ParseError("octal must have 3 octdigits"); }
+		if (val < 0)
+			throw new ParseError("octal must have 3 octdigits");
 
 		return val;
 	}

@@ -38,6 +38,7 @@ import openllet.aterm.ATermList;
 import openllet.aterm.ATermPlaceholder;
 import openllet.aterm.Visitor;
 import openllet.atom.SList;
+import openllet.shared.hash.HashFunctions;
 import openllet.shared.hash.SharedObject;
 
 public class ATermListImpl extends ATermImpl implements ATermList
@@ -84,11 +85,13 @@ public class ATermListImpl extends ATermImpl implements ATermList
 	 * @param first x
 	 * @param next x
 	 */
+	@Deprecated
 	protected void init(final int hashCode, final ATermList annos, final ATerm first, final ATermList next)
 	{
 		super.init(hashCode, annos);
 		_first = first;
 		_next = next;
+
 		if (first == null && next == null)
 			_length = 0;
 		else
@@ -108,7 +111,7 @@ public class ATermListImpl extends ATermImpl implements ATermList
 		_next = next;
 		internSetAnnotations(annos);
 		setHashCode(hashFunction());
-		// super.init(hashCode, annos);
+
 		if (first == null && next == null)
 			_length = 0;
 		else
@@ -598,54 +601,11 @@ public class ATermListImpl extends ATermImpl implements ATermList
 		int magic = 0;
 		for (int x = Integer.MIN_VALUE; x < Integer.MAX_VALUE; x++)
 		{
-			/* Set up the internal state */
-			int a = 0x9e3779b9; /* the golden ratio; an arbitrary value */
-			int b = 0x9e3779b9; /* the golden ratio; an arbitrary value */
-			int c = 3; /* the previous hash value */
-
-			/*------------------------------------- handle the last 11 bytes */
-			a += x << 16;
-
-			a -= b;
-			a -= c;
-			a ^= c >> 13;
-			b -= c;
-			b -= a;
-			b ^= a << 8;
-			c -= a;
-			c -= b;
-			c ^= b >> 13;
-			a -= b;
-			a -= c;
-			a ^= c >> 12;
-			b -= c;
-			b -= a;
-			b ^= a << 16;
-			c -= a;
-			c -= b;
-			c ^= b >> 5;
-			a -= b;
-			a -= c;
-			a ^= c >> 3;
-			b -= c;
-			b -= a;
-			b ^= a << 10;
-			c -= a;
-			c -= b;
-			c ^= b >> 15;
+			final int a = GOLDEN_RATIO + (x << 16);
+			final int c = HashFunctions.mix(a, GOLDEN_RATIO, 3);
 
 			if (c == x)
-			{
-				System.out.println("magic x = " + x);  // TODO : remove me
 				magic = x;
-				//return x;
-			}
-
-			if (x % 100000000 == 0)
-			{
-				System.out.println("x = " + x); // TODO : remove me
-				System.exit(0);
-			}
 		}
 
 		return magic;
@@ -653,49 +613,15 @@ public class ATermListImpl extends ATermImpl implements ATermList
 
 	private int hashFunction()
 	{
-		/* Set up the internal state */
-		int a = 0x9e3779b9; /* the golden ratio; an arbitrary value */
-		int b = 0x9e3779b9; /* the golden ratio; an arbitrary value */
-		int c = 3; /* the previous hash value */
+		int a = GOLDEN_RATIO + (getAnnotations().hashCode() << 16);
 
-		/*------------------------------------- handle the last 11 bytes */
-		a += getAnnotations().hashCode() << 16;
 		if (_next != null && _first != null)
 		{
 			a += _next.hashCode() << 8;
 			a += _first.hashCode();
 		}
 
-		a -= b;
-		a -= c;
-		a ^= c >> 13;
-		b -= c;
-		b -= a;
-		b ^= a << 8;
-		c -= a;
-		c -= b;
-		c ^= b >> 13;
-		a -= b;
-		a -= c;
-		a ^= c >> 12;
-		b -= c;
-		b -= a;
-		b ^= a << 16;
-		c -= a;
-		c -= b;
-		c ^= b >> 5;
-		a -= b;
-		a -= c;
-		a ^= c >> 3;
-		b -= c;
-		b -= a;
-		b ^= a << 10;
-		c -= a;
-		c -= b;
-		c ^= b >> 15;
-
-		/*-------------------------------------------- report the result */
-		return c;
+		return HashFunctions.mix(a, GOLDEN_RATIO, 3);
 	}
 
 }

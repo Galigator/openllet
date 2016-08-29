@@ -29,6 +29,7 @@
 package openllet.aterm.pure;
 
 import java.util.List;
+
 import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
@@ -42,16 +43,6 @@ import openllet.shared.hash.SharedObject;
 public class ATermRealImpl extends ATermImpl implements ATermReal
 {
 	private double _value;
-
-	/**
-	 * depricated Use the new constructor instead.
-	 * 
-	 * @param factory x
-	 */
-	protected ATermRealImpl(final PureFactory factory)
-	{
-		super(factory);
-	}
 
 	protected ATermRealImpl(final PureFactory factory, final ATermList annos, final double value)
 	{
@@ -70,11 +61,12 @@ public class ATermRealImpl extends ATermImpl implements ATermReal
 
 	/**
 	 * depricated Use the new constructor instead.
-	 * 
+	 *
 	 * @param hashCode x
 	 * @param annos x
-	 * @param _value x
+	 * @param value x
 	 */
+	@Deprecated
 	protected void init(final int hashCode, final ATermList annos, final double value)
 	{
 		super.init(hashCode, annos);
@@ -96,7 +88,7 @@ public class ATermRealImpl extends ATermImpl implements ATermReal
 			if (peer.getType() != getType())
 				return false;
 
-			return (peer.getReal() == _value && peer.getAnnotations().equals(getAnnotations()));
+			return peer.getReal() == _value && peer.getAnnotations().equals(getAnnotations());
 		}
 
 		return false;
@@ -105,7 +97,8 @@ public class ATermRealImpl extends ATermImpl implements ATermReal
 	@Override
 	protected boolean match(final ATerm pattern, final List<Object> list)
 	{
-		if (equals(pattern)) { return true; }
+		if (equals(pattern))
+			return true;
 
 		if (pattern.getType() == ATerm.PLACEHOLDER)
 		{
