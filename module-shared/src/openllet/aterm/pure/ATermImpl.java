@@ -59,6 +59,7 @@ public abstract class ATermImpl extends ATermVisitableImpl implements ATerm, Sha
 	 *
 	 * @param factory x
 	 */
+	@Deprecated
 	protected ATermImpl(final PureFactory factory)
 	{
 		super();

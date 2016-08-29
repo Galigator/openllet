@@ -51,6 +51,7 @@ public class AFunImpl extends ATermImpl implements AFun
 	 *
 	 * @param _factory x
 	 */
+	@Deprecated
 	protected AFunImpl(final PureFactory factory)
 	{
 		super(factory);
@@ -347,17 +348,17 @@ public class AFunImpl extends ATermImpl implements AFun
 		return v.visitAFun(this);
 	}
 
-	@SuppressWarnings({ "fallthrough", "incomplete-switch" })
+	@SuppressWarnings("fallthrough")
 	private int hashFunction()
 	{
-		int a, b, c;
-		/* Set up the internal state */
-		a = b = GOLDEN_RATIO;
-		/*------------------------------------- handle the last 11 bytes */
+		int a = GOLDEN_RATIO;
+		int b = GOLDEN_RATIO;
+
 		final int len = _name.length();
 		if (len >= 12)
 			return hashFunction2();
-		c = _isQuoted ? 7 * _arity + 1 : _arity + 1;
+
+		int c = _isQuoted ? 7 * _arity + 1 : _arity + 1;
 		c += len;
 		switch (len)
 		{
@@ -384,56 +385,27 @@ public class AFunImpl extends ATermImpl implements AFun
 				a += _name.charAt(1) << 8;
 			case 1:
 				a += _name.charAt(0);
-				/* case 0: nothing left to add */
+			default:
+				return HashFunctions.mix(a, b, c);
 		}
-
-		a -= b;
-		a -= c;
-		a ^= c >> 13;
-		b -= c;
-		b -= a;
-		b ^= a << 8;
-		c -= a;
-		c -= b;
-		c ^= b >> 13;
-		a -= b;
-		a -= c;
-		a ^= c >> 12;
-		b -= c;
-		b -= a;
-		b ^= a << 16;
-		c -= a;
-		c -= b;
-		c ^= b >> 5;
-		a -= b;
-		a -= c;
-		a ^= c >> 3;
-		b -= c;
-		b -= a;
-		b ^= a << 10;
-		c -= a;
-		c -= b;
-		c ^= b >> 15;
-
-		return c;
 	}
 
-	@SuppressWarnings({ "fallthrough", "incomplete-switch" })
+	/**
+	 * Handle the last 11 bytes
+	 */
+	@SuppressWarnings("fallthrough")
 	private int hashFunction2()
 	{
-		int offset = 0;
 		final int count = _name.length();
 		final char[] source = new char[count];
 
-		offset = 0;
 		_name.getChars(0, count, source, 0);
-		int a, b, c;
-		/* Set up the internal state */
 		int len = count;
-		a = b = GOLDEN_RATIO; /* the golden ratio; an arbitrary value */
-		c = _isQuoted ? 7 * (_arity + 1) : _arity + 1; // to avoid collison
-		/*------------------------------------- handle the last 11 bytes */
-		int k = offset;
+		int a = GOLDEN_RATIO;
+		int b = GOLDEN_RATIO;
+
+		int c = _isQuoted ? 7 * (_arity + 1) : _arity + 1; // to avoid collison
+		int k = 0;
 
 		while (len >= 12)
 		{
@@ -472,7 +444,8 @@ public class AFunImpl extends ATermImpl implements AFun
 			k += 12;
 			len -= 12;
 		}
-		/*---------------------------------------- handle most of the key */
+
+		// Handle most of the key
 		c += count;
 		switch (len)
 		{
@@ -499,10 +472,8 @@ public class AFunImpl extends ATermImpl implements AFun
 				a += source[k + 1] << 8;
 			case 1:
 				a += source[k + 0];
-				/* case 0: nothing left to add */
+			default:
+				return HashFunctions.mix(a, b, c);
 		}
-
-		return HashFunctions.mix(a, b, c);
 	}
-
 }

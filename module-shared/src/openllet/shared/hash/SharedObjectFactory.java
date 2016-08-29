@@ -40,8 +40,6 @@ import openllet.atom.OpenError;
  */
 public class SharedObjectFactory
 {
-	@SuppressWarnings("unused")
-	private static int DEFAULT_TERM_TABLE_SIZE = 16; // means 2^16 entries
 	private final static int DEFAULT_NR_OF_SEGMENTS_BITSIZE = 5;
 
 	private final Segment[] _segments;
@@ -450,7 +448,7 @@ public class SharedObjectFactory
 
 			// Find the object (lock free).
 			int position = hash & hashMask;
-			Entry e = currentEntries[position]; 
+			Entry e = currentEntries[position];
 			if (e != null)
 				do
 				{

@@ -49,6 +49,7 @@ public class ATermBlobImpl extends ATermImpl implements ATermBlob
 	 *
 	 * @param factory x
 	 */
+	@Deprecated
 	protected ATermBlobImpl(final PureFactory factory)
 	{
 		super(factory);

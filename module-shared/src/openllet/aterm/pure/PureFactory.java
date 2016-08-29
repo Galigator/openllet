@@ -66,7 +66,7 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 	 * empty.hashcode = empty.getAnnotations().hashCode
 	 * this magic value can be found using: findEmptyHashCode()
 	 */
-	public final static int _fixPoint = 240146486;
+	public final static int FIX_POINT = 240146486;
 
 	private final ATermList _empty;
 
@@ -97,9 +97,9 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 		super();
 		final ATermListImpl protoList = new ATermListImpl(this);
 
-		protoList.init(_fixPoint, null, null, null);
+		protoList.init(FIX_POINT, null, null, null);
 		_empty = (ATermList) build(protoList);
-		((ATermListImpl) _empty).init(_fixPoint, _empty, null, null);
+		((ATermListImpl) _empty).init(FIX_POINT, _empty, null, null);
 	}
 
 	@Override

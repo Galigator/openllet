@@ -37,6 +37,7 @@ import openllet.aterm.ATermList;
 import openllet.aterm.ATermLong;
 import openllet.aterm.ATermPlaceholder;
 import openllet.aterm.Visitor;
+import openllet.shared.hash.HashFunctions;
 import openllet.shared.hash.SharedObject;
 
 public class ATermLongImpl extends ATermImpl implements ATermLong
@@ -76,8 +77,9 @@ public class ATermLongImpl extends ATermImpl implements ATermLong
 	 * depricated Use the new constructor instead.
 	 *
 	 * @param annos x
-	 * @param _value x
+	 * @param value x
 	 */
+	@Deprecated
 	protected void initHashCode(final ATermList annos, final long value)
 	{
 		_value = value;
@@ -150,45 +152,8 @@ public class ATermLongImpl extends ATermImpl implements ATermLong
 
 	private int hashFunction()
 	{
-		/* Set up the internal state */
-		int a = GOLDEN_RATIO; /* the golden ratio; an arbitrary _value */
-		int b = GOLDEN_RATIO; /* the golden ratio; an arbitrary _value */
-		int c = 2; /* the previous hash _value */
-
-		/*------------------------------------- handle the last 11 bytes */
-		a += getAnnotations().hashCode() << 8;
-		a += _value;
-
-		a -= b;
-		a -= c;
-		a ^= c >> 13;
-		b -= c;
-		b -= a;
-		b ^= a << 8;
-		c -= a;
-		c -= b;
-		c ^= b >> 13;
-		a -= b;
-		a -= c;
-		a ^= c >> 12;
-		b -= c;
-		b -= a;
-		b ^= a << 16;
-		c -= a;
-		c -= b;
-		c ^= b >> 5;
-		a -= b;
-		a -= c;
-		a ^= c >> 3;
-		b -= c;
-		b -= a;
-		b ^= a << 10;
-		c -= a;
-		c -= b;
-		c ^= b >> 15;
-
-		/*-------------------------------------------- report the result */
-		return c;
+		int a = GOLDEN_RATIO + (getAnnotations().hashCode() << 8);
+		a += _value; // FIXME this conversion "long to int" is buggy !
+		return HashFunctions.mix(a, GOLDEN_RATIO, 2);
 	}
-
 }
