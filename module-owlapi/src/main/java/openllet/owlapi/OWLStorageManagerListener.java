@@ -44,6 +44,7 @@ import org.semanticweb.owlapi.model.RemoveAxiom;
 import org.semanticweb.owlapi.model.RemoveImport;
 import org.semanticweb.owlapi.model.RemoveOntologyAnnotation;
 import org.semanticweb.owlapi.model.SetOntologyID;
+import org.semanticweb.owlapi.util.SimpleRenderer;
 import uk.ac.manchester.cs.owl.owlapi.OWLImportsDeclarationImpl;
 
 /**
@@ -175,8 +176,7 @@ public class OWLStorageManagerListener implements OWLOntologyChangeListener
 		// There 4 basic cases, do them all. The other cases that does exists cover ontologies that already have a storage backend.
 		if (change instanceof OWLAxiomChange)
 		{
-
-			ToStringRenderer.setRenderer(() -> ToStringRenderer.getInstance());
+			ToStringRenderer.setRenderer(SimpleRenderer::new);
 			// ToStringRenderer.getRendering(object)
 
 			return ToStringRenderer.getInstance().render(change.getAxiom()).getBytes();
