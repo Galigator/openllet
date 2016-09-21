@@ -66,20 +66,20 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 
 	/**
 	 * add axiom into the ontology.
-	 * 
+	 *
 	 * @param property that carry the data
 	 * @param subject is the root of the property
 	 * @param value is the target of the property
 	 * @since 2.5.1
 	 */
-	default public void addObjectPropertyAxiom(final OWLObjectProperty property, final OWLIndividual subject, final OWLIndividual value)
+	default public void addObjectPropertyAxiom(final OWLObjectPropertyExpression property, final OWLIndividual subject, final OWLIndividual value)
 	{
 		addAxiom(getFactory().getOWLObjectPropertyAssertionAxiom(property, subject, value));
 	}
 
 	/**
 	 * add axiom into the ontology.
-	 * 
+	 *
 	 * @param property that carry the data
 	 * @param subject is the root of the property
 	 * @param literal is the target of the property
@@ -92,7 +92,7 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 
 	/**
 	 * add axiom into the ontology.
-	 * 
+	 *
 	 * @param property that carry the data
 	 * @param subject is the root of the property
 	 * @param value is the target of the property
@@ -105,7 +105,7 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 
 	/**
 	 * add axiom into the ontology.
-	 * 
+	 *
 	 * @param property that carry the data
 	 * @param subject is the root of the property
 	 * @param value is the target of the property
@@ -118,7 +118,7 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 
 	/**
 	 * add axiom into the ontology.
-	 * 
+	 *
 	 * @param property that carry the data
 	 * @param subject is the root of the property
 	 * @param value is the target of the property
@@ -131,7 +131,7 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 
 	/**
 	 * add axiom into the ontology.
-	 * 
+	 *
 	 * @param property that carry the data
 	 * @param subject is the root of the property
 	 * @param value is the target of the property
@@ -144,7 +144,7 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 
 	/**
 	 * add axiom into the ontology.
-	 * 
+	 *
 	 * @param clazz that will have the individual
 	 * @param subject is the individual that will receive the assertion.
 	 * @since 2.5.1
@@ -156,20 +156,20 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 
 	/**
 	 * remove axiom from the ontology
-	 * 
+	 *
 	 * @param property that carry the data
 	 * @param subject is the root of the property
 	 * @param value is the target of the property
 	 * @since 2.5.1
 	 */
-	default public void removeObjectPropertyAxiom(final OWLObjectProperty property, final OWLIndividual subject, final OWLIndividual value)
+	default public void removeObjectPropertyAxiom(final OWLObjectPropertyExpression property, final OWLIndividual subject, final OWLIndividual value)
 	{
 		removeAxiom(getFactory().getOWLObjectPropertyAssertionAxiom(property, subject, value));
 	}
 
 	/**
 	 * remove axiom from the ontology
-	 * 
+	 *
 	 * @param property that carry the data
 	 * @param subject is the root of the property
 	 * @param literal is the target of the property
@@ -182,7 +182,7 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 
 	/**
 	 * Remove all the value of an data property that are related to an individual. This function is slow and should be optmized.
-	 * 
+	 *
 	 * @param property to remove
 	 * @param subject to consider.
 	 * @since 2.5.1
@@ -194,7 +194,7 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 
 	/**
 	 * Remove all the value of an data property that are related to an individual. This function is slow and should be optmized.
-	 * 
+	 *
 	 * @param property to remove
 	 * @param subject to consider.
 	 * @since 2.5.1
@@ -206,7 +206,7 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 
 	/**
 	 * Remove all the target of an object property that are related to an individual. This function is slow and should be optimized.
-	 * 
+	 *
 	 * @param property to remove
 	 * @param subject to consider.
 	 * @since 2.5.1
@@ -218,7 +218,7 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 
 	/**
 	 * Remove all the target of an object property that are related to an individual. This function is slow and should be optimized.
-	 * 
+	 *
 	 * @param property to remove
 	 * @param subject to consider.
 	 * @since 2.5.1
@@ -268,7 +268,7 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 
 	/**
 	 * Declare the individual and add it a given class
-	 * 
+	 *
 	 * @param owlClazz already declare in this ontology.
 	 * @param individual to declare in this ontology.
 	 * @return the owl individual
@@ -283,7 +283,7 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 
 	/**
 	 * Declare the individual and add it a given class
-	 * 
+	 *
 	 * @param owlClazz already declare in this ontology.
 	 * @param individual as full iri
 	 * @return the owl individual
@@ -299,7 +299,7 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	/**
 	 * To avoid problem on declaration of the individual, this method get template of individual : class + namespace + name. And add some random around the
 	 * name.
-	 * 
+	 *
 	 * @param owlClazz that must be bind to the individual
 	 * @param namespace of the individual to create.
 	 * @param name of the individual to create.
@@ -450,7 +450,7 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	 * @return one object
 	 * @since 2.5.1
 	 */
-	default Optional<OWLNamedIndividual> getObject(final OWLNamedIndividual subject, final OWLObjectProperty property)
+	default Optional<OWLNamedIndividual> getObject(final OWLNamedIndividual subject, final OWLObjectPropertyExpression property)
 	{
 		return getObjects(subject, property).findAny();
 	}
@@ -497,7 +497,7 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	 * @param object target
 	 * @since 2.5.1
 	 */
-	default void addObject(final OWLNamedIndividual subject, final OWLObjectProperty property, final OWLNamedIndividual object)
+	default void addObject(final OWLNamedIndividual subject, final OWLObjectPropertyExpression property, final OWLNamedIndividual object)
 	{
 		addObjectPropertyAxiom(property, subject, object);
 	}
