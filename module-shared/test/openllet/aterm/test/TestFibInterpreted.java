@@ -40,7 +40,7 @@ import org.junit.Test;
 public class TestFibInterpreted
 {
 
-	private ATermFactory factory;
+	private ATermFactory _factory;
 
 	private AFun zero, suc, plus, fib;
 	private ATermAppl tzero;
@@ -52,14 +52,14 @@ public class TestFibInterpreted
 	@Before
 	public void setUp()
 	{
-		this.factory = new PureFactory();
+		this._factory = new PureFactory();
 
-		this.zero = factory.makeAFun("zero", 0, false);
-		this.suc = factory.makeAFun("suc", 1, false);
-		this.plus = factory.makeAFun("plus", 2, false);
-		this.fib = factory.makeAFun("fib", 1, false);
-		this.tzero = factory.makeAppl(this.zero);
-		this.fail = factory.parse("fail");
+		this.zero = _factory.makeAFun("zero", 0, false);
+		this.suc = _factory.makeAFun("suc", 1, false);
+		this.plus = _factory.makeAFun("plus", 2, false);
+		this.fib = _factory.makeAFun("fib", 1, false);
+		this.tzero = _factory.makeAppl(this.zero);
+		this.fail = _factory.parse("fail");
 
 		this.initRules();
 	}
@@ -81,7 +81,7 @@ public class TestFibInterpreted
 	public static TestFibInterpreted newTestFibInterpreted(ATermFactory factory)
 	{
 		final TestFibInterpreted t = new TestFibInterpreted();
-		t.factory = factory;
+		t._factory = factory;
 
 		t.zero = factory.makeAFun("zero", 0, false);
 		t.suc = factory.makeAFun("suc", 1, false);
@@ -100,38 +100,38 @@ public class TestFibInterpreted
 		int ruleNumber = 0;
 
 		// fib(zero) -> suc(zero)
-		lhs[ruleNumber] = factory.parse("fib(zero)");
-		rhs[ruleNumber] = factory.parse("suc(zero)");
+		lhs[ruleNumber] = _factory.parse("fib(zero)");
+		rhs[ruleNumber] = _factory.parse("suc(zero)");
 		ruleNumber++;
 
 		// fib(suc(zero)) -> suc(zero)
-		lhs[ruleNumber] = factory.parse("fib(suc(zero))");
-		rhs[ruleNumber] = factory.parse("suc(zero)");
+		lhs[ruleNumber] = _factory.parse("fib(suc(zero))");
+		rhs[ruleNumber] = _factory.parse("suc(zero)");
 		ruleNumber++;
 
 		// fib(suc(suc(X))) -> plus(fib(X),fib(suc(X)))
-		lhs[ruleNumber] = factory.parse("fib(suc(suc(<term>)))");
-		rhs[ruleNumber] = factory.parse("plus(fib(<term>),fib(suc(<term>)))");
+		lhs[ruleNumber] = _factory.parse("fib(suc(suc(<term>)))");
+		rhs[ruleNumber] = _factory.parse("plus(fib(<term>),fib(suc(<term>)))");
 		ruleNumber++;
 
 		// plus(zero,X) -> X
-		lhs[ruleNumber] = factory.parse("plus(zero,<term>)");
-		rhs[ruleNumber] = factory.parse("<term>");
+		lhs[ruleNumber] = _factory.parse("plus(zero,<term>)");
+		rhs[ruleNumber] = _factory.parse("<term>");
 		ruleNumber++;
 
 		// plus(suc(X),Y) -> plus(X,suc(Y))
-		lhs[ruleNumber] = factory.parse("plus(suc(<term>),<term>)");
-		rhs[ruleNumber] = factory.parse("plus(<term>,suc(<term>))");
+		lhs[ruleNumber] = _factory.parse("plus(suc(<term>),<term>)");
+		rhs[ruleNumber] = _factory.parse("plus(<term>,suc(<term>))");
 		ruleNumber++;
 
 		// congruence (suc)
-		lhs[ruleNumber] = factory.parse("suc(<term>)");
-		rhs[ruleNumber] = factory.parse("suc(<term>)");
+		lhs[ruleNumber] = _factory.parse("suc(<term>)");
+		rhs[ruleNumber] = _factory.parse("suc(<term>)");
 		ruleNumber++;
 
 		// congruence (plus)
-		lhs[ruleNumber] = factory.parse("plus(<term>,<term>)");
-		rhs[ruleNumber] = factory.parse("plus(<term>,<term>)");
+		lhs[ruleNumber] = _factory.parse("plus(<term>,<term>)");
+		rhs[ruleNumber] = _factory.parse("plus(<term>,<term>)");
 		ruleNumber++;
 
 	}
@@ -157,18 +157,18 @@ public class TestFibInterpreted
 		{
 			final ATerm X = (ATerm) list.get(0);
 			list.add(X);
-			return factory.make(rhs[ruleNumber], list);
+			return _factory.make(rhs[ruleNumber], list);
 		}
 		ruleNumber++;
 
 		// plus(zero,X) -> X
 		list = subject.match(lhs[ruleNumber]);
-		if (list != null) { return factory.make(rhs[ruleNumber], list); }
+		if (list != null) { return _factory.make(rhs[ruleNumber], list); }
 		ruleNumber++;
 
 		// plus(suc(X),Y) -> plus(X,suc(Y))
 		list = subject.match(lhs[ruleNumber]);
-		if (list != null) { return factory.make(rhs[ruleNumber], list); }
+		if (list != null) { return _factory.make(rhs[ruleNumber], list); }
 		ruleNumber++;
 
 		// congruence (suc)
@@ -181,7 +181,7 @@ public class TestFibInterpreted
 			if (Xp.equals(fail)) { return fail; }
 			list.clear();
 			list.add(Xp);
-			return factory.make(rhs[ruleNumber], list);
+			return _factory.make(rhs[ruleNumber], list);
 		}
 		ruleNumber++;
 
@@ -200,13 +200,13 @@ public class TestFibInterpreted
 				list.clear();
 				list.add(X);
 				list.add(Yp);
-				return factory.make(rhs[ruleNumber], list);
+				return _factory.make(rhs[ruleNumber], list);
 			}
 			final ATerm Y = (ATerm) list.get(1);
 			list.clear();
 			list.add(Xp);
 			list.add(Y);
-			return factory.make(rhs[ruleNumber], list);
+			return _factory.make(rhs[ruleNumber], list);
 		}
 		ruleNumber++;
 
@@ -230,9 +230,9 @@ public class TestFibInterpreted
 		if (list != null)
 		{
 			final ATerm X = (ATerm) list.get(0);
-			final ATerm X1 = normalize(factory.makeAppl(fib, X));
-			final ATerm X2 = normalize(factory.makeAppl(fib, factory.makeAppl(suc, X)));
-			return factory.makeAppl(plus, X1, X2);
+			final ATerm X1 = normalize(_factory.makeAppl(fib, X));
+			final ATerm X2 = normalize(_factory.makeAppl(fib, _factory.makeAppl(suc, X)));
+			return _factory.makeAppl(plus, X1, X2);
 		}
 
 		// plus(zero,X) -> X
@@ -241,7 +241,7 @@ public class TestFibInterpreted
 
 		// plus(suc(X),Y) -> plus(X,suc(Y)))
 		list = subject.match(lhs[4]);
-		if (list != null) { return factory.make(rhs[4], list); }
+		if (list != null) { return _factory.make(rhs[4], list); }
 
 		return fail;
 	}
@@ -263,9 +263,9 @@ public class TestFibInterpreted
 		ATermAppl N = tzero;
 		for (int i = 0; i < n; i++)
 		{
-			N = factory.makeAppl(suc, N);
+			N = _factory.makeAppl(suc, N);
 		}
-		final ATerm tfib = factory.makeAppl(fib, N);
+		final ATerm tfib = _factory.makeAppl(fib, N);
 		normalize(tfib);
 	}
 }

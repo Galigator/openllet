@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermList;
@@ -105,7 +106,7 @@ public class BAFReader
 		{
 			final int w1 = in.readInt();
 
-			return (w1 == BAF_MAGIC);
+			return w1 == BAF_MAGIC;
 		}
 		catch (final EOFException e)
 		{
@@ -117,7 +118,7 @@ public class BAFReader
 
 	private static void debug(final String s)
 	{
-		_logger.info(s);
+		_logger.fine(s);
 	}
 
 	private ATerm readTerm(final SymEntry e) throws ParseError, IOException
@@ -186,10 +187,6 @@ public class BAFReader
 				_level--;
 				return _factory.makeList();
 			}
-			case "{_}":
-			{
-				return args[0].setAnnotations((ATermList) args[1]);
-			}
 			case "<_>":
 			{
 				return _factory.makePlaceholder(args[0]);
@@ -229,7 +226,7 @@ public class BAFReader
 			e.nrTerms = v;
 			e.termWidth = bitWidth(v);
 			// FIXME: original code is inconsistent at this point!
-			e.terms = (v == 0) ? null : new ATerm[v];
+			e.terms = v == 0 ? null : new ATerm[v];
 
 			if (arity == 0)
 			{
@@ -347,9 +344,7 @@ public class BAFReader
 			final byte[] b = new byte[l];
 			int v = 0;
 			while (v < b.length)
-			{
 				v += _stream.read(b, v, b.length - v);
-			}
 			return new String(b);
 		}
 
@@ -368,7 +363,7 @@ public class BAFReader
 					_bitBuffer = v;
 					_bitsInBuffer = 8;
 				}
-				val |= (((_bitBuffer & 0x80) != 0) ? mask : 0);
+				val |= (_bitBuffer & 0x80) != 0 ? mask : 0;
 				mask <<= 1;
 				_bitBuffer <<= 1;
 				_bitsInBuffer--;

@@ -598,9 +598,9 @@ public class MiscTests extends AbstractKBTests
 		assertTrue(kb.isSatisfiable(and(value(term("o1")), some(term("invR1"), TOP))));
 	}
 
-	// @Test public void testEconn1() throws Exception {
-	// String ns =
-	// "http://www.mindswap.org/2004/multipleOnt/FactoredOntologies/EasyTests/Easy2/people.owl#";
+	// @Test public void testEconn1() throws Exception 
+	// {
+	// String ns = "http://www.mindswap.org/2004/multipleOnt/FactoredOntologies/EasyTests/Easy2/people.owl#";
 	//
 	// OWLReasoner reasoner = new OWLReasoner();
 	// reasoner.setEconnEnabled( true );
@@ -609,14 +609,10 @@ public class MiscTests extends AbstractKBTests
 	//
 	// assertTrue( reasoner.isConsistent() );
 	//
-	// assertTrue( !reasoner.isSatisfiable( ResourceFactory.createResource( ns +
-	// "Unsat1" ) ) );
-	// assertTrue( !reasoner.isSatisfiable( ResourceFactory.createResource( ns +
-	// "Unsat2" ) ) );
-	// assertTrue( !reasoner.isSatisfiable( ResourceFactory.createResource( ns +
-	// "Unsat3" ) ) );
-	// assertTrue( !reasoner.isSatisfiable( ResourceFactory.createResource( ns +
-	// "Unsat4" ) ) );
+	// assertTrue( !reasoner.isSatisfiable( ResourceFactory.createResource( ns + "Unsat1" ) ) );
+	// assertTrue( !reasoner.isSatisfiable( ResourceFactory.createResource( ns + "Unsat2" ) ) );
+	// assertTrue( !reasoner.isSatisfiable( ResourceFactory.createResource( ns + "Unsat3" ) ) );
+	// assertTrue( !reasoner.isSatisfiable( ResourceFactory.createResource( ns + "Unsat4" ) ) );
 	// }
 
 	@Test

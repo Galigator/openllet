@@ -42,20 +42,18 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
 import openllet.core.OpenlletOptions;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.CollectionUtils;
+import openllet.core.utils.IdentityHashSet;
 
 public class TuBox extends TBoxBase
 {
-
-	private Map<ATermAppl, List<Unfolding>> unfoldingMap;
-
-	private Collection<ATermAppl> termsToNormalize = null;
+	private Map<ATermAppl, List<Unfolding>> _unfoldingMap;
+	private Collection<ATermAppl> _termsToNormalize = null;
 
 	/*
 	 * Constructors
@@ -81,8 +79,8 @@ public class TuBox extends TBoxBase
 
 		added = td.addDef(axiom);
 
-		if (added && termsToNormalize != null)
-			termsToNormalize.add(name);
+		if (added && _termsToNormalize != null)
+			_termsToNormalize.add(name);
 
 		return added;
 	}
@@ -92,8 +90,8 @@ public class TuBox extends TBoxBase
 	{
 		final boolean removed = super.removeDef(axiom);
 
-		if (removed && termsToNormalize != null)
-			termsToNormalize.add((ATermAppl) axiom.getArgument(0));
+		if (removed && _termsToNormalize != null)
+			_termsToNormalize.add((ATermAppl) axiom.getArgument(0));
 
 		return removed;
 	}
@@ -102,13 +100,13 @@ public class TuBox extends TBoxBase
 	{
 		final ATermAppl c = (ATermAppl) axiom.getArgument(0);
 		if (ATermUtils.isPrimitive(c))
-			termsToNormalize.add(c);
+			_termsToNormalize.add(c);
 	}
 
 	public List<Unfolding> unfold(final ATermAppl c)
 	{
-		final List<Unfolding> list = unfoldingMap.get(c);
-		return list != null ? list : Collections.<Unfolding> emptyList();
+		final List<Unfolding> list = _unfoldingMap.get(c);
+		return list != null ? list : Collections.emptyList();
 	}
 
 	/**
@@ -116,18 +114,22 @@ public class TuBox extends TBoxBase
 	 */
 	public void normalize()
 	{
-		if (termsToNormalize == null)
+		if (_termsToNormalize == null)
 		{
-			termsToNormalize = _termhash.keySet();
-			unfoldingMap = CollectionUtils.makeIdentityMap();
+			_termsToNormalize = _termhash.keySet();
+			_unfoldingMap = CollectionUtils.makeIdentityMap();
 		}
-		else
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("Normalizing " + termsToNormalize);
+		_logger.fine(() -> "Normalizing " + _termsToNormalize);
 
-		for (final ATermAppl c : termsToNormalize)
+		for (final ATermAppl c : _termsToNormalize)
 		{
-			final TermDefinition td = _termhash.get(c);
+			final TermDefinition td = getTD(c);
+			if (null == td) // FIXME related to bug 453 @see testUnsatisfiable453
+			{
+				_logger.severe(() -> "While normalizing the TuBox " + c + " has no TermDefinition but was still declare in termsToNormalize");
+				continue;
+			}
+
 			td.clearDependencies();
 
 			final ATermAppl notC = ATermUtils.makeNot(c);
@@ -150,10 +152,10 @@ public class TuBox extends TBoxBase
 					unfoldNotC.add(Unfolding.create(normalizedNot, ds));
 				}
 
-				unfoldingMap.put(notC, unfoldNotC);
+				_unfoldingMap.put(notC, unfoldNotC);
 			}
 			else
-				unfoldingMap.remove(notC);
+				_unfoldingMap.remove(notC);
 
 			for (final ATermAppl subClassAxiom : td.getSubClassAxioms())
 			{
@@ -165,13 +167,12 @@ public class TuBox extends TBoxBase
 			}
 
 			if (!unfoldC.isEmpty())
-				unfoldingMap.put(c, unfoldC);
+				_unfoldingMap.put(c, unfoldC);
 			else
-				unfoldingMap.remove(c);
+				_unfoldingMap.remove(c);
 		}
 
-		termsToNormalize = new HashSet<>();
-		// termsToNormalize = null;
+		_termsToNormalize = new HashSet<>();
 
 		if (OpenlletOptions.USE_ROLE_ABSORPTION)
 			absorbRanges(_tbox);
@@ -179,7 +180,7 @@ public class TuBox extends TBoxBase
 
 	private void absorbRanges(final TBoxExpImpl tbox)
 	{
-		final List<Unfolding> unfoldTop = unfoldingMap.get(ATermUtils.TOP);
+		final List<Unfolding> unfoldTop = _unfoldingMap.get(ATermUtils.TOP);
 		if (unfoldTop == null)
 			return;
 
@@ -227,7 +228,7 @@ public class TuBox extends TBoxBase
 		}
 
 		if (newUnfoldTop.isEmpty())
-			unfoldingMap.remove(ATermUtils.TOP);
+			_unfoldingMap.remove(ATermUtils.TOP);
 
 	}
 
@@ -238,11 +239,10 @@ public class TuBox extends TBoxBase
 	public boolean addIfUnfoldable(final ATermAppl term)
 	{
 		final ATermAppl name = (ATermAppl) term.getArgument(0);
-		final ATermAppl body = (ATermAppl) term.getArgument(1);
-		TermDefinition td = getTD(name);
-
 		if (!ATermUtils.isPrimitive(name))
 			return false;
+
+		TermDefinition td = getTD(name);
 
 		if (td == null)
 			td = new TermDefinition();
@@ -252,19 +252,19 @@ public class TuBox extends TBoxBase
 			return false;
 
 		// Loop Checks
-		final Set<ATermAppl> dependencies = ATermUtils.findPrimitives(body);
-		final Set<ATermAppl> seen = new HashSet<>();
-		if (!td.getDependencies().containsAll(dependencies))
-			for (final ATermAppl current : dependencies)
-			{
-				final boolean result = findTarget(current, name, seen);
-				if (result)
+		final ATermAppl body = (ATermAppl) term.getArgument(1);
+		final Set<ATermAppl> nameDependencies = td.getDependencies();
+		final Set<ATermAppl> bodyDependencies = ATermUtils.findPrimitives(body);
+
+		if (!nameDependencies.containsAll(bodyDependencies))
+		{
+			final Set<ATermAppl> seen = new IdentityHashSet<>(); // Identity hashSet because dependencies are manage on identity hash set
+			for (final ATermAppl current : bodyDependencies)
+				if (findTarget(current, name, seen))
 					return false;
-			}
+		}
 
-		final boolean added = addDef(term);
-
-		return added;
+		return addDef(term);
 	}
 
 	protected boolean findTarget(final ATermAppl term, final ATermAppl target, final Set<ATermAppl> seen)
@@ -302,7 +302,7 @@ public class TuBox extends TBoxBase
 		try
 		{
 			out.append("Tu: [\n");
-			for (final ATermAppl c : unfoldingMap.keySet())
+			for (final ATermAppl c : _unfoldingMap.keySet())
 			{
 				final List<Unfolding> unfoldedList = unfold(c);
 				if (!unfoldedList.isEmpty())

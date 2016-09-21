@@ -34,7 +34,6 @@ import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermBlob;
-import openllet.aterm.ATermList;
 import openllet.aterm.ATermPlaceholder;
 import openllet.aterm.Visitor;
 import openllet.shared.hash.HashFunctions;
@@ -55,13 +54,13 @@ public class ATermBlobImpl extends ATermImpl implements ATermBlob
 		super(factory);
 	}
 
-	protected ATermBlobImpl(final PureFactory factory, final ATermList annos, final byte[] data)
+	protected ATermBlobImpl(final PureFactory factory, final byte[] data)
 	{
-		super(factory, annos);
+		super(factory);
 
 		_data = data;
 
-		setHashCode(HashFunctions.doobs(new Object[] { annos, data }));
+		setHashCode(HashFunctions.doobs(new Object[] { data })); // XXX strange -> comment or remove. 
 	}
 
 	@Override
@@ -78,9 +77,9 @@ public class ATermBlobImpl extends ATermImpl implements ATermBlob
 	 * @param data x
 	 */
 	@Deprecated
-	protected void init(final int hashCode, final ATermList annos, final byte[] data)
+	protected void init(final int hashCode, final byte[] data)
 	{
-		super.init(hashCode, annos);
+		super.init(hashCode);
 		_data = data;
 	}
 
@@ -99,7 +98,7 @@ public class ATermBlobImpl extends ATermImpl implements ATermBlob
 			if (peer.getType() != getType())
 				return false;
 
-			return peer.getBlobData() == _data && peer.getAnnotations().equals(getAnnotations());
+			return peer.getBlobData() == _data;
 		}
 
 		return false;
@@ -139,12 +138,6 @@ public class ATermBlobImpl extends ATermImpl implements ATermBlob
 	public int getBlobSize()
 	{
 		return _data.length;
-	}
-
-	@Override
-	public ATerm setAnnotations(final ATermList annos)
-	{
-		return getPureFactory().makeBlob(_data, annos);
 	}
 
 	@Override

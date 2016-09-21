@@ -37,7 +37,7 @@ import org.junit.Test;
 
 public class TestPrimes
 {
-	private ATermFactory factory;
+	private ATermFactory _factory;
 
 	public void assertTrue(final boolean condition)
 	{
@@ -47,7 +47,7 @@ public class TestPrimes
 	@Before
 	public void setUp()
 	{
-		factory = new PureFactory();
+		_factory = new PureFactory();
 	}
 
 	public final static void main(final String[] args)
@@ -60,14 +60,14 @@ public class TestPrimes
 	@Test
 	public void test1()
 	{
-		assertTrue(getPrimes(30) == factory.parse("[1,2,3,5,7,11,13,17,19,23,29]"));
+		assertTrue(getPrimes(30) == _factory.parse("[1,2,3,5,7,11,13,17,19,23,29]"));
 		assertTrue(getPrimes(500).getLength() == 96);
 	}
 
 	public static TestPrimes newTestPrimes(final ATermFactory factory)
 	{
 		final TestPrimes t = new TestPrimes();
-		t.factory = factory;
+		t._factory = factory;
 		return t;
 	}
 
@@ -93,9 +93,9 @@ public class TestPrimes
 	 */
 	private ATermList generateNumbers(final int max)
 	{
-		ATermList numbers = factory.makeList();
+		ATermList numbers = _factory.makeList();
 		for (int i = max; i > 0; i--)
-			numbers = factory.makeList(factory.makeInt(i), numbers);
+			numbers = _factory.makeList(_factory.makeInt(i), numbers);
 		return numbers;
 	}
 
@@ -109,7 +109,7 @@ public class TestPrimes
 	{
 		ATermList numbers = listOfnumbers;
 
-		ATermList primes = factory.makeList();
+		ATermList primes = _factory.makeList();
 		numbers = numbers.getNext();
 		while (!numbers.isEmpty())
 		{
@@ -117,7 +117,7 @@ public class TestPrimes
 			numbers = filterMultiples(prime.getInt(), numbers);
 			primes = primes.append(prime);
 		}
-		return factory.makeList(factory.makeInt(1), primes);
+		return _factory.makeList(_factory.makeInt(1), primes);
 	}
 
 	/**

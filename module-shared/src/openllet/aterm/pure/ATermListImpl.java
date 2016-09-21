@@ -56,9 +56,9 @@ public class ATermListImpl extends ATermImpl implements ATermList
 		super(factory);
 	}
 
-	protected ATermListImpl(final PureFactory factory, final ATermList annos, final ATerm first, final ATermList next)
+	protected ATermListImpl(final PureFactory factory, final ATerm first, final ATermList next)
 	{
-		super(factory, annos);
+		super(factory);
 
 		_first = first;
 		_next = next;
@@ -71,24 +71,13 @@ public class ATermListImpl extends ATermImpl implements ATermList
 		setHashCode(hashFunction());
 	}
 
-	@Override
-	public int getType()
-	{
-		return ATerm.LIST;
-	}
-
 	/**
 	 * depricated Use the new constructor instead.
-	 *
-	 * @param hashCode x
-	 * @param annos x
-	 * @param first x
-	 * @param next x
 	 */
 	@Deprecated
-	protected void init(final int hashCode, final ATermList annos, final ATerm first, final ATermList next)
+	protected void init(final int hashCode, final ATerm first, final ATermList next)
 	{
-		super.init(hashCode, annos);
+		super.init(hashCode);
 		_first = first;
 		_next = next;
 
@@ -98,6 +87,12 @@ public class ATermListImpl extends ATermImpl implements ATermList
 			_length = 1 + next.getLength();
 	}
 
+	@Override
+	public int getType()
+	{
+		return ATerm.LIST;
+	}
+
 	/**
 	 * depricated Use the new constructor instead.
 	 *
@@ -105,11 +100,10 @@ public class ATermListImpl extends ATermImpl implements ATermList
 	 * @param _first x
 	 * @param _next x
 	 */
-	protected void initHashCode(final ATermList annos, final ATerm first, final ATermList next)
+	protected void initHashCode(final ATerm first, final ATermList next)
 	{
 		_first = first;
 		_next = next;
-		internSetAnnotations(annos);
 		setHashCode(hashFunction());
 
 		if (first == null && next == null)
@@ -133,40 +127,27 @@ public class ATermListImpl extends ATermImpl implements ATermList
 			if (peer.getType() != getType())
 				return false;
 
-			return peer.getFirst() == _first && peer.getNext() == _next && peer.getAnnotations().equals(getAnnotations());
+			return peer.getFirst() == _first && peer.getNext() == _next;
 		}
 
 		return false;
 	}
 
 	@Override
-	public ATermList insert(final ATerm el)
+	public ATermList insert(final ATerm head)
 	{
-		final ATermList tail = !hasAnnotations() ? this : (ATermList) removeAnnotations();
-
-		return getPureFactory().makeList(el, tail);
+		return getPureFactory().makeList(head, this);
 	}
 
 	protected ATermList make(final ATerm head, final ATermList tail)
 	{
-		return make(head, tail, getPureFactory().makeList());
-	}
-
-	protected ATermList make(final ATerm head, final ATermList tail, final ATermList annos)
-	{
-		return getPureFactory().makeList(head, tail, annos);
+		return getPureFactory().makeList(head, tail);
 	}
 
 	@Override
 	public ATermList getEmpty()
 	{
 		return getPureFactory().makeList();
-	}
-
-	@Override
-	public ATerm setAnnotations(final ATermList annos)
-	{
-		return make(_first, _next, annos);
 	}
 
 	@Override
@@ -555,7 +536,7 @@ public class ATermListImpl extends ATermImpl implements ATermList
 
 		}
 
-		return (ATermList) _next.dictPut(key, value).insert(_first).setAnnotations(getAnnotations());
+		return _next.dictPut(key, value).insert(_first);
 	}
 
 	@Override
@@ -569,7 +550,7 @@ public class ATermListImpl extends ATermImpl implements ATermList
 		if (key.equals(pair.getFirst()))
 			return _next;
 
-		return (ATermList) _next.dictRemove(key).insert(_first).setAnnotations(getAnnotations());
+		return _next.dictRemove(key).insert(_first);
 	}
 
 	@Override
@@ -613,7 +594,7 @@ public class ATermListImpl extends ATermImpl implements ATermList
 
 	private int hashFunction()
 	{
-		int a = GOLDEN_RATIO + (getAnnotations().hashCode() << 16);
+		int a = GOLDEN_RATIO;
 
 		if (_next != null && _first != null)
 		{

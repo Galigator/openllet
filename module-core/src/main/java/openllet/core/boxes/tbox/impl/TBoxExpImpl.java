@@ -354,13 +354,11 @@ public class TBoxExpImpl implements TBox
 
 		if (!OpenlletOptions.USE_TRACING)
 		{
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("Cannot remove axioms when PelletOptions.USE_TRACING is false");
+			_logger.fine("Cannot remove axioms when OpenlletOptions.USE_TRACING is false");
 			return false;
 		}
 
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Removing " + ATermUtils.toString(explanationAxiom));
+		_logger.fine(() -> "Removing " + ATermUtils.toString(explanationAxiom));
 
 		// this axiom is being removed so it cannot support any other axiom
 		MultiMapUtils.remove(_reverseExplain, explanationAxiom, dependantAxiom);
@@ -394,7 +392,7 @@ public class TBoxExpImpl implements TBox
 		{
 			// there is no other clashExplanation for this dependant axiom so
 			// we can safely remove it
-			success |= (_tboxAxioms.remove(dependantAxiom) != null);
+			success |= _tboxAxioms.remove(dependantAxiom) != null;
 
 			final AFun fun = dependantAxiom.getAFun();
 			if (fun.equals(ATermUtils.SUBFUN) || fun.equals(ATermUtils.EQCLASSFUN))
@@ -563,7 +561,7 @@ public class TBoxExpImpl implements TBox
 		if (ATermUtils.isPrimitive(c))
 		{
 			final TermDefinition td = _Tu.getTD(c); // Time consuming so we avoid to do it if possible.
-			return (td == null || td.isPrimitive());
+			return td == null || td.isPrimitive();
 		}
 		return false;
 	}

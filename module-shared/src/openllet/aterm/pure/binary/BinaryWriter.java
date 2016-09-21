@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
@@ -51,9 +52,9 @@ import openllet.aterm.ATermReal;
 /**
  * Writes the given ATerm to a (streamable) binary format. Supply the constructor of this class with
  * a ATerm and keep calling the serialize method until the finished() method returns true.
- * 
+ *
  * For example (yes I know this code is crappy, but it's simple):<blockquote>
- * 
+ *
  * <pre>
  * ByteBuffer buffer = ByteBuffer.allocate(8192);
  * BinaryWriter bw = new BinaryWriter(openllet.aterm);
@@ -65,16 +66,14 @@ import openllet.aterm.ATermReal;
  * 		channel.write(buffer); // Write the chunk of data to a channel
  * }
  * </pre>
- * 
+ *
  * </blockquote>
- * 
+ *
  * @author Arnold Lankamp
  */
 public class BinaryWriter extends ATermFwdVoid
 {
 	private final static int ISSHAREDFLAG = 0x00000080;
-	private final static int ANNOSFLAG = 0x00000010;
-
 	private final static int ISFUNSHARED = 0x00000040;
 	private final static int APPLQUOTED = 0x00000020;
 
@@ -97,7 +96,7 @@ public class BinaryWriter extends ATermFwdVoid
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param root is the ATerm that needs to be serialized.
 	 */
 	public BinaryWriter(final ATerm root)
@@ -124,7 +123,7 @@ public class BinaryWriter extends ATermFwdVoid
 	/**
 	 * Serializes the term from the position where it left of the last time this method was called.
 	 * Note that the buffer will be flipped before returned.
-	 * 
+	 *
 	 * @param buffer that will be filled with data.
 	 */
 	public void serialize(final ByteBuffer buffer)
@@ -166,17 +165,17 @@ public class BinaryWriter extends ATermFwdVoid
 
 	/**
 	 * Checks if we are done serializing.
-	 * 
+	 *
 	 * @return true when we are done serializing; false otherwise.
 	 */
 	public boolean isFinished()
 	{
-		return (_currentTerm == null);
+		return _currentTerm == null;
 	}
 
 	/**
 	 * Finds the next term we are going to serialize, based on the current state of the _stack.
-	 * 
+	 *
 	 * @return The next term we are going to serialize.
 	 */
 	private ATerm getNextTerm()
@@ -194,9 +193,7 @@ public class BinaryWriter extends ATermFwdVoid
 			if (term.getChildCount() > current.subTermIndex + 1)
 			{
 				if (term.getType() != ATerm.LIST)
-				{
 					next = term.getChildAt(++current.subTermIndex);
-				}
 				else
 				{
 					final ATermList nextList = current.nextPartOfList;
@@ -210,19 +207,7 @@ public class BinaryWriter extends ATermFwdVoid
 				_stack[++_stackPosition] = child;
 			}
 			else
-				if (!current.annosDone && term.hasAnnotations())
-				{
-					next = term.getAnnotations();
-
-					final ATermMapping annos = new ATermMapping(next);
-					_stack[++_stackPosition] = annos;
-
-					current.annosDone = true;
-				}
-				else
-				{
-					_stackPosition--;
-				}
+				_stackPosition--;
 		}
 
 		return next;
@@ -237,7 +222,7 @@ public class BinaryWriter extends ATermFwdVoid
 		final int stackSize = _stack.length;
 		if (_stackPosition + 1 == stackSize)
 		{
-			final ATermMapping[] newStack = new ATermMapping[(stackSize << 1)];
+			final ATermMapping[] newStack = new ATermMapping[stackSize << 1];
 			System.arraycopy(_stack, 0, newStack, 0, _stack.length);
 			_stack = newStack;
 		}
@@ -245,23 +230,19 @@ public class BinaryWriter extends ATermFwdVoid
 
 	/**
 	 * Returns a header for the given term.
-	 * 
+	 *
 	 * @param term
 	 *            The term we are requesting a header for.
 	 * @return The constructed header.
 	 */
 	private static byte getHeader(final ATerm term)
 	{
-		byte header = (byte) term.getType();
-		if (term.hasAnnotations())
-			header = (byte) (header | ANNOSFLAG);
-
-		return header;
+		return (byte) term.getType();
 	}
 
 	/**
 	 * Serializes the given appl. The function name of the appl can be serialized in chunks.
-	 * 
+	 *
 	 * @see openllet.aterm.ATermFwdVoid#voidVisitAppl(ATermAppl)
 	 */
 	@Override
@@ -315,10 +296,10 @@ public class BinaryWriter extends ATermFwdVoid
 
 			int endIndex = length;
 			final int remaining = _currentBuffer.remaining();
-			if ((_indexInTerm + remaining) < endIndex)
-				endIndex = (_indexInTerm + remaining);
+			if (_indexInTerm + remaining < endIndex)
+				endIndex = _indexInTerm + remaining;
 
-			_currentBuffer.put(_tempNameWriteBuffer, _indexInTerm, (endIndex - _indexInTerm));
+			_currentBuffer.put(_tempNameWriteBuffer, _indexInTerm, endIndex - _indexInTerm);
 			_indexInTerm = endIndex;
 
 			if (_indexInTerm == length)
@@ -331,7 +312,7 @@ public class BinaryWriter extends ATermFwdVoid
 
 	/**
 	 * Serializes the given blob. A blob can be serialized in chunks.
-	 * 
+	 *
 	 * @see openllet.aterm.ATermFwdVoid#voidVisitBlob(ATermBlob)
 	 */
 	@Override
@@ -350,9 +331,7 @@ public class BinaryWriter extends ATermFwdVoid
 		int bytesToWrite = size - _indexInTerm;
 		final int remaining = _currentBuffer.remaining();
 		if (remaining < bytesToWrite)
-		{
 			bytesToWrite = remaining;
-		}
 
 		_currentBuffer.put(blobBytes, _indexInTerm, bytesToWrite);
 		_indexInTerm += bytesToWrite;
@@ -363,7 +342,7 @@ public class BinaryWriter extends ATermFwdVoid
 
 	/**
 	 * Serializes the given int. Ints will always be serialized in one piece.
-	 * 
+	 *
 	 * @see openllet.aterm.ATermFwdVoid#voidVisitInt(ATermInt)
 	 */
 	@Override
@@ -376,7 +355,7 @@ public class BinaryWriter extends ATermFwdVoid
 
 	/**
 	 * Serializes the given long.
-	 * 
+	 *
 	 * @see openllet.aterm.ATermFwdVoid#voidVisitLong(ATermLong)
 	 */
 	@Override
@@ -389,7 +368,7 @@ public class BinaryWriter extends ATermFwdVoid
 
 	/**
 	 * Serializes the given list. List information will always be serialized in one piece.
-	 * 
+	 *
 	 * @see openllet.aterm.ATermFwdVoid#voidVisitList(ATermList)
 	 */
 	@Override
@@ -403,7 +382,7 @@ public class BinaryWriter extends ATermFwdVoid
 
 	/**
 	 * Serializes the given placeholder. Placeholders will always be serialized in one piece.
-	 * 
+	 *
 	 * @see openllet.aterm.ATermFwdVoid#voidVisitPlaceholder(ATermPlaceholder)
 	 */
 	@Override
@@ -416,7 +395,7 @@ public class BinaryWriter extends ATermFwdVoid
 
 	/**
 	 * Serializes the given real. Reals will always be serialized in one peice.
-	 * 
+	 *
 	 * @see openllet.aterm.ATermFwdVoid#voidVisitReal(ATermReal)
 	 */
 	@Override
@@ -437,7 +416,7 @@ public class BinaryWriter extends ATermFwdVoid
 	 * used to indicate that more bytes coming, if this is set to 0 we know we are done. Since we
 	 * are mostly writing small values, this will save a considerable amount of space. On the other
 	 * hand a large number will occupy 5 bytes instead of the regular 4.
-	 * 
+	 *
 	 * @param value
 	 *            The integer that needs to be split and written.
 	 */
@@ -450,37 +429,37 @@ public class BinaryWriter extends ATermFwdVoid
 			_currentBuffer.put((byte) (intValue & SEVENBITS));
 			return;
 		}
-		_currentBuffer.put((byte) ((intValue & SEVENBITS) | SIGNBIT));
+		_currentBuffer.put((byte) (intValue & SEVENBITS | SIGNBIT));
 
 		if ((intValue & 0xffffc000) == 0)
 		{
-			_currentBuffer.put((byte) ((intValue >>> 7) & SEVENBITS));
+			_currentBuffer.put((byte) (intValue >>> 7 & SEVENBITS));
 			return;
 		}
-		_currentBuffer.put((byte) (((intValue >>> 7) & SEVENBITS) | SIGNBIT));
+		_currentBuffer.put((byte) (intValue >>> 7 & SEVENBITS | SIGNBIT));
 
 		if ((intValue & 0xffe00000) == 0)
 		{
-			_currentBuffer.put((byte) ((intValue >>> 14) & SEVENBITS));
+			_currentBuffer.put((byte) (intValue >>> 14 & SEVENBITS));
 			return;
 		}
-		_currentBuffer.put((byte) (((intValue >>> 14) & SEVENBITS) | SIGNBIT));
+		_currentBuffer.put((byte) (intValue >>> 14 & SEVENBITS | SIGNBIT));
 
 		if ((intValue & 0xf0000000) == 0)
 		{
-			_currentBuffer.put((byte) ((intValue >>> 21) & SEVENBITS));
+			_currentBuffer.put((byte) (intValue >>> 21 & SEVENBITS));
 			return;
 		}
-		_currentBuffer.put((byte) (((intValue >>> 21) & SEVENBITS) | SIGNBIT));
+		_currentBuffer.put((byte) (intValue >>> 21 & SEVENBITS | SIGNBIT));
 
-		_currentBuffer.put((byte) ((intValue >>> 28) & SEVENBITS));
+		_currentBuffer.put((byte) (intValue >>> 28 & SEVENBITS));
 	}
 
 	/**
 	 * Splits the given double in separate bytes and writes it to the buffer. Doubles will always
 	 * occupy 8 bytes, since the convertion of a floating point number to a long will always cause
 	 * the high order bits to be occupied.
-	 * 
+	 *
 	 * @param value
 	 *            The integer that needs to be split and written.
 	 */
@@ -493,14 +472,12 @@ public class BinaryWriter extends ATermFwdVoid
 	private void writeLong(final long value)
 	{
 		for (int i = 0; i < LONGBITS; i++)
-		{
-			_currentBuffer.put((byte) (value >>> (i * 8)));
-		}
+			_currentBuffer.put((byte) (value >>> i * 8));
 	}
 
 	/**
 	 * Writes the given openllet.aterm to the given file. Blocks of 65536 bytes will be used.
-	 * 
+	 *
 	 * @param aTerm
 	 *            The ATerm that needs to be writen to file.
 	 * @param file
@@ -532,7 +509,7 @@ public class BinaryWriter extends ATermFwdVoid
 					final int blockSize = byteBuffer.limit();
 					sizeBuffer.clear();
 					sizeBuffer.put((byte) (blockSize & 0x000000ff));
-					sizeBuffer.put((byte) ((blockSize >>> 8) & 0x000000ff));
+					sizeBuffer.put((byte) (blockSize >>> 8 & 0x000000ff));
 					sizeBuffer.flip();
 
 					fc.write(sizeBuffer);
@@ -548,7 +525,7 @@ public class BinaryWriter extends ATermFwdVoid
 	 * of a Java String is because otherwise the binary data would be corrupted, since it would be
 	 * automatically encoded in UTF-16 format (which would completely mess everything up). Blocks
 	 * of 65536 bytes will be used.
-	 * 
+	 *
 	 * @param aTerm
 	 *            The ATerm that needs to be written to a byte array.
 	 * @return The serialized representation of the given ATerm contained in a byte array.
@@ -576,7 +553,7 @@ public class BinaryWriter extends ATermFwdVoid
 			final ByteBuffer buffer = buffers.get(i);
 			final int blockSize = buffer.limit();
 			data[position++] = (byte) (blockSize & 0x000000ff);
-			data[position++] = (byte) ((blockSize >>> 8) & 0x000000ff);
+			data[position++] = (byte) (blockSize >>> 8 & 0x000000ff);
 
 			System.arraycopy(buffer.array(), 0, data, position, blockSize);
 			position += blockSize;

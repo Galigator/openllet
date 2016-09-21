@@ -68,7 +68,7 @@ public class HashFunctions
 	static public int doobs(final Object[] o)
 	{
 		int alpha = GOLDEN_RATIO;
-		alpha += (o[1].hashCode() << 8) + o[0].hashCode();
+		alpha += /*(o[1].hashCode() << 8) +  was annonations part */ o[0].hashCode();
 		return mix(alpha, GOLDEN_RATIO, o.length/* the previous hash value */);
 	}
 

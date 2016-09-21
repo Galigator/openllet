@@ -100,7 +100,7 @@ public class TBoxBase implements Logging
 
 	public boolean isEmpty()
 	{
-		return (_termhash.size() == 0);
+		return _termhash.size() == 0;
 	}
 
 	/**

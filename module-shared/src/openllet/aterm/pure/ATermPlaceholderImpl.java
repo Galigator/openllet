@@ -44,13 +44,13 @@ public class ATermPlaceholderImpl extends ATermImpl implements ATermPlaceholder
 {
 	private final ATerm _type;
 
-	protected ATermPlaceholderImpl(final PureFactory factory, final ATermList annos, final ATerm type)
+	protected ATermPlaceholderImpl(final PureFactory factory, final ATerm type)
 	{
-		super(factory, annos);
+		super(factory);
 
 		_type = type;
 
-		setHashCode(HashFunctions.doobs(new Object[] { annos, type }));
+		setHashCode(HashFunctions.doobs(new Object[] { type })); // XXX : comment or remove : there is the same pattern somewhere else.
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class ATermPlaceholderImpl extends ATermImpl implements ATermPlaceholder
 			if (peer.getType() != getType())
 				return false;
 
-			return peer.getPlaceholder() == _type && peer.getAnnotations().equals(getAnnotations());
+			return peer.getPlaceholder() == _type;
 		}
 
 		return false;
@@ -199,13 +199,7 @@ public class ATermPlaceholderImpl extends ATermImpl implements ATermPlaceholder
 
 	public ATerm setPlaceholder(final ATerm newtype)
 	{
-		return getPureFactory().makePlaceholder(newtype, getAnnotations());
-	}
-
-	@Override
-	public ATerm setAnnotations(final ATermList annos)
-	{
-		return getPureFactory().makePlaceholder(_type, annos);
+		return getPureFactory().makePlaceholder(newtype);
 	}
 
 	@Override

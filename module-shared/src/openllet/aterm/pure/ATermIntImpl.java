@@ -34,7 +34,6 @@ import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermInt;
-import openllet.aterm.ATermList;
 import openllet.aterm.ATermPlaceholder;
 import openllet.aterm.Visitor;
 import openllet.shared.hash.HashFunctions;
@@ -55,9 +54,9 @@ public class ATermIntImpl extends ATermImpl implements ATermInt
 		super(factory);
 	}
 
-	protected ATermIntImpl(final PureFactory factory, final ATermList annos, final int value)
+	protected ATermIntImpl(final PureFactory factory, final int value)
 	{
-		super(factory, annos);
+		super(factory);
 
 		_value = value;
 
@@ -78,9 +77,9 @@ public class ATermIntImpl extends ATermImpl implements ATermInt
 	 * @param _value x
 	 */
 	@Deprecated
-	protected void init(final int hashCode, final ATermList annos, final int value)
+	protected void init(final int hashCode, final int value)
 	{
-		super.init(hashCode, annos);
+		super.init(hashCode);
 		_value = value;
 	}
 
@@ -90,10 +89,9 @@ public class ATermIntImpl extends ATermImpl implements ATermInt
 	 * @param annos x
 	 * @param _value x
 	 */
-	protected void initHashCode(final ATermList annos, final int value)
+	protected void initHashCode(final int value)
 	{
 		_value = value;
-		internSetAnnotations(annos);
 		setHashCode(hashFunction());
 		//super.init(hashCode, annos);
 	}
@@ -113,7 +111,7 @@ public class ATermIntImpl extends ATermImpl implements ATermInt
 			if (peer.getType() != getType())
 				return false;
 
-			return peer.getInt() == _value && peer.getAnnotations().equals(getAnnotations());
+			return peer.getInt() == _value;
 		}
 
 		return false;
@@ -150,12 +148,6 @@ public class ATermIntImpl extends ATermImpl implements ATermInt
 	}
 
 	@Override
-	public ATerm setAnnotations(final ATermList annos)
-	{
-		return getPureFactory().makeInt(_value, annos);
-	}
-
-	@Override
 	public ATerm accept(final Visitor<ATerm> v)
 	{
 		return v.visitInt(this);
@@ -163,7 +155,7 @@ public class ATermIntImpl extends ATermImpl implements ATermInt
 
 	private int hashFunction()
 	{
-		final int alpha = GOLDEN_RATIO + (getAnnotations().hashCode() << 8) + _value;
+		final int alpha = GOLDEN_RATIO + _value;
 		return HashFunctions.mix(alpha, GOLDEN_RATIO, 2);
 	}
 }

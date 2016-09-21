@@ -162,7 +162,7 @@ public class BinaryReader
 			{
 				final int type = header & TYPEMASK;
 
-				final ATermConstruct ac = new ATermConstruct(type, (header & ANNOSFLAG) == ANNOSFLAG, _sharedTermIndex++);
+				final ATermConstruct ac = new ATermConstruct(type, _sharedTermIndex++);
 
 				ensureSharedTermsCapacity();
 
@@ -273,7 +273,7 @@ public class BinaryReader
 				_applSignatures.add(fun);
 
 				final ATermConstruct ac = _stack[_stackPosition];
-				if (_tempArity == 0 && !ac.hasAnnos)
+				if (_tempArity == 0)
 				{
 					final ATerm term = _factory.makeAppl(fun);
 					_sharedTerms[ac.termIndex] = term;
@@ -291,13 +291,8 @@ public class BinaryReader
 					final ATermConstruct ac = _stack[_stackPosition];
 					final ATerm term = _factory.makeBlob(_tempBytes);
 
-					if (!ac.hasAnnos)
-					{
-						_sharedTerms[ac.termIndex] = term;
-						linkTerm(term);
-					}
-					else
-						ac.tempTerm = term;
+					_sharedTerms[ac.termIndex] = term;
+					linkTerm(term);
 				}
 				else
 					throw new OpenError("Unsupported chunkified type: " + _tempType);
@@ -324,7 +319,7 @@ public class BinaryReader
 
 			final ATermConstruct ac = _stack[_stackPosition];
 
-			if (arity == 0 && !ac.hasAnnos)
+			if (arity == 0)
 			{
 				final ATerm term = _factory.makeAppl(fun);
 				_sharedTerms[ac.termIndex] = term;
@@ -363,14 +358,8 @@ public class BinaryReader
 		if (size == 0)
 		{
 			final ATerm term = _factory.makeList();
-
-			if (!ac.hasAnnos)
-			{
-				_sharedTerms[ac.termIndex] = term;
-				linkTerm(term);
-			}
-			else
-				ac.tempTerm = term;
+			_sharedTerms[ac.termIndex] = term;
+			linkTerm(term);
 		}
 	}
 
@@ -383,14 +372,8 @@ public class BinaryReader
 
 		final ATermConstruct ac = _stack[_stackPosition];
 		final ATerm term = _factory.makeInt(value);
-
-		if (!ac.hasAnnos)
-		{
-			_sharedTerms[ac.termIndex] = term;
-			linkTerm(term);
-		}
-		else
-			ac.tempTerm = term;
+		_sharedTerms[ac.termIndex] = term;
+		linkTerm(term);
 	}
 
 	/**
@@ -403,13 +386,8 @@ public class BinaryReader
 		final ATermConstruct ac = _stack[_stackPosition];
 		final ATerm term = _factory.makeReal(value);
 
-		if (!ac.hasAnnos)
-		{
-			_sharedTerms[ac.termIndex] = term;
-			linkTerm(term);
-		}
-		else
-			ac.tempTerm = term;
+		_sharedTerms[ac.termIndex] = term;
+		linkTerm(term);
 	}
 
 	/**
@@ -422,13 +400,8 @@ public class BinaryReader
 		final ATermConstruct ac = _stack[_stackPosition];
 		final ATerm term = _factory.makeLong(value);
 
-		if (!ac.hasAnnos)
-		{
-			_sharedTerms[ac.termIndex] = term;
-			linkTerm(term);
-		}
-		else
-			ac.tempTerm = term;
+		_sharedTerms[ac.termIndex] = term;
+		linkTerm(term);
 	}
 
 	/**
@@ -472,7 +445,7 @@ public class BinaryReader
 		if (type == ATerm.APPL)
 		{
 			final AFun fun = (AFun) ac.tempTerm;
-			constructedTerm = _factory.makeAppl(fun, subTerms, ac.annos);
+			constructedTerm = _factory.makeAppl(fun, subTerms);
 		}
 		else
 			if (type == ATerm.LIST)
@@ -480,9 +453,6 @@ public class BinaryReader
 				ATermList list = _factory.makeList();
 				for (int i = subTerms.length - 1; i >= 0; i--)
 					list = _factory.makeList(subTerms[i], list);
-
-				if (ac.hasAnnos)
-					list = (ATermList) list.setAnnotations(ac.annos);
 
 				constructedTerm = list;
 			}
@@ -494,10 +464,7 @@ public class BinaryReader
 					constructedTerm = placeholder;
 				}
 				else
-					if (ac.hasAnnos)
-						constructedTerm = ac.tempTerm.setAnnotations(ac.annos);
-					else
-						throw new OpenError("Unable to construct term.\n");
+					throw new OpenError("Unable to construct term.\n");
 
 		return constructedTerm;
 	}
@@ -517,22 +484,15 @@ public class BinaryReader
 			final ATermConstruct parent = _stack[--_stackPosition];
 
 			final ATerm[] subTerms = parent.subTerms;
-			final boolean hasAnnos = parent.hasAnnos;
 			if (subTerms != null && subTerms.length > parent.subTermIndex)
 			{
 				subTerms[parent.subTermIndex++] = term;
 
-				if (parent.subTerms.length != parent.subTermIndex || hasAnnos)
+				if (parent.subTerms.length != parent.subTermIndex)
 					return;
-
-				if (!hasAnnos)
-					parent.annos = _factory.makeList();
 			}
 			else
-				if (hasAnnos && term instanceof ATermList)
-					parent.annos = (ATermList) term;
-				else
-					throw new OpenError("Encountered a term that didn't fit anywhere. Type: " + term.getType());
+				throw new OpenError("Encountered a term that didn't fit anywhere. Type: " + term.getType());
 
 			term = buildTerm(parent);
 

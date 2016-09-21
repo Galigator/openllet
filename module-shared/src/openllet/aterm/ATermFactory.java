@@ -43,7 +43,7 @@ import java.util.List;
  */
 public interface ATermFactory
 {
-	static byte START_OF_SHARED_TEXT_FILE = (byte) '!';
+	public static byte START_OF_SHARED_TEXT_FILE = (byte) '!';
 
 	/**
 	 * Creates a new ATerm by parsing a string.
@@ -54,7 +54,7 @@ public interface ATermFactory
 	 *
 	 * @see #make(String)
 	 */
-	ATerm parse(String trm);
+	public ATerm parse(String trm);
 
 	/**
 	 * Equivalent of parse.
@@ -65,7 +65,7 @@ public interface ATermFactory
 	 *
 	 * @see #parse(String)
 	 */
-	ATerm make(String trm);
+	public ATerm make(String trm);
 
 	/**
 	 * Creates a new ATerm given a string pattern and a list of arguments.
@@ -79,7 +79,7 @@ public interface ATermFactory
 	 *
 	 * @return the constructed term.
 	 */
-	ATerm make(String pattern, List<Object> args);
+	public ATerm make(String pattern, List<Object> args);
 
 	/**
 	 * Creates a new ATerm given a pattern and a list of arguments.
@@ -91,7 +91,7 @@ public interface ATermFactory
 	 *
 	 * @return the constructed term.
 	 */
-	ATerm make(ATerm pattern, List<Object> args);
+	public ATerm make(ATerm pattern, List<Object> args);
 
 	/**
 	 * Creates a new ATerm given a pattern and a single argument.
@@ -103,7 +103,7 @@ public interface ATermFactory
 	 *
 	 * @return the constructed term.
 	 */
-	ATerm make(String pattern, Object arg1);
+	public ATerm make(String pattern, Object arg1);
 
 	/**
 	 * Creates a new ATerm given a pattern and a fixed number of arguments.
@@ -116,7 +116,7 @@ public interface ATermFactory
 	 *
 	 * @return the constructed term.
 	 */
-	ATerm make(String pattern, Object arg1, Object arg2);
+	public ATerm make(String pattern, Object arg1, Object arg2);
 
 	/**
 	 * Creates a new ATerm given a pattern and a fixed number of arguments.
@@ -130,7 +130,7 @@ public interface ATermFactory
 	 *
 	 * @return the constructed term.
 	 */
-	ATerm make(String pattern, Object arg1, Object arg2, Object arg3);
+	public ATerm make(String pattern, Object arg1, Object arg2, Object arg3);
 
 	/**
 	 * Creates a new ATerm given a pattern and a fixed number of arguments.
@@ -145,7 +145,7 @@ public interface ATermFactory
 	 *
 	 * @return the constructed term.
 	 */
-	ATerm make(String pattern, Object arg1, Object arg2, Object arg3, Object arg4);
+	public ATerm make(String pattern, Object arg1, Object arg2, Object arg3, Object arg4);
 
 	/**
 	 * Creates a new ATerm given a pattern and a fixed number of arguments.
@@ -161,7 +161,7 @@ public interface ATermFactory
 	 *
 	 * @return the constructed term.
 	 */
-	ATerm make(String pattern, Object arg1, Object arg2, Object arg3, Object arg4, Object arg5);
+	public ATerm make(String pattern, Object arg1, Object arg2, Object arg3, Object arg4, Object arg5);
 
 	/**
 	 * Creates a new ATerm given a pattern and a fixed number of arguments.
@@ -178,7 +178,7 @@ public interface ATermFactory
 	 *
 	 * @return the constructed term.
 	 */
-	ATerm make(String pattern, Object arg1, Object arg2, Object arg3, Object arg4, Object arg5, Object arg6);
+	public ATerm make(String pattern, Object arg1, Object arg2, Object arg3, Object arg4, Object arg5, Object arg6);
 
 	/**
 	 * Creates a new ATerm given a pattern and a fixed number of arguments.
@@ -196,7 +196,7 @@ public interface ATermFactory
 	 *
 	 * @return the constructed term.
 	 */
-	ATerm make(String pattern, Object arg1, Object arg2, Object arg3, Object arg4, Object arg5, Object arg6, Object arg7);
+	public ATerm make(String pattern, Object arg1, Object arg2, Object arg3, Object arg4, Object arg5, Object arg6, Object arg7);
 
 	/**
 	 * Creates a new ATermInt object
@@ -205,7 +205,7 @@ public interface ATermFactory
 	 *
 	 * @return the constructed ATermInt object.
 	 */
-	ATermInt makeInt(int val);
+	public ATermInt makeInt(int val);
 
 	/**
 	 * Creates a new ATermLong object
@@ -214,7 +214,7 @@ public interface ATermFactory
 	 *
 	 * @return the constructed ATermLong object.
 	 */
-	ATermLong makeLong(long val);
+	public ATermLong makeLong(long val);
 
 	/**
 	 * Creates a new ATermReal object
@@ -223,14 +223,14 @@ public interface ATermFactory
 	 *
 	 * @return the constructed ATermReal object.
 	 */
-	ATermReal makeReal(double val);
+	public ATermReal makeReal(double val);
 
 	/**
 	 * Creates an empty ATermList object
 	 *
 	 * @return the (empty) ATermList.
 	 */
-	ATermList makeList();
+	public ATermList makeList();
 
 	/**
 	 * Creates a singleton ATermList object.
@@ -239,7 +239,7 @@ public interface ATermFactory
 	 *
 	 * @return the singleton ATermList object.
 	 */
-	ATermList makeList(ATerm single);
+	public ATermList makeList(ATerm single);
 
 	/**
 	 * Creates a head-tail style ATermList.
@@ -249,7 +249,7 @@ public interface ATermFactory
 	 *
 	 * @return the constructed ATermList.
 	 */
-	ATermList makeList(ATerm head, ATermList tail);
+	public ATermList makeList(ATerm head, ATermList tail);
 
 	/**
 	 * Creates an ATermPlaceholder object.
@@ -258,7 +258,7 @@ public interface ATermFactory
 	 *
 	 * @return the constructed ATermPlaceholder.
 	 */
-	ATermPlaceholder makePlaceholder(ATerm type);
+	public ATermPlaceholder makePlaceholder(ATerm type);
 
 	/**
 	 * Creates an ATermBlob (Binary Large OBject).
@@ -267,7 +267,7 @@ public interface ATermFactory
 	 *
 	 * @return the constructed ATermBlob.
 	 */
-	ATermBlob makeBlob(byte[] data);
+	public ATermBlob makeBlob(byte[] data);
 
 	/**
 	 * Creates an AFun object
@@ -278,7 +278,7 @@ public interface ATermFactory
 	 *
 	 * @return the constructed AFun.
 	 */
-	AFun makeAFun(String name, int arity, boolean isQuoted);
+	public AFun makeAFun(String name, int arity, boolean isQuoted);
 
 	/**
 	 * Creates a function application.
@@ -287,7 +287,7 @@ public interface ATermFactory
 	 *
 	 * @return the constructed function application.
 	 */
-	ATermAppl makeAppl(AFun fun);
+	public ATermAppl makeAppl(AFun fun);
 
 	/**
 	 * Creates a function application.
@@ -297,7 +297,7 @@ public interface ATermFactory
 	 *
 	 * @return the constructed function application.
 	 */
-	ATermAppl makeAppl(AFun fun, ATerm arg);
+	public ATermAppl makeAppl(AFun fun, ATerm arg);
 
 	/**
 	 * Creates a function application.
@@ -308,7 +308,7 @@ public interface ATermFactory
 	 *
 	 * @return the constructed function application.
 	 */
-	ATermAppl makeAppl(AFun fun, ATerm arg1, ATerm arg2);
+	public ATermAppl makeAppl(AFun fun, ATerm arg1, ATerm arg2);
 
 	/**
 	 * Creates a function application.
@@ -320,7 +320,7 @@ public interface ATermFactory
 	 *
 	 * @return the constructed function application.
 	 */
-	ATermAppl makeAppl(AFun fun, ATerm arg1, ATerm arg2, ATerm arg3);
+	public ATermAppl makeAppl(AFun fun, ATerm arg1, ATerm arg2, ATerm arg3);
 
 	/**
 	 * Creates a function application.
@@ -333,7 +333,7 @@ public interface ATermFactory
 	 *
 	 * @return the constructed function application.
 	 */
-	ATermAppl makeAppl(AFun fun, ATerm arg1, ATerm arg2, ATerm arg3, ATerm arg4);
+	public ATermAppl makeAppl(AFun fun, ATerm arg1, ATerm arg2, ATerm arg3, ATerm arg4);
 
 	/**
 	 * Creates a function application.
@@ -347,7 +347,7 @@ public interface ATermFactory
 	 *
 	 * @return the constructed function application.
 	 */
-	ATermAppl makeAppl(AFun fun, ATerm arg1, ATerm arg2, ATerm arg3, ATerm arg4, ATerm arg5);
+	public ATermAppl makeAppl(AFun fun, ATerm arg1, ATerm arg2, ATerm arg3, ATerm arg4, ATerm arg5);
 
 	/**
 	 * Creates a function application.
@@ -362,7 +362,7 @@ public interface ATermFactory
 	 *
 	 * @return the constructed function application.
 	 */
-	ATermAppl makeAppl(AFun fun, ATerm arg1, ATerm arg2, ATerm arg3, ATerm arg4, ATerm arg5, ATerm arg6);
+	public ATermAppl makeAppl(AFun fun, ATerm arg1, ATerm arg2, ATerm arg3, ATerm arg4, ATerm arg5, ATerm arg6);
 
 	/**
 	 * Creates a function application.
@@ -372,7 +372,7 @@ public interface ATermFactory
 	 *
 	 * @return the constructed function application.
 	 */
-	ATermAppl makeAppl(AFun fun, ATerm[] args);
+	public ATermAppl makeAppl(AFun fun, ATerm[] args);
 
 	/**
 	 * Creates a function application.
@@ -382,7 +382,7 @@ public interface ATermFactory
 	 *
 	 * @return the constructed function application.
 	 */
-	ATermAppl makeApplList(AFun fun, ATermList args);
+	public ATermAppl makeApplList(AFun fun, ATermList args);
 
 	/**
 	 * Creates an ATerm from a text stream.
@@ -392,7 +392,7 @@ public interface ATermFactory
 	 * @return the parsed ATerm.
 	 * @throws IOException
 	 */
-	ATerm readFromTextFile(InputStream stream) throws IOException;
+	public ATerm readFromTextFile(InputStream stream) throws IOException;
 
 	/**
 	 * Creates an ATerm from a openllet.shared.hash text stream.
@@ -402,7 +402,7 @@ public interface ATermFactory
 	 * @return the parsed ATerm.
 	 * @throws IOException
 	 */
-	ATerm readFromSharedTextFile(InputStream stream) throws IOException;
+	public ATerm readFromSharedTextFile(InputStream stream) throws IOException;
 
 	/**
 	 * Creates an ATerm from a binary stream.
@@ -412,7 +412,7 @@ public interface ATermFactory
 	 * @return the parsed ATerm.
 	 * @throws IOException
 	 */
-	ATerm readFromBinaryFile(InputStream stream) throws IOException;
+	public ATerm readFromBinaryFile(InputStream stream) throws IOException;
 
 	/**
 	 * Creates an ATerm from a stream.
@@ -424,7 +424,7 @@ public interface ATermFactory
 	 * @return the parsed ATerm.
 	 * @throws IOException
 	 */
-	ATerm readFromFile(InputStream stream) throws IOException;
+	public ATerm readFromFile(InputStream stream) throws IOException;
 
 	/**
 	 * Creates an ATerm from a given filename.
@@ -434,7 +434,7 @@ public interface ATermFactory
 	 * @return the parsed ATerm.
 	 * @throws IOException
 	 */
-	ATerm readFromFile(String file) throws IOException;
+	public ATerm readFromFile(String file) throws IOException;
 
 	/**
 	 * Creates an ATerm by importing it from another ATermFactory.
@@ -444,5 +444,5 @@ public interface ATermFactory
 	 *
 	 * @return the imported ATerm.
 	 */
-	ATerm importTerm(ATerm term);
+	public ATerm importTerm(ATerm term);
 }

@@ -33,6 +33,7 @@ import java.io.OutputStream;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
+
 import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
@@ -78,9 +79,7 @@ class ATermWriter extends ATermFwdVoid
 		final StringBuilder buf = new StringBuilder();
 
 		if (abbrev == 0)
-		{
 			buf.append(TOBASE64[0]);
-		}
 
 		while (abbrev > 0)
 		{
@@ -114,16 +113,6 @@ class ATermWriter extends ATermFwdVoid
 		if (child.getType() == ATerm.LIST)
 		{
 			stream.write(']');
-			position++;
-		}
-
-		final ATermList annos = child.getAnnotations();
-		if (!annos.isEmpty())
-		{
-			stream.write('{');
-			position++;
-			visit(annos);
-			stream.write('}');
 			position++;
 		}
 

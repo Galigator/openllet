@@ -97,27 +97,9 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 		super();
 		final ATermListImpl protoList = new ATermListImpl(this);
 
-		protoList.init(FIX_POINT, null, null, null);
+		protoList.init(FIX_POINT, null, null);
 		_empty = (ATermList) build(protoList);
-		((ATermListImpl) _empty).init(FIX_POINT, _empty, null, null);
-	}
-
-	@Override
-	public ATermInt makeInt(final int val)
-	{
-		return makeInt(val, _empty);
-	}
-
-	@Override
-	public ATermLong makeLong(final long val)
-	{
-		return makeLong(val, _empty);
-	}
-
-	@Override
-	public ATermReal makeReal(final double val)
-	{
-		return makeReal(val, _empty);
+		((ATermListImpl) _empty).init(FIX_POINT, null, null);
 	}
 
 	@Override
@@ -129,25 +111,7 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 	@Override
 	public ATermList makeList(final ATerm singleton)
 	{
-		return makeList(singleton, _empty, _empty);
-	}
-
-	@Override
-	public ATermList makeList(final ATerm first, final ATermList next)
-	{
-		return makeList(first, next, _empty);
-	}
-
-	@Override
-	public ATermPlaceholder makePlaceholder(final ATerm type)
-	{
-		return makePlaceholder(type, _empty);
-	}
-
-	@Override
-	public ATermBlob makeBlob(final byte[] data)
-	{
-		return makeBlob(data, _empty);
+		return makeList(singleton, _empty);
 	}
 
 	@Override
@@ -156,34 +120,40 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 		return (AFun) build(new AFunImpl(this, name, arity, isQuoted));
 	}
 
-	public ATermInt makeInt(final int value, final ATermList annos)
+	@Override
+	public ATermInt makeInt(final int value)
 	{
-		return (ATermInt) build(new ATermIntImpl(this, annos, value));
+		return (ATermInt) build(new ATermIntImpl(this, value));
 	}
 
-	public ATermLong makeLong(final long value, final ATermList annos)
+	@Override
+	public ATermLong makeLong(final long value)
 	{
-		return (ATermLong) build(new ATermLongImpl(this, annos, value));
+		return (ATermLong) build(new ATermLongImpl(this, value));
 	}
 
-	public ATermReal makeReal(final double value, final ATermList annos)
+	@Override
+	public ATermReal makeReal(final double value)
 	{
-		return (ATermReal) build(new ATermRealImpl(this, annos, value));
+		return (ATermReal) build(new ATermRealImpl(this, value));
 	}
 
-	public ATermPlaceholder makePlaceholder(final ATerm type, final ATermList annos)
+	@Override
+	public ATermPlaceholder makePlaceholder(final ATerm type)
 	{
-		return (ATermPlaceholder) build(new ATermPlaceholderImpl(this, annos, type));
+		return (ATermPlaceholder) build(new ATermPlaceholderImpl(this, type));
 	}
 
-	public ATermBlob makeBlob(final byte[] data, final ATermList annos)
+	@Override
+	public ATermBlob makeBlob(final byte[] data)
 	{
-		return (ATermBlob) build(new ATermBlobImpl(this, annos, data));
+		return (ATermBlob) build(new ATermBlobImpl(this, data));
 	}
 
-	public ATermList makeList(final ATerm first, final ATermList next, final ATermList annos)
+	@Override
+	public ATermList makeList(final ATerm first, final ATermList next)
 	{
-		return (ATermList) build(new ATermListImpl(this, annos, first, next));
+		return (ATermList) build(new ATermListImpl(this, first, next));
 	}
 
 	private static ATerm[] array0 = new ATerm[0];
@@ -191,21 +161,11 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 	@Override
 	public ATermAppl makeAppl(final AFun fun, final ATerm[] args)
 	{
-		return makeAppl(fun, args, _empty);
-	}
-
-	public ATermAppl makeAppl(final AFun fun, final ATerm[] args, final ATermList annos)
-	{
-		return (ATermAppl) build(new ATermApplImpl(this, annos, fun, args));
+		return (ATermAppl) build(new ATermApplImpl(this, fun, args));
 	}
 
 	@Override
 	public ATermAppl makeApplList(final AFun fun, final ATermList list)
-	{
-		return makeApplList(fun, list, _empty);
-	}
-
-	public ATermAppl makeApplList(final AFun fun, final ATermList list, final ATermList annos)
 	{
 		final ATerm[] arg_array = new ATerm[list.getLength()];
 
@@ -213,7 +173,7 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 		for (final ATerm term : list)
 			arg_array[i++] = term;
 
-		return makeAppl(fun, arg_array, annos);
+		return makeAppl(fun, arg_array);
 	}
 
 	@Override
@@ -530,7 +490,7 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 				{
 					result = parseATerms(reader);
 					if (reader.getLastChar() != ']')
-						throw new ParseError("_expected ']' but got '" + (char) reader.getLastChar() + "'");
+						throw new ParseError("expected ']' but got '" + (char) reader.getLastChar() + "'");
 					c = reader.readSkippingWS();
 				}
 
@@ -541,7 +501,7 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 				final ATerm ph = parseFromReader(reader);
 
 				if (reader.getLastChar() != '>')
-					throw new ParseError("_expected '>' but got '" + (char) reader.getLastChar() + "'");
+					throw new ParseError("expected '>' but got '" + (char) reader.getLastChar() + "'");
 
 				c = reader.readSkippingWS();
 
@@ -639,36 +599,21 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 		}
 
 		if (reader.getLastChar() == '{')
-		{
-			ATermList annos;
 			if (reader.readSkippingWS() == '}')
-			{
 				reader.readSkippingWS();
-				annos = _empty;
-			}
 			else
 			{
-				annos = parseATerms(reader);
 				if (reader.getLastChar() != '}')
 					throw new ParseError("'}' _expected '" + (char) reader.getLastChar() + "'");
 				reader.readSkippingWS();
 			}
-			result = result.setAnnotations(annos);
-		}
 
 		/* Parse some ToolBus anomalies for backwards compatibility */
 		if (reader.getLastChar() == ':')
-		{
 			reader.read();
-			final ATerm anno = parseFromReader(reader);
-			result = result.setAnnotation(parse("type"), anno);
-		}
 
 		if (reader.getLastChar() == '?')
-		{
 			reader.readSkippingWS();
-			result = result.setAnnotation(parse("result"), parse("true"));
-		}
 
 		end = reader.getPosition();
 		reader.storeNextTerm(result, end - start);
@@ -797,25 +742,7 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 		if (t1.getType() != t2.getType())
 			return false;
 
-		ATermList l1 = t1.getAnnotations();
-		ATermList l2 = t2.getAnnotations();
-
-		if (l1.getLength() != l2.getLength())
-			return false;
-
-		while (!l1.isEmpty())
-		{
-			final ATerm a1 = l1.getFirst();
-			final ATerm a2 = l2.getFirst();
-
-			l1 = l1.getNext();
-			l2 = l2.getNext();
-
-			if (!isDeepEqual(a1, a2))
-				return false;
-		}
-
-		// Need an implemention of Comparable<XTerm> for each type of ATerm.
+		// TODO : Need an implemention of Comparable<XTerm> for each type of ATerm.
 		throw new UnsupportedOperationException("Not yet implemented! " + t1 + ", " + t2);
 	}
 
@@ -1004,12 +931,6 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 				return makeAFun(afun.getName(), afun.getArity(), afun.isQuoted());
 			default:
 				throw new OpenError("Unknown term type id: " + term.getType());
-		}
-
-		if (term.hasAnnotations())
-		{
-			final ATermList annotations = term.getAnnotations();
-			result = result.setAnnotations(annotations);
 		}
 
 		return result;

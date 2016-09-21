@@ -38,7 +38,6 @@ import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermFactory;
-import openllet.aterm.ATermList;
 import openllet.aterm.ATermPlaceholder;
 import openllet.aterm.VisitFailure;
 import openllet.atom.OpenError;
@@ -46,8 +45,6 @@ import openllet.shared.hash.SharedObjectWithID;
 
 public abstract class ATermImpl extends ATermVisitableImpl implements ATerm, SharedObjectWithID
 {
-	private ATermList _annotations;
-
 	protected PureFactory _factory;
 
 	private int _hashCode;
@@ -66,14 +63,6 @@ public abstract class ATermImpl extends ATermVisitableImpl implements ATerm, Sha
 		_factory = factory;
 	}
 
-	protected ATermImpl(final PureFactory factory, final ATermList annos)
-	{
-		super();
-
-		_factory = factory;
-		_annotations = annos;
-	}
-
 	@Override
 	public final int hashCode()
 	{
@@ -85,11 +74,6 @@ public abstract class ATermImpl extends ATermVisitableImpl implements ATerm, Sha
 		_hashCode = hashcode;
 	}
 
-	protected void internSetAnnotations(final ATermList annos)
-	{
-		_annotations = annos;
-	}
-
 	/**
 	 * Deprecated Just here for backwards compatibility : use new ATermImpl instead (or super)
 	 *
@@ -98,10 +82,9 @@ public abstract class ATermImpl extends ATermVisitableImpl implements ATerm, Sha
 	 * @param annos x
 	 */
 	@Deprecated
-	protected void init(final int hashCode, final ATermList annos)
+	protected void init(final int hashCode)
 	{
 		_hashCode = hashCode;
-		_annotations = annos;
 	}
 
 	@Override
@@ -113,45 +96,6 @@ public abstract class ATermImpl extends ATermVisitableImpl implements ATerm, Sha
 	protected PureFactory getPureFactory()
 	{
 		return _factory;
-	}
-
-	@Override
-	public boolean hasAnnotations()
-	{
-		return _annotations != null && !_annotations.isEmpty();
-	}
-
-	@Override
-	public ATerm setAnnotation(final ATerm label, final ATerm anno)
-	{
-		final ATermList new_annos = _annotations.dictPut(label, anno);
-		final ATerm result = setAnnotations(new_annos);
-
-		return result;
-	}
-
-	@Override
-	public ATerm removeAnnotation(final ATerm label)
-	{
-		return setAnnotations(_annotations.dictRemove(label));
-	}
-
-	@Override
-	public ATerm getAnnotation(final ATerm label)
-	{
-		return _annotations.dictGet(label);
-	}
-
-	@Override
-	public ATerm removeAnnotations()
-	{
-		return setAnnotations(getPureFactory().getEmpty());
-	}
-
-	@Override
-	public ATermList getAnnotations()
-	{
-		return _annotations;
 	}
 
 	@Override

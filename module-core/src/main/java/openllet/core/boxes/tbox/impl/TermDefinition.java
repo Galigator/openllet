@@ -44,36 +44,42 @@ import openllet.core.utils.CollectionUtils;
  */
 public class TermDefinition
 {
-	private final List<ATermAppl> subClassAxioms;
-	private final List<ATermAppl> eqClassAxioms;
-	private Set<ATermAppl> dependencies;
+	private final List<ATermAppl> _subClassAxioms;
+	private final List<ATermAppl> _eqClassAxioms;
+	private Set<ATermAppl> _dependencies;
 
 	public TermDefinition()
 	{
-		subClassAxioms = new ArrayList<>();
-		eqClassAxioms = new ArrayList<>();
+		_subClassAxioms = new ArrayList<>();
+		_eqClassAxioms = new ArrayList<>();
 		updateDependencies();
 	}
 
+	/**
+	 * @return the identity(==) set of dependences.
+	 */
 	public Set<ATermAppl> getDependencies()
 	{
-		if (dependencies == null)
+		if (_dependencies == null)
 			updateDependencies();
-		return dependencies;
+		return _dependencies;
 	}
 
+	/**
+	 * clear the identity set of dependences.
+	 */
 	public void clearDependencies()
 	{
-		dependencies = null;
+		_dependencies = null;
 	}
 
 	public ATermAppl getName()
 	{
-		if (!subClassAxioms.isEmpty())
-			return (ATermAppl) subClassAxioms.get(0).getArgument(0);
+		if (!_subClassAxioms.isEmpty())
+			return (ATermAppl) _subClassAxioms.get(0).getArgument(0);
 
-		if (!eqClassAxioms.isEmpty())
-			return (ATermAppl) eqClassAxioms.get(0).getArgument(0);
+		if (!_eqClassAxioms.isEmpty())
+			return (ATermAppl) _eqClassAxioms.get(0).getArgument(0);
 
 		return null;
 	}
@@ -84,10 +90,10 @@ public class TermDefinition
 
 		final AFun fun = appl.getAFun();
 		if (fun.equals(ATermUtils.SUBFUN))
-			added = subClassAxioms.contains(appl) ? false : subClassAxioms.add(appl);
+			added = _subClassAxioms.contains(appl) ? false : _subClassAxioms.add(appl);
 		else
 			if (fun.equals(ATermUtils.EQCLASSFUN))
-				added = eqClassAxioms.contains(appl) ? false : eqClassAxioms.add(appl);
+				added = _eqClassAxioms.contains(appl) ? false : _eqClassAxioms.add(appl);
 			else
 				throw new OpenError("Cannot add non-definition!");
 
@@ -103,10 +109,10 @@ public class TermDefinition
 
 		final AFun fun = axiom.getAFun();
 		if (fun.equals(ATermUtils.SUBFUN))
-			removed = subClassAxioms.remove(axiom);
+			removed = _subClassAxioms.remove(axiom);
 		else
 			if (fun.equals(ATermUtils.EQCLASSFUN))
-				removed = eqClassAxioms.remove(axiom);
+				removed = _eqClassAxioms.remove(axiom);
 			else
 				throw new OpenError("Cannot remove non-definition!");
 
@@ -117,41 +123,41 @@ public class TermDefinition
 
 	public boolean isPrimitive()
 	{
-		return eqClassAxioms.isEmpty();
+		return _eqClassAxioms.isEmpty();
 	}
 
 	public boolean isUnique()
 	{
-		return eqClassAxioms.isEmpty() || (subClassAxioms.isEmpty() && eqClassAxioms.size() == 1);
+		return _eqClassAxioms.isEmpty() || _subClassAxioms.isEmpty() && _eqClassAxioms.size() == 1;
 	}
 
 	public boolean isUnique(final ATermAppl axiom)
 	{
-		return eqClassAxioms.isEmpty() && (subClassAxioms.isEmpty() || axiom.getAFun().equals(ATermUtils.SUBFUN));
+		return _eqClassAxioms.isEmpty() && (_subClassAxioms.isEmpty() || axiom.getAFun().equals(ATermUtils.SUBFUN));
 	}
 
 	public List<ATermAppl> getSubClassAxioms()
 	{
-		return subClassAxioms;
+		return _subClassAxioms;
 	}
 
 	public List<ATermAppl> getEqClassAxioms()
 	{
-		return eqClassAxioms;
+		return _eqClassAxioms;
 	}
 
 	@Override
 	public String toString()
 	{
-		return subClassAxioms + "; " + eqClassAxioms;
+		return _subClassAxioms + "; " + _eqClassAxioms;
 	}
 
 	protected void updateDependencies()
 	{
-		dependencies = CollectionUtils.makeIdentitySet();
+		_dependencies = CollectionUtils.makeIdentitySet();
 		for (final ATermAppl sub : getSubClassAxioms())
-			ATermUtils.findPrimitives((ATermAppl) sub.getArgument(1), dependencies);
+			ATermUtils.findPrimitives((ATermAppl) sub.getArgument(1), _dependencies);
 		for (final ATermAppl eq : getEqClassAxioms())
-			ATermUtils.findPrimitives((ATermAppl) eq.getArgument(1), dependencies);
+			ATermUtils.findPrimitives((ATermAppl) eq.getArgument(1), _dependencies);
 	}
 }

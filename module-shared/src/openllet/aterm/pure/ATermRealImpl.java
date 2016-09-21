@@ -33,7 +33,6 @@ import java.util.List;
 import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
-import openllet.aterm.ATermList;
 import openllet.aterm.ATermPlaceholder;
 import openllet.aterm.ATermReal;
 import openllet.aterm.Visitor;
@@ -44,13 +43,13 @@ public class ATermRealImpl extends ATermImpl implements ATermReal
 {
 	private double _value;
 
-	protected ATermRealImpl(final PureFactory factory, final ATermList annos, final double value)
+	protected ATermRealImpl(final PureFactory factory, final double value)
 	{
-		super(factory, annos);
+		super(factory);
 
 		_value = value;
 
-		setHashCode(HashFunctions.doobs(new Object[] { annos, new Double(value) }));
+		setHashCode(HashFunctions.doobs(new Object[] { new Double(value) })); // XXX comment or remove or clone but definitly : do something.
 	}
 
 	@Override
@@ -67,9 +66,9 @@ public class ATermRealImpl extends ATermImpl implements ATermReal
 	 * @param value x
 	 */
 	@Deprecated
-	protected void init(final int hashCode, final ATermList annos, final double value)
+	protected void init(final int hashCode, final double value)
 	{
-		super.init(hashCode, annos);
+		super.init(hashCode);
 		_value = value;
 	}
 
@@ -88,7 +87,7 @@ public class ATermRealImpl extends ATermImpl implements ATermReal
 			if (peer.getType() != getType())
 				return false;
 
-			return peer.getReal() == _value && peer.getAnnotations().equals(getAnnotations());
+			return peer.getReal() == _value;
 		}
 
 		return false;
@@ -122,12 +121,6 @@ public class ATermRealImpl extends ATermImpl implements ATermReal
 	public double getReal()
 	{
 		return _value;
-	}
-
-	@Override
-	public ATerm setAnnotations(final ATermList annos)
-	{
-		return getPureFactory().makeReal(_value, annos);
 	}
 
 	@Override

@@ -76,7 +76,7 @@ public interface ATermAppl extends ATerm
 	 *
 	 * @return the ith argument of the application.
 	 */
-	public ATerm getArgument(int i);
+	public ATerm getArgument(int i); // TODO : seriously try to change the return type to ATermAppl
 
 	/**
 	 * Sets a specific argument of this application.

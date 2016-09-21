@@ -45,8 +45,8 @@ import openllet.atom.OpenError;
 
 public class Test2
 {
-	private final ATermFactory factory;
-	private final String srcdir;
+	private final ATermFactory _factory;
+	private final String _srcdir;
 
 	public final static void main(final String[] args) throws IOException
 	{
@@ -58,8 +58,8 @@ public class Test2
 
 	public Test2(final ATermFactory factory, final String srcdir)
 	{
-		this.factory = factory;
-		this.srcdir = srcdir;
+		this._factory = factory;
+		this._srcdir = srcdir;
 	}
 
 	public void test_assert(final boolean condition)
@@ -72,8 +72,8 @@ public class Test2
 	{
 		final ATermInt[] term = new ATermInt[2];
 
-		term[0] = factory.makeInt(3);
-		term[1] = factory.makeInt(3);
+		term[0] = _factory.makeInt(3);
+		term[1] = _factory.makeInt(3);
 
 		test_assert(term[0].getType() == ATerm.INT);
 		test_assert(term[0].getInt() == 3);
@@ -88,15 +88,15 @@ public class Test2
 		result = term[0].match("<int>");
 		test_assert(result != null && result.size() == 1);
 
-		System.out.println("pass: testMakeInt");
+		//		System.out.println("pass: testMakeInt");
 	}
 
 	public void testMakeReal()
 	{
 		final ATermReal[] term = new ATermReal[2];
 
-		term[0] = factory.makeReal(Math.PI);
-		term[1] = factory.makeReal(Math.PI);
+		term[0] = _factory.makeReal(Math.PI);
+		term[1] = _factory.makeReal(Math.PI);
 
 		test_assert(term[0].getType() == ATerm.REAL);
 		test_assert(term[0].getReal() == Math.PI);
@@ -105,7 +105,7 @@ public class Test2
 		final List<Object> result = term[0].match("<real>");
 		test_assert(result != null && result.size() == 1 && result.get(0).equals(new Double(Math.PI)));
 
-		System.out.println("pass: testMakeReal");
+		//		System.out.println("pass: testMakeReal");
 	}
 
 	public void testMakeAppl()
@@ -113,16 +113,16 @@ public class Test2
 		final AFun[] symmies = new AFun[2];
 		final ATermAppl[] apples = new ATermAppl[16];
 
-		symmies[0] = factory.makeAFun("f0", 0, false);
-		symmies[1] = factory.makeAFun("f1", 1, false);
+		symmies[0] = _factory.makeAFun("f0", 0, false);
+		symmies[1] = _factory.makeAFun("f1", 1, false);
 		//		symmies[2] = factory.makeAFun("f6", 6, false);
 		//		symmies[3] = factory.makeAFun("f10", 10, false);
 
-		apples[0] = factory.makeAppl(symmies[0]);
-		test_assert(factory.makeAppl(symmies[0]) == apples[0]);
+		apples[0] = _factory.makeAppl(symmies[0]);
+		test_assert(_factory.makeAppl(symmies[0]) == apples[0]);
 
-		apples[1] = factory.makeAppl(symmies[1], apples[0]);
-		test_assert(factory.makeAppl(symmies[1], apples[0]) == apples[1]);
+		apples[1] = _factory.makeAppl(symmies[1], apples[0]);
+		test_assert(_factory.makeAppl(symmies[1], apples[0]) == apples[1]);
 
 		//		apples[2] = factory.makeAppl(symmies[1], apples[1]);
 		//		apples[3] = factory.makeAppl(symmies[1], apples[0]);
@@ -144,99 +144,80 @@ public class Test2
 
 	public void testDict()
 	{
-		ATermList dict = factory.makeList();
+		ATermList dict = _factory.makeList();
 		ATerm key, value;
 
 		for (int i = 0; i < 5; i++)
 		{
-			key = factory.parse("key" + i);
-			value = factory.parse("value" + i);
+			key = _factory.parse("key" + i);
+			value = _factory.parse("value" + i);
 			dict = dict.dictPut(key, value);
 		}
 
-		key = factory.parse("key3");
-		value = factory.parse("value3");
+		key = _factory.parse("key3");
+		value = _factory.parse("value3");
 		test_assert(dict.dictGet(key).equals(value));
-	}
-
-	public void testAnnos()
-	{
-		ATerm t, key, value;
-
-		t = factory.parse("f");
-		for (int i = 0; i < 5; i++)
-		{
-			key = factory.parse("key" + i);
-			value = factory.parse("value" + i);
-			t = t.setAnnotation(key, value);
-		}
-
-		key = factory.parse("key3");
-		value = factory.parse("value3");
-		test_assert(t.getAnnotation(key).equals(value));
-		t = t.removeAnnotation(key);
-		test_assert(t.getAnnotation(key) == null);
 	}
 
 	public void testParser()
 	{
-		factory.parse("f");
-		factory.parse("f(1)");
-		factory.parse("f(1,2)");
-		factory.parse("[]");
-		factory.parse("[1]");
-		factory.parse("[1,2]");
-		factory.parse("<x>");
-		factory.parse("3.14");
-		factory.parse("f(\"x y z\"(),<abc(31)>,[])");
-		factory.parse("home([<name(\"\",String)>,<phone(\"\",PhoneNumber)>])");
-		factory.parse("[ a , b ]");
-		factory.parse("f(a){[x,y],[1,2]}");
-		factory.parse("[(),(a)]");
+		_factory.parse("f");
+		_factory.parse("f(1)");
+		_factory.parse("f(1,2)");
+		_factory.parse("[]");
+		_factory.parse("[1]");
+		_factory.parse("[1,2]");
+		_factory.parse("<x>");
+		_factory.parse("3.14");
+		_factory.parse("f(\"x y z\"(),<abc(31)>,[])");
+		_factory.parse("home([<name(\"\",String)>,<phone(\"\",PhoneNumber)>])");
+		_factory.parse("[ a , b ]");
+		_factory.parse("f(a){[x,y],[1,2]}");
+		_factory.parse("[(),(a)]");
 		System.out.println("parser tests ok.");
 	}
 
 	public void testList()
 	{
-		ATermList list = (ATermList) factory.parse("[1,2,3]");
-		ATermList result = list.remove(factory.parse("2"));
-		test_assert(result.equals(factory.parse("[1,3]")));
+		ATermList list = (ATermList) _factory.parse("[1,2,3]");
+		ATermList result = list.remove(_factory.parse("2"));
+		test_assert(result.equals(_factory.parse("[1,3]")));
 
-		list = (ATermList) factory.parse("[1,2,3]");
-		result = list.replace(factory.parse("99"), 1);
-		test_assert(result.equals(factory.parse("[1,99,3]")));
+		list = (ATermList) _factory.parse("[1,2,3]");
+		result = list.replace(_factory.parse("99"), 1);
+		test_assert(result.equals(_factory.parse("[1,99,3]")));
 
-		list = factory.makeList();
-		result = list.append(factory.parse("1"));
-		test_assert(result.equals(factory.parse("[1]")));
+		list = _factory.makeList();
+		result = list.append(_factory.parse("1"));
+		test_assert(result.equals(_factory.parse("[1]")));
 
-		list = (ATermList) factory.parse("[]");
-		result = factory.makeList();
+		list = (ATermList) _factory.parse("[]");
+		result = _factory.makeList();
 		test_assert(result.equals(list));
 
-		System.out.println("pass: testList");
+		//		System.out.println("pass: testList");
 	}
 
 	public void testFiles() throws IOException
 	{
-		final ATerm t1 = factory.readFromFile(srcdir + "/test.trm");
-		System.out.println("done reading test.trm");
-		final ATerm t2 = factory.readFromFile(srcdir + "/test.taf");
-		System.out.println("done reading test.taf");
+		final ATerm t1 = _factory.readFromFile(_srcdir + "/test.trm");
+		//		System.out.println("done reading test.trm");
+		final ATerm t2 = _factory.readFromFile(_srcdir + "/test.taf");
+		//		System.out.println("done reading test.taf");
 
 		try (PrintStream stream = new PrintStream(new FileOutputStream("test.trm2")))
 		{
 			t1.writeToTextFile(stream);
 			stream.println();
 			stream.close();
-			System.out.println("done writing test.trm2");
+			//			System.out.println("done writing test.trm2");
 		}
 
 		try (PrintStream stream = new PrintStream(new FileOutputStream("test.taf2")))
 		{
 			t1.writeToSharedTextFile(stream);
 			stream.close();
-			System.out.println("done writing test.taf2");
+			//			System.out.println("done writing test.taf2");
 
 			test_assert(t1.equals(t2));
 		}
@@ -244,15 +225,15 @@ public class Test2
 
 	public void testMatch()
 	{
-		ATerm t = factory.parse("node(\"Pico-eval\",box,182,21,62,26)");
+		ATerm t = _factory.parse("node(\"Pico-eval\",box,182,21,62,26)");
 		List<Object> result = t.match("node(<str>,<fun>,<int>,<int>,<int>,<int>)");
 		test_assert(result != null);
 
-		t = factory.parse("f(1,2,3)");
+		t = _factory.parse("f(1,2,3)");
 		result = t.match("f(1,2,3)");
 		test_assert(result != null);
 
-		System.out.println("pass: testMatch");
+		//		System.out.println("pass: testMatch");
 	}
 
 	public void testAll() throws IOException
@@ -261,7 +242,6 @@ public class Test2
 		testMakeReal();
 		testMakeAppl();
 		testDict();
-		testAnnos();
 		testParser();
 		testList();
 		testFiles();

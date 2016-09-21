@@ -45,9 +45,9 @@ public class ATermApplImpl extends ATermImpl implements ATermAppl
 
 	private final ATerm[] _args;
 
-	protected ATermApplImpl(final PureFactory factory, final ATermList annos, final AFun fun, final ATerm[] i_args)
+	protected ATermApplImpl(final PureFactory factory, final AFun fun, final ATerm[] i_args)
 	{
-		super(factory, annos);
+		super(factory);
 
 		_fun = fun;
 		_args = i_args;
@@ -67,14 +67,9 @@ public class ATermApplImpl extends ATermImpl implements ATermAppl
 		return this;
 	}
 
-	protected ATermAppl make(final AFun fun, final ATerm[] i_args, final ATermList annos)
-	{
-		return getPureFactory().makeAppl(fun, i_args, annos);
-	}
-
 	protected ATermAppl make(final AFun fun, final ATerm[] i_args)
 	{
-		return make(fun, i_args, getPureFactory().makeList());
+		return getPureFactory().makeAppl(fun, i_args);
 	}
 
 	@Override
@@ -91,7 +86,7 @@ public class ATermApplImpl extends ATermImpl implements ATermAppl
 				for (int i = 0; i < _args.length; i++)
 					if (!peer.getArgument(i).equals(_args[i]))
 						return false;
-				return peer.getAnnotations().equals(getAnnotations());
+				return true;//peer.getAnnotations().equals(getAnnotations());
 			}
 		}
 		return false;
@@ -222,7 +217,7 @@ public class ATermApplImpl extends ATermImpl implements ATermAppl
 		final ATerm[] newargs = _args.clone();
 		newargs[index] = newarg;
 
-		return make(_fun, newargs, getAnnotations());
+		return make(_fun, newargs);
 	}
 
 	@Override
@@ -250,25 +245,7 @@ public class ATermApplImpl extends ATermImpl implements ATermAppl
 		for (int i = 0; i < _args.length; i++)
 			newargs[i] = _args[i].make(arguments);
 
-		final PureFactory pf = getPureFactory();
-		final ATermList empty = pf.getEmpty();
-
-		ATermList annos = getAnnotations();
-		ATermList tempAnnos = empty;
-		while (annos != empty)
-		{
-			tempAnnos = pf.makeList(annos.getFirst().make(arguments), tempAnnos);
-			annos = annos.getNext();
-		}
-		final ATermList newAnnos = tempAnnos.reverse();
-
-		return getPureFactory().makeAppl(_fun, newargs, newAnnos);
-	}
-
-	@Override
-	public ATerm setAnnotations(final ATermList annos)
-	{
-		return getPureFactory().makeAppl(_fun, _args, annos);
+		return getPureFactory().makeAppl(_fun, newargs);
 	}
 
 	@Override
@@ -301,7 +278,6 @@ public class ATermApplImpl extends ATermImpl implements ATermAppl
 		final int len = getArity();
 		int alpha = GOLDEN_RATIO;
 		final int b = GOLDEN_RATIO + (getAFun().hashCode() << 8);
-		final int c = len + (getAnnotations().hashCode() << 8);
 
 		switch (len)
 		{
@@ -313,6 +289,6 @@ public class ATermApplImpl extends ATermImpl implements ATermAppl
 				alpha += getArgument(0).hashCode();
 		}
 
-		return HashFunctions.mix(alpha, b, c);
+		return HashFunctions.mix(alpha, b, len);
 	}
 }

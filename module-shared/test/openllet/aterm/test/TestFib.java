@@ -36,7 +36,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class TestFib {
-	private ATermFactory factory;
+	private ATermFactory _factory;
 
 	private AFun zero, suc, plus, fib;
 	private ATermAppl tzero;
@@ -55,19 +55,19 @@ public class TestFib {
 	
 	@Before
 	public void setUp() {
-	    this.factory = new PureFactory();
+	    this._factory = new PureFactory();
 
-        this.zero = factory.makeAFun("zero", 0, false);
-        this.suc = factory.makeAFun("suc", 1, false);
-        this.plus = factory.makeAFun("plus", 2, false);
-        this.fib = factory.makeAFun("fib", 1, false);
-        this.tzero = factory.makeAppl(this.zero);
+        this.zero = _factory.makeAFun("zero", 0, false);
+        this.suc = _factory.makeAFun("suc", 1, false);
+        this.plus = _factory.makeAFun("plus", 2, false);
+        this.fib = _factory.makeAFun("fib", 1, false);
+        this.tzero = _factory.makeAppl(this.zero);
 	}
 	
 	public final static TestFib newTestFib(ATermFactory factory) {
         TestFib t = new TestFib();
         
-		t.factory = factory;
+		t._factory = factory;
 
 		t.zero = factory.makeAFun("zero", 0, false);
 		t.suc = factory.makeAFun("suc", 1, false);
@@ -81,21 +81,21 @@ public class TestFib {
 	@Test
 	public void test1() {
 		normalizePlus(
-			factory.makeAppl(
+			_factory.makeAppl(
 				plus,
-				factory.makeAppl(suc, factory.makeAppl(suc, tzero)),
-				factory.makeAppl(suc, factory.makeAppl(suc, tzero))));
+				_factory.makeAppl(suc, _factory.makeAppl(suc, tzero)),
+				_factory.makeAppl(suc, _factory.makeAppl(suc, tzero))));
 	}
 
     @Test
 	public void test2() {
 		// System.out.println("test 2");
 		normalizeFib(
-			factory.makeAppl(
+			_factory.makeAppl(
 				fib,
-				factory.makeAppl(
+				_factory.makeAppl(
 					suc,
-					factory.makeAppl(suc, factory.makeAppl(suc, factory.makeAppl(suc, tzero))))));
+					_factory.makeAppl(suc, _factory.makeAppl(suc, _factory.makeAppl(suc, tzero))))));
 
 		// System.out.println("res = fib(4) = " + res);
 	}
@@ -103,11 +103,11 @@ public class TestFib {
 	public void test3(int n) {
 		ATermAppl N = tzero;
 		for (int i = 0; i < n; i++) {
-			N = factory.makeAppl(suc, N);
+			N = _factory.makeAppl(suc, N);
 		}
-		normalizeFib(factory.makeAppl(fib, N));
+		normalizeFib(_factory.makeAppl(fib, N));
 		
-		System.out.println(factory);
+		System.out.println(_factory);
 	}
 
 	public ATermAppl normalizePlus(ATermAppl t) {
@@ -126,18 +126,18 @@ public class TestFib {
 							ATermAppl v4 = (ATermAppl) v3.getArgument(0);
 							if (v4.getAFun() == suc) {
 								res =
-									factory.makeAppl(
+									_factory.makeAppl(
 										plus,
 										v4.getArgument(0),
-										factory.makeAppl(
+										_factory.makeAppl(
 											suc,
-											factory.makeAppl(
+											_factory.makeAppl(
 												suc,
-												factory.makeAppl(
+												_factory.makeAppl(
 													suc,
-													factory.makeAppl(
+													_factory.makeAppl(
 														suc,
-														factory.makeAppl(
+														_factory.makeAppl(
 															suc,
 															res.getArgument(1)))))));
 								continue;
@@ -156,10 +156,10 @@ public class TestFib {
 			// plus(s(x),y) => plus(x,s(y))
 			if (v0.getAFun() == suc) {
 				res =
-					factory.makeAppl(
+					_factory.makeAppl(
 						plus,
 						v0.getArgument(0),
-						factory.makeAppl(suc, res.getArgument(1)));
+						_factory.makeAppl(suc, res.getArgument(1)));
 				continue;
 			}
 			break;
@@ -174,7 +174,7 @@ public class TestFib {
 			// fib(0) = suc(0)
 			ATermAppl v0 = (ATermAppl) res.getArgument(0);
 			if (v0.getAFun() == zero) {
-				res = factory.makeAppl(suc, v0);
+				res = _factory.makeAppl(suc, v0);
 				break;
 			}
 			// fib(suc(0)) => suc(0)
@@ -191,10 +191,10 @@ public class TestFib {
 				ATermAppl v1 = (ATermAppl) v0.getArgument(0);
 				if (v1.getAFun() == suc) {
 					ATermAppl v2 = (ATermAppl) v1.getArgument(0);
-					ATermAppl fib1 = normalizeFib(factory.makeAppl(fib, v2));
-					ATermAppl fib2 = normalizeFib(factory.makeAppl(fib, v1));
+					ATermAppl fib1 = normalizeFib(_factory.makeAppl(fib, v2));
+					ATermAppl fib2 = normalizeFib(_factory.makeAppl(fib, v1));
 					//System.out.println("adding");
-					res = normalizePlus(factory.makeAppl(plus, fib1, fib2));
+					res = normalizePlus(_factory.makeAppl(plus, fib1, fib2));
 					break;
 				}
 			}
@@ -204,6 +204,6 @@ public class TestFib {
 	}
 
     public void setFactory(ATermFactory factory2) {
-        this.factory = factory2;
+        this._factory = factory2;
     }
 }

@@ -33,7 +33,6 @@ import java.util.List;
 import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
-import openllet.aterm.ATermList;
 import openllet.aterm.ATermLong;
 import openllet.aterm.ATermPlaceholder;
 import openllet.aterm.Visitor;
@@ -44,9 +43,9 @@ public class ATermLongImpl extends ATermImpl implements ATermLong
 {
 	private long _value;
 
-	protected ATermLongImpl(final PureFactory factory, final ATermList annos, final long value)
+	protected ATermLongImpl(final PureFactory factory, final long value)
 	{
-		super(factory, annos);
+		super(factory);
 
 		_value = value;
 
@@ -67,9 +66,9 @@ public class ATermLongImpl extends ATermImpl implements ATermLong
 	 * @param value x
 	 */
 	@Deprecated
-	protected void init(final int hashCode, final ATermList annos, final long value)
+	protected void init(final int hashCode, final long value)
 	{
-		super.init(hashCode, annos);
+		super.init(hashCode);
 		_value = value;
 	}
 
@@ -80,10 +79,9 @@ public class ATermLongImpl extends ATermImpl implements ATermLong
 	 * @param value x
 	 */
 	@Deprecated
-	protected void initHashCode(final ATermList annos, final long value)
+	protected void initHashCode(final long value)
 	{
 		_value = value;
-		internSetAnnotations(annos);
 		setHashCode(hashFunction());
 	}
 
@@ -102,7 +100,7 @@ public class ATermLongImpl extends ATermImpl implements ATermLong
 			if (peer.getType() != getType())
 				return false;
 
-			return peer.getLong() == _value && peer.getAnnotations().equals(getAnnotations());
+			return peer.getLong() == _value;
 		}
 
 		return false;
@@ -139,12 +137,6 @@ public class ATermLongImpl extends ATermImpl implements ATermLong
 	}
 
 	@Override
-	public ATerm setAnnotations(final ATermList annos)
-	{
-		return getPureFactory().makeLong(_value, annos);
-	}
-
-	@Override
 	public ATerm accept(final Visitor<ATerm> v)
 	{
 		return v.visitLong(this);
@@ -152,7 +144,7 @@ public class ATermLongImpl extends ATermImpl implements ATermLong
 
 	private int hashFunction()
 	{
-		int a = GOLDEN_RATIO + (getAnnotations().hashCode() << 8);
+		int a = GOLDEN_RATIO;
 		a += _value; // FIXME this conversion "long to int" is buggy !
 		return HashFunctions.mix(a, GOLDEN_RATIO, 2);
 	}

@@ -198,7 +198,7 @@ public class GlassBoxExplanation extends SingleExplanationGeneratorImpl
 			result = getCachedExplanation(unsatClass);
 
 			if (result == null)
-				result = getPelletExplanation(unsatClass);
+				result = getReasonerExplanation(unsatClass);
 		}
 		else
 		{
@@ -206,11 +206,11 @@ public class GlassBoxExplanation extends SingleExplanationGeneratorImpl
 
 			try
 			{
-				result = getPelletExplanation(unsatClass);
+				result = getReasonerExplanation(unsatClass);
 			}
 			catch (final RuntimeException e)
 			{
-				_logger.log(Level.SEVERE, "Unexpected error while trying to get explanation set from Pellet", e);
+				_logger.log(Level.SEVERE, "Unexpected error while trying to get explanation set", e);
 				throw new OWLRuntimeException(e);
 			}
 			finally
@@ -222,29 +222,27 @@ public class GlassBoxExplanation extends SingleExplanationGeneratorImpl
 		return result;
 	}
 
-	private Set<OWLAxiom> getPelletExplanation(final OWLClassExpression unsatClass)
+	private Set<OWLAxiom> getReasonerExplanation(final OWLClassExpression unsatClass)
 	{
-		final OpenlletReasoner pellet = getReasoner();
+		final OpenlletReasoner reasoner = getReasoner();
 
-		pellet.getKB().prepare();
+		reasoner.getKB().prepare();
 
 		// satisfiable if there is an undefined entity
 		boolean sat = !getDefinitionTracker().isDefined(unsatClass);
 
 		if (!sat)
-			sat = isSatisfiable(pellet, unsatClass, true);
+			sat = isSatisfiable(reasoner, unsatClass, true);
 		else
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("Undefined entity in " + unsatClass);
+			_logger.fine(() -> "Undefined entity in " + unsatClass);
 
 		if (sat)
 			return Collections.emptySet();
 		else
 		{
-			final Set<OWLAxiom> explanation = convertExplanation(pellet.getKB().getExplanationSet());
+			final Set<OWLAxiom> explanation = convertExplanation(reasoner.getKB().getExplanationSet());
 
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("Explanation " + explanation);
+			_logger.fine(() -> "Explanation " + explanation);
 
 			final Set<OWLAxiom> prunedExplanation = pruneExplanation(unsatClass, explanation, true);
 

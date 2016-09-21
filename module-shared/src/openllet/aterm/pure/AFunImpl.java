@@ -32,7 +32,6 @@ import java.io.IOException;
 
 import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
-import openllet.aterm.ATermList;
 import openllet.aterm.Visitor;
 import openllet.aterm.stream.BufferedOutputStreamWriter;
 import openllet.shared.hash.HashFunctions;
@@ -59,7 +58,7 @@ public class AFunImpl extends ATermImpl implements AFun
 
 	protected AFunImpl(final PureFactory factory, final String name, final int arity, final boolean isQuoted)
 	{
-		super(factory, null);
+		super(factory);
 
 		_name = name.intern();
 		_arity = arity;
@@ -107,24 +106,6 @@ public class AFunImpl extends ATermImpl implements AFun
 	public boolean isQuoted()
 	{
 		return _isQuoted;
-	}
-
-	@Override
-	public ATerm getAnnotation(final ATerm key)
-	{
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public ATermList getAnnotations()
-	{
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public ATerm setAnnotations(final ATermList annos)
-	{
-		throw new UnsupportedOperationException();
 	}
 
 	@Override
