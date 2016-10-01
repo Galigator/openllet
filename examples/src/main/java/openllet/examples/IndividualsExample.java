@@ -36,6 +36,7 @@ import org.semanticweb.owlapi.reasoner.NodeSet;
  *
  * @author Evren Sirin
  */
+@Deprecated // Example ontologie (mindswappers) can't be download or isn't valid
 public class IndividualsExample
 {
 	public static void main(final String[] args) throws Exception

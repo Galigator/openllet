@@ -40,7 +40,7 @@ import uk.ac.manchester.cs.owlapi.modularity.ModuleType;
 public class ModularityExample
 {
 
-	private static final String file = "file:examples/data/simple-galen.owl";
+	private static final String file = "file:src/main/resources/data/simple-galen.owl";
 	private static final String NS = "http://www.co-ode.org/ontologies/galen#";
 
 	private void run() throws Exception

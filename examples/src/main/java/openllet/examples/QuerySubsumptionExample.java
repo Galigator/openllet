@@ -28,6 +28,7 @@ import org.apache.jena.rdf.model.ModelFactory;
  *
  * @author Evren Sirin, Hector Perez-Urbina
  */
+@Deprecated // The ontology from internet as disappear
 public class QuerySubsumptionExample
 {
 	private static final String ont = "http://owldl.com/ontologies/family.owl";

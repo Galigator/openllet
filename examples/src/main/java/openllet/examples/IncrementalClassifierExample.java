@@ -41,7 +41,7 @@ public class IncrementalClassifierExample
 {
 
 	// The ontology we use for classification
-	private static final String file = "file:examples/data/simple-galen.owl";
+	private static final String file = "file:src/main/resources/data/simple-galen.owl";
 	// Don't modify this
 	private static final String NS = "http://www.co-ode.org/ontologies/galen#";
 

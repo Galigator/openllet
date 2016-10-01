@@ -44,7 +44,7 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 public class ExplanationExample
 {
 
-	private static final String file = "file:examples/data/people+pets.owl";
+	private static final String file = "file:src/main/resources/data/people+pets.owl";
 	private static final String NS = "http://cohse.semanticweb.org/ontologies/people#";
 
 	public void run() throws OWLOntologyCreationException, OWLException, IOException

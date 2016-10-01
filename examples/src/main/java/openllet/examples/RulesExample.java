@@ -27,20 +27,22 @@ public class RulesExample
 {
 	public static void main(final String[] args)
 	{
-		final String ont = "data/dl-safe.owl";
-
+		final String ont = "file:src/main/resources/data/dl-safe.owl";
+		final String base = "http://owldl.com/ontologies/dl-safe.owl";
+		
 		final OntModel model = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC, null);
 		model.read(ont);
+		
 
-		final ObjectProperty sibling = model.getObjectProperty(ont + "#sibling");
+		final ObjectProperty sibling = model.getObjectProperty(base + "#sibling");
 
-		final OntClass BadChild = model.getOntClass(ont + "#BadChild");
-		final OntClass Child = model.getOntClass(ont + "#Child");
-
-		final Individual Abel = model.getIndividual(ont + "#Abel");
-		final Individual Cain = model.getIndividual(ont + "#Cain");
-		final Individual Remus = model.getIndividual(ont + "#Remus");
-		final Individual Romulus = model.getIndividual(ont + "#Romulus");
+		final OntClass BadChild = model.getOntClass(base + "#BadChild");
+		final OntClass Child = model.getOntClass(base + "#Child");
+		
+		final Individual Abel = model.getIndividual(base + "#Abel");
+		final Individual Cain = model.getIndividual(base + "#Cain");
+		final Individual Remus = model.getIndividual(base + "#Remus");
+		final Individual Romulus = model.getIndividual(base + "#Romulus");
 
 		model.prepare();
 
@@ -62,15 +64,13 @@ public class RulesExample
 		printInstances(Child);
 	}
 
-	// FIXME massivelly bugged functions.
 	@SuppressWarnings("unchecked")
 	public static void printPropertyValues(final Individual ind, final Property prop)
 	{
 		System.out.print(ind.getLocalName() + " has " + prop.getLocalName() + "(s): ");
 		final ExtendedIterator<RDFNode> rsc = ind.listPropertyValues(prop);
-		// FIXME : suppress warnings doesn't suppress 
 		@SuppressWarnings("rawtypes")
-		final ExtendedIterator<? extends Resource> rsc2 = (ExtendedIterator) rsc; // FIXME : there is a type error here : the modernized strong typing show it.  
+		final ExtendedIterator<? extends Resource> rsc2 = (ExtendedIterator) rsc; //  Resource extends RDFNode 
 		printIterator(rsc2);
 	}
 
