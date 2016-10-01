@@ -9,8 +9,6 @@ package openllet.core.rules.rete;
 import java.util.Iterator;
 import java.util.List;
 
-/**
- */
 public class BetaMemoryNode extends BetaNode
 {
 	private final BetaMemoryIndex _memory;

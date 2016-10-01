@@ -6,8 +6,6 @@
 
 package openllet.core.rules.rete;
 
-/**
- */
 public class BetaTopNode extends BetaNode
 {
 	private final AlphaNode _alpha;

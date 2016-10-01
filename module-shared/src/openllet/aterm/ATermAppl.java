@@ -34,7 +34,7 @@ package openllet.aterm;
  * @author Hayco de Jong (jong@cwi.nl)
  * @author Pieter Olivier (olivierp@cwi.nl)
  */
-public interface ATermAppl extends ATerm
+public interface ATermAppl extends AFun
 {
 
 	/**
@@ -51,6 +51,7 @@ public interface ATermAppl extends ATerm
 	 * @return the function name of this application.
 	 *
 	 */
+	@Override
 	public String getName();
 
 	/**
@@ -94,6 +95,7 @@ public interface ATermAppl extends ATerm
 	 *
 	 * @return true if this application is quoted, false otherwise.
 	 */
+	@Override
 	public boolean isQuoted();
 
 	/**
@@ -102,5 +104,6 @@ public interface ATermAppl extends ATerm
 	 *
 	 * @return the number of arguments of this application.
 	 */
+	@Override
 	public int getArity();
 }

@@ -169,30 +169,6 @@ public class AlphaNetwork implements Iterable<AlphaNode>
 				((AlphaEdgeNode) alpha).activate(edge);
 	}
 
-	//	private void activateEdge(Edge edge, boolean inverse) {
-	//		Role _role = edge.getRole();
-	//		if (inverse) {
-	//			_role = _role.getInverse();
-	//			if (_role == null) {
-	//				return;
-	//			}
-	//		}
-	//		for (Role r : _role.getSuperRoles()) {
-	//			if (r.isAnon()) {
-	//				continue;
-	//			}
-	//			List<AlphaNode> alphas = _map.get(r.getName());
-	//			if (alphas != null) {
-	//				if (inverse) {
-	//					edge = new DefaultEdge(_role,(Individual)edge.getTo(),  edge.getFrom(), edge.getDepends());
-	//				}
-	//				for (AlphaNode alpha : alphas) {
-	//					((AlphaEdgeNode) alpha).activate(edge);
-	//				}
-	//			}
-	//        }
-	//    }
-
 	public void activateDifferents(final Individual ind)
 	{
 		final List<AlphaNode> alphas = _map.get("DIFFERENT");
@@ -310,7 +286,7 @@ public class AlphaNetwork implements Iterable<AlphaNode>
 		public void visit(final ClassAtom atom)
 		{
 			final AtomObject arg = atom.getArgument();
-			final ATermAppl name = (arg instanceof AtomConstant) ? ((AtomConstant) arg).getValue() : null;
+			final ATermAppl name = arg instanceof AtomConstant ? ((AtomConstant) arg).getValue() : null;
 			_result = new AlphaTypeNode(_abox, atom.getPredicate(), name);
 		}
 

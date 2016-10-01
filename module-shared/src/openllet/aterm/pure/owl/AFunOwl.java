@@ -1,58 +1,21 @@
-/*
- * Copyright (c) 2002-2007, CWI and INRIA
- *
- * All rights reserved.
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- *     * Redistributions of source code must retain the above copyright
- *       notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *     * Neither the _name of the University of California, Berkeley nor the
- *       names of its contributors may be used to endorse or promote products
- *       derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND ANY
- * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE REGENTS AND CONTRIBUTORS BE LIABLE FOR ANY
- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
-package openllet.aterm.pure;
+package openllet.aterm.pure.owl;
 
 import java.io.IOException;
 
 import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.Visitor;
+import openllet.aterm.pure.ATermImpl;
+import openllet.aterm.pure.PureFactory;
 import openllet.aterm.stream.BufferedOutputStreamWriter;
 import openllet.shared.hash.HashFunctions;
 import openllet.shared.hash.SharedObject;
 
-public class AFunImpl extends ATermImpl implements AFun
+public abstract class AFunOwl extends ATermImpl implements AFun
 {
-	private final String _name;
-
-	private final int _arity;
-
-	private final boolean _isQuoted;
-
-	protected AFunImpl(final PureFactory factory, final String name, final int arity, final boolean isQuoted)
+	protected AFunOwl(final PureFactory factory)
 	{
 		super(factory);
-
-		_name = name.intern();
-		_arity = arity;
-		_isQuoted = isQuoted;
-
 		setHashCode(hashFunction());
 	}
 
@@ -68,9 +31,21 @@ public class AFunImpl extends ATermImpl implements AFun
 		if (obj instanceof AFun)
 		{
 			final AFun peer = (AFun) obj;
-			return peer.getName().equals(_name) && peer.getArity() == _arity && peer.isQuoted() == _isQuoted;
+			return peer.getName().equals(getName()) && peer.getArity() == getArity() && peer.isQuoted() == isQuoted();
 		}
 		return false;
+	}
+
+	@Override
+	public boolean isQuoted()
+	{
+		return false;
+	}
+
+	@Override
+	public String getName()
+	{
+		return this.getClass().getSimpleName();
 	}
 
 	@Override
@@ -80,38 +55,21 @@ public class AFunImpl extends ATermImpl implements AFun
 	}
 
 	@Override
-	public String getName()
-	{
-		return _name;
-	}
-
-	@Override
-	public int getArity()
-	{
-		return _arity;
-	}
-
-	@Override
-	public boolean isQuoted()
-	{
-		return _isQuoted;
-	}
-
-	@Override
 	public int serialize(final BufferedOutputStreamWriter writer) throws IOException
 	{
+		final String name = getName();
 		int bytesWritten = 0;
-		if (_isQuoted)
+		if (isQuoted())
 		{
 			writer.write('"');
 			bytesWritten++;
 		}
 
-		final int numberOfCharacters = _name.length();
+		final int numberOfCharacters = name.length();
 		bytesWritten += numberOfCharacters;
 		for (int i = 0; i < numberOfCharacters; i++)
 		{
-			char c = _name.charAt(i);
+			char c = name.charAt(i);
 			switch (c)
 			{
 				case '\n':
@@ -204,7 +162,7 @@ public class AFunImpl extends ATermImpl implements AFun
 			}
 		}
 
-		if (_isQuoted)
+		if (isQuoted())
 		{
 			writer.write('"');
 			bytesWritten++;
@@ -216,14 +174,15 @@ public class AFunImpl extends ATermImpl implements AFun
 	@Override
 	public String toString()
 	{
-		final StringBuilder result = new StringBuilder(_name.length());
+		final String name = getName();
+		final StringBuilder result = new StringBuilder(name.length());
 
-		if (_isQuoted)
+		if (isQuoted())
 			result.append('"');
 
-		for (int i = 0; i < _name.length(); i++)
+		for (int i = 0; i < name.length(); i++)
 		{
-			char c = _name.charAt(i);
+			char c = name.charAt(i);
 			switch (c)
 			{
 				case '\n':
@@ -306,7 +265,7 @@ public class AFunImpl extends ATermImpl implements AFun
 			}
 		}
 
-		if (_isQuoted)
+		if (isQuoted())
 			result.append('"');
 
 		return result.toString();
@@ -323,38 +282,38 @@ public class AFunImpl extends ATermImpl implements AFun
 	{
 		int a = GOLDEN_RATIO;
 		int b = GOLDEN_RATIO;
-
-		final int len = _name.length();
+		final String name = getName();
+		final int len = name.length();
 		if (len >= 12)
 			return hashFunction2();
 
-		int c = _isQuoted ? 7 * _arity + 1 : _arity + 1;
+		int c = isQuoted() ? 7 * getArity() + 1 : getArity() + 1; // Check if the quoted case exist.
 		c += len;
 		switch (len)
 		{
 			case 11:
-				c += _name.charAt(10) << 24;
+				c += name.charAt(10) << 24;
 			case 10:
-				c += _name.charAt(9) << 16;
+				c += name.charAt(9) << 16;
 			case 9:
-				c += _name.charAt(8) << 8;
+				c += name.charAt(8) << 8;
 				/* the first byte of c is reserved for the length */
 			case 8:
-				b += _name.charAt(7) << 24;
+				b += name.charAt(7) << 24;
 			case 7:
-				b += _name.charAt(6) << 16;
+				b += name.charAt(6) << 16;
 			case 6:
-				b += _name.charAt(5) << 8;
+				b += name.charAt(5) << 8;
 			case 5:
-				b += _name.charAt(4);
+				b += name.charAt(4);
 			case 4:
-				a += _name.charAt(3) << 24;
+				a += name.charAt(3) << 24;
 			case 3:
-				a += _name.charAt(2) << 16;
+				a += name.charAt(2) << 16;
 			case 2:
-				a += _name.charAt(1) << 8;
+				a += name.charAt(1) << 8;
 			case 1:
-				a += _name.charAt(0);
+				a += name.charAt(0);
 			default:
 				return HashFunctions.mix(a, b, c);
 		}
@@ -366,15 +325,16 @@ public class AFunImpl extends ATermImpl implements AFun
 	@SuppressWarnings("fallthrough")
 	private int hashFunction2()
 	{
-		final int count = _name.length();
+		final String name = getName();
+		final int count = name.length();
 		final char[] source = new char[count];
 
-		_name.getChars(0, count, source, 0);
+		name.getChars(0, count, source, 0);
 		int len = count;
 		int a = GOLDEN_RATIO;
 		int b = GOLDEN_RATIO;
 
-		int c = _isQuoted ? 7 * (_arity + 1) : _arity + 1; // to avoid collison
+		int c = isQuoted() ? 7 * (getArity() + 1) : getArity() + 1; // to avoid collison
 		int k = 0;
 
 		while (len >= 12)

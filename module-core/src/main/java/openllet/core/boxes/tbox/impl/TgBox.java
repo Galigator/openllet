@@ -435,7 +435,6 @@ public class TgBox extends TBoxBase
 		for (final ATermAppl term : set)
 		{
 			final ATermAppl nnfterm = ATermUtils.nnf(term);
-			// System.out.println(term);
 			if (nnfterm.getAFun().equals(ATermUtils.ANDFUN))
 			{
 				set.remove(term);

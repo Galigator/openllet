@@ -70,7 +70,6 @@ public class BinaryReader
 {
 	private final static int ISSHAREDFLAG = 0x00000080;
 	private final static int TYPEMASK = 0x0000000f;
-	private final static int ANNOSFLAG = 0x00000010;
 
 	private final static int ISFUNSHARED = 0x00000040;
 	private final static int APPLQUOTED = 0x00000020;

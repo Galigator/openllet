@@ -56,7 +56,6 @@ public abstract class ATermImpl extends ATermVisitableImpl implements ATerm, Sha
 	 *
 	 * @param factory x
 	 */
-	@Deprecated
 	protected ATermImpl(final PureFactory factory)
 	{
 		super();
@@ -81,7 +80,6 @@ public abstract class ATermImpl extends ATermVisitableImpl implements ATerm, Sha
 	 * @param hashCode x
 	 * @param annos x
 	 */
-	@Deprecated
 	protected void init(final int hashCode)
 	{
 		_hashCode = hashCode;

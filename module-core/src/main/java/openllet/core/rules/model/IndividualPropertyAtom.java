@@ -14,9 +14,6 @@ import openllet.core.utils.URIUtils;
  * Title: Individual Property Atom
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>

@@ -28,6 +28,7 @@
 
 package openllet.aterm.pure;
 
+import java.io.IOException;
 import java.util.List;
 
 import openllet.aterm.AFun;
@@ -36,6 +37,7 @@ import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
 import openllet.aterm.ATermPlaceholder;
 import openllet.aterm.Visitor;
+import openllet.aterm.stream.BufferedOutputStreamWriter;
 import openllet.shared.hash.HashFunctions;
 import openllet.shared.hash.SharedObject;
 
@@ -290,5 +292,11 @@ public class ATermApplImpl extends ATermImpl implements ATermAppl
 		}
 
 		return HashFunctions.mix(alpha, b, len);
+	}
+
+	@Override
+	public int serialize(final BufferedOutputStreamWriter writer) throws IOException
+	{
+		return 0; // FIXME Auto-generated method stub
 	}
 }

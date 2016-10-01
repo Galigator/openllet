@@ -32,6 +32,55 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import openllet.aterm.pure.owl.FunAll;
+import openllet.aterm.pure.owl.FunAllDifferent;
+import openllet.aterm.pure.owl.FunAnd;
+import openllet.aterm.pure.owl.FunAsymmetric;
+import openllet.aterm.pure.owl.FunBottomDataProperty;
+import openllet.aterm.pure.owl.FunBottomObjectProperty;
+import openllet.aterm.pure.owl.FunBuiltin;
+import openllet.aterm.pure.owl.FunCard;
+import openllet.aterm.pure.owl.FunComplementOf;
+import openllet.aterm.pure.owl.FunDatatypeDefinition;
+import openllet.aterm.pure.owl.FunDifferent;
+import openllet.aterm.pure.owl.FunDisjointClasses;
+import openllet.aterm.pure.owl.FunDisjointProperties;
+import openllet.aterm.pure.owl.FunDisjointPropertyWith;
+import openllet.aterm.pure.owl.FunDisjointWith;
+import openllet.aterm.pure.owl.FunDomain;
+import openllet.aterm.pure.owl.FunEmpty;
+import openllet.aterm.pure.owl.FunEquivalentClasses;
+import openllet.aterm.pure.owl.FunEquivalentProperty;
+import openllet.aterm.pure.owl.FunFacet;
+import openllet.aterm.pure.owl.FunFunctionnal;
+import openllet.aterm.pure.owl.FunInv;
+import openllet.aterm.pure.owl.FunInverseFunctional;
+import openllet.aterm.pure.owl.FunInverseProperty;
+import openllet.aterm.pure.owl.FunIrreflexive;
+import openllet.aterm.pure.owl.FunLiteral;
+import openllet.aterm.pure.owl.FunMax;
+import openllet.aterm.pure.owl.FunMin;
+import openllet.aterm.pure.owl.FunNot;
+import openllet.aterm.pure.owl.FunOr;
+import openllet.aterm.pure.owl.FunProp;
+import openllet.aterm.pure.owl.FunRange;
+import openllet.aterm.pure.owl.FunReflexive;
+import openllet.aterm.pure.owl.FunRestrictedDatatype;
+import openllet.aterm.pure.owl.FunRule;
+import openllet.aterm.pure.owl.FunSameAs;
+import openllet.aterm.pure.owl.FunSelf;
+import openllet.aterm.pure.owl.FunSome;
+import openllet.aterm.pure.owl.FunSubClassOf;
+import openllet.aterm.pure.owl.FunSubProperty;
+import openllet.aterm.pure.owl.FunSymmetric;
+import openllet.aterm.pure.owl.FunTop;
+import openllet.aterm.pure.owl.FunTopDataProperty;
+import openllet.aterm.pure.owl.FunTopObjectProperty;
+import openllet.aterm.pure.owl.FunTransitive;
+import openllet.aterm.pure.owl.FunType;
+import openllet.aterm.pure.owl.FunValue;
+import openllet.aterm.pure.owl.FunVar;
+
 /**
  * An ATermFactory is responsible for making new ATerms.
  * A factory can create a new ATerm by parsing a String, by making
@@ -383,6 +432,102 @@ public interface ATermFactory
 	 * @return the constructed function application.
 	 */
 	public ATermAppl makeApplList(AFun fun, ATermList args);
+
+	public FunLiteral literal();
+
+	public FunAnd and();
+
+	public FunOr or();
+
+	public FunSome some();
+
+	public FunAll all();
+
+	public FunNot not();
+
+	public FunMax max();
+
+	public FunMin min();
+
+	public FunValue value();
+
+	public FunSelf self();
+
+	public FunCard card();
+
+	public FunInv inv();
+
+	public FunSubClassOf subClassOf();
+
+	public FunEquivalentClasses equivalentClasses();
+
+	public FunSameAs sameAs();
+
+	public FunDisjointWith disjointWith();
+
+	public FunDisjointClasses disjointClasses();
+
+	public FunDisjointPropertyWith disjointPropertyWith();
+
+	public FunDisjointProperties disjointProperties();
+
+	public FunComplementOf complementOf();
+
+	public FunVar var();
+
+	public FunType type();
+
+	public FunProp prop();
+
+	public FunDifferent different();
+
+	public FunAllDifferent allDifferent();
+
+	public FunAsymmetric asymmetric();
+
+	public FunFunctionnal functional();
+
+	public FunInverseFunctional inverseFunctional();
+
+	public FunIrreflexive irreflexive();
+
+	public FunReflexive reflexive();
+
+	public FunSymmetric symmetric();
+
+	public FunTransitive transitive();
+
+	public FunSubProperty subProperty();
+
+	public FunEquivalentProperty equivalentProperty();
+
+	public FunInverseProperty inverseProperty();
+
+	public FunDomain domain();
+
+	public FunRange range();
+
+	public FunRule rule();
+
+	public FunBuiltin builtin();
+
+	public FunDatatypeDefinition datatypeDefinition();
+
+	public FunRestrictedDatatype restrictedDatatype();
+
+	public FunFacet facet();
+
+	public FunEmpty empty();
+
+	public FunTop top();
+
+	public FunTopObjectProperty topObjectProperty();
+
+	public FunTopDataProperty topDataProperty();
+
+	public FunBottomObjectProperty bottomObjectProperty();
+
+	public FunBottomDataProperty bottomDataProperty();
 
 	/**
 	 * Creates an ATerm from a text stream.

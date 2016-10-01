@@ -55,6 +55,54 @@ import openllet.aterm.ATermReal;
 import openllet.aterm.ParseError;
 import openllet.aterm.pure.binary.BAFReader;
 import openllet.aterm.pure.binary.BinaryReader;
+import openllet.aterm.pure.owl.FunAll;
+import openllet.aterm.pure.owl.FunAllDifferent;
+import openllet.aterm.pure.owl.FunAnd;
+import openllet.aterm.pure.owl.FunAsymmetric;
+import openllet.aterm.pure.owl.FunBottomDataProperty;
+import openllet.aterm.pure.owl.FunBottomObjectProperty;
+import openllet.aterm.pure.owl.FunBuiltin;
+import openllet.aterm.pure.owl.FunCard;
+import openllet.aterm.pure.owl.FunComplementOf;
+import openllet.aterm.pure.owl.FunDatatypeDefinition;
+import openllet.aterm.pure.owl.FunDifferent;
+import openllet.aterm.pure.owl.FunDisjointClasses;
+import openllet.aterm.pure.owl.FunDisjointProperties;
+import openllet.aterm.pure.owl.FunDisjointPropertyWith;
+import openllet.aterm.pure.owl.FunDisjointWith;
+import openllet.aterm.pure.owl.FunDomain;
+import openllet.aterm.pure.owl.FunEmpty;
+import openllet.aterm.pure.owl.FunEquivalentClasses;
+import openllet.aterm.pure.owl.FunEquivalentProperty;
+import openllet.aterm.pure.owl.FunFacet;
+import openllet.aterm.pure.owl.FunFunctionnal;
+import openllet.aterm.pure.owl.FunInv;
+import openllet.aterm.pure.owl.FunInverseFunctional;
+import openllet.aterm.pure.owl.FunInverseProperty;
+import openllet.aterm.pure.owl.FunIrreflexive;
+import openllet.aterm.pure.owl.FunLiteral;
+import openllet.aterm.pure.owl.FunMax;
+import openllet.aterm.pure.owl.FunMin;
+import openllet.aterm.pure.owl.FunNot;
+import openllet.aterm.pure.owl.FunOr;
+import openllet.aterm.pure.owl.FunProp;
+import openllet.aterm.pure.owl.FunRange;
+import openllet.aterm.pure.owl.FunReflexive;
+import openllet.aterm.pure.owl.FunRestrictedDatatype;
+import openllet.aterm.pure.owl.FunRule;
+import openllet.aterm.pure.owl.FunSameAs;
+import openllet.aterm.pure.owl.FunSelf;
+import openllet.aterm.pure.owl.FunSome;
+import openllet.aterm.pure.owl.FunSubClassOf;
+import openllet.aterm.pure.owl.FunSubProperty;
+import openllet.aterm.pure.owl.FunSymmetric;
+import openllet.aterm.pure.owl.FunTop;
+import openllet.aterm.pure.owl.FunTopDataProperty;
+import openllet.aterm.pure.owl.FunTopObjectProperty;
+import openllet.aterm.pure.owl.FunTransitive;
+import openllet.aterm.pure.owl.FunType;
+import openllet.aterm.pure.owl.FunValue;
+import openllet.aterm.pure.owl.FunVar;
 import openllet.atom.OpenError;
 import openllet.shared.hash.SharedObject;
 import openllet.shared.hash.SharedObjectFactory;
@@ -934,6 +982,294 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 		}
 
 		return result;
+	}
+
+	@Override
+	public FunAnd and()
+	{
+		return (FunAnd) build(new FunAnd(this));
+	}
+
+	@Override
+	public FunLiteral literal()
+	{
+		return (FunLiteral) build(new FunLiteral(this));
+	}
+
+	@Override
+	public FunOr or()
+	{
+		return (FunOr) build(new FunOr(this));
+	}
+
+	@Override
+	public FunSome some()
+	{
+		return (FunSome) build(new FunSome(this));
+	}
+
+	@Override
+	public FunAll all()
+	{
+		return (FunAll) build(new FunAll(this));
+	}
+
+	@Override
+	public FunNot not()
+	{
+		return (FunNot) build(new FunNot(this));
+	}
+
+	@Override
+	public FunMax max()
+	{
+		return (FunMax) build(new FunMax(this));
+	}
+
+	@Override
+	public FunMin min()
+	{
+		return (FunMin) build(new FunMin(this));
+	}
+
+	@Override
+	public FunValue value()
+	{
+		return (FunValue) build(new FunValue(this));
+	}
+
+	@Override
+	public FunSelf self()
+	{
+		return (FunSelf) build(new FunSelf(this));
+	}
+
+	@Override
+	public FunCard card()
+	{
+		return (FunCard) build(new FunCard(this));
+	}
+
+	@Override
+	public FunInv inv()
+	{
+		return (FunInv) build(new FunInv(this));
+	}
+
+	@Override
+	public FunSubClassOf subClassOf()
+	{
+		return (FunSubClassOf) build(new FunSubClassOf(this));
+	}
+
+	@Override
+	public FunEquivalentClasses equivalentClasses()
+	{
+		return (FunEquivalentClasses) build(new FunEquivalentClasses(this));
+	}
+
+	@Override
+	public FunSameAs sameAs()
+	{
+		return (FunSameAs) build(new FunSameAs(this));
+	}
+
+	@Override
+	public FunDisjointWith disjointWith()
+	{
+		return (FunDisjointWith) build(new FunDisjointWith(this));
+	}
+
+	@Override
+	public FunDisjointClasses disjointClasses()
+	{
+		return (FunDisjointClasses) build(new FunDisjointClasses(this));
+	}
+
+	@Override
+	public FunDisjointPropertyWith disjointPropertyWith()
+	{
+		return (FunDisjointPropertyWith) build(new FunDisjointPropertyWith(this));
+	}
+
+	@Override
+	public FunDisjointProperties disjointProperties()
+	{
+		return (FunDisjointProperties) build(new FunDisjointProperties(this));
+	}
+
+	@Override
+	public FunComplementOf complementOf()
+	{
+		return (FunComplementOf) build(new FunComplementOf(this));
+	}
+
+	@Override
+	public FunVar var()
+	{
+		return (FunVar) build(new FunVar(this));
+	}
+
+	@Override
+	public FunType type()
+	{
+		return (FunType) build(new FunType(this));
+	}
+
+	@Override
+	public FunProp prop()
+	{
+		return (FunProp) build(new FunProp(this));
+	}
+
+	@Override
+	public FunDifferent different()
+	{
+		return (FunDifferent) build(new FunDifferent(this));
+	}
+
+	@Override
+	public FunAllDifferent allDifferent()
+	{
+		return (FunAllDifferent) build(new FunAllDifferent(this));
+	}
+
+	@Override
+	public FunAsymmetric asymmetric()
+	{
+		return (FunAsymmetric) build(new FunAsymmetric(this));
+	}
+
+	@Override
+	public FunFunctionnal functional()
+	{
+		return (FunFunctionnal) build(new FunFunctionnal(this));
+	}
+
+	@Override
+	public FunInverseFunctional inverseFunctional()
+	{
+		return (FunInverseFunctional) build(new FunInverseFunctional(this));
+	}
+
+	@Override
+	public FunIrreflexive irreflexive()
+	{
+		return (FunIrreflexive) build(new FunIrreflexive(this));
+	}
+
+	@Override
+	public FunReflexive reflexive()
+	{
+		return (FunReflexive) build(new FunReflexive(this));
+	}
+
+	@Override
+	public FunSymmetric symmetric()
+	{
+		return (FunSymmetric) build(new FunSymmetric(this));
+	}
+
+	@Override
+	public FunTransitive transitive()
+	{
+		return (FunTransitive) build(new FunTransitive(this));
+	}
+
+	@Override
+	public FunSubProperty subProperty()
+	{
+		return (FunSubProperty) build(new FunSubProperty(this));
+	}
+
+	@Override
+	public FunEquivalentProperty equivalentProperty()
+	{
+		return (FunEquivalentProperty) build(new FunEquivalentProperty(this));
+	}
+
+	@Override
+	public FunInverseProperty inverseProperty()
+	{
+		return (FunInverseProperty) build(new FunInverseProperty(this));
+	}
+
+	@Override
+	public FunDomain domain()
+	{
+		return (FunDomain) build(new FunDomain(this));
+	}
+
+	@Override
+	public FunRange range()
+	{
+		return (FunRange) build(new FunRange(this));
+	}
+
+	@Override
+	public FunRule rule()
+	{
+		return (FunRule) build(new FunRule(this));
+	}
+
+	@Override
+	public FunBuiltin builtin()
+	{
+		return (FunBuiltin) build(new FunBuiltin(this));
+	}
+
+	@Override
+	public FunDatatypeDefinition datatypeDefinition()
+	{
+		return (FunDatatypeDefinition) build(new FunDatatypeDefinition(this));
+	}
+
+	@Override
+	public FunRestrictedDatatype restrictedDatatype()
+	{
+		return (FunRestrictedDatatype) build(new FunRestrictedDatatype(this));
+	}
+
+	@Override
+	public FunFacet facet()
+	{
+		return (FunFacet) build(new FunFacet(this));
+	}
+
+	@Override
+	public FunEmpty empty()
+	{
+		return (FunEmpty) build(new FunEmpty(this));
+	}
+
+	@Override
+	public FunTop top()
+	{
+		return (FunTop) build(new FunTop(this));
+	}
+
+	@Override
+	public FunTopObjectProperty topObjectProperty()
+	{
+		return (FunTopObjectProperty) build(new FunTopObjectProperty(this));
+	}
+
+	@Override
+	public FunTopDataProperty topDataProperty()
+	{
+		return (FunTopDataProperty) build(new FunTopDataProperty(this));
+	}
+
+	@Override
+	public FunBottomObjectProperty bottomObjectProperty()
+	{
+		return (FunBottomObjectProperty) build(new FunBottomObjectProperty(this));
+	}
+
+	@Override
+	public FunBottomDataProperty bottomDataProperty()
+	{
+		return (FunBottomDataProperty) build(new FunBottomDataProperty(this));
 	}
 }
 

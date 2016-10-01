@@ -67,79 +67,79 @@ public class ATermUtils
 	public static final int LIT_LANG_INDEX = 1;
 	public static final int LIT_URI_INDEX = 2;
 
-	public static final AFun ANDFUN = factory.makeAFun("and", 1, false);
-	public static final AFun ORFUN = factory.makeAFun("or", 1, false);
-	public static final AFun SOMEFUN = factory.makeAFun("some", 2, false);
-	public static final AFun ALLFUN = factory.makeAFun("all", 2, false);
-	public static final AFun NOTFUN = factory.makeAFun("not", 1, false);
-	public static final AFun MAXFUN = factory.makeAFun("max", 3, false);
-	public static final AFun MINFUN = factory.makeAFun("min", 3, false);
-	public static final AFun VALUEFUN = factory.makeAFun("value", 1, false);
-	public static final AFun SELFFUN = factory.makeAFun("self", 1, false);
+	public static final AFun ANDFUN = factory.and();
+	public static final AFun ORFUN = factory.or();
+	public static final AFun SOMEFUN = factory.some();
+	public static final AFun ALLFUN = factory.all();
+	public static final AFun NOTFUN = factory.not();
+	public static final AFun MAXFUN = factory.max();
+	public static final AFun MINFUN = factory.min();
+	public static final AFun VALUEFUN = factory.value();
+	public static final AFun SELFFUN = factory.self();
 	/**
 	 * This is not used in the reasoner but kept here to be used for display
 	 */
-	public static final AFun CARDFUN = factory.makeAFun("card", 3, false);
+	public static final AFun CARDFUN = factory.card();
 
 	public static Set<AFun> CLASS_FUN = SetUtils.create(new AFun[] { ALLFUN, SOMEFUN, MAXFUN, MINFUN, CARDFUN, ANDFUN, ORFUN, NOTFUN, VALUEFUN, SELFFUN });
 
-	public static final AFun INVFUN = factory.makeAFun("inv", 1, false);
+	public static final AFun INVFUN = factory.inv();
 
-	public static final AFun SUBFUN = factory.makeAFun("subClassOf", 2, false);
-	public static final AFun EQCLASSFUN = factory.makeAFun("equivalentClasses", 2, false);
+	public static final AFun SUBFUN = factory.subClassOf();
+	public static final AFun EQCLASSFUN = factory.equivalentClasses();
 
-	public static final AFun SAMEASFUN = factory.makeAFun("sameAs", 2, false);
+	public static final AFun SAMEASFUN = factory.sameAs();
 
-	public static final AFun DISJOINTFUN = factory.makeAFun("disjointWith", 2, false);
-	public static final AFun DISJOINTSFUN = factory.makeAFun("disjointClasses", 1, false);
+	public static final AFun DISJOINTFUN = factory.disjointWith();
+	public static final AFun DISJOINTSFUN = factory.disjointClasses();
 
-	public static final AFun DISJOINTPROPFUN = factory.makeAFun("disjointPropertyWith", 2, false);
-	public static final AFun DISJOINTPROPSFUN = factory.makeAFun("disjointProperties", 1, false);
+	public static final AFun DISJOINTPROPFUN = factory.disjointPropertyWith();
+	public static final AFun DISJOINTPROPSFUN = factory.disjointProperties();
 
-	public static final AFun COMPLEMENTFUN = factory.makeAFun("complementOf", 2, false);
+	public static final AFun COMPLEMENTFUN = factory.complementOf();
 
 	/**
 	 * This is used to represent variables in queries
 	 */
-	public static final AFun VARFUN = factory.makeAFun("var", 1, false);
+	public static final AFun VARFUN = factory.var();
 
-	public static final AFun TYPEFUN = factory.makeAFun("type", 2, false);
+	public static final AFun TYPEFUN = factory.type();
 
-	public static final AFun PROPFUN = factory.makeAFun("prop", 3, false);
+	public static final AFun PROPFUN = factory.prop();
 
 	/**
 	 * Added for explanations
 	 */
-	public static final AFun DIFFERENTFUN = factory.makeAFun("different", 2, false);
-	public static final AFun ALLDIFFERENTFUN = factory.makeAFun("allDifferent", 1, false);
-	public static final AFun ASYMMETRICFUN = factory.makeAFun("asymmetric", 1, false);
+	public static final AFun DIFFERENTFUN = factory.different();
+	public static final AFun ALLDIFFERENTFUN = factory.allDifferent();
+	public static final AFun ASYMMETRICFUN = factory.asymmetric();
 	/**
 	 * @deprecated Use {@link #ASYMMETRICFUN}
 	 */
 	@Deprecated
 	public static final AFun ANTISYMMETRICFUN = ASYMMETRICFUN;
-	public static final AFun FUNCTIONALFUN = factory.makeAFun("functional", 1, false);
-	public static final AFun INVFUNCTIONALFUN = factory.makeAFun("inverseFunctional", 1, false);
-	public static final AFun IRREFLEXIVEFUN = factory.makeAFun("irreflexive", 1, false);
-	public static final AFun REFLEXIVEFUN = factory.makeAFun("reflexive", 1, false);
-	public static final AFun SYMMETRICFUN = factory.makeAFun("symmetric", 1, false);
-	public static final AFun TRANSITIVEFUN = factory.makeAFun("transitive", 1, false);
-	public static final AFun SUBPROPFUN = factory.makeAFun("subProperty", 2, false);
-	public static final AFun EQPROPFUN = factory.makeAFun("equivalentProperty", 2, false);
-	public static final AFun INVPROPFUN = factory.makeAFun("inverseProperty", 2, false);
-	public static final AFun DOMAINFUN = factory.makeAFun("domain", 2, false);
+	public static final AFun FUNCTIONALFUN = factory.functional();
+	public static final AFun INVFUNCTIONALFUN = factory.inverseFunctional();
+	public static final AFun IRREFLEXIVEFUN = factory.irreflexive();
+	public static final AFun REFLEXIVEFUN = factory.reflexive();
+	public static final AFun SYMMETRICFUN = factory.symmetric();
+	public static final AFun TRANSITIVEFUN = factory.transitive();
+	public static final AFun SUBPROPFUN = factory.subProperty();
+	public static final AFun EQPROPFUN = factory.equivalentProperty();
+	public static final AFun INVPROPFUN = factory.inverseProperty();
 
-	public static final AFun RANGEFUN = factory.makeAFun("range", 2, false);
+	public static final AFun DOMAINFUN = factory.domain();
+	public static final AFun RANGEFUN = factory.range();
 
-	public static final AFun RULEFUN = factory.makeAFun("rule", 3, false);
+	public static final AFun RULEFUN = factory.rule();
 
-	public static final AFun BUILTINFUN = factory.makeAFun("builtin", 1, false);
+	public static final AFun BUILTINFUN = factory.builtin();
 
-	public static final AFun DATATYPEDEFFUN = factory.makeAFun("datatypeDefinition", 2, false);
+	public static final AFun DATATYPEDEFFUN = factory.datatypeDefinition();
 
-	public static final AFun RESTRDATATYPEFUN = factory.makeAFun("restrictedDatatype", 2, false);
+	public static final AFun RESTRDATATYPEFUN = factory.restrictedDatatype();
 
-	public static final AFun FACET = factory.makeAFun("facet", 2, false);
+	public static final AFun FACET = factory.facet();
 
 	public static final ATermAppl EMPTY = makeTermAppl("");
 
@@ -498,7 +498,7 @@ public class ATermUtils
 		if (r.getType() == ATerm.LIST)
 		{
 			final ATermList list = (ATermList) r;
-			arg1 = (list.getLength() == 1) ? list.getFirst() : r;
+			arg1 = list.getLength() == 1 ? list.getFirst() : r;
 		}
 		else
 			arg1 = r;
@@ -670,7 +670,7 @@ public class ATermUtils
 
 	final static public boolean member(final ATerm a, final ATermList list)
 	{
-		return (list.indexOf(a, 0) != -1);
+		return list.indexOf(a, 0) != -1;
 	}
 
 	static public boolean isSet(final ATermList list)
@@ -1239,7 +1239,7 @@ public class ATermUtils
 							}
 							else
 								if (af.equals(ATermUtils.CARDFUN))
-									newterm = nnf(makeNot(makeExactCard(arg.getArgument(0), ((ATermInt) arg.getArgument(1)), arg.getArgument(2))));
+									newterm = nnf(makeNot(makeExactCard(arg.getArgument(0), (ATermInt) arg.getArgument(1), arg.getArgument(2))));
 								else
 									if (af.equals(ATermUtils.ANDFUN))
 										newterm = ATermUtils.makeOr(nnf(negate((ATermList) arg.getArgument(0))));
@@ -1268,7 +1268,7 @@ public class ATermUtils
 				newterm = term;
 			else
 				if (af.equals(ATermUtils.CARDFUN))
-					newterm = nnf(makeExactCard(term.getArgument(0), ((ATermInt) term.getArgument(1)), term.getArgument(2)));
+					newterm = nnf(makeExactCard(term.getArgument(0), (ATermInt) term.getArgument(1), term.getArgument(2)));
 				else
 				{
 					// Return the term with all of its arguments in nnf
@@ -1321,9 +1321,9 @@ public class ATermUtils
 	{
 		ATermAppl norm = term;
 		final AFun fun = term.getAFun();
-		final ATerm arg1 = (term.getArity() > 0) ? term.getArgument(0) : null;
-		final ATerm arg2 = (term.getArity() > 1) ? term.getArgument(1) : null;
-		final ATerm arg3 = (term.getArity() > 2) ? term.getArgument(2) : null;
+		final ATerm arg1 = term.getArity() > 0 ? term.getArgument(0) : null;
+		final ATerm arg2 = term.getArity() > 1 ? term.getArgument(1) : null;
+		final ATerm arg3 = term.getArity() > 2 ? term.getArgument(2) : null;
 
 		if (arg1 == null || fun.equals(SELFFUN) || fun.equals(VALUEFUN) || fun.equals(INVFUN) || fun.equals(RESTRDATATYPEFUN))
 		{
@@ -1389,9 +1389,9 @@ public class ATermUtils
 	{
 		ATermAppl simp = term;
 		final AFun fun = term.getAFun();
-		final ATerm arg1 = (term.getArity() > 0) ? term.getArgument(0) : null;
-		final ATerm arg2 = (term.getArity() > 1) ? term.getArgument(1) : null;
-		final ATerm arg3 = (term.getArity() > 2) ? term.getArgument(2) : null;
+		final ATerm arg1 = term.getArity() > 0 ? term.getArgument(0) : null;
+		final ATerm arg2 = term.getArity() > 1 ? term.getArgument(1) : null;
+		final ATerm arg3 = term.getArity() > 2 ? term.getArgument(2) : null;
 
 		if (arg1 == null || fun.equals(SELFFUN) || fun.equals(VALUEFUN) || fun.equals(ATermUtils.RESTRDATATYPEFUN))
 		{

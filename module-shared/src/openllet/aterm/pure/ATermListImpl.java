@@ -71,10 +71,6 @@ public class ATermListImpl extends ATermImpl implements ATermList
 		setHashCode(hashFunction());
 	}
 
-	/**
-	 * depricated Use the new constructor instead.
-	 */
-	@Deprecated
 	protected void init(final int hashCode, final ATerm first, final ATermList next)
 	{
 		super.init(hashCode);
