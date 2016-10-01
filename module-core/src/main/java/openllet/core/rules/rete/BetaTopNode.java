@@ -6,8 +6,6 @@
 
 package openllet.core.rules.rete;
 
-import java.util.logging.Level;
-
 /**
  */
 public class BetaTopNode extends BetaNode
@@ -16,7 +14,7 @@ public class BetaTopNode extends BetaNode
 
 	public BetaTopNode(final AlphaNode alpha)
 	{
-		this._alpha = alpha;
+		_alpha = alpha;
 	}
 
 	public AlphaNode getAlphaNode()
@@ -33,9 +31,7 @@ public class BetaTopNode extends BetaNode
 	@Override
 	public void activate(final WME wme)
 	{
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Activate beta " + wme);
-
+		_logger.fine(() -> "Activate beta " + wme);
 		activateChildren(wme, null);
 	}
 
@@ -46,7 +42,7 @@ public class BetaTopNode extends BetaNode
 	}
 
 	@Override
-	public void print(String indentLvl)
+	public void print(final String indentLvl)
 	{
 		System.out.print(indentLvl);
 		System.out.println(_alpha);

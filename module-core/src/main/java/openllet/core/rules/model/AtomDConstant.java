@@ -14,9 +14,6 @@ import openllet.core.utils.ATermUtils;
  * Title: Atom Data Constant
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>

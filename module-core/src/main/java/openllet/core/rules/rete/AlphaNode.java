@@ -8,7 +8,6 @@ package openllet.core.rules.rete;
 
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.logging.Level;
 import openllet.aterm.ATermAppl;
 import openllet.core.boxes.abox.ABox;
 import openllet.core.boxes.abox.Node;
@@ -49,10 +48,8 @@ public abstract class AlphaNode extends ReteNode
 
 	protected void activate(final WME wme)
 	{
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Activate alpha " + wme);
-		for (final BetaNode beta : getBetas())
-			beta.activate(wme);
+		_logger.fine(() -> "Activate alpha " + wme);
+		getBetas().forEach(betaNode -> betaNode.activate(wme));
 	}
 
 	public void setDoExplanation(final boolean doExplanation)
@@ -63,8 +60,8 @@ public abstract class AlphaNode extends ReteNode
 	@Override
 	public void print(final String indent)
 	{
-		for (final BetaNode node : getBetas())
-			if (node.isTop())
-				node.print(indent);
+		getBetas().stream()//
+				.filter(BetaNode::isTop)//
+				.forEach(node -> node.print(indent));
 	}
 }

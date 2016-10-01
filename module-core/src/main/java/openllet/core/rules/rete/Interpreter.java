@@ -15,9 +15,6 @@ import openllet.core.rules.PartialBinding;
  * Title: Interpreter
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -63,9 +60,6 @@ public class Interpreter
 		_alphaNet.activateAll();
 	}
 
-	/**
-	 * @return
-	 */
 	public Collection<PartialBinding> getBindings()
 	{
 		// TODO Auto-generated method stub

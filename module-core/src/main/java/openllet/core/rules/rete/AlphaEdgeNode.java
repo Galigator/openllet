@@ -48,7 +48,7 @@ public class AlphaEdgeNode extends AlphaNode
 	{
 		final Role edgeRole = edge.getRole();
 		final boolean isFwd = edgeRole.isSubRoleOf(_role);
-		final boolean isBwd = (_role.getInverse() != null && edgeRole.isSubRoleOf(_role.getInverse()));
+		final boolean isBwd = _role.getInverse() != null && edgeRole.isSubRoleOf(_role.getInverse());
 		return isFwd ? isBwd ? EdgeDirection.BOTH : EdgeDirection.FORWARD : isBwd ? EdgeDirection.BACKWARD : null;
 	}
 
@@ -56,7 +56,7 @@ public class AlphaEdgeNode extends AlphaNode
 	{
 		if (_doExplanation)
 		{
-			final DependencySet ds = (dir == EdgeDirection.FORWARD) ? _role.getExplainSub(edge.getRole().getName()) : _role.getInverse().getExplainSub(edge.getRole().getName());
+			final DependencySet ds = dir == EdgeDirection.FORWARD ? _role.getExplainSub(edge.getRole().getName()) : _role.getInverse().getExplainSub(edge.getRole().getName());
 			if (!ds.getExplain().isEmpty())
 				return WME.createEdge(new DefaultEdge(edge.getRole(), edge.getFrom(), edge.getTo(), edge.getDepends().union(ds, _doExplanation)), dir);
 		}
@@ -71,8 +71,7 @@ public class AlphaEdgeNode extends AlphaNode
 		if (dir != null)
 		{
 			if (dir == EdgeDirection.BOTH)
-				activate(createEdge(edge, EdgeDirection.FORWARD));
-			//				activate(createEdge(edge, EdgeDirection.BACKWARD));
+				activate(createEdge(edge, EdgeDirection.FORWARD)); // EdgeDirection.BACKWARD ?
 			else
 				activate(createEdge(edge, dir));
 			return true;
@@ -84,13 +83,13 @@ public class AlphaEdgeNode extends AlphaNode
 	@SuppressWarnings("rawtypes")
 	public boolean matches(final RuleAtom atom)
 	{
-		return ((atom instanceof IndividualPropertyAtom) || (atom instanceof DatavaluedPropertyAtom)) && atom.getPredicate().equals(_role.getName()) && ((BinaryAtom) atom).getArgument1() instanceof AtomVariable && ((BinaryAtom) atom).getArgument2() instanceof AtomVariable;
+		return (atom instanceof IndividualPropertyAtom || atom instanceof DatavaluedPropertyAtom) && atom.getPredicate().equals(_role.getName()) && ((BinaryAtom) atom).getArgument1() instanceof AtomVariable && ((BinaryAtom) atom).getArgument2() instanceof AtomVariable;
 	}
 
 	@Override
 	public Iterator<WME> getMatches(final int argIndex, final Node arg)
 	{
-		return (argIndex == 0) ? getMatches((Individual) arg, _role, null) : getMatches(null, _role, arg);
+		return argIndex == 0 ? getMatches((Individual) arg, _role, null) : getMatches(null, _role, arg);
 	}
 
 	protected Iterator<WME> getMatches(final Individual s, @SuppressWarnings("unused") final Role r, final Node o)
@@ -118,7 +117,7 @@ public class AlphaEdgeNode extends AlphaNode
 
 	private static EdgeList getEdges(final EdgeList edges, final Role r, final Node o)
 	{
-		return (o == null) ? edges.getEdges(r) : edges.getEdgesTo(r, o);
+		return o == null ? edges.getEdges(r) : edges.getEdgesTo(r, o);
 	}
 
 	@Override

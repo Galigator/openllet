@@ -13,9 +13,6 @@ import openllet.aterm.ATermAppl;
  * Title: Atom Constant
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -31,7 +28,7 @@ public abstract class AtomConstant implements AtomObject
 
 	public AtomConstant(final ATermAppl value)
 	{
-		this._value = value;
+		_value = value;
 	}
 
 	@Override
@@ -42,7 +39,7 @@ public abstract class AtomConstant implements AtomObject
 		if (!(other instanceof AtomConstant))
 			return false;
 		final Object otherValue = ((AtomConstant) other)._value;
-		return _value == otherValue || (_value != null && _value.equals(otherValue));
+		return _value == otherValue || _value != null && _value.equals(otherValue);
 	}
 
 	/**

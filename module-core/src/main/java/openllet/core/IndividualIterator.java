@@ -15,7 +15,7 @@ import openllet.core.boxes.abox.Node;
 import openllet.core.tableau.completion.queue.NodeSelector;
 
 /**
- * An iterator to return _nodes in the _order they are added. Having a separate iterator instead of using _nodes.iterator() allows to change the _nodes table
+ * An iterator to return nodes in the order they are added. Having a separate iterator instead of using _nodes.iterator() allows to change the nodes table
  * without resetting the iteration process.
  *
  * @author Evren Sirin
@@ -45,7 +45,7 @@ public class IndividualIterator implements Iterator<Individual>
 	 */
 	public IndividualIterator(final ABox abox)
 	{
-		this._abox = abox;
+		_abox = abox;
 		_nodeList = abox.getNodeNames();
 		_stop = _nodeList.size();
 		_index = 0;

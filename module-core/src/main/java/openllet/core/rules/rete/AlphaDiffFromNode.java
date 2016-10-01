@@ -71,7 +71,7 @@ public class AlphaDiffFromNode extends AlphaNode
 	@Override
 	public boolean matches(final RuleAtom atom)
 	{
-		return (atom instanceof DifferentIndividualsAtom);
+		return atom instanceof DifferentIndividualsAtom;
 	}
 
 	@Override

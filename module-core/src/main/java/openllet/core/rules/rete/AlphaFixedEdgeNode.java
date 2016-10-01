@@ -13,22 +13,22 @@ import openllet.core.boxes.rbox.Role;
 
 public class AlphaFixedEdgeNode extends AlphaEdgeNode
 {
-	protected final ATermAppl name;
-	private Node node;
+	protected final ATermAppl _name;
+	private Node _node;
 
 	public AlphaFixedEdgeNode(final ABox abox, final Role role, final ATermAppl subjectName)
 	{
 		super(abox, role);
-		name = subjectName;
+		_name = subjectName;
 	}
 
 	@SuppressWarnings("unchecked")
 	protected <N extends Node> N initNode()
 	{
-		if (node == null)
-			node = initNode(name);
-		assert node != null;
-		return (N) node;
+		if (_node == null)
+			_node = initNode(_name);
+		assert _node != null;
+		return (N) _node;
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class AlphaFixedEdgeNode extends AlphaEdgeNode
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + super.hashCode();
-		result = prime * result + name.hashCode();
+		result = prime * result + _name.hashCode();
 		return result;
 	}
 

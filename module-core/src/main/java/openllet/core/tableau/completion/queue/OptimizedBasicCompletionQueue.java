@@ -30,7 +30,6 @@ import java.util.Set;
 import openllet.aterm.ATermAppl;
 import openllet.atom.OpenError;
 import openllet.core.boxes.abox.ABox;
-import openllet.core.boxes.abox.ABoxImpl;
 import openllet.core.boxes.abox.Individual;
 import openllet.core.boxes.abox.Literal;
 import openllet.core.boxes.abox.Node;
@@ -133,7 +132,7 @@ public class OptimizedBasicCompletionQueue extends CompletionQueue
 			node = node.getSame();
 
 			if (node != null)
-				if (((node instanceof Literal && allowLiterals()) || (node instanceof Individual && !allowLiterals())) && !node.isPruned())
+				if ((node instanceof Literal && allowLiterals() || node instanceof Individual && !allowLiterals()) && !node.isPruned())
 					break;
 		}
 	}
@@ -292,7 +291,7 @@ public class OptimizedBasicCompletionQueue extends CompletionQueue
 	 * @param ab
 	 */
 	@Override
-	public void setABox(final ABoxImpl ab)
+	public void setABox(final ABox ab)
 	{
 		_abox = ab;
 	}

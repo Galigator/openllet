@@ -15,9 +15,6 @@ import openllet.core.DependencySet;
  * Title: Fact
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>

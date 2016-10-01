@@ -137,7 +137,7 @@ public class ExistentialExplosionPattern implements OntologyLintPattern
 	private static <V, E> void printGraph(final Graph<V, E> graph)
 	{
 		final DOTExporter<V, E> exp = new DOTExporter<>(new StringNameProvider<V>(), null, null);
-		exp.export(new BufferedWriter(new PrintWriter(System.out)), graph);
+		exp.exportGraph(graph, new BufferedWriter(new PrintWriter(System.out)));
 	}
 
 	private static OptimizedDirectedMultigraph<OWLClass> extractGraphFromSubsumptionAxiomsWith(final OWLOntology ontology, final ClassCollector visitor)

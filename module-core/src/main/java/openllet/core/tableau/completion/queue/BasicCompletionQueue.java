@@ -30,7 +30,6 @@ import java.util.Set;
 import openllet.aterm.ATermAppl;
 import openllet.atom.OpenError;
 import openllet.core.boxes.abox.ABox;
-import openllet.core.boxes.abox.ABoxImpl;
 import openllet.core.boxes.abox.Individual;
 import openllet.core.boxes.abox.Node;
 
@@ -45,43 +44,43 @@ public class BasicCompletionQueue extends CompletionQueue
 	protected List<ATermAppl> _queue;
 
 	/**
-	 * Set to track duplicates for new elements list for _queue
+	 * Set to track duplicates for new elements list for queue
 	 */
 	protected Set<ATermAppl> _newQueue;
 
 	//TODO: This will be refactored; however currently there are some unit tests which will not
-	//terminate due to the _order in which the completion rules are applied to individuals
-	//ont the _queue. An example of this is MiscTests.testIFDP3() - in this example,
-	//if the LiteralRule is applied to the _individual "b" first, then an infinite number
+	//terminate due to the order in which the completion rules are applied to individuals
+	//ont the queue. An example of this is MiscTests.testIFDP3() - in this example,
+	//if the LiteralRule is applied to the individual "b" first, then an infinite number
 	//of non-deterministic choices are created...talk to Evren about this.
 
 	/**
-	 * List to hold new elements for the _queue
+	 * List to hold new elements for the queue
 	 */
 	protected List<ATermAppl> _newQueueList;
 
 	/**
-	 * List of _current _index pointer for each _queue
+	 * List of _current index pointer for each queue
 	 */
 	protected int _current;
 
 	/**
-	 * List of _current _index pointer for each _queue
+	 * List of _current index pointer for each queue
 	 */
 	protected int _end;
 
 	/**
-	 * List of _current _index pointer for the stopping point at each _queue
+	 * List of _current index pointer for the stopping point at each queue
 	 */
 	protected int _cutOff;
 
 	/**
-	 * Flag set for when the kb is restored - in this case we do not want to flush the _queue immediatly
+	 * Flag set for when the kb is restored - in this case we do not want to flush the queue immediatly
 	 */
 	protected boolean _backtracked;
 
 	/**
-	 * Constructor - create _queue
+	 * Constructor - create queue
 	 *
 	 * @param _abox
 	 */
@@ -99,7 +98,7 @@ public class BasicCompletionQueue extends CompletionQueue
 	}
 
 	/**
-	 * Find the next _individual in a given _queue
+	 * Find the next _individual in a given queue
 	 *
 	 * @param type
 	 */
@@ -116,13 +115,13 @@ public class BasicCompletionQueue extends CompletionQueue
 
 			node = node.getSame();
 
-			if (((node.isLiteral() && allowLiterals()) || (node.isIndividual() && !allowLiterals())) && !node.isPruned())
+			if ((node.isLiteral() && allowLiterals() || node.isIndividual() && !allowLiterals()) && !node.isPruned())
 				break;
 		}
 	}
 
 	/**
-	 * Test if there is another element on the _queue to process
+	 * Test if there is another element on the queue to process
 	 *
 	 * @param type
 	 * @return
@@ -135,7 +134,7 @@ public class BasicCompletionQueue extends CompletionQueue
 	}
 
 	/**
-	 * Reset the _queue to be the _current _nodes in the _abox; Also reset the type _index to 0
+	 * Reset the queue to be the current nodes in the abox; Also reset the type index to 0
 	 *
 	 * @param _branch
 	 */
@@ -152,8 +151,8 @@ public class BasicCompletionQueue extends CompletionQueue
 	}
 
 	/**
-	 * Get the next element of a _queue of a given type
-	 * 
+	 * Get the next element of a queue of a given type
+	 *
 	 * @param type
 	 * @return
 	 */
@@ -170,8 +169,8 @@ public class BasicCompletionQueue extends CompletionQueue
 	}
 
 	/**
-	 * Get the next element of a _queue of a given type
-	 * 
+	 * Get the next element of a queue of a given type
+	 *
 	 * @param type
 	 * @return
 	 */
@@ -204,7 +203,7 @@ public class BasicCompletionQueue extends CompletionQueue
 
 	/**
 	 * Reset the cutoff for a given type _index
-	 * 
+	 *
 	 * @param type
 	 */
 	@Override
@@ -215,8 +214,8 @@ public class BasicCompletionQueue extends CompletionQueue
 	}
 
 	/**
-	 * Set _branch pointers to _current pointer. This is done whenever _abox.incrementBranch is called
-	 * 
+	 * Set _branch pointers to current pointer. This is done whenever abox.incrementBranch is called
+	 *
 	 * @param _branch
 	 */
 	@Override
@@ -249,18 +248,18 @@ public class BasicCompletionQueue extends CompletionQueue
 	}
 
 	/**
-	 * Set the _abox for the _queue
-	 * 
+	 * Set the abox for the queue
+	 *
 	 * @param ab
 	 */
 	@Override
-	public void setABox(final ABoxImpl ab)
+	public void setABox(final ABox ab)
 	{
 		_abox = ab;
 	}
 
 	/**
-	 * Print method for a given _queue type
+	 * Print method for a given queue type
 	 *
 	 * @param type
 	 */
@@ -271,7 +270,7 @@ public class BasicCompletionQueue extends CompletionQueue
 	}
 
 	/**
-	 * Print method for entire _queue
+	 * Print method for entire queue
 	 */
 	@Override
 	public void print()

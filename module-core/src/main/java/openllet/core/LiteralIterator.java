@@ -10,7 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import openllet.aterm.ATermAppl;
 import openllet.atom.OpenError;
-import openllet.core.boxes.abox.ABoxImpl;
+import openllet.core.boxes.abox.ABox;
 import openllet.core.boxes.abox.Literal;
 import openllet.core.boxes.abox.Node;
 
@@ -25,7 +25,7 @@ public class LiteralIterator implements Iterator<Literal>
 	/**
 	 * ABox where literals are stoired
 	 */
-	protected ABoxImpl _abox;
+	protected ABox _abox;
 	/**
 	 * List of _node names
 	 */
@@ -46,7 +46,7 @@ public class LiteralIterator implements Iterator<Literal>
 	/**
 	 * Create an iterator over all the individuals in the ABox
 	 */
-	public LiteralIterator(final ABoxImpl abox)
+	public LiteralIterator(final ABox abox)
 	{
 		this(abox, true);
 	}
@@ -57,7 +57,7 @@ public class LiteralIterator implements Iterator<Literal>
 	 * @param _abox
 	 * @param findNext
 	 */
-	protected LiteralIterator(final ABoxImpl abox, final boolean findNext)
+	protected LiteralIterator(final ABox abox, final boolean findNext)
 	{
 		_abox = abox;
 		_nodeList = abox.getNodeNames();
@@ -77,7 +77,7 @@ public class LiteralIterator implements Iterator<Literal>
 	 * @param _start
 	 * @param _stop
 	 */
-	public LiteralIterator(final ABoxImpl abox, final int start, final int stop)
+	public LiteralIterator(final ABox abox, final int start, final int stop)
 	{
 		_abox = abox;
 		_nodeList = abox.getNodeNames();

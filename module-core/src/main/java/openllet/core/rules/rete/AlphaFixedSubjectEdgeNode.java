@@ -65,12 +65,12 @@ public class AlphaFixedSubjectEdgeNode extends AlphaFixedEdgeNode
 	@SuppressWarnings("rawtypes")
 	public boolean matches(final RuleAtom atom)
 	{
-		return ((atom instanceof IndividualPropertyAtom) || (atom instanceof DatavaluedPropertyAtom)) && atom.getPredicate().equals(_role.getName()) && ((BinaryAtom) atom).getArgument1() instanceof AtomIConstant && ((AtomIConstant) ((BinaryAtom) atom).getArgument1()).getValue().equals(name) && ((BinaryAtom) atom).getArgument2() instanceof AtomVariable;
+		return ((atom instanceof IndividualPropertyAtom) || (atom instanceof DatavaluedPropertyAtom)) && atom.getPredicate().equals(_role.getName()) && ((BinaryAtom) atom).getArgument1() instanceof AtomIConstant && ((AtomIConstant) ((BinaryAtom) atom).getArgument1()).getValue().equals(_name) && ((BinaryAtom) atom).getArgument2() instanceof AtomVariable;
 	}
 
 	@Override
 	public String toString()
 	{
-		return ATermUtils.toString(_role.getName()) + "(" + ATermUtils.toString(name) + ", 1)";
+		return ATermUtils.toString(_role.getName()) + "(" + ATermUtils.toString(_name) + ", 1)";
 	}
 }

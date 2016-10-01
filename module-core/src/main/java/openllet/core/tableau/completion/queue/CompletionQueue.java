@@ -34,7 +34,6 @@ import java.util.logging.Logger;
 import openllet.aterm.ATermAppl;
 import openllet.core.IndividualIterator;
 import openllet.core.boxes.abox.ABox;
-import openllet.core.boxes.abox.ABoxImpl;
 import openllet.core.boxes.abox.Node;
 import openllet.shared.tools.Log;
 
@@ -84,7 +83,7 @@ public abstract class CompletionQueue extends IndividualIterator
 
 	/**
 	 * Find the next _individual in a given _queue
-	 * 
+	 *
 	 * @param type
 	 */
 	protected abstract void findNext(int type);
@@ -98,7 +97,7 @@ public abstract class CompletionQueue extends IndividualIterator
 
 	/**
 	 * Add an element to the _queue
-	 * 
+	 *
 	 * @param x
 	 * @param type
 	 */
@@ -106,7 +105,7 @@ public abstract class CompletionQueue extends IndividualIterator
 
 	/**
 	 * Add an element to all queues
-	 * 
+	 *
 	 * @param x
 	 * @param type
 	 */
@@ -114,7 +113,7 @@ public abstract class CompletionQueue extends IndividualIterator
 
 	/**
 	 * Reset the _current pointer
-	 * 
+	 *
 	 * @param type
 	 */
 	@Override
@@ -122,7 +121,7 @@ public abstract class CompletionQueue extends IndividualIterator
 
 	/**
 	 * Set _branch pointers to _current pointer. This is done whenever _abox.incrementBranch is called
-	 * 
+	 *
 	 * @param _branch
 	 */
 	public abstract void incrementBranch(int branch);
@@ -136,12 +135,12 @@ public abstract class CompletionQueue extends IndividualIterator
 
 	/**
 	 * Set the _abox for the _queue
-	 * 
+	 *
 	 * @param ab
 	 */
-	public void setABox(final ABoxImpl ab)
+	public void setABox(final ABox ab)
 	{
-		this._abox = ab;
+		_abox = ab;
 	}
 
 	/**

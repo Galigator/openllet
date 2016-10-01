@@ -8,7 +8,6 @@ package openllet.core.rules.rete;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
 
 /**
  */
@@ -24,14 +23,14 @@ public class BetaMemoryNode extends BetaNode
 	{
 		if (conditions == null)
 			throw new NullPointerException();
-		this._alpha = alpha;
-		this._conditions = conditions;
-		this._memory = createIndex(conditions);
+		_alpha = alpha;
+		_conditions = conditions;
+		_memory = createIndex(conditions);
 	}
 
 	private static BetaMemoryIndex createIndex(final List<FilterCondition> conditions)
 	{
-		if (!conditions.isEmpty() && (conditions.get(0) instanceof JoinCondition))
+		if (!conditions.isEmpty() && conditions.get(0) instanceof JoinCondition)
 			return BetaMemoryIndex.withJoin((JoinCondition) conditions.get(0));
 
 		return BetaMemoryIndex.withoutJoin();
@@ -50,8 +49,7 @@ public class BetaMemoryNode extends BetaNode
 	@Override
 	public void activate(final WME wme)
 	{
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Activate beta " + wme);
+		_logger.fine(() -> "Activate beta " + wme);
 
 		final Iterator<Token> wmeTokens = _memory.getTokens(wme);
 
@@ -66,8 +64,7 @@ public class BetaMemoryNode extends BetaNode
 	@Override
 	public void activate(final Token token)
 	{
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Activate beta " + token);
+		_logger.fine(() -> "Activate beta " + token);
 
 		_memory.add(token);
 
@@ -107,7 +104,7 @@ public class BetaMemoryNode extends BetaNode
 	}
 
 	@Override
-	public void print(String indentLvl)
+	public void print(final String indentLvl)
 	{
 		System.out.print(indentLvl);
 		System.out.println(_alpha);

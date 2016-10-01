@@ -77,12 +77,12 @@ public class AlphaNoVarEdgeNode extends AlphaFixedEdgeNode
 	@Override
 	public boolean matches(final RuleAtom atom)
 	{
-		return ((atom instanceof IndividualPropertyAtom) || (atom instanceof DatavaluedPropertyAtom)) && atom.getPredicate().equals(_role.getName()) && ((BinaryAtom<?, ?, ?>) atom).getArgument1() instanceof AtomIConstant && ((AtomIConstant) ((BinaryAtom<?, ?, ?>) atom).getArgument1()).getValue().equals(name) && ((BinaryAtom<?, ?, ?>) atom).getArgument2() instanceof AtomConstant && ((AtomConstant) ((BinaryAtom<?, ?, ?>) atom).getArgument2()).getValue().equals(_objectName);
+		return ((atom instanceof IndividualPropertyAtom) || (atom instanceof DatavaluedPropertyAtom)) && atom.getPredicate().equals(_role.getName()) && ((BinaryAtom<?, ?, ?>) atom).getArgument1() instanceof AtomIConstant && ((AtomIConstant) ((BinaryAtom<?, ?, ?>) atom).getArgument1()).getValue().equals(_name) && ((BinaryAtom<?, ?, ?>) atom).getArgument2() instanceof AtomConstant && ((AtomConstant) ((BinaryAtom<?, ?, ?>) atom).getArgument2()).getValue().equals(_objectName);
 	}
 
 	@Override
 	public String toString()
 	{
-		return ATermUtils.toString(_role.getName()) + "(" + ATermUtils.toString(name) + ", " + ATermUtils.toString(_objectName) + ")";
+		return ATermUtils.toString(_role.getName()) + "(" + ATermUtils.toString(_name) + ", " + ATermUtils.toString(_objectName) + ")";
 	}
 }
