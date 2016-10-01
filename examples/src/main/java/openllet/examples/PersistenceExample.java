@@ -41,7 +41,7 @@ public class PersistenceExample
 {
 
 	// The ontology we use for classification
-	private static final String file = "file:examples/data/simple-galen.owl";
+	private static final String file = "file:src/main/resources/data/simple-galen.owl";
 
 	// The zip archive that will be created to store the internal _data of the incremental classifier
 	private static final String persistenceFile = "incrementalClassifierData.zip";
