@@ -395,7 +395,7 @@ public class PelletReasoner implements OpenlletReasoner
 			throw new ReasonerInterruptedException(e);
 
 		if (e instanceof openllet.core.exceptions.InconsistentOntologyException)
-			throw new InconsistentOntologyException();
+			throw new InconsistentOntologyException(e);
 
 		if (e instanceof openllet.core.exceptions.UndefinedEntityException)
 		{

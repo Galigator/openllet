@@ -69,9 +69,9 @@ import openllet.core.boxes.abox.EdgeList;
 import openllet.core.boxes.abox.Individual;
 import openllet.core.boxes.abox.Literal;
 import openllet.core.boxes.abox.Node;
-import openllet.core.boxes.rbox.Role;
 import openllet.core.boxes.rbox.RBox;
 import openllet.core.boxes.rbox.RBoxImpl;
+import openllet.core.boxes.rbox.Role;
 import openllet.core.boxes.tbox.TBox;
 import openllet.core.boxes.tbox.TBoxFactory;
 import openllet.core.datatypes.exceptions.InvalidLiteralException;
@@ -2011,7 +2011,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		_canUseIncConsistency = canUseIncConsistency();
 
 		if (_abox.isComplete())
-			if (_changes.contains(ChangeType.TBOX_DEL) || _changes.contains(ChangeType.RBOX_DEL) || (!_canUseIncConsistency && _changes.contains(ChangeType.ABOX_DEL)))
+			if (_changes.contains(ChangeType.TBOX_DEL) || _changes.contains(ChangeType.RBOX_DEL) || !_canUseIncConsistency && _changes.contains(ChangeType.ABOX_DEL))
 				_abox.reset();
 			else
 				if (_changes.contains(ChangeType.TBOX_ADD) || _changes.contains(ChangeType.RBOX_ADD))
@@ -2312,7 +2312,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	public void ensureConsistency()
 	{
 		if (!isConsistent())
-			throw new InconsistentOntologyException("Cannot do reasoning with inconsistent ontologies!\n" + "Reason for inconsistency: " + getExplanation() + (OpenlletOptions.USE_TRACING ? "\n" + renderExplanationSet() : ""));
+			throw new InconsistentOntologyException("Cannot do reasoning with inconsistent ontologies!\n"//
+					+ "Reason for inconsistency: " + getExplanation()//
+					+ (OpenlletOptions.USE_TRACING ? "\n" + renderExplanationSet() : ""));
 	}
 
 	@Override
@@ -2509,7 +2511,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 				.filter(role ->
 				{
 					final ATermAppl p = role.getName();
-					return (ATermUtils.isPrimitive(p) && role.isInverseFunctional());
+					return ATermUtils.isPrimitive(p) && role.isInverseFunctional();
 				})//
 				.map(Role::getName)//
 				.collect(Collectors.toSet());
@@ -2563,7 +2565,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	public PropertyType getPropertyType(final ATerm r)
 	{
 		final Role role = getProperty(r);
-		return (role == null) ? PropertyType.UNTYPED : role.getType();
+		return role == null ? PropertyType.UNTYPED : role.getType();
 	}
 
 	@Override
@@ -2594,7 +2596,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	public boolean isABoxProperty(final ATerm p)
 	{
 		final PropertyType type = getPropertyType(p);
-		return (type == PropertyType.OBJECT) || (type == PropertyType.DATATYPE);
+		return type == PropertyType.OBJECT || type == PropertyType.DATATYPE;
 	}
 
 	@Override
@@ -4653,7 +4655,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public CompletionStrategy chooseStrategy(final ABox abox, final Expressivity expressivity)
 	{
-		final boolean conceptSatisfiability = (abox.size() == 1) && new IndividualIterator(abox).next().isConceptRoot();
+		final boolean conceptSatisfiability = abox.size() == 1 && new IndividualIterator(abox).next().isConceptRoot();
 
 		// We don't need to use _rules _strategy if we are checking concept satisfiability unless
 		// there are nominals because then _rules may affect concept satisfiability and we need
