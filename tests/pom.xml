@@ -59,11 +59,13 @@
 			<version>[${project.version}]</version>
 			<scope>test</scope>
 		</dependency>
+<!--
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<scope>test</scope>
 		</dependency>
+-->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>

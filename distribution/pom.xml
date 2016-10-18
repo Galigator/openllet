@@ -111,7 +111,7 @@
 								</includes>
 								<excludes>
 									<exclude>org.apache.felix:org.osgi.core</exclude>
-									<exclude>commons-io:*</exclude>
+                           <!-- <exclude>commons-io:*</exclude> -->
 									<exclude>gnu.getopt:*</exclude>
 									<exclude>org.antlr:*</exclude>
 									<exclude>org.apache.commons:*</exclude>									

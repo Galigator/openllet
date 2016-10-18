@@ -94,7 +94,7 @@
       <dependency>
         <groupId>org.jgrapht</groupId>
         <artifactId>jgrapht-ext</artifactId>
-        <version>1.0.0</version>
+        <version>[1.0.0,)</version>
       </dependency>
       <dependency>
         <groupId>org.antlr</groupId>
@@ -124,18 +124,20 @@
       <dependency>
         <groupId>log4j</groupId>
         <artifactId>log4j</artifactId>
-        <version>[1.2.17,)</version>
+        <version>[1.2.14,)</version>
       </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-simple</artifactId>
-        <version>[1.7.21,)</version>
+        <version>[1.7.14,)</version>
       </dependency>
+<!--
       <dependency>
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
         <version>[2.5,)</version>
       </dependency>
+-->
       <dependency>
         <groupId>org.jfree</groupId>
         <artifactId>jfreechart</artifactId>
@@ -159,6 +161,7 @@
          <artifactId>libthrift</artifactId>
          <version>[0.9.3,)</version>
       </dependency>
+      <!--
       <dependency>
          <groupId>org.apache.httpcomponents</groupId>
          <artifactId>httpcore</artifactId>
@@ -174,6 +177,7 @@
          <artifactId>httpclient-cache</artifactId>
          <version>[4.5.2,)</version>
       </dependency>
+      -->
       <dependency>
          <groupId>org.openrdf.sesame</groupId>
          <artifactId>sesame-rio-api</artifactId>
@@ -218,11 +222,6 @@
          <groupId>com.google.guava</groupId>
          <artifactId>guava</artifactId>
          <version>19.0</version>
-      </dependency>
-      <dependency>
-         <groupId>commons-io</groupId>
-         <artifactId>commons-io</artifactId>
-         <version>[2.5,)</version>
       </dependency>
 
     </dependencies>
@@ -271,7 +270,7 @@
 
     <pluginManagement>
       <plugins>
-
+        
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
@@ -367,18 +366,6 @@
               </goals>
             </execution>
           </executions>
-        </plugin>
-
-        <plugin>
-            <groupId>org.sonatype.plugins</groupId>
-            <artifactId>nexus-staging-maven-plugin</artifactId>
-            <version>1.6.7</version>
-            <extensions>true</extensions>
-            <configuration>
-                <serverId>ossrh</serverId>
-                <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                <autoReleaseAfterClose>true</autoReleaseAfterClose>
-            </configuration>
         </plugin>
 
         <plugin>
