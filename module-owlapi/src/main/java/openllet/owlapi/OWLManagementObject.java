@@ -306,6 +306,7 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	 * @return A new named individual.
 	 * @Deprecated This method should take a fully qualified label that depend of the context. No more next int usage.
 	 */
+	@Deprecated
 	default public OWLNamedIndividual declareIndividual(final OWLClass owlClazz, final String namespace, final String name)
 	{
 		return declareIndividual(owlClazz, IRI.create((IRIUtils.isIRI(name)) ? name : namespace + IRIUtils.randId(name)));

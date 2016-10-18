@@ -34,7 +34,7 @@ import org.semanticweb.owlapi.reasoner.NodeSet;
 
 /**
  * Functions that help management of OWL related matters. NB: This interface should replace every occurrence of OWLTools every where it is possible.
- * 
+ *
  * @since 2.5.1
  */
 public interface OWLHelper extends Logging, OWLManagementObject
@@ -56,7 +56,7 @@ public interface OWLHelper extends Logging, OWLManagementObject
 
 	/**
 	 * Add the export format in the configuration of the provided ontology
-	 * 
+	 *
 	 * @param manager of the ontology you consider.
 	 * @param ontology you consider.
 	 * @since 2.5.1
@@ -161,7 +161,7 @@ public interface OWLHelper extends Logging, OWLManagementObject
 
 	/**
 	 * This function exist because the one in IRI is deprecated and will be remove : We want the memory of calling it 'fragment' preserved.
-	 * 
+	 *
 	 * @return the NCNameSuffix
 	 * @since 2.5.1
 	 */
@@ -172,7 +172,7 @@ public interface OWLHelper extends Logging, OWLManagementObject
 
 	/**
 	 * The standard 'getOntology' from the OWLManager don't really take care of versionning. This function is here to enforce the notion of version
-	 * 
+	 *
 	 * @param ontologyID with version information
 	 * @return the ontology if already load into the given manager.
 	 * @since 2.5.1
@@ -217,7 +217,7 @@ public interface OWLHelper extends Logging, OWLManagementObject
 	/**
 	 * Clone into another ontology with the same axioms and same manager. NB : In a future version this function may return an ontology that share axiom with
 	 * previous for memory saving.
-	 * 
+	 *
 	 * @param version that will have the new ontology.
 	 * @return a new ontology with the axioms of the given one.
 	 * @throws OWLOntologyCreationException if we can't create the ontology.
@@ -238,7 +238,7 @@ public interface OWLHelper extends Logging, OWLManagementObject
 
 	/**
 	 * Same as derivate but with a version number based on EPOCH time.
-	 * 
+	 *
 	 * @return a new ontology with the axioms of the given one.
 	 * @throws OWLOntologyCreationException if we can't create the ontology.
 	 * @since 2.5.1
@@ -333,6 +333,7 @@ public interface OWLHelper extends Logging, OWLManagementObject
 	 * @return an IRI using the name or information of name + namespace declaration of this ontology.
 	 * @since 2.5.1
 	 */
+	@Deprecated
 	default public IRI resolveToIRI(final String name)
 	{
 		if (IRIUtils.isIRI(name))
@@ -386,7 +387,7 @@ public interface OWLHelper extends Logging, OWLManagementObject
 
 	/**
 	 * Axiom are parsed from the stream then add into the ontology.
-	 * 
+	 *
 	 * @param input is a stream of axioms
 	 * @throws OWLOntologyCreationException if we can't load the ontology.
 	 * @throws IOException if there is an problem when reading.
@@ -452,7 +453,7 @@ public interface OWLHelper extends Logging, OWLManagementObject
 
 	/**
 	 * Compute the types of an individual. Use this function only if you mix Named and Anonymous individuals.
-	 * 
+	 *
 	 * @param param the individual named _or_ anonymous
 	 * @return the classes of the individual.
 	 * @since 2.5.1

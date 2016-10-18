@@ -1,37 +1,61 @@
 package openllet.owlapi;
 
 import java.lang.reflect.Method;
+import java.time.Instant;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicLong;
 import org.semanticweb.owlapi.model.IRI;
 
 /**
  * A set of function usefull to manage IRIs
- * 
+ *
  * @since 2.5.1
  */
 public interface IRIUtils
 {
 	final static Random _random = new Random();
+	final static AtomicLong _atomic = new AtomicLong(0); // Avoid problem when used across multiple deployments on sames Virtuals machines.
+
+	public static final long _timeShift = (2016L - 1970L) * 365L * 24L * 60L * 60L * 1000L; // 2016 because this function appear in this year.
 
 	/**
 	 * We remove an huge part of the time the flow before the application first start. The aim is just to get shorter ids that will stayed ordered among runs.
-	 * 
+	 *
 	 * @return a short string that describe a point in time.
 	 * @since 2.5.1
 	 */
 	public static String shortTime()
 	{
-		// 2016 because this function appear in this year.
-		return Long.toHexString((System.currentTimeMillis() - (2016L - 1970L) * 365L * 24L * 60L * 60L * 1000L));
+		return shortTime(System.currentTimeMillis());
+	}
+
+	public static String shortTime(final long epochMilli)
+	{
+		return Long.toHexString((epochMilli - _timeShift));
+	}
+
+	public static Instant instantFromShortTime(final String hexTime)
+	{
+		return Instant.ofEpochMilli(Long.parseLong(hexTime, 16) + _timeShift);
 	}
 
 	/**
-	 * @return create an random string base on a random generator and the short time.
-	 * @since 2.5.1
+	 * @param rand is a String generated with the the randStr() method.
+	 * @return an Instant as parsed from a String generated with the randStr() method.
+	 * @since 2.6.0
+	 */
+	public static Instant instantFromRandStr(final String rand)
+	{
+		return instantFromShortTime(rand.substring(rand.indexOf(OWLHelper._innerSeparator) + 1, rand.lastIndexOf(OWLHelper._innerSeparator)));
+	}
+
+	/**
+	 * @return create an random string base on a random generator, the short time, and a atomic long.
+	 * @since 2.6.0
 	 */
 	public static String randStr()
 	{
-		return shortTime() + OWLHelper._innerSeparator + Integer.toHexString(_random.nextInt());
+		return _atomic.getAndIncrement() + OWLHelper._innerSeparator + shortTime() + OWLHelper._innerSeparator + Integer.toHexString(_random.nextInt());
 	}
 
 	/**
@@ -49,6 +73,7 @@ public interface IRIUtils
 	 * @return true if the String is an IRI.
 	 * @since 2.5.1
 	 */
+	@Deprecated
 	public static boolean isIRI(final String resource)
 	{
 		return resource != null && (resource.startsWith(OWLHelper._protocol) || resource.startsWith(OWLHelper._secureProtocol));
@@ -80,7 +105,7 @@ public interface IRIUtils
 
 	/**
 	 * Work for property and individual
-	 * 
+	 *
 	 * @param clazz of the entity. The entity msut have a clazz, at least its class of creation.
 	 * @param entity the name of the object/individual.
 	 * @param <T> the type of the clazz
