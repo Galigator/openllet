@@ -13,6 +13,13 @@ import openllet.shared.hash.SharedObject;
 
 public abstract class AFunOwl extends ATermImpl implements AFun
 {
+	protected AFunOwl(final PureFactory factory, final boolean lateHashComputation)
+	{
+		super(factory);
+		if (!lateHashComputation)
+			setHashCode(hashFunction());
+	}
+
 	protected AFunOwl(final PureFactory factory)
 	{
 		super(factory);

@@ -33,11 +33,12 @@ import java.io.IOException;
 import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.Visitor;
+import openllet.aterm.pure.owl.AFunOwl;
 import openllet.aterm.stream.BufferedOutputStreamWriter;
 import openllet.shared.hash.HashFunctions;
 import openllet.shared.hash.SharedObject;
 
-public class AFunImpl extends ATermImpl implements AFun
+public class AFunImpl extends AFunOwl
 {
 	private final String _name;
 
@@ -47,7 +48,7 @@ public class AFunImpl extends ATermImpl implements AFun
 
 	protected AFunImpl(final PureFactory factory, final String name, final int arity, final boolean isQuoted)
 	{
-		super(factory);
+		super(factory, true);
 
 		_name = name.intern();
 		_arity = arity;
