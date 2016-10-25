@@ -77,31 +77,25 @@ public class PelletReasoner implements OpenlletReasoner
 
 	private static final Version VERSION = createVersion();
 
-	private final OWLOntologyManager _manager;
+	private volatile OWLOntologyManager _manager;
 
-	private final OWLDataFactory _factory;
+	private volatile OWLDataFactory _factory;
 
-	/**
-	 * Main ontology for reasoner
-	 */
-	private final OWLOntology _ontology;
+	private volatile OWLOntology _ontology;
 
-	private KnowledgeBase _kb;
+	private volatile KnowledgeBase _kb;
 
-	private final ReasonerProgressMonitor _monitor;
+	private volatile ReasonerProgressMonitor _monitor;
 
-	/**
-	 * Imports closure for _ontology
-	 */
-	private Set<OWLOntology> _importsClosure;
-	private boolean _shouldRefresh;
-	private final PelletVisitor _visitor;
+	private volatile boolean _shouldRefresh;
+
+	private volatile PelletVisitor _visitor;
 
 	private final BufferingMode _bufferingMode;
 
-	private final List<OWLOntologyChange> _pendingChanges;
+	private final List<OWLOntologyChange> _pendingChanges = new ArrayList<>();
 
-	private final IndividualNodeSetPolicy _individualNodeSetPolicy;
+	private volatile IndividualNodeSetPolicy _individualNodeSetPolicy;
 
 	private final ChangeVisitor _changeVisitor = new ChangeVisitor();
 
@@ -380,7 +374,6 @@ public class PelletReasoner implements OpenlletReasoner
 		_manager.addOntologyChangeListener(this);
 
 		_shouldRefresh = true;
-		_pendingChanges = new ArrayList<>();
 
 		refresh();
 	}
@@ -409,8 +402,15 @@ public class PelletReasoner implements OpenlletReasoner
 	@Override
 	public void dispose()
 	{
-		_kb = null;
 		_manager.removeOntologyChangeListener(this);
+		_kb = null;
+		_pendingChanges.clear();
+		//		_visitor = null; // Remove KB reference.
+		//		_individualNodeSetPolicy = null;
+		//		_ontology = null; // Remove Ontology resource.
+		//		_factory = null;
+		//		_monitor = null;
+		//		_manager = null;
 	}
 
 	/**
@@ -812,8 +812,7 @@ public class PelletReasoner implements OpenlletReasoner
 		refreshCheck();
 		try
 		{
-			final Set<Set<ATermAppl>> result = _kb.getSubClasses(term(ce), direct);
-			return toClassNodeSet(result);
+			return toClassNodeSet(_kb.getSubClasses(term(ce), direct));
 		}
 		catch (final PelletRuntimeException e)
 		{
@@ -830,6 +829,7 @@ public class PelletReasoner implements OpenlletReasoner
 			final Set<Node<OWLDataProperty>> values = new HashSet<>();
 			for (final Set<ATermAppl> val : _kb.getSubProperties(term(pe), direct))
 				values.add(toDataPropertyNode(val));
+
 			return new OWLDataPropertyNodeSet(values);
 		}
 		catch (final PelletRuntimeException e)
@@ -1060,12 +1060,12 @@ public class PelletReasoner implements OpenlletReasoner
 	}
 
 	/**
-	 * Process all the given changes in an incremental fashion. Processing will _stop if a change cannot be handled incrementally and requires a reload. The
+	 * Process all the given changes in an incremental fashion. Processing will stop if a change cannot be handled incrementally and requires a reload. The
 	 * reload will not be done as part of processing.
 	 *
 	 * @param changes the changes to be applied to the reasoner
 	 * @return <code>true</code> if all changes have been processed successfully, <code>false</code> otherwise (indicates reasoner will reload the whole
-	 *         _ontology next time it needs to do reasoning)
+	 *         ontology next time it needs to do reasoning)
 	 */
 	@Override
 	public boolean processChanges(final List<? extends OWLOntologyChange> changes)
@@ -1073,20 +1073,18 @@ public class PelletReasoner implements OpenlletReasoner
 		if (_shouldRefresh)
 			return false;
 
+		final Set<OWLOntology> importsClosure = _ontology.importsClosure().collect(Collectors.toSet());
+
 		for (final OWLOntologyChange change : new ArrayList<>(changes)) // avoid ConcurrentModificationException that is too mush common.
 		{
+			_logger.fine(() -> "Changed: " + change + " in " + change.getOntology());
 
-			if (_logger.isLoggable(Level.FINER))
-				_logger.fine("Changed: " + change + " in " + change.getOntology());
-
-			if (!_importsClosure.contains(change.getOntology()))
+			if (!importsClosure.contains(change.getOntology()))
 				continue;
 
 			if (!_changeVisitor.process(change))
 			{
-				if (_logger.isLoggable(Level.FINE))
-					_logger.fine("Reload required by _ontology change " + change);
-
+				_logger.fine(() -> "Reload required by ontology change " + change);
 				_shouldRefresh = true;
 				break;
 			}
@@ -1115,11 +1113,8 @@ public class PelletReasoner implements OpenlletReasoner
 		_visitor.clear();
 		_kb.clear();
 
-		_importsClosure = _ontology.importsClosure().collect(Collectors.toSet());
-
 		_visitor.setAddAxiom(true);
-		for (final OWLOntology ont : _importsClosure)
-			ont.accept(_visitor);
+		_ontology.importsClosure().forEach(ont -> ont.accept(_visitor));
 		_visitor.verify();
 
 		_shouldRefresh = false;
@@ -1131,7 +1126,7 @@ public class PelletReasoner implements OpenlletReasoner
 	 */
 	private void refreshCheck()
 	{
-		if (_kb == null)
+		if (null == _kb)
 			throw new OWLRuntimeException("Trying to use a disposed reasoner");
 
 		if (_shouldRefresh)
@@ -1149,7 +1144,7 @@ public class PelletReasoner implements OpenlletReasoner
 
 		final ATermAppl a = _visitor.result();
 
-		if (a == null)
+		if (null == a)
 			throw new InternalReasonerException("Cannot create ATerm from description " + d);
 
 		return a;

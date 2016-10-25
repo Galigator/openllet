@@ -15,11 +15,13 @@ import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asSet;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
@@ -161,19 +163,19 @@ public class PelletVisitor implements OWLObjectVisitor
 
 	private final KnowledgeBase _kb;
 
-	private ATermAppl _term;
+	private volatile ATermAppl _term;
 
-	private AtomDObject _swrlDObject;
+	private volatile AtomDObject _swrlDObject;
 
-	private AtomIObject _swrlIObject;
+	private volatile AtomIObject _swrlIObject;
 
-	private RuleAtom _swrlAtom;
+	private volatile RuleAtom _swrlAtom;
 
-	private boolean _addAxioms;
+	private volatile boolean _addAxioms;
 
-	private boolean _reloadRequired;
+	private volatile boolean _reloadRequired;
 
-	private Set<OWLAxiom> _unsupportedAxioms;
+	private final Set<OWLAxiom> _unsupportedAxioms = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
 	/*
 	 * Only simple properties can be used in cardinality restrictions,
@@ -181,14 +183,13 @@ public class PelletVisitor implements OWLObjectVisitor
 	 * constants will be used to identify why a certain property should be
 	 * treated as simple
 	 */
-	private MultiValueMap<OWLObjectProperty, OWLObjectPropertyAxiom> _compositePropertyAxioms;
+	private final MultiValueMap<OWLObjectProperty, OWLObjectPropertyAxiom> _compositePropertyAxioms = new MultiValueMap<>();
 
-	private Set<OWLObjectProperty> _simpleProperties;
+	private final Set<OWLObjectProperty> _simpleProperties = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
 	public PelletVisitor(final KnowledgeBase kb)
 	{
 		_kb = kb;
-
 		clear();
 	}
 
@@ -197,9 +198,9 @@ public class PelletVisitor implements OWLObjectVisitor
 	 */
 	public void clear()
 	{
-		_unsupportedAxioms = new HashSet<>();
-		_compositePropertyAxioms = new MultiValueMap<>();
-		_simpleProperties = new HashSet<>();
+		_unsupportedAxioms.clear();
+		_compositePropertyAxioms.clear();
+		_simpleProperties.clear();
 	}
 
 	private void addUnsupportedAxiom(final OWLAxiom axiom)
@@ -213,7 +214,7 @@ public class PelletVisitor implements OWLObjectVisitor
 
 	public Set<OWLAxiom> getUnsupportedAxioms()
 	{
-		return new HashSet<>(_unsupportedAxioms);
+		return Collections.unmodifiableSet(_unsupportedAxioms);
 	}
 
 	private OWLObjectProperty getNamedProperty(final OWLObjectPropertyExpression ope)

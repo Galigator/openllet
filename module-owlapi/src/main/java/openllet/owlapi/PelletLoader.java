@@ -32,12 +32,12 @@ package openllet.owlapi;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import openllet.aterm.ATermAppl;
@@ -74,28 +74,26 @@ public class PelletLoader implements FacetManagerOWL
 {
 	public static Logger _logger = Log.getLogger(PelletLoader.class);
 
-	private KnowledgeBase _kb;
+	private volatile KnowledgeBase _kb;
 
-	// private Set<URI> loadedFiles;
+	private volatile OWLOntologyManager _manager;
 
-	private OWLOntologyManager _manager;
-
-	private final Set<OWLOntology> _ontologies;
+	private final Set<OWLOntology> _ontologies = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
 	/**
 	 * Flag to check if imports will be automatically loaded/unloaded
 	 */
-	private boolean _processImports;
+	private volatile boolean _processImports;
 
 	/**
 	 * Ontologies that are loaded due to imports but they have not been included in an explicit load statement by the user
 	 */
-	private final Set<OWLOntology> _notImported;
+	private final Set<OWLOntology> _notImported = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
 	/**
 	 * This is the reverse mapping of imports. The key is an ontology and the value is a set of ontology that imports the ontology used as the key
 	 */
-	private final Map<OWLOntology, Set<OWLOntology>> _importDependencies;
+	private final Map<OWLOntology, Set<OWLOntology>> _importDependencies = new ConcurrentHashMap<>();
 
 	private final PelletVisitor _visitor;
 
@@ -165,7 +163,7 @@ public class PelletLoader implements FacetManagerOWL
 		@Override
 		public void visit(final AddOntologyAnnotation change)
 		{
-			// TODO Auto-generated method stub
+			// Core reasoner don't process annotations
 		}
 
 		@Override
@@ -177,7 +175,7 @@ public class PelletLoader implements FacetManagerOWL
 		@Override
 		public void visit(final RemoveOntologyAnnotation change)
 		{
-			// TODO Auto-generated method stub
+			// Core reasoner don't process annotations
 		}
 
 		@Override
@@ -195,10 +193,6 @@ public class PelletLoader implements FacetManagerOWL
 		_visitor = new PelletVisitor(kb);
 
 		_processImports = true;
-
-		_ontologies = new HashSet<>();
-		_notImported = new HashSet<>();
-		_importDependencies = new HashMap<>();
 	}
 
 	/**
@@ -236,11 +230,6 @@ public class PelletLoader implements FacetManagerOWL
 		_ontologies.clear();
 		_notImported.clear();
 		_importDependencies.clear();
-
-		// loadedFiles = new HashSet();
-		// loadedFiles.add( Namespaces.OWL );
-		// loadedFiles.add( Namespaces.RDF );
-		// loadedFiles.add( Namespaces.RDFS );
 	}
 
 	public KnowledgeBase getKB()
@@ -269,16 +258,14 @@ public class PelletLoader implements FacetManagerOWL
 
 	public void reload()
 	{
-		_logger.fine("Reloading the _ontologies");
+		_logger.fine("Reloading the ontologies");
 
-		// copy the loaded _ontologies
+		// copy the loaded ontologies
 		final Set<OWLOntology> notImportedOnts = new HashSet<>(_notImported);
 
-		// clear everything
-		clear();
+		clear(); // clear everything
 
-		// load _ontologies again
-		load(notImportedOnts);
+		load(notImportedOnts); // load ontologies again
 	}
 
 	public void load(final Set<OWLOntology> ontologies)
@@ -302,7 +289,7 @@ public class PelletLoader implements FacetManagerOWL
 
 	private int load(final OWLOntology ontology, final boolean imported, final Collection<OWLOntology> toBeLoaded)
 	{
-		// if not imported add it to _notImported set
+		// if not imported add it to notImported set
 		if (!imported)
 			_notImported.add(ontology);
 
@@ -316,7 +303,7 @@ public class PelletLoader implements FacetManagerOWL
 		int axiomCount = ontology.getAxiomCount();
 		toBeLoaded.add(ontology);
 
-		// if processing imports load the imported _ontologies
+		// if processing imports load the imported ontologies
 		if (_processImports)
 			for (final OWLOntology importedOnt : ontology.imports().collect(Collectors.toList()))
 			{
@@ -343,8 +330,7 @@ public class PelletLoader implements FacetManagerOWL
 
 	public void unload(final Set<OWLOntology> ontologies)
 	{
-		for (final OWLOntology ontology : ontologies)
-			unload(ontology);
+		ontologies.forEach(this::unload);
 	}
 
 	private void unload(final OWLOntology ontology)
@@ -356,33 +342,26 @@ public class PelletLoader implements FacetManagerOWL
 		if (!removed)
 			return;
 
-		// remove it from _notImported set, too
+		// remove it from notImported set, too
 		_notImported.remove(ontology);
 
-		// if we are processing imports we might need to unload the
-		// imported _ontologies
+		// if we are processing imports we might need to unload the imported ontologies
 		if (_processImports)
-			// go over the imports
-			for (final OWLOntology importOnt : ontology.imports().collect(Collectors.toList()))
+			ontology.imports().forEach(importOnt ->
 			{
-			// see if the importedOnt is imported by any other ontology
-			final Set<OWLOntology> importees = _importDependencies.get(importOnt);
-			if (importees != null)
-			{
-			// remove the unloaded ontology from the dependencies
-			importees.remove(ontology);
-			// if nothing is left
-			if (importees.isEmpty())
-			{
-			// remove the empty set from dependencies
-			_importDependencies.remove(importOnt);
-			// only unload if this ontology was not loaded by the
-			// user explicitly
-			if (!_notImported.contains(importOnt))
-			unload(importOnt);
-			}
-			}
-			}
+				// see if the importedOnt is imported by any other ontology
+				final Set<OWLOntology> importees = _importDependencies.get(importOnt);
+				if (importees != null)
+				{
+					importees.remove(ontology); // remove the unloaded ontology from the dependencies
+					if (importees.isEmpty()) // if nothing is left
+					{
+						_importDependencies.remove(importOnt); // remove the empty set from dependencies
+						if (!_notImported.contains(importOnt)) // only unload if this ontology was not loaded by the user explicitly
+							unload(importOnt);
+					}
+				}
+			});
 	}
 
 	/**
