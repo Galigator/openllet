@@ -7,11 +7,11 @@
 package openllet.core.utils;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * <p>
@@ -25,7 +25,7 @@ import java.util.Set;
  * @param <K> key
  * @param <V> value
  */
-public class MultiValueMap<K, V> extends HashMap<K, Set<V>> implements MultiMap<K, V>
+public class MultiValueMap<K, V> extends ConcurrentHashMap<K, Set<V>> implements MultiMap<K, V>
 {
 	private static final long serialVersionUID = 2660982967886888197L;
 
@@ -44,6 +44,12 @@ public class MultiValueMap<K, V> extends HashMap<K, Set<V>> implements MultiMap<
 		set.add(value);
 
 		return super.put(key, set);
+	}
+
+	@Override
+	public boolean containsKey(final Object key) // ConcurrentHashMap doesn't allow null key, while HashMap allow it.
+	{
+		return null == key ? false : super.containsKey(key);
 	}
 
 	@Override
