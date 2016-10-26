@@ -33,7 +33,7 @@ public class Comparators
 				else
 					// ATerm.toString is very inefficient but hashcodes of ATerms
 					// clash very infrequently. The need to compare two different
-					// terms with same hascode is nto very common either. String
+					// terms with same hascode isn't very common either. String
 					// comparison gives us a stable ordering over different runs
 					return o1.toString().compareTo(o2.toString());
 	};

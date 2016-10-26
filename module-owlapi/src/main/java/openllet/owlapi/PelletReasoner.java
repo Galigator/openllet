@@ -83,13 +83,13 @@ public class PelletReasoner implements OpenlletReasoner
 
 	private volatile OWLOntology _ontology;
 
-	private volatile KnowledgeBase _kb;
+	private volatile KnowledgeBase _kb = new KnowledgeBaseImpl();
 
 	private volatile ReasonerProgressMonitor _monitor;
 
 	private volatile boolean _shouldRefresh;
 
-	private volatile PelletVisitor _visitor;
+	private final PelletVisitor _visitor;
 
 	private final BufferingMode _bufferingMode;
 
@@ -171,17 +171,23 @@ public class PelletReasoner implements OpenlletReasoner
 		@Override
 		public void visit(final AddAxiom change)
 		{
-			_visitor.setAddAxiom(true);
-			change.getAxiom().accept(_visitor);
-			reloadRequired = _visitor.isReloadRequired();
+			synchronized (_visitor)
+			{
+				_visitor.setAddAxiom(true);
+				change.getAxiom().accept(_visitor);
+				reloadRequired = _visitor.isReloadRequired();
+			}
 		}
 
 		@Override
 		public void visit(final RemoveAxiom change)
 		{
-			_visitor.setAddAxiom(false);
-			change.getAxiom().accept(_visitor);
-			reloadRequired = _visitor.isReloadRequired();
+			synchronized (_visitor)
+			{
+				_visitor.setAddAxiom(false);
+				change.getAxiom().accept(_visitor);
+				reloadRequired = _visitor.isReloadRequired();
+			}
 		}
 
 		@Override
@@ -360,7 +366,6 @@ public class PelletReasoner implements OpenlletReasoner
 		_ontology = ontology;
 		_monitor = config.getProgressMonitor();
 
-		_kb = new KnowledgeBaseImpl();
 		_kb.setTaxonomyBuilderProgressMonitor(new ProgressAdapter(_monitor));
 		if (config.getTimeOut() > 0)
 			_kb.getTimers().mainTimer.setTimeout(config.getTimeOut());
@@ -405,12 +410,6 @@ public class PelletReasoner implements OpenlletReasoner
 		_manager.removeOntologyChangeListener(this);
 		_kb = null;
 		_pendingChanges.clear();
-		//		_visitor = null; // Remove KB reference.
-		//		_individualNodeSetPolicy = null;
-		//		_ontology = null; // Remove Ontology resource.
-		//		_factory = null;
-		//		_monitor = null;
-		//		_manager = null;
 	}
 
 	/**
@@ -1110,14 +1109,17 @@ public class PelletReasoner implements OpenlletReasoner
 	@Override
 	public void refresh()
 	{
-		_visitor.clear();
-		_kb.clear();
+		synchronized (_visitor)
+		{
+			_visitor.clear();
+			_kb.clear();
 
-		_visitor.setAddAxiom(true);
-		_ontology.importsClosure().forEach(ont -> ont.accept(_visitor));
-		_visitor.verify();
+			_visitor.setAddAxiom(true);
+			_ontology.importsClosure().forEach(ont -> ont.accept(_visitor));
+			_visitor.verify();
 
-		_shouldRefresh = false;
+			_shouldRefresh = false;
+		}
 	}
 
 	/**
@@ -1136,18 +1138,21 @@ public class PelletReasoner implements OpenlletReasoner
 	@Override
 	public ATermAppl term(final OWLObject d)
 	{
-		refreshCheck();
+		synchronized (_visitor)
+		{
+			refreshCheck();
 
-		_visitor.reset();
-		_visitor.setAddAxiom(false);
-		d.accept(_visitor);
+			_visitor.reset();
+			_visitor.setAddAxiom(false);
+			d.accept(_visitor);
 
-		final ATermAppl a = _visitor.result();
+			final ATermAppl a = _visitor.result();
 
-		if (null == a)
-			throw new InternalReasonerException("Cannot create ATerm from description " + d);
+			if (null == a)
+				throw new InternalReasonerException("Cannot create ATerm from description " + d);
 
-		return a;
+			return a;
+		}
 	}
 
 	private NodeSet<OWLClass> toClassNodeSet(final Set<Set<ATermAppl>> termSets)

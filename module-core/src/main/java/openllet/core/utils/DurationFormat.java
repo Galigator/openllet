@@ -22,7 +22,9 @@ package openllet.core.utils;
  * </p>
  *
  * @author Evren Sirin
+ * @deprecated must use the new "Instant" java data api.
  */
+@Deprecated
 public enum DurationFormat
 {
 	/**
@@ -47,8 +49,8 @@ public enum DurationFormat
 
 	DurationFormat(final String formatString, final boolean hoursVisible)
 	{
-		this._formatString = formatString;
-		this._hoursVisible = hoursVisible;
+		_formatString = formatString;
+		_hoursVisible = hoursVisible;
 	}
 
 	/**
@@ -57,7 +59,7 @@ public enum DurationFormat
 	 * @param durationInMilliseconds duration represented in milliseconds
 	 * @return duration formatted as a string
 	 */
-	public String format(long durationInMilliseconds)
+	public String format(final long durationInMilliseconds)
 	{
 		long duration = durationInMilliseconds;
 		long hours, minutes, seconds, milliseconds;
@@ -65,16 +67,16 @@ public enum DurationFormat
 		if (_hoursVisible)
 		{
 			hours = duration / 3600000;
-			duration = duration - (hours * 3600000);
+			duration = duration - hours * 3600000;
 		}
 		else
 			hours = 0;
 
 		minutes = duration / 60000;
-		duration = duration - (minutes * 60000);
+		duration = duration - minutes * 60000;
 
 		seconds = duration / 1000;
-		milliseconds = duration - (seconds * 1000);
+		milliseconds = duration - seconds * 1000;
 
 		return String.format(_formatString, hours, minutes, seconds, milliseconds);
 	}

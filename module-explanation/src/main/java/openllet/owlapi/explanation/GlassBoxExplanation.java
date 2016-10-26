@@ -327,8 +327,7 @@ public class GlassBoxExplanation extends SingleExplanationGeneratorImpl
 			// explanation
 			for (final OWLAxiom axiom : explanation)
 			{
-				if (_logger.isLoggable(Level.FINER))
-					_logger.finer("Try pruning " + axiom);
+				_logger.finer(() -> "Try pruning " + axiom);
 
 				if (!incremental)
 					reasoner.dispose();
@@ -345,8 +344,7 @@ public class GlassBoxExplanation extends SingleExplanationGeneratorImpl
 					// does not affect satisfiability so remove from the results
 					prunedExplanation.remove(axiom);
 
-					if (_logger.isLoggable(Level.FINER))
-						_logger.finer("Pruned " + axiom);
+					_logger.finer(() -> "Pruned " + axiom);
 				}
 				else
 					// affects satisfiability so add back to the ontology

@@ -161,7 +161,7 @@ public class PelletVisitor implements OWLObjectVisitor
 {
 	public static Logger _logger = Log.getLogger(PelletVisitor.class);
 
-	private final KnowledgeBase _kb;
+	private volatile KnowledgeBase _kb;
 
 	private volatile ATermAppl _term;
 
@@ -190,6 +190,11 @@ public class PelletVisitor implements OWLObjectVisitor
 	public PelletVisitor(final KnowledgeBase kb)
 	{
 		_kb = kb;
+	}
+
+	public void dispose()
+	{
+		_kb = null;
 		clear();
 	}
 

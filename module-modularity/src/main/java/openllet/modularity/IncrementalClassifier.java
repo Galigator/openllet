@@ -93,6 +93,8 @@ import org.semanticweb.owlapi.util.Version;
  */
 public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeListener
 {
+	public static final String _namedClassesSupportOnly = "This reasoner only supports named classes";
+
 	public static final Logger _logger = Log.getLogger(IncrementalClassifier.class);
 
 	/**
@@ -302,7 +304,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 	}
 
 	/**
-	 * Get the underlying _reasoner
+	 * Get the underlying reasoner
 	 */
 	public OpenlletReasoner getReasoner()
 	{
@@ -313,7 +315,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 	public NodeSet<OWLClass> getSubClasses(final OWLClassExpression clsC, final boolean direct)
 	{
 		if (clsC.isAnonymous())
-			throw new UnsupportedOperationException("This _reasoner only supports named classes");
+			throw new UnsupportedOperationException(_namedClassesSupportOnly);
 
 		classify();
 
@@ -326,7 +328,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 
 	/**
 	 * This incremental classification _strategy does the following: for all _modules that are affected, collect all of their axioms and classify them all once
-	 * in Openllet. This allows the exploitation _current classification optimizations
+	 * in Openllet. This allows the exploitation current classification optimizations
 	 */
 	private void incClassifyAllModStrategy()
 	{
@@ -420,7 +422,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 	public boolean isEquivalentClass(final OWLClassExpression clsC, final OWLClassExpression clsD)
 	{
 		if (clsC.isAnonymous() || clsD.isAnonymous())
-			throw new UnsupportedOperationException("This reasoner only supports named classes");
+			throw new UnsupportedOperationException(_namedClassesSupportOnly);
 
 		classify();
 
@@ -489,7 +491,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 
 				if (_logger.isLoggable(Level.FINE))
 				{
-					_logger.fine("Regular _taxonomy:");
+					_logger.fine("Regular taxonomy:");
 
 					new TreeTaxonomyPrinter<ATermAppl>().print(_reasoner.getKB().getTaxonomy(), new PrintWriter(System.err));
 				}
@@ -500,7 +502,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 
 				if (_logger.isLoggable(Level.FINE))
 				{
-					_logger.fine("Copied _taxonomy:");
+					_logger.fine("Copied taxonomy:");
 
 					new TreeTaxonomyPrinter<OWLClass>().print(_taxonomyImpl, new PrintWriter(System.err));
 				}
@@ -542,8 +544,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 			throw new OpenError(e);
 		}
 
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Regular classification done");
+		_logger.fine(() -> "Regular classification done");
 	}
 
 	/**
@@ -592,7 +593,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 
 	//	/**
 	//	 * FIXME: This function is incredibly broken.
-	//	 * Main method to update the partial _order and find new subsumptions.
+	//	 * Main method to update the partial order and find new subsumptions.
 	//	 *
 	//	 * @param add
 	//	 *            Flag for additions/deletions
@@ -965,7 +966,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 	public NodeSet<OWLNamedIndividual> getInstances(final OWLClassExpression ce, final boolean direct) throws InconsistentOntologyException, ClassExpressionNotInProfileException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
 	{
 		if (ce.isAnonymous() && direct)
-			throw new UnsupportedOperationException("This _reasoner only supports named classes");
+			throw new UnsupportedOperationException(_namedClassesSupportOnly);
 
 		_reasoner.flush();
 
@@ -1111,7 +1112,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 	public NodeSet<OWLClass> getSuperClasses(final OWLClassExpression ce, final boolean direct) throws InconsistentOntologyException, ClassExpressionNotInProfileException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
 	{
 		if (ce.isAnonymous())
-			throw new UnsupportedOperationException("This reasoner only supports named classes");
+			throw new UnsupportedOperationException(_namedClassesSupportOnly);
 		final OWLClass namedClass = (OWLClass) ce;
 		classify();
 

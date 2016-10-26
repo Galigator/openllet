@@ -62,7 +62,7 @@ public class AxiomBasedModuleExtractor extends AbstractModuleExtractor
 
 		assert !_modules.containsKey(entity) : "po already contained entity";
 
-		assert currentCycle.isEmpty() : "non-empty _current cycle passed into function";
+		assert currentCycle.isEmpty() : "non-empty current cycle passed into function";
 
 		final Set<OWLEntity> myCycle = new HashSet<>();
 
@@ -299,10 +299,11 @@ public class AxiomBasedModuleExtractor extends AbstractModuleExtractor
 	}
 
 	/**
-	 * Sets the the option to optimize for openllet.shared.hash modules during module extraction. This option improves the performance of axiom-based module extractor when
-	 * there are many openllet.shared.hash modules in the ontology. This option seems to improve the performance of modularization for NCI thesaurus significantly but has
-	 * slight overhead for some other ontologies (it is not clear if the overhead would more dramatic in other untested cases). This option has no effect on
-	 * graph-based extractor which by default includes optimization for openllet.shared.hash modules that does not have negative impact on any ontology.
+	 * Sets the the option to optimize for openllet.shared.hash modules during module extraction. This option improves the performance of axiom-based module
+	 * extractor when there are many openllet.shared.hash modules in the ontology. This option seems to improve the performance of modularization for NCI
+	 * thesaurus significantly but has slight overhead for some other ontologies (it is not clear if the overhead would more dramatic in other untested cases).
+	 * This option has no effect on graph-based extractor which by default includes optimization for openllet.shared.hash modules that does not have negative
+	 * impact on any ontology.
 	 */
 	public void setOptimizeForSharedModules(final boolean optimizeForSharedModules)
 	{

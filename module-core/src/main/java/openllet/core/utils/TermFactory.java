@@ -51,7 +51,7 @@ public class TermFactory
 	}
 
 	/**
-	 * Create a variable temr with the given name.
+	 * Create a variable term with the given name.
 	 *
 	 * @param name name of the variable
 	 * @return an ATermAppl with a single argument for variable name
@@ -122,7 +122,7 @@ public class TermFactory
 
 	/**
 	 * Create a typed literal with xsd:boolean datatype.
-	 * 
+	 *
 	 * @param value boolean value
 	 * @return an ATermAppl representing the boolean literal
 	 */
@@ -133,7 +133,7 @@ public class TermFactory
 
 	/**
 	 * Create a typed literal with xsd:byte datatype.
-	 * 
+	 *
 	 * @param value byte value
 	 * @return an ATermAppl representing the byte literal
 	 */
@@ -144,7 +144,7 @@ public class TermFactory
 
 	/**
 	 * Create a typed literal with xsd:short datatype.
-	 * 
+	 *
 	 * @param value short value
 	 * @return an ATermAppl representing the short literal
 	 */
@@ -155,7 +155,7 @@ public class TermFactory
 
 	/**
 	 * Create a typed literal with xsd:long datatype.
-	 * 
+	 *
 	 * @param value long value
 	 * @return an ATermAppl representing the long literal
 	 */
@@ -166,7 +166,7 @@ public class TermFactory
 
 	/**
 	 * Create a typed literal with xsd:integer datatype.
-	 * 
+	 *
 	 * @param value integer value
 	 * @return an ATermAppl representing the integer literal
 	 */
@@ -177,7 +177,7 @@ public class TermFactory
 
 	/**
 	 * Create a typed literal with xsd:float datatype.
-	 * 
+	 *
 	 * @param value float value
 	 * @return an ATermAppl representing the float literal
 	 */
@@ -188,7 +188,7 @@ public class TermFactory
 
 	/**
 	 * Create a typed literal with xsd:double datatype.
-	 * 
+	 *
 	 * @param value double value
 	 * @return an ATermAppl representing the double literal
 	 */
@@ -199,7 +199,7 @@ public class TermFactory
 
 	/**
 	 * Create a typed literal with xsd:anyURI datatype.
-	 * 
+	 *
 	 * @param value URI value
 	 * @return an ATermAppl representing the URI literal
 	 */
@@ -210,7 +210,7 @@ public class TermFactory
 
 	/**
 	 * Create an untyped plain literal with no language tag.
-	 * 
+	 *
 	 * @param value string value
 	 * @return an ATermAppl representing the plain literal
 	 */
@@ -221,7 +221,7 @@ public class TermFactory
 
 	/**
 	 * Create an untyped plain literal with the given language tag.
-	 * 
+	 *
 	 * @param value byte value
 	 * @param lang language identifier
 	 * @return an ATermAppl representing the plain literal with language tag
@@ -233,7 +233,7 @@ public class TermFactory
 
 	/**
 	 * Create a typed literal with given lexical form and datatypes.
-	 * 
+	 *
 	 * @param value lexical value of the literal
 	 * @param datatype type of the literal
 	 * @return an ATermAppl representing the typed literal
