@@ -215,7 +215,7 @@ public class OntologyUtils
 	public static void updateOntology(final OWLOntology ontology, final Stream<? extends OWLAxiom> axioms, final boolean add)
 	{
 		if (add)
-			ontology.addAxioms(axioms.collect(Collectors.toList()));
+			ontology.addAxioms(axioms);
 		else
 			ontology.removeAxioms(axioms);
 	}

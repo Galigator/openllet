@@ -7,7 +7,7 @@
 package openllet.core.utils;
 
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -40,7 +40,7 @@ public class MultiValueMap<K, V> extends ConcurrentHashMap<K, Set<V>> implements
 
 	public Set<V> putSingle(final K key, final V value)
 	{
-		final Set<V> set = new HashSet<>();
+		final Set<V> set = Collections.newSetFromMap(new ConcurrentHashMap<>());
 		set.add(value);
 
 		return super.put(key, set);
@@ -61,9 +61,9 @@ public class MultiValueMap<K, V> extends ConcurrentHashMap<K, Set<V>> implements
 	public boolean add(final K key, final V value)
 	{
 		Set<V> values = get(key);
-		if (values == null)
+		if (null == values)
 		{
-			values = new HashSet<>();
+			values = Collections.newSetFromMap(new ConcurrentHashMap<>());
 			super.put(key, values);
 		}
 
@@ -73,9 +73,9 @@ public class MultiValueMap<K, V> extends ConcurrentHashMap<K, Set<V>> implements
 	public boolean addAll(final K key, final Collection<? extends V> collection)
 	{
 		Set<V> values = get(key);
-		if (values == null)
+		if (null == values)
 		{
-			values = new HashSet<>();
+			values = Collections.newSetFromMap(new ConcurrentHashMap<>());
 			super.put(key, values);
 		}
 
@@ -102,7 +102,7 @@ public class MultiValueMap<K, V> extends ConcurrentHashMap<K, Set<V>> implements
 	public boolean contains(final K key, final V value)
 	{
 		final Set<V> values = get(key);
-		if (values == null)
+		if (null == values)
 			return false;
 
 		return values.contains(value);
