@@ -117,7 +117,7 @@ public class OWL implements FacetManagerOWL, FacetFactoryOWL, Logging
 {
 	private static final Logger _logger = Log.getLogger(OWL.class);
 
-	public static final OWLOntologyManager _manager = OWLManager.createOWLOntologyManager();
+	public static final OWLOntologyManager _manager = OWLManager.createConcurrentOWLOntologyManager();
 
 	public static final OWLDataFactory _factory = _manager.getOWLDataFactory();
 
@@ -176,7 +176,8 @@ public class OWL implements FacetManagerOWL, FacetFactoryOWL, Logging
 		try
 		{
 			ontology = _manager.createOntology(iri);
-			OntologyUtils.addAxioms(ontology, axioms);
+			_manager.addAxioms(ontology, axioms);
+			//OntologyUtils.addAxioms(ontology, axioms);
 		}
 		catch (final OWLOntologyCreationException e)
 		{

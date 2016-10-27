@@ -27,14 +27,13 @@ Openllet 2.6.X:
 
 * Refactor modules dependencies.
 * Enforce interface usage in the core system.
-* Fullify strong typing in openllet core (2.6.1).
-* Add support for rdf4j (2.6.2)
-
-Changes :
-* Introduction of version support for latter situation calculus support.
 
 Migration :
 * lots of com.clarkparsia.* / com.mindswap.* are refactor into openllet.* to avoid conflict has typing change a lot.
+
+Roadmap :
+* Fullify strong typing in openllet core (2.7.X).
+* Add support for sesame/rdf4j reasoning (2.8.X).
 
 Openllet 2.5.X:
 -----------
