@@ -89,7 +89,7 @@
       <dependency>
         <groupId>net.sourceforge.owlapi</groupId>
         <artifactId>owlapi-distribution</artifactId>
-        <version>[5.0.3,)</version>
+        <version>[5.0.4,)</version>
       </dependency>
       <dependency>
         <groupId>org.jgrapht</groupId>
@@ -131,13 +131,6 @@
         <artifactId>slf4j-simple</artifactId>
         <version>[1.7.14,)</version>
       </dependency>
-<!--
-      <dependency>
-        <groupId>commons-io</groupId>
-        <artifactId>commons-io</artifactId>
-        <version>[2.5,)</version>
-      </dependency>
--->
       <dependency>
         <groupId>org.jfree</groupId>
         <artifactId>jfreechart</artifactId>
@@ -161,23 +154,6 @@
          <artifactId>libthrift</artifactId>
          <version>[0.9.3,)</version>
       </dependency>
-      <!--
-      <dependency>
-         <groupId>org.apache.httpcomponents</groupId>
-         <artifactId>httpcore</artifactId>
-         <version>4.4.5</version>
-      </dependency>
-      <dependency>
-         <groupId>org.apache.httpcomponents</groupId>
-         <artifactId>httpclient</artifactId>
-         <version>[4.5.2,)</version>
-      </dependency>
-      <dependency>
-         <groupId>org.apache.httpcomponents</groupId>
-         <artifactId>httpclient-cache</artifactId>
-         <version>[4.5.2,)</version>
-      </dependency>
-      -->
       <dependency>
          <groupId>org.openrdf.sesame</groupId>
          <artifactId>sesame-rio-api</artifactId>
@@ -244,7 +220,7 @@
 						<configuration>
 							<rules>
 								<requireJavaVersion><!-- Check Java version -->
-									<version>[1.8.0-91,1.9)</version>
+									<version>[1.8.0-111,1.9)</version>
 								</requireJavaVersion>
 
 								<requireReleaseDeps><!-- Ensure that release module does not depend on any snapshot module -->
