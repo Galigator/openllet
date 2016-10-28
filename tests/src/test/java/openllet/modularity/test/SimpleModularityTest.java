@@ -24,9 +24,6 @@ import org.semanticweb.owlapi.model.OWLEntity;
  * Title: Tests modularity results for simple hand-made ontologies.
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -60,7 +57,7 @@ public abstract class SimpleModularityTest extends AbstractModularityTest
 
 	/**
 	 * Tests if the computed module of the given entity is same as the _expected module.
-	 * 
+	 *
 	 * @param entity for which the module is being tested
 	 * @param expectedModule _expected elements in the module
 	 */

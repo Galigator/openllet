@@ -20,18 +20,13 @@ import openllet.modularity.PelletIncremantalReasonerFactory;
 import openllet.modularity.io.IncrementalClassifierPersistence;
 import openllet.owlapi.OWL;
 import openllet.owlapi.OntologyUtils;
+import openllet.test.PelletTestSuite;
 import org.junit.Assert;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 
 /**
- * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
  * <p>
  * Copyright: Copyright (c) 2009
  * </p>
@@ -43,6 +38,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
  */
 public class PersistenceModularityTest extends AbstractModularityTest
 {
+	public static final String base = PelletTestSuite.base + "modularity/";
 
 	private static final String TEST_FILE = "test-persistence.zip";
 
@@ -102,7 +98,8 @@ public class PersistenceModularityTest extends AbstractModularityTest
 	@Test
 	public void testGalen() throws IOException
 	{
-		testPersistence("test/data/modularity/galen.owl");
+		//testPersistence("test/data/modularity/galen.owl");
+		testPersistence(base + "galen.owl");
 	}
 
 	public static void main(final String[] args) throws IOException

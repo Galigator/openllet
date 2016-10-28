@@ -71,7 +71,7 @@ public class OntologyUtils
 
 	/**
 	 * Given an axiom, return its signature.
-	 * 
+	 *
 	 * @deprecated 2.5.1 use the stream version
 	 */
 	@Deprecated
@@ -92,7 +92,7 @@ public class OntologyUtils
 
 	public static void clearOWLOntologyManager()
 	{
-		_manager.ontologies().forEach(_manager::removeOntology);
+		_manager.clearOntologies();
 	}
 
 	/**
@@ -109,7 +109,7 @@ public class OntologyUtils
 		}
 		catch (final OWLOntologyCreationException e)
 		{
-			throw new OWLRuntimeException(e);
+			throw new OpenError(e);
 		}
 	}
 
@@ -127,7 +127,7 @@ public class OntologyUtils
 		}
 		catch (final OWLOntologyCreationException e)
 		{
-			throw new OWLRuntimeException(e);
+			throw new OpenError(e);
 		}
 	}
 
@@ -169,7 +169,7 @@ public class OntologyUtils
 
 	/**
 	 * Prints a set of axioms to console
-	 * 
+	 *
 	 * @Deprecated 2.5.1 because we don't want a System.out in the lib
 	 */
 	@Deprecated
@@ -181,7 +181,7 @@ public class OntologyUtils
 
 	/**
 	 * Prints an ontology to console
-	 * 
+	 *
 	 * @Deprecated 2.5.1 because we don't want a System.out in the lib
 	 */
 	@Deprecated

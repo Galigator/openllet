@@ -231,15 +231,15 @@ public class OWLManagerGroup implements AutoCloseable
 
 		if (_volatileManager != null)
 		{
-			_volatileManager.ontologies().forEach(_volatileManager::removeOntology);
+			_volatileManager.clearOntologies();
 			_volatileManager.getIRIMappers().clear();
 			_volatileManager = null; // Mark for GC.
 		}
 		if (_storageManager != null)
 		{
-			_storageManager.ontologies().forEach(_storageManager::removeOntology);
-			_storageListener.close();
 			_storageManager.removeOntologyChangeListener(_storageListener);
+			_storageListener.close();
+			_storageManager.clearOntologies();
 			_storageManager.getIRIMappers().clear();
 			_storageManager = null; // Mark for GC.
 		}

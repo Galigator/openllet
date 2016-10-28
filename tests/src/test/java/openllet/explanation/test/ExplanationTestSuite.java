@@ -19,9 +19,6 @@ import org.junit.runners.Suite;
  * Title: ModularityTestSuite
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2008
  * </p>
  * <p>

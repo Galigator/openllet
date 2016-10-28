@@ -170,14 +170,12 @@ public class OWL implements FacetManagerOWL, FacetFactoryOWL, Logging
 		return Ontology(axioms.stream(), iri);
 	}
 
+	@SuppressWarnings("unchecked")
 	public static OWLOntology Ontology(final Stream<? extends OWLAxiom> axioms, final IRI iri)
 	{
-		OWLOntology ontology;
 		try
 		{
-			ontology = _manager.createOntology(iri);
-			_manager.addAxioms(ontology, axioms);
-			//OntologyUtils.addAxioms(ontology, axioms);
+			return _manager.createOntology((Stream<OWLAxiom>) axioms, iri);
 		}
 		catch (final OWLOntologyCreationException e)
 		{
@@ -187,8 +185,6 @@ public class OWL implements FacetManagerOWL, FacetFactoryOWL, Logging
 		{
 			throw new OpenError(e);
 		}
-
-		return ontology;
 	}
 
 	public static OWLOntology Ontology(final OWLAxiom... axioms)
@@ -887,7 +883,7 @@ public class OWL implements FacetManagerOWL, FacetFactoryOWL, Logging
 
 	/**
 	 * Return a class expression that is a logical and between a set of properties (objets/datas) and classes.
-	 * 
+	 *
 	 * @param objects to intersect
 	 * @param datas to intersect
 	 * @param classes to intersect
@@ -907,7 +903,7 @@ public class OWL implements FacetManagerOWL, FacetFactoryOWL, Logging
 
 	/**
 	 * Convert a java class into an owl schema for the class.
-	 * 
+	 *
 	 * @param <T> is type of the class.
 	 * @param iface is the interface that define the java class.
 	 * @return a set of axiom that define the given class and it's inheritance hierarchy
