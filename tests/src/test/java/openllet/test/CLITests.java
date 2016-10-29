@@ -32,7 +32,7 @@ public class CLITests
 
 		public void run(final String... args)
 		{
-			OWL._manager.ontologies().forEach(OWL._manager::removeOntology);
+			OWL._manager.clearOntologies();
 			final OpenlletCmdApp app = create();
 			app.parseArgs(prepend(args, app.getAppCmd()));
 			app.run();

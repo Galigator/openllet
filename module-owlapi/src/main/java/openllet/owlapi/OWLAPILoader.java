@@ -214,7 +214,7 @@ public class OWLAPILoader extends KBLoader implements FacetReasonerOWL, FacetMan
 	{
 
 		_iriMapper.clear();
-		_manager.ontologies().forEach(_manager::removeOntology);
+		_manager.clearOntologies();
 
 		try
 		{

@@ -14,8 +14,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.modularity.AxiomBasedModuleExtractor;
@@ -30,10 +29,8 @@ import openllet.owlapi.OpenlletReasonerFactory;
 import openllet.shared.tools.Log;
 import openllet.test.PelletTestSuite;
 import org.junit.Test;
-import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.RemoveAxiom;
 
 /**
  * <p>
@@ -106,10 +103,7 @@ public class PersistenceUpdatesTest
 			final IncrementalClassifier modular = PelletIncremantalReasonerFactory.getInstance().createReasoner(ontology, moduleExtractor);
 			modular.classify();
 
-			final List<OWLAxiom> axiomsToRemove = new ArrayList<>(TestUtils.selectRandomAxioms(ontology, 1));
-
-			for (final OWLAxiom axiomToRemove : axiomsToRemove)
-				OWL._manager.applyChange(new RemoveAxiom(ontology, axiomToRemove));
+			OWL._manager.removeAxioms(ontology, TestUtils.selectRandomAxioms(ontology, 1).stream());
 
 			// at this point there should be a change to the ontology that is not applied yet to the classifier
 			// this should cause the save operation to fail
@@ -146,18 +140,15 @@ public class PersistenceUpdatesTest
 			final IncrementalClassifier modular = PelletIncremantalReasonerFactory.getInstance().createReasoner(ontology, moduleExtractor);
 
 			// first remove a random axiom
-			final List<OWLAxiom> axiomsToRemove = new ArrayList<>(TestUtils.selectRandomAxioms(ontology, 1));
+			final Set<OWLAxiom> axiomsToRemove = TestUtils.selectRandomAxioms(ontology, 1);
 
-			for (final OWLAxiom axiomToRemove : axiomsToRemove)
-				OWL._manager.applyChange(new RemoveAxiom(ontology, axiomToRemove));
+			OWL._manager.removeAxioms(ontology, axiomsToRemove.stream());
 
 			// classify (i.e., update)
 			modular.classify();
 
 			// add the axiom back but do not classify (do not cause an update)
-
-			for (final OWLAxiom axiomToAdd : axiomsToRemove)
-				OWL._manager.applyChange(new AddAxiom(ontology, axiomToAdd));
+			OWL._manager.addAxioms(ontology, axiomsToRemove.stream());
 
 			// at this point there should be a change to the ontology that is not applied yet to the classifier
 			// this should cause the save operation to fail
@@ -196,20 +187,14 @@ public class PersistenceUpdatesTest
 			modular.classify();
 
 			// first remove a random axiom
-			final List<OWLAxiom> axiomsToRemove = new ArrayList<>(TestUtils.selectRandomAxioms(ontology, 1));
+			final Set<OWLAxiom> axiomsToRemove = TestUtils.selectRandomAxioms(ontology, 1);
 
-			for (final OWLAxiom axiomToRemove : axiomsToRemove)
-				OWL._manager.applyChange(new RemoveAxiom(ontology, axiomToRemove));
-
+			OWL._manager.removeAxioms(ontology, axiomsToRemove.stream());
 			// add the axiom back but do not classify
-			for (final OWLAxiom axiomToAdd : axiomsToRemove)
-				OWL._manager.applyChange(new AddAxiom(ontology, axiomToAdd));
+			OWL._manager.addAxioms(ontology, axiomsToRemove.stream());
 
 			// remove another random axiom
-			final List<OWLAxiom> axiomsToRemove2 = new ArrayList<>(TestUtils.selectRandomAxioms(ontology, 1));
-
-			for (final OWLAxiom axiomToRemove : axiomsToRemove2)
-				OWL._manager.applyChange(new RemoveAxiom(ontology, axiomToRemove));
+			OWL._manager.removeAxioms(ontology, TestUtils.selectRandomAxioms(ontology, 1).stream());
 
 			// classify (i.e., update)
 			modular.classify();
@@ -224,7 +209,8 @@ public class PersistenceUpdatesTest
 		}
 		finally
 		{
-			OWL._manager.removeOntology(ontology);
+			if (null != ontology)
+				OWL._manager.removeOntology(ontology);
 		}
 	}
 
@@ -258,10 +244,7 @@ public class PersistenceUpdatesTest
 			}
 
 			// first remove a random axiom
-			final List<OWLAxiom> axiomsToRemove = new ArrayList<>(TestUtils.selectRandomAxioms(ontology, 1));
-
-			for (final OWLAxiom axiomToRemove : axiomsToRemove)
-				OWL._manager.applyChange(new RemoveAxiom(modular.getRootOntology(), axiomToRemove));
+			OWL._manager.removeAxioms(ontology, TestUtils.selectRandomAxioms(ontology, 1).stream());
 
 			modular.classify();
 
@@ -271,7 +254,8 @@ public class PersistenceUpdatesTest
 		}
 		finally
 		{
-			OWL._manager.removeOntology(ontology);
+			if (null != ontology)
+				OWL._manager.removeOntology(ontology);
 		}
 	}
 
@@ -303,10 +287,7 @@ public class PersistenceUpdatesTest
 			}
 
 			// first remove a random axiom
-			final List<OWLAxiom> axiomsToRemove = new ArrayList<>(TestUtils.selectRandomAxioms(ontology, 1));
-
-			for (final OWLAxiom axiomToRemove : axiomsToRemove)
-				OWL._manager.applyChange(new RemoveAxiom(ontology, axiomToRemove));
+			OWL._manager.removeAxioms(ontology, TestUtils.selectRandomAxioms(ontology, 1).stream());
 
 			modular.classify();
 
@@ -316,7 +297,8 @@ public class PersistenceUpdatesTest
 		}
 		finally
 		{
-			OWL._manager.removeOntology(ontology);
+			if (null != ontology)
+				OWL._manager.removeOntology(ontology);
 		}
 	}
 
@@ -335,12 +317,8 @@ public class PersistenceUpdatesTest
 				IncrementalClassifierPersistence.save(modular, fos);
 			}
 
-			// perform changes while the classifier is stored on disk
-			// first remove a random axiom
-			final List<OWLAxiom> axiomsToRemove = new ArrayList<>(TestUtils.selectRandomAxioms(ontology, 1));
-
-			for (final OWLAxiom axiomToRemove : axiomsToRemove)
-				OWL._manager.applyChange(new RemoveAxiom(ontology, axiomToRemove));
+			// perform changes while the classifier is stored on disk; first remove a random axiom
+			OWL._manager.removeAxioms(ontology, TestUtils.selectRandomAxioms(ontology, 1).stream());
 
 			try (final FileInputStream fis = new FileInputStream(testFile))
 			{
@@ -353,7 +331,8 @@ public class PersistenceUpdatesTest
 		}
 		finally
 		{
-			OWL._manager.removeOntology(ontology);
+			if (null != ontology)
+				OWL._manager.removeOntology(ontology);
 		}
 	}
 
@@ -392,5 +371,4 @@ public class PersistenceUpdatesTest
 	{
 		performUpdatesWhenPersisted("miniTambis");
 	}
-
 }

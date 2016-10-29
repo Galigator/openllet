@@ -11,12 +11,6 @@ import openllet.core.utils.DurationFormat;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2006
  * </p>
  * <p>
@@ -77,7 +71,7 @@ public class ConsoleProgressMonitor extends AbstractProgressMonitor
 	@Override
 	protected void updateProgress()
 	{
-		final int pc = (int) ((100.0 * _progress) / _progressLength);
+		final int pc = (int) (100.0 * _progress / _progressLength);
 
 		if (pc == _progressPercent)
 			return;

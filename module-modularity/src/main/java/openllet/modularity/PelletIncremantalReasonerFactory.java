@@ -19,12 +19,6 @@ import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>

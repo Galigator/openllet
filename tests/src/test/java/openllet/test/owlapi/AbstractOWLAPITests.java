@@ -89,7 +89,7 @@ public abstract class AbstractOWLAPITests
 		if (_reasoner != null)
 			_reasoner.dispose();
 
-		OWL._manager.ontologies().forEach(OWL._manager::removeOntology);
+		OWL._manager.clearOntologies();
 	}
 
 	protected boolean processAdd(final OWLAxiom axiom)

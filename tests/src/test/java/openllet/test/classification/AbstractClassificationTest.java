@@ -9,7 +9,6 @@
 package openllet.test.classification;
 
 import openllet.test.PelletTestSuite;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -77,7 +76,6 @@ public abstract class AbstractClassificationTest
 		testFile("sio");
 	}
 
-	@Ignore
 	@Test
 	public void mechanicalEngineeringTest() throws Exception
 	{

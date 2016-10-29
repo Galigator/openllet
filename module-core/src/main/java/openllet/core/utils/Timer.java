@@ -112,8 +112,8 @@ public class Timer
 	 */
 	public Timer(final String name, final Timer parent)
 	{
-		this._name = name;
-		this._parent = parent;
+		_name = name;
+		_parent = parent;
 
 		_timeout = NO_TIMEOUT;
 		reset();
@@ -121,7 +121,7 @@ public class Timer
 
 	/**
 	 * Update the total time elapsed and number of counts by by adding the values from another timer. This is especially useful if we are running
-	 * 
+	 *
 	 * @param timer
 	 */
 	public void add(final Timer timer)
@@ -145,7 +145,7 @@ public class Timer
 	/**
 	 * Stop the timer, increment the _count and update the total time spent. If timer has been started multiple times this function will only decrement the
 	 * internal counter. Time information is updated only when all starts are evened out by stops.
-	 * 
+	 *
 	 * @return Return the total time spent after last start(), -1 if timer is still running, -Long.MAX_VALUE on error
 	 */
 	public long stop()
@@ -231,7 +231,7 @@ public class Timer
 	 */
 	public boolean isStarted()
 	{
-		return (_startCount > 0);
+		return _startCount > 0;
 	}
 
 	/**
@@ -251,7 +251,7 @@ public class Timer
 	 */
 	public long getElapsed()
 	{
-		return isStarted() ? (System.currentTimeMillis() - _startTime) : 0;
+		return isStarted() ? System.currentTimeMillis() - _startTime : 0;
 	}
 
 	/**
@@ -315,9 +315,9 @@ public class Timer
 	public void setTimeout(final long timeout)
 	{
 		if (timeout < 0)
-			throw new IllegalArgumentException("Cannot set the _timeout to a negative value!");
+			throw new IllegalArgumentException("Cannot set the timeout to a negative value!");
 
-		this._timeout = timeout;
+		_timeout = timeout;
 	}
 
 	@Override

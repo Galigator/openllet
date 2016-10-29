@@ -63,7 +63,7 @@ public abstract class AbstractExplanationTest
 
 	public AbstractExplanationTest(final boolean classify)
 	{
-		this._classify = classify;
+		_classify = classify;
 	}
 
 	@Before
@@ -134,7 +134,7 @@ public abstract class AbstractExplanationTest
 	@After
 	public void after()
 	{
-		_manager.ontologies().forEach(_manager::removeOntology);
+		_manager.clearOntologies();
 	}
 
 	/**
@@ -376,12 +376,12 @@ public abstract class AbstractExplanationTest
 		final OWLDataProperty month = OWL.DataProperty(ontologyURI + "month");
 		final OWLDataProperty day = OWL.DataProperty(ontologyURI + "day");
 
-		final OWLAxiom[] axioms = { // 
-				OWL.propertyAssertion(_a, dp, // 
-						OWL.constant("2009-01-02", XSD.DATE)), // 
+		final OWLAxiom[] axioms = { //
+				OWL.propertyAssertion(_a, dp, //
+						OWL.constant("2009-01-02", XSD.DATE)), //
 				SWRL.rule(//
-						SWRL.antecedent(SWRL.propertyAtom(dp, _x, _dx), // 
-								SWRL.builtIn(SWRLBuiltInsVocabulary.DATE, _dx, y, m, d)), // 
+						SWRL.antecedent(SWRL.propertyAtom(dp, _x, _dx), //
+								SWRL.builtIn(SWRLBuiltInsVocabulary.DATE, _dx, y, m, d)), //
 						SWRL.consequent(SWRL.propertyAtom(year, _x, y), //
 								SWRL.propertyAtom(month, _x, m), //
 								SWRL.propertyAtom(day, _x, d)//

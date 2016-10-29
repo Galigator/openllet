@@ -179,7 +179,7 @@ public class ModuleExtractorPersistence
 
 	/**
 	 * Loads the ontology with axioms (for ModuleExtractor) from an input stream.
-	 * 
+	 *
 	 * @param inputStream the input stream from which to load the ontology.
 	 * @return the collection of axioms read from the ontology
 	 * @throws IOException if an error should occur during the read operation
@@ -298,7 +298,7 @@ public class ModuleExtractorPersistence
 
 	/**
 	 * Reads information about the modules from the input stream that has the information stored in a form of ontology.
-	 * 
+	 *
 	 * @param inputStream the input stream from which the ontology should be read
 	 * @return the read information about the modules
 	 * @throws IOException if an error occurs during the read process.

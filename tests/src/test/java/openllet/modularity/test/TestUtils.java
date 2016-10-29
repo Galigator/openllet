@@ -205,7 +205,7 @@ public class TestUtils
 
 	/**
 	 * Selects a set of random axioms from an ontology
-	 * 
+	 *
 	 * @param ontology is the repository of axioms
 	 * @param count number of axiom to return at max.
 	 * @return count random axioms or less
