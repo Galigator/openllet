@@ -11,7 +11,6 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -302,12 +301,10 @@ public class OntologyUtils
 			ontology.removeAxioms(ontology.axioms().filter(axiom -> !axiom.isLogicalAxiom()));
 
 			// Add exactly once declaration per entity.
-			final List<OWLAxiom> axioms = referencedEntities.stream()//
+			ontology.addAxioms(referencedEntities.stream()//
 					.filter(entity -> !ontology.containsEntityInSignature(entity))//
 					.map(entity -> manager.getOWLDataFactory().getOWLDeclarationAxiom(entity))//
-					.collect(Collectors.toList());
-			ontology.addAxioms(axioms);
-
+			);
 		}
 		catch (final OWLOntologyChangeException e)
 		{
