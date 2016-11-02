@@ -9,12 +9,16 @@ package openllet.core.utils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import openllet.shared.tools.Log;
 
 /**
  * @author ronwalf Automatic (from ant) version information for Pellet
  */
 public class VersionInfo
 {
+	public final static Logger _logger = Log.getLogger(VersionInfo.class);
 	private Properties versionProperties = null;
 
 	private static String UNKNOWN = "(unknown)";
@@ -22,32 +26,29 @@ public class VersionInfo
 	public VersionInfo()
 	{
 		versionProperties = new Properties();
-		// System.out.print(VersionInfo.class.getResource(""));
 
-		try (final InputStream vstream = VersionInfo.class.getResourceAsStream("/org/mindswap/pellet/version.properties"))
+		try (final InputStream vstream = VersionInfo.class.getResourceAsStream("src/main/resources/openllet/version.properties.in"))
 		{
 			if (vstream != null)
 				try
-			{
-					versionProperties.load(vstream);
-			}
-			catch (final IOException e)
-			{
-				System.err.println("Could not load version properties:");
-				e.printStackTrace();
-			}
-			finally
-			{
-				try
 				{
-					vstream.close();
+					versionProperties.load(vstream);
 				}
 				catch (final IOException e)
 				{
-					System.err.println("Could not close version properties:");
-					e.printStackTrace();
+					_logger.log(Level.SEVERE, "Could not load version properties", e);
 				}
-			}
+				finally
+				{
+					try
+					{
+						vstream.close();
+					}
+					catch (final IOException e)
+					{
+						_logger.log(Level.SEVERE, "Could not close version properties", e);
+					}
+				}
 		}
 		catch (final IOException exception)
 		{

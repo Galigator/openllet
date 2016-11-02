@@ -36,16 +36,16 @@ public class TestBasic
 		Log.setLevel(Level.WARNING, OWLGenericTools.class);
 	}
 
-	final OWLClass ClsA = OWL.Class("#ClsA");
-	final OWLClass ClsB = OWL.Class("#ClsB");
-	final OWLClass ClsC = OWL.Class("#ClsC");
-	final OWLClass ClsD = OWL.Class("#ClsD");
-	final OWLClass ClsE = OWL.Class("#ClsE");
-	final OWLClass ClsF = OWL.Class("#ClsF");
-	final OWLClass ClsG = OWL.Class("#ClsG");
-	final OWLNamedIndividual Ind1 = OWL.Individual("#Ind1");
-	final OWLObjectProperty propA = OWL.ObjectProperty("#mimiroux");
-	final SWRLVariable varA = SWRL.variable(IRI.create("#a"));
+	private final OWLClass ClsA = OWL.Class("#ClsA");
+	private final OWLClass ClsB = OWL.Class("#ClsB");
+	private final OWLClass ClsC = OWL.Class("#ClsC");
+	private final OWLClass ClsD = OWL.Class("#ClsD");
+	private final OWLClass ClsE = OWL.Class("#ClsE");
+	private final OWLClass ClsF = OWL.Class("#ClsF");
+	private final OWLClass ClsG = OWL.Class("#ClsG");
+	private final OWLNamedIndividual Ind1 = OWL.Individual("#Ind1");
+	private final OWLObjectProperty propA = OWL.ObjectProperty("#mimiroux");
+	private final SWRLVariable varA = SWRL.variable(IRI.create("#a"));
 
 	@Test
 	public void rule() throws OWLOntologyCreationException

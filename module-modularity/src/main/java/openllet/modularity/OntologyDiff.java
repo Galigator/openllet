@@ -20,12 +20,8 @@ import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.RemoveAxiom;
 
 /**
- * Computes differences between two ontologies, sets of ontologies or collections of axioms.
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
+ * Title: Computes differences between two ontologies, sets of ontologies or collections of axioms.
  * </p>
  * <p>
  * Copyright: Copyright (c) 2009
@@ -53,6 +49,7 @@ public class OntologyDiff
 	 */
 	private OntologyDiff()
 	{
+		// Avoid instantiation.
 	}
 
 	/**

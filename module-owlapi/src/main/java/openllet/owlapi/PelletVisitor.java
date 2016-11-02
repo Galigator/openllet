@@ -244,7 +244,7 @@ public class PelletVisitor implements OWLObjectVisitor
 		role.setForceSimple(true);
 	}
 
-	void verify()
+	public void verify()
 	{
 		for (final Map.Entry<OWLObjectProperty, Set<OWLObjectPropertyAxiom>> entry : _compositePropertyAxioms.entrySet())
 		{

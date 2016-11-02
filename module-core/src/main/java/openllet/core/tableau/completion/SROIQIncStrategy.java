@@ -433,8 +433,7 @@ public class SROIQIncStrategy extends SROIQStrategy
 
 		t.stop();
 
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Initialize Ended");
+		_logger.fine("Initialize Ended");
 	}
 
 	/**
@@ -450,18 +449,13 @@ public class SROIQIncStrategy extends SROIQStrategy
 	}
 
 	/**
-	 * Test if a type should be readded to a _node
-	 *
-	 * @param _node
+	 * @param node
 	 * @param type
-	 * @return
+	 * @return true if a type should be readded to a node
 	 */
 	protected boolean requiredAddType(final Node node, final ATermAppl type)
 	{
-		if (type == null || node.hasType(type) && !ATermUtils.isAnd(type))
-			return false;
-
-		return true;
+		return !(type == null || node.hasType(type) && !ATermUtils.isAnd(type));
 	}
 
 	@Override

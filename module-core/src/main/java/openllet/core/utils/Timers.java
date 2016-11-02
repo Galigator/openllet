@@ -46,12 +46,6 @@ import openllet.core.output.TableData;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2008
  * </p>
  * <p>
@@ -153,13 +147,13 @@ public class Timers
 	public long getTimerTotal(final String name)
 	{
 		final Timer timer = getTimer(name);
-		return (timer == null) ? 0 : timer.getTotal();
+		return timer == null ? 0 : timer.getTotal();
 	}
 
 	public double getTimerAverage(final String name)
 	{
 		final Timer timer = getTimer(name);
-		return (timer == null) ? 0 : timer.getAverage();
+		return timer == null ? 0 : timer.getAverage();
 	}
 
 	public Timer getTimer(final String name)
@@ -201,8 +195,8 @@ public class Timers
 
 		final List<Timer> list = new ArrayList<>(timers.values());
 		if (sortBy != null)
-							Collections.sort(list, (o1, o2) ->
-							{
+			Collections.sort(list, (o1, o2) ->
+			{
 				if (sortBy.equalsIgnoreCase("Total"))
 				{
 					long t1 = o1.getTotal();
@@ -221,29 +215,29 @@ public class Timers
 							return (int) (o2.getCount() - o1.getCount());
 						else
 							return AlphaNumericComparator.CASE_INSENSITIVE.compare(o1, o2);
-							});
+			});
 
 		final NumberFormat nf = new DecimalFormat("0.00");
 
 		final TableData table = new TableData(Arrays.asList(colNames));
 		table.setAlignment(alignment);
-						for (final Timer timer : list)
+		for (final Timer timer : list)
 		{
 			//			if(timer.getCount() == 0)
 			//			    continue;
-							final List<Object> row = new ArrayList<>();
-							row.add(timer.getName());
-							if (!shortForm)
+			final List<Object> row = new ArrayList<>();
+			row.add(timer.getName());
+			if (!shortForm)
 			{
-								row.add(String.valueOf(timer.getCount()));
-								row.add(nf.format(timer.getAverage()));
-							}
-							if (timer.isStarted())
-								row.add(String.valueOf(timer.getElapsed()));
-							else
-								row.add(String.valueOf(timer.getTotal()));
-							table.add(row);
-						}
+				row.add(String.valueOf(timer.getCount()));
+				row.add(nf.format(timer.getAverage()));
+			}
+			if (timer.isStarted())
+				row.add(String.valueOf(timer.getElapsed()));
+			else
+				row.add(String.valueOf(timer.getTotal()));
+			table.add(row);
+		}
 
 		table.print(pw);
 	}

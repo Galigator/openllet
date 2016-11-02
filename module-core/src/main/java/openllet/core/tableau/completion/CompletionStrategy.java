@@ -185,7 +185,7 @@ public abstract class CompletionStrategy
 
 		_tableauRules = new ArrayList<>();
 
-		if ((!OpenlletOptions.USE_PSEUDO_NOMINALS && expr.hasNominal()) || implicitNominals())
+		if (!OpenlletOptions.USE_PSEUDO_NOMINALS && expr.hasNominal() || implicitNominals())
 		{
 			_tableauRules.add(_nominalRule);
 
@@ -1051,7 +1051,7 @@ public abstract class CompletionStrategy
 					succ.restore(branch);
 				}
 				else
-					restoreLocal(((Individual) succ), branch, visited);
+					restoreLocal((Individual) succ, branch, visited);
 			}
 
 			for (final Edge edge : ind.getInEdges())
@@ -1086,8 +1086,7 @@ public abstract class CompletionStrategy
 
 		final List<ATermAppl> nodeList = _abox.getNodeNames();
 
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("RESTORE: Branch " + br.getBranch());
+		_logger.fine(() -> "RESTORE: Branch " + br.getBranch());
 
 		if (OpenlletOptions.USE_COMPLETION_QUEUE)
 		{
@@ -1146,8 +1145,7 @@ public abstract class CompletionStrategy
 				{
 					// create the sub list for _nodes to be removed
 					final List<ATermAppl> subList = nodeList.subList(i - deleteBlock, i);
-					if (_logger.isLoggable(Level.FINE))
-						_logger.fine("Remove _nodes " + subList);
+					_logger.fine(() -> "Remove nodes " + subList);
 					// clear the sublist causing all elements to removed from _nodeList
 					subList.clear();
 					// update counters
@@ -1203,7 +1201,7 @@ public abstract class CompletionStrategy
 			_abox.getKB().getDependencyIndex().addBranchAddDependency(newBranch);
 	}
 
-	void printBlocked()
+	public void printBlocked()
 	{
 		int blockedCount = 0;
 		final StringBuffer blockedNodes = new StringBuffer();
@@ -1220,7 +1218,7 @@ public abstract class CompletionStrategy
 			}
 		}
 
-		_logger.fine("Blocked _nodes " + blockedCount + " [" + blockedNodes + "]");
+		_logger.fine("Blocked nodes " + blockedCount + " [" + blockedNodes + "]");
 	}
 
 	@Override

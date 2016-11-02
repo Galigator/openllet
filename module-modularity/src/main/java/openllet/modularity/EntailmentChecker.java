@@ -72,7 +72,7 @@ public class EntailmentChecker implements OWLAxiomVisitor
 	public static Logger _logger = Log.getLogger(EntailmentChecker.class);
 
 	private final IncrementalClassifier _reasoner;
-	private Boolean _isEntailed;
+	private volatile Boolean _isEntailed;
 
 	public EntailmentChecker(final IncrementalClassifier reasoner)
 	{

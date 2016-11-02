@@ -27,6 +27,7 @@ import openllet.core.expressivity.Expressivity;
 import openllet.core.taxonomy.Taxonomy;
 import openllet.core.taxonomy.TaxonomyNode;
 import openllet.core.utils.MultiValueMap;
+import openllet.core.utils.SetUtils;
 import openllet.core.utils.Timer;
 import openllet.core.utils.Timers;
 import openllet.core.utils.progress.ConsoleProgressMonitor;
@@ -54,19 +55,19 @@ public abstract class AbstractModuleExtractor implements ModuleExtractor
 {
 	public static final Logger _logger = Log.getLogger(AbstractModuleExtractor.class);
 
-	private final Set<OWLAxiom> _additions = new HashSet<>();
+	private final Set<OWLAxiom> _additions = SetUtils.create();
 
-	private final Set<OWLClass> _newClasses = new HashSet<>();
+	private final Set<OWLClass> _newClasses = SetUtils.create();
 
 	/**
 	 * Map to find entities referenced in an axiom
 	 */
-	private final Set<OWLAxiom> _axioms = new HashSet<>();
+	private final Set<OWLAxiom> _axioms = SetUtils.create();
 
 	/**
 	 * Set of _axioms that will be deleted
 	 */
-	private final Set<OWLAxiom> _deletions = new HashSet<>();
+	private final Set<OWLAxiom> _deletions = SetUtils.create();
 
 	/**
 	 * The types of changes that are pending in additions and deletions

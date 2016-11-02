@@ -90,7 +90,6 @@ public class KRSSLoader extends KBLoader
 	public KRSSLoader(final KnowledgeBase kb)
 	{
 		_kb = kb;
-
 		_forceUppercase = false;
 	}
 
@@ -146,7 +145,7 @@ public class KRSSLoader extends KBLoader
 	{
 		final int next = _in.nextToken();
 		_in.pushBack();
-		return (token == next);
+		return token == next;
 	}
 
 	private String nextString() throws IOException
@@ -228,10 +227,10 @@ public class KRSSLoader extends KBLoader
 		String s = _in.sval;
 		if (token == StreamTokenizer.TT_WORD || token == QUOTE)
 		{
-			if (s.equalsIgnoreCase("TOP") || s.equalsIgnoreCase("*TOP*") || s.equalsIgnoreCase(":TOP"))
+			if ("TOP".equalsIgnoreCase(s) || "*TOP*".equalsIgnoreCase(s) || ":TOP".equalsIgnoreCase(s))
 				a = ATermUtils.TOP;
 			else
-				if (s.equalsIgnoreCase("BOTTOM") || s.equalsIgnoreCase("*BOTTOM*"))
+				if ("BOTTOM".equalsIgnoreCase(s) || "*BOTTOM*".equalsIgnoreCase(s))
 					a = ATermUtils.BOTTOM;
 				else
 				{
@@ -247,10 +246,10 @@ public class KRSSLoader extends KBLoader
 				if (token == ':')
 				{
 					s = nextString();
-					if (s.equalsIgnoreCase("TOP"))
+					if ("TOP".equalsIgnoreCase(s))
 						a = ATermUtils.TOP;
 					else
-						if (s.equalsIgnoreCase("BOTTOM"))
+						if ("BOTTOM".equalsIgnoreCase(s))
 							a = ATermUtils.BOTTOM;
 						else
 							throw new OpenError("Parse exception after ':' " + s);
@@ -262,7 +261,7 @@ public class KRSSLoader extends KBLoader
 						ATermUtils.assertTrue(token == StreamTokenizer.TT_WORD);
 
 						s = _in.sval;
-						if (s.equalsIgnoreCase("NOT"))
+						if ("NOT".equalsIgnoreCase(s))
 						{
 							final ATermAppl c = parseExpr();
 							a = ATermUtils.makeNot(c);
@@ -271,7 +270,7 @@ public class KRSSLoader extends KBLoader
 								_kb.addClass(c);
 						}
 						else
-							if (s.equalsIgnoreCase("AND"))
+							if ("AND".equalsIgnoreCase(s))
 							{
 								ATermList list = ATermUtils.EMPTY_LIST;
 
@@ -286,7 +285,7 @@ public class KRSSLoader extends KBLoader
 								a = ATermUtils.makeAnd(list);
 							}
 							else
-								if (s.equalsIgnoreCase("OR"))
+								if ("OR".equalsIgnoreCase(s))
 								{
 									ATermList list = ATermUtils.EMPTY_LIST;
 
@@ -301,7 +300,7 @@ public class KRSSLoader extends KBLoader
 									a = ATermUtils.makeOr(list);
 								}
 								else
-									if (s.equalsIgnoreCase("ONE-OF"))
+									if ("ONE-OF".equalsIgnoreCase(s))
 									{
 										ATermList list = ATermUtils.EMPTY_LIST;
 
@@ -315,7 +314,7 @@ public class KRSSLoader extends KBLoader
 										a = ATermUtils.makeOr(list);
 									}
 									else
-										if (s.equalsIgnoreCase("ALL"))
+										if ("ALL".equalsIgnoreCase(s))
 										{
 											final ATermAppl r = parseExpr();
 											_kb.addObjectProperty(r);
@@ -326,7 +325,7 @@ public class KRSSLoader extends KBLoader
 											a = ATermUtils.makeAllValues(r, c);
 										}
 										else
-											if (s.equalsIgnoreCase("SOME"))
+											if ("SOME".equalsIgnoreCase(s))
 											{
 												final ATermAppl r = parseExpr();
 												_kb.addObjectProperty(r);
@@ -336,7 +335,7 @@ public class KRSSLoader extends KBLoader
 												a = ATermUtils.makeSomeValues(r, c);
 											}
 											else
-												if (s.equalsIgnoreCase("AT-LEAST") || s.equalsIgnoreCase("ATLEAST"))
+												if ("AT-LEAST".equalsIgnoreCase(s) || "ATLEAST".equalsIgnoreCase(s))
 												{
 													final int n = nextInt();
 													final ATermAppl r = parseExpr();
@@ -349,7 +348,7 @@ public class KRSSLoader extends KBLoader
 													a = ATermUtils.makeMin(r, n, c);
 												}
 												else
-													if (s.equalsIgnoreCase("AT-MOST") || s.equalsIgnoreCase("ATMOST"))
+													if ("AT-MOST".equalsIgnoreCase(s) || "ATMOST".equalsIgnoreCase(s))
 													{
 														final int n = nextInt();
 														final ATermAppl r = parseExpr();
@@ -362,7 +361,7 @@ public class KRSSLoader extends KBLoader
 														a = ATermUtils.makeMax(r, n, c);
 													}
 													else
-														if (s.equalsIgnoreCase("EXACTLY"))
+														if ("EXACTLY".equalsIgnoreCase(s))
 														{
 															final int n = nextInt();
 															final ATermAppl r = parseExpr();
@@ -375,7 +374,7 @@ public class KRSSLoader extends KBLoader
 															a = ATermUtils.makeCard(r, n, c);
 														}
 														else
-															if (s.equalsIgnoreCase("A"))
+															if ("A".equalsIgnoreCase(s))
 															{
 																final ATermAppl r = nextTerm();
 																// TODO what does term 'A' stand for
@@ -384,7 +383,7 @@ public class KRSSLoader extends KBLoader
 																a = ATermUtils.makeMin(r, 1, ATermUtils.TOP_LIT);
 															}
 															else
-																if (s.equalsIgnoreCase("MIN") || s.equals(">="))
+																if ("MIN".equalsIgnoreCase(s) || ">=".equals(s))
 																{
 																	final ATermAppl r = nextTerm();
 																	_kb.addDatatypeProperty(r);
@@ -393,7 +392,7 @@ public class KRSSLoader extends KBLoader
 																	a = ATermUtils.makeAllValues(r, dr);
 																}
 																else
-																	if (s.equalsIgnoreCase("MAX") || s.equals("<="))
+																	if ("MAX".equalsIgnoreCase(s) || "<=".equals(s))
 																	{
 																		final ATermAppl r = nextTerm();
 																		_kb.addDatatypeProperty(r);
@@ -402,7 +401,7 @@ public class KRSSLoader extends KBLoader
 																		a = ATermUtils.makeAllValues(r, dr);
 																	}
 																	else
-																		if (s.equals("="))
+																		if ("=".equals(s))
 																		{
 																			final ATermAppl r = nextTerm();
 																			_kb.addDatatypeProperty(r);
@@ -411,7 +410,7 @@ public class KRSSLoader extends KBLoader
 																			a = ATermUtils.makeAllValues(r, dr);
 																		}
 																		else
-																			if (s.equalsIgnoreCase("INV"))
+																			if ("INV".equalsIgnoreCase(s))
 																			{
 																				final ATermAppl r = parseExpr();
 																				_kb.addObjectProperty(r);
@@ -573,16 +572,14 @@ public class KRSSLoader extends KBLoader
 							{
 								ATermUtils.assertTrue(nextString().equalsIgnoreCase("T"));
 								_kb.addFunctionalProperty(r);
-								if (_logger.isLoggable(Level.FINE))
-									_logger.fine("FUNCTIONAL-ROLE " + r);
+								_logger.fine(() -> "FUNCTIONAL-ROLE " + r);
 							}
 							else
 								if (cmd.equalsIgnoreCase("transitive"))
 								{
 									ATermUtils.assertTrue(nextString().equalsIgnoreCase("T"));
 									_kb.addTransitiveProperty(r);
-									if (_logger.isLoggable(Level.FINE))
-										_logger.fine("TRANSITIVE-ROLE " + r);
+									_logger.fine(() -> "TRANSITIVE-ROLE " + r);
 								}
 								else
 									if (cmd.equalsIgnoreCase("range"))
@@ -590,8 +587,7 @@ public class KRSSLoader extends KBLoader
 										final ATermAppl range = parseExpr();
 										_kb.addClass(range);
 										_kb.addRange(r, range);
-										if (_logger.isLoggable(Level.FINE))
-											_logger.fine("RANGE " + r + " " + range);
+										_logger.fine(() -> "RANGE " + r + " " + range);
 									}
 									else
 										if (cmd.equalsIgnoreCase("domain"))
@@ -599,19 +595,17 @@ public class KRSSLoader extends KBLoader
 											final ATermAppl domain = parseExpr();
 											_kb.addClass(domain);
 											_kb.addDomain(r, domain);
-											if (_logger.isLoggable(Level.FINE))
-												_logger.fine("DOMAIN " + r + " " + domain);
+											_logger.fine(() -> "DOMAIN " + r + " " + domain);
 										}
 										else
 											if (cmd.equalsIgnoreCase("inverse"))
 											{
 												final ATermAppl inv = nextTerm();
 												_kb.addInverseProperty(r, inv);
-												if (_logger.isLoggable(Level.FINE))
-													_logger.fine("INVERSE " + r + " " + inv);
+												_logger.fine(() -> "INVERSE " + r + " " + inv);
 											}
 											else
-												throw new RuntimeException("Parsing error: Unrecognized keyword _in role definition " + cmd);
+												throw new OpenError("Parsing error: Unrecognized keyword _in role definition " + cmd);
 					}
 					else
 						if (peekNext('('))
@@ -625,8 +619,7 @@ public class KRSSLoader extends KBLoader
 
 								_kb.addDomain(r, domain);
 								_kb.addRange(r, range);
-								if (_logger.isLoggable(Level.FINE))
-									_logger.fine("DOMAIN-RANGE " + r + " " + domain + " " + range);
+								_logger.fine(() -> "DOMAIN-RANGE " + r + " " + domain + " " + range);
 							}
 							else
 								throw new OpenError("Parsing error: Unrecognized keyword _in role definition");
@@ -650,7 +643,7 @@ public class KRSSLoader extends KBLoader
 						}
 			}
 			else
-				if (str.equalsIgnoreCase("DEFINE-PRIMITIVE-CONCEPT") || str.equalsIgnoreCase("DEFPRIMCONCEPT"))
+				if ("DEFINE-PRIMITIVE-CONCEPT".equalsIgnoreCase(str) || "DEFPRIMCONCEPT".equalsIgnoreCase(str))
 				{
 					final ATermAppl c = nextTerm();
 					_kb.addClass(c);
@@ -687,8 +680,7 @@ public class KRSSLoader extends KBLoader
 							for (final ATermAppl d : prevDefinitions)
 							{
 								_kb.addDisjointClass(c, d);
-								if (_logger.isLoggable(Level.FINE))
-									_logger.fine("DEFINE-PRIMITIVE-DISJOINT " + c + " " + d);
+								_logger.fine(() -> "DEFINE-PRIMITIVE-DISJOINT " + c + " " + d);
 							}
 							prevDefinitions.add(c);
 						}
@@ -697,8 +689,7 @@ public class KRSSLoader extends KBLoader
 						final ATermAppl expr = parseExpr();
 						_kb.addSubClass(c, expr);
 
-						if (_logger.isLoggable(Level.FINE))
-							_logger.fine("DEFINE-PRIMITIVE-CONCEPT " + c + " " + expr);
+						_logger.fine(() -> "DEFINE-PRIMITIVE-CONCEPT " + c + " " + expr);
 					}
 					else
 						if (str.equalsIgnoreCase("DEFINE-CONCEPT") || str.equalsIgnoreCase("DEFCONCEPT") || str.equalsIgnoreCase("EQUAL_C"))
@@ -709,8 +700,7 @@ public class KRSSLoader extends KBLoader
 							final ATermAppl expr = parseExpr();
 							_kb.addEquivalentClass(c, expr);
 
-							if (_logger.isLoggable(Level.FINE))
-								_logger.fine("DEFINE-CONCEPT " + c + " " + expr);
+							_logger.fine(() -> "DEFINE-CONCEPT " + c + " " + expr);
 						}
 						else
 							if (str.equalsIgnoreCase("IMPLIES") || str.equalsIgnoreCase("IMPLIES_C"))
@@ -721,8 +711,7 @@ public class KRSSLoader extends KBLoader
 								_kb.addClass(c2);
 								_kb.addSubClass(c1, c2);
 
-								if (_logger.isLoggable(Level.FINE))
-									_logger.fine("IMPLIES " + c1 + " " + c2);
+								_logger.fine(() -> "IMPLIES " + c1 + " " + c2);
 							}
 							else
 								if (str.equalsIgnoreCase("IMPLIES_R"))
@@ -733,8 +722,7 @@ public class KRSSLoader extends KBLoader
 									_kb.addProperty(p2);
 									_kb.addSubProperty(p1, p2);
 
-									if (_logger.isLoggable(Level.FINE))
-										_logger.fine("IMPLIES_R " + p1 + " " + p2);
+									_logger.fine(() -> "IMPLIES_R " + p1 + " " + p2);
 								}
 								else
 									if (str.equalsIgnoreCase("EQUAL_R"))
@@ -745,8 +733,7 @@ public class KRSSLoader extends KBLoader
 										_kb.addObjectProperty(p2);
 										_kb.addEquivalentProperty(p1, p2);
 
-										if (_logger.isLoggable(Level.FINE))
-											_logger.fine("EQUAL_R " + p1 + " " + p2);
+										_logger.fine(() -> "EQUAL_R " + p1 + " " + p2);
 									}
 									else
 										if (str.equalsIgnoreCase("DOMAIN"))
@@ -757,8 +744,7 @@ public class KRSSLoader extends KBLoader
 											_kb.addClass(c);
 											_kb.addDomain(p, c);
 
-											if (_logger.isLoggable(Level.FINE))
-												_logger.fine("DOMAIN " + p + " " + c);
+											_logger.fine(() -> "DOMAIN " + p + " " + c);
 										}
 										else
 											if (str.equalsIgnoreCase("RANGE"))
@@ -769,8 +755,7 @@ public class KRSSLoader extends KBLoader
 												_kb.addClass(c);
 												_kb.addRange(p, c);
 
-												if (_logger.isLoggable(Level.FINE))
-													_logger.fine("RANGE " + p + " " + c);
+												_logger.fine(() -> "RANGE " + p + " " + c);
 											}
 											else
 												if (str.equalsIgnoreCase("FUNCTIONAL"))
@@ -779,8 +764,7 @@ public class KRSSLoader extends KBLoader
 													_kb.addProperty(p);
 													_kb.addFunctionalProperty(p);
 
-													if (_logger.isLoggable(Level.FINE))
-														_logger.fine("FUNCTIONAL " + p);
+													_logger.fine(() -> "FUNCTIONAL " + p);
 												}
 												else
 													if (str.equalsIgnoreCase("TRANSITIVE"))
@@ -789,8 +773,7 @@ public class KRSSLoader extends KBLoader
 														_kb.addObjectProperty(p);
 														_kb.addTransitiveProperty(p);
 
-														if (_logger.isLoggable(Level.FINE))
-															_logger.fine("TRANSITIVE " + p);
+														_logger.fine(() -> "TRANSITIVE " + p);
 													}
 													else
 														if (str.equalsIgnoreCase("DISJOINT"))
@@ -804,8 +787,7 @@ public class KRSSLoader extends KBLoader
 																	final ATermAppl c2 = list[j];
 																	_kb.addClass(c2);
 																	_kb.addDisjointClass(c1, c2);
-																	if (_logger.isLoggable(Level.FINE))
-																		_logger.fine("DISJOINT " + c1 + " " + c2);
+																	_logger.fine(() -> "DISJOINT " + c1 + " " + c2);
 																}
 															}
 														}
@@ -815,8 +797,7 @@ public class KRSSLoader extends KBLoader
 																final ATermAppl x = nextTerm();
 
 																_kb.addIndividual(x);
-																if (_logger.isLoggable(Level.FINE))
-																	_logger.fine("DEFINDIVIDUAL " + x);
+																_logger.fine(() -> "DEFINDIVIDUAL " + x);
 															}
 															else
 																if (str.equalsIgnoreCase("INSTANCE"))
@@ -826,8 +807,7 @@ public class KRSSLoader extends KBLoader
 
 																	_kb.addIndividual(x);
 																	_kb.addType(x, c);
-																	if (_logger.isLoggable(Level.FINE))
-																		_logger.fine("INSTANCE " + x + " " + c);
+																	_logger.fine(() -> "INSTANCE " + x + " " + c);
 																}
 																else
 																	if (str.equalsIgnoreCase("RELATED"))
@@ -840,8 +820,7 @@ public class KRSSLoader extends KBLoader
 																		_kb.addIndividual(y);
 																		_kb.addPropertyValue(r, x, y);
 
-																		if (_logger.isLoggable(Level.FINE))
-																			_logger.fine("RELATED " + x + " - " + r + " -> " + y);
+																		_logger.fine(() -> "RELATED " + x + " - " + r + " -> " + y);
 																	}
 																	else
 																		if (str.equalsIgnoreCase("DIFFERENT"))
@@ -853,8 +832,7 @@ public class KRSSLoader extends KBLoader
 																			_kb.addIndividual(y);
 																			_kb.addDifferent(x, y);
 
-																			if (_logger.isLoggable(Level.FINE))
-																				_logger.fine("DIFFERENT " + x + " " + y);
+																			_logger.fine(() -> "DIFFERENT " + x + " " + y);
 																		}
 																		else
 																			if (str.equalsIgnoreCase("DATATYPE-ROLE-FILLER"))
@@ -867,8 +845,7 @@ public class KRSSLoader extends KBLoader
 																				_kb.addIndividual(y);
 																				_kb.addPropertyValue(r, x, y);
 
-																				if (_logger.isLoggable(Level.FINE))
-																					_logger.fine("DATATYPE-ROLE-FILLER " + x + " - " + r + " -> " + y);
+																				_logger.fine(() -> "DATATYPE-ROLE-FILLER " + x + " - " + r + " -> " + y);
 																			}
 																			else
 																				throw new OpenError("Parsing error: Unknown command " + str);

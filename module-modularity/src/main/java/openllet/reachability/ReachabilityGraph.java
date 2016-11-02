@@ -7,11 +7,11 @@
 package openllet.reachability;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.shared.tools.Log;
@@ -25,7 +25,7 @@ public class ReachabilityGraph<E>
 {
 	public static final Logger _logger = Log.getLogger(ReachabilityGraph.class);
 
-	private final Map<E, EntityNode<E>> _entityNodes = new HashMap<>();
+	private final Map<E, EntityNode<E>> _entityNodes = new ConcurrentHashMap<>();
 
 	private int _id = 0;
 

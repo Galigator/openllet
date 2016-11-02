@@ -9,7 +9,6 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -20,6 +19,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import openllet.core.utils.SetUtils;
 import openllet.owlapi.parser.OWLFunctionalSyntaxParser;
 import openllet.shared.tools.Log;
 import org.semanticweb.owlapi.io.ToStringRenderer;
@@ -56,14 +56,15 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 {
 	private static final Logger _logger = Log.getLogger(OWLIncrementalFlatFileStorageManagerListener.class);
 
-	static final int _flushTimeInMinute = 1;
-	static final byte[] _lineSeparator = "\n".getBytes();
+	public static final int _flushTimeInMinute = 1;
+	public static final byte[] _lineSeparator = "\n".getBytes();
 
 	private final File _delta;
 	private final File _directory;
 	private final Object _mutex = new Object();
 	private final ScheduledThreadPoolExecutor _timer = new ScheduledThreadPoolExecutor(1);
-	private final Set<OWLOntologyID> _changed = Collections.newSetFromMap(new ConcurrentHashMap<>());
+	private final Set<OWLOntologyID> _changed = SetUtils.create();
+	private final Map<OWLOntologyID, OWLFunctionalSyntaxParser> _parsers = new ConcurrentHashMap<>();
 	private final OWLManagerGroup _owlManagerGroup;
 	private final Runnable _task = () ->
 	{
@@ -232,9 +233,7 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 		}
 	}
 
-	private static final Map<OWLOntologyID, OWLFunctionalSyntaxParser> _parsers = new ConcurrentHashMap<>();
-
-	class DeltaReader extends Reader implements Iterator<OWLOntologyChange>
+	private class DeltaReader extends Reader implements Iterator<OWLOntologyChange>
 	{
 		private final BufferedReader _in;
 
@@ -249,7 +248,7 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 			_in = in;
 		}
 
-		OWLFunctionalSyntaxParser getParser(final OWLOntologyID ontId)
+		public OWLFunctionalSyntaxParser getParser(final OWLOntologyID ontId)
 		{
 			OWLFunctionalSyntaxParser parser = _parsers.get(ontId);
 			if (parser == null)
@@ -369,8 +368,7 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 			{
 				case "SetOntologyID":
 				{
-					final OWLOntologyID id = parseOntologyId(new String(data));
-					change = new SetOntologyID(ontology, id);
+					change = new SetOntologyID(ontology, parseOntologyId(data));
 					break;
 				}
 				case "AddOntologyAnnotation":
@@ -414,7 +412,7 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 		}
 	}
 
-	class Builder
+	private class Builder
 	{
 		public Set<String> scan()
 		{
@@ -522,18 +520,4 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 		}
 	}
 
-	//	public static void main(final String[] argv) {
-	//		try {
-	//			final String resource = OWLHelper._protocol + "planner" + OWLHelper._webSeparator + OWLStorageManagerListener.class.getPackage().getName() + OWLHelper._webSeparator + "demo";
-	//			OWLUtils.getOwlManagerGroup().setOntologiesDirectory(new File("."));
-	//			// OWLTools.getStorageManager().createOntology(new OWLOntologyID(IRI.create(resource), IRI.create("0")));// Maybe we should create it.
-	//
-	//			final OWLTools tools = new OWLTools(IRI.create(resource), false); // 'false' is critical here, as we want to test the storage.
-	//			final OWLNamedIndividual x = tools.declareIndividual(Action.class, OWLHelper.randId("x"));
-	//			final OWLDataProperty storage = tools.declareDataProperty(Action._dataPropertyStorageVersion);
-	//			tools.addDataPropertyAxiom(storage, x, 42);
-	//		} catch (final Exception e) {
-	//			e.printStackTrace();
-	//		}
-	//	}
 }

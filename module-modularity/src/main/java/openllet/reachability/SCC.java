@@ -2,11 +2,11 @@ package openllet.reachability;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import openllet.core.utils.SetUtils;
 
 /**
  * @author Evren Sirin
@@ -75,7 +75,7 @@ public class SCC
 
 		private ArrayList<NodeInfo> _stack;
 
-		private final Map<Node, NodeInfo> _nodeInfos = new HashMap<>();
+		private final Map<Node, NodeInfo> _nodeInfos = new ConcurrentHashMap<>();
 
 		public List<Set<EntityNode<E>>> computeSCC(final ReachabilityGraph<E> graph)
 		{
@@ -129,7 +129,7 @@ public class SCC
 
 			if (nodeInfo._lowlink == nodeInfo._index)
 			{
-				final Set<EntityNode<E>> connectedComponent = new HashSet<>();
+				final Set<EntityNode<E>> connectedComponent = SetUtils.create();
 
 				int i = _stack.size() - 1;
 				NodeInfo info = null;

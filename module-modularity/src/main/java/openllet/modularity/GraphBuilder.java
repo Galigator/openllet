@@ -79,6 +79,7 @@ public class GraphBuilder
 
 		public AxiomVisitor()
 		{
+			// empty
 		}
 
 		@Override

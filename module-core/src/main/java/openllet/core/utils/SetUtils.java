@@ -35,6 +35,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Utility functions for {#link java.util.Set Set}s.
@@ -48,12 +49,12 @@ public class SetUtils
 	 * set and singleton set implementations (which are immutable) for the sets of size 0 and 1. If the set is empty a new singleton set is created, if set has
 	 * one element we create a new set with two elements, otherwise we simply add the element to the given set.This technique is most useful if the expected set
 	 * size is 0 or 1.
-	 * 
+	 *
 	 * @param o
 	 * @param set
 	 * @return
 	 */
-	public static <T> Set<T> add(final T o, Set<T> set)
+	public static <T> Set<T> add(final T o, final Set<T> set)
 	{
 		switch (set.size())
 		{
@@ -74,7 +75,7 @@ public class SetUtils
 		}
 	}
 
-	public static <T> Set<T> remove(final Object o, Set<T> set)
+	public static <T> Set<T> remove(final Object o, final Set<T> set)
 	{
 		switch (set.size())
 		{
@@ -245,10 +246,24 @@ public class SetUtils
 	 * Creates a set containing all the elements in the collection
 	 *
 	 * @param elements
+	 * @return a fresh set resilient to concurrency.
+	 * @since 2.6.0
+	 */
+	public static <T> Set<T> create()
+	{
+		return Collections.newSetFromMap(new ConcurrentHashMap<>());
+	}
+
+	/**
+	 * Creates a set containing all the elements in the collection
+	 *
+	 * @param elements
 	 * @return
 	 */
 	public static <T> Set<T> create(final Collection<T> coll)
 	{
-		return new HashSet<>(coll);
+		final Set<T> result = create();
+		result.addAll(coll);
+		return result;
 	}
 }

@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * DisjointSet _data structure. Uses path compression and union by rank.
@@ -23,22 +24,17 @@ public class DisjointSet<T>
 {
 	private class Node<U>
 	{
-		U object;
-		Node<U> parent = this;
-		int rank = 0;
+		private final U object;
+		private Node<U> parent = this;
+		private int rank = 0;
 
-		Node(final U o)
+		public Node(final U o)
 		{
 			object = o;
 		}
 	}
 
-	private final Map<T, Node<T>> elements;
-
-	public DisjointSet()
-	{
-		elements = new HashMap<>();
-	}
+	private final Map<T, Node<T>> elements = new ConcurrentHashMap<>();
 
 	public void add(final T o)
 	{

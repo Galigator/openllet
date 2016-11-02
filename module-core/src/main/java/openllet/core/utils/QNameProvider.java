@@ -26,12 +26,9 @@ public class QNameProvider
 	private static String DC = "http://purl.org/dc/elements/1.1/";
 
 	// stores a map of uri -> prefix
-	Map<String, String> _uriToPrefix;
-	Map<String, String> _prefixToUri;
+	private final Map<String, String> _uriToPrefix;
+	private final Map<String, String> _prefixToUri;
 
-	/**
-	 *
-	 */
 	public QNameProvider()
 	{
 		_uriToPrefix = new Hashtable<>();
@@ -48,12 +45,12 @@ public class QNameProvider
 
 	public static boolean isNameStartChar(final char ch)
 	{
-		return (Character.isLetter(ch) || ch == '_');
+		return Character.isLetter(ch) || ch == '_';
 	}
 
 	public static boolean isNameChar(final char ch)
 	{
-		return (isNameStartChar(ch) || Character.isDigit(ch) || ch == '.' || ch == '-');
+		return isNameStartChar(ch) || Character.isDigit(ch) || ch == '.' || ch == '-';
 	}
 
 	public static int findNameStartIndex(final String str)
@@ -115,22 +112,18 @@ public class QNameProvider
 
 		nameStart = findLastNameIndex(uriString);
 		if (nameStart < 0)
-			// System.out.println("Couldn't find name for "+uriString);
 			return null;
 		name = uriString.substring(nameStart);
 		if (nameStart == 0)
 		{
-			// System.out.println("Name starts at beginning");
 			base = "";
 			prefix = "a"; // Pick a unique prefix later
 		}
 		else
 		{
 			base = uriString.substring(0, nameStart);
-			// System.out.println("Uri: "+ uri + " Base: " +base);
 			prefixStart = findNameStartIndex(base);
 			if (prefixStart < 0)
-				// System.out.println("Prefix < 0");
 				prefix = "b"; // Pick a uniqe prefix later
 			else
 			{
@@ -157,13 +150,9 @@ public class QNameProvider
 
 	public boolean setMapping(final String prefix, final String uri)
 	{
-		// if(!uri.endsWith("#"))
-		// uri += "#";
-
 		final String currentUri = getURI(prefix);
 		if (currentUri == null)
 		{
-			// System.out.println("Setting prefix "+prefix+": "+uri);
 			_prefixToUri.put(prefix, uri);
 			_uriToPrefix.put(uri, prefix);
 			return true;
@@ -192,7 +181,6 @@ public class QNameProvider
 
 	public String shortForm(final String uri)
 	{
-		// System.out.println("Shortform for " + uri);
 		return shortForm(uri, true);
 	}
 

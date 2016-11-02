@@ -7,19 +7,18 @@
 package openllet.reachability;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Stream;
+import openllet.core.utils.SetUtils;
 
 /**
  * FIXME TODO : We need to add a strong type system for the class Node This is related to the kind of information carry by the EntityNode.
  */
 public abstract class Node
 {
+	protected volatile Set<Node> _outputs = SetUtils.create();
 
-	protected volatile Set<Node> _outputs = new HashSet<>();
-
-	protected volatile Set<Node> _inputs = new HashSet<>();
+	protected volatile Set<Node> _inputs = SetUtils.create();
 
 	public void addOutput(final Node output)
 	{

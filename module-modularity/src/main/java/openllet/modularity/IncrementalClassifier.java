@@ -100,7 +100,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 	/**
 	 * Modularity results
 	 */
-	private MultiValueMap<OWLEntity, OWLEntity> _modules = null;
+	private volatile MultiValueMap<OWLEntity, OWLEntity> _modules = null;
 
 	/**
 	 * Standard Pellet reasoner
@@ -110,21 +110,21 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 	/**
 	 * Module _extractor
 	 */
-	private ModuleExtractor _extractor = ModuleExtractorFactory.createModuleExtractor();
+	private volatile ModuleExtractor _extractor = ModuleExtractorFactory.createModuleExtractor();
 
-	private Taxonomy<OWLClass> _taxonomyImpl = null;
+	private volatile Taxonomy<OWLClass> _taxonomyImpl = null;
 
 	/**
 	 * Do the regular classification and module extraction in two separate threads concurrently. Doing so might reduce overall processing time but increases the
 	 * memory requirements because both processes need additional memory during running which will be freed at the _end of the process.
 	 */
-	private boolean _multiThreaded = true;
+	private volatile boolean _multiThreaded = true;
 
-	public Timers _timers = _extractor.getTimers();
+	public volatile Timers _timers = _extractor.getTimers();
 
 	private final Random RND = new Random();
 
-	private boolean _realized = false;
+	private volatile boolean _realized = false;
 
 	public IncrementalClassifier(final OWLOntology ontology)
 	{

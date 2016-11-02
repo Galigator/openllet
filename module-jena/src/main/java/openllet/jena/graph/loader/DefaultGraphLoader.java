@@ -1557,7 +1557,7 @@ public class DefaultGraphLoader implements GraphLoader
 					if (defineIndividual(st))
 					{
 						defineDatatypeProperty(pt);
-						if (!datatypeURI.equals(""))
+						if (!"".equals(datatypeURI))
 							defineDatatype(ATermUtils.makeTermAppl(datatypeURI));
 
 						_kb.addPropertyValue(pt, st, ot);

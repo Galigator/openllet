@@ -7,8 +7,8 @@
 package openllet.reachability;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
+import openllet.core.utils.SetUtils;
 
 /**
  * @author Evren Sirin
@@ -22,13 +22,13 @@ public class EntityNode<E> extends Node
 
 	public EntityNode(final E entity)
 	{
-		this._entities = Collections.singleton(entity);
+		_entities = Collections.singleton(entity);
 	}
 
 	public void addEntities(final Set<E> entity)
 	{
 		if (_entities.size() == 1)
-			_entities = new HashSet<>(_entities);
+			_entities = SetUtils.create(_entities);
 
 		_entities.addAll(entity);
 	}
@@ -36,7 +36,7 @@ public class EntityNode<E> extends Node
 	public void addEntity(final E entity)
 	{
 		if (_entities.size() == 1)
-			_entities = new HashSet<>(_entities);
+			_entities = SetUtils.create(_entities);
 
 		_entities.add(entity);
 	}

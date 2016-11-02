@@ -19,8 +19,6 @@ import openllet.core.utils.TaxonomyUtils;
  * Title: RDF/XML Taxonomy Printer
  * </p>
  * <p>
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -31,9 +29,9 @@ import openllet.core.utils.TaxonomyUtils;
  */
 public class RDFXMLTaxonomyPrinter implements TaxonomyPrinter<ATermAppl>
 {
-	final static String OWL_EQUIVALENT_CLASS = "owl:equivalentClass";
-	final static String RDFS_SUB_CLASS_OF = "rdfs:subClassOf";
-	final static String RDF_TYPE = "rdf:type";
+	public final static String OWL_EQUIVALENT_CLASS = "owl:equivalentClass";
+	public final static String RDFS_SUB_CLASS_OF = "rdfs:subClassOf";
+	public final static String RDF_TYPE = "rdf:type";
 
 	protected boolean onlyDirectSubclass;
 

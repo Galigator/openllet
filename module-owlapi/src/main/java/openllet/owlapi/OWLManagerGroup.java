@@ -211,7 +211,7 @@ public class OWLManagerGroup implements AutoCloseable
 		return ontology2filename(ontology.getOntologyID());
 	}
 
-	void check(final OWLOntologyManager manager)
+	public void check(final OWLOntologyManager manager)
 	{
 		if (manager == _volatileManager || manager == _storageManager)
 			return;
