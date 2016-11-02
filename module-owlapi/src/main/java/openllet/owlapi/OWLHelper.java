@@ -95,7 +95,7 @@ public interface OWLHelper extends Logging, OWLManagementObject
 	 */
 	public static String iri2filename(final IRI iri)
 	{
-		if (iri == null)
+		if (null == iri)
 			throw new OWLException("iri2filename(null)");
 
 		return iri.toString().replaceAll(_protocol, "").replaceAll(_secureProtocol, "").replaceAll(_webSeparator, _innerSeparator).replaceAll("&", _innerSeparator);
@@ -189,7 +189,7 @@ public interface OWLHelper extends Logging, OWLManagementObject
 	default public double getVersion()
 	{
 		final IRI version = getOntology().getOntologyID().getVersionIRI().get();
-		if (version == null)
+		if (null == version)
 			return 0;
 		try
 		{

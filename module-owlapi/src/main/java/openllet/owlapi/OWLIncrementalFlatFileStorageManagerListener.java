@@ -52,14 +52,14 @@ import uk.ac.manchester.cs.owl.owlapi.OWLImportsDeclarationImpl;
  *
  * @since 2.5.1
  */
-public class OWLStorageManagerListener implements OWLOntologyChangeListener
+public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntologyChangeListener
 {
-	private static final Logger _logger = Log.getLogger(OWLStorageManagerListener.class);
+	private static final Logger _logger = Log.getLogger(OWLIncrementalFlatFileStorageManagerListener.class);
 
 	static final int _flushTimeInMinute = 1;
 	static final byte[] _lineSeparator = "\n".getBytes();
 
-	private final File _log;
+	private final File _delta;
 	private final File _directory;
 	private final Object _mutex = new Object();
 	private final ScheduledThreadPoolExecutor _timer = new ScheduledThreadPoolExecutor(1);
@@ -77,9 +77,9 @@ public class OWLStorageManagerListener implements OWLOntologyChangeListener
 		}
 	};
 
-	public OWLStorageManagerListener(final File directory, final File log, final OWLManagerGroup owlManagerGroup) throws OWLOntologyCreationException
+	public OWLIncrementalFlatFileStorageManagerListener(final File directory, final File log, final OWLManagerGroup owlManagerGroup) throws OWLOntologyCreationException
 	{
-		_log = log;
+		_delta = log;
 		_directory = directory;
 		_owlManagerGroup = owlManagerGroup;
 
@@ -120,9 +120,9 @@ public class OWLStorageManagerListener implements OWLOntologyChangeListener
 
 			_owlManagerGroup.getStorageManager().ontologies()//
 					.filter(ontology -> ontology.getOntologyID().getOntologyIRI().isPresent())//
-					.filter(ontology -> changed.contains(ontology.getOntologyID().getOntologyIRI().get()))//
+					.filter(ontology -> changed.contains(ontology.getOntologyID())) //
 					.filter(ontology -> !ontology.isAnonymous())//
-					.filter(ontology -> !ontology.isEmpty())// todo : test this : Error or not ?
+					// Don't filter ontology empty. There is no other way to mark an ontology as empty, so we save empty ontology.
 					.forEach(ontology ->
 					{
 						try (final OutputStream stream = new FileOutputStream(ontology2filename(ontology)))
@@ -138,7 +138,7 @@ public class OWLStorageManagerListener implements OWLOntologyChangeListener
 
 			// Make sure to note catch the saveOntology exception.
 			// Make sure everything goes correctly before removing 'log' file.
-			_log.delete();
+			_delta.delete();
 		}
 	}
 
@@ -203,7 +203,7 @@ public class OWLStorageManagerListener implements OWLOntologyChangeListener
 		synchronized (_mutex)
 		{
 			// TODO : pour gagner en performance, il faut maintenir un cache des stream et ne pas les ouvrir/fermer à chaque écriture.
-			try (final OutputStream stream = new FileOutputStream(_log, true))
+			try (final OutputStream stream = new FileOutputStream(_delta, true))
 			{
 				for (final OWLOntologyChange change : changes)
 				{
@@ -234,7 +234,7 @@ public class OWLStorageManagerListener implements OWLOntologyChangeListener
 
 	private static final Map<OWLOntologyID, OWLFunctionalSyntaxParser> _parsers = new ConcurrentHashMap<>();
 
-	class MyReader extends Reader implements Iterator<OWLOntologyChange>
+	class DeltaReader extends Reader implements Iterator<OWLOntologyChange>
 	{
 		private final BufferedReader _in;
 
@@ -244,7 +244,7 @@ public class OWLStorageManagerListener implements OWLOntologyChangeListener
 
 		final OWLOntologyManager _manager = _owlManagerGroup.getStorageManager();
 
-		public MyReader(final BufferedReader in)
+		public DeltaReader(final BufferedReader in)
 		{
 			_in = in;
 		}
@@ -421,7 +421,7 @@ public class OWLStorageManagerListener implements OWLOntologyChangeListener
 			final Set<String> result = new HashSet<>();
 			int line = 0;
 
-			try (final BufferedReader in = new BufferedReader(new FileReader(_log)))
+			try (final BufferedReader in = new BufferedReader(new FileReader(_delta)))
 			{
 				while (in.ready())
 					try
@@ -448,7 +448,7 @@ public class OWLStorageManagerListener implements OWLOntologyChangeListener
 
 	private void rebuild() throws OWLOntologyCreationException
 	{
-		if (_log.exists())
+		if (_delta.exists())
 			for (final String sIri : (new Builder()).scan())
 				if (sIri != null && !sIri.equals(""))
 				{
@@ -458,13 +458,10 @@ public class OWLStorageManagerListener implements OWLOntologyChangeListener
 					if (parts.length == 2)
 						ontId = new OWLOntologyID(IRI.create(parts[0]), IRI.create(parts[1]));
 					else
-					{
-						final IRI iri = IRI.create(sIri);
-						ontId = new OWLOntologyID(iri);
-					}
+						ontId = new OWLOntologyID(IRI.create(sIri));
 
 					// Build or load the ontology
-					final OWLTools tools = new OWLTools(ontId, false); // Do not delete this line.
+					final OWLHelper tools = new OWLGenericTools(_owlManagerGroup, ontId, false); // Do not delete this line. It effectively load the ontology.
 					_logger.info(tools.getOntology().getOntologyID() + " have been load.");
 
 					// Add it to save list if just build.
@@ -476,10 +473,10 @@ public class OWLStorageManagerListener implements OWLOntologyChangeListener
 	{
 		final List<OWLOntologyChange> changes = new ArrayList<>();
 
-		if (_log.exists())
-			try (final BufferedReader br = new BufferedReader(new FileReader(_log)))
+		if (_delta.exists())
+			try (final BufferedReader br = new BufferedReader(new FileReader(_delta)))
 			{
-				try (final MyReader reader = new MyReader(br))
+				try (final DeltaReader reader = new DeltaReader(br))
 				{
 					while (reader.hasNext())
 						changes.add(reader.next());
@@ -489,8 +486,6 @@ public class OWLStorageManagerListener implements OWLOntologyChangeListener
 			{
 				_logger.log(Level.SEVERE, "", e);
 			}
-
-		_owlManagerGroup.getStorageManager().applyChanges(changes); // XXX Is this useful ? Is this done by caller ?
 	}
 
 	/**

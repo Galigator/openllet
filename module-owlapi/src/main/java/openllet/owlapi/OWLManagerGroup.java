@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 import openllet.shared.tools.Log;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
@@ -23,7 +24,7 @@ public class OWLManagerGroup implements AutoCloseable
 	public volatile Optional<File> _ontologiesDirectory = Optional.empty();
 	public volatile OWLOntologyManager _volatileManager = null;
 	public volatile OWLOntologyManager _storageManager = null;
-	private OWLStorageManagerListener _storageListener;
+	private volatile OWLIncrementalFlatFileStorageManagerListener _storageListener;
 
 	public OWLManagerGroup()
 	{
@@ -43,7 +44,7 @@ public class OWLManagerGroup implements AutoCloseable
 
 	public boolean setOntologiesDirectory(final File directory)
 	{
-		_ontologiesDirectory = Optional.of(directory);
+		_ontologiesDirectory = Optional.ofNullable(directory);
 		return _ontologiesDirectory.isPresent();
 	}
 
@@ -54,7 +55,7 @@ public class OWLManagerGroup implements AutoCloseable
 
 	public OWLOntologyManager getVolatileManager()
 	{
-		if (_volatileManager == null)
+		if (null == _volatileManager)
 			_volatileManager = OWLManager.createConcurrentOWLOntologyManager();
 
 		return _volatileManager;
@@ -62,11 +63,11 @@ public class OWLManagerGroup implements AutoCloseable
 
 	/**
 	 * @return The storage manager if you have call setOntologiesDirectory() before; else it throw a RuntimeException.
-	 * @since 1.1
+	 * @since 2.5.1
 	 */
 	public synchronized OWLOntologyManager getStorageManager()
 	{
-		if (_storageManager == null)
+		if (null == _storageManager)
 		{
 			_storageManager = OWLManager.createConcurrentOWLOntologyManager();
 
@@ -79,7 +80,7 @@ public class OWLManagerGroup implements AutoCloseable
 
 			try
 			{
-				_storageListener = new OWLStorageManagerListener(getOntologiesDirectory().get(), new File(getOntologiesDirectory().get().getPath() + OWLHelper._delta), this);
+				_storageListener = new OWLIncrementalFlatFileStorageManagerListener(getOntologiesDirectory().get(), new File(getOntologiesDirectory().get().getPath() + File.separator + OWLHelper._delta), this);
 				getStorageManager().addOntologyChangeListener(_storageListener);
 			}
 			catch (final Exception e)
@@ -116,7 +117,7 @@ public class OWLManagerGroup implements AutoCloseable
 					_logger.log(Level.SEVERE, "Can't load ontology of file " + file, e);
 				}
 			else
-				_logger.info(file + " will not be load.");
+				_logger.info(() -> file + " will not be load.");
 	}
 
 	/**
@@ -181,18 +182,21 @@ public class OWLManagerGroup implements AutoCloseable
 		if (!ontIri.isPresent())
 			return Optional.empty();
 
-		final Optional<IRI> verIri = ontologyID.getVersionIRI();
+		Stream<OWLOntology> ontologies = manager.versions(ontIri.get());
 
+		final Optional<IRI> verIri = ontologyID.getVersionIRI();
 		if (verIri.isPresent())
-			return manager.versions(ontIri.get()).findAny();
-		else
-			return manager.versions(ontIri.get())//
-					.filter(candidat ->
-					{
-						final Optional<IRI> version = candidat.getOntologyID().getVersionIRI();
-						return version.isPresent() && version.get().equals(verIri.get());
-					})//
-					.findAny();
+		{
+			final IRI version = verIri.get();
+			ontologies = ontologies.filter(//
+					candidat -> candidat.getOntologyID()//
+							.getVersionIRI()//
+							.map(version::equals)//
+							.orElse(false)//
+			);
+		}
+
+		return ontologies.findAny();
 	}
 
 	public String ontology2filename(final OWLOntologyID ontId)
@@ -212,6 +216,16 @@ public class OWLManagerGroup implements AutoCloseable
 		if (manager == _volatileManager || manager == _storageManager)
 			return;
 		throw new OWLException("The given manager isn't know from in the OWLManagerGroup. Check your manager usage.");
+	}
+
+	/**
+	 * Make sure that no temporary file remain and all delta are in the storage. This function as debugging/testing purpose only.
+	 * 
+	 * @since 2.6.0
+	 */
+	public void flushIncrementalStorage()
+	{
+		_storageListener.flush();
 	}
 
 	/**
