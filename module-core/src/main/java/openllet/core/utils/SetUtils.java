@@ -32,7 +32,6 @@ package openllet.core.utils;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -102,7 +101,7 @@ public class SetUtils
 
 	public final static <T> Set<T> binary(final T o1, final T o2)
 	{
-		final Set<T> set = new HashSet<>();
+		final Set<T> set = create();
 		set.add(o1);
 		set.add(o2);
 
@@ -116,7 +115,7 @@ public class SetUtils
 	 */
 	public static <T> Set<T> union(final Collection<? extends Collection<? extends T>> coll)
 	{
-		final Set<T> set = new HashSet<>();
+		final Set<T> set = create();
 
 		for (final Collection<? extends T> innerColl : coll)
 			set.addAll(innerColl);
@@ -131,7 +130,8 @@ public class SetUtils
 	 */
 	public static <T> Set<T> union(final Collection<? extends T> c1, final Collection<? extends T> c2)
 	{
-		final Set<T> set = new HashSet<>(c1);
+		final Set<T> set = create();
+		set.addAll(c1);
 		set.addAll(c2);
 
 		return set;
@@ -147,9 +147,10 @@ public class SetUtils
 		final Iterator<? extends Collection<? extends T>> i = coll.iterator();
 
 		if (!i.hasNext())
-			return new HashSet<>();
+			return create();
 
-		final Set<T> set = new HashSet<>(i.next());
+		final Set<T> set = create();
+		set.addAll(i.next());
 		while (i.hasNext())
 		{
 			final Collection<? extends T> innerColl = i.next();
@@ -166,7 +167,8 @@ public class SetUtils
 	 */
 	public static <T> Set<T> intersection(final Collection<? extends T> c1, final Collection<? extends T> c2)
 	{
-		final Set<T> set = new HashSet<>(c1);
+		final Set<T> set = create();
+		set.addAll(c1);
 		set.retainAll(c2);
 
 		return set;
@@ -215,7 +217,7 @@ public class SetUtils
 	 */
 	public static <T> Set<T> difference(final Collection<T> c1, final Collection<? extends Object> c2)
 	{
-		final Set<T> set = new HashSet<>();
+		final Set<T> set = create();
 		set.addAll(c1);
 		if (c2 instanceof Set)
 			set.removeAll(c2);
@@ -235,11 +237,23 @@ public class SetUtils
 	@SafeVarargs
 	public static <T> Set<T> create(final T... elems)
 	{
-		final Set<T> set = new HashSet<>(elems.length);
+		final Set<T> set = create(elems.length);
 		for (final T elem : elems)
 			set.add(elem);
 
 		return set;
+	}
+
+	/**
+	 * Creates a set containing all the elements in the collection
+	 *
+	 * @param initialSize is the initial size of the set.
+	 * @return a fresh set resilient to concurrency.
+	 * @since 2.6.0
+	 */
+	public static <T> Set<T> create(final int initialSize)
+	{
+		return Collections.newSetFromMap(new ConcurrentHashMap<>(initialSize));
 	}
 
 	/**

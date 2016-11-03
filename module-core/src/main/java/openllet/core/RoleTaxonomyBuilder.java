@@ -147,11 +147,13 @@ public class RoleTaxonomyBuilder
 			return;
 		}
 		else
-			if (c.getSuperRoles().contains(_bottomRole))
+		{
+			if (null != _bottomRole && c.getSuperRoles().contains(_bottomRole))
 			{
 				_taxonomyImpl.addEquivalentNode(c.getName(), _taxonomyImpl.getBottomNode());
 				return;
 			}
+		}
 
 		Map<TaxonomyNode<ATermAppl>, Boolean> marked = new HashMap<>();
 		mark(_taxonomyImpl.getTop(), marked, Boolean.TRUE, Propagate.NONE);
