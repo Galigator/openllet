@@ -25,7 +25,7 @@ import org.semanticweb.owlapi.model.SWRLVariable;
 
 /**
  * Test basic of openllet-owlapi
- * 
+ *
  * @since 2.6.0
  */
 public class TestBasic
@@ -167,6 +167,24 @@ public class TestBasic
 			assertTrue(file.exists());
 			file.delete();
 			assertTrue(owl.getObject(Ind1, propA).get().getIRI().equals(Ind1.getIRI()));
+		}
+	}
+
+	@Test
+	public void testSubProperties() throws OWLOntologyCreationException
+	{
+		try (final OWLManagerGroup group = new OWLManagerGroup())
+		{
+			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create("http://test.org#owlapi.inc.properties"), 1.0);
+			final OWLHelper owl = new OWLGenericTools(group, ontId, true);
+
+			owl.addAxiom(OWL.subPropertyOf(OWL.ObjectProperty("#P2"), OWL.ObjectProperty("#P1"))); // p2 extends p1
+
+			owl.addAxiom(OWL.propertyAssertion(OWL.Individual("#I1"), OWL.ObjectProperty("#P1"), OWL.Individual("#I2")));
+			owl.addAxiom(OWL.propertyAssertion(OWL.Individual("#I3"), OWL.ObjectProperty("#P2"), OWL.Individual("#I4")));
+
+			assertTrue(!owl.getObject(OWL.Individual("#I1"), OWL.ObjectProperty("#P2")).isPresent());
+			assertTrue(owl.getObject(OWL.Individual("#I3"), OWL.ObjectProperty("#P1")).get().equals(OWL.Individual("#I4")));
 		}
 	}
 }
