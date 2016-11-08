@@ -94,4 +94,13 @@ public abstract class AbstractDefinitionOrder implements DefinitionOrder
 	{
 		return _definitionOrder.iterator();
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<ATermAppl> getList()
+	{
+		return _definitionOrder;
+	}
 }

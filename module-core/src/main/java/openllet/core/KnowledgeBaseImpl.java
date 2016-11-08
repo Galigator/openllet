@@ -174,7 +174,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	// Structure for tracking which assertions are deleted
 	private Set<ATermAppl> _deletedAssertions;
 
-	// Index used for _abox deletions
+	// Index used for abox deletions
 	private DependencyIndex _dependencyIndex;
 
 	// set of syntactic assertions

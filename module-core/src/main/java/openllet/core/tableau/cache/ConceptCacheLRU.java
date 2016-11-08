@@ -7,11 +7,12 @@
 package openllet.core.tableau.cache;
 
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
 import openllet.core.utils.ATermUtils;
@@ -59,11 +60,11 @@ public class ConceptCacheLRU extends AbstractConceptCache
 
 		_cacheSafety = CacheSafetyFactory.createCacheSafety(kb.getExpressivity());
 
-		_primitive = new HashMap<>();
+		_primitive = new ConcurrentHashMap<>();
 
-		_nonPrimitive = (Integer.MAX_VALUE == maxSize) ? //
-				new HashMap<>() : // as "size" is an integer and so size() can be greater than max-int, then the predicate removeEldestEntry will always be false. So we use a simpler data structure.
-				new LinkedHashMap<ATermAppl, CachedNode>(16, 0.75f, true)
+		_nonPrimitive = Integer.MAX_VALUE == maxSize ? //
+				new ConcurrentHashMap<>() : // as "size" is an integer and so size() can be greater than max-int, then the predicate removeEldestEntry will always be false. So we use a simpler data structure.
+				Collections.synchronizedMap(new LinkedHashMap<ATermAppl, CachedNode>(16, 0.75f, true)
 				{
 					private static final long serialVersionUID = 3701638684292370398L;
 
@@ -72,7 +73,7 @@ public class ConceptCacheLRU extends AbstractConceptCache
 					{
 						return _nonPrimitive.size() > getMaxSize();
 					}
-				};
+				});
 	}
 
 	@Override
@@ -107,14 +108,6 @@ public class ConceptCacheLRU extends AbstractConceptCache
 		returnSet.addAll(_nonPrimitive.entrySet());
 		return returnSet;
 	}
-
-	//	@Override
-	//	public CachedNode get(final Object key)
-	//	{
-	//		if (_primitive.containsKey(key))
-	//			return _primitive.get(key);
-	//		return _nonPrimitive.get(key);
-	//	}
 
 	@Override
 	public CachedNode get(final Object key)

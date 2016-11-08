@@ -57,8 +57,8 @@ public class OptimizedQueryEngine3 extends AbstractABoxEngineWrapper
 		final QueryResult results = new QueryResultImpl(q);
 		final KnowledgeBase kb = q.getKB();
 
-		final long satCount = kb.getABox().getStats().satisfiabilityCount;
-		final long consCount = kb.getABox().getStats().consistencyCount;
+		final long satCount = kb.getABox().getStats()._satisfiabilityCount;
+		final long consCount = kb.getABox().getStats()._consistencyCount;
 
 		if (q.getDistVars().isEmpty())
 		{
@@ -140,8 +140,8 @@ public class OptimizedQueryEngine3 extends AbstractABoxEngineWrapper
 			if (_logger.isLoggable(Level.FINE))
 			{
 				_logger.fine("Results: " + results);
-				_logger.fine("Total satisfiability operations: " + (kb.getABox().getStats().satisfiabilityCount - satCount));
-				_logger.fine("Total consistency operations: " + (kb.getABox().getStats().consistencyCount - consCount));
+				_logger.fine("Total satisfiability operations: " + (kb.getABox().getStats()._satisfiabilityCount - satCount));
+				_logger.fine("Total consistency operations: " + (kb.getABox().getStats()._consistencyCount - consCount));
 			}
 		}
 		return results;

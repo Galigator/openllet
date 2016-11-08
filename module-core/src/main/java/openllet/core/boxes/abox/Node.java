@@ -59,6 +59,8 @@ import openllet.core.utils.CollectionUtils;
 import openllet.shared.tools.Log;
 
 /**
+ * FIXME : many many data-structures that doesn't support concurrency are use in concurrent context here.
+ *
  * @author Evren Sirin
  */
 public abstract class Node
@@ -79,11 +81,11 @@ public abstract class Node
 	public final static int NOM = 6;
 	public final static int TYPES = 7;
 
-	protected ABoxImpl _abox;
-	protected ATermAppl _name;
-	protected Map<ATermAppl, DependencySet> _depends;
+	protected final ABoxImpl _abox;
+	protected final ATermAppl _name;
+	protected final Map<ATermAppl, DependencySet> _depends;
 	private final boolean _isRoot;
-	private boolean _isConceptRoot;
+	private volatile boolean _isConceptRoot;
 
 	/**
 	 * If this _node is merged to another one, points to that _node otherwise points to itself. This is a linked list implementation of disjoint-union _data
@@ -153,7 +155,7 @@ public abstract class Node
 	@Override
 	public boolean equals(final Object obj)
 	{
-		return (obj == this) || ((obj.getClass() == getClass()) && ((Node) obj)._name.equals(_name));
+		return obj == this || obj.getClass() == getClass() && ((Node) obj)._name.equals(_name);
 	}
 
 	protected void updateNodeReferences()
@@ -194,7 +196,7 @@ public abstract class Node
 
 	/**
 	 * Indicates that _node has been changed in a way that requires us to recheck the concepts of given type.
-	 * 
+	 *
 	 * @param type type of concepts that need to be rechecked
 	 */
 	public void setChanged(final int type)
@@ -214,7 +216,7 @@ public abstract class Node
 
 	/**
 	 * Returns true if this is the _node created for the concept satisfiability check.
-	 * 
+	 *
 	 * @return
 	 */
 	public boolean isConceptRoot()
@@ -382,14 +384,13 @@ public abstract class Node
 
 			final boolean removeType = OpenlletOptions.USE_SMART_RESTORE
 					//                ? ( !d.contains( _branch ) )
-					? (d.max() >= branch) : (d.getBranch() > branch);
+					? d.max() >= branch : d.getBranch() > branch;
 
 			if (removeType)
 			{
 				removed = true;
 
-				if (_logger.isLoggable(Level.FINE))
-					_logger.fine("RESTORE: " + this + " remove type " + c + " " + d + " " + branch);
+				_logger.fine(() -> "RESTORE: " + this + " remove type " + c + " " + d + " " + branch);
 
 				//track that this _node is affected
 				if (OpenlletOptions.USE_INCREMENTAL_CONSISTENCY && this instanceof Individual)
@@ -440,8 +441,7 @@ public abstract class Node
 
 			if (d.getBranch() > branch)
 			{
-				if (_logger.isLoggable(Level.FINE))
-					_logger.fine("RESTORE: " + _name + " delete difference " + node);
+				_logger.fine(() -> "RESTORE: " + _name + " delete difference " + node);
 				i.remove();
 				restored = true;
 			}
@@ -455,8 +455,7 @@ public abstract class Node
 
 			if (d.getBranch() > branch)
 			{
-				if (_logger.isLoggable(Level.FINE))
-					_logger.fine("RESTORE: " + _name + " delete reverse edge " + e);
+				_logger.fine(() -> "RESTORE: " + _name + " delete reverse edge " + e);
 
 				if (OpenlletOptions.USE_INCREMENTAL_CONSISTENCY)
 					_abox.getIncrementalChangeTracker().addDeletedEdge(e);
@@ -745,10 +744,6 @@ public abstract class Node
 	{
 		return mergedTo;
 	}
-
-	//	public DependencySet getMergeDependency() {
-	//		return _mergeDepends;
-	//	}
 
 	/**
 	 * Get the dependency if this _node is merged to another _node. This _node may be merged to another _node which is later merged to another _node and so on.

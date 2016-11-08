@@ -37,7 +37,6 @@ import openllet.core.utils.MemUtils;
 import openllet.core.utils.SetUtils;
 import openllet.core.utils.TaxonomyUtils;
 import openllet.core.utils.Timer;
-import openllet.core.utils.iterator.IteratorUtils;
 import openllet.core.utils.progress.ProgressMonitor;
 import openllet.core.utils.progress.SilentProgressMonitor;
 import openllet.shared.tools.Log;
@@ -190,7 +189,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 		if (_logger.isLoggable(Level.FINE))
 			_logger.fine("Starting classification...");
 
-		Iterator<ATermAppl> phase1, phase2;
+		List<ATermAppl> phase1, phase2;
 
 		if (_useCD)
 		{
@@ -209,16 +208,15 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 				logList(Level.FINER, "Phase 2", phase2List);
 			}
 
-			phase1 = phase1List.iterator();
-			phase2 = phase2List.iterator();
+			phase1 = phase1List;//.iterator();
+			phase2 = phase2List;//.iterator();
 		}
 		else
 		{
-			phase1 = IteratorUtils.emptyIterator();
-			phase2 = _definitionOrder.iterator();
+			phase1 = Collections.emptyList();//IteratorUtils.emptyIterator();
+			phase2 = _definitionOrder.getList();//.iterator();
 
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("CD classification disabled");
+			_logger.fine("CD classification disabled");
 		}
 
 		boolean completed = true;
@@ -228,7 +226,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 
 		_monitor.taskFinished();
 
-		_logger.fine(() -> "Satisfiability Count: " + (_kb.getABox().getStats().satisfiabilityCount - 2 * _kb.getClasses().size()));
+		_logger.fine(() -> "Satisfiability Count: " + (_kb.getABox().getStats()._satisfiabilityCount - 2 * _kb.getClasses().size()));
 
 		// Reset the definition _order, so the sorted copy can be gc'd
 		_definitionOrder = null;
@@ -238,7 +236,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 		if (_logger.isLoggable(Level.FINER))
 		{
 			_logger.finer("Tax size : " + _taxonomyImpl.getNodes().size());
-			_logger.finer("Tax _depth: " + _taxonomyImpl.getDepth());
+			_logger.finer("Tax depth: " + _taxonomyImpl.getDepth());
 			_logger.finer("Branching: " + (double) _taxonomyImpl.getTotalBranching() / _taxonomyImpl.getNodes().size());
 			_logger.finer("Leaf size: " + _taxonomyImpl.getBottomNode().getSupers().size());
 		}
@@ -259,33 +257,33 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 		}
 	}
 
-	protected boolean classify(final Iterator<ATermAppl> phase, final boolean requireTopSearch)
+	protected boolean classify(final List<ATermAppl> phase, final boolean requireTopSearch)
 	{
-		//		int lastPercent = -1;
+		final boolean useThreads = false;
 
-		while (phase.hasNext())
-		{
+		if (useThreads)
+			phase.parallelStream()//
+					.forEach(c -> //
+					{//
+						System.out.println(Thread.currentThread().getName() + " Classify on " + c + " [begin]");
+						classify(c, requireTopSearch);
+						_monitor.incrementProgress();
+						_kb.getTimers().getTimer("classify").check();
+						System.out.println(Thread.currentThread().getName() + " Classify on " + c + " [ end ]");
+					});
+		else
+			for (final ATermAppl c : phase)
+			{
+				_logger.fine(() -> "Classify (" + _taxonomyImpl.getNodes().size() + ") " + format(c) + "...");
 
-			final ATermAppl c = phase.next();
+				classify(c, requireTopSearch);
+				_monitor.incrementProgress();
 
-			_logger.fine(() -> "Classify (" + _taxonomyImpl.getNodes().size() + ") " + format(c) + "...");
+				_kb.getTimers().getTimer("classify").check();
 
-			classify(c, requireTopSearch);
-			_monitor.incrementProgress();
-
-			//			int percent = monitor.getProgressPercent();
-			//			if( percent != lastPercent ) {
-			//				lastPercent = percent;
-			//				printStats();
-			//				if( percent % 20 == 0 )
-			//					printMemory();
-			//			}
-
-			_kb.getTimers().getTimer("classify").check();
-
-			if (_monitor.isCanceled())
-				return false;
-		}
+				if (_monitor.isCanceled())
+					return false;
+			}
 
 		return true;
 	}
@@ -834,17 +832,15 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 
 		if (skipTopSearch)
 		{
-
 			superNodes = getCDSupers(c);
 			skipBottomSearch = true;
-
 		}
 		else
 		{
-
 			superNodes = doTopSearch(c);
 			skipBottomSearch = _useCD && (flag == ConceptFlag.PRIMITIVE || flag == ConceptFlag.COMPLETELY_DEFINED);
 		}
+
 		supers = new ArrayList<>();
 		for (final TaxonomyNode<ATermAppl> n : superNodes)
 			supers.add(n.getName());
@@ -904,7 +900,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 			}
 		}
 
-		_logger.finer(() -> "Subsumption Count: " + _kb.getABox().getStats().satisfiabilityCount);
+		_logger.finer(() -> "Subsumption Count: " + _kb.getABox().getStats()._satisfiabilityCount);
 
 		return node;
 	}
@@ -1083,7 +1079,6 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 
 	private boolean subCheckWithCache(final TaxonomyNode<ATermAppl> node, final ATermAppl c, final boolean topDown)
 	{
-
 		if (node.markIsDefined())
 			return node.getMark();
 
@@ -1194,9 +1189,9 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 			long time = System.currentTimeMillis();
 			final long count = _kb.getABox().getStats().satisfiabilityCount;
 			_logger.finer("Subsumption testing for [" + format(sub) + "," + format(sup) + "]...");
-		
+
 			final boolean result = _kb.getABox().isSubClassOf(sub, sup);
-		
+
 			final String sign = (_kb.getABox().getStats().satisfiabilityCount > count) ? "+" : "-";
 			time = System.currentTimeMillis() - time;
 			_logger.finer(" done (" + (result ? "+" : "-") + ") (" + sign + time + "ms)");
@@ -1308,7 +1303,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 			if (_logger.isLoggable(Level.FINER))
 			{
 				time = System.currentTimeMillis();
-				count = _kb.getABox().getStats().consistencyCount;
+				count = _kb.getABox().getStats()._consistencyCount;
 				_logger.finer("Type checking for [" + format(n) + ", " + format(c) + "]...");
 			}
 
@@ -1319,7 +1314,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 
 			if (_logger.isLoggable(Level.FINER))
 			{
-				final String sign = _kb.getABox().getStats().consistencyCount > count ? "+" : "-";
+				final String sign = _kb.getABox().getStats()._consistencyCount > count ? "+" : "-";
 				time = System.currentTimeMillis() - time;
 				_logger.finer("done (" + (isType ? "+" : "-") + ") (" + sign + time + "ms)");
 			}

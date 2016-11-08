@@ -13,8 +13,8 @@ import openllet.core.DependencySet;
 import openllet.core.IndividualIterator;
 import openllet.core.KnowledgeBase;
 import openllet.core.NodeMerge;
-import openllet.core.boxes.rbox.Role;
 import openllet.core.boxes.rbox.RBox;
+import openllet.core.boxes.rbox.Role;
 import openllet.core.boxes.tbox.TBox;
 import openllet.core.datatypes.DatatypeReasoner;
 import openllet.core.tableau.branch.Branch;
@@ -268,11 +268,7 @@ public interface ABox extends Logging
 	 */
 	public TBox getTBox();
 
-	public void setNodes(Map<ATermAppl, Node> nodes);
-
 	public List<ATermAppl> getNodeList();
-
-	public void setNodeList(List<ATermAppl> nodeList);
 
 	/**
 	 * Return the _current _branch number. Branches are created when a non-deterministic rule, e.g. _disjunction or max rule, is being applied.
@@ -419,27 +415,22 @@ public interface ABox extends Logging
 	public void resetQueue();
 
 	/**
-	 * @param _anonCount the _anonCount to set
+	 * @param anonCount the anonCount to set
 	 */
 	public int setAnonCount(final int anonCount);
 
 	/**
-	 * @return the _anonCount
+	 * @return the anonCount
 	 */
 	public int getAnonCount();
 
 	/**
-	 * @param _disjBranchStats the _disjBranchStats to set
-	 */
-	public void setDisjBranchStats(final Map<ATermAppl, int[]> disjBranchStats);
-
-	/**
-	 * @return the _disjBranchStats
+	 * @return the disjBranchStats
 	 */
 	public Map<ATermAppl, int[]> getDisjBranchStats();
 
 	/**
-	 * @param _changed the changed to set
+	 * @param changed the changed to set
 	 */
 	public void setChanged(final boolean changed);
 

@@ -24,32 +24,28 @@ public class ABoxStats
 	/**
 	 * Total number of ABox consistency checks
 	 */
-	public long consistencyCount = 0;
+	public volatile long _consistencyCount = 0;
 
 	/**
 	 * Total number of satisfiability tests performed
 	 */
-	public long satisfiabilityCount = 0;
+	public volatile long _satisfiabilityCount = 0;
 
-	/**
-	 * size of the completion graph
-	 */
-	public int size = 0;
-	public short treeDepth = 0;
+	public volatile short _treeDepth = 0;
 
-	public int backjumps = 0;
-	public int backtracks = 0;
-	public int globalRestores = 0;
-	public int localRestores = 0;
+	public volatile int _backjumps = 0;
+	public volatile int _backtracks = 0;
+	public volatile int _globalRestores = 0;
+	public volatile int _localRestores = 0;
 
-	public int branch = 0;
+	public volatile int branch = 0;
 
 	public void add(final ABoxStats other)
 	{
-		backjumps += other.backjumps;
-		backtracks += other.backtracks;
-		globalRestores += other.globalRestores;
-		localRestores += other.localRestores;
+		_backjumps += other._backjumps;
+		_backtracks += other._backtracks;
+		_globalRestores += other._globalRestores;
+		_localRestores += other._localRestores;
 		branch += other.branch;
 	}
 
@@ -58,11 +54,10 @@ public class ABoxStats
 	{
 		final StringBuilder sb = new StringBuilder();
 		sb.append(" Branches " + branch);
-		sb.append(" Tree depth: " + treeDepth);
-		sb.append(" Graph size: " + size);
-		sb.append(" Restores " + globalRestores + " global " + localRestores + " local");
-		sb.append(" Backtracks " + backtracks);
-		sb.append(" Avg backjump " + (backjumps / (double) backtracks));
+		sb.append(" Tree depth: " + _treeDepth);
+		sb.append(" Restores " + _globalRestores + " global " + _localRestores + " local");
+		sb.append(" Backtracks " + _backtracks);
+		sb.append(" Avg backjump " + _backjumps / (double) _backtracks);
 		return sb.toString();
 	}
 }

@@ -59,15 +59,15 @@ import openllet.core.utils.ATermUtils;
  */
 public class Literal extends Node
 {
-	private ATermAppl _atermValue;
+	private final ATermAppl _atermValue;
 
-	private Object _value;
+	private final Object _value;
 
-	private boolean _hasValue;
+	private final boolean _hasValue;
 
-	private NodeMerge _merge;
+	private volatile NodeMerge _merge;
 
-	private boolean _clashed = false;
+	private volatile boolean _clashed = false;
 
 	public Literal(final ATermAppl name, final ATermAppl term, final ABoxImpl abox, final DependencySet ds)
 	{
@@ -79,9 +79,10 @@ public class Literal extends Node
 			_hasValue = !term.getArgument(ATermUtils.LIT_URI_INDEX).equals(ATermUtils.NO_DATATYPE);
 			if (_hasValue)
 			{
+				Object value = null;
 				try
 				{
-					_value = abox._dtReasoner.getValue(term);
+					value = abox._dtReasoner.getValue(term);
 				}
 				catch (final InvalidLiteralException e)
 				{
@@ -89,7 +90,7 @@ public class Literal extends Node
 					if (OpenlletOptions.INVALID_LITERAL_AS_INCONSISTENCY)
 					{
 						_logger.fine(msg);
-						_value = null;
+						value = null;
 					}
 					else
 					{
@@ -103,14 +104,23 @@ public class Literal extends Node
 					_logger.severe(msg);
 					throw new InternalReasonerException(msg, e);
 				}
+
+				_value = value;
+
 				if (_value == null)
 					_depends.put(name, ds);
 			}
+			else
+				_value = null;
 
 			_atermValue = ATermUtils.makeValue(term);
 		}
 		else
+		{
+			_value = null;
+			_atermValue = null;
 			_hasValue = false;
+		}
 	}
 
 	public Literal(final Literal literal, final ABoxImpl abox)

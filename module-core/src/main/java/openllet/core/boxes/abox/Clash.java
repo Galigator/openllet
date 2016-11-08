@@ -26,17 +26,29 @@ import openllet.core.utils.ATermUtils;
  */
 public class Clash
 {
-	private DependencySet _depends;
-	private Node _node;
-	private ClashType _type;
-	ATerm[] _args;
-	String clashExplanation;
+	public final ATerm[] _args;
+	private volatile DependencySet _depends;
+	private volatile Node _node;
+	private volatile ClashType _type;
+	private volatile String _clashExplanation;
 
 	public enum ClashType
 	{
-		ATOMIC("An _individual belongs to a _type and its complement"), MIN_MAX("An _individual contains a minCardinality restriction that is greater than a maxCardinality restriction"), MAX_CARD("The maxCardinality restriction is violated"), FUNC_MAX_CARD("An _individual contains a minCardinality restriction that is greater than a maxCardinality restriction"), MAX_ZERO("The maxCardinality(0) restriction is violated"), NOMINAL("An _individual is sameAs and differentFrom another _individual at the same time"), EMPTY_DATATYPE("Range restrictions on a literal is inconsistent"), VALUE_DATATYPE("The literal value does not satisfy the datatype restriction"), MISSING_DATATYPE("Plain literal does not satisfy the datatype restriction (literal may be missing the rdf:datatype attribute)"), INVALID_LITERAL("Invalid literal for the rdf:datatype attribute"), DISJOINT_PROPS("Two disjoint properties have the same value"), BOTTOM_PROP("An _individual has a value for bottom property"), UNEXPLAINED("Cannot explain");
+		ATOMIC("An individual belongs to a type and its complement"), //
+		MIN_MAX("An _individual contains a minCardinality restriction that is greater than a maxCardinality restriction"), //
+		MAX_CARD("The maxCardinality restriction is violated"), //
+		FUNC_MAX_CARD("An individual contains a minCardinality restriction that is greater than a maxCardinality restriction"), //
+		MAX_ZERO("The maxCardinality(0) restriction is violated"), //
+		NOMINAL("An individual is sameAs and differentFrom another individual at the same time"), //
+		EMPTY_DATATYPE("Range restrictions on a literal is inconsistent"), //
+		VALUE_DATATYPE("The literal value does not satisfy the datatype restriction"), //
+		MISSING_DATATYPE("Plain literal does not satisfy the datatype restriction (literal may be missing the rdf:datatype attribute)"), //
+		INVALID_LITERAL("Invalid literal for the rdf:datatype attribute"), //
+		DISJOINT_PROPS("Two disjoint properties have the same value"), //
+		BOTTOM_PROP("An individual has a value for bottom property"), //
+		UNEXPLAINED("Cannot explain");
 
-		private String _explanation;
+		private final String _explanation;
 
 		private ClashType(final String explanation)
 		{
@@ -55,6 +67,7 @@ public class Clash
 		setDepends(depends);
 		setNode(node);
 		setType(type);
+		_args = null;
 	}
 
 	private Clash(final Node node, final ClashType type, final DependencySet depends, final ATerm[] args)
@@ -70,12 +83,13 @@ public class Clash
 		setDepends(depends);
 		setNode(node);
 		setType(type);
-		clashExplanation = explanation;
+		_args = null;
+		_clashExplanation = explanation;
 	}
 
 	public Clash copyTo(final ABoxImpl abox)
 	{
-		return new Clash(abox.getNode(getNode().getName()), getType(), getDepends(), clashExplanation);
+		return new Clash(abox.getNode(getNode().getName()), getType(), getDepends(), _clashExplanation);
 	}
 
 	public ClashType getClashType()
@@ -197,8 +211,8 @@ public class Clash
 	{
 		String str;
 
-		if (clashExplanation != null)
-			str = clashExplanation;
+		if (_clashExplanation != null)
+			str = _clashExplanation;
 		else
 			if (getType() == ClashType.UNEXPLAINED)
 				str = "No _explanation was generated.";
@@ -233,7 +247,7 @@ public class Clash
 													if (getType() == ClashType.EMPTY_DATATYPE)
 														str = emptyDatatypeExplanation();
 													else
-														str = clashExplanation;
+														str = _clashExplanation;
 
 		return str;
 	}
@@ -350,11 +364,11 @@ public class Clash
 	public String toString()
 	{
 		// TODO fix formatting
-		return "[Clash " + getNode() + " " + getType() + " " + getDepends().toString() + " " + ((_args == null) ? null : Arrays.asList(_args)) + "]";
+		return "[Clash " + getNode() + " " + getType() + " " + getDepends().toString() + " " + (_args == null ? null : Arrays.asList(_args)) + "]";
 	}
 
 	/**
-	 * @param _depends the _depends to set
+	 * @param depends the depends to set
 	 */
 	public void setDepends(final DependencySet depends)
 	{

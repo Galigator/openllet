@@ -269,9 +269,9 @@ public final class PelletTestCase
 		kb.isSatisfiable(c2);
 		kb.isSatisfiable(not(c2));
 
-		final long satCount = kb.getABox().getStats().satisfiabilityCount;
+		final long satCount = kb.getABox().getStats()._satisfiabilityCount;
 		computedSubClass = kb.isSubClassOf(c1, c2);
-		final boolean cached = (satCount == kb.getABox().getStats().satisfiabilityCount);
+		final boolean cached = (satCount == kb.getABox().getStats()._satisfiabilityCount);
 
 		assertEquals("Subclass check (Cached: " + cached + ") failed for (" + ATermUtils.toString(c1) + " [= " + ATermUtils.toString(c2) + ")", expectedSubClass, computedSubClass);
 	}

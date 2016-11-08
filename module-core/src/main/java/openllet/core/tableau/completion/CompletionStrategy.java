@@ -366,7 +366,7 @@ public abstract class CompletionStrategy
 			_logger.fine("Initialize finished");
 
 		_abox.setBranch(_abox.getBranches().size() + 1);
-		_abox.getStats().treeDepth = 1;
+		_abox.getStats()._treeDepth = 1;
 		_abox.setChanged(true);
 		_abox.setComplete(false);
 		_abox.setInitialized(true);
@@ -1016,7 +1016,7 @@ public abstract class CompletionStrategy
 
 	public void restoreLocal(final Individual ind, final Branch br)
 	{
-		_abox.getStats().localRestores++;
+		_abox.getStats()._localRestores++;
 		_abox.setClash(null);
 		_abox.setBranch(br.getBranch());
 

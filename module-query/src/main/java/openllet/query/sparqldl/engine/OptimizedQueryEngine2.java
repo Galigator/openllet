@@ -106,15 +106,15 @@ public class OptimizedQueryEngine2 extends AbstractABoxEngineWrapper
 
 		_kb = q.getKB();
 
-		final long satCount = _kb.getABox().getStats().satisfiabilityCount;
-		final long consCount = _kb.getABox().getStats().consistencyCount;
+		final long satCount = _kb.getABox().getStats()._satisfiabilityCount;
+		final long consCount = _kb.getABox().getStats()._consistencyCount;
 
 		exec(q, new ResultBindingImpl(), true);
 
 		if (_logger.isLoggable(Level.FINE))
 		{
-			_logger.fine("Total satisfiability operations: " + (_kb.getABox().getStats().satisfiabilityCount - satCount));
-			_logger.fine("Total consistency operations: " + (_kb.getABox().getStats().consistencyCount - consCount));
+			_logger.fine("Total satisfiability operations: " + (_kb.getABox().getStats()._satisfiabilityCount - satCount));
+			_logger.fine("Total consistency operations: " + (_kb.getABox().getStats()._consistencyCount - consCount));
 			_logger.fine("Results of ABox query : " + _results);
 		}
 

@@ -53,10 +53,10 @@ public class IncrementalRestore
 	}
 
 	/**
-	 * Restore a _branch add dependency
+	 * Restore a branch add dependency
 	 *
 	 * @param assertion
-	 * @param _branch
+	 * @param branch
 	 */
 	private void restoreBranchAdd(final ATermAppl assertion, final BranchAddDependency branch)
 	{

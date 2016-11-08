@@ -8,12 +8,14 @@
 
 package openllet.core.taxonomy;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import openllet.aterm.ATermAppl;
 
 /**
- * A class to compute the definition _order for concepts and tell if a concept is used in cyclic definition. The definition _order is computed after the TBox
- * preprocessing is applied so the definitions used for computing this _order is not always same as asserted definitions. The notion of cyclic definition depends
+ * A class to compute the definition order for concepts and tell if a concept is used in cyclic definition. The definition _order is computed after the TBox
+ * preprocessing is applied so the definitions used for computing this order is not always same as asserted definitions. The notion of cyclic definition depends
  * on the expressivity of the ontology. If there are no inverses a definition the concepts used inside restrictions are ignored.
  *
  * @author Evren Sirin
@@ -33,4 +35,13 @@ public interface DefinitionOrder extends Iterable<ATermAppl>
 	 * @return <code>true</code> if concept is used in a cyclic definition
 	 */
 	public boolean isCyclic(ATermAppl concept);
+
+	default public List<ATermAppl> getList()
+	{
+		final Iterator<ATermAppl> it = iterator();
+		final ArrayList<ATermAppl> result = new ArrayList<>();
+		while (it.hasNext())
+			result.add(it.next());
+		return result;
+	}
 }

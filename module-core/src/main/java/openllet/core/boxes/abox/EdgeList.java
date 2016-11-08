@@ -45,12 +45,12 @@ import openllet.core.utils.ATermUtils;
  */
 public class EdgeList implements Iterable<Edge>
 {
-	private Edge[] list;
-	private int size;
+	private volatile Edge[] _list;
+	private volatile int _size;
 
 	private class EdgeIterator implements Iterator<Edge>
 	{
-		private int curr = 0;
+		private volatile int curr = 0;
 
 		public EdgeIterator()
 		{
@@ -59,7 +59,7 @@ public class EdgeList implements Iterable<Edge>
 		@Override
 		public boolean hasNext()
 		{
-			return curr != size;
+			return curr != _size;
 		}
 
 		@Override
@@ -68,7 +68,7 @@ public class EdgeList implements Iterable<Edge>
 			if (!hasNext())
 				throw new NoSuchElementException();
 
-			return list[curr++];
+			return _list[curr++];
 		}
 
 		@Override
@@ -85,13 +85,13 @@ public class EdgeList implements Iterable<Edge>
 
 	public EdgeList(final int n)
 	{
-		list = new Edge[n];
-		size = 0;
+		_list = new Edge[n];
+		_size = 0;
 	}
 
 	public EdgeList(final EdgeList edges)
 	{
-		this(edges.size);
+		this(edges._size);
 
 		addEdgeList(edges);
 	}
@@ -103,44 +103,44 @@ public class EdgeList implements Iterable<Edge>
 	 */
 	public EdgeList(final Edge edge)
 	{
-		list = new Edge[1];
-		list[0] = edge;
-		size = 0;
+		_list = new Edge[1];
+		_list[0] = edge;
+		_size = 0;
 	}
 
 	private void allocate(final int minSize)
 	{
-		final int oldSize = list.length;
+		final int oldSize = _list.length;
 		if (minSize > oldSize)
 		{
-			final Edge oldList[] = list;
-			int newSize = (oldSize * 3) / 2 + 1;
+			final Edge oldList[] = _list;
+			int newSize = oldSize * 3 / 2 + 1;
 			if (newSize < minSize)
 				newSize = minSize;
-			list = new Edge[newSize];
-			System.arraycopy(oldList, 0, list, 0, oldSize);
+			_list = new Edge[newSize];
+			System.arraycopy(oldList, 0, _list, 0, oldSize);
 		}
 	}
 
 	public void addEdgeList(final EdgeList edges)
 	{
-		final int edgesSize = edges.size;
-		allocate(size + edgesSize);
-		System.arraycopy(edges.list, 0, list, size, edgesSize);
-		size += edgesSize;
+		final int edgesSize = edges._size;
+		allocate(_size + edgesSize);
+		System.arraycopy(edges._list, 0, _list, _size, edgesSize);
+		_size += edgesSize;
 	}
 
 	public void addEdge(final Edge e)
 	{
-		allocate(size + 1);
-		list[size++] = e;
+		allocate(_size + 1);
+		_list[_size++] = e;
 	}
 
 	public boolean removeEdge(final Edge edge)
 	{
-		for (int i = 0; i < size; i++)
+		for (int i = 0; i < _size; i++)
 		{
-			final Edge e = list[i];
+			final Edge e = _list[i];
 			if (e.equals(edge))
 			{
 				removeEdge(i);
@@ -153,30 +153,30 @@ public class EdgeList implements Iterable<Edge>
 
 	protected void removeEdge(final int index)
 	{
-		list[index] = list[--size];
-		list[size] = null;
+		_list[index] = _list[--_size];
+		_list[_size] = null;
 	}
 
 	public Edge edgeAt(final int i)
 	{
-		return list[i];
+		return _list[i];
 	}
 
 	public int size()
 	{
-		return size;
+		return _size;
 	}
 
 	public EdgeList sort()
 	{
 		final EdgeList sorted = new EdgeList(this);
-		Arrays.sort(sorted.list, (e1, e2) -> e1.getDepends().max() - e2.getDepends().max());
+		Arrays.sort(sorted._list, (e1, e2) -> e1.getDepends().max() - e2.getDepends().max());
 		return sorted;
 	}
 
 	public boolean isEmpty()
 	{
-		return size == 0;
+		return _size == 0;
 	}
 
 	@Override
@@ -189,9 +189,9 @@ public class EdgeList implements Iterable<Edge>
 	{
 		final EdgeList result = new EdgeList();
 
-		for (int i = 0; i < size; i++)
+		for (int i = 0; i < _size; i++)
 		{
-			final Edge e = list[i];
+			final Edge e = _list[i];
 			if ((from == null || from.equals(e.getFrom())) && (role == null || e.getRole().isSubRoleOf(role)) && (to == null || to.equals(e.getTo())))
 				result.addEdge(e);
 		}
@@ -228,9 +228,9 @@ public class EdgeList implements Iterable<Edge>
 	{
 		final EdgeList result = new EdgeList();
 
-		for (int i = 0; i < size; i++)
+		for (int i = 0; i < _size; i++)
 		{
-			final Edge e = list[i];
+			final Edge e = _list[i];
 			if (e.getRole().isSubRoleOf(role))
 				result.addEdge(e);
 		}
@@ -242,9 +242,9 @@ public class EdgeList implements Iterable<Edge>
 	{
 		final Set<Role> result = new HashSet<>();
 
-		for (int i = 0; i < size; i++)
+		for (int i = 0; i < _size; i++)
 		{
-			final Edge e = list[i];
+			final Edge e = _list[i];
 			result.add(e.getRole());
 		}
 
@@ -255,9 +255,9 @@ public class EdgeList implements Iterable<Edge>
 	{
 		final Set<Node> result = new HashSet<>();
 
-		for (int i = 0; i < size; i++)
+		for (int i = 0; i < _size; i++)
 		{
-			final Edge e = list[i];
+			final Edge e = _list[i];
 			result.add(e.getNeighbor(node));
 		}
 
@@ -276,9 +276,9 @@ public class EdgeList implements Iterable<Edge>
 		final Set<Node> result = new HashSet<>();
 
 		String lang = null;
-		for (int i = 0; i < size; i++)
+		for (int i = 0; i < _size; i++)
 		{
-			final Edge edge = list[i];
+			final Edge edge = _list[i];
 			final Node neighbor = edge.getNeighbor(node);
 
 			if (!ATermUtils.isTop(c) && !neighbor.hasType(c))
@@ -340,9 +340,9 @@ public class EdgeList implements Iterable<Edge>
 	 */
 	public boolean hasEdge(final Individual from, final Role role, final Node to)
 	{
-		for (int i = 0; i < size; i++)
+		for (int i = 0; i < _size; i++)
 		{
-			final Edge e = list[i];
+			final Edge e = _list[i];
 			if ((from == null || from.equals(e.getFrom())) && (role == null || e.getRole().isSubRoleOf(role)) && (to == null || to.equals(e.getTo())))
 				return true;
 		}
@@ -361,9 +361,9 @@ public class EdgeList implements Iterable<Edge>
 	 */
 	public boolean hasExactEdge(final Individual from, final Role role, final Node to)
 	{
-		for (int i = 0; i < size; i++)
+		for (int i = 0; i < _size; i++)
 		{
-			final Edge e = list[i];
+			final Edge e = _list[i];
 			if ((from == null || from.equals(e.getFrom())) && (role == null || e.getRole().equals(role)) && (to == null || to.equals(e.getTo())))
 				return true;
 		}
@@ -378,9 +378,9 @@ public class EdgeList implements Iterable<Edge>
 
 	public Edge getExactEdge(final Individual from, final Role role, final Node to)
 	{
-		for (int i = 0; i < size; i++)
+		for (int i = 0; i < _size; i++)
 		{
-			final Edge e = list[i];
+			final Edge e = _list[i];
 			if ((from == null || from.equals(e.getFrom())) && (role == null || e.getRole().equals(role)) && (to == null || to.equals(e.getTo())))
 				return e;
 		}
@@ -392,9 +392,9 @@ public class EdgeList implements Iterable<Edge>
 	{
 		DependencySet ds = DependencySet.INDEPENDENT;
 
-		for (int i = 0; i < size; i++)
+		for (int i = 0; i < _size; i++)
 		{
-			final Edge e = list[i];
+			final Edge e = _list[i];
 			ds = ds.union(e.getDepends(), doExplanation);
 		}
 
@@ -404,16 +404,16 @@ public class EdgeList implements Iterable<Edge>
 	@Override
 	public String toString()
 	{
-		if (size == 0)
+		if (_size == 0)
 			return "[]";
 
 		final StringBuilder b = new StringBuilder();
 		b.append('[');
-		b.append(list[0]);
-		for (int i = 1; i < size; i++)
+		b.append(_list[0]);
+		for (int i = 1; i < _size; i++)
 		{
 			b.append(", ");
-			b.append(list[i]);
+			b.append(_list[i]);
 		}
 		b.append(']');
 		return b.toString();
@@ -424,9 +424,9 @@ public class EdgeList implements Iterable<Edge>
 	 */
 	public void reset()
 	{
-		for (int i = 0; i < size; i++)
+		for (int i = 0; i < _size; i++)
 		{
-			final Edge e = list[i];
+			final Edge e = _list[i];
 
 			if (e.getDepends().getBranch() != DependencySet.NO_BRANCH)
 				removeEdge(i--);

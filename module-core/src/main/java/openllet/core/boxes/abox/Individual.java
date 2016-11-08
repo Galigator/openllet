@@ -31,6 +31,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.Vector;
 import java.util.logging.Level;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermInt;
@@ -60,18 +61,18 @@ public class Individual extends Node implements CachedNode
 	private EdgeList outEdges;
 
 	@SuppressWarnings("unchecked")
-	private final ArrayList<ATermAppl>[] _types = new ArrayList[TYPES]; // Known warning message
-	public int[] _applyNext = new int[TYPES];
+	private final Vector<ATermAppl>[] _types = new Vector[TYPES]; // List[] isn't a super type of Vector[]
+	public final int[] _applyNext = new int[TYPES];
 
-	private int _nominalLevel;
+	private volatile int _nominalLevel;
 
-	private Individual _parent;
+	private volatile Individual _parent;
 
-	private boolean _modifiedAfterMerge = false;
+	private volatile boolean _modifiedAfterMerge = false;
 
-	private short _depth;
+	private final short _depth;
 
-	private boolean _isBlocked;
+	private volatile boolean _isBlocked = false;
 
 	Individual(final ATermAppl name, final ABoxImpl abox, final Individual parent)
 	{
@@ -92,7 +93,7 @@ public class Individual extends Node implements CachedNode
 
 		for (int i = 0; i < TYPES; i++)
 		{
-			_types[i] = new ArrayList<>();
+			_types[i] = new Vector<>();
 			_applyNext[i] = 0;
 		}
 
@@ -108,7 +109,7 @@ public class Individual extends Node implements CachedNode
 
 		for (int i = 0; i < TYPES; i++)
 		{
-			_types[i] = new ArrayList<>(ind._types[i]);
+			_types[i] = new Vector<>(ind._types[i]);
 			_applyNext[i] = ind._applyNext[i];
 		}
 
@@ -116,6 +117,8 @@ public class Individual extends Node implements CachedNode
 			outEdges = new EdgeList(ind.outEdges);
 		else
 			outEdges = new EdgeList(ind.outEdges.size());
+
+		_depth = 0;
 	}
 
 	public boolean isBlocked()
@@ -1114,6 +1117,10 @@ public class Individual extends Node implements CachedNode
 		return outEdges;
 	}
 
+	/**
+	 * @return can return null
+	 * @since 2.30
+	 */
 	public Individual getParent()
 	{
 		return _parent;
@@ -1142,7 +1149,7 @@ public class Individual extends Node implements CachedNode
 	{
 		for (int type = 0; type < TYPES; type++)
 		{
-			final ArrayList<ATermAppl> list = _types[type];
+			final List<ATermAppl> list = _types[type];
 			int size = list.size();
 			for (int i = 0; i < size; i++)
 			{
