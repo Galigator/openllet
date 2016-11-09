@@ -20,6 +20,7 @@ import openllet.shared.tools.Logging;
 /**
  * Definition of taxonomies
  *
+ * @param <T> type of taxon
  * @since 2.6.0
  */
 public interface Taxonomy<T> extends Logging
@@ -52,6 +53,9 @@ public interface Taxonomy<T> extends Logging
 
 	/**
 	 * Add a collection of elements equivalent to an element already in the taxonomy.
+	 *
+	 * @param t
+	 * @param eqs
 	 */
 	public default void addEquivalents(final T t, final Collection<T> eqs)
 	{
@@ -169,6 +173,9 @@ public interface Taxonomy<T> extends Logging
 
 	/**
 	 * Add a collection of elements as subs to an element
+	 *
+	 * @param subs
+	 * @param sup
 	 */
 	public default void addSuper(final Collection<T> subs, final T sup)
 	{
@@ -194,6 +201,9 @@ public interface Taxonomy<T> extends Logging
 
 	/**
 	 * Add a sub/super relation
+	 *
+	 * @param sub
+	 * @param sup
 	 */
 	public default void addSuper(final T sub, final T sup)
 	{
@@ -217,6 +227,9 @@ public interface Taxonomy<T> extends Logging
 
 	/**
 	 * Add a collection of supers to an element
+	 *
+	 * @param sub
+	 * @param sups
 	 */
 	public default void addSupers(final T sub, final Collection<T> sups)
 	{
@@ -248,12 +261,21 @@ public interface Taxonomy<T> extends Logging
 	/**
 	 * Given a list of concepts, find all the Least Common Ancestors (LCA). Note that a taxonomy is DAG not a tree so we do not have a unique LCA but a set of
 	 * LCA.
+	 * <p>
+	 * FIXME : does not work when one of the elements is an ancestor of the rest
+	 * </p>
+	 * <p>
+	 * TODO : <code>what to do with equivalent classes?</code>
+	 * </p>
+	 * <p>
+	 * TODO : <code>improve efficiency</code>
+	 * </p>
+	 *
+	 * @param list
+	 * @return the Least Common Ancestors
 	 */
 	public default List<T> computeLCA(final List<T> list)
 	{
-		// FIXME does not work when one of the elements is an ancestor of the rest
-		// TODO what to do with equivalent classes?
-		// TODO improve efficiency
 
 		if (list.isEmpty())
 			return null;
@@ -264,7 +286,7 @@ public interface Taxonomy<T> extends Logging
 		// add all its ancestor as possible LCA candidates
 		final List<T> ancestors = new ArrayList<>(getFlattenedSupers(t, /* direct = */false));
 
-		for (int i = 1; (i < list.size()) && (ancestors.size() > 0); i++)
+		for (int i = 1; i < list.size() && ancestors.size() > 0; i++)
 		{
 			t = list.get(i);
 
@@ -311,7 +333,7 @@ public interface Taxonomy<T> extends Logging
 	 * e.g., to collect datum values in a transitive closure (as in all instances of a class).
 	 *
 	 * @param t starting location in taxonomy
-	 * @param _key _key associated with datum returned
+	 * @param key _key associated with datum returned
 	 * @return datum iterator
 	 */
 	public Iterator<Object> depthFirstDatumOnly(final T t, final Object key);
@@ -343,13 +365,13 @@ public interface Taxonomy<T> extends Logging
 	 * Get datum on taxonomy elements associated with {@code _key}
 	 *
 	 * @param t identifies the taxonomy element
-	 * @param _key identifies the specific datum
+	 * @param key identifies the specific datum
 	 * @return the datum (or {@code null} if none is associated with {@code _key})
 	 */
 	public default Object getDatum(final T t, final Object key)
 	{
 		final TaxonomyNode<T> node = getNodes().get(t);
-		return (node == null) ? null : node.getDatum(key);
+		return node == null ? null : node.getDatum(key);
 	}
 
 	/**
@@ -368,11 +390,19 @@ public interface Taxonomy<T> extends Logging
 
 	/**
 	 * As in {@link #getSubs(Object, boolean)} except the return value is the union of nested sets
+	 *
+	 * @param t
+	 * @param direct
+	 * @return a union of subs
 	 */
 	public Set<T> getFlattenedSubs(final T t, final boolean direct);
 
 	/**
 	 * As in {@link #getSupers(Object, boolean)} except the return value is the union of nested sets
+	 *
+	 * @param t
+	 * @param direct
+	 * @return a union of supers
 	 */
 	public Set<T> getFlattenedSupers(final T t, final boolean direct);
 
@@ -519,6 +549,8 @@ public interface Taxonomy<T> extends Logging
 
 	/**
 	 * Remove an element from the taxonomy.
+	 *
+	 * @param t
 	 */
 	public default void remove(final T t)
 	{
@@ -539,6 +571,8 @@ public interface Taxonomy<T> extends Logging
 
 	/**
 	 * Walk through the super getNodes() of the given _node and when a cycle is detected merge all the getNodes() in that path
+	 *
+	 * @param node
 	 */
 	public void removeCycles(final TaxonomyNode<T> node);
 
@@ -549,6 +583,9 @@ public interface Taxonomy<T> extends Logging
 
 	/**
 	 * Clear existing supers for an element and set to a new collection
+	 * 
+	 * @param t
+	 * @param supers
 	 */
 	public default void resetSupers(final T t, final Collection<T> supers)
 	{

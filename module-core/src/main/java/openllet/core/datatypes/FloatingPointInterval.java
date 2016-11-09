@@ -24,6 +24,7 @@ import openllet.shared.tools.Log;
  * </p>
  *
  * @author Mike Smith
+ * @param <T> specific type of number
  */
 public class FloatingPointInterval<T extends Number & Comparable<T>>
 {
@@ -81,8 +82,9 @@ public class FloatingPointInterval<T extends Number & Comparable<T>>
 	private final T _upper;
 
 	/**
-	 * Create a point interval. This is equivalent to {@link #IEEEFloatInterval(Float, Float)} with arguments <code>point,point,true,true</code>
+	 * Create a point interval. This is equivalent to IEEEFloatInterval(Float, Float) with arguments <code>point,point,true,true</code>
 	 *
+	 * @param type
 	 * @param point Value of point interval
 	 */
 	public FloatingPointInterval(final FloatingPointType<T> type, final T point)
@@ -102,9 +104,10 @@ public class FloatingPointInterval<T extends Number & Comparable<T>>
 
 	/**
 	 * Create an interval.
-	 *
-	 * @param _lower Interval _lower bound
-	 * @param _upper Interval _upper bound
+	 * 
+	 * @param type
+	 * @param lower Interval _lower bound
+	 * @param upper Interval _upper bound
 	 */
 	public FloatingPointInterval(final FloatingPointType<T> type, final T lower, final T upper)
 	{
@@ -250,9 +253,9 @@ public class FloatingPointInterval<T extends Number & Comparable<T>>
 	{
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((_type == null) ? 0 : _type.hashCode());
-		result = prime * result + ((_lower == null) ? 0 : _lower.hashCode());
-		result = prime * result + ((_upper == null) ? 0 : _upper.hashCode());
+		result = prime * result + (_type == null ? 0 : _type.hashCode());
+		result = prime * result + (_lower == null ? 0 : _lower.hashCode());
+		result = prime * result + (_upper == null ? 0 : _upper.hashCode());
 		return result;
 	}
 

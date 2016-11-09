@@ -5,12 +5,6 @@ import java.util.NoSuchElementException;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2008
  * </p>
  * <p>
@@ -18,6 +12,7 @@ import java.util.NoSuchElementException;
  * </p>
  *
  * @author Evren Sirin
+ * @param <T> kind of element
  */
 public abstract class FilterIterator<T> implements Iterator<T>
 {

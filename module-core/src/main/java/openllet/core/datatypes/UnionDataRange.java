@@ -22,6 +22,7 @@ import java.util.Set;
  * </p>
  *
  * @author Mike Smith
+ * @param <T> kind of elements
  */
 public class UnionDataRange<T> implements DataRange<T>
 {
@@ -50,7 +51,7 @@ public class UnionDataRange<T> implements DataRange<T>
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public boolean containsAtLeast(int n)
+	public boolean containsAtLeast(final int n)
 	{
 		int values = n - _values.size();
 		if (values <= 0)

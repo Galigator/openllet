@@ -21,6 +21,7 @@ package openllet.core.utils;
  * </p>
  *
  * @author Mike Smith
+ * @param <T> kind of element
  */
 public interface PartialOrderComparator<T>
 {

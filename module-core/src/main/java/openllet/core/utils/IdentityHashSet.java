@@ -21,6 +21,7 @@ import java.util.Set;
  * </p>
  *
  * @author Evren Sirin
+ * @param <T> kind of elements
  */
 @SuppressWarnings("unused")
 public class IdentityHashSet<T> extends AbstractSet<T> implements Set<T>, Cloneable

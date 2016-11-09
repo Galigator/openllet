@@ -16,9 +16,6 @@ import openllet.core.utils.ATermUtils;
  * Title: Unary Atom
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -26,6 +23,7 @@ import openllet.core.utils.ATermUtils;
  * </p>
  *
  * @author Ron Alford
+ * @param <A> kind of atom
  */
 public abstract class UnaryAtom<A extends AtomObject> extends RuleAtomImpl<ATermAppl>
 {

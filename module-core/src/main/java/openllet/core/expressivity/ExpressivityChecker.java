@@ -71,6 +71,9 @@ public class ExpressivityChecker
 
 	/**
 	 * Added for incremental reasoning. Given an openllet.aterm corresponding to an _individual and concept, the expressivity is updated accordingly.
+	 * 
+	 * @param i
+	 * @param concept
 	 */
 	public void updateWithIndividual(final ATermAppl i, final ATermAppl concept)
 	{

@@ -42,6 +42,8 @@ public class IndividualIterator implements Iterator<Individual>
 
 	/**
 	 * Create an iterator over all the individuals in the ABox
+	 * 
+	 * @param abox
 	 */
 	public IndividualIterator(final ABox abox)
 	{

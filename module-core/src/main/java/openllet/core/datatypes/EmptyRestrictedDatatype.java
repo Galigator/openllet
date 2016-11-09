@@ -18,6 +18,7 @@ import openllet.aterm.ATermAppl;
  * </p>
  *
  * @author Mike Smith
+ * @param <T> kind of element
  */
 public class EmptyRestrictedDatatype<T> extends EmptyDataRange<T> implements RestrictedDatatype<T>
 {

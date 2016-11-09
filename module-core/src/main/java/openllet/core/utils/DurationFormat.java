@@ -7,9 +7,7 @@
 package openllet.core.utils;
 
 /**
- * <p>
- * Title:
- * </p>
+ * Deprecated must use the new "Instant" java data api.
  * <p>
  * Description: A simple class to provide various formatting options for durations represented in milliseconds. The durations are displayed in terms of hours,
  * minutes, seconds, and milliseconds.
@@ -22,9 +20,7 @@ package openllet.core.utils;
  * </p>
  *
  * @author Evren Sirin
- * @deprecated must use the new "Instant" java data api.
  */
-@Deprecated
 public enum DurationFormat
 {
 	/**

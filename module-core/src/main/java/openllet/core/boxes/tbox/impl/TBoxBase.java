@@ -43,8 +43,8 @@ public class TBoxBase implements Logging
 {
 	public static Logger _logger = Log.getLogger(TBoxBase.class);
 
-	protected KnowledgeBase _kb;
-	protected TBoxExpImpl _tbox;
+	protected final KnowledgeBase _kb;
+	protected final TBoxExpImpl _tbox;
 
 	protected Map<ATermAppl, TermDefinition> _termhash = CollectionUtils.makeIdentityMap();
 

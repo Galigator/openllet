@@ -17,6 +17,7 @@ import java.util.Iterator;
  * </p>
  *
  * @author Mike Smith
+ * @param <T> type of literals
  */
 public interface DataRange<T>
 {
@@ -59,7 +60,7 @@ public interface DataRange<T>
 	public boolean isFinite();
 
 	/**
-	 * Return the size of the _data range. <i>Necessary to support {@link LiteralValueBranch} constructor</i>
+	 * Return the size of the _data range. <i>Necessary to support LiteralValueBranch constructor</i>
 	 *
 	 * @return the size of the _data range
 	 * @throws IllegalStateException if {@link #isFinite()} returns <code>false</code>
@@ -72,7 +73,7 @@ public interface DataRange<T>
 	}
 
 	/**
-	 * Return a value from an enumerable _data range. <i>Necessary to support {@link LiteralValueBranch} shiftTryNext</i>
+	 * Return a value from an enumerable _data range. <i>Necessary to support LiteralValueBranch shiftTryNext</i>
 	 *
 	 * @param i the _index of the value in the _data range
 	 * @return the value
@@ -80,7 +81,7 @@ public interface DataRange<T>
 	 * @deprecated Use {@link #valueIterator()}
 	 */
 	@Deprecated
-	default public T getValue(@SuppressWarnings("unused") final int i)
+	default public T getValue(final int i)
 	{
 		throw new UnsupportedOperationException();
 	}

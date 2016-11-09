@@ -53,9 +53,8 @@ public class QueueElement
 
 	/**
 	 * Constructor
-	 * 
-	 * @param ATermAppl The _node
-	 * @param ATermAppl The label
+	 *
+	 * @param n The _node
 	 */
 	public QueueElement(final Node n)
 	{
@@ -69,7 +68,7 @@ public class QueueElement
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param ATermAppl The _node
 	 * @param ATermAppl The label
 	 */
@@ -95,7 +94,7 @@ public class QueueElement
 	/**
 	 * Set label
 	 *
-	 * @param ATermAppl The label
+	 * @param l The label
 	 */
 	public void setLabel(final ATermAppl l)
 	{
@@ -105,7 +104,7 @@ public class QueueElement
 	/**
 	 * Set the _node
 	 *
-	 * @param ATermAppl The _node
+	 * @param n The _node
 	 */
 	public void setNode(final ATermAppl n)
 	{

@@ -29,8 +29,9 @@ public abstract class ProfileBasedExpressivityChecker
 	}
 
 	/**
-	 * Compute the expressivity from the {@link org.mindswap.pellet.KnowledgeBase} and update it to the given {@link openllet.core.expressivity.Expressivity}.
+	 * Compute the expressivity from the {@link KnowledgeBase} and update it to the given {@link openllet.core.expressivity.Expressivity}.
 	 *
+	 * @param expressivity
 	 * @return <code>true</code> if the expressivity is within the profile defined by the implementation, <code>false</code> otherwise.
 	 */
 	public abstract boolean compute(Expressivity expressivity);
@@ -38,6 +39,8 @@ public abstract class ProfileBasedExpressivityChecker
 	/**
 	 * Update the given {@link openllet.core.expressivity.Expressivity} by adding the new @{link openllet.aterm.ATermAppl}.
 	 *
+	 * @param expressivity
+	 * @param term
 	 * @return <code>true</code> if the new expressivity is within the profile defined by the implementation, <code>false</code> otherwise.
 	 */
 	public abstract boolean updateWith(Expressivity expressivity, ATermAppl term);

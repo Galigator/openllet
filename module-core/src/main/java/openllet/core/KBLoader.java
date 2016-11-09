@@ -76,7 +76,7 @@ public abstract class KBLoader
 	 * Parse one or more files to the internal representation supported by this loader. Note: this method previously accepted a list of regular expressions
 	 * instead of file URIs. This behavior has been changed as of 2.0.0-rc7.
 	 *
-	 * @param fileNameList list of file URIs
+	 * @param fileNames list of file URIs
 	 * @see FileUtils#getFileURIs(String...)
 	 */
 	public void parse(final String... fileNames)

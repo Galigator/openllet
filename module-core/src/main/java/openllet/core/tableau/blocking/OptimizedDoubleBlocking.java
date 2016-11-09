@@ -36,12 +36,6 @@ package openllet.core.tableau.blocking;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2008
  * </p>
  * <p>
@@ -61,6 +55,7 @@ public class OptimizedDoubleBlocking extends Blocking
 
 	private OptimizedDoubleBlocking()
 	{
+		// prevented
 	}
 
 	@Override

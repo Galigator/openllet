@@ -64,6 +64,7 @@ public abstract class Blocking
 
 	protected Blocking()
 	{
+		//
 	}
 
 	public boolean isDynamic()
@@ -140,8 +141,7 @@ public abstract class Blocking
 		if (!cxt._blocker.isRoot() && isDirectlyBlockedBy(cxt))
 		{
 			cxt._blocked.setBlocked(true);
-			if (_logger.isLoggable(Level.FINER))
-				_logger.finer(cxt._blocked + " _blocked by " + cxt._blocker);
+			_logger.finer(() -> cxt._blocked + " _blocked by " + cxt._blocker);
 			return true;
 		}
 

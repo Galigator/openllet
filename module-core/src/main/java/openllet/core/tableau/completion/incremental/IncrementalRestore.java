@@ -255,9 +255,9 @@ public class IncrementalRestore
 	 * Restore a disjunct, merge pairs, etc. of a _branch that has been closed due to a clash whose dependency set contains an assertion that has been deleted
 	 *
 	 * @param assertion
-	 * @param _branch
+	 * @param branch
 	 */
-	private static void restoreCloseBranch(@SuppressWarnings("unused") final ATermAppl assertion, final CloseBranchDependency branch)
+	private static void restoreCloseBranch(final ATermAppl assertion, final CloseBranchDependency branch)
 	{
 		// only proceed if _tryNext is larger than 1!
 		if (branch.getTheBranch().getTryNext() > -1)

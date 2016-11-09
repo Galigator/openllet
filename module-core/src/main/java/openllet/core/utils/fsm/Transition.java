@@ -21,10 +21,11 @@ package openllet.core.utils.fsm;
  * </p>
  *
  * @author Evren Sirin
+ * @param <T> kind of transition
  */
 public class Transition<T>
 {
-	private static Object EPSILON = null;
+	private static final Object EPSILON = null;
 
 	private final T _name;
 
@@ -32,6 +33,8 @@ public class Transition<T>
 
 	/**
 	 * /* add edge with epsilon edge
+	 *
+	 * @param t
 	 */
 	@SuppressWarnings("unchecked")
 	public Transition(final State<T> t)
@@ -42,11 +45,14 @@ public class Transition<T>
 
 	/**
 	 * add edge for _name from _current state _to state t on c
+	 *
+	 * @param name
+	 * @param to
 	 */
 	public Transition(final T name, final State<T> to)
 	{
-		this._name = name;
-		this._to = to;
+		_name = name;
+		_to = to;
 	}
 
 	@Override
@@ -54,8 +60,8 @@ public class Transition<T>
 	{
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((_name == null) ? 0 : _name.hashCode());
-		result = prime * result + ((_to == null) ? 0 : _to.hashCode());
+		result = prime * result + (_name == null ? 0 : _name.hashCode());
+		result = prime * result + (_to == null ? 0 : _to.hashCode());
 		return result;
 	}
 
@@ -110,7 +116,7 @@ public class Transition<T>
 
 	public boolean hasName(final T c)
 	{
-		return (_name == EPSILON) ? c == EPSILON : (c == EPSILON) ? false : _name.equals(c);
+		return _name == EPSILON ? c == EPSILON : c == EPSILON ? false : _name.equals(c);
 	}
 
 	@Override

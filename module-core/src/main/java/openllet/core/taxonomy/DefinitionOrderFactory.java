@@ -16,7 +16,7 @@ import openllet.core.OpenlletOptions;
 import openllet.core.utils.Comparators;
 
 /**
- * Creates a definition _order based on the configuration options defined in {@link PelletOptions}.
+ * Creates a definition _order based on the configuration options defined in {@link OpenlletOptions}.
  *
  * @author Evren Sirin
  */

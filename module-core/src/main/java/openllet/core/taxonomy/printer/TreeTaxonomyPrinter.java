@@ -39,6 +39,7 @@ import openllet.core.utils.Comparators;
 
 /**
  * @author Evren Sirin
+ * @param <T> kind of taxon
  */
 public class TreeTaxonomyPrinter<T> implements TaxonomyPrinter<T>
 {

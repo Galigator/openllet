@@ -11,6 +11,7 @@ import java.util.NoSuchElementException;
 
 /**
  * @author Evren Sirin
+ * @param <T> kind of element
  */
 public class PairIterator<T> implements Iterator<T>
 {

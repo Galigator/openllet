@@ -25,6 +25,7 @@ import openllet.core.exceptions.InternalReasonerException;
  * </p>
  *
  * @author Ron Alford
+ * @param <T> kind of element
  */
 public class Tuple<T>
 {

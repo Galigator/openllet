@@ -44,7 +44,7 @@ public class Interpreter
 	/**
 	 * Restore _abox to the given _branch
 	 *
-	 * @return true if a matching TermTuple was removed. False otherwise.
+	 * @param branch
 	 */
 	public void restore(final int branch)
 	{
@@ -62,7 +62,6 @@ public class Interpreter
 
 	public Collection<PartialBinding> getBindings()
 	{
-		// TODO Auto-generated method stub
 		return Collections.emptyList();
 	}
 }

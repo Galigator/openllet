@@ -13,9 +13,6 @@ import openllet.aterm.ATermAppl;
  * Title: Data Range Atom
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -26,7 +23,6 @@ import openllet.aterm.ATermAppl;
  */
 public class DataRangeAtom extends UnaryAtom<AtomDObject>
 {
-
 	public DataRangeAtom(final ATermAppl predicate, final AtomDObject argument)
 	{
 		super(predicate, argument);
@@ -37,5 +33,4 @@ public class DataRangeAtom extends UnaryAtom<AtomDObject>
 	{
 		visitor.visit(this);
 	}
-
 }

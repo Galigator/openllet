@@ -43,7 +43,7 @@ public abstract class AtomConstant implements AtomObject
 	}
 
 	/**
-	 * Returns the openllet.aterm _value this constant was initialized with.
+	 * @return the openllet.aterm _value this constant was initialized with.
 	 */
 	public ATermAppl getValue()
 	{

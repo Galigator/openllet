@@ -24,6 +24,8 @@ import openllet.shared.tools.Log;
  * </p>
  *
  * @author Mike Smith
+ * @param <T> kind of numbers
+ * @param <U> kind of interval of numbers
  */
 public abstract class DiscreteInterval<T extends Number, U extends DiscreteInterval<T, U>>
 {
@@ -68,7 +70,7 @@ public abstract class DiscreteInterval<T extends Number, U extends DiscreteInter
 				_next = null;
 			else
 				_next = _increment ? increment(_next) : decrement(_next);
-				return ret;
+			return ret;
 		}
 
 		@Override
@@ -83,9 +85,9 @@ public abstract class DiscreteInterval<T extends Number, U extends DiscreteInter
 	 * These constants are setup so that reference to the NullSemantics enum
 	 * does not need qualification within this class.
 	 */
-	protected final static NullSemantics// 
-			GREATEST = NullSemantics.GREATEST,//
-			LEAST = NullSemantics.LEAST,//
+	protected final static NullSemantics//
+	GREATEST = NullSemantics.GREATEST, //
+			LEAST = NullSemantics.LEAST, //
 			NA = NullSemantics.NA;
 
 	private static final Logger _logger = Log.getLogger(DiscreteInterval.class);
@@ -94,7 +96,7 @@ public abstract class DiscreteInterval<T extends Number, U extends DiscreteInter
 	private final T _upper;
 
 	/**
-	 * Create a point interval. This is equivalent to {@link #DiscreteInterval(T, T)} with arguments <code>point,point</code>
+	 * Create a point interval. This is equivalent to {@link #DiscreteInterval} with arguments <code>point,point</code>
 	 *
 	 * @param point Value of point interval
 	 */
@@ -110,8 +112,8 @@ public abstract class DiscreteInterval<T extends Number, U extends DiscreteInter
 	/**
 	 * Create an interval.
 	 *
-	 * @param _lower Interval _lower bound
-	 * @param _upper Interval _upper bound
+	 * @param lower Interval _lower bound
+	 * @param upper Interval _upper bound
 	 */
 	public DiscreteInterval(final T lower, final T upper)
 	{
@@ -238,8 +240,8 @@ public abstract class DiscreteInterval<T extends Number, U extends DiscreteInter
 	{
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((getLower() == null) ? 0 : getLower().hashCode());
-		result = prime * result + ((getUpper() == null) ? 0 : getUpper().hashCode());
+		result = prime * result + (getLower() == null ? 0 : getLower().hashCode());
+		result = prime * result + (getUpper() == null ? 0 : getUpper().hashCode());
 		return result;
 	}
 
@@ -354,9 +356,7 @@ public abstract class DiscreteInterval<T extends Number, U extends DiscreteInter
 			if (after == null)
 				return Collections.singletonList(before);
 			else
-			{
 				return Arrays.asList(before, after);
-			}
 	}
 
 	public abstract Number size();

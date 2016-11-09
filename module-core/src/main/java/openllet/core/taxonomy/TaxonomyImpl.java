@@ -300,7 +300,7 @@ public class TaxonomyImpl<T> implements Taxonomy<T>
 	 * e.g., to collect datum values in a transitive closure (as in all instances of a class).
 	 *
 	 * @param t starting location in taxonomy
-	 * @param _key _key associated with datum returned
+	 * @param key _key associated with datum returned
 	 * @return datum iterator
 	 */
 	@Override

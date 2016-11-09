@@ -59,17 +59,17 @@ public class AlphaNumericComparator implements Comparator<Object>
 	 */
 	public AlphaNumericComparator()
 	{
-		this._caseSensitive = true;
+		_caseSensitive = true;
 	}
 
 	/**
 	 * Create an AlphaNumericComparator
-	 * 
-	 * @param _caseSensitive if true comparisons are case sensitive
+	 *
+	 * @param caseSensitive if true comparisons are case sensitive
 	 */
 	public AlphaNumericComparator(final boolean caseSensitive)
 	{
-		this._caseSensitive = caseSensitive;
+		_caseSensitive = caseSensitive;
 	}
 
 	@Override
@@ -90,9 +90,9 @@ public class AlphaNumericComparator implements Comparator<Object>
 					{
 						int value1 = 0, value2 = 0;
 						while (i1 < n1 && Character.isDigit(c1 = s1.charAt(i1++)))
-							value1 = 10 * value1 + (c1 - '0');
+							value1 = 10 * value1 + c1 - '0';
 						while (i2 < n2 && Character.isDigit(c2 = s2.charAt(i2++)))
-							value2 = 10 * value2 + (c2 - '0');
+							value2 = 10 * value2 + c2 - '0';
 						if (value1 != value2)
 							return value1 - value2;
 					}

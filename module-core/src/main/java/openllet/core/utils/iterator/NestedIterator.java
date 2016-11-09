@@ -11,6 +11,8 @@ import java.util.NoSuchElementException;
 
 /**
  * @author Evren Sirin
+ * @param <Outer>
+ * @param <Inner>
  */
 public abstract class NestedIterator<Outer, Inner> implements Iterator<Inner>
 {

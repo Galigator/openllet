@@ -14,9 +14,6 @@ import java.util.List;
  * Title: Property Atom
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>

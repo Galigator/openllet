@@ -35,6 +35,7 @@ import openllet.core.utils.Comparators;
  * </p>
  *
  * @author Mike Smith
+ * @param <T> type of taxon
  */
 public class FunctionalTaxonomyPrinter<T> implements TaxonomyPrinter<T>
 {
@@ -103,7 +104,7 @@ public class FunctionalTaxonomyPrinter<T> implements TaxonomyPrinter<T>
 			// Use supers to determine if this has been _printed before, if so
 			// skip it
 			final Set<Set<T>> supEqs = _taxonomyImpl.getSupers(firstC, true);
-			if ((supEqs.size() > 1) && _printed.contains(firstC))
+			if (supEqs.size() > 1 && _printed.contains(firstC))
 				continue;
 			else
 				_printed.add(firstC);

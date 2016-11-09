@@ -10,6 +10,7 @@ import java.util.Iterator;
 
 /**
  * @author Evren Sirin
+ * @param <T> kind of element
  */
 public class FlattenningIterator<T> extends NestedIterator<Iterable<T>, T>
 {

@@ -17,6 +17,7 @@ import openllet.core.datatypes.DiscreteInterval;
  * </p>
  *
  * @author Mike Smith
+ * @param <T> specific type of number
  */
 public class FloatingPointInterval<T extends Number & Comparable<T>> extends DiscreteInterval<T, FloatingPointInterval<T>>
 {

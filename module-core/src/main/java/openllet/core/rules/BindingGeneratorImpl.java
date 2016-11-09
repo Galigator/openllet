@@ -25,7 +25,7 @@ import openllet.core.boxes.abox.ABox;
  * <p>
  * Company: Clark & Parsia, LLC. <http://www.clarkparsia.com>
  * </p>
- * 
+ *
  * @author Ron Alford
  */
 
@@ -53,7 +53,7 @@ public class BindingGeneratorImpl implements BindingGenerator
 
 		/**
 		 * Return the _current _binding up through and including the <code>max</code> element of the pattern chain.
-		 * 
+		 *
 		 * @param max
 		 * @return
 		 */
@@ -134,11 +134,21 @@ public class BindingGeneratorImpl implements BindingGenerator
 	/**
 	 * Constructs a _binding generator with the given list of _helpers. The _helpers must be in such an _order that prerequisite variables of any helper are
 	 * bound by a helper before it.
+	 *
+	 * @param abox
+	 * @param initialBinding
+	 * @param helpers
 	 */
-	public BindingGeneratorImpl(@SuppressWarnings("unused") final ABox abox, final VariableBinding initialBinding, final Collection<BindingHelper> helpers)
+	public BindingGeneratorImpl(final ABox abox, final VariableBinding initialBinding, final Collection<BindingHelper> helpers)
 	{
-		this._helpers = helpers;
-		this._initialBinding = initialBinding;
+		_helpers = helpers;
+		_initialBinding = initialBinding;
+	}
+
+	public BindingGeneratorImpl(final VariableBinding initialBinding, final Collection<BindingHelper> helpers)
+	{
+		_helpers = helpers;
+		_initialBinding = initialBinding;
 	}
 
 	@Override

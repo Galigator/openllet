@@ -91,7 +91,8 @@ public class TrivialSatisfactionHelpers
 	private interface BindingTester
 	{
 		/**
-		 * Returns true if binding supports testing _condition
+		 * @return true if binding supports testing _condition
+		 * @param binding
 		 */
 		public DependencySet check(VariableBinding binding);
 	}
@@ -184,7 +185,7 @@ public class TrivialSatisfactionHelpers
 		@Override
 		public void rebind(final VariableBinding newBinding)
 		{
-			_result = (_tester.check(newBinding) == null);
+			_result = _tester.check(newBinding) == null;
 		}
 
 		@Override

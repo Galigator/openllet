@@ -45,6 +45,8 @@ public class LiteralIterator implements Iterator<Literal>
 
 	/**
 	 * Create an iterator over all the individuals in the ABox
+	 *
+	 * @param abox
 	 */
 	public LiteralIterator(final ABox abox)
 	{
@@ -73,9 +75,9 @@ public class LiteralIterator implements Iterator<Literal>
 	 * Create a limited iterator over the individuals in the ABox that only covers the individuals whose _index in _nodeList is between _start ans _stop
 	 * indices.
 	 *
-	 * @param _abox
-	 * @param _start
-	 * @param _stop
+	 * @param abox
+	 * @param start
+	 * @param stop
 	 */
 	public LiteralIterator(final ABox abox, final int start, final int stop)
 	{

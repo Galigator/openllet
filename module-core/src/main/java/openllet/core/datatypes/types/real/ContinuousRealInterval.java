@@ -202,27 +202,26 @@ public class ContinuousRealInterval
 	private final Number _upper;
 
 	/**
-	 * Create a _point interval. This is equivalent to {@link #OWLRealInterval(Number, Number, boolean, boolean)} with arguments
-	 * <code>_point,_point,true,true</code>
+	 * Create a _point interval. This is equivalent to OWLRealInterval(Number, Number, boolean, boolean) with arguments <code>point,point,true,true</code>
 	 *
-	 * @param _point Value of _point interval
+	 * @param point Value of point interval
 	 */
 	public ContinuousRealInterval(final Number point)
 	{
-		this._lower = point;
-		this._upper = point;
-		this._point = true;
-		this._inclusiveLower = true;
-		this._inclusiveUpper = true;
+		_lower = point;
+		_upper = point;
+		_point = true;
+		_inclusiveLower = true;
+		_inclusiveUpper = true;
 	}
 
 	/**
 	 * Create an interval. <code>null</code> should be used to indicate unbound (i.e., infinite intervals).
 	 *
-	 * @param _lower Interval _lower bound
-	 * @param _upper Interval _upper bound
-	 * @param _inclusiveLower <code>true</code> if _lower bound is inclusive, <code>false</code> for exclusive. Ignored if <code>_lower == null</code>.
-	 * @param _inclusiveUpper <code>true</code> if _upper bound is inclusive, <code>false</code> for exclusive. Ignored if <code>_upper == null</code>.
+	 * @param lower Interval _lower bound
+	 * @param upper Interval _upper bound
+	 * @param inclusiveLower <code>true</code> if _lower bound is inclusive, <code>false</code> for exclusive. Ignored if <code>_lower == null</code>.
+	 * @param inclusiveUpper <code>true</code> if _upper bound is inclusive, <code>false</code> for exclusive. Ignored if <code>_upper == null</code>.
 	 */
 	public ContinuousRealInterval(final Number lower, final Number upper, final boolean inclusiveLower, final boolean inclusiveUpper)
 	{
@@ -237,7 +236,7 @@ public class ContinuousRealInterval
 			}
 			else
 				if (cmp == 0)
-					if ((!inclusiveLower || !inclusiveUpper))
+					if (!inclusiveLower || !inclusiveUpper)
 					{
 						final String msg = "Point intervals must be inclusive";
 						_logger.severe(msg);
@@ -245,22 +244,22 @@ public class ContinuousRealInterval
 					}
 		}
 
-		this._lower = lower;
-		this._upper = upper;
-		this._inclusiveLower = (lower == null) ? false : inclusiveLower;
-		this._inclusiveUpper = (upper == null) ? false : inclusiveUpper;
+		_lower = lower;
+		_upper = upper;
+		_inclusiveLower = lower == null ? false : inclusiveLower;
+		_inclusiveUpper = upper == null ? false : inclusiveUpper;
 
-		this._point = (lower != null && upper != null && lower.equals(upper));
+		_point = lower != null && upper != null && lower.equals(upper);
 	}
 
 	public boolean boundLower()
 	{
-		return (_lower != null);
+		return _lower != null;
 	}
 
 	public boolean boundUpper()
 	{
-		return (_upper != null);
+		return _upper != null;
 	}
 
 	public boolean canUnionWith(final ContinuousRealInterval other)
@@ -282,7 +281,7 @@ public class ContinuousRealInterval
 			comp = OWLRealUtils.compare(getLower(), n);
 			if (comp > 0)
 				return false;
-			if ((comp == 0) && !inclusiveLower())
+			if (comp == 0 && !inclusiveLower())
 				return false;
 		}
 
@@ -291,7 +290,7 @@ public class ContinuousRealInterval
 			comp = OWLRealUtils.compare(getUpper(), n);
 			if (comp < 0)
 				return false;
-			if ((comp == 0) && !inclusiveUpper())
+			if (comp == 0 && !inclusiveUpper())
 				return false;
 		}
 
@@ -370,8 +369,8 @@ public class ContinuousRealInterval
 		int result = 1;
 		result = prime * result + (_inclusiveLower ? 1231 : 1237);
 		result = prime * result + (_inclusiveUpper ? 1231 : 1237);
-		result = prime * result + ((_lower == null) ? 0 : _lower.hashCode());
-		result = prime * result + ((_upper == null) ? 0 : _upper.hashCode());
+		result = prime * result + (_lower == null ? 0 : _lower.hashCode());
+		result = prime * result + (_upper == null ? 0 : _upper.hashCode());
 		return result;
 	}
 
@@ -404,33 +403,33 @@ public class ContinuousRealInterval
 
 			case EQUALS:
 
-				lower = this.getLower();
-				inclusiveLower = this.inclusiveLower();
-				upper = this.getUpper();
-				inclusiveUpper = this.inclusiveUpper();
+				lower = getLower();
+				inclusiveLower = inclusiveLower();
+				upper = getUpper();
+				inclusiveUpper = inclusiveUpper();
 				break;
 
 			case DURING:
 			case STARTS:
 
-				lower = this.getLower();
-				inclusiveLower = this.inclusiveLower();
-				upper = this.getUpper();
-				inclusiveUpper = this.inclusiveUpper();
+				lower = getLower();
+				inclusiveLower = inclusiveLower();
+				upper = getUpper();
+				inclusiveUpper = inclusiveUpper();
 				break;
 
 			case FINISHED_BY:
 				lower = that.getLower();
 				inclusiveLower = that.inclusiveLower();
 				upper = that.getUpper();
-				inclusiveUpper = (this.inclusiveUpper() && that.inclusiveUpper());
+				inclusiveUpper = inclusiveUpper() && that.inclusiveUpper();
 				break;
 
 			case FINISHES:
-				lower = this.getLower();
-				inclusiveLower = this.inclusiveLower();
-				upper = this.getUpper();
-				inclusiveUpper = (this.inclusiveUpper() && that.inclusiveUpper());
+				lower = getLower();
+				inclusiveLower = inclusiveLower();
+				upper = getUpper();
+				inclusiveUpper = inclusiveUpper() && that.inclusiveUpper();
 				break;
 
 			case MEETS:
@@ -438,8 +437,8 @@ public class ContinuousRealInterval
 				return null;
 
 			case OVERLAPPED_BY:
-				lower = this.getLower();
-				inclusiveLower = this.inclusiveLower();
+				lower = getLower();
+				inclusiveLower = inclusiveLower();
 				upper = that.getUpper();
 				inclusiveUpper = that.inclusiveUpper();
 				break;
@@ -447,8 +446,8 @@ public class ContinuousRealInterval
 			case OVERLAPS:
 				lower = that.getLower();
 				inclusiveLower = that.inclusiveLower();
-				upper = this.getUpper();
-				inclusiveUpper = this.inclusiveUpper();
+				upper = getUpper();
+				inclusiveUpper = inclusiveUpper();
 				break;
 
 			case PRECEDED_BY:
@@ -491,8 +490,8 @@ public class ContinuousRealInterval
 		{
 
 			case CONTAINS:
-				before = new ContinuousRealInterval(this.getLower(), other.getLower(), inclusiveLower(), !other.inclusiveLower());
-				after = new ContinuousRealInterval(other.getUpper(), this.getUpper(), !other.inclusiveUpper(), this.inclusiveUpper());
+				before = new ContinuousRealInterval(getLower(), other.getLower(), inclusiveLower(), !other.inclusiveLower());
+				after = new ContinuousRealInterval(other.getUpper(), getUpper(), !other.inclusiveUpper(), inclusiveUpper());
 				break;
 
 			case DURING:
@@ -502,24 +501,24 @@ public class ContinuousRealInterval
 				return Collections.emptyList();
 
 			case MEETS:
-				before = new ContinuousRealInterval(this.getLower(), this.getUpper(), this.inclusiveLower(), false);
+				before = new ContinuousRealInterval(getLower(), getUpper(), inclusiveLower(), false);
 				after = null;
 				break;
 
 			case MET_BY:
 				before = null;
-				after = new ContinuousRealInterval(this.getLower(), this.getUpper(), false, this.inclusiveUpper());
+				after = new ContinuousRealInterval(getLower(), getUpper(), false, inclusiveUpper());
 				break;
 
 			case OVERLAPPED_BY:
 			case STARTED_BY:
 				before = null;
-				after = new ContinuousRealInterval(other.getUpper(), this.getUpper(), !other.inclusiveUpper(), this.inclusiveUpper());
+				after = new ContinuousRealInterval(other.getUpper(), getUpper(), !other.inclusiveUpper(), inclusiveUpper());
 				break;
 
 			case OVERLAPS:
 			case FINISHED_BY:
-				before = new ContinuousRealInterval(this.getLower(), other.getLower(), this.inclusiveLower(), !other.inclusiveLower());
+				before = new ContinuousRealInterval(getLower(), other.getLower(), inclusiveLower(), !other.inclusiveLower());
 				after = null;
 				break;
 

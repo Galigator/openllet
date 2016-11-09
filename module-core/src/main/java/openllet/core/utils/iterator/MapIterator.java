@@ -11,6 +11,8 @@ import java.util.Iterator;
  * </p>
  *
  * @author Evren Sirin
+ * @param <F> kind of function
+ * @param <T> kind of elements
  */
 public abstract class MapIterator<F, T> implements Iterator<T>
 {

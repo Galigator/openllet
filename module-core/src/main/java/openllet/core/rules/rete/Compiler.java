@@ -180,7 +180,7 @@ public class Compiler
 				}
 			}
 
-			final boolean firstBeta = (node == null);
+			final boolean firstBeta = node == null;
 			BetaNode newBeta = null;
 
 			if (canReuseBeta)
@@ -215,7 +215,7 @@ public class Compiler
 			}
 
 			alpha.addChild(newBeta);
-			if ((!firstBeta) && node != null)
+			if (!firstBeta && node != null)
 				node.addChild(newBeta);
 			node = newBeta;
 
@@ -300,7 +300,8 @@ public class Compiler
 		private boolean result = false;
 
 		/**
-		 * May return true if _atom is something that will be added to the ABox during completion.
+		 * @param atom
+		 * @return maybe true if _atom is something that will be added to the ABox during completion.
 		 */
 		public boolean isSafe(final RuleAtom atom)
 		{

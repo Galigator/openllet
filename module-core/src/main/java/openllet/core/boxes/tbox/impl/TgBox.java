@@ -34,7 +34,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -48,6 +47,7 @@ import openllet.aterm.ATermList;
 import openllet.core.DependencySet;
 import openllet.core.OpenlletOptions;
 import openllet.core.utils.ATermUtils;
+import openllet.core.utils.CollectionUtils;
 import openllet.shared.tools.Log;
 
 public class TgBox extends TBoxBase
@@ -129,7 +129,9 @@ public class TgBox extends TBoxBase
 
 		final Collection<TermDefinition> terms = _termhash.values();
 
-		_termhash = new HashMap<>();
+		// _termhash.clear(); FIXME : why is this doesn't work ?
+		// _termhash = new HashMap<>();
+		_termhash = CollectionUtils.makeIdentityMap();
 
 		for (final TermDefinition def : terms)
 		{

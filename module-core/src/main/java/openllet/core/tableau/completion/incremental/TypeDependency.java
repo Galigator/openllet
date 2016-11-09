@@ -29,19 +29,17 @@ public class TypeDependency implements Dependency
 	/**
 	 * Constructor
 	 *
-	 * @param _ind
-	 * @param _type
+	 * @param ind
+	 * @param type
 	 */
 	public TypeDependency(final ATermAppl ind, final ATermAppl type)
 	{
-		this._type = type;
-		this._ind = ind;
+		_type = type;
+		_ind = ind;
 	}
 
 	/**
-	 * Get the _individual
-	 *
-	 * @return
+	 * @return the _individual
 	 */
 	public ATermAppl getInd()
 	{
@@ -49,9 +47,7 @@ public class TypeDependency implements Dependency
 	}
 
 	/**
-	 * Get the _type
-	 *
-	 * @return
+	 * @return the _type
 	 */
 	public ATermAppl getType()
 	{
@@ -74,7 +70,7 @@ public class TypeDependency implements Dependency
 	public boolean equals(final Object other)
 	{
 		if (other instanceof TypeDependency)
-			return this._ind.equals(((TypeDependency) other)._ind) && this._type.equals(((TypeDependency) other)._type);
+			return _ind.equals(((TypeDependency) other)._ind) && _type.equals(((TypeDependency) other)._type);
 		else
 			return false;
 	}
@@ -85,7 +81,7 @@ public class TypeDependency implements Dependency
 	@Override
 	public int hashCode()
 	{
-		return this._ind.hashCode() + this._type.hashCode();
+		return _ind.hashCode() + _type.hashCode();
 	}
 
 }

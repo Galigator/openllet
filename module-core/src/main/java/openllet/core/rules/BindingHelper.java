@@ -30,12 +30,14 @@ public interface BindingHelper
 {
 
 	/**
-	 * Returns a set of variables which this binding helper can bind.
+	 * @param bound
+	 * @return a set of variables which this binding helper can bind.
 	 */
 	public Collection<? extends AtomVariable> getBindableVars(Collection<AtomVariable> bound);
 
 	/**
-	 * Returns a set of variables which must be bound before this helper can generate bindings.
+	 * @param bound
+	 * @return a set of variables which must be bound before this helper can generate bindings.
 	 */
 	public Collection<? extends AtomVariable> getPrerequisiteVars(Collection<AtomVariable> bound);
 
@@ -55,7 +57,7 @@ public interface BindingHelper
 
 	/**
 	 * Set the variables this pattern uses in the given map.
-	 * 
+	 *
 	 * @param currentBinding
 	 */
 	public void setCurrentBinding(VariableBinding currentBinding);

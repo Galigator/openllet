@@ -31,6 +31,7 @@ import openllet.shared.tools.Log;
  * </p>
  *
  * @author Mike Smith
+ * @param <T> kind of number
  */
 public class RestrictedFloatingPointDatatype<T extends Number & Comparable<T>> implements RestrictedDatatype<T>
 {
@@ -360,7 +361,6 @@ public class RestrictedFloatingPointDatatype<T extends Number & Comparable<T>> i
 		return true;
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public int size()
 	{
@@ -431,7 +431,7 @@ public class RestrictedFloatingPointDatatype<T extends Number & Comparable<T>> i
 		 * openllet.core.utils.iterator.MultiIterator
 		 */
 		return new Iterator<T>()
-				{
+		{
 			final Iterator<FloatingPointInterval<T>> iit = _intervals.iterator();
 			Iterator<T> nit = null;
 
@@ -467,7 +467,7 @@ public class RestrictedFloatingPointDatatype<T extends Number & Comparable<T>> i
 			{
 				throw new UnsupportedOperationException();
 			}
-				};
+		};
 	}
 
 }

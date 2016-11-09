@@ -15,6 +15,8 @@ package openllet.core.utils;
  * </p>
  *
  * @author Evren sirin
+ * @param <F> kind of first element
+ * @param <S> kind of second element
  */
 public class Pair<F, S>
 {

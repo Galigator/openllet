@@ -384,7 +384,7 @@ public class Clash
 	}
 
 	/**
-	 * @param _node the _node to set
+	 * @param node the _node to set
 	 */
 	public void setNode(final Node node)
 	{
@@ -400,7 +400,7 @@ public class Clash
 	}
 
 	/**
-	 * @param _type the _type to set
+	 * @param type the _type to set
 	 */
 	public void setType(final ClashType type)
 	{

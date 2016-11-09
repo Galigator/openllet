@@ -46,11 +46,11 @@ import openllet.core.utils.ATermUtils;
 
 public class DisjunctionBranch extends Branch
 {
-	protected Node _node;
-	protected ATermAppl _disjunction;
-	private ATermAppl[] _disj;
-	protected DependencySet[] _prevDS;
-	protected int[] _order;
+	protected final Node _node;
+	protected final ATermAppl _disjunction;
+	private volatile ATermAppl[] _disj;
+	protected volatile DependencySet[] _prevDS;
+	protected volatile int[] _order;
 
 	public DisjunctionBranch(final ABox abox, final CompletionStrategy completion, final Node node, final ATermAppl disjunction, final DependencySet ds, final ATermAppl[] disj)
 	{
@@ -138,7 +138,7 @@ public class DisjunctionBranch extends Branch
 				final int preference = preferredDisjunct();
 				stats = new int[_disj.length];
 				for (int i = 0; i < _disj.length; i++)
-					stats[i] = (i != preference) ? 0 : Integer.MIN_VALUE;
+					stats[i] = i != preference ? 0 : Integer.MIN_VALUE;
 				_abox.getDisjBranchStats().put(_disjunction, stats);
 			}
 			if (getTryNext() > 0)
@@ -148,7 +148,7 @@ public class DisjunctionBranch extends Branch
 			int minValue = stats[getTryNext()];
 			for (int i = getTryNext() + 1; i < stats.length; i++)
 			{
-				final boolean tryEarlier = (stats[i] < minValue);
+				final boolean tryEarlier = stats[i] < minValue;
 
 				if (tryEarlier)
 				{
@@ -270,7 +270,7 @@ public class DisjunctionBranch extends Branch
 					// set the clash only if we are returning from the function
 					if (_abox.doExplanation())
 					{
-						final ATermAppl positive = (ATermUtils.isNot(notD) ? d : notD);
+						final ATermAppl positive = ATermUtils.isNot(notD) ? d : notD;
 						_abox.setClash(Clash.atomic(node, clashDepends.union(ds, _abox.doExplanation()), positive));
 					}
 					else
@@ -296,7 +296,7 @@ public class DisjunctionBranch extends Branch
 	/**
 	 * Added for to re-open closed branches. This is needed for incremental reasoning through deletions
 	 *
-	 * @param _index The shift _index
+	 * @param openIndex The shift _index
 	 */
 	@Override
 	public void shiftTryNext(final int openIndex)
@@ -349,7 +349,7 @@ public class DisjunctionBranch extends Branch
 	}
 
 	/**
-	 * @param _disj the _disj to set
+	 * @param disj the _disj to set
 	 */
 	public void setDisj(final ATermAppl[] disj)
 	{
@@ -357,7 +357,8 @@ public class DisjunctionBranch extends Branch
 	}
 
 	/**
-	 * @return the _disj
+	 * @param i
+	 * @return the disj
 	 */
 	public ATermAppl getDisjunct(final int i)
 	{

@@ -10,6 +10,7 @@ import java.util.Map;
 import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
 import openllet.core.boxes.abox.EdgeList;
+import openllet.core.boxes.abox.Individual;
 import openllet.core.boxes.rbox.Role;
 
 /**
@@ -68,15 +69,16 @@ public interface CachedNode
 	/**
 	 * Returns the incoming edges of this _node.
 	 *
-	 * @return Incoming edges of this _node
+	 * @return Incoming edges of this node
 	 */
 	public EdgeList getInEdges();
 
 	/**
-	 * Checks if this _node is connected to another _node with the given role (or one of its subproperties). The _node may have an incoming edge with the
-	 * inverse of this role which would count as an r-_neighbor.
+	 * Checks if this node is connected to another _node with the given role (or one of its subproperties). The _node may have an incoming edge with the inverse
+	 * of this role which would count as an r-neighbor.
 	 *
-	 * @return Outgoing edges of this _node
+	 * @param role
+	 * @return Outgoing edges of this node
 	 */
 	public boolean hasRNeighbor(Role role);
 

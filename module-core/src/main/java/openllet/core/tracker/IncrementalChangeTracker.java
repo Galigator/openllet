@@ -125,7 +125,7 @@ public interface IncrementalChangeTracker
 	public Iterator<Individual> newIndividuals();
 
 	/**
-	 * Iterate over all _nodes unpruned (see {@link #addUnprunedIndividual(Individual)}) since the previous {@link #clear()}
+	 * Iterate over all _nodes unpruned (see addUnprunedIndividual) since the previous {@link #clear()}
 	 *
 	 * @return Iterator
 	 */

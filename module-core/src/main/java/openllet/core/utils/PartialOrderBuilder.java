@@ -14,6 +14,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
+import openllet.atom.OpenError;
 import openllet.core.taxonomy.Taxonomy;
 import openllet.core.taxonomy.TaxonomyImpl;
 import openllet.core.taxonomy.TaxonomyNode;
@@ -30,6 +31,7 @@ import openllet.core.taxonomy.TaxonomyNode;
  * </p>
  *
  * @author Mike Smith
+ * @param <T> type of taxon
  */
 public class PartialOrderBuilder<T>
 {
@@ -57,6 +59,9 @@ public class PartialOrderBuilder<T>
 
 	/**
 	 * Initialize the builder with given _taxonomy and _comparator.
+	 *
+	 * @param taxonomy
+	 * @param comparator
 	 */
 	public PartialOrderBuilder(final Taxonomy<T> taxonomy, final PartialOrderComparator<T> comparator)
 	{
@@ -73,6 +78,7 @@ public class PartialOrderBuilder<T>
 	 * Add a new element to the partial _order of this builder with its _comparator.
 	 *
 	 * @param toAdd the element to be added
+	 * @param hidden
 	 */
 	public void add(final T toAdd, final boolean hidden)
 	{
@@ -235,6 +241,8 @@ public class PartialOrderBuilder<T>
 						break;
 					case INCOMPARABLE:
 						break;
+					default:
+						throw new OpenError("Impossible comparison");
 				}
 
 			if (!hasSuccessors && candidate != null)

@@ -272,7 +272,7 @@ public class Expressivity
 	}
 
 	/**
-	 * Returns true if a cardinality restriction (less than or equal to 1) is defined on any datatype property
+	 * @return true if a cardinality restriction (less than or equal to 1) is defined on any datatype property
 	 */
 	public boolean hasFunctionalityD()
 	{
@@ -285,7 +285,7 @@ public class Expressivity
 	}
 
 	/**
-	 * Returns true if a cardinality restriction (greater than 1) is defined on any datatype property
+	 * @return true if a cardinality restriction (greater than 1) is defined on any datatype property
 	 */
 	public boolean hasCardinalityD()
 	{
@@ -354,6 +354,7 @@ public class Expressivity
 	}
 
 	/**
+	 * @return do not use
 	 * @deprecated Use {@link #hasAsymmmetry()}
 	 */
 	@Deprecated
@@ -368,6 +369,7 @@ public class Expressivity
 	}
 
 	/**
+	 * @param v
 	 * @deprecated Use {@link #setHasAsymmetry(boolean)}
 	 */
 	@Deprecated

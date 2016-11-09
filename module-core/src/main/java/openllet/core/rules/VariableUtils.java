@@ -114,6 +114,9 @@ public class VariableUtils
 
 	/**
 	 * Static convenience function to return the instance variables used in the given atom.
+	 *
+	 * @param atom
+	 * @return return the instance variables used in the given atom.
 	 */
 	public static Collection<AtomDVariable> getDVars(final RuleAtom atom)
 	{
@@ -125,6 +128,9 @@ public class VariableUtils
 
 	/**
 	 * Static convenience function to return the instance variables used in the given atom.
+	 *
+	 * @param atom
+	 * @return return the instance variables used in the given atom.
 	 */
 	public static Collection<AtomIVariable> getIVars(final RuleAtom atom)
 	{
@@ -136,6 +142,9 @@ public class VariableUtils
 
 	/**
 	 * Static convenience function to return the variables used in the given atom.
+	 *
+	 * @param atom
+	 * @return the variables used in the given atom.
 	 */
 	public static Collection<AtomVariable> getVars(final RuleAtom atom)
 	{
@@ -146,7 +155,8 @@ public class VariableUtils
 	}
 
 	/**
-	 * Returns true if atom object is a variable
+	 * @return true if atom object is a variable
+	 * @param obj
 	 */
 	public static boolean isVariable(final AtomObject obj)
 	{

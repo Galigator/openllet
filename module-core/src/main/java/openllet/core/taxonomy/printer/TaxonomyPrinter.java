@@ -24,6 +24,7 @@ import openllet.core.taxonomy.Taxonomy;
  * </p>
  *
  * @author Mike Smith
+ * @param <T> kind of taxon
  */
 public interface TaxonomyPrinter<T>
 {

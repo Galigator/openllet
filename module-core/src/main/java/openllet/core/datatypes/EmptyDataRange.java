@@ -18,6 +18,7 @@ import java.util.NoSuchElementException;
  * </p>
  *
  * @author Mike Smith
+ * @param <T> kind of classes
  */
 public class EmptyDataRange<T> implements DataRange<T>
 {

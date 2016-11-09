@@ -45,9 +45,9 @@ public class OWLRealInterval
 
 		public IntegerIterator(final Number first, final Number last, final boolean increment)
 		{
-			this._last = last;
-			this._increment = increment;
-			this._next = first;
+			_last = last;
+			_increment = increment;
+			_next = first;
 		}
 
 		@Override
@@ -64,7 +64,7 @@ public class OWLRealInterval
 
 			final Number n = _next;
 
-			if ((_last != null) && (OWLRealUtils.compare(_next, _last) == 0))
+			if (_last != null && OWLRealUtils.compare(_next, _last) == 0)
 				_next = null;
 			else
 				_next = _increment ? OWLRealUtils.integerIncrement(_next) : OWLRealUtils.integerDecrement(_next);
@@ -290,20 +290,19 @@ public class OWLRealInterval
 	private final Number _upper;
 
 	/**
-	 * Create a _point interval. This is equivalent to {@link #OWLRealInterval(Number, Number, boolean, boolean)} with arguments
-	 * <code>_point,_point,true,true</code>
+	 * Create a _point interval. This is equivalent to {@link #OWLRealInterval} with arguments <code>_point,_point,true,true</code>
 	 *
-	 * @param _point Value of _point interval
+	 * @param point Value of _point interval
 	 */
 	public OWLRealInterval(final Number point)
 	{
-		this._lower = point;
-		this._upper = point;
-		this._point = true;
-		this._inclusiveLower = true;
-		this._inclusiveUpper = true;
-		this._type = LineType.CONTINUOUS;
-		this._finite = true;
+		_lower = point;
+		_upper = point;
+		_point = true;
+		_inclusiveLower = true;
+		_inclusiveUpper = true;
+		_type = LineType.CONTINUOUS;
+		_finite = true;
 	}
 
 	/**
@@ -315,7 +314,7 @@ public class OWLRealInterval
 	 * @param inclusiveUpper <code>true</code> if upper bound is inclusive, <code>false</code> for exclusive. Ignored if <code>upper == null</code>.
 	 * @param baseType
 	 */
-	public OWLRealInterval(final Number lower, final Number upper, final boolean inclusiveLower, final boolean inclusiveUpper, LineType baseType)
+	public OWLRealInterval(final Number lower, final Number upper, final boolean inclusiveLower, final boolean inclusiveUpper, final LineType baseType)
 	{
 		LineType type = baseType;
 
@@ -331,7 +330,7 @@ public class OWLRealInterval
 			else
 				if (cmp == 0)
 				{
-					if ((!inclusiveLower || !inclusiveUpper))
+					if (!inclusiveLower || !inclusiveUpper)
 					{
 						final String msg = "Point intervals must be inclusive";
 						_logger.severe(msg);
@@ -341,51 +340,51 @@ public class OWLRealInterval
 				}
 		}
 
-		this._type = type;
+		_type = type;
 		if (LineType.INTEGER_ONLY.equals(type))
 		{
 			if (lower == null)
 			{
-				this._lower = null;
-				this._inclusiveLower = false;
+				_lower = null;
+				_inclusiveLower = false;
 			}
 			else
 			{
 				if (inclusiveLower)
 				{
 					if (isInteger(lower))
-						this._lower = lower;
+						_lower = lower;
 					else
-						this._lower = roundDown(lower);
+						_lower = roundDown(lower);
 				}
 				else
 					if (isInteger(lower))
-						this._lower = integerIncrement(lower);
+						_lower = integerIncrement(lower);
 					else
-						this._lower = roundDown(lower);
-				this._inclusiveLower = true;
+						_lower = roundDown(lower);
+				_inclusiveLower = true;
 			}
 
 			if (upper == null)
 			{
-				this._upper = null;
-				this._inclusiveUpper = false;
+				_upper = null;
+				_inclusiveUpper = false;
 			}
 			else
 			{
 				if (inclusiveUpper)
 				{
 					if (isInteger(upper))
-						this._upper = upper;
+						_upper = upper;
 					else
-						this._upper = roundDown(upper);
+						_upper = roundDown(upper);
 				}
 				else
 					if (isInteger(upper))
-						this._upper = integerDecrement(upper);
+						_upper = integerDecrement(upper);
 					else
-						this._upper = roundDown(upper);
-				this._inclusiveUpper = true;
+						_upper = roundDown(upper);
+				_inclusiveUpper = true;
 			}
 
 		}
@@ -394,63 +393,63 @@ public class OWLRealInterval
 			{
 				if (lower == null)
 				{
-					this._lower = null;
-					this._inclusiveLower = false;
+					_lower = null;
+					_inclusiveLower = false;
 				}
 				else
 				{
-					this._lower = lower;
+					_lower = lower;
 					if (inclusiveLower)
 					{
 						if (isInteger(lower))
-							this._inclusiveLower = false;
+							_inclusiveLower = false;
 						else
-							this._inclusiveLower = true;
+							_inclusiveLower = true;
 					}
 					else
-						this._inclusiveLower = false;
+						_inclusiveLower = false;
 				}
 
 				if (upper == null)
 				{
-					this._upper = null;
-					this._inclusiveUpper = false;
+					_upper = null;
+					_inclusiveUpper = false;
 				}
 				else
 				{
-					this._upper = upper;
+					_upper = upper;
 					if (inclusiveUpper)
 					{
 						if (isInteger(upper))
-							this._inclusiveUpper = false;
+							_inclusiveUpper = false;
 						else
-							this._inclusiveUpper = true;
+							_inclusiveUpper = true;
 					}
 					else
-						this._inclusiveUpper = false;
+						_inclusiveUpper = false;
 				}
 			}
 			else
 			{
-				this._lower = lower;
-				this._upper = upper;
-				this._inclusiveLower = (lower == null) ? false : inclusiveLower;
-				this._inclusiveUpper = (upper == null) ? false : inclusiveUpper;
+				_lower = lower;
+				_upper = upper;
+				_inclusiveLower = lower == null ? false : inclusiveLower;
+				_inclusiveUpper = upper == null ? false : inclusiveUpper;
 			}
 
-		this._point = (lower != null && upper != null && lower.equals(upper));
+		_point = lower != null && upper != null && lower.equals(upper);
 
-		this._finite = this._point || ((LineType.INTEGER_ONLY.equals(type) && (lower != null) && (upper != null)));
+		_finite = _point || LineType.INTEGER_ONLY.equals(type) && lower != null && upper != null;
 	}
 
 	public boolean boundLower()
 	{
-		return (_lower != null);
+		return _lower != null;
 	}
 
 	public boolean boundUpper()
 	{
-		return (_upper != null);
+		return _upper != null;
 	}
 
 	public IntervalRelations compare(final OWLRealInterval other)
@@ -477,7 +476,7 @@ public class OWLRealInterval
 			comp = OWLRealUtils.compare(getLower(), n);
 			if (comp > 0)
 				return false;
-			if ((comp == 0) && !inclusiveLower())
+			if (comp == 0 && !inclusiveLower())
 				return false;
 		}
 
@@ -486,7 +485,7 @@ public class OWLRealInterval
 			comp = OWLRealUtils.compare(getUpper(), n);
 			if (comp < 0)
 				return false;
-			if ((comp == 0) && !inclusiveUpper())
+			if (comp == 0 && !inclusiveUpper())
 				return false;
 		}
 
@@ -572,9 +571,9 @@ public class OWLRealInterval
 		int result = 1;
 		result = prime * result + (_inclusiveLower ? 1231 : 1237);
 		result = prime * result + (_inclusiveUpper ? 1231 : 1237);
-		result = prime * result + ((_lower == null) ? 0 : _lower.hashCode());
-		result = prime * result + ((_type == null) ? 0 : _type.hashCode());
-		result = prime * result + ((_upper == null) ? 0 : _upper.hashCode());
+		result = prime * result + (_lower == null ? 0 : _lower.hashCode());
+		result = prime * result + (_type == null ? 0 : _type.hashCode());
+		result = prime * result + (_upper == null ? 0 : _upper.hashCode());
 		return result;
 	}
 
@@ -593,7 +592,7 @@ public class OWLRealInterval
 		Number lower, upper;
 		boolean inclusiveUpper, inclusiveLower;
 
-		final LineType intersectionType = this._type.intersect(that._type);
+		final LineType intersectionType = _type.intersect(that._type);
 		if (intersectionType == null)
 			return null;
 
@@ -613,41 +612,41 @@ public class OWLRealInterval
 				break;
 
 			case EQUALS:
-				if (intersectionType.equals(this._type))
+				if (intersectionType.equals(_type))
 					return this;
-				if (intersectionType.equals(this._type))
+				if (intersectionType.equals(_type))
 					return that;
 
-				lower = this.getLower();
-				inclusiveLower = this.inclusiveLower();
-				upper = this.getUpper();
-				inclusiveUpper = this.inclusiveUpper();
+				lower = getLower();
+				inclusiveLower = inclusiveLower();
+				upper = getUpper();
+				inclusiveUpper = inclusiveUpper();
 				break;
 
 			case DURING:
 			case STARTS:
 
-				if (intersectionType.equals(this._type))
+				if (intersectionType.equals(_type))
 					return this;
 
-				lower = this.getLower();
-				inclusiveLower = this.inclusiveLower();
-				upper = this.getUpper();
-				inclusiveUpper = this.inclusiveUpper();
+				lower = getLower();
+				inclusiveLower = inclusiveLower();
+				upper = getUpper();
+				inclusiveUpper = inclusiveUpper();
 				break;
 
 			case FINISHED_BY:
 				lower = that.getLower();
 				inclusiveLower = that.inclusiveLower();
 				upper = that.getUpper();
-				inclusiveUpper = (this.inclusiveUpper() && that.inclusiveUpper());
+				inclusiveUpper = inclusiveUpper() && that.inclusiveUpper();
 				break;
 
 			case FINISHES:
-				lower = this.getLower();
-				inclusiveLower = this.inclusiveLower();
-				upper = this.getUpper();
-				inclusiveUpper = (this.inclusiveUpper() && that.inclusiveUpper());
+				lower = getLower();
+				inclusiveLower = inclusiveLower();
+				upper = getUpper();
+				inclusiveUpper = inclusiveUpper() && that.inclusiveUpper();
 				break;
 
 			case MEETS:
@@ -655,8 +654,8 @@ public class OWLRealInterval
 				return null;
 
 			case OVERLAPPED_BY:
-				lower = this.getLower();
-				inclusiveLower = this.inclusiveLower();
+				lower = getLower();
+				inclusiveLower = inclusiveLower();
 				upper = that.getUpper();
 				inclusiveUpper = that.inclusiveUpper();
 				break;
@@ -664,8 +663,8 @@ public class OWLRealInterval
 			case OVERLAPS:
 				lower = that.getLower();
 				inclusiveLower = that.inclusiveLower();
-				upper = this.getUpper();
-				inclusiveUpper = this.inclusiveUpper();
+				upper = getUpper();
+				inclusiveUpper = inclusiveUpper();
 				break;
 
 			case PRECEDED_BY:
@@ -763,7 +762,7 @@ public class OWLRealInterval
 	public List<OWLRealInterval> remove(final OWLRealInterval other)
 	{
 
-		final LineType t1 = this.getType();
+		final LineType t1 = getType();
 		final LineType t2 = other.getType();
 
 		if (LineType.INTEGER_ONLY.equals(t1))
@@ -781,12 +780,12 @@ public class OWLRealInterval
 		{
 
 			case CONTAINS:
-				before = new OWLRealInterval(this.getLower(), other.getLower(), inclusiveLower(), !other.inclusiveLower(), t1);
+				before = new OWLRealInterval(getLower(), other.getLower(), inclusiveLower(), !other.inclusiveLower(), t1);
 				if (t1.equals(t2) || LineType.CONTINUOUS.equals(t2))
 					during = null;
 				else
 					during = new OWLRealInterval(other.getLower(), other.getUpper(), false, false, LineType.INTEGER_EXCLUDED.equals(t2) ? LineType.INTEGER_ONLY : LineType.INTEGER_EXCLUDED);
-				after = new OWLRealInterval(other.getUpper(), this.getUpper(), !other.inclusiveUpper(), this.inclusiveUpper(), t1);
+				after = new OWLRealInterval(other.getUpper(), getUpper(), !other.inclusiveUpper(), inclusiveUpper(), t1);
 				break;
 
 			case DURING:
@@ -797,21 +796,21 @@ public class OWLRealInterval
 				if (t1.equals(t2) || LineType.CONTINUOUS.equals(t2))
 					during = null;
 				else
-					during = new OWLRealInterval(this.getLower(), this.getUpper(), false, false, LineType.INTEGER_EXCLUDED.equals(t2) ? LineType.INTEGER_ONLY : LineType.INTEGER_EXCLUDED);
+					during = new OWLRealInterval(getLower(), getUpper(), false, false, LineType.INTEGER_EXCLUDED.equals(t2) ? LineType.INTEGER_ONLY : LineType.INTEGER_EXCLUDED);
 				after = null;
 				break;
 
 			case FINISHED_BY:
-				before = new OWLRealInterval(this.getLower(), other.getLower(), this.inclusiveLower(), !other.inclusiveLower(), t1);
+				before = new OWLRealInterval(getLower(), other.getLower(), inclusiveLower(), !other.inclusiveLower(), t1);
 				if (t1.equals(t2) || LineType.CONTINUOUS.equals(t2))
 					during = null;
 				else
-					during = new OWLRealInterval(other.getLower(), this.getUpper(), false, false, LineType.INTEGER_EXCLUDED.equals(t2) ? LineType.INTEGER_ONLY : LineType.INTEGER_EXCLUDED);
+					during = new OWLRealInterval(other.getLower(), getUpper(), false, false, LineType.INTEGER_EXCLUDED.equals(t2) ? LineType.INTEGER_ONLY : LineType.INTEGER_EXCLUDED);
 				after = null;
 				break;
 
 			case MEETS:
-				before = new OWLRealInterval(this.getLower(), this.getUpper(), this.inclusiveLower(), false, t1);
+				before = new OWLRealInterval(getLower(), getUpper(), inclusiveLower(), false, t1);
 				during = null;
 				after = null;
 				break;
@@ -819,7 +818,7 @@ public class OWLRealInterval
 			case MET_BY:
 				before = null;
 				during = null;
-				after = new OWLRealInterval(this.getLower(), this.getUpper(), false, this.inclusiveUpper(), t1);
+				after = new OWLRealInterval(getLower(), getUpper(), false, inclusiveUpper(), t1);
 				break;
 
 			case OVERLAPPED_BY:
@@ -828,16 +827,16 @@ public class OWLRealInterval
 				if (t1.equals(t2) || LineType.CONTINUOUS.equals(t2))
 					during = null;
 				else
-					during = new OWLRealInterval(this.getLower(), other.getUpper(), false, false, LineType.INTEGER_EXCLUDED.equals(t2) ? LineType.INTEGER_ONLY : LineType.INTEGER_EXCLUDED);
-				after = new OWLRealInterval(other.getUpper(), this.getUpper(), !other.inclusiveUpper(), this.inclusiveUpper(), t1);
+					during = new OWLRealInterval(getLower(), other.getUpper(), false, false, LineType.INTEGER_EXCLUDED.equals(t2) ? LineType.INTEGER_ONLY : LineType.INTEGER_EXCLUDED);
+				after = new OWLRealInterval(other.getUpper(), getUpper(), !other.inclusiveUpper(), inclusiveUpper(), t1);
 				break;
 
 			case OVERLAPS:
-				before = new OWLRealInterval(this.getLower(), other.getLower(), this.inclusiveLower(), !other.inclusiveLower(), t1);
+				before = new OWLRealInterval(getLower(), other.getLower(), inclusiveLower(), !other.inclusiveLower(), t1);
 				if (t1.equals(t2) || LineType.CONTINUOUS.equals(t2))
 					during = null;
 				else
-					during = new OWLRealInterval(other.getLower(), this.getUpper(), false, false, LineType.INTEGER_EXCLUDED.equals(t2) ? LineType.INTEGER_ONLY : LineType.INTEGER_EXCLUDED);
+					during = new OWLRealInterval(other.getLower(), getUpper(), false, false, LineType.INTEGER_EXCLUDED.equals(t2) ? LineType.INTEGER_ONLY : LineType.INTEGER_EXCLUDED);
 				after = null;
 				break;
 
@@ -879,7 +878,7 @@ public class OWLRealInterval
 
 	public List<OWLRealInterval> union(final OWLRealInterval other)
 	{
-		final LineType t1 = this.getType();
+		final LineType t1 = getType();
 		final LineType t2 = other.getType();
 
 		OWLRealInterval before, during, after;

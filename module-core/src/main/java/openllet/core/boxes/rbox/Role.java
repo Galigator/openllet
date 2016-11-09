@@ -11,7 +11,7 @@ import openllet.core.utils.fsm.TransitionGraph;
 
 /**
  * Definition of Role.
- * 
+ *
  * @since 2.6.0
  */
 public interface Role
@@ -20,7 +20,7 @@ public interface Role
 
 	/**
 	 * Add a sub role chain without dependency tracking information
-	 * 
+	 *
 	 * @param chain
 	 */
 	public void addSubRoleChain(final ATermList chain);
@@ -80,7 +80,7 @@ public interface Role
 	public boolean isDatatypeRole();
 
 	/**
-	 * check if a role is declared as datatype property
+	 * @return true if a role is declared as datatype property
 	 */
 	public boolean isAnnotationRole();
 
@@ -169,14 +169,14 @@ public interface Role
 	public void setType(final PropertyType type);
 
 	/**
-	 * @param _subRoleChains
-	 * @param dependencies map from role names (or lists) to depedencies
+	 * @param subRoles
+	 * @param subRoleChains
+	 * @param dependencies map from role names (or lists) to dependencies A map from role names (or role lists) to dependency sets.
 	 */
 	public void setSubRolesAndChains(final Set<Role> subRoles, final Set<ATermList> subRoleChains, final Map<ATerm, DependencySet> dependencies);
 
 	/**
-	 * @param _superRoles The _superRoles to set.
-	 * @param dependencies A map from role names (or role lists) to dependency sets.
+	 * @param superRoles The _superRoles to set.
 	 */
 	public void setSuperRoles(final Set<Role> superRoles);
 
@@ -186,7 +186,7 @@ public interface Role
 	public Set<Role> getFunctionalSupers();
 
 	/**
-	 * @param functionalSuper The functionalSuper to set.
+	 * @param r The functionalSuper to set.
 	 */
 	public void addFunctionalSuper(final Role r);
 

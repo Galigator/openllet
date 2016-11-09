@@ -31,21 +31,21 @@ public interface BranchEffectTracker
 	/**
 	 * Record that a _node is affected by a _branch
 	 *
-	 * @param _branch Branch integer identifier
+	 * @param branch Branch integer identifier
 	 * @param a Node name
 	 * @return boolean {@code true} if effect not already noted for _branch+_node pair, {@code false} else
 	 */
 	public boolean add(int branch, ATermAppl a);
 
 	/**
-	 * Copy _branch tracker
+	 * @return a copy of branch tracker
 	 */
 	public BranchEffectTracker copy();
 
 	/**
 	 * Retrieve _nodes affected by a _branch and all subsequent branches
 	 *
-	 * @param _branch Branch integer identifier
+	 * @param branch Branch integer identifier
 	 * @return Names of all _nodes affected by _branch and subsequent branches
 	 */
 	public Set<ATermAppl> getAll(int branch);
@@ -54,15 +54,15 @@ public interface BranchEffectTracker
 	 * Remove a _branch from the tracker. Note that this causes the _branch to effects association to change for all subsequent branches and should only be used
 	 * if the _branch indices are changed in ABox and all other structures.
 	 *
-	 * @param _branch Branch integer identifier
+	 * @param branch Branch integer identifier
 	 * @return Names of all _nodes affected by _branch
 	 */
 	public Set<ATermAppl> remove(int branch);
 
 	/**
-	 * Remove a _branch and all subsequent branches from the tracker.
+	 * Remove a branch and all subsequent branches from the tracker.
 	 *
-	 * @param _branch Branch integer identifier
+	 * @param branch Branch integer identifier
 	 * @return Names of all _nodes affected by _branch and subsequent branches
 	 */
 	public Set<ATermAppl> removeAll(int branch);

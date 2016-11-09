@@ -13,9 +13,6 @@ import java.util.List;
  * Title: Rule Atom Implementation
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -23,16 +20,16 @@ import java.util.List;
  * </p>
  *
  * @author Ron Alford
+ * @param <P> is a predicate
  */
 
 public abstract class RuleAtomImpl<P> implements RuleAtom
 {
-
-	P _predicate;
+	private final P _predicate;
 
 	public RuleAtomImpl(final P predicate)
 	{
-		this._predicate = predicate;
+		_predicate = predicate;
 	}
 
 	@Override

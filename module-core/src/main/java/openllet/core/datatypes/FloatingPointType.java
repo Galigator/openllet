@@ -15,6 +15,7 @@ package openllet.core.datatypes;
  * </p>
  *
  * @author Mike Smith
+ * @param <T> kind of numbers
  */
 public interface FloatingPointType<T extends Number & Comparable<T>>
 {
@@ -29,9 +30,7 @@ public interface FloatingPointType<T extends Number & Comparable<T>>
 	public T cast(Object o);
 
 	/**
-	 * Return the next floating point value in the direction of <code>-Inf<code>.
-	 *
-	 * @param n The value to decrement
+	 * @param n The value to decrement Return the next floating point value in the direction of <code>-Inf<code>.
 	 * @return If <code>n > -Inf</code>, the next floating point value in the direction of <code>-Inf<code>.  If <code>n == -Inf</code>, <code>-Inf</code>.
 	 * @throws IllegalArgumentException if <code>n.isNaN()</code>
 	 */
@@ -59,9 +58,8 @@ public interface FloatingPointType<T extends Number & Comparable<T>>
 	public T getPositiveInfinity();
 
 	/**
-	 * Return the next floating point value in the direction of <code>+Inf<code>.
+	 * @param n The value to increment Return the next floating point value in the direction of <code>+Inf<code>.
 	 *
-	 * @param n The value to increment
 	 * @return If <code>n < +Inf</code>, the next floating point value in the direction of <code>+Inf<code>.  If <code>n == +Inf</code>, <code>+Inf</code>.
 	 * @throws IllegalArgumentException if <code>n.isNaN()</code>
 	 */

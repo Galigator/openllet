@@ -25,6 +25,7 @@ import openllet.core.boxes.rbox.Role;
  * </p>
  *
  * @author Evren Sirin
+ * @param <T> kind of states
  */
 public class State<T>
 {
@@ -42,7 +43,7 @@ public class State<T>
 
 	/**
 	 * Create a transition from this state to the given state on given symbol
-	 * 
+	 *
 	 * @param symbol
 	 * @param s
 	 */
@@ -60,7 +61,7 @@ public class State<T>
 
 	/**
 	 * Create an epsilon transition from this state to the given state
-	 * 
+	 *
 	 * @param s
 	 */
 	public void addTransition(final State<T> s)
@@ -74,7 +75,7 @@ public class State<T>
 
 	/**
 	 * Returns the _transitions for originating from this state.
-	 * 
+	 *
 	 * @return the _transitions for originating from this state
 	 */
 	public Set<Transition<T>> getTransitions()
@@ -85,6 +86,7 @@ public class State<T>
 	/**
 	 * Returns a state reached from this state with the given symbol. If more than one state can be reached with the given symbol, an arbitrary one is returned.
 	 *
+	 * @param symbol
 	 * @return a state reached from this state with the given symbol, <code>null</code> otherwise
 	 */
 	public State<T> move(final T symbol)

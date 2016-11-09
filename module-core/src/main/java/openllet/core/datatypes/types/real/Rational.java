@@ -82,7 +82,7 @@ public class Rational extends Number implements Comparable<Rational>
 		final String nLex = m.group(2);
 		final String dLex = m.group(3);
 
-		final Number n = OWLRealUtils.getCanonicalObject(DatatypeConverter.parseInteger((sLex == null) ? nLex : sLex + nLex));
+		final Number n = OWLRealUtils.getCanonicalObject(DatatypeConverter.parseInteger(sLex == null ? nLex : sLex + nLex));
 		final Number d = OWLRealUtils.getCanonicalObject(DatatypeConverter.parseInteger(dLex));
 		if (OWLRealUtils.signum(d) != 1)
 			throw new NumberFormatException(s);
@@ -131,8 +131,8 @@ public class Rational extends Number implements Comparable<Rational>
 	{
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((_denominator == null) ? 0 : _denominator.hashCode());
-		result = prime * result + ((_numerator == null) ? 0 : _numerator.hashCode());
+		result = prime * result + (_denominator == null ? 0 : _denominator.hashCode());
+		result = prime * result + (_numerator == null ? 0 : _numerator.hashCode());
 		return result;
 	}
 
@@ -176,8 +176,8 @@ public class Rational extends Number implements Comparable<Rational>
 	/**
 	 * Construct a rational number from
 	 *
-	 * @param _numerator An integer value
-	 * @param _denominator A positive integer value
+	 * @param numerator An integer value
+	 * @param denominator A positive integer value
 	 * @throws IllegalArgumentException if this _condition does not hold for the input parameters
 	 *         <code>OWLRealUtils.acceptable(_numerator) && OWLRealUtils.isInteger(_numerator) && OWLRealUtils.acceptable(_denominator) && OWLRealUtils.isInteger(_denominator) && _denominator > 0</code>
 	 */

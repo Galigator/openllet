@@ -22,7 +22,7 @@ public class URIUtils
 		return getFilePart(uri) + ":" + getLocalName(uri);
 	}
 
-	public static String getFilePart(String uri)
+	public static String getFilePart(final String uri)
 	{
 		try
 		{
@@ -46,11 +46,9 @@ public class URIUtils
 	}
 
 	/**
-	 * Return the local name of a URI. This function is not equiavlent to URI.getFragment() because it tries to handle handle slashy URI's such as the ones
-	 * found in Dublin Core. It is equiavalent to getLocalName(uri.toString()).
-	 *
+	 * @return the local name of a URI. This function is not equiavlent to URI.getFragment() because it tries to handle handle slashy URI's such as the ones
+	 *         found in Dublin Core. It is equiavalent to getLocalName(uri.toString()).
 	 * @param uri
-	 * @return
 	 */
 	public static String getLocalName(final URI uri)
 	{
@@ -58,11 +56,9 @@ public class URIUtils
 	}
 
 	/**
-	 * Return the local name of a URI string. This naive implementation splits the URI from the position of a '#' character or the last occurunce of '/'
-	 * character. If neither of these characters are found, the parameter itself is returned.
-	 *
+	 * @return the local name of a URI string. This naive implementation splits the URI from the position of a '#' character or the last occurunce of '/'
+	 *         character. If neither of these characters are found, the parameter itself is returned.
 	 * @param uri
-	 * @return
 	 */
 	public static String getLocalName(final String uri)
 	{

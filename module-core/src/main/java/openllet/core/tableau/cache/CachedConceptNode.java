@@ -43,8 +43,8 @@ public class CachedConceptNode implements CachedNode
 	private final boolean _isIndependent;
 
 	/**
-	 * @param depends
-	 * @param node
+	 * @param name
+	 * @param nodeParam
 	 */
 	public CachedConceptNode(final ATermAppl name, final Individual nodeParam)
 	{
@@ -191,7 +191,7 @@ public class CachedConceptNode implements CachedNode
 	@Override
 	public boolean hasRNeighbor(final Role role)
 	{
-		return _outEdges.hasEdge(role) || (role.isObjectRole() && _inEdges.hasEdge(role.getInverse()));
+		return _outEdges.hasEdge(role) || role.isObjectRole() && _inEdges.hasEdge(role.getInverse());
 
 	}
 

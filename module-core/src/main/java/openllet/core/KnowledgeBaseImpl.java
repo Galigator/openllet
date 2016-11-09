@@ -871,8 +871,8 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	 * Add the value of a DatatypeProperty.
 	 *
 	 * @param p Datatype Property
-	 * @param ind Individual value being added to
-	 * @param literalValue A literal ATerm which should be constructed with one of ATermUtils.makeXXXLiteral functions
+	 * @param s Individual value being added to
+	 * @param o A literal ATerm which should be constructed with one of ATermUtils.makeXXXLiteral functions
 	 * @deprecated Use addPropertyValue instead
 	 */
 	@Deprecated
@@ -1092,6 +1092,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	}
 
 	/**
+	 * @param p
+	 * @param s
+	 * @param o
 	 * @deprecated Use addPropertyValue instead
 	 */
 	@Deprecated
@@ -1573,6 +1576,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	}
 
 	/**
+	 * @param p
 	 * @deprecated Use {@link #addAsymmetricProperty(ATermAppl)}
 	 */
 	@Deprecated
@@ -2068,6 +2072,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 	/**
 	 * This method is used for incremental reasoning. We do not want to recompute the expressivity from scratch.
+	 *
+	 * @param i
+	 * @param c
 	 */
 	public void updateExpressivity(final ATermAppl i, final ATermAppl c)
 	{
@@ -2448,6 +2455,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	}
 
 	/**
+	 * @return DO NOT USE
 	 * @deprecated Use {@link #getAntisymmetricProperties()}
 	 */
 	@Deprecated
@@ -2610,7 +2618,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	}
 
 	@Deprecated
-	public boolean isOntologyProperty(final ATerm p)
+	public boolean isOntologyProperty(@SuppressWarnings("unused") final ATerm p)
 	{
 		return false;
 	}
@@ -2778,6 +2786,8 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	}
 
 	/**
+	 * @param p
+	 * @return DO NOT USE
 	 * @deprecated Use {@link #isAsymmetricProperty(ATermAppl)}
 	 */
 	@Deprecated
@@ -3021,7 +3031,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	}
 
 	/**
-	 * @param c
+	 * @param d
 	 * @return true if there is at least one named individual that belongs to the given class
 	 */
 	@Override
@@ -3431,7 +3441,8 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	 * *** This function will first classify the whole ontology ***
 	 * </p>
 	 *
-	 * @param c class whose superclasses are returned
+	 * @param cParam class whose superclasses are returned
+	 * @param direct
 	 * @return A set of sets, where each set in the collection represents an equivalence class. The elements of the inner class are ATermAppl objects.
 	 */
 	@Override
@@ -3962,7 +3973,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	}
 
 	/**
-	 * @param prop
+	 * @param name
 	 * @return the named inverse property and all its equivalent properties.
 	 */
 	@Override
@@ -4091,8 +4102,8 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	 *
 	 * @param r
 	 * @param x
-	 * @param lang
-	 * @return List of ATermAppl objects representing literals. These objects are in the form literal(value, lang, datatypeURI).
+	 * @param datatype
+	 * @return List of ATermAppl objects representing literals.
 	 */
 	@Override
 	public List<ATermAppl> getDataPropertyValues(final ATermAppl r, final ATermAppl x, final ATermAppl datatype)
@@ -4275,7 +4286,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	 *
 	 * @param r An ATerm object that contains the literal value in the form literal(lexicalValue, langIdentifier, datatypeURI). Should be created with
 	 *        ATermUtils.makeXXXLiteral() functions.
-	 * @param x
+	 * @param litValue
 	 * @return List of ATermAppl objects.
 	 */
 	public List<ATermAppl> getIndividualsWithDataProperty(final ATermAppl r, final ATermAppl litValue)
@@ -4601,6 +4612,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	}
 
 	/**
+	 * @param doDepAxioms
 	 * @deprecated Use setDoExplanation instead
 	 */
 	@Deprecated

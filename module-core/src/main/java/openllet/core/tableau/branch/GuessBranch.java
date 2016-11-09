@@ -69,7 +69,7 @@ public class GuessBranch extends IndividualBranch
 			final int n = _minGuess + getTryCount() - getTryNext() - 1;
 
 			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("GUES: (" + (getTryNext() + 1) + "/" + getTryCount() + ") at _branch (" + getBranch() + ") to  " + ind + " -> " + _r + " -> anon" + (n == 1 ? "" : (_abox.getAnonCount() + 1) + " - anon") + (_abox.getAnonCount() + n) + " " + ds);
+				_logger.fine("GUES: (" + (getTryNext() + 1) + "/" + getTryCount() + ") at _branch (" + getBranch() + ") to  " + ind + " -> " + _r + " -> anon" + (n == 1 ? "" : _abox.getAnonCount() + 1 + " - anon") + (_abox.getAnonCount() + n) + " " + ds);
 
 			ds = ds.union(new DependencySet(getBranch()), _abox.doExplanation());
 
@@ -144,7 +144,7 @@ public class GuessBranch extends IndividualBranch
 	 * Added for to re-open closed branches. This is needed for incremental reasoning through deletions Currently this method does nothing as we cannot support
 	 * incremental reasoning when both nominals and inverses are used - this is the only case when the guess rule is needed.
 	 *
-	 * @param _index The shift _index
+	 * @param openIndex The shift _index
 	 */
 	@Override
 	public void shiftTryNext(final int openIndex)

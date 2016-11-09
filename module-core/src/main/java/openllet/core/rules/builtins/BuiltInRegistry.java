@@ -102,7 +102,8 @@ public class BuiltInRegistry
 	}
 
 	/**
-	 * Returns a built-in registered by the given name. If none exists, return a built-in that will create an empty binding helper.
+	 * @return a built-in registered by the given name. If none exists, return a built-in that will create an empty binding helper.
+	 * @param name
 	 */
 	public BuiltIn getBuiltIn(final String name)
 	{

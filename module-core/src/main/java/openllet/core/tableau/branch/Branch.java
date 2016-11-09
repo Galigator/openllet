@@ -53,18 +53,18 @@ public abstract class Branch
 {
 	public static final Logger _logger = Log.getLogger(Branch.class);
 
-	protected ABox _abox;
-	protected CompletionStrategy _strategy;
-	protected int _branch;
-	protected int _tryCount;
-	protected int _tryNext;
+	protected final ABox _abox;
+	protected volatile CompletionStrategy _strategy;
+	protected volatile int _branch;
+	protected volatile int _tryCount;
+	protected volatile int _tryNext;
 
-	private DependencySet _termDepends;
-	private DependencySet _prevDS;
+	private volatile DependencySet _termDepends;
+	private volatile DependencySet _prevDS;
 
 	// store things that can be changed after this _branch
-	protected int _anonCount;
-	protected int _nodeCount;
+	protected volatile int _anonCount;
+	protected volatile int _nodeCount;
 
 	Branch(final ABox abox, final CompletionStrategy strategy, final DependencySet ds, final int n)
 	{
@@ -140,12 +140,12 @@ public abstract class Branch
 	/**
 	 * Added for to re-open closed branches. This is needed for incremental reasoning through deletions
 	 *
-	 * @param _index The shift _index
+	 * @param index The shift _index
 	 */
 	public abstract void shiftTryNext(int index);
 
 	/**
-	 * @param _nodeCount the _nodeCount to set
+	 * @param nodeCount the _nodeCount to set
 	 */
 	public void setNodeCount(final int nodeCount)
 	{
@@ -182,7 +182,7 @@ public abstract class Branch
 	}
 
 	/**
-	 * @param _tryNext the _tryNext to set
+	 * @param tryNext the _tryNext to set
 	 */
 	public void setTryNext(final int tryNext)
 	{
@@ -198,7 +198,7 @@ public abstract class Branch
 	}
 
 	/**
-	 * @param _tryCount the _tryCount to set
+	 * @param tryCount the _tryCount to set
 	 */
 	public void setTryCount(final int tryCount)
 	{
@@ -214,7 +214,7 @@ public abstract class Branch
 	}
 
 	/**
-	 * @param _termDepends the _termDepends to set
+	 * @param termDepends the _termDepends to set
 	 */
 	public void setTermDepends(final DependencySet termDepends)
 	{
@@ -230,7 +230,7 @@ public abstract class Branch
 	}
 
 	/**
-	 * @param _anonCount the _anonCount to set
+	 * @param anonCount the _anonCount to set
 	 */
 	public void setAnonCount(final int anonCount)
 	{

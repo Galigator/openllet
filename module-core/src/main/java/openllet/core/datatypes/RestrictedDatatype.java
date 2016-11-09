@@ -21,6 +21,7 @@ import openllet.core.datatypes.exceptions.InvalidConstrainingFacetException;
  * </p>
  *
  * @author Mike Smith
+ * @param <T> type of literal
  */
 public interface RestrictedDatatype<T> extends DataRange<T>
 {
@@ -50,7 +51,7 @@ public interface RestrictedDatatype<T> extends DataRange<T>
 	 * @param other restricted datatype to merge into this
 	 * @param negated <code>true</code> if <code>other</code> is negated, <code>false</code> else
 	 * @return a new {@link RestrictedDatatype}, representing the intersection of <code>this</code> and <code>other</code>
-	 * @throws {@link IllegalArgumentException} if the primitive datatypes for the ranges are not equal
+	 * @throws IllegalArgumentException {@link IllegalArgumentException} if the primitive datatypes for the ranges are not equal
 	 */
 	public RestrictedDatatype<T> intersect(RestrictedDatatype<?> other, boolean negated);
 
@@ -69,7 +70,7 @@ public interface RestrictedDatatype<T> extends DataRange<T>
 	 *
 	 * @param other restricted datatype to merge with this
 	 * @return a new {@link RestrictedDatatype}, representing the intersection of <code>this</code> and <code>other</code>
-	 * @throws {@link IllegalArgumentException} if the primitive datatypes for the ranges are not equal
+	 * @throws IllegalArgumentException {@link IllegalArgumentException} if the primitive datatypes for the ranges are not equal
 	 */
 	public RestrictedDatatype<T> union(RestrictedDatatype<?> other);
 }

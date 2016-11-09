@@ -52,7 +52,7 @@ public abstract class AbstractConceptCache implements ConceptCache
 	/**
 	 * Creates an empty _cache with at most <code>_maxSize</code> elements which are neither named or negations of names.
 	 *
-	 * @param _maxSize
+	 * @param maxSize
 	 */
 	public AbstractConceptCache(final int maxSize)
 	{
@@ -192,11 +192,11 @@ public abstract class AbstractConceptCache implements ConceptCache
 			}
 		}
 
-		final boolean bothNamedIndividuals = (root1 instanceof Individual && root2 instanceof Individual);
+		final boolean bothNamedIndividuals = root1 instanceof Individual && root2 instanceof Individual;
 
 		if (kb.getExpressivity().hasFunctionality() || kb.getExpressivity().hasFunctionalityD())
 		{
-			root = (roots[0].getOutEdges().size() + roots[0].getInEdges().size()) < (roots[1].getOutEdges().size() + roots[1].getInEdges().size()) ? 0 : 1;
+			root = roots[0].getOutEdges().size() + roots[0].getInEdges().size() < roots[1].getOutEdges().size() + roots[1].getInEdges().size() ? 0 : 1;
 			otherRoot = 1 - root;
 
 			if (bothNamedIndividuals)
@@ -572,9 +572,6 @@ public abstract class AbstractConceptCache implements ConceptCache
 		return ind != null && ind.isRootNominal();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	private static Set<ATermAppl> getRNeighbors(final CachedNode node, final Role role)
 	{
 		final Set<ATermAppl> neighbors = new HashSet<>();

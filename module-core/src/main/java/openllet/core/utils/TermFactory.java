@@ -244,6 +244,9 @@ public class TermFactory
 	}
 
 	/**
+	 * @param value
+	 * @param lang
+	 * @return do not use
 	 * @deprecated Use {@link #literal(String, String)} instead
 	 */
 	@Deprecated
@@ -253,6 +256,9 @@ public class TermFactory
 	}
 
 	/**
+	 * @param value
+	 * @param dt
+	 * @return do not use
 	 * @deprecated Use {@link #literal(String, ATermAppl)} instead
 	 */
 	@Deprecated
@@ -262,6 +268,9 @@ public class TermFactory
 	}
 
 	/**
+	 * @param value
+	 * @param dt
+	 * @return do not use
 	 * @deprecated Use {@link #literal(String, ATermAppl)} instead
 	 */
 	@Deprecated

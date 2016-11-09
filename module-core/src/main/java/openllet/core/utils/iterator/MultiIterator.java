@@ -13,12 +13,6 @@ import java.util.NoSuchElementException;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2008
  * </p>
  * <p>
@@ -26,33 +20,34 @@ import java.util.NoSuchElementException;
  * </p>
  *
  * @author Evren Sirin
+ * @param <T> kind of elements
  */
 public class MultiIterator<T> implements Iterator<T>
 {
-	private final List<Iterator<? extends T>> list = new ArrayList<>(2);
+	private final List<Iterator<? extends T>> _list = new ArrayList<>(2);
 
-	private int index = 0;
+	private volatile int _index = 0;
 
-	private Iterator<? extends T> curr;
+	private volatile Iterator<? extends T> _curr;
 
 	public MultiIterator(final Iterator<? extends T> first)
 	{
-		curr = first;
+		_curr = first;
 	}
 
 	public MultiIterator(final Iterator<? extends T> first, final Iterator<? extends T> second)
 	{
-		curr = first;
-		list.add(second);
+		_curr = first;
+		_list.add(second);
 	}
 
 	@Override
 	public boolean hasNext()
 	{
-		while (!curr.hasNext() && index < list.size())
-			curr = list.get(index++);
+		while (!_curr.hasNext() && _index < _list.size())
+			_curr = _list.get(_index++);
 
-		return curr.hasNext();
+		return _curr.hasNext();
 	}
 
 	@Override
@@ -61,21 +56,21 @@ public class MultiIterator<T> implements Iterator<T>
 		if (!hasNext())
 			throw new NoSuchElementException("multi iterator");
 
-		return curr.next();
+		return _curr.next();
 	}
 
 	public void append(final Iterator<? extends T> other)
 	{
 		if (other.hasNext())
 			if (other instanceof MultiIterator)
-				list.addAll(((MultiIterator<? extends T>) other).list);
+				_list.addAll(((MultiIterator<? extends T>) other)._list);
 			else
-				list.add(other);
+				_list.add(other);
 	}
 
 	@Override
 	public void remove()
 	{
-		curr.remove();
+		_curr.remove();
 	}
 }

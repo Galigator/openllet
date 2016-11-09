@@ -19,6 +19,7 @@ import openllet.core.tableau.branch.Branch;
 import openllet.core.tableau.completion.rule.TableauRule;
 
 /**
+ * https://lat.inf.tu-dresden.de/~baader/Talks/Tableaux2000.pdf
  * <p>
  * Copyright: Copyright (c) 2006
  * </p>
@@ -62,7 +63,7 @@ public class SROIQStrategy extends CompletionStrategy
 						// other branches to test (ie.
 						// _abox.getClash().depends.size()==2),
 						// then update depedency _index and return false
-						if ((br.getTryNext() == br.getTryCount() - 1) && _abox.getClash().getDepends().size() == 2)
+						if (br.getTryNext() == br.getTryCount() - 1 && _abox.getClash().getDepends().size() == 2)
 						{
 							_abox.getKB().getDependencyIndex().addCloseBranchDependency(br, _abox.getClash().getDepends());
 							return false;
@@ -70,7 +71,7 @@ public class SROIQStrategy extends CompletionStrategy
 					}
 
 			final List<Branch> branches = _abox.getBranches();
-			_abox.getStats()._backjumps += (branches.size() - lastBranch);
+			_abox.getStats()._backjumps += branches.size() - lastBranch;
 			// CHW - added for incremental deletion support
 			if (OpenlletOptions.USE_TRACING && OpenlletOptions.USE_INCREMENTAL_CONSISTENCY)
 			{
@@ -132,13 +133,13 @@ public class SROIQStrategy extends CompletionStrategy
 
 				if (_logger.isLoggable(Level.FINE))
 				{
-					_logger.fine("Branch: " + _abox.getBranch() + ", Depth: " + _abox.getStats()._treeDepth + ", Size: " + _abox.getNodes().size() + ", Mem: " + (Runtime.getRuntime().freeMemory() / 1000) + "kb");
+					_logger.fine("Branch: " + _abox.getBranch() + ", Depth: " + _abox.getStats()._treeDepth + ", Size: " + _abox.getNodes().size() + ", Mem: " + Runtime.getRuntime().freeMemory() / 1000 + "kb");
 					_abox.validate();
 					printBlocked();
 					_abox.printTree();
 				}
 
-				final IndividualIterator i = (OpenlletOptions.USE_COMPLETION_QUEUE) ? _abox.getCompletionQueue() : _abox.getIndIterator();
+				final IndividualIterator i = OpenlletOptions.USE_COMPLETION_QUEUE ? _abox.getCompletionQueue() : _abox.getIndIterator();
 
 				// flush the _queue
 				if (OpenlletOptions.USE_COMPLETION_QUEUE)

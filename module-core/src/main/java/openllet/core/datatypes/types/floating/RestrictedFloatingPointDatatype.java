@@ -16,9 +16,9 @@ import openllet.aterm.ATermAppl;
 import openllet.core.datatypes.Datatype;
 import openllet.core.datatypes.EmptyRestrictedDatatype;
 import openllet.core.datatypes.Facet;
+import openllet.core.datatypes.Facet.XSD;
 import openllet.core.datatypes.OWLRealUtils;
 import openllet.core.datatypes.RestrictedDatatype;
-import openllet.core.datatypes.Facet.XSD;
 import openllet.shared.tools.Log;
 
 /**
@@ -36,6 +36,7 @@ import openllet.shared.tools.Log;
  * </p>
  *
  * @author Mike Smith
+ * @param <T> kind of numbers
  */
 public class RestrictedFloatingPointDatatype<T extends Number & Comparable<T>> implements RestrictedDatatype<T>
 {
@@ -302,7 +303,7 @@ public class RestrictedFloatingPointDatatype<T extends Number & Comparable<T>> i
 					for (final FloatingPointInterval<T> j : intersectWith)
 					{
 						final FloatingPointInterval<T> k = i.intersection(j);
-						changes = (k != i);
+						changes = k != i;
 						if (k != null)
 							revisedIntervals.add(k);
 					}
@@ -436,7 +437,7 @@ public class RestrictedFloatingPointDatatype<T extends Number & Comparable<T>> i
 		 * openllet.core.utils.iterator.MultiIterator
 		 */
 		return new Iterator<T>()
-				{
+		{
 			final Iterator<FloatingPointInterval<T>> iit = _intervals.iterator();
 			Iterator<T> nit = null;
 
@@ -472,7 +473,7 @@ public class RestrictedFloatingPointDatatype<T extends Number & Comparable<T>> i
 			{
 				throw new UnsupportedOperationException();
 			}
-				};
+		};
 	}
 
 }

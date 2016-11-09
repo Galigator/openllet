@@ -54,6 +54,8 @@ public class DependencyIndex
 
 	/**
 	 * Default constructor
+	 *
+	 * @param kb
 	 */
 	public DependencyIndex(final KnowledgeBase kb)
 	{
@@ -62,6 +64,9 @@ public class DependencyIndex
 
 	/**
 	 * Copy constructor
+	 * 
+	 * @param kb
+	 * @param oldIndex
 	 */
 	public DependencyIndex(final KnowledgeBase kb, final DependencyIndex oldIndex)
 	{
@@ -129,7 +134,7 @@ public class DependencyIndex
 	 * Add a new merge dependency
 	 *
 	 * @param ind
-	 * @param type
+	 * @param mergedTo
 	 * @param ds
 	 */
 	public void addMergeDependency(final ATermAppl ind, final ATermAppl mergedTo, final DependencySet ds)
@@ -183,11 +188,9 @@ public class DependencyIndex
 	}
 
 	/**
-	 * Add a new _branch dependency
+	 * Add a new branch dependency
 	 *
-	 * @param ind
-	 * @param type
-	 * @param ds
+	 * @param branch
 	 */
 	public void addBranchAddDependency(final Branch branch)
 	{
@@ -221,8 +224,7 @@ public class DependencyIndex
 	/**
 	 * Add a new _branch ds removal dependency
 	 *
-	 * @param ind
-	 * @param type
+	 * @param branch
 	 * @param ds
 	 */
 	public void addCloseBranchDependency(final Branch branch, final DependencySet ds)
@@ -300,7 +302,9 @@ public class DependencyIndex
 	}
 
 	/**
-	 * Set clash _dependencies
+	 * Set clash dependencies
+	 *
+	 * @param clash
 	 */
 	public void setClashDependencies(final Clash clash)
 	{

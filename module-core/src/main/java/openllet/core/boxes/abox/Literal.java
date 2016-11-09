@@ -88,10 +88,7 @@ public class Literal extends Node
 				{
 					final String msg = format("Attempt to create literal from invalid literal (%s): %s", term, e.getMessage());
 					if (OpenlletOptions.INVALID_LITERAL_AS_INCONSISTENCY)
-					{
 						_logger.fine(msg);
-						value = null;
-					}
 					else
 					{
 						_logger.severe(msg);

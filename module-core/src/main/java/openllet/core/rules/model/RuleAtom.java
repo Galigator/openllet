@@ -30,13 +30,13 @@ public interface RuleAtom
 	public void accept(RuleAtomVisitor visitor);
 
 	/**
-	 * Return all arguments (constants and variables) to the rule atom.
+	 * @return all arguments (constants and variables) to the rule atom.
 	 */
 	public List<? extends AtomObject> getAllArguments();
 
 	/**
-	 * Return the predicate for the rule atom. The type of this predicate will depend on the implementation of this interface. Use the RuleAtomVisitor for type
-	 * safety.
+	 * @return the predicate for the rule atom. The type of this predicate will depend on the implementation of this interface. Use the RuleAtomVisitor for type
+	 *         safety.
 	 */
 	public Object getPredicate();
 

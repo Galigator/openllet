@@ -18,6 +18,7 @@ import java.util.NoSuchElementException;
  * </p>
  *
  * @author Mike Smith
+ * @param <E> kind of non elements
  */
 public class EmptyIterator<E> implements Iterator<E>
 {

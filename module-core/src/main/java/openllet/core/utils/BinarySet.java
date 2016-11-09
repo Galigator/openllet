@@ -14,6 +14,7 @@ import java.util.NoSuchElementException;
  * A specialized immutable implementation of Set interface that always contains exactly two elements.
  *
  * @author Evren Sirin
+ * @param <T> kind of element
  */
 public class BinarySet<T> extends AbstractSet<T>
 {
@@ -24,8 +25,8 @@ public class BinarySet<T> extends AbstractSet<T>
 	{
 		if (first.equals(second))
 			throw new IllegalArgumentException("Cannot create a binary set with single element: " + first);
-		this._first = first;
-		this._second = second;
+		_first = first;
+		_second = second;
 	}
 
 	public static <T> BinarySet<T> create(final T first, final T second)
@@ -68,7 +69,7 @@ public class BinarySet<T> extends AbstractSet<T>
 				if (!hasNext())
 					throw new NoSuchElementException();
 
-				return (i++ == 0) ? _first : _second;
+				return i++ == 0 ? _first : _second;
 			}
 
 			@Override

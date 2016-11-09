@@ -42,8 +42,8 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Create a table _data structure that has a list of column names and list of _data rows. The only function of this class is to print the _data in a table format.
- * Data can be given at once by the constructor or can be added incrementally with the addRow function.
+ * Create a table _data structure that has a list of column names and list of _data rows. The only function of this class is to print the _data in a table
+ * format. Data can be given at once by the constructor or can be added incrementally with the addRow function.
  *
  * @author Evren Sirin
  */
@@ -61,8 +61,8 @@ public class TableData
 
 	public TableData(final Collection<Object> data, final List<?> colNames)
 	{
-		this._data = data;
-		this._colNames = colNames;
+		_data = data;
+		_colNames = colNames;
 
 		final int cols = colNames.size();
 		_colWidths = new int[cols];
@@ -71,8 +71,8 @@ public class TableData
 
 	public TableData(final List<?> colNames)
 	{
-		this._data = new ArrayList<>();
-		this._colNames = colNames;
+		_data = new ArrayList<>();
+		_colNames = colNames;
 
 		final int cols = colNames.size();
 		_colWidths = new int[cols];
@@ -89,16 +89,17 @@ public class TableData
 		if (rightAligned.length != _colNames.size())
 			throw new IllegalArgumentException("Alignment has " + rightAligned.length + " elements but table has " + _colNames.size() + " columns");
 
-		this._rightAligned = rightAligned;
+		_rightAligned = rightAligned;
 	}
 
 	public void setrightAligned(final int colIndex, final boolean rightAligned)
 	{
-		this._rightAligned[colIndex] = rightAligned;
+		_rightAligned[colIndex] = rightAligned;
 	}
 
 	/**
-	 * @deprecated Use {@link add(List)} instead
+	 * @param row
+	 * @deprecated Use {@link #add(List)} instead
 	 */
 	@Deprecated
 	public void addRow(final List<?> row)
@@ -131,7 +132,7 @@ public class TableData
 
 	private void printText(final Writer writer)
 	{
-		final PrintWriter pw = (writer instanceof PrintWriter) ? (PrintWriter) writer : new PrintWriter(writer);
+		final PrintWriter pw = writer instanceof PrintWriter ? (PrintWriter) writer : new PrintWriter(writer);
 
 		computeHeaderWidths();
 		computeRowWidths();
@@ -148,9 +149,9 @@ public class TableData
 			pw.print('=');
 		pw.println();
 
-		for (final Iterator<Object> i = _data.iterator(); i.hasNext();)
+		for (final Object object : _data)
 		{
-			final Collection<?> rowData = (Collection<?>) i.next();
+			final Collection<?> rowData = (Collection<?>) object;
 
 			final Iterator<?> j = rowData.iterator();
 			for (int col = 0; j.hasNext(); col++)
@@ -207,22 +208,22 @@ public class TableData
 		for (int col = 0; k.hasNext(); col++)
 		{
 			final Object value = k.next();
-			final String str = (value == null) ? "<null>" : value.toString();
+			final String str = value == null ? "<null>" : value.toString();
 			_colWidths[col] = str.length();
 		}
 	}
 
 	private void computeRowWidths()
 	{
-		for (final Iterator<Object> i = _data.iterator(); i.hasNext();)
+		for (final Object object : _data)
 		{
-			final Collection<?> rowData = (Collection<?>) i.next();
+			final Collection<?> rowData = (Collection<?>) object;
 
 			final Iterator<?> j = rowData.iterator();
 			for (int col = 0; j.hasNext(); col++)
 			{
 				final Object value = j.next();
-				final String str = (value == null) ? "<null>" : value.toString();
+				final String str = value == null ? "<null>" : value.toString();
 
 				if (_colWidths[col] < str.length())
 					_colWidths[col] = str.length();

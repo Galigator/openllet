@@ -183,7 +183,7 @@ public class FileUtils
 	/**
 	 * Creates a URI from a given file name.
 	 *
-	 * @param fileNameList the list of files
+	 * @param fileName the file
 	 * @return a string representing the file URI
 	 */
 	public static String getFileURI(final String fileName)

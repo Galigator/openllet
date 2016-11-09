@@ -17,6 +17,7 @@ import java.util.Iterator;
  * </p>
  *
  * @author Mike Smith
+ * @param <T> kind of element
  */
 public class NegatedDataRange<T> implements DataRange<T>
 {

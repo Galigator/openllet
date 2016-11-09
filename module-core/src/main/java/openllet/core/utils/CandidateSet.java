@@ -6,34 +6,33 @@
 
 package openllet.core.utils;
 
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import openllet.core.utils.iterator.PairIterator;
 
 /**
  * @author Evren Sirin
+ * @param <T> kind of element
  */
 public class CandidateSet<T>
 {
-	private final Set<T> _knowns, _unknowns;
+	private final Set<T> _knowns = SetUtils.create();
+	private final Set<T> _unknowns = SetUtils.create();
 
 	public CandidateSet()
 	{
-		this._knowns = new HashSet<>();
-		this._unknowns = new HashSet<>();
+		// knowns and unknowns empty
 	}
 
 	public CandidateSet(final Set<T> knowns)
 	{
-		this._knowns = new HashSet<>(knowns);
-		this._unknowns = new HashSet<>();
+		_knowns.addAll(knowns);
 	}
 
 	public CandidateSet(final Set<T> knowns, final Set<T> unknowns)
 	{
-		this._knowns = new HashSet<>(knowns);
-		this._unknowns = new HashSet<>(unknowns);
+		_knowns.addAll(knowns);
+		_unknowns.addAll(unknowns);
 	}
 
 	public Set<T> getKnowns()

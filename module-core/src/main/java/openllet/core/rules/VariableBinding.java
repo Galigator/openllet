@@ -201,6 +201,8 @@ public class VariableBinding
 
 	/**
 	 * Shallow copies the binding maps.
+	 *
+	 * @param binding
 	 */
 	public VariableBinding(final VariableBinding binding)
 	{
@@ -246,6 +248,9 @@ public class VariableBinding
 
 	/**
 	 * If the key is a variable, return the _node associated with it in the map. If the key is a constant, return the corresponding _node from the _abox.
+	 *
+	 * @param key
+	 * @return a node
 	 */
 	public Literal get(final AtomDObject key)
 	{
@@ -257,6 +262,9 @@ public class VariableBinding
 	/**
 	 * If the key is a variable, return the _individual associated with it in the map. If the key is a constant, return the corresponding _individual from the
 	 * _abox.
+	 *
+	 * @param key
+	 * @return an individual link to the key of the abox
 	 */
 	public Individual get(final AtomIObject key)
 	{
@@ -278,6 +286,10 @@ public class VariableBinding
 
 	/**
 	 * If the key is a _data variable, set the value. Otherwise, ignore it.
+	 *
+	 * @param key
+	 * @param value
+	 * @return the visited value after acceptation
 	 */
 	public Literal set(final AtomDObject key, final Literal value)
 	{
@@ -296,6 +308,10 @@ public class VariableBinding
 
 	/**
 	 * If the key is an instance variable, set the value. Otherwise, ignore it.
+	 *
+	 * @param key
+	 * @param value
+	 * @return the visited individual after acceptation
 	 */
 	public Individual set(final AtomIObject key, final Individual value)
 	{

@@ -35,12 +35,6 @@ import openllet.core.utils.SetUtils;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2008
  * </p>
  * <p>
@@ -60,6 +54,7 @@ public class DoubleBlocking extends Blocking
 
 	private DoubleBlocking()
 	{
+		// prevented
 	}
 
 	@Override

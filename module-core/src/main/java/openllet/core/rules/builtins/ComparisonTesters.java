@@ -49,7 +49,7 @@ public class ComparisonTesters
 
 		private EqualityTester(final boolean flip)
 		{
-			this._flip = flip;
+			_flip = flip;
 		}
 
 		@Override
@@ -59,7 +59,7 @@ public class ComparisonTesters
 			final Object bval = b.getValue();
 
 			// Numbers are a special case, since they can be promoted from Integers and Decimals to Floats and Doubles.
-			if ((aval instanceof Number) && (bval instanceof Number))
+			if (aval instanceof Number && bval instanceof Number)
 			{
 				final NumericPromotion promoter = new NumericPromotion();
 				final Number anum = (Number) aval;
@@ -87,8 +87,8 @@ public class ComparisonTesters
 
 		private OrderingTester(final boolean flip, final boolean inclusive)
 		{
-			this._lt = flip;
-			this._inclusive = inclusive;
+			_lt = flip;
+			_inclusive = inclusive;
 		}
 
 		private boolean comparesWell(final int comparison)
@@ -110,7 +110,7 @@ public class ComparisonTesters
 			final Object l2val = l2.getValue();
 
 			// String comparisons between ATerms
-			if ((l1val instanceof ATermAppl) && (l2val instanceof ATermAppl))
+			if (l1val instanceof ATermAppl && l2val instanceof ATermAppl)
 			{
 				final ATermAppl l1term = (ATermAppl) l1val;
 				final ATermAppl l2term = (ATermAppl) l2val;
@@ -129,7 +129,7 @@ public class ComparisonTesters
 
 			// Numbers are a special case, since they can be promoted from
 			// Integers and Decimals to Floats and Doubles.
-			if ((l1val instanceof Number) && (l2val instanceof Number))
+			if (l1val instanceof Number && l2val instanceof Number)
 			{
 				final NumericPromotion promoter = new NumericPromotion();
 				final Number l1num = (Number) l1val;
@@ -179,7 +179,9 @@ public class ComparisonTesters
 	public final static Tester equal = new EqualityTester(false), greaterThan = new OrderingTester(false, false), greaterThanOrEqual = new OrderingTester(false, true), lessThan = new OrderingTester(true, false), lessThanOrEqual = new OrderingTester(true, true), notEqual = new EqualityTester(true);
 
 	/**
-	 * If the first argument is null, return the second. Else, return the literal if its value equals the string. Otherwise return null.
+	 * @param expected
+	 * @param result
+	 * @return the second argument if the first is null, else return the first . Else, return the literal if its value equals the string. Otherwise return null.
 	 */
 	public static Literal expectedIfEquals(final Literal expected, final Literal result)
 	{

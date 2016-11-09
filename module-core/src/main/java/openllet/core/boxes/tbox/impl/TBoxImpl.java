@@ -67,6 +67,7 @@ import openllet.core.utils.BinarySet;
 import openllet.core.utils.CollectionUtils;
 import openllet.core.utils.MultiMapUtils;
 import openllet.core.utils.Namespaces;
+import openllet.core.utils.SetUtils;
 import openllet.core.utils.iterator.IteratorUtils;
 import openllet.core.utils.iterator.MultiIterator;
 import openllet.core.utils.iterator.MultiListIterator;
@@ -93,10 +94,10 @@ public class TBoxImpl implements TBox
 
 	private static final Set<Set<ATermAppl>> SINGLE_EMPTY_SET = Collections.singleton(Collections.<ATermAppl> emptySet());
 
-	protected KnowledgeBase _kb;
+	protected final KnowledgeBase _kb;
 
-	protected Set<ATermAppl> _classes = CollectionUtils.makeIdentitySet();
-	private Set<ATermAppl> _allClasses;
+	protected final Set<ATermAppl> _classes = CollectionUtils.makeIdentitySet();
+	private final Set<ATermAppl> _allClasses = SetUtils.create();
 
 	/**
 	 * MultiValueMap where key is an axiom and the values are the explanations of the key
@@ -118,7 +119,6 @@ public class TBoxImpl implements TBox
 	public TBoxImpl(final KnowledgeBase kb)
 	{
 		_kb = kb;
-
 		_primitiveTbox = new PrimitiveTBox();
 		_unaryTbox = new UnaryTBox();
 		_binaryTbox = new BinaryTBox();
@@ -132,9 +132,9 @@ public class TBoxImpl implements TBox
 	@Override
 	public Set<ATermAppl> getAllClasses()
 	{
-		if (_allClasses == null)
+		if (_allClasses.isEmpty())
 		{
-			_allClasses = new HashSet<>(_classes);
+			_allClasses.addAll(_classes);
 			_allClasses.add(ATermUtils.TOP);
 			_allClasses.add(ATermUtils.BOTTOM);
 		}
@@ -506,7 +506,7 @@ public class TBoxImpl implements TBox
 						if (ATermUtils.isNot(term))
 							head = term;
 
-			if (head == null || (propertyAtoms == 0 && primitiveClassAtoms < 2))
+			if (head == null || propertyAtoms == 0 && primitiveClassAtoms < 2)
 				return false;
 
 			terms.remove(head);
@@ -961,7 +961,7 @@ public class TBoxImpl implements TBox
 
 		// there is no other clashExplanation for this dependant axiom so
 		// we can safely remove it
-		removed |= (_tboxAxioms.remove(dependantAxiom) != null);
+		removed |= _tboxAxioms.remove(dependantAxiom) != null;
 
 		final AFun fun = dependantAxiom.getAFun();
 		if (fun.equals(ATermUtils.SUBFUN) || fun.equals(ATermUtils.EQCLASSFUN))
@@ -1062,7 +1062,7 @@ public class TBoxImpl implements TBox
 		final boolean added = _classes.add(term);
 
 		if (added)
-			_allClasses = null;
+			_allClasses.clear();
 
 		return added;
 	}

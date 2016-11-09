@@ -53,6 +53,8 @@ public interface TaxonomyBuilder
 
 	/**
 	 * Classify the KB.
+	 *
+	 * @return true if classification success
 	 */
 	public boolean classify();
 
@@ -60,6 +62,8 @@ public interface TaxonomyBuilder
 
 	/**
 	 * Realize the KB by finding the instances of each class.
+	 * 
+	 * @return true if operation success
 	 */
 	public boolean realize();
 

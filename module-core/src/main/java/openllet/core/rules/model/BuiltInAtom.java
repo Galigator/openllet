@@ -16,9 +16,6 @@ import openllet.core.utils.URIUtils;
  * Title: Built-In Atom
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -41,7 +38,7 @@ public class BuiltInAtom extends RuleAtomImpl<String>
 	public BuiltInAtom(final String predicate, final List<AtomDObject> arguments)
 	{
 		super(predicate);
-		this._arguments = arguments;
+		_arguments = arguments;
 	}
 
 	@Override

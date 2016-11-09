@@ -26,6 +26,8 @@ public abstract class ReteNode
 
 	/**
 	 * Add a directly dependent _node.
+	 *
+	 * @param beta
 	 */
 	public void addChild(final BetaNode beta)
 	{
@@ -33,7 +35,7 @@ public abstract class ReteNode
 	}
 
 	/**
-	 * Return any directly dependent _nodes.
+	 * @return any directly dependent nodes.
 	 */
 	public Collection<BetaNode> getBetas()
 	{

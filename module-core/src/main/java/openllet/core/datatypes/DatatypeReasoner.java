@@ -35,6 +35,9 @@ public interface DatatypeReasoner
 	 * @param n the minimum number of elements
 	 * @param ranges the _data ranges to intersect
 	 * @return <code>true</code> if the intersection of <code>ranges</code> contains at least <code>n</code> elements, <code>false</code> else
+	 * @throws InvalidConstrainingFacetException
+	 * @throws InvalidLiteralException
+	 * @throws UnrecognizedDatatypeException
 	 */
 	public boolean containsAtLeast(int n, Collection<ATermAppl> ranges) throws InvalidConstrainingFacetException, InvalidLiteralException, UnrecognizedDatatypeException;
 
@@ -119,29 +122,38 @@ public interface DatatypeReasoner
 	 *
 	 * @param dataranges The _data ranges on the literal _node
 	 * @return <code>true</code> if the conjunction of the _data ranges is satisfiable, <code>false</code> else.
+	 * @throws InvalidConstrainingFacetException
+	 * @throws InvalidLiteralException
+	 * @throws UnrecognizedDatatypeException
 	 */
 	public boolean isSatisfiable(Collection<ATermAppl> dataranges) throws InvalidConstrainingFacetException, InvalidLiteralException, UnrecognizedDatatypeException;
 
 	/**
 	 * Check the _data ranges on a single literal _node are satisfiable (independent of other _nodes).
 	 *
-	 * @param dconjunction The _data ranges on the literal _node
+	 * @param dataranges The _data ranges on the literal _node
 	 * @param value A constant value asserted for the _node or <code>null</code> if no such value is present.
 	 * @return <code>true</code> if the conjunction of the _data ranges is satisfiable, <code>false</code> else.
+	 * @throws InvalidConstrainingFacetException
+	 * @throws InvalidLiteralException
+	 * @throws UnrecognizedDatatypeException
 	 */
 	public boolean isSatisfiable(Collection<ATermAppl> dataranges, Object value) throws InvalidConstrainingFacetException, InvalidLiteralException, UnrecognizedDatatypeException;
 
 	/**
 	 * Check that the _data ranges and inequalities asserted on a collection of literal _nodes are satisfiable.
 	 *
-	 * @param _nodes A set representing all literals with in-edges from a single _individual
+	 * @param nodes A set representing all literals with in-edges from a single _individual
 	 * @param ineqs A map representing all literal inequality constraints
 	 * @return <code>true</code> if the _data ranges and inequalities are satisfiable, <code>false</code> else.
+	 * @throws InvalidConstrainingFacetException
+	 * @throws InvalidLiteralException
+	 * @throws UnrecognizedDatatypeException
 	 */
 	public boolean isSatisfiable(Set<Literal> nodes, Map<Literal, Set<Literal>> ineqs) throws InvalidConstrainingFacetException, InvalidLiteralException, UnrecognizedDatatypeException;
 
 	/**
-	 * Return a collection of all known _data ranges.
+	 * @return a collection of all known _data ranges.
 	 */
 	public Collection<ATermAppl> listDataRanges();
 
@@ -162,8 +174,9 @@ public interface DatatypeReasoner
 	/**
 	 * Check if a typed literal is valid (i.e., it is in the lexical space for its datatype)
 	 *
-	 * @param literal The literal
+	 * @param typedLiteral
 	 * @return <code>true</code> if the literal is in the lexical space of the datatype, <code>false</code>else
+	 * @throws UnrecognizedDatatypeException
 	 */
 	public boolean validLiteral(ATermAppl typedLiteral) throws UnrecognizedDatatypeException;
 

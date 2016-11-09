@@ -46,21 +46,21 @@ public class NodeMerge
 
 	public NodeMerge(final Node y, final Node z)
 	{
-		this.setSource(y.getName());
-		this.setTarget(z.getName());
+		setSource(y.getName());
+		setTarget(z.getName());
 	}
 
 	public NodeMerge(final Node y, final Node z, final DependencySet ds)
 	{
-		this.setSource(y.getName());
-		this.setTarget(z.getName());
-		this._ds = ds;
+		setSource(y.getName());
+		setTarget(z.getName());
+		_ds = ds;
 	}
 
 	NodeMerge(final ATermAppl y, final ATermAppl z)
 	{
-		this.setSource(y);
-		this.setTarget(z);
+		setSource(y);
+		setTarget(z);
 	}
 
 	@Override
@@ -70,11 +70,11 @@ public class NodeMerge
 	}
 
 	/**
-	 * @param _source the _source to set
+	 * @param source the _source to set
 	 */
 	public void setSource(final ATermAppl source)
 	{
-		this._source = source;
+		_source = source;
 	}
 
 	/**
@@ -86,11 +86,11 @@ public class NodeMerge
 	}
 
 	/**
-	 * @param _target the _target to set
+	 * @param target the _target to set
 	 */
 	public void setTarget(final ATermAppl target)
 	{
-		this._target = target;
+		_target = target;
 	}
 
 	/**

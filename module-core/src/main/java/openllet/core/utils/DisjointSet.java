@@ -19,6 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * DisjointSet _data structure. Uses path compression and union by rank.
  *
  * @author Evren Sirin
+ * @param <T> kind of element
  */
 public class DisjointSet<T>
 {

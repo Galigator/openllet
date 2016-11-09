@@ -17,7 +17,7 @@ import openllet.core.OpenlletOptions;
 /**
  * In some ontologies, such as the ones from OBO, annotations may be nested and contain type assertions on annotation values. Such type assertions will be
  * treated as regular assertions and processed by the reasoner. This causes many superfluous logical axioms to be considered by the reasoner which might have
- * significant impact on performance. The {@link PelletOptions#IGNORE_ANNOTATION_CLASSES} option tells Pellet to ignore such annotations. The set of classes
+ * significant impact on performance. The {@link OpenlletOptions#IGNORE_ANNOTATION_CLASSES} option tells Pellet to ignore such annotations. The set of classes
  * that will be treated as annotation classes are stored in this class. This set can be modified by adding new classes or removing existing classes.
  * <p>
  * Annotation classes from OBO are included by default. These are <code>obo:DbXref, obo:Definition, obo:Subset, obo:Synonym, obo:SynonymType</code> where
@@ -50,9 +50,8 @@ public class AnnotationClasses
 	}
 
 	/**
-	 * Returns <code>true</code> if the specified class is defined to be an annotation class AND {@link PelletOptions#IGNORE_ANNOTATION_CLASSES} option is set
-	 * to true. If the configuration option is <code>false</code> this function will return <code>false</code> for every class.
-	 *
+	 * @return <code>true</code> if the specified class is defined to be an annotation class AND {@link OpenlletOptions#IGNORE_ANNOTATION_CLASSES} option is set
+	 *         to true. If the configuration option is <code>false</code> this function will return <code>false</code> for every class.
 	 * @param cls class to check
 	 */
 	public static boolean contains(final ATermAppl cls)
@@ -71,7 +70,7 @@ public class AnnotationClasses
 	}
 
 	/**
-	 * Returns an unmodifiable copy of the annotation classes regardless of the {@link PelletOptions#IGNORE_ANNOTATION_CLASSES} option.
+	 * @return an unmodifiable copy of the annotation classes regardless of the {@link OpenlletOptions#IGNORE_ANNOTATION_CLASSES} option.
 	 */
 	public static Set<ATermAppl> getAll()
 	{

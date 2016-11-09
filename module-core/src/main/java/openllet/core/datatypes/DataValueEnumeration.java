@@ -22,6 +22,7 @@ import java.util.Set;
  * </p>
  *
  * @author Mike Smith
+ * @param <T> kind of element
  */
 public class DataValueEnumeration<T> implements DataRange<T>
 {
