@@ -9,34 +9,24 @@ package openllet.core.tableau.completion.incremental;
 import openllet.aterm.ATermAppl;
 
 /**
- * Abstract class for a _branch dependency
+ * Abstract class for a branch dependency
  *
  * @author Christian Halaschek-Wiener
  */
 public abstract class BranchDependency implements Dependency
 {
-
 	/**
-	 * The _assertion which this _branch is indexed on
+	 * The assertion which this branch is indexed on
 	 */
-	protected ATermAppl _assertion;
+	protected final ATermAppl _assertion;
 
-	/**
-	 * Constructor
-	 *
-	 * @param _assertion
-	 */
 	public BranchDependency(final ATermAppl assertion)
 	{
-		this._assertion = assertion;
+		_assertion = assertion;
 	}
 
-	/**
-	 * @return
-	 */
 	public ATermAppl getAssertion()
 	{
 		return _assertion;
 	}
-
 }

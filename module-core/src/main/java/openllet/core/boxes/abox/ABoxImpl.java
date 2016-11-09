@@ -408,35 +408,18 @@ public class ABoxImpl implements ABox
 
 	}
 
-	/**
-	 * Create a copy of this ABox with all the _nodes and edges.
-	 *
-	 * @return
-	 */
 	@Override
 	public ABoxImpl copy()
 	{
 		return copy(_kb);
 	}
 
-	/**
-	 * Create a copy of this ABox with all the _nodes and edges and the given KB.
-	 */
 	@Override
 	public ABoxImpl copy(final KnowledgeBase kb)
 	{
 		return new ABoxImpl(kb, this, null, true);
 	}
 
-	/**
-	 * Create a copy of this ABox with one more additional _individual. This is <b>NOT</b> equivalent to create a copy and then add the _individual. The _order
-	 * of individuals in the ABox is important to figure out which individuals exist in the original ontology and which ones are created by the tableau
-	 * algorithm. This function creates a new ABox such that the _individual is supposed to exist in the original ontology. This is very important when
-	 * satisfiability of a concept starts with a pesudo model rather than the initial ABox.
-	 *
-	 * @param extraIndividual Extra _individual to be added to the copy ABox
-	 * @return
-	 */
 	@Override
 	public ABoxImpl copy(final ATermAppl extraIndividual, final boolean copyIndividuals)
 	{
@@ -878,7 +861,7 @@ public class ABoxImpl implements ABox
 
 	/**
 	 * @param x is an individual
-	 * @param c is a class
+	 * @param cParam is a class
 	 * @return true if individual x belongs to type c. This is a logical consequence of the KB if in all possible models x belongs to C. This is checked by
 	 *         trying to construct a model where x belongs to not(c).
 	 */
@@ -922,26 +905,18 @@ public class ABoxImpl implements ABox
 		return isType;
 	}
 
-	/**
-	 * @param c is a class
-	 * @param inds is a collection of individuals.
-	 * @return true if any of the individuals in the given list belongs to type c.
-	 */
 	@Override
 	public boolean isType(final List<ATermAppl> inds, final ATermAppl cParam)
 	{
-		ATermAppl c = cParam;
-		c = ATermUtils.normalize(c);
+		final ATermAppl c = ATermUtils.normalize(cParam);
 
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Checking type " + ATermUtils.toString(c) + " for individuals " + inds.size());
+		_logger.fine(() -> "Checking type " + ATermUtils.toString(c) + " for individuals " + inds.size());
 
 		final ATermAppl notC = ATermUtils.negate(c);
 
 		final boolean isType = !isConsistent(inds, notC, false);
 
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Type " + isType + " " + ATermUtils.toString(c) + " for individuals " + inds.size());
+		_logger.fine(() -> "Type " + isType + " " + ATermUtils.toString(c) + " for individuals " + inds.size());
 
 		return isType;
 	}
@@ -1739,12 +1714,6 @@ public class ABoxImpl implements ABox
 		getNode(x).removeType(ATermUtils.normalize(c));
 	}
 
-	/**
-	 * Add a new literal to the ABox. This function is used only when the literal value does not have a known value, e.g. applyMinRule would create such a
-	 * literal.
-	 *
-	 * @return
-	 */
 	@Override
 	public Literal addLiteral(final DependencySet ds)
 	{
@@ -2060,20 +2029,12 @@ public class ABoxImpl implements ABox
 		return _isComplete;
 	}
 
-	/**
-	 * @param _isComplete The _isComplete to set.
-	 */
 	@Override
 	public void setComplete(final boolean isComplete)
 	{
 		_isComplete = isComplete;
 	}
 
-	/**
-	 * Returns true if Abox has a _clash.
-	 *
-	 * @return
-	 */
 	@Override
 	public boolean isClosed()
 	{
@@ -2103,8 +2064,7 @@ public class ABoxImpl implements ABox
 
 			if (_clash != null)
 			{
-				if (_logger.isLoggable(Level.FINER))
-					_logger.finer("Clash was already set \nExisting: " + _clash + "\nNew     : " + clash);
+				_logger.finer(() -> "Clash was already set \nExisting: " + _clash + "\nNew     : " + clash);
 
 				if (_clash.getDepends().max() < clash.getDepends().max())
 					return;
@@ -2165,22 +2125,12 @@ public class ABoxImpl implements ABox
 		return _branch;
 	}
 
-	/**
-	 * Set the _branch number (should only be called when backjumping is in progress)
-	 *
-	 * @param _branch
-	 */
 	@Override
 	public void setBranch(final int branch)
 	{
 		_branch = branch;
 	}
 
-	/**
-	 * Increment the _branch number (should only be called when a non-deterministic rule, e.g. _disjunction or max rule, is being applied)
-	 *
-	 * @param _branch
-	 */
 	@Override
 	public void incrementBranch()
 	{
@@ -2219,11 +2169,6 @@ public class ABoxImpl implements ABox
 		return _doExplanation;
 	}
 
-	/**
-	 * Enable/disable clashExplanation generation
-	 *
-	 * @param _doExplanation The _doExplanation to set.
-	 */
 	@Override
 	public void setDoExplanation(final boolean doExplanation)
 	{
@@ -2239,8 +2184,6 @@ public class ABoxImpl implements ABox
 	@Override
 	public String getExplanation()
 	{
-		// Clash _lastClash = (_lastCompletion != null) ?
-		// _lastCompletion.getClash() : null;
 		if (_lastClash == null)
 			return "No inconsistency was found! There is no clashExplanation generated.";
 		else
@@ -2283,11 +2226,6 @@ public class ABoxImpl implements ABox
 		return _incChangeTracker;
 	}
 
-	/**
-	 * Return individuals to which we need to apply the tableau rules
-	 *
-	 * @return
-	 */
 	@Override
 	public IndividualIterator getIndIterator()
 	{
@@ -2361,14 +2299,6 @@ public class ABoxImpl implements ABox
 			final DependencySet ds = node.getDepends(c);
 			if (ds.max() > _branch || !OpenlletOptions.USE_SMART_RESTORE && ds.getBranch() > _branch)
 				throw new InternalReasonerException("Invalid ds found: " + node + " " + c + " " + ds + " " + _branch);
-			// if( c.getAFun().equals( ATermUtils.VALUEFUN ) ) {
-			// if( !PelletOptions.USE_PSEUDO_NOMINALS ) {
-			// Individual z = getIndividual(c.getArgument(0));
-			// if(z == null)
-			// throw new InternalReasonerException("Nominal to non-existing
-			// _node: " + _node + " " + c + " " + ds + " " + _branch);
-			// }
-			// }
 		}
 		for (final Node ind : node.getDifferents())
 		{
@@ -2513,22 +2443,12 @@ public class ABoxImpl implements ABox
 		_keepLastCompletion = keepLastCompletion;
 	}
 
-	/**
-	 * Return the number of _nodes in the ABox. This number includes both the individuals and the literals.
-	 *
-	 * @return
-	 */
 	@Override
 	public int size()
 	{
 		return _nodes.size();
 	}
 
-	/**
-	 * Returns true if there are no individuals in the ABox.
-	 *
-	 * @return
-	 */
 	@Override
 	public boolean isEmpty()
 	{
@@ -2541,24 +2461,12 @@ public class ABoxImpl implements ABox
 		_lastCompletion = comp;
 	}
 
-	/**
-	 * Set whether changes to the update should be treated as syntactic updates, i.e., if the changes are made on explicit source axioms. This is used for the
-	 * completion _queue for incremental consistency checking purposes.
-	 *
-	 * @param boolean val The value
-	 */
 	@Override
 	public void setSyntacticUpdate(final boolean val)
 	{
 		_syntacticUpdate = val;
 	}
 
-	/**
-	 * Set whether changes to the update should be treated as syntactic updates, i.e., if the changes are made on explicit source axioms. This is used for the
-	 * completion _queue for incremental consistency checking purposes.
-	 *
-	 * @param boolean val The value
-	 */
 	@Override
 	public boolean isSyntacticUpdate()
 	{
@@ -2619,9 +2527,6 @@ public class ABoxImpl implements ABox
 			node.reset(true);
 	}
 
-	/**
-	 * @param _anonCount the _anonCount to set
-	 */
 	@Override
 	public int setAnonCount(final int anonCount)
 	{
@@ -2646,9 +2551,6 @@ public class ABoxImpl implements ABox
 		return _disjBranchStats;
 	}
 
-	/**
-	 * @param _changed the _changed to set
-	 */
 	@Override
 	public void setChanged(final boolean changed)
 	{

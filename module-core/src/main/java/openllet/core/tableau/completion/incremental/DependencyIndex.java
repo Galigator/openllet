@@ -81,7 +81,7 @@ public class DependencyIndex
 
 	/**
 	 * @param assertion
-	 * @return
+	 * @return the dependencies
 	 */
 	public DependencyEntry getDependencies(final ATermAppl assertion)
 	{

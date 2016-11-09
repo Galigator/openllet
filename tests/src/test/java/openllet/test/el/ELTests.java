@@ -83,8 +83,7 @@ public class ELTests extends AbstractKBTests
 		TaxonomyBuilder builder = null;
 		try
 		{
-			builder = builderClass.newInstance();
-			builder.setKB(_kb);
+			builder = builderClass.getConstructor(KnowledgeBase.class).newInstance(_kb);
 		}
 		catch (final Exception e)
 		{
@@ -92,11 +91,8 @@ public class ELTests extends AbstractKBTests
 		}
 		builder.setProgressMonitor(new SilentProgressMonitor());
 		builder.classify();
-		final Taxonomy<ATermAppl> taxonomy = builder.getTaxonomy();
 
-		//		 taxonomy.getTop().print();
-
-		return taxonomy;
+		return builder.getTaxonomy();
 	}
 
 	@Test

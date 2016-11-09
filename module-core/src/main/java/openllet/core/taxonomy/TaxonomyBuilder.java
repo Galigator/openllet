@@ -33,7 +33,6 @@ package openllet.core.taxonomy;
 import java.util.Map;
 import java.util.Set;
 import openllet.aterm.ATermAppl;
-import openllet.core.KnowledgeBase;
 import openllet.core.utils.progress.ProgressMonitor;
 
 /**
@@ -48,7 +47,7 @@ import openllet.core.utils.progress.ProgressMonitor;
  */
 public interface TaxonomyBuilder
 {
-	public void setKB(KnowledgeBase kb);
+	//	public void setKB(KnowledgeBase kb);
 
 	public void setProgressMonitor(ProgressMonitor monitor);
 

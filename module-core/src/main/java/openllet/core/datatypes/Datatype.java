@@ -18,6 +18,7 @@ import openllet.core.datatypes.exceptions.InvalidLiteralException;
  * </p>
  *
  * @author Mike Smith
+ * @param <T> type of literal
  */
 public interface Datatype<T>
 {
@@ -34,6 +35,7 @@ public interface Datatype<T>
 	 *
 	 * @param input a lexical form of the literal
 	 * @return the canonical representation of the lexical form
+	 * @throws InvalidLiteralException if input is invalid
 	 */
 	public ATermAppl getCanonicalRepresentation(ATermAppl input) throws InvalidLiteralException;
 
@@ -66,6 +68,7 @@ public interface Datatype<T>
 	 *
 	 * @param literal the literal
 	 * @return the Java object representation of the lexical form
+	 * @throws InvalidLiteralException if literal is invalid
 	 */
 	public T getValue(ATermAppl literal) throws InvalidLiteralException;
 

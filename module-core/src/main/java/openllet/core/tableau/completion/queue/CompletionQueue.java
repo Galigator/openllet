@@ -91,7 +91,7 @@ public abstract class CompletionQueue extends IndividualIterator
 	/**
 	 * Reset the _queue to be the _current _nodes in the _abox; Also reset the type _index to 0
 	 *
-	 * @param _branch
+	 * @param branch
 	 */
 	public abstract void restore(int branch);
 
@@ -101,13 +101,12 @@ public abstract class CompletionQueue extends IndividualIterator
 	 * @param x
 	 * @param type
 	 */
-	public abstract void add(QueueElement x, NodeSelector s);
+	public abstract void add(QueueElement x, NodeSelector type);
 
 	/**
 	 * Add an element to all queues
 	 *
 	 * @param x
-	 * @param type
 	 */
 	public abstract void add(QueueElement x);
 
@@ -117,19 +116,17 @@ public abstract class CompletionQueue extends IndividualIterator
 	 * @param type
 	 */
 	@Override
-	public abstract void reset(NodeSelector s);
+	public abstract void reset(NodeSelector type);
 
 	/**
-	 * Set _branch pointers to _current pointer. This is done whenever _abox.incrementBranch is called
+	 * Set branch pointers to current pointer. This is done whenever abox.incrementBranch is called
 	 *
-	 * @param _branch
+	 * @param branch
 	 */
 	public abstract void incrementBranch(int branch);
 
 	/**
-	 * Copy the _queue
-	 *
-	 * @return
+	 * @return a copy of the queue
 	 */
 	public abstract CompletionQueue copy();
 
@@ -156,9 +153,9 @@ public abstract class CompletionQueue extends IndividualIterator
 	public abstract void print();
 
 	/**
-	 * Print _branch information
+	 * Print branch information
 	 */
-	public void printBranchInfo()
+	public static void printBranchInfo()
 	{
 		return;
 	}
@@ -174,19 +171,21 @@ public abstract class CompletionQueue extends IndividualIterator
 	}
 
 	/**
-	 * Flush the _queue
+	 * Flush the queue
 	 */
 	public abstract void flushQueue();
 
 	/**
-	 * Flush the _queue
+	 * Flush the queue
 	 */
 	protected abstract void flushQueue(NodeSelector s);
 
 	/**
-	 * Clear the _queue
+	 * Clear the queue
+	 *
+	 * @param type
 	 */
-	public abstract void clearQueue(NodeSelector s);
+	public abstract void clearQueue(NodeSelector type);
 
 	/**
 	 * Get flag to allow literals
@@ -199,9 +198,7 @@ public abstract class CompletionQueue extends IndividualIterator
 	}
 
 	/**
-	 * Get next literal
-	 *
-	 * @return
+	 * @return next literal
 	 */
 	public abstract Node nextLiteral();
 
@@ -210,7 +207,7 @@ public abstract class CompletionQueue extends IndividualIterator
 	 *
 	 * @return
 	 */
-	protected ATermAppl getNextLabel()
+	protected static ATermAppl getNextLabel()
 	{
 		return null;
 	}

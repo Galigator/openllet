@@ -196,7 +196,7 @@ public class RoleImpl implements Role
 
 	/**
 	 * Add a sub role chain without dependency tracking information
-	 * 
+	 *
 	 * @param chain
 	 */
 	@Override
@@ -406,9 +406,6 @@ public class RoleImpl implements Role
 		return _type == PropertyType.UNTYPED;
 	}
 
-	/**
-	 * @return
-	 */
 	@Override
 	public Role getInverse()
 	{
@@ -446,6 +443,7 @@ public class RoleImpl implements Role
 	}
 
 	/**
+	 * @return DO NOT USE
 	 * @deprecated Use {@link #isAsymmetric()}
 	 */
 	@Deprecated
@@ -532,9 +530,6 @@ public class RoleImpl implements Role
 		return _subRoleChains;
 	}
 
-	/**
-	 * @return
-	 */
 	@Override
 	public Set<Role> getSuperRoles()
 	{
@@ -553,9 +548,6 @@ public class RoleImpl implements Role
 		return _disjointRoles.get(role);
 	}
 
-	/**
-	 * @return
-	 */
 	@Override
 	public PropertyType getType()
 	{
@@ -689,6 +681,7 @@ public class RoleImpl implements Role
 	}
 
 	/**
+	 * @param b
 	 * @deprecated Use {@link #setAsymmetric(boolean)}
 	 */
 	@Deprecated
@@ -704,6 +697,8 @@ public class RoleImpl implements Role
 	}
 
 	/**
+	 * @param b
+	 * @param ds
 	 * @deprecated Use {@link #setAsymmetric(boolean,DependencySet)}
 	 */
 	@Deprecated
@@ -747,8 +742,8 @@ public class RoleImpl implements Role
 	}
 
 	/**
-	 * @param _subRoleChains
-	 * @param dependencies map from role names (or lists) to depedencies
+	 * @param subRoleChains
+	 * @param dependencies map from role names (or lists) to dependencies
 	 */
 	@Override
 	public void setSubRolesAndChains(final Set<Role> subRoles, final Set<ATermList> subRoleChains, final Map<ATerm, DependencySet> dependencies)
@@ -759,8 +754,7 @@ public class RoleImpl implements Role
 	}
 
 	/**
-	 * @param _superRoles The _superRoles to set.
-	 * @param dependencies A map from role names (or role lists) to dependency sets.
+	 * @param superRoles The _superRoles to set.
 	 */
 	@Override
 	public void setSuperRoles(final Set<Role> superRoles)
@@ -778,7 +772,7 @@ public class RoleImpl implements Role
 	}
 
 	/**
-	 * @param functionalSuper The functionalSuper to set.
+	 * @param r The functionalSuper to set.
 	 */
 	@Override
 	public void addFunctionalSuper(final Role r)
@@ -1000,6 +994,6 @@ public class RoleImpl implements Role
 	@Override
 	public boolean isBuiltin()
 	{
-		return isTop() || isBottom() || (_inverse != null && (_inverse.isTop() || _inverse.isBottom()));
+		return isTop() || isBottom() || _inverse != null && (_inverse.isTop() || _inverse.isBottom());
 	}
 }

@@ -233,7 +233,7 @@ public class Individual extends Node implements CachedNode
 	 * Collects atomic concepts such that either that concept or its negation exist in the _types list without depending on any non-deterministic _branch. First
 	 * list is filled with _types and second list is filled with non-_types, i.e. this _individual can never be an instance of any element in the second list.
 	 *
-	 * @param _types All atomic concepts found in _types
+	 * @param types All atomic concepts found in types
 	 * @param nonTypes All atomic concepts
 	 */
 	public void getObviousTypes(final List<ATermAppl> types, final List<ATermAppl> nonTypes)
@@ -766,11 +766,9 @@ public class Individual extends Node implements CachedNode
 	}
 
 	/**
-	 * Get _neighbor edges to a specific _node
-	 *
 	 * @param r
-	 * @param _node
-	 * @return
+	 * @param node
+	 * @return neighbor edges to a specific node
 	 */
 	public EdgeList getRNeighborEdges(final Role r, final Node node)
 	{
@@ -889,8 +887,9 @@ public class Individual extends Node implements CachedNode
 	 *
 	 * @param r
 	 * @param n
+	 * @param c
 	 * @param onlyNominals
-	 * @return
+	 * @return true if this individual has at least n distinct r-neighbors.
 	 */
 	public boolean hasDistinctRNeighborsForMin(final Role r, final int n, final ATermAppl c, final boolean onlyNominals)
 	{
@@ -1258,7 +1257,6 @@ public class Individual extends Node implements CachedNode
 	 * Prune the given _node by removing all links going to nominal _nodes and recurse through all successors. No need to remove incoming edges because either
 	 * the _node is the first one being pruned so the merge function already handled it or this is a successor _node and its successor is also being pruned
 	 *
-	 * @param succ
 	 * @param ds
 	 */
 	@Override

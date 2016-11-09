@@ -37,14 +37,12 @@ public class NumericPromotion
 
 		Type(final int rank)
 		{
-			this._rank = rank;
+			_rank = rank;
 		}
 
 		/**
-		 * Return true if given _type is not null and has a _rank strictly greater than this.
-		 * 
 		 * @param t
-		 * @return
+		 * @return true if given _type is not null and has a _rank strictly greater than this.
 		 */
 		public boolean isLessThan(final Type t)
 		{
@@ -210,9 +208,8 @@ public class NumericPromotion
 	}
 
 	/**
-	 * Takes an array of numeric values and converts all of them into the same _type, with 'minType' defining the minimum common _type.
-	 * 
-	 * @return The common _type everything was converted to.
+	 * Takes an array of numeric values and converts all of them into the same _type, with 'minType' defining the minimum common _type. type become The common
+	 * type everything was converted to.
 	 */
 	private void promote(final Type minType, final Number... nums)
 	{

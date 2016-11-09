@@ -106,7 +106,7 @@ public class DependencySet
 	 */
 	public DependencySet(final int branch)
 	{
-		this._depends = IntSetFactory.create();
+		_depends = IntSetFactory.create();
 
 		_depends.add(branch);
 		setExplain(Collections.emptySet());
@@ -117,34 +117,37 @@ public class DependencySet
 	 */
 	private DependencySet(final int branch, final IntSet depends, final Set<ATermAppl> explain)
 	{
-		this._branch = branch;
-		this._depends = depends;
-		this.setExplain(explain);
+		_branch = branch;
+		_depends = depends;
+		setExplain(explain);
 	}
 
 	/**
 	 * Creates a dependency set with no dependency and single explanation atom
+	 *
+	 * @param explainAtom
 	 */
 	public DependencySet(final ATermAppl explainAtom)
 	{
-		this._depends = DependencySet.ZERO;
-		this.setExplain(SetUtils.singleton(explainAtom));
+		_depends = DependencySet.ZERO;
+		setExplain(SetUtils.singleton(explainAtom));
 
 	}
 
 	/**
 	 * Creates a dependency set with no dependency and a set of explanation atoms
+	 *
+	 * @param explain
 	 */
 	public DependencySet(final Set<ATermAppl> explain)
 	{
-		this._depends = DependencySet.ZERO;
-		this.setExplain(explain);
+		_depends = DependencySet.ZERO;
+		setExplain(explain);
 	}
 
 	/**
-	 * Creates a new DependencySet object with a new _branch number where the IntSet is openllet.shared.hash (changing one will change the other).
-	 *
-	 * @return
+	 * @param newBranch
+	 * @return a new DependencySet object with a new _branch number where the IntSet is openllet.shared.hash (changing one will change the other).
 	 */
 	public DependencySet copy(final int newBranch)
 	{
@@ -152,10 +155,8 @@ public class DependencySet
 	}
 
 	/**
-	 * Return true if <code>b</code> is in this set.
-	 *
 	 * @param b
-	 * @return
+	 * @return true if <code>b</code> is in this set.
 	 */
 	public boolean contains(final int b)
 	{
@@ -183,9 +184,7 @@ public class DependencySet
 	}
 
 	/**
-	 * Return true if there is no dependency on a non-deterministic _branch
-	 *
-	 * @return
+	 * @return true if there is no dependency on a non-deterministic _branch
 	 */
 	public boolean isIndependent()
 	{
@@ -193,7 +192,7 @@ public class DependencySet
 	}
 
 	/**
-	 * Get the _branch number when the dependency set was created
+	 * @return the _branch number when the dependency set was created
 	 */
 	public int getBranch()
 	{
@@ -201,9 +200,7 @@ public class DependencySet
 	}
 
 	/**
-	 * Return the number of elements in this set.
-	 *
-	 * @return
+	 * @return the number of elements in this set.
 	 */
 	public int size()
 	{
@@ -211,9 +208,7 @@ public class DependencySet
 	}
 
 	/**
-	 * Return the maximum value in this set.
-	 *
-	 * @return
+	 * @return the maximum value in this set.
 	 */
 	public int max()
 	{
@@ -221,22 +216,18 @@ public class DependencySet
 	}
 
 	/**
-	 * Create a new DependencySet and all the elements of <code>this</code> and <code>set</code> .
-	 *
 	 * @param ds
-	 * @return
+	 * @return a new DependencySet and all the elements of <code>this</code> and <code>set</code> .
 	 */
-	public DependencySet union(final IntSet set)
+	public DependencySet union(final IntSet ds)
 	{
-		return new DependencySet(_branch, _depends.union(set), _explain);
+		return new DependencySet(_branch, _depends.union(ds), _explain);
 	}
 
 	/**
-	 * Create a new DependencySet and all the elements of <code>this</code> and <code>ds</code>.
-	 *
 	 * @param ds
 	 * @param doExplanation
-	 * @return
+	 * @return a new DependencySet and all the elements of <code>this</code> and <code>ds</code>.
 	 */
 	public DependencySet union(final DependencySet ds, final boolean doExplanation)
 	{
@@ -252,16 +243,16 @@ public class DependencySet
 	}
 
 	/**
-	 * @param _explain
+	 * @param explain
 	 * @param doExplanation
-	 * @return
+	 * @return the union as dependencySet
 	 */
 	public DependencySet union(final Set<ATermAppl> explain, final boolean doExplanation)
 	{
 		if (!doExplanation || explain.isEmpty())
 			return this;
 
-		return new DependencySet(_branch, _depends.copy(), SetUtils.union(this._explain, explain));
+		return new DependencySet(_branch, _depends.copy(), SetUtils.union(_explain, explain));
 	}
 
 	@Override
@@ -299,7 +290,7 @@ public class DependencySet
 
 	public void setDepends(final IntSet depends)
 	{
-		this._depends = depends;
+		_depends = depends;
 	}
 
 	public IntSet getDepends()
@@ -308,17 +299,15 @@ public class DependencySet
 	}
 
 	/**
-	 * @param _explain the _explain to set
+	 * @param explain the explain to set
 	 */
 	public void setExplain(final Set<ATermAppl> explain)
 	{
-		this._explain = explain;
+		_explain = explain;
 	}
 
 	/**
-	 * Return the set of explanations associated with this DependencySet.
-	 *
-	 * @return
+	 * @return the set of explanations associated with this DependencySet.
 	 */
 	public Set<ATermAppl> getExplain()
 	{
@@ -331,7 +320,7 @@ public class DependencySet
 	 * function does not create a new DependencySet object so will not require additional memory. Caching this copy is more appropriate so we don't waste space
 	 * for storing the actual dependency set or the explanation which are not used in caches anyway.
 	 *
-	 * @return
+	 * @return the dummy dependency set, the cache
 	 */
 	public DependencySet cache()
 	{

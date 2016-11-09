@@ -131,9 +131,6 @@ public abstract class CompletionStrategy
 
 	protected List<TableauRule> _tableauRules;
 
-	/**
-	 *
-	 */
 	public CompletionStrategy(final ABox abox)
 	{
 		_abox = abox;
@@ -164,9 +161,7 @@ public abstract class CompletionStrategy
 	}
 
 	/**
-	 * Return individuals to which we need to apply the initialization rules
-	 *
-	 * @return
+	 * @return individuals to which we need to apply the initialization rules
 	 */
 	public Iterator<Individual> getInitializeIterator()
 	{
@@ -374,6 +369,8 @@ public abstract class CompletionStrategy
 
 	/**
 	 * apply all the tableau rules to the designated ABox
+	 *
+	 * @param expr of the tableau
 	 */
 	public abstract void complete(Expressivity expr);
 
@@ -1009,6 +1006,7 @@ public abstract class CompletionStrategy
 			throw new NullPointerException();
 	}
 
+	@SuppressWarnings("static-method")
 	public boolean setDifferent(final Node y, final Node z, final DependencySet ds)
 	{
 		return y.setDifferent(z, ds);

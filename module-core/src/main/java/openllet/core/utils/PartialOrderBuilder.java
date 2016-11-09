@@ -51,9 +51,9 @@ public class PartialOrderBuilder<T>
 		return hierarchy;
 	}
 
-	private PartialOrderComparator<T> _comparator;
+	private final PartialOrderComparator<T> _comparator;
 
-	private Taxonomy<T> _taxonomyImpl;
+	private final Taxonomy<T> _taxonomyImpl;
 
 	/**
 	 * Initialize the builder with given _taxonomy and _comparator.
@@ -181,14 +181,14 @@ public class PartialOrderBuilder<T>
 		final Set<T> visited = new HashSet<>();
 
 		/*
-		 * Comment written as if maxToMin == true Each pass over the loop a _node
+		 * Comment written as if maxToMin == true Each pass over the loop a node
 		 * (called the candidate) and its children are pulled from the pending
-		 * _queue. If the _node to be inserted is less than one of the children,
-		 * that child and its children are pushed on to the pending _queue. If
-		 * the _node to be inserted is equal to one of the children, it is
-		 * inserted and processing stops. If the _node to be inserted is not less
-		 * than or equal to any of the children, the candidate _node is a parent.
-		 * The loop is iterated until the _queue is empty, at which point all
+		 * queue. If the node to be inserted is less than one of the children,
+		 * that child and its children are pushed on to the pending queue. If
+		 * the node to be inserted is equal to one of the children, it is
+		 * inserted and processing stops. If the node to be inserted is not less
+		 * than or equal to any of the children, the candidate node is a parent.
+		 * The loop is iterated until the queue is empty, at which point all
 		 * parents have been identified.
 		 */
 		while (!pending.isEmpty())
@@ -237,20 +237,10 @@ public class PartialOrderBuilder<T>
 						break;
 				}
 
-			if (!hasSuccessors && (candidate != null))
+			if (!hasSuccessors && candidate != null)
 				retSet.add(candidate);
 		}
 
 		return retSet;
-	}
-
-	public void setComparator(final PartialOrderComparator<T> comparator)
-	{
-		this._comparator = comparator;
-	}
-
-	public void setTaxonomy(final TaxonomyImpl<T> taxonomy)
-	{
-		this._taxonomyImpl = taxonomy;
 	}
 }

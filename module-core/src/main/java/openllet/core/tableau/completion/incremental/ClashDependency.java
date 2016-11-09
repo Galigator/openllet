@@ -29,14 +29,14 @@ public class ClashDependency implements Dependency
 
 	/**
 	 * Constructor
-	 * 
-	 * @param _assertion
-	 * @param _clash
+	 *
+	 * @param assertion
+	 * @param clash
 	 */
 	public ClashDependency(final ATermAppl assertion, final Clash clash)
 	{
-		this._assertion = assertion;
-		this._clash = clash;
+		_assertion = assertion;
+		_clash = clash;
 	}
 
 	/**
@@ -55,7 +55,7 @@ public class ClashDependency implements Dependency
 	public boolean equals(final Object other)
 	{
 		if (other instanceof ClashDependency)
-			return this._assertion.equals(((ClashDependency) other)._assertion) && this._clash.getNode().equals(((ClashDependency) other)._clash.getNode()) && this._clash.getType() == ((ClashDependency) other)._clash.getType() && this._clash.getDepends().equals(((ClashDependency) other)._clash.getDepends());
+			return _assertion.equals(((ClashDependency) other)._assertion) && _clash.getNode().equals(((ClashDependency) other)._clash.getNode()) && _clash.getType() == ((ClashDependency) other)._clash.getType() && _clash.getDepends().equals(((ClashDependency) other)._clash.getDepends());
 		else
 			return false;
 	}
@@ -66,13 +66,11 @@ public class ClashDependency implements Dependency
 	@Override
 	public int hashCode()
 	{
-		return this._clash.getType().hashCode() + this._clash.getDepends().hashCode() + this._clash.getNode().hashCode() + this._assertion.hashCode();
+		return _clash.getType().hashCode() + _clash.getDepends().hashCode() + _clash.getNode().hashCode() + _assertion.hashCode();
 	}
 
 	/**
-	 * Get the _assertion
-	 * 
-	 * @return
+	 * @return the _assertion
 	 */
 	protected ATermAppl getAssertion()
 	{
@@ -80,9 +78,7 @@ public class ClashDependency implements Dependency
 	}
 
 	/**
-	 * Get the _clash
-	 *
-	 * @return
+	 * @return the _clash
 	 */
 	public Clash getClash()
 	{

@@ -68,7 +68,7 @@ public class SROIQIncStrategy extends SROIQStrategy
 	/**
 	 * Constructor
 	 *
-	 * @param _abox
+	 * @param abox
 	 */
 	public SROIQIncStrategy(final ABoxImpl abox)
 	{
@@ -76,9 +76,7 @@ public class SROIQIncStrategy extends SROIQStrategy
 	}
 
 	/**
-	 * Return individuals to which we need to apply the initialization rules
-	 *
-	 * @return
+	 * @return individuals to which we need to apply the initialization rules
 	 */
 	@Override
 	public Iterator<Individual> getInitializeIterator()
@@ -87,9 +85,7 @@ public class SROIQIncStrategy extends SROIQStrategy
 	}
 
 	/**
-	 * Return individuals that were newly added
-	 *
-	 * @return
+	 * @return individuals that were newly added
 	 */
 	public Iterator<Individual> getNewIterator()
 	{
@@ -97,9 +93,7 @@ public class SROIQIncStrategy extends SROIQStrategy
 	}
 
 	/**
-	 * Return edges that were newly added
-	 *
-	 * @return
+	 * @return edges that were newly added
 	 */
 	public Iterator<Edge> getNewEdgeIterator()
 	{
@@ -107,9 +101,7 @@ public class SROIQIncStrategy extends SROIQStrategy
 	}
 
 	/**
-	 * Return the unpruned indivdiuals
-	 *
-	 * @return
+	 * @return the unpruned indivdiuals
 	 */
 	public Iterator<Node> getUnPrunedIterator()
 	{
@@ -117,9 +109,7 @@ public class SROIQIncStrategy extends SROIQStrategy
 	}
 
 	/**
-	 * Return edges that were newly added
-	 *
-	 * @return
+	 * @return edges that were newly added
 	 */
 	public Iterator<Edge> getRemovedEdgeIterator()
 	{
@@ -127,9 +117,7 @@ public class SROIQIncStrategy extends SROIQStrategy
 	}
 
 	/**
-	 * Return types that were deleted
-	 *
-	 * @return
+	 * @return types that were deleted
 	 */
 	public Iterator<Map.Entry<Node, Set<ATermAppl>>> getRemovedTypeIterator()
 	{

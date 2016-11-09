@@ -267,7 +267,7 @@ public class EdgeList implements Iterable<Edge>
 	/**
 	 * Find the neighbors of a _node that has a certain type. For literals, we collect only the ones with the same language tag.
 	 *
-	 * @param _node The _node whose neighbors are being sought
+	 * @param node The _node whose neighbors are being sought
 	 * @param c The concept (or datatype) that each _neighbor should belong to
 	 * @return Set of _nodes
 	 */
@@ -336,7 +336,7 @@ public class EdgeList implements Iterable<Edge>
 	 * @param from
 	 * @param role
 	 * @param to
-	 * @return
+	 * @return true if contains an edge that match
 	 */
 	public boolean hasEdge(final Individual from, final Role role, final Node to)
 	{
@@ -357,7 +357,7 @@ public class EdgeList implements Iterable<Edge>
 	 * @param from
 	 * @param role
 	 * @param to
-	 * @return
+	 * @return true if contains an edge that match
 	 */
 	public boolean hasExactEdge(final Individual from, final Role role, final Node to)
 	{

@@ -20,10 +20,10 @@ import java.util.logging.Logger;
 import openllet.aterm.AFun;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
+import openllet.core.KnowledgeBase;
 import openllet.core.boxes.rbox.Role;
 import openllet.core.taxonomy.CDOptimizedTaxonomyBuilder;
 import openllet.core.taxonomy.Taxonomy;
-import openllet.core.taxonomy.TaxonomyBuilder;
 import openllet.core.taxonomy.TaxonomyImpl;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.CollectionUtils;
@@ -43,16 +43,15 @@ import openllet.shared.tools.Log;
  *
  * @author Evren Sirin
  */
-@SuppressWarnings("unused")
-public class SimplifiedELClassifier extends CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
+public class SimplifiedELClassifier extends CDOptimizedTaxonomyBuilder
 {
 	@SuppressWarnings("hiding")
 	public static final Logger _logger = Log.getLogger(SimplifiedELClassifier.class);
 
 	private static class QueueElement
 	{
-		private final ConceptInfo _sub;
-		private final ConceptInfo _sup;
+		public final ConceptInfo _sub;
+		public final ConceptInfo _sup;
 
 		public QueueElement(final ConceptInfo sub, final ConceptInfo sup)
 		{
@@ -82,8 +81,9 @@ public class SimplifiedELClassifier extends CDOptimizedTaxonomyBuilder implement
 	private RoleChainCache _roleChains;
 	private RoleRestrictionCache _roleRestrictions;
 
-	public SimplifiedELClassifier()
+	public SimplifiedELClassifier(final KnowledgeBase kb)
 	{
+		super(kb);
 	}
 
 	@Override
@@ -165,7 +165,7 @@ public class SimplifiedELClassifier extends CDOptimizedTaxonomyBuilder implement
 		for (final ConceptInfo supOfSucc : succ.getSuperClasses())
 			addSuccessor(pred, p, supOfSucc);
 
-		if (!_roleChains.isAnon(p))
+		if (!RoleChainCache.isAnon(p))
 			if (MATERIALIZE_SUPER_PROPERTIES)
 			{
 				if (_existentials.contains(p, succ))

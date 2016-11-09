@@ -64,18 +64,15 @@ public class DependencyEntry
 		_clash = null;
 	}
 
-	/**
-	 * @return
-	 */
 	public DependencyEntry copy()
 	{
 		final DependencyEntry newEntry = new DependencyEntry();
 
 		//TODO:may need to perform a deep copy here
-		newEntry.types = new HashSet<>(this.types);
+		newEntry.types = new HashSet<>(types);
 
 		//TODO:may need to perform a deep copy here
-		newEntry.merges = new HashSet<>(this.merges);
+		newEntry.merges = new HashSet<>(merges);
 
 		//copy edge depenedencies
 		for (final Edge next : edges)
@@ -89,13 +86,13 @@ public class DependencyEntry
 		}
 
 		//TODO:may need to perform a deep copy here
-		newEntry.branchAdds = new HashSet<>(this.branchAdds);
+		newEntry.branchAdds = new HashSet<>(branchAdds);
 
 		//TODO:may need to perform a deep copy here
-		newEntry.branchCloses = new HashSet<>(this.branchCloses);
+		newEntry.branchCloses = new HashSet<>(branchCloses);
 
 		//TODO:may need to perform a deep copy here
-		newEntry._clash = this._clash;
+		newEntry._clash = _clash;
 
 		return newEntry;
 	}
@@ -182,9 +179,7 @@ public class DependencyEntry
 	}
 
 	/**
-	 * Get edges
-	 * 
-	 * @return
+	 * @return the edges
 	 */
 	public Set<Edge> getEdges()
 	{
@@ -192,9 +187,7 @@ public class DependencyEntry
 	}
 
 	/**
-	 * Get merges
-	 * 
-	 * @return
+	 * @return the merges
 	 */
 	public Set<MergeDependency> getMerges()
 	{
@@ -202,9 +195,7 @@ public class DependencyEntry
 	}
 
 	/**
-	 * Get types
-	 * 
-	 * @return
+	 * @return the types
 	 */
 	public Set<TypeDependency> getTypes()
 	{
@@ -212,9 +203,7 @@ public class DependencyEntry
 	}
 
 	/**
-	 * Get branches
-	 * 
-	 * @return
+	 * @return get branches
 	 */
 	public Set<BranchAddDependency> getBranchAdds()
 	{
@@ -222,9 +211,7 @@ public class DependencyEntry
 	}
 
 	/**
-	 * Get the close branches for this entry
-	 *
-	 * @return
+	 * @return the close branches for this entry
 	 */
 	public Set<CloseBranchDependency> getCloseBranches()
 	{
@@ -232,9 +219,7 @@ public class DependencyEntry
 	}
 
 	/**
-	 * Get _clash dependency
-	 * 
-	 * @return
+	 * @return the clash dependency
 	 */
 	public ClashDependency getClash()
 	{
@@ -243,11 +228,11 @@ public class DependencyEntry
 
 	/**
 	 * Set _clash dependency
-	 * 
+	 *
 	 * @param _clash
 	 */
 	protected void setClash(final ClashDependency clash)
 	{
-		this._clash = clash;
+		_clash = clash;
 	}
 }

@@ -11,8 +11,8 @@ import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
 import openllet.core.boxes.abox.ABox;
 import openllet.core.boxes.abox.Individual;
-import openllet.core.boxes.rbox.Role;
 import openllet.core.boxes.rbox.RBox;
+import openllet.core.boxes.rbox.Role;
 import openllet.core.boxes.tbox.TBox;
 import openllet.core.datatypes.DatatypeReasoner;
 import openllet.core.expressivity.Expressivity;
@@ -115,7 +115,7 @@ public interface KnowledgeBase extends Logging
 	public void ensureConsistency();
 
 	/**
-	 * Returns true if the consistency check has been done and nothing in the KB has changed after that.
+	 * @return true if the consistency check has been done and nothing in the KB has changed after that.
 	 */
 	public boolean isConsistencyDone();
 
@@ -170,6 +170,8 @@ public interface KnowledgeBase extends Logging
 	 * Choose a completion strategy based on the expressivity of the KB. The abox given is not necessarily the ABox that belongs to this KB but can be a
 	 * derivative.
 	 *
+	 * @param abox
+	 * @param expressivity
 	 * @return a Completion strategy choose.
 	 */
 	public CompletionStrategy chooseStrategy(final ABox abox, final Expressivity expressivity);
@@ -219,7 +221,7 @@ public interface KnowledgeBase extends Logging
 	public Map<Rule, Rule> getNormalizedRules();
 
 	/**
-	 * Return all the asserted rules.
+	 * @return all the asserted rules.
 	 */
 	public Set<Rule> getRules();
 
@@ -320,7 +322,7 @@ public interface KnowledgeBase extends Logging
 	public Set<ATermAppl> getAsymmetricProperties();
 
 	/**
-	 * @param prop
+	 * @param name
 	 * @return the named inverse property and all its equivalent properties.
 	 */
 	public Set<ATermAppl> getInverses(final ATerm name);
@@ -330,7 +332,9 @@ public interface KnowledgeBase extends Logging
 	public Map<ATermAppl, List<ATermAppl>> getPropertyValues(final ATermAppl pred);
 
 	/**
-	 * List all properties asserted between a subject and object.
+	 * @param s
+	 * @param o
+	 * @return all properties asserted between a subject and object.
 	 */
 	public List<ATermAppl> getProperties(final ATermAppl s, final ATermAppl o);
 
@@ -359,7 +363,7 @@ public interface KnowledgeBase extends Logging
 	 * @param s Subject
 	 * @param p Predicate
 	 * @param o Object (<code>null</code> can be used as wildcard)
-	 * @return
+	 * @return true if the hasPropertyValue question without doing any satisfiability check.
 	 */
 	public Bool hasKnownPropertyValue(final ATermAppl s, final ATermAppl p, final ATermAppl o);
 
@@ -379,7 +383,7 @@ public interface KnowledgeBase extends Logging
 	/**
 	 * The results of this function is not guaranteed to be complete. Use {@link #hasDomain(ATermAppl, ATermAppl)} to get complete answers.
 	 *
-	 * @param prop
+	 * @param name
 	 * @return the domain restrictions on the property.
 	 */
 	public Set<ATermAppl> getDomains(final ATermAppl name);
@@ -387,7 +391,7 @@ public interface KnowledgeBase extends Logging
 	/**
 	 * The results of this function is not guaranteed to be complete. Use {@link #hasRange(ATermAppl, ATermAppl)} to get complete answers.
 	 *
-	 * @param prop
+	 * @param name
 	 * @return the domain restrictions on the property.
 	 */
 	public Set<ATermAppl> getRanges(final ATerm name);
@@ -450,7 +454,7 @@ public interface KnowledgeBase extends Logging
 	 *
 	 * @param x
 	 * @param c
-	 * @return
+	 * @return true if the term x is of the know type c (class)
 	 */
 	public Bool isKnownType(final ATermAppl x, final ATermAppl c);
 
@@ -515,7 +519,8 @@ public interface KnowledgeBase extends Logging
 	public Set<ATermAppl> retrieve(final ATermAppl d, final Collection<ATermAppl> individuals);
 
 	/**
-	 * Retrieve _individuals which possibly have a property value for the given property.
+	 * @param r
+	 * @return individuals which possibly have a property value for the given property.
 	 */
 	public List<ATermAppl> retrieveIndividualsWithProperty(final ATermAppl r);
 
@@ -651,12 +656,15 @@ public interface KnowledgeBase extends Logging
 	 *
 	 * @param name name of the datatype
 	 * @param datarange a data range expression
-	 * @return
+	 * @return true if the add success
 	 */
 	public boolean addDatatypeDefinition(final ATermAppl name, final ATermAppl datarange);
 
 	/**
 	 * Add a rule to the KB.
+	 *
+	 * @param rule
+	 * @return true if the add success
 	 */
 	public boolean addRule(final Rule rule);
 
@@ -736,7 +744,8 @@ public interface KnowledgeBase extends Logging
 	 * *** This function will first classify the whole ontology ***
 	 * </p>
 	 *
-	 * @param c class whose superclasses are returned
+	 * @param cParam class whose superclasses are returned
+	 * @param direct
 	 * @return A set of sets, where each set in the collection represents an equivalence class. The elements of the inner class are ATermAppl objects.
 	 */
 	public Set<Set<ATermAppl>> getSuperClasses(final ATermAppl cParam, final boolean direct);
@@ -778,11 +787,11 @@ public interface KnowledgeBase extends Logging
 	 * Return all literal values for a given dataproperty that belongs to the specified datatype.
 	 *
 	 * @param r
-	 * @param x
 	 * @param lang
+	 * @param datatype
 	 * @return List of ATermAppl objects representing literals. These objects are in the form literal(value, lang, datatypeURI).
 	 */
-	public List<ATermAppl> getDataPropertyValues(final ATermAppl r, final ATermAppl x, final ATermAppl datatype);
+	public List<ATermAppl> getDataPropertyValues(final ATermAppl r, final ATermAppl lang, final ATermAppl datatype);
 
 	/**
 	 * Return all literal values for a given dataproperty and subject value.

@@ -37,25 +37,25 @@ import openllet.shared.tools.Logging;
 public interface ABox extends Logging
 {
 	/**
-	 * Create a copy of this ABox with all the _nodes and edges.
-	 *
-	 * @return
+	 * @return a copy of this ABox with all the nodes and edges.
 	 */
 	public ABox copy();
 
 	/**
-	 * Create a copy of this ABox with all the nodes and edges and the given KB.
+	 * @param kb from witch the ABox is extracted
+	 * @return a copy of this ABox with all the nodes and edges and the given KB.
 	 */
 	public ABox copy(final KnowledgeBase kb);
 
 	/**
-	 * Create a copy of this ABox with one more additional _individual. This is <b>NOT</b> equivalent to create a copy and then add the _individual. The _order
-	 * of individuals in the ABox is important to figure out which individuals exist in the original ontology and which ones are created by the tableau
-	 * algorithm. This function creates a new ABox such that the _individual is supposed to exist in the original ontology. This is very important when
-	 * satisfiability of a concept starts with a pesudo model rather than the initial ABox.
+	 * Create a copy of this ABox with one more additional individual. This is <b>NOT</b> equivalent to create a copy and then add the individual. The order of
+	 * individuals in the ABox is important to figure out which individuals exist in the original ontology and which ones are created by the tableau algorithm.
+	 * This function creates a new ABox such that the individual is supposed to exist in the original ontology. This is very important when satisfiability of a
+	 * concept starts with a pesudo model rather than the initial ABox.
 	 *
 	 * @param extraIndividual Extra _individual to be added to the copy ABox
-	 * @return
+	 * @param copyIndividuals are the new individual that are supposed to exist in the original ontology.
+	 * @return a copy of this ABox
 	 */
 	public ABox copy(final ATermAppl extraIndividual, final boolean copyIndividuals);
 
@@ -105,21 +105,17 @@ public interface ABox extends Logging
 	public boolean isSameAs(final ATermAppl ind1, final ATermAppl ind2);
 
 	/**
-	 * Returns true if _individual x belongs to type c. This is a logical consequence of the KB if in all possible models x belongs to C. This is checked by
-	 * trying to construct a model where x belongs to not(c).
-	 *
 	 * @param x
 	 * @param c
-	 * @return
+	 * @return true if individual x belongs to type c. This is a logical consequence of the KB if in all possible models x belongs to C. This is checked by
+	 *         trying to construct a model where x belongs to not(c).
 	 */
 	public boolean isType(final ATermAppl x, ATermAppl c);
 
 	/**
-	 * Returns true if any of the individuals in the given list belongs to type c.
-	 *
 	 * @param c
 	 * @param inds
-	 * @return
+	 * @return true if any of the individuals in the given list belongs to type c.
 	 */
 	public boolean isType(final List<ATermAppl> inds, ATermAppl c);
 
@@ -148,15 +144,13 @@ public interface ABox extends Logging
 	public void getSames(final Individual ind, final Set<ATermAppl> knowns, final Set<ATermAppl> unknowns);
 
 	/**
-	 * Return true if this ABox is consistent. Consistent ABox means after applying all the tableau completion rules at least one _branch with no clashes was
-	 * found
-	 *
-	 * @return
+	 * @return true if this ABox is consistent. Consistent ABox means after applying all the tableau completion rules at least one _branch with no clashes was
+	 *         found
 	 */
 	public boolean isConsistent();
 
 	/**
-	 * Check the consistency of this ABox using the incremental consistency checking approach
+	 * @return true if this ABox is consistent, using the incremental consistency checking approach
 	 */
 	boolean isIncConsistent();
 
@@ -177,10 +171,10 @@ public interface ABox extends Logging
 	public Edge addEdge(final ATermAppl p, final ATermAppl s, final ATermAppl o, DependencySet ds);
 
 	/**
-	 * Remove the given _node from the _node map which maps names to _nodes. Does not remove the _node from the _node list or other _nodes' edge lists.
+	 * Remove the given node from the node map which maps names to nodes. Does not remove the node from the node list or other nodes' edge lists.
 	 *
 	 * @param x
-	 * @return
+	 * @return true if the removal occur
 	 */
 	public boolean removeNode(final ATermAppl x);
 
@@ -190,7 +184,8 @@ public interface ABox extends Logging
 	 * Add a new literal to the ABox. This function is used only when the literal value does not have a known value, e.g. applyMinRule would create such a
 	 * literal.
 	 *
-	 * @return
+	 * @param ds
+	 * @return the literal added.
 	 */
 	public Literal addLiteral(final DependencySet ds);
 
@@ -233,14 +228,12 @@ public interface ABox extends Logging
 	public boolean isComplete();
 
 	/**
-	 * @param _isComplete The isComplete to set.
+	 * @param isComplete The isComplete to set.
 	 */
 	public void setComplete(final boolean isComplete);
 
 	/**
-	 * Returns true if Abox has a clash.
-	 *
-	 * @return
+	 * @return true if Abox is closed.
 	 */
 	public boolean isClosed();
 
@@ -255,32 +248,35 @@ public interface ABox extends Logging
 
 	/**
 	 * Convenience function to get the named role.
+	 *
+	 * @param r is the name of the role
+	 * @return the named role.
 	 */
 	public Role getRole(final ATerm r);
 
 	/**
-	 * Return the RBox
+	 * @return the RBox
 	 */
 	public RBox getRBox();
 
 	/**
-	 * Return the TBox
+	 * @return the TBox
 	 */
 	public TBox getTBox();
 
 	public List<ATermAppl> getNodeList();
 
 	/**
-	 * Return the _current _branch number. Branches are created when a non-deterministic rule, e.g. _disjunction or max rule, is being applied.
+	 * Return the current branch number. Branches are created when a non-deterministic rule, e.g. disjunction or max rule, is being applied.
 	 *
-	 * @return Returns the _branch.
+	 * @return Returns the branch.
 	 */
 	public int getBranch();
 
 	/**
 	 * Set the _branch number (should only be called when backjumping is in progress)
 	 *
-	 * @param _branch
+	 * @param branch
 	 */
 	public void setBranch(final int branch);
 
@@ -293,16 +289,14 @@ public interface ABox extends Logging
 	public void setRulesNotApplied(final boolean rulesNotApplied);
 
 	/**
-	 * Increment the _branch number (should only be called when a non-deterministic rule, e.g. _disjunction or max rule, is being applied)
-	 *
-	 * @param _branch
+	 * Increment the branch number (should only be called when a non-deterministic rule, e.g. disjunction or max rule, is being applied)
 	 */
 	public void incrementBranch();
 
 	/**
 	 * Check if the ABox is ready to be completed.
 	 *
-	 * @return Returns the _initialized.
+	 * @return Returns the initialized.
 	 */
 	public boolean isInitialized();
 
@@ -318,7 +312,7 @@ public interface ABox extends Logging
 	/**
 	 * Enable/disable clashExplanation generation
 	 *
-	 * @param _doExplanation The _doExplanation to set.
+	 * @param doExplanation The doExplanation to set.
 	 */
 	public void setDoExplanation(final boolean doExplanation);
 
@@ -331,16 +325,14 @@ public interface ABox extends Logging
 	public BranchEffectTracker getBranchEffectTracker();
 
 	/**
-	 * Returns the _branches.
+	 * @return the branches.
 	 */
 	public List<Branch> getBranches();
 
 	public IncrementalChangeTracker getIncrementalChangeTracker();
 
 	/**
-	 * Return individuals to which we need to apply the tableau rules
-	 *
-	 * @return
+	 * @return the individuals to which we need to apply the tableau rules
 	 */
 	public IndividualIterator getIndIterator();
 
@@ -374,16 +366,12 @@ public interface ABox extends Logging
 	public void setKeepLastCompletion(final boolean keepLastCompletion);
 
 	/**
-	 * Return the number of _nodes in the ABox. This number includes both the individuals and the literals.
-	 *
-	 * @return
+	 * @return the number of nodes in the ABox. This number includes both the individuals and the literals.
 	 */
 	public int size();
 
 	/**
-	 * Returns true if there are no individuals in the ABox.
-	 *
-	 * @return
+	 * @return true if there are no individuals in the ABox.
 	 */
 	public boolean isEmpty();
 
@@ -391,9 +379,9 @@ public interface ABox extends Logging
 
 	/**
 	 * Set whether changes to the update should be treated as syntactic updates, i.e., if the changes are made on explicit source axioms. This is used for the
-	 * completion _queue for incremental consistency checking purposes.
+	 * completion queue for incremental consistency checking purposes.
 	 *
-	 * @param boolean val The value
+	 * @param val The value
 	 */
 	void setSyntacticUpdate(final boolean val);
 
@@ -401,7 +389,7 @@ public interface ABox extends Logging
 	 * Set whether changes to the update should be treated as syntactic updates, i.e., if the changes are made on explicit source axioms. This is used for the
 	 * completion _queue for incremental consistency checking purposes.
 	 *
-	 * @param boolean val The value
+	 * @return the value
 	 */
 	boolean isSyntacticUpdate();
 
@@ -416,6 +404,7 @@ public interface ABox extends Logging
 
 	/**
 	 * @param anonCount the anonCount to set
+	 * @return the count set.
 	 */
 	public int setAnonCount(final int anonCount);
 

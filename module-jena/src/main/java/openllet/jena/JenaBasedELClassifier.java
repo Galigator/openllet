@@ -18,9 +18,11 @@ import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
+import openllet.core.KnowledgeBase;
 import openllet.core.el.RuleBasedELClassifier;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.MultiValueMap;
+import openllet.core.utils.SetUtils;
 import org.apache.jena.graph.Graph;
 import org.apache.jena.graph.Node;
 import org.apache.jena.graph.NodeFactory;
@@ -59,14 +61,14 @@ public class JenaBasedELClassifier extends RuleBasedELClassifier
 
 	private final NameStore _names;
 	private final VariableStore _variables;
-	private final Set<Rule> _rules;
+	private final Set<Rule> _rules = SetUtils.create();
 	private final Graph _facts;
 
-	public JenaBasedELClassifier()
+	public JenaBasedELClassifier(final KnowledgeBase kb)
 	{
+		super(kb);
 		_names = new NameStore();
 		_variables = new VariableStore();
-		_rules = new HashSet<>();
 		_facts = GraphFactory.createDefaultGraph();
 
 		TOP = _names.get(ATermUtils.TOP);

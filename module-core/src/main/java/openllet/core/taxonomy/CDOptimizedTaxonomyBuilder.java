@@ -43,7 +43,7 @@ import openllet.shared.tools.Log;
 
 /**
  * <p>
- * Title: CD Optimized Taxonomy Builder
+ * Title: Completely Defined Optimized Taxonomy Builder
  * </p>
  * <p>
  * Description: Taxonomy Builder implementation optimized for completely defined concepts
@@ -73,35 +73,31 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 
 	private static final Set<ConceptFlag> PHASE1_FLAGS = EnumSet.of(ConceptFlag.COMPLETELY_DEFINED, ConceptFlag.PRIMITIVE, ConceptFlag.OTHER);
 
-	protected ProgressMonitor _monitor = OpenlletOptions.USE_CLASSIFICATION_MONITOR.create();
+	protected volatile ProgressMonitor _monitor = OpenlletOptions.USE_CLASSIFICATION_MONITOR.create();
 
-	protected Collection<ATermAppl> _classes;
+	protected volatile Collection<ATermAppl> _classes; // No concurrent write on _classes
 
-	protected Taxonomy<ATermAppl> _toldTaxonomy;
+	protected volatile Taxonomy<ATermAppl> _toldTaxonomy;
 
-	protected Taxonomy<ATermAppl> _taxonomyImpl;
+	protected volatile Taxonomy<ATermAppl> _taxonomyImpl;
 
-	private Map<ATermAppl, Set<ATermAppl>> _toldDisjoints;
+	private final Map<ATermAppl, Set<ATermAppl>> _toldDisjoints = CollectionUtils.makeIdentityMap();
 
-	private Map<ATermAppl, ATermList> _unionClasses;
+	private final Map<ATermAppl, ATermList> _unionClasses = CollectionUtils.makeIdentityMap();
 
-	private DefinitionOrder _definitionOrder;
+	private volatile DefinitionOrder _definitionOrder;
 
-	protected KnowledgeBase _kb;
+	protected volatile KnowledgeBase _kb;
 
-	private boolean _useCD;
+	private volatile boolean _useCD = false;
 
-	private List<TaxonomyNode<ATermAppl>> _markedNodes;
+	private final List<TaxonomyNode<ATermAppl>> _markedNodes = CollectionUtils.makeList();
 
-	private Map<ATermAppl, ConceptFlag> _conceptFlags;
+	private volatile Map<ATermAppl, ConceptFlag> _conceptFlags;
 
-	public CDOptimizedTaxonomyBuilder()
-	{
+	private volatile boolean _prepared = false;
 
-	}
-
-	@Override
-	public void setKB(final KnowledgeBase kb)
+	public CDOptimizedTaxonomyBuilder(final KnowledgeBase kb)
 	{
 		_kb = kb;
 	}
@@ -115,8 +111,6 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 			_monitor = monitor;
 	}
 
-	private boolean prepared = false;
-
 	@Override
 	public Taxonomy<ATermAppl> getTaxonomy()
 	{
@@ -127,7 +121,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 	@Override
 	public Taxonomy<ATermAppl> getToldTaxonomy()
 	{
-		if (!prepared)
+		if (!_prepared)
 		{
 			reset();
 			computeToldInformation();
@@ -140,7 +134,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 	@Override
 	public Map<ATermAppl, Set<ATermAppl>> getToldDisjoints()
 	{
-		if (!prepared)
+		if (!_prepared)
 		{
 			reset();
 			computeToldInformation();
@@ -179,7 +173,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 			_logger.fine("Classes: " + classCount + " Individuals: " + _kb.getIndividuals().size());
 		}
 
-		if (!prepared)
+		if (!_prepared)
 		{
 			final Timer t = _kb.getTimers().startTimer("taxBuilder.prepare");
 			prepare();
@@ -298,7 +292,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 
 		computeConceptFlags();
 
-		prepared = true;
+		_prepared = true;
 	}
 
 	protected void reset()
@@ -309,9 +303,9 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 
 		_useCD = OpenlletOptions.USE_CD_CLASSIFICATION && !_kb.getTBox().unfold(ATermUtils.TOP).hasNext() && !_kb.getExpressivity().hasNominal();
 
-		_toldDisjoints = CollectionUtils.makeIdentityMap();
-		_unionClasses = CollectionUtils.makeIdentityMap();
-		_markedNodes = CollectionUtils.makeList();
+		_toldDisjoints.clear();
+		_unionClasses.clear();
+		_markedNodes.clear();
 
 		_taxonomyImpl = new TaxonomyImpl<>(null, ATermUtils.TOP, ATermUtils.BOTTOM);
 
@@ -360,16 +354,13 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 
 			for (final ATermAppl d : lca)
 			{
-				if (_logger.isLoggable(Level.FINER))
-					_logger.finer("Union subsumption " + format(c) + " " + format(d));
-
+				_logger.finer(() -> "Union subsumption " + format(c) + " " + format(d));
 				addToldSubsumer(c, d);
 			}
 		}
 
 		// we don't need this any more so set it null and let GC claim it
-		_unionClasses = null;
-
+		_unionClasses.clear();
 		_toldTaxonomy.assertValid();
 
 		t.stop();
@@ -1189,9 +1180,9 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 			long time = System.currentTimeMillis();
 			final long count = _kb.getABox().getStats().satisfiabilityCount;
 			_logger.finer("Subsumption testing for [" + format(sub) + "," + format(sup) + "]...");
-
+		
 			final boolean result = _kb.getABox().isSubClassOf(sub, sup);
-
+		
 			final String sign = (_kb.getABox().getStats().satisfiabilityCount > count) ? "+" : "-";
 			time = System.currentTimeMillis() - time;
 			_logger.finer(" done (" + (result ? "+" : "-") + ") (" + sign + time + "ms)");
@@ -1354,10 +1345,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 		_monitor.setProgressLength(_classes.size() + 2);
 		_monitor.taskStarted();
 
-		if (_markedNodes == null)
-			_markedNodes = CollectionUtils.makeList();
-		else
-			clearMarks();
+		clearMarks();
 
 		final Collection<ATermAppl> individuals = _kb.getIndividuals();
 		if (!individuals.isEmpty())

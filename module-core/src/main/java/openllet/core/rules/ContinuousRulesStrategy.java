@@ -243,7 +243,7 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 					_logger.fine("Branch: " + _abox.getBranch()//
 							+ ", Depth: " + _abox.getStats()._treeDepth//
 							+ ", Size: " + _abox.getNodes().size()//
-							+ ", Mem: " + (Runtime.getRuntime().freeMemory() / 1000) + "kb");
+							+ ", Mem: " + Runtime.getRuntime().freeMemory() / 1000 + "kb");
 					_abox.validate();
 					// printBlocked();
 					_abox.printTree();
@@ -376,7 +376,7 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 	{
 		_merging = true;
 		super.mergeTo(y, z, ds);
-		if (!_abox.isClosed() && (_interpreter != null) && (y.isRootNominal() || z.isRootNominal()))
+		if (!_abox.isClosed() && _interpreter != null && (y.isRootNominal() || z.isRootNominal()))
 		{
 			//			if( y.isRootNominal() )
 			//				runRules |= interpreter.removeMentions( y.getTerm() );

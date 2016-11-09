@@ -104,9 +104,7 @@ public class TBoxBase implements Logging
 	}
 
 	/**
-	 * Returns the number of term definitions stored in this TBox.
-	 *
-	 * @return
+	 * @return the number of term definitions stored in this TBox.
 	 */
 	public int size()
 	{

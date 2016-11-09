@@ -22,7 +22,7 @@ public class PartialOrderTaxonomyBuilder implements TaxonomyBuilder
 {
 
 	private final PartialOrderBuilder<ATermAppl> _builder;
-	private KnowledgeBase _kb;
+	private final KnowledgeBase _kb;
 	private final TaxonomyImpl<ATermAppl> _tax;
 
 	public PartialOrderTaxonomyBuilder(final KnowledgeBase kb)
@@ -69,20 +69,15 @@ public class PartialOrderTaxonomyBuilder implements TaxonomyBuilder
 		throw new UnsupportedOperationException();
 	}
 
-	@Override
-	public void setKB(final KnowledgeBase kb)
-	{
-		_kb = kb;
-	}
+	//	@Override
+	//	public void setKB(final KnowledgeBase kb)
+	//	{
+	//		_kb = kb;
+	//	}
 
 	public PartialOrderComparator<ATermAppl> getComparator()
 	{
 		return _builder.getComparator();
-	}
-
-	public void setComparator(final PartialOrderComparator<ATermAppl> comparator)
-	{
-		_builder.setComparator(comparator);
 	}
 
 	@Override

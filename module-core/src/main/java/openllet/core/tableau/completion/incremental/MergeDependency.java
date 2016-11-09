@@ -28,20 +28,18 @@ public class MergeDependency implements Dependency
 
 	/**
 	 * Constructor
-	 * 
-	 * @param _ind
-	 * @param _mergedIntoInd
+	 *
+	 * @param ind
+	 * @param mergedIntoInd
 	 */
 	public MergeDependency(final ATermAppl ind, final ATermAppl mergedIntoInd)
 	{
-		this._mergedIntoInd = mergedIntoInd;
-		this._ind = ind;
+		_mergedIntoInd = mergedIntoInd;
+		_ind = ind;
 	}
 
 	/**
-	 * Get the _individual that is merged into the other
-	 *
-	 * @return
+	 * @return the _individual that is merged into the other
 	 */
 	public ATermAppl getInd()
 	{
@@ -49,9 +47,7 @@ public class MergeDependency implements Dependency
 	}
 
 	/**
-	 * Get the _individual that has _ind merged into it
-	 *
-	 * @return
+	 * @return the _individual that has _ind merged into it
 	 */
 	public ATermAppl getmergedIntoInd()
 	{
@@ -74,7 +70,7 @@ public class MergeDependency implements Dependency
 	public boolean equals(final Object other)
 	{
 		if (other instanceof MergeDependency)
-			return this._ind.equals(((MergeDependency) other)._ind) && this._mergedIntoInd.equals(((MergeDependency) other)._mergedIntoInd);
+			return _ind.equals(((MergeDependency) other)._ind) && _mergedIntoInd.equals(((MergeDependency) other)._mergedIntoInd);
 		else
 			return false;
 	}
@@ -85,7 +81,7 @@ public class MergeDependency implements Dependency
 	@Override
 	public int hashCode()
 	{
-		return this._ind.hashCode() + this._mergedIntoInd.hashCode();
+		return _ind.hashCode() + _mergedIntoInd.hashCode();
 	}
 
 }

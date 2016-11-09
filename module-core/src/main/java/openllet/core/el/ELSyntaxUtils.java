@@ -39,7 +39,7 @@ public class ELSyntaxUtils
 	 * limited use of nominals Pellet's specialized EL classifier currently does not support nominals so we treat them as non-EL).
 	 *
 	 * @param concept
-	 * @return
+	 * @return true if the the term is EL
 	 */
 	public static boolean isEL(final ATermAppl concept)
 	{

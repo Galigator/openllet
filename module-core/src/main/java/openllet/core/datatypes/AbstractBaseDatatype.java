@@ -18,6 +18,7 @@ import openllet.core.utils.ATermUtils;
  * </p>
  *
  * @author Mike Smith
+ * @param <T> type of literal
  */
 public abstract class AbstractBaseDatatype<T> implements Datatype<T>
 {
@@ -61,7 +62,7 @@ public abstract class AbstractBaseDatatype<T> implements Datatype<T>
 	 * @return <code>ATermUtils.getLiteralValue( input )</code>
 	 * @throws IllegalArgumentException if <code>!ATermUtils.isLiteral( input )</code> or if the datatype URI does not match this datatype
 	 */
-	protected String getLexicalForm(final ATermAppl input)
+	protected static String getLexicalForm(final ATermAppl input)
 	{
 		if (!ATermUtils.isLiteral(input))
 			throw new IllegalArgumentException();

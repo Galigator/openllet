@@ -42,6 +42,7 @@ import java.util.Properties;
 import java.util.logging.Logger;
 import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.tableau.completion.CompletionStrategy;
+import openllet.core.utils.AnnotationClasses;
 import openllet.core.utils.progress.ConsoleProgressMonitor;
 import openllet.core.utils.progress.ProgressMonitor;
 import openllet.core.utils.progress.SilentProgressMonitor;
@@ -116,6 +117,7 @@ public class OpenlletOptions
 	 * Sets the Pellet configuration options and returns the old values for the options.
 	 *
 	 * @param newOptions the new values for configuration options
+	 * @return the old properties.
 	 */
 	public static Properties setOptions(final Properties newOptions)
 	{
@@ -601,7 +603,7 @@ public class OpenlletOptions
 	public static boolean RETURN_DEDUCTIONS_GRAPH = false;
 
 	/**
-	 * Flag set if the completion _queue should be utilized. This optimization will introduce memory overhead but will (in some cases) dramatically reduce
+	 * Flag set if the completion queue should be utilized. This optimization will introduce memory overhead but will (in some cases) dramatically reduce
 	 * reasoning time. Rather than iterating over all individuals during the completion _strategy, only those which need to have the rules fired are selected
 	 * for rule applications.
 	 */
@@ -609,9 +611,9 @@ public class OpenlletOptions
 
 	/**
 	 * Flag set if the optimized basic completion _queue should be used. The difference between the basic completion _queue is that it maintains queues of
-	 * individuals for each rule type. In contrast the basic completion _queue simply one list of individuals which all rules iterate over
+	 * individuals for each rule type. In contrast the basic completion queue simply one list of individuals which all rules iterate over
 	 */
-	public static boolean USE_OPTIMIZED_BASIC_COMPLETION_QUEUE = false && USE_COMPLETION_QUEUE;
+	public static boolean USE_OPTIMIZED_BASIC_COMPLETION_QUEUE = USE_COMPLETION_QUEUE && false;
 
 	/**
 	 * During backjumping use dependency set information to restore _node labels rather than restoring the label exactly to the previous state.
@@ -621,23 +623,23 @@ public class OpenlletOptions
 	/**
 	 * Flag set if incremental consistency checking should be used. Currently it can only be used on KBs with SHIQ or SHOQ expressivity
 	 */
-	public static boolean USE_INCREMENTAL_CONSISTENCY = false && USE_COMPLETION_QUEUE;
+	public static boolean USE_INCREMENTAL_CONSISTENCY = USE_COMPLETION_QUEUE && false;
 
 	/**
 	 * Flag set if incremental support for deletions should be used. Currently it can only be used on KBs with SHIQ or SHOQ expressivity. This flag is used as
 	 * incremental deletions introduces memory overhead, which may not be suitable for some KBs
 	 */
-	public static boolean USE_INCREMENTAL_DELETION = false && USE_INCREMENTAL_CONSISTENCY && USE_TRACING;
+	public static boolean USE_INCREMENTAL_DELETION = USE_INCREMENTAL_CONSISTENCY && USE_TRACING && false;
 
 	/**
 	 * Flag if the completion _queue should be maintained through incremental deletions. It can be the case that a removal of a syntactic assertion will require
-	 * a _queue element to be removed, as it is no longer applicable. If this is set to false then a simple check before each rule is fired will be performed -
+	 * a queue element to be removed, as it is no longer applicable. If this is set to false then a simple check before each rule is fired will be performed -
 	 * if the ds for the label is null, then the rule will not be fired. If this is set to true and tracing is on, then the _queue will be maintained through
-	 * deletions. TODO: Note currently the _queue maintenance is not implemented, so this should always be FALSE!
+	 * deletions. TODO: Note currently the queue maintenance is not implemented, so this should always be FALSE!
 	 * <p>
 	 * <b>*********** DO NOT CHANGE THE VALUE OF THIS OPTION **************</b>
 	 */
-	public static boolean MAINTAIN_COMPLETION_QUEUE = false && USE_TRACING && USE_COMPLETION_QUEUE;
+	public static boolean MAINTAIN_COMPLETION_QUEUE = USE_TRACING && USE_COMPLETION_QUEUE && false;
 
 	/**
 	 * Use (if applicable) special optimization for completely defined (CD) concepts during classification.

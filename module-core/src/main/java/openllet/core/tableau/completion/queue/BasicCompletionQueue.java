@@ -82,7 +82,7 @@ public class BasicCompletionQueue extends CompletionQueue
 	/**
 	 * Constructor - create queue
 	 *
-	 * @param _abox
+	 * @param abox
 	 */
 	public BasicCompletionQueue(final ABox abox)
 	{
@@ -121,10 +121,7 @@ public class BasicCompletionQueue extends CompletionQueue
 	}
 
 	/**
-	 * Test if there is another element on the queue to process
-	 *
-	 * @param type
-	 * @return
+	 * @return true if there is another element on the queue to process
 	 */
 	@Override
 	public boolean hasNext()
@@ -134,9 +131,9 @@ public class BasicCompletionQueue extends CompletionQueue
 	}
 
 	/**
-	 * Reset the queue to be the current nodes in the abox; Also reset the type index to 0
+	 * Restore the queue to be the current nodes in the abox; Also reset the type index to 0
 	 *
-	 * @param _branch
+	 * @param branch
 	 */
 	@Override
 	public void restore(final int branch)
@@ -151,10 +148,7 @@ public class BasicCompletionQueue extends CompletionQueue
 	}
 
 	/**
-	 * Get the next element of a queue of a given type
-	 *
-	 * @param type
-	 * @return
+	 * @return the next element of a queue of a given type
 	 */
 	@Override
 	public Individual next()
@@ -169,10 +163,7 @@ public class BasicCompletionQueue extends CompletionQueue
 	}
 
 	/**
-	 * Get the next element of a queue of a given type
-	 *
-	 * @param type
-	 * @return
+	 * @return the next element of a queue of a given type
 	 */
 	@Override
 	public Node nextLiteral()
@@ -202,9 +193,9 @@ public class BasicCompletionQueue extends CompletionQueue
 	}
 
 	/**
-	 * Reset the cutoff for a given type _index
+	 * Reset the cutoff for a given type index
 	 *
-	 * @param type
+	 * @param s
 	 */
 	@Override
 	public void reset(final NodeSelector s)
@@ -214,9 +205,9 @@ public class BasicCompletionQueue extends CompletionQueue
 	}
 
 	/**
-	 * Set _branch pointers to current pointer. This is done whenever abox.incrementBranch is called
+	 * Set branch pointers to current pointer. This is done whenever abox.incrementBranch is called
 	 *
-	 * @param _branch
+	 * @param branch
 	 */
 	@Override
 	public void incrementBranch(final int branch)
@@ -225,9 +216,7 @@ public class BasicCompletionQueue extends CompletionQueue
 	}
 
 	/**
-	 * Copy the _queue
-	 *
-	 * @return
+	 * @return a copy of the queue
 	 */
 	@Override
 	public BasicCompletionQueue copy()

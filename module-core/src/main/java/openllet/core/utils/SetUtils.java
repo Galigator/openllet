@@ -51,7 +51,7 @@ public class SetUtils
 	 *
 	 * @param o
 	 * @param set
-	 * @return
+	 * @return merge of set
 	 */
 	public static <T> Set<T> add(final T o, final Set<T> set)
 	{
@@ -109,9 +109,8 @@ public class SetUtils
 	}
 
 	/**
-	 * Returns the union of all the sets given in a collection.
-	 *
 	 * @param coll A Collection of sets
+	 * @return the union of all the sets given in a collection.
 	 */
 	public static <T> Set<T> union(final Collection<? extends Collection<? extends T>> coll)
 	{
@@ -124,9 +123,9 @@ public class SetUtils
 	}
 
 	/**
-	 * Returns the union of two collections
-	 *
-	 * @param coll A Collection of sets
+	 * @param c1 A Collection of sets
+	 * @param c2 A Collection of sets
+	 * @return the union of two collections
 	 */
 	public static <T> Set<T> union(final Collection<? extends T> c1, final Collection<? extends T> c2)
 	{
@@ -138,9 +137,8 @@ public class SetUtils
 	}
 
 	/**
-	 * Returns the intersection of all the collections given in a collection.
-	 *
 	 * @param coll A Collection of sets
+	 * @return the intersection of all the collections given in a collection.
 	 */
 	public static <T> Set<T> intersection(final Collection<? extends Collection<? extends T>> coll)
 	{
@@ -161,9 +159,9 @@ public class SetUtils
 	}
 
 	/**
-	 * Returns the intersection of two collections
-	 *
-	 * @param coll A Collection of sets
+	 * @return the intersection of two collections
+	 * @param c1 A Collection of sets
+	 * @param c2 A Collection of sets
 	 */
 	public static <T> Set<T> intersection(final Collection<? extends T> c1, final Collection<? extends T> c2)
 	{
@@ -175,7 +173,9 @@ public class SetUtils
 	}
 
 	/**
-	 * Checks if two collections have any elements in common
+	 * @param c1
+	 * @param c2
+	 * @return true if two collections have any elements in common
 	 */
 	public static boolean intersects(final Collection<?> c1, final Collection<?> c2)
 	{
@@ -187,11 +187,9 @@ public class SetUtils
 	}
 
 	/**
-	 * Checks if one set is subset of another one
-	 *
 	 * @param sub
 	 * @param sup
-	 * @return
+	 * @return true if one set is subset of another one
 	 */
 	public static boolean subset(final Set<?> sub, final Set<?> sup)
 	{
@@ -199,11 +197,9 @@ public class SetUtils
 	}
 
 	/**
-	 * Checks if one set is equal of another one
-	 *
-	 * @param sub
-	 * @param sup
-	 * @return
+	 * @param s1
+	 * @param s2
+	 * @return true if one set is equal of another one
 	 */
 	public static <T> boolean equals(final Set<T> s1, final Set<T> s2)
 	{
@@ -211,9 +207,9 @@ public class SetUtils
 	}
 
 	/**
-	 * Returns the difference of two sets. All the elements of second set is removed from the first set
-	 *
-	 * @param coll A Collection of sets
+	 * @param c1
+	 * @param c2
+	 * @return the difference of two sets. All the elements of second set is removed from the first set
 	 */
 	public static <T> Set<T> difference(final Collection<T> c1, final Collection<? extends Object> c2)
 	{
@@ -229,10 +225,8 @@ public class SetUtils
 	}
 
 	/**
-	 * Creates a list containing all the elements in the array
-	 *
-	 * @param elements
-	 * @return
+	 * @param elems
+	 * @return a new set containing all the elements in the array
 	 */
 	@SafeVarargs
 	public static <T> Set<T> create(final T... elems)
@@ -259,7 +253,6 @@ public class SetUtils
 	/**
 	 * Creates a set containing all the elements in the collection
 	 *
-	 * @param elements
 	 * @return a fresh set resilient to concurrency.
 	 * @since 2.6.0
 	 */
@@ -269,15 +262,13 @@ public class SetUtils
 	}
 
 	/**
-	 * Creates a set containing all the elements in the collection
-	 *
 	 * @param elements
-	 * @return
+	 * @return a new set containing all the elements in the collection
 	 */
-	public static <T> Set<T> create(final Collection<T> coll)
+	public static <T> Set<T> create(final Collection<T> elements)
 	{
 		final Set<T> result = create();
-		result.addAll(coll);
+		result.addAll(elements);
 		return result;
 	}
 }

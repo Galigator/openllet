@@ -170,12 +170,12 @@ public class TaxonomyImpl<T> implements Taxonomy<T>
 
 	public static final boolean TOP_DOWN = true;
 
-	protected TaxonomyNode<T> _bottomNode;
-	protected Map<T, TaxonomyNode<T>> _nodes;
-	protected TaxonomyNode<T> _topNode;
+	protected volatile TaxonomyNode<T> _bottomNode;
+	protected volatile Map<T, TaxonomyNode<T>> _nodes;
+	protected volatile TaxonomyNode<T> _topNode;
 
-	protected short _depth = 0;
-	protected int _totalBranching = 0;
+	protected volatile short _depth = 0;
+	protected volatile int _totalBranching = 0;
 
 	@Override
 	public Logger getLogger()
@@ -328,7 +328,7 @@ public class TaxonomyImpl<T> implements Taxonomy<T>
 		final Set<T> result = new HashSet<>();
 
 		final List<TaxonomyNode<T>> visit = new ArrayList<>();
-		visit.addAll((subOrSuper == SUB) ? node.getSubs() : node.getSupers());
+		visit.addAll(subOrSuper == SUB ? node.getSubs() : node.getSupers());
 
 		for (int i = 0; i < visit.size(); i++)
 		{
@@ -341,7 +341,7 @@ public class TaxonomyImpl<T> implements Taxonomy<T>
 			result.addAll(add);
 
 			if (!direct)
-				visit.addAll((subOrSuper == SUB) ? node.getSubs() : node.getSupers());
+				visit.addAll(subOrSuper == SUB ? node.getSubs() : node.getSupers());
 		}
 
 		return result;
@@ -390,7 +390,7 @@ public class TaxonomyImpl<T> implements Taxonomy<T>
 		final Set<Set<T>> result = new HashSet<>();
 
 		final List<TaxonomyNode<T>> visit = new ArrayList<>();
-		visit.addAll((subOrSuper == SUB) ? node.getSubs() : node.getSupers());
+		visit.addAll(subOrSuper == SUB ? node.getSubs() : node.getSupers());
 
 		for (int i = 0; i < visit.size(); i++)
 		{
@@ -404,7 +404,7 @@ public class TaxonomyImpl<T> implements Taxonomy<T>
 				result.add(add);
 
 			if (!direct)
-				visit.addAll((subOrSuper == SUB) ? node.getSubs() : node.getSupers());
+				visit.addAll(subOrSuper == SUB ? node.getSubs() : node.getSupers());
 		}
 
 		return result;
@@ -498,17 +498,17 @@ public class TaxonomyImpl<T> implements Taxonomy<T>
 				merged.add(other);
 
 			for (final TaxonomyNode<T> sub : other.getSubs())
-				if ((sub != _bottomNode) && !mergeList.contains(sub))
+				if (sub != _bottomNode && !mergeList.contains(sub))
 				{
-					if ((node.getSubs().size() == 1) && (node.getSubs().iterator().next() == _bottomNode))
+					if (node.getSubs().size() == 1 && node.getSubs().iterator().next() == _bottomNode)
 						node.removeSub(_bottomNode);
 					node.addSub(sub);
 				}
 
 			for (final TaxonomyNode<T> sup : other.getSupers())
-				if ((sup != _topNode) && !mergeList.contains(sup))
+				if (sup != _topNode && !mergeList.contains(sup))
 				{
-					if ((node.getSupers().size() == 1) && (node.getSupers().iterator().next() == _topNode))
+					if (node.getSupers().size() == 1 && node.getSupers().iterator().next() == _topNode)
 						_topNode.removeSub(node);
 					sup.addSub(node);
 				}

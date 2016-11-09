@@ -35,33 +35,32 @@ import openllet.core.utils.Pair;
  * </p>
  *
  * @author Evren Sirin
+ * @param <T> kind of states
  */
 public class TransitionGraph<T>
 {
-	private State<T> initialState; // the initial state for the TG
+	private State<T> _initialState; // the initial state for the TG
 
-	private final Set<State<T>> allStates; // set of all states in the TG
+	private final Set<State<T>> _allStates; // set of all states in the TG
 
-	private Set<State<T>> finalStates; // set of final states for the TG
+	private Set<State<T>> _finalStates; // set of final states for the TG
 
-	private final Set<T> alphabet; // set of all characters in TG
+	private final Set<T> _alphabet; // set of all characters in TG
 
 	public TransitionGraph()
 	{
-		initialState = null;
-		allStates = new HashSet<>();
-		finalStates = new HashSet<>();
-		alphabet = new HashSet<>();
+		_initialState = null;
+		_allStates = new HashSet<>();
+		_finalStates = new HashSet<>();
+		_alphabet = new HashSet<>();
 	}
 
 	/**
-	 * Returns the number of states in this transition graph
-	 *
-	 * @return
+	 * @return the number of states in this transition graph
 	 */
 	public int size()
 	{
-		return allStates.size();
+		return _allStates.size();
 	}
 
 	// ---------------------------------------------------
@@ -70,43 +69,43 @@ public class TransitionGraph<T>
 	public State<T> newState()
 	{
 		final State<T> s = new State<>();
-		allStates.add(s);
+		_allStates.add(s);
 		return s;
 	}
 
 	public Set<T> getAlpahabet()
 	{
-		return Collections.unmodifiableSet(alphabet);
+		return Collections.unmodifiableSet(_alphabet);
 	}
 
 	public Set<State<T>> getAllStates()
 	{
-		return Collections.unmodifiableSet(allStates);
+		return Collections.unmodifiableSet(_allStates);
 	}
 
 	public void setInitialState(final State<T> s)
 	{
-		initialState = s;
+		_initialState = s;
 	}
 
 	public State<T> getInitialState()
 	{
-		return initialState;
+		return _initialState;
 	}
 
 	public void addFinalState(final State<T> s)
 	{
-		finalStates.add(s);
+		_finalStates.add(s);
 	}
 
 	public Set<State<T>> getFinalStates()
 	{
-		return finalStates;
+		return _finalStates;
 	}
 
 	public State<T> getFinalState()
 	{
-		final int size = finalStates.size();
+		final int size = _finalStates.size();
 
 		if (size == 0)
 			throw new OpenError("There are no final states!");
@@ -114,7 +113,7 @@ public class TransitionGraph<T>
 			if (size > 1)
 				throw new OpenError("There is more than one final state!");
 
-		return finalStates.iterator().next();
+		return _finalStates.iterator().next();
 	}
 
 	public void addTransition(final State<T> begin, final T transition, final State<T> end)
@@ -123,7 +122,7 @@ public class TransitionGraph<T>
 			throw new NullPointerException();
 
 		begin.addTransition(transition, end);
-		alphabet.add(transition);
+		_alphabet.add(transition);
 	}
 
 	public void addTransition(final State<T> begin, final State<T> end)
@@ -135,7 +134,7 @@ public class TransitionGraph<T>
 	{
 		final List<Pair<State<T>, State<T>>> result = new ArrayList<>();
 
-		for (final State<T> s1 : allStates)
+		for (final State<T> s1 : _allStates)
 		{
 			final State<T> s2 = s1.move(transition);
 
@@ -148,12 +147,12 @@ public class TransitionGraph<T>
 
 	public boolean isInitial(final State<T> st)
 	{
-		return initialState.equals(st);
+		return _initialState.equals(st);
 	}
 
 	public boolean isFinal(final State<T> st)
 	{
-		return finalStates.contains(st);
+		return _finalStates.contains(st);
 	}
 
 	// ---------------------------------------------------
@@ -162,7 +161,7 @@ public class TransitionGraph<T>
 	public boolean isAnyFinal(final Set<State<T>> ss)
 	{
 		for (final State<T> st : ss)
-			if (finalStates.contains(st))
+			if (_finalStates.contains(st))
 				return true;
 		return false;
 	}
@@ -176,8 +175,8 @@ public class TransitionGraph<T>
 		final State<T> s = tg.newState();
 		final State<T> f = tg.newState();
 		s.addTransition(f);
-		tg.initialState = s;
-		tg.finalStates.add(f);
+		tg._initialState = s;
+		tg._finalStates.add(f);
 		return tg;
 	}
 
@@ -190,9 +189,9 @@ public class TransitionGraph<T>
 		final State<T> s = tg.newState();
 		final State<T> f = tg.newState();
 		s.addTransition(transition, f);
-		tg.initialState = s;
-		tg.finalStates.add(f);
-		tg.alphabet.add(transition);
+		tg._initialState = s;
+		tg._finalStates.add(f);
+		tg._alphabet.add(transition);
 		return tg;
 	}
 
@@ -207,7 +206,7 @@ public class TransitionGraph<T>
 		buf.append("[Transition Graph\n");
 
 		// print all states and edges
-		for (final State<T> st : allStates)
+		for (final State<T> st : _allStates)
 		{
 			buf.append(st.getName()).append(": ");
 			final Iterator<Transition<T>> i = st.getTransitions().iterator();
@@ -223,17 +222,17 @@ public class TransitionGraph<T>
 
 		// print start state
 		buf.append("initial state: ");
-		buf.append(initialState.getName());
+		buf.append(_initialState.getName());
 		buf.append("\n");
 
 		// print final state(s)
 		buf.append("final states: ");
-		buf.append(finalStates);
+		buf.append(_finalStates);
 		buf.append("\n");
 
 		// print alphabet
 		buf.append("alphabet: ");
-		buf.append(alphabet);
+		buf.append(_alphabet);
 		buf.append("\n");
 		buf.append("]\n");
 
@@ -250,7 +249,7 @@ public class TransitionGraph<T>
 		final LinkedList<State<T>> workList = new LinkedList<>();
 
 		int val = 0;
-		workList.addFirst(initialState);
+		workList.addFirst(_initialState);
 
 		while (workList.size() > 0)
 		{
@@ -272,7 +271,7 @@ public class TransitionGraph<T>
 
 	public boolean accepts(final List<T> str)
 	{
-		State<T> s = initialState;
+		State<T> s = _initialState;
 		for (final T ch : str)
 		{
 			s = s.move(ch);
@@ -280,7 +279,7 @@ public class TransitionGraph<T>
 				return false;
 		}
 
-		return finalStates.contains(s);
+		return _finalStates.contains(s);
 	}
 
 	// -------------------------------------------------------------//
@@ -299,24 +298,24 @@ public class TransitionGraph<T>
 		final State<T> f = newState(); // new final state
 
 		// combine all states and final states
-		allStates.addAll(t.allStates);
-		finalStates.addAll(t.finalStates);
+		_allStates.addAll(t._allStates);
+		_finalStates.addAll(t._finalStates);
 
 		// add an epsilon edge from new start state to
 		// _current TG's and parameter TG's start state
-		s.addTransition(initialState);
-		s.addTransition(t.initialState);
-		initialState = s;
+		s.addTransition(_initialState);
+		s.addTransition(t._initialState);
+		_initialState = s;
 
 		// from all final states add an epsilon edge to new final state
-		for (final State<T> fs : finalStates)
+		for (final State<T> fs : _finalStates)
 			fs.addTransition(f);
 		// make f the only final state
-		finalStates.clear();
-		finalStates.add(f);
+		_finalStates.clear();
+		_finalStates.add(f);
 
 		// combine the alphabets
-		alphabet.addAll(t.alphabet);
+		_alphabet.addAll(t._alphabet);
 
 		return this;
 	}
@@ -332,29 +331,29 @@ public class TransitionGraph<T>
 		final State<T> f = newState(); // new final state
 
 		// combine all states
-		allStates.addAll(t.allStates);
+		_allStates.addAll(t._allStates);
 
 		// add an epsilon edge from new start state to _current
 		// TG's start state and make it the start state
-		s.addTransition(initialState);
-		initialState = s;
+		s.addTransition(_initialState);
+		_initialState = s;
 
 		// from final states of _current TG add an
 		// epsilon edge to start state of parameter TG
-		for (final State<T> fs : finalStates)
-			fs.addTransition(t.initialState);
+		for (final State<T> fs : _finalStates)
+			fs.addTransition(t._initialState);
 
 		// from final states of parameter TG add an
 		// epsilon edge to new final state
-		for (final State<T> tfs : t.finalStates)
+		for (final State<T> tfs : t._finalStates)
 			tfs.addTransition(f);
 
 		// make f the only final state
-		finalStates.clear();
-		finalStates.add(f);
+		_finalStates.clear();
+		_finalStates.add(f);
 
 		// combine alphabets
-		alphabet.addAll(t.alphabet);
+		_alphabet.addAll(t._alphabet);
 
 		return this;
 	}
@@ -370,20 +369,20 @@ public class TransitionGraph<T>
 
 		// from final states of _current TG add an epsilon
 		// edge to old start state and new final state
-		for (final State<T> fs : finalStates)
+		for (final State<T> fs : _finalStates)
 		{
-			fs.addTransition(initialState);
+			fs.addTransition(_initialState);
 			fs.addTransition(f);
 		}
 		// make f the only final state
-		finalStates.clear();
-		finalStates.add(f);
+		_finalStates.clear();
+		_finalStates.add(f);
 
 		// add an epsilon edge from new start state to
 		// old start state and to new final state
-		s.addTransition(initialState);
+		s.addTransition(_initialState);
 		s.addTransition(f);
-		initialState = s;
+		_initialState = s;
 
 		return this;
 	}
@@ -391,7 +390,7 @@ public class TransitionGraph<T>
 	public TransitionGraph<T> insert(final TransitionGraph<T> tg, final State<T> i, final State<T> f)
 	{
 		// combine the alphabets
-		alphabet.addAll(tg.alphabet);
+		_alphabet.addAll(tg._alphabet);
 
 		// map each state in the input tg to a state in this tg
 		final Map<State<T>, State<T>> newStates = new HashMap<>();
@@ -403,7 +402,7 @@ public class TransitionGraph<T>
 
 		// for each transition in tg, create a new transition in this tg
 		// creating new states as necessary
-		for (final State<T> s1 : tg.allStates)
+		for (final State<T> s1 : tg._allStates)
 		{
 			State<T> n1 = newStates.get(s1);
 			if (n1 == null)
@@ -493,10 +492,10 @@ public class TransitionGraph<T>
 
 	public boolean isDeterministic()
 	{
-		if (!allStates.contains(initialState))
+		if (!_allStates.contains(_initialState))
 			throw new InternalReasonerException();
 
-		for (final State<T> s : allStates)
+		for (final State<T> s : _allStates)
 		{
 			final Set<T> seenSymbols = new HashSet<>();
 			for (final Transition<T> t : s.getTransitions())
@@ -516,14 +515,14 @@ public class TransitionGraph<T>
 		final Set<State<T>> visited = new HashSet<>();
 		final Stack<State<T>> stack = new Stack<>();
 
-		stack.push(initialState);
-		visited.add(initialState);
+		stack.push(_initialState);
+		visited.add(_initialState);
 
 		while (!stack.isEmpty())
 		{
 			final State<T> state = stack.pop();
 
-			if (!allStates.contains(state))
+			if (!_allStates.contains(state))
 				return false;
 
 			for (final Transition<T> t : state.getTransitions())
@@ -532,7 +531,7 @@ public class TransitionGraph<T>
 
 		}
 
-		return visited.size() == allStates.size();
+		return visited.size() == _allStates.size();
 	}
 
 	// ---------------------------------------------------
@@ -547,15 +546,15 @@ public class TransitionGraph<T>
 
 		// start state of DFA is epsilon closure of start state in NFA
 		State<T> s = new State<>();
-		Set<State<T>> ss = epsilonClosure(initialState, new HashSet<State<T>>());
+		Set<State<T>> ss = epsilonClosure(_initialState, new HashSet<State<T>>());
 
-		initialState = s;
+		_initialState = s;
 
 		// unmarked states in dStates will be processed
 		final Set<State<T>> processList = new HashSet<>();
 		processList.add(s);
 		dStates.put(ss, s);
-		initialState = s;
+		_initialState = s;
 
 		// if there are unprocessed states continue
 		boolean moreToProcess = true;
@@ -579,7 +578,7 @@ public class TransitionGraph<T>
 
 			if (moreToProcess)
 			{
-				for (final T a : alphabet)
+				for (final T a : _alphabet)
 				{
 					// find epsilon closure of move with a
 					U = epsilonClosure(move(ss, a));
@@ -614,7 +613,7 @@ public class TransitionGraph<T>
 		// a set of final states for DFA
 		final Set<State<T>> acceptingStates = new HashSet<>();
 		// clear all states
-		allStates.clear();
+		_allStates.clear();
 
 		for (final Map.Entry<Set<State<T>>, State<T>> entry : dStates.entrySet())
 		{
@@ -622,14 +621,14 @@ public class TransitionGraph<T>
 			s = entry.getValue();
 			ss = entry.getKey();
 			// add DFA state to state set
-			allStates.add(s);
+			_allStates.add(s);
 			// if any of NFA states are final update accepting states
 			if (isAnyFinal(ss))
 				acceptingStates.add(s);
 		}
 		// accepting states becomes final states
-		finalStates.clear();
-		finalStates = acceptingStates;
+		_finalStates.clear();
+		_finalStates = acceptingStates;
 
 		return this;
 	}
@@ -646,21 +645,21 @@ public class TransitionGraph<T>
 	public TransitionGraph<T> minimize()
 	{
 		// partitions are set of states, where max # of sets = # of states
-		final List<Set<State<T>>> partitions = new ArrayList<>(allStates.size());
+		final List<Set<State<T>>> partitions = new ArrayList<>(_allStates.size());
 		final Map<State<T>, Integer> partitionNumbers = new HashMap<>();
 		final Map<State<T>, State<T>> partitionRep = new HashMap<>();
 
 		// first partition is the set of final states
-		final Set<State<T>> firstPartition = new HashSet<>(finalStates);
+		final Set<State<T>> firstPartition = new HashSet<>(_finalStates);
 		partitions.add(firstPartition);
 		setPartition(firstPartition, 0, partitionNumbers);
 
 		// check if there are any states that are not final
-		if (firstPartition.size() < allStates.size())
+		if (firstPartition.size() < _allStates.size())
 		{
 			// second partition is set of non-accepting states
-			final Set<State<T>> secondPartition = new HashSet<>(allStates);
-			secondPartition.removeAll(finalStates);
+			final Set<State<T>> secondPartition = new HashSet<>(_allStates);
+			secondPartition.removeAll(_finalStates);
 			partitions.add(secondPartition);
 			setPartition(secondPartition, 1, partitionNumbers);
 		}
@@ -680,7 +679,7 @@ public class TransitionGraph<T>
 				final State<T> t = i.next();
 
 				// for all the symbols in an alphabet
-				for (final T a : alphabet)
+				for (final T a : _alphabet)
 					// find move(a) for the first and _current state
 					// if they go to different partitions
 					if (!isEquivalentState(s.move(a), t.move(a), partitionNumbers))
@@ -710,7 +709,7 @@ public class TransitionGraph<T>
 		}
 
 		// store the partition num of the start state
-		final int startPartition = partitionNumbers.get(initialState);
+		final int startPartition = partitionNumbers.get(_initialState);
 
 		// for each partition the first state is marked as the representative
 		// of that partition and rest is removed from states
@@ -720,12 +719,12 @@ public class TransitionGraph<T>
 			final State<T> s = i.next();
 			partitionRep.put(s, s);
 			if (p == startPartition)
-				initialState = s;
+				_initialState = s;
 			while (i.hasNext())
 			{
 				final State<T> t = i.next();
-				allStates.remove(t);
-				finalStates.remove(t);
+				_allStates.remove(t);
+				_finalStates.remove(t);
 				// set rep so that we can later update
 				// edges to this state
 				partitionRep.put(t, s);
@@ -735,7 +734,7 @@ public class TransitionGraph<T>
 		// correct any edges that are going to states that are removed,
 		// by updating the target state to be the rep of partition which
 		// dead state belonged to
-		for (final State<T> t : allStates)
+		for (final State<T> t : _allStates)
 			for (final Transition<T> edge : t.getTransitions())
 				edge.setTo(partitionRep.get(edge.getTo()));
 

@@ -27,24 +27,20 @@ import openllet.core.utils.Bool;
 public interface ConceptCache extends Map<ATermAppl, CachedNode>
 {
 	/**
-	 * Get the maximum number of non-primitive concepts allowed in the _cache
-	 *
-	 * @return
+	 * @return the maximum number of non-primitive concepts allowed in the _cache
 	 */
 	public int getMaxSize();
 
 	/**
-	 * Set the maximum number of non-primitive concepts allowed in the _cache
+	 * Set the maximum number of non-primitive concepts allowed in the cache
 	 *
-	 * @return
+	 * @param maxSize
 	 */
 	public void setMaxSize(int maxSize);
 
 	/**
-	 * Get the satisfiability status of a concept as a three-value boolean.
-	 *
-	 * @param c
-	 * @return
+	 * @param c is the concept
+	 * @return the satisfiability status of a concept as a three-value boolean.
 	 */
 	public Bool getSat(ATermAppl c);
 
@@ -53,7 +49,7 @@ public interface ConceptCache extends Map<ATermAppl, CachedNode>
 	 *
 	 * @param c
 	 * @param isSatisfiable
-	 * @return
+	 * @return true if put is success
 	 */
 	public boolean putSat(ATermAppl c, boolean isSatisfiable);
 
@@ -61,7 +57,7 @@ public interface ConceptCache extends Map<ATermAppl, CachedNode>
 	 * @param kb
 	 * @param node1
 	 * @param node2
-	 * @return
+	 * @return true if mergable
 	 */
 	public abstract Bool isMergable(KnowledgeBase kb, CachedNode node1, CachedNode node2);
 
@@ -69,7 +65,7 @@ public interface ConceptCache extends Map<ATermAppl, CachedNode>
 	 * @param kb
 	 * @param node1
 	 * @param node2
-	 * @return
+	 * @return true if nominal
 	 */
 	public abstract Bool checkNominalEdges(KnowledgeBase kb, CachedNode node1, CachedNode node2);
 

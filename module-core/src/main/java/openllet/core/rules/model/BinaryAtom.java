@@ -24,6 +24,9 @@ import java.util.List;
  * </p>
  *
  * @author Ron Alford
+ * @param <P>
+ * @param <A>
+ * @param <B>
  */
 public abstract class BinaryAtom<P, A extends AtomObject, B extends AtomObject> extends RuleAtomImpl<P>
 {

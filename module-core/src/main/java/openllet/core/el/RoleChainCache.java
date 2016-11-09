@@ -69,7 +69,7 @@ public class RoleChainCache
 		}
 	}
 
-	public boolean isAnon(final ATermAppl r)
+	public static boolean isAnon(final ATermAppl r)
 	{
 		return r.getName().startsWith(ANON_ROLE);
 	}
@@ -90,10 +90,10 @@ public class RoleChainCache
 	private ATermAppl createSuperRoleFor(final ATermAppl r1, final ATermAppl r2)
 	{
 		final Set<ATermAppl> superRoles = getAllSuperRoles(r1, r2);
-		if (superRoles.isEmpty())
-			return ATermUtils.makeTermAppl(ANON_ROLE + _anonRoleCount++);
-		else
-			return superRoles.iterator().next();
+
+		return superRoles.isEmpty() ? //
+				ATermUtils.makeTermAppl(ANON_ROLE + _anonRoleCount++) : //
+				superRoles.iterator().next();
 	}
 
 	private void add(final KnowledgeBase kb, final ATermAppl r1, final ATermAppl r2, final ATermAppl superRole)

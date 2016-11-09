@@ -21,7 +21,7 @@ import openllet.shared.tools.Logging;
 
 /**
  * Definition of an rbox.
- * 
+ *
  * @since 2.6.0
  */
 public interface RBox extends Logging
@@ -63,10 +63,8 @@ public interface RBox extends Logging
 	public boolean isAnnotationTaxonomyPrepared();
 
 	/**
-	 * Return the role with the given name
-	 *
 	 * @param r Name (URI) of the role
-	 * @return
+	 * @return the role with the given name
 	 */
 	default Role getRole(final ATerm r)
 	{
@@ -74,10 +72,8 @@ public interface RBox extends Logging
 	}
 
 	/**
-	 * Return the role with the given name and throw and exception if it is not found.
-	 *
 	 * @param r Name (URI) of the role
-	 * @return
+	 * @return the role with the given name and throw and exception if it is not found.
 	 */
 	default Role getDefinedRole(final ATerm r)
 	{
@@ -114,6 +110,8 @@ public interface RBox extends Logging
 	 * Add a non-asserted property range axiom
 	 *
 	 * @param p The property
+	 * @param range
+	 * @param explanation
 	 * @param a A class expression for the domain
 	 * @param clashExplanation A set of {@link ATermAppl}s that explain the range axiom.
 	 * @return <code>true</code> if range add was successful, <code>false</code> else
@@ -146,7 +144,7 @@ public interface RBox extends Logging
 	 * Add an asserted property range axiom
 	 *
 	 * @param p The property
-	 * @param a A class expression for the range
+	 * @param range A class expression for the range
 	 * @return <code>true</code> if range add was successful, <code>false</code> else
 	 * @throws IllegalArgumentException if <code>p</code> is not a defined property.
 	 */
@@ -160,7 +158,7 @@ public interface RBox extends Logging
 	default Role addObjectRole(final ATermAppl r)
 	{
 		Role role = getRole(r);
-		final PropertyType roleType = (role == null) ? PropertyType.UNTYPED : role.getType();
+		final PropertyType roleType = role == null ? PropertyType.UNTYPED : role.getType();
 
 		switch (roleType)
 		{
@@ -335,8 +333,8 @@ public interface RBox extends Logging
 	 * Add a non-asserted property domain axiom
 	 *
 	 * @param p The property
-	 * @param a A class expression for the domain
-	 * @param explain A set of {@link ATermAppl}s that explain the domain axiom.
+	 * @param domain A class expression for the domain
+	 * @param explanation A set of {@link ATermAppl}s that explain the domain axiom.
 	 * @return <code>true</code> if domain add was successful, <code>false</code> else
 	 * @throws IllegalArgumentException if <code>p</code> is not a defined property.
 	 */
@@ -436,7 +434,8 @@ public interface RBox extends Logging
 	}
 
 	/**
-	 * check if the term is declared as a role
+	 * @param r
+	 * @return true if the term is declared as a role
 	 */
 	default boolean isRole(final ATerm r)
 	{
@@ -532,7 +531,7 @@ public interface RBox extends Logging
 				for (final Role s : r.getSubRoles())
 					if (s.isTransitive())
 					{
-						if (r.isSubRoleOf(s) && (r != s))
+						if (r.isSubRoleOf(s) && r != s)
 						{
 							isTransitive = true;
 							transitiveDS = r.getExplainSub(s.getName()).union(s.getExplainTransitive(), true);
@@ -694,7 +693,10 @@ public interface RBox extends Logging
 	}
 
 	/**
-	 * for each role in the list finds an inverse role and returns the new list.
+	 * For each role in the list finds an inverse role and returns the new list.
+	 *
+	 * @param roles
+	 * @return inverses of the roles
 	 */
 	default ATermList inverse(final ATermList roles)
 	{

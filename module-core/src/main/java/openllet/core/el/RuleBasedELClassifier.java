@@ -14,9 +14,9 @@ import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
+import openllet.core.KnowledgeBase;
 import openllet.core.boxes.rbox.Role;
 import openllet.core.taxonomy.CDOptimizedTaxonomyBuilder;
-import openllet.core.taxonomy.TaxonomyBuilder;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.MultiValueMap;
 import openllet.core.utils.Timer;
@@ -33,16 +33,16 @@ import openllet.shared.tools.Log;
  *
  * @author Evren Sirin
  */
-@SuppressWarnings("unused")
-public abstract class RuleBasedELClassifier extends CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
+public abstract class RuleBasedELClassifier extends CDOptimizedTaxonomyBuilder
 {
 	@SuppressWarnings("hiding")
 	public static final Logger _logger = Log.getLogger(RuleBasedELClassifier.class);
 
 	protected Timers _timers = new Timers();
 
-	public RuleBasedELClassifier()
+	public RuleBasedELClassifier(final KnowledgeBase kb)
 	{
+		super(kb);
 		_logger.fine("new RuleBasedELClassifier");
 	}
 

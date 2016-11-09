@@ -416,6 +416,8 @@ public class ATermUtils
 	}
 
 	/**
+	 * @param r
+	 * @return DO NOT USE
 	 * @deprecated Use {@link #makeAsymmetric(ATerm)}
 	 */
 	@Deprecated
@@ -782,7 +784,9 @@ public class ATermUtils
 	 * Return a string representation of the term which might be representing a named term, literal, variable or a complex concept expression. The URIs used in
 	 * the term can be shortened into local names. The concept expressions can be printed in NNF format.
 	 *
-	 * @param term term whose string representation we are creating
+	 * @param term whose string representation we are creating
+	 * @param printLocalName the name of the term
+	 * @param printNNF true to use the NNF Format
 	 * @return string representation of the term
 	 */
 	public static String toString(final ATermAppl term, final boolean printLocalName, final boolean printNNF)
@@ -1383,7 +1387,7 @@ public class ATermUtils
 	 * </ul>
 	 *
 	 * @param term
-	 * @return
+	 * @return the term simplified
 	 */
 	public static ATermAppl simplify(final ATermAppl term)
 	{
@@ -1496,10 +1500,8 @@ public class ATermUtils
 	}
 
 	/**
-	 * Creates a simplified and assuming that all the elements have already been normalized.
-	 *
 	 * @param conjuncts
-	 * @return
+	 * @return a simplified and assuming that all the elements have already been normalized.
 	 */
 	public static ATermAppl makeSimplifiedAnd(final Collection<ATermAppl> conjuncts)
 	{

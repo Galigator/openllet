@@ -97,7 +97,7 @@ public class Timer
 	/**
 	 * Create a timer with no parent.
 	 *
-	 * @param _name
+	 * @param name
 	 */
 	public Timer(final String name)
 	{
@@ -107,8 +107,8 @@ public class Timer
 	/**
 	 * Create a timer that has the specified parent timer.
 	 *
-	 * @param _name
-	 * @param _parent
+	 * @param name
+	 * @param parent
 	 */
 	public Timer(final String name, final Timer parent)
 	{
@@ -197,6 +197,7 @@ public class Timer
 	 * Check if the elapsed time is greater than the timeout limit and throw a TimeoutException if that is the case. Check the parent timer if there is one.
 	 *
 	 * @throws TimeoutException
+	 * @throws TimerInterruptedException
 	 */
 	public void check() throws TimeoutException, TimerInterruptedException
 	{
@@ -225,9 +226,7 @@ public class Timer
 	}
 
 	/**
-	 * Return true if timer has been started with a {@link #start()} call but not has been stopped with a {@link #_stop()} call.
-	 *
-	 * @return
+	 * @return true if timer has been started with a {@link #start()} call but not has been stopped with a {@link #stop()} call.
 	 */
 	public boolean isStarted()
 	{
@@ -235,9 +234,7 @@ public class Timer
 	}
 
 	/**
-	 * Return the name of this timer.
-	 *
-	 * @return
+	 * @return the name of this timer.
 	 */
 	public String getName()
 	{
@@ -245,9 +242,7 @@ public class Timer
 	}
 
 	/**
-	 * Return the time elapsed (in milliseconds) since the last time this timer was started. If the timer is not running now 0 is returned.
-	 *
-	 * @return
+	 * @return the time elapsed (in milliseconds) since the last time this timer was started. If the timer is not running now 0 is returned.
 	 */
 	public long getElapsed()
 	{
@@ -255,10 +250,8 @@ public class Timer
 	}
 
 	/**
-	 * Return the total time (in milliseconds) spent while this timer was running. If the timer is running when this function is called time elapsed will be
-	 * discarded. Therefore, it is advised to use this function only with stopped timers.
-	 *
-	 * @return
+	 * @return the total time (in milliseconds) spent while this timer was running. If the timer is running when this function is called time elapsed will be
+	 *         discarded. Therefore, it is advised to use this function only with stopped timers.
 	 */
 	public long getTotal()
 	{
@@ -266,10 +259,8 @@ public class Timer
 	}
 
 	/**
-	 * Return the total number of times this timer has been started and stopped. Note that recursive start operations are computed only once so actual number of
-	 * times {@link start() start()} function is called may be greater than this amount.
-	 *
-	 * @return
+	 * @return the total number of times this timer has been started and stopped. Note that recursive start operations are computed only once so actual number
+	 *         of times {@link #start()} function is called may be greater than this amount.
 	 */
 	public long getCount()
 	{
@@ -277,9 +268,7 @@ public class Timer
 	}
 
 	/**
-	 * Return the timeout associated with this timer.
-	 *
-	 * @return
+	 * @return the timeout associated with this timer.
 	 */
 	public long getTimeout()
 	{
@@ -287,10 +276,8 @@ public class Timer
 	}
 
 	/**
-	 * Return the total time spent (in milliseconds) divided by the number of times this timer has been ran. If the timer is still running elapsed time is
-	 * discarded. Therefore, it is advised to use this function only with stopped timers.
-	 *
-	 * @return
+	 * @return the total time spent (in milliseconds) divided by the number of times this timer has been ran. If the timer is still running elapsed time is
+	 *         discarded. Therefore, it is advised to use this function only with stopped timers.
 	 */
 	public double getAverage()
 	{
@@ -298,9 +285,7 @@ public class Timer
 	}
 
 	/**
-	 * Return the total time spent between last start()-stop() period.
-	 *
-	 * @return
+	 * @return the total time spent between last start()-stop() period.
 	 */
 	public long getLast()
 	{
@@ -310,7 +295,7 @@ public class Timer
 	/**
 	 * Set a timeout limit for this timer. Set the timeout to 0 to disable timeout checking
 	 *
-	 * @param _timeout
+	 * @param timeout
 	 */
 	public void setTimeout(final long timeout)
 	{

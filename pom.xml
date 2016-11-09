@@ -79,12 +79,12 @@
       <dependency>
         <groupId>org.apache.jena</groupId>
         <artifactId>jena-core</artifactId>
-        <version>3.1.0</version> <!-- maven use SNAPSHOT if available on open interval, and jena publish SNAPSHOT releases -->
+        <version>3.1.1</version> <!-- maven use SNAPSHOT if available on open interval, and jena publish SNAPSHOT releases -->
       </dependency>
       <dependency>
         <groupId>org.apache.jena</groupId>
         <artifactId>jena-arq</artifactId>
-        <version>3.1.0</version> <!-- maven use SNAPSHOT if available on open interval, and jena publish SNAPSHOT releases -->
+        <version>3.1.1</version> <!-- maven use SNAPSHOT if available on open interval, and jena publish SNAPSHOT releases -->
       </dependency>
       <dependency>
         <groupId>net.sourceforge.owlapi</groupId>

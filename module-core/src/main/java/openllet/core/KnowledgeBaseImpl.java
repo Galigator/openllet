@@ -1704,7 +1704,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	 *
 	 * @param name name of the datatype
 	 * @param datarange a data range expression
-	 * @return
+	 * @return true if the add success
 	 */
 	@Override
 	public boolean addDatatypeDefinition(final ATermAppl name, final ATermAppl datarange)
@@ -2557,9 +2557,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	}
 
 	/**
-	 * Returns the set of key values of the _annotations map
-	 *
-	 * @return
+	 * @return the set of key values of the annotations map
 	 */
 	@Override
 	public Set<ATermAppl> getAnnotationSubjects()
@@ -2612,7 +2610,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	}
 
 	@Deprecated
-	public boolean isOntologyProperty(@SuppressWarnings("unused") final ATerm p)
+	public boolean isOntologyProperty(final ATerm p)
 	{
 		return false;
 	}
@@ -3023,10 +3021,8 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	}
 
 	/**
-	 * Returns true if there is at least one named _individual that belongs to the given class
-	 *
 	 * @param c
-	 * @return
+	 * @return true if there is at least one named individual that belongs to the given class
 	 */
 	@Override
 	public boolean hasInstance(final ATerm d)
@@ -3226,14 +3222,6 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		return isEquivalentClass(c1, notC2);
 	}
 
-	/**
-	 * Answers the isType question without doing any satisfiability check. It might return <code>Bool.TRUE</code>, <code>Bool.FALSE</code>, or
-	 * <code>Bool.UNKNOWN</code>. If <code>Bool.UNKNOWN</code> is returned <code>isType</code> function needs to be called to get the answer.
-	 *
-	 * @param x
-	 * @param c
-	 * @return
-	 */
 	@Override
 	public Bool isKnownType(final ATermAppl x, final ATermAppl c)
 	{
@@ -3421,15 +3409,6 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		return _abox.hasPropertyValue(s, p, o);
 	}
 
-	/**
-	 * Answers the hasPropertyValue question without doing any satisfiability check. It might return <code>Boolean.TRUE</code>, <code>Boolean.FALSE</code>, or
-	 * <code>null</code> (unknown). If the null value is returned <code>hasPropertyValue</code> function needs to be called to get the answer.
-	 *
-	 * @param s Subject
-	 * @param p Predicate
-	 * @param o Object (<code>null</code> can be used as wildcard)
-	 * @return
-	 */
 	@Override
 	public Bool hasKnownPropertyValue(final ATermAppl s, final ATermAppl p, final ATermAppl o)
 	{
@@ -4021,11 +4000,10 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	}
 
 	/**
-	 * Return the domain restrictions on the property. The results of this function is not guaranteed to be complete. Use
-	 * {@link #hasDomain(ATermAppl, ATermAppl)} to get complete answers.
+	 * The results of this function is not guaranteed to be complete. Use {@link #hasDomain(ATermAppl, ATermAppl)} to get complete answers.
 	 *
-	 * @param prop
-	 * @return
+	 * @param name
+	 * @return the domain restrictions on the property.
 	 */
 	@Override
 	public Set<ATermAppl> getDomains(final ATermAppl name)
@@ -4043,11 +4021,10 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	}
 
 	/**
-	 * Return the domain restrictions on the property. The results of this function is not guaranteed to be complete. Use
-	 * {@link #hasRange(ATermAppl, ATermAppl)} to get complete answers.
+	 * The results of this function is not guaranteed to be complete. Use {@link #hasRange(ATermAppl, ATermAppl)} to get complete answers.
 	 *
-	 * @param prop
-	 * @return
+	 * @param name
+	 * @return the domain restrictions on the property.
 	 */
 	@Override
 	public Set<ATermAppl> getRanges(final ATerm name)
@@ -4066,10 +4043,8 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	}
 
 	/**
-	 * Return all the indviduals asserted to be equal to the given _individual inluding the _individual itself.
-	 *
 	 * @param name
-	 * @return
+	 * @return all the indviduals asserted to be equal to the given individual inluding the individual itself.
 	 */
 	@Override
 	public Set<ATermAppl> getAllSames(final ATermAppl name)
@@ -4423,10 +4398,8 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	}
 
 	/**
-	 * Return all the _individuals that belong to the given class which is not necessarily a named class.
-	 *
 	 * @param d
-	 * @return
+	 * @return all the individuals that belong to the given class which is not necessarily a named class.
 	 */
 	@Override
 	public Set<ATermAppl> retrieve(final ATermAppl d, final Collection<ATermAppl> individuals)
@@ -4637,6 +4610,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	}
 
 	/**
+	 * @return DO NOT USE
 	 * @deprecated Use getExplanation instead
 	 */
 	@Deprecated
@@ -4655,7 +4629,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	 * Choose a completion strategy based on the expressivity of the KB. The _abox given is not necessarily the ABox that belongs to this KB but can be a
 	 * derivative.
 	 *
-	 * @return
+	 * @return the completion strategy choosen
 	 */
 	@Override
 	public CompletionStrategy chooseStrategy(final ABox abox, final Expressivity expressivity)
@@ -4708,10 +4682,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 			prepare();
 
 			if (_expChecker.getExpressivity().isEL() && !OpenlletOptions.DISABLE_EL_CLASSIFIER)
-				_builder = new SimplifiedELClassifier();
+				_builder = new SimplifiedELClassifier(this);
 			else
-				_builder = new CDOptimizedTaxonomyBuilder();
-			_builder.setKB(this);
+				_builder = new CDOptimizedTaxonomyBuilder(this);
 
 			if (_builderProgressMonitor != null)
 				_builder.setProgressMonitor(_builderProgressMonitor);
@@ -4977,7 +4950,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	 * It should be turned on if explanations are only needed for inconsistencies but not other inferences. Turning this option on improves the performance of
 	 * consistency checking for _consistent ontologies.
 	 *
-	 * @param _explainOnlyInconsistency new value for _explainOnlyInconsistency option
+	 * @param explainOnlyInconsistency new value for _explainOnlyInconsistency option
 	 */
 	public void setExplainOnlyInconsistency(final boolean explainOnlyInconsistency)
 	{

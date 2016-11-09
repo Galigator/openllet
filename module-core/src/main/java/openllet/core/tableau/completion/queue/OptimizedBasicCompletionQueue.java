@@ -84,7 +84,7 @@ public class OptimizedBasicCompletionQueue extends CompletionQueue
 	/**
 	 * Constructor - create _queue
 	 *
-	 * @param _abox
+	 * @param abox
 	 */
 	@SuppressWarnings("unchecked")
 	public OptimizedBasicCompletionQueue(final ABox abox)
@@ -138,10 +138,7 @@ public class OptimizedBasicCompletionQueue extends CompletionQueue
 	}
 
 	/**
-	 * Test if there is another element on the _queue to process
-	 *
-	 * @param type
-	 * @return
+	 * @return true if there is another element on the queue to process
 	 */
 	@Override
 	public boolean hasNext()
@@ -151,9 +148,9 @@ public class OptimizedBasicCompletionQueue extends CompletionQueue
 	}
 
 	/**
-	 * Reset the _queue to be the _current _nodes in the _abox; Also reset the type _index to 0
+	 * Reset the queue to be the current nodes in the abox; Also reset the type index to 0
 	 *
-	 * @param _branch
+	 * @param branch
 	 */
 	@Override
 	public void restore(final int branch)
@@ -171,10 +168,7 @@ public class OptimizedBasicCompletionQueue extends CompletionQueue
 	}
 
 	/**
-	 * Get the next element of a _queue of a given type
-	 *
-	 * @param type
-	 * @return
+	 * @return the next element of a _queue of a given type
 	 */
 	@Override
 	public Individual next()
@@ -188,10 +182,7 @@ public class OptimizedBasicCompletionQueue extends CompletionQueue
 	}
 
 	/**
-	 * Get the next element of a _queue of a given type
-	 *
-	 * @param type
-	 * @return
+	 * @return the next element of a _queue of a given type
 	 */
 	@Override
 	public Node nextLiteral()
@@ -229,7 +220,7 @@ public class OptimizedBasicCompletionQueue extends CompletionQueue
 	/**
 	 * Reset the cutoff for a given type _index
 	 *
-	 * @param type
+	 * @param s
 	 */
 	@Override
 	public void reset(final NodeSelector s)
@@ -242,7 +233,7 @@ public class OptimizedBasicCompletionQueue extends CompletionQueue
 	/**
 	 * Set _branch pointers to _current pointer. This is done whenever _abox.incrementBranch is called
 	 *
-	 * @param _branch
+	 * @param branch
 	 */
 	@Override
 	public void incrementBranch(final int branch)
@@ -251,9 +242,7 @@ public class OptimizedBasicCompletionQueue extends CompletionQueue
 	}
 
 	/**
-	 * Copy the _queue
-	 *
-	 * @return
+	 * @return a copy of the queue
 	 */
 	@Override
 	public OptimizedBasicCompletionQueue copy()

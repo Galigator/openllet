@@ -24,20 +24,25 @@ public class BranchAddDependency extends BranchDependency
 
 	/**
 	 * Constructor
-	 * 
-	 * @param _index
-	 * @param _branch
+	 *
+	 * @param assertion
+	 * @param index is unused
+	 * @param branch
 	 */
-	public BranchAddDependency(final ATermAppl assertion, @SuppressWarnings("unused") final int index, final Branch branch)
+	public BranchAddDependency(final ATermAppl assertion, final int index, final Branch branch)
 	{
 		super(assertion);
-		this._branch = branch;
+		_branch = branch;
+	}
+
+	public BranchAddDependency(final ATermAppl assertion, final Branch branch)
+	{
+		super(assertion);
+		_branch = branch;
 	}
 
 	/**
-	 * Get _branch
-	 * 
-	 * @return
+	 * @return branch
 	 */
 	public Branch getBranch()
 	{
@@ -60,7 +65,7 @@ public class BranchAddDependency extends BranchDependency
 	public boolean equals(final Object other)
 	{
 		if (other instanceof BranchAddDependency)
-			return (this._branch.getBranch() == ((BranchAddDependency) other)._branch.getBranch()) && this._assertion.equals(((BranchAddDependency) other)._assertion);
+			return _branch.getBranch() == ((BranchAddDependency) other)._branch.getBranch() && _assertion.equals(((BranchAddDependency) other)._assertion);
 		else
 			return false;
 	}
@@ -71,7 +76,7 @@ public class BranchAddDependency extends BranchDependency
 	@Override
 	public int hashCode()
 	{
-		return this._branch.getBranch() + this._assertion.hashCode();
+		return _branch.getBranch() + _assertion.hashCode();
 	}
 
 }

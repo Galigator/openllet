@@ -18,6 +18,7 @@ import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
+import openllet.core.KnowledgeBase;
 import openllet.core.boxes.rbox.Role;
 import openllet.core.taxonomy.CDOptimizedTaxonomyBuilder;
 import openllet.core.taxonomy.PartialOrderTaxonomyBuilder;
@@ -61,30 +62,18 @@ public class ELClassifier extends CDOptimizedTaxonomyBuilder
 
 	private final PartialOrderComparator<ATermAppl> subsumptionComparator = (a, b) ->
 	{
-		//			if( a == ATermUtils.BOTTOM )
-		//				return PartialOrderRelation.LESS;
-		//			else if( b == ATermUtils.TOP )
-		//				return PartialOrderRelation.GREATER;
-
 		final ConceptInfo aInfo = getInfo(a);
 		final ConceptInfo bInfo = getInfo(b);
 
-		if (aInfo.hasSuperClass(bInfo))
-		{
-			if (bInfo.hasSuperClass(aInfo))
-				return PartialOrderRelation.EQUAL;
-			else
-				return PartialOrderRelation.LESS;
-		}
-		else
-			if (bInfo.hasSuperClass(aInfo))
-				return PartialOrderRelation.GREATER;
-			else
-				return PartialOrderRelation.INCOMPARABLE;
+		return aInfo.hasSuperClass(bInfo) ? //
+		bInfo.hasSuperClass(aInfo) ? PartialOrderRelation.EQUAL : PartialOrderRelation.LESS//
+				: //
+		bInfo.hasSuperClass(aInfo) ? PartialOrderRelation.GREATER : PartialOrderRelation.INCOMPARABLE;
 	};
 
-	public ELClassifier()
+	public ELClassifier(final KnowledgeBase kb)
 	{
+		super(kb);
 	}
 
 	@Override

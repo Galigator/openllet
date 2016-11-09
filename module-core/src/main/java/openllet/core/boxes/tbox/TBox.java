@@ -42,22 +42,23 @@ public interface TBox
 	/**
 	 * Add a named class declaration
 	 *
+	 * @param term
 	 * @return <code>true</code> if TBox changed as a result of this call
 	 */
 	public boolean addClass(ATermAppl term);
 
 	/**
-	 * Return all the named classes
+	 * @return all the named classes
 	 */
 	public Set<ATermAppl> getClasses();
 
 	/**
-	 * Return all the named classes plus TOP and BOTTOM
+	 * @return all the named classes plus TOP and BOTTOM
 	 */
 	public Set<ATermAppl> getAllClasses();
 
 	/**
-	 * Return all the named classes plus TOP and BOTTOM
+	 * @return all the named classes plus TOP and BOTTOM
 	 */
 	default Stream<ATermAppl> allClasses()
 	{
@@ -65,12 +66,12 @@ public interface TBox
 	}
 
 	/**
-	 * Return all the axioms defined in this TBox (may include new axioms introduced during absorption)
+	 * @return all the axioms defined in this TBox (may include new axioms introduced during absorption)
 	 */
 	public Collection<ATermAppl> getAxioms();
 
 	/**
-	 * Return all the axioms defined in this TBox (may include new axioms introduced during absorption)
+	 * @return all the axioms defined in this TBox (may include new axioms introduced during absorption)
 	 */
 	default Stream<ATermAppl> axioms()
 	{
@@ -78,20 +79,21 @@ public interface TBox
 	}
 
 	/**
-	 * Return all the asserted axioms in this TBox
+	 * @return all the asserted axioms in this TBox
 	 */
 	public Collection<ATermAppl> getAssertedAxioms();
 
 	/**
-	 * Return all the sub and equivalent class axioms that have the given concept on the left hand side
+	 * @param concept
+	 * @return all the sub and equivalent class axioms that have the given concept on the left hand side
 	 */
 	public Collection<ATermAppl> getAxioms(ATermAppl concept);
 
 	/**
 	 * Lazy unfold the given concept
-	 * 
+	 *
 	 * @param c
-	 * @return
+	 * @return the concept the lazy way
 	 */
 	public Iterator<Unfolding> unfold(ATermAppl c);
 
@@ -108,7 +110,7 @@ public interface TBox
 	 * Add a TBox axiom.
 	 *
 	 * @param axiom
-	 * @return
+	 * @return true if operation success
 	 */
 	public boolean addAxiom(ATermAppl axiom);
 
@@ -118,7 +120,7 @@ public interface TBox
 	 * is syntactic sugar for {@link #removeAxiom(ATermAppl, ATermAppl)} where both parameters are {@code axiom}.
 	 *
 	 * @param axiom
-	 * @return
+	 * @return true if operation success
 	 */
 	public boolean removeAxiom(ATermAppl axiom);
 
@@ -128,23 +130,19 @@ public interface TBox
 	 *
 	 * @param dependantAxiom
 	 * @param explanationAxiom
-	 * @return
+	 * @return true if operation success
 	 */
 	public boolean removeAxiom(ATermAppl dependantAxiom, ATermAppl explanationAxiom);
 
 	/**
-	 * Return a single clashExplanation for the given TBox axiom.
-	 *
 	 * @param axiom
-	 * @return
+	 * @return a single clashExplanation for the given TBox axiom.
 	 */
 	public Set<ATermAppl> getAxiomExplanation(ATermAppl axiom);
 
 	/**
-	 * Return multiple explanations for the given TBox axiom.
-	 *
 	 * @param axiom
-	 * @return
+	 * @return multiple explanations for the given TBox axiom.
 	 */
 	public Set<Set<ATermAppl>> getAxiomExplanations(ATermAppl axiom);
 

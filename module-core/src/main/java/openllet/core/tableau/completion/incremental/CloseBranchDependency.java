@@ -40,13 +40,10 @@ public class CloseBranchDependency extends BranchDependency
 	public CloseBranchDependency(final ATermAppl assertion, final int tryNext, final Branch theBranch)
 	{
 		super(assertion);
-		this._tryNext = tryNext;
-		this._theBranch = theBranch;
+		_tryNext = tryNext;
+		_theBranch = theBranch;
 	}
 
-	/**
-	 * @return
-	 */
 	public ATermAppl getInd()
 	{
 		return _theBranch.getNode().getName();
@@ -68,7 +65,7 @@ public class CloseBranchDependency extends BranchDependency
 	public boolean equals(final Object other)
 	{
 		if (other instanceof CloseBranchDependency)
-			return this.getInd().equals(((CloseBranchDependency) other).getInd()) && this.getBranch() == ((CloseBranchDependency) other).getBranch() && this._tryNext == ((CloseBranchDependency) other)._tryNext;
+			return getInd().equals(((CloseBranchDependency) other).getInd()) && getBranch() == ((CloseBranchDependency) other).getBranch() && _tryNext == ((CloseBranchDependency) other)._tryNext;
 		else
 			return false;
 	}
@@ -79,7 +76,7 @@ public class CloseBranchDependency extends BranchDependency
 	@Override
 	public int hashCode()
 	{
-		return this.getInd().hashCode() + this.getBranch() + this._tryNext;
+		return getInd().hashCode() + getBranch() + _tryNext;
 	}
 
 	public int getBranch()
