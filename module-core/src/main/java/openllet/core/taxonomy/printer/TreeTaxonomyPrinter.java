@@ -43,14 +43,12 @@ import openllet.core.utils.Comparators;
  */
 public class TreeTaxonomyPrinter<T> implements TaxonomyPrinter<T>
 {
-	// Indentation string used when classification tree is printed
-	final static String INDENT = "  ";
-
-	protected Taxonomy<T> _taxonomyImpl;
-	protected PrintWriter _out;
+	protected volatile Taxonomy<T> _taxonomyImpl;
+	protected volatile PrintWriter _out;
 
 	public TreeTaxonomyPrinter()
 	{
+		// Nothing to do
 	}
 
 	@Override
@@ -62,8 +60,8 @@ public class TreeTaxonomyPrinter<T> implements TaxonomyPrinter<T>
 	@Override
 	public void print(final Taxonomy<T> taxonomy, final PrintWriter out)
 	{
-		this._taxonomyImpl = taxonomy;
-		this._out = out;
+		_taxonomyImpl = taxonomy;
+		_out = out;
 
 		out.println();
 		printTree();

@@ -6,24 +6,24 @@
 
 package openllet.core.tableau.blocking;
 
-import java.util.HashSet;
 import java.util.Set;
 import openllet.core.boxes.abox.Edge;
 import openllet.core.boxes.abox.Individual;
 import openllet.core.boxes.abox.Node;
 import openllet.core.boxes.rbox.Role;
+import openllet.core.utils.SetUtils;
 
 /**
  * A class to keep track of the _current _individual being tested for blocking conditions. Current context stores the _blocker candidate and caches the incoming
- * edges to the (possibly) _blocked _individual since multiple blocking conditions need to access that information.
+ * edges to the (possibly) blocked individual since multiple blocking conditions need to access that information.
  *
  * @author Evren Sirin
  */
-public class BlockingContext
+public final class BlockingContext
 {
-	Individual _blocked;
-	Individual _blocker;
-	Set<Role> _rolesToBlocked;
+	public final Individual _blocked;
+	public volatile Individual _blocker;
+	private Set<Role> _rolesToBlocked;
 
 	public BlockingContext(final Individual blocked)
 	{
@@ -111,7 +111,7 @@ public class BlockingContext
 	 * @param ind _individual to check
 	 * @return the roles that points to the given _individual from its parent
 	 */
-	protected static Set<Role> getIncomingRoles(final Individual ind)
+	public static Set<Role> getIncomingRoles(final Individual ind)
 	{
 		Set<Role> rolesToBlocked = null;
 		for (final Edge e : ind.getInEdges())
@@ -121,7 +121,7 @@ public class BlockingContext
 				else
 					if (!rolesToBlocked.contains(e.getRole()))
 					{
-						rolesToBlocked = new HashSet<>(rolesToBlocked);
+						rolesToBlocked = SetUtils.create(rolesToBlocked);
 						rolesToBlocked.addAll(e.getRole().getSuperRoles());
 					}
 		return rolesToBlocked;
@@ -130,6 +130,6 @@ public class BlockingContext
 	@Override
 	public String toString()
 	{
-		return _blocked + " _blocked by " + _blocker;
+		return _blocked + " blocked by " + _blocker;
 	}
 }

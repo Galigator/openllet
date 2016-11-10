@@ -209,8 +209,8 @@ public class RBoxImpl implements RBox
 
 	private static class DomainRangeIterator extends FilterIterator<Map.Entry<ATermAppl, Set<Set<ATermAppl>>>>
 	{
-		final ATermAppl _p;
-		final boolean _isDomain;
+		private final ATermAppl _p;
+		private final boolean _isDomain;
 
 		public DomainRangeIterator(final Map<ATermAppl, Set<Set<ATermAppl>>> map, final Role role, final boolean isDomain)
 		{

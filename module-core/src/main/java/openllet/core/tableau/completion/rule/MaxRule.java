@@ -176,8 +176,7 @@ public class MaxRule extends AbstractTableauRule
 			final DependencySet dsEdges = x.hasDistinctRNeighborsForMax(r, k + 1, c);
 			if (dsEdges == null)
 			{
-				if (_logger.isLoggable(Level.FINE))
-					_logger.fine("Cannot determine the exact clash dependency for " + x);
+				_logger.fine(() -> "Cannot determine the exact clash dependency for " + x);
 				_strategy.getABox().setClash(Clash.maxCardinality(x, ds));
 				return false;
 			}
@@ -203,8 +202,7 @@ public class MaxRule extends AbstractTableauRule
 		if (newBranch.tryNext() == false)
 			return false;
 
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("hasMore: " + (n > k + 1));
+		_logger.fine(() -> "hasMore: " + (n > k + 1));
 
 		// if there were exactly k + 1 neighbors the previous step would
 		// eliminate one _node and only n neighbors would be left. This means
@@ -214,7 +212,7 @@ public class MaxRule extends AbstractTableauRule
 		return n > k + 1;
 	}
 
-	DependencySet findMergeNodes(final Set<Node> neighbors, final Individual node, final List<NodeMerge> pairs)
+	private DependencySet findMergeNodes(final Set<Node> neighbors, final Individual node, final List<NodeMerge> pairs)
 	{
 		DependencySet ds = DependencySet.INDEPENDENT;
 
@@ -351,7 +349,7 @@ public class MaxRule extends AbstractTableauRule
 				}
 				// always merge to a nominal (of lowest level) or an ancestor
 				else
-					if ((next.getNominalLevel() < head.getNominalLevel()) || (!head.isNominal() && next.hasSuccessor(x)))
+					if (next.getNominalLevel() < head.getNominalLevel() || !head.isNominal() && next.hasSuccessor(x))
 					{
 						final Node temp = head;
 						head = next;

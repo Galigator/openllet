@@ -303,8 +303,7 @@ public abstract class CompletionStrategy
 			return;
 		}
 
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Initialize started");
+		_logger.fine("Initialize started");
 
 		_abox.setBranch(0);
 
@@ -351,14 +350,12 @@ public abstract class CompletionStrategy
 			applyPropertyRestrictions(n, topRole, n, DependencySet.INDEPENDENT);
 		}
 
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Merging: " + _mergeList);
+		_logger.fine(() -> "Merging: " + _mergeList);
 
 		if (!_mergeList.isEmpty())
 			mergeAll();
 
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Initialize finished");
+		_logger.fine("Initialize finished");
 
 		_abox.setBranch(_abox.getBranches().size() + 1);
 		_abox.getStats()._treeDepth = 1;
@@ -383,15 +380,14 @@ public abstract class CompletionStrategy
 		return ind;
 	}
 
-	void applyUniversalRestrictions(final Individual node)
+	public void applyUniversalRestrictions(final Individual node)
 	{
 		addType(node, ATermUtils.TOP, DependencySet.INDEPENDENT);
 
 		final Set<Role> reflexives = _abox.getKB().getRBox().getReflexiveRoles();
 		for (final Role r : reflexives)
 		{
-			if (_logger.isLoggable(Level.FINE) && !node.hasRNeighbor(r, node))
-				_logger.fine("REF : " + node + " " + r);
+			_logger.fine(() -> "REF : " + node + " " + r);
 			addEdge(node, r, node, r.getExplainReflexive());
 			if (node.isMerged())
 				return;
@@ -573,12 +569,12 @@ public abstract class CompletionStrategy
 		return edge;
 	}
 
-	void applyPropertyRestrictions(final Edge edge)
+	public void applyPropertyRestrictions(final Edge edge)
 	{
 		applyPropertyRestrictions(edge.getFrom(), edge.getRole(), edge.getTo(), edge.getDepends());
 	}
 
-	void applyPropertyRestrictions(final Individual subj, final Role pred, final Node obj, final DependencySet ds)
+	public void applyPropertyRestrictions(final Individual subj, final Role pred, final Node obj, final DependencySet ds)
 	{
 		applyDomainRange(subj, pred, obj, ds);
 		if (subj.isPruned() || obj.isPruned())
@@ -600,7 +596,7 @@ public abstract class CompletionStrategy
 		}
 	}
 
-	void applyDomainRange(final Individual subj, final Role pred, final Node obj, final DependencySet ds)
+	public void applyDomainRange(final Individual subj, final Role pred, final Node obj, final DependencySet ds)
 	{
 		final Set<ATermAppl> domains = pred.getDomains();
 		final Set<ATermAppl> ranges = pred.getRanges();
@@ -623,7 +619,7 @@ public abstract class CompletionStrategy
 		}
 	}
 
-	void applyFunctionality(final Individual subj, final Role pred, final Node obj)
+	public void applyFunctionality(final Individual subj, final Role pred, final Node obj)
 	{
 		DependencySet maxCardDS = pred.isFunctional() ? pred.getExplainFunctional() : subj.hasMax1(pred);
 
@@ -646,7 +642,7 @@ public abstract class CompletionStrategy
 
 	}
 
-	void applyDisjointness(final Individual subj, final Role pred, final Node obj, final DependencySet dsParam)
+	private void applyDisjointness(final Individual subj, final Role pred, final Node obj, final DependencySet dsParam)
 	{
 		DependencySet ds = dsParam;
 		// TODO what about inv edges?
@@ -670,7 +666,7 @@ public abstract class CompletionStrategy
 
 	}
 
-	void checkReflexivitySymmetry(final Individual subj, final Role pred, final Individual obj, final DependencySet dsParam)
+	public void checkReflexivitySymmetry(final Individual subj, final Role pred, final Individual obj, final DependencySet dsParam)
 	{
 		DependencySet ds = dsParam;
 		if (pred.isAsymmetric() && obj.hasRSuccessor(pred, subj))
@@ -739,7 +735,7 @@ public abstract class CompletionStrategy
 				continue;
 
 			// it is possible that there are multiple edges to the same
-			// _node, e.g. property p and its super property, so check if
+			// node, e.g. property p and its super property, so check if
 			// we already merged this one
 			if (head.isSame(next))
 				continue;
@@ -1064,8 +1060,6 @@ public abstract class CompletionStrategy
 
 	public void restore(final Branch br)
 	{
-		// Timers _timers = _abox.getKB().timers;
-		// Timer timer = _timers.startTimer("restore");
 		_abox.setBranch(br.getBranch());
 		_abox.setClash(null);
 		// Setting the anonCount to the value at the time of _branch creation is incorrect
@@ -1107,16 +1101,12 @@ public abstract class CompletionStrategy
 		// the ArrayList we compute the block to be deleted and then remove all
 		// at once to utilize the underlying System.arraycopy operation.
 
-		// number of _nodes in the _nodeList
-		int nodeCount = nodeList.size();
-		// number of _nodes
-		int deleteBlock = 0;
+		int nodeCount = nodeList.size(); // number of _nodes in the nodeList
+		int deleteBlock = 0; // number of nodes
 		for (int i = 0; i < nodeCount; i++)
 		{
-			// get the _node name
-			final ATermAppl a = nodeList.get(i);
-			// and the corresponding _node
-			final Node node = _abox.getNode(a);
+			final ATermAppl a = nodeList.get(i); // get the node name
+			final Node node = _abox.getNode(a); // and the corresponding node
 
 			// node dependency tells us if the node was created after the _branch
 			// and if that is the case we remove it completely
@@ -1125,19 +1115,16 @@ public abstract class CompletionStrategy
 			// left for that literal
 			if (node.getNodeDepends() == null || node.getNodeDepends().getBranch() > br.getBranch())
 			{
-				// remove the _node from the _node map
-				_abox.removeNode(a);
-				// if the _node is merged to another one we should remove it from
-				// the other _node's merged list
-				if (node.isMerged())
-					node.undoSetSame();
-				// increment the size of block that will be deleted
-				deleteBlock++;
+				_abox.removeNode(a); // remove the node from the node map
+
+				if (node.isMerged()) // if the node is merged to another one we should remove it from
+					node.undoSetSame(); // the other node's merged list
+
+				deleteBlock++; // increment the size of block that will be deleted
 			}
 			else
 			{
 				// this _node will be restored to previous state not removed
-
 				// first if there are any _nodes collected earlier delete them
 				if (deleteBlock > 0)
 				{
@@ -1181,8 +1168,6 @@ public abstract class CompletionStrategy
 
 		if (!_abox.isClosed())
 			_abox.validate();
-
-		// timer.stop();
 	}
 
 	public void addBranch(final Branch newBranch)
@@ -1202,7 +1187,7 @@ public abstract class CompletionStrategy
 	public void printBlocked()
 	{
 		int blockedCount = 0;
-		final StringBuffer blockedNodes = new StringBuffer();
+		final StringBuilder blockedNodes = new StringBuilder();
 		final Iterator<Individual> n = _abox.getIndIterator();
 		while (n.hasNext())
 		{
@@ -1216,7 +1201,8 @@ public abstract class CompletionStrategy
 			}
 		}
 
-		_logger.fine("Blocked nodes " + blockedCount + " [" + blockedNodes + "]");
+		if (_logger.isLoggable(Level.FINE))
+			_logger.fine("Blocked nodes " + blockedCount + " [" + blockedNodes + "]");
 	}
 
 	@Override

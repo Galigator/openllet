@@ -44,10 +44,19 @@ public class DateTimeOperators
 {
 	private static Logger _logger = Log.getLogger(DateTimeOperators.class);
 
+	public final static GeneralFunction date = new Date();
+
+	public final static GeneralFunction dateTime = new DateTime();
+
+	public final static Function dayTimeDuration = new StringFunctionAdapter(new Duration(Duration.DURATIONTYPE.DAYTIME), XSD + "duration");
+
+	public final static GeneralFunction time = new Time();
+
+	public final static Function yearMonthDuration = new StringFunctionAdapter(new Duration(Duration.DURATIONTYPE.YEARMONTH), XSD + "duration");
+
 	private static class Date implements GeneralFunction, StringToStringFunction
 	{
-
-		StringFunctionAdapter allBound = new StringFunctionAdapter(this, XSD + "date");
+		public final StringFunctionAdapter allBound = new StringFunctionAdapter(this, XSD + "date");
 
 		@Override
 		public boolean apply(final ABox abox, final Literal[] args)
@@ -112,8 +121,7 @@ public class DateTimeOperators
 
 	private static class DateTime implements GeneralFunction, StringToStringFunction
 	{
-
-		StringFunctionAdapter allBound = new StringFunctionAdapter(this, XSD + "dateTime");
+		public final StringFunctionAdapter allBound = new StringFunctionAdapter(this, XSD + "dateTime");
 
 		@Override
 		public boolean apply(final ABox abox, final Literal[] args)
@@ -142,7 +150,7 @@ public class DateTimeOperators
 				results[4] = createInteger(abox, value.getHour());
 				results[5] = createInteger(abox, value.getMinute());
 				final BigDecimal fractionalSeconds = value.getFractionalSecond();
-				results[6] = createDecimal(abox, (fractionalSeconds == null) ? value.getSecond() : fractionalSeconds.add(BigDecimal.valueOf(value.getSecond())));
+				results[6] = createDecimal(abox, fractionalSeconds == null ? value.getSecond() : fractionalSeconds.add(BigDecimal.valueOf(value.getSecond())));
 				if (value.getTimezone() != DatatypeConstants.FIELD_UNDEFINED)
 					results[7] = abox.addLiteral(ATermUtils.makePlainLiteral(toTZ(value.getTimezone())));
 
@@ -184,7 +192,6 @@ public class DateTimeOperators
 	 */
 	private static class Duration implements GeneralFunction, StringToStringFunction
 	{
-
 		public static enum DURATIONTYPE
 		{
 			FULL(0, 5), YEARMONTH(0, 2), DAYTIME(2, 5);
@@ -239,12 +246,12 @@ public class DateTimeOperators
 			if (args.length > SEP.length + granularity._start)
 				return null;
 
-			StringBuffer result;
+			StringBuilder result;
 			if (args[0].charAt(0) != '-')
-				result = new StringBuffer("P");
+				result = new StringBuilder("P");
 			else
 			{
-				result = new StringBuffer("-P");
+				result = new StringBuilder("-P");
 				args[0] = args[0].substring(1);
 			}
 
@@ -264,7 +271,6 @@ public class DateTimeOperators
 					result.append(SEP[i]);
 				}
 				i++;
-
 			}
 
 			return result.toString();
@@ -281,7 +287,7 @@ public class DateTimeOperators
 	private static class Time implements GeneralFunction, StringToStringFunction
 	{
 
-		StringFunctionAdapter allBound = new StringFunctionAdapter(this, XSD + "time");
+		public final StringFunctionAdapter allBound = new StringFunctionAdapter(this, XSD + "time");
 
 		@Override
 		public boolean apply(final ABox abox, final Literal[] args)
@@ -306,7 +312,7 @@ public class DateTimeOperators
 				results[1] = createInteger(abox, value.getHour());
 				results[2] = createInteger(abox, value.getMinute());
 				final BigDecimal fractionalSeconds = value.getFractionalSecond();
-				results[3] = createDecimal(abox, (fractionalSeconds == null) ? value.getSecond() : fractionalSeconds.add(BigDecimal.valueOf(value.getSecond())));
+				results[3] = createDecimal(abox, fractionalSeconds == null ? value.getSecond() : fractionalSeconds.add(BigDecimal.valueOf(value.getSecond())));
 				if (value.getTimezone() != DatatypeConstants.FIELD_UNDEFINED)
 					results[4] = abox.addLiteral(ATermUtils.makePlainLiteral(toTZ(value.getTimezone())));
 
@@ -343,16 +349,6 @@ public class DateTimeOperators
 		}
 
 	}
-
-	public final static GeneralFunction date = new Date();
-
-	public final static GeneralFunction dateTime = new DateTime();
-
-	public final static Function dayTimeDuration = new StringFunctionAdapter(new Duration(Duration.DURATIONTYPE.DAYTIME), XSD + "duration");
-
-	public final static GeneralFunction time = new Time();
-
-	public final static Function yearMonthDuration = new StringFunctionAdapter(new Duration(Duration.DURATIONTYPE.YEARMONTH), XSD + "duration");
 
 	private static boolean applicability(final int minargs, final int maxargs, final boolean[] boundPositions)
 	{
@@ -419,7 +415,7 @@ public class DateTimeOperators
 		return true;
 	}
 
-	private static String pad(final int p, String s)
+	private static String pad(final int p, final String s)
 	{
 		final StringBuilder padded = new StringBuilder();
 
@@ -443,7 +439,7 @@ public class DateTimeOperators
 		return pad(4, year) + "-" + pad(2, month) + "-" + pad(2, day);
 	}
 
-	private static String toTime(final String hour, final String minute, String second_)
+	private static String toTime(final String hour, final String minute, final String second_)
 	{
 		String second = second_;
 		String millis = "";

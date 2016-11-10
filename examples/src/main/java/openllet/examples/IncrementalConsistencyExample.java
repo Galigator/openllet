@@ -39,11 +39,11 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 public class IncrementalConsistencyExample
 {
 	// namespaces that will be used
-	static final String foaf = "http://xmlns.com/foaf/0.1/";
+	private static final String foaf = "http://xmlns.com/foaf/0.1/";
 
-	static final String mindswap = "http://www.mindswap.org/2003/owl/mindswap#";
+	private static final String mindswap = "http://www.mindswap.org/2003/owl/mindswap#";
 
-	static final String mindswappers = "http://www.mindswap.org/2004/owl/mindswappers#";
+	private static final String mindswappers = "http://www.mindswap.org/2004/owl/mindswappers#";
 
 	public static void main(final String[] args) throws Exception
 	{

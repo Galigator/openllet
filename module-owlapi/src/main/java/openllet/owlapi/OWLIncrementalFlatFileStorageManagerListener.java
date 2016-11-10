@@ -235,13 +235,12 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 
 	private class DeltaReader extends Reader implements Iterator<OWLOntologyChange>
 	{
+		private final OWLOntologyManager _manager = _owlManagerGroup.getStorageManager();
 		private final BufferedReader _in;
 
 		private volatile char[] _data;
 		private volatile int _localOffset = 0;
 		private volatile int _line = 0;
-
-		final OWLOntologyManager _manager = _owlManagerGroup.getStorageManager();
 
 		public DeltaReader(final BufferedReader in)
 		{

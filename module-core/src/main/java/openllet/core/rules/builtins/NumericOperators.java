@@ -35,7 +35,6 @@ public class NumericOperators
 
 	private static class Abs implements NumericFunction
 	{
-
 		@Override
 		public BigDecimal apply(final BigDecimal... args)
 		{
@@ -71,7 +70,6 @@ public class NumericOperators
 
 	private static class Add implements NumericFunction
 	{
-
 		@Override
 		public BigDecimal apply(final BigDecimal... args)
 		{
@@ -129,6 +127,7 @@ public class NumericOperators
 	{
 		public Ceiling()
 		{
+			// nothing to do
 		}
 
 		@Override
@@ -261,6 +260,7 @@ public class NumericOperators
 	{
 		public Floor()
 		{
+			// Nothing to do
 		}
 
 		@Override
@@ -456,7 +456,6 @@ public class NumericOperators
 
 	private static class Pow implements NumericFunction
 	{
-
 		@Override
 		public BigDecimal apply(final BigDecimal... args)
 		{
@@ -510,10 +509,11 @@ public class NumericOperators
 
 	private static class Round implements NumericFunction
 	{
-		BigDecimal HALF = new BigDecimal("0.5");
+		public final static BigDecimal HALF = new BigDecimal("0.5");
 
 		public Round()
 		{
+			// Nothing to do
 		}
 
 		@Override
@@ -561,6 +561,7 @@ public class NumericOperators
 
 		public RoundHalfToEven()
 		{
+			// Nothing to do
 		}
 
 		@Override
@@ -618,7 +619,6 @@ public class NumericOperators
 
 	private static class Sin implements NumericFunction
 	{
-
 		@Override
 		public Double apply(final BigDecimal... args)
 		{

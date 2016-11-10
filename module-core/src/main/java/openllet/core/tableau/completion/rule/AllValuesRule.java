@@ -9,7 +9,6 @@ package openllet.core.tableau.completion.rule;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
@@ -26,12 +25,6 @@ import openllet.core.tableau.completion.queue.NodeSelector;
 import openllet.core.utils.ATermUtils;
 
 /**
- * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
  * <p>
  * Copyright: Copyright (c) 2009
  * </p>
@@ -77,8 +70,8 @@ public class AllValuesRule extends AbstractTableauRule
 	}
 
 	/**
-	 * Apply the allValues rule for the given type with the given dependency. The concept is in the form all(r,C) and this function adds C to all r-neighbors of
-	 * x
+	 * Apply the all Values rule for the given type with the given dependency. The concept is in the form all(r,C) and this function adds C to all r-neighbors
+	 * of x
 	 *
 	 * @param x
 	 * @param av
@@ -86,8 +79,6 @@ public class AllValuesRule extends AbstractTableauRule
 	 */
 	public void applyAllValues(final Individual x, final ATermAppl av, final DependencySet ds)
 	{
-		// Timer _timer = _kb.timers.startTimer("applyAllValues");
-
 		if (av.getArity() == 0)
 			throw new InternalReasonerException();
 		final ATerm p = av.getArgument(0);
@@ -144,8 +135,6 @@ public class AllValuesRule extends AbstractTableauRule
 
 		if (!roleChain.isEmpty())
 			applyAllValuesPropertyChain(x, (ATermList) p, c, ds);
-
-		// _timer.stop();
 	}
 
 	protected boolean applyAllValuesPropertyChain(final Individual x, final ATermList chain, final ATermAppl c, final DependencySet ds)
@@ -177,10 +166,9 @@ public class AllValuesRule extends AbstractTableauRule
 	{
 		if (!obj.hasType(c))
 		{
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("ALL : " + subj + " -> " + pred + " -> " + obj + " : " + ATermUtils.toString(c) + " - " + ds);
+			_logger.fine(() -> "ALL : " + subj + " -> " + pred + " -> " + obj + " : " + ATermUtils.toString(c) + " - " + ds);
 
-			//because we do not maintain the _queue it could be the case that this _node is pruned, so return
+			// because we do not maintain the _queue it could be the case that this _node is pruned, so return
 			if (OpenlletOptions.USE_COMPLETION_QUEUE && !OpenlletOptions.MAINTAIN_COMPLETION_QUEUE && obj.isPruned())
 				return;
 
@@ -275,8 +263,12 @@ public class AllValuesRule extends AbstractTableauRule
 
 	/**
 	 * Apply all values restriction for the Top object role
+	 *
+	 * @param allTopC
+	 * @param c
+	 * @param ds
 	 */
-	void applyAllValuesTop(final ATermAppl allTopC, final ATermAppl c, final DependencySet ds)
+	public void applyAllValuesTop(final ATermAppl allTopC, final ATermAppl c, final DependencySet ds)
 	{
 		for (final Node node : _strategy.getABox().getNodes().values())
 			if (node.isIndividual() && !node.isPruned() && !node.hasType(c))
