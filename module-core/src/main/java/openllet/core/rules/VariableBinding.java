@@ -106,12 +106,12 @@ public class VariableBinding
 	}
 
 	/**
-	 * Collects _individual values of a objects it visits
+	 * Collects individual values of a objects it visits
 	 */
 	private class IndividualValueCollector implements AtomObjectVisitor
 	{
 
-		Individual value = null;
+		private Individual value = null;
 
 		public Individual getValue()
 		{
@@ -134,7 +134,7 @@ public class VariableBinding
 	}
 
 	/**
-	 * Sets the value of a variable to the _individual or _node as appropriate.
+	 * Sets the value of a variable to the individual or node as appropriate.
 	 */
 	private class ValueSettingVisitor implements AtomObjectVisitor
 	{
@@ -188,15 +188,13 @@ public class VariableBinding
 
 	private final ABox _abox;
 
-	private final Map<AtomDVariable, Literal> _dataVars;
+	private final Map<AtomDVariable, Literal> _dataVars = new HashMap<>();
 
-	private final Map<AtomIVariable, Individual> _instanceVars;
+	private final Map<AtomIVariable, Individual> _instanceVars = new HashMap<>();
 
 	public VariableBinding(final ABox abox)
 	{
 		_abox = abox;
-		_dataVars = new HashMap<>();
-		_instanceVars = new HashMap<>();
 	}
 
 	/**
@@ -207,8 +205,8 @@ public class VariableBinding
 	public VariableBinding(final VariableBinding binding)
 	{
 		_abox = binding._abox;
-		_dataVars = new HashMap<>(binding._dataVars);
-		_instanceVars = new HashMap<>(binding._instanceVars);
+		_dataVars.putAll(binding._dataVars);
+		_instanceVars.putAll(binding._instanceVars);
 	}
 
 	public boolean containsKey(final AtomDVariable key)

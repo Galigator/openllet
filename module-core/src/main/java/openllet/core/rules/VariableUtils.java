@@ -39,12 +39,7 @@ public class VariableUtils
 	 */
 	private static class VisitingCollector implements AtomObjectVisitor
 	{
-		private final Collection<AtomVariable> _variables;
-
-		public VisitingCollector()
-		{
-			_variables = new HashSet<>();
-		}
+		private final Collection<AtomVariable> _variables = new HashSet<>();
 
 		public Collection<AtomVariable> getVariables()
 		{
@@ -69,12 +64,7 @@ public class VariableUtils
 	 */
 	private static class VisitingDCollector implements AtomObjectVisitor
 	{
-		private final Collection<AtomDVariable> _variables;
-
-		public VisitingDCollector()
-		{
-			_variables = new HashSet<>();
-		}
+		private final Collection<AtomDVariable> _variables = new HashSet<>();
 
 		public Collection<AtomDVariable> getVariables()
 		{
@@ -93,12 +83,7 @@ public class VariableUtils
 	 */
 	private static class VisitingICollector implements AtomObjectVisitor
 	{
-		private final Collection<AtomIVariable> _variables;
-
-		public VisitingICollector()
-		{
-			_variables = new HashSet<>();
-		}
+		private final Collection<AtomIVariable> _variables = new HashSet<>();
 
 		public Collection<AtomIVariable> getVariables()
 		{
