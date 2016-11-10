@@ -162,14 +162,14 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	private SizeEstimate _estimate;
 	private boolean _explainOnlyInconsistency = false;
 	private final Map<ATermAppl, Map<ATermAppl, Set<ATermAppl>>> _annotations;
-	private Map<ATermAppl, Set<ATermAppl>> _instances;
+	private final Map<ATermAppl, Set<ATermAppl>> _instances = new ConcurrentHashMap<>();
 	private ExpressivityChecker _expChecker;
 	private final FullyDefinedClassVisitor _fullyDefinedVisitor = new FullyDefinedClassVisitor();
 	private final DatatypeVisitor _datatypeVisitor = new DatatypeVisitor();
 	/**
 	 * Rules added to this KB. The key is the asserted rule,
 	 */
-	private Map<Rule, Rule> _rules;
+	private final Map<Rule, Rule> _rules = new HashMap<>(); // All operations are atomic (and we must allow null normalized rules).
 
 	// Structure for tracking which assertions are deleted
 	private Set<ATermAppl> _deletedAssertions;
@@ -573,7 +573,8 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	{
 		_tbox = kb._tbox;
 		_rbox = kb._rbox;
-		_rules = kb._rules;
+		_rules.clear();
+		_rules.putAll(kb._rules);
 
 		_aboxAssertions = new MultiValueMap<>();
 
@@ -595,7 +596,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 			_abox = new ABoxImpl(this);
 
 			_individuals = SetUtils.create();
-			_instances = new ConcurrentHashMap<>();
+			_instances.clear();
 
 			// even though we don't copy the _individuals over to the new KB
 			// we should still create _individuals for the
@@ -615,7 +616,8 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 				}
 
 			_individuals = SetUtils.create(kb._individuals);
-			_instances = new ConcurrentHashMap<>(kb._instances);
+			_instances.clear();
+			_instances.putAll(kb._instances);
 
 			// copy deleted assertions
 			if (kb.getDeletedAssertions() != null)
@@ -645,8 +647,6 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 			_state = EnumSet.noneOf(ReasoningState.class);
 
 		_timers = kb._timers;
-		// _timers.createTimer("preprocessing");
-		// _timers.createTimer("consistency");
 	}
 
 	@Override
@@ -684,11 +684,11 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		_tbox = TBoxFactory.createTBox(this);
 		_rbox = new RBoxImpl();
-		_rules = new HashMap<>(); // All operations are atomic (and we must allow null normalized rules).
+		_rules.clear(); // All operations are atomic (and we must allow null normalized rules).
 		_expChecker = new ExpressivityChecker(this);
 		_individuals = SetUtils.create();
 		_aboxAssertions = new MultiValueMap<>();
-		_instances = new ConcurrentHashMap<>();
+		_instances.clear();
 		_builder = null;
 
 		_state.clear();
@@ -1392,7 +1392,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public Set<ATermAppl> getAnnotations(final ATermAppl s, final ATermAppl p)
 	{
-		if (null == s)
+		if (null == s || null == p)
 			return Collections.emptySet();
 
 		final Map<ATermAppl, Set<ATermAppl>> pidx = _annotations.get(s);
@@ -1418,7 +1418,6 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	 */
 	private Set<ATermAppl> getSubAnnotationProperties(final ATermAppl p)
 	{
-
 		final Set<ATermAppl> values = new HashSet<>();
 
 		final List<ATermAppl> temp = new ArrayList<>();

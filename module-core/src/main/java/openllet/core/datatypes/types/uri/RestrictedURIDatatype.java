@@ -2,7 +2,6 @@ package openllet.core.datatypes.types.uri;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import openllet.aterm.ATermAppl;
@@ -10,6 +9,7 @@ import openllet.core.datatypes.Datatype;
 import openllet.core.datatypes.RestrictedDatatype;
 import openllet.core.datatypes.exceptions.InvalidConstrainingFacetException;
 import openllet.core.utils.ATermUtils;
+import openllet.core.utils.SetUtils;
 
 /**
  * <p>
@@ -39,8 +39,8 @@ public class RestrictedURIDatatype implements RestrictedDatatype<ATermAppl>
 
 	private RestrictedURIDatatype(final Datatype<ATermAppl> dt, final Set<Object> excludedValues)
 	{
-		this._dt = dt;
-		this._excludedValues = excludedValues;
+		_dt = dt;
+		_excludedValues = excludedValues;
 	}
 
 	@Override
@@ -72,10 +72,11 @@ public class RestrictedURIDatatype implements RestrictedDatatype<ATermAppl>
 		return true;
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public RestrictedDatatype<ATermAppl> exclude(final Collection<?> values)
 	{
-		final Set<Object> newExcludedValues = new HashSet<>(values);
+		final Set<Object> newExcludedValues = (Set) SetUtils.create(values);
 		newExcludedValues.addAll(_excludedValues);
 		return new RestrictedURIDatatype(_dt, newExcludedValues);
 	}

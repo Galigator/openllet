@@ -68,7 +68,7 @@ public interface RBox extends Logging
 	 */
 	default Role getRole(final ATerm r)
 	{
-		return getRoles().get(r);
+		return null != r ? getRoles().get(r) : null;
 	}
 
 	/**

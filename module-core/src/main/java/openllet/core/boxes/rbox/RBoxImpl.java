@@ -32,11 +32,11 @@ package openllet.core.boxes.rbox;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.aterm.ATerm;
@@ -49,6 +49,7 @@ import openllet.core.PropertyType;
 import openllet.core.RoleTaxonomyBuilder;
 import openllet.core.taxonomy.Taxonomy;
 import openllet.core.utils.ATermUtils;
+import openllet.core.utils.SetUtils;
 import openllet.core.utils.iterator.FilterIterator;
 import openllet.core.utils.iterator.IteratorUtils;
 import openllet.core.utils.iterator.MapIterator;
@@ -74,16 +75,16 @@ public class RBoxImpl implements RBox
 		return _logger;
 	}
 
-	private final Map<ATermAppl, Role> _roles = new HashMap<>();
+	private final Map<ATermAppl, Role> _roles = new ConcurrentHashMap<>();
 
-	private final Set<Role> _reflexiveRoles = new HashSet<>();
-	private final Map<Role, Map<ATermAppl, Set<Set<ATermAppl>>>> _domainAssertions;
-	private final Map<Role, Map<ATermAppl, Set<Set<ATermAppl>>>> _rangeAssertions;
+	private final Set<Role> _reflexiveRoles = SetUtils.create();
+	private final Map<Role, Map<ATermAppl, Set<Set<ATermAppl>>>> _domainAssertions = new ConcurrentHashMap<>();
+	private final Map<Role, Map<ATermAppl, Set<Set<ATermAppl>>>> _rangeAssertions = new ConcurrentHashMap<>();
 	private final FSMBuilder _fsmBuilder;
 
-	private Taxonomy<ATermAppl> _objectTaxonomy;
-	private Taxonomy<ATermAppl> _dataTaxonomy;
-	private Taxonomy<ATermAppl> _annotationTaxonomy;
+	private volatile Taxonomy<ATermAppl> _objectTaxonomy;
+	private volatile Taxonomy<ATermAppl> _dataTaxonomy;
+	private volatile Taxonomy<ATermAppl> _annotationTaxonomy;
 
 	@Override
 	public Taxonomy<ATermAppl> getObjectTaxonomy()
@@ -238,9 +239,6 @@ public class RBoxImpl implements RBox
 
 	public RBoxImpl()
 	{
-		_domainAssertions = new HashMap<>();
-		_rangeAssertions = new HashMap<>();
-
 		_fsmBuilder = new FSMBuilder(this);
 
 		addDatatypeRole(ATermUtils.TOP_DATA_PROPERTY);

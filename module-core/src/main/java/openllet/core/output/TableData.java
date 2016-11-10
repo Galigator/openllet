@@ -49,19 +49,20 @@ import java.util.List;
  */
 public class TableData
 {
-	Collection<Object> _data;
+	private final Collection<Object> _data = new ArrayList<>();
 
-	List<?> _colNames;
+	private final List<?> _colNames;
 
-	boolean[] _rightAligned;
+	private boolean[] _rightAligned;
 
-	int _colWidths[] = null;
+	private int _colWidths[] = null;
 
-	String _colSep = " | ";
+	static private final String _colSep = " | ";
 
 	public TableData(final Collection<Object> data, final List<?> colNames)
 	{
-		_data = data;
+		_data.clear();
+		_data.addAll(data);
 		_colNames = colNames;
 
 		final int cols = colNames.size();
@@ -71,7 +72,7 @@ public class TableData
 
 	public TableData(final List<?> colNames)
 	{
-		_data = new ArrayList<>();
+		_data.clear();
 		_colNames = colNames;
 
 		final int cols = colNames.size();
@@ -251,7 +252,9 @@ public class TableData
 	{
 		final Object a[] = _data.toArray();
 		Arrays.sort(a, (l1, l2) -> ((Comparable<T>) ((List<T>) l1).get(col)).compareTo(((List<T>) l2).get(col)));
-		_data = Arrays.asList(a);
+		_data.clear();
+		for (final Object o : a)
+			_data.add(o);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -259,7 +262,9 @@ public class TableData
 	{
 		final Object a[] = _data.toArray();
 		Arrays.sort(a, (l1, l2) -> c.compare(((List<T>) l1).get(col), ((List<T>) l2).get(col)));
-		_data = Arrays.asList(a);
+		_data.clear();
+		for (final Object o : a)
+			_data.add(o);
 	}
 
 	@Override

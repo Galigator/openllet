@@ -286,7 +286,7 @@ public class TgBox extends TBoxBase
 		return false;
 	}
 
-	void absorbOneOf(final ATermAppl oneOf, final ATermAppl c, final Set<ATermAppl> explain)
+	public void absorbOneOf(final ATermAppl oneOf, final ATermAppl c, final Set<ATermAppl> explain)
 	{
 		absorbOneOf((ATermList) oneOf.getArgument(0), c, explain);
 	}

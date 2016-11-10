@@ -31,7 +31,7 @@ public class XSDDuration extends AbstractBaseDatatype<Duration>
 {
 
 	private static final XSDDuration instance;
-	static final ATermAppl NAME;
+	private static final ATermAppl NAME;
 
 	static
 	{

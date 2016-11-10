@@ -30,7 +30,7 @@ public class XSDAnyURI extends AbstractBaseDatatype<ATermAppl>
 {
 
 	private static final XSDAnyURI instance;
-	static final ATermAppl NAME;
+	public static final ATermAppl NAME;
 
 	static
 	{
