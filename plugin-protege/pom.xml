@@ -102,7 +102,7 @@
                     org.protege.common,
                     org.protege.editor.core.application;bundle-version="4.3.0",
                     org.protege.editor.owl;bundle-version="4.3.0",
-                    org.semanticweb.owl.owlapi;bundle-version="5.0.2"</Require-Bundle><!-- TODO : link version to parent pom.xml -->
+                    org.semanticweb.owl.owlapi;bundle-version="5.0.4"</Require-Bundle><!-- TODO : link version to parent pom.xml -->
                  <Embed-Dependency>
                     openllet*;inline=true;scope=compile|runtime|provided,
                     jena-*;inline=false;scope=compile|runtime|provided,
