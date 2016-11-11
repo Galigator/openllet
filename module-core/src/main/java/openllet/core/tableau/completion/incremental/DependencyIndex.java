@@ -6,7 +6,6 @@
 
 package openllet.core.tableau.completion.incremental;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -20,6 +19,7 @@ import openllet.core.boxes.abox.Clash;
 import openllet.core.boxes.abox.Edge;
 import openllet.core.tableau.branch.Branch;
 import openllet.core.tableau.branch.DisjunctionBranch;
+import openllet.core.utils.SetUtils;
 import openllet.shared.tools.Log;
 
 /**
@@ -45,7 +45,7 @@ public class DependencyIndex
 	/**
 	 * Clash dependency - used for cleanup
 	 */
-	private final Set<ClashDependency> _clashIndex = Collections.newSetFromMap(new ConcurrentHashMap<>());
+	private final Set<ClashDependency> _clashIndex = SetUtils.create();
 
 	/**
 	 * KB object
@@ -64,7 +64,7 @@ public class DependencyIndex
 
 	/**
 	 * Copy constructor
-	 * 
+	 *
 	 * @param kb
 	 * @param oldIndex
 	 */

@@ -144,41 +144,43 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	 * in a certain amount of time.</li>
 	 * </ul>
 	 */
-	public Timers _timers = new Timers();
+	public final Timers _timers;
 
-	protected ABox _abox;
-	protected TBox _tbox;
-	protected RBox _rbox;
-
-	protected TaxonomyBuilder _builder;
-	protected EnumSet<ChangeType> _changes;
-	protected boolean _canUseIncConsistency;
-	protected MultiValueMap<AssertionType, ATermAppl> _aboxAssertions;
-	protected EnumSet<ReasoningState> _state = EnumSet.noneOf(ReasoningState.class);
-
-	private Set<ATermAppl> _individuals;
-	private ProgressMonitor _builderProgressMonitor;
-	private boolean _consistent;
-	private SizeEstimate _estimate;
-	private boolean _explainOnlyInconsistency = false;
+	protected final MultiValueMap<AssertionType, ATermAppl> _aboxAssertions = new MultiValueMap<>();
+	private final Set<ATermAppl> _individuals = SetUtils.create();
 	private final Map<ATermAppl, Map<ATermAppl, Set<ATermAppl>>> _annotations;
 	private final Map<ATermAppl, Set<ATermAppl>> _instances = new ConcurrentHashMap<>();
-	private ExpressivityChecker _expChecker;
 	private final FullyDefinedClassVisitor _fullyDefinedVisitor = new FullyDefinedClassVisitor();
 	private final DatatypeVisitor _datatypeVisitor = new DatatypeVisitor();
+
+	protected volatile ABox _abox;
+	protected volatile TBox _tbox;
+	protected volatile RBox _rbox;
+
+	protected volatile TaxonomyBuilder _builder;
+	protected volatile EnumSet<ChangeType> _changes;
+	protected volatile boolean _canUseIncConsistency = false;
+
+	protected volatile EnumSet<ReasoningState> _state = EnumSet.noneOf(ReasoningState.class);
+	private volatile boolean _consistent = false;
+	private volatile boolean _explainOnlyInconsistency = false;
+	private volatile ProgressMonitor _builderProgressMonitor;
+	private volatile SizeEstimate _estimate;
+	private volatile ExpressivityChecker _expChecker;
+
 	/**
 	 * Rules added to this KB. The key is the asserted rule,
 	 */
 	private final Map<Rule, Rule> _rules = new HashMap<>(); // All operations are atomic (and we must allow null normalized rules).
 
-	// Structure for tracking which assertions are deleted
-	private Set<ATermAppl> _deletedAssertions;
+	/** Structure for tracking which assertions are deleted */
+	private final Set<ATermAppl> _deletedAssertions = SetUtils.create();
 
-	// Index used for abox deletions
-	private DependencyIndex _dependencyIndex;
+	/** set of syntactic assertions */
+	private final Set<ATermAppl> _syntacticAssertions = SetUtils.create();
 
-	// set of syntactic assertions
-	private Set<ATermAppl> _syntacticAssertions;
+	/** Index used for abox deletions */
+	private volatile DependencyIndex _dependencyIndex;
 
 	/**
 	 * The state of KB w.r.t. reasoning. The state is not valid if KB is changed, i.e. !changes.isEmpty(). These states are added in the _order CONSISTENCY <
@@ -478,89 +480,19 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 	}
 
-	@Override
-	public Timers getTimers()
-	{
-		return _timers;
-	}
-
-	@Override
-	public void setTimers(final Timers timers)
-	{
-		_timers = timers;
-	}
-
-	@Override
-	public ABox getABox()
-	{
-		return _abox;
-	}
-
-	@Override
-	public void setABox(final ABox abox)
-	{
-		_abox = abox;
-	}
-
-	@Override
-	public TBox getTBox()
-	{
-		return _tbox;
-	}
-
-	@Override
-	public void setTBox(final TBox tbox)
-	{
-		_tbox = tbox;
-	}
-
-	@Override
-	public RBox getRBox()
-	{
-		return _rbox;
-	}
-
-	@Override
-	public void setRBox(final RBox rbox)
-	{
-		_rbox = rbox;
-	}
-
-	@Override
-	public TaxonomyBuilder getBuilder()
-	{
-		return _builder;
-	}
-
-	@Override
-	public void setBuilder(final TaxonomyBuilder builder)
-	{
-		_builder = builder;
-	}
-
-	@Override
-	public Logger getLogger()
-	{
-		return _logger;
-	}
-
 	public KnowledgeBaseImpl()
 	{
 		clear();
 
+		_timers = new Timers();
 		_timers.createTimer("preprocessing");
 		_timers.createTimer("consistency");
 		_timers.createTimer("complete");
 		_state = EnumSet.noneOf(ReasoningState.class);
 
 		if (OpenlletOptions.USE_INCREMENTAL_DELETION)
-		{
-			_deletedAssertions = SetUtils.create();
 			_dependencyIndex = new DependencyIndex(this);
-			_syntacticAssertions = SetUtils.create();
-		}
 
-		_aboxAssertions = new MultiValueMap<>();
 		_annotations = new ConcurrentHashMap<>();
 	}
 
@@ -571,12 +503,11 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	 */
 	protected KnowledgeBaseImpl(final KnowledgeBaseImpl kb, final boolean emptyABox)
 	{
+		_timers = kb._timers;
 		_tbox = kb._tbox;
 		_rbox = kb._rbox;
 		_rules.clear();
 		_rules.putAll(kb._rules);
-
-		_aboxAssertions = new MultiValueMap<>();
 
 		_annotations = kb._annotations;
 
@@ -585,17 +516,12 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		_changes = kb._changes.clone();
 
 		if (OpenlletOptions.USE_INCREMENTAL_DELETION)
-		{
-			_deletedAssertions = SetUtils.create();
 			_dependencyIndex = new DependencyIndex(this);
-			_syntacticAssertions = SetUtils.create();
-		}
 
 		if (emptyABox)
 		{
 			_abox = new ABoxImpl(this);
 
-			_individuals = SetUtils.create();
 			_instances.clear();
 
 			// even though we don't copy the _individuals over to the new KB
@@ -612,24 +538,18 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 				{
 					final Set<ATermAppl> assertions = kb._aboxAssertions.get(assertionType);
 					if (!assertions.isEmpty())
-						_aboxAssertions.put(assertionType, new HashSet<>(assertions));
+						_aboxAssertions.put(assertionType, SetUtils.create(assertions));
 				}
 
-			_individuals = SetUtils.create(kb._individuals);
+			_individuals.addAll(kb._individuals);
 			_instances.clear();
 			_instances.putAll(kb._instances);
 
-			// copy deleted assertions
-			if (kb.getDeletedAssertions() != null)
-				_deletedAssertions = SetUtils.create(kb.getDeletedAssertions());
+			_deletedAssertions.addAll(kb.getDeletedAssertions()); // copy deleted assertions
+			_syntacticAssertions.addAll(kb._syntacticAssertions); // copy syntactic assertions
 
 			if (OpenlletOptions.USE_INCREMENTAL_CONSISTENCY && OpenlletOptions.USE_INCREMENTAL_DELETION)
-				// copy the dependency _index
-				_dependencyIndex = new DependencyIndex(this, kb._dependencyIndex);
-
-			// copy syntactic assertions
-			if (kb._syntacticAssertions != null)
-				_syntacticAssertions = SetUtils.create(kb._syntacticAssertions);
+				_dependencyIndex = new DependencyIndex(this, kb._dependencyIndex); // copy the dependency _index
 		}
 
 		if (kb.isConsistencyDone())
@@ -645,8 +565,42 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		}
 		else
 			_state = EnumSet.noneOf(ReasoningState.class);
+	}
 
-		_timers = kb._timers;
+	@Override
+	public Timers getTimers()
+	{
+		return _timers;
+	}
+
+	@Override
+	public ABox getABox()
+	{
+		return _abox;
+	}
+
+	@Override
+	public TBox getTBox()
+	{
+		return _tbox;
+	}
+
+	@Override
+	public RBox getRBox()
+	{
+		return _rbox;
+	}
+
+	@Override
+	public TaxonomyBuilder getBuilder()
+	{
+		return _builder;
+	}
+
+	@Override
+	public Logger getLogger()
+	{
+		return _logger;
 	}
 
 	@Override
@@ -686,8 +640,8 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		_rbox = new RBoxImpl();
 		_rules.clear(); // All operations are atomic (and we must allow null normalized rules).
 		_expChecker = new ExpressivityChecker(this);
-		_individuals = SetUtils.create();
-		_aboxAssertions = new MultiValueMap<>();
+		_individuals.clear();
+		_aboxAssertions.clear();
 		_instances.clear();
 		_builder = null;
 
@@ -704,9 +658,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		if (OpenlletOptions.USE_INCREMENTAL_DELETION)
 		{
-			_deletedAssertions = SetUtils.create();
+			_deletedAssertions.clear();
+			_syntacticAssertions.clear();
 			_dependencyIndex = new DependencyIndex(this);
-			_syntacticAssertions = SetUtils.create();
 		}
 
 		final ABoxImpl newABox = new ABoxImpl(this);

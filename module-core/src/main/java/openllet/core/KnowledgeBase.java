@@ -55,8 +55,6 @@ public interface KnowledgeBase extends Logging
 
 	public Timers getTimers();
 
-	public void setTimers(Timers timers);
-
 	public SizeEstimate getSizeEstimate();
 
 	/**
@@ -68,21 +66,13 @@ public interface KnowledgeBase extends Logging
 
 	public ABox getABox();
 
-	public void setABox(final ABox abox);
-
 	public void clearABox();
 
 	public TBox getTBox();
 
-	public void setTBox(final TBox tbox);
-
 	public RBox getRBox();
 
-	public void setRBox(final RBox rbox);
-
 	public TaxonomyBuilder getBuilder();
-
-	public void setBuilder(final TaxonomyBuilder builder);
 
 	public Expressivity getExpressivity();
 

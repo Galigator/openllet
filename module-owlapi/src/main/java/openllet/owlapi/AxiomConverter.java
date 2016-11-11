@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
+import openllet.atom.OpenError;
 import openllet.core.KnowledgeBase;
 import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.utils.ATermUtils;
@@ -80,9 +81,9 @@ public class AxiomConverter implements FacetFactoryOWL
 	public AxiomConverter(final KnowledgeBase kb, final OWLDataFactory factory)
 	{
 		if (kb == null)
-			throw new NullPointerException("KnowledgeBase is null");
+			throw new OpenError("KnowledgeBase is null");
 		if (factory == null)
-			throw new NullPointerException("OWLDataFactory is null");
+			throw new OpenError("OWLDataFactory is null");
 
 		_kb = kb;
 		_factory = factory;
