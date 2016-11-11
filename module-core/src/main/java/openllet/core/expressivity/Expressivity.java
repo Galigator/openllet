@@ -146,7 +146,7 @@ public class Expressivity
 			if (hasTransitivity)
 				dl += "R+";
 
-			if (dl.equals("ALCR+"))
+			if ("ALCR+".equals(dl))
 				dl = "S";
 
 			if (hasComplexSubRoles)

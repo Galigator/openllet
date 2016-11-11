@@ -36,7 +36,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
@@ -176,8 +175,7 @@ public class TBoxImpl implements TBox
 	 */
 	protected boolean addAxiomExplanation(final ATermAppl axiom, final Set<ATermAppl> explain)
 	{
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Add Axiom: " + ATermUtils.toString(axiom) + " Explanation: " + explain);
+		_logger.fine(() -> "Add Axiom: " + ATermUtils.toString(axiom) + " Explanation: " + explain);
 
 		boolean added = false;
 		if (!OpenlletOptions.USE_TRACING)
@@ -295,8 +293,7 @@ public class TBoxImpl implements TBox
 
 	private void absorbSubClass(final ATermAppl sub, final ATermAppl sup, final Set<ATermAppl> explanation)
 	{
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Absorb: subClassOf(" + ATermUtils.toString(sub) + ", " + ATermUtils.toString(sup) + ")");
+		_logger.fine(() -> "Absorb: subClassOf(" + ATermUtils.toString(sub) + ", " + ATermUtils.toString(sup) + ")");
 
 		final Set<ATermAppl> terms = CollectionUtils.makeSet();
 		terms.add(nnf(sub));
@@ -421,8 +418,7 @@ public class TBoxImpl implements TBox
 		{
 			if (OpenlletOptions.USE_PSEUDO_NOMINALS)
 			{
-				if (_logger.isLoggable(Level.WARNING))
-					_logger.warning("Ignoring axiom involving nominals: " + explain);
+				_logger.warning(() -> "Ignoring axiom involving nominals: " + explain);
 				return;
 			}
 
@@ -434,8 +430,7 @@ public class TBoxImpl implements TBox
 				final ATermAppl nominal = list.next();
 				final ATermAppl ind = (ATermAppl) nominal.getArgument(0);
 
-				if (_logger.isLoggable(Level.FINE))
-					_logger.fine("Absorb nominals: " + ATermUtils.toString(c) + " " + ind);
+				_logger.fine(() -> "Absorb nominals: " + ATermUtils.toString(c) + " " + ind);
 
 				_kb.addIndividual(ind);
 				_kb.addType(ind, c, ds);
@@ -469,8 +464,7 @@ public class TBoxImpl implements TBox
 					final ATermAppl invP = _kb.getProperty(p).getInverse().getName();
 					final ATermAppl allInvPC = ATermUtils.makeAllValues(invP, c);
 
-					if (_logger.isLoggable(Level.FINER))
-						_logger.finer("Absorb into " + ATermUtils.toString(ind) + " with inverse of " + ATermUtils.toString(p) + " for " + ATermUtils.toString(c));
+					_logger.finer(() -> "Absorb into " + ATermUtils.toString(ind) + " with inverse of " + ATermUtils.toString(p) + " for " + ATermUtils.toString(c));
 
 					_absorbedAxioms.addAll(explanation);
 
@@ -523,8 +517,7 @@ public class TBoxImpl implements TBox
 			final Rule rule = new Rule(headAtoms, bodyAtoms);
 			_kb.addRule(rule);
 
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("Add rule: " + rule);
+			_logger.fine(() -> "Add rule: " + rule);
 
 			return true;
 		}
@@ -800,10 +793,7 @@ public class TBoxImpl implements TBox
 				return true;
 
 			final ATermAppl second = i.next();
-			if (absorbIntoTerm(second, terms, explanation))
-				return true;
-
-			return false;
+			return absorbIntoTerm(second, terms, explanation);
 		}
 	}
 
@@ -839,8 +829,7 @@ public class TBoxImpl implements TBox
 				final ATermAppl disjunction = disjunction(terms);
 				_kb.addDomain(p, disjunction, explanation);
 
-				if (_logger.isLoggable(Level.FINE))
-					_logger.fine("Add dom: " + ATermUtils.toString(p) + " " + ATermUtils.toString(disjunction));
+				_logger.fine(() -> "Add dom: " + ATermUtils.toString(p) + " " + ATermUtils.toString(disjunction));
 
 				_absorbedAxioms.addAll(explanation);
 				return true;
@@ -880,15 +869,13 @@ public class TBoxImpl implements TBox
 
 		if (!OpenlletOptions.USE_TRACING)
 		{
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("Cannot remove axioms when PelletOptions.USE_TRACING is false");
+			_logger.fine("Cannot remove axioms when PelletOptions.USE_TRACING is false");
 			return false;
 		}
 
 		if (_absorbedAxioms.contains(dependantAxiom))
 		{
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("Cannot remove axioms that have been absorbed outside TBox");
+			_logger.fine("Cannot remove axioms that have been absorbed outside TBox");
 			return false;
 		}
 
@@ -922,13 +909,11 @@ public class TBoxImpl implements TBox
 
 		if (!OpenlletOptions.USE_TRACING)
 		{
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("Cannot remove axioms when PelletOptions.USE_TRACING is false");
+			_logger.fine("Cannot remove axioms when PelletOptions.USE_TRACING is false");
 			return false;
 		}
 
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Removing " + explanationAxiom);
+		_logger.fine(() -> "Removing " + explanationAxiom);
 
 		// this axiom is being removed so it cannot support any other axiom
 		MultiMapUtils.remove(_reverseExplain, explanationAxiom, dependantAxiom);

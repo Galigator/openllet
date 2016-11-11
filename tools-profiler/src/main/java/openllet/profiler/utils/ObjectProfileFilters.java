@@ -111,10 +111,7 @@ public abstract class ObjectProfileFilters
 		@Override
 		public boolean accept(final IObjectProfileNode node)
 		{
-			if (node.size() >= _threshold * node.root().size())
-				return true;
-			else
-				return false;
+			return (node.size() >= _threshold * node.root().size());
 		}
 
 		SizeFractionFilter(final double threshold)
@@ -133,12 +130,9 @@ public abstract class ObjectProfileFilters
 		{
 			final IObjectProfileNode parent = node.parent();
 			if (parent == null)
-				return true; // always accept root _node
+				return true; // always accept root node
 			else
-				if (node.size() >= _threshold * parent.size())
-					return true;
-				else
-					return false;
+				return (node.size() >= _threshold * parent.size());
 		}
 
 		ParentSizeFractionFilter(final double threshold)

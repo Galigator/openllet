@@ -44,7 +44,7 @@ public class BooleanOperators
 
 			if (args[0] == null)
 			{
-				if ((args[1] != null) && (args[1].getValue() instanceof Boolean))
+				if (args[1] != null && args[1].getValue() instanceof Boolean)
 				{
 					args[0] = abox.addLiteral(((Boolean) args[1].getValue()).booleanValue() ? FALSE_TERM : TRUE_TERM);
 					return true;
@@ -53,14 +53,14 @@ public class BooleanOperators
 			else
 				if (args[1] == null)
 				{
-					if ((args[0].getValue() instanceof Boolean))
+					if (args[0].getValue() instanceof Boolean)
 					{
 						args[1] = abox.addLiteral(((Boolean) args[0].getValue()).booleanValue() ? FALSE_TERM : TRUE_TERM);
 						return true;
 					}
 				}
 				else
-					if ((args[0].getValue() instanceof Boolean) && (args[1].getValue() instanceof Boolean))
+					if (args[0].getValue() instanceof Boolean && args[1].getValue() instanceof Boolean)
 						return !args[0].equals(args[1]);
 
 			return false;
@@ -72,10 +72,7 @@ public class BooleanOperators
 			if (boundPositions.length != 2)
 				return false;
 
-			if (Arrays.equals(boundPositions, new boolean[] { false, false }))
-				return false;
-
-			return true;
+			return !Arrays.equals(boundPositions, new boolean[] { false, false });
 		}
 	}
 

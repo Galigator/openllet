@@ -30,7 +30,7 @@ public class RestrictedDurationDatatype implements RestrictedDatatype<Duration>
 
 	public RestrictedDurationDatatype(final Datatype<Duration> dt)
 	{
-		this._dt = dt;
+		_dt = dt;
 	}
 
 	@Override
@@ -43,9 +43,7 @@ public class RestrictedDurationDatatype implements RestrictedDatatype<Duration>
 	@Override
 	public boolean contains(final Object value)
 	{
-		if (value instanceof Duration)
-			return true;
-		return false;
+		return value instanceof Duration;
 	}
 
 	@Override

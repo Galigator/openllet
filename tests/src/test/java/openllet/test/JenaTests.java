@@ -2376,7 +2376,7 @@ public class JenaTests
 				for (int i = k; i < k + 3; i++)
 				{
 					final Resource c1 = model.getResource(ns + prefix + i);
-					if (prefix.equals("op"))
+					if ("op".equals(prefix))
 					{
 						addStatements(inferences, c1, OWL2.propertyDisjointWith, OWL2.bottomObjectProperty);
 						addStatements(inferences, OWL2.bottomObjectProperty, OWL2.propertyDisjointWith, c1);

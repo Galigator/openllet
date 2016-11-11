@@ -126,7 +126,7 @@ public class GeneralFunctionBuiltIn implements BuiltIn
 		@Override
 		public boolean selectNextBinding()
 		{
-			if (_partial != null && _used == false)
+			if (_partial != null && !_used)
 			{
 				_used = true;
 				return true;

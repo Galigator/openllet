@@ -430,7 +430,7 @@ public abstract class CompletionStrategy
 			}
 		}
 
-		// update dependency _index for this _node
+		// update dependency index for this node
 		if (OpenlletOptions.USE_INCREMENTAL_DELETION)
 			_abox.getKB().getDependencyIndex().addTypeDependency(node.getName(), c, ds);
 
@@ -552,7 +552,7 @@ public abstract class CompletionStrategy
 					addBranch(newBranch);
 
 					// try a merge that does not trivially fail
-					if (newBranch.tryNext() == false)
+					if (!newBranch.tryNext())
 						return edge;
 
 					if (_abox.isClosed())

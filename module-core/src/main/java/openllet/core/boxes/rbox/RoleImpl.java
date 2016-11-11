@@ -354,10 +354,7 @@ public class RoleImpl implements Role
 			_domains = CollectionUtils.makeMap();
 
 		final DependencySet existing = _domains.put(a, ds);
-		if (existing != null && existing.getExplain().equals(ds.getExplain()))
-			return false;
-
-		return true;
+		return existing == null || !existing.getExplain().equals(ds.getExplain());
 	}
 
 	@Override

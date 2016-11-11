@@ -960,10 +960,7 @@ public class Individual extends Node implements CachedNode
 			return true;
 
 		final Role invR = r.getInverse();
-		if (invR != null && _inEdges.hasEdge(invR))
-			return true;
-
-		return false;
+		return invR != null && _inEdges.hasEdge(invR);
 	}
 
 	public boolean hasRSuccessor(final Role r)

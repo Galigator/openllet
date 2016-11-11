@@ -832,7 +832,7 @@ public class ATermUtils
 						final ATermAppl datatypeURI = (ATermAppl) term.getArgument(2);
 
 						sb.append('"').append(value).append('"');
-						if (!lang.equals(""))
+						if (!"".equals(lang))
 							sb.append('@').append(lang);
 						else
 							if (!datatypeURI.equals(NO_DATATYPE) && !datatypeURI.equals(PLAIN_LITERAL_DATATYPE))
@@ -1003,9 +1003,12 @@ public class ATermUtils
 
 	public static final boolean isBuiltinProperty(final ATermAppl name)
 	{
-		if (TOP_OBJECT_PROPERTY.equals(name) || BOTTOM_OBJECT_PROPERTY.equals(name) || makeInv(TOP_OBJECT_PROPERTY).equals(name) || makeInv(BOTTOM_OBJECT_PROPERTY).equals(name) || TOP_DATA_PROPERTY.equals(name) || BOTTOM_DATA_PROPERTY.equals(name))
-			return true;
-		return false;
+		return TOP_OBJECT_PROPERTY.equals(name)//
+				|| BOTTOM_OBJECT_PROPERTY.equals(name)//
+				|| makeInv(TOP_OBJECT_PROPERTY).equals(name)//
+				|| makeInv(BOTTOM_OBJECT_PROPERTY).equals(name)//
+				|| TOP_DATA_PROPERTY.equals(name)//
+				|| BOTTOM_DATA_PROPERTY.equals(name);
 	}
 
 	public static Set<ATermAppl> listToSet(final ATermList list)

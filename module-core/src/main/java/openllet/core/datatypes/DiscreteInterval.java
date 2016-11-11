@@ -143,12 +143,7 @@ public abstract class DiscreteInterval<T extends Number, U extends DiscreteInter
 			if (uu < 0)
 			{
 				if (compare(this.getUpper(), GREATEST, other.getLower(), LEAST) < 0)
-				{
-					if (equal(increment(this.getUpper()), other.getLower()))
-						return true;
-					else
-						return false;
-				}
+					return equal(increment(this.getUpper()), other.getLower());
 				else
 					return true;
 			}
@@ -159,12 +154,7 @@ public abstract class DiscreteInterval<T extends Number, U extends DiscreteInter
 			if (uu > 0)
 			{
 				if (compare(this.getLower(), LEAST, other.getUpper(), GREATEST) > 0)
-				{
-					if (equal(increment(other.getUpper()), this.getLower()))
-						return true;
-					else
-						return false;
-				}
+					return equal(increment(other.getUpper()), this.getLower());
 				else
 					return true;
 			}
@@ -188,10 +178,7 @@ public abstract class DiscreteInterval<T extends Number, U extends DiscreteInter
 			return true;
 
 		final int ucmp = compare(getUpper(), GREATEST, n, NA);
-		if (ucmp < 0)
-			return false;
-
-		return true;
+		return ucmp >= 0;
 	}
 
 	protected abstract U create(T lower, T upper);

@@ -760,11 +760,11 @@ public class QueryEngine
 			case NegativePropertyValue:
 				return kb.isType(arguments.get(0), not(hasValue(arguments.get(1), arguments.get(2))));
 			case Union:
-				LOOP: for (final List<QueryAtom> atoms : ((UnionQueryAtom) atom).getUnion())
+				for (final List<QueryAtom> atoms : ((UnionQueryAtom) atom).getUnion())
 				{
 					for (final QueryAtom unionAtom : atoms)
 						if (!checkGround(unionAtom, kb))
-							continue LOOP;
+							break; // Go to next sequence of atoms
 					return true;
 				}
 				return false;

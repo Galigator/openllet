@@ -88,10 +88,10 @@ public class XSDBoolean extends AbstractBaseDatatype<Boolean>
 	public Boolean getValue(final ATermAppl literal) throws InvalidLiteralException
 	{
 		final String lexicalForm = getLexicalForm(literal).trim();
-		if (lexicalForm.equals("true") || lexicalForm.equals("1"))
+		if ("true".equals(lexicalForm) || "1".equals(lexicalForm))
 			return Boolean.TRUE;
 		else
-			if (lexicalForm.equals("false") || lexicalForm.equals("0"))
+			if ("false".equals(lexicalForm) || "0".equals(lexicalForm))
 				return Boolean.FALSE;
 			else
 				throw new InvalidLiteralException(getName(), lexicalForm);

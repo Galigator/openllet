@@ -147,10 +147,10 @@ public class ATermAbstractSyntaxRenderer extends ATermBaseRenderer
 
 		_out.print("\"" + lexicalValue + "\"");
 
-		if (!lang.equals(""))
+		if (!"".equals(lang))
 			_out.print("@" + lang);
 		else
-			if (!datatypeURI.equals(""))
+			if (!"".equals(datatypeURI))
 			{
 				_out.print("^^");
 				_out.print(datatypeURI);
@@ -208,7 +208,7 @@ public class ATermAbstractSyntaxRenderer extends ATermBaseRenderer
 	 * @see org.mindswap.pellet.utils.ATermVisitor#visitList(openllet.aterm.ATermAppl)
 	 */
 	@Override
-	public void visitList(ATermList list)
+	public void visitList(final ATermList list)
 	{
 		int size = list.getLength();
 		for (final ATerm term : list)

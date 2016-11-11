@@ -124,10 +124,7 @@ public class FloatingPointInterval<T extends Number & Comparable<T>> extends Dis
 		final FloatingPointInterval<?> other = (FloatingPointInterval<?>) obj;
 		if (!getLower().equals(other.getLower()))
 			return false;
-		if (!getUpper().equals(other.getUpper()))
-			return false;
-
-		return true;
+		return getUpper().equals(other.getUpper());
 	}
 
 	@Override

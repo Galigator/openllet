@@ -95,9 +95,7 @@ public class BAFReader
 
 	public static boolean isBinaryATerm(final BufferedInputStream in) throws IOException
 	{
-		if (isBinaryATerm(new BitStream(in)))
-			return true;
-		return false;
+		return isBinaryATerm(new BitStream(in));
 	}
 
 	private static boolean isBinaryATerm(final BitStream in) throws IOException

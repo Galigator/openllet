@@ -104,7 +104,7 @@ public class FloatingPointInterval<T extends Number & Comparable<T>>
 
 	/**
 	 * Create an interval.
-	 * 
+	 *
 	 * @param type
 	 * @param lower Interval _lower bound
 	 * @param upper Interval _upper bound
@@ -145,12 +145,7 @@ public class FloatingPointInterval<T extends Number & Comparable<T>>
 			if (uu < 0)
 			{
 				if (this._upper.compareTo(other._lower) < 0)
-				{
-					if (_type.increment(this._upper).equals(other._lower))
-						return true;
-					else
-						return false;
-				}
+					return _type.increment(this._upper).equals(other._lower);
 				else
 					return true;
 			}
@@ -161,12 +156,7 @@ public class FloatingPointInterval<T extends Number & Comparable<T>>
 			if (uu > 0)
 			{
 				if (this._lower.compareTo(other._upper) > 0)
-				{
-					if (_type.increment(other._upper).equals(this._lower))
-						return true;
-					else
-						return false;
-				}
+					return _type.increment(other._upper).equals(this._lower);
 				else
 					return true;
 			}
@@ -186,10 +176,7 @@ public class FloatingPointInterval<T extends Number & Comparable<T>>
 			return true;
 
 		final int ucmp = getUpper().compareTo(n);
-		if (ucmp < 0)
-			return false;
-
-		return true;
+		return ucmp >= 0;
 	}
 
 	private FloatingPointInterval<T> create(final T lower, final T upper)
@@ -209,10 +196,8 @@ public class FloatingPointInterval<T extends Number & Comparable<T>>
 		final FloatingPointInterval<?> other = (FloatingPointInterval<?>) obj;
 		if (!_lower.equals(other._lower))
 			return false;
-		if (!_upper.equals(other._upper))
-			return false;
 
-		return true;
+		return _upper.equals(other._upper);
 	}
 
 	public T getLower()

@@ -97,10 +97,7 @@ public class ComparisonTesters
 				return true;
 			if (!_lt && comparison > 0)
 				return true;
-			if (_inclusive && comparison == 0)
-				return true;
-
-			return false;
+			return _inclusive && comparison == 0;
 		}
 
 		@Override
@@ -159,10 +156,7 @@ public class ComparisonTesters
 					final ATermAppl canon1 = dtr.getCanonicalRepresentation(term1);
 					final ATermAppl baseType = (ATermAppl) canon1.getArgument(ATermUtils.LIT_URI_INDEX);
 					final ATermAppl dr = ATermUtils.makeRestrictedDatatype(baseType, new ATermAppl[] { ATermUtils.makeFacetRestriction(f.getName(), canon1) });
-					if (dtr.isSatisfiable(Collections.singleton(dr), l2val))
-						return true;
-					else
-						return false;
+					return dtr.isSatisfiable(Collections.singleton(dr), l2val);
 				}
 				else
 					return false;

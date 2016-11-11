@@ -178,7 +178,7 @@ public class ATermPlaceholderImpl extends ATermImpl implements ATermPlaceholder
 						throw new OpenError("Unknow ATerm function name : " + name);
 					}
 				}
-			if (name.equals("appl"))
+			if ("appl".equals(name))
 			{
 				final ATermList oldargs = appl.getArguments();
 				final String newname = (String) args.get(0);

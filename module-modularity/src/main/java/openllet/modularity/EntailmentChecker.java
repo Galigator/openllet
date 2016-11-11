@@ -225,10 +225,7 @@ public class EntailmentChecker implements OWLAxiomVisitor
 		if (taxonomy.getFlattenedSupers(first, false).contains(next))
 			return false;
 
-		if (taxonomy.getFlattenedSupers(next, false).contains(first))
-			return false;
-
-		return true;
+		return !(taxonomy.getFlattenedSupers(next, false).contains(first));
 	}
 
 	/**

@@ -623,10 +623,7 @@ public class DatatypeReasonerImpl implements DatatypeReasoner
 
 		if (_coreDatatypes.containsKey(name))
 			return true;
-		if (namedDataRanges.containsKey(name))
-			return true;
-
-		return false;
+		return namedDataRanges.containsKey(name);
 	}
 
 	@Override
@@ -838,7 +835,7 @@ public class DatatypeReasonerImpl implements DatatypeReasoner
 			final DataRange<?> dr = normalized[i];
 
 			final Set<Integer> diffs = ne[i];
-			final int min = (diffs == null) ? 1 : diffs.size() + 1;
+			final int min = diffs == null ? 1 : diffs.size() + 1;
 			if (dr.containsAtLeast(min))
 			{
 				it.remove();
@@ -1098,7 +1095,7 @@ public class DatatypeReasonerImpl implements DatatypeReasoner
 					final Object value = it.next();
 					boolean permit = true;
 					for (final DataRange<?> dr : ranges)
-						if ((dr != enumeration) && !dr.contains(value))
+						if (dr != enumeration && !dr.contains(value))
 						{
 							permit = false;
 							same = false;

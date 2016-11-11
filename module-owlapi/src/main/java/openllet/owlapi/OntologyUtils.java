@@ -351,10 +351,10 @@ public class OntologyUtils
 	{
 		OWLEntity entity = null;
 
-		if (name.equals("owl:Thing"))
+		if ("owl:Thing".equals(name))
 			entity = OWL.Thing;
 		else
-			if (name.equals("owl:Nothing"))
+			if ("owl:Nothing".equals(name))
 				entity = OWL.Nothing;
 			else
 			{

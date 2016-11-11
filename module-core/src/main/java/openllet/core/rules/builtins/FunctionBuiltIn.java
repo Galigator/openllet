@@ -122,7 +122,7 @@ public class FunctionBuiltIn implements BuiltIn
 		@Override
 		public boolean selectNextBinding()
 		{
-			if (_value != null && _used == false)
+			if (_value != null && !_used)
 			{
 				_used = true;
 				return true;

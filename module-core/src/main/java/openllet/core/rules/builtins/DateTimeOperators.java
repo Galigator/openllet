@@ -261,7 +261,7 @@ public class DateTimeOperators
 			{
 				if (arg.length() > 0)
 				{
-					if (i > 2 && seenTime == false)
+					if (i > 2 && !seenTime)
 					{
 						seenTime = true;
 						result.append('T');

@@ -158,10 +158,7 @@ public class QNameProvider
 			return true;
 		}
 		else
-			if (currentUri.equals(uri))
-				return true;
-			else
-				return false;
+			return currentUri.equals(uri);
 	}
 
 	public Set<String> getPrefixSet()

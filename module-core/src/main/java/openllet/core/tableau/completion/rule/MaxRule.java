@@ -44,7 +44,7 @@ public class MaxRule extends AbstractTableauRule
 	}
 
 	/**
-	 * Apply max rule to the _individual.
+	 * Apply max rule to the individual.
 	 */
 	@Override
 	public void apply(final Individual x)
@@ -199,7 +199,7 @@ public class MaxRule extends AbstractTableauRule
 		_strategy.addBranch(newBranch);
 
 		// try a merge that does not trivially fail
-		if (newBranch.tryNext() == false)
+		if (!newBranch.tryNext())
 			return false;
 
 		_logger.fine(() -> "hasMore: " + (n > k + 1));

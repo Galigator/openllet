@@ -172,9 +172,7 @@ public class BindingGeneratorStrategyImpl implements BindingGeneratorStrategy
 
 		}
 
-		if (unsatList.size() == 0)
-			return true;
-		return false;
+		return unsatList.size() == 0;
 	}
 
 	/**

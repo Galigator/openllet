@@ -53,9 +53,7 @@ public class ELExpressivityChecker extends ProfileBasedExpressivityChecker
 			return false;
 		if (!processClasses())
 			return false;
-		if (!processRoles())
-			return false;
-		return true;
+		return processRoles();
 	}
 
 	private boolean processIndividuals()

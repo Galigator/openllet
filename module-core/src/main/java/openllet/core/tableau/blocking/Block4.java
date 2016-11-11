@@ -56,9 +56,6 @@ public class Block4 implements BlockingCondition
 		if (cxt.isRSuccessor(invT) && cxt._blocked.getParent().hasType(c))
 			return true;
 
-		if (cxt._blocker.getRSuccessors(t, c).size() >= m)
-			return true;
-
-		return false;
+		return cxt._blocker.getRSuccessors(t, c).size() >= m;
 	}
 }
