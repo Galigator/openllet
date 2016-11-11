@@ -60,264 +60,6 @@ public class OpenlletOptions
 {
 	public final static Logger _logger = Log.getLogger(OpenlletOptions.class);
 
-	private interface EnumFactory<T>
-	{
-		public T create();
-	}
-
-	public enum MonitorType implements EnumFactory<ProgressMonitor>
-	{
-
-		CONSOLE(ConsoleProgressMonitor.class), SWING(SwingProgressMonitor.class), NONE(SilentProgressMonitor.class);
-
-		private final Class<? extends ProgressMonitor> _c;
-
-		private MonitorType(final Class<? extends ProgressMonitor> c)
-		{
-			_c = c;
-		}
-
-		@Override
-		public ProgressMonitor create()
-		{
-			try
-			{
-				return _c.newInstance();
-			}
-			catch (final InstantiationException e)
-			{
-				throw new InternalReasonerException(e);
-			}
-			catch (final IllegalAccessException e)
-			{
-				throw new InternalReasonerException(e);
-			}
-		}
-	}
-
-	public enum InstanceRetrievalMethod
-	{
-		BINARY, LINEAR, TRACING_BASED
-	}
-
-	/**
-	 * @see #UNDEFINED_DATATYPE_HANDLING
-	 */
-	public enum UndefinedDatatypeHandling
-	{
-		EMPTY, EXCEPTION, INFINITE_STRING
-	}
-
-	public enum OrderedClassification
-	{
-		DISABLED, ENABLED, ENABLED_LEGACY_ORDERING
-	}
-
-	/**
-	 * Sets the Pellet configuration options and returns the old values for the options.
-	 *
-	 * @param newOptions the new values for configuration options
-	 * @return the old properties.
-	 */
-	public static Properties setOptions(final Properties newOptions)
-	{
-		final Properties oldOptions = new Properties();
-
-		ALWAYS_REBUILD_RETE = getBooleanProperty(newOptions, "ALWAYS_REBUILD_RETE", ALWAYS_REBUILD_RETE, oldOptions);
-
-		CACHE_RETRIEVAL = getBooleanProperty(newOptions, "CACHE_RETRIEVAL", CACHE_RETRIEVAL, oldOptions);
-
-		DL_SAFE_RULES = getBooleanProperty(newOptions, "DL_SAFE_RULES", DL_SAFE_RULES, oldOptions);
-
-		FREEZE_BUILTIN_NAMESPACES = getBooleanProperty(newOptions, "FREEZE_BUILTIN_NAMESPACES", FREEZE_BUILTIN_NAMESPACES, oldOptions);
-
-		FULL_SIZE_ESTIMATE = getBooleanProperty(newOptions, "FULL_SIZE_ESTIMATE", FULL_SIZE_ESTIMATE, oldOptions);
-
-		IGNORE_DEPRECATED_TERMS = getBooleanProperty(newOptions, "IGNORE_DEPRECATED_TERMS", IGNORE_DEPRECATED_TERMS, oldOptions);
-
-		IGNORE_INVERSES = getBooleanProperty(newOptions, "IGNORE_INVERSES", IGNORE_INVERSES, oldOptions);
-
-		IGNORE_UNSUPPORTED_AXIOMS = getBooleanProperty(newOptions, "IGNORE_UNSUPPORTED_AXIOMS", IGNORE_UNSUPPORTED_AXIOMS, oldOptions);
-
-		MAINTAIN_COMPLETION_QUEUE = getBooleanProperty(newOptions, "MAINTAIN_COMPLETION_QUEUE", MAINTAIN_COMPLETION_QUEUE, oldOptions);
-
-		MAX_ANONYMOUS_CACHE = getIntProperty(newOptions, "MAX_ANONYMOUS_CACHE", MAX_ANONYMOUS_CACHE, oldOptions);
-
-		OPTIMIZE_DOWN_MONOTONIC = getBooleanProperty(newOptions, "OPTIMIZE_DOWN_MONOTONIC", OPTIMIZE_DOWN_MONOTONIC, oldOptions);
-
-		REALIZE_INDIVIDUAL_AT_A_TIME = getBooleanProperty(newOptions, "REALIZE_INDIVIDUAL_AT_A_TIME", REALIZE_INDIVIDUAL_AT_A_TIME, oldOptions);
-
-		AUTO_REALIZE = getBooleanProperty(newOptions, "AUTO_REALIZE", AUTO_REALIZE, oldOptions);
-
-		RETURN_DEDUCTIONS_GRAPH = getBooleanProperty(newOptions, "RETURN_DEDUCTIONS_GRAPH", RETURN_DEDUCTIONS_GRAPH, oldOptions);
-
-		SAMPLING_RATIO = getDoubleProperty(newOptions, "SAMPLING_RATIO", SAMPLING_RATIO, oldOptions);
-
-		SILENT_UNDEFINED_ENTITY_HANDLING = getBooleanProperty(newOptions, "SILENT_UNDEFINED_ENTITY_HANDLING", SILENT_UNDEFINED_ENTITY_HANDLING, oldOptions);
-
-		SIMPLIFY_QUERY = getBooleanProperty(newOptions, "SIMPLIFY_QUERY", SIMPLIFY_QUERY, oldOptions);
-
-		STATIC_REORDERING_LIMIT = getIntProperty(newOptions, "STATIC_REORDERING_LIMIT", STATIC_REORDERING_LIMIT, oldOptions);
-
-		TRACK_BRANCH_EFFECTS = getBooleanProperty(newOptions, "TRACK_BRANCH_EFFECTS", TRACK_BRANCH_EFFECTS, oldOptions);
-
-		TREAT_ALL_VARS_DISTINGUISHED = getBooleanProperty(newOptions, "TREAT_ALL_VARS_DISTINGUISHED", TREAT_ALL_VARS_DISTINGUISHED, oldOptions);
-
-		USE_ABSORPTION = getBooleanProperty(newOptions, "USE_ABSORPTION", USE_ABSORPTION, oldOptions);
-
-		USE_NOMINAL_ABSORPTION = getBooleanProperty(newOptions, "USE_NOMINAL_ABSORPTION", USE_NOMINAL_ABSORPTION, oldOptions);
-
-		USE_HASVALUE_ABSORPTION = getBooleanProperty(newOptions, "USE_HASVALUE_ABSORPTION", USE_HASVALUE_ABSORPTION, oldOptions);
-
-		USE_ROLE_ABSORPTION = getBooleanProperty(newOptions, "USE_ROLE_ABSORPTION", USE_ROLE_ABSORPTION, oldOptions);
-
-		USE_RULE_ABSORPTION = getBooleanProperty(newOptions, "USE_RULE_ABSORPTION", USE_RULE_ABSORPTION, oldOptions);
-
-		USE_ADVANCED_CACHING = getBooleanProperty(newOptions, "USE_ADVANCED_CACHING", USE_ADVANCED_CACHING, oldOptions);
-
-		USE_ANNOTATION_SUPPORT = getBooleanProperty(newOptions, "USE_ANNOTATION_SUPPORT", USE_ANNOTATION_SUPPORT, oldOptions);
-
-		USE_BACKJUMPING = getBooleanProperty(newOptions, "USE_BACKJUMPING", USE_BACKJUMPING, oldOptions);
-
-		USE_CACHING = getBooleanProperty(newOptions, "USE_CACHING", USE_CACHING, oldOptions);
-
-		USE_CD_CLASSIFICATION = getBooleanProperty(newOptions, "USE_CD_CLASSIFICATION", USE_CD_CLASSIFICATION, oldOptions);
-
-		USE_CLASSIFICATION_MONITOR = getEnumProperty(newOptions, "USE_CLASSIFICATION_MONITOR", USE_CLASSIFICATION_MONITOR, oldOptions);
-
-		USE_COMPLETION_QUEUE = getBooleanProperty(newOptions, "USE_COMPLETION_QUEUE", USE_COMPLETION_QUEUE, oldOptions);
-
-		USE_CONTINUOUS_RULES = getBooleanProperty(newOptions, "USE_CONTINUOUS_RULES", USE_CONTINUOUS_RULES, oldOptions);
-
-		USE_FULL_DATATYPE_REASONING = getBooleanProperty(newOptions, "USE_FULL_DATATYPE_REASONING", USE_FULL_DATATYPE_REASONING, oldOptions);
-
-		USE_INCREMENTAL_CONSISTENCY = getBooleanProperty(newOptions, "USE_INCREMENTAL_CONSISTENCY", USE_INCREMENTAL_CONSISTENCY, oldOptions);
-
-		USE_INCREMENTAL_DELETION = getBooleanProperty(newOptions, "USE_INCREMENTAL_DELETION", USE_INCREMENTAL_DELETION, oldOptions);
-
-		USE_NAIVE_QUERY_ENGINE = getBooleanProperty(newOptions, "USE_NAIVE_QUERY_ENGINE", USE_NAIVE_QUERY_ENGINE, oldOptions);
-
-		USE_PSEUDO_NOMINALS = getBooleanProperty(newOptions, "USE_PSEUDO_NOMINALS", USE_PSEUDO_NOMINALS, oldOptions);
-
-		USE_SEMANTIC_BRANCHING = getBooleanProperty(newOptions, "USE_SEMANTIC_BRANCHING", USE_SEMANTIC_BRANCHING, oldOptions);
-
-		USE_SMART_RESTORE = getBooleanProperty(newOptions, "USE_SMART_RESTORE", USE_SMART_RESTORE, oldOptions);
-
-		USE_TRACING = getBooleanProperty(newOptions, "USE_TRACING", USE_TRACING, oldOptions);
-
-		USE_UNIQUE_NAME_ASSUMPTION = getBooleanProperty(newOptions, "USE_UNIQUE_NAME_ASSUMPTION", USE_UNIQUE_NAME_ASSUMPTION, oldOptions);
-
-		HIDE_TOP_PROPERTY_VALUES = getBooleanProperty(newOptions, "HIDE_TOP_PROPERTY_VALUES", HIDE_TOP_PROPERTY_VALUES, oldOptions);
-
-		ORDERED_CLASSIFICATION = getEnumProperty(newOptions, "ORDERED_CLASSIFICATION", ORDERED_CLASSIFICATION, oldOptions);
-
-		DISABLE_EL_CLASSIFIER = getBooleanProperty(newOptions, "DISABLE_EL_CLASSIFIER", DISABLE_EL_CLASSIFIER, oldOptions);
-
-		PROCESS_JENA_UPDATES_INCREMENTALLY = getBooleanProperty(newOptions, "PROCESS_JENA_UPDATES_INCREMENTALLY", PROCESS_JENA_UPDATES_INCREMENTALLY, oldOptions);
-
-		IGNORE_ANNOTATION_CLASSES = getBooleanProperty(newOptions, "IGNORE_ANNOTATION_CLASSES", IGNORE_ANNOTATION_CLASSES, oldOptions);
-
-		return oldOptions;
-	}
-
-	public static void load(final URL configFile) throws FileNotFoundException, IOException
-	{
-		_logger.fine("Reading Pellet configuration file " + configFile);
-
-		final Properties properties = new Properties();
-		properties.load(configFile.openStream());
-		setOptions(properties);
-	}
-
-	private static boolean getBooleanProperty(final Properties properties, final String property, final boolean defaultValue, final Properties defaultValues)
-	{
-		defaultValues.setProperty(property, String.valueOf(defaultValue));
-		String value = properties.getProperty(property);
-		boolean returnValue = defaultValue;
-
-		if (value != null)
-		{
-			value = value.trim();
-			if (value.equalsIgnoreCase("true"))
-				returnValue = true;
-			else
-				if (value.equalsIgnoreCase("false"))
-					returnValue = false;
-				else
-					_logger.severe("Ignoring invalid value (" + value + ") for the configuration option " + property);
-		}
-
-		properties.setProperty(property, String.valueOf(returnValue));
-
-		return returnValue;
-	}
-
-	private static double getDoubleProperty(final Properties properties, final String property, final double defaultValue, final Properties defaultValues)
-	{
-		defaultValues.setProperty(property, String.valueOf(defaultValue));
-		final String value = properties.getProperty(property);
-		double doubleValue = defaultValue;
-
-		if (value != null)
-			try
-			{
-				doubleValue = Double.parseDouble(value);
-			}
-			catch (final NumberFormatException e)
-			{
-				Log.error(_logger, "Ignoring invalid double value (" + value + ") for the configuration option " + property, e);
-			}
-
-		properties.setProperty(property, String.valueOf(doubleValue));
-
-		return doubleValue;
-	}
-
-	private static int getIntProperty(final Properties properties, final String property, final int defaultValue, final Properties defaultValues)
-	{
-		defaultValues.setProperty(property, String.valueOf(defaultValue));
-		final String value = properties.getProperty(property);
-		int intValue = defaultValue;
-
-		if (value != null)
-			try
-			{
-				intValue = Integer.parseInt(value);
-			}
-			catch (final NumberFormatException e)
-			{
-				Log.error(_logger, "Ignoring invalid int value (" + value + ") for the configuration option " + property, e);
-			}
-
-		properties.setProperty(property, String.valueOf(intValue));
-
-		return intValue;
-	}
-
-	private static <T extends Enum<T>> T getEnumProperty(final Properties properties, final String property, final T defaultValue, final Properties defaultValues)
-	{
-		defaultValues.setProperty(property, String.valueOf(defaultValue));
-		String value = properties.getProperty(property);
-		T returnValue = defaultValue;
-
-		if (value != null)
-		{
-			value = value.trim().toUpperCase();
-			try
-			{
-				returnValue = Enum.valueOf(defaultValue.getDeclaringClass(), value);
-			}
-			catch (final IllegalArgumentException e)
-			{
-				Log.error(_logger, "Ignoring invalid value (" + value + ") for the configuration option " + property, e);
-			}
-		}
-
-		properties.setProperty(property, String.valueOf(returnValue));
-
-		return returnValue;
-	}
-
 	/**
 	 * When this option is set completion will go on even if a clash is detected until the completion graph is saturated. Turning this option has very severe
 	 * performance effect and right now is only used for experimental purposes to generate explanations.
@@ -731,4 +473,263 @@ public class OpenlletOptions
 				Log.error(_logger, "I/O error while reading Openllet configuration file", e);
 			}
 	}
+
+	private interface EnumFactory<T>
+	{
+		public T create();
+	}
+
+	public enum MonitorType implements EnumFactory<ProgressMonitor>
+	{
+
+		CONSOLE(ConsoleProgressMonitor.class), SWING(SwingProgressMonitor.class), NONE(SilentProgressMonitor.class);
+
+		private final Class<? extends ProgressMonitor> _c;
+
+		private MonitorType(final Class<? extends ProgressMonitor> c)
+		{
+			_c = c;
+		}
+
+		@Override
+		public ProgressMonitor create()
+		{
+			try
+			{
+				return _c.newInstance();
+			}
+			catch (final InstantiationException e)
+			{
+				throw new InternalReasonerException(e);
+			}
+			catch (final IllegalAccessException e)
+			{
+				throw new InternalReasonerException(e);
+			}
+		}
+	}
+
+	public enum InstanceRetrievalMethod
+	{
+		BINARY, LINEAR, TRACING_BASED
+	}
+
+	/**
+	 * @see #UNDEFINED_DATATYPE_HANDLING
+	 */
+	public enum UndefinedDatatypeHandling
+	{
+		EMPTY, EXCEPTION, INFINITE_STRING
+	}
+
+	public enum OrderedClassification
+	{
+		DISABLED, ENABLED, ENABLED_LEGACY_ORDERING
+	}
+
+	/**
+	 * Sets the Pellet configuration options and returns the old values for the options.
+	 *
+	 * @param newOptions the new values for configuration options
+	 * @return the old properties.
+	 */
+	public static Properties setOptions(final Properties newOptions)
+	{
+		final Properties oldOptions = new Properties();
+
+		ALWAYS_REBUILD_RETE = getBooleanProperty(newOptions, "ALWAYS_REBUILD_RETE", ALWAYS_REBUILD_RETE, oldOptions);
+
+		CACHE_RETRIEVAL = getBooleanProperty(newOptions, "CACHE_RETRIEVAL", CACHE_RETRIEVAL, oldOptions);
+
+		DL_SAFE_RULES = getBooleanProperty(newOptions, "DL_SAFE_RULES", DL_SAFE_RULES, oldOptions);
+
+		FREEZE_BUILTIN_NAMESPACES = getBooleanProperty(newOptions, "FREEZE_BUILTIN_NAMESPACES", FREEZE_BUILTIN_NAMESPACES, oldOptions);
+
+		FULL_SIZE_ESTIMATE = getBooleanProperty(newOptions, "FULL_SIZE_ESTIMATE", FULL_SIZE_ESTIMATE, oldOptions);
+
+		IGNORE_DEPRECATED_TERMS = getBooleanProperty(newOptions, "IGNORE_DEPRECATED_TERMS", IGNORE_DEPRECATED_TERMS, oldOptions);
+
+		IGNORE_INVERSES = getBooleanProperty(newOptions, "IGNORE_INVERSES", IGNORE_INVERSES, oldOptions);
+
+		IGNORE_UNSUPPORTED_AXIOMS = getBooleanProperty(newOptions, "IGNORE_UNSUPPORTED_AXIOMS", IGNORE_UNSUPPORTED_AXIOMS, oldOptions);
+
+		MAINTAIN_COMPLETION_QUEUE = getBooleanProperty(newOptions, "MAINTAIN_COMPLETION_QUEUE", MAINTAIN_COMPLETION_QUEUE, oldOptions);
+
+		MAX_ANONYMOUS_CACHE = getIntProperty(newOptions, "MAX_ANONYMOUS_CACHE", MAX_ANONYMOUS_CACHE, oldOptions);
+
+		OPTIMIZE_DOWN_MONOTONIC = getBooleanProperty(newOptions, "OPTIMIZE_DOWN_MONOTONIC", OPTIMIZE_DOWN_MONOTONIC, oldOptions);
+
+		REALIZE_INDIVIDUAL_AT_A_TIME = getBooleanProperty(newOptions, "REALIZE_INDIVIDUAL_AT_A_TIME", REALIZE_INDIVIDUAL_AT_A_TIME, oldOptions);
+
+		AUTO_REALIZE = getBooleanProperty(newOptions, "AUTO_REALIZE", AUTO_REALIZE, oldOptions);
+
+		RETURN_DEDUCTIONS_GRAPH = getBooleanProperty(newOptions, "RETURN_DEDUCTIONS_GRAPH", RETURN_DEDUCTIONS_GRAPH, oldOptions);
+
+		SAMPLING_RATIO = getDoubleProperty(newOptions, "SAMPLING_RATIO", SAMPLING_RATIO, oldOptions);
+
+		SILENT_UNDEFINED_ENTITY_HANDLING = getBooleanProperty(newOptions, "SILENT_UNDEFINED_ENTITY_HANDLING", SILENT_UNDEFINED_ENTITY_HANDLING, oldOptions);
+
+		SIMPLIFY_QUERY = getBooleanProperty(newOptions, "SIMPLIFY_QUERY", SIMPLIFY_QUERY, oldOptions);
+
+		STATIC_REORDERING_LIMIT = getIntProperty(newOptions, "STATIC_REORDERING_LIMIT", STATIC_REORDERING_LIMIT, oldOptions);
+
+		TRACK_BRANCH_EFFECTS = getBooleanProperty(newOptions, "TRACK_BRANCH_EFFECTS", TRACK_BRANCH_EFFECTS, oldOptions);
+
+		TREAT_ALL_VARS_DISTINGUISHED = getBooleanProperty(newOptions, "TREAT_ALL_VARS_DISTINGUISHED", TREAT_ALL_VARS_DISTINGUISHED, oldOptions);
+
+		USE_ABSORPTION = getBooleanProperty(newOptions, "USE_ABSORPTION", USE_ABSORPTION, oldOptions);
+
+		USE_NOMINAL_ABSORPTION = getBooleanProperty(newOptions, "USE_NOMINAL_ABSORPTION", USE_NOMINAL_ABSORPTION, oldOptions);
+
+		USE_HASVALUE_ABSORPTION = getBooleanProperty(newOptions, "USE_HASVALUE_ABSORPTION", USE_HASVALUE_ABSORPTION, oldOptions);
+
+		USE_ROLE_ABSORPTION = getBooleanProperty(newOptions, "USE_ROLE_ABSORPTION", USE_ROLE_ABSORPTION, oldOptions);
+
+		USE_RULE_ABSORPTION = getBooleanProperty(newOptions, "USE_RULE_ABSORPTION", USE_RULE_ABSORPTION, oldOptions);
+
+		USE_ADVANCED_CACHING = getBooleanProperty(newOptions, "USE_ADVANCED_CACHING", USE_ADVANCED_CACHING, oldOptions);
+
+		USE_ANNOTATION_SUPPORT = getBooleanProperty(newOptions, "USE_ANNOTATION_SUPPORT", USE_ANNOTATION_SUPPORT, oldOptions);
+
+		USE_BACKJUMPING = getBooleanProperty(newOptions, "USE_BACKJUMPING", USE_BACKJUMPING, oldOptions);
+
+		USE_CACHING = getBooleanProperty(newOptions, "USE_CACHING", USE_CACHING, oldOptions);
+
+		USE_CD_CLASSIFICATION = getBooleanProperty(newOptions, "USE_CD_CLASSIFICATION", USE_CD_CLASSIFICATION, oldOptions);
+
+		USE_CLASSIFICATION_MONITOR = getEnumProperty(newOptions, "USE_CLASSIFICATION_MONITOR", USE_CLASSIFICATION_MONITOR, oldOptions);
+
+		USE_COMPLETION_QUEUE = getBooleanProperty(newOptions, "USE_COMPLETION_QUEUE", USE_COMPLETION_QUEUE, oldOptions);
+
+		USE_CONTINUOUS_RULES = getBooleanProperty(newOptions, "USE_CONTINUOUS_RULES", USE_CONTINUOUS_RULES, oldOptions);
+
+		USE_FULL_DATATYPE_REASONING = getBooleanProperty(newOptions, "USE_FULL_DATATYPE_REASONING", USE_FULL_DATATYPE_REASONING, oldOptions);
+
+		USE_INCREMENTAL_CONSISTENCY = getBooleanProperty(newOptions, "USE_INCREMENTAL_CONSISTENCY", USE_INCREMENTAL_CONSISTENCY, oldOptions);
+
+		USE_INCREMENTAL_DELETION = getBooleanProperty(newOptions, "USE_INCREMENTAL_DELETION", USE_INCREMENTAL_DELETION, oldOptions);
+
+		USE_NAIVE_QUERY_ENGINE = getBooleanProperty(newOptions, "USE_NAIVE_QUERY_ENGINE", USE_NAIVE_QUERY_ENGINE, oldOptions);
+
+		USE_PSEUDO_NOMINALS = getBooleanProperty(newOptions, "USE_PSEUDO_NOMINALS", USE_PSEUDO_NOMINALS, oldOptions);
+
+		USE_SEMANTIC_BRANCHING = getBooleanProperty(newOptions, "USE_SEMANTIC_BRANCHING", USE_SEMANTIC_BRANCHING, oldOptions);
+
+		USE_SMART_RESTORE = getBooleanProperty(newOptions, "USE_SMART_RESTORE", USE_SMART_RESTORE, oldOptions);
+
+		USE_TRACING = getBooleanProperty(newOptions, "USE_TRACING", USE_TRACING, oldOptions);
+
+		USE_UNIQUE_NAME_ASSUMPTION = getBooleanProperty(newOptions, "USE_UNIQUE_NAME_ASSUMPTION", USE_UNIQUE_NAME_ASSUMPTION, oldOptions);
+
+		HIDE_TOP_PROPERTY_VALUES = getBooleanProperty(newOptions, "HIDE_TOP_PROPERTY_VALUES", HIDE_TOP_PROPERTY_VALUES, oldOptions);
+
+		ORDERED_CLASSIFICATION = getEnumProperty(newOptions, "ORDERED_CLASSIFICATION", ORDERED_CLASSIFICATION, oldOptions);
+
+		DISABLE_EL_CLASSIFIER = getBooleanProperty(newOptions, "DISABLE_EL_CLASSIFIER", DISABLE_EL_CLASSIFIER, oldOptions);
+
+		PROCESS_JENA_UPDATES_INCREMENTALLY = getBooleanProperty(newOptions, "PROCESS_JENA_UPDATES_INCREMENTALLY", PROCESS_JENA_UPDATES_INCREMENTALLY, oldOptions);
+
+		IGNORE_ANNOTATION_CLASSES = getBooleanProperty(newOptions, "IGNORE_ANNOTATION_CLASSES", IGNORE_ANNOTATION_CLASSES, oldOptions);
+
+		return oldOptions;
+	}
+
+	public static void load(final URL configFile) throws FileNotFoundException, IOException
+	{
+		_logger.fine("Reading Pellet configuration file " + configFile);
+
+		final Properties properties = new Properties();
+		properties.load(configFile.openStream());
+		setOptions(properties);
+	}
+
+	private static boolean getBooleanProperty(final Properties properties, final String property, final boolean defaultValue, final Properties defaultValues)
+	{
+		defaultValues.setProperty(property, String.valueOf(defaultValue));
+		String value = properties.getProperty(property);
+		boolean returnValue = defaultValue;
+
+		if (value != null)
+		{
+			value = value.trim();
+			if (value.equalsIgnoreCase("true"))
+				returnValue = true;
+			else
+				if (value.equalsIgnoreCase("false"))
+					returnValue = false;
+				else
+					_logger.severe("Ignoring invalid value (" + value + ") for the configuration option " + property);
+		}
+
+		properties.setProperty(property, String.valueOf(returnValue));
+
+		return returnValue;
+	}
+
+	private static double getDoubleProperty(final Properties properties, final String property, final double defaultValue, final Properties defaultValues)
+	{
+		defaultValues.setProperty(property, String.valueOf(defaultValue));
+		final String value = properties.getProperty(property);
+		double doubleValue = defaultValue;
+
+		if (value != null)
+			try
+			{
+				doubleValue = Double.parseDouble(value);
+			}
+			catch (final NumberFormatException e)
+			{
+				Log.error(_logger, "Ignoring invalid double value (" + value + ") for the configuration option " + property, e);
+			}
+
+		properties.setProperty(property, String.valueOf(doubleValue));
+
+		return doubleValue;
+	}
+
+	private static int getIntProperty(final Properties properties, final String property, final int defaultValue, final Properties defaultValues)
+	{
+		defaultValues.setProperty(property, String.valueOf(defaultValue));
+		final String value = properties.getProperty(property);
+		int intValue = defaultValue;
+
+		if (value != null)
+			try
+			{
+				intValue = Integer.parseInt(value);
+			}
+			catch (final NumberFormatException e)
+			{
+				Log.error(_logger, "Ignoring invalid int value (" + value + ") for the configuration option " + property, e);
+			}
+
+		properties.setProperty(property, String.valueOf(intValue));
+
+		return intValue;
+	}
+
+	private static <T extends Enum<T>> T getEnumProperty(final Properties properties, final String property, final T defaultValue, final Properties defaultValues)
+	{
+		defaultValues.setProperty(property, String.valueOf(defaultValue));
+		String value = properties.getProperty(property);
+		T returnValue = defaultValue;
+
+		if (value != null)
+		{
+			value = value.trim().toUpperCase();
+			try
+			{
+				returnValue = Enum.valueOf(defaultValue.getDeclaringClass(), value);
+			}
+			catch (final IllegalArgumentException e)
+			{
+				Log.error(_logger, "Ignoring invalid value (" + value + ") for the configuration option " + property, e);
+			}
+		}
+
+		properties.setProperty(property, String.valueOf(returnValue));
+
+		return returnValue;
+	}
+
 }
