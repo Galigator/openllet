@@ -2,6 +2,7 @@ package openllet.owlapi;
 
 import java.io.File;
 import java.util.Optional;
+import java.util.function.BiFunction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
@@ -92,7 +93,7 @@ public class OWLManagerGroup implements AutoCloseable
 		return _storageManager;
 	}
 
-	public void loadDirectory(final File directory)
+	public void loadDirectory(final File directory, final OWLOntologyManager manager, final BiFunction<OWLOntologyManager, File, Optional<OWLOntology>> loader)
 	{
 		if (!directory.exists())
 			if (!directory.mkdir())
@@ -107,10 +108,12 @@ public class OWLManagerGroup implements AutoCloseable
 				{
 					_logger.info("loading from " + file);
 					// We just want the ontology to be put into the manager and configuration set to our standard. We don't care of the tools for now.
-					final OWLOntologyManager manager = getStorageManager();
-					final OWLOntology ontology = manager.loadOntologyFromOntologyDocument(file); // The side effect is wanted.
-					OWLHelper.setFormat(manager, ontology);
-					_logger.info(ontology.getOntologyID() + "loaded from " + file);
+					loader.apply(manager, file)// The side effect is wanted.
+							.ifPresent(ontology ->
+							{
+								OWLHelper.setFormat(manager, ontology);
+								_logger.info(ontology.getOntologyID() + "loaded from " + file);
+							});//
 				}
 				catch (final Exception e)
 				{
@@ -118,6 +121,22 @@ public class OWLManagerGroup implements AutoCloseable
 				}
 			else
 				_logger.info(() -> file + " will not be load.");
+	}
+
+	public void loadDirectory(final File directory)
+	{
+		loadDirectory(directory, getStorageManager(), (m, f) ->
+		{
+			try
+			{
+				return Optional.of(m.loadOntologyFromOntologyDocument(f));
+			}
+			catch (final Exception e)
+			{
+				_logger.log(Level.SEVERE, "Can't load ontology of file " + f, e);
+				return Optional.empty();
+			}
+		});
 	}
 
 	/**

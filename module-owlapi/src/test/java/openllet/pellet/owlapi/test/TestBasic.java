@@ -16,6 +16,7 @@ import openllet.shared.tools.Log;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
@@ -45,6 +46,7 @@ public class TestBasic
 	private final OWLClass ClsG = OWL.Class("#ClsG");
 	private final OWLNamedIndividual Ind1 = OWL.Individual("#Ind1");
 	private final OWLObjectProperty propA = OWL.ObjectProperty("#mimiroux");
+	private final OWLDataProperty propB = OWL.DataProperty("#propB");
 	private final SWRLVariable varA = SWRL.variable(IRI.create("#a"));
 
 	@Test
@@ -144,11 +146,15 @@ public class TestBasic
 		try (final OWLManagerGroup group = new OWLManagerGroup())
 		{
 			group.setOntologiesDirectory(new File("target"));
+			group.getStorageManager();
+
 			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create("http://test.org#owlapi.inc.storage"), 1.0);
 			final OWLHelper owl = new OWLGenericTools(group, ontId, false);
+
 			owl.addAxiom(OWL.declaration(ClsA));
 			owl.addAxiom(OWL.declaration(ClsB));
 			owl.addAxiom(OWL.propertyAssertion(Ind1, propA, Ind1));
+			owl.addAxiom(OWL.propertyAssertion(Ind1, propB, OWL.constant(");alpha\"#\\\n \t\n\rbeta<xml></xml>")));
 
 			// This test is good but a little too slow when building the project ten time a day.
 			//			try

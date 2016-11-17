@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -13,6 +14,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -84,6 +86,35 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 		_directory = directory;
 		_owlManagerGroup = owlManagerGroup;
 
+		_owlManagerGroup.loadDirectory(_directory, _owlManagerGroup.getStorageManager(), (m, f) ->
+		{
+			final List<OWLAxiom> axioms = new ArrayList<>();
+			final OWLOntology ontology;
+
+			try (final BufferedReader in = new BufferedReader(new FileReader(f)))
+			{
+				ontology = m.createOntology(parseOntologyId(in.readLine()));
+				final OWLFunctionalSyntaxParser parser = new OWLFunctionalSyntaxParser(in);
+				parser.setUp(ontology, new OWLOntologyLoaderConfiguration());
+				try
+				{
+					while (true)
+						axioms.add(parser.Axiom());
+				}
+				catch (@SuppressWarnings("unused") final Exception e)
+				{
+					// The exception is the way we detected the end.
+				}
+			}
+			catch (final Exception exception)
+			{
+				_logger.log(Level.SEVERE, "File " + f + " lead to corrupted ontology.", exception);
+				return Optional.empty();
+			}
+			ontology.addAxioms(axioms);
+			return Optional.of(ontology);
+		});
+
 		// Rebuild the ontology that still doesn't exists.
 		rebuild();
 
@@ -120,6 +151,7 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 			}
 
 			_owlManagerGroup.getStorageManager().ontologies()//
+					.parallel()// Yes we can !
 					.filter(ontology -> ontology.getOntologyID().getOntologyIRI().isPresent())//
 					.filter(ontology -> changed.contains(ontology.getOntologyID())) //
 					.filter(ontology -> !ontology.isAnonymous())//
@@ -128,8 +160,11 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 					{
 						try (final OutputStream stream = new FileOutputStream(ontology2filename(ontology)))
 						{
-							_owlManagerGroup.getStorageManager().saveOntology(ontology, stream); // All exceptions must be fatal to avoid loosing 'log' file. Re-apply a log isn't an issue.
-						}
+							final PrintStream out = new PrintStream(stream);
+							writeOntologyId(stream, ontology.getOntologyID());
+							stream.write(_lineSeparator);
+							ontology.axioms().map(OWLAxiom::toString).forEach(out::println);
+						} // All exceptions must be fatal to avoid loosing 'log' file. Re-apply a log isn't an issue.
 						catch (final Exception e)
 						{ // Do not make other ontologies crash at save time.
 							_logger.log(Level.SEVERE, "Crash when saving " + ontology.getOntologyID(), e);
@@ -145,10 +180,10 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 
 	private static byte[] bytesOfOntologyId(final OWLOntologyID ontologyID)
 	{
-		if (ontologyID.getVersionIRI() != null)
-			return (ontologyID.getOntologyIRI() + " " + ontologyID.getVersionIRI()).getBytes();
+		if (ontologyID.getVersionIRI().isPresent())
+			return (ontologyID.getOntologyIRI().get() + " " + ontologyID.getVersionIRI().get()).getBytes();
 		else
-			return ontologyID.getOntologyIRI().toString().getBytes();
+			return ontologyID.getOntologyIRI().get().toString().getBytes();
 	}
 
 	private static void writeOntologyId(final OutputStream stream, final OWLOntologyID ontologyID) throws IOException
@@ -258,7 +293,7 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 					try
 					{
 						_logger.info("Creation of " + ontId.getOntologyIRI());
-						ontology = new OWLTools(ontId, false).getOntology();
+						ontology = new OWLGenericTools(_owlManagerGroup, ontId, false).getOntology();
 					}
 					catch (final OWLOntologyCreationException exception)
 					{
