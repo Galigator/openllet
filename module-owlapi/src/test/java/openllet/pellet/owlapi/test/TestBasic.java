@@ -4,7 +4,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 import openllet.owlapi.OWL;
@@ -15,6 +17,7 @@ import openllet.owlapi.SWRL;
 import openllet.shared.tools.Log;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
@@ -143,6 +146,8 @@ public class TestBasic
 	@Test
 	public void incrementalStorage() throws OWLOntologyCreationException
 	{
+		final File file = new File("target/test.org#owlapi.inc.storage-test.org#owlapi.inc.storage_1.0.owl");
+
 		try (final OWLManagerGroup group = new OWLManagerGroup())
 		{
 			group.setOntologiesDirectory(new File("target"));
@@ -169,10 +174,44 @@ public class TestBasic
 			//			}
 			group.flushIncrementalStorage();
 
-			final File file = new File("target/test.org#owlapi.inc.storage-test.org#owlapi.inc.storage_1.0.owl");
 			assertTrue(file.exists());
 			file.delete();
 			assertTrue(owl.getObject(Ind1, propA).get().getIRI().equals(Ind1.getIRI()));
+		}
+
+		final Set<OWLAxiom> expected = new HashSet<>();
+		expected.add(OWL.declaration(ClsA));
+		expected.add(OWL.declaration(ClsB));
+		expected.add(OWL.propertyAssertion(Ind1, propA, Ind1));
+		expected.add(OWL.propertyAssertion(Ind1, propB, OWL.constant(");alpha\"#\\\n \t\n\rbeta<xml></xml>")));
+
+		try (final OWLManagerGroup group = new OWLManagerGroup())
+		{
+			group.setOntologiesDirectory(new File("target"));
+			group.getStorageManager();
+
+			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create("http://test.org#owlapi.inc.storage"), 1.0);
+			final OWLHelper owl = new OWLGenericTools(group, ontId, false);
+
+			owl.addAxioms(expected.stream());
+		} // Autoclose force a flush.
+
+		try (final OWLManagerGroup group = new OWLManagerGroup()) // Force the manager to read the file.
+		{
+			assertTrue(file.exists());
+			group.setOntologiesDirectory(new File("target"));
+			group.getStorageManager();
+
+			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create("http://test.org#owlapi.inc.storage"), 1.0);
+			final OWLHelper owl = new OWLGenericTools(group, ontId, false);
+
+			final Set<OWLAxiom> set = owl.getOntology().axioms().collect(Collectors.toSet());
+			assertTrue(expected.stream().allMatch(set::contains));
+		} // Autoclose force a flush.
+
+		{ // Delete the file.
+			assertTrue(file.exists());
+			file.delete();
 		}
 	}
 
