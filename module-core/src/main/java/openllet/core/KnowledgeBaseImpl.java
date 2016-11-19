@@ -695,6 +695,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 	public void loadKRSS(final Reader reader) throws IOException
 	{
+		if (null == reader)
+			return;
+
 		final KRSSLoader loader = new KRSSLoader(this);
 		loader.parse(reader);
 	}
@@ -702,7 +705,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public void addClass(final ATermAppl c)
 	{
-		if (c.equals(ATermUtils.TOP) || ATermUtils.isComplexClass(c))
+		if (null == c || c.equals(ATermUtils.TOP) || ATermUtils.isComplexClass(c))
 			return;
 
 		final boolean added = _tbox.addClass(c);
@@ -718,7 +721,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public void addSubClass(final ATermAppl sub, final ATermAppl sup)
 	{
-		if (sub.equals(sup))
+		if (null == sub || null == sup || sub.equals(sup))
 			return;
 
 		_changes.add(ChangeType.TBOX_ADD);
@@ -731,7 +734,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public void addEquivalentClass(final ATermAppl c1, final ATermAppl c2)
 	{
-		if (c1.equals(c2))
+		if (null == c1 || null == c2 || c1.equals(c2))
 			return;
 
 		_changes.add(ChangeType.TBOX_ADD);
@@ -744,6 +747,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public void addKey(final ATermAppl c, final Set<ATermAppl> properties)
 	{
+		if (null == c || null == properties)
+			return;
+
 		int varId = 0;
 		final List<RuleAtom> head = new ArrayList<>();
 		final List<RuleAtom> body = new ArrayList<>();
@@ -784,6 +790,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public void addDisjointClasses(final ATermList classes)
 	{
+		if (null == classes)
+			return;
+
 		_changes.add(ChangeType.TBOX_ADD);
 
 		_tbox.addAxiom(ATermUtils.makeDisjoints(classes));
@@ -794,12 +803,18 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public void addDisjointClasses(final List<ATermAppl> classes)
 	{
+		if (null == classes)
+			return;
+
 		addDisjointClasses(ATermUtils.toSet(classes));
 	}
 
 	@Override
 	public void addDisjointClass(final ATermAppl c1, final ATermAppl c2)
 	{
+		if (null == c1 || null == c2)
+			return;
+
 		_changes.add(ChangeType.TBOX_ADD);
 
 		_tbox.addAxiom(ATermUtils.makeDisjoint(c1, c2));
@@ -810,6 +825,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public void addComplementClass(final ATermAppl c1, final ATermAppl c2)
 	{
+		if (null == c1 || null == c2)
+			return;
+
 		_changes.add(ChangeType.TBOX_ADD);
 		final ATermAppl notC2 = ATermUtils.makeNot(c2);
 
@@ -838,6 +856,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public Individual addIndividual(final ATermAppl i)
 	{
+		if (null == i)
+			return null;
+
 		final Node node = _abox.getNode(i);
 		if (node != null)
 		{
@@ -903,6 +924,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public void addType(final ATermAppl i, final ATermAppl c)
 	{
+		if (null == i || null == c)
+			return;
+
 		if (AnnotationClasses.contains(c))
 			return;
 
@@ -926,6 +950,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public void addType(final ATermAppl i, final ATermAppl c, final DependencySet ds)
 	{
+		if (null == i || null == c || null == ds)
+			return;
+
 		// set addition flag
 		_changes.add(ChangeType.ABOX_ADD);
 
@@ -956,6 +983,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public void addSame(final ATermAppl i1, final ATermAppl i2)
 	{
+		if (null == i1 || null == i2)
+			return;
+
 		// set addition flag
 		_changes.add(ChangeType.ABOX_ADD);
 
@@ -979,6 +1009,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public void addAllDifferent(final ATermList list)
 	{
+		if (null == list)
+			return;
+
 		// set addition flag
 		_changes.add(ChangeType.ABOX_ADD);
 
@@ -1020,6 +1053,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public void addDifferent(final ATermAppl i1, final ATermAppl i2)
 	{
+		if (null == i1 || null == i2)
+			return;
+
 		// set addition flag
 		_changes.add(ChangeType.ABOX_ADD);
 
@@ -1049,7 +1085,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	 * @param p
 	 * @param s
 	 * @param o
-	 * @deprecated Use addPropertyValue instead
+	 * @deprecated 2.5.1 Use addPropertyValue instead
 	 */
 	@Deprecated
 	public void addObjectPropertyValue(final ATermAppl p, final ATermAppl s, final ATermAppl o)
@@ -1060,6 +1096,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean addPropertyValue(final ATermAppl p, final ATermAppl s, final ATermAppl o)
 	{
+		if (null == p || null == s || null == o)
+			return false;
+
 		final Individual subj = _abox.getIndividual(s);
 		final Role role = getRole(p);
 		Node obj = null;
@@ -1186,6 +1225,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean addNegatedPropertyValue(final ATermAppl p, final ATermAppl s, final ATermAppl o)
 	{
+		if (null == p || null == s || null == o)
+			return false;
+
 		_changes.add(ChangeType.ABOX_ADD);
 
 		final Individual subj = _abox.getIndividual(s);
@@ -1251,6 +1293,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean addObjectProperty(final ATerm p)
 	{
+		if (null == p)
+			return false;
+
 		final boolean exists = getPropertyType(p) == PropertyType.OBJECT;
 
 		final Role role = _rbox.addObjectRole((ATermAppl) p);
@@ -1274,6 +1319,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean addDatatypeProperty(final ATerm p)
 	{
+		if (null == p)
+			return false;
+
 		final boolean exists = getPropertyType(p) == PropertyType.DATATYPE;
 
 		final Role role = _rbox.addDatatypeRole((ATermAppl) p);
@@ -1296,6 +1344,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean addAnnotationProperty(final ATerm p)
 	{
+		if (null == p)
+			return false;
+
 		final boolean exists = getPropertyType(p) == PropertyType.ANNOTATION;
 
 		final Role role = _rbox.addAnnotationRole((ATermAppl) p);
@@ -1312,13 +1363,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean addAnnotation(final ATermAppl s, final ATermAppl p, final ATermAppl o)
 	{
-		if (!OpenlletOptions.USE_ANNOTATION_SUPPORT)
-			return false;
-
-		if (!isAnnotationProperty(p))
-			return false;
-
-		if (null == s)
+		if (null == p || null == s || null == o//
+				|| !OpenlletOptions.USE_ANNOTATION_SUPPORT//
+				|| !isAnnotationProperty(p))//
 			return false;
 
 		synchronized (_annotations)
@@ -1372,6 +1419,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	 */
 	private Set<ATermAppl> getSubAnnotationProperties(final ATermAppl p)
 	{
+		if (null == p)
+			return Collections.emptySet();
+
 		final Set<ATermAppl> values = new HashSet<>();
 
 		final List<ATermAppl> temp = new ArrayList<>();
@@ -1392,6 +1442,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public Set<ATermAppl> getIndividualsWithAnnotation(final ATermAppl p, final ATermAppl o)
 	{
+		if (null == p || null == o)
+			return Collections.emptySet();
+
 		final Set<ATermAppl> ret = new HashSet<>();
 
 		for (final Map.Entry<ATermAppl, Map<ATermAppl, Set<ATermAppl>>> e1 : _annotations.entrySet())
@@ -1444,6 +1497,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public void addDisjointProperties(final ATermList properties)
 	{
+		if (null == properties)
+			return;
+
 		final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeDisjointProperties(properties)) : DependencySet.INDEPENDENT;
 
 		for (ATermList l1 = properties; !l1.isEmpty(); l1 = l1.getNext())
@@ -1482,6 +1538,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public void addInverseProperty(final ATermAppl p1, final ATermAppl p2)
 	{
+		if (null == p1 || null == p2)
+			return;
+
 		if (OpenlletOptions.IGNORE_INVERSES)
 		{
 			_logger.warning("Ignoring inverseOf(" + p1 + " " + p2 + ") axiom due to the IGNORE_INVERSES option");
@@ -1500,6 +1559,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public void addTransitiveProperty(final ATermAppl p)
 	{
+		if (null == p)
+			return;
+
 		_changes.add(ChangeType.RBOX_ADD);
 
 		final Role r = _rbox.getDefinedRole(p);
@@ -1541,6 +1603,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public void addAsymmetricProperty(final ATermAppl p)
 	{
+		if (null == p)
+			return;
+
 		_changes.add(ChangeType.RBOX_ADD);
 		final Role r = _rbox.getDefinedRole(p);
 
@@ -1553,6 +1618,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public void addReflexiveProperty(final ATermAppl p)
 	{
+		if (null == p)
+			return;
+
 		_changes.add(ChangeType.RBOX_ADD);
 		final Role r = _rbox.getDefinedRole(p);
 
@@ -1589,6 +1657,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public void addInverseFunctionalProperty(final ATerm p)
 	{
+		if (null == p)
+			return;
+
 		if (OpenlletOptions.IGNORE_INVERSES)
 		{
 			_logger.warning("Ignoring InverseFunctionalProperty(" + p + ") axiom due to the IGNORE_INVERSES option");
@@ -1607,6 +1678,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public void addDomain(final ATerm p, final ATermAppl c)
 	{
+		if (null == p || null == c)
+			return;
+
 		_changes.add(ChangeType.RBOX_ADD);
 
 		_rbox.addDomain(p, c);
@@ -1643,6 +1717,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public void addRange(final ATerm p, final ATermAppl c, final Set<ATermAppl> explain)
 	{
+		if (null == p || null == c || null == explain)
+			return;
+
 		_changes.add(ChangeType.RBOX_ADD);
 
 		_rbox.addRange(p, c, explain);
@@ -1653,6 +1730,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public void addDatatype(final ATermAppl p)
 	{
+		if (null == p)
+			return;
+
 		getDatatypeReasoner().declare(p);
 	}
 
@@ -1666,6 +1746,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean addDatatypeDefinition(final ATermAppl name, final ATermAppl datarange)
 	{
+		if (null == name || null == datarange)
+			return false;
+
 		return getDatatypeReasoner().define(name, datarange);
 	}
 
@@ -1680,6 +1763,8 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean removeDomain(final ATerm p, final ATermAppl c)
 	{
+		if (null == p || null == c)
+			return false;
 
 		final Role role = getRole(p);
 		if (role == null)
@@ -1706,6 +1791,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean removePropertyValue(final ATermAppl p, final ATermAppl i1, final ATermAppl i2)
 	{
+		if (null == p || null == i1 || null == i2)
+			return false;
+
 		final ATermAppl ind1 = i1;
 		final ATermAppl ind2;
 		if (ATermUtils.isLiteral(i2))
@@ -1812,6 +1900,8 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean removeRange(final ATerm p, final ATermAppl c)
 	{
+		if (null == p || null == c)
+			return false;
 
 		final Role role = getRole(p);
 		if (role == null)
@@ -1838,6 +1928,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean removeType(final ATermAppl ind, final ATermAppl c)
 	{
+		if (null == ind || null == c)
+			return false;
+
 		final Individual subj = _abox.getIndividual(ind);
 
 		if (subj == null)
@@ -1902,6 +1995,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean removeAxiom(final ATermAppl axiom)
 	{
+		if (null == axiom)
+			return false;
+
 		boolean removed = false;
 
 		try
@@ -2031,6 +2127,8 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	 */
 	public void updateExpressivity(final ATermAppl i, final ATermAppl c)
 	{
+		if (null == i || null == c)
+			return;
 
 		// if the _tbox or _rbox changed then we cannot use incremental reasoning!
 		if (!isChanged() || isTBoxChanged() || isRBoxChanged())
@@ -2549,17 +2647,20 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean isDatatypeProperty(final ATerm p)
 	{
-		return getPropertyType(p) == PropertyType.DATATYPE;
+		return null != p && getPropertyType(p) == PropertyType.DATATYPE;
 	}
 
 	@Override
 	public boolean isObjectProperty(final ATerm p)
 	{
-		return getPropertyType(p) == PropertyType.OBJECT;
+		return null != p && getPropertyType(p) == PropertyType.OBJECT;
 	}
 
 	public boolean isABoxProperty(final ATerm p)
 	{
+		if (null == p)
+			return false;
+
 		final PropertyType type = getPropertyType(p);
 		return type == PropertyType.OBJECT || type == PropertyType.DATATYPE;
 	}
@@ -2567,7 +2668,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean isAnnotationProperty(final ATerm p)
 	{
-		return getPropertyType(p) == PropertyType.ANNOTATION;
+		return p != null && getPropertyType(p) == PropertyType.ANNOTATION;
 	}
 
 	@Deprecated
@@ -2579,6 +2680,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean isTransitiveProperty(final ATermAppl r)
 	{
+		if (null == r)
+			return false;
+
 		final Role role = getRole(r);
 
 		if (role == null)
@@ -2609,12 +2713,15 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean isSymmetricProperty(final ATermAppl p)
 	{
-		return isInverse(p, p);
+		return p != null && isInverse(p, p);
 	}
 
 	@Override
 	public boolean isFunctionalProperty(final ATermAppl p)
 	{
+		if (null == p)
+			return false;
+
 		final Role role = getRole(p);
 
 		if (role == null)
@@ -2650,6 +2757,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean isInverseFunctionalProperty(final ATermAppl p)
 	{
+		if (null == p)
+			return false;
+
 		final Role role = getRole(p);
 
 		if (role == null)
@@ -2676,6 +2786,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean isReflexiveProperty(final ATermAppl p)
 	{
+		if (null == p)
+			return false;
+
 		final Role role = getRole(p);
 
 		if (role == null)
@@ -2706,6 +2819,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean isIrreflexiveProperty(final ATermAppl p)
 	{
+		if (null == p)
+			return false;
+
 		final Role role = getRole(p);
 
 		if (role == null)
@@ -2752,6 +2868,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean isAsymmetricProperty(final ATermAppl p)
 	{
+		if (null == p)
+			return false;
+
 		final Role role = getRole(p);
 
 		if (role == null)
@@ -2782,6 +2901,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean isSubPropertyOf(final ATermAppl sub, final ATermAppl sup)
 	{
+		if (null == sub || null == sup)
+			return false;
+
 		final Role roleSub = _rbox.getRole(sub);
 		final Role roleSup = _rbox.getRole(sup);
 
@@ -2834,6 +2956,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean isEquivalentProperty(final ATermAppl p1, final ATermAppl p2)
 	{
+		if (null == p1 || null == p2)
+			return false;
+
 		final Role role1 = _rbox.getRole(p1);
 		final Role role2 = _rbox.getRole(p2);
 
@@ -2886,6 +3011,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean isInverse(final ATermAppl r1, final ATermAppl r2)
 	{
+		if (null == r1 || null == r2)
+			return false;
+
 		final Role role1 = getRole(r1);
 		final Role role2 = getRole(r2);
 
@@ -2925,6 +3053,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean hasDomain(final ATermAppl p, final ATermAppl c)
 	{
+		if (null == p || null == c)
+			return false;
+
 		final Role r = _rbox.getRole(p);
 		if (r == null)
 		{
@@ -2945,6 +3076,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean hasRange(final ATermAppl p, final ATermAppl c)
 	{
+		if (null == p || null == c)
+			return false;
+
 		if (!isClass(c) && !isDatatype(c))
 		{
 			handleUndefinedEntity(c + _isNotAValidClassExpression);
@@ -2957,12 +3091,18 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean isDatatype(final ATermAppl c)
 	{
+		if (null == c)
+			return false;
+
 		return _datatypeVisitor.isDatatype(c);
 	}
 
 	@Override
 	public boolean isSatisfiable(final ATermAppl c)
 	{
+		if (null == c)
+			return false;
+
 		ensureConsistency();
 
 		if (!isClass(c))
@@ -2990,6 +3130,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean hasInstance(final ATerm d)
 	{
+		if (null == d)
+			return false;
+
 		if (!isClass(d))
 		{
 			handleUndefinedEntity(d + _isNotAnClass);
@@ -3027,6 +3170,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean isSubClassOf(final ATermAppl c1, final ATermAppl c2)
 	{
+		if (null == c1 || null == c2)
+			return false;
+
 		ensureConsistency();
 
 		if (!isClass(c1))
@@ -3066,6 +3212,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean isEquivalentClass(final ATermAppl c1, final ATermAppl c2)
 	{
+		if (null == c1 || null == c2)
+			return false;
+
 		ensureConsistency();
 
 		if (!isClass(c1))
@@ -3112,6 +3261,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean isDisjoint(final ATermAppl c1, final ATermAppl c2)
 	{
+		if (null == c1 || null == c2)
+			return false;
+
 		if (isClass(c1) && isClass(c2))
 			return isDisjointClass(c1, c2);
 		else
@@ -3124,6 +3276,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean isDisjointClass(final ATermAppl c1, final ATermAppl c2)
 	{
+		if (null == c1 || null == c2)
+			return false;
+
 		final ATermAppl notC2 = ATermUtils.makeNot(c2);
 
 		return isSubClassOf(c1, notC2);
@@ -3132,6 +3287,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean isDisjointProperty(final ATermAppl r1, final ATermAppl r2)
 	{
+		if (null == r1 || null == r2)
+			return false;
+
 		final Role role1 = getRole(r1);
 		final Role role2 = getRole(r2);
 
@@ -3180,6 +3338,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean isComplement(final ATermAppl c1, final ATermAppl c2)
 	{
+		if (null == c1 || null == c2)
+			return false;
+
 		final ATermAppl notC2 = ATermUtils.makeNot(c2);
 
 		return isEquivalentClass(c1, notC2);
@@ -3188,6 +3349,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public Bool isKnownType(final ATermAppl x, final ATermAppl c)
 	{
+		if (null == x || null == c)
+			return Bool.FALSE;
+
 		ensureConsistency();
 
 		if (!isIndividual(x))
@@ -3207,6 +3371,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean isType(final ATermAppl x, final ATermAppl c)
 	{
+		if (null == x || null == c)
+			return false;
+
 		ensureConsistency();
 
 		if (!isIndividual(x))
@@ -3240,6 +3407,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean isSameAs(final ATermAppl t1, final ATermAppl t2)
 	{
+		if (null == t1 || null == t2)
+			return false;
+
 		ensureConsistency();
 
 		if (!isIndividual(t1))
@@ -3280,6 +3450,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean isDifferentFrom(final ATermAppl t1, final ATermAppl t2)
 	{
+		if (null == t1 || null == t2)
+			return false;
+
 		final Individual ind1 = _abox.getIndividual(t1);
 		final Individual ind2 = _abox.getIndividual(t2);
 
@@ -3306,6 +3479,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public Set<ATermAppl> getDifferents(final ATermAppl name)
 	{
+		if (null == name)
+			return Collections.emptySet();
+
 		ensureConsistency();
 
 		Individual ind = _abox.getIndividual(name);
@@ -3345,6 +3521,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean hasPropertyValue(final ATermAppl s, final ATermAppl p, final ATermAppl o)
 	{
+		if (null == s || null == p)
+			return false;
+
 		ensureConsistency();
 
 		if (!isIndividual(s))
@@ -3375,6 +3554,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public Bool hasKnownPropertyValue(final ATermAppl s, final ATermAppl p, final ATermAppl o)
 	{
+		if (null == s || null == p || null == o)
+			return Bool.FALSE;
+
 		ensureConsistency();
 
 		return _abox.hasObviousPropertyValue(s, p, o);
@@ -3401,6 +3583,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public Set<Set<ATermAppl>> getSuperClasses(final ATermAppl cParam, final boolean direct)
 	{
+		if (null == cParam)
+			return Collections.emptySet();
+
 		ATermAppl c = cParam;
 		if (!isClass(c))
 		{
@@ -3426,6 +3611,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 	public Set<Set<ATermAppl>> getDisjoints(final ATermAppl c)
 	{
+		if (null == c)
+			return Collections.emptySet();
+
 		if (isClass(c))
 			return getDisjointClasses(c);
 		else
@@ -3439,6 +3627,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public Set<Set<ATermAppl>> getDisjointClasses(final ATermAppl c, final boolean direct)
 	{
+		if (null == c)
+			return Collections.emptySet();
+
 		if (!isClass(c))
 		{
 			handleUndefinedEntity(c + _isNotAnClass);
@@ -3464,11 +3655,17 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public Set<Set<ATermAppl>> getDisjointProperties(final ATermAppl p)
 	{
+		if (null == p)
+			return Collections.emptySet();
+
 		return getDisjointProperties(p, false);
 	}
 
 	public Set<Set<ATermAppl>> getDisjointProperties(final ATermAppl p, final boolean direct)
 	{
+		if (null == p)
+			return Collections.emptySet();
+
 		if (!isProperty(p))
 		{
 			handleUndefinedEntity(p + _isNotAnProperty);
@@ -3525,6 +3722,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public Set<ATermAppl> getComplements(final ATermAppl c)
 	{
+		if (null == c)
+			return Collections.emptySet();
+
 		if (!isClass(c))
 		{
 			handleUndefinedEntity(c + _isNotAnClass);
@@ -3550,6 +3750,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public Set<Set<ATermAppl>> getTypes(final ATermAppl ind, final boolean direct)
 	{
+		if (null == ind)
+			return Collections.emptySet();
+
 		if (!isIndividual(ind))
 		{
 			handleUndefinedEntity(ind + _isNotAnIndividual);
@@ -3585,6 +3788,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 	public ATermAppl getType(final ATermAppl ind)
 	{
+		if (null == ind)
+			return null;
+
 		if (!isIndividual(ind))
 		{
 			handleUndefinedEntity(ind + _isNotAnIndividual);
@@ -3598,6 +3804,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 	public ATermAppl getType(final ATermAppl ind, final boolean direct)
 	{
+		if (null == ind)
+			return null;
+
 		if (!isIndividual(ind))
 		{
 			handleUndefinedEntity(ind + _isNotAnIndividual);
@@ -3618,6 +3827,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public Set<ATermAppl> getInstances(final ATermAppl c)
 	{
+		if (null == c)
+			return Collections.emptySet();
+
 		if (!isClass(c))
 		{
 			handleUndefinedEntity(c + _isNotAnClass);
@@ -3645,7 +3857,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	}
 
 	/**
-	 * Returns the _instances of class c. Depending on the second parameter the resulting list will include all or only the direct _instances. An _individual x
+	 * Returns the instances of class c. Depending on the second parameter the resulting list will include all or only the direct _instances. An _individual x
 	 * is a direct instance of c iff x is of type c and there is no subclass d of c such that x is of type d.
 	 * <p>
 	 * *** This function will first realize the whole ontology ***
@@ -3658,6 +3870,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public Set<ATermAppl> getInstances(final ATermAppl c, final boolean direct)
 	{
+		if (null == c)
+			return Collections.emptySet();
+
 		if (!isClass(c))
 		{
 			handleUndefinedEntity(c + _isNotAnClass);
@@ -3719,6 +3934,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public Set<ATermAppl> getEquivalentClasses(final ATermAppl c)
 	{
+		if (null == c)
+			return Collections.emptySet();
+
 		final Set<ATermAppl> result = getAllEquivalentClasses(c);
 		result.remove(c);
 
@@ -3737,6 +3955,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public Set<ATermAppl> getAllEquivalentClasses(final ATermAppl c)
 	{
+		if (null == c)
+			return Collections.emptySet();
+
 		if (!isClass(c))
 		{
 			handleUndefinedEntity(c + _isNotAnClass);
@@ -3776,6 +3997,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public Set<Set<ATermAppl>> getSubClasses(final ATermAppl c, final boolean direct)
 	{
+		if (null == c)
+			return Collections.emptySet();
+
 		if (!isClass(c))
 		{
 			handleUndefinedEntity(c + _isNotAnClass);
@@ -3805,6 +4029,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public Set<Set<ATermAppl>> getAllSuperProperties(final ATermAppl prop)
 	{
+		if (null == prop)
+			return Collections.emptySet();
+
 		if (!isProperty(prop))
 		{
 			handleUndefinedEntity(prop + _isNotAnProperty);
@@ -3828,6 +4055,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public Set<Set<ATermAppl>> getSuperProperties(final ATermAppl prop, final boolean direct)
 	{
+		if (null == prop)
+			return Collections.emptySet();
+
 		if (!isProperty(prop))
 		{
 			handleUndefinedEntity(prop + _isNotAnProperty);
@@ -3850,6 +4080,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public Set<Set<ATermAppl>> getAllSubProperties(final ATermAppl prop)
 	{
+		if (null == prop)
+			return Collections.emptySet();
+
 		if (!isProperty(prop))
 		{
 			handleUndefinedEntity(prop + _isNotAnProperty);
@@ -3872,6 +4105,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public Set<Set<ATermAppl>> getSubProperties(final ATermAppl prop, final boolean direct)
 	{
+		if (null == prop)
+			return Collections.emptySet();
+
 		if (!isProperty(prop))
 		{
 			handleUndefinedEntity(prop + _isNotAnProperty);
@@ -3902,6 +4138,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public Set<ATermAppl> getEquivalentProperties(final ATermAppl prop)
 	{
+		if (null == prop)
+			return Collections.emptySet();
+
 		if (!isProperty(prop))
 		{
 			handleUndefinedEntity(prop + _isNotAnProperty);
@@ -3915,6 +4154,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public Set<ATermAppl> getAllEquivalentProperties(final ATermAppl prop)
 	{
+		if (null == prop)
+			return Collections.emptySet();
+
 		if (!isProperty(prop))
 		{
 			handleUndefinedEntity(prop + _isNotAnProperty);
@@ -3932,6 +4174,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public Set<ATermAppl> getInverses(final ATerm name)
 	{
+		if (null == name)
+			return Collections.emptySet();
+
 		final ATermAppl invR = getInverse(name);
 		if (invR != null)
 		{
@@ -3951,6 +4196,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	 */
 	public ATermAppl getInverse(final ATerm name)
 	{
+		if (null == name)
+			return null;
+
 		final Role prop = _rbox.getRole(name);
 		if (prop == null)
 		{
@@ -3972,6 +4220,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public Set<ATermAppl> getDomains(final ATermAppl name)
 	{
+		if (null == name)
+			return Collections.emptySet();
+
 		ensureConsistency();
 
 		final Role prop = _rbox.getRole(name);
@@ -3993,6 +4244,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public Set<ATermAppl> getRanges(final ATerm name)
 	{
+		if (null == name)
+			return Collections.emptySet();
+
 		ensureConsistency();
 
 		final Set<ATermAppl> set = Collections.emptySet();
@@ -4013,6 +4267,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public Set<ATermAppl> getAllSames(final ATermAppl name)
 	{
+		if (null == name)
+			return Collections.emptySet();
+
 		ensureConsistency();
 
 		final Set<ATermAppl> knowns = new HashSet<>();
@@ -4044,6 +4301,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public Set<ATermAppl> getSames(final ATermAppl name)
 	{
+		if (null == name)
+			return Collections.emptySet();
+
 		final Set<ATermAppl> sames = getAllSames(name);
 		sames.remove(name);
 
@@ -4061,6 +4321,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public List<ATermAppl> getDataPropertyValues(final ATermAppl r, final ATermAppl x, final ATermAppl datatype)
 	{
+		if (null == r || null == x)
+			return Collections.emptyList();
+
 		ensureConsistency();
 
 		final Individual ind = _abox.getIndividual(x);
@@ -4104,6 +4367,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	 */
 	public List<ATermAppl> getDataPropertyValues(final ATermAppl r, final ATermAppl x, final String lang)
 	{
+		if (null == r || null == x)
+			return Collections.emptyList();
+
 		final List<ATermAppl> values = getDataPropertyValues(r, x);
 		if (lang == null)
 			return values;
@@ -4130,6 +4396,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public List<ATermAppl> getObjectPropertyValues(final ATermAppl r, final ATermAppl x)
 	{
+		if (null == r || null == x)
+			return Collections.emptyList();
+
 		ensureConsistency();
 
 		final Role role = _rbox.getRole(r);
@@ -4180,6 +4449,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public List<ATermAppl> getPropertyValues(final ATermAppl r, final ATermAppl x)
 	{
+		if (null == r || null == x)
+			return Collections.emptyList();
+
 		final Role role = _rbox.getRole(r);
 
 		if (role == null || role.isUntypedRole())
@@ -4244,6 +4516,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	 */
 	public List<ATermAppl> getIndividualsWithDataProperty(final ATermAppl r, final ATermAppl litValue)
 	{
+		if (null == r || null == litValue)
+			return Collections.emptyList();
+
 		if (!ATermUtils.isLiteral(litValue))
 			return Collections.emptyList();
 
@@ -4303,6 +4578,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	 */
 	public List<ATermAppl> getIndividualsWithObjectProperty(final ATermAppl r, final ATermAppl o)
 	{
+		if (null == r || null == o)
+			return Collections.emptyList();
+
 		ensureConsistency();
 
 		if (!isIndividual(o))
@@ -4349,6 +4627,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public Map<ATermAppl, List<ATermAppl>> getPropertyValues(final ATermAppl pred)
 	{
+		if (null == pred)
+			return Collections.emptyMap();
+
 		final Map<ATermAppl, List<ATermAppl>> result = new HashMap<>();
 
 		for (final ATermAppl subj : _individuals)
@@ -4368,6 +4649,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public Set<ATermAppl> retrieve(final ATermAppl d, final Collection<ATermAppl> individuals)
 	{
+		if (null == d || null == individuals)
+			return Collections.emptySet();
+
 		ensureConsistency();
 
 		final ATermAppl c = ATermUtils.normalize(d);
@@ -4438,6 +4722,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public List<ATermAppl> retrieveIndividualsWithProperty(final ATermAppl r)
 	{
+		if (null == r)
+			return Collections.emptyList();
+
 		ensureConsistency();
 
 		final Role role = _rbox.getRole(r);
@@ -4457,6 +4744,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 	public void tracingBasedInstanceRetrieval(final ATermAppl c, final List<ATermAppl> candidates, final Collection<ATermAppl> results)
 	{
+		if (null == c || null == candidates || null == results)
+			return;
+
 		List<ATermAppl> individuals = candidates;
 		final boolean doExplanation = doExplanation();
 		setDoExplanation(true);
@@ -4488,6 +4778,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 	public void linearInstanceRetrieval(final ATermAppl c, final List<ATermAppl> candidates, final Collection<ATermAppl> results)
 	{
+		if (null == c || null == candidates || null == results)
+			return;
+
 		for (final ATermAppl ind : candidates)
 			if (_abox.isType(ind, c))
 				results.add(ind);
@@ -4495,6 +4788,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 	public void binaryInstanceRetrieval(final ATermAppl c, final List<ATermAppl> candidates, final Collection<ATermAppl> results)
 	{
+		if (null == c || null == candidates || null == results)
+			return;
+
 		if (candidates.isEmpty())
 			return;
 		else
@@ -4559,6 +4855,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 	public void printClassTree(final PrintWriter out)
 	{
+		if (null == out)
+			return;
+
 		classify();
 
 		new ClassTreePrinter().print(_builder.getTaxonomy(), out);
@@ -4587,6 +4886,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public CompletionStrategy chooseStrategy(final ABox abox)
 	{
+		if (null == abox)
+			return null;
+
 		return chooseStrategy(abox, getExpressivity());
 	}
 
@@ -4599,6 +4901,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public CompletionStrategy chooseStrategy(final ABox abox, final Expressivity expressivity)
 	{
+		if (null == abox || null == expressivity)
+			return null;
+
 		final boolean conceptSatisfiability = abox.size() == 1 && new IndividualIterator(abox).next().isConceptRoot();
 
 		// We don't need to use rules _strategy if we are checking concept satisfiability unless
@@ -4661,6 +4966,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public void setTaxonomyBuilderProgressMonitor(final ProgressMonitor progressMonitor)
 	{
+		if (null == progressMonitor)
+			return;
+
 		_builderProgressMonitor = progressMonitor;
 
 		if (_builder != null)
@@ -4703,6 +5011,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean addRule(final Rule rule)
 	{
+		if (null == rule)
+			return false;
+
 		// DL-safe _rules affects the ABox so we might redo the reasoning
 		_changes.add(ChangeType.ABOX_ADD);
 
@@ -4881,6 +5192,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 	public Set<ATermAppl> getABoxAssertions(final AssertionType assertionType)
 	{
+		if (null == assertionType)
+			return Collections.emptySet();
+
 		final Set<ATermAppl> assertions = _aboxAssertions.get(assertionType);
 
 		if (assertions == null)

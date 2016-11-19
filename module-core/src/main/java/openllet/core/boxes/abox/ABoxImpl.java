@@ -1580,7 +1580,7 @@ public class ABoxImpl implements ABox
 	@Override
 	public Individual getIndividual(final ATerm x)
 	{
-		final Object o = _nodes.get(x);
+		final Node o = _nodes.get(x);
 		if (o instanceof Individual)
 			return (Individual) o;
 		return null;
@@ -1589,7 +1589,7 @@ public class ABoxImpl implements ABox
 	@Override
 	public Literal getLiteral(final ATerm x)
 	{
-		final Object o = _nodes.get(x);
+		final Node o = _nodes.get(x);
 		if (o instanceof Literal)
 			return (Literal) o;
 		return null;
