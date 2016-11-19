@@ -1081,11 +1081,14 @@ public class PelletReasoner implements OpenlletReasoner
 			if (!importsClosure.contains(change.getOntology()))
 				continue;
 
-			if (!_changeVisitor.process(change))
+			synchronized (_visitor)
 			{
-				_logger.fine(() -> "Reload required by ontology change " + change);
-				_shouldRefresh = true;
-				break;
+				if (!_changeVisitor.process(change))
+				{
+					_logger.fine(() -> "Reload required by ontology change " + change);
+					_shouldRefresh = true;
+					break;
+				}
 			}
 		}
 

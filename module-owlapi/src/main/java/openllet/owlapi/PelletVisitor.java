@@ -1082,12 +1082,18 @@ public class PelletVisitor implements OWLObjectVisitor
 			return;
 		}
 
-		axiom.getSubject().accept(this);
-		final ATermAppl s = _term;
-		axiom.getProperty().accept(this);
-		final ATermAppl p = _term;
-		axiom.getObject().accept(this);
-		final ATermAppl o = _term;
+		final ATermAppl s;
+		final ATermAppl p;
+		final ATermAppl o;
+		synchronized (this)
+		{
+			axiom.getSubject().accept(this);
+			s = _term;
+			axiom.getProperty().accept(this);
+			p = _term;
+			axiom.getObject().accept(this);
+			o = _term;
+		}
 
 		_kb.addNegatedPropertyValue(p, s, o);
 	}
@@ -1095,10 +1101,15 @@ public class PelletVisitor implements OWLObjectVisitor
 	@Override
 	public void visit(final OWLDataPropertyDomainAxiom axiom)
 	{
-		axiom.getProperty().accept(this);
-		final ATermAppl p = _term;
-		axiom.getDomain().accept(this);
-		final ATermAppl c = _term;
+		final ATermAppl p;
+		final ATermAppl c;
+		synchronized (this)
+		{
+			axiom.getProperty().accept(this);
+			p = _term;
+			axiom.getDomain().accept(this);
+			c = _term;
+		}
 
 		if (_addAxioms)
 			_kb.addDomain(p, c);
@@ -1129,12 +1140,19 @@ public class PelletVisitor implements OWLObjectVisitor
 			return;
 		}
 
-		axiom.getSubject().accept(this);
-		final ATermAppl s = _term;
-		axiom.getProperty().accept(this);
-		final ATermAppl p = _term;
-		axiom.getObject().accept(this);
-		final ATermAppl o = _term;
+		final ATermAppl s;
+		final ATermAppl p;
+		final ATermAppl o;
+
+		synchronized (this)
+		{
+			axiom.getSubject().accept(this);
+			s = _term;
+			axiom.getProperty().accept(this);
+			p = _term;
+			axiom.getObject().accept(this);
+			o = _term;
+		}
 
 		_kb.addNegatedPropertyValue(p, s, o);
 	}
@@ -1156,12 +1174,18 @@ public class PelletVisitor implements OWLObjectVisitor
 	@Override
 	public void visit(final OWLObjectPropertyAssertionAxiom axiom)
 	{
-		axiom.getSubject().accept(this);
-		final ATermAppl subj = _term;
-		axiom.getProperty().accept(this);
-		final ATermAppl pred = _term;
-		axiom.getObject().accept(this);
-		final ATermAppl obj = _term;
+		final ATermAppl subj;
+		final ATermAppl pred;
+		final ATermAppl obj;
+		synchronized (this)
+		{
+			axiom.getSubject().accept(this);
+			subj = _term;
+			axiom.getProperty().accept(this);
+			pred = _term;
+			axiom.getObject().accept(this);
+			obj = _term;
+		}
 
 		if (_addAxioms)
 			_kb.addPropertyValue(pred, subj, obj);
@@ -1274,12 +1298,18 @@ public class PelletVisitor implements OWLObjectVisitor
 	@Override
 	public void visit(final OWLDataPropertyAssertionAxiom axiom)
 	{
-		axiom.getSubject().accept(this);
-		final ATermAppl subj = _term;
-		axiom.getProperty().accept(this);
-		final ATermAppl pred = _term;
-		axiom.getObject().accept(this);
-		final ATermAppl obj = _term;
+		final ATermAppl subj;
+		final ATermAppl pred;
+		final ATermAppl obj;
+		synchronized (this)
+		{
+			axiom.getSubject().accept(this);
+			subj = _term;
+			axiom.getProperty().accept(this);
+			pred = _term;
+			axiom.getObject().accept(this);
+			obj = _term;
+		}
 
 		if (_addAxioms)
 			_kb.addPropertyValue(pred, subj, obj);
@@ -1329,11 +1359,15 @@ public class PelletVisitor implements OWLObjectVisitor
 			_reloadRequired = true;
 			return;
 		}
-
-		axiom.getSubProperty().accept(this);
-		final ATermAppl p1 = _term;
-		axiom.getSuperProperty().accept(this);
-		final ATermAppl p2 = _term;
+		final ATermAppl p1;
+		final ATermAppl p2;
+		synchronized (this)
+		{
+			axiom.getSubProperty().accept(this);
+			p1 = _term;
+			axiom.getSuperProperty().accept(this);
+			p2 = _term;
+		}
 
 		_kb.addSubProperty(p1, p2);
 	}
@@ -1436,12 +1470,18 @@ public class PelletVisitor implements OWLObjectVisitor
 
 		if (OpenlletOptions.USE_ANNOTATION_SUPPORT)
 		{
-			axiom.getSubject().accept(this);
-			final ATermAppl s = _term;
-			axiom.getProperty().accept(this);
-			final ATermAppl p = _term;
-			axiom.getValue().accept(this);
-			final ATermAppl o = _term;
+			final ATermAppl s;
+			final ATermAppl p;
+			final ATermAppl o;
+			synchronized (this)
+			{
+				axiom.getSubject().accept(this);
+				s = _term;
+				axiom.getProperty().accept(this);
+				p = _term;
+				axiom.getValue().accept(this);
+				o = _term;
+			}
 
 			_kb.addAnnotation(s, p, o);
 		}
