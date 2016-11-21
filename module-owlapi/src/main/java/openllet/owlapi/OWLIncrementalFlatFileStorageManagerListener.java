@@ -63,7 +63,6 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 
 	private final File _delta;
 	private final File _directory;
-	private final Object _mutex = new Object();
 	private final ScheduledThreadPoolExecutor _timer = new ScheduledThreadPoolExecutor(1);
 	private final Set<OWLOntologyID> _changed = SetUtils.create();
 	private final Map<OWLOntologyID, OWLFunctionalSyntaxParser> _parsers = new ConcurrentHashMap<>();
@@ -141,7 +140,7 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 	 */
 	public void flush()
 	{
-		synchronized (_mutex)
+		synchronized (this)
 		{
 			final List<OWLOntologyID> changed;
 			synchronized (_changed) // We don't took the synchronized over _changed directly to avoid a general stop of the application.
@@ -236,7 +235,7 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 	@Override
 	public synchronized void ontologiesChanged(final List<? extends OWLOntologyChange> changes)
 	{
-		synchronized (_mutex)
+		synchronized (this)
 		{
 			// TODO : pour gagner en performance, il faut maintenir un cache des stream et ne pas les ouvrir/fermer à chaque écriture.
 			try (final OutputStream stream = new FileOutputStream(_delta, true))
