@@ -29,9 +29,22 @@ Openllet 2.6.X:
 
 * Refactor modules dependencies.
 * Enforce interface usage in the core system.
+* Lighter hash functions and less conflict when use in multi-thread environnement.
 
 Migration :
 * lots of com.clarkparsia.* / com.mindswap.* are refactor into openllet.* to avoid conflict has typing change a lot.
+* dependencies on modern libs.
+
+		<dependency>
+			<groupId>com.github.galigator.openllet</groupId>
+			<artifactId>openllet-owlapi</artifactId>
+			<version>2.6.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.galigator.openllet</groupId>
+			<artifactId>openllet-jena</artifactId>
+			<version>2.6.0</version>
+		</dependency>
 
 Roadmap :
 * Fullify strong typing in openllet core (2.7.X).
@@ -48,19 +61,8 @@ Changes :
 * Corrections : all tests works, no more warnings with high level of reports in Eclipse.
 
 Migration :
-* pellet/owlapi/src/main/java/com/clarkparsia/owlapiv3/ is now  pellet/owlapi/src/main/java/com/clarkparsia/owlapiv/
+* pellet/owlapi/src/main/java/com/clarkparsia/owlapiv3/ is now  pellet/owlapi/src/main/java/com/clarkparsia/owlapi/
 * groupId   com.clarkparsia.pellet   is now   com.github.galigator.openllet
-
-		<dependency>
-			<groupId>com.github.galigator.openllet</groupId>
-			<artifactId>openllet-owlapi</artifactId>
-			<version>2.5.1</version>
-		</dependency>
-		<dependency>
-			<groupId>com.github.galigator.openllet</groupId>
-			<artifactId>openllet-jena</artifactId>
-			<version>2.5.1</version>
-		</dependency>
 
 
 Pellet 1..2.3] Licences and supports: 

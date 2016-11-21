@@ -1,6 +1,20 @@
 Change Log
 ==========
 
+Pellet 2.6.0 (Nov 21, 2016)
+---------------------------
+
+* Project rename to openllet
+
+* Bug correction
+
+* Better support of threadings
+
+* Enforce usage of interfaces in the core.
+
+* Upgrade to modern dependencies
+
+
 Pellet 2.5.1 (May 09, 2016)
 ---------------------------
 
@@ -11,7 +25,6 @@ Pellet 2.5.1 (May 09, 2016)
 * Removing/Modernize obselete parts
 
 * Re-entrance related changes
-
 
 
 Pellet 2.5.0 (Apr 15, 2016)
