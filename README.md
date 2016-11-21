@@ -5,6 +5,8 @@ Openllet: An Open Source OWL DL reasoner for Java
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Galigator/pelletEvolution?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Twitter](https://img.shields.io/badge/twitter-openllet-blue.svg)](https://twitter.com/openllet)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/d1acfdbe2c194252a311e223cd94e64e)](https://www.codacy.com/app/sejourne_kevin/openllet?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Galigator/openllet&amp;utm_campaign=Badge_Grade)
+<a href="https://www.versioneye.com/user/projects/5832fff3e7cea00029198b38"><img src="https://www.versioneye.com/user/projects/5832fff3e7cea00029198b38/badge.svg?style=flat"/></a>
+
 <!--
 [![codecov](https://codecov.io/gh/Galigator/openllet/branch/integration/graph/badge.svg)](https://codecov.io/gh/Galigator/openllet)
 -->
@@ -60,77 +62,6 @@ Migration :
 			<version>2.5.1</version>
 		</dependency>
 
-Dependencies and security of modules of openllet : 
---------------------------------------------------
-
-<table>
-<tr><td>Modules</td><td></td></tr>
-<tr><td>Functions</td><td>
-    <a href="https://www.versioneye.com/user/projects/577054ea67189400364490f2"><img src="https://www.versioneye.com/user/projects/577054ea67189400364490f2/badge.svg?style=flat"/></a>
-</td></tr>
-
-<tr><td>Core</td><td>
-<a href="https://www.versioneye.com/user/projects/577054e06718940052ba8db8"><img src="https://www.versioneye.com/user/projects/577054e06718940052ba8db8/badge.svg?style=flat"/></a>
-</td></tr>
-
-<tr><td>Jena</td><td>
-<a href="https://www.versioneye.com/user/projects/577054e467189400364490e3"><img src="https://www.versioneye.com/user/projects/577054e467189400364490e3/badge.svg?style=flat"/></a>
-</td></tr>
-
-<tr><td>OwlApi</td><td>
-<a href="https://www.versioneye.com/user/projects/577054e86718940052ba8dbf"><img src="https://www.versioneye.com/user/projects/577054e86718940052ba8dbf/badge.svg?style=flat"/></a>
-</td></tr>
-
-<tr><td>Query</td><td>
-<a href="https://www.versioneye.com/user/projects/577054e9671894004e1a91f3"><img src="https://www.versioneye.com/user/projects/577054e9671894004e1a91f3/badge.svg?style=flat"/></a>
-</td></tr>
-
-<tr><td>Explanation</td><td>
-<a href="https://www.versioneye.com/user/projects/577054e3671894004e1a91ee"><img src="https://www.versioneye.com/user/projects/577054e3671894004e1a91ee/badge.svg?style=flat"/></a>
-</td></tr>
-
-<tr><td>Modularity</td><td>
-<a href="https://www.versioneye.com/user/projects/577054e6671894004fedd441"><img src="https://www.versioneye.com/user/projects/577054e6671894004fedd441/badge.svg?style=flat"/></a>
-</td></tr>
-
-<tr><td>Tools</td><td></td></tr>
-<tr><td>Cli</td><td>
-<a href="https://www.versioneye.com/user/projects/577054ee671894004e1a91f9"><img src="https://www.versioneye.com/user/projects/577054ee671894004e1a91f9/badge.svg?style=flat"/></a>
-</td></tr>
-
-<tr><td>Profiler</td><td>
-<a href="https://www.versioneye.com/user/projects/577054f1671894004fedd493"><img src="https://www.versioneye.com/user/projects/577054f1671894004fedd493/badge.svg?style=flat"/></a>
-</td></tr>
-
-<tr><td>Pellint</td><td>
-<a href="https://www.versioneye.com/user/projects/577054f167189400364490fb"><img src="https://www.versioneye.com/user/projects/577054f167189400364490fb/badge.svg?style=flat"/></a>
-</td></tr>
-
-<tr><td>Plugins</td><td></td></tr>
-<tr><td>Protege</td><td>
-<a href="https://www.versioneye.com/user/projects/577055026718940052ba8dd9"><img src="https://www.versioneye.com/user/projects/577055026718940052ba8dd9/badge.svg?style=flat"/></a>
-</td></tr>
-
-<tr><td>Others</td><td></td></tr>
-<tr><td>Tests</td><td>
-<a href="https://www.versioneye.com/user/projects/577054ed6718940052ba8dc7"><img src="https://www.versioneye.com/user/projects/577054ed6718940052ba8dc7/badge.svg?style=flat"/></a>
-</td></tr>
-
-<tr><td>Parent</td><td>
-<a href="https://www.versioneye.com/user/projects/577054ec671894004fedd445"><img src="https://www.versioneye.com/user/projects/577054ec671894004fedd445/badge.svg?style=flat"/></a>
-</td></tr>
-
-<tr><td>Distribution</td><td>
-<a href="https://www.versioneye.com/user/projects/57705509671894004e1a9204"><img src="https://www.versioneye.com/user/projects/57705509671894004e1a9204/badge.svg?style=flat"/></a>
-</td></tr>
-
-<tr><td>Examples</td><td>
-<a href="https://www.versioneye.com/user/projects/577054d1671894004fedd438"><img src="https://www.versioneye.com/user/projects/577054d1671894004fedd438/badge.svg?style=flat"/></a>
-</td></tr>
-
-
-
-</table>
 
 Pellet 1..2.3] Licences and supports: 
 -------------------------------------
