@@ -473,7 +473,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 
 	private void clearMarks()
 	{
-		_markedNodes.forEach(n -> n.resetMark());
+		_markedNodes.stream().filter(n -> n != null).forEach(TaxonomyNode::resetMark);
 		_markedNodes.clear();
 	}
 

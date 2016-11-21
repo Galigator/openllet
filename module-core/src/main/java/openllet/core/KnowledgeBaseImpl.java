@@ -2394,8 +2394,11 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		final Timer timer = _timers.startTimer("classify");
 
 		_builder = getTaxonomyBuilder();
-
-		final boolean isClassified = _builder.classify();
+		final boolean isClassified;
+		synchronized (_builder)
+		{
+			isClassified = _builder.classify();
+		}
 
 		timer.stop();
 
@@ -2421,7 +2424,11 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		final Timer timer = _timers.startTimer("realize");
 
 		// This is false if the progress monitor is canceled
-		final boolean isRealized = _builder.realize();
+		final boolean isRealized;
+		synchronized (_builder)
+		{
+			isRealized = _builder.realize();
+		}
 
 		timer.stop();
 
