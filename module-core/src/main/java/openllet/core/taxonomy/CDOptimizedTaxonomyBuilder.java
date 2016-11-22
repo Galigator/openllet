@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
@@ -85,15 +86,15 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 
 	private final Map<ATermAppl, ATermList> _unionClasses = CollectionUtils.makeIdentityMap();
 
-	private volatile DefinitionOrder _definitionOrder;
+	private volatile Optional<DefinitionOrder> _definitionOrder = Optional.empty();
 
-	protected volatile KnowledgeBase _kb;
+	protected final KnowledgeBase _kb;
 
 	private volatile boolean _useCD = false;
 
 	private final List<TaxonomyNode<ATermAppl>> _markedNodes = CollectionUtils.makeList();
 
-	private volatile Map<ATermAppl, ConceptFlag> _conceptFlags;
+	private volatile Map<ATermAppl, ConceptFlag> _conceptFlags = CollectionUtils.makeIdentityMap();
 
 	private volatile boolean _prepared = false;
 
@@ -180,8 +181,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 			t.stop();
 		}
 
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Starting classification...");
+		_logger.fine("Starting classification...");
 
 		List<ATermAppl> phase1, phase2;
 
@@ -189,7 +189,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 		{
 			final List<ATermAppl> phase1List = new ArrayList<>();
 			final List<ATermAppl> phase2List = new ArrayList<>();
-			for (final ATermAppl c : _definitionOrder)
+			for (final ATermAppl c : getDefinitionOrder())
 				if (PHASE1_FLAGS.contains(_conceptFlags.get(c)))
 					phase1List.add(c);
 				else
@@ -208,7 +208,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 		else
 		{
 			phase1 = Collections.emptyList();//IteratorUtils.emptyIterator();
-			phase2 = _definitionOrder.getList();//.iterator();
+			phase2 = getDefinitionOrder().getList();//.iterator();
 
 			_logger.fine("CD classification disabled");
 		}
@@ -222,8 +222,8 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 
 		_logger.fine(() -> "Satisfiability Count: " + (_kb.getABox().getStats()._satisfiabilityCount - 2 * _kb.getClasses().size()));
 
-		// Reset the definition _order, so the sorted copy can be gc'd
-		_definitionOrder = null;
+		// Reset the definition order, so the sorted copy can be gc'd
+		_definitionOrder = Optional.empty();
 
 		_taxonomyImpl.assertValid();
 
@@ -311,9 +311,9 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 
 		_toldTaxonomy = new TaxonomyImpl<>();
 
-		_definitionOrder = null;
+		_definitionOrder = Optional.empty();
 
-		_conceptFlags = CollectionUtils.makeIdentityMap();
+		_conceptFlags.clear();
 	}
 
 	private void computeToldInformation()
@@ -366,9 +366,16 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 		t.stop();
 	}
 
-	private void createDefinitionOrder()
+	private synchronized DefinitionOrder createDefinitionOrder()
 	{
-		_definitionOrder = DefinitionOrderFactory.createDefinitionOrder(_kb);
+		final DefinitionOrder df = DefinitionOrderFactory.createDefinitionOrder(_kb);
+		_definitionOrder = Optional.of(df);
+		return df;
+	}
+
+	private DefinitionOrder getDefinitionOrder()
+	{
+		return _definitionOrder.orElseGet(this::createDefinitionOrder);
 	}
 
 	private void computeConceptFlags()
@@ -412,12 +419,11 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 		 * orphans
 		 */
 		final TBox tbox = _kb.getTBox();
-		for (final ATermAppl c : _definitionOrder)
+		for (final ATermAppl c : getDefinitionOrder())
 		{
-
 			final Iterator<Unfolding> unfoldingList = _kb.getTBox().unfold(c);
 
-			if (!tbox.isPrimitive(c) || _definitionOrder.isCyclic(c) || _toldTaxonomy.getAllEquivalents(c).size() > 1)
+			if (!tbox.isPrimitive(c) || getDefinitionOrder().isCyclic(c) || _toldTaxonomy.getAllEquivalents(c).size() > 1)
 			{
 				_conceptFlags.put(c, ConceptFlag.NONPRIMITIVE);
 				while (unfoldingList.hasNext())
