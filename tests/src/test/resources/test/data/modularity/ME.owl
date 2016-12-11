@@ -1,0 +1,182 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY owl2xml "http://www.w3.org/2006/12/owl2-xml#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+    <!ENTITY MechanicalEngineeringOntology "http://people.bath.ac.uk/cll25/ontologies/2009/10/29/MechanicalEngineeringOntology.owl#" >
+    <!ENTITY Force "http://people.bath.ac.uk/cll25/ontologies/2009/10/29/MechanicalEngineeringOntology.owl#Force/" >
+    <!ENTITY Faces_IJ_ "http://people.bath.ac.uk/cll25/ontologies/2009/10/29/MechanicalEngineeringOntology.owl#Faces_IJ_&amp;" >
+    <!ENTITY Plane_strs_w "http://people.bath.ac.uk/cll25/ontologies/2009/10/29/MechanicalEngineeringOntology.owl#Plane_strs_w/" >
+]>
+
+
+<rdf:RDF xmlns="http://people.bath.ac.uk/cll25/ontologies/2009/10/29/MechanicalEngineeringOntology.owl#"
+     xml:base="http://people.bath.ac.uk/cll25/ontologies/2009/10/29/MechanicalEngineeringOntology.owl"
+     xmlns:owl2xml="http://www.w3.org/2006/12/owl2-xml#"
+     xmlns:Faces_IJ_="&MechanicalEngineeringOntology;Faces_IJ_&amp;"
+     xmlns:Force="&MechanicalEngineeringOntology;Force/"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:Plane_strs_w="&MechanicalEngineeringOntology;Plane_strs_w/"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:MechanicalEngineeringOntology="http://people.bath.ac.uk/cll25/ontologies/2009/10/29/MechanicalEngineeringOntology.owl#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#">
+
+
+    <owl:Class rdf:about="&MechanicalEngineeringOntology;CostDriver">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&MechanicalEngineeringOntology;affectCost"/>
+                <owl:someValuesFrom rdf:resource="&MechanicalEngineeringOntology;Cost"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="&MechanicalEngineeringOntology;CostEngineeringViewpoint"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&MechanicalEngineeringOntology;Material">
+        <owl:equivalentClass rdf:resource="&MechanicalEngineeringOntology;PRODUCT_DESCRIPTION_-_Material"/>
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&MechanicalEngineeringOntology;affectCost"/>
+                <owl:someValuesFrom rdf:resource="&MechanicalEngineeringOntology;Cost"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&MechanicalEngineeringOntology;hasLabel"/>
+                <owl:someValuesFrom rdf:resource="&xsd;string"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&MechanicalEngineeringOntology;hasMaterialProperty"/>
+                <owl:someValuesFrom rdf:resource="&MechanicalEngineeringOntology;MaterialProperties"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+    <owl:Class rdf:about="&MechanicalEngineeringOntology;MaterialCost">
+        <rdfs:subClassOf rdf:resource="&MechanicalEngineeringOntology;Cost"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&MechanicalEngineeringOntology;hasValue"/>
+                <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onDataRange rdf:resource="&xsd;double"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&MechanicalEngineeringOntology;hasUnit"/>
+                <owl:onClass rdf:resource="&MechanicalEngineeringOntology;Unit"/>
+                <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+    <owl:Class rdf:about="&MechanicalEngineeringOntology;MaterialProperties">
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&MechanicalEngineeringOntology;affectCost"/>
+                <owl:someValuesFrom rdf:resource="&MechanicalEngineeringOntology;Cost"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+    <owl:Class rdf:about="&MechanicalEngineeringOntology;Part">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="&MechanicalEngineeringOntology;hasCost"/>
+                        <owl:someValuesFrom rdf:resource="&MechanicalEngineeringOntology;Cost"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="&MechanicalEngineeringOntology;hasManufacturingProcess"/>
+                        <owl:someValuesFrom rdf:resource="&MechanicalEngineeringOntology;ManufacturingProcess"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="&MechanicalEngineeringOntology;hasMaterial"/>
+                        <owl:someValuesFrom rdf:resource="&MechanicalEngineeringOntology;Material"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="&MechanicalEngineeringOntology;hasMaterialProperty"/>
+                        <owl:someValuesFrom rdf:resource="&MechanicalEngineeringOntology;MaterialProperties"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="&MechanicalEngineeringOntology;hasShapeRepresentation"/>
+                        <owl:someValuesFrom rdf:resource="&MechanicalEngineeringOntology;shape_representation"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="&MechanicalEngineeringOntology;hasWeight"/>
+                        <owl:someValuesFrom rdf:resource="&MechanicalEngineeringOntology;Weight"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+
+    <owl:Class rdf:about="&MechanicalEngineeringOntology;MechanicalProperties">
+        <rdfs:subClassOf rdf:resource="&MechanicalEngineeringOntology;MaterialProperties"/>
+    </owl:Class>
+    
+
+    <owl:Class rdf:about="&MechanicalEngineeringOntology;MeltingPoint">
+        <rdfs:subClassOf rdf:resource="&MechanicalEngineeringOntology;PhysicalProperties"/>
+    </owl:Class>
+    
+    <owl:Class rdf:about="&MechanicalEngineeringOntology;PeeningForming">
+        <rdfs:subClassOf rdf:resource="&MechanicalEngineeringOntology;MiscOtherForming"/>
+    </owl:Class>
+    
+    <owl:Class rdf:about="&MechanicalEngineeringOntology;PencilWeldingJoining">
+        <rdfs:subClassOf rdf:resource="&MechanicalEngineeringOntology;WeldingJoining"/>
+    </owl:Class>
+    
+    <owl:Class rdf:about="&MechanicalEngineeringOntology;PercussionWeldingJoining">
+        <rdfs:subClassOf rdf:resource="&MechanicalEngineeringOntology;WeldingJoining"/>
+    </owl:Class>
+    
+    <owl:Class rdf:about="&MechanicalEngineeringOntology;PerforatingPiercingShearingForming">
+        <rdfs:subClassOf rdf:resource="&MechanicalEngineeringOntology;PiercingShearingForming"/>
+    </owl:Class>
+    
+    <owl:Class rdf:about="&MechanicalEngineeringOntology;PeripheralMillingMachining">
+        <rdfs:subClassOf rdf:resource="&MechanicalEngineeringOntology;MillingMachining"/>
+    </owl:Class>
+    
+    <owl:Class rdf:about="&MechanicalEngineeringOntology;PermanentMoldCasting">
+        <rdfs:subClassOf rdf:resource="&MechanicalEngineeringOntology;Casting"/>
+    </owl:Class>
+    
+    <owl:Class rdf:about="&MechanicalEngineeringOntology;PhenolicsAdhesiveBondingJoining">
+        <rdfs:subClassOf rdf:resource="&MechanicalEngineeringOntology;AdhesiveBondingJoining"/>
+    </owl:Class>
+    
+    <owl:Class rdf:about="&MechanicalEngineeringOntology;PhillipsBySlotFasteningWoodAndMetalJoining">
+        <rdfs:subClassOf rdf:resource="&MechanicalEngineeringOntology;BySlotFasteningWoodAndMetalJoining"/>
+        <owl:disjointWith rdf:resource="&MechanicalEngineeringOntology;StraightBySlotFasteningWoodAndMetalJoining"/>
+    </owl:Class>
+    
+    <owl:Class rdf:about="&MechanicalEngineeringOntology;PhotochemicalMachining">
+        <rdfs:subClassOf rdf:resource="&MechanicalEngineeringOntology;Machining"/>
+    </owl:Class>
+    
+    <owl:Class rdf:about="&MechanicalEngineeringOntology;PhysicalProperties">
+        <rdfs:subClassOf rdf:resource="&MechanicalEngineeringOntology;MaterialProperties"/>
+    </owl:Class>
+    
+    <owl:Class rdf:about="&MechanicalEngineeringOntology;PicklingSteelMillMachining">
+        <rdfs:subClassOf rdf:resource="&MechanicalEngineeringOntology;SteelMillMachining"/>
+    </owl:Class>
+    
+    <owl:Class rdf:about="&MechanicalEngineeringOntology;PiercingShearingForming">
+        <rdfs:subClassOf rdf:resource="&MechanicalEngineeringOntology;ShearingForming"/>
+    </owl:Class>
+</rdf:RDF>
+
