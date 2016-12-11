@@ -95,6 +95,12 @@ public class AllValuesRule extends AbstractTableauRule
 		else
 			s = _strategy.getABox().getRole(p);
 
+		if (null == s)
+		{
+			_logger.severe(() -> "[1] Role " + p + " of " + av + "  is null.");
+			return;
+		}
+
 		if (s.isTop() && s.isObjectRole())
 		{
 			applyAllValuesTop(av, c, ds);
@@ -199,6 +205,12 @@ public class AllValuesRule extends AbstractTableauRule
 			}
 			else
 				s = _strategy.getABox().getRole(p);
+
+			if (null == s)
+			{
+				_logger.severe(() -> "[2] Role " + p + " of " + av + "  is null.");
+				return;
+			}
 
 			if (s.isTop() && s.isObjectRole())
 			{

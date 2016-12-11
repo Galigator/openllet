@@ -14,7 +14,7 @@ import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
 import openllet.core.OpenlletOptions;
 import openllet.core.utils.ATermUtils;
-import openllet.core.utils.CollectionUtils;
+import openllet.core.utils.SetUtils;
 import openllet.core.utils.iterator.IteratorUtils;
 import org.apache.jena.graph.Graph;
 import org.apache.jena.graph.GraphListener;
@@ -34,29 +34,24 @@ import org.apache.jena.vocabulary.RDF;
  */
 public class PelletGraphListener implements GraphListener
 {
-	// KB object - used for incremental ABox changes
-	private final KnowledgeBase _kb;
+	private volatile Set<Graph> _leafGraphs = SetUtils.create();
+
+	private final Set<Graph> _changedGraphs = SetUtils.create();
+
+	private boolean _statementDeleted  = false;
 
 	private final Graph _rootGraph;
-
-	private Set<Graph> _leafGraphs;
-
-	private final Set<Graph> _changedGraphs;
-
-	private boolean _statementDeleted;
-
-	private boolean _enabled;
+	
+	// KB object - used for incremental ABox changes
+	private final KnowledgeBase _kb;
+	
+	private boolean _enabled;	
 
 	public PelletGraphListener(final Graph rootGraph, final KnowledgeBase kb, final boolean enabled)
 	{
 		_rootGraph = rootGraph;
 		_kb = kb;
 		_enabled = enabled;
-
-		_leafGraphs = CollectionUtils.makeSet();
-		_changedGraphs = CollectionUtils.makeSet();
-
-		_statementDeleted = false;
 
 		if (enabled)
 			collectLeafGraphs(rootGraph, Collections.<Graph> emptySet());
@@ -169,11 +164,11 @@ public class PelletGraphListener implements GraphListener
 		_statementDeleted = false;
 	}
 
-	public Set<Graph> getChangedGraphs()
+	public Set<Graph> getChangedGraphs() // TODO fix synchronization has in main branch.
 	{
 		final Set<Graph> prevLeaves = _leafGraphs;
 
-		_leafGraphs = CollectionUtils.makeSet();
+		_leafGraphs = SetUtils.create();
 
 		collectLeafGraphs(_rootGraph, prevLeaves);
 

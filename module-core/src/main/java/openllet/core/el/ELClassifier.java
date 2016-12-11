@@ -27,6 +27,7 @@ import openllet.core.utils.CollectionUtils;
 import openllet.core.utils.MultiValueMap;
 import openllet.core.utils.PartialOrderComparator;
 import openllet.core.utils.PartialOrderRelation;
+import openllet.core.utils.SetUtils;
 import openllet.core.utils.Timer;
 import openllet.core.utils.Timers;
 import openllet.shared.tools.Log;
@@ -451,7 +452,7 @@ public class ELClassifier extends CDOptimizedTaxonomyBuilder
 		final Set<Trigger> TOP_TRIGGERS = TOP.getTriggers();
 		for (final ConceptInfo ci : _concepts.values())
 		{
-			final Set<Trigger> queueList = CollectionUtils.makeSet(TOP_TRIGGERS);
+			final Set<Trigger> queueList = SetUtils.create(TOP_TRIGGERS);
 			queueList.addAll(ci.getTriggers());
 
 			if (!queueList.isEmpty())

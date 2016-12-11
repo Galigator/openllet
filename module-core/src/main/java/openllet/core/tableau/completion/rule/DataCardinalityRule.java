@@ -71,6 +71,9 @@ public class DataCardinalityRule extends AbstractTableauRule
 			final ATermAppl r = (ATermAppl) rTerm;
 			final Role role = _strategy.getABox().getRole(r);
 
+			if (null == role) // FIXME null should not be observe.
+				continue;
+
 			/*
 			 * Skip any roles that are not datatype properties
 			 */

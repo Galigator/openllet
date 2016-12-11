@@ -8,12 +8,6 @@ package openllet.core.utils.fsm;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2006
  * </p>
  * <p>

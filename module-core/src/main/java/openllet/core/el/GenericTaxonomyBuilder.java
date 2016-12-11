@@ -14,8 +14,8 @@ import openllet.core.taxonomy.Taxonomy;
 import openllet.core.taxonomy.TaxonomyImpl;
 import openllet.core.taxonomy.TaxonomyNode;
 import openllet.core.utils.ATermUtils;
-import openllet.core.utils.CollectionUtils;
 import openllet.core.utils.MultiValueMap;
+import openllet.core.utils.SetUtils;
 
 /**
  * <p>
@@ -61,8 +61,8 @@ public class GenericTaxonomyBuilder
 
 		if (node == null)
 		{
-			final Set<ATermAppl> equivalents = CollectionUtils.makeSet();
-			final Set<TaxonomyNode<ATermAppl>> subsumerNodes = CollectionUtils.makeSet();
+			final Set<ATermAppl> equivalents = SetUtils.create();
+			final Set<TaxonomyNode<ATermAppl>> subsumerNodes = SetUtils.create();
 
 			for (final ATermAppl subsumer : _subsumers.get(c))
 			{
@@ -89,8 +89,8 @@ public class GenericTaxonomyBuilder
 
 	private TaxonomyNode<ATermAppl> add(final ATermAppl c, final Set<TaxonomyNode<ATermAppl>> subsumers)
 	{
-		final Set<TaxonomyNode<ATermAppl>> parents = CollectionUtils.makeSet(subsumers);
-		final Set<ATermAppl> supers = CollectionUtils.makeSet();
+		final Set<TaxonomyNode<ATermAppl>> parents = SetUtils.create(subsumers);
+		final Set<ATermAppl> supers = SetUtils.create();
 		final Set<ATermAppl> subs = Collections.singleton(ATermUtils.BOTTOM);
 
 		for (final TaxonomyNode<ATermAppl> subsumer : subsumers)

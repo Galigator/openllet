@@ -524,13 +524,9 @@ public class ABoxImpl implements ABox
 		}
 		else
 		{
-
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("Cache " + rootNode.debugString());
+			_logger.fine(() -> "Cache " + rootNode.debugString());
 
 			_cache.put(c, CachedNodeFactory.createNode(c, rootNode));
-
-			//			System.err.println( c + " " + rootNode.debugString() );
 		}
 	}
 
@@ -1418,13 +1414,11 @@ public class ABoxImpl implements ABox
 			abox.setSyntacticUpdate(false);
 		}
 
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Consistency check starts");
+		_logger.fine(() -> "Consistency check starts");
 
 		final CompletionStrategy strategy = _kb.chooseStrategy(abox, expr);
 
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Strategy: " + strategy.getClass().getName());
+		_logger.fine(() -> "Strategy: " + strategy.getClass().getName());
 
 		final Timer completionTimer = _kb.getTimers().getTimer("complete");
 		completionTimer.start();
@@ -2021,7 +2015,7 @@ public class ABoxImpl implements ABox
 	}
 
 	/**
-	 * @return Returns the _isComplete.
+	 * @return Returns the isComplete.
 	 */
 	@Override
 	public boolean isComplete()
@@ -2079,7 +2073,7 @@ public class ABoxImpl implements ABox
 	}
 
 	/**
-	 * @return Returns the _kb.
+	 * @return Returns the kb.
 	 */
 	@Override
 	public KnowledgeBase getKB()
@@ -2115,9 +2109,9 @@ public class ABoxImpl implements ABox
 	}
 
 	/**
-	 * Return the _current _branch number. Branches are created when a non-deterministic rule, e.g. _disjunction or max rule, is being applied.
+	 * Return the _current branch number. Branches are created when a non-deterministic rule, e.g. disjunction or max rule, is being applied.
 	 *
-	 * @return Returns the _branch.
+	 * @return Returns the branch.
 	 */
 	@Override
 	public int getBranch()
@@ -2144,7 +2138,7 @@ public class ABoxImpl implements ABox
 	/**
 	 * Check if the ABox is ready to be completed.
 	 *
-	 * @return Returns the _initialized.
+	 * @return Returns the initialized.
 	 */
 	@Override
 	public boolean isInitialized()
@@ -2161,7 +2155,7 @@ public class ABoxImpl implements ABox
 	/**
 	 * Checks if the clashExplanation is turned on.
 	 *
-	 * @return Returns the _doExplanation.
+	 * @return Returns the doExplanation.
 	 */
 	@Override
 	final public boolean doExplanation()
@@ -2209,7 +2203,7 @@ public class ABoxImpl implements ABox
 	}
 
 	/**
-	 * Returns the _branches.
+	 * Returns the branches.
 	 */
 	@Override
 	public List<Branch> getBranches()
@@ -2233,7 +2227,7 @@ public class ABoxImpl implements ABox
 	}
 
 	/**
-	 * Validate all the edges in the ABox _nodes. Used to find bugs in the copy and detach/attach functions.
+	 * Validate all the edges in the ABox nodes. Used to find bugs in the copy and detach/attach functions.
 	 */
 	@Override
 	public void validate()
@@ -2534,7 +2528,7 @@ public class ABoxImpl implements ABox
 	}
 
 	/**
-	 * @return the _anonCount
+	 * @return the anonCount
 	 */
 	@Override
 	public int getAnonCount()
@@ -2543,7 +2537,7 @@ public class ABoxImpl implements ABox
 	}
 
 	/**
-	 * @return the _disjBranchStats
+	 * @return the disjBranchStats
 	 */
 	@Override
 	public Map<ATermAppl, int[]> getDisjBranchStats()
@@ -2558,7 +2552,7 @@ public class ABoxImpl implements ABox
 	}
 
 	/**
-	 * @return the _changed
+	 * @return the changed
 	 */
 	@Override
 	public boolean isChanged()
@@ -2567,7 +2561,7 @@ public class ABoxImpl implements ABox
 	}
 
 	/**
-	 * @return the _toBeMerged
+	 * @return the toBeMerged
 	 */
 	@Override
 	public List<NodeMerge> getToBeMerged()

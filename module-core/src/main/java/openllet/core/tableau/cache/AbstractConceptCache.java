@@ -263,6 +263,9 @@ public abstract class AbstractConceptCache implements ConceptCache
 			r = ((ATermList) r).getFirst();
 		final Role role = kb.getRole(r);
 
+		if (null == role) // FIXME : null is unexpected.
+			return Bool.UNKNOWN;
+
 		if (!role.hasComplexSubRole())
 		{
 			if (otherRoot.hasRNeighbor(role))

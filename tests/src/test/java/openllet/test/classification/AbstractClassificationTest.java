@@ -81,4 +81,10 @@ public abstract class AbstractClassificationTest
 	{
 		testFile("MechanicalEngineering");
 	}
+	
+//	@Test
+//	public void simpleMechanicalEngineeringTest() throws Exception
+//	{
+//		testFile("ME");
+//	}
 }

@@ -6,22 +6,15 @@
 
 package openllet.core.el;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 import openllet.aterm.ATermAppl;
 import openllet.core.utils.ATermUtils;
-import openllet.core.utils.CollectionUtils;
 import openllet.core.utils.MultiValueMap;
+import openllet.core.utils.SetUtils;
 import openllet.shared.tools.Log;
 
 /**
- * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
  * <p>
  * Copyright: Copyright (c) 2007
  * </p>
@@ -39,20 +32,20 @@ class ConceptInfo
 	private final Set<Trigger> triggers;
 
 	private final MultiValueMap<ATermAppl, ConceptInfo> successors;
-	private final MultiValueMap<ATermAppl, ConceptInfo> predecessors;
+	private final MultiValueMap<ATermAppl, ConceptInfo> predecessors = new MultiValueMap<>();
 
-	private final Set<ConceptInfo> superClasses;
+	private final Set<ConceptInfo> superClasses = SetUtils.create();
 
 	public ConceptInfo(final ATermAppl c, final boolean storeSuccessors, final boolean noTriggers)
 	{
 		concept = c;
 
-		superClasses = CollectionUtils.makeSet();
+		superClasses.clear();
 
 		successors = storeSuccessors ? new MultiValueMap<>() : null;
-		predecessors = new MultiValueMap<>();
+		predecessors.clear();
 
-		triggers = noTriggers ? null : new HashSet<>();
+		triggers = noTriggers ? null : SetUtils.create();
 	}
 
 	public boolean addSuccessor(final ATermAppl p, final ConceptInfo ci)
@@ -81,7 +74,7 @@ class ConceptInfo
 	@Override
 	public boolean equals(final Object obj)
 	{
-		return (obj instanceof ConceptInfo) && ((ConceptInfo) obj).concept == concept;
+		return obj instanceof ConceptInfo && ((ConceptInfo) obj).concept == concept;
 	}
 
 	public ATermAppl getConcept()

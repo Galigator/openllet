@@ -14,6 +14,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import openllet.atom.OpenError;
 import openllet.owlwg.owlapi.testcase.impl.OwlApiCase;
 import openllet.owlwg.runner.TestRunner;
 import openllet.owlwg.testcase.ConsistencyTest;
@@ -108,7 +109,7 @@ public abstract class OwlApiAbstractRunner implements TestRunner<OWLOntology>
 	private class Runner implements TestCaseVisitor<OWLOntology>
 	{
 
-		private TestRunResult[] _results;
+		private volatile TestRunResult[] _results;
 
 		public List<TestRunResult> getResults(final OwlApiCase testcase)
 		{
@@ -122,6 +123,8 @@ public abstract class OwlApiAbstractRunner implements TestRunner<OWLOntology>
 		{
 			_results = new TestRunResult[1];
 			_results[0] = runConsistencyTest(testcase);
+			if (null == _results[0])
+				throw new OpenError("Result[0] is null");
 		}
 
 		@Override
@@ -129,6 +132,8 @@ public abstract class OwlApiAbstractRunner implements TestRunner<OWLOntology>
 		{
 			_results = new TestRunResult[1];
 			_results[0] = runInconsistencyTest(testcase);
+			if (null == _results[0])
+				throw new OpenError("Result[0] is null");
 		}
 
 		@Override
@@ -136,7 +141,11 @@ public abstract class OwlApiAbstractRunner implements TestRunner<OWLOntology>
 		{
 			_results = new TestRunResult[2];
 			_results[0] = runConsistencyTest(testcase);
+			if (null == _results[0])
+				throw new OpenError("Result[0] is null");
 			_results[1] = runEntailmentTest(testcase);
+			if (null == _results[1])
+				throw new OpenError("Result[1] is null");
 		}
 
 		@Override
@@ -144,7 +153,11 @@ public abstract class OwlApiAbstractRunner implements TestRunner<OWLOntology>
 		{
 			_results = new TestRunResult[2];
 			_results[0] = runConsistencyTest(testcase);
+			if (null == _results[0])
+				throw new OpenError("Result[0] is null");
 			_results[1] = runEntailmentTest(testcase);
+			if (null == _results[1])
+				throw new OpenError("Result[1] is null");
 		}
 	}
 

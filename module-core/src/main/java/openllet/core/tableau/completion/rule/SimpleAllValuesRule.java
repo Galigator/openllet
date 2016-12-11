@@ -43,6 +43,12 @@ public class SimpleAllValuesRule extends AllValuesRule
 
 		final Role s = _strategy.getABox().getRole(p);
 
+		if (null == s)
+		{
+			_logger.severe(() -> "[1] Role " + p + " of " + av + "  is null.");
+			return;
+		}
+
 		if (s.isTop() && s.isObjectRole())
 		{
 			applyAllValuesTop(av, c, ds);
@@ -107,6 +113,12 @@ public class SimpleAllValuesRule extends AllValuesRule
 			final ATermAppl c = (ATermAppl) av.getArgument(1);
 
 			final Role s = _strategy.getABox().getRole(p);
+
+			if (null == s)
+			{
+				_logger.severe(() -> "[2] Role " + p + " is null.");
+				continue;
+			}
 
 			if (s.isTop() && s.isObjectRole())
 			{

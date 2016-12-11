@@ -13,16 +13,10 @@ import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
 import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.utils.ATermUtils;
-import openllet.core.utils.CollectionUtils;
+import openllet.core.utils.SetUtils;
 import openllet.core.utils.iterator.MultiListIterator;
 
 /**
- * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
  * <p>
  * Copyright: Copyright (c) 2008
  * </p>
@@ -90,7 +84,7 @@ public class ELSyntaxUtils
 		if (fun.equals(ATermUtils.ANDFUN))
 		{
 			final ATermList conjuncts = (ATermList) elConcept.getArgument(0);
-			final Set<ATermAppl> set = CollectionUtils.makeSet();
+			final Set<ATermAppl> set = SetUtils.create();
 			for (final MultiListIterator i = new MultiListIterator(conjuncts); i.hasNext();)
 			{
 				final ATermAppl c = i.next();

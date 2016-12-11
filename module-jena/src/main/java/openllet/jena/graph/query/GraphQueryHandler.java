@@ -115,13 +115,11 @@ public class GraphQueryHandler
 	{
 		final Triple pattern = Triple.create(s, p, o);
 
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Registering handler for pattern: " + pattern);
+		_logger.fine(() -> "Registering handler for pattern: " + pattern);
 
 		final Object prev = QUERY_HANDLERS.put(pattern, handler);
 		if (prev != null)
-			if (_logger.isLoggable(Level.SEVERE))
-				_logger.severe("Existing handler found for pattern: " + pattern);
+			_logger.severe(() -> "Existing handler found for pattern: " + pattern);
 	}
 
 	private static void registerQueryHandlers()

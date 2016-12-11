@@ -560,13 +560,13 @@ public class RoleImpl implements Role
 	@Override
 	public boolean isSubRoleOf(final Role r)
 	{
-		return _superRoles.contains(r);
+		return null != r && _superRoles.contains(r);
 	}
 
 	@Override
 	public boolean isSuperRoleOf(final Role r)
 	{
-		return _subRoles.contains(r);
+		return null != r && _subRoles.contains(r);
 	}
 
 	@Override

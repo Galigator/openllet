@@ -46,6 +46,7 @@ import openllet.aterm.ATermInt;
 import openllet.aterm.ATermList;
 import openllet.core.DependencySet;
 import openllet.core.OpenlletOptions;
+import openllet.core.boxes.rbox.Role;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.CollectionUtils;
 import openllet.shared.tools.Log;
@@ -322,7 +323,11 @@ public class TgBox extends TBoxBase
 			if (ATermUtils.isSomeValues(name))
 			{
 				final ATermAppl r = (ATermAppl) name.getArgument(0);
-				if (_kb.getRole(r).hasComplexSubRole())
+				final Role role = _kb.getRole(r);
+				if (null == role) // FIXME null is unexpected.
+					continue;
+
+				if (role.hasComplexSubRole())
 					continue;
 
 				final ATermAppl domain = ATermUtils.makeNot(ATermUtils.makeAnd(ATermUtils.makeList(set)));

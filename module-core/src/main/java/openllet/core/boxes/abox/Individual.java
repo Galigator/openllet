@@ -755,6 +755,9 @@ public class Individual extends Node implements CachedNode
 
 	public EdgeList getRNeighborEdges(final Role r)
 	{
+		if (null == r)
+			return new EdgeList(); // TODO : this is really ugly.
+
 		final EdgeList neighbors = outEdges.getEdges(r);
 
 		final Role invR = r.getInverse();

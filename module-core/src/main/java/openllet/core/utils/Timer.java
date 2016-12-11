@@ -211,7 +211,7 @@ public class Timer
 		final long elapsed = getElapsed();
 
 		if (_timeout != NO_TIMEOUT && elapsed > _timeout)
-			throw new TimeoutException("Running time of " + _name + " exceeded _timeout of " + _timeout);
+			throw new TimeoutException("Running time of " + _name + " exceeded timeout of " + _timeout);
 
 		if (_parent != null)
 			_parent.check();

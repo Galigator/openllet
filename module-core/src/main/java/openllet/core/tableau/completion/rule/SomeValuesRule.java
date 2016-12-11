@@ -137,6 +137,9 @@ public class SomeValuesRule extends AbstractTableauRule
 		if (neighborFound)
 			return;
 
+		if (null == role)
+			return; // FIXME : this is the echo of a previous error.
+
 		// If not, we have to create it
 		// If the role is a datatype property...
 		if (role.isDatatypeRole())
@@ -293,7 +296,7 @@ public class SomeValuesRule extends AbstractTableauRule
 				_strategy.addType(y, c, ds);
 
 				if (!useExistingRole)
-					if (x.isBlockable() && (y != null && y.isConceptRoot()))
+					if (x.isBlockable() && y != null && y.isConceptRoot())
 						_strategy.addEdge((Individual) y, role.getInverse(), x, ds);
 					else
 						_strategy.addEdge(x, role, y, ds);

@@ -66,18 +66,14 @@ public class SimplifiedELClassifier extends CDOptimizedTaxonomyBuilder
 
 	private static final boolean MATERIALIZE_SUPER_PROPERTIES = false;
 
+	private final Queue<QueueElement> _primaryQueue = new LinkedList<>();
+	private final Map<ATermAppl, ConceptInfo> _concepts = CollectionUtils.makeMap();
+	private final MultiValueMap<ATermAppl, ConceptInfo> _existentials = new MultiValueMap<>();
+	private final MultiValueMap<ConceptInfo, ConceptInfo> _conjunctions = new MultiValueMap<>();
+
 	private ConceptInfo TOP;
 	private ConceptInfo BOTTOM;
-
 	private boolean _hasComplexRoles;
-
-	private Queue<QueueElement> _primaryQueue;
-
-	private Map<ATermAppl, ConceptInfo> _concepts;
-
-	private MultiValueMap<ATermAppl, ConceptInfo> _existentials;
-	private MultiValueMap<ConceptInfo, ConceptInfo> _conjunctions;
-
 	private RoleChainCache _roleChains;
 	private RoleRestrictionCache _roleRestrictions;
 
@@ -93,12 +89,10 @@ public class SimplifiedELClassifier extends CDOptimizedTaxonomyBuilder
 
 		_hasComplexRoles = _kb.getExpressivity().hasTransitivity() || _kb.getExpressivity().hasComplexSubRoles();
 
-		_primaryQueue = new LinkedList<>();
-
-		_concepts = CollectionUtils.makeMap();
-
-		_existentials = new MultiValueMap<>();
-		_conjunctions = new MultiValueMap<>();
+		_primaryQueue.clear();
+		_concepts.clear();
+		_existentials.clear();
+		_conjunctions.clear();
 
 		_roleChains = new RoleChainCache(_kb);
 		_roleRestrictions = new RoleRestrictionCache(_kb.getRBox());
@@ -124,11 +118,11 @@ public class SimplifiedELClassifier extends CDOptimizedTaxonomyBuilder
 		_monitor.setProgressLength(queueSize);
 		_monitor.taskStarted();
 
-		_logger.fine("Processing _queue");
+		_logger.fine("Processing queue");
 		t = timers.startTimer("processQueue");
 		processQueue();
 		t.stop();
-		_logger.fine("Processed _queue");
+		_logger.fine("Processed queue");
 
 		if (_logger.isLoggable(Level.FINER))
 			print();
@@ -153,8 +147,7 @@ public class SimplifiedELClassifier extends CDOptimizedTaxonomyBuilder
 		if (!pred.addSuccessor(p, succ))
 			return;
 
-		if (_logger.isLoggable(Level.FINER))
-			_logger.finer("Adding " + pred + " -> " + ATermUtils.toString(p) + " -> " + succ);
+		_logger.finer(() -> "Adding " + pred + " -> " + ATermUtils.toString(p) + " -> " + succ);
 
 		if (succ == BOTTOM)
 		{
@@ -221,15 +214,13 @@ public class SimplifiedELClassifier extends CDOptimizedTaxonomyBuilder
 		if (sub.addSuperClass(sup))
 		{
 			_primaryQueue.add(new QueueElement(sub, sup));
-			if (_logger.isLoggable(Level.FINER))
-				_logger.finer("Queue " + sub + " " + sup);
+			_logger.finer(() -> "Queue " + sub + " " + sup);
 		}
 	}
 
 	private void addSuperClass(final ConceptInfo sub, final ConceptInfo sup)
 	{
-		if (_logger.isLoggable(Level.FINER))
-			_logger.finer("Adding " + sub + " < " + sup);
+		_logger.finer(() -> "Adding " + sub + " < " + sup);
 
 		if (sup == BOTTOM)
 		{

@@ -265,7 +265,7 @@ public class SetUtils
 	 * @param elements
 	 * @return a new set containing all the elements in the collection
 	 */
-	public static <T> Set<T> create(final Collection<T> elements)
+	public static <T> Set<T> create(final Collection<? extends T> elements)
 	{
 		final Set<T> result = create();
 		result.addAll(elements);

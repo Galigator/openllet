@@ -29,7 +29,7 @@ public class MultiMapUtils
 		Set<V> values = map.get(key);
 		if (values == null)
 		{
-			values = CollectionUtils.makeSet();
+			values = SetUtils.create();
 			map.put(key, values);
 		}
 
@@ -41,7 +41,7 @@ public class MultiMapUtils
 		Set<V> values = map.get(key);
 		if (values == null)
 		{
-			values = CollectionUtils.makeSet();
+			values = SetUtils.create();
 			map.put(key, values);
 		}
 

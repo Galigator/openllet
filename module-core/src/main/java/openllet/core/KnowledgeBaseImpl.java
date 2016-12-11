@@ -2391,7 +2391,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		_logger.fine("Classifying...");
 
-		final Timer timer = _timers.startTimer("classify");
+		final Timer timer = _timers.startTimer("classify"); // TODO : coordination of the name of the classifier with the Taxonomy builders..
 
 		_builder = getTaxonomyBuilder();
 		final boolean isClassified;
@@ -4962,6 +4962,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 				_builder = new SimplifiedELClassifier(this);
 			else
 				_builder = new CDOptimizedTaxonomyBuilder(this);
+			//_builder = new CDOptimizedTaxonomyBuilderProb(this, Optional.ofNullable(_builderProgressMonitor));
 
 			if (_builderProgressMonitor != null)
 				_builder.setProgressMonitor(_builderProgressMonitor);

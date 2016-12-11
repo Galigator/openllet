@@ -109,7 +109,7 @@ public class TBoxImpl implements TBox
 
 	private final Set<ATermAppl> _tboxAssertedAxioms = CollectionUtils.makeIdentitySet();
 
-	private final Set<ATermAppl> _absorbedAxioms = CollectionUtils.makeSet();
+	private final Set<ATermAppl> _absorbedAxioms = SetUtils.create();
 
 	private final PrimitiveTBox _primitiveTbox;
 	private final UnaryTBox _unaryTbox;
@@ -295,11 +295,11 @@ public class TBoxImpl implements TBox
 	{
 		_logger.fine(() -> "Absorb: subClassOf(" + ATermUtils.toString(sub) + ", " + ATermUtils.toString(sup) + ")");
 
-		final Set<ATermAppl> terms = CollectionUtils.makeSet();
+		final Set<ATermAppl> terms = SetUtils.create();
 		terms.add(nnf(sub));
 		terms.add(nnf(negate(sup)));
 
-		absorbAxiom(terms, CollectionUtils.makeSet(explanation));
+		absorbAxiom(terms, SetUtils.create(explanation));
 	}
 
 	private final Absorption[] absorptions = { new BinaryAbsorption(true), new DeterministicUnaryAbsorption(), new SimplifyAbsorption(), new OneOfAbsorption(), new HasValueAbsorption(), new RuleAbsorption(), new BinaryAbsorption(false), new ExistentialAbsorption(), new UnaryAbsorption(), new UnfoldAbsorption(), new DomainAbsorption(), new GeneralAbsorption() };
@@ -363,7 +363,7 @@ public class TBoxImpl implements TBox
 					i.remove();
 					for (ATermList list = (ATermList) term.getArgument(0); !list.isEmpty(); list = list.getNext())
 					{
-						final Set<ATermAppl> newTerms = CollectionUtils.makeSet(terms);
+						final Set<ATermAppl> newTerms = SetUtils.create(terms);
 						newTerms.add((ATermAppl) list.getFirst());
 						absorbAxiom(newTerms, explanation);
 					}

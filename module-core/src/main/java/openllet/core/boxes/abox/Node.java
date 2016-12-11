@@ -186,6 +186,13 @@ public abstract class Node
 			final Edge edge = oldEdges.edgeAt(i);
 
 			final Individual from = _abox.getIndividual(edge.getFrom().getName());
+
+			if (null == from)
+			{
+				_logger.severe(() -> "The 'from' individual, " + edge.getFrom() + " is now null is the edge when updating references. The edge is ignore.");
+				continue;
+			}
+
 			final Edge newEdge = new DefaultEdge(edge.getRole(), from, this, edge.getDepends());
 
 			_inEdges.addEdge(newEdge);

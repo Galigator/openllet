@@ -26,6 +26,8 @@ public class DefinitionOrderFactory
 	{
 		final Comparator<ATerm> comparator = OpenlletOptions.ORDERED_CLASSIFICATION != DISABLED ? Comparators.termComparator : null;
 
-		return OpenlletOptions.ORDERED_CLASSIFICATION == ENABLED_LEGACY_ORDERING ? new TaxonomyBasedDefinitionOrder(kb, comparator) : new JGraphBasedDefinitionOrder(kb, comparator);
+		return OpenlletOptions.ORDERED_CLASSIFICATION == ENABLED_LEGACY_ORDERING ? //
+				new TaxonomyBasedDefinitionOrder(kb, comparator) : //
+				new JGraphBasedDefinitionOrder(kb, comparator);
 	}
 }

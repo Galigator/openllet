@@ -14,6 +14,7 @@ import static org.junit.Assert.fail;
 import java.util.ArrayList;
 import java.util.List;
 import openllet.jena.PelletReasonerFactory;
+import org.apache.jena.ontology.Individual;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
@@ -53,7 +54,14 @@ public class JenaClassificationTest extends AbstractClassificationTest
 				if (AbstractClassificationTest.FAIL_AT_FIRST_ERROR)
 					fail("Not entailed: " + format(stmt));
 				else
-					nonEntailments.add(format(stmt));
+				{
+					String x = format(stmt);
+					//if (!"[MaterialProperties,subClassOf,CostDriver]".equals(x))
+						nonEntailments.add(format(stmt));
+					Individual i = premise.getIndividual(stmt.getSubject().asResource().getURI());
+					System.out.println(i);
+					System.out.println(stmt.getPredicate());
+				}
 		}
 
 		assertTrue(nonEntailments.toString(), nonEntailments.isEmpty());

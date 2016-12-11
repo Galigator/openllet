@@ -40,7 +40,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Set;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 import openllet.core.exceptions.InternalReasonerException;
@@ -474,8 +473,7 @@ public class TaxonomyImpl<T> implements Taxonomy<T>
 
 		assert mergeList.size() > 1 : "Attempt to merge less than two _nodes";
 
-		if (_logger.isLoggable(Level.FINER))
-			_logger.finer("Merge " + mergeList);
+		_logger.finer(() -> "Merge " + mergeList);
 
 		TaxonomyNode<T> node = null;
 		if (mergeList.contains(_topNode))

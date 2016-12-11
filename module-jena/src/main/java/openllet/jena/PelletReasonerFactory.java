@@ -30,6 +30,7 @@
 
 package openllet.jena;
 
+import java.util.Optional;
 import org.apache.jena.ontology.OntModelSpec;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
@@ -62,7 +63,7 @@ public class PelletReasonerFactory implements ReasonerFactory
 		return _theInstance;
 	}
 
-	private Model _reasonerCapabilities;
+	private volatile Optional<Model> _reasonerCapabilities = Optional.empty();
 
 	private PelletReasonerFactory()
 	{
@@ -83,10 +84,10 @@ public class PelletReasonerFactory implements ReasonerFactory
 	@Override
 	public Model getCapabilities()
 	{
-		if (_reasonerCapabilities == null)
+		if (!_reasonerCapabilities.isPresent())
 		{
-			_reasonerCapabilities = ModelFactory.createDefaultModel();
-			final Resource base = _reasonerCapabilities.createResource(URI);
+			_reasonerCapabilities = Optional.of(ModelFactory.createDefaultModel());
+			final Resource base = _reasonerCapabilities.get().createResource(URI);
 			base.addProperty(ReasonerVocabulary.nameP, "Openllet Reasoner")//
 					.addProperty(ReasonerVocabulary.descriptionP, "Reasoner that is backed by the OWL DL reasoner Openllet.")//
 					.addProperty(ReasonerVocabulary.supportsP, RDFS.subClassOf)//
@@ -100,7 +101,7 @@ public class PelletReasonerFactory implements ReasonerFactory
 					.addProperty(ReasonerVocabulary.supportsP, ReasonerVocabulary.directRDFType);//
 		}
 
-		return _reasonerCapabilities;
+		return _reasonerCapabilities.get();
 	}
 
 	@Override

@@ -74,6 +74,22 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 
 	private static final Set<ConceptFlag> PHASE1_FLAGS = EnumSet.of(ConceptFlag.COMPLETELY_DEFINED, ConceptFlag.PRIMITIVE, ConceptFlag.OTHER);
 
+	private final Map<ATermAppl, Set<ATermAppl>> _toldDisjoints = CollectionUtils.makeIdentityMap();
+
+	private final Map<ATermAppl, ATermList> _unionClasses = CollectionUtils.makeIdentityMap();
+
+	protected final KnowledgeBase _kb;
+
+	private final List<TaxonomyNode<ATermAppl>> _markedNodes = CollectionUtils.makeList();
+
+	private volatile Optional<DefinitionOrder> _definitionOrder = Optional.empty();
+
+	private volatile boolean _useCD = false;
+
+	private volatile boolean _prepared = false;
+
+	private volatile Map<ATermAppl, ConceptFlag> _conceptFlags = CollectionUtils.makeIdentityMap();
+
 	protected volatile ProgressMonitor _monitor = OpenlletOptions.USE_CLASSIFICATION_MONITOR.create();
 
 	protected volatile Collection<ATermAppl> _classes; // No concurrent write on _classes
@@ -81,22 +97,6 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 	protected volatile Taxonomy<ATermAppl> _toldTaxonomy;
 
 	protected volatile Taxonomy<ATermAppl> _taxonomyImpl;
-
-	private final Map<ATermAppl, Set<ATermAppl>> _toldDisjoints = CollectionUtils.makeIdentityMap();
-
-	private final Map<ATermAppl, ATermList> _unionClasses = CollectionUtils.makeIdentityMap();
-
-	private volatile Optional<DefinitionOrder> _definitionOrder = Optional.empty();
-
-	protected final KnowledgeBase _kb;
-
-	private volatile boolean _useCD = false;
-
-	private final List<TaxonomyNode<ATermAppl>> _markedNodes = CollectionUtils.makeList();
-
-	private volatile Map<ATermAppl, ConceptFlag> _conceptFlags = CollectionUtils.makeIdentityMap();
-
-	private volatile boolean _prepared = false;
 
 	public CDOptimizedTaxonomyBuilder(final KnowledgeBase kb)
 	{
@@ -1228,7 +1228,6 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 			final Individual x = i.next();
 
 			_monitor.incrementProgress();
-
 			_kb.getTimers().getTimer("realize").check();
 
 			if (_monitor.isCanceled())
@@ -1356,7 +1355,6 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 		final Collection<ATermAppl> individuals = _kb.getIndividuals();
 		if (!individuals.isEmpty())
 			realizeByConcept(ATermUtils.TOP, individuals);
-
 		_kb.getTimers().getTimer("realize").check();
 
 		if (_monitor.isCanceled())
