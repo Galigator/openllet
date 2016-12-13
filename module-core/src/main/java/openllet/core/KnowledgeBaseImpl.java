@@ -53,6 +53,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
@@ -157,7 +158,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	protected volatile TBox _tbox;
 	protected volatile RBox _rbox;
 
-	protected volatile TaxonomyBuilder _builder;
+	protected volatile Optional<TaxonomyBuilder> _builder = Optional.empty();
 	protected volatile EnumSet<ChangeType> _changes;
 	protected volatile boolean _canUseIncConsistency = false;
 
@@ -594,7 +595,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public TaxonomyBuilder getBuilder()
 	{
-		return _builder;
+		return getTaxonomyBuilder();
 	}
 
 	@Override
@@ -643,7 +644,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		_individuals.clear();
 		_aboxAssertions.clear();
 		_instances.clear();
-		_builder = null;
+		_builder = Optional.empty();
 
 		_state.clear();
 		_changes = EnumSet.of(ChangeType.ABOX_ADD, ChangeType.TBOX_ADD, ChangeType.RBOX_ADD);
@@ -2101,7 +2102,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		if (!reuseTaxonomy)
 		{
 			_state.remove(ReasoningState.CLASSIFY);
-			_builder = null;
+			_builder = Optional.empty();
 			// taxonomy = null;
 		}
 
@@ -2393,11 +2394,11 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		final Timer timer = _timers.startTimer("classify"); // TODO : coordination of the name of the classifier with the Taxonomy builders..
 
-		_builder = getTaxonomyBuilder();
+		final TaxonomyBuilder builder = getTaxonomyBuilder();
 		final boolean isClassified;
-		synchronized (_builder)
+		synchronized (builder)
 		{
-			isClassified = _builder.classify();
+			isClassified = builder.classify();
 		}
 
 		timer.stop();
@@ -2425,9 +2426,10 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		// This is false if the progress monitor is canceled
 		final boolean isRealized;
-		synchronized (_builder)
+		final TaxonomyBuilder builder = getTaxonomyBuilder();
+		synchronized (builder)
 		{
-			isRealized = _builder.realize();
+			isRealized = builder.realize();
 		}
 
 		timer.stop();
@@ -3122,7 +3124,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		if (isClassified() && !doExplanation())
 		{
-			final Bool equivToBottom = _builder.getTaxonomy().isEquivalent(ATermUtils.BOTTOM, normalClass);
+			final Bool equivToBottom = getTaxonomyBuilder().getTaxonomy().isEquivalent(ATermUtils.BOTTOM, normalClass);
 			if (equivToBottom.isKnown())
 				return equivToBottom.isFalse();
 		}
@@ -3203,7 +3205,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		if (isClassified() && !doExplanation())
 		{
-			final Bool isSubNode = _builder.getTaxonomy().isSubNodeOf(normalC1, normalC2);
+			final Bool isSubNode = getTaxonomyBuilder().getTaxonomy().isSubNodeOf(normalC1, normalC2);
 			if (isSubNode.isKnown())
 				return isSubNode.isTrue();
 		}
@@ -3247,7 +3249,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		{
 			Bool isEquivalent = Bool.UNKNOWN;
 			if (isClassified())
-				isEquivalent = _builder.getTaxonomy().isEquivalent(normalC1, normalC2);
+				isEquivalent = getTaxonomyBuilder().getTaxonomy().isEquivalent(normalC1, normalC2);
 
 			if (isEquivalent.isUnknown())
 				isEquivalent = _abox.isKnownSubClassOf(normalC1, normalC2).and(_abox.isKnownSubClassOf(normalC2, normalC1));
@@ -3396,10 +3398,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		if (isRealized() && !doExplanation())
 		{
-			if (_builder == null)
-				throw new NullPointerException("Builder is null");
-
-			final Taxonomy<ATermAppl> taxonomy = _builder.getTaxonomy();
+			final Taxonomy<ATermAppl> taxonomy = getTaxonomyBuilder().getTaxonomy();
 
 			if (taxonomy == null)
 				throw new NullPointerException("Taxonomy is null");
@@ -3604,10 +3603,10 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		classify();
 
-		final Taxonomy<ATermAppl> taxonomy = _builder.getTaxonomy();
+		final Taxonomy<ATermAppl> taxonomy = getTaxonomyBuilder().getTaxonomy();
 
 		if (!taxonomy.contains(c))
-			_builder.classify(c);
+			getTaxonomyBuilder().classify(c);
 
 		return taxonomy//
 				.supers(c, direct)//
@@ -3774,7 +3773,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		if (types.isEmpty() && !OpenlletOptions.AUTO_REALIZE)
 		{
 			classify();
-			_builder.realize(ind);
+			getTaxonomyBuilder().realize(ind);
 			types = getPrimitiveTypes(ind, direct);
 		}
 
@@ -3784,7 +3783,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	private Set<Set<ATermAppl>> getPrimitiveTypes(final ATermAppl ind, final boolean direct)
 	{
 		final Set<Set<ATermAppl>> types = new HashSet<>();
-		for (final Set<ATermAppl> t : TaxonomyUtils.getTypes(_builder.getTaxonomy(), ind, direct))
+		for (final Set<ATermAppl> t : TaxonomyUtils.getTypes(getTaxonomyBuilder().getTaxonomy(), ind, direct))
 		{
 			final Set<ATermAppl> eqSet = ATermUtils.primitiveOrBottom(t);
 			if (!eqSet.isEmpty())
@@ -3848,10 +3847,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		else
 			if (isRealized())
 			{
-				if (_builder == null)
-					throw new OpenError("Builder is null");
-
-				final Taxonomy<ATermAppl> taxonomy = _builder.getTaxonomy();
+				final Taxonomy<ATermAppl> taxonomy = getTaxonomyBuilder().getTaxonomy();
 
 				if (taxonomy == null)
 					throw new OpenError("Taxonomy is null");
@@ -3892,10 +3888,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		realize();
 
-		if (_builder == null)
-			throw new OpenError("Builder is null");
-
-		final Taxonomy<ATermAppl> taxonomy = _builder.getTaxonomy();
+		final Taxonomy<ATermAppl> taxonomy = getTaxonomyBuilder().getTaxonomy();
 
 		if (taxonomy == null)
 			throw new OpenError("Taxonomy is null");
@@ -3905,7 +3898,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 			return TaxonomyUtils.getDirectInstances(taxonomy, c);
 
 		if (!taxonomy.contains(c))
-			_builder.classify(c);
+			getTaxonomyBuilder().classify(c);
 
 		// Direct _instances for anonymous concepts
 		final Set<ATermAppl> ret = new HashSet<>();
@@ -3975,10 +3968,10 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		classify();
 
-		final Taxonomy<ATermAppl> taxonomy = _builder.getTaxonomy();
+		final Taxonomy<ATermAppl> taxonomy = getTaxonomyBuilder().getTaxonomy();
 
 		if (!taxonomy.contains(normalC))
-			_builder.classify(normalC);
+			getTaxonomyBuilder().classify(normalC);
 
 		return ATermUtils.primitiveOrBottom(taxonomy.getAllEquivalents(normalC));
 	}
@@ -4017,10 +4010,10 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		classify();
 
-		final Taxonomy<ATermAppl> taxonomy = _builder.getTaxonomy();
+		final Taxonomy<ATermAppl> taxonomy = getTaxonomyBuilder().getTaxonomy();
 
 		if (!taxonomy.contains(normalC))
-			_builder.classify(normalC);
+			getTaxonomyBuilder().classify(normalC);
 
 		final Set<Set<ATermAppl>> subs = new HashSet<>();
 		for (final Set<ATermAppl> s : taxonomy.getSubs(normalC, direct))
@@ -4678,10 +4671,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 				Set<ATermAppl> subs = Collections.emptySet();
 				if (isClassified())
 				{
-					if (_builder == null)
-						throw new NullPointerException("Builder is null");
-
-					final Taxonomy<ATermAppl> taxonomy = _builder.getTaxonomy();
+					final Taxonomy<ATermAppl> taxonomy = getTaxonomyBuilder().getTaxonomy();
 
 					if (taxonomy == null)
 						throw new NullPointerException("Taxonomy");
@@ -4857,7 +4847,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	{
 		classify();
 
-		new ClassTreePrinter().print(_builder.getTaxonomy());
+		new ClassTreePrinter().print(getTaxonomyBuilder().getTaxonomy());
 	}
 
 	public void printClassTree(final PrintWriter out)
@@ -4867,7 +4857,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		classify();
 
-		new ClassTreePrinter().print(_builder.getTaxonomy(), out);
+		new ClassTreePrinter().print(getTaxonomyBuilder().getTaxonomy(), out);
 	}
 
 	/**
@@ -4948,27 +4938,30 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	{
 		classify();
 
-		return _builder.getTaxonomy();
+		return getTaxonomyBuilder().getTaxonomy();
 	}
 
 	@Override
 	public TaxonomyBuilder getTaxonomyBuilder()
 	{
-		if (_builder == null)
+		if (!_builder.isPresent())
 		{
 			prepare();
+			TaxonomyBuilder builder;
 
 			if (_expChecker.getExpressivity().isEL() && !OpenlletOptions.DISABLE_EL_CLASSIFIER)
-				_builder = new SimplifiedELClassifier(this);
+				builder = new SimplifiedELClassifier(this);
 			else
-				_builder = new CDOptimizedTaxonomyBuilder(this);
-			//_builder = new CDOptimizedTaxonomyBuilderProb(this, Optional.ofNullable(_builderProgressMonitor));
+				builder = new CDOptimizedTaxonomyBuilder(this);
+			//builder = new CDOptimizedTaxonomyBuilderProb(this, Optional.ofNullable(_builderProgressMonitor));
 
 			if (_builderProgressMonitor != null)
-				_builder.setProgressMonitor(_builderProgressMonitor);
+				builder.setProgressMonitor(_builderProgressMonitor);
+
+			_builder = Optional.of(builder);
 		}
 
-		return _builder;
+		return _builder.get();
 	}
 
 	@Override
@@ -4979,8 +4972,8 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		_builderProgressMonitor = progressMonitor;
 
-		if (_builder != null)
-			_builder.setProgressMonitor(progressMonitor);
+		if (_builder.isPresent())
+			getTaxonomyBuilder().setProgressMonitor(progressMonitor);
 	}
 
 	@Override
