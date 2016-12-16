@@ -426,6 +426,7 @@ public class TestAnnotations
 		final Query query = QueryFactory.read(QUERY1_RQ);
 		try (final QueryExecution qe = SparqlDLExecutionFactory.create(query, model))
 		{
+			assertTrue("qe must not be null", qe != null);
 			final ResultSet rs = qe.execSelect();
 
 			while (rs.hasNext())
@@ -460,6 +461,8 @@ public class TestAnnotations
 		kb.addSubProperty(r, s);
 
 		// The set of sub/super roles at this point are correct for each role
+		final Set<Set<ATermAppl>> subProperties = kb.getSubProperties(s);
+		assertTrue("subProperties must not be null", subProperties != null);
 		assertEquals(singletonSets(p, r, q), kb.getSubProperties(s));
 	}
 
