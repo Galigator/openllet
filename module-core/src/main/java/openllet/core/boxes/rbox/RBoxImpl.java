@@ -31,13 +31,11 @@
 package openllet.core.boxes.rbox;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
@@ -302,7 +300,6 @@ public class RBoxImpl implements RBox
 	@Override
 	public void computeImmediateSubRoles(final Role r, final Map<ATerm, DependencySet> subs)
 	{
-
 		final Role invR = r.getInverse();
 		if (invR != null && invR != r)
 		{
@@ -311,44 +308,20 @@ public class RBoxImpl implements RBox
 			{
 				final Role subR = invSubR.getInverse();
 				if (subR == null)
-				{
-					if (_logger.isLoggable(Level.FINE))
-						_logger.fine("Property " + invSubR + " was supposed to be an ObjectProperty but it is not!");
-				}
+					_logger.fine(() -> "Property " + invSubR + " was supposed to be an ObjectProperty but it is not!");
 				else
 					if (subR != r)
-					{
-						// System.out.println("expsub:
-						// "+invR.getExplainSub(invSubR.getName()));
-						// System.out.println("expinv:
-						// "+invSubR.getExplainInverse());
-						final DependencySet subDS = invR.getExplainSub(invSubR.getName());
-						subs.put(subR.getName(), subDS);
-					}
+						subs.put(subR.getName(), invR.getExplainSub(invSubR.getName()));
 			}
 			for (final ATermList roleChain : invR.getSubRoleChains())
-			{
-				final DependencySet subDS = invR.getExplainSub(roleChain);
-
-				final ATermList subChain = inverse(roleChain);
-				subs.put(subChain, subDS);
-			}
+				subs.put(inverse(roleChain), invR.getExplainSub(roleChain));
 		}
 
 		for (final Role sub : r.getSubRoles())
-		{
-			final DependencySet subDS = r.getExplainSub(sub.getName());
-
-			subs.put(sub.getName(), subDS);
-		}
+			subs.put(sub.getName(), r.getExplainSub(sub.getName()));
 
 		for (final ATermList subChain : r.getSubRoleChains())
-		{
-			final DependencySet subDS = r.getExplainSub(subChain);
-
-			subs.put(subChain, subDS);
-		}
-
+			subs.put(subChain, r.getExplainSub(subChain));
 	}
 
 	@Override
@@ -363,7 +336,7 @@ public class RBoxImpl implements RBox
 		dependencies.put(r.getName(), ds);
 
 		// transitive closure
-		final Map<ATerm, DependencySet> immSubs = new HashMap<>();
+		final Map<ATerm, DependencySet> immSubs = new ConcurrentHashMap<>();
 		computeImmediateSubRoles(r, immSubs);
 		for (final Entry<ATerm, DependencySet> entry : immSubs.entrySet())
 		{

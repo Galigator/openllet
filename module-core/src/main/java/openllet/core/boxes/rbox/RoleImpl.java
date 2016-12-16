@@ -31,10 +31,10 @@
 package openllet.core.boxes.rbox;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
@@ -117,8 +117,8 @@ public class RoleImpl implements Role
 	private final DependencySet _explainSymmetric = DependencySet.INDEPENDENT;
 	private DependencySet _explainTransitive = DependencySet.INDEPENDENT;
 	private DependencySet _explainInverseFunctional = DependencySet.INDEPENDENT;
-	private Map<ATerm, DependencySet> _explainSub = new HashMap<>();
-	private final Map<ATerm, DependencySet> _explainSup = new HashMap<>();
+	private Map<ATerm, DependencySet> _explainSub = new ConcurrentHashMap<>();
+	private final Map<ATerm, DependencySet> _explainSup = new ConcurrentHashMap<>();
 
 	private Map<ATermAppl, DependencySet> _domains = Collections.emptyMap();
 	private Map<ATermAppl, DependencySet> _ranges = Collections.emptyMap();
@@ -342,7 +342,7 @@ public class RoleImpl implements Role
 	public void addDisjointRole(final Role r, final DependencySet ds)
 	{
 		if (_disjointRoles.isEmpty())
-			_disjointRoles = new HashMap<>();
+			_disjointRoles = new ConcurrentHashMap<>();
 
 		_disjointRoles.put(r, ds);
 	}

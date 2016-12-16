@@ -1,11 +1,11 @@
 package openllet.core.boxes.rbox;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
@@ -17,6 +17,7 @@ import openllet.core.PropertyType;
 import openllet.core.exceptions.UnsupportedFeatureException;
 import openllet.core.taxonomy.Taxonomy;
 import openllet.core.utils.ATermUtils;
+import openllet.core.utils.SetUtils;
 import openllet.shared.tools.Logging;
 
 /**
@@ -126,7 +127,7 @@ public interface RBox extends Logging
 		Map<ATermAppl, Set<Set<ATermAppl>>> ranges = getRangeAssertions().get(r);
 		if (ranges == null)
 		{
-			ranges = new HashMap<>();
+			ranges = new ConcurrentHashMap<>();
 			getRangeAssertions().put(r, ranges);
 		}
 
@@ -347,14 +348,14 @@ public interface RBox extends Logging
 		Map<ATermAppl, Set<Set<ATermAppl>>> domains = getDomainAssertions().get(r);
 		if (domains == null)
 		{
-			domains = new HashMap<>();
+			domains = new ConcurrentHashMap<>();
 			getDomainAssertions().put(r, domains);
 		}
 
 		Set<Set<ATermAppl>> allExplanations = domains.get(domain);
 		if (allExplanations == null)
 		{
-			allExplanations = new HashSet<>();
+			allExplanations = SetUtils.create();
 			domains.put(domain, allExplanations);
 		}
 
@@ -446,12 +447,12 @@ public interface RBox extends Logging
 	{
 
 		// first pass - compute sub getRoles()
-		final Set<Role> complexRoles = new HashSet<>();
+		final Set<Role> complexRoles = SetUtils.create();
 		for (final Role role : getRoles().values())
 		{
-			final Map<ATerm, DependencySet> subExplain = new HashMap<>();
-			final Set<Role> subRoles = new HashSet<>();
-			final Set<ATermList> subRoleChains = new HashSet<>();
+			final Map<ATerm, DependencySet> subExplain = new ConcurrentHashMap<>();
+			final Set<Role> subRoles = SetUtils.create();
+			final Set<ATermList> subRoleChains = SetUtils.create();
 
 			computeSubRoles(role, subRoles, subRoleChains, subExplain, DependencySet.INDEPENDENT);
 

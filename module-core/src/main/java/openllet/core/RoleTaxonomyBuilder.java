@@ -47,8 +47,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.aterm.ATermAppl;
 import openllet.atom.OpenError;
-import openllet.core.boxes.rbox.Role;
 import openllet.core.boxes.rbox.RBox;
+import openllet.core.boxes.rbox.Role;
 import openllet.core.taxonomy.Taxonomy;
 import openllet.core.taxonomy.TaxonomyImpl;
 import openllet.core.taxonomy.TaxonomyNode;
@@ -141,19 +141,17 @@ public class RoleTaxonomyBuilder
 		if (_logger.isLoggable(Level.FINER))
 			_logger.finer("Property (" + (++count) + ") " + c + "...");
 
-		if (c.getSubRoles().contains(_topRole))
+		if (null != _topRole && c.getSubRoles().contains(_topRole))
 		{
 			_taxonomyImpl.addEquivalentNode(c.getName(), _taxonomyImpl.getTop());
 			return;
 		}
 		else
-		{
 			if (null != _bottomRole && c.getSuperRoles().contains(_bottomRole))
 			{
 				_taxonomyImpl.addEquivalentNode(c.getName(), _taxonomyImpl.getBottomNode());
 				return;
 			}
-		}
 
 		Map<TaxonomyNode<ATermAppl>, Boolean> marked = new HashMap<>();
 		mark(_taxonomyImpl.getTop(), marked, Boolean.TRUE, Propagate.NONE);
@@ -174,8 +172,7 @@ public class RoleTaxonomyBuilder
 			// i since we already know everything about j
 			if (subsumed(sup, c, marked))
 			{
-				if (_logger.isLoggable(Level.FINER))
-					_logger.finer(ATermUtils.toString(c.getName()) + " = " + ATermUtils.toString(sup.getName()));
+				_logger.finer(() -> ATermUtils.toString(c.getName()) + " = " + ATermUtils.toString(sup.getName()));
 
 				_taxonomyImpl.addEquivalentNode(c.getName(), sup);
 				return;
@@ -269,7 +266,7 @@ public class RoleTaxonomyBuilder
 
 		if (propagate != Propagate.NONE)
 		{
-			final Collection<TaxonomyNode<ATermAppl>> others = (propagate == Propagate.UP) ? node.getSupers() : node.getSubs();
+			final Collection<TaxonomyNode<ATermAppl>> others = propagate == Propagate.UP ? node.getSupers() : node.getSubs();
 			for (final TaxonomyNode<ATermAppl> next : others)
 				mark(next, marked, value, propagate);
 		}
