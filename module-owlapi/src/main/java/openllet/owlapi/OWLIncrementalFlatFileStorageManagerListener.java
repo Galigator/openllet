@@ -19,8 +19,11 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import openllet.atom.OpenError;
 import openllet.core.utils.SetUtils;
 import openllet.owlapi.parser.OWLFunctionalSyntaxParser;
 import openllet.shared.tools.Log;
@@ -67,6 +70,9 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 	private final Set<OWLOntologyID> _changed = SetUtils.create();
 	private final Map<OWLOntologyID, OWLFunctionalSyntaxParser> _parsers = new ConcurrentHashMap<>();
 	private final OWLManagerGroup _owlManagerGroup;
+	private final Lock _sequential = new ReentrantLock();
+	private volatile Optional<OutputStream> _deltaStream = Optional.empty();
+
 	private final Runnable _task = () ->
 	{
 		try
@@ -75,7 +81,7 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 		}
 		catch (final Exception e)
 		{
-			_logger.log(Level.SEVERE, "", e);
+			Log.error(_logger, e);
 		}
 	};
 
@@ -107,7 +113,7 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 			}
 			catch (final Exception exception)
 			{
-				_logger.log(Level.SEVERE, "File " + f + " lead to corrupted ontology.", exception);
+				Log.error(_logger, "File " + f + " lead to corrupted ontology.", exception);
 				return Optional.empty();
 			}
 			ontology.addAxioms(axioms);
@@ -140,7 +146,6 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 	 */
 	public void flush()
 	{
-		synchronized (this)
 		{
 			final List<OWLOntologyID> changed;
 			synchronized (_changed) // We don't took the synchronized over _changed directly to avoid a general stop of the application.
@@ -166,14 +171,37 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 						} // All exceptions must be fatal to avoid loosing 'log' file. Re-apply a log isn't an issue.
 						catch (final Exception e)
 						{ // Do not make other ontologies crash at save time.
-							_logger.log(Level.SEVERE, "Crash when saving " + ontology.getOntologyID(), e);
+							Log.error(_logger, "Crash when saving " + ontology.getOntologyID(), e);
 						}
 					});
-			_logger.info("flush done");
+
+			_logger.fine("flush done");
 
 			// Make sure to note catch the saveOntology exception.
 			// Make sure everything goes correctly before removing 'log' file.
+			releaseDeltaStream();
+		}
+	}
+
+	private void releaseDeltaStream()
+	{
+		try
+		{
+			_sequential.lock();
 			_delta.delete();
+			if (_deltaStream.isPresent())
+			{
+				_deltaStream.get().close();
+				_deltaStream = Optional.empty();
+			}
+		}
+		catch (final Exception e)
+		{
+			Log.error(_logger, e);
+		}
+		finally
+		{
+			_sequential.unlock();
 		}
 	}
 
@@ -232,15 +260,28 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 					}
 	}
 
+	@SuppressWarnings("resource") // resources are close when calling the 'close()' method, that why this class is auto-closable too
 	@Override
-	public synchronized void ontologiesChanged(final List<? extends OWLOntologyChange> changes)
+	public void ontologiesChanged(final List<? extends OWLOntologyChange> changes)
 	{
-		synchronized (this)
+		final List<? extends OWLOntologyChange> copyOfChanges = new ArrayList<>(changes);
 		{
-			// TODO : pour gagner en performance, il faut maintenir un cache des stream et ne pas les ouvrir/fermer à chaque écriture.
-			try (final OutputStream stream = new FileOutputStream(_delta, true))
+			try
 			{
-				for (final OWLOntologyChange change : changes)
+				try
+				{
+					_sequential.lock();
+					if (!_deltaStream.isPresent())
+						_deltaStream = Optional.of(new FileOutputStream(_delta, true));
+				}
+				finally
+				{
+					_sequential.unlock();
+				}
+
+				final OutputStream stream = _deltaStream.orElseThrow(() -> new OpenError("Can't open write stream to " + _delta));
+
+				for (final OWLOntologyChange change : copyOfChanges)
 				{
 					final byte[] bytes = bytesOfChange(change);
 					if (bytes != null)
@@ -256,14 +297,20 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 						stream.write(Base64.getEncoder().encode(bytes));
 						stream.write(_lineSeparator);
 
-						_changed.add(ontologyId);
+						synchronized (_changed)
+						{
+							_changed.add(ontologyId);
+						}
 					}
 				}
+				stream.flush();
 			}
-			catch (final Exception e)
+			catch (final Exception e1)
 			{
-				_logger.log(Level.SEVERE, "", e);
+				Log.error(_logger, e1);
+				releaseDeltaStream();
 			}
+
 		}
 	}
 
@@ -336,7 +383,7 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 			}
 			catch (final IOException e)
 			{
-				_logger.log(Level.SEVERE, "", e);
+				Log.error(_logger, e);
 				return false;
 			}
 		}
@@ -464,13 +511,13 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 					} // If the triple readLine fail we are in a malformed file.
 					catch (final Exception e)
 					{
-						_logger.log(Level.SEVERE, "Malformed File near " + (line * 3), e);
+						Log.error(_logger, "Malformed File near " + (line * 3), e);
 						return null;
 					}
 			}
 			catch (final Exception e)
 			{
-				_logger.log(Level.SEVERE, "", e);
+				Log.error(_logger, e);
 			}
 
 			return result;
@@ -515,7 +562,7 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 			}
 			catch (final Exception e)
 			{
-				_logger.log(Level.SEVERE, "", e);
+				Log.error(_logger, e);
 			}
 	}
 
@@ -532,7 +579,7 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 		}
 		catch (final Exception exception)
 		{
-			_logger.log(Level.SEVERE, "", exception);
+			Log.error(_logger, exception);
 		}
 		try
 		{
@@ -541,7 +588,7 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 		}
 		catch (final Exception exception)
 		{
-			_logger.log(Level.WARNING, "", exception);
+			Log.warning(_logger, exception);
 		}
 		try
 		{
@@ -549,8 +596,7 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 		}
 		catch (final Exception exception)
 		{
-			_logger.log(Level.WARNING, "", exception);
+			Log.warning(_logger, exception);
 		}
 	}
-
 }

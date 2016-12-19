@@ -95,7 +95,7 @@ public class Log implements Logging
 
 	/**
 	 * Change the level of logging only on the logger that match the giver filter (contains)
-	 * 
+	 *
 	 * @param level of logging that will be set.
 	 * @param filter that must be contains in the logger name.
 	 */
@@ -122,6 +122,16 @@ public class Log implements Logging
 	public static void error(final Logger logger, final String msg, final Throwable e)
 	{
 		logger.log(Level.SEVERE, msg, e);
+	}
+
+	public static void warning(final Logger logger, final Throwable e)
+	{
+		logger.log(Level.WARNING, "", e);
+	}
+
+	public static void warning(final Logger logger, final String msg, final Throwable e)
+	{
+		logger.log(Level.WARNING, msg, e);
 	}
 
 	public static org.slf4j.Logger toSlf4j(final Logger logger)
