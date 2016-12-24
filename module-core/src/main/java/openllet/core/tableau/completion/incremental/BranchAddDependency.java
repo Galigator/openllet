@@ -65,7 +65,7 @@ public class BranchAddDependency extends BranchDependency
 	public boolean equals(final Object other)
 	{
 		if (other instanceof BranchAddDependency)
-			return _branch.getBranch() == ((BranchAddDependency) other)._branch.getBranch() && _assertion.equals(((BranchAddDependency) other)._assertion);
+			return _branch.getBranchIndexInABox() == ((BranchAddDependency) other)._branch.getBranchIndexInABox() && _assertion.equals(((BranchAddDependency) other)._assertion);
 		else
 			return false;
 	}
@@ -76,7 +76,7 @@ public class BranchAddDependency extends BranchDependency
 	@Override
 	public int hashCode()
 	{
-		return _branch.getBranch() + _assertion.hashCode();
+		return _branch.getBranchIndexInABox() + _assertion.hashCode();
 	}
 
 }

@@ -290,7 +290,7 @@ public class Individual extends Node implements CachedNode
 		// and the edge used in applyAllValues may depend on a _branch we want
 		// this type to be deleted when that edge goes away, i.e. we backtrack
 		// to a position before the max dependency of this type
-		int b = _abox.getBranch();
+		int b = _abox.getBranchIndex();
 		final int max = ds.max();
 		if (b == -1 && max != 0)
 			b = max + 1;
@@ -302,8 +302,8 @@ public class Individual extends Node implements CachedNode
 		_abox.setChanged(true);
 
 		// add to effected list
-		if (_abox.getBranch() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
-			_abox.getBranchEffectTracker().add(_abox.getBranch(), getName());
+		if (_abox.getBranchIndex() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
+			_abox.getBranchEffectTracker().add(_abox.getBranchIndex(), getName());
 
 		//create new _queue element
 		final QueueElement qElement = new QueueElement(this, c);
@@ -314,7 +314,7 @@ public class Individual extends Node implements CachedNode
 		{
 			final ATermAppl positive = ATermUtils.isNot(notC) ? c : notC;
 			clashDepends = clashDepends.union(ds, _abox.doExplanation());
-			clashDepends = clashDepends.copy(_abox.getBranch());
+			clashDepends = clashDepends.copy(_abox.getBranchIndex());
 			_abox.setClash(Clash.atomic(this, clashDepends, positive));
 		}
 
@@ -1069,10 +1069,10 @@ public class Individual extends Node implements CachedNode
 		DependencySet ds = dsParam;
 
 		// add these _nodes to the effected list
-		if (_abox.getBranch() > 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
+		if (_abox.getBranchIndex() > 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
 		{
-			_abox.getBranchEffectTracker().add(_abox.getBranch(), getName());
-			_abox.getBranchEffectTracker().add(_abox.getBranch(), x.getName());
+			_abox.getBranchEffectTracker().add(_abox.getBranchIndex(), getName());
+			_abox.getBranchEffectTracker().add(_abox.getBranchIndex(), x.getName());
 		}
 
 		if (r.isBottom())
@@ -1100,7 +1100,7 @@ public class Individual extends Node implements CachedNode
 		setChanged(MAX);
 		_applyNext[MAX] = 0;
 
-		ds = ds.copy(_abox.getBranch());
+		ds = ds.copy(_abox.getBranchIndex());
 
 		final Edge edge = new DefaultEdge(r, this, x, ds);
 
@@ -1264,8 +1264,8 @@ public class Individual extends Node implements CachedNode
 	{
 
 		// add to effected list
-		if (_abox.getBranch() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
-			_abox.getBranchEffectTracker().add(_abox.getBranch(), getName());
+		if (_abox.getBranchIndex() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
+			_abox.getBranchEffectTracker().add(_abox.getBranchIndex(), getName());
 
 		pruned = ds;
 

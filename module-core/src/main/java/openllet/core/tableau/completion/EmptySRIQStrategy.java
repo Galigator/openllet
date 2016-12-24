@@ -98,7 +98,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 	@Override
 	public void initialize(final Expressivity expressivity)
 	{
-		_mergeList = new ArrayList<>();
+		_mergeList.clear();
 
 		_cachedNodes = new HashMap<>();
 
@@ -117,7 +117,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 		_mayNeedExpanding = new LinkedList<>();
 		_mayNeedExpanding.add(root);
 
-		_abox.setBranch(1);
+		_abox.setBranchIndex(1);
 		_abox.getStats()._treeDepth = 1;
 		_abox.setChanged(true);
 		_abox.setComplete(false);
@@ -166,7 +166,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 			if (_abox.isClosed())
 			{
 				if (_logger.isLoggable(Level.FINE))
-					_logger.fine("Clash at Branch (" + _abox.getBranch() + ") " + _abox.getClash());
+					_logger.fine("Clash at Branch (" + _abox.getBranchIndex() + ") " + _abox.getClash());
 
 				if (backtrack())
 					_abox.setClash(null);
@@ -271,9 +271,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 					// set the clash information to be the union of all types
 					DependencySet ds = DependencySet.EMPTY;
 					for (final ATermAppl c : x.getTypes())
-					{
 						ds = ds.union(x.getDepends(c), _abox.doExplanation());
-					}
 					_abox.setClash(Clash.atomic(x, ds));
 				}
 				return;
@@ -501,7 +499,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 		final List<ATermAppl> clashPath = clashNode.getPath();
 		clashPath.add(clashNode.getName());
 
-		_abox.setBranch(br.getBranch());
+		_abox.setBranchIndex(br.getBranchIndexInABox());
 		_abox.setClash(null);
 		// Setting the _anonCount to the value at the time of _branch creation is incorrect
 		// when SMART_RESTORE option is turned on. If we create an anon _node after _branch
@@ -521,7 +519,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 
 		if (_logger.isLoggable(Level.FINE))
 		{
-			_logger.fine("RESTORE: Branch " + br.getBranch());
+			_logger.fine("RESTORE: Branch " + br.getBranchIndexInABox());
 			if (br.getNodeCount() < nodeList.size())
 				_logger.fine("Remove _nodes " + nodeList.subList(br.getNodeCount(), nodeList.size()));
 		}
@@ -547,7 +545,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 			}
 			else
 			{
-				node.restore(br.getBranch());
+				node.restore(br.getBranchIndexInABox());
 
 				// FIXME should we look at the clash path or clash _node
 				if (node.equals(clashNode))
@@ -584,7 +582,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 				return false;
 
 			final List<Branch> branches = _abox.getBranches();
-			_abox.getStats()._backjumps += (branches.size() - lastBranch);
+			_abox.getStats()._backjumps += branches.size() - lastBranch;
 			Branch newBranch = null;
 			if (lastBranch <= branches.size())
 			{
@@ -593,7 +591,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 
 				if (_logger.isLoggable(Level.FINE))
 					_logger.fine("JUMP: " + lastBranch);
-				if (newBranch == null || lastBranch != newBranch.getBranch())
+				if (newBranch == null || lastBranch != newBranch.getBranchIndexInABox())
 					throw new OpenError("Internal error in reasoner: Trying to backtrack _branch " + lastBranch + " but got " + newBranch);
 
 				if (newBranch.getTryNext() < newBranch.getTryCount())
@@ -619,8 +617,8 @@ public class EmptySRIQStrategy extends CompletionStrategy
 			{
 				// create another copy of the _mnx list here because we may backtrack to the same
 				// _branch multiple times and we want the same copy to be available every time
-				_mayNeedExpanding = new LinkedList<>(_mnx.get(newBranch.getBranch()));
-				_mnx.subList(newBranch.getBranch() + 1, _mnx.size()).clear();
+				_mayNeedExpanding = new LinkedList<>(_mnx.get(newBranch.getBranchIndexInABox()));
+				_mnx.subList(newBranch.getBranchIndexInABox() + 1, _mnx.size()).clear();
 				if (_logger.isLoggable(Level.FINE))
 					_logger.fine("MNX : " + _mayNeedExpanding);
 			}
@@ -637,7 +635,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 	{
 		super.addBranch(newBranch);
 
-		assert _mnx.size() == newBranch.getBranch() : _mnx.size() + " != " + newBranch.getBranch();
+		assert _mnx.size() == newBranch.getBranchIndexInABox() : _mnx.size() + " != " + newBranch.getBranchIndexInABox();
 
 		// create a copy of the _mnx list so that changes in the _current _branch will not affect it
 		_mnx.add(new ArrayList<>(_mayNeedExpanding));

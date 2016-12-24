@@ -55,7 +55,7 @@ public abstract class Branch
 
 	protected final ABox _abox;
 	protected volatile CompletionStrategy _strategy;
-	protected volatile int _branch;
+	protected volatile int _branchIndexInABox;
 	protected volatile int _tryCount;
 	protected volatile int _tryNext;
 
@@ -76,7 +76,7 @@ public abstract class Branch
 		_prevDS = DependencySet.EMPTY;
 		setTryNext(0);
 
-		setBranch(abox.getBranch());
+		setBranchIndexInABox(abox.getBranchIndex());
 		setAnonCount(abox.getAnonCount());
 		setNodeCount(abox.size());
 	}
@@ -119,7 +119,7 @@ public abstract class Branch
 		// _branch again. remove this _branch from clash dependency
 		if (_abox.isClosed())
 			if (!OpenlletOptions.USE_INCREMENTAL_DELETION)
-				_abox.getClash().getDepends().remove(getBranch());
+				_abox.getClash().getDepends().remove(getBranchIndexInABox());
 
 		return !_abox.isClosed();
 	}
@@ -134,15 +134,15 @@ public abstract class Branch
 	public String toString()
 	{
 		//		return "Branch " + _branch + " (" + _tryCount + ")";
-		return "Branch on _node " + getNode() + "  Branch number: " + getBranch() + " " + getTryNext() + "(" + getTryCount() + ")";
+		return "Branch on _node " + getNode() + "  Branch number: " + getBranchIndexInABox() + " " + getTryNext() + "(" + getTryCount() + ")";
 	}
 
 	/**
 	 * Added for to re-open closed branches. This is needed for incremental reasoning through deletions
 	 *
-	 * @param index The shift _index
+	 * @param branchIndex The shift _index
 	 */
-	public abstract void shiftTryNext(int index);
+	public abstract void shiftTryNext(int branchIndex);
 
 	/**
 	 * @param nodeCount the _nodeCount to set
@@ -160,17 +160,17 @@ public abstract class Branch
 		return _nodeCount;
 	}
 
-	public void setBranch(final int branch)
+	public void setBranchIndexInABox(final int branchIndexInABox)
 	{
-		_branch = branch;
+		_branchIndexInABox = branchIndexInABox;
 	}
 
 	/**
 	 * @return the _branch
 	 */
-	public int getBranch()
+	public int getBranchIndexInABox()
 	{
-		return _branch;
+		return _branchIndexInABox;
 	}
 
 	/**

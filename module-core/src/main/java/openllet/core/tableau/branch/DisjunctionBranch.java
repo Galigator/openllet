@@ -73,7 +73,7 @@ public class DisjunctionBranch extends Branch
 
 	protected String getDebugMsg()
 	{
-		return "DISJ: Branch (" + getBranch() + ") try (" + (getTryNext() + 1) + "/" + getTryCount() + ") " + _node + " " + ATermUtils.toString(_disj[getTryNext()]) + " " + ATermUtils.toString(_disjunction);
+		return "DISJ: Branch (" + getBranchIndexInABox() + ") try (" + (getTryNext() + 1) + "/" + getTryCount() + ") " + _node + " " + ATermUtils.toString(_disj[getTryNext()]) + " " + ATermUtils.toString(_disjunction);
 	}
 
 	@Override
@@ -83,7 +83,7 @@ public class DisjunctionBranch extends Branch
 		final DisjunctionBranch b = new DisjunctionBranch(abox, null, n, _disjunction, getTermDepends(), _disj);
 		b.setAnonCount(_anonCount);
 		b.setNodeCount(_nodeCount);
-		b.setBranch(_branch);
+		b.setBranchIndexInABox(_branchIndexInABox);
 		b.setStrategy(_strategy);
 		b.setTryNext(_tryNext);
 
@@ -187,15 +187,15 @@ public class DisjunctionBranch extends Branch
 				if (OpenlletOptions.USE_INCREMENTAL_DELETION)
 					ds.setExplain(getTermDepends().getExplain());
 				else
-					ds.remove(getBranch());
+					ds.remove(getBranchIndexInABox());
 			}
 			else
 				//CHW - Changed for tracing purposes
 				if (OpenlletOptions.USE_INCREMENTAL_DELETION)
-					ds = getTermDepends().union(new DependencySet(getBranch()), _abox.doExplanation());
+					ds = getTermDepends().union(new DependencySet(getBranchIndexInABox()), _abox.doExplanation());
 				else
 				{
-					ds = new DependencySet(getBranch());
+					ds = new DependencySet(getBranchIndexInABox());
 					//added for tracing
 					final Set<ATermAppl> explain = new HashSet<>();
 					explain.addAll(getTermDepends().getExplain());
@@ -224,7 +224,7 @@ public class DisjunctionBranch extends Branch
 				if (_logger.isLoggable(Level.FINE))
 				{
 					final Clash clash = _abox.isClosed() ? _abox.getClash() : Clash.atomic(node, clashDepends, d);
-					_logger.fine("CLASH: Branch " + getBranch() + " " + clash + "!" + " " + clashDepends.getExplain());
+					_logger.fine("CLASH: Branch " + getBranchIndexInABox() + " " + clash + "!" + " " + clashDepends.getExplain());
 				}
 
 				if (OpenlletOptions.USE_DISJUNCT_SORTING)
@@ -242,7 +242,7 @@ public class DisjunctionBranch extends Branch
 				// do not restore if we do not have any more branches to try. after
 				// backtrack the correct _branch will restore it anyway. more
 				// importantly restore clears the clash info causing exceptions
-				if (getTryNext() < getTryCount() - 1 && clashDepends.contains(getBranch()))
+				if (getTryNext() < getTryCount() - 1 && clashDepends.contains(getBranchIndexInABox()))
 				{
 					// do not restore if we find the problem without adding the concepts
 					if (_abox.isClosed())
@@ -250,7 +250,7 @@ public class DisjunctionBranch extends Branch
 						{
 							_abox.setClash(null);
 
-							node.restore(_branch);
+							node.restore(_branchIndexInABox);
 						}
 						else
 						{

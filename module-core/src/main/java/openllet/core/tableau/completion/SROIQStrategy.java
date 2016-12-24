@@ -92,8 +92,8 @@ public class SROIQStrategy extends CompletionStrategy
 			if (_logger.isLoggable(Level.FINE))
 				_logger.fine("JUMP: Branch " + lastBranch);
 
-			if (lastBranch != newBranch.getBranch())
-				throw new InternalReasonerException("Backtrack: Trying to backtrack to _branch " + lastBranch + " but got " + newBranch.getBranch());
+			if (lastBranch != newBranch.getBranchIndexInABox())
+				throw new InternalReasonerException("Backtrack: Trying to backtrack to _branch " + lastBranch + " but got " + newBranch.getBranchIndexInABox());
 
 			// set the last clash before restore
 			if (newBranch.getTryNext() < newBranch.getTryCount())
@@ -133,7 +133,7 @@ public class SROIQStrategy extends CompletionStrategy
 
 				if (_logger.isLoggable(Level.FINE))
 				{
-					_logger.fine("Branch: " + _abox.getBranch() + ", Depth: " + _abox.getStats()._treeDepth + ", Size: " + _abox.getNodes().size() + ", Mem: " + Runtime.getRuntime().freeMemory() / 1000 + "kb");
+					_logger.fine("Branch: " + _abox.getBranchIndex() + ", Depth: " + _abox.getStats()._treeDepth + ", Size: " + _abox.getNodes().size() + ", Mem: " + Runtime.getRuntime().freeMemory() / 1000 + "kb");
 					_abox.validate();
 					printBlocked();
 					_abox.printTree();
@@ -165,7 +165,7 @@ public class SROIQStrategy extends CompletionStrategy
 			if (_abox.isClosed())
 			{
 				if (_logger.isLoggable(Level.FINE))
-					_logger.fine("Clash at Branch (" + _abox.getBranch() + ") " + _abox.getClash());
+					_logger.fine("Clash at Branch (" + _abox.getBranchIndex() + ") " + _abox.getClash());
 
 				if (backtrack())
 				{
@@ -194,13 +194,13 @@ public class SROIQStrategy extends CompletionStrategy
 						if (unexploredBranch.getTryNext() < unexploredBranch.getTryCount())
 						{
 							restore(unexploredBranch);
-							System.out.println("restoring _branch " + unexploredBranch.getBranch() + " _tryNext = " + unexploredBranch.getTryNext() + " _tryCount = " + unexploredBranch.getTryCount());
+							System.out.println("restoring _branch " + unexploredBranch.getBranchIndexInABox() + " _tryNext = " + unexploredBranch.getTryNext() + " _tryCount = " + unexploredBranch.getTryCount());
 							unexploredBranch.tryNext();
 							break;
 						}
 						else
 						{
-							System.out.println("removing _branch " + unexploredBranch.getBranch());
+							System.out.println("removing _branch " + unexploredBranch.getBranchIndexInABox());
 							_abox.getBranches().remove(i);
 							unexploredBranch = null;
 						}

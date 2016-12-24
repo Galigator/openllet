@@ -6,7 +6,6 @@
 
 package openllet.core.tableau.branch;
 
-import java.util.logging.Level;
 import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
 import openllet.core.OpenlletOptions;
@@ -50,7 +49,7 @@ public class GuessBranch extends IndividualBranch
 		final IndividualBranch b = new GuessBranch(abox, null, x, _r, _minGuess, _minGuess + getTryCount() - 1, _qualification, getTermDepends());
 		b.setAnonCount(getAnonCount());
 		b.setNodeCount(_nodeCount);
-		b.setBranch(_branch);
+		b.setBranchIndexInABox(_branchIndexInABox);
 		b.setStrategy(_strategy);
 		b.setTryNext(_tryNext);
 
@@ -68,10 +67,9 @@ public class GuessBranch extends IndividualBranch
 			// start with max possibility and decrement at each try
 			final int n = _minGuess + getTryCount() - getTryNext() - 1;
 
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("GUES: (" + (getTryNext() + 1) + "/" + getTryCount() + ") at _branch (" + getBranch() + ") to  " + ind + " -> " + _r + " -> anon" + (n == 1 ? "" : _abox.getAnonCount() + 1 + " - anon") + (_abox.getAnonCount() + n) + " " + ds);
+			_logger.fine(() -> "GUES: (" + (getTryNext() + 1) + "/" + getTryCount() + ") at _branch (" + getBranchIndexInABox() + ") to  " + ind + " -> " + _r + " -> anon" + (n == 1 ? "" : _abox.getAnonCount() + 1 + " - anon") + (_abox.getAnonCount() + n));
 
-			ds = ds.union(new DependencySet(getBranch()), _abox.doExplanation());
+			ds = ds.union(new DependencySet(getBranchIndexInABox()), _abox.doExplanation());
 
 			// add the min cardinality restriction just to make early clash detection easier
 			_strategy.addType(ind, ATermUtils.makeMin(_r.getName(), n, _qualification), ds);
@@ -96,12 +94,11 @@ public class GuessBranch extends IndividualBranch
 			final boolean earlyClash = _abox.isClosed();
 			if (earlyClash)
 			{
-				if (_logger.isLoggable(Level.FINE))
-					_logger.fine("CLASH: Branch " + getBranch() + " " + _abox.getClash() + "!");
+				_logger.fine(() -> "CLASH: Branch " + getBranchIndexInABox() + " " + _abox.getClash() + "!");
 
 				final DependencySet clashDepends = _abox.getClash().getDepends();
 
-				if (clashDepends.contains(getBranch()))
+				if (clashDepends.contains(getBranchIndexInABox()))
 				{
 					// we need a global restore here because the merge operation modified three
 					// different _nodes and possibly other global variables
@@ -124,7 +121,7 @@ public class GuessBranch extends IndividualBranch
 
 		//CHW - removed for rollback through deletions
 		if (!OpenlletOptions.USE_INCREMENTAL_DELETION)
-			ds.remove(getBranch());
+			ds.remove(getBranchIndexInABox());
 
 		_abox.setClash(Clash.unexplained(ind, ds));
 
@@ -135,9 +132,9 @@ public class GuessBranch extends IndividualBranch
 	public String toString()
 	{
 		if (getTryNext() < getTryCount())
-			return "Branch " + getBranch() + " guess rule on " + ind + " for role  " + _r;
+			return "Branch " + getBranchIndexInABox() + " guess rule on " + ind + " for role  " + _r;
 
-		return "Branch " + getBranch() + " guess rule on " + ind + " for role  " + _r + " exhausted merge possibilities";
+		return "Branch " + getBranchIndexInABox() + " guess rule on " + ind + " for role  " + _r + " exhausted merge possibilities";
 	}
 
 	/**
@@ -152,5 +149,4 @@ public class GuessBranch extends IndividualBranch
 		//decrement trynext
 		//_tryNext--;
 	}
-
 }

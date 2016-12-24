@@ -217,8 +217,8 @@ public abstract class Node
 			_abox.getCompletionQueue().add(newElement, NodeSelector.DATATYPE);
 
 		// add _node to effected list
-		if (_abox.getBranch() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
-			_abox.getBranchEffectTracker().add(_abox.getBranch(), getName());
+		if (_abox.getBranchIndex() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
+			_abox.getBranchEffectTracker().add(_abox.getBranchIndex(), getName());
 	}
 
 	/**
@@ -328,7 +328,7 @@ public abstract class Node
 	{
 
 		if (OpenlletOptions.TRACK_BRANCH_EFFECTS)
-			_abox.getBranchEffectTracker().add(_abox.getBranch(), _name);
+			_abox.getBranchEffectTracker().add(_abox.getBranchIndex(), _name);
 
 		if (pruned != null)
 			if (pruned.getBranch() > branch)
@@ -374,7 +374,7 @@ public abstract class Node
 	{
 
 		if (OpenlletOptions.TRACK_BRANCH_EFFECTS)
-			_abox.getBranchEffectTracker().add(_abox.getBranch(), _name);
+			_abox.getBranchEffectTracker().add(_abox.getBranchIndex(), _name);
 
 		boolean restored = false;
 
@@ -492,10 +492,10 @@ public abstract class Node
 				return;
 
 		// add to effected list
-		if (_abox.getBranch() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
-			_abox.getBranchEffectTracker().add(_abox.getBranch(), getName());
+		if (_abox.getBranchIndex() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
+			_abox.getBranchEffectTracker().add(_abox.getBranchIndex(), getName());
 
-		int b = _abox.getBranch();
+		int b = _abox.getBranchIndex();
 
 		final int max = ds.max();
 		if (b == -1 && max != 0)
@@ -845,7 +845,7 @@ public abstract class Node
 		}
 
 		mergedTo = node;
-		_mergeDepends = ds.copy(_abox.getBranch());
+		_mergeDepends = ds.copy(_abox.getBranchIndex());
 		node.addMerged(this);
 		return true;
 	}
@@ -875,8 +875,8 @@ public abstract class Node
 		DependencySet ds = dsParam;
 
 		// add to effected list
-		if (_abox.getBranch() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
-			_abox.getBranchEffectTracker().add(_abox.getBranch(), node.getName());
+		if (_abox.getBranchIndex() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
+			_abox.getBranchEffectTracker().add(_abox.getBranchIndex(), node.getName());
 
 		if (isDifferent(node))
 			return false;
@@ -890,7 +890,7 @@ public abstract class Node
 				return false;
 		}
 
-		ds = ds.copy(_abox.getBranch());
+		ds = ds.copy(_abox.getBranchIndex());
 		_differents.put(node, ds);
 		node.setDifferent(this, ds);
 		_abox.setChanged(true);

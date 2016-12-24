@@ -62,7 +62,7 @@ public class RuleBranch extends Branch
 
 		b.setAnonCount(getAnonCount());
 		b.setNodeCount(_nodeCount);
-		b.setBranch(_branch);
+		b.setBranchIndexInABox(_branchIndexInABox);
 		b.setTryNext(_tryNext);
 		b._prevDS = new DependencySet[_prevDS.length];
 		System.arraycopy(_prevDS, 0, b._prevDS, 0, _tryNext);
@@ -139,17 +139,17 @@ public class RuleBranch extends Branch
 				if (OpenlletOptions.USE_INCREMENTAL_DELETION)
 					ds.setExplain(getTermDepends().getExplain());
 				else
-					ds.remove(getBranch());
+					ds.remove(getBranchIndexInABox());
 			}
 			else
 				// CHW - Changed for tracing purposes
 				if (OpenlletOptions.USE_INCREMENTAL_DELETION)
-					ds = getTermDepends().union(new DependencySet(getBranch()), _abox.doExplanation());
+					ds = getTermDepends().union(new DependencySet(getBranchIndexInABox()), _abox.doExplanation());
 				else
-					ds = new DependencySet(getBranch());
+					ds = new DependencySet(getBranchIndexInABox());
 
 			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("RULE: Branch (" + getBranch() + ") try (" + (_tryNext + 1) + "/" + _tryCount + ") " + atom + " " + _binding + " " + _atoms + " " + ds);
+				_logger.fine("RULE: Branch (" + getBranchIndexInABox() + ") try (" + (_tryNext + 1) + "/" + _tryCount + ") " + atom + " " + _binding + " " + _atoms + " " + ds);
 
 			_ruleAtomAsserter.assertAtom(atom, _binding, ds, _tryNext < _bodyAtomCount, _abox, _strategy);
 
@@ -159,7 +159,7 @@ public class RuleBranch extends Branch
 				final DependencySet clashDepends = _abox.getClash().getDepends();
 
 				if (_logger.isLoggable(Level.FINE))
-					_logger.fine("CLASH: Branch " + getBranch() + " " + Clash.unexplained(null, clashDepends) + "!");
+					_logger.fine("CLASH: Branch " + getBranchIndexInABox() + " " + Clash.unexplained(null, clashDepends) + "!");
 
 				// if( PelletOptions.USE_DISJUNCT_SORTING ) {
 				// if( stats == null ) {
@@ -175,7 +175,7 @@ public class RuleBranch extends Branch
 				// after
 				// backtrack the correct _branch will restore it anyway. more
 				// importantly restore clears the clash info causing exceptions
-				if (_tryNext < _tryCount - 1 && clashDepends.contains(getBranch()))
+				if (_tryNext < _tryCount - 1 && clashDepends.contains(getBranchIndexInABox()))
 				{
 					final AtomIObject obj = (AtomIObject) (atom instanceof UnaryAtom ? ((UnaryAtom<?>) atom).getArgument() : ((BinaryAtom<?, ?, ?>) atom).getArgument1());
 					final Individual ind = _binding.get(obj);

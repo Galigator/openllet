@@ -240,7 +240,7 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 
 				if (_logger.isLoggable(Level.FINE))
 				{
-					_logger.fine("Branch: " + _abox.getBranch()//
+					_logger.fine("Branch: " + _abox.getBranchIndex()//
 							+ ", Depth: " + _abox.getStats()._treeDepth//
 							+ ", Size: " + _abox.getNodes().size()//
 							+ ", Mem: " + Runtime.getRuntime().freeMemory() / 1000 + "kb");
@@ -276,7 +276,7 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 			if (_abox.isClosed())
 			{
 				if (_logger.isLoggable(Level.FINE))
-					_logger.fine("Clash at Branch (" + _abox.getBranch() + ") " + _abox.getClash());
+					_logger.fine("Clash at Branch (" + _abox.getBranchIndex() + ") " + _abox.getClash());
 
 				if (backtrack())
 					_abox.setClash(null);
@@ -294,13 +294,13 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 						if (unexploredBranch.getTryNext() < unexploredBranch.getTryCount())
 						{
 							restore(unexploredBranch);
-							System.out.println("restoring _branch " + unexploredBranch.getBranch() + " _tryNext = " + unexploredBranch.getTryNext() + " _tryCount = " + unexploredBranch.getTryCount());
+							System.out.println("restoring _branch " + unexploredBranch.getBranchIndexInABox() + " _tryNext = " + unexploredBranch.getTryNext() + " _tryCount = " + unexploredBranch.getTryCount());
 							unexploredBranch.tryNext();
 							break;
 						}
 						else
 						{
-							System.out.println("removing _branch " + unexploredBranch.getBranch());
+							System.out.println("removing _branch " + unexploredBranch.getBranchIndexInABox());
 							_abox.getBranches().remove(i);
 							unexploredBranch = null;
 						}
@@ -367,7 +367,7 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 				final RuleBranch r = new RuleBranch(_abox, this, ruleAtomAsser_ter, atoms, binding, bodyAtomCount, ds);
 				addBranch(r);
 				r.tryNext();
-				return r.getBranch();
+				return r.getBranchIndexInABox();
 			}
 	}
 
@@ -407,7 +407,7 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 		for (final Iterator<Map.Entry<Pair<Rule, VariableBinding>, Integer>> ruleAppIter = _rulesApplied.entrySet().iterator(); ruleAppIter.hasNext();)
 		{
 			final Map.Entry<Pair<Rule, VariableBinding>, Integer> ruleBranchEntry = ruleAppIter.next();
-			if (ruleBranchEntry.getValue() > branch.getBranch())
+			if (ruleBranchEntry.getValue() > branch.getBranchIndexInABox())
 			{
 				// System.out.println( "Removing " + ruleBranchEntry.getKey() );
 				ruleAppIter.remove();
@@ -418,11 +418,11 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 		for (final Iterator<PartialBinding> iter = _partialBindings.iterator(); iter.hasNext();)
 		{
 			final PartialBinding binding = iter.next();
-			if (binding.getBranch() > branch.getBranch())
+			if (binding.getBranch() > branch.getBranchIndexInABox())
 				iter.remove();
 		}
 
-		_interpreter.restore(branch.getBranch());
+		_interpreter.restore(branch.getBranchIndexInABox());
 		// rebuildFacts = true;
 	}
 }

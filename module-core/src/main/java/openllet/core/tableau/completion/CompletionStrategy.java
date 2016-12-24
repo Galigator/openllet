@@ -114,22 +114,22 @@ public abstract class CompletionStrategy
 	/**
 	 * The _queue of _node pairs that are waiting to be merged
 	 */
-	protected List<NodeMerge> _mergeList;
+	protected final List<NodeMerge> _mergeList = new ArrayList<>();;
 
-	protected TableauRule _unfoldingRule = new UnfoldingRule(this);
-	protected TableauRule _disjunctionRule = new DisjunctionRule(this);
+	protected final TableauRule _unfoldingRule = new UnfoldingRule(this);
+	protected final TableauRule _disjunctionRule = new DisjunctionRule(this);
 	protected AllValuesRule _allValuesRule = new AllValuesRule(this);
-	protected TableauRule _someValuesRule = new SomeValuesRule(this);
-	protected TableauRule _chooseRule = new ChooseRule(this);
-	protected TableauRule _minRule = new MinRule(this);
-	protected MaxRule _maxRule = new MaxRule(this);
-	protected TableauRule _selfRule = new SelfRule(this);
-	protected TableauRule _nominalRule = new NominalRule(this);
-	protected TableauRule _guessRule = new GuessRule(this);
-	protected TableauRule _dataSatRule = new DataSatisfiabilityRule(this);
-	protected TableauRule _dataCardRule = new DataCardinalityRule(this);
+	protected final TableauRule _someValuesRule = new SomeValuesRule(this);
+	protected final TableauRule _chooseRule = new ChooseRule(this);
+	protected final TableauRule _minRule = new MinRule(this);
+	protected final MaxRule _maxRule = new MaxRule(this);
+	protected final TableauRule _selfRule = new SelfRule(this);
+	protected final TableauRule _nominalRule = new NominalRule(this);
+	protected final TableauRule _guessRule = new GuessRule(this);
+	protected final TableauRule _dataSatRule = new DataSatisfiabilityRule(this);
+	protected final TableauRule _dataCardRule = new DataCardinalityRule(this);
 
-	protected List<TableauRule> _tableauRules;
+	protected final List<TableauRule> _tableauRules = new ArrayList<>();;
 
 	public CompletionStrategy(final ABox abox)
 	{
@@ -178,7 +178,7 @@ public abstract class CompletionStrategy
 
 		final boolean fullDatatypeReasoning = OpenlletOptions.USE_FULL_DATATYPE_REASONING && (expr.hasUserDefinedDatatype() || expr.hasCardinalityD() || expr.hasKeys());
 
-		_tableauRules = new ArrayList<>();
+		_tableauRules.clear();
 
 		if (!OpenlletOptions.USE_PSEUDO_NOMINALS && expr.hasNominal() || implicitNominals())
 		{
@@ -216,7 +216,7 @@ public abstract class CompletionStrategy
 
 	protected void addAllRules()
 	{
-		_tableauRules = new ArrayList<>();
+		_tableauRules.clear();
 
 		_tableauRules.add(_nominalRule);
 		_tableauRules.add(_guessRule);
@@ -254,7 +254,7 @@ public abstract class CompletionStrategy
 
 	public void initialize(final Expressivity expressivity)
 	{
-		_mergeList = new ArrayList<>();
+		_mergeList.clear();
 
 		blocking = BlockingFactory.createBlocking(expressivity);
 
@@ -305,7 +305,7 @@ public abstract class CompletionStrategy
 
 		_logger.fine("Initialize started");
 
-		_abox.setBranch(0);
+		_abox.setBranchIndex(0);
 
 		_mergeList.addAll(_abox.getToBeMerged());
 
@@ -357,7 +357,7 @@ public abstract class CompletionStrategy
 
 		_logger.fine("Initialize finished");
 
-		_abox.setBranch(_abox.getBranches().size() + 1);
+		_abox.setBranchIndex(_abox.getBranches().size() + 1);
 		_abox.getStats()._treeDepth = 1;
 		_abox.setChanged(true);
 		_abox.setComplete(false);
@@ -520,8 +520,8 @@ public abstract class CompletionStrategy
 
 		if (OpenlletOptions.TRACK_BRANCH_EFFECTS)
 		{
-			_abox.getBranchEffectTracker().add(_abox.getBranch(), subj.getName());
-			_abox.getBranchEffectTracker().add(_abox.getBranch(), obj.getName());
+			_abox.getBranchEffectTracker().add(_abox.getBranchIndex(), subj.getName());
+			_abox.getBranchEffectTracker().add(_abox.getBranchIndex(), obj.getName());
 		}
 
 		if (OpenlletOptions.USE_COMPLETION_QUEUE)
@@ -822,10 +822,10 @@ public abstract class CompletionStrategy
 	{
 		DependencySet ds = dsParam;
 		// add to effected list
-		if (_abox.getBranch() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
+		if (_abox.getBranchIndex() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
 		{
-			_abox.getBranchEffectTracker().add(_abox.getBranch(), y.getName());
-			_abox.getBranchEffectTracker().add(_abox.getBranch(), z.getName());
+			_abox.getBranchEffectTracker().add(_abox.getBranchIndex(), y.getName());
+			_abox.getBranchEffectTracker().add(_abox.getBranchIndex(), z.getName());
 		}
 
 		// add to merge dependency to dependency _index
@@ -853,7 +853,7 @@ public abstract class CompletionStrategy
 				if (_logger.isLoggable(Level.FINE))
 					_logger.fine("MERG: " + y + " -> " + z + " " + ds);
 
-				ds = ds.copy(_abox.getBranch());
+				ds = ds.copy(_abox.getBranchIndex());
 
 				if (y instanceof Literal && z instanceof Literal)
 					mergeLiterals((Literal) y, (Literal) z, ds);
@@ -923,8 +923,8 @@ public abstract class CompletionStrategy
 			// if( _abox.getBranch() >= 0 && PelletOptions.USE_COMPLETION_QUEUE ) {
 			// _abox.getCompletionQueue().addEffected( _abox.getBranch(), z.getName() );
 			// }
-			if (_abox.getBranch() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
-				_abox.getBranchEffectTracker().add(_abox.getBranch(), z.getName());
+			if (_abox.getBranchIndex() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
+				_abox.getBranchEffectTracker().add(_abox.getBranchIndex(), z.getName());
 
 		}
 
@@ -950,8 +950,8 @@ public abstract class CompletionStrategy
 				addEdge(x, r, z, finalDS);
 
 				// add to effected list
-				if (_abox.getBranch() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
-					_abox.getBranchEffectTracker().add(_abox.getBranch(), z.getName());
+				if (_abox.getBranchIndex() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
+					_abox.getBranchEffectTracker().add(_abox.getBranchIndex(), z.getName());
 
 				// do not remove edge here because prune will take care of that
 			}
@@ -990,8 +990,8 @@ public abstract class CompletionStrategy
 			z.removeEdge(edge);
 
 			// add to effected list
-			if (_abox.getBranch() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
-				_abox.getBranchEffectTracker().add(_abox.getBranch(), z.getName());
+			if (_abox.getBranchIndex() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
+				_abox.getBranchEffectTracker().add(_abox.getBranchIndex(), z.getName());
 		}
 
 		x.inheritDifferents(y, ds);
@@ -1012,11 +1012,11 @@ public abstract class CompletionStrategy
 	{
 		_abox.getStats()._localRestores++;
 		_abox.setClash(null);
-		_abox.setBranch(br.getBranch());
+		_abox.setBranchIndex(br.getBranchIndexInABox());
 
 		final Map<Node, Boolean> visited = new HashMap<>();
 
-		restoreLocal(ind, br.getBranch(), visited);
+		restoreLocal(ind, br.getBranchIndexInABox(), visited);
 
 		for (final Map.Entry<Node, Boolean> entry : visited.entrySet())
 		{
@@ -1060,7 +1060,7 @@ public abstract class CompletionStrategy
 
 	public void restore(final Branch br)
 	{
-		_abox.setBranch(br.getBranch());
+		_abox.setBranchIndex(br.getBranchIndexInABox());
 		_abox.setClash(null);
 		// Setting the anonCount to the value at the time of _branch creation is incorrect
 		// when SMART_RESTORE option is turned on. If we create an anon node after branch
@@ -1078,7 +1078,7 @@ public abstract class CompletionStrategy
 
 		final List<ATermAppl> nodeList = _abox.getNodeNames();
 
-		_logger.fine(() -> "RESTORE: Branch " + br.getBranch());
+		_logger.fine(() -> "RESTORE: Branch " + br.getBranchIndexInABox());
 
 		if (OpenlletOptions.USE_COMPLETION_QUEUE)
 		{
@@ -1087,7 +1087,7 @@ public abstract class CompletionStrategy
 			_abox.getCompletionQueue().clearQueue(NodeSelector.UNIVERSAL);
 
 			// reset the queues
-			_abox.getCompletionQueue().restore(br.getBranch());
+			_abox.getCompletionQueue().restore(br.getBranchIndexInABox());
 		}
 
 		// the restore may cause changes which require using the _allValuesRule -
@@ -1113,7 +1113,7 @@ public abstract class CompletionStrategy
 			// NOTE: for literals, _node.getNodeDepends() may be null when a literal value _branch is
 			// restored, in that case we can remove the literal since there is no other reference
 			// left for that literal
-			if (node.getNodeDepends() == null || node.getNodeDepends().getBranch() > br.getBranch())
+			if (node.getNodeDepends() == null || node.getNodeDepends().getBranch() > br.getBranchIndexInABox())
 			{
 				_abox.removeNode(a); // remove the node from the node map
 
@@ -1141,7 +1141,7 @@ public abstract class CompletionStrategy
 
 				// restore only if not tracking _branch effects
 				if (!OpenlletOptions.TRACK_BRANCH_EFFECTS)
-					node.restore(br.getBranch());
+					node.restore(br.getBranchIndexInABox());
 			}
 		}
 
@@ -1152,12 +1152,12 @@ public abstract class CompletionStrategy
 		if (OpenlletOptions.TRACK_BRANCH_EFFECTS)
 		{
 			// when tracking _branch effects only restore _nodes explicitly stored in the effected list
-			final Set<ATermAppl> effected = _abox.getBranchEffectTracker().removeAll(br.getBranch() + 1);
+			final Set<ATermAppl> effected = _abox.getBranchEffectTracker().removeAll(br.getBranchIndexInABox() + 1);
 			for (final ATermAppl a : effected)
 			{
 				final Node n = _abox.getNode(a);
 				if (n != null)
-					n.restore(br.getBranch());
+					n.restore(br.getBranchIndexInABox());
 			}
 		}
 
@@ -1174,8 +1174,8 @@ public abstract class CompletionStrategy
 	{
 		_abox.getBranches().add(newBranch);
 
-		if (newBranch.getBranch() != _abox.getBranches().size())
-			throw new OpenError("Invalid _branch created: " + newBranch.getBranch() + " != " + _abox.getBranches().size());
+		if (newBranch.getBranchIndexInABox() != _abox.getBranches().size())
+			throw new OpenError("Invalid _branch created: " + newBranch.getBranchIndexInABox() + " != " + _abox.getBranches().size());
 
 		_completionTimer.check();
 

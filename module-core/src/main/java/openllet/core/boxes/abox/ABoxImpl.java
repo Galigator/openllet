@@ -164,7 +164,7 @@ public class ABoxImpl implements ABox
 	private final Set<Clash> _assertedClashes;
 
 	/** the current branch number */
-	private volatile int _branch;
+	private volatile int _branchIndex; // Replace this by something resilient to multi-threading.
 	private final List<Branch> _branches;
 
 	private final List<NodeMerge> _toBeMerged;
@@ -247,7 +247,7 @@ public class ABoxImpl implements ABox
 		_dtReasoner = new DatatypeReasonerImpl();
 		_keepLastCompletion = false;
 
-		setBranch(DependencySet.NO_BRANCH);
+		setBranchIndex(DependencySet.NO_BRANCH);
 		_branches = new Vector<>();
 		_disjBranchStats = new ConcurrentHashMap<>();
 
@@ -381,7 +381,7 @@ public class ABoxImpl implements ABox
 
 		if (extraIndividual == null || copyIndividuals)
 		{
-			setBranch(abox._branch);
+			setBranchIndex(abox._branchIndex);
 			_branches = new Vector<>(abox._branches.size());
 			for (int i = 0, n = abox._branches.size(); i < n; i++)
 			{
@@ -400,7 +400,7 @@ public class ABoxImpl implements ABox
 		}
 		else
 		{
-			setBranch(DependencySet.NO_BRANCH);
+			setBranchIndex(DependencySet.NO_BRANCH);
 			_branches = new Vector<>();
 		}
 
@@ -1617,8 +1617,8 @@ public class ABoxImpl implements ABox
 		// the _current _branch. We need to set it to the initial
 		// _branch number to make sure that this type assertion
 		// will not be removed during backtracking
-		final int remember = _branch;
-		setBranch(DependencySet.NO_BRANCH);
+		final int remember = _branchIndex;
+		setBranchIndex(DependencySet.NO_BRANCH);
 
 		Individual node = getIndividual(x);
 		node.addType(c, ds, false);
@@ -1630,7 +1630,7 @@ public class ABoxImpl implements ABox
 			node.addType(c, ds, !node.isMerged());
 		}
 
-		setBranch(remember);
+		setBranchIndex(remember);
 	}
 
 	@Override
@@ -1723,12 +1723,12 @@ public class ABoxImpl implements ABox
 	@Override
 	public Literal addLiteral(final ATermAppl dataValue)
 	{
-		final int remember = getBranch();
-		setBranch(DependencySet.NO_BRANCH);
+		final int remember = getBranchIndex();
+		setBranchIndex(DependencySet.NO_BRANCH);
 
 		final Literal lit = addLiteral(dataValue, DependencySet.INDEPENDENT);
 
-		setBranch(remember);
+		setBranchIndex(remember);
 
 		return lit;
 	}
@@ -1795,16 +1795,16 @@ public class ABoxImpl implements ABox
 					_completionQueue.add(newElement, NodeSelector.LITERAL);
 				}
 
-				if (getBranch() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
-					_branchEffects.add(getBranch(), node.getName());
+				if (getBranchIndex() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
+					_branchEffects.add(getBranchIndex(), node.getName());
 
 				return (Literal) node;
 			}
 			else
 				throw new InternalReasonerException("Same term refers to both a literal and an _individual: " + name);
 
-		final int remember = _branch;
-		setBranch(DependencySet.NO_BRANCH);
+		final int remember = _branchIndex;
+		setBranchIndex(DependencySet.NO_BRANCH);
 
 		/*
 		 * TODO Investigate the effects of storing asserted value
@@ -1816,7 +1816,7 @@ public class ABoxImpl implements ABox
 		final Literal lit = new Literal(name, dataValue, this, ds);
 		lit.addType(ATermUtils.TOP_LIT, ds);
 
-		setBranch(remember);
+		setBranchIndex(remember);
 
 		_nodes.put(name, lit);
 		_nodeList.add(name);
@@ -1828,8 +1828,8 @@ public class ABoxImpl implements ABox
 			_completionQueue.add(newElement, NodeSelector.LITERAL);
 		}
 
-		if (getBranch() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
-			_branchEffects.add(getBranch(), lit.getName());
+		if (getBranchIndex() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
+			_branchEffects.add(getBranchIndex(), lit.getName());
 
 		return lit;
 	}
@@ -1840,8 +1840,8 @@ public class ABoxImpl implements ABox
 		final Individual ind = addIndividual(x, null, ds);
 
 		// update affected inds for this _branch
-		if (getBranch() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
-			_branchEffects.add(getBranch(), ind.getName());
+		if (getBranchIndex() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
+			_branchEffects.add(getBranchIndex(), ind.getName());
 
 		return ind;
 	}
@@ -1881,8 +1881,8 @@ public class ABoxImpl implements ABox
 		//this must be performed after the _nodeList is updated as this call will update the completion queues
 		n.addType(ATermUtils.TOP, ds);
 
-		if (getBranch() > 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
-			_branchEffects.add(getBranch(), n.getName());
+		if (getBranchIndex() > 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
+			_branchEffects.add(getBranchIndex(), n.getName());
 
 		return n;
 	}
@@ -1928,12 +1928,12 @@ public class ABoxImpl implements ABox
 		final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(diffAxiom) : DependencySet.INDEPENDENT;
 
 		// Temporarily reset the _branch so that this assertion survives resets
-		final int remember = _branch;
-		setBranch(DependencySet.NO_BRANCH);
+		final int remember = _branchIndex;
+		setBranchIndex(DependencySet.NO_BRANCH);
 
 		ind1.setDifferent(ind2, ds);
 
-		setBranch(remember);
+		setBranchIndex(remember);
 	}
 
 	@Override
@@ -1958,12 +1958,12 @@ public class ABoxImpl implements ABox
 
 				final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(allDifferent) : DependencySet.INDEPENDENT;
 
-				final int remember = _branch;
-				setBranch(DependencySet.NO_BRANCH);
+				final int remember = _branchIndex;
+				setBranchIndex(DependencySet.NO_BRANCH);
 
 				ind1.setDifferent(ind2, ds);
 
-				setBranch(remember);
+				setBranchIndex(remember);
 
 				inner = inner.getNext();
 			}
@@ -2049,11 +2049,11 @@ public class ABoxImpl implements ABox
 			if (_logger.isLoggable(Level.FINER))
 			{
 				_logger.finer("CLSH: " + clash);
-				if (clash.getDepends().max() > _branch && _branch != -1)
-					_logger.severe("Invalid _clash dependency " + clash + " > " + _branch);
+				if (clash.getDepends().max() > _branchIndex && _branchIndex != -1)
+					_logger.severe("Invalid _clash dependency " + clash + " > " + _branchIndex);
 			}
 
-			if (_branch == DependencySet.NO_BRANCH && clash.getDepends().getBranch() == DependencySet.NO_BRANCH)
+			if (_branchIndex == DependencySet.NO_BRANCH && clash.getDepends().getBranch() == DependencySet.NO_BRANCH)
 				_assertedClashes.add(clash);
 
 			if (_clash != null)
@@ -2114,15 +2114,15 @@ public class ABoxImpl implements ABox
 	 * @return Returns the branch.
 	 */
 	@Override
-	public int getBranch()
+	public int getBranchIndex()
 	{
-		return _branch;
+		return _branchIndex;
 	}
 
 	@Override
-	public void setBranch(final int branch)
+	public void setBranchIndex(final int branch)
 	{
-		_branch = branch;
+		_branchIndex = branch;
 	}
 
 	@Override
@@ -2130,9 +2130,9 @@ public class ABoxImpl implements ABox
 	{
 
 		if (OpenlletOptions.USE_COMPLETION_QUEUE)
-			_completionQueue.incrementBranch(_branch);
+			_completionQueue.incrementBranch(_branchIndex);
 
-		_branch++;
+		_branchIndex++;
 	}
 
 	/**
@@ -2291,13 +2291,13 @@ public class ABoxImpl implements ABox
 		for (final ATermAppl c : node.getDepends().keySet())
 		{
 			final DependencySet ds = node.getDepends(c);
-			if (ds.max() > _branch || !OpenlletOptions.USE_SMART_RESTORE && ds.getBranch() > _branch)
-				throw new InternalReasonerException("Invalid ds found: " + node + " " + c + " " + ds + " " + _branch);
+			if (ds.max() > _branchIndex || !OpenlletOptions.USE_SMART_RESTORE && ds.getBranch() > _branchIndex)
+				throw new InternalReasonerException("Invalid ds found: " + node + " " + c + " " + ds + " " + _branchIndex);
 		}
 		for (final Node ind : node.getDifferents())
 		{
 			final DependencySet ds = node.getDifferenceDependency(ind);
-			if (ds.max() > _branch || ds.getBranch() > _branch)
+			if (ds.max() > _branchIndex || ds.getBranch() > _branchIndex)
 				throw new InternalReasonerException("Invalid ds: " + node + " != " + ind + " " + ds);
 			if (ind.getDifferenceDependency(node) == null)
 				throw new InternalReasonerException("Invalid difference: " + node + " != " + ind + " " + ds);
@@ -2314,7 +2314,7 @@ public class ABoxImpl implements ABox
 			if (succ.isMerged())
 				throw new InternalReasonerException("Invalid edge to a removed _node: " + edge + " " + succ.isMerged());
 			final DependencySet ds = edge.getDepends();
-			if (ds.max() > _branch || ds.getBranch() > _branch)
+			if (ds.max() > _branchIndex || ds.getBranch() > _branchIndex)
 				throw new InternalReasonerException("Invalid ds: " + edge + " " + ds);
 			final EdgeList allEdges = node.getEdgesTo(succ);
 			if (allEdges.getRoles().size() != allEdges.size())
@@ -2325,7 +2325,7 @@ public class ABoxImpl implements ABox
 		{
 			final Edge edge = edges.edgeAt(e);
 			final DependencySet ds = edge.getDepends();
-			if (ds.max() > _branch || ds.getBranch() > _branch)
+			if (ds.max() > _branchIndex || ds.getBranch() > _branchIndex)
 				throw new InternalReasonerException("Invalid ds: " + edge + " " + ds);
 		}
 	}
@@ -2508,7 +2508,7 @@ public class ABoxImpl implements ABox
 		// completion again
 		setClash(null);
 
-		setBranch(DependencySet.NO_BRANCH);
+		setBranchIndex(DependencySet.NO_BRANCH);
 		_branches.clear();
 		_disjBranchStats.clear();
 		_rulesNotApplied = true;

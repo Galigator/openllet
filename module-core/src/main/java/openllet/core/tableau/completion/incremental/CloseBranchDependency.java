@@ -55,7 +55,7 @@ public class CloseBranchDependency extends BranchDependency
 	@Override
 	public String toString()
 	{
-		return "Branch [" + _theBranch.getNode().getName() + "]  -  [" + _theBranch.getBranch() + "]";
+		return "Branch [" + _theBranch.getNode().getName() + "]  -  [" + _theBranch.getBranchIndexInABox() + "]";
 	}
 
 	/**
@@ -81,7 +81,7 @@ public class CloseBranchDependency extends BranchDependency
 
 	public int getBranch()
 	{
-		return _theBranch.getBranch();
+		return _theBranch.getBranchIndexInABox();
 	}
 
 	public int getTryNext()

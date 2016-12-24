@@ -872,8 +872,8 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 			if (ATermUtils.isLiteral(i))
 				throw new UnsupportedFeatureException("Trying to use a literal as an _individual: " + ATermUtils.toString(i));
 
-		final int remember = _abox.getBranch();
-		_abox.setBranch(DependencySet.NO_BRANCH);
+		final int remember = _abox.getBranchIndex();
+		_abox.setBranchIndex(DependencySet.NO_BRANCH);
 
 		_abox.setSyntacticUpdate(true);
 		final Individual ind = _abox.addIndividual(i, DependencySet.INDEPENDENT);
@@ -917,7 +917,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 			_abox.setSyntacticUpdate(false);
 		}
 
-		_abox.setBranch(remember);
+		_abox.setBranchIndex(remember);
 
 		return ind;
 	}
@@ -1039,11 +1039,11 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 			// add to pseudomodel - note _branch must be temporarily set to 0 to
 			// ensure that asssertion
 			// will not be restored during backtracking
-			final int branch = _abox.getBranch();
-			_abox.setBranch(0);
+			final int branch = _abox.getBranchIndex();
+			_abox.setBranchIndex(0);
 			// update pseudomodel
 			_abox.addAllDifferent(list);
-			_abox.setBranch(branch);
+			_abox.setBranchIndex(branch);
 		}
 
 		_abox.addAllDifferent(list);
@@ -1072,10 +1072,10 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 			// add to pseudomodel - note _branch must be temporarily set to 0 to
 			// ensure that asssertion
 			// will not be restored during backtracking
-			final int branch = _abox.getBranch();
-			_abox.setBranch(0);
+			final int branch = _abox.getBranchIndex();
+			_abox.setBranchIndex(0);
 			_abox.addDifferent(i1, i2);
-			_abox.setBranch(branch);
+			_abox.setBranchIndex(branch);
 		}
 
 		_abox.addDifferent(i1, i2);
@@ -1207,11 +1207,11 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 				// add to pseudomodel - note _branch must be temporarily set to 0 to
 				// ensure that assertion
 				// will not be restored during backtracking
-				final int branch = _abox.getBranch();
-				_abox.setBranch(DependencySet.NO_BRANCH);
+				final int branch = _abox.getBranchIndex();
+				_abox.setBranchIndex(DependencySet.NO_BRANCH);
 				// add the edge
 				final Edge newEdge = subj2.addEdge(role, obj, ds);
-				_abox.setBranch(branch);
+				_abox.setBranchIndex(branch);
 
 				// add new edge to affected set
 				if (newEdge != null)

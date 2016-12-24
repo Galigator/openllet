@@ -60,8 +60,7 @@ public class IncrementalRestore
 	 */
 	private void restoreBranchAdd(final ATermAppl assertion, final BranchAddDependency branch)
 	{
-		if (DependencyIndex._logger.isLoggable(Level.FINE))
-			DependencyIndex._logger.fine("    Removing _branch add? " + branch.getBranch());
+		DependencyIndex._logger.fine(() -> "    Removing _branch add? " + branch.getBranch());
 
 		// get merge dependency
 		final DependencySet ds = branch.getBranch().getTermDepends();
@@ -72,10 +71,9 @@ public class IncrementalRestore
 		// undo merge if empty
 		if (ds.getExplain().isEmpty())
 		{
-			if (DependencyIndex._logger.isLoggable(Level.FINE))
-				DependencyIndex._logger.fine("           Actually removing _branch!");
+			DependencyIndex._logger.fine("           Actually removing _branch!");
 
-			final Collection<ATermAppl> allEffects = OpenlletOptions.TRACK_BRANCH_EFFECTS ? _kb.getABox().getBranchEffectTracker().getAll(branch.getBranch().getBranch()) : _kb.getABox().getNodeNames();
+			final Collection<ATermAppl> allEffects = OpenlletOptions.TRACK_BRANCH_EFFECTS ? _kb.getABox().getBranchEffectTracker().getAll(branch.getBranch().getBranchIndexInABox()) : _kb.getABox().getNodeNames();
 
 			final List<IntSet> updatedList = new ArrayList<>();
 
@@ -108,10 +106,10 @@ public class IncrementalRestore
 					updatedList.add(tDS.getDepends());
 
 					// update _branch if necessary
-					if (tDS.getBranch() > branch.getBranch().getBranch())
+					if (tDS.getBranch() > branch.getBranch().getBranchIndexInABox())
 						tDS = tDS.copy(tDS.getBranch() - 1);
 
-					for (int i = branch.getBranch().getBranch(); i <= _kb.getABox().getBranches().size(); i++)
+					for (int i = branch.getBranch().getBranchIndexInABox(); i <= _kb.getABox().getBranches().size(); i++)
 						// update dependency set
 						if (tDS.contains(i))
 						{
@@ -143,10 +141,10 @@ public class IncrementalRestore
 					updatedList.add(tDS.getDepends());
 
 					// update _branch if necessary
-					if (tDS.getBranch() > branch.getBranch().getBranch())
+					if (tDS.getBranch() > branch.getBranch().getBranchIndexInABox())
 						tDS = tDS.copy(edge.getDepends().getBranch() - 1);
 
-					for (int i = branch.getBranch().getBranch(); i <= _kb.getABox().getBranches().size(); i++)
+					for (int i = branch.getBranch().getBranchIndexInABox(); i <= _kb.getABox().getBranches().size(); i++)
 						// update dependency set
 						if (tDS.contains(i))
 						{
@@ -156,37 +154,10 @@ public class IncrementalRestore
 
 					edge.setDepends(tDS);
 				}
-
-				// //TODO:The following code update outedges as well - after
-				// testing is seems that this is un-necessary
-				// if(_node instanceof Individual){
-				// Individual ind = (Individual)_node;
-				//
-				// //update edge depdencies
-				// //update type dependencies
-				// edges = ind.getInEdges();
-				// for(Iterator eIt = edges.iterator(); eIt.hasNext();){
-				// //get next type
-				// Edge edge = (Edge)eIt.next();
-				//
-				// //update _branch if necessary
-				// if(edge.getDepends().branch > _branch.getBranch().branch)
-				// edge.getDepends().branch--;
-				//
-				// for(int i = _branch.getBranch().branch; i <=
-				// _kb.getABox().getBranches().size(); i++){
-				// //update dependency set
-				// if(edge.getDepends().contains(i)){
-				// edge.getDepends().remove(i);
-				// edge.getDepends().add(i-1);
-				// }
-				// }
-				// }
-				// }
 			}
 
 			if (OpenlletOptions.TRACK_BRANCH_EFFECTS)
-				_kb.getABox().getBranchEffectTracker().remove(branch.getBranch().getBranch() + 1);
+				_kb.getABox().getBranchEffectTracker().remove(branch.getBranch().getBranchIndexInABox() + 1);
 
 			// !!!!!!!!!!!!!!!! Next update _kb.getABox() branches !!!!!!!!!!!!!!
 			// remove the _branch from branches
@@ -195,7 +166,7 @@ public class IncrementalRestore
 			// decrease _branch id for each _branch after the _branch we're
 			// removing
 			// also need to change the dependency set for each label
-			for (int i = branch.getBranch().getBranch(); i < branches.size(); i++)
+			for (int i = branch.getBranch().getBranchIndexInABox(); i < branches.size(); i++)
 			{
 				// cast for ease
 				final Branch br = branches.get(i);
@@ -203,10 +174,10 @@ public class IncrementalRestore
 				DependencySet tDS = br.getTermDepends();
 
 				// update the term depends in the _branch
-				if (tDS.getBranch() > branch.getBranch().getBranch())
+				if (tDS.getBranch() > branch.getBranch().getBranchIndexInABox())
 					tDS = tDS.copy(tDS.getBranch() - 1);
 
-				for (int j = branch.getBranch().getBranch(); j < _kb.getABox().getBranches().size(); j++)
+				for (int j = branch.getBranch().getBranchIndexInABox(); j < _kb.getABox().getBranches().size(); j++)
 					if (tDS.contains(j))
 					{
 						tDS.remove(j);
@@ -214,7 +185,7 @@ public class IncrementalRestore
 					}
 
 				// also need to decrement the _branch number
-				br.setBranch(br.getBranch() - 1);
+				br.setBranchIndexInABox(br.getBranchIndexInABox() - 1);
 				br.setTermDepends(tDS);
 			}
 
@@ -222,7 +193,7 @@ public class IncrementalRestore
 			branches.remove(branch.getBranch());
 
 			// set the _branch counter
-			_kb.getABox().setBranch(_kb.getABox().getBranch() - 1);
+			_kb.getABox().setBranchIndex(_kb.getABox().getBranchIndex() - 1);
 		}
 	}
 

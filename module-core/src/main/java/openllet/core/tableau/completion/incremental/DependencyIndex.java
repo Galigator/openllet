@@ -204,10 +204,10 @@ public class DependencyIndex
 					_dependencies.put(nextAtom, new DependencyEntry());
 
 				if (_logger.isLoggable(Level.FINE))
-					_logger.fine("DependencyIndex- Adding _branch add dependency for assertion: " + nextAtom + " -  Branch id [" + branch.getBranch() + "]   ,  Branch [" + branch + "]");
+					_logger.fine("DependencyIndex- Adding _branch add dependency for assertion: " + nextAtom + " -  Branch id [" + branch.getBranchIndexInABox() + "]   ,  Branch [" + branch + "]");
 
 				//add the dependency
-				final BranchDependency newDep = _dependencies.get(nextAtom).addBranchAddDependency(nextAtom, branch.getBranch(), branch);
+				final BranchDependency newDep = _dependencies.get(nextAtom).addBranchAddDependency(nextAtom, branch.getBranchIndexInABox(), branch);
 
 				//add dependency to _index so that backjumping can be supported (ie, we need a fast way to remove the _branch _dependencies
 				if (!_branchIndex.containsKey(branch))
@@ -243,7 +243,7 @@ public class DependencyIndex
 					label = ((DisjunctionBranch) branch).getDisjunct(branch.getTryNext());
 
 				if (_logger.isLoggable(Level.FINE))
-					_logger.fine("DependencyIndex- Adding _branch remove ds dependency for assertion: " + nextAtom + " -  Branch id [" + branch.getBranch() + "]   ,  Branch [" + branch + "]   on label [" + label + "]  ,    _tryNext [" + branch.getTryNext() + "]");
+					_logger.fine("DependencyIndex- Adding _branch remove ds dependency for assertion: " + nextAtom + " -  Branch id [" + branch.getBranchIndexInABox() + "]   ,  Branch [" + branch + "]   on label [" + label + "]  ,    _tryNext [" + branch.getTryNext() + "]");
 
 				//add the dependency
 				final BranchDependency newDep = _dependencies.get(nextAtom).addCloseBranchDependency(nextAtom, branch);

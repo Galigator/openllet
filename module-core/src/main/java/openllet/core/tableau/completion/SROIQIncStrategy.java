@@ -137,7 +137,7 @@ public class SROIQIncStrategy extends SROIQStrategy
 		if (_logger.isLoggable(Level.FINE))
 			_logger.fine("Initialize Started");
 
-		_mergeList = new ArrayList<>();
+		_mergeList.clear();
 
 		blocking = BlockingFactory.createBlocking(expr);
 
@@ -153,7 +153,7 @@ public class SROIQIncStrategy extends SROIQStrategy
 		// ensure that assertion
 		// will not be restored during backtracking
 		// int _branch = _abox.getBranch();
-		_abox.setBranch(0);
+		_abox.setBranchIndex(0);
 
 		_mergeList.addAll(_abox.getToBeMerged());
 		if (!_mergeList.isEmpty())
@@ -234,7 +234,7 @@ public class SROIQIncStrategy extends SROIQStrategy
 			mergeAll();
 
 		//set appropriate _branch
-		_abox.setBranch(_abox.getBranches().size() + 1);
+		_abox.setBranchIndex(_abox.getBranches().size() + 1);
 
 		// we will also need to add stuff to the _queue in the event of a
 		// deletion

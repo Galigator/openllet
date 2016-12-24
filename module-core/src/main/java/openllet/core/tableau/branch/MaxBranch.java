@@ -75,7 +75,7 @@ public class MaxBranch extends IndividualBranch
 		final MaxBranch b = new MaxBranch(abox, null, x, _r, _n, _qualification, _mergePairs, getTermDepends());
 		b.setAnonCount(getAnonCount());
 		b.setNodeCount(_nodeCount);
-		b.setBranch(_branch);
+		b.setBranchIndexInABox(_branchIndexInABox);
 		b.setStrategy(_strategy);
 		b.setTryNext(_tryNext);
 		b._prevDS = new DependencySet[_prevDS.length];
@@ -122,9 +122,9 @@ public class MaxBranch extends IndividualBranch
 			final Node z = _abox.getNode(nm.getTarget()).getSame();
 
 			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("MAX : (" + (getTryNext() + 1) + "/" + _mergePairs.size() + ") at _branch (" + getBranch() + ") to  " + ind + " for prop " + _r + " _qualification " + _qualification + " merge " + y + " -> " + z + " " + ds);
+				_logger.fine("MAX : (" + (getTryNext() + 1) + "/" + _mergePairs.size() + ") at _branch (" + getBranchIndexInABox() + ") to  " + ind + " for prop " + _r + " _qualification " + _qualification + " merge " + y + " -> " + z + " " + ds);
 
-			ds = ds.union(new DependencySet(getBranch()), _abox.doExplanation());
+			ds = ds.union(new DependencySet(getBranchIndexInABox()), _abox.doExplanation());
 
 			// max cardinality merge also depends on all the edges
 			// between the _individual that has the cardinality and
@@ -173,7 +173,7 @@ public class MaxBranch extends IndividualBranch
 				{
 					final MaxBranch prevBranch = (MaxBranch) branch;
 					if (prevBranch.ind.equals(ind) && prevBranch._r.equals(_r) && prevBranch._qualification.equals(_qualification))
-						ds.add(prevBranch.getBranch());
+						ds.add(prevBranch.getBranchIndexInABox());
 					else
 						break;
 				}
@@ -189,11 +189,11 @@ public class MaxBranch extends IndividualBranch
 			if (earlyClash)
 			{
 				if (_logger.isLoggable(Level.FINE))
-					_logger.fine("CLASH: Branch " + getBranch() + " " + _abox.getClash() + "!");
+					_logger.fine("CLASH: Branch " + getBranchIndexInABox() + " " + _abox.getClash() + "!");
 
 				final DependencySet clashDepends = _abox.getClash().getDepends();
 
-				if (clashDepends.contains(getBranch()))
+				if (clashDepends.contains(getBranchIndexInABox()))
 				{
 					// we need a global restore here because the merge operation modified three
 					// different _nodes and possibly other global variables
@@ -216,7 +216,7 @@ public class MaxBranch extends IndividualBranch
 
 		//CHW - removed for rollback through deletions
 		if (!OpenlletOptions.USE_INCREMENTAL_DELETION)
-			ds.remove(getBranch());
+			ds.remove(getBranchIndexInABox());
 
 		if (_abox.doExplanation())
 			_abox.setClash(Clash.maxCardinality(ind, ds, _r.getName(), _n));
@@ -238,9 +238,9 @@ public class MaxBranch extends IndividualBranch
 	public String toString()
 	{
 		if (getTryNext() < _mergePairs.size())
-			return "Branch " + getBranch() + " max rule on " + ind + " merged  " + _mergePairs.get(getTryNext());
+			return "Branch " + getBranchIndexInABox() + " max rule on " + ind + " merged  " + _mergePairs.get(getTryNext());
 
-		return "Branch " + getBranch() + " max rule on " + ind + " exhausted merge possibilities";
+		return "Branch " + getBranchIndexInABox() + " max rule on " + ind + " exhausted merge possibilities";
 	}
 
 	/**

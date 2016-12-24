@@ -271,14 +271,14 @@ public interface ABox extends Logging
 	 *
 	 * @return Returns the branch.
 	 */
-	public int getBranch();
+	public int getBranchIndex();
 
 	/**
 	 * Set the _branch number (should only be called when backjumping is in progress)
 	 *
-	 * @param branch
+	 * @param branchIndex
 	 */
-	public void setBranch(final int branch);
+	public void setBranchIndex(final int branchIndex);
 
 	public ABox getSourceABox();
 
