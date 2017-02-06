@@ -28,7 +28,7 @@ import org.jgrapht.alg.KosarajuStrongConnectivityInspector;
 import org.jgrapht.alg.TransitiveClosure;
 import org.jgrapht.alg.interfaces.StrongConnectivityAlgorithm;
 import org.jgrapht.ext.DOTExporter;
-import org.jgrapht.ext.StringNameProvider;
+import org.jgrapht.ext.StringComponentNameProvider;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.DirectedSubgraph;
 import org.jgrapht.graph.EdgeReversedGraph;
@@ -45,12 +45,6 @@ import org.semanticweb.owlapi.model.OWLObjectUnionOf;
 import org.semanticweb.owlapi.model.OWLOntology;
 
 /**
- * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
  * <p>
  * Copyright: Copyright (c) 2008
  * </p>
@@ -136,7 +130,7 @@ public class ExistentialExplosionPattern implements OntologyLintPattern
 	@SuppressWarnings("unused")
 	private static <V, E> void printGraph(final Graph<V, E> graph)
 	{
-		final DOTExporter<V, E> exp = new DOTExporter<>(new StringNameProvider<V>(), null, null);
+		final DOTExporter<V, E> exp = new DOTExporter<>(new StringComponentNameProvider<V>(), null, null);
 		exp.exportGraph(graph, new BufferedWriter(new PrintWriter(System.out)));
 	}
 
