@@ -13,6 +13,7 @@ import openllet.owlapi.OWL;
 import openllet.owlapi.OWLGenericTools;
 import openllet.owlapi.OWLHelper;
 import openllet.owlapi.OWLManagerGroup;
+import openllet.owlapi.OpenlletReasoner;
 import openllet.owlapi.SWRL;
 import openllet.shared.tools.Log;
 import org.junit.Test;
@@ -20,10 +21,13 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyID;
+import org.semanticweb.owlapi.model.SWRLIndividualArgument;
+import org.semanticweb.owlapi.model.SWRLLiteralArgument;
 import org.semanticweb.owlapi.model.SWRLRule;
 import org.semanticweb.owlapi.model.SWRLVariable;
 
@@ -38,6 +42,7 @@ public class TestBasic
 	{
 		System.setProperty(org.slf4j.impl.SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "WARN");
 		Log.setLevel(Level.WARNING, OWLGenericTools.class);
+		Log._defaultLevel = Level.FINEST;
 	}
 
 	private final OWLClass ClsA = OWL.Class("#ClsA");
@@ -230,6 +235,88 @@ public class TestBasic
 
 			assertFalse(owl.getObject(OWL.Individual("#I1"), OWL.ObjectProperty("#P2")).isPresent());
 			assertTrue(owl.getObject(OWL.Individual("#I3"), OWL.ObjectProperty("#P1")).get().equals(OWL.Individual("#I4")));
+		}
+	}
+
+	@Test
+	public void testSwrlBuildInByVariable() throws OWLOntologyCreationException
+	{
+		try (final OWLManagerGroup group = new OWLManagerGroup())
+		{
+			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create("http://test.org#swrl-build-in"), 1.00);
+			final OWLHelper owl = new OWLGenericTools(group, ontId, true);
+
+			final OWLDataProperty dpA = OWL.DataProperty("dpA");
+			final OWLDataProperty dpB = OWL.DataProperty("dpB");
+			final OWLNamedIndividual a = OWL.Individual("A");
+			final OWLNamedIndividual b = OWL.Individual("B");
+			final SWRLIndividualArgument swrlIndA = SWRL.individual(a);
+			final SWRLIndividualArgument swrlIndB = SWRL.individual(b);
+			final OWLLiteral ten = OWL.constant(10.);
+			final OWLLiteral eleven = OWL.constant(11.);
+			final SWRLVariable varX = SWRL.variable("x");
+			final SWRLVariable varY = SWRL.variable("y");
+			final SWRLLiteralArgument sup = SWRL.constant("sup");
+			final SWRLLiteralArgument inf = SWRL.constant("inf");
+
+			owl.addAxiom(OWL.propertyAssertion(a, dpA, ten));
+			owl.addAxiom(OWL.propertyAssertion(b, dpA, eleven));
+			owl.addAxiom(SWRL.rule(//
+					SWRL.antecedent(//
+							SWRL.propertyAtom(dpA, swrlIndA, varX), //
+							SWRL.propertyAtom(dpA, swrlIndB, varY), //
+							SWRL.greaterThan(varX, varY)), //
+					SWRL.consequent(SWRL.propertyAtom(dpB, swrlIndA, sup))));
+
+			owl.addAxiom(SWRL.rule(//
+					SWRL.antecedent(//
+							SWRL.propertyAtom(dpA, swrlIndA, varX), //
+							SWRL.propertyAtom(dpA, swrlIndB, varY), //
+							SWRL.lessThan(varX, varY)), //
+					SWRL.consequent(SWRL.propertyAtom(dpB, swrlIndA, inf))));
+
+			final OpenlletReasoner reasoner = owl.getReasoner();
+			assertFalse(reasoner.isEntailed(OWL.propertyAssertion(a, dpB, OWL.constant("sup"))));
+			assertTrue(reasoner.isEntailed(OWL.propertyAssertion(a, dpB, OWL.constant("inf"))));
+		}
+	}
+
+	@Test
+	public void testSwrlBuildInByConstants() throws OWLOntologyCreationException
+	{
+		try (final OWLManagerGroup group = new OWLManagerGroup())
+		{
+			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create("http://test.org#swrl-build-in"), 1.01);
+			final OWLHelper owl = new OWLGenericTools(group, ontId, true);
+
+			final OWLDataProperty dpA = OWL.DataProperty("dpA");
+			final OWLDataProperty dpB = OWL.DataProperty("dpB");
+			final OWLNamedIndividual a = OWL.Individual("A");
+			final OWLNamedIndividual b = OWL.Individual("B");
+			final SWRLIndividualArgument swrlIndA = SWRL.individual(a);
+			final OWLLiteral ten = OWL.constant(10.);
+			final OWLLiteral eleven = OWL.constant(11.);
+			final SWRLVariable varX = SWRL.variable("x");
+			final SWRLLiteralArgument sup = SWRL.constant("sup");
+			final SWRLLiteralArgument inf = SWRL.constant("inf");
+
+			owl.addAxiom(OWL.propertyAssertion(a, dpA, ten));
+			owl.addAxiom(OWL.propertyAssertion(b, dpA, eleven));
+			owl.addAxiom(SWRL.rule(//
+					SWRL.antecedent(//
+							SWRL.propertyAtom(dpA, swrlIndA, varX), //
+							SWRL.greaterThan(varX, SWRL.constant(11.))), //
+					SWRL.consequent(SWRL.propertyAtom(dpB, swrlIndA, sup))));
+
+			owl.addAxiom(SWRL.rule(//
+					SWRL.antecedent(//
+							SWRL.propertyAtom(dpA, swrlIndA, varX), //
+							SWRL.lessThan(varX, SWRL.constant(11.))), //
+					SWRL.consequent(SWRL.propertyAtom(dpB, swrlIndA, inf))));
+
+			final OpenlletReasoner reasoner = owl.getReasoner();
+			assertFalse(reasoner.isEntailed(OWL.propertyAssertion(a, dpB, OWL.constant("sup"))));
+			assertTrue(reasoner.isEntailed(OWL.propertyAssertion(a, dpB, OWL.constant("inf"))));
 		}
 	}
 }

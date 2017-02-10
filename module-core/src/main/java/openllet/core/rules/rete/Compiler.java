@@ -165,26 +165,22 @@ public class Compiler
 
 			bound.addAll(VariableUtils.getVars(atom));
 
-			// any _builtin that can be evaluated with _current bindings should be handled here
-			for (final Iterator<BuiltInCall> i = builtins.iterator(); i.hasNext();)
+			// any _builtin that can be evaluated with current bindings should be handled here
+			for (BuiltInCall call : builtins)
 			{
-				final BuiltInCall call = i.next();
 				if (bound.containsAll(call.getPrerequisitesVars(bound)))
 				{
 					final Collection<? extends AtomVariable> bindableVars = call.getBindableVars(bound);
 					if (bindableVars.isEmpty() || bound.containsAll(bindableVars))
-					{
 						conditions.add(call.createCondition(processed));
-						i.remove();
-					}
+					// i.remove();
 				}
 			}
 
-			final boolean firstBeta = node == null;
 			BetaNode newBeta = null;
 
 			if (canReuseBeta)
-				if (firstBeta || node == null)
+				if (node == null) // First beta node.
 				{
 					for (final BetaNode existingBeta : alpha.getBetas())
 						if (existingBeta.isTop())
@@ -194,28 +190,21 @@ public class Compiler
 						}
 				}
 				else
-				{
-					final Collection<BetaNode> sharedBetas = SetUtils.intersection(alpha.getBetas(), node.getBetas());
-					for (final BetaNode existingBeta : sharedBetas)
-						if (existingBeta instanceof BetaMemoryNode)
+					for (final BetaNode existingBeta : SetUtils.intersection(alpha.getBetas(), node.getBetas()))
+						if (existingBeta instanceof BetaMemoryNode && conditions.equals(((BetaMemoryNode) existingBeta).getConditions()))
 						{
-							final BetaMemoryNode existingBetaMem = (BetaMemoryNode) existingBeta;
-							if (existingBetaMem.getConditions().equals(conditions))
-							{
-								newBeta = existingBeta;
-								break;
-							}
+							newBeta = existingBeta;
+							break;
 						}
-				}
 
-			if (newBeta == null)
+			if (null == newBeta)
 			{
-				newBeta = firstBeta ? new BetaTopNode(alpha) : new BetaMemoryNode(alpha, conditions);
+				newBeta = node == null ? new BetaTopNode(alpha) : new BetaMemoryNode(alpha, conditions);
 				canReuseBeta = false;
 			}
 
 			alpha.addChild(newBeta);
-			if (!firstBeta && node != null)
+			if (node != null)
 				node.addChild(newBeta);
 			node = newBeta;
 
@@ -259,18 +248,16 @@ public class Compiler
 					lastSafeBeta.addChild(new ProductionNode.ProduceBinding(_strategy, explain, rule, args));
 			}
 
-		if (rule.getHead().isEmpty())
-		{
-			if (node != null)
+		if (node != null)
+			if (rule.getHead().isEmpty())
 				node.addChild(new ProductionNode.Inconsistency(_strategy, explain));
-		}
-		else
-		{
-			final ProductionNodeCreator creator = new ProductionNodeCreator(processed, explain);
-			if (node != null)
+			else
+			{
+				final ProductionNodeCreator creator = new ProductionNodeCreator(processed, explain);
+
 				for (final RuleAtom headAtom : rule.getHead())
 					node.addChild(creator.create(headAtom));
-		}
+			}
 	}
 
 	private static TokenNodeProvider createNodeProvider(final AtomVariable arg, final List<RuleAtom> processed)

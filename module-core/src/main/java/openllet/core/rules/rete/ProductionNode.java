@@ -9,7 +9,6 @@ package openllet.core.rules.rete;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.logging.Level;
 import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
 import openllet.core.boxes.abox.Clash;
@@ -157,8 +156,7 @@ public abstract class ProductionNode extends BetaNode
 			final Node s = getNode(_subject, token);
 			final Node o = getNode(_object, token);
 			final Object edge = _strategy.addEdge((Individual) s, _role, o, _ds);
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("Produce edge " + token + " -> " + edge);
+			_logger.fine(() -> "Produce edge " + token + " -> " + edge);
 		}
 
 		@Override
@@ -240,8 +238,7 @@ public abstract class ProductionNode extends BetaNode
 				else
 					binding.set((AtomDVariable) arg, (Literal) node);
 			}
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("Produce binding " + _rule + " -> " + binding);
+			_logger.fine(() -> "Produce binding " + _rule + " -> " + binding);
 			_strategy.addPartialBinding(new PartialBinding(_rule, binding, _ds));
 		}
 

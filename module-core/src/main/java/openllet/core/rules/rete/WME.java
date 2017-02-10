@@ -16,6 +16,7 @@ import openllet.core.boxes.abox.Node;
 import openllet.core.utils.ATermUtils;
 
 /**
+ * Working Memory Element for asserted facts.
  */
 public abstract class WME
 {
@@ -42,8 +43,8 @@ public abstract class WME
 
 		public AbstractWME(final Individual subject, final DependencySet depends)
 		{
-			this._subject = subject;
-			this._depends = depends;
+			_subject = subject;
+			_depends = depends;
 		}
 
 		@Override
@@ -61,14 +62,14 @@ public abstract class WME
 		{
 			super(subject, depends);
 
-			this._object = object;
+			_object = object;
 		}
 
 		@Override
 		public Node getArg(final int index)
 		{
 			assert index == 0 || index == 1;
-			return (index == 0) ? _subject : _object;
+			return index == 0 ? _subject : _object;
 		}
 
 		@Override
@@ -86,7 +87,7 @@ public abstract class WME
 		{
 			super(subject, depends);
 
-			this._type = type;
+			_type = type;
 		}
 
 		@Override
@@ -146,8 +147,8 @@ public abstract class WME
 		{
 			if (dir == null || dir == EdgeDirection.BOTH)
 				throw new IllegalArgumentException();
-			this._edge = edge;
-			this._dir = dir;
+			_edge = edge;
+			_dir = dir;
 		}
 
 		@Override
@@ -160,7 +161,7 @@ public abstract class WME
 		public Node getArg(final int index)
 		{
 			assert index == 0 || index == 1;
-			return (index == (_dir == EdgeDirection.FORWARD ? 0 : 1)) ? _edge.getFrom() : _edge.getTo();
+			return index == (_dir == EdgeDirection.FORWARD ? 0 : 1) ? _edge.getFrom() : _edge.getTo();
 		}
 
 		@Override
@@ -172,7 +173,7 @@ public abstract class WME
 		@Override
 		public String toString()
 		{
-			final boolean isFwd = (_dir == EdgeDirection.FORWARD);
+			final boolean isFwd = _dir == EdgeDirection.FORWARD;
 			return String.format("%s%s-%s-%s%s %s", _edge.getFrom(), isFwd ? "" : "<", _edge.getRole(), isFwd ? ">" : "", _edge.getTo(), _edge.getDepends());
 		}
 	}
@@ -184,8 +185,8 @@ public abstract class WME
 
 		public BuiltinWME(final Literal[] literals, final DependencySet depends)
 		{
-			this._literals = literals;
-			this._depends = depends;
+			_literals = literals;
+			_depends = depends;
 		}
 
 		@Override

@@ -46,8 +46,18 @@ public class SWRLAbstract
 
 	protected void test(final String test)
 	{
-		testJena(url(test + "-premise.rdf"), url(test + "-conclusion.rdf"));
+		testOWLAPI(test);
+		testJena(test);
+	}
+
+	protected void testOWLAPI(final String test)
+	{
 		testOWLAPI(url(test + "-premise.rdf"), url(test + "-conclusion.rdf"));
+	}
+
+	protected void testJena(final String test)
+	{
+		testJena(url(test + "-premise.rdf"), url(test + "-conclusion.rdf"));
 	}
 
 	private static void testJena(final String premiseURI, final String conclusionURI)

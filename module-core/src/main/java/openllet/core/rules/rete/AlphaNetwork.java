@@ -117,14 +117,7 @@ public class AlphaNetwork implements Iterable<AlphaNode>
 
 	public void activateAll()
 	{
-		//		interpreter.addFact( EMPTY_FACT );
-		for (final Iterator<Individual> i = _abox.getIndIterator(); i.hasNext();)
-		{
-			final Individual ind = i.next();
-			activateIndividual(ind);
-		}
-
-		return;
+		_abox.getIndIterator().forEachRemaining(this::activateIndividual);
 	}
 
 	public boolean activateIndividual(final Individual ind)
