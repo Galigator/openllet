@@ -6,7 +6,7 @@
     <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
     <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
     <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
-    <!ENTITY MechanicalEngineeringOntology "http://people.bath.ac.uK/MechanicalEngineeringOntology.owl#" >
+    <!ENTITY MechanicalEngineeringOntology "http://ac.uK/MechanicalEngineeringOntology.owl#" >
 ]>
 
 
@@ -16,7 +16,7 @@
      xmlns:owl="http://www.w3.org/2002/07/owl#"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-     xmlns:MechanicalEngineeringOntology="http://people.bath.ac.uK/MechanicalEngineeringOntology.owl#">
+     xmlns:MechanicalEngineeringOntology="http://ac.uK/MechanicalEngineeringOntology.owl#">
 
     <owl:Class rdf:about="&MechanicalEngineeringOntology;MaterialProperties">
         <rdfs:subClassOf rdf:resource="&MechanicalEngineeringOntology;CostDriver"/>

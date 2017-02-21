@@ -173,13 +173,17 @@ public class SimplifiedELClassifier extends CDOptimizedTaxonomyBuilder
 			}
 			else
 			{
-				final Set<Role> superRoles = _kb.getRole(p).getSuperRoles();
-				for (final Role superRole : superRoles)
-					if (_existentials.contains(superRole.getName(), succ))
-					{
-						final ATermAppl some = ATermUtils.makeSomeValues(superRole.getName(), succ.getConcept());
-						addToQueue(pred, _concepts.get(some));
-					}
+				final Role pRole = _kb.getRole(p);
+				if (null != pRole)
+				{
+					final Set<Role> superRoles = pRole.getSuperRoles();
+					for (final Role superRole : superRoles)
+						if (_existentials.contains(superRole.getName(), succ))
+						{
+							final ATermAppl some = ATermUtils.makeSomeValues(superRole.getName(), succ.getConcept());
+							addToQueue(pred, _concepts.get(some));
+						}
+				}
 			}
 
 		if (!PREPROCESS_DOMAINS)

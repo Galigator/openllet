@@ -39,6 +39,8 @@ import org.semanticweb.owlapi.reasoner.FreshEntitiesException;
 @RunWith(Parameterized.class)
 public class OWLWGTestCase
 {
+	public static Object _lock = new Object();
+
 	/**
 	 * Ensure that test cases timeout after 10 seconds. This is in slightly broader than the one second timeout for each PelletOA3TestRunner.
 	 */
@@ -115,9 +117,12 @@ public class OWLWGTestCase
 		_test = test;
 	}
 
+	static int ref = 0;
+
 	@Test
 	public void runTestCase()
 	{
+
 		// FAILURE
 		if (_failingTests.contains(_test.getIdentifier()))
 		{
@@ -125,38 +130,41 @@ public class OWLWGTestCase
 			return;
 		}
 
-		try
+		synchronized (_lock)
 		{
-			KnowledgeBaseImpl._logger.setLevel(Level.WARNING);
-
-			final Collection<TestRunResult> results = (new PelletOA3TestRunner()).run(_test, 1 * 1000 * _travisLowSpeed); // One second of timeout : really enough if every thing work well.
-			for (final TestRunResult result : results)
+			try
 			{
-				final RunResultType resultType = result.getResultType();
-				if (!RunResultType.PASSING.equals(resultType))
-					if (result.getCause() != null)
-					{
-						// FIXME Can get rid of conditional once #295 is fixed.
-						if (!(result.getCause() instanceof FreshEntitiesException))
-							throw new OpenError(_test.getIdentifier(), result.getCause());
-					}
-					else
-					{
-						System.out.println("FAILURE [" + _test.getIdentifier() + "]");
-						fail(result.toString());
-					}
+				KnowledgeBaseImpl._logger.setLevel(Level.WARNING);
+
+				final Collection<TestRunResult> results = (new PelletOA3TestRunner()).run(_test, 1 * 1000 * _travisLowSpeed); // One second of timeout : really enough if every thing work well.
+				for (final TestRunResult result : results)
+				{
+					final RunResultType resultType = result.getResultType();
+					if (!RunResultType.PASSING.equals(resultType))
+						if (result.getCause() != null)
+						{
+							// FIXME Can get rid of conditional once #295 is fixed.
+							if (!(result.getCause() instanceof FreshEntitiesException))
+								throw new OpenError(_test.getIdentifier(), result.getCause());
+						}
+						else
+						{
+							System.out.println("FAILURE [" + _test.getIdentifier() + "]");
+							fail(result.toString());
+						}
+				}
 			}
-		}
-		catch (final Exception e)
-		{
-			System.out.println("EXCEPTION [" + _test.getIdentifier() + "]");
-			throw e;
-		}
-		finally
-		{
-			_test.dispose();
-			_test = null;
-			System.gc();
+			catch (final Exception e)
+			{
+				System.out.println("EXCEPTION [" + _test.getIdentifier() + "]");
+				throw e;
+			}
+			finally
+			{
+				_test.dispose();
+				_test = null;
+				System.gc();
+			}
 		}
 	}
 

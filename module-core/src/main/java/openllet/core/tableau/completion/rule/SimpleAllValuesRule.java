@@ -43,11 +43,8 @@ public class SimpleAllValuesRule extends AllValuesRule
 
 		final Role s = _strategy.getABox().getRole(p);
 
-		if (null == s)
-		{
-			_logger.severe(() -> "[1] Role " + p + " of " + av + "  is null.");
+		if (null == s) // FIXME : this should not occure but it does in ME.owl / ME2.owl
 			return;
-		}
 
 		if (s.isTop() && s.isObjectRole())
 		{
@@ -115,10 +112,7 @@ public class SimpleAllValuesRule extends AllValuesRule
 			final Role s = _strategy.getABox().getRole(p);
 
 			if (null == s)
-			{
-				_logger.severe(() -> "[2] Role " + p + " is null.");
-				continue;
-			}
+				continue; // FIXME : this should not occur but it does in ME.owl ME2.owl
 
 			if (s.isTop() && s.isObjectRole())
 			{

@@ -50,18 +50,18 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 	private final Set<PartialBinding> _partialBindings;
 	private final Map<Pair<Rule, VariableBinding>, Integer> _rulesApplied;
 	private final RulesToATermTranslator _atermTranslator;
-	private final RuleAtomAsserter ruleAtomAsser_ter;
+	private final RuleAtomAsserter _ruleAtomAsserter;
 	private final TrivialSatisfactionHelpers _atomTester;
 
 	public ContinuousRulesStrategy(final ABox abox)
 	{
 		super(abox);
 		_bindingStrategy = new BindingGeneratorStrategyImpl(abox);
-		_partialBindings = new HashSet<>();
+		_partialBindings = new HashSet<>(); // FIXME : use Concurrent data structure here,  LinkedList<>() or ConcurrentHashMap<>().
 		_unsafeRules = new HashSet<>();
 		_rulesApplied = new HashMap<>();
 		_atermTranslator = new RulesToATermTranslator();
-		ruleAtomAsser_ter = new RuleAtomAsserter();
+		_ruleAtomAsserter = new RuleAtomAsserter();
 		_atomTester = new TrivialSatisfactionHelpers(abox);
 	}
 
@@ -189,7 +189,6 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 		Timer t;
 
 		final Expressivity expressivity = _abox.getKB().getExpressivity();
-
 		initialize(expressivity);
 
 		_merging = false;
@@ -338,7 +337,7 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 			}
 			else
 				for (final RuleAtom atom : rule.getHead())
-					ruleAtomAsser_ter.assertAtom(atom, binding, ds, false, _abox, this);
+					_ruleAtomAsserter.assertAtom(atom, binding, ds, false, _abox, this);
 			return -1;
 		}
 
@@ -359,12 +358,12 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 		else
 			if (atoms.size() == 1)
 			{
-				ruleAtomAsser_ter.assertAtom(atoms.get(0), binding, ds, true, _abox, this);
+				_ruleAtomAsserter.assertAtom(atoms.get(0), binding, ds, true, _abox, this);
 				return -1;
 			}
 			else
 			{
-				final RuleBranch r = new RuleBranch(_abox, this, ruleAtomAsser_ter, atoms, binding, bodyAtomCount, ds);
+				final RuleBranch r = new RuleBranch(_abox, this, _ruleAtomAsserter, atoms, binding, bodyAtomCount, ds);
 				addBranch(r);
 				r.tryNext();
 				return r.getBranchIndexInABox();

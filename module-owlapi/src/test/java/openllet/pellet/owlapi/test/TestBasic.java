@@ -42,7 +42,7 @@ public class TestBasic
 	{
 		System.setProperty(org.slf4j.impl.SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "WARN");
 		Log.setLevel(Level.WARNING, OWLGenericTools.class);
-		Log._defaultLevel = Level.FINEST;
+		Log._defaultLevel = Level.INFO;
 	}
 
 	private final OWLClass ClsA = OWL.Class("#ClsA");

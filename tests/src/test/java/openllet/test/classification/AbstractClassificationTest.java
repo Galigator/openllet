@@ -16,6 +16,8 @@ import org.junit.Test;
  */
 public abstract class AbstractClassificationTest
 {
+
+	
 	public static final String base = PelletTestSuite.base + "modularity/";
 
 	protected static boolean FAIL_AT_FIRST_ERROR = false;
@@ -82,15 +84,15 @@ public abstract class AbstractClassificationTest
 		testFile("MechanicalEngineering");
 	}
 	
-//	@Test
-//	public void simpleMechanicalEngineeringTest() throws Exception
-//	{
-//		testFile("ME");
-//	}
+	@Test
+	public void simpleMechanicalEngineeringTest() throws Exception
+	{
+		testFile("ME");
+	}
 	
-//	@Test
-//	public void simpleMechanicalEngineeringTest2() throws Exception
-//	{
-//		testFile("ME2");
-//	}
+	@Test
+	public void simpleMechanicalEngineeringTest2() throws Exception
+	{
+		testFile("ME2");
+	}
 }

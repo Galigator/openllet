@@ -118,7 +118,10 @@ public class Expressivity
 
 	public boolean isEL()
 	{
-		return !hasNegation && !hasAllValues && !hasInverse && !hasFunctionality && !hasCardinality && !hasCardinalityQ && !hasFunctionalityD && !hasCardinalityD && !hasIrreflexivity && !hasDisjointRoles && !hasAsymmetry && !hasDatatype && !hasKeys && !hasIndividual && nominals.isEmpty();
+		return !hasNegation && !hasAllValues && !hasInverse && !hasFunctionality && !hasCardinality//
+				&& !hasCardinalityQ && !hasFunctionalityD && !hasCardinalityD && !hasIrreflexivity//
+				&& !hasDisjointRoles && !hasAsymmetry && !hasDatatype && !hasKeys && !hasIndividual//
+				&& nominals.isEmpty();
 	}
 
 	@Override
