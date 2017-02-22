@@ -15,7 +15,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Queue;
 import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 import openllet.aterm.ATermAppl;
 import openllet.atom.OpenError;
@@ -47,7 +49,7 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 	private Interpreter _interpreter;
 	private boolean _merging;
 	private final Set<PartialBinding> _unsafeRules;
-	private final Set<PartialBinding> _partialBindings;
+	private final Queue<PartialBinding> _partialBindings;
 	private final Map<Pair<Rule, VariableBinding>, Integer> _rulesApplied;
 	private final RulesToATermTranslator _atermTranslator;
 	private final RuleAtomAsserter _ruleAtomAsserter;
@@ -57,7 +59,7 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 	{
 		super(abox);
 		_bindingStrategy = new BindingGeneratorStrategyImpl(abox);
-		_partialBindings = new HashSet<>(); // FIXME : use Concurrent data structure here,  LinkedList<>() or ConcurrentHashMap<>().
+		_partialBindings = new ConcurrentLinkedQueue<>();
 		_unsafeRules = new HashSet<>();
 		_rulesApplied = new HashMap<>();
 		_atermTranslator = new RulesToATermTranslator();
@@ -147,7 +149,6 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 
 	public void applyRuleBindings()
 	{
-
 		int total = 0;
 
 		for (final PartialBinding ruleBinding : _partialBindings)
@@ -164,11 +165,7 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 					total++;
 
 					if (_logger.isLoggable(Level.FINE))
-					{
-						_logger.fine("Rule: " + rule);
-						_logger.fine("Binding: " + binding);
-						_logger.fine("total:" + total);
-					}
+						_logger.fine("Rule: " + rule + "\nBinding: " + binding + "\ntotal:" + total);
 
 					final int branch = createDisjunctionsFromBinding(binding, rule, ruleBinding.getDependencySet());
 

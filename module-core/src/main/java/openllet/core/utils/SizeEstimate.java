@@ -260,15 +260,15 @@ public class SizeEstimate
 		// of classification. the number of sat checks done during
 		// classification varies widely but due to various optimizations
 		// it is a relatively small percentage of the brute-force n^2
-		classificationCost = _kb.isClassified() ? noSatCost : (classCount * classCount * oneSatCost) / 10;
+		classificationCost = _kb.isClassified() ? noSatCost : classCount * classCount * oneSatCost / 10;
 
 		// the same arguments for classification applies here too
-		realizationCost = _kb.isRealized() ? noSatCost : classificationCost + (oneSatCost * classCount * indCount);
+		realizationCost = _kb.isRealized() ? noSatCost : classificationCost + oneSatCost * classCount * indCount;
 
 		// instance retrieval performs sat checks on only individuals that
 		// are not ruled out by obvious (non-)instance checks thus it is
 		// again a very small percentage
-		instanceRetrievalCost = _kb.isRealized() ? noSatCost : (indCount * oneSatCost) / 100;
+		instanceRetrievalCost = _kb.isRealized() ? noSatCost : indCount * oneSatCost / 100;
 
 		// either KB is realized and this operation is pretty much free or
 		// we perform realization and pay the cost
@@ -277,7 +277,7 @@ public class SizeEstimate
 		classRetrievalCost = _kb.isRealized() ? noSatCost : realizationCost;
 	}
 
-	public void computeAll()
+	public void computeAll() // Call from the jena's SparqlDLExecution
 	{
 		if (!computed)
 		{
@@ -310,10 +310,17 @@ public class SizeEstimate
 		for (final Integer integer : x)
 			a += integer;
 
-		return x.size() > 0 ? ((double) a) / x.size() : 1;
+		return x.size() > 0 ? (double) a / x.size() : 1;
 	}
 
-	public void compute(final Collection<ATermAppl> cs, final Collection<ATermAppl> ps)
+	// Call from the jena's sparql querying system.
+	// FIXME the 'synchronized' is a not a good deal because the true effect is indirect, we does'nt really
+	// care of precision of computation here; What we care is to not have concurrency exception.
+	// concurrency exception came from the change on the KB while doing computation here.
+	// As this 'compute' method is call from the inner quering/update system, it's true effect is to create of sequence
+	// of call in the KB; so individuals do not change in computation : This 'synchronize' slow all the reasoning processing.
+	// A better solution could be to take of every loop in here and use concurrent resilient data structure (on day work).
+	public synchronized void compute(final Collection<ATermAppl> cs, final Collection<ATermAppl> ps)
 	{
 		final Collection<ATermAppl> concepts = new HashSet<>(cs);
 		final Collection<ATermAppl> properties = new HashSet<>(ps);
@@ -442,7 +449,7 @@ public class SizeEstimate
 					// estimate for number of instances per given class
 
 					final Bool isKnownType = _kb.getABox().isKnownType(ind, c);
-					if (isKnownType.isTrue() || (CHECK_CONCEPT_SAT && isKnownType.isUnknown() && (randomGen.nextFloat() < UNKNOWN_PROB)))
+					if (isKnownType.isTrue() || CHECK_CONCEPT_SAT && isKnownType.isUnknown() && randomGen.nextFloat() < UNKNOWN_PROB)
 					{
 
 						instancesPC.put(c, size(c) + 1);
@@ -560,7 +567,7 @@ public class SizeEstimate
 				pairsPP.put(p, (int) (size / OpenlletOptions.SAMPLING_RATIO));
 
 			final Role role = _kb.getRBox().getRole(p);
-			final ATermAppl invP = (role.getInverse() != null) ? role.getInverse().getName() : null;
+			final ATermAppl invP = role.getInverse() != null ? role.getInverse().getName() : null;
 			int subjCount = pSubj.get(p);
 			if (subjCount == 0)
 				subjCount = 1;
@@ -838,7 +845,7 @@ public class SizeEstimate
 
 	public double subClasses(final ATermAppl sup, final boolean direct)
 	{
-		final Map<ATermAppl, Integer> map = (direct ? directSubClasses : subClasses);
+		final Map<ATermAppl, Integer> map = direct ? directSubClasses : subClasses;
 
 		if (!map.containsKey(sup))
 		{
@@ -854,7 +861,7 @@ public class SizeEstimate
 
 	public double subProperties(final ATermAppl sup, final boolean direct)
 	{
-		final Map<ATermAppl, Integer> map = (direct ? directSubProperties : subProperties);
+		final Map<ATermAppl, Integer> map = direct ? directSubProperties : subProperties;
 
 		if (!map.containsKey(sup))
 		{
@@ -867,7 +874,7 @@ public class SizeEstimate
 
 	public double superClasses(final ATermAppl sup, final boolean direct)
 	{
-		final Map<ATermAppl, Integer> map = (direct ? directSuperClasses : superClasses);
+		final Map<ATermAppl, Integer> map = direct ? directSuperClasses : superClasses;
 
 		if (!map.containsKey(sup))
 		{
@@ -880,7 +887,7 @@ public class SizeEstimate
 
 	public double superProperties(final ATermAppl sup, final boolean direct)
 	{
-		final Map<ATermAppl, Integer> map = (direct ? directSuperProperties : superProperties);
+		final Map<ATermAppl, Integer> map = direct ? directSuperProperties : superProperties;
 
 		if (!map.containsKey(sup))
 		{
@@ -977,7 +984,7 @@ public class SizeEstimate
 
 			// if realized trivial, oth. 1 sat (more frq than hpv, but less than sc)
 			case IS_TYPE:
-				cost = (_kb.isRealized() ? noSatCost : oneSatCost);
+				cost = _kb.isRealized() ? noSatCost : oneSatCost;
 				break;
 
 			// rare sat (nonempty dependency set of an edge in Compl. G.)

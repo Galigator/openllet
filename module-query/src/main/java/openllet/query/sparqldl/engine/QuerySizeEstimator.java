@@ -19,9 +19,6 @@ import openllet.query.sparqldl.model.QueryAtom;
  * Title: Computation of size estimate for a knowledge base and a query.
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>

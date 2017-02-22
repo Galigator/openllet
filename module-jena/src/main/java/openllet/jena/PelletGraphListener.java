@@ -38,14 +38,14 @@ public class PelletGraphListener implements GraphListener
 
 	private final Set<Graph> _changedGraphs = SetUtils.create();
 
-	private boolean _statementDeleted  = false;
+	private boolean _statementDeleted = false;
 
 	private final Graph _rootGraph;
-	
+
 	// KB object - used for incremental ABox changes
 	private final KnowledgeBase _kb;
-	
-	private boolean _enabled;	
+
+	private boolean _enabled;
 
 	public PelletGraphListener(final Graph rootGraph, final KnowledgeBase kb, final boolean enabled)
 	{
@@ -164,7 +164,9 @@ public class PelletGraphListener implements GraphListener
 		_statementDeleted = false;
 	}
 
-	public Set<Graph> getChangedGraphs() // TODO fix synchronization has in main branch.
+	// 'synchronize' here should have low impact since the main path comme from 'prepare()' that is also 'synchronized()'
+	// We can ignore the 'loading' path as they rarelly are time critical on 'in-memory' apps.
+	public synchronized Set<Graph> getChangedGraphs()
 	{
 		final Set<Graph> prevLeaves = _leafGraphs;
 

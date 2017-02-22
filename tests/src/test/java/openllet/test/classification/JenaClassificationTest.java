@@ -55,10 +55,10 @@ public class JenaClassificationTest extends AbstractClassificationTest
 					fail("Not entailed: " + format(stmt));
 				else
 				{
-					String x = format(stmt);
+					//String x = format(stmt);
 					//if (!"[MaterialProperties,subClassOf,CostDriver]".equals(x))
-						nonEntailments.add(format(stmt));
-					Individual i = premise.getIndividual(stmt.getSubject().asResource().getURI());
+					nonEntailments.add(format(stmt));
+					final Individual i = premise.getIndividual(stmt.getSubject().asResource().getURI());
 					System.out.println(i);
 					System.out.println(stmt.getPredicate());
 				}
