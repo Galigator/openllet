@@ -36,6 +36,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Level;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
@@ -70,25 +71,22 @@ public class EmptySRIQStrategy extends CompletionStrategy
 	/**
 	 * List of individuals that needs to be expanded by applying tableau completion rules
 	 */
-	private LinkedList<Individual> _mayNeedExpanding;
+	private LinkedList<Individual> _mayNeedExpanding = new LinkedList<>();
 
 	/**
 	 * Cached _mayNeedExpanding at a certain _branch that will be restored during backtracking
 	 */
-	private List<List<Individual>> _mnx;
+	private final List<List<Individual>> _mnx = new ArrayList<>();
 
 	/**
 	 * Nodes in the completion graph that re already being searched
 	 */
-	private Map<Individual, ATermAppl> _cachedNodes;
+	private final Map<Individual, ATermAppl> _cachedNodes = new HashMap<>();
 
 	/**
-	 * Cache safety checker to decide if a cached satisfiability result can be reused for a given _node in the completion graph
+	 * Cache safety checker to decide if a cached satisfiability result can be reused for a given node in the completion graph
 	 */
-	private CacheSafety _cacheSafety;
-
-	//	private static int _cache = 0;
-	//	private static int block = 0;
+	private volatile Optional<CacheSafety> _cacheSafety = Optional.empty();
 
 	public EmptySRIQStrategy(final ABox abox)
 	{
@@ -100,21 +98,16 @@ public class EmptySRIQStrategy extends CompletionStrategy
 	{
 		_mergeList.clear();
 
-		_cachedNodes = new HashMap<>();
+		_mnx.add(null); // add a null entry so Branch._branch _index will match with the _index in this array
 
-		_mnx = new ArrayList<>();
-		// add a null entry so Branch._branch _index will match with the _index in this array
-		_mnx.add(null);
+		assert _abox.size() == 1 : "This strategy can only be used with originally empty ABoxes";
 
-		assert _abox.size() == 1 : "This _strategy can only be used with originally empty ABoxes";
-
-		blocking = BlockingFactory.createBlocking(expressivity);
+		_blocking = BlockingFactory.createBlocking(expressivity);
 
 		final Individual root = _abox.getIndIterator().next();
 		applyUniversalRestrictions(root);
 		_selfRule.apply(root);
 
-		_mayNeedExpanding = new LinkedList<>();
 		_mayNeedExpanding.add(root);
 
 		_abox.setBranchIndex(1);
@@ -139,7 +132,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 			if (_abox.getNodes().size() > 1)
 				throw new OpenError("This _strategy can only be used with an ABox that has a single _individual.");
 
-		_cacheSafety = _abox.getCache().getSafety().canSupport(expr) ? _abox.getCache().getSafety() : CacheSafetyFactory.createCacheSafety(expr);
+		_cacheSafety = Optional.of(_abox.getCache().getSafety().canSupport(expr) ? _abox.getCache().getSafety() : CacheSafetyFactory.createCacheSafety(expr));
 
 		initialize(expr);
 
@@ -188,15 +181,15 @@ public class EmptySRIQStrategy extends CompletionStrategy
 		if (OpenlletOptions.USE_ADVANCED_CACHING)
 			// if completion tree is clash free _cache all sat concepts
 			if (!_abox.isClosed())
-			for (final Iterator<Individual> i = new IndividualIterator(_abox); i.hasNext();)
-			{
-			final Individual ind = i.next();
-			final ATermAppl c = _cachedNodes.get(ind);
-			if (c == null)
-			continue;
+				for (final Iterator<Individual> i = new IndividualIterator(_abox); i.hasNext();)
+				{
+					final Individual ind = i.next();
+					final ATermAppl c = _cachedNodes.get(ind);
+					if (c == null)
+						continue;
 
-			addCacheSat(c);
-			}
+					addCacheSat(c);
+				}
 	}
 
 	private List<Individual> getDescendants(final Individual ind)
@@ -280,7 +273,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 
 		do
 		{
-			if (blocking.isDirectlyBlocked(x))
+			if (_blocking.isDirectlyBlocked(x))
 			{
 				if (_logger.isLoggable(Level.FINE))
 					_logger.fine("Stop _blocked " + x);
@@ -302,7 +295,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 			if (x.canApply(Node.ATOM) || x.canApply(Node.OR))
 				continue;
 
-			if (blocking.isDynamic() && blocking.isDirectlyBlocked(x))
+			if (_blocking.isDynamic() && _blocking.isDirectlyBlocked(x))
 			{
 				if (_logger.isLoggable(Level.FINE))
 					_logger.fine("Stop _blocked " + x);
@@ -388,28 +381,21 @@ public class EmptySRIQStrategy extends CompletionStrategy
 
 		final ATermAppl c = createConcept(x);
 
-		Bool sat = isCachedSat(c);
+		final Bool sat = isCachedSat(c);
 
 		if (sat.isUnknown())
 		{
-			if (_logger.isLoggable(Level.FINEST))
-				_logger.finest("??? Cache miss for " + c);
+			_logger.finest(() -> "??? Cache miss for " + c);
 			_cachedNodes.put(x, c);
 		}
 		else
-			if (!_cacheSafety.isSafe(c, x))
+			if (!_cacheSafety.isPresent() || !_cacheSafety.get().isSafe(c, x))
 			{
-				if (_logger.isLoggable(Level.FINER))
-					_logger.finer("*** Cache unsafe for " + c);
-
-				//			_cacheSafety.isSafe( c, x.getInEdges().edgeAt( 0 ).getRole(), x.getParent() );
-				//			System.err.println( "CACHE " + ++_cache );
-
-				sat = Bool.UNKNOWN;
+				_logger.finer(() -> "*** Cache unsafe for " + c);
+				return Bool.UNKNOWN;
 			}
 			else
-				if (_logger.isLoggable(Level.FINER))
-					_logger.finer("*** Cache hit for " + c + " sat = " + sat);
+				_logger.finer(() -> "*** Cache hit for " + c + " sat = " + sat);
 
 		return sat;
 	}

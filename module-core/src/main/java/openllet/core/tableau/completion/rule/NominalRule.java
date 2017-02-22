@@ -71,8 +71,7 @@ public class NominalRule extends AbstractTableauRule
 		_strategy.getABox().copyOnWrite();
 
 		final ATermAppl nominal = (ATermAppl) nc.getArgument(0);
-		// first find the _individual for the given nominal
-		Individual z = _strategy.getABox().getIndividual(nominal);
+		Individual z = _strategy.getABox().getIndividual(nominal); // first find the _individual for the given nominal
 		if (z == null)
 			if (ATermUtils.isAnonNominal(nominal))
 				z = _strategy.getABox().addIndividual(nominal, ds);

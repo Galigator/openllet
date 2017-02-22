@@ -36,9 +36,9 @@ import openllet.core.utils.SetUtils;
  *
  * @author Evren Sirin
  */
-public class MaxRule extends AbstractTableauRule
+public class MaxCardinalityRule extends AbstractTableauRule
 {
-	public MaxRule(final CompletionStrategy strategy)
+	public MaxCardinalityRule(final CompletionStrategy strategy)
 	{
 		super(strategy, NodeSelector.MAX_NUMBER, BlockingType.INDIRECT);
 	}
@@ -47,25 +47,25 @@ public class MaxRule extends AbstractTableauRule
 	 * Apply max rule to the individual.
 	 */
 	@Override
-	public void apply(final Individual x)
+	public void apply(final Individual ind)
 	{
-		if (!x.canApply(Node.MAX))
+		if (!ind.canApply(Node.MAX))
 			return;
 
-		final List<ATermAppl> maxCardinality = x.getTypes(Node.MAX);
+		final List<ATermAppl> maxCardinality = ind.getTypes(Node.MAX);
 		for (int i = 0; i < maxCardinality.size(); i++)
 		{
 			final ATermAppl mc = maxCardinality.get(i);
 
-			applyMaxRule(x, mc);
+			applyMaxRule(ind, mc);
 
 			if (_strategy.getABox().isClosed())
 				return;
 
-			if (x.isMerged())
+			if (ind.isMerged())
 				return;
 		}
-		x._applyNext[Node.MAX] = maxCardinality.size();
+		ind._applyNext[Node.MAX] = maxCardinality.size();
 	}
 
 	protected void applyMaxRule(final Individual x, final ATermAppl mc)

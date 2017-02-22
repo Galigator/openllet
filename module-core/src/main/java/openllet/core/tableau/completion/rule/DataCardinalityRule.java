@@ -28,12 +28,6 @@ import openllet.core.tableau.completion.queue.NodeSelector;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2009
  * </p>
  * <p>
@@ -55,17 +49,11 @@ public class DataCardinalityRule extends AbstractTableauRule
 		final Map<ATermAppl, Collection<ATermAppl>> dataranges = new HashMap<>();
 		final Map<ATermAppl, DependencySet> rangeDepends = new HashMap<>();
 
-		/*
-		 * Gather all _data properties that appear in universal restrictions on this _node.
-		 */
-		for (final ATermAppl allDesc : x.getTypes(Node.ALL))
+		for (final ATermAppl allDesc : x.getTypes(Node.ALL)) // Gather all _data properties that appear in universal restrictions on this _node.
 		{
 			final ATerm rTerm = allDesc.getArgument(0);
 
-			/*
-			 * Skip object property chains
-			 */
-			if (rTerm instanceof ATermList)
+			if (rTerm instanceof ATermList) // Skip object property chains
 				continue;
 
 			final ATermAppl r = (ATermAppl) rTerm;
@@ -74,16 +62,10 @@ public class DataCardinalityRule extends AbstractTableauRule
 			if (null == role) // FIXME null should not be observe.
 				continue;
 
-			/*
-			 * Skip any roles that are not datatype properties
-			 */
-			if (!role.isDatatypeRole())
+			if (!role.isDatatypeRole()) // Skip any roles that are not datatype properties
 				continue;
 
-			/*
-			 * Collect the _data range and its dependency set
-			 */
-			Collection<ATermAppl> existing = dataranges.get(r);
+			Collection<ATermAppl> existing = dataranges.get(r); // Collect the _data range and its dependency set
 			DependencySet ds = x.getDepends(allDesc);
 			if (existing == null)
 			{
@@ -97,10 +79,7 @@ public class DataCardinalityRule extends AbstractTableauRule
 
 		}
 
-		/*
-		 * Get the ranges of any _data properties that have min cardinality restrictions
-		 */
-		for (final ATermAppl minDesc : x.getTypes(Node.MIN))
+		for (final ATermAppl minDesc : x.getTypes(Node.MIN)) // Get the ranges of any _data properties that have min cardinality restrictions
 		{
 			/*
 			 * TODO: Verify that minDesc will never have a property chain
@@ -108,10 +87,7 @@ public class DataCardinalityRule extends AbstractTableauRule
 			final ATermAppl r = (ATermAppl) minDesc.getArgument(0);
 			final Role role = _strategy.getABox().getRole(r);
 
-			/*
-			 * Skip any roles that are not datatype properties
-			 */
-			if (!role.isDatatypeRole())
+			if (!role.isDatatypeRole()) // Skip any roles that are not datatype properties
 				continue;
 
 			final Set<ATermAppl> ranges = role.getRanges();
@@ -142,10 +118,7 @@ public class DataCardinalityRule extends AbstractTableauRule
 			}
 		}
 
-		/*
-		 * For each of the min cardinality restrictions, verify that the _data range is large enough
-		 */
-		for (final ATermAppl minDesc : x.getTypes(Node.MIN))
+		for (final ATermAppl minDesc : x.getTypes(Node.MIN)) // For each of the min cardinality restrictions, verify that the _data range is large enough
 		{
 			final ATermAppl r = (ATermAppl) minDesc.getArgument(0);
 			final Role role = _strategy.getABox().getRole(r);
@@ -187,8 +160,7 @@ public class DataCardinalityRule extends AbstractTableauRule
 				}
 				catch (final DatatypeReasonerException e)
 				{
-					// TODO Better Error Handling
-					throw new InternalReasonerException(e);
+					throw new InternalReasonerException(e); // TODO Better Error Handling
 				}
 			}
 		}

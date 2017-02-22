@@ -18,12 +18,6 @@ import openllet.shared.tools.Log;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2009
  * </p>
  * <p>
@@ -41,20 +35,15 @@ public abstract class AbstractTableauRule implements TableauRule
 		NONE, DIRECT, INDIRECT, COMPLETE
 	}
 
-	protected CompletionStrategy _strategy;
-	protected NodeSelector _nodeSelector;
-	protected BlockingType _blockingType;
+	protected final CompletionStrategy _strategy;
+	protected final NodeSelector _nodeSelector;
+	protected final BlockingType _blockingType;
 
 	public AbstractTableauRule(final CompletionStrategy strategy, final NodeSelector nodeSelector, final BlockingType blockingType)
 	{
-		this._strategy = strategy;
-		this._nodeSelector = nodeSelector;
-		this._blockingType = blockingType;
-	}
-
-	public boolean isDisabled()
-	{
-		return false;
+		_strategy = strategy;
+		_nodeSelector = nodeSelector;
+		_blockingType = blockingType;
 	}
 
 	@Override

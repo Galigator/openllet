@@ -58,27 +58,20 @@ public abstract class CompletionQueue extends IndividualIterator
 
 	public final static Logger _logger = Log.getLogger(CompletionQueue.class);
 
-	/**
-	 * Pointer to the _abox
-	 */
-	//protected ABox _abox;
+	private boolean _allowLiterals = false;
 
-	private boolean allowLiterals;
+	protected int _currentType; // Access fom OptimizedBasicCompletionQueue only
 
-	protected int currentType;
-
-	protected boolean closed;
+	protected boolean _closed = false;
 
 	/**
-	 * Constructor - create _queue
+	 * Constructor - create queue
 	 *
 	 * @param _abox
 	 */
 	protected CompletionQueue(final ABox abox)
 	{
 		super(abox);
-		closed = false;
-		allowLiterals = false;
 	}
 
 	/**
@@ -167,7 +160,7 @@ public abstract class CompletionQueue extends IndividualIterator
 	 */
 	public void setAllowLiterals(final boolean val)
 	{
-		allowLiterals = val;
+		_allowLiterals = val;
 	}
 
 	/**
@@ -192,9 +185,9 @@ public abstract class CompletionQueue extends IndividualIterator
 	 *
 	 * @return
 	 */
-	protected boolean allowLiterals()
+	protected boolean isAllowLiterals()
 	{
-		return allowLiterals;
+		return _allowLiterals;
 	}
 
 	/**
@@ -214,6 +207,6 @@ public abstract class CompletionQueue extends IndividualIterator
 
 	public void setClosed(final boolean isClash)
 	{
-		closed = isClash;
+		_closed = isClash;
 	}
 }

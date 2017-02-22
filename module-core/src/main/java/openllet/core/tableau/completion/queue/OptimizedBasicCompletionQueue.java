@@ -37,18 +37,18 @@ import openllet.core.boxes.abox.Node;
 /**
  * An optimized basic _queue for individuals that need to have completion rules applied
  */
-public class OptimizedBasicCompletionQueue extends CompletionQueue
+public final class OptimizedBasicCompletionQueue extends CompletionQueue // The class it set 'final' only to help reading the code.
 {
 
 	/**
-	 * The _queue - array - each entry is an arraylist for a particular rule type
+	 * The queue - array - each entry is an arraylist for a particular rule type
 	 */
-	protected List<ATermAppl>[] queue;
+	private final List<ATermAppl>[] _queue;
 
 	/**
-	 * Set to track duplicates for new elements list for _queue
+	 * Set to track duplicates for new elements list for queue
 	 */
-	protected Set<ATermAppl>[] newQueue;
+	private final Set<ATermAppl>[] _newQueue;
 
 	//TODO: This will be refactored; however currently there are some unit tests which will not
 	//terminate due to the _order in which the completion rules are applied to individuals
@@ -57,29 +57,29 @@ public class OptimizedBasicCompletionQueue extends CompletionQueue
 	//of non-deterministic choices are created...talk to Evren about this.
 
 	/**
-	 * List to hold new elements for the _queue
+	 * List to hold new elements for the queue
 	 */
-	protected List<ATermAppl>[] newQueueList;
+	private final List<ATermAppl>[] _newQueueList;
 
 	/**
-	 * List of _current _index pointer for each _queue
+	 * List of current index pointer for each queue
 	 */
-	protected int current[];
+	private final int _current[];
 
 	/**
-	 * List of _current _index pointer for each _queue
+	 * List of current _index pointer for each queue
 	 */
-	protected int end[];
+	private final int _end[];
 
 	/**
-	 * List of _current _index pointer for the stopping point at each _queue
+	 * List of current index pointer for the stopping point at each queue
 	 */
-	protected int cutOff[];
+	private final int _cutOff[];
 
 	/**
-	 * Flag set for when the kb is restored - in this case we do not want to flush the _queue immediatly
+	 * Flag set for when the kb is restored - in this case we do not want to flush the queue immediatly
 	 */
-	protected boolean backtracked;
+	private boolean _backtracked = false;
 
 	/**
 	 * Constructor - create _queue
@@ -91,26 +91,24 @@ public class OptimizedBasicCompletionQueue extends CompletionQueue
 	{
 		super(abox);
 		final int nSelectors = NodeSelector.numSelectors();
-		queue = new ArrayList[nSelectors];
-		newQueue = new HashSet[nSelectors];
-		newQueueList = new ArrayList[nSelectors];
+		_queue = new ArrayList[nSelectors];
+		_newQueue = new HashSet[nSelectors];
+		_newQueueList = new ArrayList[nSelectors];
 
-		current = new int[nSelectors];
-		cutOff = new int[nSelectors];
-		end = new int[nSelectors];
+		_current = new int[nSelectors];
+		_cutOff = new int[nSelectors];
+		_end = new int[nSelectors];
 
 		for (int i = 0; i < nSelectors; i++)
 		{
-			queue[i] = new ArrayList<>();
-			newQueue[i] = new HashSet<>();
-			newQueueList[i] = new ArrayList<>();
+			_queue[i] = new ArrayList<>();
+			_newQueue[i] = new HashSet<>();
+			_newQueueList[i] = new ArrayList<>();
 
-			current[i] = 0;
-			cutOff[i] = 0;
-			end[i] = 0;
+			_current[i] = 0;
+			_cutOff[i] = 0;
+			_end[i] = 0;
 		}
-
-		backtracked = false;
 	}
 
 	/**
@@ -121,9 +119,9 @@ public class OptimizedBasicCompletionQueue extends CompletionQueue
 	@Override
 	protected void findNext(final int type)
 	{
-		for (; current[type] < cutOff[type]; current[type]++)
+		for (; _current[type] < _cutOff[type]; _current[type]++)
 		{
-			Node node = _abox.getNode(queue[type].get(current[type]));
+			Node node = _abox.getNode(_queue[type].get(_current[type]));
 
 			//because we do not maitain the _queue during restore this _node could be non-existent
 			if (node == null)
@@ -132,7 +130,7 @@ public class OptimizedBasicCompletionQueue extends CompletionQueue
 			node = node.getSame();
 
 			if (node != null)
-				if ((node instanceof Literal && allowLiterals() || node instanceof Individual && !allowLiterals()) && !node.isPruned())
+				if ((node instanceof Literal && isAllowLiterals() || node instanceof Individual && !isAllowLiterals()) && !node.isPruned())
 					break;
 		}
 	}
@@ -143,8 +141,8 @@ public class OptimizedBasicCompletionQueue extends CompletionQueue
 	@Override
 	public boolean hasNext()
 	{
-		findNext(currentType);
-		return current[currentType] < cutOff[currentType];
+		findNext(_currentType);
+		return _current[_currentType] < _cutOff[_currentType];
 	}
 
 	/**
@@ -157,14 +155,14 @@ public class OptimizedBasicCompletionQueue extends CompletionQueue
 	{
 		for (int i = 0; i < NodeSelector.numSelectors(); i++)
 		{
-			queue[i].addAll(newQueueList[i]);
-			newQueue[i].clear();
-			newQueueList[i].clear();
-			end[i] = queue[i].size();
-			current[i] = 0;
-			cutOff[i] = end[i];
+			_queue[i].addAll(_newQueueList[i]);
+			_newQueue[i].clear();
+			_newQueueList[i].clear();
+			_end[i] = _queue[i].size();
+			_current[i] = 0;
+			_cutOff[i] = _end[i];
 		}
-		backtracked = true;
+		_backtracked = true;
 	}
 
 	/**
@@ -174,10 +172,10 @@ public class OptimizedBasicCompletionQueue extends CompletionQueue
 	public Individual next()
 	{
 		//get the next _index
-		findNext(currentType);
-		Individual ind = (Individual) _abox.getNode(queue[currentType].get(current[currentType]));
+		findNext(_currentType);
+		Individual ind = (Individual) _abox.getNode(_queue[_currentType].get(_current[_currentType]));
 		ind = ind.getSame();
-		current[currentType]++;
+		_current[_currentType]++;
 		return ind;
 	}
 
@@ -188,10 +186,10 @@ public class OptimizedBasicCompletionQueue extends CompletionQueue
 	public Node nextLiteral()
 	{
 		//get the next _index
-		findNext(currentType);
-		Node node = _abox.getNode(queue[currentType].get(current[currentType]));
+		findNext(_currentType);
+		Node node = _abox.getNode(_queue[_currentType].get(_current[_currentType]));
 		node = node.getSame();
-		current[currentType]++;
+		_current[_currentType]++;
 		return node;
 	}
 
@@ -199,10 +197,10 @@ public class OptimizedBasicCompletionQueue extends CompletionQueue
 	public void add(final QueueElement x, final NodeSelector s)
 	{
 		final int type = s.ordinal();
-		if (!newQueue[type].contains(x.getNode()))
+		if (!_newQueue[type].contains(x.getNode()))
 		{
-			newQueue[type].add(x.getNode());
-			newQueueList[type].add(x.getNode());
+			_newQueue[type].add(x.getNode());
+			_newQueueList[type].add(x.getNode());
 		}
 	}
 
@@ -210,10 +208,10 @@ public class OptimizedBasicCompletionQueue extends CompletionQueue
 	public void add(final QueueElement x)
 	{
 		for (int i = 0; i < NodeSelector.numSelectors(); i++)
-			if (!newQueue[i].contains(x.getNode()))
+			if (!_newQueue[i].contains(x.getNode()))
 			{
-				newQueue[i].add(x.getNode());
-				newQueueList[i].add(x.getNode());
+				_newQueue[i].add(x.getNode());
+				_newQueueList[i].add(x.getNode());
 			}
 	}
 
@@ -225,9 +223,9 @@ public class OptimizedBasicCompletionQueue extends CompletionQueue
 	@Override
 	public void reset(final NodeSelector s)
 	{
-		currentType = s.ordinal();
-		cutOff[currentType] = end[currentType];
-		current[currentType] = 0;
+		_currentType = s.ordinal();
+		_cutOff[_currentType] = _end[_currentType];
+		_current[_currentType] = 0;
 	}
 
 	/**
@@ -251,31 +249,24 @@ public class OptimizedBasicCompletionQueue extends CompletionQueue
 
 		for (int i = 0; i < NodeSelector.numSelectors(); i++)
 		{
-			copy.queue[i] = new ArrayList<>(queue[i]);
-			copy.newQueue[i] = new HashSet<>(newQueue[i]);
-			copy.newQueueList[i] = new ArrayList<>(newQueueList[i]);
+			copy._queue[i] = new ArrayList<>(_queue[i]);
+			copy._newQueue[i] = new HashSet<>(_newQueue[i]);
+			copy._newQueueList[i] = new ArrayList<>(_newQueueList[i]);
 
-			copy.current[i] = current[i];
-			copy.cutOff[i] = cutOff[i];
-			copy.end[i] = end[i];
+			copy._current[i] = _current[i];
+			copy._cutOff[i] = _cutOff[i];
+			copy._end[i] = _end[i];
 		}
 
-		copy.backtracked = backtracked;
+		copy._backtracked = _backtracked;
 
-		copy.setAllowLiterals(allowLiterals());
+		copy.setAllowLiterals(isAllowLiterals());
 
-		//copy _branch effects
-		//		for(int i = 0; i < branchEffects.size(); i++){
-		//			HashSet<ATermAppl> cp = new HashSet<ATermAppl>();
-		//			cp.addAll((Set<ATermAppl>)branchEffects.get(i));
-		//			copy.branchEffects.add(cp);
-		//		}
-		//
 		return copy;
 	}
 
 	/**
-	 * Set the _abox for the _queue
+	 * Set the abox for the queue
 	 *
 	 * @param ab
 	 */
@@ -286,7 +277,7 @@ public class OptimizedBasicCompletionQueue extends CompletionQueue
 	}
 
 	/**
-	 * Print method for a given _queue type
+	 * Print method for a given queue type
 	 *
 	 * @param type
 	 */
@@ -295,7 +286,7 @@ public class OptimizedBasicCompletionQueue extends CompletionQueue
 	{
 		if (type > NodeSelector.numSelectors())
 			return;
-		System.out.println("Queue " + type + ": " + queue[type]);
+		System.out.println("Queue " + type + ": " + _queue[type]);
 	}
 
 	/**
@@ -305,7 +296,7 @@ public class OptimizedBasicCompletionQueue extends CompletionQueue
 	public void print()
 	{
 		for (int i = 0; i < NodeSelector.numSelectors(); i++)
-			System.out.println("Queue " + i + ": " + queue[i]);
+			System.out.println("Queue " + i + ": " + _queue[i]);
 	}
 
 	/**
@@ -322,23 +313,22 @@ public class OptimizedBasicCompletionQueue extends CompletionQueue
 	{
 		for (int i = 0; i < NodeSelector.numSelectors(); i++)
 		{
-
-			if (!backtracked && !closed)
-				queue[i].clear();
+			if (!_backtracked && !_closed)
+				_queue[i].clear();
 			else
-				if (closed)
+				if (_closed)
 					if (!_abox.isClosed())
-						closed = false;
+						_closed = false;
 
-			queue[i].addAll(newQueueList[i]);
+			_queue[i].addAll(_newQueueList[i]);
 
-			newQueue[i].clear();
-			newQueueList[i].clear();
+			_newQueue[i].clear();
+			_newQueueList[i].clear();
 
-			end[i] = queue[i].size();
+			_end[i] = _queue[i].size();
 		}
 
-		backtracked = false;
+		_backtracked = false;
 	}
 
 	@Override
@@ -347,15 +337,15 @@ public class OptimizedBasicCompletionQueue extends CompletionQueue
 
 		final int index = s.ordinal();
 
-		if (index == NodeSelector.UNIVERSAL.ordinal() || !backtracked)
-			queue[index].clear();
+		if (index == NodeSelector.UNIVERSAL.ordinal() || !_backtracked)
+			_queue[index].clear();
 
-		queue[index].addAll(newQueueList[index]);
+		_queue[index].addAll(_newQueueList[index]);
 
-		newQueue[index].clear();
-		newQueueList[index].clear();
+		_newQueue[index].clear();
+		_newQueueList[index].clear();
 
-		end[index] = queue[index].size();
+		_end[index] = _queue[index].size();
 	}
 
 	@Override
@@ -364,12 +354,12 @@ public class OptimizedBasicCompletionQueue extends CompletionQueue
 
 		final int index = s.ordinal();
 
-		queue[index].clear();
+		_queue[index].clear();
 
-		newQueue[index].clear();
-		newQueueList[index].clear();
+		_newQueue[index].clear();
+		_newQueueList[index].clear();
 
-		end[index] = queue[index].size();
+		_end[index] = _queue[index].size();
 	}
 
 }

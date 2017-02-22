@@ -18,12 +18,12 @@ public class ClashDependency implements Dependency
 {
 
 	/**
-	 * The _assertion
+	 * The assertion
 	 */
 	private final ATermAppl _assertion;
 
 	/**
-	 * The _clash
+	 * The clash
 	 */
 	private final Clash _clash;
 
@@ -72,7 +72,7 @@ public class ClashDependency implements Dependency
 	/**
 	 * @return the _assertion
 	 */
-	protected ATermAppl getAssertion()
+	protected ATermAppl getAssertion() // reuse in Dependecy Index
 	{
 		return _assertion;
 	}

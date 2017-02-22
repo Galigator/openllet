@@ -44,12 +44,12 @@ public class QueueElement
 	/**
 	 * Label for this element
 	 */
-	private ATermAppl label;
+	private volatile ATermAppl _label;
 
 	/**
 	 * Node for this element
 	 */
-	private ATermAppl node;
+	private volatile ATermAppl _node;
 
 	/**
 	 * Constructor
@@ -74,12 +74,12 @@ public class QueueElement
 	 */
 	private QueueElement(final ATermAppl n, final ATermAppl l)
 	{
-		node = n;
+		_node = n;
 
 		//This will be set to null only if its called from ABox.createLiteral or Node.setChanged
 		//In these cases, the element will be added to the LITERALLIST or DATATYPELIST respectively
 		//In both cases it does not matter.
-		label = l;
+		_label = l;
 	}
 
 	/**
@@ -88,7 +88,7 @@ public class QueueElement
 	@Override
 	public String toString()
 	{
-		return node.getName() + "[" + label + "]";
+		return _node.getName() + "[" + _label + "]";
 	}
 
 	/**
@@ -98,7 +98,7 @@ public class QueueElement
 	 */
 	public void setLabel(final ATermAppl l)
 	{
-		label = l;
+		_label = l;
 	}
 
 	/**
@@ -108,7 +108,7 @@ public class QueueElement
 	 */
 	public void setNode(final ATermAppl n)
 	{
-		node = n;
+		_node = n;
 	}
 
 	/**
@@ -118,7 +118,7 @@ public class QueueElement
 	 */
 	public ATermAppl getLabel()
 	{
-		return label;
+		return _label;
 	}
 
 	/**
@@ -128,6 +128,6 @@ public class QueueElement
 	 */
 	public ATermAppl getNode()
 	{
-		return node;
+		return _node;
 	}
 }

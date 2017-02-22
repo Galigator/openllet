@@ -24,12 +24,6 @@ import openllet.shared.tools.Log;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2009
  * </p>
  * <p>
@@ -68,7 +62,7 @@ public class UnfoldingRule extends AbstractTableauRule
 			if (_strategy.getABox().isClosed())
 				return;
 
-			// it is possible that unfolding added new atomic 
+			// it is possible that unfolding added new atomic
 			// concepts that we need to further unfold
 			size = types.size();
 		}

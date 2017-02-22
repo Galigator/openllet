@@ -11,12 +11,6 @@ import openllet.core.boxes.abox.Individual;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2009
  * </p>
  * <p>
@@ -27,7 +21,12 @@ import openllet.core.boxes.abox.Individual;
  */
 public interface TableauRule
 {
-	public void apply(IndividualIterator i);
+	public void apply(final IndividualIterator i);
 
-	public void apply(Individual ind);
+	/**
+	 * Apply transformations rule in the ABox around the given individual
+	 *
+	 * @param ind is the entry point in the abox.
+	 */
+	public void apply(final Individual ind);
 }

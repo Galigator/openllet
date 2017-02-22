@@ -36,17 +36,17 @@ import openllet.core.boxes.abox.Node;
 /**
  * A basic _queue for individuals that need to have completion rules applied
  */
-public class BasicCompletionQueue extends CompletionQueue
+public final class BasicCompletionQueue extends CompletionQueue // Class is set to final only to help readability.
 {
 	/**
 	 * The _queue - array - each entry is an arraylist for a particular rule type
 	 */
-	protected List<ATermAppl> _queue;
+	private final List<ATermAppl> _queue = new ArrayList<>();
 
 	/**
 	 * Set to track duplicates for new elements list for queue
 	 */
-	protected Set<ATermAppl> _newQueue;
+	private final Set<ATermAppl> _newQueue = new HashSet<>();
 
 	//TODO: This will be refactored; however currently there are some unit tests which will not
 	//terminate due to the order in which the completion rules are applied to individuals
@@ -57,27 +57,27 @@ public class BasicCompletionQueue extends CompletionQueue
 	/**
 	 * List to hold new elements for the queue
 	 */
-	protected List<ATermAppl> _newQueueList;
+	private final List<ATermAppl> _newQueueList = new ArrayList<>();
 
 	/**
 	 * List of _current index pointer for each queue
 	 */
-	protected int _current;
+	private int _current = 0;
 
 	/**
 	 * List of _current index pointer for each queue
 	 */
-	protected int _end;
+	private int _end = 0;
 
 	/**
 	 * List of _current index pointer for the stopping point at each queue
 	 */
-	protected int _cutOff;
+	private int _cutOff = 0;
 
 	/**
 	 * Flag set for when the kb is restored - in this case we do not want to flush the queue immediatly
 	 */
-	protected boolean _backtracked;
+	private boolean _backtracked = false;
 
 	/**
 	 * Constructor - create queue
@@ -87,14 +87,20 @@ public class BasicCompletionQueue extends CompletionQueue
 	public BasicCompletionQueue(final ABox abox)
 	{
 		super(abox);
-		_queue = new ArrayList<>();
-		_newQueue = new HashSet<>();
-		_newQueueList = new ArrayList<>();
+	}
 
-		_current = 0;
-		_cutOff = 0;
-		_end = 0;
-		_backtracked = false;
+	public BasicCompletionQueue(final BasicCompletionQueue that)
+	{
+		super(that._abox);
+		_queue.addAll(that._queue);
+		_newQueue.addAll(that._newQueue);
+		_newQueueList.addAll(that._newQueueList);
+
+		_current = that._current;
+		_cutOff = that._cutOff;
+		_backtracked = that._backtracked;
+		_end = that._end;
+		setAllowLiterals(that.isAllowLiterals());
 	}
 
 	/**
@@ -115,7 +121,7 @@ public class BasicCompletionQueue extends CompletionQueue
 
 			node = node.getSame();
 
-			if ((node.isLiteral() && allowLiterals() || node.isIndividual() && !allowLiterals()) && !node.isPruned())
+			if ((node.isLiteral() && isAllowLiterals() || node.isIndividual() && !isAllowLiterals()) && !node.isPruned())
 				break;
 		}
 	}
@@ -221,19 +227,7 @@ public class BasicCompletionQueue extends CompletionQueue
 	@Override
 	public BasicCompletionQueue copy()
 	{
-		final BasicCompletionQueue copy = new BasicCompletionQueue(_abox);
-
-		copy._queue = new ArrayList<>(_queue);
-		copy._newQueue = new HashSet<>(_newQueue);
-		copy._newQueueList = new ArrayList<>(_newQueueList);
-
-		copy._current = _current;
-		copy._cutOff = _cutOff;
-		copy._backtracked = _backtracked;
-		copy._end = _end;
-		copy.setAllowLiterals(allowLiterals());
-
-		return copy;
+		return new BasicCompletionQueue(this);
 	}
 
 	/**
@@ -279,12 +273,12 @@ public class BasicCompletionQueue extends CompletionQueue
 	@Override
 	public void flushQueue()
 	{
-		if (!_backtracked && !closed)
+		if (!_backtracked && !_closed)
 			_queue.clear();
 		else
-			if (closed)
+			if (_closed)
 				if (!_abox.isClosed())
-					closed = false;
+					_closed = false;
 
 		_queue.addAll(_newQueueList);
 

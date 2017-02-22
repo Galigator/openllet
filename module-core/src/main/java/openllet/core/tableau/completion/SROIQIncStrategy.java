@@ -35,7 +35,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
@@ -134,12 +133,11 @@ public class SROIQIncStrategy extends SROIQStrategy
 
 		final Timer t = _abox.getKB().getTimers().startTimer("initialize");
 
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Initialize Started");
+		_logger.fine("Initialize Started");
 
 		_mergeList.clear();
 
-		blocking = BlockingFactory.createBlocking(expr);
+		_blocking = BlockingFactory.createBlocking(expr);
 
 		configureTableauRules(expr);
 
@@ -175,10 +173,8 @@ public class SROIQIncStrategy extends SROIQStrategy
 			_selfRule.apply(n);
 		}
 
-		//handle _nodes affected by the update
-		for (final Iterator<Individual> it = getInitializeIterator(); it.hasNext();)
+		for (final Iterator<Individual> it = getInitializeIterator(); it.hasNext();) //handle _nodes affected by the update
 		{
-
 			Individual n = it.next();
 
 			_nominalRule.apply(n);
@@ -441,7 +437,7 @@ public class SROIQIncStrategy extends SROIQStrategy
 	 * @param type
 	 * @return true if a type should be readded to a node
 	 */
-	protected boolean requiredAddType(final Node node, final ATermAppl type)
+	protected static boolean requiredAddType(final Node node, final ATermAppl type)
 	{
 		return !(type == null || node.hasType(type) && !ATermUtils.isAnd(type));
 	}
@@ -595,10 +591,10 @@ public class SROIQIncStrategy extends SROIQStrategy
 			//get all edges to this _node
 			for (int i = 0; i < applicableRoles.size(); i++)
 			{
-			final ATerm p = applicableRoles.get(i);
-			final Role role = _abox.getRole(p);
+				final ATerm p = applicableRoles.get(i);
+				final Role role = _abox.getRole(p);
 
-			edges.addEdgeList(neighbor.getRNeighborEdges(role, node));
+				edges.addEdgeList(neighbor.getRNeighborEdges(role, node));
 			}
 		else
 			edges.addEdge(edge);

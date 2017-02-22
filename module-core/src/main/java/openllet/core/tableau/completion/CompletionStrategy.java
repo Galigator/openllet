@@ -52,8 +52,8 @@ import openllet.core.tableau.completion.rule.DataCardinalityRule;
 import openllet.core.tableau.completion.rule.DataSatisfiabilityRule;
 import openllet.core.tableau.completion.rule.DisjunctionRule;
 import openllet.core.tableau.completion.rule.GuessRule;
-import openllet.core.tableau.completion.rule.MaxRule;
-import openllet.core.tableau.completion.rule.MinRule;
+import openllet.core.tableau.completion.rule.MaxCardinalityRule;
+import openllet.core.tableau.completion.rule.MinCardinalityRule;
 import openllet.core.tableau.completion.rule.NominalRule;
 import openllet.core.tableau.completion.rule.SelfRule;
 import openllet.core.tableau.completion.rule.SimpleAllValuesRule;
@@ -78,28 +78,28 @@ public abstract class CompletionStrategy
 	/**
 	 * ABox being completed
 	 */
-	protected ABox _abox;
+	protected final ABox _abox;
 
 	/**
 	 * TBox associated with the _abox
 	 */
-	protected TBox _tbox;
+	protected final TBox _tbox;
 
 	/**
 	 * Blocking method specific to this completion _strategy
 	 */
-	protected Blocking blocking;
+	protected volatile Blocking _blocking; // Reset in 'initialize()'
 
 	/**
 	 * Timers of the associated KB
 	 */
-	protected Timers _timers;
+	protected final Timers _timers; // Abox timers.
 
 	/**
 	 * Timer to be used by the complete function. KB's consistency timer depends on this one and this dependency is set in the constructor. Any concrete class
 	 * that extends CompletionStrategy should check this timer to respect the timeouts defined in the KB.
 	 */
-	protected Timer _completionTimer;
+	protected final Timer _completionTimer;
 
 	/**
 	 * Flag to indicate that a merge operation is going on
@@ -114,22 +114,22 @@ public abstract class CompletionStrategy
 	/**
 	 * The _queue of _node pairs that are waiting to be merged
 	 */
-	protected final List<NodeMerge> _mergeList = new ArrayList<>();;
+	protected final List<NodeMerge> _mergeList = new ArrayList<>();
 
 	protected final TableauRule _unfoldingRule = new UnfoldingRule(this);
 	protected final TableauRule _disjunctionRule = new DisjunctionRule(this);
-	protected AllValuesRule _allValuesRule = new AllValuesRule(this);
 	protected final TableauRule _someValuesRule = new SomeValuesRule(this);
 	protected final TableauRule _chooseRule = new ChooseRule(this);
-	protected final TableauRule _minRule = new MinRule(this);
-	protected final MaxRule _maxRule = new MaxRule(this);
+	protected final TableauRule _minRule = new MinCardinalityRule(this);
+	protected final MaxCardinalityRule _maxRule = new MaxCardinalityRule(this);
 	protected final TableauRule _selfRule = new SelfRule(this);
 	protected final TableauRule _nominalRule = new NominalRule(this);
 	protected final TableauRule _guessRule = new GuessRule(this);
 	protected final TableauRule _dataSatRule = new DataSatisfiabilityRule(this);
 	protected final TableauRule _dataCardRule = new DataCardinalityRule(this);
+	protected volatile AllValuesRule _allValuesRule = new AllValuesRule(this);
 
-	protected final List<TableauRule> _tableauRules = new ArrayList<>();;
+	protected final List<TableauRule> _tableauRules = new ArrayList<>();
 
 	public CompletionStrategy(final ABox abox)
 	{
@@ -152,7 +152,7 @@ public abstract class CompletionStrategy
 
 	public Blocking getBlocking()
 	{
-		return blocking;
+		return _blocking;
 	}
 
 	public void checkTimer()
@@ -256,7 +256,7 @@ public abstract class CompletionStrategy
 	{
 		_mergeList.clear();
 
-		blocking = BlockingFactory.createBlocking(expressivity);
+		_blocking = BlockingFactory.createBlocking(expressivity);
 
 		configureTableauRules(expressivity);
 
@@ -1194,7 +1194,7 @@ public abstract class CompletionStrategy
 			final Individual node = n.next();
 			final ATermAppl x = node.getName();
 
-			if (blocking.isBlocked(node))
+			if (_blocking.isBlocked(node))
 			{
 				blockedCount++;
 				blockedNodes.append(x).append(" ");

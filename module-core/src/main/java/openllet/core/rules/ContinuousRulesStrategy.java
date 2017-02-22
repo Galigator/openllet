@@ -188,8 +188,7 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 	{
 		Timer t;
 
-		final Expressivity expressivity = _abox.getKB().getExpressivity();
-		initialize(expressivity);
+		initialize(_abox.getKB().getExpressivity());
 
 		_merging = false;
 		t = _timers.startTimer("rule-buildReteRules");

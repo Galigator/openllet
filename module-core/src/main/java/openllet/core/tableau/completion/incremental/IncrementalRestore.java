@@ -41,8 +41,7 @@ public class IncrementalRestore
 {
 	public static void restoreDependencies(final KnowledgeBase kb)
 	{
-		final IncrementalRestore restore = new IncrementalRestore(kb);
-		restore.restoreDependencies();
+		new IncrementalRestore(kb).restoreDependencies();
 	}
 
 	private final KnowledgeBase _kb;
@@ -205,19 +204,13 @@ public class IncrementalRestore
 	 */
 	private void restoreClash(final ATermAppl assertion, final ClashDependency clash)
 	{
+		DependencyIndex._logger.fine(() -> "    Restoring clash dependency clash: " + clash.getClash());
 
-		if (DependencyIndex._logger.isLoggable(Level.FINE))
-			DependencyIndex._logger.fine("    Restoring clash dependency clash: " + clash.getClash());
+		clash.getClash().getDepends().removeExplain(assertion); // remove the dependency
 
-		// remove the dependency
-		clash.getClash().getDepends().removeExplain(assertion);
-
-		// undo clash if empty and is independent
-		if (clash.getClash().getDepends().getExplain().isEmpty() && clash.getClash().getDepends().isIndependent())
+		if (clash.getClash().getDepends().getExplain().isEmpty() && clash.getClash().getDepends().isIndependent()) // undo clash if empty and is independent
 		{
-			if (DependencyIndex._logger.isLoggable(Level.FINE))
-				DependencyIndex._logger.fine("           Actually removing clash!");
-
+			DependencyIndex._logger.fine(() -> "           Actually removing clash!");
 			_kb.getABox().setClash(null);
 		}
 	}
@@ -230,14 +223,10 @@ public class IncrementalRestore
 	 */
 	private static void restoreCloseBranch(final ATermAppl assertion, final CloseBranchDependency branch)
 	{
-		// only proceed if _tryNext is larger than 1!
-		if (branch.getTheBranch().getTryNext() > -1)
+		if (branch.getTheBranch().getTryNext() > -1) // only proceed if _tryNext is larger than 1!
 		{
-			if (DependencyIndex._logger.isLoggable(Level.FINE))
-				DependencyIndex._logger.fine("    Undoing _branch remove - _branch " + branch.getBranch() + "  -  " + branch.getInd() + "   _tryNext: " + branch.getTryNext());
-
-			// shift try next for _branch
-			branch.getTheBranch().shiftTryNext(branch.getTryNext());
+			DependencyIndex._logger.fine(() -> "    Undoing _branch remove - _branch " + branch.getBranch() + "  -  " + branch.getInd() + "   _tryNext: " + branch.getTryNext());
+			branch.getTheBranch().shiftTryNext(branch.getTryNext()); // shift try next for _branch
 		}
 	}
 
@@ -249,67 +238,51 @@ public class IncrementalRestore
 	 */
 	private void restoreDependencies()
 	{
-
-		// iterate over all removed assertions
-		for (final ATermAppl next : _kb.getDeletedAssertions())
+		for (final ATermAppl next : _kb.getDeletedAssertions()) // iterate over all removed assertions
 		{
-			// get the dependency entry
-			final DependencyEntry entry = _kb.getDependencyIndex().getDependencies(next);
+			final DependencyEntry entry = _kb.getDependencyIndex().getDependencies(next); // get the dependency entry (from map, so it can be null)
 
 			if (entry != null)
 			{
-				if (DependencyIndex._logger.isLoggable(Level.FINE))
-					DependencyIndex._logger.fine("Restoring dependencies for " + next);
-
-				// restore the entry
-				restoreDependency(next, entry);
+				DependencyIndex._logger.fine(() -> "Restoring dependencies for " + next);
+				restoreDependency(next, entry); // restore the entry
 			}
 
-			// remove the entry in the _index for this assertion
-			_kb.getDependencyIndex().removeDependencies(next);
+			_kb.getDependencyIndex().removeDependencies(next); // remove the entry in the _index for this assertion
 		}
 
 	}
 
 	/**
-	 * Perform the actual rollback of a depenedency entry
+	 * Perform the actual rollback of a dependency entry
 	 *
 	 * @param assertion
 	 * @param entry
 	 */
 	private void restoreDependency(final ATermAppl assertion, final DependencyEntry entry)
 	{
-
-		if (DependencyIndex._logger.isLoggable(Level.FINE))
-			DependencyIndex._logger.fine("  Restoring Edge Dependencies:");
+		DependencyIndex._logger.fine(() -> "  Restoring Edge Dependencies:");
 		for (final Edge next : entry.getEdges())
 			restoreEdge(assertion, next);
 
-		if (DependencyIndex._logger.isLoggable(Level.FINE))
-			DependencyIndex._logger.fine("  Restoring Type Dependencies:");
+		DependencyIndex._logger.fine(() -> "  Restoring Type Dependencies:");
 		for (final TypeDependency next : entry.getTypes())
 			restoreType(assertion, next);
 
-		if (DependencyIndex._logger.isLoggable(Level.FINE))
-			DependencyIndex._logger.fine("  Restoring Merge Dependencies: " + entry.getMerges());
+		DependencyIndex._logger.fine(() -> "  Restoring Merge Dependencies: " + entry.getMerges());
 		for (final MergeDependency next : entry.getMerges())
 			restoreMerge(assertion, next);
 
-		if (DependencyIndex._logger.isLoggable(Level.FINE))
-			DependencyIndex._logger.fine("  Restoring Branch Add Dependencies: " + entry.getBranchAdds());
+		DependencyIndex._logger.fine(() -> "  Restoring Branch Add Dependencies: " + entry.getBranchAdds());
 		for (final BranchAddDependency next : entry.getBranchAdds())
 			restoreBranchAdd(assertion, next);
 
-		if (DependencyIndex._logger.isLoggable(Level.FINE))
-			DependencyIndex._logger.fine("  Restoring Branch Remove DS Dependencies: " + entry.getBranchAdds());
+		DependencyIndex._logger.fine(() -> "  Restoring Branch Remove DS Dependencies: " + entry.getBranchAdds());
 		for (final CloseBranchDependency next : entry.getCloseBranches())
 			restoreCloseBranch(assertion, next);
 
-		if (DependencyIndex._logger.isLoggable(Level.FINE))
-			DependencyIndex._logger.fine("  Restoring clash dependency: " + entry.getClash());
-		if (entry.getClash() != null)
-			restoreClash(assertion, entry.getClash());
-
+		DependencyIndex._logger.fine(() -> "  Restoring clash dependency: " + entry.getClash());
+		entry.getClash().ifPresent(clash -> restoreClash(assertion, clash));
 	}
 
 	/**
@@ -380,49 +353,36 @@ public class IncrementalRestore
 	 */
 	private void restoreMerge(final ATermAppl assertion, final MergeDependency merge)
 	{
+		DependencyIndex._logger.fine(() -> "    Removing merge? " + merge.getInd() + " merged to " + merge.getmergedIntoInd());
 
-		if (DependencyIndex._logger.isLoggable(Level.FINE))
-			DependencyIndex._logger.fine("    Removing merge? " + merge.getInd() + " merged to " + merge.getmergedIntoInd());
+		final DependencySet ds = _kb.getABox().getNode(merge.getInd()).getMergeDependency(false); // get merge dependency
 
-		// get merge dependency
-		final DependencySet ds = _kb.getABox().getNode(merge.getInd()).getMergeDependency(false);
+		ds.removeExplain(assertion); // remove the dependency
 
-		// remove the dependency
-		ds.removeExplain(assertion);
-
-		// undo merge if empty
-		if (ds.getExplain().isEmpty())
+		if (ds.getExplain().isEmpty()) // undo merge if empty
 		{
-			if (DependencyIndex._logger.isLoggable(Level.FINE))
-				DependencyIndex._logger.fine("           Actually removing merge!");
+			DependencyIndex._logger.fine(() -> "           Actually removing merge!");
 
-			// get _nodes
-			final Node ind = _kb.getABox().getNode(merge.getInd());
+			final Node ind = _kb.getABox().getNode(merge.getInd()); // get _nodes
 			final Node mergedToInd = _kb.getABox().getNode(merge.getmergedIntoInd());
 
-			// check that they are actually the same - else throw error
-			if (!ind.isSame(mergedToInd))
+			if (!ind.isSame(mergedToInd)) // check that they are actually the same - else throw error
 				throw new InternalReasonerException(" Restore merge error: " + ind + " not same as " + mergedToInd);
 
 			if (!ind.isPruned())
 				throw new InternalReasonerException(" Restore merge error: " + ind + " not pruned");
 
-			// unprune to prune _branch
-			ind.unprune(ind.getPruned().getBranch());
+			ind.unprune(ind.getPruned().getBranch()); // unprune to prune _branch
 
-			// undo set same
-			ind.undoSetSame();
+			ind.undoSetSame(); // undo set same
 
 			// add to updated
 			// Note that ind.unprune may add edges, however we do not need to
-			// add them to the updated individuals as
-			// they will be added when the edge is removed from the _node which
-			// this _individual was merged to
-			// add to updated
+			// add them to the updated individuals as they will be added when the edge is removed from the _node which
+			// this _individual was merged to add to updated
 			final IncrementalChangeTracker tracker = _kb.getABox().getIncrementalChangeTracker();
 
-			// because this _node was pruned, we must guarantee that all of
-			// its lables have been fired
+			// because this _node was pruned, we must guarantee that all of its labels have been fired
 			tracker.addUnprunedNode(ind);
 
 			if (ind instanceof Individual)

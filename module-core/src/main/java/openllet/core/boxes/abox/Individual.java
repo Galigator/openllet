@@ -58,7 +58,7 @@ import openllet.core.utils.Bool;
  */
 public class Individual extends Node implements CachedNode
 {
-	private EdgeList outEdges;
+	private EdgeList _outEdges;
 
 	@SuppressWarnings("unchecked")
 	private final Vector<ATermAppl>[] _types = new Vector[TYPES]; // List[] isn't a super type of Vector[]
@@ -97,7 +97,7 @@ public class Individual extends Node implements CachedNode
 			_applyNext[i] = 0;
 		}
 
-		outEdges = new EdgeList();
+		_outEdges = new EdgeList();
 	}
 
 	Individual(final Individual ind, final ABoxImpl abox)
@@ -114,18 +114,28 @@ public class Individual extends Node implements CachedNode
 		}
 
 		if (isPruned())
-			outEdges = new EdgeList(ind.outEdges);
+			_outEdges = new EdgeList(ind._outEdges);
 		else
-			outEdges = new EdgeList(ind.outEdges.size());
+			_outEdges = new EdgeList(ind._outEdges.size());
 
 		_depth = 0;
 	}
 
+	/**
+	 * using only for 'tableau' algorithm.
+	 *
+	 * @return blocking or not
+	 */
 	public boolean isBlocked()
 	{
 		return _isBlocked;
 	}
 
+	/**
+	 * use only for 'tableau' algorithm.
+	 *
+	 * @param isBlocked set to blocking or not
+	 */
 	public void setBlocked(final boolean isBlocked)
 	{
 		_isBlocked = isBlocked;
@@ -430,7 +440,7 @@ public class Individual extends Node implements CachedNode
 												// during loading role would be null
 												if (role != null)
 												{
-													final EdgeList selfEdges = outEdges.getEdges(role).getEdgesTo(this);
+													final EdgeList selfEdges = _outEdges.getEdges(role).getEdgesTo(this);
 													if (!selfEdges.isEmpty())
 														_abox.setClash(Clash.unexplained(this, selfEdges.getDepends(_abox.doExplanation())));
 												}
@@ -713,7 +723,7 @@ public class Individual extends Node implements CachedNode
 	@Override
 	final public boolean isLeaf()
 	{
-		return !isRoot() && outEdges.isEmpty();
+		return !isRoot() && _outEdges.isEmpty();
 	}
 
 	@Override
@@ -726,7 +736,7 @@ public class Individual extends Node implements CachedNode
 	{
 		final Set<Node> result = new HashSet<>();
 
-		final EdgeList edges = outEdges.getEdges(r);
+		final EdgeList edges = _outEdges.getEdges(r);
 		for (int i = 0, n = edges.size(); i < n; i++)
 		{
 			final Edge edge = edges.edgeAt(i);
@@ -740,7 +750,7 @@ public class Individual extends Node implements CachedNode
 
 	final public EdgeList getRSuccessorEdges(final Role r)
 	{
-		return outEdges.getEdges(r);
+		return _outEdges.getEdges(r);
 	}
 
 	final public EdgeList getRPredecessorEdges(final Role r)
@@ -758,7 +768,7 @@ public class Individual extends Node implements CachedNode
 		if (null == r)
 			return new EdgeList(); // TODO : this is really ugly.
 
-		final EdgeList neighbors = outEdges.getEdges(r);
+		final EdgeList neighbors = _outEdges.getEdges(r);
 
 		final Role invR = r.getInverse();
 		// inverse of datatype properties is not defined
@@ -775,7 +785,7 @@ public class Individual extends Node implements CachedNode
 	 */
 	public EdgeList getRNeighborEdges(final Role r, final Node node)
 	{
-		final EdgeList neighbors = outEdges.getEdgesTo(r, node);
+		final EdgeList neighbors = _outEdges.getEdgesTo(r, node);
 
 		final Role invR = r.getInverse();
 		// inverse of datatype properties is not defined
@@ -787,12 +797,12 @@ public class Individual extends Node implements CachedNode
 
 	public EdgeList getEdgesTo(final Node x)
 	{
-		return outEdges.getEdgesTo(x);
+		return _outEdges.getEdgesTo(x);
 	}
 
 	public EdgeList getEdgesTo(final Node x, final Role r)
 	{
-		return outEdges.getEdgesTo(x).getEdges(r);
+		return _outEdges.getEdgesTo(x).getEdges(r);
 	}
 
 	/**
@@ -959,7 +969,7 @@ public class Individual extends Node implements CachedNode
 	@Override
 	final public boolean hasRNeighbor(final Role r)
 	{
-		if (outEdges.hasEdge(r))
+		if (_outEdges.hasEdge(r))
 			return true;
 
 		final Role invR = r.getInverse();
@@ -968,18 +978,18 @@ public class Individual extends Node implements CachedNode
 
 	public boolean hasRSuccessor(final Role r)
 	{
-		return outEdges.hasEdge(r);
+		return _outEdges.hasEdge(r);
 	}
 
 	@Override
 	public boolean hasSuccessor(final Node x)
 	{
-		return outEdges.hasEdgeTo(x);
+		return _outEdges.hasEdgeTo(x);
 	}
 
 	public final boolean hasRSuccessor(final Role r, final Node x)
 	{
-		return outEdges.hasEdge(this, r, x);
+		return _outEdges.hasEdge(this, r, x);
 	}
 
 	/**
@@ -999,7 +1009,7 @@ public class Individual extends Node implements CachedNode
 	{
 		Bool hasValue = Bool.FALSE;
 
-		final EdgeList edges = outEdges.getEdges(r);
+		final EdgeList edges = _outEdges.getEdges(r);
 		for (int i = 0; i < edges.size(); i++)
 		{
 			final Edge edge = edges.edgeAt(i);
@@ -1061,7 +1071,7 @@ public class Individual extends Node implements CachedNode
 		if (edge.getRole().isBottom())
 			_abox.setClash(Clash.bottomProperty(edge.getFrom(), edge.getDepends(), edge.getRole().getName()));
 		else
-			outEdges.addEdge(edge);
+			_outEdges.addEdge(edge);
 	}
 
 	public Edge addEdge(final Role r, final Node x, final DependencySet dsParam)
@@ -1104,7 +1114,7 @@ public class Individual extends Node implements CachedNode
 
 		final Edge edge = new DefaultEdge(r, this, x, ds);
 
-		outEdges.addEdge(edge);
+		_outEdges.addEdge(edge);
 		x.addInEdge(edge);
 
 		return edge;
@@ -1113,7 +1123,7 @@ public class Individual extends Node implements CachedNode
 	@Override
 	final public EdgeList getOutEdges()
 	{
-		return outEdges;
+		return _outEdges;
 	}
 
 	/**
@@ -1140,7 +1150,7 @@ public class Individual extends Node implements CachedNode
 		if (onlyApplyTypes)
 			return;
 
-		outEdges.reset();
+		_outEdges.reset();
 	}
 
 	@Override
@@ -1196,7 +1206,7 @@ public class Individual extends Node implements CachedNode
 
 		boolean removed = false;
 
-		for (final Iterator<Edge> i = outEdges.iterator(); i.hasNext();)
+		for (final Iterator<Edge> i = _outEdges.iterator(); i.hasNext();)
 		{
 			final Edge e = i.next();
 			final DependencySet d = e.getDepends();
@@ -1245,7 +1255,7 @@ public class Individual extends Node implements CachedNode
 
 	final public boolean removeEdge(final Edge edge)
 	{
-		final boolean removed = outEdges.removeEdge(edge);
+		final boolean removed = _outEdges.removeEdge(edge);
 
 		if (!removed)
 			throw new InternalReasonerException("Trying to remove a non-existing edge " + edge);
@@ -1269,9 +1279,9 @@ public class Individual extends Node implements CachedNode
 
 		pruned = ds;
 
-		for (int i = 0; i < outEdges.size(); i++)
+		for (int i = 0; i < _outEdges.size(); i++)
 		{
-			final Edge edge = outEdges.edgeAt(i);
+			final Edge edge = _outEdges.edgeAt(i);
 			final Node succ = edge.getTo();
 
 			if (succ.isPruned())
@@ -1291,9 +1301,9 @@ public class Individual extends Node implements CachedNode
 
 		boolean added = false;
 
-		for (int i = 0; i < outEdges.size(); i++)
+		for (int i = 0; i < _outEdges.size(); i++)
 		{
-			final Edge edge = outEdges.edgeAt(i);
+			final Edge edge = _outEdges.edgeAt(i);
 			final DependencySet d = edge.getDepends();
 
 			if (d.getBranch() <= branch)
@@ -1342,7 +1352,7 @@ public class Individual extends Node implements CachedNode
 
 	public String debugString()
 	{
-		return _name.getName() + " = " + _types[ATOM] + _types[ALL] + _types[SOME] + _types[OR] + _types[MIN] + _types[MAX] + _types[NOM] + "; **" + outEdges + "**" + "; **" + _inEdges + "**" + " --> " + _depends + "";
+		return _name.getName() + " = " + _types[ATOM] + _types[ALL] + _types[SOME] + _types[OR] + _types[MIN] + _types[MAX] + _types[NOM] + "; **" + _outEdges + "**" + "; **" + _inEdges + "**" + " --> " + _depends + "";
 	}
 
 	@Override
@@ -1355,14 +1365,14 @@ public class Individual extends Node implements CachedNode
 
 		if (isPruned())
 		{
-			final EdgeList oldEdges = outEdges;
-			outEdges = new EdgeList(oldEdges.size());
+			final EdgeList oldEdges = _outEdges;
+			_outEdges = new EdgeList(oldEdges.size());
 			for (int i = 0; i < oldEdges.size(); i++)
 			{
 				final Edge edge = oldEdges.edgeAt(i);
 				final Node to = _abox.getNode(edge.getTo().getName());
 				final Edge newEdge = new DefaultEdge(edge.getRole(), this, to, edge.getDepends());
-				outEdges.addEdge(newEdge);
+				_outEdges.addEdge(newEdge);
 			}
 		}
 	}

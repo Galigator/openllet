@@ -16,9 +16,8 @@ import openllet.core.tableau.branch.Branch;
  */
 public class BranchAddDependency extends BranchDependency
 {
-
 	/**
-	 * The actual _branch
+	 * The actual branch
 	 */
 	private final Branch _branch;
 

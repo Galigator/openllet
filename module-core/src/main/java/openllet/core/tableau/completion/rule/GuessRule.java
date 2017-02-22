@@ -53,9 +53,6 @@ public class GuessRule extends AbstractTableauRule
 
 			if (_strategy.getABox().isClosed())
 				return;
-
-			//			if( x.isPruned() )
-			//				break LOOP;
 		}
 	}
 

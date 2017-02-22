@@ -7,6 +7,7 @@
 package openllet.core.tableau.completion.incremental;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import openllet.aterm.ATermAppl;
 import openllet.core.boxes.abox.DefaultEdge;
@@ -24,77 +25,57 @@ public class DependencyEntry
 	/**
 	 * The set of _node lables which are dependent
 	 */
-	private Set<TypeDependency> types;
+	private final Set<TypeDependency> types = new HashSet<>();
 
 	/**
 	 * The set of merges which are dependent
 	 */
-	private Set<MergeDependency> merges;
+	private final Set<MergeDependency> merges = new HashSet<>();
 
 	/**
 	 * The set of edge which are dependent
 	 */
-	private final Set<Edge> edges;
+	private final Set<Edge> edges = new HashSet<>();
 
 	/**
 	 * The set of branches which are dependent
 	 */
-	private Set<BranchAddDependency> branchAdds;
+	private final Set<BranchAddDependency> branchAdds = new HashSet<>();
 
 	/**
 	 * The set of _branch remove ds' which are dependent
 	 */
-	private Set<CloseBranchDependency> branchCloses;
+	private final Set<CloseBranchDependency> branchCloses = new HashSet<>();
 
 	/**
 	 * Clash dependency
 	 */
-	private ClashDependency _clash;
+	private volatile Optional<ClashDependency> _clash = Optional.empty();
 
 	/**
 	 * Default constructor
 	 */
 	public DependencyEntry()
 	{
-		types = new HashSet<>();
-		edges = new HashSet<>();
-		merges = new HashSet<>();
-		branchAdds = new HashSet<>();
-		branchCloses = new HashSet<>();
-		_clash = null;
+		// Nothing to do.
+	}
+
+	public DependencyEntry(final DependencyEntry that)
+	{
+		types.addAll(that.types); //TODO:may need to perform a deep copy here
+		merges.addAll(that.merges); //TODO:may need to perform a deep copy here
+
+		for (final Edge next : that.edges) //copy edge depenedencies
+			edges.add(new DefaultEdge(next.getRole(), next.getFrom(), next.getTo(), next.getDepends()));
+
+		branchAdds.addAll(that.branchAdds); //TODO:may need to perform a deep copy here
+		branchCloses.addAll(that.branchCloses); //TODO:may need to perform a deep copy here
+		_clash = that._clash; //TODO:may need to perform a deep copy here
 	}
 
 	public DependencyEntry copy()
 	{
-		final DependencyEntry newEntry = new DependencyEntry();
-
-		//TODO:may need to perform a deep copy here
-		newEntry.types = new HashSet<>(types);
-
-		//TODO:may need to perform a deep copy here
-		newEntry.merges = new HashSet<>(merges);
-
-		//copy edge depenedencies
-		for (final Edge next : edges)
-		{
-
-			//create new edge
-			final Edge newEdge = new DefaultEdge(next.getRole(), next.getFrom(), next.getTo(), next.getDepends());
-
-			//add to edge list
-			newEntry.edges.add(newEdge);
-		}
-
-		//TODO:may need to perform a deep copy here
-		newEntry.branchAdds = new HashSet<>(branchAdds);
-
-		//TODO:may need to perform a deep copy here
-		newEntry.branchCloses = new HashSet<>(branchCloses);
-
-		//TODO:may need to perform a deep copy here
-		newEntry._clash = _clash;
-
-		return newEntry;
+		return new DependencyEntry(this);
 	}
 
 	/**
@@ -221,7 +202,7 @@ public class DependencyEntry
 	/**
 	 * @return the clash dependency
 	 */
-	public ClashDependency getClash()
+	public Optional<ClashDependency> getClash()
 	{
 		return _clash;
 	}
@@ -233,6 +214,6 @@ public class DependencyEntry
 	 */
 	protected void setClash(final ClashDependency clash)
 	{
-		_clash = clash;
+		_clash = Optional.ofNullable(clash);
 	}
 }

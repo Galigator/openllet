@@ -25,24 +25,26 @@ public class IndividualIterator implements Iterator<Individual>
 	/**
 	 * ABox where the individuals are stored
 	 */
-	protected ABox _abox;
+	protected volatile ABox _abox; // Can change in tableau.completion.queue.CompletionQueue
+
 	/**
-	 * List of _node names
+	 * List of node names
 	 */
-	protected List<ATermAppl> _nodeList;
+	private final List<ATermAppl> _nodeList;
+
 	/**
 	 * Last returned _index
 	 */
-	protected int _index;
+	private int _index = 0;
 
 	/**
 	 * Index where iterator stops (size of list by default)
 	 */
-	protected int _stop;
+	private final int _stop;
 
 	/**
 	 * Create an iterator over all the individuals in the ABox
-	 * 
+	 *
 	 * @param abox
 	 */
 	public IndividualIterator(final ABox abox)
@@ -50,7 +52,6 @@ public class IndividualIterator implements Iterator<Individual>
 		_abox = abox;
 		_nodeList = abox.getNodeNames();
 		_stop = _nodeList.size();
-		_index = 0;
 
 		findNext();
 	}
@@ -72,7 +73,7 @@ public class IndividualIterator implements Iterator<Individual>
 		return _index < _stop;
 	}
 
-	public void reset(@SuppressWarnings("unused") final NodeSelector s)
+	public void reset(@SuppressWarnings("unused") final NodeSelector s) // 's' is used only in the 'tableau.completion.queue.OptimizedBasicCompletionQueue'
 	{
 		_index = 0;
 		findNext();
@@ -82,9 +83,7 @@ public class IndividualIterator implements Iterator<Individual>
 	public Individual next()
 	{
 		findNext();
-		final Individual ind = _abox.getIndividual(_nodeList.get(_index++));
-
-		return ind;
+		return _abox.getIndividual(_nodeList.get(_index++));
 	}
 
 	@Override

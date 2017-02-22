@@ -117,8 +117,6 @@ public class OWLWGTestCase
 		_test = test;
 	}
 
-	static int ref = 0;
-
 	@Test
 	public void runTestCase()
 	{

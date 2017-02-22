@@ -29,34 +29,32 @@ import openllet.core.utils.ATermUtils;
  *
  * @author Evren Sirin
  */
-public class MinRule extends AbstractTableauRule
+public class MinCardinalityRule extends AbstractTableauRule
 {
-	public MinRule(final CompletionStrategy strategy)
+	public MinCardinalityRule(final CompletionStrategy strategy)
 	{
 		super(strategy, NodeSelector.MIN_NUMBER, BlockingType.COMPLETE);
 	}
 
 	@Override
-	public void apply(final Individual x)
+	public void apply(final Individual ind)
 	{
-		if (!x.canApply(Node.MIN))
+		if (!ind.canApply(Node.MIN))
 			return;
 
-		// We get all the minCard restrictions in the _node and store
-		// them in the list ''types''
-		final List<ATermAppl> types = x.getTypes(Node.MIN);
+		// We get all the minCard restrictions in the _node and store them in the list ''types''
+		final List<ATermAppl> types = ind.getTypes(Node.MIN);
 		final int size = types.size();
-		for (int j = x._applyNext[Node.MIN]; j < size; j++)
+		for (int j = ind._applyNext[Node.MIN]; j < size; j++)
 		{
-			// mc stores the _current type (the _current minCard restriction)
-			final ATermAppl mc = types.get(j);
+			final ATermAppl mc = types.get(j); // mc stores the _current type (the _current minCard restriction)
 
-			apply(x, mc);
+			apply(ind, mc);
 
 			if (_strategy.getABox().isClosed())
 				return;
 		}
-		x._applyNext[Node.MIN] = size;
+		ind._applyNext[Node.MIN] = size;
 	}
 
 	protected void apply(final Individual x, final ATermAppl mc)
@@ -77,7 +75,7 @@ public class MinRule extends AbstractTableauRule
 			return;
 
 		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("MIN : " + x + " -> " + r + " -> anon" + (n == 1 ? "" : (_strategy.getABox().getAnonCount() + 1) + " - anon") + (_strategy.getABox().getAnonCount() + n) + " " + ATermUtils.toString(c) + " " + ds);
+			_logger.fine("MIN : " + x + " -> " + r + " -> anon" + (n == 1 ? "" : _strategy.getABox().getAnonCount() + 1 + " - anon") + (_strategy.getABox().getAnonCount() + n) + " " + ATermUtils.toString(c) + " " + ds);
 
 		final Node[] y = new Node[n];
 		for (int c1 = 0; c1 < n; c1++)

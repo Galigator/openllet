@@ -6,8 +6,7 @@
 
 package openllet.core.tableau.completion.rule;
 
-import java.util.List;
-import java.util.logging.Level;
+import java.util.ArrayList;
 import openllet.aterm.ATermAppl;
 import openllet.core.OpenlletOptions;
 import openllet.core.boxes.abox.Individual;
@@ -38,21 +37,16 @@ public class SelfRule extends AbstractTableauRule
 	@Override
 	public final void apply(final Individual node)
 	{
-		final List<ATermAppl> types = node.getTypes(Node.ATOM);
-		final int size = types.size();
-		for (int j = 0; j < size; j++)
+		for (final ATermAppl c : new ArrayList<>(node.getTypes(Node.ATOM))) // 'applyAllValues' can change the underlying types of individual; so we make a copy to iterate
 		{
-			final ATermAppl c = types.get(j);
-
-			if (!OpenlletOptions.MAINTAIN_COMPLETION_QUEUE && node.getDepends(c) == null)
+			if (!OpenlletOptions.MAINTAIN_COMPLETION_QUEUE && null == node.getDepends(c))
 				continue;
 
 			if (ATermUtils.isSelf(c))
 			{
-				final ATermAppl pred = (ATermAppl) c.getArgument(0);
-				final Role role = _strategy.getABox().getRole(pred);
-				if (_logger.isLoggable(Level.FINE) && !node.hasRSuccessor(role, node))
-					_logger.fine("SELF: " + node + " " + role + " " + node.getDepends(c));
+				final ATermAppl predicate = (ATermAppl) c.getArgument(0);
+				final Role role = _strategy.getABox().getRole(predicate);
+				_logger.fine(() -> "SELF: " + node + "\trole:" + role + "\tdepends:" + node.getDepends(c) + "\tRSuccessor:" + node.hasRSuccessor(role, node));
 				_strategy.addEdge(node, role, node, node.getDepends(c));
 
 				if (_strategy.getABox().isClosed())

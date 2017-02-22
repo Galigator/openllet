@@ -46,8 +46,7 @@ public class SROIQStrategy extends CompletionStrategy
 
 			final int lastBranch = _abox.getClash().getDepends().max();
 
-			// not more branches to try
-			if (lastBranch <= 0)
+			if (lastBranch <= 0) // not more branches to try
 				return false;
 			else
 				if (lastBranch > _abox.getBranches().size())
@@ -55,8 +54,7 @@ public class SROIQStrategy extends CompletionStrategy
 				else
 					if (OpenlletOptions.USE_INCREMENTAL_DELETION)
 					{
-						// get the last _branch
-						final Branch br = _abox.getBranches().get(lastBranch - 1);
+						final Branch br = _abox.getBranches().get(lastBranch - 1); // get the last _branch
 
 						// if this is the last _disjunction, merge pair, etc. for the
 						// _branch (i.e, br.tryNext == br.tryCount-1) and there are no
@@ -83,36 +81,27 @@ public class SROIQStrategy extends CompletionStrategy
 				brList.clear();
 			}
 			else
-				// old approach
-				branches.subList(lastBranch, branches.size()).clear();
+				branches.subList(lastBranch, branches.size()).clear(); // old approach
 
-			// get the _branch to try
-			final Branch newBranch = branches.get(lastBranch - 1);
+			final Branch newBranch = branches.get(lastBranch - 1); // get the _branch to try
 
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("JUMP: Branch " + lastBranch);
+			_logger.fine(() -> "JUMP: Branch " + lastBranch);
 
 			if (lastBranch != newBranch.getBranchIndexInABox())
 				throw new InternalReasonerException("Backtrack: Trying to backtrack to _branch " + lastBranch + " but got " + newBranch.getBranchIndexInABox());
 
-			// set the last clash before restore
-			if (newBranch.getTryNext() < newBranch.getTryCount())
+			if (newBranch.getTryNext() < newBranch.getTryCount()) // set the last clash before restore
 				newBranch.setLastClash(_abox.getClash().getDepends());
 
-			// increment the counter
-			newBranch.setTryNext(newBranch.getTryNext() + 1);
+			newBranch.setTryNext(newBranch.getTryNext() + 1); // increment the counter
 
-			// no need to restore this _branch if we exhausted possibilities
-			if (newBranch.getTryNext() < newBranch.getTryCount())
-				// undo the changes done after this _branch
-				restore(newBranch);
+			if (newBranch.getTryNext() < newBranch.getTryCount()) // no need to restore this _branch if we exhausted possibilities
+				restore(newBranch); // undo the changes done after this _branch
 
-			// try the next possibility
-			branchFound = newBranch.tryNext();
+			branchFound = newBranch.tryNext(); // try the next possibility
 
 			if (!branchFound)
-				if (_logger.isLoggable(Level.FINE))
-					_logger.fine("FAIL: Branch " + lastBranch);
+				_logger.fine(() -> "FAIL: Branch " + lastBranch);
 		}
 
 		return branchFound;
@@ -178,8 +167,7 @@ public class SROIQStrategy extends CompletionStrategy
 				{
 					_abox.setComplete(true);
 
-					// we need to flush the _queue to add the other elements
-					if (OpenlletOptions.USE_COMPLETION_QUEUE)
+					if (OpenlletOptions.USE_COMPLETION_QUEUE) // we need to flush the _queue to add the other elements
 						_abox.getCompletionQueue().flushQueue();
 				}
 			}
