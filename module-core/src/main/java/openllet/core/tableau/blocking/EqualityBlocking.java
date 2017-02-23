@@ -57,6 +57,6 @@ public class EqualityBlocking extends Blocking
 	@Override
 	public boolean isDirectlyBlockedBy(final BlockingContext cxt)
 	{
-		return block1.isBlocked(cxt) && block2.isBlocked(cxt);
+		return blockSet.isBlocked(cxt) && blockAll.isBlocked(cxt);
 	}
 }

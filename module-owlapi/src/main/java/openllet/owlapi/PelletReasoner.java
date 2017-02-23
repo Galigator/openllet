@@ -387,6 +387,7 @@ public class PelletReasoner implements OpenlletReasoner
 	{
 
 		if (e instanceof openllet.core.exceptions.TimeoutException)
+			//	throw e;
 			throw new TimeOutException();
 
 		if (e instanceof openllet.core.exceptions.TimerInterruptedException)

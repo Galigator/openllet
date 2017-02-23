@@ -61,17 +61,17 @@ public class OptimizedDoubleBlocking extends Blocking
 	@Override
 	public boolean isDirectlyBlockedBy(final BlockingContext cxt)
 	{
-		if (block1.isBlocked(cxt) && block2.isBlocked(cxt))
+		if (blockSet.isBlocked(cxt) && blockAll.isBlocked(cxt))
 		{
 			if (!cxt.isInvSuccessor())
 				return true;
 
 			// aBlock
-			if (block3.isBlocked(cxt) && block4.isBlocked(cxt))
+			if (block3.isBlocked(cxt) && blockMin.isBlocked(cxt))
 				return true;
 
 			// cBlock
-			if (block4.isBlocked(cxt) && block5.isBlocked(cxt))
+			if (blockMin.isBlocked(cxt) && block5.isBlocked(cxt))
 				return true;
 		}
 

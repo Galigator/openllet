@@ -6,43 +6,35 @@
 
 package openllet.core.tableau.blocking;
 
+import java.util.function.BiPredicate;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermInt;
 import openllet.core.boxes.abox.Node;
 import openllet.core.boxes.rbox.Role;
-import openllet.core.utils.ATermUtils;
 
 /**
  * @author Evren Sirin
  */
-public class Block3 implements BlockingCondition
+public class Block3Max implements BlockingCondition
 {
+	public static BiPredicate<BlockingContext, ATermAppl> _typeAndRSuccessorN = (ctx, normMax) ->
+	{
+		final ATermAppl max = (ATermAppl) normMax.getArgument(0);
+		final Role role = ctx._blocked.getABox().getRole(max.getArgument(0));
+		final ATermAppl c = (ATermAppl) max.getArgument(2);
+		final int n = ((ATermInt) max.getArgument(1)).getInt() - 1;
+
+		return ctx._blocked.getParent().hasType(c)//
+				&& ctx._blocker.getRSuccessors(role, c).size() < n;
+	};
+
 	@Override
 	public boolean isBlocked(final BlockingContext cxt)
 	{
 		for (final ATermAppl normMax : cxt._blocker.getTypes(Node.MAX))
-		{
-			final ATermAppl max = (ATermAppl) normMax.getArgument(0);
-			final Role s = cxt._blocked.getABox().getRole(max.getArgument(0));
-			final int n = ((ATermInt) max.getArgument(1)).getInt() - 1;
-			final ATermAppl c = (ATermAppl) max.getArgument(2);
-
-			if (s.isDatatypeRole())
-				continue;
-
-			final Role invS = s.getInverse();
-
-			if (!cxt.isRSuccessor(invS))
-				continue;
-
-			if (cxt._blocked.getParent().hasType(ATermUtils.negate(c)))
-				continue;
-
-			if (cxt._blocked.getParent().hasType(c) && cxt._blocker.getRSuccessors(s, c).size() < n)
-				continue;
-
-			return false;
-		}
+			if (!(Block5Max._maxBlock.test(cxt, normMax)//
+					|| _typeAndRSuccessorN.test(cxt, normMax)))
+				return false;
 
 		return true;
 	}

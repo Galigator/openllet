@@ -23,7 +23,7 @@ public final class BlockingContext
 {
 	public final Individual _blocked;
 	public volatile Individual _blocker;
-	private Set<Role> _rolesToBlocked;
+	private volatile Set<Role> _rolesToBlocked = null;
 
 	public BlockingContext(final Individual blocked)
 	{

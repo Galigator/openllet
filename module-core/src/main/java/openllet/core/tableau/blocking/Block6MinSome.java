@@ -14,7 +14,7 @@ import openllet.core.utils.ATermUtils;
 /**
  * @author Evren Sirin
  */
-public class Block6 implements BlockingCondition
+public class Block6MinSome implements BlockingCondition
 {
 	@Override
 	public boolean isBlocked(final BlockingContext cxt)

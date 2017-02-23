@@ -11,7 +11,7 @@ import openllet.core.utils.SetUtils;
 /**
  * @author Evren Sirin
  */
-public class Block1 implements BlockingCondition
+public class Block1Set implements BlockingCondition
 {
 	@Override
 	public boolean isBlocked(final BlockingContext cxt)

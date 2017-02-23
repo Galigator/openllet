@@ -63,6 +63,6 @@ public class SubsetBlocking extends Blocking
 	@Override
 	public boolean isDirectlyBlockedBy(final BlockingContext cxt)
 	{
-		return block1.isBlocked(cxt);
+		return blockSet.isBlocked(cxt);
 	}
 }

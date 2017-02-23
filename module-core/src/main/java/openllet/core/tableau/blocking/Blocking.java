@@ -55,12 +55,12 @@ public abstract class Blocking
 {
 	public final static Logger _logger = Log.getLogger(Blocking.class);
 
-	protected static final BlockingCondition block1 = new Block1();
-	protected static final BlockingCondition block2 = new Block2();
-	protected static final BlockingCondition block3 = new Block3();
-	protected static final BlockingCondition block4 = new Block4();
-	protected static final BlockingCondition block5 = new Block5();
-	protected static final BlockingCondition block6 = new Block6();
+	protected static final BlockingCondition blockSet = new Block1Set();
+	protected static final BlockingCondition blockAll = new Block2All();
+	protected static final BlockingCondition block3 = new Block3Max();
+	protected static final BlockingCondition blockMin = new Block4Min();
+	protected static final BlockingCondition block5 = new Block5Max();
+	protected static final BlockingCondition block6 = new Block6MinSome();
 
 	protected Blocking()
 	{

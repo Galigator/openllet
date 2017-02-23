@@ -17,7 +17,7 @@ import openllet.core.utils.ATermUtils;
 /**
  * @author Evren Sirin
  */
-public class Block2 implements BlockingCondition
+public class Block2All implements BlockingCondition
 {
 	@Override
 	public boolean isBlocked(final BlockingContext cxt)
@@ -40,19 +40,15 @@ public class Block2 implements BlockingCondition
 					continue;
 				else
 				{
-					final Role invS = s.getInverse();
-
-					if (cxt.isRSuccessor(invS) && !cxt._blocked.getParent().hasType(c))
+					if (cxt.isRSuccessor(s.getInverse()) && !cxt._blocked.getParent().hasType(c))
 						return false;
 
 					if (!s.isSimple())
 					{
 						final Set<ATermList> subRoleChains = s.getSubRoleChains();
 						for (final ATermList chain : subRoleChains)
-						{
 							if (!isBlockedByChain(cxt, chain, c))
 								return false;
-						}
 					}
 				}
 		}
@@ -60,7 +56,7 @@ public class Block2 implements BlockingCondition
 		return true;
 	}
 
-	protected boolean isBlockedByChain(final BlockingContext cxt, final ATermList chain, final ATermAppl c)
+	private static boolean isBlockedByChain(final BlockingContext cxt, final ATermList chain, final ATermAppl c)
 	{
 		final Role firstRole = cxt._blocked.getABox().getRole(chain.getFirst());
 
