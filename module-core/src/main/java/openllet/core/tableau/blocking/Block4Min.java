@@ -15,7 +15,7 @@ import openllet.core.utils.ATermUtils;
 /**
  * @author Evren Sirin
  */
-public class Block4 implements BlockingCondition
+public class Block4Min implements BlockingCondition
 {
 	@Override
 	public boolean isBlocked(final BlockingContext cxt)
@@ -34,11 +34,11 @@ public class Block4 implements BlockingCondition
 		return true;
 	}
 
-	protected boolean block4(final BlockingContext cxt, final ATermAppl term)
+	private static boolean block4(final BlockingContext cxt, final ATermAppl term)
 	{
 		final Role t = cxt._blocked.getABox().getRole(term.getArgument(0));
-		int m = 1;
-		ATermAppl c;
+		final int m;
+		final ATermAppl c;
 
 		if (ATermUtils.isMin(term))
 		{
@@ -46,14 +46,15 @@ public class Block4 implements BlockingCondition
 			m = ((ATermInt) term.getArgument(1)).getInt();
 		}
 		else
+		{
 			c = ATermUtils.negate((ATermAppl) term.getArgument(1));
+			m = 1;
+		}
 
 		if (t.isDatatypeRole())
 			return true;
 
-		final Role invT = t.getInverse();
-
-		if (cxt.isRSuccessor(invT) && cxt._blocked.getParent().hasType(c))
+		if (cxt.isRSuccessor(t.getInverse()) && cxt._blocked.getParent().hasType(c))
 			return true;
 
 		return cxt._blocker.getRSuccessors(t, c).size() >= m;

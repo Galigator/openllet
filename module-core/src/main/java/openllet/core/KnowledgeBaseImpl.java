@@ -5030,22 +5030,18 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		if (!UsableRuleFilter.isUsable(rule))
 			return null;
 
-		final List<RuleAtom> head = new ArrayList<>();
-		final List<RuleAtom> body = new ArrayList<>();
-
-		for (RuleAtom atom : rule.getHead())
+		final List<RuleAtom> head = rule.getHead().stream().map(atom ->
 		{
 			if (atom instanceof ClassAtom)
 			{
 				final ClassAtom ca = (ClassAtom) atom;
-				final AtomIObject arg = ca.getArgument();
-				final ATermAppl c = ca.getPredicate();
-				final ATermAppl normC = ATermUtils.normalize(c);
-				if (c != normC)
-					atom = new ClassAtom(normC, arg);
+				final ATermAppl rawCls = ca.getPredicate();
+				final ATermAppl normCls = ATermUtils.normalize(rawCls);
+				if (rawCls != normCls)
+					return new ClassAtom(normCls, ca.getArgument());
 			}
-			head.add(atom);
-		}
+			return atom;
+		}).collect(Collectors.toList());
 
 		final Map<AtomIObject, Set<ATermAppl>> types = new HashMap<>();
 
@@ -5072,22 +5068,20 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 				}
 			}
 
-		for (RuleAtom atom : rule.getBody())
-		{
+		final List<RuleAtom> body = new ArrayList<>(rule.getBody().size());
+		for (final RuleAtom atom : rule.getBody())
 			if (atom instanceof ClassAtom)
 			{
 				final ClassAtom ca = (ClassAtom) atom;
 				final AtomIObject arg = ca.getArgument();
-				final ATermAppl c = ca.getPredicate();
-				final ATermAppl normC = ATermUtils.normalize(c);
-				if (MultiMapUtils.contains(types, arg, normC))
-					continue;
-				else
-					if (c != normC)
-						atom = new ClassAtom(normC, ca.getArgument());
+				final ATermAppl rawCls = ca.getPredicate();
+				final ATermAppl normCls = ATermUtils.normalize(rawCls);
+				if (!MultiMapUtils.contains(types, arg, normCls))
+					body.add(rawCls == normCls ? atom : new ClassAtom(normCls, arg));
+				// else the class is drop.
 			}
-			body.add(atom);
-		}
+			else
+				body.add(atom);
 
 		return new Rule(rule.getName(), head, body);
 	}
