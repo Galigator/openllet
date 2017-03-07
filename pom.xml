@@ -79,13 +79,12 @@
       <dependency>
         <groupId>org.apache.jena</groupId>
         <artifactId>jena-core</artifactId>
-        <version>[3.1.1],[3.2.0,3.2.99]</version>
-        <!-- Make sure not using the 3.1.0 it is buggy. -->
+        <version>[3.2.0,3.2.99)</version> <!-- Make sure not using the 3.1.0 it is buggy. -->
       </dependency>
       <dependency>
         <groupId>org.apache.jena</groupId>
         <artifactId>jena-arq</artifactId>
-        <version>[3.1.1],[3.2.0,3.2.99]</version>
+        <version>[3.2.0,3.2.99)</version>
       </dependency>
       <dependency>
         <groupId>net.sourceforge.owlapi</groupId>
