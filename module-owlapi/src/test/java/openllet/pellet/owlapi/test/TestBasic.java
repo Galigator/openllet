@@ -4,11 +4,19 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
+import openllet.core.rules.builtins.BuiltInRegistry;
+import openllet.core.rules.builtins.FunctionBuiltIn;
+import openllet.core.rules.builtins.NumericAdapter;
+import openllet.core.rules.builtins.NumericFunction;
 import openllet.owlapi.OWL;
 import openllet.owlapi.OWLGenericTools;
 import openllet.owlapi.OWLHelper;
@@ -317,6 +325,86 @@ public class TestBasic
 			final OpenlletReasoner reasoner = owl.getReasoner();
 			assertFalse(reasoner.isEntailed(OWL.propertyAssertion(a, dpB, OWL.constant("sup"))));
 			assertTrue(reasoner.isEntailed(OWL.propertyAssertion(a, dpB, OWL.constant("inf"))));
+		}
+	}
+
+	class RandomBuildIn implements NumericFunction
+	{
+		public volatile int _callCountBigDecimal = 0;
+		public volatile int _callCountBigInteger = 0;
+		public volatile int _callCountDouble = 0;
+		public volatile int _callCountFloat = 0;
+		public volatile Object _object = null;
+		private final Random _rand = new Random();
+
+		@Override
+		public BigDecimal apply(final BigDecimal... args)
+		{
+			_callCountBigDecimal++;
+			return (BigDecimal) (_object = new BigDecimal(_rand.nextFloat()));
+		}
+
+		@Override
+		public BigInteger apply(final BigInteger... args)
+		{
+			_callCountBigInteger++;
+			return (BigInteger) (_object = new BigInteger(Long.toString(_rand.nextInt()))); // I am using only a 'int' not an BigInt.
+		}
+
+		@Override
+		public Double apply(final Double... args)
+		{
+			_callCountDouble++;
+			return (Double) (_object = _rand.nextDouble());
+		}
+
+		@Override
+		public Float apply(final Float... args)
+		{
+			_callCountFloat++;
+			return (Float) (_object = _rand.nextFloat());
+		}
+	}
+
+	@Test
+	public void testSpecialBuitIn() throws OWLOntologyCreationException
+	{
+		final RandomBuildIn myRandomFunction = new RandomBuildIn();
+		BuiltInRegistry.instance.registerBuiltIn("MyRandomFunction", new FunctionBuiltIn(new NumericAdapter(myRandomFunction)));
+
+		try (final OWLManagerGroup group = new OWLManagerGroup())
+		{
+			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create("http://test.org#swrl-special-build-in"), 1.02);
+			final OWLHelper owl = new OWLGenericTools(group, ontId, true);
+
+			final OWLDataProperty property = OWL.DataProperty("property");
+			final OWLNamedIndividual individual = OWL.Individual("individual");
+			final OWLClass clazz = OWL.Class("clazz");
+
+			final SWRLVariable varX = SWRL.variable("x");
+			final SWRLVariable varY = SWRL.variable("y");
+
+			owl.addAxiom(OWL.classAssertion(individual, clazz));
+			// owl.addAxiom(OWL.range(property, XSD.DOUBLE)); // TODO : uncomment this to show a bug.
+
+			owl.addAxiom(SWRL.rule(//
+					SWRL.antecedent(//
+							SWRL.classAtom(clazz, varX), //
+							OWL._factory.getSWRLBuiltInAtom(IRI.create("MyRandomFunction"), Arrays.asList(varY))), //
+					SWRL.consequent(//
+							SWRL.propertyAtom(property, varX, varY))//
+			));
+
+			final Set<OWLLiteral> results = owl.getReasoner().getDataPropertyValues(individual, property);
+			assertTrue(results.size() == 1);
+			final OWLLiteral literal = results.iterator().next();
+			assertTrue(literal.isInteger());
+			assertTrue(0 == myRandomFunction._callCountBigDecimal);
+			assertTrue(1 == myRandomFunction._callCountBigInteger); // Nothing in the code or spec specify to use this datatype.
+			assertTrue(0 == myRandomFunction._callCountDouble);
+			assertTrue(0 == myRandomFunction._callCountFloat);
+
+			assertTrue(myRandomFunction._object.toString().equals(Integer.toString(literal.parseInteger())));
 		}
 	}
 }

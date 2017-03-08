@@ -78,10 +78,10 @@ public class RestrictedTextDatatype implements RestrictedDatatype<ATermAppl>
 
 	private RestrictedTextDatatype(final Datatype<ATermAppl> dt, final Set<Pattern> patterns, final boolean allowLang, final Set<Object> excludedValues)
 	{
-		this._dt = dt;
-		this._allowLang = allowLang;
-		this._excludedValues = excludedValues;
-		this._patterns = patterns;
+		_dt = dt;
+		_allowLang = allowLang;
+		_excludedValues = excludedValues;
+		_patterns = patterns;
 	}
 
 	@Override
@@ -140,7 +140,7 @@ public class RestrictedTextDatatype implements RestrictedDatatype<ATermAppl>
 		return _dt;
 	}
 
-	protected <T> List<T> concatLists(final List<T> l1, final List<T> l2)
+	protected static <T> List<T> concatLists(final List<T> l1, final List<T> l2)
 	{
 		if (l1.isEmpty())
 			return l2;
@@ -161,7 +161,7 @@ public class RestrictedTextDatatype implements RestrictedDatatype<ATermAppl>
 		{
 			final RestrictedTextDatatype that = (RestrictedTextDatatype) other;
 
-			return new RestrictedTextDatatype(_dt, SetUtils.union(this._patterns, that._patterns), this._allowLang && that._allowLang, SetUtils.union(this._excludedValues, that._excludedValues));
+			return new RestrictedTextDatatype(_dt, SetUtils.union(_patterns, that._patterns), _allowLang && that._allowLang, SetUtils.union(_excludedValues, that._excludedValues));
 		}
 		else
 			throw new IllegalArgumentException();
@@ -193,7 +193,7 @@ public class RestrictedTextDatatype implements RestrictedDatatype<ATermAppl>
 			if (!_patterns.isEmpty() || !((RestrictedTextDatatype) other)._patterns.isEmpty())
 				throw new UnsupportedOperationException();
 
-			if (this._allowLang)
+			if (_allowLang)
 				return this;
 
 			return (RestrictedTextDatatype) other;
