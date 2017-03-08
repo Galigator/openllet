@@ -39,6 +39,15 @@ import org.semanticweb.owlapi.reasoner.FreshEntitiesException;
 @RunWith(Parameterized.class)
 public class OWLWGTestCase
 {
+	static
+	{
+		// Enable those lines for finer debugging.
+		//		Log._defaultLevel = Level.FINE;
+		//		Log._setDefaultParent = true;
+		//		Log._parent.addHandler(Log._systemOutHandler);
+		//		Log.setLevel(Level.FINE);
+	}
+
 	public static Object _lock = new Object();
 
 	/**

@@ -7,7 +7,6 @@
 package openllet.core.tableau.completion.rule;
 
 import java.util.List;
-import java.util.logging.Level;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermInt;
 import openllet.core.DependencySet;
@@ -74,13 +73,13 @@ public class MinCardinalityRule extends AbstractTableauRule
 		if (!OpenlletOptions.MAINTAIN_COMPLETION_QUEUE && ds == null)
 			return;
 
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("MIN : " + x + " -> " + r + " -> anon" + (n == 1 ? "" : _strategy.getABox().getAnonCount() + 1 + " - anon") + (_strategy.getABox().getAnonCount() + n) + " " + ATermUtils.toString(c) + " " + ds);
+		_logger.fine(() -> "MIN : " + x + " -> " + r + " -> anon" + (n == 1 ? "" : _strategy.getABox().getAnonCount() + 1 + " - anon") + (_strategy.getABox().getAnonCount() + n) + " " + ATermUtils.toString(c) + " " + ds);
 
 		final Node[] y = new Node[n];
 		for (int c1 = 0; c1 < n; c1++)
 		{
 			_strategy.checkTimer();
+
 			if (r.isDatatypeRole())
 				y[c1] = _strategy.getABox().addLiteral(ds);
 			else

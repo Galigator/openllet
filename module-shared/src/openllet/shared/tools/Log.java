@@ -2,8 +2,11 @@ package openllet.shared.tools;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Handler;
 import java.util.logging.Level;
+import java.util.logging.LogRecord;
 import java.util.logging.Logger;
+
 import org.slf4j.Marker;
 
 /**
@@ -14,6 +17,31 @@ public class Log implements Logging
 	public static final Logger _parent = Logger.getLogger(Log.class.getName());
 	public static volatile Level _defaultLevel = Level.INFO;
 	public static volatile boolean _setDefaultParent = false;
+	public static final Handler _systemOutHandler = new Handler()
+	{
+		@Override
+		public void publish(final LogRecord record)
+		{
+			final StringBuffer buff = new StringBuffer();
+			buff.append(record.getLevel()).append(' ');
+			buff.append(record.getThreadID()).append(' ');
+			buff.append(record.getLoggerName()).append(' ');
+			buff.append(record.getMessage()).append(' ');
+			System.out.println(buff.toString());
+		}
+
+		@Override
+		public void flush()
+		{
+			//
+		}
+
+		@Override
+		public void close() throws SecurityException
+		{
+			//
+		}
+	};
 
 	static
 	{

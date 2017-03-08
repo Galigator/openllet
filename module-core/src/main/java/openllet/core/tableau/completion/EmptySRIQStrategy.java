@@ -120,8 +120,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 	@Override
 	public void complete(final Expressivity expr)
 	{
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("************  " + EmptySRIQStrategy.class.getName() + "  ************");
+		_logger.fine(() -> "************  " + EmptySRIQStrategy.class.getName() + "  ************ " + expr);
 
 		if (_abox.getNodes().isEmpty())
 		{
@@ -158,8 +157,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 
 			if (_abox.isClosed())
 			{
-				if (_logger.isLoggable(Level.FINE))
-					_logger.fine("Clash at Branch (" + _abox.getBranchIndex() + ") " + _abox.getClash());
+				_logger.fine(() -> "Clash at Branch (" + _abox.getBranchIndex() + ") " + _abox.getClash());
 
 				if (backtrack())
 					_abox.setClash(null);
@@ -280,9 +278,6 @@ public class EmptySRIQStrategy extends CompletionStrategy
 				_mayNeedExpanding.remove(0);
 				return;
 			}
-			//			else if ( SubsetBlocking.getInstance().isDirectlyBlocked( x ) ) {
-			//				System.err.println( "BLOCK " + ++block );
-			//			}
 
 			_unfoldingRule.apply(x);
 			if (_abox.isClosed())
@@ -297,8 +292,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 
 			if (_blocking.isDynamic() && _blocking.isDirectlyBlocked(x))
 			{
-				if (_logger.isLoggable(Level.FINE))
-					_logger.fine("Stop _blocked " + x);
+				_logger.fine(() -> "Stop blocked " + x);
 				_mayNeedExpanding.remove(0);
 				return;
 			}
