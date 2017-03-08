@@ -22,6 +22,7 @@ import openllet.owlwg.testcase.TestCase;
 import openllet.owlwg.testcase.filter.FilterCondition;
 import openllet.owlwg.testrun.RunResultType;
 import openllet.owlwg.testrun.TestRunResult;
+import openllet.shared.tools.Log;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.Timeout;
@@ -42,10 +43,10 @@ public class OWLWGTestCase
 	static
 	{
 		// Enable those lines for finer debugging.
-		//		Log._defaultLevel = Level.FINE;
+		Log._defaultLevel = Level.INFO;
 		//		Log._setDefaultParent = true;
 		//		Log._parent.addHandler(Log._systemOutHandler);
-		//		Log.setLevel(Level.FINE);
+		Log.setLevel(Level.INFO);
 	}
 
 	public static Object _lock = new Object();
