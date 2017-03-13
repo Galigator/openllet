@@ -51,7 +51,6 @@ import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
 import openllet.atom.OpenError;
 import openllet.core.DependencySet;
-import openllet.core.IndividualIterator;
 import openllet.core.KnowledgeBase;
 import openllet.core.OpenlletOptions;
 import openllet.core.boxes.rbox.RBox;

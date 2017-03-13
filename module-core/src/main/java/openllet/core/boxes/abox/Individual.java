@@ -58,7 +58,7 @@ import openllet.core.utils.Bool;
  */
 public class Individual extends Node implements CachedNode
 {
-	private EdgeList _outEdges;
+	private volatile EdgeList _outEdges;
 
 	@SuppressWarnings("unchecked")
 	private final Vector<ATermAppl>[] _types = new Vector[TYPES]; // List[] isn't a super type of Vector[]
@@ -292,28 +292,7 @@ public class Individual extends Node implements CachedNode
 			return;
 		}
 
-		//        if( ABox._logger.isLoggable( Level.FINE ) )
-		//            ABox._logger.fine( "TYPE: " + this + " " + c );
-
-		// if we are checking entailment using a precompleted ABox, _abox.branch
-		// is set to -1. however, since applyAllValues is done automatically
-		// and the edge used in applyAllValues may depend on a _branch we want
-		// this type to be deleted when that edge goes away, i.e. we backtrack
-		// to a position before the max dependency of this type
-		int b = _abox.getBranchIndex();
-		final int max = ds.max();
-		if (b == -1 && max != 0)
-			b = max + 1;
-
-		ds = ds.copy(b);
-
-		_depends.put(c, ds);
-
-		_abox.setChanged(true);
-
-		// add to effected list
-		if (_abox.getBranchIndex() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
-			_abox.getBranchEffectTracker().add(_abox.getBranchIndex(), getName());
+		ds = forceAddType(c, ds);
 
 		//create new _queue element
 		final QueueElement qElement = new QueueElement(this, c);

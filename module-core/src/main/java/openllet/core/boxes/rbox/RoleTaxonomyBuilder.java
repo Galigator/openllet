@@ -28,7 +28,7 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 
-package openllet.core;
+package openllet.core.boxes.rbox;
 
 import static openllet.core.utils.TermFactory.BOTTOM_DATA_PROPERTY;
 import static openllet.core.utils.TermFactory.BOTTOM_OBJECT_PROPERTY;
@@ -47,8 +47,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.aterm.ATermAppl;
 import openllet.atom.OpenError;
-import openllet.core.boxes.rbox.RBox;
-import openllet.core.boxes.rbox.Role;
+import openllet.core.PropertyType;
 import openllet.core.taxonomy.Taxonomy;
 import openllet.core.taxonomy.TaxonomyImpl;
 import openllet.core.taxonomy.TaxonomyNode;

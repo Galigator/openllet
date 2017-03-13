@@ -39,6 +39,13 @@ public class ArrayIntSet implements IntSet
 		System.arraycopy(other.ints, 0, ints, 0, size);
 	}
 
+	public ArrayIntSet(final int[] others)
+	{
+		size = others.length;
+		ints = new int[size];
+		System.arraycopy(others, 0, ints, 0, size);
+	}
+
 	private ArrayIntSet(final ArrayIntSet set1, final ArrayIntSet set2)
 	{
 		setToUnionOf(set1, set2);

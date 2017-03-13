@@ -63,11 +63,7 @@ public class DependencySet
 	 */
 	public static final DependencySet INDEPENDENT = new DependencySet(0);
 
-	public static final IntSet ZERO = IntSetFactory.create();
-	static
-	{
-		ZERO.add(0);
-	}
+	public static final IntSet ZERO = IntSetFactory.create(0);
 
 	/**
 	 * A dummy dependency set that is used just to indicate there is a dependency
@@ -84,7 +80,7 @@ public class DependencySet
 	 */
 	private int _branch = NO_BRANCH;
 
-	private Set<ATermAppl> _explain;
+	private volatile Set<ATermAppl> _explain;
 
 	/**
 	 * Create an empty set
@@ -102,9 +98,7 @@ public class DependencySet
 	 */
 	public DependencySet(final int branch)
 	{
-		_depends = IntSetFactory.create();
-
-		_depends.add(branch);
+		_depends = IntSetFactory.create(branch);
 		setExplain(Collections.emptySet());
 	}
 
@@ -228,12 +222,10 @@ public class DependencySet
 	public DependencySet union(final DependencySet ds, final boolean doExplanation)
 	{
 		final IntSet newDepends = _depends.union(ds._depends);
-		Set<ATermAppl> newExplain;
 
-		if (doExplanation)
-			newExplain = SetUtils.union(_explain, ds._explain);
-		else
-			newExplain = Collections.emptySet();
+		final Set<ATermAppl> newExplain = doExplanation ? //
+				SetUtils.union(_explain, ds._explain) : //
+				Collections.emptySet();
 
 		return new DependencySet(_branch, newDepends, newExplain);
 	}
@@ -278,8 +270,7 @@ public class DependencySet
 		if (getExplain().contains(assertion))
 		{
 			setExplain(new HashSet<ATermAppl>());
-			if (DependencyIndex._logger.isLoggable(Level.FINE))
-				DependencyIndex._logger.fine("             Explain: removed ");
+			DependencyIndex._logger.fine("             Explain: removed ");
 		}
 
 	}
@@ -315,9 +306,6 @@ public class DependencySet
 	 */
 	public DependencySet cache()
 	{
-		if (isIndependent())
-			return DependencySet.INDEPENDENT;
-		else
-			return DependencySet.DUMMY;
+		return isIndependent() ? DependencySet.INDEPENDENT : DependencySet.DUMMY;
 	}
 }

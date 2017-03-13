@@ -22,4 +22,9 @@ public class IntSetFactory
 	{
 		return new ArrayIntSet();
 	}
+
+	public static IntSet create(final int... values)
+	{
+		return new ArrayIntSet(values);
+	}
 }

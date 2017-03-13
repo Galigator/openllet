@@ -4,14 +4,11 @@
 // Please see LICENSE.txt for full license terms, including the availability of proprietary exceptions.
 // Questions, comments, or requests for clarification: licensing@clarkparsia.com
 
-package openllet.core;
+package openllet.core.boxes.abox;
 
 import java.util.Iterator;
 import java.util.List;
 import openllet.aterm.ATermAppl;
-import openllet.core.boxes.abox.ABox;
-import openllet.core.boxes.abox.Individual;
-import openllet.core.boxes.abox.Node;
 import openllet.core.tableau.completion.queue.NodeSelector;
 
 /**

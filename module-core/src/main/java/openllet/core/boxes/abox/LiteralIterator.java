@@ -4,15 +4,12 @@
 // Please see LICENSE.txt for full license terms, including the availability of proprietary exceptions.
 // Questions, comments, or requests for clarification: licensing@clarkparsia.com
 
-package openllet.core;
+package openllet.core.boxes.abox;
 
 import java.util.Iterator;
 import java.util.List;
 import openllet.aterm.ATermAppl;
 import openllet.atom.OpenError;
-import openllet.core.boxes.abox.ABox;
-import openllet.core.boxes.abox.Literal;
-import openllet.core.boxes.abox.Node;
 
 /**
  * An iterator to return _nodes in the _order they are added. Having a seperate iterator instead of using _nodes.iterator() allows to change the _nodes table

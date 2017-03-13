@@ -10,7 +10,6 @@ import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
 import openllet.core.DependencySet;
-import openllet.core.IndividualIterator;
 import openllet.core.KnowledgeBase;
 import openllet.core.boxes.rbox.RBox;
 import openllet.core.boxes.rbox.Role;

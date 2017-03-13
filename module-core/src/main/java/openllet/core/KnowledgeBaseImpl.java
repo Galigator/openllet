@@ -70,6 +70,7 @@ import openllet.core.boxes.abox.ABoxImpl;
 import openllet.core.boxes.abox.Edge;
 import openllet.core.boxes.abox.EdgeList;
 import openllet.core.boxes.abox.Individual;
+import openllet.core.boxes.abox.IndividualIterator;
 import openllet.core.boxes.abox.Literal;
 import openllet.core.boxes.abox.Node;
 import openllet.core.boxes.rbox.RBox;

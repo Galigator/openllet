@@ -10,9 +10,9 @@ package openllet.core.tableau.completion;
 
 import java.util.List;
 import java.util.logging.Level;
-import openllet.core.IndividualIterator;
 import openllet.core.OpenlletOptions;
 import openllet.core.boxes.abox.ABox;
+import openllet.core.boxes.abox.IndividualIterator;
 import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.expressivity.Expressivity;
 import openllet.core.tableau.branch.Branch;

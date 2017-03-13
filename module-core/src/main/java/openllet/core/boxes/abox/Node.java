@@ -70,8 +70,6 @@ public abstract class Node
 	public final static int BLOCKABLE = Integer.MAX_VALUE;
 	public final static int NOMINAL = 0;
 
-	public final static int CHANGED = 0x7F;
-	public final static int UNCHANGED = 0x00;
 	public final static int ATOM = 0;
 	public final static int OR = 1;
 	public final static int SOME = 2;
@@ -481,29 +479,39 @@ public abstract class Node
 		return restored;
 	}
 
-	public void addType(final ATermAppl c, final DependencySet dsParam)
+	protected DependencySet forceAddType(final ATermAppl c, final DependencySet ds)
 	{
-		DependencySet ds = dsParam;
+		// add to effected list
+		if (OpenlletOptions.TRACK_BRANCH_EFFECTS && _abox.getBranchIndex() >= 0)
+			_abox.getBranchEffectTracker().add(_abox.getBranchIndex(), getName());
 
+		// if we are checking entailment using a precompleted ABox, _abox.branch
+		// is set to -1. however, since applyAllValues is done automatically
+		// and the edge used in applyAllValues may depend on a _branch we want
+		// this type to be deleted when that edge goes away, i.e. we backtrack
+		// to a position before the max dependency of this type
+		int b = _abox.getBranchIndex();
+		final int max = ds.max();
+		if (b == -1 && max != 0)
+			b = max + 1;
+
+		final DependencySet out = ds.copy(b);
+		_depends.put(c, out);
+
+		_abox.setChanged(true);
+
+		return out;
+	}
+
+	public void addType(final ATermAppl c, final DependencySet ds)
+	{
 		if (isPruned())
 			throw new InternalReasonerException("Adding type to a pruned _node " + this + " " + c);
 		else
 			if (isMerged())
 				return;
 
-		// add to effected list
-		if (_abox.getBranchIndex() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
-			_abox.getBranchEffectTracker().add(_abox.getBranchIndex(), getName());
-
-		int b = _abox.getBranchIndex();
-
-		final int max = ds.max();
-		if (b == -1 && max != 0)
-			b = max + 1;
-		ds = ds.copy(b);
-		_depends.put(c, ds);
-
-		_abox.setChanged(true);
+		forceAddType(c, ds);
 	}
 
 	public boolean removeType(final ATermAppl c)
