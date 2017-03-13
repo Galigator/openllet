@@ -1277,7 +1277,7 @@ public class Individual extends Node implements CachedNode
 		if (_abox.getBranchIndex() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
 			_abox.getBranchEffectTracker().add(_abox.getBranchIndex(), getName());
 
-		pruned = ds;
+		_pruned = ds;
 
 		for (int i = 0; i < _outEdges.size(); i++)
 		{

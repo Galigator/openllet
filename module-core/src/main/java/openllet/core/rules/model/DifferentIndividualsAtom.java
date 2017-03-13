@@ -21,7 +21,6 @@ package openllet.core.rules.model;
  */
 public class DifferentIndividualsAtom extends BinaryAtom<String, AtomIObject, AtomIObject>
 {
-
 	public DifferentIndividualsAtom(final AtomIObject argument1, final AtomIObject argument2)
 	{
 		super("DIFFERENT", argument1, argument2);
@@ -38,5 +37,4 @@ public class DifferentIndividualsAtom extends BinaryAtom<String, AtomIObject, At
 	{
 		return getArgument1() + " != " + getArgument2();
 	}
-
 }

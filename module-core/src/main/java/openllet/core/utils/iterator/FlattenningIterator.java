@@ -29,5 +29,4 @@ public class FlattenningIterator<T> extends NestedIterator<Iterable<T>, T>
 	{
 		return outer.iterator();
 	}
-
 }

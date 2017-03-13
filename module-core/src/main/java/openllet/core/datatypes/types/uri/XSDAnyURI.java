@@ -43,18 +43,18 @@ public class XSDAnyURI extends AbstractBaseDatatype<ATermAppl>
 		return instance;
 	}
 
-	private final RestrictedDatatype<ATermAppl> dataRange;
+	private final RestrictedDatatype<ATermAppl> _dataRange;
 
 	private XSDAnyURI()
 	{
 		super(NAME);
-		dataRange = new RestrictedURIDatatype(this);
+		_dataRange = new RestrictedURIDatatype(this);
 	}
 
 	@Override
 	public RestrictedDatatype<ATermAppl> asDataRange()
 	{
-		return dataRange;
+		return _dataRange;
 	}
 
 	@Override

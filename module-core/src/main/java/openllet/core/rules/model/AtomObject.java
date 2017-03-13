@@ -11,9 +11,6 @@ package openllet.core.rules.model;
  * Title: Atom Object
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -24,7 +21,5 @@ package openllet.core.rules.model;
  */
 public interface AtomObject
 {
-
 	public void accept(AtomObjectVisitor visitor);
-
 }

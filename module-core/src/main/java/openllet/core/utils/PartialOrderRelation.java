@@ -11,9 +11,6 @@ package openllet.core.utils;
  * Title: Partial Order Relation
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -24,7 +21,5 @@ package openllet.core.utils;
  */
 public enum PartialOrderRelation
 {
-
 	EQUAL, GREATER, INCOMPARABLE, LESS
-
 }

@@ -21,12 +21,11 @@ import java.util.Iterator;
  */
 public class NegatedDataRange<T> implements DataRange<T>
 {
-
 	private final DataRange<? extends T> _datarange;
 
 	public NegatedDataRange(final DataRange<? extends T> datarange)
 	{
-		this._datarange = datarange;
+		_datarange = datarange;
 	}
 
 	@Override

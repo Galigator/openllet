@@ -10,12 +10,6 @@ import java.util.NoSuchElementException;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -65,7 +59,7 @@ public abstract class AbstractIntSet implements IntSet
 
 	protected void removed(final int low, final int high)
 	{
-		if (isEmpty() || (low == min || high == max))
+		if (isEmpty() || low == min || high == max)
 		{
 			min = Integer.MAX_VALUE;
 			max = Integer.MIN_VALUE;

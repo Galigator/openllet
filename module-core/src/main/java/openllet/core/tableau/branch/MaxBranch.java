@@ -34,7 +34,6 @@ import java.util.List;
 import java.util.logging.Level;
 import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
-import openllet.core.NodeMerge;
 import openllet.core.OpenlletOptions;
 import openllet.core.boxes.abox.ABox;
 import openllet.core.boxes.abox.Clash;
@@ -42,6 +41,7 @@ import openllet.core.boxes.abox.Edge;
 import openllet.core.boxes.abox.EdgeList;
 import openllet.core.boxes.abox.Individual;
 import openllet.core.boxes.abox.Node;
+import openllet.core.boxes.abox.NodeMerge;
 import openllet.core.boxes.rbox.Role;
 import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.tableau.completion.CompletionStrategy;
@@ -106,7 +106,7 @@ public class MaxBranch extends IndividualBranch
 		DependencySet ds = getTermDepends();
 		for (; getTryNext() < getTryCount(); _tryNext++)
 		{
-			_abox.getKB().getTimers().mainTimer.check();
+			_abox.getKB().getTimers()._mainTimer.check();
 			if (OpenlletOptions.USE_SEMANTIC_BRANCHING)
 				for (int m = 0; m < getTryNext(); m++)
 				{

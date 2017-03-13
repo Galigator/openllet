@@ -7,7 +7,7 @@ import java.util.Iterator;
  * Title: Data Range
  * </p>
  * <p>
- * Description: Data range interface openllet.shared.hash by all _data ranges (restricted datatypes, enumerations, etc.)
+ * Description: Data range interface openllet.shared.hash by all data ranges (restricted datatypes, enumerations, etc.)
  * </p>
  * <p>
  * Copyright: Copyright (c) 2009
@@ -21,9 +21,8 @@ import java.util.Iterator;
  */
 public interface DataRange<T>
 {
-
 	/**
-	 * Check if a _data range contains a particular value
+	 * Check if a data range contains a particular value
 	 *
 	 * @param value the value to check
 	 * @return <code>true</code> if the _data range contains <code>value</code>, <code>false</code> else
@@ -31,7 +30,7 @@ public interface DataRange<T>
 	public boolean contains(Object value);
 
 	/**
-	 * Check that a _data range contains a minimum number of elements
+	 * Check that a data range contains a minimum number of elements
 	 *
 	 * @param n the number of elements
 	 * @return <code>true</code> if the _data range contains <code>n</code> or more elements, <code>false</code> otherwise

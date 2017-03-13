@@ -28,7 +28,7 @@ import openllet.shared.tools.Log;
  * <p>
  * Company: Clark & Parsia, LLC. <http://www.clarkparsia.com>
  * </p>
- * 
+ *
  * @author Ron Alford
  */
 public class DataRangeBindingHelper implements BindingHelper
@@ -42,8 +42,8 @@ public class DataRangeBindingHelper implements BindingHelper
 
 	public DataRangeBindingHelper(final ABox abox, final DataRangeAtom atom)
 	{
-		this._dtReasoner = abox.getDatatypeReasoner();
-		this._atom = atom;
+		_dtReasoner = abox.getDatatypeReasoner();
+		_atom = atom;
 		_hasNext = false;
 	}
 

@@ -51,26 +51,22 @@ public class DependencySet
 {
 	public static final Logger _logger = Log.getLogger(DependencySet.class);
 
-	public static final int NO_BRANCH;
+	public static final int NO_BRANCH = -1;
 
 	/**
 	 * An empty dependency set
 	 */
-	public static final DependencySet EMPTY;
+	public static final DependencySet EMPTY = new DependencySet();
 
 	/**
 	 * Used for assertions that are true by nature, i.e. an _individual always has type owl:Thing
 	 */
-	public static final DependencySet INDEPENDENT;
+	public static final DependencySet INDEPENDENT = new DependencySet(0);
 
-	public static final IntSet ZERO;
+	public static final IntSet ZERO = IntSetFactory.create();
 	static
 	{
-		NO_BRANCH = -1;
-		ZERO = IntSetFactory.create();
 		ZERO.add(0);
-		EMPTY = new DependencySet();
-		INDEPENDENT = new DependencySet(0);
 	}
 
 	/**
@@ -81,7 +77,7 @@ public class DependencySet
 	/**
 	 * _index of branches this assertion _depends on
 	 */
-	private IntSet _depends;
+	private final IntSet _depends;
 
 	/**
 	 * _branch number when this assertion was added to ABox
@@ -286,11 +282,6 @@ public class DependencySet
 				DependencyIndex._logger.fine("             Explain: removed ");
 		}
 
-	}
-
-	public void setDepends(final IntSet depends)
-	{
-		_depends = depends;
 	}
 
 	public IntSet getDepends()

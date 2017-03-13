@@ -26,7 +26,7 @@ public class ExpressivityChecker
 	private final KnowledgeBase _KB;
 	private final ELExpressivityChecker _ELChecker;
 	private final DLExpressivityChecker _DLChecker;
-	private Expressivity _expressivity;
+	private volatile Expressivity _expressivity;
 
 	public ExpressivityChecker(final KnowledgeBase kb)
 	{
@@ -71,7 +71,7 @@ public class ExpressivityChecker
 
 	/**
 	 * Added for incremental reasoning. Given an openllet.aterm corresponding to an _individual and concept, the expressivity is updated accordingly.
-	 * 
+	 *
 	 * @param i
 	 * @param concept
 	 */

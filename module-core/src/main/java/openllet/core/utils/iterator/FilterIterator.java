@@ -25,7 +25,7 @@ public abstract class FilterIterator<T> implements Iterator<T>
 
 	public FilterIterator(final Iterator<T> iterator)
 	{
-		this._iterator = iterator;
+		_iterator = iterator;
 	}
 
 	private void findNext()

@@ -11,9 +11,6 @@ package openllet.core.rules.model;
  * Title: Atom Object Visitor
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -24,7 +21,6 @@ package openllet.core.rules.model;
  */
 public interface AtomObjectVisitor
 {
-
 	default public void visit(@SuppressWarnings("unused") final AtomDConstant constant)
 	{//
 	}
@@ -40,5 +36,4 @@ public interface AtomObjectVisitor
 	default public void visit(@SuppressWarnings("unused") final AtomIVariable variable)
 	{//
 	}
-
 }

@@ -652,10 +652,10 @@ public class OpenlletOptions
 		if (value != null)
 		{
 			value = value.trim();
-			if (value.equalsIgnoreCase("true"))
+			if ("true".equalsIgnoreCase(value))
 				returnValue = true;
 			else
-				if (value.equalsIgnoreCase("false"))
+				if ("false".equalsIgnoreCase(value))
 					returnValue = false;
 				else
 					_logger.severe("Ignoring invalid value (" + value + ") for the configuration option " + property);

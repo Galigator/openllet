@@ -27,7 +27,6 @@ import java.util.List;
  */
 public abstract class BinaryAtom<P, A extends AtomObject, B extends AtomObject> extends RuleAtomImpl<P>
 {
-
 	private final A _argument1;
 	private final B _argument2;
 

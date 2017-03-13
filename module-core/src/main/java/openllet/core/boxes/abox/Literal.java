@@ -44,7 +44,6 @@ import java.util.Set;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
-import openllet.core.NodeMerge;
 import openllet.core.OpenlletOptions;
 import openllet.core.datatypes.DatatypeReasoner;
 import openllet.core.datatypes.OWLRealUtils;
@@ -476,7 +475,7 @@ public class Literal extends Node
 	@Override
 	final public void prune(final DependencySet ds)
 	{
-		pruned = ds;
+		_pruned = ds;
 	}
 
 	@Override

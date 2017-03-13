@@ -28,10 +28,10 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 
-package openllet.core;
+package openllet.core.boxes.abox;
 
 import openllet.aterm.ATermAppl;
-import openllet.core.boxes.abox.Node;
+import openllet.core.DependencySet;
 
 /**
  * Stores a pair of nodes to be merged. Order of nodes is important, always first node is going to be merged to the second one.

@@ -12,13 +12,13 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import openllet.aterm.ATermAppl;
 import openllet.core.boxes.abox.ABoxImpl;
 import openllet.core.boxes.abox.DefaultEdge;
 import openllet.core.boxes.abox.Edge;
 import openllet.core.boxes.abox.Individual;
 import openllet.core.boxes.abox.Node;
-import java.util.Set;
 
 /**
  * <p>
@@ -38,31 +38,30 @@ import java.util.Set;
  */
 public class SimpleIncrementalChangeTracker implements IncrementalChangeTracker
 {
-
-	private final HashSet<Edge> deletedEdges;
-	private final HashMap<Node, Set<ATermAppl>> deletedTypes;
-	private final HashSet<Edge> newEdges;
-	private final HashSet<Individual> newIndividuals;
-	private final HashSet<Node> unprunedNodes;
-	private final HashSet<Individual> updatedIndividuals;
+	private final HashSet<Edge> _deletedEdges;
+	private final HashMap<Node, Set<ATermAppl>> _deletedTypes;
+	private final HashSet<Edge> _newEdges;
+	private final HashSet<Individual> _newIndividuals;
+	private final HashSet<Node> _unprunedNodes;
+	private final HashSet<Individual> _updatedIndividuals;
 
 	public SimpleIncrementalChangeTracker()
 	{
-		deletedEdges = new HashSet<>();
-		deletedTypes = new HashMap<>();
-		newEdges = new HashSet<>();
-		newIndividuals = new HashSet<>();
-		unprunedNodes = new HashSet<>();
-		updatedIndividuals = new HashSet<>();
+		_deletedEdges = new HashSet<>();
+		_deletedTypes = new HashMap<>();
+		_newEdges = new HashSet<>();
+		_newIndividuals = new HashSet<>();
+		_unprunedNodes = new HashSet<>();
+		_updatedIndividuals = new HashSet<>();
 	}
 
 	private SimpleIncrementalChangeTracker(final SimpleIncrementalChangeTracker src, final ABoxImpl target)
 	{
 
-		this.deletedEdges = new HashSet<>(src.deletedEdges.size());
-		this.newEdges = new HashSet<>(src.newEdges.size());
+		_deletedEdges = new HashSet<>(src._deletedEdges.size());
+		_newEdges = new HashSet<>(src._newEdges.size());
 
-		for (final Edge se : src.deletedEdges)
+		for (final Edge se : src._deletedEdges)
 		{
 			final Individual s = target.getIndividual(se.getFrom().getName());
 			if (s == null)
@@ -71,20 +70,20 @@ public class SimpleIncrementalChangeTracker implements IncrementalChangeTracker
 			if (o == null)
 				throw new NullPointerException();
 
-			this.newEdges.add(new DefaultEdge(se.getRole(), s, o, se.getDepends()));
+			_newEdges.add(new DefaultEdge(se.getRole(), s, o, se.getDepends()));
 		}
 
-		this.deletedTypes = new HashMap<>(src.deletedTypes.size());
+		_deletedTypes = new HashMap<>(src._deletedTypes.size());
 
-		for (final Map.Entry<Node, Set<ATermAppl>> e : src.deletedTypes.entrySet())
+		for (final Map.Entry<Node, Set<ATermAppl>> e : src._deletedTypes.entrySet())
 		{
 			final Node n = target.getNode(e.getKey().getName());
 			if (n == null)
 				throw new NullPointerException();
-			this.deletedTypes.put(n, new HashSet<>(e.getValue()));
+			_deletedTypes.put(n, new HashSet<>(e.getValue()));
 		}
 
-		for (final Edge se : src.newEdges)
+		for (final Edge se : src._newEdges)
 		{
 			final Individual s = target.getIndividual(se.getFrom().getName());
 			if (s == null)
@@ -93,40 +92,40 @@ public class SimpleIncrementalChangeTracker implements IncrementalChangeTracker
 			if (o == null)
 				throw new NullPointerException();
 
-			this.newEdges.add(new DefaultEdge(se.getRole(), s, o, se.getDepends()));
+			_newEdges.add(new DefaultEdge(se.getRole(), s, o, se.getDepends()));
 		}
 
-		this.newIndividuals = new HashSet<>(src.newIndividuals.size());
+		_newIndividuals = new HashSet<>(src._newIndividuals.size());
 
-		for (final Individual si : src.newIndividuals)
+		for (final Individual si : src._newIndividuals)
 		{
 			final Individual ti = target.getIndividual(si.getName());
 			if (ti == null)
 				throw new NullPointerException();
 
-			this.newIndividuals.add(ti);
+			_newIndividuals.add(ti);
 		}
 
-		this.unprunedNodes = new HashSet<>(src.unprunedNodes.size());
+		_unprunedNodes = new HashSet<>(src._unprunedNodes.size());
 
-		for (final Node sn : src.unprunedNodes)
+		for (final Node sn : src._unprunedNodes)
 		{
 			final Node tn = target.getNode(sn.getName());
 			if (tn == null)
 				throw new NullPointerException();
 
-			this.unprunedNodes.add(tn);
+			_unprunedNodes.add(tn);
 		}
 
-		this.updatedIndividuals = new HashSet<>(src.updatedIndividuals.size());
+		_updatedIndividuals = new HashSet<>(src._updatedIndividuals.size());
 
-		for (final Individual si : src.updatedIndividuals)
+		for (final Individual si : src._updatedIndividuals)
 		{
 			final Individual ti = target.getIndividual(si.getName());
 			if (ti == null)
 				throw new NullPointerException();
 
-			this.updatedIndividuals.add(ti);
+			_updatedIndividuals.add(ti);
 		}
 	}
 
@@ -141,7 +140,7 @@ public class SimpleIncrementalChangeTracker implements IncrementalChangeTracker
 		if (e == null)
 			throw new NullPointerException();
 
-		return deletedEdges.add(e);
+		return _deletedEdges.add(e);
 	}
 
 	/*
@@ -158,11 +157,11 @@ public class SimpleIncrementalChangeTracker implements IncrementalChangeTracker
 		if (type == null)
 			throw new NullPointerException();
 
-		Set<ATermAppl> existing = deletedTypes.get(n);
+		Set<ATermAppl> existing = _deletedTypes.get(n);
 		if (existing == null)
 		{
 			existing = new HashSet<>();
-			deletedTypes.put(n, existing);
+			_deletedTypes.put(n, existing);
 		}
 
 		return existing.add(type);
@@ -179,7 +178,7 @@ public class SimpleIncrementalChangeTracker implements IncrementalChangeTracker
 		if (e == null)
 			throw new NullPointerException();
 
-		return newEdges.add(e);
+		return _newEdges.add(e);
 	}
 
 	/*
@@ -193,7 +192,7 @@ public class SimpleIncrementalChangeTracker implements IncrementalChangeTracker
 		if (i == null)
 			throw new NullPointerException();
 
-		return newIndividuals.add(i);
+		return _newIndividuals.add(i);
 	}
 
 	/*
@@ -207,7 +206,7 @@ public class SimpleIncrementalChangeTracker implements IncrementalChangeTracker
 		if (n == null)
 			throw new NullPointerException();
 
-		return unprunedNodes.add(n);
+		return _unprunedNodes.add(n);
 	}
 
 	/*
@@ -221,7 +220,7 @@ public class SimpleIncrementalChangeTracker implements IncrementalChangeTracker
 		if (i == null)
 			throw new NullPointerException();
 
-		return updatedIndividuals.add(i);
+		return _updatedIndividuals.add(i);
 	}
 
 	/*
@@ -232,12 +231,12 @@ public class SimpleIncrementalChangeTracker implements IncrementalChangeTracker
 	@Override
 	public void clear()
 	{
-		deletedEdges.clear();
-		deletedTypes.clear();
-		newEdges.clear();
-		newIndividuals.clear();
-		unprunedNodes.clear();
-		updatedIndividuals.clear();
+		_deletedEdges.clear();
+		_deletedTypes.clear();
+		_newEdges.clear();
+		_newIndividuals.clear();
+		_unprunedNodes.clear();
+		_updatedIndividuals.clear();
 	}
 
 	/*
@@ -259,7 +258,7 @@ public class SimpleIncrementalChangeTracker implements IncrementalChangeTracker
 	@Override
 	public Iterator<Edge> deletedEdges()
 	{
-		return Collections.unmodifiableSet(deletedEdges).iterator();
+		return Collections.unmodifiableSet(_deletedEdges).iterator();
 	}
 
 	/*
@@ -270,7 +269,7 @@ public class SimpleIncrementalChangeTracker implements IncrementalChangeTracker
 	@Override
 	public Iterator<Entry<Node, Set<ATermAppl>>> deletedTypes()
 	{
-		return Collections.unmodifiableMap(deletedTypes).entrySet().iterator();
+		return Collections.unmodifiableMap(_deletedTypes).entrySet().iterator();
 	}
 
 	/*
@@ -281,7 +280,7 @@ public class SimpleIncrementalChangeTracker implements IncrementalChangeTracker
 	@Override
 	public Iterator<Edge> newEdges()
 	{
-		return Collections.unmodifiableSet(newEdges).iterator();
+		return Collections.unmodifiableSet(_newEdges).iterator();
 	}
 
 	/*
@@ -292,7 +291,7 @@ public class SimpleIncrementalChangeTracker implements IncrementalChangeTracker
 	@Override
 	public Iterator<Individual> newIndividuals()
 	{
-		return Collections.unmodifiableSet(newIndividuals).iterator();
+		return Collections.unmodifiableSet(_newIndividuals).iterator();
 	}
 
 	/*
@@ -303,7 +302,7 @@ public class SimpleIncrementalChangeTracker implements IncrementalChangeTracker
 	@Override
 	public Iterator<Node> unprunedNodes()
 	{
-		return Collections.unmodifiableSet(unprunedNodes).iterator();
+		return Collections.unmodifiableSet(_unprunedNodes).iterator();
 	}
 
 	/*
@@ -314,6 +313,6 @@ public class SimpleIncrementalChangeTracker implements IncrementalChangeTracker
 	@Override
 	public Iterator<Individual> updatedIndividuals()
 	{
-		return Collections.unmodifiableSet(updatedIndividuals).iterator();
+		return Collections.unmodifiableSet(_updatedIndividuals).iterator();
 	}
 }

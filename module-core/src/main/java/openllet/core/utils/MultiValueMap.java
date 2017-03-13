@@ -112,18 +112,18 @@ public class MultiValueMap<K, V> extends ConcurrentHashMap<K, Set<V>> implements
 	{
 		return new Iterator<V>()
 		{
-			private final Iterator<Set<V>> setIterator = values().iterator();
-			private Iterator<V> valueIterator = null;
+			private final Iterator<Set<V>> _setIterator = values().iterator();
+			private volatile Iterator<V> _valueIterator = null;
 
 			@Override
 			public boolean hasNext()
 			{
-				while (valueIterator == null || !valueIterator.hasNext())
+				while (_valueIterator == null || !_valueIterator.hasNext())
 				{
-					if (!setIterator.hasNext())
+					if (!_setIterator.hasNext())
 						return false;
 
-					valueIterator = setIterator.next().iterator();
+					_valueIterator = _setIterator.next().iterator();
 				}
 				return true;
 			}
@@ -134,13 +134,13 @@ public class MultiValueMap<K, V> extends ConcurrentHashMap<K, Set<V>> implements
 				if (!hasNext())
 					throw new NoSuchElementException();
 
-				return valueIterator.next();
+				return _valueIterator.next();
 			}
 
 			@Override
 			public void remove()
 			{
-				setIterator.remove();
+				_setIterator.remove();
 			}
 		};
 	}

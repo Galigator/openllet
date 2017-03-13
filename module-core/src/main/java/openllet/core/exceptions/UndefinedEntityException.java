@@ -11,9 +11,6 @@ package openllet.core.exceptions;
  * Title: UndefinedEntityException
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>

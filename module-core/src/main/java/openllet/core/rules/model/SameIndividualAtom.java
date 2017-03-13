@@ -21,7 +21,6 @@ package openllet.core.rules.model;
  */
 public class SameIndividualAtom extends BinaryAtom<String, AtomIObject, AtomIObject>
 {
-
 	public SameIndividualAtom(final AtomIObject argument1, final AtomIObject argument2)
 	{
 		super("SAME", argument1, argument2);
@@ -38,5 +37,4 @@ public class SameIndividualAtom extends BinaryAtom<String, AtomIObject, AtomIObj
 	{
 		return getArgument1() + " = " + getArgument2();
 	}
-
 }

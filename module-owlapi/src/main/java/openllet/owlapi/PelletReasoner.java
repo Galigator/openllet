@@ -368,7 +368,7 @@ public class PelletReasoner implements OpenlletReasoner
 
 		_kb.setTaxonomyBuilderProgressMonitor(new ProgressAdapter(_monitor));
 		if (config.getTimeOut() > 0)
-			_kb.getTimers().mainTimer.setTimeout(config.getTimeOut());
+			_kb.getTimers()._mainTimer.setTimeout(config.getTimeOut());
 
 		_manager = ontology.getOWLOntologyManager();
 		_factory = _manager.getOWLDataFactory();
@@ -906,7 +906,7 @@ public class PelletReasoner implements OpenlletReasoner
 	@Override
 	public long getTimeOut()
 	{
-		return _kb.getTimers().mainTimer.getTimeout();
+		return _kb.getTimers()._mainTimer.getTimeout();
 	}
 
 	@Override

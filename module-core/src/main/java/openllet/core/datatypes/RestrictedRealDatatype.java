@@ -51,20 +51,20 @@ public class RestrictedRealDatatype implements RestrictedDatatype<Number>
 
 	public RestrictedRealDatatype(final Datatype<? extends Number> datatype, final OWLRealInterval interval)
 	{
-		this._datatype = datatype;
-		this._empty = new EmptyRestrictedDatatype<>(datatype);
-		this._intervals = Collections.singletonList(interval);
-		this._finite = interval.isFinite();
-		this._enumerable = interval.isPoint() || interval.getType().equals(OWLRealInterval.LineType.INTEGER_ONLY);
+		_datatype = datatype;
+		_empty = new EmptyRestrictedDatatype<>(datatype);
+		_intervals = Collections.singletonList(interval);
+		_finite = interval.isFinite();
+		_enumerable = interval.isPoint() || interval.getType().equals(OWLRealInterval.LineType.INTEGER_ONLY);
 	}
 
 	private RestrictedRealDatatype(final RestrictedRealDatatype other, final List<OWLRealInterval> intervals)
 	{
-		this._datatype = other._datatype;
-		this._empty = other._empty;
-		this._intervals = Collections.unmodifiableList(intervals);
+		_datatype = other._datatype;
+		_empty = other._empty;
+		_intervals = Collections.unmodifiableList(intervals);
 		if (other._finite)
-			this._finite = true;
+			_finite = true;
 		else
 		{
 			boolean allFinite = true;
@@ -74,10 +74,10 @@ public class RestrictedRealDatatype implements RestrictedDatatype<Number>
 					allFinite = false;
 					break;
 				}
-			this._finite = allFinite;
+			_finite = allFinite;
 		}
 		if (other._enumerable)
-			this._enumerable = true;
+			_enumerable = true;
 		else
 		{
 			boolean allEnumerable = true;
@@ -87,7 +87,7 @@ public class RestrictedRealDatatype implements RestrictedDatatype<Number>
 					allEnumerable = false;
 					break;
 				}
-			this._enumerable = allEnumerable;
+			_enumerable = allEnumerable;
 		}
 	}
 
@@ -309,7 +309,7 @@ public class RestrictedRealDatatype implements RestrictedDatatype<Number>
 			else
 				intersectWith = otherRRD._intervals;
 
-			for (final OWLRealInterval i : this._intervals)
+			for (final OWLRealInterval i : _intervals)
 				for (final OWLRealInterval j : intersectWith)
 				{
 					final OWLRealInterval k = i.intersection(j);
@@ -317,7 +317,7 @@ public class RestrictedRealDatatype implements RestrictedDatatype<Number>
 						revisedIntervals.add(k);
 				}
 
-			if (revisedIntervals.equals(this._intervals))
+			if (revisedIntervals.equals(_intervals))
 				return this;
 			else
 				if (revisedIntervals.isEmpty())
@@ -372,7 +372,7 @@ public class RestrictedRealDatatype implements RestrictedDatatype<Number>
 		{
 			final RestrictedRealDatatype otherRRD = (RestrictedRealDatatype) other;
 
-			final List<OWLRealInterval> revisedIntervals = new ArrayList<>(this._intervals);
+			final List<OWLRealInterval> revisedIntervals = new ArrayList<>(_intervals);
 			final EnumSet<IntervalRelations> connected = EnumSet.complementOf(EnumSet.of(IntervalRelations.PRECEDED_BY, IntervalRelations.PRECEDES));
 			for (final OWLRealInterval i : otherRRD._intervals)
 			{
@@ -417,7 +417,7 @@ public class RestrictedRealDatatype implements RestrictedDatatype<Number>
 		 * openllet.core.utils.iterator.MultiIterator
 		 */
 		return new Iterator<Number>()
-				{
+		{
 			final Iterator<OWLRealInterval> iit = _intervals.iterator();
 			Iterator<Number> nit = null;
 
@@ -448,7 +448,7 @@ public class RestrictedRealDatatype implements RestrictedDatatype<Number>
 			{
 				throw new UnsupportedOperationException();
 			}
-				};
+		};
 	}
 
 	@Override

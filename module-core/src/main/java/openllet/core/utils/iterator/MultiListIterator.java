@@ -15,24 +15,24 @@ import openllet.aterm.ATermList;
 
 public class MultiListIterator implements Iterator<ATermAppl>
 {
-	private final List<ATermList> list = new ArrayList<>(2);
+	private final List<ATermList> _list = new ArrayList<>(2);
 
-	private int index = 0;
+	private int _index = 0;
 
-	private ATermList curr;
+	private volatile ATermList _curr;
 
 	public MultiListIterator(final ATermList first)
 	{
-		curr = first;
+		_curr = first;
 	}
 
 	@Override
 	public boolean hasNext()
 	{
-		while (curr.isEmpty() && index < list.size())
-			curr = list.get(index++);
+		while (_curr.isEmpty() && _index < _list.size())
+			_curr = _list.get(_index++);
 
-		return !curr.isEmpty();
+		return !_curr.isEmpty();
 	}
 
 	@Override
@@ -41,16 +41,16 @@ public class MultiListIterator implements Iterator<ATermAppl>
 		if (!hasNext())
 			throw new NoSuchElementException();
 
-		final ATermAppl next = (ATermAppl) curr.getFirst();
+		final ATermAppl next = (ATermAppl) _curr.getFirst();
 
-		curr = curr.getNext();
+		_curr = _curr.getNext();
 
 		return next;
 	}
 
 	public void append(final ATermList other)
 	{
-		list.add(other);
+		_list.add(other);
 	}
 
 	@Override

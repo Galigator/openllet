@@ -33,11 +33,7 @@ public abstract class KBLoader
 {
 	public static final Logger _logger = Log.getLogger(KBLoader.class);
 
-	protected String _inputFormat;
-
-	public KBLoader()
-	{
-	}
+	protected volatile String _inputFormat;
 
 	/**
 	 * Resets the loader and clear any previously loaded ontologies.

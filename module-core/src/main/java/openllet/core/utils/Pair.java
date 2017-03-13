@@ -26,7 +26,7 @@ public class Pair<F, S>
 	public Pair(final F first_, final S second_)
 	{
 		if (first_ == null || second_ == null)
-			throw new NullPointerException();
+			throw new IllegalArgumentException();
 
 		this.first = first_;
 		this.second = second_;

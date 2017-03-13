@@ -19,12 +19,7 @@ package openllet.core.datatypes;
 public class IEEEDoubleType implements FloatingPointType<Double>
 {
 
-	private static final IEEEDoubleType INSTANCE;
-
-	static
-	{
-		INSTANCE = new IEEEDoubleType();
-	}
+	private static final IEEEDoubleType INSTANCE = new IEEEDoubleType();
 
 	public static IEEEDoubleType getInstance()
 	{

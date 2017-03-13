@@ -4927,7 +4927,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	public void setTimeout(final long timeout)
 	{
 		_logger.info(() -> "Timeout @ " + timeout + "ms");
-		_timers.mainTimer.setTimeout(timeout);
+		_timers._mainTimer.setTimeout(timeout);
 	}
 
 	/**

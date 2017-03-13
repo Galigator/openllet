@@ -35,7 +35,7 @@ public class Clash
 	public enum ClashType
 	{
 		ATOMIC("An individual belongs to a type and its complement"), //
-		MIN_MAX("An _individual contains a minCardinality restriction that is greater than a maxCardinality restriction"), //
+		MIN_MAX("An individual contains a minCardinality restriction that is greater than a maxCardinality restriction"), //
 		MAX_CARD("The maxCardinality restriction is violated"), //
 		FUNC_MAX_CARD("An individual contains a minCardinality restriction that is greater than a maxCardinality restriction"), //
 		MAX_ZERO("The maxCardinality(0) restriction is violated"), //

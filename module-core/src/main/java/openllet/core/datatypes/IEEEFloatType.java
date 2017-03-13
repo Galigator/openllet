@@ -18,13 +18,7 @@ package openllet.core.datatypes;
  */
 public class IEEEFloatType implements FloatingPointType<Float>
 {
-
-	private static final IEEEFloatType INSTANCE;
-
-	static
-	{
-		INSTANCE = new IEEEFloatType();
-	}
+	private static final IEEEFloatType INSTANCE = new IEEEFloatType();
 
 	public static IEEEFloatType getInstance()
 	{

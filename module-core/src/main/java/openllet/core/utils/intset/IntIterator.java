@@ -6,13 +6,10 @@
 
 package openllet.core.utils.intset;
 
+import java.util.Objects;
+import java.util.function.Consumer;
+
 /**
- * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
  * <p>
  * Copyright: Copyright (c) 2007
  * </p>
@@ -27,4 +24,16 @@ public interface IntIterator
 	public boolean hasNext();
 
 	public int next();
+
+	default void remove()
+	{
+		throw new UnsupportedOperationException("remove");
+	}
+
+	default void forEachRemaining(final Consumer<Integer> action)
+	{
+		Objects.requireNonNull(action);
+		while (hasNext())
+			action.accept(next());
+	}
 }

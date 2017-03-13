@@ -12,7 +12,6 @@ import openllet.aterm.ATermList;
 import openllet.core.DependencySet;
 import openllet.core.IndividualIterator;
 import openllet.core.KnowledgeBase;
-import openllet.core.NodeMerge;
 import openllet.core.boxes.rbox.RBox;
 import openllet.core.boxes.rbox.Role;
 import openllet.core.boxes.tbox.TBox;

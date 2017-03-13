@@ -29,19 +29,18 @@ import openllet.core.boxes.abox.Node;
  */
 public class LiteralFilter implements Iterator<Literal>
 {
-
 	private final Iterator<Node> _iterator;
-	private Literal _next;
+	private volatile Literal _next;
 
 	public LiteralFilter(final Iterator<Node> iterator)
 	{
-		this._iterator = iterator;
+		_iterator = iterator;
 	}
 
 	@Override
 	public boolean hasNext()
 	{
-		while ((_next == null) && _iterator.hasNext())
+		while (_next == null && _iterator.hasNext())
 		{
 			final Node node = _iterator.next();
 			if (node.isLiteral() && node.isRootNominal())

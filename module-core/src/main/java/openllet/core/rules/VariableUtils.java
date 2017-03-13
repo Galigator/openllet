@@ -33,7 +33,6 @@ import openllet.core.rules.model.RuleAtom;
  */
 public class VariableUtils
 {
-
 	/**
 	 * Collects all variables that it visits
 	 */
@@ -60,7 +59,7 @@ public class VariableUtils
 	}
 
 	/**
-	 * Collects all _data variables that it visits
+	 * Collects all data variables that it visits
 	 */
 	private static class VisitingDCollector implements AtomObjectVisitor
 	{

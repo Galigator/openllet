@@ -32,22 +32,22 @@ import openllet.aterm.ATermAppl;
 public class SimpleBranchEffectTracker implements BranchEffectTracker
 {
 
-	private final ArrayList<Set<ATermAppl>> effects;
+	private final ArrayList<Set<ATermAppl>> _effects;
 
 	public SimpleBranchEffectTracker()
 	{
-		effects = new ArrayList<>();
+		_effects = new ArrayList<>();
 	}
 
 	private SimpleBranchEffectTracker(final SimpleBranchEffectTracker other)
 	{
-		final int n = other.effects.size();
+		final int n = other._effects.size();
 
-		this.effects = new ArrayList<>(n);
+		_effects = new ArrayList<>(n);
 		for (int i = 0; i < n; i++)
 		{
-			final Set<ATermAppl> s = other.effects.get(i);
-			this.effects.add((s == null) ? null : new HashSet<>(s));
+			final Set<ATermAppl> s = other._effects.get(i);
+			_effects.add(s == null ? null : new HashSet<>(s));
 		}
 	}
 
@@ -59,23 +59,22 @@ public class SimpleBranchEffectTracker implements BranchEffectTracker
 	@Override
 	public boolean add(final int branch, final ATermAppl a)
 	{
-
 		if (branch <= 0)
 			return false;
 
-		final int diff = branch - effects.size();
+		final int diff = branch - _effects.size();
 		if (diff > 0)
 		{
 			@SuppressWarnings("unchecked")
 			final Set<ATermAppl> nulls[] = new Set[diff];
-			effects.addAll(Arrays.asList(nulls));
+			_effects.addAll(Arrays.asList(nulls));
 		}
 
-		Set<ATermAppl> existing = effects.get(branch - 1);
+		Set<ATermAppl> existing = _effects.get(branch - 1);
 		if (existing == null)
 		{
 			existing = new HashSet<>();
-			effects.set(branch - 1, existing);
+			_effects.set(branch - 1, existing);
 		}
 
 		return existing.add(a);
@@ -104,13 +103,13 @@ public class SimpleBranchEffectTracker implements BranchEffectTracker
 		if (branch < 1)
 			throw new IllegalArgumentException();
 
-		if (branch > effects.size())
+		if (branch > _effects.size())
 			return Collections.emptySet();
 
 		final Set<ATermAppl> ret = new HashSet<>();
-		for (int i = branch - 1; i < effects.size(); i++)
+		for (int i = branch - 1; i < _effects.size(); i++)
 		{
-			final Set<ATermAppl> s = effects.get(i);
+			final Set<ATermAppl> s = _effects.get(i);
 			if (s != null)
 				ret.addAll(s);
 		}
@@ -126,14 +125,13 @@ public class SimpleBranchEffectTracker implements BranchEffectTracker
 	@Override
 	public Set<ATermAppl> remove(final int branch)
 	{
-
 		if (branch < 1)
 			throw new IllegalArgumentException();
 
-		if (branch > effects.size())
+		if (branch > _effects.size())
 			return Collections.emptySet();
 
-		final Set<ATermAppl> ret = effects.remove(branch - 1);
+		final Set<ATermAppl> ret = _effects.remove(branch - 1);
 		if (ret == null)
 			return Collections.emptySet();
 
@@ -152,13 +150,13 @@ public class SimpleBranchEffectTracker implements BranchEffectTracker
 		if (branch < 1)
 			throw new IllegalArgumentException();
 
-		if (branch > effects.size())
+		if (branch > _effects.size())
 			return Collections.emptySet();
 
 		final Set<ATermAppl> ret = new HashSet<>();
-		for (int i = (effects.size() - 1); i >= (branch - 1); i--)
+		for (int i = _effects.size() - 1; i >= branch - 1; i--)
 		{
-			final Set<ATermAppl> s = effects.remove(i);
+			final Set<ATermAppl> s = _effects.remove(i);
 			if (s != null)
 				ret.addAll(s);
 		}

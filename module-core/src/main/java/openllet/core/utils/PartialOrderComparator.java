@@ -11,9 +11,6 @@ package openllet.core.utils;
  * Title: Partial Order Comparator
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>

@@ -11,9 +11,6 @@ package openllet.core.rules.model;
  * Title: Rule Atom Visitor
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
