@@ -54,38 +54,50 @@ public abstract class Branch
 	public static final Logger _logger = Log.getLogger(Branch.class);
 
 	protected final ABox _abox;
+
+	private volatile int _branchIndexInABox;
+	private volatile int _anonCount;
+	private volatile DependencySet _termDepends;
+	private volatile DependencySet _combinedClash;
+
 	protected volatile CompletionStrategy _strategy;
-	protected volatile int _branchIndexInABox;
 	protected volatile int _tryCount;
 	protected volatile int _tryNext;
-
-	private volatile DependencySet _termDepends;
-	private volatile DependencySet _prevDS;
-
-	// store things that can be changed after this _branch
-	protected volatile int _anonCount;
 	protected volatile int _nodeCount;
 
-	Branch(final ABox abox, final CompletionStrategy strategy, final DependencySet ds, final int n)
+	protected Branch(final ABox abox, final CompletionStrategy strategy, final DependencySet ds, final int n)
 	{
 		_abox = abox;
-		setStrategy(strategy);
+		_strategy = strategy;
 
-		setTermDepends(ds);
-		setTryCount(n);
-		_prevDS = DependencySet.EMPTY;
-		setTryNext(0);
+		_termDepends = ds;
+		_tryCount = n;
+		_combinedClash = DependencySet.EMPTY;
+		_tryNext = 0;
 
-		setBranchIndexInABox(abox.getBranchIndex());
-		setAnonCount(abox.getAnonCount());
-		setNodeCount(abox.size());
+		_branchIndexInABox = abox.getBranchIndex();
+		_anonCount = abox.getAnonCount();
+		_nodeCount = abox.size();
+	}
+
+	protected Branch(final ABox abox, final int n, final Branch br)
+	{
+		_abox = abox; // Changing Abox ? seriously ?
+		_strategy = br._strategy;
+		_branchIndexInABox = br._branchIndexInABox;
+		_tryCount = n; // Changing count.
+		_tryNext = br._tryNext;
+		_termDepends = br._termDepends;
+		_combinedClash = br._combinedClash;
+		_anonCount = br._anonCount;
+		_nodeCount = br._nodeCount;
 	}
 
 	public void setLastClash(final DependencySet ds)
 	{
 		if (getTryNext() >= 0)
 		{
-			_prevDS = _prevDS.union(ds, _abox.doExplanation());
+			_combinedClash = _combinedClash.union(ds, _abox.doExplanation());
 			if (OpenlletOptions.USE_INCREMENTAL_DELETION)
 				//CHW - added for incremental deletions support THIS SHOULD BE MOVED TO SUPER
 				_abox.getKB().getDependencyIndex().addCloseBranchDependency(this, ds);
@@ -94,7 +106,7 @@ public abstract class Branch
 
 	public DependencySet getCombinedClash()
 	{
-		return _prevDS;
+		return _combinedClash;
 	}
 
 	public void setStrategy(final CompletionStrategy strategy)
@@ -124,6 +136,7 @@ public abstract class Branch
 		return !_abox.isClosed();
 	}
 
+	@Deprecated
 	public abstract Branch copyTo(ABox abox);
 
 	protected abstract void tryBranch();
@@ -160,6 +173,7 @@ public abstract class Branch
 		return _nodeCount;
 	}
 
+	@Deprecated
 	public void setBranchIndexInABox(final int branchIndexInABox)
 	{
 		_branchIndexInABox = branchIndexInABox;

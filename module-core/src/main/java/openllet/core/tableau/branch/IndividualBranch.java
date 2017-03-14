@@ -38,18 +38,25 @@ import openllet.core.tableau.completion.CompletionStrategy;
 
 public abstract class IndividualBranch extends Branch
 {
-	protected Individual ind;
+	protected Individual _ind;
 
 	protected IndividualBranch(final ABox abox, final CompletionStrategy strategy, final Individual x, final DependencySet ds, final int n)
 	{
 		super(abox, strategy, ds, n);
 
-		ind = x;
+		_ind = x;
+	}
+
+	protected IndividualBranch(final ABox abox, final IndividualBranch ib, final int tryCount)
+	{
+		super(abox, tryCount, ib);
+
+		_ind = ib._ind;
 	}
 
 	@Override
 	public Node getNode()
 	{
-		return ind;
+		return _ind;
 	}
 }

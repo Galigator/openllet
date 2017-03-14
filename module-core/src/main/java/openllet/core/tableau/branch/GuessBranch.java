@@ -29,11 +29,12 @@ import openllet.core.utils.ATermUtils;
 public class GuessBranch extends IndividualBranch
 {
 	private final Role _r;
-
 	private final int _minGuess;
 	private final ATermAppl _qualification;
 
-	public GuessBranch(final ABox abox, final CompletionStrategy strategy, final Individual x, final Role r, final int minGuess, final int maxGuess, final ATermAppl q, final DependencySet ds)
+	public GuessBranch(final ABox abox, final CompletionStrategy strategy, final Individual x, //
+			final Role r, final int minGuess, final int maxGuess, //
+			final ATermAppl q, final DependencySet ds)
 	{
 		super(abox, strategy, x, ds, maxGuess - minGuess + 1);
 
@@ -42,18 +43,21 @@ public class GuessBranch extends IndividualBranch
 		_qualification = q;
 	}
 
+	public GuessBranch(final ABox abox, final GuessBranch gb)
+	{
+		super(abox, gb, gb._minGuess + gb.getTryCount() /*- 1*/ - gb._minGuess /*+ 1*/);
+
+		_r = gb._r;
+		_minGuess = gb._minGuess;
+		_qualification = gb._qualification;
+
+		_ind = abox.getIndividual(_ind.getName()); // FIXME : see MaxBranch
+	}
+
 	@Override
 	public IndividualBranch copyTo(final ABox abox)
 	{
-		final Individual x = abox.getIndividual(ind.getName());
-		final IndividualBranch b = new GuessBranch(abox, null, x, _r, _minGuess, _minGuess + getTryCount() - 1, _qualification, getTermDepends());
-		b.setAnonCount(getAnonCount());
-		b.setNodeCount(_nodeCount);
-		b.setBranchIndexInABox(_branchIndexInABox);
-		b.setStrategy(_strategy);
-		b.setTryNext(_tryNext);
-
-		return b;
+		return new GuessBranch(abox, this);
 	}
 
 	@Override
@@ -67,15 +71,15 @@ public class GuessBranch extends IndividualBranch
 			// start with max possibility and decrement at each try
 			final int n = _minGuess + getTryCount() - getTryNext() - 1;
 
-			_logger.fine(() -> "GUES: (" + (getTryNext() + 1) + "/" + getTryCount() + ") at _branch (" + getBranchIndexInABox() + ") to  " + ind + " -> " + _r + " -> anon" + (n == 1 ? "" : _abox.getAnonCount() + 1 + " - anon") + (_abox.getAnonCount() + n));
+			_logger.fine(() -> "GUES: (" + (getTryNext() + 1) + "/" + getTryCount() + ") at _branch (" + getBranchIndexInABox() + ") to  " + _ind + " -> " + _r + " -> anon" + (n == 1 ? "" : _abox.getAnonCount() + 1 + " - anon") + (_abox.getAnonCount() + n));
 
 			ds = ds.union(new DependencySet(getBranchIndexInABox()), _abox.doExplanation());
 
 			// add the min cardinality restriction just to make early clash detection easier
-			_strategy.addType(ind, ATermUtils.makeMin(_r.getName(), n, _qualification), ds);
+			_strategy.addType(_ind, ATermUtils.makeMin(_r.getName(), n, _qualification), ds);
 
 			// add the max cardinality for guess
-			_strategy.addType(ind, ATermUtils.makeNormalizedMax(_r.getName(), n, _qualification), ds);
+			_strategy.addType(_ind, ATermUtils.makeNormalizedMax(_r.getName(), n, _qualification), ds);
 
 			// create n distinct nominal successors
 			final Individual[] y = new Individual[n];
@@ -83,7 +87,7 @@ public class GuessBranch extends IndividualBranch
 			{
 				y[c1] = _strategy.createFreshIndividual(null, ds);
 
-				_strategy.addEdge(ind, _r, y[c1], ds);
+				_strategy.addEdge(_ind, _r, y[c1], ds);
 				y[c1] = y[c1].getSame();
 				_strategy.addType(y[c1], _qualification, ds);
 				y[c1] = y[c1].getSame();
@@ -123,7 +127,7 @@ public class GuessBranch extends IndividualBranch
 		if (!OpenlletOptions.USE_INCREMENTAL_DELETION)
 			ds.remove(getBranchIndexInABox());
 
-		_abox.setClash(Clash.unexplained(ind, ds));
+		_abox.setClash(Clash.unexplained(_ind, ds));
 
 		return;
 	}
@@ -132,9 +136,9 @@ public class GuessBranch extends IndividualBranch
 	public String toString()
 	{
 		if (getTryNext() < getTryCount())
-			return "Branch " + getBranchIndexInABox() + " guess rule on " + ind + " for role  " + _r;
+			return "Branch " + getBranchIndexInABox() + " guess rule on " + _ind + " for role  " + _r;
 
-		return "Branch " + getBranchIndexInABox() + " guess rule on " + ind + " for role  " + _r + " exhausted merge possibilities";
+		return "Branch " + getBranchIndexInABox() + " guess rule on " + _ind + " for role  " + _r + " exhausted merge possibilities";
 	}
 
 	/**

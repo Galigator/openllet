@@ -48,11 +48,12 @@ public class DisjunctionBranch extends Branch
 {
 	protected final Node _node;
 	protected final ATermAppl _disjunction;
-	private volatile ATermAppl[] _disj;
+	private volatile ATermAppl[] _disj; // Tssss 'disjonction' and 'disj'
 	protected volatile DependencySet[] _prevDS;
 	protected volatile int[] _order;
 
-	public DisjunctionBranch(final ABox abox, final CompletionStrategy completion, final Node node, final ATermAppl disjunction, final DependencySet ds, final ATermAppl[] disj)
+	public DisjunctionBranch(final ABox abox, final CompletionStrategy completion, final Node node, //
+			final ATermAppl disjunction, final DependencySet ds, final ATermAppl[] disj)
 	{
 		super(abox, completion, ds, disj.length);
 
@@ -63,6 +64,20 @@ public class DisjunctionBranch extends Branch
 		_order = new int[disj.length];
 		for (int i = 0; i < disj.length; i++)
 			_order[i] = i;
+	}
+
+	public DisjunctionBranch(final DisjunctionBranch dr, final ABox abox)
+	{
+		super(abox, dr._disj.length, dr);
+
+		_node = dr._node;
+		_disjunction = dr._disjunction;
+		_disj = dr._disj;
+
+		_prevDS = new DependencySet[dr._disj.length];
+		System.arraycopy(dr._prevDS, 0, _prevDS, 0, dr._disj.length);
+		_order = new int[dr._disj.length];
+		System.arraycopy(dr._order, 0, _order, 0, dr._disj.length);
 	}
 
 	@Override
@@ -79,20 +94,7 @@ public class DisjunctionBranch extends Branch
 	@Override
 	public DisjunctionBranch copyTo(final ABox abox)
 	{
-		final Node n = abox.getNode(_node.getName());
-		final DisjunctionBranch b = new DisjunctionBranch(abox, null, n, _disjunction, getTermDepends(), _disj);
-		b.setAnonCount(_anonCount);
-		b.setNodeCount(_nodeCount);
-		b.setBranchIndexInABox(_branchIndexInABox);
-		b.setStrategy(_strategy);
-		b.setTryNext(_tryNext);
-
-		b._prevDS = new DependencySet[_disj.length];
-		System.arraycopy(_prevDS, 0, b._prevDS, 0, _disj.length);
-		b._order = new int[_disj.length];
-		System.arraycopy(_order, 0, b._order, 0, _disj.length);
-
-		return b;
+		return new DisjunctionBranch(this, abox);
 	}
 
 	/**
@@ -250,7 +252,7 @@ public class DisjunctionBranch extends Branch
 						{
 							_abox.setClash(null);
 
-							node.restore(_branchIndexInABox);
+							node.restore(getBranchIndexInABox());
 						}
 						else
 						{
