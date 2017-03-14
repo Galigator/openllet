@@ -79,7 +79,7 @@ public abstract class Node
 	public final static int NOM = 6;
 	public final static int TYPES = 7;
 
-	protected final ABoxImpl _abox;
+	protected final ABox _abox;
 	protected final ATermAppl _name;
 	protected final Map<ATermAppl, DependencySet> _depends;
 	private final boolean _isRoot;
@@ -108,7 +108,7 @@ public abstract class Node
 
 	protected volatile Map<Node, DependencySet> _differents;
 
-	protected Node(final ATermAppl name, final ABoxImpl abox)
+	protected Node(final ATermAppl name, final ABox abox)
 	{
 		_name = name;
 		_abox = abox;
@@ -888,6 +888,7 @@ public abstract class Node
 
 		if (isDifferent(node))
 			return false;
+
 		if (isSame(node))
 		{
 			ds = ds.union(getMergeDependency(true), _abox.doExplanation());
@@ -971,7 +972,7 @@ public abstract class Node
 		return path;
 	}
 
-	public ABoxImpl getABox()
+	public ABox getABox()
 	{
 		return _abox;
 	}

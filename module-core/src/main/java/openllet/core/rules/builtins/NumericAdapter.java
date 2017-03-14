@@ -7,7 +7,6 @@
 package openllet.core.rules.builtins;
 
 import openllet.core.boxes.abox.ABox;
-import openllet.core.boxes.abox.ABoxImpl;
 import openllet.core.boxes.abox.Literal;
 
 /**
@@ -23,7 +22,7 @@ import openllet.core.boxes.abox.Literal;
  * <p>
  * Company: Clark & Parsia, LLC. <http://www.clarkparsia.com>
  * </p>
- * 
+ *
  * @author Ron Alford
  */
 
@@ -34,7 +33,7 @@ public class NumericAdapter implements Function
 
 	public NumericAdapter(final NumericFunction function)
 	{
-		this._function = function;
+		_function = function;
 	}
 
 	@Override
@@ -48,7 +47,7 @@ public class NumericAdapter implements Function
 		{
 			if (!(expected.getValue() instanceof Number))
 			{
-				ABoxImpl._logger.info("Testing non-numeric against the result of a numeric _function '" + _function + "': " + expected);
+				BuiltInRegistry._logger.info("Testing non-numeric against the result of a numeric _function '" + _function + "': " + expected);
 				return null;
 			}
 			expectedNum = (Number) expected.getValue();
@@ -60,7 +59,7 @@ public class NumericAdapter implements Function
 				numArgs[i] = (Number) args[i].getValue();
 			else
 			{
-				ABoxImpl._logger.info("Non numeric arguments to numeric _function '" + _function + "': " + args[i]);
+				BuiltInRegistry._logger.info("Non numeric arguments to numeric _function '" + _function + "': " + args[i]);
 				return null;
 			}
 

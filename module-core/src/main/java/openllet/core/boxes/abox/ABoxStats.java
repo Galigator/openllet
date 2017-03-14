@@ -37,8 +37,7 @@ public class ABoxStats
 	public volatile int _backtracks = 0;
 	public volatile int _globalRestores = 0;
 	public volatile int _localRestores = 0;
-
-	public volatile int branch = 0;
+	public volatile int _branch = 0;
 
 	public void add(final ABoxStats other)
 	{
@@ -46,14 +45,14 @@ public class ABoxStats
 		_backtracks += other._backtracks;
 		_globalRestores += other._globalRestores;
 		_localRestores += other._localRestores;
-		branch += other.branch;
+		_branch += other._branch;
 	}
 
 	@Override
 	public String toString()
 	{
 		final StringBuilder sb = new StringBuilder();
-		sb.append(" Branches " + branch);
+		sb.append(" Branches " + _branch);
 		sb.append(" Tree depth: " + _treeDepth);
 		sb.append(" Restores " + _globalRestores + " global " + _localRestores + " local");
 		sb.append(" Backtracks " + _backtracks);

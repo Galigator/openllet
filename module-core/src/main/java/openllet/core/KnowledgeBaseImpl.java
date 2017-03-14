@@ -665,9 +665,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 			_dependencyIndex = new DependencyIndex(this);
 		}
 
-		final ABoxImpl newABox = new ABoxImpl(this);
-		newABox._cache = _abox.getCache();
-		_abox = newABox;
+		_abox = new ABoxImpl(this, true); // copy abox & cache.
 
 		_individuals.clear();
 
@@ -1017,8 +1015,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		// set addition flag
 		_changes.add(ChangeType.ABOX_ADD);
 
-		// if we can use incremental consistency checking then add to
-		// pseudomodel
+		// if we can use incremental consistency checking then add to pseudomodel
 		if (canUseIncConsistency())
 		{
 			ATermList outer = list;
@@ -1038,8 +1035,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 			}
 
 			// add to pseudomodel - note _branch must be temporarily set to 0 to
-			// ensure that asssertion
-			// will not be restored during backtracking
+			// ensure that asssertion will not be restored during backtracking
 			final int branch = _abox.getBranchIndex();
 			_abox.setBranchIndex(0);
 			// update pseudomodel

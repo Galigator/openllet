@@ -100,7 +100,7 @@ public class Individual extends Node implements CachedNode
 		_outEdges = new EdgeList();
 	}
 
-	Individual(final Individual ind, final ABoxImpl abox)
+	private Individual(final Individual ind, final ABoxImpl abox)
 	{
 		super(ind, abox);
 

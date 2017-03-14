@@ -68,9 +68,8 @@ public class Literal extends Node
 
 	private volatile boolean _clashed = false;
 
-	public Literal(final ATermAppl name, final ATermAppl term, final ABoxImpl abox, final DependencySet ds)
+	public Literal(final ATermAppl name, final ATermAppl term, final ABox abox, final DependencySet ds)
 	{
-
 		super(name, abox);
 
 		if (term != null)
@@ -81,7 +80,7 @@ public class Literal extends Node
 				Object value = null;
 				try
 				{
-					value = abox._dtReasoner.getValue(term);
+					value = abox.getDatatypeReasoner().getValue(term);
 				}
 				catch (final InvalidLiteralException e)
 				{

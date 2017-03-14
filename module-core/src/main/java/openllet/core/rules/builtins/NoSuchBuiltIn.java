@@ -9,7 +9,6 @@ package openllet.core.rules.builtins;
 import java.util.Collection;
 import java.util.Collections;
 import openllet.core.boxes.abox.ABox;
-import openllet.core.boxes.abox.ABoxImpl;
 import openllet.core.boxes.abox.Literal;
 import openllet.core.rules.BindingHelper;
 import openllet.core.rules.VariableBinding;
@@ -81,7 +80,7 @@ public class NoSuchBuiltIn implements BuiltIn
 	@Override
 	public BindingHelper createHelper(final BuiltInAtom atom)
 	{
-		ABoxImpl._logger.warning("Returning an empty binding helper for unimplemented built-in " + atom);
+		BuiltInRegistry._logger.warning("Returning an empty binding helper for unimplemented built-in " + atom);
 		return empty;
 	}
 

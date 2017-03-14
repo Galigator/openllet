@@ -12,6 +12,10 @@ import static openllet.core.utils.Namespaces.SWRLB;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
+import openllet.core.boxes.abox.ABoxImpl;
+import openllet.shared.tools.Log;
+import openllet.shared.tools.Logging;
 
 /**
  * <p>
@@ -29,8 +33,9 @@ import java.util.Map;
  *
  * @author Ron Alford
  */
-public class BuiltInRegistry
+public class BuiltInRegistry implements Logging
 {
+	public final static Logger _logger = Log.getLogger(ABoxImpl.class); // We took the logger of the abox; also the logger is public to allow rules to use it !
 
 	public static final BuiltInRegistry instance = new BuiltInRegistry();
 
@@ -101,6 +106,12 @@ public class BuiltInRegistry
 		registerBuiltIn(SWRLB + "booleanNot", generalFunc(BooleanOperators.booleanNot));
 	}
 
+	@Override
+	public Logger getLogger()
+	{
+		return _logger;
+	}
+
 	/**
 	 * @return a built-in registered by the given name. If none exists, return a built-in that will create an empty binding helper.
 	 * @param name
@@ -137,4 +148,5 @@ public class BuiltInRegistry
 	{
 		return new TesterBuiltIn(tester);
 	}
+
 }
