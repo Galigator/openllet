@@ -63,8 +63,8 @@ public class RuleBranch extends Branch
 		_bodyAtomCount = rb._bodyAtomCount;
 
 		_prevDS = new DependencySet[rb._prevDS.length];
-
 		System.arraycopy(rb._prevDS, 0, _prevDS, 0, rb._tryNext);
+
 		_order = new int[rb._order.length];
 		System.arraycopy(rb._order, 0, _order, 0, rb._order.length);
 	}

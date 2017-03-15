@@ -57,9 +57,9 @@ public class MaxBranch extends IndividualBranch
 	private final ATermAppl _qualification;
 	private final DependencySet[] _prevDS;
 
-	public MaxBranch(final ABox abox, final CompletionStrategy strategy, final Individual x, //
-			final Role r, final int n, final ATermAppl qualification, //
-			final List<NodeMerge> mergePairs, final DependencySet ds)
+	public MaxBranch(final ABox abox, final CompletionStrategy strategy, //
+			final Individual x, final Role r, final int n, //
+			final ATermAppl qualification, final List<NodeMerge> mergePairs, final DependencySet ds)
 	{
 		super(abox, strategy, x, ds, mergePairs.size());
 
@@ -89,7 +89,7 @@ public class MaxBranch extends IndividualBranch
 	public IndividualBranch copyTo(final ABox abox)
 	{
 		return new MaxBranch(abox, this);
-		/*		
+		/*
 				final Individual x = abox.getIndividual(_ind.getName());
 				final MaxBranch b = new MaxBranch(abox, null, x, _r, _n, _qualification, _mergePairs, getTermDepends());
 				b.setAnonCount(getAnonCount());

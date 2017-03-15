@@ -84,11 +84,13 @@ public abstract class Branch
 	{
 		_abox = abox; // Changing Abox ? seriously ?
 		_strategy = br._strategy;
-		_branchIndexInABox = br._branchIndexInABox;
-		_tryCount = n; // Changing count.
-		_tryNext = br._tryNext;
+
 		_termDepends = br._termDepends;
-		_combinedClash = br._combinedClash;
+		_tryCount = n; // Changing count.
+		_combinedClash = DependencySet.EMPTY;
+		_tryNext = br._tryNext;
+
+		_branchIndexInABox = br._branchIndexInABox;
 		_anonCount = br._anonCount;
 		_nodeCount = br._nodeCount;
 	}

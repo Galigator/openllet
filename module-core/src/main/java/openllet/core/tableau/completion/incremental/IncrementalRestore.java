@@ -51,6 +51,116 @@ public class IncrementalRestore
 		_kb = kb;
 	}
 
+	private void phase1(final BranchAddDependency branch, final Collection<ATermAppl> allEffects)
+	{
+		final List<IntSet> updatedList = new ArrayList<>();
+
+		for (final ATermAppl a : allEffects)
+		{
+
+			// get the actual _node
+			final Node node = _kb.getABox().getNode(a);
+
+			// update type dependencies
+			final Map<ATermAppl, DependencySet> types = node.getDepends();
+
+			for (final Entry<ATermAppl, DependencySet> entry : types.entrySet())
+			{
+				// get ds for type
+				DependencySet tDS = entry.getValue();
+
+				// DependencySet.copy() does not create a new bitset object,
+				// so we need to track which bitsets have been
+				// updated, so we do not process the same bitset multiple
+				// times
+				boolean exit = false;
+				for (int i = 0; i < updatedList.size(); i++)
+					if (updatedList.get(i) == tDS.getDepends())
+						exit = true;
+
+				if (exit)
+					continue;
+
+				updatedList.add(tDS.getDepends());
+
+				// update _branch if necessary
+				if (tDS.getBranch() > branch.getBranch().getBranchIndexInABox())
+					tDS = tDS.copy(tDS.getBranch() - 1);
+
+				for (int i = branch.getBranch().getBranchIndexInABox(); i <= _kb.getABox().getBranches().size(); i++)
+					// update dependency set
+					if (tDS.contains(i))
+					{
+						tDS.remove(i);
+						tDS.add(i - 1);
+					}
+
+				entry.setValue(tDS);
+			}
+
+			// update edge depdencies
+			final EdgeList edges = node.getInEdges();
+			for (final Edge edge : edges)
+			{
+				DependencySet tDS = edge.getDepends();
+
+				// DependencySet.copy() does not create a new bitset object,
+				// so we need to track which bitsets have been
+				// updated, so we do not process the same bitset multiple
+				// times
+				boolean exit = false;
+				for (int i = 0; i < updatedList.size(); i++)
+					if (updatedList.get(i) == tDS.getDepends())
+						exit = true;
+
+				if (exit)
+					continue;
+
+				updatedList.add(tDS.getDepends());
+
+				// update _branch if necessary
+				if (tDS.getBranch() > branch.getBranch().getBranchIndexInABox())
+					tDS = tDS.copy(edge.getDepends().getBranch() - 1);
+
+				for (int i = branch.getBranch().getBranchIndexInABox(); i <= _kb.getABox().getBranches().size(); i++)
+					// update dependency set
+					if (tDS.contains(i))
+					{
+						tDS.remove(i);
+						tDS.add(i - 1);
+					}
+
+				edge.setDepends(tDS);
+			}
+		}
+	}
+
+	private void phase2(final BranchAddDependency branch, final List<Branch> branches)
+	{
+		// decrease branch id for each branch after the branch we're removing
+		// also need to change the dependency set for each label
+		for (int i = branch.getBranch().getBranchIndexInABox(); i < branches.size(); i++)
+		{
+			final Branch br = branches.get(i); // cast for ease
+
+			DependencySet termDepends = br.getTermDepends();
+
+			// update the term depends in the branch
+			if (termDepends.getBranch() > branch.getBranch().getBranchIndexInABox())
+				termDepends = termDepends.copy(termDepends.getBranch() - 1);
+
+			for (int j = branch.getBranch().getBranchIndexInABox(); j < _kb.getABox().getBranches().size(); j++)
+				if (termDepends.contains(j))
+				{
+					termDepends.remove(j);
+					termDepends.add(j - 1);
+				}
+
+			br.setBranchIndexInABox(br.getBranchIndexInABox() - 1); // also need to decrement the branch number
+			br.setTermDepends(termDepends);
+		}
+	}
+
 	/**
 	 * Restore a branch add dependency
 	 *
@@ -61,132 +171,26 @@ public class IncrementalRestore
 	{
 		DependencyIndex._logger.fine(() -> "    Removing _branch add? " + branch.getBranch());
 
-		// get merge dependency
-		final DependencySet ds = branch.getBranch().getTermDepends();
+		final DependencySet ds = branch.getBranch().getTermDepends(); // get merge dependency
 
-		// remove the dependency
-		ds.removeExplain(assertion);
+		ds.removeExplain(assertion); // remove the dependency
 
-		// undo merge if empty
-		if (ds.getExplain().isEmpty())
+		if (ds.getExplain().isEmpty()) // undo merge if empty
 		{
 			DependencyIndex._logger.fine("           Actually removing _branch!");
 
 			final Collection<ATermAppl> allEffects = OpenlletOptions.TRACK_BRANCH_EFFECTS ? _kb.getABox().getBranchEffectTracker().getAll(branch.getBranch().getBranchIndexInABox()) : _kb.getABox().getNodeNames();
 
-			final List<IntSet> updatedList = new ArrayList<>();
-
-			for (final ATermAppl a : allEffects)
-			{
-
-				// get the actual _node
-				final Node node = _kb.getABox().getNode(a);
-
-				// update type dependencies
-				final Map<ATermAppl, DependencySet> types = node.getDepends();
-
-				for (final Entry<ATermAppl, DependencySet> entry : types.entrySet())
-				{
-					// get ds for type
-					DependencySet tDS = entry.getValue();
-
-					// DependencySet.copy() does not create a new bitset object,
-					// so we need to track which bitsets have been
-					// updated, so we do not process the same bitset multiple
-					// times
-					boolean exit = false;
-					for (int i = 0; i < updatedList.size(); i++)
-						if (updatedList.get(i) == tDS.getDepends())
-							exit = true;
-
-					if (exit)
-						continue;
-
-					updatedList.add(tDS.getDepends());
-
-					// update _branch if necessary
-					if (tDS.getBranch() > branch.getBranch().getBranchIndexInABox())
-						tDS = tDS.copy(tDS.getBranch() - 1);
-
-					for (int i = branch.getBranch().getBranchIndexInABox(); i <= _kb.getABox().getBranches().size(); i++)
-						// update dependency set
-						if (tDS.contains(i))
-						{
-							tDS.remove(i);
-							tDS.add(i - 1);
-						}
-
-					entry.setValue(tDS);
-				}
-
-				// update edge depdencies
-				final EdgeList edges = node.getInEdges();
-				for (final Edge edge : edges)
-				{
-					DependencySet tDS = edge.getDepends();
-
-					// DependencySet.copy() does not create a new bitset object,
-					// so we need to track which bitsets have been
-					// updated, so we do not process the same bitset multiple
-					// times
-					boolean exit = false;
-					for (int i = 0; i < updatedList.size(); i++)
-						if (updatedList.get(i) == tDS.getDepends())
-							exit = true;
-
-					if (exit)
-						continue;
-
-					updatedList.add(tDS.getDepends());
-
-					// update _branch if necessary
-					if (tDS.getBranch() > branch.getBranch().getBranchIndexInABox())
-						tDS = tDS.copy(edge.getDepends().getBranch() - 1);
-
-					for (int i = branch.getBranch().getBranchIndexInABox(); i <= _kb.getABox().getBranches().size(); i++)
-						// update dependency set
-						if (tDS.contains(i))
-						{
-							tDS.remove(i);
-							tDS.add(i - 1);
-						}
-
-					edge.setDepends(tDS);
-				}
-			}
+			phase1(branch, allEffects); // TODO rename this function when you find the its semantic.
 
 			if (OpenlletOptions.TRACK_BRANCH_EFFECTS)
 				_kb.getABox().getBranchEffectTracker().remove(branch.getBranch().getBranchIndexInABox() + 1);
 
 			// !!!!!!!!!!!!!!!! Next update _kb.getABox() branches !!!!!!!!!!!!!!
-			// remove the _branch from branches
+			// remove the branch from branches
 			final List<Branch> branches = _kb.getABox().getBranches();
 
-			// decrease _branch id for each _branch after the _branch we're
-			// removing
-			// also need to change the dependency set for each label
-			for (int i = branch.getBranch().getBranchIndexInABox(); i < branches.size(); i++)
-			{
-				// cast for ease
-				final Branch br = branches.get(i);
-
-				DependencySet tDS = br.getTermDepends();
-
-				// update the term depends in the _branch
-				if (tDS.getBranch() > branch.getBranch().getBranchIndexInABox())
-					tDS = tDS.copy(tDS.getBranch() - 1);
-
-				for (int j = branch.getBranch().getBranchIndexInABox(); j < _kb.getABox().getBranches().size(); j++)
-					if (tDS.contains(j))
-					{
-						tDS.remove(j);
-						tDS.add(j - 1);
-					}
-
-				// also need to decrement the _branch number
-				br.setBranchIndexInABox(br.getBranchIndexInABox() - 1);
-				br.setTermDepends(tDS);
-			}
+			phase2(branch, branches);
 
 			// remove the actual _branch
 			branches.remove(branch.getBranch());

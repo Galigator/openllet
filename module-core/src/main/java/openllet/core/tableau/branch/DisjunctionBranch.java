@@ -70,12 +70,13 @@ public class DisjunctionBranch extends Branch
 	{
 		super(abox, dr._disj.length, dr);
 
-		_node = dr._node;
+		_node = abox.getNode(dr._node.getName());
 		_disjunction = dr._disjunction;
 		_disj = dr._disj;
 
 		_prevDS = new DependencySet[dr._disj.length];
 		System.arraycopy(dr._prevDS, 0, _prevDS, 0, dr._disj.length);
+
 		_order = new int[dr._disj.length];
 		System.arraycopy(dr._order, 0, _order, 0, dr._disj.length);
 	}
@@ -334,9 +335,6 @@ public class DisjunctionBranch extends Branch
 		setTryNext(getTryNext() - 1);
 	}
 
-	/**
-	 *
-	 */
 	public void printLong()
 	{
 		for (int i = 0; i < _disj.length; i++)
