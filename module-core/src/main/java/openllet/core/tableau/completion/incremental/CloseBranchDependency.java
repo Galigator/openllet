@@ -26,41 +26,34 @@ import openllet.aterm.ATermAppl;
 import openllet.core.tableau.branch.Branch;
 
 /**
- * A depedency for a closed disjunct, merge pair, etc. for a _branch
+ * A dependency for a closed disjunct, merge pair, etc. for a _branch
  *
  * @author Christian Halaschek-Wiener
  */
 public class CloseBranchDependency extends BranchDependency
 {
-
 	private final int _tryNext;
 
-	private final Branch _theBranch;
+	private final Branch _closeBranch;
 
 	public CloseBranchDependency(final ATermAppl assertion, final int tryNext, final Branch theBranch)
 	{
 		super(assertion);
 		_tryNext = tryNext;
-		_theBranch = theBranch;
+		_closeBranch = theBranch;
 	}
 
 	public ATermAppl getInd()
 	{
-		return _theBranch.getNode().getName();
+		return _closeBranch.getNode().getName();
 	}
 
-	/**
-	 * ToString method
-	 */
 	@Override
 	public String toString()
 	{
-		return "Branch [" + _theBranch.getNode().getName() + "]  -  [" + _theBranch.getBranchIndexInABox() + "]";
+		return "Branch [" + _closeBranch.getNode().getName() + "]  -  [" + _closeBranch.getBranchIndexInABox() + "]";
 	}
 
-	/**
-	 * Equals method
-	 */
 	@Override
 	public boolean equals(final Object other)
 	{
@@ -71,7 +64,7 @@ public class CloseBranchDependency extends BranchDependency
 	}
 
 	/**
-	 * Hashcode method TODO: this may not be sufficient
+	 * TODO: this hash may not be sufficient
 	 */
 	@Override
 	public int hashCode()
@@ -81,7 +74,7 @@ public class CloseBranchDependency extends BranchDependency
 
 	public int getBranch()
 	{
-		return _theBranch.getBranchIndexInABox();
+		return _closeBranch.getBranchIndexInABox();
 	}
 
 	public int getTryNext()
@@ -89,9 +82,9 @@ public class CloseBranchDependency extends BranchDependency
 		return _tryNext;
 	}
 
-	public Branch getTheBranch()
+	public Branch getCloseBranch()
 	{
-		return _theBranch;
+		return _closeBranch;
 	}
 
 }

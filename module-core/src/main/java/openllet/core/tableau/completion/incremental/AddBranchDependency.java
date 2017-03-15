@@ -10,11 +10,11 @@ import openllet.aterm.ATermAppl;
 import openllet.core.tableau.branch.Branch;
 
 /**
- * Dependency structure for when a _branch is added.
+ * Dependency structure for when a branch is added.
  *
  * @author Christian Halaschek-Wiener
  */
-public class BranchAddDependency extends BranchDependency
+public class AddBranchDependency extends BranchDependency
 {
 	/**
 	 * The actual branch
@@ -22,60 +22,41 @@ public class BranchAddDependency extends BranchDependency
 	private final Branch _branch;
 
 	/**
-	 * Constructor
-	 *
 	 * @param assertion
-	 * @param index is unused
 	 * @param branch
 	 */
-	public BranchAddDependency(final ATermAppl assertion, final int index, final Branch branch)
-	{
-		super(assertion);
-		_branch = branch;
-	}
-
-	public BranchAddDependency(final ATermAppl assertion, final Branch branch)
+	public AddBranchDependency(final ATermAppl assertion, final Branch branch)
 	{
 		super(assertion);
 		_branch = branch;
 	}
 
 	/**
-	 * @return branch
+	 * @return branch that is add
 	 */
 	public Branch getBranch()
 	{
 		return _branch;
 	}
 
-	/**
-	 * ToString method
-	 */
 	@Override
 	public String toString()
 	{
 		return "Branch  - [" + _branch + "]";
 	}
 
-	/**
-	 * Equals method
-	 */
 	@Override
 	public boolean equals(final Object other)
 	{
-		if (other instanceof BranchAddDependency)
-			return _branch.getBranchIndexInABox() == ((BranchAddDependency) other)._branch.getBranchIndexInABox() && _assertion.equals(((BranchAddDependency) other)._assertion);
+		if (other instanceof AddBranchDependency)
+			return _branch.getBranchIndexInABox() == ((AddBranchDependency) other)._branch.getBranchIndexInABox() && _assertion.equals(((AddBranchDependency) other)._assertion);
 		else
 			return false;
 	}
 
-	/**
-	 * Hashcode method
-	 */
 	@Override
 	public int hashCode()
 	{
 		return _branch.getBranchIndexInABox() + _assertion.hashCode();
 	}
-
 }

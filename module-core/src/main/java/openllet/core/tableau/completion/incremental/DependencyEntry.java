@@ -40,7 +40,7 @@ public class DependencyEntry
 	/**
 	 * The set of branches which are dependent
 	 */
-	private final Set<BranchAddDependency> branchAdds = new HashSet<>();
+	private final Set<AddBranchDependency> branchAdds = new HashSet<>();
 
 	/**
 	 * The set of _branch remove ds' which are dependent
@@ -116,9 +116,9 @@ public class DependencyEntry
 	 * @param branchId
 	 * @param _branch
 	 */
-	protected BranchDependency addBranchAddDependency(final ATermAppl assertion, final int branchId, final Branch branch)
+	protected BranchDependency addBranchAddDependency(final ATermAppl assertion, final Branch branch)
 	{
-		final BranchAddDependency b = new BranchAddDependency(assertion, branchId, branch);
+		final AddBranchDependency b = new AddBranchDependency(assertion, branch);
 
 		branchAdds.add(b);
 		return b;
@@ -186,7 +186,7 @@ public class DependencyEntry
 	/**
 	 * @return get branches
 	 */
-	public Set<BranchAddDependency> getBranchAdds()
+	public Set<AddBranchDependency> getBranchAdds()
 	{
 		return branchAdds;
 	}

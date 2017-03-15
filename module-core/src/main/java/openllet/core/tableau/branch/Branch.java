@@ -56,7 +56,7 @@ public abstract class Branch
 	protected final ABox _abox;
 
 	private volatile int _branchIndexInABox;
-	private volatile int _anonCount;
+	private final int _anonCount;
 	private volatile DependencySet _termDepends;
 	private volatile DependencySet _combinedClash;
 
@@ -244,13 +244,4 @@ public abstract class Branch
 	{
 		return _termDepends;
 	}
-
-	/**
-	 * @param anonCount the _anonCount to set
-	 */
-	public void setAnonCount(final int anonCount)
-	{
-		_anonCount = anonCount;
-	}
-
 }

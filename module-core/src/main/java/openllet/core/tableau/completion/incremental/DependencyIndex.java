@@ -207,7 +207,7 @@ public class DependencyIndex
 					_logger.fine("DependencyIndex- Adding _branch add dependency for assertion: " + nextAtom + " -  Branch id [" + branch.getBranchIndexInABox() + "]   ,  Branch [" + branch + "]");
 
 				//add the dependency
-				final BranchDependency newDep = _dependencies.get(nextAtom).addBranchAddDependency(nextAtom, branch.getBranchIndexInABox(), branch);
+				final BranchDependency newDep = _dependencies.get(nextAtom).addBranchAddDependency(nextAtom, branch);
 
 				//add dependency to _index so that backjumping can be supported (ie, we need a fast way to remove the _branch _dependencies
 				if (!_branchIndex.containsKey(branch))
@@ -289,7 +289,7 @@ public class DependencyIndex
 		{
 			if (_logger.isLoggable(Level.FINE))
 				_logger.fine("DependencyIndex: RESTORE causing remove of _branch _index for assertion: " + next.getAssertion() + " _branch dep.: " + next);
-			if (next instanceof BranchAddDependency)
+			if (next instanceof AddBranchDependency)
 				//remove the dependency
 				_dependencies.get(next.getAssertion()).getBranchAdds().remove(next);
 			else
