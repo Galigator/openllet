@@ -28,6 +28,7 @@ import openllet.core.utils.ATermUtils;
 import openllet.core.utils.intset.IntSet;
 
 /**
+ * The incremental restoration is call when predicate have been remove from the ABox and the consistency is re-check.
  * <p>
  * Copyright: Copyright (c) 2008
  * </p>
