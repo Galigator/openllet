@@ -111,10 +111,10 @@ public class DependencyEntry
 	}
 
 	/**
-	 * Add a _branch add dependency
+	 * Add a branch add dependency
 	 *
 	 * @param branchId
-	 * @param _branch
+	 * @param branch
 	 */
 	protected BranchDependency addBranchAddDependency(final ATermAppl assertion, final Branch branch)
 	{
@@ -125,10 +125,10 @@ public class DependencyEntry
 	}
 
 	/**
-	 * Add a _branch remove ds dependency
+	 * Add a branch remove ds dependency
 	 *
 	 * @param branchId
-	 * @param _branch
+	 * @param branch
 	 */
 	protected BranchDependency addCloseBranchDependency(final ATermAppl assertion, final Branch theBranch)
 	{
@@ -208,9 +208,9 @@ public class DependencyEntry
 	}
 
 	/**
-	 * Set _clash dependency
+	 * Set clash dependency
 	 *
-	 * @param _clash
+	 * @param clash
 	 */
 	protected void setClash(final ClashDependency clash)
 	{

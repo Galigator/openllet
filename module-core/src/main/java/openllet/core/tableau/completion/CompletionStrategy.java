@@ -1175,7 +1175,7 @@ public abstract class CompletionStrategy
 		_abox.getBranches().add(newBranch);
 
 		if (newBranch.getBranchIndexInABox() != _abox.getBranches().size())
-			throw new OpenError("Invalid _branch created: " + newBranch.getBranchIndexInABox() + " != " + _abox.getBranches().size());
+			throw new OpenError("Invalid branch created: " + newBranch.getBranchIndexInABox() + " != " + _abox.getBranches().size());
 
 		_completionTimer.check();
 

@@ -1247,6 +1247,60 @@ public class IncConsistencyTests extends AbstractKBTests
 	}
 
 	@Test
+	public void testBacktracking2withRollBack()
+	{
+		// basic classes
+		_kb.addClass(_person);
+		_kb.addClass(_dog);
+		_kb.addClass(_cat);
+		_kb.addClass(_man);
+		_kb.addClass(_woman);
+
+		// basic properties
+		_kb.addObjectProperty(_sibling);
+		_kb.addObjectProperty(_owns);
+		_kb.addObjectProperty(_ownedBy);
+		_kb.addInverseProperty(_owns, _ownedBy);
+		_kb.addObjectProperty(_knows);
+
+		// basic _abox
+		_kb.addIndividual(_robert);
+		_kb.addIndividual(_mary);
+		_kb.addIndividual(_victor);
+		_kb.addIndividual(_chris);
+		_kb.addIndividual(_bill);
+
+		// add specific test case axioms/assertions
+		final ATermAppl ownsDog = some(_owns, _dog);
+		_kb.addClass(ownsDog);
+
+		_kb.addSubClass(_man, ownsDog);
+
+		final ATermAppl owersAreDogs = all(_ownedBy, _dog);
+		_kb.addClass(owersAreDogs);
+
+		final ATermAppl owersAreCats = all(_ownedBy, _cat);
+		_kb.addClass(owersAreCats);
+		final ATermAppl owersownersAreCats = all(_ownedBy, owersAreCats);
+		_kb.addClass(owersownersAreCats);
+
+		_kb.addSubClass(_dog, owersAreDogs);
+
+		_kb.addClass(negate(_dog));
+
+		final ATermAppl manOrDog = or(negate(_dog), _woman);
+		_kb.addClass(manOrDog);
+
+		_kb.addType(_victor, manOrDog);
+
+		assertTrue(_kb.isConsistent());
+
+		_kb.removeType(_victor, manOrDog);
+		
+		assertTrue(_kb.isConsistent());
+	}
+	
+	@Test
 	public void testSimpleABoxRemove()
 	{
 		final KnowledgeBase kb = new KnowledgeBaseImpl();
