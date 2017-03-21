@@ -247,16 +247,24 @@ public class DependencySet
 	public String toString()
 	{
 		final StringBuilder sb = new StringBuilder();
-		sb.append("[");
-		sb.append(_branch);
-		sb.append("-");
+		sb.append("DS{branch:");
+		switch (_branch)
+		{
+			case NO_BRANCH:
+				sb.append("NO_BRANCH(-1)");
+				break;
+
+			default:
+				sb.append(_branch);
+		}
+		sb.append(", depends:");
 		sb.append(_depends);
 		if (_logger.isLoggable(Level.FINE))
 		{
-			sb.append(" ");
+			sb.append(", explain:");
 			sb.append(_explain);
 		}
-		sb.append("]");
+		sb.append("}");
 		return sb.toString();
 	}
 

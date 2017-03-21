@@ -49,7 +49,7 @@ import openllet.shared.tools.Log;
  *
  * @author Evren Sirin
  */
-public abstract class Branch
+public abstract class Branch implements Comparable<Branch>
 {
 	public static final Logger _logger = Log.getLogger(Branch.class);
 
@@ -235,5 +235,11 @@ public abstract class Branch
 	public DependencySet getTermDepends()
 	{
 		return _termDepends;
+	}
+
+	@Override
+	public int compareTo(final Branch that)
+	{
+		return this == that ? 0 : _branchIndexInABox - that._branchIndexInABox;
 	}
 }
