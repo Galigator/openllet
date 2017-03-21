@@ -55,7 +55,7 @@ public abstract class Branch
 
 	protected final ABox _abox;
 
-	private volatile int _branchIndexInABox;
+	private final int _branchIndexInABox;
 	private final int _anonCount;
 	private volatile DependencySet _termDepends;
 	private volatile DependencySet _combinedClash;
@@ -138,7 +138,6 @@ public abstract class Branch
 		return !_abox.isClosed();
 	}
 
-	@Deprecated
 	public abstract Branch copyTo(ABox abox);
 
 	protected abstract void tryBranch();
@@ -148,8 +147,7 @@ public abstract class Branch
 	@Override
 	public String toString()
 	{
-		//		return "Branch " + _branch + " (" + _tryCount + ")";
-		return "Branch on _node " + getNode() + "  Branch number: " + getBranchIndexInABox() + " " + getTryNext() + "(" + getTryCount() + ")";
+		return "{Branch [" + getNode() + "]  n°: " + getBranchIndexInABox() + " tryNext:" + getTryNext() + " tryCount:" + getTryCount() + "}";
 	}
 
 	/**
@@ -173,12 +171,6 @@ public abstract class Branch
 	public int getNodeCount()
 	{
 		return _nodeCount;
-	}
-
-	@Deprecated
-	public void setBranchIndexInABox(final int branchIndexInABox)
-	{
-		_branchIndexInABox = branchIndexInABox;
 	}
 
 	/**

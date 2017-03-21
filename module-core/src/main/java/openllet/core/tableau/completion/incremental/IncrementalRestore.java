@@ -150,12 +150,12 @@ public class IncrementalRestore
 					termDepends.add(j - 1);
 					break;
 				}
-
-			br.setBranchIndexInABox(br.getBranchIndexInABox() - 1); // also need to decrement the branch number
 			br.setTermDepends(termDepends);
 		}
 
 		branches.remove(branch.getBranch()); // remove the actual branch
+
+		System.out.println("miaou");
 	}
 
 	/**

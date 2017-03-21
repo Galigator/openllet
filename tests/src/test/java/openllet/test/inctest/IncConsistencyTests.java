@@ -1288,14 +1288,30 @@ public class IncConsistencyTests extends AbstractKBTests
 
 		_kb.addClass(negate(_dog));
 
-		final ATermAppl manOrDog = or(negate(_dog), _woman);
-		_kb.addClass(manOrDog);
+		final ATermAppl womanOrNotDog = or(negate(_dog), _woman);
+		_kb.addClass(womanOrNotDog);
 
-		_kb.addType(_victor, manOrDog);
+		_kb.addType(_victor, womanOrNotDog);
 
 		assertTrue(_kb.isConsistent());
 
-		_kb.removeType(_victor, manOrDog);
+		_kb.removeType(_victor, womanOrNotDog);
+		
+		assertTrue(_kb.isConsistent());
+
+		_kb.addType(_robert, womanOrNotDog);
+		_kb.addType(_mary, womanOrNotDog);
+		_kb.addType(_victor, womanOrNotDog);
+		_kb.addType(_chris, womanOrNotDog);
+		_kb.addType(_bill, womanOrNotDog);
+		
+		assertTrue(_kb.isConsistent());
+		
+		_kb.removeType(_robert, womanOrNotDog);
+		_kb.removeType(_mary, womanOrNotDog);
+		_kb.removeType(_victor, womanOrNotDog);
+		_kb.removeType(_chris, womanOrNotDog);
+		_kb.removeType(_bill, womanOrNotDog);
 		
 		assertTrue(_kb.isConsistent());
 	}
