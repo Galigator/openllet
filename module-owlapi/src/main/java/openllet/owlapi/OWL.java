@@ -18,6 +18,7 @@ import java.util.UUID;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 import openllet.atom.OpenError;
+import openllet.core.utils.Namespaces;
 import openllet.owlapi.facet.FacetFactoryOWL;
 import openllet.owlapi.facet.FacetManagerOWL;
 import openllet.shared.tools.Log;
@@ -98,7 +99,6 @@ import org.semanticweb.owlapi.model.OWLSymmetricObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLTransitiveObjectPropertyAxiom;
 import org.semanticweb.owlapi.vocab.OWLFacet;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
-import uk.ac.manchester.cs.owl.owlapi.InternalizedEntities;
 
 /**
  * <p>
@@ -123,17 +123,17 @@ public class OWL implements FacetManagerOWL, FacetFactoryOWL, Logging
 
 	public static final OWLDataFactory _factory = _manager.getOWLDataFactory();
 
-	public static final OWLClass Nothing = InternalizedEntities.OWL_NOTHING;// _factory.getOWLNothing();
+	public static final OWLClass Nothing = _factory.getOWLNothing(); //InternalizedEntities.OWL_NOTHING;
 
-	public static final OWLClass Thing = InternalizedEntities.OWL_THING;// _factory.getOWLThing();
+	public static final OWLClass Thing = _factory.getOWLThing(); // InternalizedEntities.OWL_THING;
 
-	public static final OWLObjectProperty topObjectProperty = InternalizedEntities.OWL_TOP_OBJECT_PROPERTY;// ObjectProperty(Namespaces.OWL + "topObjectProperty");
+	public static final OWLObjectProperty topObjectProperty = ObjectProperty(Namespaces.OWL + "topObjectProperty"); // InternalizedEntities.OWL_TOP_OBJECT_PROPERTY;
 
-	public static final OWLObjectProperty bottomObjectProperty = InternalizedEntities.OWL_BOTTOM_OBJECT_PROPERTY;// ObjectProperty(Namespaces.OWL + "bottomObjectProperty");
+	public static final OWLObjectProperty bottomObjectProperty = ObjectProperty(Namespaces.OWL + "bottomObjectProperty"); // InternalizedEntities.OWL_BOTTOM_OBJECT_PROPERTY;//
 
-	public static final OWLDataProperty topDataProperty = InternalizedEntities.OWL_TOP_DATA_PROPERTY;// DataProperty(Namespaces.OWL + "topDataProperty");
+	public static final OWLDataProperty topDataProperty = DataProperty(Namespaces.OWL + "topDataProperty");// InternalizedEntities.OWL_TOP_DATA_PROPERTY;
 
-	public static final OWLDataProperty bottomDataProperty = InternalizedEntities.OWL_BOTTOM_DATA_PROPERTY;//DataProperty(Namespaces.OWL + "bottomDataProperty");
+	public static final OWLDataProperty bottomDataProperty = DataProperty(Namespaces.OWL + "bottomDataProperty"); // InternalizedEntities.OWL_BOTTOM_DATA_PROPERTY;
 
 	public static final OWLLiteral TRUE = _factory.getOWLLiteral(true);
 
