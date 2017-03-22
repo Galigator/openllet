@@ -23,6 +23,7 @@ import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
  * </p>
  *
  * @author Evren Sirin
+ * @deprecated since 2.6.0
  */
 @Deprecated
 public class PelletReasonerFactory implements OWLReasonerFactory

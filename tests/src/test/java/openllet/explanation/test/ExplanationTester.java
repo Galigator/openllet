@@ -16,18 +16,12 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import openllet.owlapi.OntologyUtils;
+import openllet.owlapi.OWL;
 import openllet.shared.tools.Log;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 
 /**
- * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
  * <p>
  * Copyright: Copyright (c) 2007
  * </p>
@@ -49,9 +43,9 @@ public class ExplanationTester
 
 	public ExplanationTester(final ExplanationGenerator expGen)
 	{
-		this._expGen = expGen;
+		_expGen = expGen;
 
-		_converter = new SatisfiabilityConverter(OntologyUtils.getOWLOntologyManager().getOWLDataFactory());
+		_converter = new SatisfiabilityConverter(OWL._factory);
 		_renderer = new ConciseExplanationRenderer();
 	}
 

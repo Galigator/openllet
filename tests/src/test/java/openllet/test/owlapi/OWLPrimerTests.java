@@ -18,7 +18,9 @@ import openllet.owlapi.OWL;
 import openllet.owlapi.OntologyUtils;
 import openllet.owlapi.OpenlletReasonerFactory;
 import openllet.test.PelletTestSuite;
+import org.junit.Before;
 import org.junit.Test;
+import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
@@ -52,16 +54,11 @@ public class OWLPrimerTests extends AbstractOWLAPITests
 		return new JUnit4TestAdapter(OWLPrimerTests.class);
 	}
 
-	public OWLPrimerTests()
-	{
-	}
-
 	@Override
-	public void resetOntologyManager()
+	@Before
+	public void setUp()
 	{
-		super.resetOntologyManager();
-
-		_ontology = OntologyUtils.loadOntology("file:" + PelletTestSuite.base + "modularity/OWL2Primer.owl");
+		_ontology = OntologyUtils.loadOntology(OWLManager.createOWLOntologyManager(), "file:" + PelletTestSuite.base + "modularity/OWL2Primer.owl");
 		_reasoner = OpenlletReasonerFactory.getInstance().createReasoner(_ontology);
 	}
 

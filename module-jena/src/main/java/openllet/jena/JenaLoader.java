@@ -26,7 +26,7 @@ import org.apache.jena.util.FileManager;
  */
 public class JenaLoader extends KBLoader
 {
-	private static final FileManager manager = FileManager.get();
+	private static final FileManager _manager = FileManager.get();
 
 	private OntModel _model;
 
@@ -71,7 +71,7 @@ public class JenaLoader extends KBLoader
 	@Override
 	protected void parseFile(final String file)
 	{
-		manager.readModel(_model, file, _inputFormat);
+		_manager.readModel(_model, file, _inputFormat);
 	}
 
 	/**

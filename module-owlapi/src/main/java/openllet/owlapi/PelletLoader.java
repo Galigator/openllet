@@ -43,6 +43,7 @@ import java.util.stream.Collectors;
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
 import openllet.core.exceptions.InternalReasonerException;
+import openllet.core.utils.SetUtils;
 import openllet.core.utils.Timer;
 import openllet.owlapi.facet.FacetManagerOWL;
 import openllet.shared.tools.Log;
@@ -78,7 +79,7 @@ public class PelletLoader implements FacetManagerOWL
 
 	private volatile OWLOntologyManager _manager;
 
-	private final Set<OWLOntology> _ontologies = Collections.newSetFromMap(new ConcurrentHashMap<>());
+	private final Set<OWLOntology> _ontologies = SetUtils.create();
 
 	/**
 	 * Flag to check if imports will be automatically loaded/unloaded
@@ -88,7 +89,7 @@ public class PelletLoader implements FacetManagerOWL
 	/**
 	 * Ontologies that are loaded due to imports but they have not been included in an explicit load statement by the user
 	 */
-	private final Set<OWLOntology> _notImported = Collections.newSetFromMap(new ConcurrentHashMap<>());
+	private final Set<OWLOntology> _notImported = SetUtils.create();
 
 	/**
 	 * This is the reverse mapping of imports. The key is an ontology and the value is a set of ontology that imports the ontology used as the key
@@ -108,6 +109,12 @@ public class PelletLoader implements FacetManagerOWL
 	public void setManager(final OWLOntologyManager manager)
 	{
 		_manager = manager;
+	}
+
+	@Override
+	public OWLGroup getGroup()
+	{
+		return OWLGroup.fromVolatileManager(_manager);
 	}
 
 	private class ChangeVisitor implements OWLOntologyChangeVisitor

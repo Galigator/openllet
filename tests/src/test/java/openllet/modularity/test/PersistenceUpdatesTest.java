@@ -22,15 +22,16 @@ import openllet.modularity.IncrementalClassifier;
 import openllet.modularity.ModuleExtractor;
 import openllet.modularity.PelletIncremantalReasonerFactory;
 import openllet.modularity.io.IncrementalClassifierPersistence;
-import openllet.owlapi.OWL;
 import openllet.owlapi.OntologyUtils;
 import openllet.owlapi.OpenlletReasoner;
 import openllet.owlapi.OpenlletReasonerFactory;
 import openllet.shared.tools.Log;
 import openllet.test.PelletTestSuite;
 import org.junit.Test;
+import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 /**
  * <p>
@@ -94,124 +95,102 @@ public class PersistenceUpdatesTest
 	public void testPersistenceRemoves(final String inputOnt) throws IOException
 	{
 		final File testFile = new File(TEST_FILE);
-		final OWLOntology ontology = OntologyUtils.loadOntology(inputOnt);
+		final OWLOntologyManager manager = OWLManager.createConcurrentOWLOntologyManager();
+		final OWLOntology ontology = OntologyUtils.loadOntology(manager, inputOnt);
 
-		try
+		final ModuleExtractor moduleExtractor = createModuleExtractor();
+
+		final IncrementalClassifier modular = PelletIncremantalReasonerFactory.getInstance().createReasoner(ontology, moduleExtractor);
+		modular.classify();
+
+		manager.removeAxioms(ontology, TestUtils.selectRandomAxioms(ontology, 1).stream());
+
+		// at this point there should be a change to the ontology that is not applied yet to the classifier
+		// this should cause the save operation to fail
+
+		try (FileOutputStream fos = new FileOutputStream(testFile))
 		{
-			final ModuleExtractor moduleExtractor = createModuleExtractor();
-
-			final IncrementalClassifier modular = PelletIncremantalReasonerFactory.getInstance().createReasoner(ontology, moduleExtractor);
-			modular.classify();
-
-			OWL._manager.removeAxioms(ontology, TestUtils.selectRandomAxioms(ontology, 1).stream());
-
-			// at this point there should be a change to the ontology that is not applied yet to the classifier
-			// this should cause the save operation to fail
-
-			try (FileOutputStream fos = new FileOutputStream(testFile))
-			{
-				IncrementalClassifierPersistence.save(modular, fos);
-				fail("The incremental classifer must not allow itself to be persisted if there are any unapplied changes to the ontology");
-			}
-			catch (final IllegalStateException e)
-			{
-				_logger.log(Level.FINE, "", e);
-				assertTrue(testFile.delete());
-				// correct behavior
-			}
-
+			IncrementalClassifierPersistence.save(modular, fos);
+			fail("The incremental classifer must not allow itself to be persisted if there are any unapplied changes to the ontology");
 		}
-		finally
+		catch (final IllegalStateException e)
 		{
-			if (ontology != null)
-				OWL._manager.removeOntology(ontology);
+			_logger.log(Level.FINE, "", e);
+			assertTrue(testFile.delete());
+			// correct behavior
 		}
 	}
 
 	public void testPersistenceAdds(final String inputOnt) throws IOException
 	{
 		final File testFile = new File(TEST_FILE);
-		final OWLOntology ontology = OntologyUtils.loadOntology(inputOnt);
+		final OWLOntologyManager manager = OWLManager.createConcurrentOWLOntologyManager();
+		final OWLOntology ontology = OntologyUtils.loadOntology(manager, inputOnt);
 
-		try
+		final ModuleExtractor moduleExtractor = createModuleExtractor();
+
+		final IncrementalClassifier modular = PelletIncremantalReasonerFactory.getInstance().createReasoner(ontology, moduleExtractor);
+
+		// first remove a random axiom
+		final Set<OWLAxiom> axiomsToRemove = TestUtils.selectRandomAxioms(ontology, 1);
+
+		manager.removeAxioms(ontology, axiomsToRemove.stream());
+
+		// classify (i.e., update)
+		modular.classify();
+
+		// add the axiom back but do not classify (do not cause an update)
+		manager.addAxioms(ontology, axiomsToRemove.stream());
+
+		// at this point there should be a change to the ontology that is not applied yet to the classifier
+		// this should cause the save operation to fail
+
+		try (final FileOutputStream fos = new FileOutputStream(testFile))
 		{
-			final ModuleExtractor moduleExtractor = createModuleExtractor();
-
-			final IncrementalClassifier modular = PelletIncremantalReasonerFactory.getInstance().createReasoner(ontology, moduleExtractor);
-
-			// first remove a random axiom
-			final Set<OWLAxiom> axiomsToRemove = TestUtils.selectRandomAxioms(ontology, 1);
-
-			OWL._manager.removeAxioms(ontology, axiomsToRemove.stream());
-
-			// classify (i.e., update)
-			modular.classify();
-
-			// add the axiom back but do not classify (do not cause an update)
-			OWL._manager.addAxioms(ontology, axiomsToRemove.stream());
-
-			// at this point there should be a change to the ontology that is not applied yet to the classifier
-			// this should cause the save operation to fail
-
-			try (final FileOutputStream fos = new FileOutputStream(testFile))
-			{
-				IncrementalClassifierPersistence.save(modular, fos);
-				fail("The incremental classifer must not allow itself to be persisted if there are any unapplied changes to the ontology");
-			}
-			catch (final IllegalStateException e)
-			{
-				_logger.log(Level.FINE, "", e);
-				assertTrue(testFile.delete());
-				// correct behavior
-			}
-
-			modular.dispose();
+			IncrementalClassifierPersistence.save(modular, fos);
+			fail("The incremental classifer must not allow itself to be persisted if there are any unapplied changes to the ontology");
 		}
-		finally
+		catch (final IllegalStateException e)
 		{
-			if (ontology != null)
-				OWL._manager.removeOntology(ontology);
+			_logger.log(Level.FINE, "", e);
+			assertTrue(testFile.delete());
+			// correct behavior
 		}
+
+		modular.dispose();
 	}
 
 	public void testAllowedUpdates(final String inputOnt) throws IOException
 	{
 		final File testFile = new File(TEST_FILE);
-		final OWLOntology ontology = OntologyUtils.loadOntology(inputOnt);
+		final OWLOntologyManager manager = OWLManager.createConcurrentOWLOntologyManager();
+		final OWLOntology ontology = OntologyUtils.loadOntology(manager, inputOnt);
 
-		try
+		final ModuleExtractor moduleExtractor = createModuleExtractor();
+
+		final IncrementalClassifier modular = PelletIncremantalReasonerFactory.getInstance().createReasoner(ontology, moduleExtractor);
+		modular.classify();
+
+		// first remove a random axiom
+		final Set<OWLAxiom> axiomsToRemove = TestUtils.selectRandomAxioms(ontology, 1);
+
+		manager.removeAxioms(ontology, axiomsToRemove.stream());
+		// add the axiom back but do not classify
+		manager.addAxioms(ontology, axiomsToRemove.stream());
+
+		// remove another random axiom
+		manager.removeAxioms(ontology, TestUtils.selectRandomAxioms(ontology, 1).stream());
+
+		// classify (i.e., update)
+		modular.classify();
+
+		// at this point, the ontology should be updated (despite the changes), and the save should succeed.
+		try (final FileOutputStream fos = new FileOutputStream(testFile))
 		{
-			final ModuleExtractor moduleExtractor = createModuleExtractor();
-
-			final IncrementalClassifier modular = PelletIncremantalReasonerFactory.getInstance().createReasoner(ontology, moduleExtractor);
-			modular.classify();
-
-			// first remove a random axiom
-			final Set<OWLAxiom> axiomsToRemove = TestUtils.selectRandomAxioms(ontology, 1);
-
-			OWL._manager.removeAxioms(ontology, axiomsToRemove.stream());
-			// add the axiom back but do not classify
-			OWL._manager.addAxioms(ontology, axiomsToRemove.stream());
-
-			// remove another random axiom
-			OWL._manager.removeAxioms(ontology, TestUtils.selectRandomAxioms(ontology, 1).stream());
-
-			// classify (i.e., update)
-			modular.classify();
-
-			// at this point, the ontology should be updated (despite the changes), and the save should succeed.
-			try (final FileOutputStream fos = new FileOutputStream(testFile))
-			{
-				IncrementalClassifierPersistence.save(modular, fos);
-			}
-
-			assertTrue(testFile.delete());
+			IncrementalClassifierPersistence.save(modular, fos);
 		}
-		finally
-		{
-			if (null != ontology)
-				OWL._manager.removeOntology(ontology);
-		}
+
+		assertTrue(testFile.delete());
 	}
 
 	/**
@@ -224,39 +203,33 @@ public class PersistenceUpdatesTest
 	public void testUpdatesAfterPersistence(final String inputOnt) throws IOException
 	{
 		final File testFile = new File(TEST_FILE);
-		final OWLOntology ontology = OntologyUtils.loadOntology(inputOnt);
+		final OWLOntologyManager manager = OWLManager.createConcurrentOWLOntologyManager();
+		final OWLOntology ontology = OntologyUtils.loadOntology(manager, inputOnt);
 
-		try
+		final ModuleExtractor moduleExtractor = createModuleExtractor();
+
+		IncrementalClassifier modular = PelletIncremantalReasonerFactory.getInstance().createReasoner(ontology, moduleExtractor);
+		modular.classify();
+
+		try (final FileOutputStream fos = new FileOutputStream(testFile))
 		{
-			final ModuleExtractor moduleExtractor = createModuleExtractor();
-
-			IncrementalClassifier modular = PelletIncremantalReasonerFactory.getInstance().createReasoner(ontology, moduleExtractor);
-			modular.classify();
-
-			try (final FileOutputStream fos = new FileOutputStream(testFile))
-			{
-				IncrementalClassifierPersistence.save(modular, fos);
-			}
-
-			try (final FileInputStream fis = new FileInputStream(testFile))
-			{
-				modular = IncrementalClassifierPersistence.load(fis);
-			}
-
-			// first remove a random axiom
-			OWL._manager.removeAxioms(ontology, TestUtils.selectRandomAxioms(ontology, 1).stream());
-
-			modular.classify();
-
-			final OpenlletReasoner expected = OpenlletReasonerFactory.getInstance().createReasoner(modular.getRootOntology());
-
-			assertClassificationEquals(expected, modular);
+			IncrementalClassifierPersistence.save(modular, fos);
 		}
-		finally
+
+		try (final FileInputStream fis = new FileInputStream(testFile))
 		{
-			if (null != ontology)
-				OWL._manager.removeOntology(ontology);
+			modular = IncrementalClassifierPersistence.load(fis);
 		}
+
+		// first remove a random axiom
+		manager.removeAxioms(ontology, TestUtils.selectRandomAxioms(ontology, 1).stream());
+
+		modular.classify();
+
+		final OpenlletReasoner expected = OpenlletReasonerFactory.getInstance().createReasoner(modular.getRootOntology());
+
+		assertClassificationEquals(expected, modular);
+
 	}
 
 	/**
@@ -269,71 +242,57 @@ public class PersistenceUpdatesTest
 	public void testUpdatesAfterPersistence2(final String inputOnt) throws IOException
 	{
 		final File testFile = new File(TEST_FILE);
-		final OWLOntology ontology = OntologyUtils.loadOntology(inputOnt);
+		final OWLOntologyManager manager = OWLManager.createConcurrentOWLOntologyManager();
+		final OWLOntology ontology = OntologyUtils.loadOntology(manager, inputOnt);
 
-		try
+		IncrementalClassifier modular = PelletIncremantalReasonerFactory.getInstance().createReasoner(ontology, createModuleExtractor());
+		modular.classify();
+
+		try (final FileOutputStream fos = new FileOutputStream(testFile))
 		{
-			IncrementalClassifier modular = PelletIncremantalReasonerFactory.getInstance().createReasoner(ontology, createModuleExtractor());
-			modular.classify();
-
-			try (final FileOutputStream fos = new FileOutputStream(testFile))
-			{
-				IncrementalClassifierPersistence.save(modular, fos);
-			}
-
-			try (final FileInputStream fis = new FileInputStream(testFile))
-			{
-				modular = IncrementalClassifierPersistence.load(fis, ontology);
-			}
-
-			// first remove a random axiom
-			OWL._manager.removeAxioms(ontology, TestUtils.selectRandomAxioms(ontology, 1).stream());
-
-			modular.classify();
-
-			final OpenlletReasoner expected = OpenlletReasonerFactory.getInstance().createReasoner(ontology);
-
-			assertClassificationEquals(expected, modular);
+			IncrementalClassifierPersistence.save(modular, fos);
 		}
-		finally
+
+		try (final FileInputStream fis = new FileInputStream(testFile))
 		{
-			if (null != ontology)
-				OWL._manager.removeOntology(ontology);
+			modular = IncrementalClassifierPersistence.load(fis, ontology);
 		}
+
+		// first remove a random axiom
+		manager.removeAxioms(ontology, TestUtils.selectRandomAxioms(ontology, 1).stream());
+
+		modular.classify();
+
+		final OpenlletReasoner expected = OpenlletReasonerFactory.getInstance().createReasoner(ontology);
+
+		assertClassificationEquals(expected, modular);
 	}
 
 	public void testUpdatesWhenPersisted(final String inputOnt) throws IOException
 	{
 		final File testFile = new File(TEST_FILE);
-		final OWLOntology ontology = OntologyUtils.loadOntology(inputOnt);
+		final OWLOntologyManager manager = OWLManager.createConcurrentOWLOntologyManager();
+		final OWLOntology ontology = OntologyUtils.loadOntology(manager, inputOnt);
 
-		try
+		IncrementalClassifier modular = PelletIncremantalReasonerFactory.getInstance().createReasoner(ontology, createModuleExtractor());
+		modular.classify();
+
+		try (final FileOutputStream fos = new FileOutputStream(testFile))
 		{
-			IncrementalClassifier modular = PelletIncremantalReasonerFactory.getInstance().createReasoner(ontology, createModuleExtractor());
-			modular.classify();
-
-			try (final FileOutputStream fos = new FileOutputStream(testFile))
-			{
-				IncrementalClassifierPersistence.save(modular, fos);
-			}
-
-			// perform changes while the classifier is stored on disk; first remove a random axiom
-			OWL._manager.removeAxioms(ontology, TestUtils.selectRandomAxioms(ontology, 1).stream());
-
-			try (final FileInputStream fis = new FileInputStream(testFile))
-			{
-				modular = IncrementalClassifierPersistence.load(fis, ontology);
-			}
-
-			final OpenlletReasoner expected = OpenlletReasonerFactory.getInstance().createReasoner(ontology);
-
-			assertClassificationEquals(expected, modular);
+			IncrementalClassifierPersistence.save(modular, fos);
 		}
-		finally
+
+		// perform changes while the classifier is stored on disk; first remove a random axiom
+		manager.removeAxioms(ontology, TestUtils.selectRandomAxioms(ontology, 1).stream());
+
+		try (final FileInputStream fis = new FileInputStream(testFile))
 		{
-			if (null != ontology)
-				OWL._manager.removeOntology(ontology);
+			modular = IncrementalClassifierPersistence.load(fis, ontology);
 		}
+
+		final OpenlletReasoner expected = OpenlletReasonerFactory.getInstance().createReasoner(ontology);
+
+		assertClassificationEquals(expected, modular);
 	}
 
 	@Test

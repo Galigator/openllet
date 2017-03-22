@@ -55,15 +55,20 @@ public interface OWLHelper extends Logging, OWLManagementObject
 	public static final OWLDocumentFormat _format = _formatFactory.get();
 
 	/**
-	 * Add the export format in the configuration of the provided ontology
-	 *
-	 * @param manager of the ontology you consider.
-	 * @param ontology you consider.
+	 * @return true if this ontology isn't persistent.
 	 * @since 2.5.1
 	 */
-	public static void setFormat(final OWLOntologyManager manager, final OWLOntology ontology)
+	public abstract boolean isVolatile();
+
+	/**
+	 * Add the export format in the configuration of the provided ontology
+	 *
+	 * @param ontology you consider.
+	 * @since 2.6.1
+	 */
+	public static void setFormat(final OWLOntology ontology)
 	{
-		manager.setOntologyFormat(ontology, _format);
+		ontology.getOWLOntologyManager().setOntologyFormat(ontology, _format);
 	}
 
 	/**
@@ -139,18 +144,6 @@ public interface OWLHelper extends Logging, OWLManagementObject
 	}
 
 	/**
-	 * @return the manager that manage the current ontology.
-	 * @since 2.5.1
-	 */
-	public abstract OWLManagerGroup getGroup();
-
-	/**
-	 * @return true if this ontology isn't persistent.
-	 * @since 2.5.1
-	 */
-	public abstract boolean isVolatile();
-
-	/**
 	 * @return the root of the default object insert in the ontology without namespace.
 	 * @since 2.5.1
 	 */
@@ -179,7 +172,7 @@ public interface OWLHelper extends Logging, OWLManagementObject
 	 */
 	public default Optional<OWLOntology> getOntology(final OWLOntologyID ontologyID)
 	{
-		return OWLManagerGroup.getOntology(getManager(), ontologyID);
+		return OWLGroup.getOntology(getManager(), ontologyID);
 	}
 
 	/**
@@ -503,5 +496,4 @@ public interface OWLHelper extends Logging, OWLManagementObject
 		ontologyToString(buff, msg);
 		return buff.toString();
 	}
-
 }

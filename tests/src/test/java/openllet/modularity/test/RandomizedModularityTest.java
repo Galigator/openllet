@@ -46,18 +46,18 @@ public abstract class RandomizedModularityTest extends AbstractModularityTest
 		}
 	}
 
-	private static void modularityTest(final String file)
+	private void modularityTest(final String file)
 	{
-		final OWLOntology ontology = OntologyUtils.loadOntology("file:" + file, false);
+		final OWLOntology ontology = OntologyUtils.loadOntology(_manager, "file:" + file, false);
 
 		final Set<OWLEntity> signature = new HashSet<>();
 		signature.addAll(TestUtils.selectRandomElements(ontology.classesInSignature().collect(Collectors.toList()), 5));
 		modularityTest(ontology, signature);
 
-		OWL._manager.removeOntology(ontology);
+		_manager.removeOntology(ontology);
 	}
 
-	private static void modularityTest(final OWLOntology ontology, final Set<OWLEntity> signature)
+	private void modularityTest(final OWLOntology ontology, final Set<OWLEntity> signature)
 	{
 		modularityTest(ontology, signature, ModuleType.BOT);
 		modularityTest(ontology, signature, ModuleType.TOP);
@@ -65,11 +65,11 @@ public abstract class RandomizedModularityTest extends AbstractModularityTest
 		//		modularityTest( ontology, signature, ModuleType.TOP_OF_BOT );
 	}
 
-	private static void modularityTest(final OWLOntology ontology, final Set<OWLEntity> signature, final ModuleType moduleType)
+	private void modularityTest(final OWLOntology ontology, final Set<OWLEntity> signature, final ModuleType moduleType)
 	{
 		final Set<OWLAxiom> computed = ModularityUtils.extractModule(ontology, signature, moduleType);
 
-		final OntologySegmenter segmenter = new SyntacticLocalityModuleExtractor(OWL._manager, ontology, moduleType);
+		final OntologySegmenter segmenter = new SyntacticLocalityModuleExtractor(_manager, ontology, moduleType);
 		final Set<OWLAxiom> expected = segmenter.extract(signature);
 
 		// prune declarations to avoid mismatches related to declarations

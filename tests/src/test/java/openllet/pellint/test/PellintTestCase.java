@@ -1,8 +1,6 @@
 package openllet.pellint.test;
 
-import java.util.Collections;
 import openllet.owlapi.OWL;
-import openllet.owlapi.OntologyUtils;
 import org.junit.Before;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
@@ -71,6 +69,6 @@ public class PellintTestCase
 	@SuppressWarnings("unused")
 	protected void addAxiom(final OWLAxiom axiom) throws OWLException
 	{
-		OntologyUtils.addAxioms(_ontology, Collections.singleton(axiom));
+		_ontology.add(axiom);
 	}
 }

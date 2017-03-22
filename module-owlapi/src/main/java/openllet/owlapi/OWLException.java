@@ -1,11 +1,13 @@
 package openllet.owlapi;
 
+import openllet.atom.OpenError;
+
 /**
  * throw a exception for OWL related problems.
  * 
  * @since 2.5.1
  */
-public class OWLException extends RuntimeException
+public class OWLException extends OpenError
 {
 	private static final long serialVersionUID = 922674511735669343L;
 

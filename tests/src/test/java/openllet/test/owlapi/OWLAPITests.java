@@ -37,9 +37,7 @@ import static openllet.owlapi.OWL.subClassOf;
 import static openllet.owlapi.OWL.subPropertyOf;
 import static openllet.owlapi.OWL.symmetric;
 import static openllet.owlapi.OWL.transitive;
-import static openllet.owlapi.OntologyUtils.addAxioms;
 import static openllet.owlapi.OntologyUtils.loadOntology;
-import static openllet.owlapi.OntologyUtils.removeAxioms;
 import static openllet.owlapi.SWRL.classAtom;
 import static openllet.owlapi.SWRL.propertyAtom;
 import static openllet.owlapi.SWRL.rule;
@@ -127,7 +125,7 @@ public class OWLAPITests extends AbstractOWLAPITests
 	public void testOWL2()
 	{
 		final String ns = "http://www.example.org/test#";
-		final OWLOntology ont = loadOntology(_base + "owl2.owl");
+		final OWLOntology ont = loadOntology(OWLManager.createOWLOntologyManager(), _base + "owl2.owl");
 		final OpenlletReasoner reasoner = OpenlletReasonerFactory.getInstance().createReasoner(ont);
 
 		try
@@ -144,7 +142,7 @@ public class OWLAPITests extends AbstractOWLAPITests
 	public void testOWL2Incremental()
 	{
 		final String ns = "http://www.example.org/test#";
-		final OWLOntology ont = loadOntology(_base + "owl2.owl");
+		final OWLOntology ont = loadOntology(OWLManager.createOWLOntologyManager(), _base + "owl2.owl");
 		final IncrementalClassifier classifier = new IncrementalClassifier(ont);
 
 		try
@@ -232,7 +230,7 @@ public class OWLAPITests extends AbstractOWLAPITests
 	public void testUncle()
 	{
 		final String ns = "http://www.example.org/test#";
-		final OWLOntology ont = loadOntology(_base + "uncle.owl");
+		final OWLOntology ont = loadOntology(OWLManager.createOWLOntologyManager(), _base + "uncle.owl");
 		final OpenlletReasoner reasoner = OpenlletReasonerFactory.getInstance().createReasoner(ont);
 
 		final OWLNamedIndividual Bob = Individual(ns + "Bob");
@@ -247,7 +245,7 @@ public class OWLAPITests extends AbstractOWLAPITests
 	public void testSibling()
 	{
 		final String ns = "http://www.example.org/test#";
-		final OWLOntology ont = loadOntology(_base + "sibling.owl");
+		final OWLOntology ont = loadOntology(OWLManager.createOWLOntologyManager(), _base + "sibling.owl");
 		final OpenlletReasoner reasoner = OpenlletReasonerFactory.getInstance().createReasoner(ont);
 
 		final OWLNamedIndividual Bob = Individual(ns + "Bob");
@@ -287,7 +285,7 @@ public class OWLAPITests extends AbstractOWLAPITests
 	public void testPropertyChain()
 	{
 		final String ns = "http://www.example.org/test#";
-		final OWLOntology ont = loadOntology(_base + "propertyChain.owl");
+		final OWLOntology ont = loadOntology(OWLManager.createOWLOntologyManager(), _base + "propertyChain.owl");
 		final OpenlletReasoner reasoner = OpenlletReasonerFactory.getInstance().createReasoner(ont);
 
 		final OWLClass C = Class(ns + "C");
@@ -327,7 +325,7 @@ public class OWLAPITests extends AbstractOWLAPITests
 	public void testQualifiedCardinality1()
 	{
 		final String ns = "http://www.example.org/test#";
-		final OWLOntology ont = loadOntology(_base + "qcr.owl");
+		final OWLOntology ont = loadOntology(OWLManager.createOWLOntologyManager(), _base + "qcr.owl");
 		final OpenlletReasoner reasoner = OpenlletReasonerFactory.getInstance().createReasoner(ont);
 
 		final OWLClass sub = Class(ns + "sub");
@@ -345,7 +343,7 @@ public class OWLAPITests extends AbstractOWLAPITests
 	{
 		final String ns = "http://www.example.org/test#";
 		final String foaf = "http://xmlns.com/foaf/0.1/";
-		final OWLOntology ont = loadOntology(_base + "reflexive.owl");
+		final OWLOntology ont = loadOntology(OWLManager.createOWLOntologyManager(), _base + "reflexive.owl");
 		final OpenlletReasoner reasoner = OpenlletReasonerFactory.getInstance().createReasoner(ont);
 
 		final OWLObjectProperty[] knows = { ObjectProperty(foaf + "knows"), ObjectProperty(ns + "knows2"), ObjectProperty(ns + "knows3") };
@@ -367,7 +365,7 @@ public class OWLAPITests extends AbstractOWLAPITests
 	@Test
 	public void testInfiniteChain()
 	{
-		final OWLOntology ont = loadOntology(_base + "infiniteChain.owl");
+		final OWLOntology ont = loadOntology(OWLManager.createOWLOntologyManager(), _base + "infiniteChain.owl");
 
 		final OpenlletReasoner reasoner = OpenlletReasonerFactory.getInstance().createReasoner(ont);
 
@@ -401,7 +399,7 @@ public class OWLAPITests extends AbstractOWLAPITests
 	public void testRemoveLiteral(final String indName, final boolean buffering)
 	{
 		final String ns = "http://www.example.org/test#";
-		final OWLOntology ont = loadOntology(_base + "RemoveLiteral.owl");
+		final OWLOntology ont = loadOntology(OWLManager.createOWLOntologyManager(), _base + "RemoveLiteral.owl");
 		final OpenlletReasoner reasoner = buffering ? OpenlletReasonerFactory.getInstance().createReasoner(ont) : OpenlletReasonerFactory.getInstance().createNonBufferingReasoner(ont);
 
 		final OWLDataProperty pInt = DataProperty(ns + "pInt");
@@ -416,7 +414,7 @@ public class OWLAPITests extends AbstractOWLAPITests
 
 		assertTrue(reasoner.isConsistent());
 
-		removeAxioms(ont, propertyAssertion(ind, pDouble, valDouble));
+		ont.remove(propertyAssertion(ind, pDouble, valDouble));
 		if (buffering)
 		{
 			assertFalse(reasoner.getDataPropertyValues(ind, pDouble).isEmpty());
@@ -424,7 +422,7 @@ public class OWLAPITests extends AbstractOWLAPITests
 		}
 		assertTrue(reasoner.getDataPropertyValues(ind, pDouble).isEmpty());
 
-		removeAxioms(ont, propertyAssertion(ind, pInt, valInt));
+		ont.remove(propertyAssertion(ind, pInt, valInt));
 		if (buffering)
 		{
 			assertFalse(reasoner.getDataPropertyValues(ind, pInt).isEmpty());
@@ -432,7 +430,7 @@ public class OWLAPITests extends AbstractOWLAPITests
 		}
 		assertTrue(reasoner.getDataPropertyValues(ind, pInt).isEmpty());
 
-		removeAxioms(ont, propertyAssertion(ind, pBoolean, valBoolean));
+		ont.remove(propertyAssertion(ind, pBoolean, valBoolean));
 		if (buffering)
 		{
 			assertFalse(reasoner.getDataPropertyValues(ind, pBoolean).isEmpty());
@@ -443,7 +441,7 @@ public class OWLAPITests extends AbstractOWLAPITests
 		// assertTrue( reasoner.getDataPropertyRelationships( ind ).isEmpty() );
 
 		final OWLLiteral newVal = OWL.constant(0.0D);
-		addAxioms(ont, propertyAssertion(ind, pDouble, newVal));
+		ont.add(propertyAssertion(ind, pDouble, newVal));
 		if (buffering)
 			reasoner.flush();
 
@@ -454,7 +452,7 @@ public class OWLAPITests extends AbstractOWLAPITests
 	public void testFamily()
 	{
 		final String ns = "http://www.example.org/family#";
-		final OWLOntology ont = loadOntology(_base + "family.owl");
+		final OWLOntology ont = loadOntology(OWLManager.createOWLOntologyManager(), _base + "family.owl");
 		final OpenlletReasoner reasoner = OpenlletReasonerFactory.getInstance().createReasoner(ont);
 
 		try
@@ -473,7 +471,7 @@ public class OWLAPITests extends AbstractOWLAPITests
 	public void testFamilyIncremental()
 	{
 		final String ns = "http://www.example.org/family#";
-		final OWLOntology ont = loadOntology(_base + "family.owl");
+		final OWLOntology ont = loadOntology(OWLManager.createOWLOntologyManager(), _base + "family.owl");
 		final IncrementalClassifier classifier = new IncrementalClassifier(ont);
 
 		try
@@ -675,7 +673,7 @@ public class OWLAPITests extends AbstractOWLAPITests
 	public void testAnonInverse()
 	{
 		final String ns = "http://www.example.org/test#";
-		final OWLOntology ont = loadOntology(_base + "anon_inverse.owl");
+		final OWLOntology ont = loadOntology(OWLManager.createOWLOntologyManager(), _base + "anon_inverse.owl");
 		final OpenlletReasoner reasoner = OpenlletReasonerFactory.getInstance().createReasoner(ont);
 
 		final OWLClass C = Class(ns + "C");
@@ -711,7 +709,7 @@ public class OWLAPITests extends AbstractOWLAPITests
 	public void testDLSafeRules()
 	{
 		final String ns = "http://owldl.com/ontologies/dl-safe.owl#";
-		final OWLOntology ont = loadOntology(_base + "dl-safe.owl");
+		final OWLOntology ont = loadOntology(OWLManager.createOWLOntologyManager(), _base + "dl-safe.owl");
 		final OpenlletReasoner reasoner = OpenlletReasonerFactory.getInstance().createReasoner(ont);
 
 		// OWLObjectProperty father = _factory.getOWLObjectProperty( URI.create(
@@ -769,7 +767,7 @@ public class OWLAPITests extends AbstractOWLAPITests
 	public void testDLSafeConstants()
 	{
 		final String ns = "http://owldl.com/ontologies/dl-safe-constants.owl#";
-		final OWLOntology ont = loadOntology(_base + "dl-safe-constants.owl");
+		final OWLOntology ont = loadOntology(OWLManager.createOWLOntologyManager(), _base + "dl-safe-constants.owl");
 		final OpenlletReasoner reasoner = OpenlletReasonerFactory.getInstance().createReasoner(ont);
 
 		final OWLClass DreamTeamMember = Class(ns + "DreamTeamMember");
@@ -816,20 +814,20 @@ public class OWLAPITests extends AbstractOWLAPITests
 
 		for (final OWLAxiom axiom : axioms)
 		{
-			addAxioms(ont, axiom);
+			ont.add(axiom);
 
 			reasoner = OpenlletReasonerFactory.getInstance().createReasoner(ont);
 			assertTrue(axiom.toString(), reasoner.isEntailed(classAssertion(y, C)));
 			assertFalse(axiom.toString(), reasoner.isEntailed(classAssertion(z, C)));
 
-			removeAxioms(ont, axiom);
+			ont.remove(axiom);
 		}
 	}
 
 	@Test
 	public void testInvalidTransitivity2()
 	{
-		final OWLOntology ont = loadOntology(_base + "invalidTransitivity.owl");
+		final OWLOntology ont = loadOntology(OWLManager.createOWLOntologyManager(), _base + "invalidTransitivity.owl");
 		final OpenlletReasoner reasoner = OpenlletReasonerFactory.getInstance().createReasoner(ont);
 		final KnowledgeBase kb = reasoner.getKB();
 		kb.prepare();
@@ -971,7 +969,7 @@ public class OWLAPITests extends AbstractOWLAPITests
 		{
 			final ProgressMonitor monitor = new TimedProgressMonitor(1);
 
-			final OWLOntology ont = loadOntology(_base + "food.owl");
+			final OWLOntology ont = loadOntology(OWLManager.createOWLOntologyManager(), _base + "food.owl");
 
 			final OpenlletReasoner pellet = OpenlletReasonerFactory.getInstance().createReasoner(ont);
 			final KnowledgeBase kb = pellet.getKB();
@@ -998,7 +996,7 @@ public class OWLAPITests extends AbstractOWLAPITests
 	{
 		boolean timeout = false;
 
-		final OWLOntology ont = loadOntology(_base + "food.owl");
+		final OWLOntology ont = loadOntology(OWLManager.createOWLOntologyManager(), _base + "food.owl");
 		final OpenlletReasoner pellet = OpenlletReasonerFactory.getInstance().createReasoner(ont);
 		final KnowledgeBase kb = pellet.getKB();
 
@@ -1027,7 +1025,7 @@ public class OWLAPITests extends AbstractOWLAPITests
 	{
 		boolean timeout = false;
 
-		final OWLOntology ont = loadOntology("file:" + PelletTestSuite.base + "modularity/SWEET.owl");
+		final OWLOntology ont = loadOntology(OWLManager.createOWLOntologyManager(), "file:" + PelletTestSuite.base + "modularity/SWEET.owl");
 
 		final OpenlletReasoner pellet = OpenlletReasonerFactory.getInstance().createReasoner(ont);
 		final KnowledgeBase kb = pellet.getKB();
@@ -1068,7 +1066,7 @@ public class OWLAPITests extends AbstractOWLAPITests
 	public void testAxiomConverterRules1()
 	{
 		final KnowledgeBase kb = new KnowledgeBaseImpl();
-		final AxiomConverter converter = new AxiomConverter(kb, OWL._manager.getOWLDataFactory());
+		final AxiomConverter converter = new AxiomConverter(kb, OWL._factory);
 
 		final ATermAppl C = ATermUtils.makeTermAppl("C");
 		final ATermAppl D = ATermUtils.makeTermAppl("D");
@@ -1373,7 +1371,7 @@ public class OWLAPITests extends AbstractOWLAPITests
 	public void testSetTheory() // This test doesn't work, the url isn't available.
 	{
 		final String ns = "http://www.integratedmodelling.org/ks/tarassandbox/set-theory.owl#";
-		final OWLOntology ont = loadOntology(_base + "set-theory.owl");
+		final OWLOntology ont = loadOntology(OWLManager.createOWLOntologyManager(), _base + "set-theory.owl");
 		final OpenlletReasoner reasoner = OpenlletReasonerFactory.getInstance().createReasoner(ont);
 
 		reasoner.getKB().classify();
@@ -1516,7 +1514,7 @@ public class OWLAPITests extends AbstractOWLAPITests
 	@Test
 	public void test454()
 	{
-		final OWLOntology ont = loadOntology(_base + "ticket-454-test-case.owl");
+		final OWLOntology ont = loadOntology(OWLManager.createOWLOntologyManager(), _base + "ticket-454-test-case.owl");
 
 		final OpenlletReasoner reasoner = OpenlletReasonerFactory.getInstance().createReasoner(ont);
 
@@ -1526,7 +1524,7 @@ public class OWLAPITests extends AbstractOWLAPITests
 	@Test
 	public void test456()
 	{
-		final OWLOntology ont = loadOntology(_base + "ticket-456-test-case.owl");
+		final OWLOntology ont = loadOntology(OWLManager.createOWLOntologyManager(), _base + "ticket-456-test-case.owl");
 
 		final OpenlletReasoner reasoner = OpenlletReasonerFactory.getInstance().createReasoner(ont);
 
@@ -1612,7 +1610,7 @@ public class OWLAPITests extends AbstractOWLAPITests
 	{
 		final String ns = "http://test#";
 
-		final OWLOntology ont = loadOntology(MiscTests._base + "ticket539.ofn");
+		final OWLOntology ont = loadOntology(OWLManager.createOWLOntologyManager(), MiscTests._base + "ticket539.ofn");
 
 		final OpenlletReasoner reasoner = OpenlletReasonerFactory.getInstance().createNonBufferingReasoner(ont);
 

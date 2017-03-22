@@ -12,14 +12,15 @@ import static openllet.owlapi.OWL.ObjectProperty;
 
 import openllet.modularity.ModuleExtractor;
 import openllet.owlapi.OWL;
-import openllet.owlapi.OntologyUtils;
 import org.junit.After;
 import org.junit.Before;
+import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 /**
  * <p>
@@ -36,35 +37,30 @@ import org.semanticweb.owlapi.model.OWLOntology;
  */
 public abstract class AbstractModularityTest
 {
-	//	protected static final OWLOntologyManager	manager		= OWL.manager;
+	protected volatile OWLOntology _ontology;
+	protected volatile OWLOntologyManager _manager;
+	protected volatile ModuleExtractor _modExtractor;
 
-	protected OWLOntology _ontology;
-	protected ModuleExtractor _modExtractor;
+	protected final OWLClass _A = Class("A");
+	protected final OWLClass _B = Class("B");
+	protected final OWLClass _C = Class("C");
+	protected final OWLClass _D = Class("D");
+	protected final OWLClass _E = Class("E");
+	protected final OWLClass _F = Class("F");
+	protected final OWLClass _G = Class("G");
+	protected final OWLClass _H = Class("H");
 
-	protected OWLClass _A = Class("A");
-	protected OWLClass _B = Class("B");
-	protected OWLClass _C = Class("C");
-	protected OWLClass _D = Class("D");
-	protected OWLClass _E = Class("E");
-	protected OWLClass _F = Class("F");
-	protected OWLClass _G = Class("G");
-	protected OWLClass _H = Class("H");
-
-	protected OWLNamedIndividual _a = Individual("a");
-	protected OWLNamedIndividual _b = Individual("b");
-	protected OWLNamedIndividual _c = Individual("c");
-	protected OWLNamedIndividual _d = Individual("d");
-	protected OWLNamedIndividual _e = Individual("e");
-	protected OWLNamedIndividual _f = Individual("f");
-	protected OWLNamedIndividual _g = Individual("g");
-	protected OWLNamedIndividual _h = Individual("h");
+	protected final OWLNamedIndividual _a = Individual("a");
+	protected final OWLNamedIndividual _b = Individual("b");
+	protected final OWLNamedIndividual _c = Individual("c");
+	protected final OWLNamedIndividual _d = Individual("d");
+	protected final OWLNamedIndividual _e = Individual("e");
+	protected final OWLNamedIndividual _f = Individual("f");
+	protected final OWLNamedIndividual _g = Individual("g");
+	protected final OWLNamedIndividual _h = Individual("h");
 
 	protected OWLObjectProperty _p = ObjectProperty("p");
 	protected OWLObjectProperty _q = ObjectProperty("q");
-
-	public AbstractModularityTest()
-	{
-	}
 
 	public abstract ModuleExtractor createModuleExtractor();
 
@@ -77,13 +73,15 @@ public abstract class AbstractModularityTest
 	public void before()
 	{
 		// create an empty module extractor
+		_manager = OWLManager.createOWLOntologyManager();
 		_modExtractor = createModuleExtractor();
 	}
 
 	@After
 	public void after()
 	{
+		_ontology = null;
 		_modExtractor = null;
-		OntologyUtils.clearOWLOntologyManager();
+		_manager.clearOntologies();
 	}
 }

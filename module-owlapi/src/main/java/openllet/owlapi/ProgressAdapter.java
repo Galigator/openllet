@@ -20,7 +20,7 @@ public class ProgressAdapter implements ProgressMonitor
 
 	public ProgressAdapter(final ReasonerProgressMonitor monitor)
 	{
-		this._monitor = monitor;
+		_monitor = monitor;
 		_progress = 0;
 		_length = -1;
 		_title = "<untitled>";
@@ -68,7 +68,7 @@ public class ProgressAdapter implements ProgressMonitor
 	@Override
 	public void setProgressLength(final int length)
 	{
-		this._length = length;
+		_length = length;
 		if (length > 0)
 			_monitor.reasonerTaskProgressChanged(_progress, length);
 		else
@@ -84,7 +84,7 @@ public class ProgressAdapter implements ProgressMonitor
 	@Override
 	public void setProgressTitle(final String title)
 	{
-		this._title = title;
+		_title = title;
 	}
 
 	@Override

@@ -164,7 +164,7 @@ public class TestBasic
 		try (final OWLManagerGroup group = new OWLManagerGroup())
 		{
 			group.setOntologiesDirectory(new File("target"));
-			group.getStorageManager();
+			group.getPersistentManager();
 
 			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create("http://test.org#owlapi.inc.storage"), 1.0);
 			final OWLHelper owl = new OWLGenericTools(group, ontId, false);
@@ -201,7 +201,7 @@ public class TestBasic
 		try (final OWLManagerGroup group = new OWLManagerGroup())
 		{
 			group.setOntologiesDirectory(new File("target"));
-			group.getStorageManager();
+			group.getPersistentManager();
 
 			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create("http://test.org#owlapi.inc.storage"), 1.0);
 			final OWLHelper owl = new OWLGenericTools(group, ontId, false);
@@ -213,7 +213,7 @@ public class TestBasic
 		{
 			assertTrue(file.exists());
 			group.setOntologiesDirectory(new File("target"));
-			group.getStorageManager();
+			group.getPersistentManager();
 
 			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create("http://test.org#owlapi.inc.storage"), 1.0);
 			final OWLHelper owl = new OWLGenericTools(group, ontId, false);

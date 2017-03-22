@@ -22,6 +22,7 @@ import openllet.owlapi.OpenlletReasonerFactory;
 import openllet.test.PelletTestSuite;
 import org.junit.After;
 import org.junit.Before;
+import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.OWLAnonymousIndividual;
 import org.semanticweb.owlapi.model.OWLAxiom;
@@ -32,6 +33,7 @@ import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.RemoveAxiom;
 
 /**
@@ -72,24 +74,30 @@ public abstract class AbstractOWLAPITests
 	protected static final OWLAnonymousIndividual _anon = AnonymousIndividual();
 	protected static final OWLLiteral _lit = constant("lit");
 
-	protected OWLOntology _ontology;
-	protected OpenlletReasoner _reasoner;
+	private final OWLOntologyManager _manager = OWLManager.createOWLOntologyManager();
+	protected volatile OWLOntology _ontology;
+	protected volatile OpenlletReasoner _reasoner;
 
 	public void createReasoner(final OWLAxiom... axioms)
 	{
-		_ontology = OWL.Ontology(axioms);
+		_manager.clearOntologies();
+		_ontology = OWL.Ontology(_manager, axioms);
 		_reasoner = OpenlletReasonerFactory.getInstance().createReasoner(_ontology);
 	}
 
 	@Before
-	@After
-	public void resetOntologyManager()
+	public void setUp()
 	{
+		//
+	}
+
+	@After
+	public void after()
+	{
+		_manager.clearOntologies();
 		_ontology = null;
 		if (_reasoner != null)
 			_reasoner.dispose();
-
-		OWL._manager.clearOntologies();
 	}
 
 	protected boolean processAdd(final OWLAxiom axiom)

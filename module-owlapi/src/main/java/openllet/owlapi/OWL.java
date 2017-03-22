@@ -18,7 +18,6 @@ import java.util.UUID;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 import openllet.atom.OpenError;
-import openllet.core.utils.Namespaces;
 import openllet.owlapi.facet.FacetFactoryOWL;
 import openllet.owlapi.facet.FacetManagerOWL;
 import openllet.shared.tools.Log;
@@ -99,6 +98,7 @@ import org.semanticweb.owlapi.model.OWLSymmetricObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLTransitiveObjectPropertyAxiom;
 import org.semanticweb.owlapi.vocab.OWLFacet;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
+import uk.ac.manchester.cs.owl.owlapi.InternalizedEntities;
 
 /**
  * <p>
@@ -119,19 +119,21 @@ public class OWL implements FacetManagerOWL, FacetFactoryOWL, Logging
 
 	public static final OWLOntologyManager _manager = OWLManager.createConcurrentOWLOntologyManager();
 
+	public static final OWLGroup _managerGroup = OWLGroup.fromVolatileManager(_manager);
+
 	public static final OWLDataFactory _factory = _manager.getOWLDataFactory();
 
-	public static final OWLClass Nothing = _factory.getOWLNothing();
+	public static final OWLClass Nothing = InternalizedEntities.OWL_NOTHING;// _factory.getOWLNothing();
 
-	public static final OWLClass Thing = _factory.getOWLThing();
+	public static final OWLClass Thing = InternalizedEntities.OWL_THING;// _factory.getOWLThing();
 
-	public static final OWLObjectProperty topObjectProperty = ObjectProperty(Namespaces.OWL + "topObjectProperty");
+	public static final OWLObjectProperty topObjectProperty = InternalizedEntities.OWL_TOP_OBJECT_PROPERTY;// ObjectProperty(Namespaces.OWL + "topObjectProperty");
 
-	public static final OWLObjectProperty bottomObjectProperty = ObjectProperty(Namespaces.OWL + "bottomObjectProperty");
+	public static final OWLObjectProperty bottomObjectProperty = InternalizedEntities.OWL_BOTTOM_OBJECT_PROPERTY;// ObjectProperty(Namespaces.OWL + "bottomObjectProperty");
 
-	public static final OWLDataProperty topDataProperty = DataProperty(Namespaces.OWL + "topDataProperty");
+	public static final OWLDataProperty topDataProperty = InternalizedEntities.OWL_TOP_DATA_PROPERTY;// DataProperty(Namespaces.OWL + "topDataProperty");
 
-	public static final OWLDataProperty bottomDataProperty = DataProperty(Namespaces.OWL + "bottomDataProperty");
+	public static final OWLDataProperty bottomDataProperty = InternalizedEntities.OWL_BOTTOM_DATA_PROPERTY;//DataProperty(Namespaces.OWL + "bottomDataProperty");
 
 	public static final OWLLiteral TRUE = _factory.getOWLLiteral(true);
 
@@ -155,27 +157,33 @@ public class OWL implements FacetManagerOWL, FacetFactoryOWL, Logging
 		return _manager;
 	}
 
-	public static OWLOntology Ontology(final Collection<? extends OWLAxiom> axioms)
+	@Override
+	public OWLGroup getGroup()
 	{
-		return Ontology(axioms.stream());
+		return _managerGroup;
 	}
 
-	public static OWLOntology Ontology(final Stream<? extends OWLAxiom> axioms)
+	public static OWLOntology Ontology(final OWLOntologyManager manager, final Collection<? extends OWLAxiom> axioms)
 	{
-		return Ontology(axioms, IRI.create("http://www.example.org/ontology" + UUID.randomUUID()));
+		return Ontology(manager, axioms.stream());
 	}
 
-	public static OWLOntology Ontology(final Collection<? extends OWLAxiom> axioms, final IRI iri)
+	public static OWLOntology Ontology(final OWLOntologyManager manager, final Stream<? extends OWLAxiom> axioms)
 	{
-		return Ontology(axioms.stream(), iri);
+		return Ontology(manager, axioms, IRI.create("http://www.example.org/ontology" + UUID.randomUUID()));
+	}
+
+	public static OWLOntology Ontology(final OWLOntologyManager manager, final Collection<? extends OWLAxiom> axioms, final IRI iri)
+	{
+		return Ontology(manager, axioms.stream(), iri);
 	}
 
 	@SuppressWarnings("unchecked")
-	public static OWLOntology Ontology(final Stream<? extends OWLAxiom> axioms, final IRI iri)
+	public static OWLOntology Ontology(final OWLOntologyManager manager, final Stream<? extends OWLAxiom> axioms, final IRI iri)
 	{
 		try
 		{
-			return _manager.createOntology((Stream<OWLAxiom>) axioms, iri);
+			return manager.createOntology((Stream<OWLAxiom>) axioms, iri);
 		}
 		catch (final OWLOntologyCreationException e)
 		{
@@ -185,6 +193,31 @@ public class OWL implements FacetManagerOWL, FacetFactoryOWL, Logging
 		{
 			throw new OpenError(e);
 		}
+	}
+
+	public static OWLOntology Ontology(final OWLOntologyManager manager, final OWLAxiom... axioms)
+	{
+		return Ontology(manager, Arrays.asList(axioms));
+	}
+
+	public static OWLOntology Ontology(final Collection<? extends OWLAxiom> axioms)
+	{
+		return Ontology(_manager, axioms.stream());
+	}
+
+	public static OWLOntology Ontology(final Stream<? extends OWLAxiom> axioms)
+	{
+		return Ontology(_manager, axioms);
+	}
+
+	public static OWLOntology Ontology(final Collection<? extends OWLAxiom> axioms, final IRI iri)
+	{
+		return Ontology(_manager, axioms.stream(), iri);
+	}
+
+	public static OWLOntology Ontology(final Stream<? extends OWLAxiom> axioms, final IRI iri)
+	{
+		return Ontology(_manager, axioms, iri);
 	}
 
 	public static OWLOntology Ontology(final OWLAxiom... axioms)

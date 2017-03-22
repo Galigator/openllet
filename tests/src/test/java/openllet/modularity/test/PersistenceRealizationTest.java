@@ -25,7 +25,9 @@ import openllet.owlapi.OpenlletReasoner;
 import openllet.owlapi.OpenlletReasonerFactory;
 import openllet.test.PelletTestSuite;
 import org.junit.Test;
+import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 /**
  * <p>
@@ -51,13 +53,13 @@ public class PersistenceRealizationTest
 	public void testFile(final String fileName) throws IOException
 	{
 		final String common = "file:" + base + fileName;
-		testRealization(common + ".owl");
+		testRealization(OWLManager.createConcurrentOWLOntologyManager(), common + ".owl");
 	}
 
-	public void testRealization(final String inputOnt) throws IOException
+	public void testRealization(final OWLOntologyManager manager, final String inputOnt) throws IOException
 	{
 		final File testFile = new File(TEST_FILE);
-		final OWLOntology ontology = OntologyUtils.loadOntology(inputOnt);
+		final OWLOntology ontology = OntologyUtils.loadOntology(manager, inputOnt);
 
 		try
 		{

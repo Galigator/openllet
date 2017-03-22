@@ -29,7 +29,6 @@ import openllet.modularity.IncrementalClassifier;
 import openllet.modularity.ModuleExtractor;
 import openllet.modularity.PelletIncremantalReasonerFactory;
 import openllet.owlapi.OWL;
-import openllet.owlapi.OntologyUtils;
 import openllet.owlapi.OpenlletReasoner;
 import openllet.owlapi.OpenlletReasonerFactory;
 import org.semanticweb.owlapi.model.AddAxiom;
@@ -352,8 +351,8 @@ public class TestUtils
 		modular.classify();
 		comparisonMethod.compare(unified, modular);
 
-		OntologyUtils.addAxioms(ontology, additions);
-		OntologyUtils.removeAxioms(ontology, deletions);
+		ontology.add(additions);
+		ontology.remove(deletions);
 
 		modular.classify();
 

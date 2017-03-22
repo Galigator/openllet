@@ -10,10 +10,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import openllet.atom.OpenError;
-import openllet.owlapi.OWL;
-import openllet.owlapi.OntologyUtils;
 import openllet.owlapi.OpenlletReasoner;
 import openllet.owlapi.OpenlletReasonerFactory;
+import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -22,15 +21,9 @@ import uk.ac.manchester.cs.owl.owlapi.OWLOntologyIRIMapperImpl;
 
 public class OWLAPIWebOntTester implements WebOntTester
 {
-	private final OWLOntologyManager _manager;
+	private final OWLOntologyManager _manager = OWLManager.createOWLOntologyManager();
+	private final OWLOntologyIRIMapperImpl _mapper = new OWLOntologyIRIMapperImpl();
 	private OpenlletReasoner _reasoner;
-	private final OWLOntologyIRIMapperImpl _mapper;
-
-	public OWLAPIWebOntTester()
-	{
-		_manager = OWL._manager;
-		_mapper = new OWLOntologyIRIMapperImpl();
-	}
 
 	@Override
 	public void classify()
@@ -62,7 +55,7 @@ public class OWLAPIWebOntTester implements WebOntTester
 	@Override
 	public void setInputOntology(final String inputFileURI)
 	{
-		OntologyUtils.clearOWLOntologyManager();
+		_manager.clearOntologies();
 		OWLOntology ont = null;
 		try
 		{

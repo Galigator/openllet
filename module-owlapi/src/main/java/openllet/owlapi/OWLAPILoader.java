@@ -16,15 +16,13 @@ import openllet.atom.OpenError;
 import openllet.core.KBLoader;
 import openllet.core.KnowledgeBase;
 import openllet.core.OpenlletOptions;
-import openllet.owlapi.facet.FacetManagerOWL;
-import openllet.owlapi.facet.FacetOntologyOWL;
-import openllet.owlapi.facet.FacetReasonerOWL;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.AddImport;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.MissingImportEvent;
 import org.semanticweb.owlapi.model.MissingImportHandlingStrategy;
 import org.semanticweb.owlapi.model.MissingImportListener;
+import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLImportsDeclaration;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChangeException;
@@ -41,15 +39,15 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
  *
  * @author Evren Sirin
  */
-public class OWLAPILoader extends KBLoader implements FacetReasonerOWL, FacetManagerOWL, FacetOntologyOWL
+public class OWLAPILoader extends KBLoader implements OWLHelper
 {
-	private final OWLOntologyManager _manager;
+	private final OWLOntologyManager _manager = OWLManager.createOWLOntologyManager();
 
-	private final LimitedMapIRIMapper _iriMapper;
+	private final LimitedMapIRIMapper _iriMapper = new LimitedMapIRIMapper();
 
-	private OpenlletReasoner _reasoner;
+	private volatile OpenlletReasoner _reasoner;
 
-	private OWLOntology _baseOntology;
+	private volatile OWLOntology _ontology;
 
 	private boolean _ignoreImports;
 
@@ -63,6 +61,27 @@ public class OWLAPILoader extends KBLoader implements FacetReasonerOWL, FacetMan
 	public OWLOntologyManager getManager()
 	{
 		return _manager;
+	}
+
+	@Override
+	public OWLDataFactory getFactory()
+	{
+		return _manager.getOWLDataFactory();
+	}
+
+	/**
+	 * The ontology is load from a file but is not persist into a file after change, so it is a volatile ontology.
+	 */
+	@Override
+	public boolean isVolatile()
+	{
+		return true;
+	}
+
+	@Override
+	public OWLGroup getGroup()
+	{
+		return OWLGroup.fromVolatileManager(_manager);
 	}
 
 	/**
@@ -79,7 +98,7 @@ public class OWLAPILoader extends KBLoader implements FacetReasonerOWL, FacetMan
 	@Override
 	public OWLOntology getOntology()
 	{
-		return _baseOntology;
+		return _ontology;
 	}
 
 	/**
@@ -93,9 +112,6 @@ public class OWLAPILoader extends KBLoader implements FacetReasonerOWL, FacetMan
 
 	public OWLAPILoader()
 	{
-		_iriMapper = new LimitedMapIRIMapper();
-		_manager = OWLManager.createOWLOntologyManager();
-
 		_manager.setOntologyLoaderConfiguration(_manager.getOntologyLoaderConfiguration().setMissingImportHandlingStrategy(MissingImportHandlingStrategy.SILENT));
 		_manager.addMissingImportListener(new MissingImportListener()
 		{
@@ -141,7 +157,7 @@ public class OWLAPILoader extends KBLoader implements FacetReasonerOWL, FacetMan
 	@Override
 	public void load()
 	{
-		_reasoner = new OpenlletReasonerFactory().createReasoner(_baseOntology);
+		_reasoner = new OpenlletReasonerFactory().createReasoner(_ontology);
 		_reasoner.getKB().setTaxonomyBuilderProgressMonitor(OpenlletOptions.USE_CLASSIFICATION_MONITOR.create());
 	}
 
@@ -168,16 +184,15 @@ public class OWLAPILoader extends KBLoader implements FacetReasonerOWL, FacetMan
 			final IRI fileIRI = IRI.create(file);
 			_iriMapper.addAllowedIRI(fileIRI);
 
-			if (_loadSingleFile)
-				// we are loading a single file so we can load it directly
-				_baseOntology = _manager.loadOntologyFromOntologyDocument(fileIRI);
+			if (_loadSingleFile) // we are loading a single file so we can load it directly
+				_ontology = _manager.loadOntologyFromOntologyDocument(fileIRI);
 			else
 			{
 				// loading multiple files so each input file should be added as
 				// an import to the base ontology we created
 				final OWLOntology importOnt = _manager.loadOntologyFromOntologyDocument(fileIRI);
 				final OWLImportsDeclaration declaration = _manager.getOWLDataFactory().getOWLImportsDeclaration(importOnt.getOntologyID().getOntologyIRI().get());
-				_manager.applyChange(new AddImport(_baseOntology, declaration));
+				_manager.applyChange(new AddImport(_ontology, declaration));
 			}
 		}
 		catch (final IllegalArgumentException e)
@@ -212,13 +227,12 @@ public class OWLAPILoader extends KBLoader implements FacetReasonerOWL, FacetMan
 	@Override
 	public void clear()
 	{
-
 		_iriMapper.clear();
 		_manager.clearOntologies();
 
 		try
 		{
-			_baseOntology = _manager.createOntology();
+			_ontology = _manager.createOntology();
 		}
 		catch (final OWLOntologyCreationException e)
 		{

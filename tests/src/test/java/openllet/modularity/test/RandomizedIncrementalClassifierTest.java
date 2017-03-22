@@ -51,13 +51,13 @@ public abstract class RandomizedIncrementalClassifierTest extends AbstractModula
 	private void classifyCorrectnessTest(final String file)
 	{
 		final int n = 5;
-		final OWLOntology loadedOntology = OntologyUtils.loadOntology("file:" + file, false);
+		final OWLOntology loadedOntology = OntologyUtils.loadOntology(_manager, "file:" + file, false);
 
 		final List<OWLAxiom> axioms = new ArrayList<>(TestUtils.selectRandomAxioms(loadedOntology, n * 2));
 		final int size = axioms.size();
 
 		// Delete 5 axioms before the test
-		OntologyUtils.removeAxioms(loadedOntology, axioms.subList(0, n));
+		loadedOntology.remove(axioms.subList(0, n));
 
 		// Update test will add n axioms and remove n axioms
 		final List<OWLAxiom> additions = axioms.subList(0, n);

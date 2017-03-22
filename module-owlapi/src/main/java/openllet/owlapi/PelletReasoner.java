@@ -323,6 +323,12 @@ public class PelletReasoner implements OpenlletReasoner
 	}
 
 	@Override
+	public OWLManagerGroup getGroup()
+	{
+		return null;
+	}
+
+	@Override
 	public OWLDataFactory getFactory()
 	{
 		return _factory;
@@ -1128,7 +1134,7 @@ public class PelletReasoner implements OpenlletReasoner
 
 	/**
 	 * Make sure the reasoner is ready to answer queries. This function does not process changes but if changes processed earlier required a refresh this
-	 * funciton will call {@link #refresh()}.
+	 * function will call {@link #refresh()}.
 	 */
 	private void refreshCheck()
 	{

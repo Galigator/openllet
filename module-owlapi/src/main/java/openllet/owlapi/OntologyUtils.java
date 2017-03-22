@@ -40,25 +40,31 @@ import org.semanticweb.owlapi.model.parameters.Imports;
  *
  * @author Evren Sirin
  */
+
 public class OntologyUtils
 {
-	private static OWLOntologyManager _manager = OWL._manager;
+	@Deprecated
+	private static final OWLOntologyManager _manager = OWL._manager;
 
+	@Deprecated
 	public static void addAxioms(final OWLOntology ontology, final Collection<? extends OWLAxiom> axioms)
 	{
 		addAxioms(ontology, axioms.stream());
 	}
 
+	@Deprecated
 	public static void addAxioms(final OWLOntology ontology, final Stream<? extends OWLAxiom> axioms)
 	{
 		updateOntology(ontology, axioms, true);
 	}
 
+	@Deprecated
 	public static void addAxioms(final OWLOntology ontology, final OWLAxiom... axioms)
 	{
 		addAxioms(ontology, Arrays.asList(axioms));
 	}
 
+	@Deprecated
 	public static boolean containsClass(final Set<Set<OWLClass>> classes, final OWLClass cls)
 	{
 		for (final Set<OWLClass> set : classes)
@@ -79,16 +85,19 @@ public class OntologyUtils
 		return axiom.getSignature();
 	}
 
+	@Deprecated
 	public static Stream<OWLEntity> signature(final OWLAxiom axiom)
 	{
 		return axiom.signature();
 	}
 
+	@Deprecated
 	public static OWLOntologyManager getOWLOntologyManager()
 	{
 		return _manager;
 	}
 
+	@Deprecated
 	public static void clearOWLOntologyManager()
 	{
 		_manager.clearOntologies();
@@ -100,11 +109,17 @@ public class OntologyUtils
 	 * @param uri the ontology uri
 	 * @return the ontology
 	 */
+	@Deprecated
 	public static OWLOntology loadOntology(final String uri)
+	{
+		return loadOntology(_manager, uri);
+	}
+
+	public static OWLOntology loadOntology(final OWLOntologyManager manager, final String uri)
 	{
 		try
 		{
-			return _manager.loadOntology(IRI.create(uri));
+			return manager.loadOntology(IRI.create(uri));
 		}
 		catch (final OWLOntologyCreationException e)
 		{
@@ -118,11 +133,17 @@ public class OntologyUtils
 	 * @param inputStream input ontology
 	 * @return the ontology
 	 */
+	@Deprecated
 	public static OWLOntology loadOntology(final InputStream inputStream)
+	{
+		return loadOntology(_manager, inputStream);
+	}
+
+	public static OWLOntology loadOntology(final OWLOntologyManager manager, final InputStream inputStream)
 	{
 		try
 		{
-			return _manager.loadOntologyFromOntologyDocument(inputStream);
+			return manager.loadOntologyFromOntologyDocument(inputStream);
 		}
 		catch (final OWLOntologyCreationException e)
 		{
@@ -138,12 +159,18 @@ public class OntologyUtils
 	 * @param withAnnotations if <code>false</code> removes all annotation axioms from the ontology, otherwise leaves the ontology intact
 	 * @return the ontology
 	 */
+	@Deprecated
 	public static OWLOntology loadOntology(final String uri, final boolean withAnnotations)
 	{
-		final OWLOntology ont = loadOntology(uri);
+		return loadOntology(_manager, uri, withAnnotations);
+	}
+
+	public static OWLOntology loadOntology(final OWLOntologyManager manager, final String uri, final boolean withAnnotations)
+	{
+		final OWLOntology ont = loadOntology(manager, uri);
 
 		if (!withAnnotations)
-			removeAllAnnotations(ont, _manager);
+			removeAllAnnotations(ont, manager);
 
 		return ont;
 	}
@@ -156,12 +183,18 @@ public class OntologyUtils
 	 * @param withAnnotations if <code>false</code> removes all annotation axioms from the ontology, otherwise leaves the ontology intact
 	 * @return the ontology
 	 */
+	@Deprecated
 	public static OWLOntology loadOntology(final InputStream inputStream, final boolean withAnnotations)
 	{
-		final OWLOntology ont = loadOntology(inputStream);
+		return loadOntology(_manager, inputStream, withAnnotations);
+	}
+
+	public static OWLOntology loadOntology(final OWLOntologyManager manager, final InputStream inputStream, final boolean withAnnotations)
+	{
+		final OWLOntology ont = loadOntology(manager, inputStream);
 
 		if (!withAnnotations)
-			removeAllAnnotations(ont, _manager);
+			removeAllAnnotations(ont, manager);
 
 		return ont;
 	}
@@ -194,11 +227,13 @@ public class OntologyUtils
 		updateOntology(ontology, axioms, false);
 	}
 
+	@Deprecated
 	public static void removeAxioms(final OWLOntology ontology, final OWLAxiom... axioms)
 	{
 		removeAxioms(ontology, Arrays.asList(axioms));
 	}
 
+	@Deprecated
 	public static void save(final OWLOntology ont, final String path) throws OWLOntologyStorageException
 	{
 		_manager.saveOntology(ont, IRI.create(new File(path).toURI()));

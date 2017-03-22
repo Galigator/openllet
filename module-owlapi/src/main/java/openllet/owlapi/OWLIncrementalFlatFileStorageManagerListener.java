@@ -91,7 +91,7 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 		_directory = directory;
 		_owlManagerGroup = owlManagerGroup;
 
-		_owlManagerGroup.loadDirectory(_directory, _owlManagerGroup.getStorageManager(), (m, f) ->
+		_owlManagerGroup.loadDirectory(_directory, _owlManagerGroup.getPersistentManager(), (m, f) ->
 		{
 			final List<OWLAxiom> axioms = new ArrayList<>();
 			final OWLOntology ontology;
@@ -154,7 +154,7 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 				_changed.clear();
 			}
 
-			_owlManagerGroup.getStorageManager().ontologies()//
+			_owlManagerGroup.getPersistentManager().ontologies()//
 					.parallel()// Yes we can !
 					.filter(ontology -> ontology.getOntologyID().getOntologyIRI().isPresent())//
 					.filter(ontology -> changed.contains(ontology.getOntologyID())) //
@@ -316,7 +316,7 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 
 	private class DeltaReader extends Reader implements Iterator<OWLOntologyChange>
 	{
-		private final OWLOntologyManager _manager = _owlManagerGroup.getStorageManager();
+		private final OWLOntologyManager _manager = _owlManagerGroup.getPersistentManager();
 		private final BufferedReader _in;
 
 		private volatile char[] _data;

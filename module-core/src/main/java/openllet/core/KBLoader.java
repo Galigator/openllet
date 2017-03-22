@@ -8,10 +8,10 @@
 
 package openllet.core;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.core.utils.FileUtils;
 import openllet.shared.tools.Log;
+import openllet.shared.tools.Logging;
 
 /**
  * <p>
@@ -29,15 +29,17 @@ import openllet.shared.tools.Log;
  *
  * @author Evren Sirin
  */
-public abstract class KBLoader
+public abstract class KBLoader implements Logging
 {
 	public static final Logger _logger = Log.getLogger(KBLoader.class);
 
-	protected String _inputFormat;
-
-	public KBLoader()
+	@Override
+	public Logger getLogger()
 	{
+		return _logger;
 	}
+
+	protected String _inputFormat;
 
 	/**
 	 * Resets the loader and clear any previously loaded ontologies.
@@ -81,15 +83,13 @@ public abstract class KBLoader
 	 */
 	public void parse(final String... fileNames)
 	{
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Parsing (" + fileNames.length + ") files");
+		_logger.fine(() -> "Parsing (" + fileNames.length + ") files");
 		for (final String fileName : fileNames)
 		{
 			final String fileURI = FileUtils.getFileURI(fileName);
 			parseFile(fileURI);
 		}
-		if (_logger.isLoggable(Level.INFO))
-			_logger.fine("Parsing done.");
+		_logger.info("Parsing done.");
 	}
 
 	/**

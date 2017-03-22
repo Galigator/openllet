@@ -10,14 +10,12 @@ import static org.junit.Assert.assertTrue;
 
 import openllet.atom.OpenError;
 import openllet.jena.PelletReasonerFactory;
-import openllet.owlapi.OntologyUtils;
 import openllet.owlapi.OpenlletReasoner;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
-import org.junit.After;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -102,11 +100,5 @@ public class SWRLAbstract
 	private static String url(final String filename)
 	{
 		return _base + filename;
-	}
-
-	@After
-	public void after()
-	{
-		OntologyUtils.clearOWLOntologyManager();
 	}
 }

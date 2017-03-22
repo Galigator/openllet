@@ -37,53 +37,53 @@ public class OWLTools extends OWLGenericTools
 	 */
 	public OWLTools(final OWLOntologyID ontologyID) throws OWLOntologyCreationException
 	{
-		super(OWLUtils.getOwlManagerGroup(), ontologyID);
+		super(OWL._managerGroup, ontologyID);
 	}
 
 	public OWLTools(final OWLOntologyID ontologyID, final boolean isVolatile) throws OWLOntologyCreationException
 	{
-		super(OWLUtils.getOwlManagerGroup(), ontologyID, isVolatile);
+		super(OWL._managerGroup, ontologyID, isVolatile);
 	}
 
 	public OWLTools(final IRI ontologyIRI, final double version) throws OWLOntologyCreationException
 	{
-		super(OWLUtils.getOwlManagerGroup(), ontologyIRI, version);
+		super(OWL._managerGroup, ontologyIRI, version);
 	}
 
 	public OWLTools(final IRI ontologyIRI, final double version, final boolean isVolatile) throws OWLOntologyCreationException
 	{
-		super(OWLUtils.getOwlManagerGroup(), ontologyIRI, version, isVolatile);
+		super(OWL._managerGroup, ontologyIRI, version, isVolatile);
 	}
 
 	public OWLTools(final IRI ontologyIRI, final boolean isVolatile) throws OWLOntologyCreationException
 	{
-		super(OWLUtils.getOwlManagerGroup(), ontologyIRI, isVolatile);
+		super(OWL._managerGroup, ontologyIRI, isVolatile);
 	}
 
 	protected OWLTools(final InputStream is) throws OWLOntologyCreationException
 	{
-		super(OWLUtils.getOwlManagerGroup(), is);
+		super(OWL._managerGroup, is);
 	}
 
 	public OWLTools(final OWLOntologyManager manager, final OWLOntology ontology)
 	{
-		super(OWLUtils.getOwlManagerGroup(), manager, ontology);
+		super(OWL._managerGroup, manager, ontology);
 	}
 
 	public OWLTools(final OWLOntologyManager manager, final File file) throws OWLOntologyCreationException
 	{
-		super(OWLUtils.getOwlManagerGroup(), manager, file);
+		super(OWL._managerGroup, manager, file);
 	}
 
 	// Raw create
 	public OWLTools(final OWLOntology ontology, final OWLOntologyManager manager, final Map<String, String> namespaces)
 	{
-		super(OWLUtils.getOwlManagerGroup(), ontology, manager, namespaces);
+		super(OWL._managerGroup, ontology, manager, namespaces);
 	}
 
 	public OWLTools(final File file) throws Exception
 	{
-		super(OWLUtils.getOwlManagerGroup(), file);
+		super(OWL._managerGroup, file);
 	}
 
 	// Clone create

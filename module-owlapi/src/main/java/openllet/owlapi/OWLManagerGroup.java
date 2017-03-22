@@ -5,10 +5,8 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
 import openllet.shared.tools.Log;
 import org.semanticweb.owlapi.apibinding.OWLManager;
-import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
@@ -18,13 +16,13 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
  *
  * @since 2.5.1
  */
-public class OWLManagerGroup implements AutoCloseable
+public class OWLManagerGroup implements OWLGroup
 {
 	private static final Logger _logger = Log.getLogger(OWLManagerGroup.class);
 
 	public volatile Optional<File> _ontologiesDirectory = Optional.empty();
 	public volatile OWLOntologyManager _volatileManager = null;
-	public volatile OWLOntologyManager _storageManager = null;
+	public volatile OWLOntologyManager _persistentManager = null;
 	private volatile OWLIncrementalFlatFileStorageManagerListener _storageListener;
 
 	public OWLManagerGroup()
@@ -40,20 +38,29 @@ public class OWLManagerGroup implements AutoCloseable
 	public OWLManagerGroup(final Optional<OWLOntologyManager> volatileManager, final Optional<OWLOntologyManager> storageManager)
 	{
 		volatileManager.ifPresent(m -> _volatileManager = m);
-		storageManager.ifPresent(m -> _storageManager = m);
+		storageManager.ifPresent(m -> _persistentManager = m);
 	}
 
+	@Override
+	public Logger getLogger()
+	{
+		return _logger;
+	}
+
+	@Override
 	public boolean setOntologiesDirectory(final File directory)
 	{
 		_ontologiesDirectory = Optional.ofNullable(directory);
 		return _ontologiesDirectory.isPresent();
 	}
 
+	@Override
 	public Optional<File> getOntologiesDirectory()
 	{
 		return _ontologiesDirectory;
 	}
 
+	@Override
 	public OWLOntologyManager getVolatileManager()
 	{
 		if (null == _volatileManager)
@@ -66,23 +73,25 @@ public class OWLManagerGroup implements AutoCloseable
 	 * @return The storage manager if you have call setOntologiesDirectory() before; else it throw a RuntimeException.
 	 * @since 2.5.1
 	 */
-	public synchronized OWLOntologyManager getStorageManager()
+	@Override
+	public synchronized OWLOntologyManager getPersistentManager()
 	{
-		if (null == _storageManager)
+		if (null == _persistentManager)
 		{
-			_storageManager = OWLManager.createConcurrentOWLOntologyManager();
+			_persistentManager = OWLManager.createConcurrentOWLOntologyManager();
 
 			if (!getOntologiesDirectory().isPresent())
 			{
 				final String msg = "You should define a directory for stored ontologies before using stored ontologies.";
-				_logger.log(Level.SEVERE, msg, new OWLException(msg));
-				throw new OWLException(msg);
+				final OWLException ex = new OWLException(msg);
+				Log.error(getLogger(), msg, ex);
+				throw ex;
 			}
 
 			try
 			{
 				_storageListener = new OWLIncrementalFlatFileStorageManagerListener(getOntologiesDirectory().get(), new File(getOntologiesDirectory().get().getPath() + File.separator + OWLHelper._delta), this);
-				getStorageManager().addOntologyChangeListener(_storageListener);
+				getPersistentManager().addOntologyChangeListener(_storageListener);
 			}
 			catch (final Exception e)
 			{
@@ -90,9 +99,22 @@ public class OWLManagerGroup implements AutoCloseable
 			}
 		}
 
-		return _storageManager;
+		return _persistentManager;
 	}
 
+	@Override
+	public boolean havePersistentManager()
+	{
+		return null != _persistentManager;
+	}
+
+	@Override
+	public boolean haveVolatileManager()
+	{
+		return null != _volatileManager;
+	}
+
+	@Override
 	public void loadDirectory(final File directory, final OWLOntologyManager manager, final BiFunction<OWLOntologyManager, File, Optional<OWLOntology>> loader)
 	{
 		if (!directory.exists())
@@ -111,7 +133,7 @@ public class OWLManagerGroup implements AutoCloseable
 					loader.apply(manager, file)// The side effect is wanted.
 							.ifPresent(ontology ->
 							{
-								OWLHelper.setFormat(manager, ontology);
+								OWLHelper.setFormat(ontology);
 								_logger.info(ontology.getOntologyID() + "loaded from " + file);
 							});//
 				}
@@ -123,9 +145,10 @@ public class OWLManagerGroup implements AutoCloseable
 				_logger.info(() -> file + " will not be load.");
 	}
 
+	@Override
 	public void loadDirectory(final File directory)
 	{
-		loadDirectory(directory, getStorageManager(), (m, f) ->
+		loadDirectory(directory, getPersistentManager(), (m, f) ->
 		{
 			try
 			{
@@ -139,85 +162,7 @@ public class OWLManagerGroup implements AutoCloseable
 		});
 	}
 
-	/**
-	 * Seek the asked ontology. First in the volatile ontologies, then in the stored ontologies that are already stored.
-	 *
-	 * @param ontology the iri of the ontology you are looking for.
-	 * @param version of the ontology
-	 * @param isVolatile
-	 * @return an ontology if found.
-	 * @since 2.6.0
-	 */
-	public Optional<OWLHelper> getOntology(final IRI ontology, final double version, final boolean isVolatile)
-	{
-		return getOntology(OWLHelper.getVersion(ontology, version), isVolatile);
-	}
-
-	/**
-	 * Seek the asked ontology. First in the volatile ontologies, then in the stored ontologies that are already stored.
-	 *
-	 * @param ontologyID the id of the ontology you are looking for.
-	 * @param isVolatile
-	 * @return an ontology if found.
-	 * @since 2.6.0
-	 */
-	public Optional<OWLHelper> getOntology(final OWLOntologyID ontologyID, final boolean isVolatile)
-	{
-		try
-		{
-			return Optional.of(new OWLGenericTools(this, ontologyID));
-		}
-		catch (final Exception e)
-		{
-			_logger.log(Level.WARNING, "Can't load " + ontologyID + " in volatile=" + isVolatile + " mode", e);
-			return Optional.empty();
-		}
-	}
-
-	/**
-	 * Seek the asked ontology. First in the volatile ontologies, then in the stored ontologies that are already stored.
-	 *
-	 * @param ontologyID the id of the ontology you are looking for.
-	 * @return an ontology if found.
-	 * @since 2.5.1
-	 */
-	public Optional<OWLOntology> getOntology(final OWLOntologyID ontologyID)
-	{
-		final Optional<OWLOntology> ontology = getOntology(getVolatileManager(), ontologyID);
-		return ontology.isPresent() ? ontology : getOntology(getStorageManager(), ontologyID);
-	}
-
-	/**
-	 * The standard 'getOntology' from the OWLManager don't really take care of versionning. This function is here to enforce the notion of version
-	 *
-	 * @param manager to look into (mainly storage or volatile)
-	 * @param ontologyID with version information
-	 * @return the ontology if already load into the given manager.
-	 * @since 2.5.1
-	 */
-	public static Optional<OWLOntology> getOntology(final OWLOntologyManager manager, final OWLOntologyID ontologyID)
-	{
-		final Optional<IRI> ontIri = ontologyID.getOntologyIRI();
-		if (!ontIri.isPresent())
-			return Optional.empty();
-
-		Stream<OWLOntology> ontologies = manager.versions(ontIri.get());
-
-		final Optional<IRI> verIri = ontologyID.getVersionIRI();
-		if (verIri.isPresent())
-		{
-			final IRI version = verIri.get();
-			ontologies = ontologies.filter(//
-					candidat -> candidat.getOntologyID()//
-							.getVersionIRI()//
-							.map(version::equals)//
-							.orElse(false)//
-			);
-		}
-
-		return ontologies.findAny();
-	}
-
+	@Override
 	public String ontology2filename(final OWLOntologyID ontId)
 	{
 		if (_ontologiesDirectory.isPresent())
@@ -225,14 +170,16 @@ public class OWLManagerGroup implements AutoCloseable
 		throw new OWLException("Storage directory should be define to enable loading of ontology by iri.");
 	}
 
+	@Override
 	public String ontology2filename(final OWLOntology ontology)
 	{
 		return ontology2filename(ontology.getOntologyID());
 	}
 
+	@Override
 	public void check(final OWLOntologyManager manager)
 	{
-		if (manager == _volatileManager || manager == _storageManager)
+		if (manager == _volatileManager || manager == _persistentManager)
 			return;
 		throw new OWLException("The given manager isn't know from in the OWLManagerGroup. Check your manager usage.");
 	}
@@ -256,9 +203,9 @@ public class OWLManagerGroup implements AutoCloseable
 	@Override
 	public void close()
 	{
-		if (this == OWLUtils.getOwlManagerGroup())
+		if (this == OWL._managerGroup)
 		{
-			_logger.log(Level.WARNING, "You try to close a static resource that should never be closed.");
+			_logger.log(Level.WARNING, "You try to close a static resource that should never be closed : ignore");
 			return;
 		}
 
@@ -268,13 +215,14 @@ public class OWLManagerGroup implements AutoCloseable
 			_volatileManager.getIRIMappers().clear();
 			_volatileManager = null; // Mark for GC.
 		}
-		if (_storageManager != null)
+		if (_persistentManager != null)
 		{
-			_storageManager.removeOntologyChangeListener(_storageListener);
+			_persistentManager.removeOntologyChangeListener(_storageListener);
 			_storageListener.close();
-			_storageManager.clearOntologies();
-			_storageManager.getIRIMappers().clear();
-			_storageManager = null; // Mark for GC.
+			_persistentManager.clearOntologies();
+			_persistentManager.getIRIMappers().clear();
+			_persistentManager = null; // Mark for GC.
 		}
 	}
+
 }

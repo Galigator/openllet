@@ -84,7 +84,7 @@ public class PersistenceModularityTest extends AbstractModularityTest
 
 	private void testPersistence(final String file) throws IOException
 	{
-		final OWLOntology ontology = OntologyUtils.loadOntology("file:" + file, false);
+		final OWLOntology ontology = OntologyUtils.loadOntology(_manager, "file:" + file, false);
 		try
 		{
 			testPersistence(ontology);
