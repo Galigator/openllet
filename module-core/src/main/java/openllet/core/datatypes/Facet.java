@@ -24,16 +24,14 @@ import openllet.core.utils.Namespaces;
  */
 public interface Facet
 {
-
 	public abstract ATermAppl getName();
 
 	public static class Registry
 	{
 
-		private static final Map<ATermAppl, Facet> map;
+		private static final Map<ATermAppl, Facet> map = new HashMap<>();
 		static
 		{
-			map = new HashMap<>();
 			for (final Facet f : XSD.values())
 				map.put(f.getName(), f);
 		}
@@ -58,17 +56,17 @@ public interface Facet
 	{
 		MAX_EXCLUSIVE("maxExclusive"), MAX_INCLUSIVE("maxInclusive"), MIN_EXCLUSIVE("minExclusive"), MIN_INCLUSIVE("minInclusive"), LENGTH("length"), MIN_LENGTH("minLength"), MAX_LENGTH("maxLength"), PATTERN("pattern");
 
-		private final ATermAppl name;
+		private final ATermAppl _name;
 
 		private XSD(final String localName)
 		{
-			name = ATermUtils.makeTermAppl(Namespaces.XSD + localName);
+			_name = ATermUtils.makeTermAppl(Namespaces.XSD + localName);
 		}
 
 		@Override
 		public ATermAppl getName()
 		{
-			return name;
+			return _name;
 		}
 
 	}

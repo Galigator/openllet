@@ -24,7 +24,6 @@ import openllet.core.utils.URIUtils;
  */
 public class IndividualPropertyAtom extends BinaryAtom<ATermAppl, AtomIObject, AtomIObject>
 {
-
 	public IndividualPropertyAtom(final ATermAppl predicate, final AtomIObject subject, final AtomIObject object)
 	{
 		super(predicate, subject, object);

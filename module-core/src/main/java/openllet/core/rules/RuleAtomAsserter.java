@@ -41,17 +41,18 @@ import openllet.core.utils.ATermUtils;
  */
 public class RuleAtomAsserter implements RuleAtomVisitor
 {
-	private ABox _abox;
-	private CompletionStrategy _strategy;
+	private volatile ABox _abox;
+	private volatile CompletionStrategy _strategy;
 
-	private VariableBinding _binding;
-	private DependencySet _ds;
+	private volatile VariableBinding _binding;
+	private volatile DependencySet _ds;
 	private boolean _negated;
 
 	private boolean _asserted;
 
 	public RuleAtomAsserter()
 	{
+		// empty
 	}
 
 	public boolean assertAtom(final RuleAtom atom, final VariableBinding binding, final DependencySet ds, final boolean negated, final ABox abox, final CompletionStrategy strategy)

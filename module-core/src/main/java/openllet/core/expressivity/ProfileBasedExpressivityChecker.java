@@ -21,7 +21,7 @@ import openllet.core.KnowledgeBase;
  */
 public abstract class ProfileBasedExpressivityChecker
 {
-	protected KnowledgeBase _KB;
+	protected final KnowledgeBase _KB;
 
 	public ProfileBasedExpressivityChecker(final KnowledgeBase kb)
 	{

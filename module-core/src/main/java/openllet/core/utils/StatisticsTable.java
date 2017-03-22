@@ -20,7 +20,7 @@ public class StatisticsTable<ROW, COL>
 
 	private static final Logger _logger = Log.getLogger(StatisticsTable.class);
 
-	private final Map<COL, Map<ROW, Number>> statistics = new HashMap<>();
+	private final Map<COL, Map<ROW, Number>> _statistics = new HashMap<>();
 
 	private final List<COL> _cols = new ArrayList<>();
 	private final List<ROW> _rows = new ArrayList<>();
@@ -29,12 +29,12 @@ public class StatisticsTable<ROW, COL>
 
 	public void add(final ROW row, final COL col, final Number stat)
 	{
-		Map<ROW, Number> getCol = statistics.get(col);
+		Map<ROW, Number> getCol = _statistics.get(col);
 
 		if (getCol == null)
 		{
 			getCol = new HashMap<>();
-			statistics.put(col, getCol);
+			_statistics.put(col, getCol);
 			_cols.add(col);
 		}
 
@@ -94,7 +94,7 @@ public class StatisticsTable<ROW, COL>
 			final List<Number> rowData = new ArrayList<>();
 			for (final COL col : _cols)
 			{
-				final Map<ROW, Number> map = statistics.get(col);
+				final Map<ROW, Number> map = _statistics.get(col);
 				final Number stat = map.get(row);
 
 				if (stat == null)

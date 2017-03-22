@@ -28,7 +28,6 @@ import openllet.core.datatypes.exceptions.InvalidConstrainingFacetException;
 
 public class RestrictedBooleanDatatype implements RestrictedDatatype<Boolean>
 {
-
 	private final Datatype<Boolean> _dt;
 	private final boolean _permitFalse;
 	private final boolean _permitTrue;

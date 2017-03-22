@@ -32,10 +32,12 @@ public class RuleBranch extends Branch
 	private final VariableBinding _binding;
 	private final List<RuleAtom> _atoms;
 	private final int _bodyAtomCount;
-	private int[] _order;
-	private DependencySet[] _prevDS;
+	private final int[] _order;
+	private final DependencySet[] _prevDS;
 
-	public RuleBranch(final ABox abox, final CompletionStrategy completion, final RuleAtomAsserter ruleAtomAsserter, final List<RuleAtom> atoms, final VariableBinding binding, final int bodyAtomCount, final DependencySet ds)
+	public RuleBranch(final ABox abox, final CompletionStrategy completion, final RuleAtomAsserter ruleAtomAsserter, //
+			final List<RuleAtom> atoms, final VariableBinding binding, final int bodyAtomCount, //
+			final DependencySet ds)
 	{
 		super(abox, completion, ds, atoms.size());
 
@@ -43,10 +45,28 @@ public class RuleBranch extends Branch
 		_atoms = atoms;
 		_bodyAtomCount = bodyAtomCount;
 		_binding = binding;
+
 		_prevDS = new DependencySet[atoms.size()];
+
 		_order = new int[atoms.size()];
 		for (int i = 0; i < _order.length; i++)
 			_order[i] = i;
+	}
+
+	public RuleBranch(final RuleBranch rb, final ABox abox)
+	{
+		super(abox, rb._atoms.size(), rb);
+
+		_ruleAtomAsserter = rb._ruleAtomAsserter;
+		_atoms = rb._atoms;
+		_binding = rb._binding;
+		_bodyAtomCount = rb._bodyAtomCount;
+
+		_prevDS = new DependencySet[rb._prevDS.length];
+		System.arraycopy(rb._prevDS, 0, _prevDS, 0, rb._tryNext);
+
+		_order = new int[rb._order.length];
+		System.arraycopy(rb._order, 0, _order, 0, rb._order.length);
 	}
 
 	@Override
@@ -55,21 +75,24 @@ public class RuleBranch extends Branch
 		return null;
 	}
 
+	@Deprecated
 	@Override
 	public RuleBranch copyTo(final ABox abox)
 	{
-		final RuleBranch b = new RuleBranch(abox, _strategy, _ruleAtomAsserter, _atoms, _binding, _bodyAtomCount, getTermDepends());
-
-		b.setAnonCount(getAnonCount());
-		b.setNodeCount(_nodeCount);
-		b.setBranchIndexInABox(_branchIndexInABox);
-		b.setTryNext(_tryNext);
-		b._prevDS = new DependencySet[_prevDS.length];
-		System.arraycopy(_prevDS, 0, b._prevDS, 0, _tryNext);
-		b._order = new int[_order.length];
-		System.arraycopy(_order, 0, b._order, 0, _order.length);
-
-		return b;
+		return new RuleBranch(this, abox);
+		//
+		//		final RuleBranch b = new RuleBranch(abox, _strategy, _ruleAtomAsserter, _atoms, _binding, _bodyAtomCount, getTermDepends());
+		//
+		//		b.setAnonCount(getAnonCount());
+		//		b.setNodeCount(_nodeCount);
+		//		b.setBranchIndexInABox(getBranchIndexInABox());
+		//		b.setTryNext(_tryNext);
+		//		b._prevDS = new DependencySet[_prevDS.length];
+		//		System.arraycopy(_prevDS, 0, b._prevDS, 0, _tryNext);
+		//		b._order = new int[_order.length];
+		//		System.arraycopy(_order, 0, b._order, 0, _order.length);
+		//
+		//		return b;
 	}
 
 	@Override
@@ -85,46 +108,9 @@ public class RuleBranch extends Branch
 	{
 		_abox.incrementBranch();
 
-		// int[] stats = null;
-		// if( PelletOptions.USE_DISJUNCT_SORTING ) {
-		// stats = _abox.getDisjBranchStats().get(_atoms);
-		// if(stats == null) {
-		// stats = new int[_tryCount];
-		// Arrays.fill( stats, 0 );
-		// _abox.getDisjBranchStats().put(_atoms, stats);
-		// }
-		// if(_tryNext > 0) {
-		// stats[_order[_tryNext-1]]++;
-		// }
-		// if(stats != null) {
-		// int minIndex = _tryNext;
-		// int minValue = stats[_tryNext];
-		// for(int i = _tryNext + 1; i < stats.length; i++) {
-		// boolean tryEarlier = ( stats[i] < minValue );
-		//
-		// if( tryEarlier ) {
-		// minIndex = i;
-		// minValue = stats[i];
-		// }
-		// }
-		// if(minIndex != _tryNext) {
-		// Collections.swap( _atoms, minIndex, _tryNext );
-		//
-		// _order[minIndex] = _tryNext;
-		// _order[_tryNext] = minIndex;
-		// }
-		// }
-		// }
-
 		for (; _tryNext < _tryCount; _tryNext++)
 		{
 			final RuleAtom atom = _atoms.get(_tryNext);
-
-			//			if( PelletOptions.USE_SEMANTIC_BRANCHING ) {
-			//				for( int m = 0; m < _tryNext; m++ )
-			//					_ruleAtomAsserter
-			//							.assertAtom( _atoms.get( m ), _binding, _prevDS[m], m >= _bodyAtomCount );
-			//			}
 
 			DependencySet ds = null;
 			if (_tryNext == _tryCount - 1 && !OpenlletOptions.SATURATE_TABLEAU)
@@ -134,8 +120,7 @@ public class RuleBranch extends Branch
 				for (int m = 0; m < _tryNext; m++)
 					ds = ds.union(_prevDS[m], _abox.doExplanation());
 
-				// CHW - added for incremental reasoning and rollback through
-				// deletions
+				// CHW - added for incremental reasoning and rollback through deletions
 				if (OpenlletOptions.USE_INCREMENTAL_DELETION)
 					ds.setExplain(getTermDepends().getExplain());
 				else
@@ -161,19 +146,8 @@ public class RuleBranch extends Branch
 				if (_logger.isLoggable(Level.FINE))
 					_logger.fine("CLASH: Branch " + getBranchIndexInABox() + " " + Clash.unexplained(null, clashDepends) + "!");
 
-				// if( PelletOptions.USE_DISJUNCT_SORTING ) {
-				// if( stats == null ) {
-				// stats = new int[disj.length];
-				// for( int i = 0; i < disj.length; i++ )
-				// stats[i] = 0;
-				// _abox.getDisjBranchStats().put( _atoms, stats );
-				// }
-				// stats[_order[_tryNext]]++;
-				// }
-
 				// do not restore if we do not have any more branches to try.
-				// after
-				// backtrack the correct _branch will restore it anyway. more
+				// after backtrack the correct _branch will restore it anyway. more
 				// importantly restore clears the clash info causing exceptions
 				if (_tryNext < _tryCount - 1 && clashDepends.contains(getBranchIndexInABox()))
 				{
@@ -208,8 +182,7 @@ public class RuleBranch extends Branch
 		// this code is not unreachable. if there are no branches left restore
 		// does not call this
 		// function, and the loop immediately returns when there are no branches
-		// left in this
-		// _disjunction. If this exception is thrown it shows a bug in the code.
+		// left in this _disjunction. If this exception is thrown it shows a bug in the code.
 		throw new InternalReasonerException("This exception should not be thrown!");
 	}
 

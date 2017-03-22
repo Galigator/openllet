@@ -30,13 +30,12 @@ import openllet.core.utils.ATermUtils;
  */
 public class Rule
 {
-
 	private final ATermAppl _name;
 
 	private final List<? extends RuleAtom> _body;// FIXME : use an ordered collection here.
 	private final List<? extends RuleAtom> _head;
 
-	private Set<ATermAppl> _explanation;
+	private volatile Set<ATermAppl> _explanation;
 
 	public Rule(final List<? extends RuleAtom> head, final List<? extends RuleAtom> body)
 	{

@@ -11,12 +11,6 @@ import java.util.Iterator;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -27,12 +21,7 @@ import java.util.Iterator;
  */
 public class HashIntSet extends AbstractIntSet
 {
-	private final HashSet<Integer> ints;
-
-	public HashIntSet()
-	{
-		ints = new HashSet<>();
-	}
+	private final HashSet<Integer> ints = new HashSet<>();
 
 	@Override
 	public void add(final int value)

@@ -33,11 +33,11 @@ import openllet.core.utils.Pair;
  */
 public class TransitionGraph<T>
 {
-	private State<T> _initialState; // the initial state for the TG
+	private volatile State<T> _initialState; // the initial state for the TG
 
 	private final Set<State<T>> _allStates; // set of all states in the TG
 
-	private Set<State<T>> _finalStates; // set of final states for the TG
+	private volatile Set<State<T>> _finalStates; // set of final states for the TG
 
 	private final Set<T> _alphabet; // set of all characters in TG
 

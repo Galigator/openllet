@@ -51,9 +51,7 @@ import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
 import openllet.atom.OpenError;
 import openllet.core.DependencySet;
-import openllet.core.IndividualIterator;
 import openllet.core.KnowledgeBase;
-import openllet.core.NodeMerge;
 import openllet.core.OpenlletOptions;
 import openllet.core.boxes.rbox.RBox;
 import openllet.core.boxes.rbox.Role;
@@ -105,7 +103,59 @@ import openllet.shared.tools.Log;
  */
 public class ABoxImpl implements ABox
 {
-	public final static Logger _logger = Log.getLogger(ABoxImpl.class);
+	private final static Logger _logger = Log.getLogger(ABoxImpl.class);
+
+	private final ABoxStats _stats = new ABoxStats();
+
+	/**
+	 * datatype reasoner used for checking the satisfiability of datatypes
+	 */
+	private final DatatypeReasoner _dtReasoner;
+
+	/** The KB to which this ABox belongs */
+	private final KnowledgeBase _kb;
+	private final BranchEffectTracker _branchEffects;
+	private final CompletionQueue _completionQueue;
+	private final IncrementalChangeTracker _incChangeTracker;
+
+	private final List<Branch> _branches;
+
+	/**
+	 * This is a list of node names. This list stores the individuals in the order they are created
+	 */
+	private final List<ATermAppl> _nodeList;
+
+	// pseudo model for this Abox. This is the ABox that results from
+	// completing to the original Abox
+	// private ABox pseudoModel;
+
+	private final Set<Clash> _assertedClashes;
+
+	private final List<NodeMerge> _toBeMerged;
+
+	private final Map<ATermAppl, int[]> _disjBranchStats;
+
+	/**
+	 * This is a list of _nodes. Each _node has a name expressed as an ATerm which is used as the key in the Hashtable. The value is the actual _node object
+	 */
+	private final Map<ATermAppl, Node> _nodes;
+
+	/** the current branch number */
+	private volatile int _branchIndex;
+
+	/** the last clash recorded */
+	private volatile Clash _clash;
+
+	/** if we are using copy on write, this is where to copy from */
+	private volatile ABox _sourceABox; // FIXME : sourceBox actively use null.
+
+	/**
+	 * cache of the last completion. it may be different from the pseudo model, e.g. type checking for individual adds one extra assertion last completion is
+	 * stored for caching the root nodes that was the result of
+	 */
+	private volatile ABox _lastCompletion;
+
+	private volatile Clash _lastClash;
 
 	/**
 	 * following two variables are used to generate names for newly generated individuals. so during rules are applied anon1, anon2, etc. will be generated.
@@ -113,22 +163,10 @@ public class ABoxImpl implements ABox
 	 */
 	private volatile int _anonCount = 0;
 
-	public final ABoxStats _stats = new ABoxStats();
+	private volatile boolean _keepLastCompletion;
 
-	/**
-	 * This is a list of _nodes. Each _node has a name expressed as an ATerm which is used as the key in the Hashtable. The value is the actual _node object
-	 */
-	protected final Map<ATermAppl, Node> _nodes;
-
-	/**
-	 * datatype reasoner used for checking the satisfiability of datatypes
-	 */
-	protected final DatatypeReasoner _dtReasoner;
-
-	/**
-	 * This is a list of node names. This list stores the individuals in the order they are created
-	 */
-	protected final List<ATermAppl> _nodeList;
+	// complete ABox means no more tableau rules are applicable
+	private volatile boolean _isComplete = false;
 
 	/**
 	 * Indicates if any of the completion rules has been applied to modify ABox
@@ -138,61 +176,20 @@ public class ABoxImpl implements ABox
 	private volatile boolean _doExplanation = false;
 
 	/**
-	 * cached satisfiability results the table maps every atomic concept A (and also its negation not(A)) to the root node of its completed tree. If a concept
-	 * is mapped to null value it means it is not satisfiable
-	 */
-	public volatile ConceptCache _cache;
-
-	// pseudo model for this Abox. This is the ABox that results from
-	// completing to the original Abox
-	// private ABox pseudoModel;
-
-	/**
-	 * cache of the last completion. it may be different from the pseudo model, e.g. type checking for individual adds one extra assertion last completion is
-	 * stored for caching the root nodes that was the result of
-	 */
-	private volatile ABox _lastCompletion;
-	private volatile boolean _keepLastCompletion;
-	private volatile Clash _lastClash;
-
-	// complete ABox means no more tableau rules are applicable
-	private volatile boolean _isComplete = false;
-
-	/** the last clash recorded */
-	private volatile Clash _clash;
-
-	private final Set<Clash> _assertedClashes;
-
-	/** the current branch number */
-	private volatile int _branchIndex; // Replace this by something resilient to multi-threading.
-	private final List<Branch> _branches;
-
-	private final List<NodeMerge> _toBeMerged;
-
-	private final Map<ATermAppl, int[]> _disjBranchStats;
-
-	/** if we are using copy on write, this is where to copy from */
-	private volatile ABox _sourceABox; // FIXME : sourceBox actively use null.
-
-	/**
 	 * return true if init() function is called. This indicates parsing is completed and ABox is ready for completion
 	 */
-	private boolean _initialized = false;
+	private volatile boolean _initialized = false;
 
-	/** The KB to which this ABox belongs */
-	private final KnowledgeBase _kb;
-
-	public volatile boolean _rulesNotApplied = false;
-
-	public volatile boolean _ranRete = false;
-	public volatile boolean _useRete = false;
-
-	private final BranchEffectTracker _branchEffects;
-	private final CompletionQueue _completionQueue;
-	private final IncrementalChangeTracker _incChangeTracker;
+	private volatile boolean _rulesNotApplied = false;
 
 	/** flag set when incrementally updating the abox with explicit assertions */
 	private volatile boolean _syntacticUpdate = false;
+
+	/**
+	 * cached satisfiability results the table maps every atomic concept A (and also its negation not(A)) to the root node of its completed tree. If a concept
+	 * is mapped to null value it means it is not satisfiable
+	 */
+	private volatile ConceptCache _cache;
 
 	@Override
 	public Logger getLogger()
@@ -273,6 +270,13 @@ public class ABoxImpl implements ABox
 			_incChangeTracker = new SimpleIncrementalChangeTracker();
 		else
 			_incChangeTracker = null;
+	}
+
+	public ABoxImpl(final KnowledgeBase kb, final boolean copyCache)
+	{
+		this(kb);
+		if (copyCache)
+			_cache = kb.getABox().getCache();
 	}
 
 	public ABoxImpl(final KnowledgeBase kb, final ABoxImpl abox, final ATermAppl extraIndividual, final boolean copyIndividuals)
@@ -746,7 +750,6 @@ public class ABoxImpl implements ABox
 	@Override
 	public Bool isKnownType(final Individual pNode, final ATermAppl concept, final Collection<ATermAppl> subs)
 	{
-		// Timer t = _kb.timers.startTimer( "isKnownType" );
 		Bool isType = isType(pNode, concept);
 		if (isType.isUnknown())
 		{
@@ -766,23 +769,17 @@ public class ABoxImpl implements ABox
 				{
 					isType = Bool.UNKNOWN;
 
-					//					boolean justSC = true;
-
 					final Collection<ATermAppl> axioms = _kb.getTBox().getAxioms(c);
 					LOOP: for (final ATermAppl axiom : axioms)
 					{
 						ATermAppl term = (ATermAppl) axiom.getArgument(1);
 
-						//						final AFun afun = axiom.getAFun();
-						//
-						//						if( !afun.equals( ATermUtils.SUBFUN ) ) {
-						//							justSC = false;
-						//						}
-
 						final boolean equivalent = axiom.getAFun().equals(ATermUtils.EQCLASSFUN);
 						if (equivalent)
 						{
-							final Iterator<ATermAppl> i = ATermUtils.isAnd(term) ? new MultiListIterator((ATermList) term.getArgument(0)) : Collections.singleton(term).iterator();
+							final Iterator<ATermAppl> i = ATermUtils.isAnd(term) ? //
+									new MultiListIterator((ATermList) term.getArgument(0)) : //
+									Collections.singleton(term).iterator();
 							Bool knownType = Bool.TRUE;
 							while (i.hasNext() && knownType.isTrue())
 							{
@@ -802,16 +799,12 @@ public class ABoxImpl implements ABox
 					// types of the _individual with a dependency. In this case,
 					// Node.hasObviousType returns unknown and changing it to
 					// false here is wrong.
-					//					 if( justSC && ATermUtils.isPrimitive( c ) ) {
-					//						return Bool.FALSE;
-					//					}
 
 					if (isType.isUnknown())
 						return Bool.UNKNOWN;
 				}
 			}
 		}
-		// t.stop();
 
 		return isType;
 	}
@@ -1949,10 +1942,8 @@ public class ABoxImpl implements ABox
 				final Individual ind1 = getIndividual(outer.getFirst());
 				final Individual ind2 = getIndividual(inner.getFirst());
 
-				// update syntactic assertions - currently i do not add this to
-				// the dependency _index
-				// now, as it will be added during the actual merge when the
-				// completion is performed
+				// update syntactic assertions - currently i do not add this to the dependency index
+				// now, as it will be added during the actual merge when the completion is performed
 				if (OpenlletOptions.USE_INCREMENTAL_DELETION)
 					_kb.getSyntacticAssertions().add(allDifferent);
 
@@ -2277,7 +2268,7 @@ public class ABoxImpl implements ABox
 			final EdgeList preds = node.getInEdges();
 			final boolean validPred = preds.size() == 1 || preds.size() == 2 && preds.hasEdgeFrom(node);
 			if (!validPred)
-				throw new InternalReasonerException("Invalid blockable _node: " + node + " " + node.getInEdges());
+				throw new InternalReasonerException("Invalid blockable node: " + node + " " + node.getInEdges());
 
 		}
 		else
@@ -2285,7 +2276,7 @@ public class ABoxImpl implements ABox
 			{
 				final ATermAppl nominal = ATermUtils.makeValue(node.getName());
 				if (!ATermUtils.isAnonNominal(node.getName()) && !node.hasType(nominal))
-					throw new InternalReasonerException("Invalid nominal _node: " + node + " " + node.getTypes());
+					throw new InternalReasonerException("Invalid nominal node: " + node + " " + node.getTypes());
 			}
 
 		for (final ATermAppl c : node.getDepends().keySet())
@@ -2308,11 +2299,11 @@ public class ABoxImpl implements ABox
 			final Edge edge = edges.edgeAt(e);
 			final Node succ = edge.getTo();
 			if (_nodes.get(succ.getName()) != succ)
-				throw new InternalReasonerException("Invalid edge to a non-existing _node: " + edge + " " + _nodes.get(succ.getName()) + "(" + _nodes.get(succ.getName()).hashCode() + ")" + succ + "(" + succ.hashCode() + ")");
+				throw new InternalReasonerException("Invalid edge to a non-existing node: " + edge + " " + _nodes.get(succ.getName()) + "(" + _nodes.get(succ.getName()).hashCode() + ")" + succ + "(" + succ.hashCode() + ")");
 			if (!succ.getInEdges().hasEdge(edge))
 				throw new InternalReasonerException("Invalid edge: " + edge);
 			if (succ.isMerged())
-				throw new InternalReasonerException("Invalid edge to a removed _node: " + edge + " " + succ.isMerged());
+				throw new InternalReasonerException("Invalid edge to a removed node: " + edge + " " + succ.isMerged());
 			final DependencySet ds = edge.getDepends();
 			if (ds.max() > _branchIndex || ds.getBranch() > _branchIndex)
 				throw new InternalReasonerException("Invalid ds: " + edge + " " + ds);

@@ -27,7 +27,6 @@ import openllet.core.utils.ATermUtils;
  */
 public abstract class UnaryAtom<A extends AtomObject> extends RuleAtomImpl<ATermAppl>
 {
-
 	private final A _argument;
 
 	public UnaryAtom(final ATermAppl predicate, final A argument)
@@ -52,5 +51,4 @@ public abstract class UnaryAtom<A extends AtomObject> extends RuleAtomImpl<ATerm
 	{
 		return ATermUtils.toString(getPredicate()) + "(" + getArgument() + ")";
 	}
-
 }

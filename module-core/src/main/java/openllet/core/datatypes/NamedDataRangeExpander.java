@@ -26,7 +26,6 @@ import openllet.core.utils.ATermUtils;
  */
 public class NamedDataRangeExpander extends ATermBaseVisitor
 {
-
 	private Map<ATermAppl, ATermAppl> _map;
 	private ATermAppl _ret;
 	private boolean _change;
@@ -39,10 +38,10 @@ public class NamedDataRangeExpander extends ATermBaseVisitor
 		if (map.isEmpty())
 			return input;
 
-		this._map = map;
+		_map = map;
 		try
 		{
-			this.visit(input);
+			visit(input);
 		}
 		catch (final UnsupportedOperationException e)
 		{
@@ -65,7 +64,7 @@ public class NamedDataRangeExpander extends ATermBaseVisitor
 		for (ATermList l = (ATermList) term.getArgument(0); !l.isEmpty(); l = l.getNext())
 		{
 			final ATermAppl a = (ATermAppl) l.getFirst();
-			this.visit(a);
+			visit(a);
 			args.add(_ret);
 			if (_change)
 				listChange = true;
@@ -122,7 +121,7 @@ public class NamedDataRangeExpander extends ATermBaseVisitor
 	public void visitNot(final ATermAppl term)
 	{
 		final ATermAppl a = (ATermAppl) term.getArgument(0);
-		this.visit(a);
+		visit(a);
 		if (_change)
 			_ret = ATermUtils.makeNot(_ret);
 		else
@@ -144,7 +143,7 @@ public class NamedDataRangeExpander extends ATermBaseVisitor
 		for (ATermList l = (ATermList) term.getArgument(0); !l.isEmpty(); l = l.getNext())
 		{
 			final ATermAppl a = (ATermAppl) l.getFirst();
-			this.visit(a);
+			visit(a);
 			args.add(_ret);
 			if (_change)
 				listChange = true;

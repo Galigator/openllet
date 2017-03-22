@@ -17,12 +17,6 @@ import openllet.core.utils.Namespaces;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright = term(NS + c) 2008
  * </p>
  * <p>

@@ -13,8 +13,8 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.aterm.ATermList;
-import openllet.core.boxes.rbox.Role;
 import openllet.core.boxes.rbox.RBox;
+import openllet.core.boxes.rbox.Role;
 import openllet.core.utils.Pair;
 import openllet.core.utils.fsm.State;
 import openllet.core.utils.fsm.Transition;
@@ -48,8 +48,7 @@ public class FSMBuilder
 		TransitionGraph<Role> tg = s.getFSM();
 		if (tg == null)
 		{
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("Building NFA for " + s);
+			_logger.fine(() -> "Building NFA for " + s);
 
 			tg = buildNondeterministicFSM(s, visited);
 
@@ -138,7 +137,7 @@ public class FSMBuilder
 			for (final Pair<State<Role>, State<Role>> pair : tg.findTransitions(r))
 			{
 				if (s.isEquivalent(r))
-					if (tg.isInitial(pair.first) || tg.isFinal(pair.second) || (tg.isFinal(pair.first) && tg.isInitial(pair.second)))
+					if (tg.isInitial(pair.first) || tg.isFinal(pair.second) || tg.isFinal(pair.first) && tg.isInitial(pair.second))
 						continue;
 					else
 						return null;

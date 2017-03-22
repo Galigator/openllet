@@ -44,7 +44,6 @@ import openllet.core.DependencySet;
 import openllet.core.FSMBuilder;
 import openllet.core.OpenlletOptions;
 import openllet.core.PropertyType;
-import openllet.core.RoleTaxonomyBuilder;
 import openllet.core.taxonomy.Taxonomy;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.SetUtils;

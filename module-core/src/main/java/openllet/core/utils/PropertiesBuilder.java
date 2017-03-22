@@ -10,9 +10,6 @@ import java.util.Properties;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
  * Description: Convenience class to build Properties objects.
  * </p>
  * <p>
@@ -26,26 +23,27 @@ import java.util.Properties;
  */
 public class PropertiesBuilder
 {
-	private Properties properties = new Properties();
+	private Properties _properties = new Properties();
 
 	public PropertiesBuilder()
 	{
+		// nothing to do
 	}
 
 	public PropertiesBuilder(final Properties defaults)
 	{
-		this.properties = new Properties(defaults);
+		_properties = new Properties(defaults);
 	}
 
 	public PropertiesBuilder set(final String key, final String value)
 	{
-		properties.setProperty(key, value);
+		_properties.setProperty(key, value);
 		return this;
 	}
 
 	public Properties build()
 	{
-		return properties;
+		return _properties;
 	}
 
 	public static Properties singleton(final String key, final String value)

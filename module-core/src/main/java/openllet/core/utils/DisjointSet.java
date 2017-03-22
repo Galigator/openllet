@@ -25,51 +25,51 @@ public class DisjointSet<T>
 {
 	private class Node<U>
 	{
-		private final U object;
-		private Node<U> parent = this;
-		private int rank = 0;
+		private final U _object;
+		private Node<U> _parent = this;
+		private int _rank = 0;
 
 		public Node(final U o)
 		{
-			object = o;
+			_object = o;
 		}
 	}
 
-	private final Map<T, Node<T>> elements = new ConcurrentHashMap<>();
+	private final Map<T, Node<T>> _elements = new ConcurrentHashMap<>();
 
 	public void add(final T o)
 	{
-		if (elements.containsKey(o))
+		if (_elements.containsKey(o))
 			return;
 
-		elements.put(o, new Node<>(o));
+		_elements.put(o, new Node<>(o));
 	}
 
 	public boolean contains(final T o)
 	{
-		return elements.containsKey(o);
+		return _elements.containsKey(o);
 	}
 
 	public Collection<T> elements()
 	{
-		return Collections.unmodifiableSet(elements.keySet());
+		return Collections.unmodifiableSet(_elements.keySet());
 	}
 
 	public T find(final T o)
 	{
-		return findRoot(o).object;
+		return findRoot(o)._object;
 	}
 
 	private Node<T> findRoot(final T o)
 	{
-		Node<T> node = elements.get(o);
-		while (node.parent.parent != node.parent)
+		Node<T> node = _elements.get(o);
+		while (node._parent._parent != node._parent)
 		{
-			node.parent = node.parent.parent;
-			node = node.parent;
+			node._parent = node._parent._parent;
+			node = node._parent;
 		}
 
-		return node.parent;
+		return node._parent;
 	}
 
 	public Collection<Set<T>> getEquivalanceSets()
@@ -77,7 +77,7 @@ public class DisjointSet<T>
 
 		final Map<T, Set<T>> equivalanceSets = new HashMap<>();
 
-		for (final T x : elements.keySet())
+		for (final T x : _elements.keySet())
 		{
 			final T representative = find(x);
 
@@ -104,12 +104,12 @@ public class DisjointSet<T>
 		final StringBuffer buffer = new StringBuffer();
 
 		buffer.append("{");
-		for (final Iterator<Node<T>> i = elements.values().iterator(); i.hasNext();)
+		for (final Iterator<Node<T>> i = _elements.values().iterator(); i.hasNext();)
 		{
 			final Node<T> node = i.next();
-			buffer.append(node.object);
+			buffer.append(node._object);
 			buffer.append(" -> ");
-			buffer.append(node.parent.object);
+			buffer.append(node._parent._object);
 			if (i.hasNext())
 				buffer.append(", ");
 		}
@@ -123,17 +123,17 @@ public class DisjointSet<T>
 		Node<T> rootX = findRoot(x);
 		Node<T> rootY = findRoot(y);
 
-		if (rootX.rank > rootY.rank)
+		if (rootX._rank > rootY._rank)
 		{
 			final Node<T> node = rootX;
 			rootX = rootY;
 			rootY = node;
 		}
 		else
-			if (rootX.rank == rootY.rank)
-				++rootY.rank;
+			if (rootX._rank == rootY._rank)
+				++rootY._rank;
 
-		rootX.parent = rootY;
+		rootX._parent = rootY;
 
 		return rootY;
 	}

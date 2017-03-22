@@ -39,7 +39,7 @@ public abstract class KBLoader implements Logging
 		return _logger;
 	}
 
-	protected String _inputFormat;
+	protected volatile String _inputFormat;
 
 	/**
 	 * Resets the loader and clear any previously loaded ontologies.

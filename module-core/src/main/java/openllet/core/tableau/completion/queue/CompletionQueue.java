@@ -32,8 +32,8 @@ package openllet.core.tableau.completion.queue;
 
 import java.util.logging.Logger;
 import openllet.aterm.ATermAppl;
-import openllet.core.IndividualIterator;
 import openllet.core.boxes.abox.ABox;
+import openllet.core.boxes.abox.IndividualIterator;
 import openllet.core.boxes.abox.Node;
 import openllet.shared.tools.Log;
 

@@ -11,12 +11,6 @@ import java.util.NoSuchElementException;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -43,6 +37,13 @@ public class ArrayIntSet implements IntSet
 		size = other.size;
 		ints = new int[size];
 		System.arraycopy(other.ints, 0, ints, 0, size);
+	}
+
+	public ArrayIntSet(final int[] others)
+	{
+		size = others.length;
+		ints = new int[size];
+		System.arraycopy(others, 0, ints, 0, size);
 	}
 
 	private ArrayIntSet(final ArrayIntSet set1, final ArrayIntSet set2)
@@ -94,7 +95,7 @@ public class ArrayIntSet implements IntSet
 
 		while (low <= high)
 		{
-			final int mid = (low + high) >>> 1;
+			final int mid = low + high >>> 1;
 			final int midVal = a[mid];
 
 			if (midVal < key)
@@ -138,9 +139,9 @@ public class ArrayIntSet implements IntSet
 		if (!(o instanceof IntSet))
 			return false;
 		final IntSet that = (IntSet) o;
-		if (this.size() != that.size())
+		if (size() != that.size())
 			return false;
-		final IntIterator i = this.iterator();
+		final IntIterator i = iterator();
 		while (i.hasNext())
 			if (!that.contains(i.next()))
 				return false;
@@ -153,7 +154,7 @@ public class ArrayIntSet implements IntSet
 		if (minCapacity > oldCapacity)
 		{
 			final int oldData[] = ints;
-			int newCapacity = (oldCapacity * 3) / 2 + 1;
+			int newCapacity = oldCapacity * 3 / 2 + 1;
 			if (newCapacity < minCapacity)
 				newCapacity = minCapacity;
 			ints = new int[newCapacity];

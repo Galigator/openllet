@@ -16,8 +16,8 @@ import java.util.NoSuchElementException;
  */
 public abstract class NestedIterator<Outer, Inner> implements Iterator<Inner>
 {
-	private Iterator<? extends Outer> _outerIterator;
-	private Iterator<? extends Inner> _innerIterator;
+	private volatile Iterator<? extends Outer> _outerIterator;
+	private volatile Iterator<? extends Inner> _innerIterator;
 
 	public NestedIterator(final Iterable<? extends Outer> outerIterable)
 	{
@@ -26,7 +26,7 @@ public abstract class NestedIterator<Outer, Inner> implements Iterator<Inner>
 
 	public NestedIterator(final Iterator<? extends Outer> outerIterator)
 	{
-		this._outerIterator = outerIterator;
+		_outerIterator = outerIterator;
 		findIterator();
 	}
 

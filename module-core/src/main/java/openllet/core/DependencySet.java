@@ -51,27 +51,19 @@ public class DependencySet
 {
 	public static final Logger _logger = Log.getLogger(DependencySet.class);
 
-	public static final int NO_BRANCH;
+	public static final int NO_BRANCH = -1;
 
 	/**
 	 * An empty dependency set
 	 */
-	public static final DependencySet EMPTY;
+	public static final DependencySet EMPTY = new DependencySet();
 
 	/**
 	 * Used for assertions that are true by nature, i.e. an _individual always has type owl:Thing
 	 */
-	public static final DependencySet INDEPENDENT;
+	public static final DependencySet INDEPENDENT = new DependencySet(0);
 
-	public static final IntSet ZERO;
-	static
-	{
-		NO_BRANCH = -1;
-		ZERO = IntSetFactory.create();
-		ZERO.add(0);
-		EMPTY = new DependencySet();
-		INDEPENDENT = new DependencySet(0);
-	}
+	public static final IntSet ZERO = IntSetFactory.create(0);
 
 	/**
 	 * A dummy dependency set that is used just to indicate there is a dependency
@@ -81,14 +73,14 @@ public class DependencySet
 	/**
 	 * _index of branches this assertion _depends on
 	 */
-	private IntSet _depends;
+	private final IntSet _depends;
 
 	/**
 	 * _branch number when this assertion was added to ABox
 	 */
 	private int _branch = NO_BRANCH;
 
-	private Set<ATermAppl> _explain;
+	private volatile Set<ATermAppl> _explain;
 
 	/**
 	 * Create an empty set
@@ -106,9 +98,7 @@ public class DependencySet
 	 */
 	public DependencySet(final int branch)
 	{
-		_depends = IntSetFactory.create();
-
-		_depends.add(branch);
+		_depends = IntSetFactory.create(branch);
 		setExplain(Collections.emptySet());
 	}
 
@@ -232,12 +222,10 @@ public class DependencySet
 	public DependencySet union(final DependencySet ds, final boolean doExplanation)
 	{
 		final IntSet newDepends = _depends.union(ds._depends);
-		Set<ATermAppl> newExplain;
 
-		if (doExplanation)
-			newExplain = SetUtils.union(_explain, ds._explain);
-		else
-			newExplain = Collections.emptySet();
+		final Set<ATermAppl> newExplain = doExplanation ? //
+				SetUtils.union(_explain, ds._explain) : //
+				Collections.emptySet();
 
 		return new DependencySet(_branch, newDepends, newExplain);
 	}
@@ -259,16 +247,24 @@ public class DependencySet
 	public String toString()
 	{
 		final StringBuilder sb = new StringBuilder();
-		sb.append("[");
-		sb.append(_branch);
-		sb.append("-");
+		sb.append("DS{branch:");
+		switch (_branch)
+		{
+			case NO_BRANCH:
+				sb.append("NO_BRANCH(-1)");
+				break;
+
+			default:
+				sb.append(_branch);
+		}
+		sb.append(", depends:");
 		sb.append(_depends);
 		if (_logger.isLoggable(Level.FINE))
 		{
-			sb.append(" ");
+			sb.append(", explain:");
 			sb.append(_explain);
 		}
-		sb.append("]");
+		sb.append("}");
 		return sb.toString();
 	}
 
@@ -282,15 +278,9 @@ public class DependencySet
 		if (getExplain().contains(assertion))
 		{
 			setExplain(new HashSet<ATermAppl>());
-			if (DependencyIndex._logger.isLoggable(Level.FINE))
-				DependencyIndex._logger.fine("             Explain: removed ");
+			DependencyIndex._logger.fine("             Explain: removed ");
 		}
 
-	}
-
-	public void setDepends(final IntSet depends)
-	{
-		_depends = depends;
 	}
 
 	public IntSet getDepends()
@@ -324,9 +314,6 @@ public class DependencySet
 	 */
 	public DependencySet cache()
 	{
-		if (isIndependent())
-			return DependencySet.INDEPENDENT;
-		else
-			return DependencySet.DUMMY;
+		return isIndependent() ? DependencySet.INDEPENDENT : DependencySet.DUMMY;
 	}
 }

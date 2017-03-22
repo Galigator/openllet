@@ -44,7 +44,6 @@ import java.util.Set;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
-import openllet.core.NodeMerge;
 import openllet.core.OpenlletOptions;
 import openllet.core.datatypes.DatatypeReasoner;
 import openllet.core.datatypes.OWLRealUtils;
@@ -69,9 +68,8 @@ public class Literal extends Node
 
 	private volatile boolean _clashed = false;
 
-	public Literal(final ATermAppl name, final ATermAppl term, final ABoxImpl abox, final DependencySet ds)
+	public Literal(final ATermAppl name, final ATermAppl term, final ABox abox, final DependencySet ds)
 	{
-
 		super(name, abox);
 
 		if (term != null)
@@ -82,7 +80,7 @@ public class Literal extends Node
 				Object value = null;
 				try
 				{
-					value = abox._dtReasoner.getValue(term);
+					value = abox.getDatatypeReasoner().getValue(term);
 				}
 				catch (final InvalidLiteralException e)
 				{
@@ -476,7 +474,7 @@ public class Literal extends Node
 	@Override
 	final public void prune(final DependencySet ds)
 	{
-		pruned = ds;
+		_pruned = ds;
 	}
 
 	@Override

@@ -11,7 +11,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import openllet.core.boxes.abox.ABox;
-import openllet.core.boxes.abox.ABoxImpl;
 import openllet.core.boxes.abox.Literal;
 import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.rules.BindingHelper;
@@ -105,7 +104,7 @@ public class GeneralFunctionBuiltIn implements BuiltIn
 						// Oops, we overwrote an argument.
 						if (newBinding.get(arg) != null)
 							throw new InternalReasonerException("General Function implementation overwrote one of its arguments!");
-						ABoxImpl._logger.info("Function results in multiple simultaneous values for variable");
+						BuiltInRegistry._logger.info("Function results in multiple simultaneous values for variable");
 						return;
 					}
 					if (current == null)

@@ -25,27 +25,27 @@ public class DependencyEntry
 	/**
 	 * The set of _node lables which are dependent
 	 */
-	private final Set<TypeDependency> types = new HashSet<>();
+	private final Set<TypeDependency> _types = new HashSet<>();
 
 	/**
 	 * The set of merges which are dependent
 	 */
-	private final Set<MergeDependency> merges = new HashSet<>();
+	private final Set<MergeDependency> _merges = new HashSet<>();
 
 	/**
 	 * The set of edge which are dependent
 	 */
-	private final Set<Edge> edges = new HashSet<>();
+	private final Set<Edge> _edges = new HashSet<>();
 
 	/**
 	 * The set of branches which are dependent
 	 */
-	private final Set<BranchAddDependency> branchAdds = new HashSet<>();
+	private final Set<AddBranchDependency> _branchAdds = new HashSet<>();
 
 	/**
 	 * The set of _branch remove ds' which are dependent
 	 */
-	private final Set<CloseBranchDependency> branchCloses = new HashSet<>();
+	private final Set<CloseBranchDependency> _branchCloses = new HashSet<>();
 
 	/**
 	 * Clash dependency
@@ -62,14 +62,14 @@ public class DependencyEntry
 
 	public DependencyEntry(final DependencyEntry that)
 	{
-		types.addAll(that.types); //TODO:may need to perform a deep copy here
-		merges.addAll(that.merges); //TODO:may need to perform a deep copy here
+		_types.addAll(that._types); //TODO:may need to perform a deep copy here
+		_merges.addAll(that._merges); //TODO:may need to perform a deep copy here
 
-		for (final Edge next : that.edges) //copy edge depenedencies
-			edges.add(new DefaultEdge(next.getRole(), next.getFrom(), next.getTo(), next.getDepends()));
+		for (final Edge next : that._edges) //copy edge depenedencies
+			_edges.add(new DefaultEdge(next.getRole(), next.getFrom(), next.getTo(), next.getDepends()));
 
-		branchAdds.addAll(that.branchAdds); //TODO:may need to perform a deep copy here
-		branchCloses.addAll(that.branchCloses); //TODO:may need to perform a deep copy here
+		_branchAdds.addAll(that._branchAdds); //TODO:may need to perform a deep copy here
+		_branchCloses.addAll(that._branchCloses); //TODO:may need to perform a deep copy here
 		_clash = that._clash; //TODO:may need to perform a deep copy here
 	}
 
@@ -86,7 +86,7 @@ public class DependencyEntry
 	 */
 	protected void addTypeDependency(final ATermAppl ind, final ATermAppl type)
 	{
-		types.add(new TypeDependency(ind, type));
+		_types.add(new TypeDependency(ind, type));
 	}
 
 	/**
@@ -96,7 +96,7 @@ public class DependencyEntry
 	 */
 	protected void addEdgeDependency(final Edge edge)
 	{
-		edges.add(edge);
+		_edges.add(edge);
 	}
 
 	/**
@@ -107,37 +107,37 @@ public class DependencyEntry
 	 */
 	protected void addMergeDependency(final ATermAppl ind, final ATermAppl mergedTo)
 	{
-		merges.add(new MergeDependency(ind, mergedTo));
+		_merges.add(new MergeDependency(ind, mergedTo));
 	}
 
 	/**
-	 * Add a _branch add dependency
+	 * Add a branch add dependency
 	 *
 	 * @param branchId
-	 * @param _branch
+	 * @param branch
 	 */
-	protected BranchDependency addBranchAddDependency(final ATermAppl assertion, final int branchId, final Branch branch)
+	protected BranchDependency addBranchAddDependency(final ATermAppl assertion, final Branch branch)
 	{
-		final BranchAddDependency b = new BranchAddDependency(assertion, branchId, branch);
+		final AddBranchDependency b = new AddBranchDependency(assertion, branch);
 
-		branchAdds.add(b);
+		_branchAdds.add(b);
 		return b;
 	}
 
 	/**
-	 * Add a _branch remove ds dependency
+	 * Add a branch remove ds dependency
 	 *
 	 * @param branchId
-	 * @param _branch
+	 * @param branch
 	 */
 	protected BranchDependency addCloseBranchDependency(final ATermAppl assertion, final Branch theBranch)
 	{
 		final CloseBranchDependency b = new CloseBranchDependency(assertion, theBranch.getTryNext(), theBranch);
 
-		if (branchCloses.contains(b))
-			branchCloses.remove(b);
+		if (_branchCloses.contains(b))
+			_branchCloses.remove(b);
 
-		branchCloses.add(b);
+		_branchCloses.add(b);
 		return b;
 	}
 
@@ -147,15 +147,15 @@ public class DependencyEntry
 	public void print()
 	{
 		System.out.println("  Edge Dependencies:");
-		for (final Edge e : edges)
+		for (final Edge e : _edges)
 			System.out.println("    " + e.toString());
 
 		System.out.println("  Type Dependencies:");
-		for (final TypeDependency t : types)
+		for (final TypeDependency t : _types)
 			System.out.println("    " + t.toString());
 
 		System.out.println("  Merge Dependencies:");
-		for (final MergeDependency m : merges)
+		for (final MergeDependency m : _merges)
 			System.out.println("    " + m.toString());
 	}
 
@@ -164,7 +164,7 @@ public class DependencyEntry
 	 */
 	public Set<Edge> getEdges()
 	{
-		return edges;
+		return _edges;
 	}
 
 	/**
@@ -172,7 +172,7 @@ public class DependencyEntry
 	 */
 	public Set<MergeDependency> getMerges()
 	{
-		return merges;
+		return _merges;
 	}
 
 	/**
@@ -180,15 +180,15 @@ public class DependencyEntry
 	 */
 	public Set<TypeDependency> getTypes()
 	{
-		return types;
+		return _types;
 	}
 
 	/**
 	 * @return get branches
 	 */
-	public Set<BranchAddDependency> getBranchAdds()
+	public Set<AddBranchDependency> getBranchAdds()
 	{
-		return branchAdds;
+		return _branchAdds;
 	}
 
 	/**
@@ -196,7 +196,7 @@ public class DependencyEntry
 	 */
 	public Set<CloseBranchDependency> getCloseBranches()
 	{
-		return branchCloses;
+		return _branchCloses;
 	}
 
 	/**
@@ -208,9 +208,9 @@ public class DependencyEntry
 	}
 
 	/**
-	 * Set _clash dependency
+	 * Set clash dependency
 	 *
-	 * @param _clash
+	 * @param clash
 	 */
 	protected void setClash(final ClashDependency clash)
 	{

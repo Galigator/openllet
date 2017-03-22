@@ -4,18 +4,15 @@
 // Please see LICENSE.txt for full license terms, including the availability of proprietary exceptions.
 // Questions, comments, or requests for clarification: licensing@clarkparsia.com
 
-package openllet.core;
+package openllet.core.boxes.abox;
 
 import java.util.Iterator;
 import java.util.List;
 import openllet.aterm.ATermAppl;
-import openllet.core.boxes.abox.ABox;
-import openllet.core.boxes.abox.Individual;
-import openllet.core.boxes.abox.Node;
 import openllet.core.tableau.completion.queue.NodeSelector;
 
 /**
- * An iterator to return nodes in the order they are added. Having a separate iterator instead of using _nodes.iterator() allows to change the nodes table
+ * An iterator to return nodes in the order they are added. Having a separate iterator instead of using nodes.iterator() allows to change the nodes table
  * without resetting the iteration process.
  *
  * @author Evren Sirin

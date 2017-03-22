@@ -23,7 +23,7 @@ public class Transition<T>
 
 	private final T _name;
 
-	private State<T> _to;
+	private volatile State<T> _to;
 
 	/**
 	 * /* add edge with epsilon edge

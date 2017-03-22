@@ -11,12 +11,6 @@ import java.util.NoSuchElementException;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -43,7 +37,7 @@ public class BitIntSet implements IntSet
 	public void add(final int value)
 	{
 		if (value < 0)
-			throw new UnsupportedOperationException("Negatibe integers cannot be added to this set");
+			throw new UnsupportedOperationException("Negative integers cannot be added to this set");
 
 		bits.set(value);
 	}

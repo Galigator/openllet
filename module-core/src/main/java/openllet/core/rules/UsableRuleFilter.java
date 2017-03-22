@@ -40,16 +40,15 @@ import openllet.core.rules.model.SameIndividualAtom;
  */
 public class UsableRuleFilter
 {
-
 	private static class UsableFilter implements RuleAtomVisitor
 	{
-		protected String notUsableMessage;
+		protected String _notUsableMessage;
 
 		public String explainNotUsable(final RuleAtom atom)
 		{
-			notUsableMessage = null;
+			_notUsableMessage = null;
 			atom.accept(this);
-			return notUsableMessage;
+			return _notUsableMessage;
 		}
 	}
 
@@ -60,13 +59,13 @@ public class UsableRuleFilter
 		{
 			final BuiltIn builtin = BuiltInRegistry.instance.getBuiltIn(atom.getPredicate());
 			if (builtin.equals(NoSuchBuiltIn.instance))
-				notUsableMessage = "No builtin for " + atom.getPredicate();
+				_notUsableMessage = "No builtin for " + atom.getPredicate();
 		}
 
 		@Override
 		public void visit(final SameIndividualAtom atom)
 		{
-			notUsableMessage = "SameIndividual atom is not supported in rule body: " + atom;
+			_notUsableMessage = "SameIndividual atom is not supported in rule body: " + atom;
 		}
 
 	}
@@ -77,13 +76,13 @@ public class UsableRuleFilter
 		@Override
 		public void visit(final BuiltInAtom atom)
 		{
-			notUsableMessage = "Builtin atoms in rule heads are not currently supported";
+			_notUsableMessage = "Builtin atoms in rule heads are not currently supported";
 		}
 
 		@Override
 		public void visit(final DataRangeAtom atom)
 		{
-			notUsableMessage = "DataRange atoms in rule heads are not currently supported";
+			_notUsableMessage = "DataRange atoms in rule heads are not currently supported";
 		}
 	}
 

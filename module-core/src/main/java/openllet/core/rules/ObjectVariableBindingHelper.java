@@ -27,22 +27,21 @@ import openllet.core.rules.model.AtomVariable;
  * <p>
  * Company: Clark & Parsia, LLC. <http://www.clarkparsia.com>
  * </p>
- * 
+ *
  * @author Ron Alford
  */
 
 public class ObjectVariableBindingHelper implements BindingHelper
 {
-
 	private final ABox _abox;
-	private Individual _currentIndividual;
-	private Iterator<Individual> _individualIterator;
 	private final AtomIVariable _var;
+	private volatile Individual _currentIndividual;
+	private volatile Iterator<Individual> _individualIterator;
 
 	public ObjectVariableBindingHelper(final ABox abox, final AtomIVariable var)
 	{
-		this._abox = abox;
-		this._var = var;
+		_abox = abox;
+		_var = var;
 	}
 
 	@Override
@@ -69,7 +68,7 @@ public class ObjectVariableBindingHelper implements BindingHelper
 	@Override
 	public boolean selectNextBinding()
 	{
-		if ((_individualIterator == null) || !_individualIterator.hasNext())
+		if (_individualIterator == null || !_individualIterator.hasNext())
 			return false;
 
 		_currentIndividual = _individualIterator.next();

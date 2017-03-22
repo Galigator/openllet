@@ -44,5 +44,4 @@ public class AtomIConstant extends AtomConstant implements AtomIObject
 	{
 		return URIUtils.getLocalName(getValue().getName());
 	}
-
 }

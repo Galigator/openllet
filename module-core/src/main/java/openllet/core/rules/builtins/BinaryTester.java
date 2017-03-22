@@ -26,7 +26,6 @@ import openllet.core.boxes.abox.Literal;
  */
 public abstract class BinaryTester implements Tester
 {
-
 	@Override
 	public boolean test(final Literal[] args)
 	{
@@ -39,5 +38,4 @@ public abstract class BinaryTester implements Tester
 	 * Overriden to provide test functionality
 	 */
 	protected abstract boolean test(Literal l1, Literal l2);
-
 }

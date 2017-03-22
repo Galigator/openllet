@@ -49,43 +49,57 @@ import openllet.shared.tools.Log;
  *
  * @author Evren Sirin
  */
-public abstract class Branch
+public abstract class Branch implements Comparable<Branch>
 {
 	public static final Logger _logger = Log.getLogger(Branch.class);
 
 	protected final ABox _abox;
+
+	private final int _branchIndexInABox;
+	private final int _anonCount;
+	private volatile DependencySet _termDepends;
+	private volatile DependencySet _combinedClash;
+
 	protected volatile CompletionStrategy _strategy;
-	protected volatile int _branchIndexInABox;
 	protected volatile int _tryCount;
 	protected volatile int _tryNext;
-
-	private volatile DependencySet _termDepends;
-	private volatile DependencySet _prevDS;
-
-	// store things that can be changed after this _branch
-	protected volatile int _anonCount;
 	protected volatile int _nodeCount;
 
-	Branch(final ABox abox, final CompletionStrategy strategy, final DependencySet ds, final int n)
+	protected Branch(final ABox abox, final CompletionStrategy strategy, final DependencySet ds, final int n)
 	{
 		_abox = abox;
-		setStrategy(strategy);
+		_strategy = strategy;
 
-		setTermDepends(ds);
-		setTryCount(n);
-		_prevDS = DependencySet.EMPTY;
-		setTryNext(0);
+		_termDepends = ds;
+		_tryCount = n;
+		_combinedClash = DependencySet.EMPTY;
+		_tryNext = 0;
 
-		setBranchIndexInABox(abox.getBranchIndex());
-		setAnonCount(abox.getAnonCount());
-		setNodeCount(abox.size());
+		_branchIndexInABox = abox.getBranchIndex();
+		_anonCount = abox.getAnonCount();
+		_nodeCount = abox.size();
+	}
+
+	protected Branch(final ABox abox, final int n, final Branch br)
+	{
+		_abox = abox; // Changing Abox ? seriously ?
+		_strategy = br._strategy;
+
+		_termDepends = br._termDepends;
+		_tryCount = n; // Changing count.
+		_combinedClash = DependencySet.EMPTY;
+		_tryNext = br._tryNext;
+
+		_branchIndexInABox = br._branchIndexInABox;
+		_anonCount = br._anonCount;
+		_nodeCount = br._nodeCount;
 	}
 
 	public void setLastClash(final DependencySet ds)
 	{
 		if (getTryNext() >= 0)
 		{
-			_prevDS = _prevDS.union(ds, _abox.doExplanation());
+			_combinedClash = _combinedClash.union(ds, _abox.doExplanation());
 			if (OpenlletOptions.USE_INCREMENTAL_DELETION)
 				//CHW - added for incremental deletions support THIS SHOULD BE MOVED TO SUPER
 				_abox.getKB().getDependencyIndex().addCloseBranchDependency(this, ds);
@@ -94,7 +108,7 @@ public abstract class Branch
 
 	public DependencySet getCombinedClash()
 	{
-		return _prevDS;
+		return _combinedClash;
 	}
 
 	public void setStrategy(final CompletionStrategy strategy)
@@ -133,8 +147,7 @@ public abstract class Branch
 	@Override
 	public String toString()
 	{
-		//		return "Branch " + _branch + " (" + _tryCount + ")";
-		return "Branch on _node " + getNode() + "  Branch number: " + getBranchIndexInABox() + " " + getTryNext() + "(" + getTryCount() + ")";
+		return "{Branch [" + getNode() + "]  n°: " + getBranchIndexInABox() + " tryNext:" + getTryNext() + " tryCount:" + getTryCount() + "}";
 	}
 
 	/**
@@ -158,11 +171,6 @@ public abstract class Branch
 	public int getNodeCount()
 	{
 		return _nodeCount;
-	}
-
-	public void setBranchIndexInABox(final int branchIndexInABox)
-	{
-		_branchIndexInABox = branchIndexInABox;
 	}
 
 	/**
@@ -229,12 +237,9 @@ public abstract class Branch
 		return _termDepends;
 	}
 
-	/**
-	 * @param anonCount the _anonCount to set
-	 */
-	public void setAnonCount(final int anonCount)
+	@Override
+	public int compareTo(final Branch that)
 	{
-		_anonCount = anonCount;
+		return this == that ? 0 : _branchIndexInABox - that._branchIndexInABox;
 	}
-
 }

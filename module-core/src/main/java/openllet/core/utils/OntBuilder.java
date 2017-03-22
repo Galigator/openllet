@@ -174,7 +174,7 @@ public class OntBuilder
 
 	}
 
-	private KnowledgeBase _kb;
+	private volatile KnowledgeBase _kb;
 	private final KnowledgeBase _originalKB;
 
 	private final DefinitionVisitor _defVisitor = new DefinitionVisitor();

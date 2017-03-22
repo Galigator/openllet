@@ -10,12 +10,6 @@ import openllet.core.utils.Timer;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2006
  * </p>
  * <p>
@@ -42,6 +36,7 @@ public abstract class AbstractProgressMonitor implements ProgressMonitor
 
 	public AbstractProgressMonitor()
 	{
+		// empty
 	}
 
 	public AbstractProgressMonitor(final int length)
@@ -97,7 +92,7 @@ public abstract class AbstractProgressMonitor implements ProgressMonitor
 	@Override
 	public void setProgress(final int progress)
 	{
-		this._progress = progress;
+		_progress = progress;
 
 		updateProgress();
 	}
@@ -105,7 +100,7 @@ public abstract class AbstractProgressMonitor implements ProgressMonitor
 	@Override
 	public void setProgressLength(final int progressLength)
 	{
-		this._progressLength = progressLength;
+		_progressLength = progressLength;
 
 		resetProgress();
 	}
@@ -113,13 +108,13 @@ public abstract class AbstractProgressMonitor implements ProgressMonitor
 	@Override
 	public void setProgressMessage(final String progressMessage)
 	{
-		this._progressMessage = progressMessage;
+		_progressMessage = progressMessage;
 	}
 
 	@Override
 	public void setProgressTitle(final String progressTitle)
 	{
-		this._progressTitle = progressTitle;
+		_progressTitle = progressTitle;
 	}
 
 	@Override

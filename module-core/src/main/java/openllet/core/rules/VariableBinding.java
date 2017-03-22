@@ -57,11 +57,11 @@ public class VariableBinding
 	 */
 	private class DataValueCollector implements AtomObjectVisitor
 	{
-		private Literal value = null;
+		private Literal _value = null;
 
 		public Literal getValue()
 		{
-			return value;
+			return _value;
 		}
 
 		@Override
@@ -92,15 +92,15 @@ public class VariableBinding
 			}
 
 			_abox.copyOnWrite();
-			value = _abox.getLiteral(canonical);
-			if (value == null)
-				value = _abox.addLiteral(canonical);
+			_value = _abox.getLiteral(canonical);
+			if (_value == null)
+				_value = _abox.addLiteral(canonical);
 		}
 
 		@Override
 		public void visit(final AtomDVariable variable)
 		{
-			value = _dataVars.get(variable);
+			_value = _dataVars.get(variable);
 		}
 
 	}

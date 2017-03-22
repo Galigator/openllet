@@ -23,7 +23,6 @@ import openllet.aterm.ATermAppl;
  */
 public class ClassAtom extends UnaryAtom<AtomIObject>
 {
-
 	public ClassAtom(final ATermAppl predicate, final AtomIObject argument)
 	{
 		super(predicate, argument);
@@ -34,5 +33,4 @@ public class ClassAtom extends UnaryAtom<AtomIObject>
 	{
 		visitor.visit(this);
 	}
-
 }

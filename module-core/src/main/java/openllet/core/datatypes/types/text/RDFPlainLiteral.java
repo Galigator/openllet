@@ -39,18 +39,18 @@ public class RDFPlainLiteral extends AbstractBaseDatatype<ATermAppl>
 		return instance;
 	}
 
-	private final RestrictedTextDatatype dataRange;
+	private final RestrictedTextDatatype _dataRange;
 
 	private RDFPlainLiteral()
 	{
 		super(ATermUtils.makeTermAppl(Namespaces.RDF + "PlainLiteral"));
-		dataRange = new RestrictedTextDatatype(this, true);
+		_dataRange = new RestrictedTextDatatype(this, true);
 	}
 
 	@Override
 	public RestrictedDatatype<ATermAppl> asDataRange()
 	{
-		return dataRange;
+		return _dataRange;
 	}
 
 	@Override

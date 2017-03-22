@@ -49,79 +49,80 @@ public class Expressivity
 	/**
 	 * not (owl:complementOf) is used directly or indirectly
 	 */
-	private boolean hasNegation = false;
-	private boolean hasAllValues = false;
-	private boolean hasDisjointClasses = false;
+	private boolean _hasNegation = false;
+	private boolean _hasAllValues = false;
+	private boolean _hasDisjointClasses = false;
 
 	/**
 	 * An inverse property has been defined or a property has been defined as InverseFunctional
 	 */
-	private boolean hasInverse = false;
-	private boolean hasFunctionality = false;
-	private boolean hasCardinality = false;
-	private boolean hasCardinalityQ = false;
-	private boolean hasFunctionalityD = false;
-	private boolean hasCardinalityD = false;
-	private boolean hasTransitivity = false;
-	private boolean hasRoleHierarchy = false;
-	private boolean hasReflexivity = false;
-	private boolean hasIrreflexivity = false;
-	private boolean hasDisjointRoles = false;
-	private boolean hasAsymmetry = false;
-	private boolean hasComplexSubRoles = false;
-	private boolean hasDatatype = false;
-	private boolean hasUserDefinedDatatype = false;
+	private boolean _hasInverse = false;
+	private boolean _hasFunctionality = false;
+	private boolean _hasCardinality = false;
+	private boolean _hasCardinalityQ = false;
+	private boolean _hasFunctionalityD = false;
+	private boolean _hasCardinalityD = false;
+	private boolean _hasTransitivity = false;
+	private boolean _hasRoleHierarchy = false;
+	private boolean _hasReflexivity = false;
+	private boolean _hasIrreflexivity = false;
+	private boolean _hasDisjointRoles = false;
+	private boolean _hasAsymmetry = false;
+	private boolean _hasComplexSubRoles = false;
+	private boolean _hasDatatype = false;
+	private boolean _hasUserDefinedDatatype = false;
 
-	private boolean hasKeys = false;
+	private boolean _hasKeys = false;
 
-	private boolean hasDomain = false;
-	private boolean hasRange = false;
+	private boolean _hasDomain = false;
+	private boolean _hasRange = false;
 
-	private boolean hasIndividual = false;
+	private boolean _hasIndividual = false;
 	/**
 	 * The set of individuals in the ABox that have been used as nominals, i.e. in an owl:oneOf enumeration or target of owl:hasValue restriction
 	 */
-	private Set<ATermAppl> nominals = new HashSet<>();
+	private Set<ATermAppl> _nominals = new HashSet<>();
 
-	private Set<ATermAppl> anonInverses = new HashSet<>();
+	private Set<ATermAppl> _anonInverses = new HashSet<>();
 
 	public Expressivity()
 	{
+		// Nothing to do.
 	}
 
 	public Expressivity(final Expressivity other)
 	{
-		hasNegation = other.hasNegation;
-		hasAllValues = other.hasAllValues;
-		hasDisjointClasses = other.hasDisjointClasses;
-		hasInverse = other.hasInverse;
-		hasFunctionality = other.hasFunctionality;
-		hasCardinality = other.hasCardinality;
-		hasCardinalityQ = other.hasCardinalityQ;
-		hasFunctionalityD = other.hasFunctionalityD;
-		hasCardinalityD = other.hasCardinalityD;
-		hasTransitivity = other.hasTransitivity;
-		hasRoleHierarchy = other.hasRoleHierarchy;
-		hasReflexivity = other.hasReflexivity;
-		hasIrreflexivity = other.hasIrreflexivity;
-		hasDisjointRoles = other.hasDisjointRoles;
-		hasAsymmetry = other.hasAsymmetry;
-		hasComplexSubRoles = other.hasComplexSubRoles;
-		hasDatatype = other.hasDatatype;
-		hasKeys = other.hasKeys;
-		hasDomain = other.hasDomain;
-		hasRange = other.hasRange;
-		hasIndividual = other.hasIndividual;
-		nominals = new HashSet<>(other.nominals);
-		anonInverses = new HashSet<>(other.anonInverses);
+		_hasNegation = other._hasNegation;
+		_hasAllValues = other._hasAllValues;
+		_hasDisjointClasses = other._hasDisjointClasses;
+		_hasInverse = other._hasInverse;
+		_hasFunctionality = other._hasFunctionality;
+		_hasCardinality = other._hasCardinality;
+		_hasCardinalityQ = other._hasCardinalityQ;
+		_hasFunctionalityD = other._hasFunctionalityD;
+		_hasCardinalityD = other._hasCardinalityD;
+		_hasTransitivity = other._hasTransitivity;
+		_hasRoleHierarchy = other._hasRoleHierarchy;
+		_hasReflexivity = other._hasReflexivity;
+		_hasIrreflexivity = other._hasIrreflexivity;
+		_hasDisjointRoles = other._hasDisjointRoles;
+		_hasAsymmetry = other._hasAsymmetry;
+		_hasComplexSubRoles = other._hasComplexSubRoles;
+		_hasDatatype = other._hasDatatype;
+		_hasKeys = other._hasKeys;
+		_hasDomain = other._hasDomain;
+		_hasRange = other._hasRange;
+		_hasIndividual = other._hasIndividual;
+		_nominals = new HashSet<>(other._nominals);
+		_anonInverses = new HashSet<>(other._anonInverses);
 	}
 
 	public boolean isEL()
 	{
-		return !hasNegation && !hasAllValues && !hasInverse && !hasFunctionality && !hasCardinality//
-				&& !hasCardinalityQ && !hasFunctionalityD && !hasCardinalityD && !hasIrreflexivity//
-				&& !hasDisjointRoles && !hasAsymmetry && !hasDatatype && !hasKeys && !hasIndividual//
-				&& nominals.isEmpty();
+		return !_hasNegation && !_hasAllValues && !_hasInverse && !_hasFunctionality && !_hasCardinality//
+				&& !_hasCardinalityQ && !_hasFunctionalityD && !_hasCardinalityD && !_hasIrreflexivity//
+				&& !_hasDisjointRoles && !_hasAsymmetry && !_hasDatatype && !_hasKeys && !_hasIndividual//
+				&& _nominals.isEmpty();
 	}
 
 	@Override
@@ -133,48 +134,48 @@ public class Expressivity
 		{
 			dl = "EL";
 
-			if (hasComplexSubRoles || hasReflexivity || hasDomain || hasRange || hasDisjointClasses)
+			if (_hasComplexSubRoles || _hasReflexivity || _hasDomain || _hasRange || _hasDisjointClasses)
 				dl += "+";
 			else
-				if (hasRoleHierarchy)
+				if (_hasRoleHierarchy)
 					dl += "H";
 		}
 		else
 		{
 			dl = "AL";
 
-			if (hasNegation)
+			if (_hasNegation)
 				dl = "ALC";
 
-			if (hasTransitivity)
+			if (_hasTransitivity)
 				dl += "R+";
 
 			if ("ALCR+".equals(dl))
 				dl = "S";
 
-			if (hasComplexSubRoles)
+			if (_hasComplexSubRoles)
 				dl = "SR";
 			else
-				if (hasRoleHierarchy)
+				if (_hasRoleHierarchy)
 					dl += "H";
 
 			if (hasNominal())
 				dl += "O";
 
-			if (hasInverse)
+			if (_hasInverse)
 				dl += "I";
 
-			if (hasCardinalityQ)
+			if (_hasCardinalityQ)
 				dl += "Q";
 			else
-				if (hasCardinality)
+				if (_hasCardinality)
 					dl += "N";
 				else
-					if (hasFunctionality)
+					if (_hasFunctionality)
 						dl += "F";
 
-			if (hasDatatype)
-				if (hasKeys)
+			if (_hasDatatype)
+				if (_hasKeys)
 					dl += "(Dk)";
 				else
 					dl += "(D)";
@@ -188,12 +189,12 @@ public class Expressivity
 	 */
 	public boolean hasNegation()
 	{
-		return hasNegation;
+		return _hasNegation;
 	}
 
 	public void setHasNegation(final boolean v)
 	{
-		hasNegation = v;
+		_hasNegation = v;
 	}
 
 	/**
@@ -201,12 +202,12 @@ public class Expressivity
 	 */
 	public boolean hasAllValues()
 	{
-		return hasAllValues;
+		return _hasAllValues;
 	}
 
 	public void setHasAllValues(final boolean v)
 	{
-		hasAllValues = v;
+		_hasAllValues = v;
 	}
 
 	/**
@@ -214,12 +215,12 @@ public class Expressivity
 	 */
 	public boolean hasDisjointClasses()
 	{
-		return hasDisjointClasses;
+		return _hasDisjointClasses;
 	}
 
 	public void setHasDisjointClasses(final boolean v)
 	{
-		hasDisjointClasses = v;
+		_hasDisjointClasses = v;
 	}
 
 	/**
@@ -227,12 +228,12 @@ public class Expressivity
 	 */
 	public boolean hasInverse()
 	{
-		return hasInverse;
+		return _hasInverse;
 	}
 
 	public void setHasInverse(final boolean v)
 	{
-		hasInverse = v;
+		_hasInverse = v;
 	}
 
 	/**
@@ -240,12 +241,12 @@ public class Expressivity
 	 */
 	public boolean hasFunctionality()
 	{
-		return hasFunctionality;
+		return _hasFunctionality;
 	}
 
 	public void setHasFunctionality(final boolean v)
 	{
-		hasFunctionality = v;
+		_hasFunctionality = v;
 	}
 
 	/**
@@ -253,12 +254,12 @@ public class Expressivity
 	 */
 	public boolean hasCardinality()
 	{
-		return hasCardinality;
+		return _hasCardinality;
 	}
 
 	public void setHasCardinality(final boolean v)
 	{
-		hasCardinality = v;
+		_hasCardinality = v;
 	}
 
 	/**
@@ -266,12 +267,12 @@ public class Expressivity
 	 */
 	public boolean hasCardinalityQ()
 	{
-		return hasCardinalityQ;
+		return _hasCardinalityQ;
 	}
 
 	public void setHasCardinalityQ(final boolean v)
 	{
-		hasCardinalityQ = v;
+		_hasCardinalityQ = v;
 	}
 
 	/**
@@ -279,12 +280,12 @@ public class Expressivity
 	 */
 	public boolean hasFunctionalityD()
 	{
-		return hasFunctionalityD;
+		return _hasFunctionalityD;
 	}
 
 	public void setHasFunctionalityD(final boolean v)
 	{
-		hasFunctionalityD = v;
+		_hasFunctionalityD = v;
 	}
 
 	/**
@@ -292,12 +293,12 @@ public class Expressivity
 	 */
 	public boolean hasCardinalityD()
 	{
-		return hasCardinalityD;
+		return _hasCardinalityD;
 	}
 
 	public void setHasCardinalityD(final boolean v)
 	{
-		hasCardinalityD = v;
+		_hasCardinalityD = v;
 	}
 
 	/**
@@ -305,12 +306,12 @@ public class Expressivity
 	 */
 	public boolean hasTransitivity()
 	{
-		return hasTransitivity;
+		return _hasTransitivity;
 	}
 
 	public void setHasTransitivity(final boolean v)
 	{
-		hasTransitivity = v;
+		_hasTransitivity = v;
 	}
 
 	/**
@@ -318,42 +319,42 @@ public class Expressivity
 	 */
 	public boolean hasRoleHierarchy()
 	{
-		return hasRoleHierarchy;
+		return _hasRoleHierarchy;
 	}
 
 	public void setHasRoleHierarchy(final boolean v)
 	{
-		hasRoleHierarchy = v;
+		_hasRoleHierarchy = v;
 	}
 
 	public boolean hasReflexivity()
 	{
-		return hasReflexivity;
+		return _hasReflexivity;
 	}
 
 	public void setHasReflexivity(final boolean v)
 	{
-		hasReflexivity = v;
+		_hasReflexivity = v;
 	}
 
 	public boolean hasIrreflexivity()
 	{
-		return hasIrreflexivity;
+		return _hasIrreflexivity;
 	}
 
 	public void setHasIrreflexivity(final boolean v)
 	{
-		hasIrreflexivity = v;
+		_hasIrreflexivity = v;
 	}
 
 	public boolean hasDisjointRoles()
 	{
-		return hasDisjointRoles;
+		return _hasDisjointRoles;
 	}
 
 	public void setHasDisjointRoles(final boolean v)
 	{
-		hasDisjointRoles = v;
+		_hasDisjointRoles = v;
 	}
 
 	/**
@@ -363,12 +364,12 @@ public class Expressivity
 	@Deprecated
 	public boolean hasAntiSymmmetry()
 	{
-		return hasAsymmetry;
+		return _hasAsymmetry;
 	}
 
 	public boolean hasAsymmmetry()
 	{
-		return hasAsymmetry;
+		return _hasAsymmetry;
 	}
 
 	/**
@@ -378,22 +379,22 @@ public class Expressivity
 	@Deprecated
 	public void setHasAntiSymmetry(final boolean v)
 	{
-		hasAsymmetry = v;
+		_hasAsymmetry = v;
 	}
 
 	public void setHasAsymmetry(final boolean v)
 	{
-		hasAsymmetry = v;
+		_hasAsymmetry = v;
 	}
 
 	public boolean hasComplexSubRoles()
 	{
-		return hasComplexSubRoles;
+		return _hasComplexSubRoles;
 	}
 
 	public void setHasComplexSubRoles(final boolean v)
 	{
-		hasComplexSubRoles = v;
+		_hasComplexSubRoles = v;
 	}
 
 	/**
@@ -401,79 +402,79 @@ public class Expressivity
 	 */
 	public boolean hasDatatype()
 	{
-		return hasDatatype;
+		return _hasDatatype;
 	}
 
 	public void setHasDatatype(final boolean v)
 	{
-		hasDatatype = v;
+		_hasDatatype = v;
 	}
 
 	public boolean hasUserDefinedDatatype()
 	{
-		return hasUserDefinedDatatype;
+		return _hasUserDefinedDatatype;
 	}
 
 	public void setHasUserDefinedDatatype(final boolean v)
 	{
 		if (v)
 			setHasDatatype(true);
-		hasUserDefinedDatatype = v;
+		_hasUserDefinedDatatype = v;
 	}
 
 	public boolean hasKeys()
 	{
-		return hasKeys;
+		return _hasKeys;
 	}
 
 	public void setHasKeys(final boolean v)
 	{
-		hasKeys = v;
+		_hasKeys = v;
 	}
 
 	public boolean hasDomain()
 	{
-		return hasDomain;
+		return _hasDomain;
 	}
 
 	public void setHasDomain(final boolean v)
 	{
-		hasDomain = v;
+		_hasDomain = v;
 	}
 
 	public boolean hasRange()
 	{
-		return hasRange;
+		return _hasRange;
 	}
 
 	public void setHasRange(final boolean v)
 	{
-		hasRange = v;
+		_hasRange = v;
 	}
 
 	public boolean hasIndividual()
 	{
-		return hasIndividual;
+		return _hasIndividual;
 	}
 
 	public void setHasIndividual(final boolean v)
 	{
-		hasIndividual = v;
+		_hasIndividual = v;
 	}
 
 	public boolean hasNominal()
 	{
-		return !nominals.isEmpty();
+		return !_nominals.isEmpty();
 	}
 
 	public Set<ATermAppl> getNominals()
 	{
-		return nominals;
+		return _nominals;
 	}
 
 	public void addNominal(final ATermAppl n)
 	{
-		nominals.add(n);
+		_nominals.add(n);
 	}
 
 	/**
@@ -483,11 +484,11 @@ public class Expressivity
 	 */
 	public Set<ATermAppl> getAnonInverses()
 	{
-		return anonInverses;
+		return _anonInverses;
 	}
 
 	public void addAnonInverse(final ATermAppl p)
 	{
-		anonInverses.add(p);
+		_anonInverses.add(p);
 	}
 }

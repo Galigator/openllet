@@ -38,7 +38,7 @@ import openllet.core.utils.ATermUtils;
  */
 public class RulesToATermTranslator implements RuleAtomVisitor, AtomObjectVisitor
 {
-	private ATermAppl _term;
+	private volatile ATermAppl _term = null;
 
 	public ATermAppl translate(final Rule rule)
 	{

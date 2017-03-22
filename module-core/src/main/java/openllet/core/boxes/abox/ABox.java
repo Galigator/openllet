@@ -10,9 +10,7 @@ import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
 import openllet.core.DependencySet;
-import openllet.core.IndividualIterator;
 import openllet.core.KnowledgeBase;
-import openllet.core.NodeMerge;
 import openllet.core.boxes.rbox.RBox;
 import openllet.core.boxes.rbox.Role;
 import openllet.core.boxes.tbox.TBox;
@@ -207,6 +205,12 @@ public interface ABox extends Logging
 
 	public void addDifferent(final ATermAppl x, final ATermAppl y);
 
+	/**
+	 * Say that all the term of the list are different from each-other.
+	 *
+	 * @param list of different element.
+	 * @since ever
+	 */
 	public void addAllDifferent(final ATermList list);
 
 	public boolean isNode(final ATerm x);

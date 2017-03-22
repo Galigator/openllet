@@ -60,7 +60,7 @@ public class FileUtils
 
 	public static String readFile(final File file) throws FileNotFoundException, IOException
 	{
-		try (FileReader reader = new FileReader(file))
+		try (final FileReader reader = new FileReader(file))
 		{
 			return readAll(reader);
 		}
@@ -78,7 +78,7 @@ public class FileUtils
 	{
 		final StringBuffer buffer = new StringBuffer();
 
-		try (BufferedReader in = new BufferedReader(reader))
+		try (final BufferedReader in = new BufferedReader(reader))
 		{
 			int ch;
 			while ((ch = in.read()) > -1)

@@ -14,9 +14,6 @@ import openllet.core.utils.URIUtils;
  * Title: Atom Variable
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -27,12 +24,11 @@ import openllet.core.utils.URIUtils;
  */
 public abstract class AtomVariable implements AtomObject
 {
-
 	private final String _name;
 
 	public AtomVariable(final String name)
 	{
-		this._name = name;
+		_name = name;
 	}
 
 	public int compareTo(final ATermAppl arg0)

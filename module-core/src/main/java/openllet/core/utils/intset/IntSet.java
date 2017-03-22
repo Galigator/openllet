@@ -10,9 +10,6 @@ import java.util.NoSuchElementException;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
  * Description: An interface describing a set of primitive integers. An implementation may only accept certain types of integers (e.g. only positive integers).
  * </p>
  * <p>

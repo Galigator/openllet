@@ -29,14 +29,15 @@ import openllet.core.OpenlletOptions;
 public class AnnotationClasses
 {
 	private static final Set<ATermAppl> INSTANCE = new HashSet<>();
+	private static final String _geneontologyBaseIriObo = "http://www.geneontology.org/formats/oboInOwl#";
 
 	static
 	{
-		INSTANCE.add(term("http://www.geneontology.org/formats/oboInOwl#DbXref"));
-		INSTANCE.add(term("http://www.geneontology.org/formats/oboInOwl#Definition"));
-		INSTANCE.add(term("http://www.geneontology.org/formats/oboInOwl#Subset"));
-		INSTANCE.add(term("http://www.geneontology.org/formats/oboInOwl#Synonym"));
-		INSTANCE.add(term("http://www.geneontology.org/formats/oboInOwl#SynonymType"));
+		INSTANCE.add(term(_geneontologyBaseIriObo + "DbXref"));
+		INSTANCE.add(term(_geneontologyBaseIriObo + "Definition"));
+		INSTANCE.add(term(_geneontologyBaseIriObo + "Subset"));
+		INSTANCE.add(term(_geneontologyBaseIriObo + "Synonym"));
+		INSTANCE.add(term(_geneontologyBaseIriObo + "SynonymType"));
 	}
 
 	/**

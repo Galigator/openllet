@@ -13,9 +13,6 @@ import java.util.List;
  * Title: Rule Atom
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -26,7 +23,6 @@ import java.util.List;
  */
 public interface RuleAtom
 {
-
 	public void accept(RuleAtomVisitor visitor);
 
 	/**
@@ -39,5 +35,4 @@ public interface RuleAtom
 	 *         safety.
 	 */
 	public Object getPredicate();
-
 }

@@ -11,9 +11,6 @@ package openllet.core.utils;
  * Title: List of knowledge base operations.
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -33,10 +30,7 @@ public enum KBOperation
 
 	// use told taxonomy - to be provided by KB - not to classify the whole KB
 	IS_SUBCLASS_OF, IS_EQUIVALENT_CLASS, // triv.
-	// if
-	// classified,
-	// otherwise
-	// 1 sat
+	// if classified, otherwise 1 sat
 
 	IS_DISJOINT_WITH, IS_COMPLEMENT_OF, // 1 sat
 

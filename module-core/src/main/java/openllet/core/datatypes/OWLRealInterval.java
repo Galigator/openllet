@@ -41,7 +41,7 @@ public class OWLRealInterval
 
 		private final boolean _increment;
 		private final Number _last;
-		private Number _next;
+		private volatile Number _next;
 
 		public IntegerIterator(final Number first, final Number last, final boolean increment)
 		{

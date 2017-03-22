@@ -18,7 +18,6 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import openllet.aterm.ATermAppl;
 import openllet.core.boxes.abox.ABox;
-import openllet.core.boxes.abox.ABoxImpl;
 import openllet.core.boxes.abox.Literal;
 import openllet.core.rules.BindingHelper;
 import openllet.core.rules.VariableBinding;
@@ -129,7 +128,7 @@ public class StringOperators
 			}
 			catch (final PatternSyntaxException e)
 			{
-				ABoxImpl._logger.log(Level.INFO, "Bad regex from builtin rule: " + l2, e);
+				BuiltInRegistry._logger.log(Level.INFO, "Bad regex from builtin rule: " + l2, e);
 			}
 			return result;
 		}

@@ -56,25 +56,25 @@ import openllet.core.output.TableData;
  */
 public class Timers
 {
-	private final Map<String, Timer> timers = new LinkedHashMap<>();
+	private final Map<String, Timer> _timers = new LinkedHashMap<>();
 
-	final public Timer mainTimer;
+	public final Timer _mainTimer;
 
 	public Timers()
 	{
-		mainTimer = createTimer("main");
-		mainTimer.start();
+		_mainTimer = createTimer("main");
+		_mainTimer.start();
 	}
 
 	public void addAll(final Timers other)
 	{
-		for (final Entry<String, Timer> entry : other.timers.entrySet())
+		for (final Entry<String, Timer> entry : other._timers.entrySet())
 		{
 			final String name = entry.getKey();
 			final Timer otherTimer = entry.getValue();
 			final Timer thisTimer = getTimer(name);
 			if (thisTimer == null)
-				timers.put(name, otherTimer);
+				_timers.put(name, otherTimer);
 			else
 				thisTimer.add(otherTimer);
 		}
@@ -82,8 +82,8 @@ public class Timers
 
 	public Timer createTimer(final String name)
 	{
-		final Timer t = new Timer(name, mainTimer);
-		timers.put(name, t);
+		final Timer t = new Timer(name, _mainTimer);
+		_timers.put(name, t);
 		return t;
 	}
 
@@ -116,7 +116,7 @@ public class Timers
 
 	public void interrupt()
 	{
-		mainTimer.interrupt();
+		_mainTimer.interrupt();
 	}
 
 	public void setTimeout(final String name, final long timeout)
@@ -139,9 +139,9 @@ public class Timers
 
 	public void resetAll()
 	{
-		for (final Timer timer : timers.values())
+		for (final Timer timer : _timers.values())
 			timer.reset();
-		mainTimer.start();
+		_mainTimer.start();
 	}
 
 	public long getTimerTotal(final String name)
@@ -158,12 +158,12 @@ public class Timers
 
 	public Timer getTimer(final String name)
 	{
-		return timers.get(name);
+		return _timers.get(name);
 	}
 
 	public Collection<Timer> getTimers()
 	{
-		return timers.values();
+		return _timers.values();
 	}
 
 	public void print()
@@ -193,7 +193,7 @@ public class Timers
 
 		final boolean[] alignment = shortForm ? new boolean[] { false, true } : new boolean[] { false, true, true, true };
 
-		final List<Timer> list = new ArrayList<>(timers.values());
+		final List<Timer> list = new ArrayList<>(_timers.values());
 		if (sortBy != null)
 			Collections.sort(list, (o1, o2) ->
 			{
@@ -245,6 +245,6 @@ public class Timers
 	@Override
 	public String toString()
 	{
-		return timers.values().toString();
+		return _timers.values().toString();
 	}
 }

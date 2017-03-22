@@ -7,9 +7,9 @@
 package openllet.core.tableau.completion.rule;
 
 import java.util.logging.Logger;
-import openllet.core.IndividualIterator;
 import openllet.core.OpenlletOptions;
 import openllet.core.boxes.abox.Individual;
+import openllet.core.boxes.abox.IndividualIterator;
 import openllet.core.boxes.abox.Node;
 import openllet.core.tableau.completion.CompletionStrategy;
 import openllet.core.tableau.completion.queue.NodeSelector;

@@ -6,12 +6,6 @@ import openllet.core.utils.ATermUtils;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2009
  * </p>
  * <p>
@@ -32,8 +26,8 @@ class NamedDatatype<T> implements Datatype<T>
 		if (name.getArity() != 0)
 			throw new IllegalArgumentException();
 
-		this._name = name;
-		this._range = range;
+		_name = name;
+		_range = range;
 	}
 
 	@Override
@@ -110,7 +104,7 @@ class NamedDatatype<T> implements Datatype<T>
 	{
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((_name == null) ? 0 : _name.hashCode());
+		result = prime * result + (_name == null ? 0 : _name.hashCode());
 		return result;
 	}
 

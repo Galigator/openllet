@@ -224,7 +224,7 @@ public class InterruptReasoningExample
 		for (final int timeout : timeouts)
 		{
 			// update the timeout value
-			timers.mainTimer.setTimeout(timeout);
+			timers._mainTimer.setTimeout(timeout);
 			System.out.println("Query Timeout: " + timeout + "ms");
 
 			// run the queries
@@ -242,7 +242,7 @@ public class InterruptReasoningExample
 		// we need to restart the timer every time because timeouts are checked
 		// w.r.t. the time a timer was started. not resetting the timer will
 		// cause timeout exceptions nearly all the time
-		timers.mainTimer.restart();
+		timers._mainTimer.restart();
 
 		try
 		{
@@ -251,13 +251,13 @@ public class InterruptReasoningExample
 
 			// print if the query succeeded
 			final int size = results.toList().size();
-			System.out.print("completed in " + timers.mainTimer.getElapsed() + "ms");
+			System.out.print("completed in " + timers._mainTimer.getElapsed() + "ms");
 			System.out.println(" (" + size + " results)");
 		}
 		catch (final TimeoutException e)
 		{
 			Log.error(_logger, e);
-			System.out.println("interrupted after " + timers.mainTimer.getElapsed() + "ms");
+			System.out.println("interrupted after " + timers._mainTimer.getElapsed() + "ms");
 		}
 	}
 
@@ -266,7 +266,7 @@ public class InterruptReasoningExample
 		System.out.print("Running SPARQL query...");
 
 		// we need to restart the timer as above
-		timers.mainTimer.restart();
+		timers._mainTimer.restart();
 
 		try
 		{
@@ -274,13 +274,13 @@ public class InterruptReasoningExample
 			final ResultSet results = SparqlDLExecutionFactory.create(query, model).execSelect();
 
 			final int size = ResultSetFormatter.consume(results);
-			System.out.print("completed in " + timers.mainTimer.getElapsed() + "ms");
+			System.out.print("completed in " + timers._mainTimer.getElapsed() + "ms");
 			System.out.println(" (" + size + " results)");
 		}
 		catch (final TimeoutException e)
 		{
 			Log.error(_logger, e);
-			System.out.println("interrupted after " + timers.mainTimer.getElapsed() + "ms");
+			System.out.println("interrupted after " + timers._mainTimer.getElapsed() + "ms");
 		}
 	}
 }

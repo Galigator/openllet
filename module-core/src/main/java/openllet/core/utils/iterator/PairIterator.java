@@ -20,8 +20,8 @@ public class PairIterator<T> implements Iterator<T>
 
 	public PairIterator(final Iterator<T> first, final Iterator<T> second)
 	{
-		this._first = first;
-		this._second = second;
+		_first = first;
+		_second = second;
 	}
 
 	@Override

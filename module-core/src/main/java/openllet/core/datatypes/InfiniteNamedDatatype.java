@@ -29,13 +29,7 @@ import openllet.core.utils.ATermUtils;
  */
 public class InfiniteNamedDatatype implements Datatype<ATermAppl>
 {
-
-	private static final Map<ATermAppl, WeakReference<InfiniteNamedDatatype>> cache;
-
-	static
-	{
-		cache = new WeakHashMap<>();
-	}
+	private static final Map<ATermAppl, WeakReference<InfiniteNamedDatatype>> cache = new WeakHashMap<>();
 
 	/**
 	 * Get an instance with a specific _name.
@@ -46,7 +40,7 @@ public class InfiniteNamedDatatype implements Datatype<ATermAppl>
 	public static InfiniteNamedDatatype get(final ATermAppl dtName)
 	{
 		final WeakReference<InfiniteNamedDatatype> dtRef = cache.get(dtName);
-		InfiniteNamedDatatype dt = (dtRef == null) ? null : dtRef.get();
+		InfiniteNamedDatatype dt = dtRef == null ? null : dtRef.get();
 		if (dt == null)
 		{
 			dt = new InfiniteNamedDatatype(dtName);
@@ -66,7 +60,7 @@ public class InfiniteNamedDatatype implements Datatype<ATermAppl>
 		if (name.getArity() != 0)
 			throw new IllegalArgumentException();
 
-		this._name = name;
+		_name = name;
 		_range = new RestrictedDatatype<ATermAppl>()
 		{
 
@@ -85,7 +79,7 @@ public class InfiniteNamedDatatype implements Datatype<ATermAppl>
 					if (ATermUtils.isLiteral(a))
 					{
 						final ATermAppl dt = (ATermAppl) a.getArgument(ATermUtils.LIT_URI_INDEX);
-						return InfiniteNamedDatatype.this._name.equals(dt);
+						return _name.equals(dt);
 					}
 				}
 				return false;
@@ -234,7 +228,7 @@ public class InfiniteNamedDatatype implements Datatype<ATermAppl>
 	{
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((_name == null) ? 0 : _name.hashCode());
+		result = prime * result + (_name == null ? 0 : _name.hashCode());
 		return result;
 	}
 
