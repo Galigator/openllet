@@ -23,12 +23,15 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Filter;
+import java.util.logging.Logger;
 import junit.framework.JUnit4TestAdapter;
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
 import openllet.core.OpenlletOptions;
 import openllet.core.datatypes.DatatypeReasoner;
 import openllet.core.datatypes.DatatypeReasonerImpl;
+import openllet.core.datatypes.types.real.XSDDecimal;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.PropertiesBuilder;
 import openllet.jena.ModelExtractor;
@@ -36,6 +39,7 @@ import openllet.jena.PelletInfGraph;
 import openllet.jena.PelletReasoner;
 import openllet.jena.PelletReasonerFactory;
 import openllet.jena.vocabulary.OWL2;
+import openllet.shared.tools.Log;
 import org.apache.jena.datatypes.TypeMapper;
 import org.apache.jena.graph.compose.Union;
 import org.apache.jena.ontology.AnnotationProperty;
@@ -1853,9 +1857,42 @@ public class JenaTests
 	@Test
 	public void testBuiltinDatatypesWithInvalidValues()
 	{
+
 		final String ns = "urn:test:";
 
-		final Object[] datatypes = { XSD.anyURI, "http://www.w3.com\\invalid", XSD.xboolean, "True", "01", XSD.xbyte, "-12093421034", "257", "2147483648", XSD.date, "2004-15-03", "2004/03/15", "03-15-2004", XSD.dateTime, "2003-12-25", XSD.decimal, "x3.1415292", XSD.xdouble, "Inf", XSD.duration, "P-8M", XSD.xfloat, "3.1g-1", XSD.gDay, "11", "Monday", "Mon", XSD.gMonth, "02", "Feb", "February", XSD.gMonthDay, "02-14", "02/14", XSD.gYear, "0000", "542", XSD.gYearMonth, "1972/08", "197208", XSD.xint, "2147483648", "9223372036854775808", XSD.integer, "1.1", XSD.xlong, "9223372036854775808", XSD.negativeInteger, "0", "1", XSD.nonNegativeInteger, "-1", XSD.nonPositiveInteger, "1", XSD.positiveInteger, "-1", XSD.xshort, "32768", "1.1", };
+		{ // Locally Reconfiguration the XSDDecimal logger to shutoff him on the error case we will put in him.
+			final Logger xsdDecimalLogger = Log.getLogger(XSDDecimal.class);
+			final Filter newFilter = record ->
+			{
+				if (record.getMessage().contains("while parsing decimal x3.1415292")) // TODO : fail if this message isn't generate.
+					return false;
+				return true;
+			};
+			xsdDecimalLogger.setFilter(newFilter);
+		}
+
+		final Object[] datatypes = { XSD.anyURI, "http://www.w3.com\\invalid", //
+				XSD.xboolean, "True", "01", //
+				XSD.xbyte, "-12093421034", "257", "2147483648", //
+				XSD.date, "2004-15-03", "2004/03/15", "03-15-2004", //
+				XSD.dateTime, "2003-12-25", //
+				XSD.decimal, "x3.1415292", //
+				XSD.xdouble, "Inf", //
+				XSD.duration, "P-8M", //
+				XSD.xfloat, "3.1g-1", //
+				XSD.gDay, "11", "Monday", "Mon", //
+				XSD.gMonth, "02", "Feb", "February", //
+				XSD.gMonthDay, "02-14", "02/14", //
+				XSD.gYear, "0000", "542", //
+				XSD.gYearMonth, "1972/08", "197208", //
+				XSD.xint, "2147483648", "9223372036854775808", //
+				XSD.integer, "1.1", //
+				XSD.xlong, "9223372036854775808", //
+				XSD.negativeInteger, "0", "1", //
+				XSD.nonNegativeInteger, "-1", //
+				XSD.nonPositiveInteger, "1", //
+				XSD.positiveInteger, "-1", //
+				XSD.xshort, "32768", "1.1", };
 
 		for (final boolean addRangeRestriction : new boolean[] { false, true })
 			for (int i = 0; i < datatypes.length;)
