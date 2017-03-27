@@ -13,6 +13,7 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLDataRange;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
@@ -31,7 +32,7 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	 */
 	default public ChangeApplied addAxiom(final OWLAxiom axiom)
 	{
-		return getManager().addAxiom(getOntology(), axiom);
+		return getOntology().add(axiom);
 	}
 
 	/**
@@ -41,7 +42,7 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	 */
 	default public ChangeApplied addAxioms(final Stream<OWLAxiom> axioms)
 	{
-		return getManager().addAxioms(getOntology(), axioms);
+		return getOntology().addAxioms(axioms);
 	}
 
 	/**
@@ -61,7 +62,7 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	 */
 	default public ChangeApplied removeAxioms(final Stream<OWLAxiom> axioms)
 	{
-		return getManager().removeAxioms(getOntology(), axioms);
+		return getOntology().removeAxioms(axioms);
 	}
 
 	/**
@@ -239,6 +240,23 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 		return getReasoner().isEntailed(getFactory().getOWLClassAssertionAxiom(facette, named));
 	}
 
+	/**
+	 * @param property is the property that support the given range. In fact can be all 'simple' DataProperty you may want.
+	 * @param range like [1..3] or more complex if you want.
+	 * @param literal to check, 2 is include [1..3], 4 isn't include in [1..3].
+	 * @return true if the literal is in the range.
+	 * @since 2.6.1
+	 */
+	default public boolean isLiteralIncludeInRange(final OWLDataProperty property, final OWLDataRange range, final OWLLiteral literal)
+	{
+		return getReasoner().isSatisfiable(//
+				OWL.and(// You must be of all the following class
+						OWL.some(property, OWL.oneOf(literal)), // The class of the 'literal'
+						OWL.some(property, range), // The class of the range.
+						OWL.max(property, 1))// But you can have the property only once.
+		);
+	}
+
 	// Declarations
 
 	/**
@@ -304,7 +322,7 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	 * @param namespace of the individual to create.
 	 * @param name of the individual to create.
 	 * @return A new named individual.
-	 * @Deprecated This method should take a fully qualified label that depend of the context. No more next int usage.
+	 * @Deprecated 2.6.1 This method should take a fully qualified label that depend of the context. No more next int usage.
 	 */
 	@Deprecated
 	default public OWLNamedIndividual declareIndividual(final OWLClass owlClazz, final String namespace, final String name)
