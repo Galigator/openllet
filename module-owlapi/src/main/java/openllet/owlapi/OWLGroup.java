@@ -94,6 +94,37 @@ public interface OWLGroup extends AutoCloseable, Logging
 		return ontology.isPresent() ? ontology : getPersistentOntology(ontologyID);
 	}
 
+	default Optional<OWLHelper> getHelper(final OWLOntologyID ontologyID)
+	{
+		Optional<OWLOntology> ontology = getVolatileOntology(ontologyID);
+		if (ontology.isPresent())
+			return Optional.of(new OWLGenericTools(this, getVolatileManager(), ontology.get()));
+
+		ontology = getPersistentOntology(ontologyID);
+		if (ontology.isPresent())
+			return Optional.of(new OWLGenericTools(this, getPersistentManager(), ontology.get()));
+
+		return Optional.empty();
+	}
+
+	default Stream<OWLHelper> getVolatilesHelper()
+	{
+		if (!haveVolatileManager())
+			return Stream.empty();
+
+		final OWLOntologyManager vm = getVolatileManager();
+		return vm.ontologies().map(ontology -> new OWLGenericTools(this, vm, ontology));
+	}
+
+	default Stream<OWLHelper> getPersistentsHelper()
+	{
+		if (!havePersistentManager())
+			return Stream.empty();
+
+		final OWLOntologyManager vm = getPersistentManager();
+		return vm.ontologies().map(ontology -> new OWLGenericTools(this, vm, ontology));
+	}
+
 	/**
 	 * The standard 'getOntology' from the OWLManager don't really take care of versionning. This function is here to enforce the notion of version
 	 *

@@ -20,6 +20,7 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChangeException;
@@ -170,7 +171,7 @@ public class OntologyUtils
 		final OWLOntology ont = loadOntology(manager, uri);
 
 		if (!withAnnotations)
-			removeAllAnnotations(ont, manager);
+			removeAllAnnotations(ont);
 
 		return ont;
 	}
@@ -194,7 +195,7 @@ public class OntologyUtils
 		final OWLOntology ont = loadOntology(manager, inputStream);
 
 		if (!withAnnotations)
-			removeAllAnnotations(ont, manager);
+			removeAllAnnotations(ont);
 
 		return ont;
 	}
@@ -323,7 +324,7 @@ public class OntologyUtils
 	 *
 	 * @param ontology the ontology being changed
 	 */
-	public static void removeAllAnnotations(final OWLOntology ontology, final OWLOntologyManager manager)
+	public static void removeAllAnnotations(final OWLOntology ontology)
 	{
 		try
 		{
@@ -335,10 +336,12 @@ public class OntologyUtils
 			// Remove every thing that is not logical.
 			ontology.removeAxioms(ontology.axioms().filter(axiom -> !axiom.isLogicalAxiom()));
 
+			final OWLDataFactory factory = ontology.getOWLOntologyManager().getOWLDataFactory();
+
 			// Add exactly once declaration per entity.
 			ontology.addAxioms(referencedEntities.stream()//
 					.filter(entity -> !ontology.containsEntityInSignature(entity))//
-					.map(entity -> manager.getOWLDataFactory().getOWLDeclarationAxiom(entity))//
+					.map(factory::getOWLDeclarationAxiom)//
 			);
 		}
 		catch (final OWLOntologyChangeException e)
