@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import openllet.atom.OpenError;
 import openllet.shared.tools.Logging;
@@ -19,6 +20,7 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnonymousIndividual;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLDocumentFormat;
 import org.semanticweb.owlapi.model.OWLIndividual;
@@ -447,19 +449,19 @@ public interface OWLHelper extends Logging, OWLManagementObject
 	/**
 	 * Compute the types of an individual. Use this function only if you mix Named and Anonymous individuals.
 	 *
-	 * @param param the individual named _or_ anonymous
+	 * @param ind the individual named _or_ anonymous
 	 * @return the classes of the individual.
 	 * @since 2.5.1
 	 */
-	default public NodeSet<OWLClass> getTypes(final OWLIndividual param)
+	default public NodeSet<OWLClass> getTypes(final OWLIndividual ind)
 	{
-		if (param instanceof OWLAnonymousIndividual)
+		if (ind instanceof OWLAnonymousIndividual)
 		{
 			// We create a temporary named Individual to allow the reasoner to work.
 			final OWLNamedIndividual individual = getFactory().getOWLNamedIndividual(IRI.create(_protocol + OWLHelper.class.getPackage().getName() + _webSeparator + OWLHelper.class.getSimpleName() + _entitySeparator + IRIUtils.randId(OWLHelper.class.getSimpleName())));
 			final Stream<OWLAxiom> axioms = Stream.of( //
 					getFactory().getOWLDeclarationAxiom(individual), //
-					getFactory().getOWLSameIndividualAxiom(individual, param) // The temporary named is the same as the anonymous one.
+					getFactory().getOWLSameIndividualAxiom(individual, ind) // The temporary named is the same as the anonymous one.
 			);
 			getManager().addAxioms(getOntology(), axioms);
 			final NodeSet<OWLClass> result = getReasoner().getTypes(individual, false);
@@ -467,7 +469,7 @@ public interface OWLHelper extends Logging, OWLManagementObject
 			return result;
 		}
 		else
-			return getReasoner().getTypes((OWLNamedIndividual) param, false);
+			return getReasoner().getTypes((OWLNamedIndividual) ind, false);
 	}
 
 	/**
@@ -495,5 +497,54 @@ public interface OWLHelper extends Logging, OWLManagementObject
 		final StringBuffer buff = new StringBuffer();
 		ontologyToString(buff, msg);
 		return buff.toString();
+	}
+
+	public static OWLHelper createLightHelper(final OpenlletReasoner reasoner)
+	{
+		return new OWLHelper()
+		{
+			@Override
+			public Logger getLogger()
+			{
+				return PelletReasoner._logger;
+			}
+
+			@Override
+			public OWLDataFactory getFactory()
+			{
+				return reasoner.getFactory();
+			}
+
+			@Override
+			public OWLOntologyManager getManager()
+			{
+				return reasoner.getManager();
+			}
+
+			@Override
+			public OWLGroup getGroup()
+			{
+				return new OWLManagerGroup(Optional.of(getManager()), Optional.empty());
+			}
+
+			@Override
+			public OWLOntology getOntology()
+			{
+				return reasoner.getOntology();
+			}
+
+			@Override
+			public OpenlletReasoner getReasoner()
+			{
+				reasoner.flush();
+				return reasoner;
+			}
+
+			@Override
+			public boolean isVolatile()
+			{
+				return true;
+			}
+		};
 	}
 }
