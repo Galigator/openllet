@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import openllet.core.utils.SetUtils;
 import openllet.owlapi.OWL;
-import openllet.owlapi.OntologyUtils;
 import openllet.reachability.Node;
 import openllet.reachability.ReachabilityGraph;
 import openllet.shared.tools.Log;
@@ -630,12 +629,12 @@ public class GraphBuilder
 		if (node.equals(NULL_NODE))
 			return;
 
-		OntologyUtils.signature(axiom).map(_graph::createEntityNode).forEach(node::addOutput);
+		axiom.signature().map(_graph::createEntityNode).forEach(node::addOutput);
 	}
 
 	private void addOutputs(final OWLAxiom axiom)
 	{
-		final OWLEntity[] entities = OntologyUtils.signature(axiom).toArray(OWLEntity[]::new);
+		final OWLEntity[] entities = axiom.signature().toArray(OWLEntity[]::new);
 
 		for (int i = 0, n = entities.length; i < n - 1; i++)
 		{

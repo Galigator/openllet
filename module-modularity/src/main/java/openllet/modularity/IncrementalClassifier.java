@@ -37,7 +37,6 @@ import openllet.core.utils.TaxonomyUtils;
 import openllet.core.utils.Timer;
 import openllet.core.utils.Timers;
 import openllet.owlapi.OWL;
-import openllet.owlapi.OntologyUtils;
 import openllet.owlapi.OpenlletReasoner;
 import openllet.owlapi.OpenlletReasonerFactory;
 import openllet.shared.tools.Log;
@@ -370,7 +369,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 			//			new FunctionalTaxonomyPrinter().print( _taxonomy, new OutputFormatter( System.err, false ) );
 		}
 
-		OntologyUtils.getOWLOntologyManager().removeOntology(owlModule);
+		owlModule.getOWLOntologyManager().removeOntology(owlModule);
 	}
 
 	private void incrementalClassify()

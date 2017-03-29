@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 import openllet.core.utils.DisjointSet;
 import openllet.core.utils.SetUtils;
 import openllet.core.utils.progress.ProgressMonitor;
-import openllet.owlapi.OntologyUtils;
 import openllet.shared.tools.Log;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
@@ -247,7 +246,7 @@ public class AxiomBasedModuleExtractor extends AbstractModuleExtractor
 		final Set<OWLEntity> nonLocalModule = new HashSet<>();
 		axioms()//
 				.filter(axiom -> !isLocal(axiom, Collections.<OWLEntity> emptySet())) //
-				.forEach(axiom -> nonLocalModule.addAll(OntologyUtils.signature(axiom).collect(Collectors.toList())));
+				.forEach(axiom -> nonLocalModule.addAll(axiom.signature().collect(Collectors.toList())));
 
 		// iterate over classes passed in, and extract all their modules
 		for (final OWLEntity ent : entities)
@@ -279,7 +278,7 @@ public class AxiomBasedModuleExtractor extends AbstractModuleExtractor
 		final Set<OWLEntity> module = new HashSet<>(signature);
 		axioms()//
 				.filter(axiom -> !isLocal(axiom, Collections.<OWLEntity> emptySet())) //
-				.forEach(axiom -> module.addAll(OntologyUtils.signature(axiom).collect(Collectors.toList())));
+				.forEach(axiom -> module.addAll(axiom.signature().collect(Collectors.toList())));
 
 		if (!_entityAxioms.isEmpty())
 			if (_optimizeForSharedModules)

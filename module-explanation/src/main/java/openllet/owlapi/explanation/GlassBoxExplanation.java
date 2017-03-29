@@ -21,7 +21,6 @@ import openllet.core.utils.SetUtils;
 import openllet.core.utils.TaxonomyUtils;
 import openllet.owlapi.AxiomConverter;
 import openllet.owlapi.OWL;
-import openllet.owlapi.OntologyUtils;
 import openllet.owlapi.OpenlletReasoner;
 import openllet.owlapi.OpenlletReasonerFactory;
 import openllet.owlapi.PelletReasoner;
@@ -332,7 +331,7 @@ public class GlassBoxExplanation extends SingleExplanationGeneratorImpl
 				if (!incremental)
 					reasoner.dispose();
 
-				OntologyUtils.removeAxioms(debuggingOntology, axiom);
+				debuggingOntology.remove(axiom);
 
 				if (!incremental)
 					reasoner = getReasonerFactory().createNonBufferingReasoner(debuggingOntology);
@@ -347,8 +346,7 @@ public class GlassBoxExplanation extends SingleExplanationGeneratorImpl
 					_logger.finer(() -> "Pruned " + axiom);
 				}
 				else
-					// affects satisfiability so add back to the ontology
-					OntologyUtils.addAxioms(debuggingOntology, axiom);
+					debuggingOntology.add(axiom); // affects satisfiability so add back to the ontology
 			}
 
 			if (incremental)
