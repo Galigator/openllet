@@ -479,7 +479,9 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 
 	private void clearMarks()
 	{
-		_markedNodes.stream().filter(n -> n != null).forEach(TaxonomyNode::resetMark);
+		for (final TaxonomyNode<ATermAppl> node : _markedNodes)
+			if (node != null)
+				node.resetMark();
 		_markedNodes.clear();
 	}
 
@@ -703,7 +705,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 			// TODO just getting direct supers and letting recursion handle rest
 			// might be more efficient
 			for (final ATermAppl sup : _toldTaxonomy.getFlattenedSupers(c, /* direct = */true))
-			markToldSubsumers(sup);
+				markToldSubsumers(sup);
 	}
 
 	private void markToldSubsumeds(final ATermAppl c, final boolean b)
@@ -1186,9 +1188,9 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 			long time = System.currentTimeMillis();
 			final long count = _kb.getABox().getStats().satisfiabilityCount;
 			_logger.finer("Subsumption testing for [" + format(sub) + "," + format(sup) + "]...");
-		
+
 			final boolean result = _kb.getABox().isSubClassOf(sub, sup);
-		
+
 			final String sign = (_kb.getABox().getStats().satisfiabilityCount > count) ? "+" : "-";
 			time = System.currentTimeMillis() - time;
 			_logger.finer(" done (" + (result ? "+" : "-") + ") (" + sign + time + "ms)");
