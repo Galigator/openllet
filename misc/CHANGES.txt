@@ -1,10 +1,18 @@
 Change Log
 ==========
 
-Pellet 2.6.0 (Nov 21, 2016)
+Pellet 2.6.0 (Mar 31, 2017)
 ---------------------------
 
-* Project rename to openllet
+* Bug correction
+
+* Upgrade dependencies
+
+* More tests & examples
+
+
+Pellet 2.6.0 (Nov 21, 2016)
+---------------------------
 
 * Bug correction
 
