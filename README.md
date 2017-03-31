@@ -1,9 +1,10 @@
 Openllet: An Open Source OWL DL reasoner for Java
 -----------------------------------------------
-<!--
-[![Build Status](https://api.travis-ci.org/Galigator/openllet.svg?branch=integration)](https://travis-ci.org/Galigator/openllet) -->
+
+
 <!--
 [![CircleCI Build Status](https://circleci.com/gh/Galigator/openllet.svg?style=shield)](https://circleci.com/gh/Galigator/openllet) -->
+[![Build Status](https://api.travis-ci.org/Galigator/openllet.svg?branch=integration)](https://travis-ci.org/Galigator/openllet) 
 [![Codeship Build Status](https://codeship.com/projects/1fe60a20-f84b-0134-33ee-76e4f316aab3/status?branch=integration)](https://app.codeship.com/projects/210924)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Galigator/pelletEvolution?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Twitter](https://img.shields.io/badge/twitter-openllet-blue.svg)](https://twitter.com/openllet)
@@ -16,7 +17,6 @@ Openllet: An Open Source OWL DL reasoner for Java
 
 Openllet is the OWL 2 DL reasoner: 
 --------------------------------
-
 
 Openllet can be used with Jena or OWL-API libraries. Openllet provides functionality to check consistency of ontologies, compute the classification hierarchy, 
 explain inferences, and answer SPARQL queries.
