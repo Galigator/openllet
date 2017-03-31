@@ -43,4 +43,26 @@ public class Namespaces
 	public static final String SWRL = "http://www.w3.org/2003/11/swrl#";
 	public static final String SWRLB = "http://www.w3.org/2003/11/swrlb#";
 	public static final String XSD = "http://www.w3.org/2001/XMLSchema#";
+
+	// W3C OWL-S Namespaces.
+	public static final String ACTOR = "http://www.daml.org/services/owl-s/1.2/ActorDefault.owl#";
+	public static final String COUNTRY = "http://www.daml.org/services/owl-s/1.2/Country.owl#";
+	public static final String GENERIC_EXPR = "http://www.daml.org/services/owl-s/1.2/generic/Expression.owl#";
+	public static final String GENERIC_LIST = "http://www.daml.org/services/owl-s/1.2/generic/ObjectList.owl#";
+	public static final String GROUNDING = "http://www.daml.org/services/owl-s/1.2/Grounding.owl#";
+	public static final String HOBBS_TIME_ENTRY = "http://www.isi.edu/~hobbs/damltime/time-entry.owl#";
+	public static final String PAN_TIME_ENTRY = "http://www.isi.edu/~pan/damltime/time-entry.owl#";
+	public static final String PAN_TIME_ZONE = "http://www.isi.edu/~pan/damltime/timezone-ont.owl#";
+	public static final String PROCESS = "http://www.daml.org/services/owl-s/1.2/Process.owl#";
+	public static final String PROFILE = "http://www.daml.org/services/owl-s/1.2/profile.owl#";
+	public static final String PROFILE_PARAMETERS = "http://www.daml.org/services/owl-s/1.2/ProfileAdditionalParameters.owl#";
+	public static final String SERVICE = "http://www.daml.org/services/owl-s/1.2/Service.owl#";
+	public static final String SERVICE_CATEGORY = "http://www.daml.org/services/owl-s/1.2/ServiceCategory.owl#";
+	public static final String SERVICE_PARAMETERS = "http://www.daml.org/services/owl-s/1.2/ServiceParameter.owl#";
+	public static final String YALE_DRS = "http://cs-www.cs.yale.edu/homes/dvm/daml/drsonto040520.owl#";
+
+	// WORD NET Namespaces.
+	public static final String WORDNETN_31 = "http://wordnet-rdf.princeton.edu/wn31/";
+	public static final String WORDNET_LEMON = "http://lemon-model.net/lemon#";
+	public static final String WORDNET_PRINCETON = "http://wordnet-rdf.princeton.edu/ontology#";
 }
