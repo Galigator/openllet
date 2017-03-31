@@ -16,3 +16,12 @@ dependencies:
         - sudo apt-get install oracle-java8-installer
         - javac -version
         - echo $JAVA_HOME
+
+
+compile:
+    override:
+        - mvn clean install -DskipTests=true
+
+test:
+    override:
+        - mvn test

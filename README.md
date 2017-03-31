@@ -2,6 +2,7 @@ Openllet: An Open Source OWL DL reasoner for Java
 -----------------------------------------------
 
 [![Build Status](https://api.travis-ci.org/Galigator/openllet.svg?branch=integration)](https://travis-ci.org/Galigator/openllet)
+[![CircleCI Build Status](https://circleci.com/gh/Galigator/openllet.svg?style=shield)](https://circleci.com/gh/Galigator/openllet)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Galigator/pelletEvolution?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Twitter](https://img.shields.io/badge/twitter-openllet-blue.svg)](https://twitter.com/openllet)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/d1acfdbe2c194252a311e223cd94e64e)](https://www.codacy.com/app/sejourne_kevin/openllet?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Galigator/openllet&amp;utm_campaign=Badge_Grade)
@@ -38,12 +39,12 @@ Migration :
 		<dependency>
 			<groupId>com.github.galigator.openllet</groupId>
 			<artifactId>openllet-owlapi</artifactId>
-			<version>2.6.0</version>
+			<version>2.6.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.galigator.openllet</groupId>
 			<artifactId>openllet-jena</artifactId>
-			<version>2.6.0</version>
+			<version>2.6.1</version>
 		</dependency>
 
 Roadmap :
