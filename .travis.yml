@@ -9,7 +9,7 @@ addons:
 
 
 #script: "mvn cobertura:cobertura"
-script: rm -rf ~/.m2 ; mvn -U dependency:resolve-plugins
+#script: rm -rf ~/.m2 ; mvn -U dependency:resolve-plugins
 
 #after_success:
 #  - bash <(curl -s https://codecov.io/bash)
