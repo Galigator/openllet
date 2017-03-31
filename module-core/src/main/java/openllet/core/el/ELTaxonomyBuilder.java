@@ -31,17 +31,17 @@ import openllet.core.utils.ATermUtils;
  */
 class ELTaxonomyBuilder
 {
-	private Taxonomy<ATermAppl> taxonomyImpl;
+	private Taxonomy<ATermAppl> _taxonomyImpl;
 
 	public Taxonomy<ATermAppl> build(final Map<ATermAppl, ConceptInfo> concepts)
 	{
-		taxonomyImpl = new TaxonomyImpl<>(null, ATermUtils.TOP, ATermUtils.BOTTOM);
+		_taxonomyImpl = new TaxonomyImpl<>(null, ATermUtils.TOP, ATermUtils.BOTTOM);
 
 		for (final ConceptInfo ci : concepts.get(ATermUtils.TOP).getSuperClasses())
 		{
 			final ATermAppl eq = ci.getConcept();
 			if (ATermUtils.isPrimitive(eq))
-				taxonomyImpl.addEquivalentNode(eq, taxonomyImpl.getTop());
+				_taxonomyImpl.addEquivalentNode(eq, _taxonomyImpl.getTop());
 		}
 
 		final ConceptInfo BOTTOM = concepts.get(ATermUtils.BOTTOM);
@@ -52,18 +52,18 @@ class ELTaxonomyBuilder
 				continue;
 
 			if (ci.getSuperClasses().contains(BOTTOM))
-				taxonomyImpl.addEquivalentNode(c, taxonomyImpl.getBottomNode());
+				_taxonomyImpl.addEquivalentNode(c, _taxonomyImpl.getBottomNode());
 			else
 				classify(ci);
 		}
 
-		return taxonomyImpl;
+		return _taxonomyImpl;
 	}
 
 	private TaxonomyNode<ATermAppl> classify(final ConceptInfo ci)
 	{
 		final ATermAppl c = ci.getConcept();
-		TaxonomyNode<ATermAppl> node = taxonomyImpl.getNode(c);
+		TaxonomyNode<ATermAppl> node = _taxonomyImpl.getNode(c);
 
 		if (node == null)
 		{
@@ -93,7 +93,7 @@ class ELTaxonomyBuilder
 			for (final ConceptInfo eqInfo : equivalents)
 			{
 				final ATermAppl eq = eqInfo.getConcept();
-				taxonomyImpl.addEquivalentNode(eq, node);
+				_taxonomyImpl.addEquivalentNode(eq, node);
 			}
 		}
 
@@ -114,10 +114,10 @@ class ELTaxonomyBuilder
 		for (final TaxonomyNode<ATermAppl> parent : parents)
 		{
 			supers.add(parent.getName());
-			parent.removeSub(taxonomyImpl.getBottomNode());
+			parent.removeSub(_taxonomyImpl.getBottomNode());
 		}
 
-		return taxonomyImpl.addNode(Collections.singleton(c), supers, subs, false);
+		return _taxonomyImpl.addNode(Collections.singleton(c), supers, subs, false);
 	}
 
 }

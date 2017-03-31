@@ -62,7 +62,7 @@ public abstract class RuleBasedELClassifier extends CDOptimizedTaxonomyBuilder
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean classify()
+	public synchronized boolean classify()
 	{
 		reset();
 
@@ -97,22 +97,6 @@ public abstract class RuleBasedELClassifier extends CDOptimizedTaxonomyBuilder
 
 	protected void buildTaxonomy(final MultiValueMap<ATermAppl, ATermAppl> subsumers)
 	{
-		//		CachedSubsumptionComparator subsumptionComparator = new CachedSubsumptionComparator( subsumers );
-		//
-		//		PartialOrderTaxonomyBuilder _builder = new PartialOrderTaxonomyBuilder( _kb, subsumptionComparator );
-		//		_builder.setKB( _kb );
-		//
-		//		taxonomy = _builder.getTaxonomy();
-		//
-		//		for( ATermAppl c : subsumers.keySet() ) {
-		//			if( subsumptionComparator.isSubsumedBy( c, ATermUtils.BOTTOM ) ) {
-		//				taxonomy.addEquivalentNode( c, taxonomy.getBottom() );
-		//			}
-		//			else {
-		//				_builder.classify( c );
-		//			}
-		//		}
-
 		_taxonomyImpl = new GenericTaxonomyBuilder().build(subsumers);
 	}
 

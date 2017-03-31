@@ -148,7 +148,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 	 * Classify the KB.
 	 */
 	@Override
-	public boolean classify()
+	synchronized public boolean classify()
 	{
 		_classes = _kb.getClasses();
 
@@ -1084,9 +1084,9 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 		/*
 		 * Search ancestors for marks to propogate
 		 */
-		final Collection<TaxonomyNode<ATermAppl>> others = topDown ? node.getSupers() : node.getSubs();
+		final Collection<TaxonomyNode<ATermAppl>> ancestors = topDown ? node.getSupers() : node.getSubs();
 
-		if (others.size() > 1)
+		if (ancestors.size() > 1) // ancestors rarelly > 1 (multiple inheritance).
 		{
 			final Map<TaxonomyNode<ATermAppl>, TaxonomyNode<ATermAppl>> visited = new HashMap<>();
 			Map<TaxonomyNode<ATermAppl>, TaxonomyNode<ATermAppl>> toBeVisited = new HashMap<>(); // used as a Set of Pair where the second par isn't part of the key.
@@ -1094,7 +1094,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 
 			visited.put(node, null); // Null is the stop signal for the path marking.
 
-			for (final TaxonomyNode<ATermAppl> n : others)
+			for (final TaxonomyNode<ATermAppl> n : ancestors)
 				toBeVisited.put(n, node);
 
 			// Look for "FALSE" mark in all relatives
@@ -1129,13 +1129,6 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 					nextVisit = toBeVisited;
 					toBeVisited = tmp;
 				}
-
-				//				{ // Non swap XXX allow stream parallel implementation but force more operations on hash and cleaning.
-				//					toBeVisited.clear();
-				//					toBeVisited.putAll(nextVisit);
-				//					nextVisit.clear();
-				//				}
-
 			}
 		}
 
@@ -1182,22 +1175,6 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 
 	private boolean subsumes(final ATermAppl sup, final ATermAppl sub) // CPU hot spot.
 	{
-		/*
-		if (_logger.isLoggable(Level.FINER))
-		{
-			long time = System.currentTimeMillis();
-			final long count = _kb.getABox().getStats().satisfiabilityCount;
-			_logger.finer("Subsumption testing for [" + format(sub) + "," + format(sup) + "]...");
-
-			final boolean result = _kb.getABox().isSubClassOf(sub, sup);
-
-			final String sign = (_kb.getABox().getStats().satisfiabilityCount > count) ? "+" : "-";
-			time = System.currentTimeMillis() - time;
-			_logger.finer(" done (" + (result ? "+" : "-") + ") (" + sign + time + "ms)");
-			return result;
-		}
-		else
-		*/
 		return _kb.getABox().isSubClassOf(sub, sup);
 	}
 
@@ -1449,7 +1426,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 		System.out.println(sb);
 	}
 
-	public void printMemory()
+	public static void printMemory()
 	{
 		try
 		{

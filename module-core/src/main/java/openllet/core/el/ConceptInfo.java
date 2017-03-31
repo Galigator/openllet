@@ -28,32 +28,30 @@ class ConceptInfo
 {
 	public final static Logger _logger = Log.getLogger(ConceptInfo.class);
 
-	private final ATermAppl concept;
-	private final Set<Trigger> triggers;
+	private final ATermAppl _concept;
+	private final Set<Trigger> _triggers;
 
-	private final MultiValueMap<ATermAppl, ConceptInfo> successors;
-	private final MultiValueMap<ATermAppl, ConceptInfo> predecessors = new MultiValueMap<>();
+	private final MultiValueMap<ATermAppl, ConceptInfo> _successors;
+	private final MultiValueMap<ATermAppl, ConceptInfo> _predecessors = new MultiValueMap<>();
 
 	private final Set<ConceptInfo> superClasses = SetUtils.create();
 
 	public ConceptInfo(final ATermAppl c, final boolean storeSuccessors, final boolean noTriggers)
 	{
-		concept = c;
+		_concept = c;
 
-		superClasses.clear();
+		_successors = storeSuccessors ? new MultiValueMap<>() : null;
+		_predecessors.clear();
 
-		successors = storeSuccessors ? new MultiValueMap<>() : null;
-		predecessors.clear();
-
-		triggers = noTriggers ? null : SetUtils.create();
+		_triggers = noTriggers ? null : SetUtils.create();
 	}
 
 	public boolean addSuccessor(final ATermAppl p, final ConceptInfo ci)
 	{
-		if (ci.predecessors.add(p, this))
+		if (ci._predecessors.add(p, this))
 		{
-			if (successors != null)
-				successors.add(p, ci);
+			if (_successors != null)
+				_successors.add(p, ci);
 
 			return true;
 		}
@@ -68,28 +66,28 @@ class ConceptInfo
 
 	public boolean addTrigger(final Trigger trigger)
 	{
-		return triggers.add(trigger);
+		return _triggers.add(trigger);
 	}
 
 	@Override
 	public boolean equals(final Object obj)
 	{
-		return obj instanceof ConceptInfo && ((ConceptInfo) obj).concept == concept;
+		return obj instanceof ConceptInfo && ((ConceptInfo) obj)._concept == _concept;
 	}
 
 	public ATermAppl getConcept()
 	{
-		return concept;
+		return _concept;
 	}
 
 	public MultiValueMap<ATermAppl, ConceptInfo> getSuccessors()
 	{
-		return successors;
+		return _successors;
 	}
 
 	public MultiValueMap<ATermAppl, ConceptInfo> getPredecessors()
 	{
-		return predecessors;
+		return _predecessors;
 	}
 
 	public Set<ConceptInfo> getSuperClasses()
@@ -99,18 +97,18 @@ class ConceptInfo
 
 	public Set<Trigger> getTriggers()
 	{
-		return triggers;
+		return _triggers;
 	}
 
 	public boolean hasSuccessor(final ATermAppl p, final ConceptInfo ci)
 	{
-		return ci.predecessors.contains(p, this);
+		return ci._predecessors.contains(p, this);
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return concept.hashCode();
+		return _concept.hashCode();
 	}
 
 	public boolean hasSuperClass(final ConceptInfo ci)
@@ -121,6 +119,6 @@ class ConceptInfo
 	@Override
 	public String toString()
 	{
-		return ATermUtils.toString(concept);
+		return ATermUtils.toString(_concept);
 	}
 }

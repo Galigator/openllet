@@ -102,7 +102,7 @@ public class SimplifiedELClassifier extends CDOptimizedTaxonomyBuilder
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean classify()
+	public synchronized boolean classify()
 	{
 		_logger.fine("Reset");
 		reset();
@@ -442,9 +442,9 @@ public class SimplifiedELClassifier extends CDOptimizedTaxonomyBuilder
 			//Convert ATermAppl Domains to axioms
 			for (final Entry<ATermAppl, ATermAppl> entry : _roleRestrictions.getDomains().entrySet())
 			{
-			final ATermAppl roleName = entry.getKey();
-			final ATermAppl domain = entry.getValue();
-			createConceptsFromAxiom(ATermUtils.makeSomeValues(roleName, ATermUtils.TOP), domain);
+				final ATermAppl roleName = entry.getKey();
+				final ATermAppl domain = entry.getValue();
+				createConceptsFromAxiom(ATermUtils.makeSomeValues(roleName, ATermUtils.TOP), domain);
 			}
 
 		//Convert Reflexive Roles to axioms

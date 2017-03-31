@@ -49,8 +49,8 @@ public class ELClassifier extends CDOptimizedTaxonomyBuilder
 
 	public final Timers _timers = new Timers();
 
-	public ConceptInfo TOP;
-	public ConceptInfo BOTTOM;
+	public volatile ConceptInfo TOP;
+	public volatile ConceptInfo BOTTOM;
 
 	private boolean _hasComplexRoles;
 
@@ -95,7 +95,7 @@ public class ELClassifier extends CDOptimizedTaxonomyBuilder
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean classify()
+	public synchronized boolean classify()
 	{
 		reset();
 
