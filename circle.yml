@@ -9,6 +9,7 @@ machine:
 
 dependencies:
     pre:
+        - mvn -version
         - sudo apt-get install software-properties-common
         - sudo add-apt-repository -y ppa:webupd8team/java
         - sudo apt-get update
@@ -17,18 +18,14 @@ dependencies:
         - javac -version
         - echo $JAVA_HOME
     override:
-        - mvn -version
+        - rm -rf ~/.m2 ;
         - mvn -U dependency:resolve-plugins
 
 compile:
     override:
-        - echo "Begin of compilation"
         - mvn clean install -DskipTests=true
-        - echo "End of compilation"
 
 test:
     override:
-        - echo "Begin of tests"
         - mvn test
-        - echo "End of tests"
 
