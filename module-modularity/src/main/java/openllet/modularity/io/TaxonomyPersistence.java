@@ -23,7 +23,7 @@ import java.util.stream.Stream;
 import openllet.core.taxonomy.Taxonomy;
 import openllet.core.taxonomy.TaxonomyImpl;
 import openllet.core.taxonomy.TaxonomyNode;
-import openllet.core.utils.TaxonomyUtils;
+import openllet.core.taxonomy.TaxonomyUtils;
 import openllet.owlapi.OWL;
 import openllet.shared.tools.Log;
 import org.semanticweb.owlapi.formats.OWLXMLDocumentFormat;
@@ -160,7 +160,7 @@ public class TaxonomyPersistence
 	@SuppressWarnings("unchecked")
 	private static Collection<OWLNamedIndividual> getDatumInstanceAsCollectorOfOWLNamedIndividual(final TaxonomyNode<OWLClass> taxonomyNode)
 	{
-		return (Collection<OWLNamedIndividual>) taxonomyNode.getDatum(TaxonomyUtils.INSTANCES_KEY);
+		return (Collection<OWLNamedIndividual>) taxonomyNode.getDatum(TaxonomyUtils.TaxonomyKey.INSTANCES_KEY);
 	}
 
 	/**
@@ -262,7 +262,7 @@ public class TaxonomyPersistence
 							.collect(Collectors.toSet());//
 
 			if (!individuals.isEmpty())
-				taxonomyNode.putDatum(TaxonomyUtils.INSTANCES_KEY, individuals);
+				taxonomyNode.putDatum(TaxonomyUtils.TaxonomyKey.INSTANCES_KEY, individuals);
 		}
 
 		return taxonomy;

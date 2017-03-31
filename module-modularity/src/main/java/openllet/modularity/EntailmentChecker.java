@@ -12,7 +12,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 import openllet.core.taxonomy.Taxonomy;
-import openllet.core.utils.TaxonomyUtils;
+import openllet.core.taxonomy.TaxonomyUtils;
 import openllet.owlapi.OWL;
 import openllet.shared.tools.Log;
 import org.semanticweb.owlapi.model.OWLAsymmetricObjectPropertyAxiom;

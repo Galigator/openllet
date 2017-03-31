@@ -4,9 +4,9 @@ import java.io.PrintWriter;
 import java.util.Collections;
 import java.util.Set;
 import openllet.core.taxonomy.Taxonomy;
+import openllet.core.taxonomy.TaxonomyUtils;
 import openllet.core.taxonomy.printer.TreeTaxonomyPrinter;
 import openllet.core.utils.QNameProvider;
-import openllet.core.utils.TaxonomyUtils;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
@@ -69,7 +69,7 @@ public class OWLClassTreePrinter extends TreeTaxonomyPrinter<OWLClass>
 	public static Set<OWLNamedIndividual> getDirectInstances(final Taxonomy<OWLClass> t, final OWLClass c)
 	{
 
-		final Set<OWLNamedIndividual> instances = (Set<OWLNamedIndividual>) t.getDatum(c, TaxonomyUtils.INSTANCES_KEY);
+		final Set<OWLNamedIndividual> instances = (Set<OWLNamedIndividual>) t.getDatum(c, TaxonomyUtils.TaxonomyKey.INSTANCES_KEY);
 		if (instances == null)
 		{
 			if (t.contains(c))

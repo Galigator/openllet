@@ -11,8 +11,8 @@ import java.util.HashSet;
 import java.util.Set;
 import openllet.aterm.ATermAppl;
 import openllet.core.taxonomy.Taxonomy;
+import openllet.core.taxonomy.TaxonomyUtils;
 import openllet.core.utils.ATermUtils;
-import openllet.core.utils.TaxonomyUtils;
 
 /**
  * <p>

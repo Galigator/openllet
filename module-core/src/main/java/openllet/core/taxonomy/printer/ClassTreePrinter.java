@@ -34,9 +34,9 @@ import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.Set;
 import openllet.aterm.ATermAppl;
+import openllet.core.taxonomy.TaxonomyUtils;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.QNameProvider;
-import openllet.core.utils.TaxonomyUtils;
 
 /**
  * <p>

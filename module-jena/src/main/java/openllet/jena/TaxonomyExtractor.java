@@ -11,7 +11,7 @@ import java.util.HashSet;
 import openllet.aterm.ATermAppl;
 import openllet.core.taxonomy.Taxonomy;
 import openllet.core.taxonomy.TaxonomyNode;
-import openllet.core.utils.TaxonomyUtils;
+import openllet.core.taxonomy.TaxonomyUtils;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
@@ -94,7 +94,7 @@ public class TaxonomyExtractor
 	@SuppressWarnings("unchecked")
 	protected static Collection<ATermAppl> getDatumInstanceAsCollectorOfATermAppl(final TaxonomyNode<ATermAppl> taxonomyNode)
 	{
-		return (Collection<ATermAppl>) taxonomyNode.getDatum(TaxonomyUtils.INSTANCES_KEY);
+		return (Collection<ATermAppl>) taxonomyNode.getDatum(TaxonomyUtils.TaxonomyKey.INSTANCES_KEY);
 	}
 
 	private static Statement typeAssertion(final Model model, final ATermAppl individual, final ATermAppl type)

@@ -24,6 +24,7 @@ import openllet.core.exceptions.PelletRuntimeException;
 import openllet.core.taxonomy.Taxonomy;
 import openllet.core.taxonomy.TaxonomyImpl;
 import openllet.core.taxonomy.TaxonomyNode;
+import openllet.core.taxonomy.TaxonomyUtils;
 import openllet.core.taxonomy.printer.ClassTreePrinter;
 import openllet.core.taxonomy.printer.TreeTaxonomyPrinter;
 import openllet.core.utils.ATermUtils;
@@ -33,7 +34,6 @@ import openllet.core.utils.Namespaces;
 import openllet.core.utils.PartialOrderBuilder;
 import openllet.core.utils.PartialOrderComparator;
 import openllet.core.utils.PartialOrderRelation;
-import openllet.core.utils.TaxonomyUtils;
 import openllet.core.utils.Timer;
 import openllet.core.utils.Timers;
 import openllet.owlapi.OWL;
@@ -1310,7 +1310,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 	{
 		if (_taxonomyImpl != null)
 			for (final TaxonomyNode<OWLClass> node : _taxonomyImpl.getNodes().values())
-				node.removeDatum(TaxonomyUtils.INSTANCES_KEY);
+				node.removeDatum(TaxonomyUtils.TaxonomyKey.INSTANCES_KEY);
 
 		_realized = false;
 	}
@@ -1368,7 +1368,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 			}
 
 			if (!mostSpecificInstances.isEmpty())
-				node.putDatum(TaxonomyUtils.INSTANCES_KEY, toOWLNamedIndividuals(mostSpecificInstances, factory));
+				node.putDatum(TaxonomyUtils.TaxonomyKey.INSTANCES_KEY, toOWLNamedIndividuals(mostSpecificInstances, factory));
 		}
 
 		return instances;

@@ -43,6 +43,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 import openllet.core.exceptions.InternalReasonerException;
+import openllet.core.taxonomy.TaxonomyUtils.TaxonomyKey;
 import openllet.core.utils.CollectionUtils;
 import openllet.shared.tools.Log;
 
@@ -289,7 +290,7 @@ public class TaxonomyImpl<T> implements Taxonomy<T>
 	 * @return iterator over equivalence set, datum pairs
 	 */
 	@Override
-	public Iterator<Map.Entry<Set<T>, Object>> datumEquivalentsPair(final Object key)
+	public Iterator<Map.Entry<Set<T>, Object>> datumEquivalentsPair(final TaxonomyKey key)
 	{
 		return new DatumEquivalentsPairIterator<>(this, key);
 	}
@@ -303,7 +304,7 @@ public class TaxonomyImpl<T> implements Taxonomy<T>
 	 * @return datum iterator
 	 */
 	@Override
-	public Iterator<Object> depthFirstDatumOnly(final T t, final Object key)
+	public Iterator<Object> depthFirstDatumOnly(final T t, final TaxonomyKey key)
 	{
 		return new DepthFirstDatumOnlyIterator<>(this, t, key);
 	}
@@ -576,7 +577,7 @@ public class TaxonomyImpl<T> implements Taxonomy<T>
 	}
 
 	@Override
-	public Object removeDatum(final T t, final Object key)
+	public Object removeDatum(final T t, final TaxonomyKey key)
 	{
 		return getNode(t).removeDatum(key);
 	}

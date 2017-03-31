@@ -36,7 +36,6 @@ import openllet.core.utils.ATermUtils;
 import openllet.core.utils.CollectionUtils;
 import openllet.core.utils.MemUtils;
 import openllet.core.utils.SetUtils;
-import openllet.core.utils.TaxonomyUtils;
 import openllet.core.utils.Timer;
 import openllet.core.utils.progress.ProgressMonitor;
 import openllet.core.utils.progress.SilentProgressMonitor;
@@ -1310,11 +1309,11 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 			if (!realized)
 			{
 				@SuppressWarnings("unchecked")
-				Set<ATermAppl> instances = (Set<ATermAppl>) node.getDatum(TaxonomyUtils.INSTANCES_KEY);
+				Set<ATermAppl> instances = (Set<ATermAppl>) node.getDatum(TaxonomyUtils.TaxonomyKey.INSTANCES_KEY);
 				if (instances == null)
 				{
 					instances = new HashSet<>();
-					node.putDatum(TaxonomyUtils.INSTANCES_KEY, instances);
+					node.putDatum(TaxonomyUtils.TaxonomyKey.INSTANCES_KEY, instances);
 				}
 				instances.add(n);
 				realized = true;
@@ -1382,7 +1381,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 			}
 
 			if (!mostSpecificInstances.isEmpty())
-				node.putDatum(TaxonomyUtils.INSTANCES_KEY, mostSpecificInstances);
+				node.putDatum(TaxonomyUtils.TaxonomyKey.INSTANCES_KEY, mostSpecificInstances);
 		}
 
 		return instances;
@@ -1410,7 +1409,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 
 		@SuppressWarnings("unused")
 		int totalAxioms = 0; // TODO : remove this or print it
-		final Iterator<?> i = _taxonomyImpl.depthFirstDatumOnly(ATermUtils.TOP, TaxonomyUtils.SUPER_EXPLANATION_KEY);
+		final Iterator<?> i = _taxonomyImpl.depthFirstDatumOnly(ATermUtils.TOP, TaxonomyUtils.TaxonomyKey.SUPER_EXPLANATION_KEY);
 		while (i.hasNext())
 		{
 			@SuppressWarnings("unchecked")

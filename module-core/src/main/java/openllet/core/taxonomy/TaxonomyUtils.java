@@ -4,7 +4,7 @@
 // Please see LICENSE.txt for full license terms, including the availability of proprietary exceptions.
 // Questions, comments, or requests for clarification: licensing@clarkparsia.com
 
-package openllet.core.utils;
+package openllet.core.taxonomy;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -14,8 +14,6 @@ import java.util.Map;
 import java.util.Set;
 import openllet.aterm.ATermAppl;
 import openllet.atom.OpenError;
-import openllet.core.taxonomy.Taxonomy;
-import openllet.core.taxonomy.TaxonomyNode;
 
 /**
  * <p>
@@ -35,21 +33,25 @@ import openllet.core.taxonomy.TaxonomyNode;
  */
 public class TaxonomyUtils
 {
+	public enum TaxonomyKey
+	{
+		INSTANCES_KEY, SUPER_EXPLANATION_KEY
+	}
 
-	public static final Object INSTANCES_KEY = new Object();
-	public static final Object SUPER_EXPLANATION_KEY = new Object();
+	//	public static final Object INSTANCES_KEY = new Object();
+	//	public static final Object SUPER_EXPLANATION_KEY = new Object();
 
-	public static boolean addSuperExplanation(final Taxonomy<ATermAppl> t, final ATermAppl sub, final ATermAppl sup, final Set<ATermAppl> explanation)
+	protected static boolean addSuperExplanation(final Taxonomy<ATermAppl> t, final ATermAppl sub, final ATermAppl sup, final Set<ATermAppl> explanation)
 	{
 		@SuppressWarnings("unchecked")
-		Map<ATermAppl, Set<Set<ATermAppl>>> map = (Map<ATermAppl, Set<Set<ATermAppl>>>) t.getDatum(sub, SUPER_EXPLANATION_KEY);
+		Map<ATermAppl, Set<Set<ATermAppl>>> map = (Map<ATermAppl, Set<Set<ATermAppl>>>) t.getDatum(sub, TaxonomyKey.SUPER_EXPLANATION_KEY);
 		Set<Set<ATermAppl>> explanations;
 		if (map == null)
 		{
 			if (t.contains(sub))
 			{
 				map = new HashMap<>();
-				t.putDatum(sub, SUPER_EXPLANATION_KEY, map);
+				t.putDatum(sub, TaxonomyKey.SUPER_EXPLANATION_KEY, map);
 				explanations = null;
 			}
 			else
@@ -67,15 +69,35 @@ public class TaxonomyUtils
 		return explanations.add(explanation);
 	}
 
-	public static void clearSuperExplanation(final Taxonomy<ATermAppl> t, final ATermAppl c)
+	protected static void clearSuperExplanation(final Taxonomy<ATermAppl> t, final ATermAppl c)
 	{
-		t.removeDatum(c, SUPER_EXPLANATION_KEY);
+		t.removeDatum(c, TaxonomyKey.SUPER_EXPLANATION_KEY);
 	}
 
-	public static void clearAllInstances(final Taxonomy<?> t)
+	protected static void clearAllInstances(final Taxonomy<?> t)
 	{
 		for (final TaxonomyNode<?> node : t.getNodes().values())
-			node.removeDatum(INSTANCES_KEY);
+			node.removeDatum(TaxonomyKey.INSTANCES_KEY);
+	}
+
+	/**
+	 * @param t is a taxonomy
+	 * @param sub classe
+	 * @param sup classe
+	 * @return if only I know.
+	 */
+	public static Set<Set<ATermAppl>> getSuperExplanations(final Taxonomy<ATermAppl> t, final ATermAppl sub, final ATermAppl sup)
+	{
+		@SuppressWarnings("unchecked")
+		final Map<ATermAppl, Set<Set<ATermAppl>>> map = (Map<ATermAppl, Set<Set<ATermAppl>>>) t.getDatum(sub, TaxonomyKey.SUPER_EXPLANATION_KEY);
+		if (map == null)
+			return null;
+
+		final Set<Set<ATermAppl>> explanations = map.get(sup);
+		if (explanations == null)
+			return null;
+
+		return Collections.unmodifiableSet(explanations);
 	}
 
 	/**
@@ -87,21 +109,23 @@ public class TaxonomyUtils
 	 */
 	public static <T, I> Set<I> getAllInstances(final Taxonomy<T> t, final T c)
 	{
-		final Iterator<Object> i = t.depthFirstDatumOnly(c, INSTANCES_KEY);
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		final Iterator<Set<I>> i = (Iterator) t.depthFirstDatumOnly(c, TaxonomyKey.INSTANCES_KEY);
 		if (!i.hasNext())
 			throw new OpenError(c + " is an unknown class!");
 
 		final Set<I> instances = new HashSet<>();
 		do
 		{
-			@SuppressWarnings("unchecked")
-			final Set<I> current = (Set<I>) i.next();
+			final Set<I> current = i.next();
 			if (current != null)
 				instances.addAll(current);
 
 		} while (i.hasNext());
 
 		return Collections.unmodifiableSet(instances);
+		//return Set<OWLNamedIndividual>
+		//return Set<ATermAppl>
 	}
 
 	/**
@@ -114,7 +138,7 @@ public class TaxonomyUtils
 	public static <T, I> Set<I> getDirectInstances(final Taxonomy<T> t, final T c)
 	{
 		@SuppressWarnings("unchecked")
-		final Set<I> instances = (Set<I>) t.getDatum(c, INSTANCES_KEY);
+		final Set<I> instances = (Set<I>) t.getDatum(c, TaxonomyKey.INSTANCES_KEY);
 		if (instances == null)
 		{
 			if (t.contains(c))
@@ -126,20 +150,6 @@ public class TaxonomyUtils
 		return Collections.unmodifiableSet(instances);
 	}
 
-	public static Set<Set<ATermAppl>> getSuperExplanations(final Taxonomy<ATermAppl> t, final ATermAppl sub, final ATermAppl sup)
-	{
-		@SuppressWarnings("unchecked")
-		final Map<ATermAppl, Set<Set<ATermAppl>>> map = (Map<ATermAppl, Set<Set<ATermAppl>>>) t.getDatum(sub, SUPER_EXPLANATION_KEY);
-		if (map == null)
-			return null;
-
-		final Set<Set<ATermAppl>> explanations = map.get(sup);
-		if (explanations == null)
-			return null;
-
-		return Collections.unmodifiableSet(explanations);
-	}
-
 	/**
 	 * Get classes of which the _individual is an instance (based on the _current state of the taxonomy)
 	 *
@@ -148,21 +158,21 @@ public class TaxonomyUtils
 	 * @param directOnly {@code true} if only most specific classes are desired, {@code false} if all classes are desired
 	 * @return a set of sets of classes where each inner set is a collection of equivalent classes
 	 */
-	public static <T> Set<Set<T>> getTypes(final Taxonomy<T> t, final Object ind, final boolean directOnly)
+	public static <TClass, TInd> Set<Set<TClass>> getTypes(final Taxonomy<TClass> t, final TInd ind, final boolean directOnly)
 	{
-		final Set<Set<T>> types = new HashSet<>();
-		final Iterator<Map.Entry<Set<T>, Object>> i = t.datumEquivalentsPair(INSTANCES_KEY);
+		final Set<Set<TClass>> types = new HashSet<>();
+		final Iterator<Map.Entry<Set<TClass>, Object>> i = t.datumEquivalentsPair(TaxonomyKey.INSTANCES_KEY);
 		while (i.hasNext())
 		{
-			final Map.Entry<Set<T>, Object> pair = i.next();
+			final Map.Entry<Set<TClass>, Object> pair = i.next();
 			@SuppressWarnings("unchecked")
-			final Set<T> instances = (Set<T>) pair.getValue();
+			final Set<TClass> instances = (Set<TClass>) pair.getValue();
 			if (instances != null && instances.contains(ind))
 			{
 				types.add(pair.getKey());
 				if (!directOnly)
 				{
-					final T a = pair.getKey().iterator().next();
+					final TClass a = pair.getKey().iterator().next();
 					types.addAll(t.getSupers(a));
 				}
 			}
@@ -180,7 +190,7 @@ public class TaxonomyUtils
 	 */
 	public static boolean isType(final Taxonomy<ATermAppl> t, final ATermAppl ind, final ATermAppl c)
 	{
-		final Iterator<Object> i = t.depthFirstDatumOnly(c, INSTANCES_KEY);
+		final Iterator<Object> i = t.depthFirstDatumOnly(c, TaxonomyKey.INSTANCES_KEY);
 		if (!i.hasNext())
 			throw new OpenError(c + " is an unknown class!");
 

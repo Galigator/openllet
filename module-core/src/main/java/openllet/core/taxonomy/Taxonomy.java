@@ -14,6 +14,7 @@ import java.util.TreeMap;
 import java.util.stream.Stream;
 import openllet.atom.OpenError;
 import openllet.core.exceptions.InternalReasonerException;
+import openllet.core.taxonomy.TaxonomyUtils.TaxonomyKey;
 import openllet.core.utils.Bool;
 import openllet.shared.tools.Logging;
 
@@ -326,7 +327,7 @@ public interface Taxonomy<T> extends Logging
 	 * @param key key associated with datum returned
 	 * @return iterator over equivalence set, datum pairs
 	 */
-	public Iterator<Map.Entry<Set<T>, Object>> datumEquivalentsPair(final Object key);
+	public Iterator<Map.Entry<Set<T>, Object>> datumEquivalentsPair(final TaxonomyKey key);
 
 	/**
 	 * Iterate down taxonomy in a _depth first traversal, beginning with class {@code c}, returning only datum associated with {@code _key} for each. Useful,
@@ -336,7 +337,7 @@ public interface Taxonomy<T> extends Logging
 	 * @param key _key associated with datum returned
 	 * @return datum iterator
 	 */
-	public Iterator<Object> depthFirstDatumOnly(final T t, final Object key);
+	public Iterator<Object> depthFirstDatumOnly(final T t, final TaxonomyKey key);
 
 	/**
 	 * Returns all the classes that are equivalent to class c. Class c itself is included in the result.
@@ -368,7 +369,7 @@ public interface Taxonomy<T> extends Logging
 	 * @param key identifies the specific datum
 	 * @return the datum (or {@code null} if none is associated with {@code _key})
 	 */
-	public default Object getDatum(final T t, final Object key)
+	public default Object getDatum(final T t, final TaxonomyKey key)
 	{
 		final TaxonomyNode<T> node = getNodes().get(t);
 		return node == null ? null : node.getDatum(key);
@@ -538,7 +539,7 @@ public interface Taxonomy<T> extends Logging
 	 * @param value the datum
 	 * @return previous _value of datum or {@code null} if not set
 	 */
-	public default Object putDatum(final T t, final Object key, final Object value)
+	public default Object putDatum(final T t, final TaxonomyKey key, final Object value)
 	{
 		final TaxonomyNode<T> node = getNodes().get(t);
 		if (node == null)
@@ -576,14 +577,14 @@ public interface Taxonomy<T> extends Logging
 	 */
 	public void removeCycles(final TaxonomyNode<T> node);
 
-	public default Object removeDatum(final T t, final Object key)
+	public default Object removeDatum(final T t, final TaxonomyKey key)
 	{
 		return getNode(t).removeDatum(key);
 	}
 
 	/**
 	 * Clear existing supers for an element and set to a new collection
-	 * 
+	 *
 	 * @param t
 	 * @param supers
 	 */
