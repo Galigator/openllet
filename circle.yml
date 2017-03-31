@@ -18,6 +18,7 @@ dependencies:
         - echo $JAVA_HOME
     override:
         - rm -rf ~/.m2
+        - mvn -version
         - mvn dependency:resolve-plugins
 
 compile:
