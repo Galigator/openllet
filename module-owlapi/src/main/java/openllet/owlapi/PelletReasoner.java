@@ -652,15 +652,26 @@ public class PelletReasoner implements OpenlletReasoner
 		return new OWLNamedIndividualNodeSet(instances);
 	}
 
+	private Stream<OWLNamedIndividual> individualStream(final Stream<ATermAppl> individuals)
+	{
+		return individuals//
+				.map(_kb::getAllSames)//
+				.flatMap(set -> set.stream())//
+				.distinct()//
+				.map(IND_MAPPER::map);
+	}
+
 	private NodeSet<OWLNamedIndividual> getIndividualNodeSet(final Collection<ATermAppl> individuals)
 	{
-		if (IndividualNodeSetPolicy.BY_NAME.equals(_individualNodeSetPolicy))
-			return getIndividualNodeSetByName(individuals);
-		else
-			if (IndividualNodeSetPolicy.BY_SAME_AS.equals(_individualNodeSetPolicy))
+		switch (_individualNodeSetPolicy)
+		{
+			case BY_SAME_AS:
 				return getIndividualNodeSetBySameAs(individuals);
-			else
+			case BY_NAME:
+				return getIndividualNodeSetByName(individuals);
+			default:
 				throw new AssertionError("Unsupported IndividualNodeSetPolicy : " + _individualNodeSetPolicy);
+		}
 	}
 
 	@Override
@@ -746,6 +757,20 @@ public class PelletReasoner implements OpenlletReasoner
 		try
 		{
 			return getIndividualNodeSet(_kb.getObjectPropertyValues(term(pe), term(ind)));
+		}
+		catch (final PelletRuntimeException e)
+		{
+			throw convert(e);
+		}
+	}
+
+	@Override
+	public Stream<OWLNamedIndividual> objectPropertyValues(final OWLNamedIndividual ind, final OWLObjectPropertyExpression pe) throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
+	{
+		refreshCheck();
+		try
+		{
+			return individualStream(_kb.getObjectPropertyValues(term(pe), term(ind)).stream());
 		}
 		catch (final PelletRuntimeException e)
 		{
@@ -1175,6 +1200,11 @@ public class PelletReasoner implements OpenlletReasoner
 		return NodeFactory.getOWLClassNode(CLASS_MAPPER.map(terms));
 	}
 
+	private Stream<OWLClass> toClassNode(final Stream<ATermAppl> terms)
+	{
+		return terms.map(CLASS_MAPPER::map);
+	}
+
 	private Node<OWLDataProperty> toDataPropertyNode(final Set<ATermAppl> terms)
 	{
 		return NodeFactory.getOWLDataPropertyNode(DP_MAPPER.map(terms));
@@ -1185,6 +1215,11 @@ public class PelletReasoner implements OpenlletReasoner
 		return NodeFactory.getOWLNamedIndividualNode(IND_MAPPER.map(terms));
 	}
 
+	private Stream<OWLNamedIndividual> toIndividualNode(final Stream<ATermAppl> terms)
+	{
+		return terms.map(IND_MAPPER::map);
+	}
+
 	private Set<OWLLiteral> toLiteralSet(final Collection<ATermAppl> terms)
 	{
 		return LIT_MAPPER.map(terms);
@@ -1193,6 +1228,11 @@ public class PelletReasoner implements OpenlletReasoner
 	private Node<OWLObjectPropertyExpression> toObjectPropertyNode(final Set<ATermAppl> terms)
 	{
 		return NodeFactory.getOWLObjectPropertyNode(OP_MAPPER.map(terms));
+	}
+
+	private Stream<OWLObjectPropertyExpression> toObjectPropertyNode(final Stream<ATermAppl> terms)
+	{
+		return terms.map(OP_MAPPER::map);
 	}
 
 	private Node<OWLNamedIndividual> toIndividualNode(final ATermAppl term)

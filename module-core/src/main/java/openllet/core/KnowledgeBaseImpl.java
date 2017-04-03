@@ -4390,11 +4390,10 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	 * @param x
 	 * @return A list of ATermAppl objects
 	 */
-	@Override
-	public List<ATermAppl> getObjectPropertyValues(final ATermAppl r, final ATermAppl x)
+	private Set<ATermAppl> getObjectPropertyValuesSet(final ATermAppl r, final ATermAppl x)
 	{
 		if (null == r || null == x)
-			return Collections.emptyList();
+			return Collections.emptySet();
 
 		ensureConsistency();
 
@@ -4403,13 +4402,13 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		if (role == null || !role.isObjectRole())
 		{
 			handleUndefinedEntity(r + _isNotAnKnowObjectProperty);
-			return Collections.emptyList();
+			return Collections.emptySet();
 		}
 
 		if (!isIndividual(x))
 		{
 			handleUndefinedEntity(x + _isNotAnKnowIndividual);
-			return Collections.emptyList();
+			return Collections.emptySet();
 		}
 
 		// TODO get rid of unnecessary Set + List creation
@@ -4433,7 +4432,19 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 			binaryInstanceRetrieval(c, new ArrayList<>(unknowns), knowns);
 		}
 
-		return new ArrayList<>(knowns);
+		return knowns;
+	}
+
+	@Override
+	public List<ATermAppl> getObjectPropertyValues(final ATermAppl r, final ATermAppl x)
+	{
+		return new ArrayList<>(getObjectPropertyValuesSet(r, x));
+	}
+
+	@Override
+	public Stream<ATermAppl> objectPropertyValues(final ATermAppl r, final ATermAppl x)
+	{
+		return getObjectPropertyValuesSet(r, x).stream();
 	}
 
 	/**

@@ -804,6 +804,8 @@ public interface KnowledgeBase extends Logging
 	 */
 	public List<ATermAppl> getObjectPropertyValues(final ATermAppl r, final ATermAppl x);
 
+	public Stream<ATermAppl> objectPropertyValues(final ATermAppl r, final ATermAppl x);
+
 	public Set<ATermAppl> getAllEquivalentProperties(final ATermAppl prop);
 
 	public Set<Set<ATermAppl>> getDisjointProperties(final ATermAppl p);
