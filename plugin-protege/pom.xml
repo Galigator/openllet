@@ -102,9 +102,9 @@
                     org.protege.common,
                     org.protege.editor.core.application;bundle-version="4.3.0",
                     org.protege.editor.owl;bundle-version="4.3.0",
-                    org.semanticweb.owl.owlapi;bundle-version="5.0.4"</Require-Bundle><!-- TODO : link version to parent pom.xml -->
+                    org.semanticweb.owl.owlapi;bundle-version="5.1.0"</Require-Bundle><!-- TODO : link version to parent pom.xml -->
                  <Embed-Dependency>
-                    openllet*;inline=true;scope=compile|runtime|provided,
+                    org.github.openllet*;inline=true;scope=compile|runtime|provided,
                     jena-*;inline=false;scope=compile|runtime|provided,
                     jgrapht-ext;inline=false;scope=compile|runtime|provided,
                     slf4j*;inline=false;scope=compile|runtime|provided,
@@ -112,7 +112,7 @@
                     xml-apis;inline=false;scope=compile|runtime|provided,
                     httpclient;inline=false;scope=compile|runtime|provided,
                     antlr*;inline=false;scope=compile|runtime|provided,
-                    !sesame*,
+                    !org.apache.rdf4j*,
                     !org.apache.felix*,
                     !jackson*,
                     !trove4j*,
@@ -130,8 +130,8 @@
                  </Embed-Dependency>
                  <Embed-Transitive>true</Embed-Transitive>
                  <Embed-Directory>lib</Embed-Directory>
-                 <Export-Package>openllet.*</Export-Package>
-                 <Import-Package>org.protege.*, javax.xml.bind, org.w3c.dom.*,org.semanticweb.*</Import-Package>
+                 <Export-Package>org.github.openllet.*</Export-Package>
+                 <Import-Package>org.protege.*, javax.xml.bind, org.w3c.dom.*</Import-Package>
                 </instructions>
                 <executions>
                     <execution>

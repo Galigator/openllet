@@ -109,17 +109,17 @@
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
-        <version>[1.7.25,)</version>
+        <version>[1.7.25,1.7.99]</version>
       </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-log4j12</artifactId>
-        <version>[1.7.25,)</version>
+        <version>[1.7.25,1.7.99]</version>
       </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>jcl-over-slf4j</artifactId>
-        <version>[1.7.25,)</version>
+        <version>[1.7.25,1.7.99]</version>
       </dependency>
       <dependency>
         <groupId>log4j</groupId>
@@ -129,7 +129,7 @@
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-simple</artifactId>
-        <version>[1.7.25,)</version>
+        <version>[1.7.25,1.7.99]</version>
       </dependency>
       <dependency>
         <groupId>org.jfree</groupId>
