@@ -34,6 +34,9 @@ import openllet.shared.tools.Logging;
  */
 public interface ABox extends Logging
 {
+	public final String IS_INC_CONSISTENT = "isIncConsistent";
+	public final String IS_CONSISTENT = "isConsistent";
+
 	/**
 	 * @return a copy of this ABox with all the nodes and edges.
 	 */

@@ -1497,20 +1497,18 @@ public class ABoxImpl implements ABox
 	{
 		assert isComplete() : "Initial consistency check has not been performed!";
 
-		final Timer incT = _kb.getTimers().startTimer("isIncConsistent");
-		final Timer t = _kb.getTimers().startTimer("isConsistent");
+		final Timer incT = _kb.getTimers().startTimer(IS_INC_CONSISTENT);
+		final Timer t = _kb.getTimers().startTimer(IS_CONSISTENT);
 
 		// throw away old information to let gc do its work
 		_lastCompletion = null;
 
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Consistency check starts");
+		_logger.fine("Consistency check starts");
 
 		// currently there is only one incremental consistency _strategy
 		final CompletionStrategy incStrategy = new SROIQIncStrategy(this);
 
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Strategy: " + incStrategy.getClass().getName());
+		_logger.fine("Strategy: " + incStrategy.getClass().getName());
 
 		// set _abox to not being complete
 		setComplete(false);

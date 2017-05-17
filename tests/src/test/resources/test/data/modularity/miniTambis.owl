@@ -11,8 +11,7 @@
 ]>
 
 
-<rdf:RDF xmlns="owlapi:ontology:ont12#"
-     xml:base="owlapi:ontology:ont12"
+<rdf:RDF xmlns="http://miniTambis#"
      xmlns:owl2xml="http://www.w3.org/2006/12/owl2-xml#"
      xmlns:miniTambis="http://miniTambis#"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
