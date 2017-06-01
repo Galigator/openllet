@@ -2,8 +2,6 @@ package openllet.core.datatypes;
 
 import static java.lang.String.format;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.logging.Logger;
 import javax.xml.bind.DatatypeConverter;
 import openllet.aterm.ATermAppl;
@@ -89,10 +87,10 @@ public class XSDInteger implements Datatype<Number>
 		return XSDDecimal.getInstance().getCanonicalRepresentation(ATermUtils.makeTypedLiteral(lexicalForm, XSDDecimal.getInstance().getName()));
 	}
 
-	public List<Datatype<?>> getDerivedFrom()
-	{
-		return Collections.<Datatype<?>> singletonList(XSDDecimal.getInstance());
-	}
+	//	public List<Datatype<?>> getDerivedFrom()
+	//	{
+	//		return Collections.<Datatype<?>> singletonList(XSDDecimal.getInstance());
+	//	}
 
 	@Override
 	public ATermAppl getLiteral(final Object value)

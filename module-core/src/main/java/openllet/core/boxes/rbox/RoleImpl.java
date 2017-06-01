@@ -382,12 +382,6 @@ public class RoleImpl implements Role
 		return _type == PropertyType.DATATYPE;
 	}
 
-	@Deprecated
-	public boolean isOntologyRole()
-	{
-		return false;
-	}
-
 	/**
 	 * check if a role is declared as datatype property
 	 */
