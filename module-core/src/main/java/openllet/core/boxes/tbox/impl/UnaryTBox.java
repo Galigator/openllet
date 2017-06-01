@@ -34,14 +34,9 @@ public class UnaryTBox
 {
 	public static final Logger _logger = Log.getLogger(UnaryTBox.class);
 
-	private Map<ATermAppl, List<Unfolding>> _unfoldings = CollectionUtils.makeIdentityMap();
+	private final Map<ATermAppl, List<Unfolding>> _unfoldings = CollectionUtils.makeIdentityMap();
 
-	public UnaryTBox()
-	{
-		_unfoldings = CollectionUtils.makeIdentityMap();
-	}
-
-	public void add(final ATermAppl sub, ATermAppl sup, final Set<ATermAppl> explanation)
+	public void add(final ATermAppl sub, final ATermAppl sup, final Set<ATermAppl> explanation)
 	{
 		List<Unfolding> list = _unfoldings.get(sub);
 		if (list == null)
@@ -52,12 +47,6 @@ public class UnaryTBox
 
 		_logger.fine(() -> "Add sub: " + ATermUtils.toString(sub) + " < " + ATermUtils.toString(sup));
 		list.add(Unfolding.create(ATermUtils.normalize(sup), explanation));
-	}
-
-	public boolean remove(@SuppressWarnings("unused") final ATermAppl axiom)
-	{
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	public Iterator<Unfolding> unfold(final ATermAppl concept)

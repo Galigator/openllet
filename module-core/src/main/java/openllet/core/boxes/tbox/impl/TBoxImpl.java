@@ -81,7 +81,7 @@ public class TBoxImpl implements TBox
 {
 	public static final Logger _logger = Log.getLogger(TBoxImpl.class);
 
-	protected static final Map<ATermAppl, String> FACETS;
+	private static final Map<ATermAppl, String> FACETS;
 	static
 	{
 		FACETS = new HashMap<>();
@@ -93,9 +93,9 @@ public class TBoxImpl implements TBox
 
 	private static final Set<Set<ATermAppl>> SINGLE_EMPTY_SET = Collections.singleton(Collections.<ATermAppl> emptySet());
 
-	protected final KnowledgeBase _kb;
+	private final KnowledgeBase _kb;
 
-	protected final Set<ATermAppl> _classes = CollectionUtils.makeIdentitySet();
+	private final Set<ATermAppl> _classes = CollectionUtils.makeIdentitySet();
 	private final Set<ATermAppl> _allClasses = SetUtils.create();
 
 	/**
@@ -111,16 +111,13 @@ public class TBoxImpl implements TBox
 
 	private final Set<ATermAppl> _absorbedAxioms = SetUtils.create();
 
-	private final PrimitiveTBox _primitiveTbox;
-	private final UnaryTBox _unaryTbox;
-	private final BinaryTBox _binaryTbox;
+	private final PrimitiveTBox _primitiveTbox = new PrimitiveTBox();
+	private final UnaryTBox _unaryTbox = new UnaryTBox();
+	private final BinaryTBox _binaryTbox = new BinaryTBox();
 
 	public TBoxImpl(final KnowledgeBase kb)
 	{
 		_kb = kb;
-		_primitiveTbox = new PrimitiveTBox();
-		_unaryTbox = new UnaryTBox();
-		_binaryTbox = new BinaryTBox();
 	}
 
 	public KnowledgeBase getKB()
@@ -173,7 +170,7 @@ public class TBoxImpl implements TBox
 	 * @param explain
 	 * @return
 	 */
-	protected boolean addAxiomExplanation(final ATermAppl axiom, final Set<ATermAppl> explain)
+	private boolean addAxiomExplanation(final ATermAppl axiom, final Set<ATermAppl> explain)
 	{
 		_logger.fine(() -> "Add Axiom: " + ATermUtils.toString(axiom) + " Explanation: " + explain);
 
@@ -256,7 +253,7 @@ public class TBoxImpl implements TBox
 		return added;
 	}
 
-	protected boolean addAxiom(final ATermAppl axiom, final Set<ATermAppl> explanation, final boolean forceAddition)
+	private boolean addAxiom(final ATermAppl axiom, final Set<ATermAppl> explanation, final boolean forceAddition)
 	{
 		final boolean added = addAxiomExplanation(axiom, explanation);
 
@@ -319,7 +316,7 @@ public class TBoxImpl implements TBox
 		throw new InternalReasonerException("Absorption failed");
 	}
 
-	protected ATermAppl disjunction(final Set<ATermAppl> terms)
+	private static ATermAppl disjunction(final Set<ATermAppl> terms)
 	{
 		return not(and(terms.toArray(new ATermAppl[terms.size()])));
 	}
@@ -327,7 +324,6 @@ public class TBoxImpl implements TBox
 	private interface Absorption
 	{
 		public boolean absorb(Set<ATermAppl> terms, Set<ATermAppl> explanation);
-
 	}
 
 	private class SimplifyAbsorption implements Absorption
@@ -522,7 +518,7 @@ public class TBoxImpl implements TBox
 			return true;
 		}
 
-		protected int processClass(final AtomIObject var, final ATermAppl c, final List<RuleAtom> atoms, final int varCountInit)
+		private int processClass(final AtomIObject var, final ATermAppl c, final List<RuleAtom> atoms, final int varCountInit)
 		{
 			int varCount = varCountInit;
 
@@ -581,7 +577,7 @@ public class TBoxImpl implements TBox
 			return varCount;
 		}
 
-		protected void processDatatype(final AtomDObject var, final ATermAppl c, final List<RuleAtom> atoms)
+		private void processDatatype(final AtomDObject var, final ATermAppl c, final List<RuleAtom> atoms)
 		{
 			final AFun afun = c.getAFun();
 			if (afun.equals(ATermUtils.ANDFUN))

@@ -27,10 +27,10 @@ import openllet.core.utils.ATermUtils;
 public class Clash
 {
 	public final ATerm[] _args;
-	private volatile DependencySet _depends;
-	private volatile Node _node;
-	private volatile ClashType _type;
-	private volatile String _clashExplanation;
+	private volatile DependencySet _depends; // Warn, some functions get the _depends then change its value behind us.
+	private final Node _node;
+	private final ClashType _type;
+	private final String _clashExplanation;
 
 	public enum ClashType
 	{
@@ -61,28 +61,29 @@ public class Clash
 		}
 	}
 
-	// TODO Make constructor privates and only use public creator functions
 	private Clash(final Node node, final ClashType type, final DependencySet depends)
 	{
-		setDepends(depends);
-		setNode(node);
-		setType(type);
+		_depends = depends;
+		_node = node;
+		_type = type;
 		_args = null;
+		_clashExplanation = type.getExplanation();
 	}
 
 	private Clash(final Node node, final ClashType type, final DependencySet depends, final ATerm[] args)
 	{
-		setDepends(depends);
-		setNode(node);
-		setType(type);
+		_depends = depends;
+		_node = node;
+		_type = type;
 		_args = args;
+		_clashExplanation = type.getExplanation();
 	}
 
 	private Clash(final Node node, final ClashType type, final DependencySet depends, final String explanation)
 	{
-		setDepends(depends);
-		setNode(node);
-		setType(type);
+		_depends = depends;
+		_node = node;
+		_type = type;
 		_args = null;
 		_clashExplanation = explanation;
 	}
@@ -252,7 +253,7 @@ public class Clash
 		return str;
 	}
 
-	public String describeNode(final Node node)
+	public static String describeNode(final Node node)
 	{
 		final StringBuffer str = new StringBuffer();
 		if (node.getNameStr().startsWith("Any member of"))
@@ -363,8 +364,7 @@ public class Clash
 	@Override
 	public String toString()
 	{
-		// TODO fix formatting
-		return "[Clash " + getNode() + " " + getType() + " " + getDepends().toString() + " " + (_args == null ? null : Arrays.asList(_args)) + "]";
+		return "[Clash " + getNode() + " " + getType() + " " + getDepends().toString() + (_args == null ? "" : " " + Arrays.asList(_args)) + "]";
 	}
 
 	/**
@@ -376,7 +376,7 @@ public class Clash
 	}
 
 	/**
-	 * @return the _depends
+	 * @return the depends
 	 */
 	public DependencySet getDepends()
 	{
@@ -384,15 +384,7 @@ public class Clash
 	}
 
 	/**
-	 * @param node the _node to set
-	 */
-	public void setNode(final Node node)
-	{
-		_node = node;
-	}
-
-	/**
-	 * @return the _node
+	 * @return the node
 	 */
 	public Node getNode()
 	{
@@ -400,15 +392,7 @@ public class Clash
 	}
 
 	/**
-	 * @param type the _type to set
-	 */
-	public void setType(final ClashType type)
-	{
-		_type = type;
-	}
-
-	/**
-	 * @return the _type
+	 * @return the type
 	 */
 	public ClashType getType()
 	{

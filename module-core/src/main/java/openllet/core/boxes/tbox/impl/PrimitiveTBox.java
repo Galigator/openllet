@@ -37,14 +37,8 @@ public class PrimitiveTBox
 {
 	public static final Logger _logger = Log.getLogger(PrimitiveTBox.class);
 
-	private final Map<ATermAppl, Unfolding> _definitions;
-	private final Map<ATermAppl, Set<ATermAppl>> _dependencies;
-
-	public PrimitiveTBox()
-	{
-		_definitions = CollectionUtils.makeIdentityMap();
-		_dependencies = CollectionUtils.makeIdentityMap();
-	}
+	private final Map<ATermAppl, Unfolding> _definitions = CollectionUtils.makeIdentityMap();
+	private final Map<ATermAppl, Set<ATermAppl>> _dependencies = CollectionUtils.makeIdentityMap();
 
 	public boolean contains(final ATermAppl concept)
 	{
@@ -78,7 +72,7 @@ public class PrimitiveTBox
 		return true;
 	}
 
-	protected void addDefinition(final ATermAppl concept, ATermAppl definition, final Set<ATermAppl> explanation)
+	protected void addDefinition(final ATermAppl concept, final ATermAppl definition, final Set<ATermAppl> explanation)
 	{
 		_logger.fine(() -> "Def: " + ATermUtils.toString(concept) + " = " + ATermUtils.toString(definition));
 		_definitions.put(concept, Unfolding.create(ATermUtils.normalize(definition), explanation));
