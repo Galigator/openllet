@@ -6,7 +6,6 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.PrintStream;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -17,12 +16,14 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import openllet.atom.OpenError;
 import openllet.core.utils.SetUtils;
 import openllet.owlapi.parser.OWLFunctionalSyntaxParser;
@@ -72,6 +73,7 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 	private final OWLManagerGroup _owlManagerGroup;
 	private final Lock _sequential = new ReentrantLock();
 	private volatile Optional<OutputStream> _deltaStream = Optional.empty();
+	private volatile ScheduledFuture<?> _future;
 
 	private final Runnable _task = () ->
 	{
@@ -129,7 +131,7 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 		flush();
 
 		// We flush the log file into ontologies file on fix schedule to avoid to much problem with the log file.
-		_timer.scheduleAtFixedRate(_task, 0, _flushTimeInMinute, TimeUnit.MINUTES);
+		_future = _timer.scheduleAtFixedRate(_task, 0, _flushTimeInMinute, TimeUnit.MINUTES);
 	}
 
 	public String ontology2filename(final OWLOntology ontology)
@@ -146,41 +148,39 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 	 */
 	public void flush()
 	{
+		final List<OWLOntologyID> changed;
+		synchronized (_changed) // We don't took the synchronized over _changed directly to avoid a general stop of the application.
 		{
-			final List<OWLOntologyID> changed;
-			synchronized (_changed) // We don't took the synchronized over _changed directly to avoid a general stop of the application.
-			{
-				changed = new ArrayList<>(_changed);
-				_changed.clear();
-			}
-
-			_owlManagerGroup.getPersistentManager().ontologies()//
-					.parallel()// Yes we can !
-					.filter(ontology -> ontology.getOntologyID().getOntologyIRI().isPresent())//
-					.filter(ontology -> changed.contains(ontology.getOntologyID())) //
-					.filter(ontology -> !ontology.isAnonymous())//
-					// Don't filter ontology empty. There is no other way to mark an ontology as empty, so we save empty ontology.
-					.forEach(ontology ->
-					{
-						try (final OutputStream stream = new FileOutputStream(ontology2filename(ontology)))
-						{
-							final PrintStream out = new PrintStream(stream);
-							writeOntologyId(stream, ontology.getOntologyID());
-							stream.write(_lineSeparator);
-							ontology.axioms().map(OWLAxiom::toString).forEach(out::println);
-						} // All exceptions must be fatal to avoid loosing 'log' file. Re-apply a log isn't an issue.
-						catch (final Exception e)
-						{ // Do not make other ontologies crash at save time.
-							Log.error(_logger, "Crash when saving " + ontology.getOntologyID(), e);
-						}
-					});
-
-			_logger.fine("flush done");
-
-			// Make sure to note catch the saveOntology exception.
-			// Make sure everything goes correctly before removing 'log' file.
-			releaseDeltaStream();
+			changed = new ArrayList<>(_changed);
+			_changed.clear();
 		}
+
+		_owlManagerGroup.getPersistentManager().ontologies()//
+				.parallel()// Yes we can !
+				.filter(ontology -> ontology.getOntologyID().getOntologyIRI().isPresent())//
+				.filter(ontology -> changed.contains(ontology.getOntologyID())) //
+				.filter(ontology -> !ontology.isAnonymous())//
+				// Don't filter ontology empty. There is no other way to mark an ontology as empty, so we save empty ontology.
+				.forEach(ontology ->
+				{
+					try (final OutputStream stream = new FileOutputStream(ontology2filename(ontology)))
+					{
+						writeOntologyId(stream, ontology.getOntologyID());
+						stream.write(_lineSeparator);
+						stream.write(ontology.axioms().map(OWLAxiom::toString).distinct().collect(Collectors.joining("\n")).getBytes()); // Not sure why distinct is require, look-like sometime axioms aren't really unique.
+						stream.write(_lineSeparator);
+					} // All exceptions must be fatal to avoid loosing 'log' file. Re-apply a log isn't an issue.
+					catch (final Exception e)
+					{ // Do not make other ontologies crash at save time.
+						Log.error(_logger, "Crash when saving " + ontology.getOntologyID(), e);
+					}
+				});
+
+		_logger.fine("flush done");
+
+		// Make sure to not catch the saveOntology exception.
+		// Make sure everything goes correctly before removing 'log' file.
+		releaseDeltaStream();
 	}
 
 	private void releaseDeltaStream()
@@ -583,7 +583,7 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 		}
 		try
 		{
-			_timer.remove(_task);
+			_future.cancel(true); // Removing the 'delta file' is an atomic operation, and the only one that carry 'risk'.
 			_logger.log(Level.INFO, "The task that save ontologies have been removed.");
 		}
 		catch (final Exception exception)
@@ -593,6 +593,7 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 		try
 		{
 			_timer.purge();
+			_timer.shutdown();
 		}
 		catch (final Exception exception)
 		{
