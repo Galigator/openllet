@@ -39,9 +39,7 @@ import static openllet.core.utils.TermFactory.BOTTOM;
 import static openllet.core.utils.TermFactory.and;
 import static openllet.core.utils.TermFactory.some;
 
-import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -693,15 +691,6 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		return new KnowledgeBaseImpl(this, emptyABox);
 	}
 
-	public void loadKRSS(final Reader reader) throws IOException
-	{
-		if (null == reader)
-			return;
-
-		final KRSSLoader loader = new KRSSLoader(this);
-		loader.parse(reader);
-	}
-
 	@Override
 	public void addClass(final ATermAppl c)
 	{
@@ -837,20 +826,6 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		_tbox.addAxiom(ATermUtils.makeEqClasses(c1, notC2));
 
 		_logger.finer(() -> "complement " + c1 + " " + c2);
-	}
-
-	/**
-	 * Add the value of a DatatypeProperty.
-	 *
-	 * @param p Datatype Property
-	 * @param s Individual value being added to
-	 * @param o A literal ATerm which should be constructed with one of ATermUtils.makeXXXLiteral functions
-	 * @deprecated Use addPropertyValue instead
-	 */
-	@Deprecated
-	public void addDataPropertyValue(final ATermAppl p, final ATermAppl s, final ATermAppl o)
-	{
-		addPropertyValue(p, s, o);
 	}
 
 	@Override
@@ -1510,11 +1485,6 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 			}
 		}
 		_logger.finer(() -> "disjoints " + properties);
-	}
-
-	public void addDisjointProperties(final List<ATermAppl> properties)
-	{
-		addDisjointProperties(ATermUtils.toSet(properties));
 	}
 
 	@Override
@@ -2677,12 +2647,6 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		return p != null && getPropertyType(p) == PropertyType.ANNOTATION;
 	}
 
-	@Deprecated
-	public boolean isOntologyProperty(@SuppressWarnings("unused") final ATerm p)
-	{
-		return false;
-	}
-
 	@Override
 	public boolean isTransitiveProperty(final ATermAppl r)
 	{
@@ -3787,38 +3751,6 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 				types.add(eqSet);
 		}
 		return types;
-	}
-
-	public ATermAppl getType(final ATermAppl ind)
-	{
-		if (null == ind)
-			return null;
-
-		if (!isIndividual(ind))
-		{
-			handleUndefinedEntity(ind + _isNotAnIndividual);
-			return null;
-		}
-
-		// there is always at least one atomic class guaranteed to exist (i.e.
-		// owl:Thing)
-		return _abox.getIndividual(ind).getTypes(Node.ATOM).iterator().next();
-	}
-
-	public ATermAppl getType(final ATermAppl ind, final boolean direct)
-	{
-		if (null == ind)
-			return null;
-
-		if (!isIndividual(ind))
-		{
-			handleUndefinedEntity(ind + _isNotAnIndividual);
-			return null;
-		}
-
-		final Set<Set<ATermAppl>> types = getTypes(ind, direct);
-
-		return types.isEmpty() ? null : types.iterator().next().iterator().next();
 	}
 
 	/**

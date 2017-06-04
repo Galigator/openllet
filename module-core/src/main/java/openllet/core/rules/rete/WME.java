@@ -110,20 +110,6 @@ public abstract class WME
 		}
 	}
 
-	public static class SameAs extends BinaryWME
-	{
-		public SameAs(final Individual subject, final Individual object, final DependencySet depends)
-		{
-			super(subject, object, depends);
-		}
-
-		@Override
-		public Kind getKind()
-		{
-			return Kind.SAME_AS;
-		}
-	}
-
 	public static class DiffFrom extends BinaryWME
 	{
 		public DiffFrom(final Individual subject, final Individual object, final DependencySet depends)

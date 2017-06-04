@@ -7,12 +7,10 @@
 package openllet.core.el;
 
 import java.util.Set;
-import java.util.logging.Logger;
 import openllet.aterm.ATermAppl;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.MultiValueMap;
 import openllet.core.utils.SetUtils;
-import openllet.shared.tools.Log;
 
 /**
  * <p>
@@ -26,8 +24,6 @@ import openllet.shared.tools.Log;
  */
 class ConceptInfo
 {
-	public final static Logger _logger = Log.getLogger(ConceptInfo.class);
-
 	private final ATermAppl _concept;
 	private final Set<Trigger> _triggers;
 

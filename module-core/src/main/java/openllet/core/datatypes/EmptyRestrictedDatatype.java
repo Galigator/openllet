@@ -43,7 +43,7 @@ public class EmptyRestrictedDatatype<T> extends EmptyDataRange<T> implements Res
 		return this;
 	}
 
-	public void getConstrainingFacetValues(@SuppressWarnings("unused") final ATermAppl[] facets, @SuppressWarnings("unused") final Object[] values)
+	private static void getConstrainingFacetValues(@SuppressWarnings("unused") final ATermAppl[] facets, @SuppressWarnings("unused") final Object[] values)
 	{
 		throw new UnsupportedOperationException();
 	}
@@ -54,7 +54,7 @@ public class EmptyRestrictedDatatype<T> extends EmptyDataRange<T> implements Res
 		return _datatype;
 	}
 
-	public boolean inFacetSpace(@SuppressWarnings("unused") final ATermAppl facet, @SuppressWarnings("unused") final Object value)
+	private static boolean inFacetSpace(@SuppressWarnings("unused") final ATermAppl facet, @SuppressWarnings("unused") final Object value)
 	{
 		throw new UnsupportedOperationException();
 	}

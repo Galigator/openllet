@@ -9,9 +9,6 @@ import openllet.aterm.ATermAppl;
  * Title: Invalid Constraining Facet Exception
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2009
  * </p>
  * <p>
@@ -42,14 +39,8 @@ public class InvalidConstrainingFacetException extends DatatypeReasonerException
 	public InvalidConstrainingFacetException(final String msg, final ATermAppl facet, final Object value)
 	{
 		super(msg);
-		this._facet = facet;
-		this._value = value;
-	}
-
-	public InvalidConstrainingFacetException(final String msg, final ATermAppl facet, final Object value, final Throwable cause)
-	{
-		this(msg, facet, value);
-		initCause(cause);
+		_facet = facet;
+		_value = value;
 	}
 
 	public ATermAppl getFacet()

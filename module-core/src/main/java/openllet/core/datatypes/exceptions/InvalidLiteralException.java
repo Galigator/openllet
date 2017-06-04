@@ -9,9 +9,6 @@ import openllet.aterm.ATermAppl;
  * Title: Invalid Literal Exception
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2009
  * </p>
  * <p>
@@ -31,8 +28,8 @@ public class InvalidLiteralException extends DatatypeReasonerException
 	public InvalidLiteralException(final ATermAppl dt, final String value)
 	{
 		super(format("'%s' is not in the lexical space of datatype %s", value, dt.getName()));
-		this._dt = dt;
-		this._value = value;
+		_dt = dt;
+		_value = value;
 	}
 
 	public InvalidLiteralException(final ATermAppl dt, final String value, final Throwable cause)

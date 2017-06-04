@@ -25,15 +25,4 @@ public class DatatypeReasonerException extends Exception
 	{
 		super(message);
 	}
-
-	public DatatypeReasonerException(final Throwable cause)
-	{
-		super(cause);
-	}
-
-	public DatatypeReasonerException(final String message, final Throwable cause)
-	{
-		super(message, cause);
-	}
-
 }

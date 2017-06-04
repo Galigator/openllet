@@ -131,7 +131,7 @@ public class BindingGeneratorStrategyImpl implements BindingGeneratorStrategy
 		}
 		optimize(helpers);
 
-		return new BindingGeneratorImpl(_abox, initialBinding, helpers);
+		return new BindingGeneratorImpl(initialBinding, helpers);
 	}
 
 	/**

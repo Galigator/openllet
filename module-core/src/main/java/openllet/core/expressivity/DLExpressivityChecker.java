@@ -17,7 +17,6 @@ import openllet.core.boxes.abox.Individual;
 import openllet.core.boxes.rbox.Role;
 import openllet.core.boxes.tbox.TBox;
 import openllet.core.boxes.tbox.impl.Unfolding;
-import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.output.ATermBaseVisitor;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.SetUtils;
@@ -312,11 +311,6 @@ public class DLExpressivityChecker extends ProfileBasedExpressivityChecker
 		{
 			_expressivity.setHasReflexivity(true);
 			_expressivity.setHasIrreflexivity(true);
-		}
-
-		public void visitSubClass(final ATermAppl term)
-		{
-			throw new InternalReasonerException("This function should never be called: " + term);
 		}
 
 		@Override

@@ -1,12 +1,10 @@
 package openllet.core.datatypes.types.text;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 import openllet.aterm.ATermAppl;
@@ -138,20 +136,6 @@ public class RestrictedTextDatatype implements RestrictedDatatype<ATermAppl>
 	public Datatype<? extends ATermAppl> getDatatype()
 	{
 		return _dt;
-	}
-
-	protected static <T> List<T> concatLists(final List<T> l1, final List<T> l2)
-	{
-		if (l1.isEmpty())
-			return l2;
-		if (l2.isEmpty())
-			return l1;
-
-		final List<T> newList = new ArrayList<>(l1.size() + l2.size());
-		newList.addAll(l1);
-		newList.addAll(l2);
-
-		return newList;
 	}
 
 	@Override

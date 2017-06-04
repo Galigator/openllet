@@ -34,7 +34,6 @@ import openllet.core.boxes.tbox.impl.Unfolding;
 import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.CollectionUtils;
-import openllet.core.utils.MemUtils;
 import openllet.core.utils.SetUtils;
 import openllet.core.utils.Timer;
 import openllet.core.utils.progress.ProgressMonitor;
@@ -1385,60 +1384,6 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 		}
 
 		return instances;
-	}
-
-	public void printStats()
-	{
-		final Timer t1 = _kb.getTimers().getTimer("satisfiability");
-		final Timer t2 = _kb.getTimers().getTimer("subClassSat");
-		final StringBuilder sb = new StringBuilder(_kb.getABox().getCache().toString());
-		sb.append("sat: ");
-		if (t1 != null)
-			sb.append(t1.getCount()).append(" ").append(t1.getTotal());
-		else
-			sb.append("0");
-
-		sb.append(" sub: ");
-		if (t2 != null)
-			sb.append(t2.getCount()).append(" ").append(t2.getTotal());
-		else
-			sb.append("0");
-
-		@SuppressWarnings("unused")
-		int totalExps = 0; // TODO : remove this or print it
-
-		@SuppressWarnings("unused")
-		int totalAxioms = 0; // TODO : remove this or print it
-		final Iterator<?> i = _taxonomyImpl.depthFirstDatumOnly(ATermUtils.TOP, TaxonomyUtils.TaxonomyKey.SUPER_EXPLANATION_KEY);
-		while (i.hasNext())
-		{
-			@SuppressWarnings("unchecked")
-			final Map<ATermAppl, Set<Set<ATermAppl>>> allExps = (Map<ATermAppl, Set<Set<ATermAppl>>>) i.next();
-			if (allExps != null)
-			{
-				totalExps++;
-				for (final Set<Set<ATermAppl>> exps : allExps.values())
-					for (final Set<ATermAppl> exp : exps)
-						totalAxioms += exp.size();
-			}
-		}
-		System.out.println(sb);
-	}
-
-	public static void printMemory()
-	{
-		try
-		{
-			MemUtils.printMemory("Total: ", MemUtils.totalMemory());
-			MemUtils.printMemory("Free : ", MemUtils.freeMemory());
-			MemUtils.printMemory("Used*: ", MemUtils.totalMemory() - MemUtils.freeMemory());
-			MemUtils.runGC();
-			MemUtils.printMemory("Used : ", MemUtils.usedMemory());
-		}
-		catch (final Exception e)
-		{
-			e.printStackTrace();
-		}
 	}
 
 	private static String format(final ATermAppl c)

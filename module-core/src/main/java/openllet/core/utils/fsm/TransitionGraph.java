@@ -161,35 +161,6 @@ public class TransitionGraph<T>
 	}
 
 	// ---------------------------------------------------
-	// Return a TG that accepts just epsilon
-
-	public TransitionGraph<T> epsilon()
-	{
-		final TransitionGraph<T> tg = new TransitionGraph<>();
-		final State<T> s = tg.newState();
-		final State<T> f = tg.newState();
-		s.addTransition(f);
-		tg._initialState = s;
-		tg._finalStates.add(f);
-		return tg;
-	}
-
-	// ---------------------------------------------------
-	// Return a TG that accepts just a single character
-
-	public static <T> TransitionGraph<T> symbol(final T transition)
-	{
-		final TransitionGraph<T> tg = new TransitionGraph<>();
-		final State<T> s = tg.newState();
-		final State<T> f = tg.newState();
-		s.addTransition(transition, f);
-		tg._initialState = s;
-		tg._finalStates.add(f);
-		tg._alphabet.add(transition);
-		return tg;
-	}
-
-	// ---------------------------------------------------
 	// given a DFA, print it out
 
 	@Override
@@ -259,23 +230,6 @@ public class TransitionGraph<T>
 		return this;
 	}
 
-	// ---------------------------------------------------
-	// given a DFA and a string, trace the execution of
-	// the DFA on the string and decide accept/reject
-
-	public boolean accepts(final List<T> str)
-	{
-		State<T> s = _initialState;
-		for (final T ch : str)
-		{
-			s = s.move(ch);
-			if (s == null)
-				return false;
-		}
-
-		return _finalStates.contains(s);
-	}
-
 	// -------------------------------------------------------------//
 	// -------------------------------------------------------------//
 	// --------------Make changes past this point-------------------//
@@ -283,103 +237,6 @@ public class TransitionGraph<T>
 	// -------------------------------------------------------------//
 
 	// ---------------------------------------------------
-	// modify TG so that it accepts strings accepted by
-	// either _current TG or new TG
-
-	public TransitionGraph<T> choice(final TransitionGraph<T> t)
-	{
-		final State<T> s = newState(); // new start state
-		final State<T> f = newState(); // new final state
-
-		// combine all states and final states
-		_allStates.addAll(t._allStates);
-		_finalStates.addAll(t._finalStates);
-
-		// add an epsilon edge from new start state to
-		// _current TG's and parameter TG's start state
-		s.addTransition(_initialState);
-		s.addTransition(t._initialState);
-		_initialState = s;
-
-		// from all final states add an epsilon edge to new final state
-		for (final State<T> fs : _finalStates)
-			fs.addTransition(f);
-		// make f the only final state
-		_finalStates.clear();
-		_finalStates.add(f);
-
-		// combine the alphabets
-		_alphabet.addAll(t._alphabet);
-
-		return this;
-	}
-
-	// ---------------------------------------------------
-	// modify TG so that it accepts strings composed
-	// of strings accepted by _current TG followed strings
-	// accepted by new TG
-
-	public TransitionGraph<T> concat(final TransitionGraph<T> t)
-	{
-		final State<T> s = newState(); // new start state
-		final State<T> f = newState(); // new final state
-
-		// combine all states
-		_allStates.addAll(t._allStates);
-
-		// add an epsilon edge from new start state to _current
-		// TG's start state and make it the start state
-		s.addTransition(_initialState);
-		_initialState = s;
-
-		// from final states of _current TG add an
-		// epsilon edge to start state of parameter TG
-		for (final State<T> fs : _finalStates)
-			fs.addTransition(t._initialState);
-
-		// from final states of parameter TG add an
-		// epsilon edge to new final state
-		for (final State<T> tfs : t._finalStates)
-			tfs.addTransition(f);
-
-		// make f the only final state
-		_finalStates.clear();
-		_finalStates.add(f);
-
-		// combine alphabets
-		_alphabet.addAll(t._alphabet);
-
-		return this;
-	}
-
-	// ---------------------------------------------------
-	// Return a TG that accepts any sequence of 0 or more
-	// strings accepted by TG
-
-	public TransitionGraph<T> closure()
-	{
-		final State<T> s = newState(); // new start state
-		final State<T> f = newState(); // new final state
-
-		// from final states of _current TG add an epsilon
-		// edge to old start state and new final state
-		for (final State<T> fs : _finalStates)
-		{
-			fs.addTransition(_initialState);
-			fs.addTransition(f);
-		}
-		// make f the only final state
-		_finalStates.clear();
-		_finalStates.add(f);
-
-		// add an epsilon edge from new start state to
-		// old start state and to new final state
-		s.addTransition(_initialState);
-		s.addTransition(f);
-		_initialState = s;
-
-		return this;
-	}
 
 	public TransitionGraph<T> insert(final TransitionGraph<T> tg, final State<T> i, final State<T> f)
 	{

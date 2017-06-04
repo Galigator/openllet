@@ -315,11 +315,6 @@ public class Expressivity
 		_hasDisjointRoles = v;
 	}
 
-	public boolean hasAsymmmetry()
-	{
-		return _hasAsymmetry;
-	}
-
 	public void setHasAsymmetry(final boolean v)
 	{
 		_hasAsymmetry = v;
