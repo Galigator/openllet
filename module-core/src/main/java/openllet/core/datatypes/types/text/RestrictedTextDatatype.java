@@ -13,6 +13,7 @@ import openllet.core.datatypes.RestrictedDatatype;
 import openllet.core.datatypes.exceptions.InvalidConstrainingFacetException;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.SetUtils;
+import openllet.core.vocabulary.BuiltinNamespace;
 
 /**
  * <p>
@@ -32,7 +33,6 @@ import openllet.core.utils.SetUtils;
  */
 public class RestrictedTextDatatype implements RestrictedDatatype<ATermAppl>
 {
-
 	private static final String NCNAMESTARTCHAR = "[A-Z]|_|[a-z]|[\u00C0-\u00D6]|[\u00D8-\u00F6]|[\u00F8-\u02FF]|[\u0370-\u037D]|[\u037F-\u1FFF]|[\u200C-\u200D]|[\u2070-\u218F]|[\u2C00-\u2FEF]|[\u3001-\uD7FF]|[\uF900-\uFDCF]|[\uFDF0-\uFFFD]";
 	private static final String NCNAMECHAR = NCNAMESTARTCHAR + "|-|\\.|[0-9]|\u00B7|[\u0300-\u036F]|[\u203F-\u2040]";
 	protected static final String NCNAME = "(" + NCNAMESTARTCHAR + ")(" + NCNAMECHAR + ")*";
@@ -52,41 +52,34 @@ public class RestrictedTextDatatype implements RestrictedDatatype<ATermAppl>
 	private static final Set<ATermAppl> permittedDts = new HashSet<>(Arrays.asList(ATermUtils.EMPTY));
 
 	/*
-	 * TODO: This is awkward.
+	 * XXX: This is awkward.
 	 */
 	public static boolean addPermittedDatatype(final ATermAppl dt)
 	{
 		return permittedDts.add(dt);
 	}
 
-	private final Set<Object> _excludedValues;
-	private final Set<Pattern> _patterns;
-	private final boolean _allowLang;
-	private final Datatype<ATermAppl> _dt;
+	protected final Set<Object> _excludedValues;
+	protected final Set<Pattern> _patterns;
+	protected final boolean _allowLang;
+	protected final Datatype<ATermAppl> _dt;
+
+	protected RestrictedTextDatatype(final Datatype<ATermAppl> dt, final Set<Pattern> patterns, final boolean allowLang, final Set<Object> excludedValues)
+	{
+		_dt = dt;
+		_patterns = patterns;
+		_allowLang = allowLang;
+		_excludedValues = excludedValues;
+	}
 
 	public RestrictedTextDatatype(final Datatype<ATermAppl> dt, final boolean allowLang)
 	{
-		this(dt, Collections.<Pattern> emptySet(), allowLang, Collections.emptySet());
+		this(dt, Collections.emptySet(), allowLang, Collections.emptySet());
 	}
 
 	public RestrictedTextDatatype(final Datatype<ATermAppl> dt, final String pattern)
 	{
 		this(dt, Collections.singleton(Pattern.compile(pattern)), false, Collections.emptySet());
-	}
-
-	private RestrictedTextDatatype(final Datatype<ATermAppl> dt, final Set<Pattern> patterns, final boolean allowLang, final Set<Object> excludedValues)
-	{
-		_dt = dt;
-		_allowLang = allowLang;
-		_excludedValues = excludedValues;
-		_patterns = patterns;
-	}
-
-	@Override
-	public RestrictedDatatype<ATermAppl> applyConstrainingFacet(final ATermAppl facet, final Object value) throws InvalidConstrainingFacetException
-	{
-		// TODO: support facets
-		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -125,33 +118,6 @@ public class RestrictedTextDatatype implements RestrictedDatatype<ATermAppl>
 	}
 
 	@Override
-	public RestrictedDatatype<ATermAppl> exclude(final Collection<?> values)
-	{
-		final Set<Object> newExcludedValues = new HashSet<>(values);
-		newExcludedValues.addAll(_excludedValues);
-		return new RestrictedTextDatatype(_dt, _patterns, _allowLang, newExcludedValues);
-	}
-
-	@Override
-	public Datatype<? extends ATermAppl> getDatatype()
-	{
-		return _dt;
-	}
-
-	@Override
-	public RestrictedDatatype<ATermAppl> intersect(final RestrictedDatatype<?> other, final boolean negated)
-	{
-		if (other instanceof RestrictedTextDatatype)
-		{
-			final RestrictedTextDatatype that = (RestrictedTextDatatype) other;
-
-			return new RestrictedTextDatatype(_dt, SetUtils.union(_patterns, that._patterns), _allowLang && that._allowLang, SetUtils.union(_excludedValues, that._excludedValues));
-		}
-		else
-			throw new IllegalArgumentException();
-	}
-
-	@Override
 	public boolean isEmpty()
 	{
 		return false;
@@ -170,6 +136,68 @@ public class RestrictedTextDatatype implements RestrictedDatatype<ATermAppl>
 	}
 
 	@Override
+	public Iterator<ATermAppl> valueIterator()
+	{
+		throw new IllegalStateException();
+	}
+
+	@Override
+	public Datatype<? extends ATermAppl> getDatatype()
+	{
+		return _dt;
+	}
+
+	@Override
+	public RestrictedDatatype<ATermAppl> applyConstrainingFacet(final ATermAppl facet, final Object value) throws InvalidConstrainingFacetException
+	{
+		// System.out.println("RestrictedTextDatatype.applyConstrainingFacet(" + facet + "\t" + value + ")");
+		final String name = facet.getName().substring(BuiltinNamespace.XSD.getURI().length());
+		switch (name)
+		{
+			case "pattern":
+			{
+				if (!(value instanceof ATermAppl))
+					throw new UnsupportedOperationException("Don't know how to eval " + value + " in a regexp-pattern assertion");
+
+				final ATermAppl term = (ATermAppl) value;
+				final ATermAppl payload = (ATermAppl) term.getChildAt(0); // The 'pattern'.
+				final Set<Pattern> patterns = SetUtils.union(_patterns, Collections.singleton(Pattern.compile(payload.getName())));
+				return new RestrictedTextDatatype(_dt, patterns, _allowLang, _excludedValues);
+			}
+			case "lang_range":
+				throw new UnsupportedOperationException("TODO : support lang_range facets"); // TODO: support lang_range facets
+			case "length":
+				throw new UnsupportedOperationException("TODO : support length facets"); // TODO: support length facets
+			case "max_length":
+				throw new UnsupportedOperationException("TODO : support max_length facets"); // TODO: support max_length facets
+			default:
+				throw new UnsupportedOperationException(facet.getName() + " is an unknow restriction");
+		}
+		//return this;
+	}
+
+	@Override
+	public RestrictedDatatype<ATermAppl> intersect(final RestrictedDatatype<?> other, final boolean negated)
+	{
+		if (other instanceof RestrictedTextDatatype)
+		{
+			final RestrictedTextDatatype that = (RestrictedTextDatatype) other;
+
+			return new RestrictedTextDatatype(_dt, SetUtils.union(_patterns, that._patterns), _allowLang && that._allowLang, SetUtils.union(_excludedValues, that._excludedValues));
+		}
+		else
+			throw new IllegalArgumentException();
+	}
+
+	@Override
+	public RestrictedDatatype<ATermAppl> exclude(final Collection<?> values)
+	{
+		final Set<Object> newExcludedValues = new HashSet<>(values);
+		newExcludedValues.addAll(_excludedValues);
+		return new RestrictedTextDatatype(_dt, _patterns, _allowLang, newExcludedValues);
+	}
+
+	@Override
 	public RestrictedDatatype<ATermAppl> union(final RestrictedDatatype<?> other)
 	{
 		if (other instanceof RestrictedTextDatatype)
@@ -184,12 +212,6 @@ public class RestrictedTextDatatype implements RestrictedDatatype<ATermAppl>
 		}
 		else
 			throw new IllegalArgumentException();
-	}
-
-	@Override
-	public Iterator<ATermAppl> valueIterator()
-	{
-		throw new IllegalStateException();
 	}
 
 }

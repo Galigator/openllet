@@ -899,7 +899,7 @@ public class DatatypeReasonerImpl implements DatatypeReasoner
 		/*
 		 * Enumerate until a solution is found
 		 */
-		for (final Set<Integer> p : partitions)
+		for (final Set<Integer> p : partitions) // replace with a backtracking+fast-forward search.
 		{
 			final int nPart = p.size();
 

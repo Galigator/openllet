@@ -23,6 +23,7 @@ import openllet.owlapi.OWLHelper;
 import openllet.owlapi.OWLManagerGroup;
 import openllet.owlapi.OpenlletReasoner;
 import openllet.owlapi.SWRL;
+import openllet.owlapi.XSD;
 import openllet.shared.tools.Log;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.IRI;
@@ -38,6 +39,7 @@ import org.semanticweb.owlapi.model.SWRLIndividualArgument;
 import org.semanticweb.owlapi.model.SWRLLiteralArgument;
 import org.semanticweb.owlapi.model.SWRLRule;
 import org.semanticweb.owlapi.model.SWRLVariable;
+import org.semanticweb.owlapi.vocab.OWLFacet;
 
 /**
  * Test basic of openllet-owlapi
@@ -229,6 +231,50 @@ public class TestBasic
 	}
 
 	@Test
+	public void testRegexRestriction() throws OWLOntologyCreationException
+	{
+		try (final OWLManagerGroup group = new OWLManagerGroup())
+		{
+			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create("http://test.org#owlapi.inc.regex.restriction"), 1.0);
+			final OWLHelper owl = new OWLGenericTools(group, ontId, true);
+
+			final OWLNamedIndividual x1 = OWL.Individual("#I1");
+			final OWLNamedIndividual x2 = OWL.Individual("#I2");
+
+			owl.addAxiom(OWL.equivalentClasses(ClsA, OWL.some(propB, OWL.restrict(XSD.STRING, OWL._factory.getOWLFacetRestriction(OWLFacet.PATTERN, OWL.constant("A.A"))))));
+			owl.addAxiom(OWL.propertyAssertion(x1, propB, OWL.constant("AAA")));
+			owl.addAxiom(OWL.propertyAssertion(x2, propB, OWL.constant("BBB")));
+
+			owl.addAxiom(OWL.differentFrom(x1, x2));
+
+			final OpenlletReasoner r = owl.getReasoner();
+			assertTrue(r.isEntailed(OWL.classAssertion(x1, ClsA)));
+			assertFalse(r.isEntailed(OWL.classAssertion(x2, ClsA)));
+		}
+	}
+
+	@Test
+	public void testRestriction() throws OWLOntologyCreationException
+	{
+		try (final OWLManagerGroup group = new OWLManagerGroup())
+		{
+			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create("http://test.org#owlapi.inc.integer-float.restriction"), 1.0);
+			final OWLHelper owl = new OWLGenericTools(group, ontId, true);
+
+			final OWLNamedIndividual x1 = OWL.Individual("#I1");
+			final OWLNamedIndividual x2 = OWL.Individual("#I2");
+
+			owl.addAxiom(OWL.equivalentClasses(ClsA, OWL.some(propB, XSD.INTEGER)));
+			owl.addAxiom(OWL.propertyAssertion(x1, propB, OWL.constant(1)));
+			owl.addAxiom(OWL.propertyAssertion(x2, propB, OWL.constant(1.)));
+
+			final OpenlletReasoner r = owl.getReasoner();
+			assertTrue(r.isEntailed(OWL.classAssertion(x1, ClsA)));
+			assertFalse(r.isEntailed(OWL.classAssertion(x2, ClsA)));
+		}
+	}
+
+	@Test
 	public void testSubProperties() throws OWLOntologyCreationException
 	{
 		try (final OWLManagerGroup group = new OWLManagerGroup())
@@ -243,6 +289,49 @@ public class TestBasic
 
 			assertFalse(owl.getObject(OWL.Individual("#I1"), OWL.ObjectProperty("#P2")).isPresent());
 			assertTrue(owl.getObject(OWL.Individual("#I3"), OWL.ObjectProperty("#P1")).get().equals(OWL.Individual("#I4")));
+		}
+	}
+
+	@Test
+	public void testTransitiveSubProperties() throws OWLOntologyCreationException
+	{
+		try (final OWLManagerGroup group = new OWLManagerGroup())
+		{
+			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create("http://test.org#owlapi.inc.transtive.properties"), 1.0);
+			final OWLHelper owl = new OWLGenericTools(group, ontId, true);
+			final OWLObjectProperty p1 = OWL.ObjectProperty("#P1");
+			final OWLObjectProperty p2 = OWL.ObjectProperty("#P2");
+			final OWLObjectProperty p3 = OWL.ObjectProperty("#P3");
+			final OWLObjectProperty p4 = OWL.ObjectProperty("#P4");
+
+			{
+				owl.addAxiom(OWL.subPropertyOf(p1, p2)); // p2 extends [P1]
+				final OWLObjectProperty[] chain = { p2, p1 };
+				owl.addAxiom(OWL.subPropertyOf(chain, p2)); // p2 extends [P2, P1]
+			}
+			{
+				owl.addAxiom(OWL.inverseProperties(p1, p3)); // p3 inverse of p1
+			}
+			{
+				owl.addAxiom(OWL.subPropertyOf(p3, p4)); // p4 extends [P3]
+				final OWLObjectProperty[] chain = { p4, p3 };
+				owl.addAxiom(OWL.subPropertyOf(chain, p4)); // p4 extends [P4, P3]
+			}
+
+			owl.addAxiom(OWL.propertyAssertion(OWL.Individual("#I1"), p1, OWL.Individual("#I2")));
+			owl.addAxiom(OWL.propertyAssertion(OWL.Individual("#I2"), p1, OWL.Individual("#I3")));
+			owl.addAxiom(OWL.propertyAssertion(OWL.Individual("#I3"), p1, OWL.Individual("#I4")));
+			owl.addAxiom(OWL.propertyAssertion(OWL.Individual("#I4"), p1, OWL.Individual("#I5")));
+			owl.addAxiom(OWL.propertyAssertion(OWL.Individual("#I5"), p1, OWL.Individual("#I6")));
+			owl.addAxiom(OWL.propertyAssertion(OWL.Individual("#I6"), p1, OWL.Individual("#I7")));
+			owl.addAxiom(OWL.propertyAssertion(OWL.Individual("#I7"), p1, OWL.Individual("#I8")));
+			owl.addAxiom(OWL.propertyAssertion(OWL.Individual("#I8"), p1, OWL.Individual("#IA")));
+			owl.addAxiom(OWL.propertyAssertion(OWL.Individual("#IA"), p1, OWL.Individual("#IB")));
+
+			assertTrue("direct", owl.getObjects(OWL.Individual("#I5"), p1).map(x -> x.toString()).sorted().collect(Collectors.joining("")).equals("<#I6>"));
+			assertTrue("transitive", owl.getObjects(OWL.Individual("#I5"), p2).map(x -> x.toString()).sorted().collect(Collectors.joining("")).equals("<#I6><#I7><#I8><#IA><#IB>"));
+			assertTrue("inverse", owl.getObjects(OWL.Individual("#I5"), p3).map(x -> x.toString()).sorted().collect(Collectors.joining("")).equals("<#I4>"));
+			assertTrue("inverse transitive", owl.getObjects(OWL.Individual("#I5"), p4).map(x -> x.toString()).sorted((a, b) -> -a.compareTo(b)).collect(Collectors.joining("")).equals("<#I4><#I3><#I2><#I1>"));
 		}
 	}
 
