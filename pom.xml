@@ -89,7 +89,7 @@
       <dependency>
         <groupId>net.sourceforge.owlapi</groupId>
         <artifactId>owlapi-distribution</artifactId>
-        <version>[5.1.0,)</version>
+        <version>[5.1.1,)</version>
       </dependency>
       <dependency>
         <groupId>org.jgrapht</groupId>
@@ -182,7 +182,7 @@
       <dependency>
          <groupId>com.google.guava</groupId>
          <artifactId>guava</artifactId>
-         <version>22.0</version>
+         <version>23.0</version>
       </dependency>
       <dependency>
         <groupId>commons-io</groupId> 
@@ -251,7 +251,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.6.1</version>
+          <version>3.6.2</version>
           <configuration>
             <source>1.8</source>
             <target>1.8</target>
@@ -377,7 +377,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-assembly-plugin</artifactId>
-          <version>3.0.0</version>
+          <version>3.1.0</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -413,7 +413,7 @@
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>findbugs-maven-plugin</artifactId>
-          <version>3.0.4</version>
+          <version>3.0.5</version>
           <executions>
             <execution>
               <id>findbugs-check</id>
