@@ -51,6 +51,8 @@ Migration :
 		</dependency>
 ```
 
+NB, the Protege plugin need a Protege that work with an 5.1.X version of the OWL-API, so the main branch of Protege isn't compatible with Openllet.
+
 Roadmap :
 * Fullify strong typing in openllet core (2.7.X).
 * Add support for sesame/rdf4j reasoning (2.8.X).
