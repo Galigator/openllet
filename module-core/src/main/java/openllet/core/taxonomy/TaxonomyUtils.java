@@ -74,12 +74,6 @@ public class TaxonomyUtils
 		t.removeDatum(c, TaxonomyKey.SUPER_EXPLANATION_KEY);
 	}
 
-	protected static void clearAllInstances(final Taxonomy<?> t)
-	{
-		for (final TaxonomyNode<?> node : t.getNodes().values())
-			node.removeDatum(TaxonomyKey.INSTANCES_KEY);
-	}
-
 	/**
 	 * @param t is a taxonomy
 	 * @param sub classe

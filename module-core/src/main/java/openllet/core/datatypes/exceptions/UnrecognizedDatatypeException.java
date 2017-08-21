@@ -7,9 +7,6 @@ import openllet.aterm.ATermAppl;
  * Title: Unrecognized Datatype Exception
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2009
  * </p>
  * <p>
@@ -28,13 +25,7 @@ public class UnrecognizedDatatypeException extends DatatypeReasonerException
 	public UnrecognizedDatatypeException(final ATermAppl dt)
 	{
 		super("Unrecognized datatype " + dt.getName());
-		this._dt = dt;
-	}
-
-	public UnrecognizedDatatypeException(final ATermAppl dt, final String msg)
-	{
-		super(msg);
-		this._dt = dt;
+		_dt = dt;
 	}
 
 	public ATermAppl getDatatype()

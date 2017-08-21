@@ -34,7 +34,7 @@ public class OpenlletCmdOption
 	private boolean _exists;
 	private OpenlletCmdOptionArg _arg = OpenlletCmdOptionArg.NONE;
 
-	public OpenlletCmdOption(final String longOption)
+	protected OpenlletCmdOption(final String longOption)
 	{
 		if (longOption == null)
 			throw new OpenlletCmdException("A long option must be defined for a command line option");
@@ -43,57 +43,57 @@ public class OpenlletCmdOption
 		_defaultValue = null;
 	}
 
-	public String getShortOption()
+	protected String getShortOption()
 	{
 		return _shortOption;
 	}
 
-	public String getLongOption()
+	protected String getLongOption()
 	{
 		return _longOption;
 	}
 
-	public void setShortOption(final String shortOption)
+	protected void setShortOption(final String shortOption)
 	{
 		_shortOption = removeHyphen(shortOption);
 	}
 
-	public String getType()
+	protected String getType()
 	{
 		return _type;
 	}
 
-	public void setType(final String type)
+	protected void setType(final String type)
 	{
 		_type = type;
 	}
 
-	public void setDescription(final String description)
+	protected void setDescription(final String description)
 	{
 		_description = description;
 	}
 
-	public String getDescription()
+	protected String getDescription()
 	{
 		return _description;
 	}
 
-	public void setDefaultValue(final Object defaultValue)
+	protected void setDefaultValue(final Object defaultValue)
 	{
 		_defaultValue = defaultValue;
 	}
 
-	public Object getDefaultValue()
+	protected Object getDefaultValue()
 	{
 		return _defaultValue;
 	}
 
-	public Object getValue()
+	protected Object getValue()
 	{
 		return _value;
 	}
 
-	public String getValueAsString()
+	protected String getValueAsString()
 	{
 		if (_value != null)
 			return _value.toString();
@@ -105,36 +105,14 @@ public class OpenlletCmdOption
 	}
 
 	/**
-	 * Returns the option _value as an integer and verifies that the _value is a positive integer (>= 1).
-	 *
-	 * @return an integer _value
-	 * @throws OpenlletCmdException If the option _value does not exist or is a not a valid positive integer _value (>= 1)
-	 */
-	public int getValueAsPositiveInteger() throws OpenlletCmdException
-	{
-		return getValueAsInteger(1, Integer.MAX_VALUE);
-	}
-
-	/**
 	 * Returns the option _value as an integer and verifies that the _value is a non-negative integer (>= 0).
 	 *
 	 * @return an integer _value
 	 * @throws OpenlletCmdException If the option _value does not exist or is a not a valid non-negative integer _value (>= 0)
 	 */
-	public int getValueAsNonNegativeInteger() throws OpenlletCmdException
+	protected int getValueAsNonNegativeInteger() throws OpenlletCmdException
 	{
 		return getValueAsInteger(0, Integer.MAX_VALUE);
-	}
-
-	/**
-	 * Returns the option _value as an integer
-	 *
-	 * @return an integer _value
-	 * @throws OpenlletCmdException If the option _value does not exist or is a not a valid integer _value
-	 */
-	public int getValueAsInteger() throws OpenlletCmdException
-	{
-		return getValueAsInteger(Integer.MIN_VALUE, Integer.MAX_VALUE);
 	}
 
 	/**
@@ -145,7 +123,7 @@ public class OpenlletCmdOption
 	 * @return an integer _value in the specified range
 	 * @throws OpenlletCmdException If the option _value does not exist, is a not a valid integer _value, or not in the specified range
 	 */
-	public int getValueAsInteger(final int minAllowed, final int maxAllowed) throws OpenlletCmdException
+	private int getValueAsInteger(final int minAllowed, final int maxAllowed) throws OpenlletCmdException
 	{
 		final String value = getValueAsString();
 
@@ -173,29 +151,29 @@ public class OpenlletCmdOption
 	 *
 	 * @return returns the string _value as a boolean
 	 */
-	public boolean getValueAsBoolean()
+	protected boolean getValueAsBoolean()
 	{
 		final String value = getValueAsString();
 
 		return Boolean.parseBoolean(value);
 	}
 
-	public void setValue(final String value)
+	protected void setValue(final String value)
 	{
 		_value = value;
 	}
 
-	public void setValue(final Boolean value)
+	protected void setValue(final Boolean value)
 	{
 		_value = value;
 	}
 
-	public void setIsMandatory(final boolean isMandatory)
+	protected void setIsMandatory(final boolean isMandatory)
 	{
 		_isMandatory = isMandatory;
 	}
 
-	public boolean isMandatory()
+	protected boolean isMandatory()
 	{
 		return _isMandatory;
 	}
@@ -244,12 +222,12 @@ public class OpenlletCmdOption
 		return option.substring(start);
 	}
 
-	public void setArg(final OpenlletCmdOptionArg arg)
+	protected void setArg(final OpenlletCmdOptionArg arg)
 	{
 		_arg = arg;
 	}
 
-	public OpenlletCmdOptionArg getArg()
+	protected OpenlletCmdOptionArg getArg()
 	{
 		return _arg;
 	}
@@ -260,12 +238,12 @@ public class OpenlletCmdOption
 	 *
 	 * @return if the option _exists in the command-line argument
 	 */
-	public boolean exists()
+	protected boolean exists()
 	{
 		return _exists || _value != null;
 	}
 
-	public void setExists(final boolean exists)
+	protected void setExists(final boolean exists)
 	{
 		_exists = exists;
 	}

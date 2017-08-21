@@ -42,192 +42,234 @@ import openllet.core.utils.SetUtils;
  * @author Evren Sirin
  * @param <T> type of the node name.
  */
-public class TaxonomyNode<T> {
-	
+public class TaxonomyNode<T>
+{
+
 	private final Map<Object, Object> _dataMap = new ConcurrentHashMap<>();
-	
+
 	private final Set<TaxonomyNode<T>> _subs = SetUtils.create(2);
 	private final Set<TaxonomyNode<T>> _supers = SetUtils.create();
-	
+
 	private volatile Set<T> _equivalents; // Most time it won't change. But it happen some time.
 	private volatile boolean _hidden;
-	
+
 	private volatile boolean _checkMark;
 	private volatile boolean _seen = false; // Is the checkMark meaningfull
-	
+
 	private volatile T _name; // Can be null :-(
-	
+
 	protected volatile short _depth = 0;
-	
-	public TaxonomyNode(final T name, final boolean hidden) {
+
+	public TaxonomyNode(final T name, final boolean hidden)
+	{
 		_name = name;
 		_hidden = hidden;
-		
-		if (name == null) _equivalents = Collections.emptySet();
-		else _equivalents = Collections.singleton(name);
+
+		if (name == null)
+			_equivalents = Collections.emptySet();
+		else
+			_equivalents = Collections.singleton(name);
 	}
-	
-	public TaxonomyNode(final Collection<T> equivalents, final boolean hidden) {
-		if (equivalents == null || equivalents.isEmpty()) {
+
+	public TaxonomyNode(final Collection<T> equivalents, final boolean hidden)
+	{
+		if (equivalents == null || equivalents.isEmpty())
+		{
 			_name = null;
 			_equivalents = Collections.emptySet();
-		} else {
+		}
+		else
+		{
 			_name = equivalents.iterator().next();
 			_equivalents = SetUtils.create(equivalents);
 		}
-		
+
 		_hidden = hidden;
 	}
-	
-	public void setMark(final boolean b) {
+
+	public void setMark(final boolean b)
+	{
 		_checkMark = b;
 		_seen = true;
 	}
-	
-	public boolean markIsDefined() {
+
+	public boolean markIsDefined()
+	{
 		return _seen;
 	}
-	
-	public boolean getMark() {
+
+	public boolean getMark()
+	{
 		return _checkMark;
 	}
-	
-	public void resetMark() {
+
+	public void resetMark()
+	{
 		_seen = false;
 	}
-	
-	public void addEquivalent(final T t) {
+
+	public void addEquivalent(final T t)
+	{
 		if (_equivalents.size() < 2)// Equivalents of size [0, 1] are immutable collections.
 			_equivalents = SetUtils.create(_equivalents);
 		_equivalents.add(t);
 	}
-	
-	public void addSub(final TaxonomyNode<T> other) {
-		if (equals(other) || _subs.contains(other)) return;
-		
+
+	public void addSub(final TaxonomyNode<T> other)
+	{
+		if (equals(other) || _subs.contains(other))
+			return;
+
 		_subs.add(other);
-		if (!_hidden) other._supers.add(this);
+		if (!_hidden)
+			other._supers.add(this);
 	}
-	
-	public void addSubs(final Collection<TaxonomyNode<T>> others) {
+
+	public void addSubs(final Collection<TaxonomyNode<T>> others)
+	{
 		others.forEach(t -> addSub(t));
 	}
-	
-	public void addSupers(final Collection<TaxonomyNode<T>> others) {
+
+	public void addSupers(final Collection<TaxonomyNode<T>> others)
+	{
 		_supers.addAll(others);
-		if (!_hidden) for (final TaxonomyNode<T> other : others)
-			other._subs.add(this);
+		if (!_hidden)
+			for (final TaxonomyNode<T> other : others)
+				other._subs.add(this);
 	}
-	
-	public void clearData() {
+
+	public void clearData()
+	{
 		_dataMap.clear();
 	}
-	
-	public boolean contains(final T t) {
-		return _equivalents.contains(t);
-	}
-	
-	public void disconnect() {
-		for (final Iterator<TaxonomyNode<T>> j = _subs.iterator(); j.hasNext();) {
+
+	public void disconnect()
+	{
+		for (final Iterator<TaxonomyNode<T>> j = _subs.iterator(); j.hasNext();)
+		{
 			final TaxonomyNode<T> sub = j.next();
 			j.remove();
 			sub._supers.remove(this);
 		}
-		
-		for (final Iterator<TaxonomyNode<T>> j = _supers.iterator(); j.hasNext();) {
+
+		for (final Iterator<TaxonomyNode<T>> j = _supers.iterator(); j.hasNext();)
+		{
 			final TaxonomyNode<T> sup = j.next();
 			j.remove();
 			sup._subs.remove(this);
 		}
 	}
-	
-	public Object getDatum(final Object key) {
+
+	public Object getDatum(final Object key)
+	{
 		return _dataMap.get(key);
 	}
-	
-	public Set<T> getEquivalents() {
+
+	public Set<T> getEquivalents()
+	{
 		return _equivalents;
 	}
-	
-	public T getName() {
+
+	public T getName()
+	{
 		return _name;
 	}
-	
-	public Collection<TaxonomyNode<T>> getSubs() {
+
+	public Collection<TaxonomyNode<T>> getSubs()
+	{
 		return _subs;
 	}
-	
-	public Collection<TaxonomyNode<T>> getSupers() {
+
+	public Collection<TaxonomyNode<T>> getSupers()
+	{
 		return _supers;
 	}
-	
-	public boolean isBottom() {
+
+	public boolean isBottom()
+	{
 		return _subs.isEmpty();
 	}
-	
-	public boolean isHidden() {
+
+	public boolean isHidden()
+	{
 		return _hidden;
 	}
-	
-	public boolean isLeaf() {
+
+	public boolean isLeaf()
+	{
 		return _subs.size() == 1 && _subs.iterator().next().isBottom();
 	}
-	
-	public boolean isTop() {
+
+	public boolean isTop()
+	{
 		return _supers.isEmpty();
 	}
-	
-	public void print() {
+
+	public void print()
+	{
 		print("");
 	}
-	
-	public void print(final String indentLvl) {
-		if (_subs.isEmpty()) return;
-		
+
+	public void print(final String indentLvl)
+	{
+		if (_subs.isEmpty())
+			return;
+
 		System.out.print(indentLvl);
 		final Iterator<T> i = _equivalents.iterator();
-		while (i.hasNext()) {
+		while (i.hasNext())
+		{
 			System.out.print(i.next());
-			if (i.hasNext()) System.out.print(" = ");
+			if (i.hasNext())
+				System.out.print(" = ");
 		}
 		System.out.println();
-		
+
 		final String indent = indentLvl + "  ";
 		for (final TaxonomyNode<T> sub : _subs)
 			sub.print(indent);
 	}
-	
-	public Object putDatum(final Object key, final Object value) {
+
+	public Object putDatum(final Object key, final Object value)
+	{
 		return _dataMap.put(key, value);
 	}
-	
-	public Object removeDatum(final Object key) {
+
+	public Object removeDatum(final Object key)
+	{
 		return _dataMap.remove(key);
 	}
-	
-	public void removeMultiplePaths() {
-		if (!_hidden) for (final TaxonomyNode<T> sup : _supers)
-			for (final TaxonomyNode<T> sub : _subs)
-				sup.removeSub(sub);
+
+	public void removeMultiplePaths()
+	{
+		if (!_hidden)
+			for (final TaxonomyNode<T> sup : _supers)
+				for (final TaxonomyNode<T> sub : _subs)
+					sup.removeSub(sub);
 	}
-	
-	public void removeEquivalent(final T t) {
+
+	public void removeEquivalent(final T t)
+	{
 		_equivalents.remove(t);
-		
-		if (_name != null && _name.equals(t)) _name = _equivalents.iterator().next();
+
+		if (_name != null && _name.equals(t))
+			_name = _equivalents.iterator().next();
 	}
-	
-	public void removeSub(final TaxonomyNode<T> other) {
+
+	public void removeSub(final TaxonomyNode<T> other)
+	{
 		_subs.remove(other);
 		other._supers.remove(this);
 	}
-	
-	public void setHidden(final boolean hidden) {
+
+	public void setHidden(final boolean hidden)
+	{
 		this._hidden = hidden;
 	}
-	
+
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		return _name.toString();// + " = " + _equivalents;
 	}
 }

@@ -67,7 +67,7 @@ public class InfiniteNamedDatatype implements Datatype<ATermAppl>
 			@Override
 			public RestrictedDatatype<ATermAppl> applyConstrainingFacet(final ATermAppl facet, final Object value) throws InvalidConstrainingFacetException
 			{
-				throw new UnsupportedOperationException();
+				throw new UnsupportedOperationException(name.toString());
 			}
 
 			@Override

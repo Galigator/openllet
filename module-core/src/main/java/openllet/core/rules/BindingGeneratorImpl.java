@@ -10,7 +10,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import openllet.core.boxes.abox.ABox;
 
 /**
  * <p>
@@ -34,6 +33,19 @@ public class BindingGeneratorImpl implements BindingGenerator
 
 	private final Collection<BindingHelper> _helpers;
 	private VariableBinding _initialBinding;
+
+	/**
+	 * Constructs a _binding generator with the given list of _helpers. The _helpers must be in such an _order that prerequisite variables of any helper are
+	 * bound by a helper before it.
+	 *
+	 * @param initialBinding
+	 * @param helpers
+	 */
+	public BindingGeneratorImpl(final VariableBinding initialBinding, final Collection<BindingHelper> helpers)
+	{
+		_helpers = helpers;
+		_initialBinding = initialBinding;
+	}
 
 	private class BindingIterator implements Iterator<VariableBinding>
 	{
@@ -129,26 +141,6 @@ public class BindingGeneratorImpl implements BindingGenerator
 	public BindingGeneratorImpl()
 	{
 		_helpers = Collections.emptySet();
-	}
-
-	/**
-	 * Constructs a _binding generator with the given list of _helpers. The _helpers must be in such an _order that prerequisite variables of any helper are
-	 * bound by a helper before it.
-	 *
-	 * @param abox
-	 * @param initialBinding
-	 * @param helpers
-	 */
-	public BindingGeneratorImpl(final ABox abox, final VariableBinding initialBinding, final Collection<BindingHelper> helpers)
-	{
-		_helpers = helpers;
-		_initialBinding = initialBinding;
-	}
-
-	public BindingGeneratorImpl(final VariableBinding initialBinding, final Collection<BindingHelper> helpers)
-	{
-		_helpers = helpers;
-		_initialBinding = initialBinding;
 	}
 
 	@Override

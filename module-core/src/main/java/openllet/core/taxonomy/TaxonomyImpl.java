@@ -168,8 +168,6 @@ public class TaxonomyImpl<T> implements Taxonomy<T>
 
 	private static final boolean SUPER = false;
 
-	public static final boolean TOP_DOWN = true;
-
 	protected volatile TaxonomyNode<T> _bottomNode;
 	protected volatile Map<T, TaxonomyNode<T>> _nodes;
 	protected volatile TaxonomyNode<T> _topNode;

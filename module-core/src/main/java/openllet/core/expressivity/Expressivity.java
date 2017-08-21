@@ -184,38 +184,14 @@ public class Expressivity
 		return dl;
 	}
 
-	/**
-	 * @return Returns the hasNegation.
-	 */
-	public boolean hasNegation()
-	{
-		return _hasNegation;
-	}
-
 	public void setHasNegation(final boolean v)
 	{
 		_hasNegation = v;
 	}
 
-	/**
-	 * @return Returns the hasAllValues.
-	 */
-	public boolean hasAllValues()
-	{
-		return _hasAllValues;
-	}
-
 	public void setHasAllValues(final boolean v)
 	{
 		_hasAllValues = v;
-	}
-
-	/**
-	 * @return Returns the hasDisjointClasses.
-	 */
-	public boolean hasDisjointClasses()
-	{
-		return _hasDisjointClasses;
 	}
 
 	public void setHasDisjointClasses(final boolean v)
@@ -314,32 +290,14 @@ public class Expressivity
 		_hasTransitivity = v;
 	}
 
-	/**
-	 * @return Returns the hasRoleHierarchy.
-	 */
-	public boolean hasRoleHierarchy()
-	{
-		return _hasRoleHierarchy;
-	}
-
 	public void setHasRoleHierarchy(final boolean v)
 	{
 		_hasRoleHierarchy = v;
 	}
 
-	public boolean hasReflexivity()
-	{
-		return _hasReflexivity;
-	}
-
 	public void setHasReflexivity(final boolean v)
 	{
 		_hasReflexivity = v;
-	}
-
-	public boolean hasIrreflexivity()
-	{
-		return _hasIrreflexivity;
 	}
 
 	public void setHasIrreflexivity(final boolean v)
@@ -357,31 +315,6 @@ public class Expressivity
 		_hasDisjointRoles = v;
 	}
 
-	/**
-	 * @return do not use
-	 * @deprecated Use {@link #hasAsymmmetry()}
-	 */
-	@Deprecated
-	public boolean hasAntiSymmmetry()
-	{
-		return _hasAsymmetry;
-	}
-
-	public boolean hasAsymmmetry()
-	{
-		return _hasAsymmetry;
-	}
-
-	/**
-	 * @param v
-	 * @deprecated Use {@link #setHasAsymmetry(boolean)}
-	 */
-	@Deprecated
-	public void setHasAntiSymmetry(final boolean v)
-	{
-		_hasAsymmetry = v;
-	}
-
 	public void setHasAsymmetry(final boolean v)
 	{
 		_hasAsymmetry = v;
@@ -395,14 +328,6 @@ public class Expressivity
 	public void setHasComplexSubRoles(final boolean v)
 	{
 		_hasComplexSubRoles = v;
-	}
-
-	/**
-	 * @return Returns the hasDatatype.
-	 */
-	public boolean hasDatatype()
-	{
-		return _hasDatatype;
 	}
 
 	public void setHasDatatype(final boolean v)
@@ -432,29 +357,14 @@ public class Expressivity
 		_hasKeys = v;
 	}
 
-	public boolean hasDomain()
-	{
-		return _hasDomain;
-	}
-
 	public void setHasDomain(final boolean v)
 	{
 		_hasDomain = v;
 	}
 
-	public boolean hasRange()
-	{
-		return _hasRange;
-	}
-
 	public void setHasRange(final boolean v)
 	{
 		_hasRange = v;
-	}
-
-	public boolean hasIndividual()
-	{
-		return _hasIndividual;
 	}
 
 	public void setHasIndividual(final boolean v)

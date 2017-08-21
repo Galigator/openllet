@@ -124,20 +124,20 @@ public class BindingGeneratorStrategyImpl implements BindingGeneratorStrategy
 
 		helpers.addAll(new TrivialSatisfactionHelpers(_abox).getHelpers(rule));
 
-		if (!ensureOrdering(helpers, initialBinding))
+		if (!ensureOrdering(helpers))
 		{
 			BindingGenerator._logger.warning("IGNORING RULE " + rule + ": Could not generate safe ordering for body constraints.");
 			return new BindingGeneratorImpl();
 		}
 		optimize(helpers);
 
-		return new BindingGeneratorImpl(_abox, initialBinding, helpers);
+		return new BindingGeneratorImpl(initialBinding, helpers);
 	}
 
 	/**
 	 * Reorder list so that each binding helper's prerequisites are satisfied by the helpers before it. If no such ordering exists, return false.
 	 */
-	private static boolean ensureOrdering(final List<BindingHelper> helpers, @SuppressWarnings("unused") final VariableBinding initialBinding)
+	private static boolean ensureOrdering(final List<BindingHelper> helpers)
 	{
 		final List<BindingHelper> unsatList = new ArrayList<>();
 		final Set<AtomVariable> bound = new HashSet<>();

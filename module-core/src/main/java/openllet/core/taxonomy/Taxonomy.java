@@ -173,34 +173,6 @@ public interface Taxonomy<T> extends Logging
 	}
 
 	/**
-	 * Add a collection of elements as subs to an element
-	 *
-	 * @param subs
-	 * @param sup
-	 */
-	public default void addSuper(final Collection<T> subs, final T sup)
-	{
-
-		assert getNodes().keySet().containsAll(subs) : "At least one sub element not in taxonomy";
-		assert getNodes().keySet().contains(sup) : "Super element " + sup.toString() + " not in taxonomy";
-
-		final Set<TaxonomyNode<T>> subNodes = new HashSet<>();
-		for (final T sub : subs)
-			subNodes.add(getNodes().get(sub));
-		final TaxonomyNode<T> supNode = getNodes().get(sup);
-
-		for (final TaxonomyNode<T> subNode : subNodes)
-			if (subNode.getSupers().size() == 1 && subNode.getSupers().contains(getTopNode()))
-				getTopNode().removeSub(subNode);
-
-		if (supNode.getSubs().size() == 1 && supNode.getSubs().contains(getBottomNode()))
-			supNode.removeSub(getBottomNode());
-
-		supNode.addSubs(subNodes);
-
-	}
-
-	/**
 	 * Add a sub/super relation
 	 *
 	 * @param sub

@@ -11,16 +11,16 @@ import openllet.reachability.EntityNode;
 import openllet.reachability.ReachabilityGraph;
 import openllet.reachability.SCC;
 import org.junit.Test;
-import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLClass;
 
 /**
  * @author Evren Sirin
  */
 public class SCCTests
 {
-	private ReachabilityGraph<OWLEntity> _graph;
+	private ReachabilityGraph<OWLClass> _graph;
 
-	private EntityNode<OWLEntity>[] _nodes;
+	private EntityNode<OWLClass>[] _nodes;
 
 	private void addEdge(final int in, final int out)
 	{
@@ -38,13 +38,13 @@ public class SCCTests
 
 	private void testSCC(final int[][] expectedSCC)
 	{
-		final List<Set<EntityNode<OWLEntity>>> computed = SCC.computeSCC(_graph);
+		final List<Set<EntityNode<OWLClass>>> computed = SCC.computeSCC(_graph);
 
 		assertEquals("SCC count", expectedSCC.length, computed.size());
 
 		for (final int[] component : expectedSCC)
 		{
-			final Set<EntityNode<OWLEntity>> set = new HashSet<>();
+			final Set<EntityNode<OWLClass>> set = new HashSet<>();
 			for (final int i : component)
 				set.add(_nodes[i]);
 

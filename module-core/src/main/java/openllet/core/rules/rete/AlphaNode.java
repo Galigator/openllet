@@ -6,7 +6,6 @@
 
 package openllet.core.rules.rete;
 
-import java.util.Collections;
 import java.util.Iterator;
 import openllet.aterm.ATermAppl;
 import openllet.core.boxes.abox.ABox;
@@ -18,8 +17,6 @@ import openllet.core.utils.ATermUtils;
  */
 public abstract class AlphaNode extends ReteNode
 {
-	protected static final Iterator<WME> NO_MATCH = Collections.<WME> emptyList().iterator();
-
 	protected boolean _doExplanation;
 
 	protected final ABox _abox;
