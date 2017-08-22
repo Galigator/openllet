@@ -1407,21 +1407,25 @@ public class ABoxImpl implements ABox
 			abox.setSyntacticUpdate(false);
 		}
 
-		_logger.fine(() -> "Consistency check starts");
-
-		final CompletionStrategy strategy = _kb.chooseStrategy(abox, expr);
-
-		_logger.fine(() -> "Strategy: " + strategy.getClass().getName());
-
-		final Timer completionTimer = _kb.getTimers().getTimer("complete");
-		completionTimer.start();
-		try
+		synchronized (this) // We should not try to completion in the same time.
 		{
-			strategy.complete(expr);
-		}
-		finally
-		{
-			completionTimer.stop();
+			_logger.fine(() -> "Consistency check starts");
+
+			final CompletionStrategy strategy = _kb.chooseStrategy(abox, expr);
+
+			_logger.fine(() -> "Strategy: " + strategy.getClass().getName());
+
+			final Timer completionTimer = _kb.getTimers().getTimer("complete");
+
+			completionTimer.start();
+			try
+			{
+				strategy.complete(expr);
+			}
+			finally
+			{
+				completionTimer.stop();
+			}
 		}
 
 		final boolean consistent = !abox.isClosed();

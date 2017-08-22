@@ -48,7 +48,7 @@ public class DisjunctionBranch extends Branch
 {
 	protected final Node _node;
 	protected final ATermAppl _disjunction;
-	private volatile ATermAppl[] _disj; // Tssss 'disjonction' and 'disj'
+	private volatile ATermAppl[] _allDisjonctions;
 	protected volatile DependencySet[] _prevDS;
 	protected volatile int[] _order;
 
@@ -68,17 +68,17 @@ public class DisjunctionBranch extends Branch
 
 	public DisjunctionBranch(final DisjunctionBranch dr, final ABox abox)
 	{
-		super(abox, dr._disj.length, dr);
+		super(abox, dr._allDisjonctions.length, dr);
 
 		_node = abox.getNode(dr._node.getName());
 		_disjunction = dr._disjunction;
-		_disj = dr._disj;
+		_allDisjonctions = dr._allDisjonctions;
 
-		_prevDS = new DependencySet[dr._disj.length];
-		System.arraycopy(dr._prevDS, 0, _prevDS, 0, dr._disj.length);
+		_prevDS = new DependencySet[dr._allDisjonctions.length];
+		System.arraycopy(dr._prevDS, 0, _prevDS, 0, dr._allDisjonctions.length);
 
-		_order = new int[dr._disj.length];
-		System.arraycopy(dr._order, 0, _order, 0, dr._disj.length);
+		_order = new int[dr._allDisjonctions.length];
+		System.arraycopy(dr._order, 0, _order, 0, dr._allDisjonctions.length);
 	}
 
 	@Override
@@ -89,7 +89,7 @@ public class DisjunctionBranch extends Branch
 
 	protected String getDebugMsg()
 	{
-		return "DISJ: Branch (" + getBranchIndexInABox() + ") try (" + (getTryNext() + 1) + "/" + getTryCount() + ") " + _node + " " + ATermUtils.toString(_disj[getTryNext()]) + " " + ATermUtils.toString(_disjunction);
+		return "DISJ: Branch (" + getBranchIndexInABox() + ") try (" + (getTryNext() + 1) + "/" + getTryCount() + ") " + _node + " " + ATermUtils.toString(_allDisjonctions[getTryNext()]) + " " + ATermUtils.toString(_disjunction);
 	}
 
 	@Override
@@ -107,13 +107,13 @@ public class DisjunctionBranch extends Branch
 	 */
 	private int preferredDisjunct()
 	{
-		if (_disj.length != 2)
+		if (_allDisjonctions.length != 2)
 			return -1;
 
-		if (ATermUtils.isPrimitive(_disj[0]) && ATermUtils.isAllValues(_disj[1]) && ATermUtils.isNot((ATermAppl) _disj[1].getArgument(1)))
+		if (ATermUtils.isPrimitive(_allDisjonctions[0]) && ATermUtils.isAllValues(_allDisjonctions[1]) && ATermUtils.isNot((ATermAppl) _allDisjonctions[1].getArgument(1)))
 			return 1;
 
-		if (ATermUtils.isPrimitive(_disj[1]) && ATermUtils.isAllValues(_disj[0]) && ATermUtils.isNot((ATermAppl) _disj[0].getArgument(1)))
+		if (ATermUtils.isPrimitive(_allDisjonctions[1]) && ATermUtils.isAllValues(_allDisjonctions[0]) && ATermUtils.isNot((ATermAppl) _allDisjonctions[0].getArgument(1)))
 			return 0;
 
 		return -1;
@@ -139,8 +139,8 @@ public class DisjunctionBranch extends Branch
 			if (stats == null)
 			{
 				final int preference = preferredDisjunct();
-				stats = new int[_disj.length];
-				for (int i = 0; i < _disj.length; i++)
+				stats = new int[_allDisjonctions.length];
+				for (int i = 0; i < _allDisjonctions.length; i++)
 					stats[i] = i != preference ? 0 : Integer.MIN_VALUE;
 				_abox.getDisjBranchStats().put(_disjunction, stats);
 			}
@@ -161,9 +161,9 @@ public class DisjunctionBranch extends Branch
 			}
 			if (minIndex != getTryNext())
 			{
-				final ATermAppl selDisj = _disj[minIndex];
-				_disj[minIndex] = _disj[getTryNext()];
-				_disj[getTryNext()] = selDisj;
+				final ATermAppl selDisj = _allDisjonctions[minIndex];
+				_allDisjonctions[minIndex] = _allDisjonctions[getTryNext()];
+				_allDisjonctions[getTryNext()] = selDisj;
 				_order[minIndex] = getTryNext();
 				_order[getTryNext()] = minIndex;
 			}
@@ -173,11 +173,11 @@ public class DisjunctionBranch extends Branch
 
 		for (; getTryNext() < getTryCount(); _tryNext++)
 		{
-			final ATermAppl d = _disj[getTryNext()];
+			final ATermAppl d = _allDisjonctions[getTryNext()];
 
 			if (OpenlletOptions.USE_SEMANTIC_BRANCHING)
 				for (int m = 0; m < getTryNext(); m++)
-					_strategy.addType(node, ATermUtils.negate(_disj[m]), _prevDS[m]);
+					_strategy.addType(node, ATermUtils.negate(_allDisjonctions[m]), _prevDS[m]);
 
 			DependencySet ds = null;
 			if (getTryNext() == getTryCount() - 1 && !OpenlletOptions.SATURATE_TABLEAU)
@@ -234,8 +234,8 @@ public class DisjunctionBranch extends Branch
 				{
 					if (stats == null)
 					{
-						stats = new int[_disj.length];
-						for (int i = 0; i < _disj.length; i++)
+						stats = new int[_allDisjonctions.length];
+						for (int i = 0; i < _allDisjonctions.length; i++)
 							stats[i] = 0;
 						_abox.getDisjBranchStats().put(_disjunction, stats);
 					}
@@ -306,7 +306,7 @@ public class DisjunctionBranch extends Branch
 	{
 		//save vals
 		//		int ord = _order[openIndex];
-		final ATermAppl dis = _disj[openIndex];
+		final ATermAppl dis = _allDisjonctions[openIndex];
 		//		DependencySet preDS = _prevDS[openIndex];
 
 		//TODO: also need to handle semantic branching
@@ -319,17 +319,17 @@ public class DisjunctionBranch extends Branch
 
 		//need to shift both _prevDS and next and _order
 		//disjfirst
-		for (int i = openIndex; i < _disj.length - 1; i++)
+		for (int i = openIndex; i < _allDisjonctions.length - 1; i++)
 		{
-			_disj[i] = _disj[i + 1];
+			_allDisjonctions[i] = _allDisjonctions[i + 1];
 			_prevDS[i] = _prevDS[i + 1];
 			_order[i] = _order[i];
 		}
 
 		//move open label to _end
-		_disj[_disj.length - 1] = dis;
-		_prevDS[_disj.length - 1] = null;
-		_order[_disj.length - 1] = _disj.length - 1;
+		_allDisjonctions[_allDisjonctions.length - 1] = dis;
+		_prevDS[_allDisjonctions.length - 1] = null;
+		_order[_allDisjonctions.length - 1] = _allDisjonctions.length - 1;
 
 		//decrement trynext
 		setTryNext(getTryNext() - 1);
@@ -337,9 +337,9 @@ public class DisjunctionBranch extends Branch
 
 	public void printLong()
 	{
-		for (int i = 0; i < _disj.length; i++)
+		for (int i = 0; i < _allDisjonctions.length; i++)
 		{
-			System.out.println("Disj[" + i + "] " + _disj[i]);
+			System.out.println("Disj[" + i + "] " + _allDisjonctions[i]);
 			System.out.println("prevDS[" + i + "] " + _prevDS[i]);
 			System.out.println("order[" + i + "] " + _order[i]);
 		}
@@ -353,7 +353,7 @@ public class DisjunctionBranch extends Branch
 	 */
 	public void setDisj(final ATermAppl[] disj)
 	{
-		_disj = disj;
+		_allDisjonctions = disj;
 	}
 
 	/**
@@ -362,7 +362,7 @@ public class DisjunctionBranch extends Branch
 	 */
 	public ATermAppl getDisjunct(final int i)
 	{
-		return _disj[i];
+		return _allDisjonctions[i];
 	}
 
 }
