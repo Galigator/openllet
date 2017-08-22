@@ -70,6 +70,7 @@ public class GeneralFunctionBuiltIn implements BuiltIn
 			return vars;
 		}
 
+		@SuppressWarnings("unlikely-arg-type")
 		private boolean isApplicable(final Collection<AtomVariable> bound)
 		{
 			final boolean[] boundPositions = new boolean[_atom.getAllArguments().size()];

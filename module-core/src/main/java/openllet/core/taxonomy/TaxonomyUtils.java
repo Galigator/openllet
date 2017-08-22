@@ -160,7 +160,7 @@ public class TaxonomyUtils
 		{
 			final Map.Entry<Set<TClass>, Object> pair = i.next();
 			@SuppressWarnings("unchecked")
-			final Set<TClass> instances = (Set<TClass>) pair.getValue();
+			final Set<TInd> instances = (Set<TInd>) pair.getValue();
 			if (instances != null && instances.contains(ind))
 			{
 				types.add(pair.getKey());
