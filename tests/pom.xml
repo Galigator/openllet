@@ -87,7 +87,7 @@
 				<configuration>
 					<forkCount>1</forkCount>
 					<reuseForks>true</reuseForks>
-					<argLine>-Xms1024m -Xmx1536m</argLine>
+					<argLine>-Xms1024m -Xmx1536m -XX:+UseG1GC</argLine>
 					<includes>
 						<include>**/PelletTestSuite.java</include>
 					</includes>
