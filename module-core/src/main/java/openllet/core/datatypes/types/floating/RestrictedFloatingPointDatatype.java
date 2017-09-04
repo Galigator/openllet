@@ -26,7 +26,7 @@ import openllet.shared.tools.Log;
  * Title: Restricted Float Datatype
  * </p>
  * <p>
- * Description: A subset of the value space of xsd:float.
+ * Description: A subset of the value space of xsd:float. TODO add support for TOTAL_DIGITS & FRACTION_DIGITS
  * </p>
  * <p>
  * Copyright: Copyright (c) 2009

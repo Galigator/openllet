@@ -830,6 +830,11 @@ public class OWL implements FacetManagerOWL, FacetFactoryOWL, Logging
 		return _factory.getOWLDatatypeRestriction(datatype, restrictions);
 	}
 
+	public static OWLFacetRestriction facetRestriction(final OWLFacet facet, final OWLLiteral facetValue)
+	{
+		return _factory.getOWLFacetRestriction(facet, facetValue);
+	}
+
 	public static OWLSameIndividualAxiom sameAs(final OWLIndividual i1, final OWLIndividual i2)
 	{
 		return _factory.getOWLSameIndividualAxiom(set(i1, i2));

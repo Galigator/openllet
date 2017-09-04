@@ -15,9 +15,9 @@ import openllet.aterm.ATermAppl;
 import openllet.core.datatypes.Datatype;
 import openllet.core.datatypes.EmptyRestrictedDatatype;
 import openllet.core.datatypes.Facet;
+import openllet.core.datatypes.Facet.XSD;
 import openllet.core.datatypes.OWLRealUtils;
 import openllet.core.datatypes.RestrictedDatatype;
-import openllet.core.datatypes.Facet.XSD;
 import openllet.shared.tools.Log;
 
 /**
@@ -25,7 +25,7 @@ import openllet.shared.tools.Log;
  * Title: Restricted Real Datatype
  * </p>
  * <p>
- * Description: A subset of the value space of owl:real.
+ * Description: A subset of the value space of owl:real. TODO add support for TOTAL_DIGITS & FRACTION_DIGITS
  * </p>
  * <p>
  * Copyright: Copyright (c) 2009
@@ -56,27 +56,27 @@ public class RestrictedRealDatatype implements RestrictedDatatype<Number>
 
 	public RestrictedRealDatatype(final Datatype<? extends Number> datatype, final IntegerInterval ints, final ContinuousRealInterval decimals, final ContinuousRealInterval rationals)
 	{
-		this._datatype = datatype;
-		this._empty = new EmptyRestrictedDatatype<>(datatype);
-		this._intIntervals = ints == null ? Collections.<IntegerInterval> emptyList() : Collections.singletonList(ints);
-		this._decimalIntervals = decimals == null ? Collections.<ContinuousRealInterval> emptyList() : Collections.singletonList(decimals);
-		this._rationalIntervals = rationals == null ? Collections.<ContinuousRealInterval> emptyList() : Collections.singletonList(rationals);
+		_datatype = datatype;
+		_empty = new EmptyRestrictedDatatype<>(datatype);
+		_intIntervals = ints == null ? Collections.<IntegerInterval> emptyList() : Collections.singletonList(ints);
+		_decimalIntervals = decimals == null ? Collections.<ContinuousRealInterval> emptyList() : Collections.singletonList(decimals);
+		_rationalIntervals = rationals == null ? Collections.<ContinuousRealInterval> emptyList() : Collections.singletonList(rationals);
 
-		this._finite = ((ints == null) ? true : ints.isFinite()) && ((decimals == null) ? true : decimals.isPoint()) && ((rationals == null) ? true : rationals.isPoint());
-		this._enumerable = this._finite || (decimals == null && rationals == null);
+		_finite = (ints == null ? true : ints.isFinite()) && (decimals == null ? true : decimals.isPoint()) && (rationals == null ? true : rationals.isPoint());
+		_enumerable = _finite || decimals == null && rationals == null;
 	}
 
 	@SuppressWarnings("unchecked")
 	private RestrictedRealDatatype(final RestrictedRealDatatype other, final List<IntegerInterval> intIntervals, final List<ContinuousRealInterval> decimalIntervals, final List<ContinuousRealInterval> rationalIntervals)
 	{
-		this._datatype = other._datatype;
-		this._empty = other._empty;
-		this._intIntervals = intIntervals;
-		this._decimalIntervals = decimalIntervals;
-		this._rationalIntervals = rationalIntervals;
+		_datatype = other._datatype;
+		_empty = other._empty;
+		_intIntervals = intIntervals;
+		_decimalIntervals = decimalIntervals;
+		_rationalIntervals = rationalIntervals;
 
 		if (other._enumerable)
-			this._enumerable = true;
+			_enumerable = true;
 		else
 		{
 			boolean allEnumerable = true;
@@ -88,13 +88,13 @@ public class RestrictedRealDatatype implements RestrictedDatatype<Number>
 							allEnumerable = false;
 							break;
 						}
-			this._enumerable = allEnumerable;
+			_enumerable = allEnumerable;
 		}
 
 		if (other._finite)
-			this._finite = true;
+			_finite = true;
 		else
-			if (this._enumerable)
+			if (_enumerable)
 			{
 				boolean allFinite = true;
 				for (final IntegerInterval i : intIntervals)
@@ -103,10 +103,10 @@ public class RestrictedRealDatatype implements RestrictedDatatype<Number>
 						allFinite = false;
 						break;
 					}
-				this._finite = allFinite;
+				_finite = allFinite;
 			}
 			else
-				this._finite = false;
+				_finite = false;
 	}
 
 	@Override
@@ -472,7 +472,7 @@ public class RestrictedRealDatatype implements RestrictedDatatype<Number>
 			else
 				intIntersectWith = otherRRD._intIntervals;
 
-			for (final IntegerInterval i : this._intIntervals)
+			for (final IntegerInterval i : _intIntervals)
 				for (final IntegerInterval j : intIntersectWith)
 				{
 					final IntegerInterval k = i.intersection(j);
@@ -498,7 +498,7 @@ public class RestrictedRealDatatype implements RestrictedDatatype<Number>
 			else
 				decimalIntersectWith = otherRRD._decimalIntervals;
 
-			for (final ContinuousRealInterval i : this._decimalIntervals)
+			for (final ContinuousRealInterval i : _decimalIntervals)
 				for (final ContinuousRealInterval j : decimalIntersectWith)
 				{
 					final ContinuousRealInterval k = i.intersection(j);
@@ -524,7 +524,7 @@ public class RestrictedRealDatatype implements RestrictedDatatype<Number>
 			else
 				rationalIntersectWith = otherRRD._rationalIntervals;
 
-			for (final ContinuousRealInterval i : this._rationalIntervals)
+			for (final ContinuousRealInterval i : _rationalIntervals)
 				for (final ContinuousRealInterval j : rationalIntersectWith)
 				{
 					final ContinuousRealInterval k = i.intersection(j);
@@ -532,7 +532,7 @@ public class RestrictedRealDatatype implements RestrictedDatatype<Number>
 						revisedRationals.add(k);
 				}
 
-			if (revisedInts.equals(this._intIntervals) && revisedDecimals.equals(this._decimalIntervals) && revisedRationals.equals(this._rationalIntervals))
+			if (revisedInts.equals(_intIntervals) && revisedDecimals.equals(_decimalIntervals) && revisedRationals.equals(_rationalIntervals))
 				return this;
 			else
 				if (revisedInts.isEmpty() && revisedDecimals.isEmpty() && revisedRationals.isEmpty())
@@ -600,9 +600,9 @@ public class RestrictedRealDatatype implements RestrictedDatatype<Number>
 		{
 			final RestrictedRealDatatype otherRRD = (RestrictedRealDatatype) other;
 
-			final List<IntegerInterval> revisedInts = new ArrayList<>(this._intIntervals);
-			final List<ContinuousRealInterval> revisedDecimals = new ArrayList<>(this._decimalIntervals);
-			final List<ContinuousRealInterval> revisedRationals = new ArrayList<>(this._rationalIntervals);
+			final List<IntegerInterval> revisedInts = new ArrayList<>(_intIntervals);
+			final List<ContinuousRealInterval> revisedDecimals = new ArrayList<>(_decimalIntervals);
+			final List<ContinuousRealInterval> revisedRationals = new ArrayList<>(_rationalIntervals);
 
 			/*
 			 * Union the integer intervals
@@ -682,7 +682,7 @@ public class RestrictedRealDatatype implements RestrictedDatatype<Number>
 				}
 			}
 
-			if (revisedInts.equals(this._intIntervals) && revisedDecimals.equals(this._decimalIntervals) && revisedRationals.equals(this._rationalIntervals))
+			if (revisedInts.equals(_intIntervals) && revisedDecimals.equals(_decimalIntervals) && revisedRationals.equals(_rationalIntervals))
 				return this;
 			else
 				return new RestrictedRealDatatype(this, revisedInts, revisedDecimals, revisedRationals);

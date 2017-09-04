@@ -17,6 +17,7 @@ import openllet.core.rules.builtins.BuiltInRegistry;
 import openllet.core.rules.builtins.FunctionBuiltIn;
 import openllet.core.rules.builtins.NumericAdapter;
 import openllet.core.rules.builtins.NumericFunction;
+import openllet.core.utils.SetUtils;
 import openllet.owlapi.OWL;
 import openllet.owlapi.OWLGenericTools;
 import openllet.owlapi.OWLHelper;
@@ -241,13 +242,39 @@ public class TestBasic
 			final OWLNamedIndividual x1 = OWL.Individual("#I1");
 			final OWLNamedIndividual x2 = OWL.Individual("#I2");
 
-			owl.addAxiom(OWL.equivalentClasses(ClsA, OWL.some(propB, OWL.restrict(XSD.STRING, OWL._factory.getOWLFacetRestriction(OWLFacet.PATTERN, OWL.constant("A.A"))))));
+			owl.addAxiom(OWL.equivalentClasses(ClsA, OWL.some(propB, OWL.restrict(XSD.STRING, OWL.facetRestriction(OWLFacet.PATTERN, OWL.constant("A.A"))))));
 			owl.addAxiom(OWL.propertyAssertion(x1, propB, OWL.constant("AAA")));
 			owl.addAxiom(OWL.propertyAssertion(x2, propB, OWL.constant("BBB")));
 
 			owl.addAxiom(OWL.differentFrom(x1, x2));
 
 			final OpenlletReasoner r = owl.getReasoner();
+			assertTrue(r.isEntailed(OWL.classAssertion(x1, ClsA)));
+			assertFalse(r.isEntailed(OWL.classAssertion(x2, ClsA)));
+		}
+	}
+
+	@Test
+	public void testMaxLengthRestriction() throws OWLOntologyCreationException
+	{
+		try (final OWLManagerGroup group = new OWLManagerGroup())
+		{
+			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create("http://test.org#owlapi.inc.maxLength.restriction"), 1.0);
+			final OWLHelper owl = new OWLGenericTools(group, ontId, true);
+
+			final OWLNamedIndividual x0 = OWL.Individual("#I0");
+			final OWLNamedIndividual x1 = OWL.Individual("#I1");
+			final OWLNamedIndividual x2 = OWL.Individual("#I2");
+
+			owl.addAxiom(OWL.equivalentClasses(ClsA, OWL.some(propB, OWL.restrict(XSD.STRING, OWL.facetRestriction(OWLFacet.MAX_LENGTH, OWL.constant(3L))))));
+			owl.addAxiom(OWL.propertyAssertion(x0, propB, OWL.constant("")));
+			owl.addAxiom(OWL.propertyAssertion(x1, propB, OWL.constant("AA")));
+			owl.addAxiom(OWL.propertyAssertion(x2, propB, OWL.constant("AAAAA")));
+
+			owl.addAxiom(OWL.differentFrom(SetUtils.create(x0, x1, x2)));
+
+			final OpenlletReasoner r = owl.getReasoner();
+			assertTrue(r.isEntailed(OWL.classAssertion(x0, ClsA)));
 			assertTrue(r.isEntailed(OWL.classAssertion(x1, ClsA)));
 			assertFalse(r.isEntailed(OWL.classAssertion(x2, ClsA)));
 		}
