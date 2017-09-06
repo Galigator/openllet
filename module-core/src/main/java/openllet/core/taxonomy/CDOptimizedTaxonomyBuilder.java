@@ -99,7 +99,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 	public CDOptimizedTaxonomyBuilder(final KnowledgeBase kb)
 	{
 		_kb = kb;
-		reset();
+		init();
 	}
 
 	@Override
@@ -292,25 +292,23 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 		_prepared = true;
 	}
 
-	protected void reset()
+	private void init()
 	{
-		_kb.prepare();
-
-		_classes = new ArrayList<>(_kb.getClasses());
-
-		_useCD = OpenlletOptions.USE_CD_CLASSIFICATION && !_kb.getTBox().unfold(ATermUtils.TOP).hasNext() && !_kb.getExpressivity().hasNominal();
-
 		_toldDisjoints.clear();
 		_unionClasses.clear();
 		_markedNodes.clear();
-
 		_taxonomyImpl = new TaxonomyImpl<>(null, ATermUtils.TOP, ATermUtils.BOTTOM);
-
 		_toldTaxonomy = new TaxonomyImpl<>();
-
 		_definitionOrder = Optional.empty();
-
 		_conceptFlags.clear();
+	}
+
+	protected void reset()
+	{
+		_kb.prepare();
+		_classes = new ArrayList<>(_kb.getClasses());
+		_useCD = OpenlletOptions.USE_CD_CLASSIFICATION && !_kb.getTBox().unfold(ATermUtils.TOP).hasNext() && !_kb.getExpressivity().hasNominal();
+		init();
 	}
 
 	private void computeToldInformation()
