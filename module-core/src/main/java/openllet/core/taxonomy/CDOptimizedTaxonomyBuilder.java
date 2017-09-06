@@ -99,6 +99,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 	public CDOptimizedTaxonomyBuilder(final KnowledgeBase kb)
 	{
 		_kb = kb;
+		reset();
 	}
 
 	@Override
@@ -116,7 +117,6 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 		return _taxonomyImpl;
 	}
 
-	// TODO optimize();
 	@Override
 	public Taxonomy<ATermAppl> getToldTaxonomy()
 	{
@@ -129,7 +129,6 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 		return _toldTaxonomy;
 	}
 
-	// TODO optimize();
 	@Override
 	public Map<ATermAppl, Set<ATermAppl>> getToldDisjoints()
 	{
@@ -700,8 +699,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 				_logger.warning("Told subsumer " + c + " is not classified yet");
 
 		if (_toldTaxonomy.contains(c))
-			// TODO just getting direct supers and letting recursion handle rest
-			// might be more efficient
+			// TODO just getting direct supers and letting recursion handle rest might be more efficient
 			for (final ATermAppl sup : _toldTaxonomy.getFlattenedSupers(c, /* direct = */true))
 				markToldSubsumers(sup);
 	}
@@ -963,23 +961,19 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 
 	private List<TaxonomyNode<ATermAppl>> doTopSearch(final ATermAppl c)
 	{
-		final List<TaxonomyNode<ATermAppl>> supers = new ArrayList<>();
-
 		mark(_taxonomyImpl.getTop(), true, Propogate.NONE);
 		_taxonomyImpl.getBottomNode().setMark(false);
 		markToldSubsumers(c);
 		markToldDisjoints(Collections.singleton(c), true);
 
 		_logger.finer("Top search...");
-
+		final List<TaxonomyNode<ATermAppl>> supers = new ArrayList<>();
 		search(true, c, _taxonomyImpl.getTop(), new HashSet<TaxonomyNode<ATermAppl>>(), supers);
-
 		return supers;
 	}
 
 	private List<TaxonomyNode<ATermAppl>> getCDSupers(final ATermAppl c)
 	{
-
 		/*
 		 * Find all of told subsumers already classified and not redundant
 		 */

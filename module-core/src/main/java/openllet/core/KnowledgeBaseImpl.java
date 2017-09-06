@@ -2016,7 +2016,6 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		if (isRBoxChanged())
 		{
-
 			_logger.finer(() -> "Role hierarchy...");
 			t = _timers.startTimer("rbox");
 			_rbox.prepare();
@@ -2025,7 +2024,6 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		if (isTBoxChanged())
 		{
-
 			_logger.finer(() -> "Prepare TBox...");
 			t = _timers.startTimer("normalize");
 			_tbox.prepare();
@@ -2057,9 +2055,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		if (!_canUseIncConsistency)
 		{
-
 			_logger.finer(() -> "Expressivity...");
-
 			_expChecker.prepare();
 		}
 

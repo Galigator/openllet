@@ -302,6 +302,51 @@ public class TestBasic
 	}
 
 	@Test
+	public void testOnlyProperties() throws OWLOntologyCreationException
+	{
+		try (final OWLManagerGroup group = new OWLManagerGroup())
+		{
+			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create("http://test.org#owlapi.only.properties"), 1.0);
+			final OWLHelper owl = new OWLGenericTools(group, ontId, true);
+
+			//			final OWLNamedIndividual x1 = OWL.Individual("#I1");
+			//			final OWLNamedIndividual x2 = OWL.Individual("#I2");
+
+			//owl.addAxiom(OWL.propertyAssertion(x1, propA, x2));
+			owl.addAxiom(OWL.inverseProperties(OWL.ObjectProperty("#A"), OWL.ObjectProperty("#B")));
+			//owl.addAxiom(OWL.declaration(ClsA));
+
+			owl.getReasoner().getObjectPropertyDomains(OWL.ObjectProperty("#A"));
+		} // The test is just about not crash.
+	}
+
+	@Test
+	public void testAddAndRemove() throws OWLOntologyCreationException
+	{
+		try (final OWLManagerGroup group = new OWLManagerGroup())
+		{
+			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create("http://test.org#owlapi.add.remove"), 1.0);
+			final OWLHelper owl = new OWLGenericTools(group, ontId, true);
+
+			owl.addAxiom(OWL.declaration(OWL.DataProperty("#propA")));
+			owl.addAxiom(OWL.declaration(OWL.Class("#clsA")));
+			owl.addAxiom(OWL.equivalentClasses(OWL.Class("#clsA"), //
+					OWL.value(OWL.DataProperty("#propA"), OWL.constant(12))//
+			));
+			assertTrue(owl.getReasoner().instances(OWL.Class("#clsA")).count() == 0);
+
+			final OWLNamedIndividual x1 = OWL.Individual("#I1");
+
+			owl.addAxiom(OWL.classAssertion(x1, OWL.Class("#clsA")));
+			assertTrue(owl.getReasoner().instances(OWL.Class("#clsA")).count() == 1);
+
+			owl.removeAxiom(OWL.classAssertion(x1, OWL.Class("#clsA")));
+			assertTrue(owl.getReasoner().instances(OWL.Class("#clsA")).count() == 0);
+
+		} // The test is just about not crash.
+	}
+
+	@Test
 	public void testSubProperties() throws OWLOntologyCreationException
 	{
 		try (final OWLManagerGroup group = new OWLManagerGroup())
