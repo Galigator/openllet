@@ -23,7 +23,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
  * 
  * @author Mike Smith &lt;msmith@clarkparsia.com&gt;
  */
-public class PelletOA3TestRunner extends OwlApiAbstractRunner
+public class PelletTestRunner extends OwlApiAbstractRunner
 {
 
 	private static final OpenlletReasonerFactory _reasonerFactory = new OpenlletReasonerFactory();

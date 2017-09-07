@@ -73,7 +73,6 @@ public class MiscTests
 			Log.error(_logger, e);
 			Assert.fail("Both values are contained in the knowledge base.");
 		}
-
 	}
 
 	@Before

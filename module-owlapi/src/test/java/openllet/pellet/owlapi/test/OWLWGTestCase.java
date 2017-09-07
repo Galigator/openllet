@@ -17,7 +17,7 @@ import openllet.core.KnowledgeBaseImpl;
 import openllet.owlwg.TestCollection;
 import openllet.owlwg.cli.FilterConditionParser;
 import openllet.owlwg.owlapi.testcase.impl.OwlApiTestCaseFactory;
-import openllet.owlwg.runner.pellet.PelletOA3TestRunner;
+import openllet.owlwg.runner.pellet.PelletTestRunner;
 import openllet.owlwg.testcase.TestCase;
 import openllet.owlwg.testcase.filter.FilterCondition;
 import openllet.owlwg.testrun.RunResultType;
@@ -144,7 +144,7 @@ public class OWLWGTestCase
 			{
 				KnowledgeBaseImpl._logger.setLevel(Level.WARNING);
 
-				final Collection<TestRunResult> results = (new PelletOA3TestRunner()).run(_test, 1 * 1000 * _travisLowSpeed); // One second of timeout : really enough if every thing work well.
+				final Collection<TestRunResult> results = (new PelletTestRunner()).run(_test, 1 * 1000 * _travisLowSpeed); // One second of timeout : really enough if every thing work well.
 				for (final TestRunResult result : results)
 				{
 					final RunResultType resultType = result.getResultType();

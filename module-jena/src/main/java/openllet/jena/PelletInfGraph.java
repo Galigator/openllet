@@ -33,7 +33,6 @@ package openllet.jena;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
@@ -80,16 +79,13 @@ public class PelletInfGraph extends BaseInfGraph
 
 	private static final Triple INCONCISTENCY_TRIPLE = Triple.create(OWL.Thing.asNode(), RDFS.subClassOf.asNode(), OWL.Nothing.asNode());
 
-	private GraphLoader _loader;
-	protected KnowledgeBase _kb;
+	private final KnowledgeBase _kb;
 	private final ModelExtractor _extractor;
+	private final PelletGraphListener _graphListener;
 
-	private PelletGraphListener _graphListener;
-
-	private Graph _deductionsGraph;
-
+	private volatile GraphLoader _loader;
+	private volatile Graph _deductionsGraph;
 	private boolean _autoDetectChanges;
-
 	private boolean _skipBuiltinPredicates;
 
 	public PelletInfGraph(final KnowledgeBase kb, final PelletReasoner pellet, final GraphLoader loader)
@@ -198,8 +194,7 @@ public class PelletInfGraph extends BaseInfGraph
 
 	private void load()
 	{
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Loading triples");
+		_logger.fine("Loading triples");
 
 		final Set<Graph> changedGraphs = _graphListener.getChangedGraphs();
 
@@ -214,8 +209,7 @@ public class PelletInfGraph extends BaseInfGraph
 	 */
 	public void reload()
 	{
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Clearing the KB and reloading");
+		_logger.fine("Clearing the KB and reloading");
 
 		clear();
 
@@ -256,8 +250,7 @@ public class PelletInfGraph extends BaseInfGraph
 		if (isPrepared())
 			return;
 
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Preparing PelletInfGraph...");
+		_logger.fine("Preparing PelletInfGraph...");
 
 		load();
 
@@ -266,8 +259,7 @@ public class PelletInfGraph extends BaseInfGraph
 		if (doConsistencyCheck)
 			_kb.isConsistent();
 
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("done.");
+		_logger.fine("done.");
 
 		super.prepare();
 	}
@@ -292,14 +284,12 @@ public class PelletInfGraph extends BaseInfGraph
 	public void classify()
 	{
 		prepare();
-
 		_kb.classify();
 	}
 
 	public void realize()
 	{
 		prepare();
-
 		_kb.realize();
 	}
 
@@ -314,18 +304,15 @@ public class PelletInfGraph extends BaseInfGraph
 
 		if (_deductionsGraph == null)
 		{
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("Realizing PelletInfGraph...");
+			_logger.fine("Realizing PelletInfGraph...");
 			_kb.realize();
 
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("Extract model...");
+			_logger.fine("Extract model...");
 
 			final Model extractedModel = _extractor.extractModel();
 			_deductionsGraph = extractedModel.getGraph();
 
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("done.");
+			_logger.fine("done.");
 		}
 
 		return _deductionsGraph;
@@ -380,15 +367,13 @@ public class PelletInfGraph extends BaseInfGraph
 		{
 			if (!pattern.isConcrete())
 			{
-				if (_logger.isLoggable(Level.WARNING))
-					_logger.warning("Triple patterns with variables cannot be epxlained: " + pattern);
+				_logger.warning(() -> "Triple patterns with variables cannot be epxlained: " + pattern);
 				return null;
 			}
 
 			if (isSyntaxTriple(pattern))
 			{
-				if (_logger.isLoggable(Level.WARNING))
-					_logger.warning("Syntax triples cannot be explained: " + pattern);
+				_logger.warning(() -> "Syntax triples cannot be explained: " + pattern);
 				return null;
 			}
 		}
@@ -397,28 +382,24 @@ public class PelletInfGraph extends BaseInfGraph
 
 		final Graph explanationGraph = Factory.createDefaultGraph();
 
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Explain " + pattern);
+		_logger.fine(() -> "Explain " + pattern);
 
 		if (checkEntailment(this, pattern, true))
 		{
 			final Set<ATermAppl> explanation = _kb.getExplanationSet();
 
-			if (_logger.isLoggable(Level.FINER))
-				_logger.finer("Explanation " + formatAxioms(explanation));
+			_logger.finer(() -> "Explanation " + formatAxioms(explanation));
 
 			final Set<ATermAppl> prunedExplanation = pruneExplanation(pattern, explanation);
 
-			if (_logger.isLoggable(Level.FINER))
-				_logger.finer("Pruned " + formatAxioms(prunedExplanation));
+			_logger.finer(() -> "Pruned " + formatAxioms(prunedExplanation));
 
 			final AxiomConverter converter = new AxiomConverter(_kb, explanationGraph);
 			for (final ATermAppl axiom : prunedExplanation)
 				converter.convert(axiom);
 		}
 
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Explanation " + explanationGraph);
+		_logger.fine(() -> "Explanation " + explanationGraph);
 
 		return explanationGraph;
 	}
@@ -442,8 +423,7 @@ public class PelletInfGraph extends BaseInfGraph
 			if (!checkEntailment(copyGraph, pattern, false))
 				prunedExplanation.add(axiom);
 			else
-				if (_logger.isLoggable(Level.FINER))
-					_logger.finer("Prune from explanation " + ATermUtils.toString(axiom));
+				_logger.finer(() -> "Prune from explanation " + ATermUtils.toString(axiom));
 		}
 
 		return prunedExplanation;
@@ -628,8 +608,7 @@ public class PelletInfGraph extends BaseInfGraph
 		}
 		clear();
 		_graphListener.dispose();
-		_graphListener = null;
-		_kb = null;
+		_kb.clear();
 	}
 
 	/**

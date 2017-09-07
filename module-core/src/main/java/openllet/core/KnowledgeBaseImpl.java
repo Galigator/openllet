@@ -1923,8 +1923,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		}
 		else
 		{
-			// if use inc. reasoning then we need to track the deleted
-			// assertion.
+			// if use inc. reasoning then we need to track the deleted assertion.
 			// Note that the actual edge type be deleted when undo all dependent
 			// structures in ABox.isIncConsistent()
 
@@ -1935,8 +1934,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 			// consistency checking
 			_abox.getIncrementalChangeTracker().addUpdatedIndividual(subj);
 
-			// we may need to update the expressivity here, however so far it
-			// does not seem necessary!
+			// we may need to update the expressivity here, however so far it does not seem necessary!
 			// updateExpressivity(i, c);
 		}
 

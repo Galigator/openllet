@@ -34,16 +34,15 @@ import org.apache.jena.vocabulary.RDF;
  */
 public class PelletGraphListener implements GraphListener
 {
-	private volatile Set<Graph> _leafGraphs = SetUtils.create();
-
 	private final Set<Graph> _changedGraphs = SetUtils.create();
-
-	private boolean _statementDeleted = false;
 
 	private final Graph _rootGraph;
 
-	// KB object - used for incremental ABox changes
-	private final KnowledgeBase _kb;
+	private final KnowledgeBase _kb; // KB object - used for incremental ABox changes
+
+	private volatile Set<Graph> _leafGraphs = SetUtils.create();
+
+	private boolean _statementDeleted = false;
 
 	private boolean _enabled;
 
@@ -103,7 +102,7 @@ public class PelletGraphListener implements GraphListener
 	{
 		if (graph instanceof Polyadic)
 		{
-			final Polyadic union = ((Polyadic) graph);
+			final Polyadic union = (Polyadic) graph;
 			if (union.getBaseGraph() != null)
 				collectLeafGraphs(union.getBaseGraph(), prevLeaves);
 
@@ -113,7 +112,7 @@ public class PelletGraphListener implements GraphListener
 		else
 			if (graph instanceof Dyadic)
 			{
-				final Dyadic dyadic = ((Dyadic) graph);
+				final Dyadic dyadic = (Dyadic) graph;
 				if (dyadic.getL() instanceof Graph)
 					collectLeafGraphs((Graph) dyadic.getL(), prevLeaves);
 
@@ -346,10 +345,8 @@ public class PelletGraphListener implements GraphListener
 		if (canUpdateIncrementally(g) && isABoxChange(t))
 			deleteABoxTriple(t);
 		else
-		{
-			_statementDeleted = true;
 			_changedGraphs.add(g);
-		}
+		_statementDeleted = true; // TODO : check that this change is correct.
 	}
 
 	@Override
