@@ -14,12 +14,6 @@ import org.apache.jena.sparql.engine.binding.Binding;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -36,9 +30,9 @@ public class SlicedResultSet implements ResultSet
 
 	public SlicedResultSet(final ResultSet results, final long offset, final long limit)
 	{
-		this._results = results;
-		this._row = 0;
-		this._limit = limit;
+		_results = results;
+		_row = 0;
+		_limit = limit;
 
 		for (int i = 0; i < offset && results.hasNext(); i++)
 			results.next();
@@ -48,77 +42,77 @@ public class SlicedResultSet implements ResultSet
 	 * {@inheritDoc}
 	 */
 	@Override
-	 public boolean hasNext()
+	public boolean hasNext()
 	{
 		return _row < _limit && _results.hasNext();
 	}
 
-	 /**
-	  * {@inheritDoc}
-	  */
-	 @Override
-	 public Binding nextBinding()
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Binding nextBinding()
 	{
-		 _row++;
+		_row++;
 
 		return _results.nextBinding();
 	}
 
-	 /**
-	  * {@inheritDoc}
-	  */
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	 public QuerySolution nextSolution()
+	public QuerySolution nextSolution()
 	{
 		_row++;
 
 		return _results.nextSolution();
 	}
 
-	 /**
-	  * {@inheritDoc}
-	  */
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	 public QuerySolution next()
+	public QuerySolution next()
 	{
 		return nextSolution();
 	}
 
-	 /**
-	  * {@inheritDoc}
-	  */
-	 @Override
-	 public List<String> getResultVars()
-	{
-		 return _results.getResultVars();
-	 }
-
-	 /**
-	  * {@inheritDoc}
-	  */
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	 public int getRowNumber()
+	public List<String> getResultVars()
+	{
+		return _results.getResultVars();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int getRowNumber()
 	{
 		return _row;
 	}
 
-	 /**
-	  * {@inheritDoc}
-	  */
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	 public void remove() throws UnsupportedOperationException
+	public void remove() throws UnsupportedOperationException
 	{
 		_results.remove();
 	}
 
-	 @Override
+	@Override
 	public String toString()
 	{
 		return _results.toString();
 	}
 
 	@Override
-	 public Model getResourceModel()
+	public Model getResourceModel()
 	{
 		return null;
 	}

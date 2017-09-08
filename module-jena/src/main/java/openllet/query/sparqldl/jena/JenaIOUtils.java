@@ -23,9 +23,6 @@ import org.apache.jena.util.FileManager;
  * Title: Query Utilities
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -45,7 +42,7 @@ public class JenaIOUtils
 
 		RDFFormatType(final String s)
 		{
-			this.jenaName = s;
+			jenaName = s;
 		}
 
 		public String jenaName()

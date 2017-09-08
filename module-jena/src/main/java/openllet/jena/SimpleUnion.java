@@ -21,19 +21,6 @@ public class SimpleUnion extends Polyadic
 		super(graphs.iterator());
 	}
 
-	//	/**
-	//	 * {@inheritDoc}
-	//	 */
-	//	@Override
-	//	protected ExtendedIterator<Triple> graphBaseFind(TripleMatch m) {
-	//		ExtendedIterator<Triple> result = NullIterator.instance();
-	//		for (final Graph g : m_subGraphs) {
-	//			result = result.andThen(g.find(m));
-	//		}
-	//
-	//		return result;
-	//	}
-
 	/**
 	 * {@inheritDoc}
 	 */

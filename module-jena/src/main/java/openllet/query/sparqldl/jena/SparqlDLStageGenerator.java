@@ -13,9 +13,6 @@ import org.apache.jena.sparql.engine.main.StageGenerator;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
  * Description: A stage generator that generates one {@link SparqlDLStage} for each {@link BasicPattern}
  * </p>
  * <p>
@@ -49,6 +46,6 @@ class SparqlDLStageGenerator implements StageGenerator
 	@Override
 	public QueryIterator execute(final BasicPattern pattern, final QueryIterator input, final ExecutionContext execCxt)
 	{
-		return (new SparqlDLStage(pattern, _handleVariableSPO)).build(input, execCxt);
+		return new SparqlDLStage(pattern, _handleVariableSPO).build(input, execCxt);
 	}
 }

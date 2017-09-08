@@ -40,9 +40,7 @@ public class NodeFormatter
 	private final StringWriter _sw;
 	private final ATermRenderer _renderer;
 	private final PrintWriter _formatter;
-
-	private Model _rawModel;
-
+	private final Model _rawModel;
 	private final static Resource NULL = null;
 
 	//    private Set usedStatements;

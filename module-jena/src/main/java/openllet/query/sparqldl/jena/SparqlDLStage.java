@@ -39,11 +39,8 @@ import org.apache.jena.sparql.engine.main.StageGeneratorGeneric;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description: An implementation of ARQ _query stage for PelletInfGraph. The {@link BasicPattern} is converted into a native Pellet SPARQL-DL _query and
- * answered by the Pellet _query engine. The conversion to Pellet _query might fail if the _pattern is not a SPARQL-DL _query in which case the default ARQ
+ * Description: An implementation of ARQ query stage for PelletInfGraph. The {@link BasicPattern} is converted into a native Pellet SPARQL-DL _query and
+ * answered by the Pellet _query engine. The conversion to Pellet query might fail if the _pattern is not a SPARQL-DL query in which case the default ARQ
  * handler is used.
  * </p>
  * <p>
@@ -71,8 +68,8 @@ class SparqlDLStage
 
 	public SparqlDLStage(final BasicPattern pattern, final boolean handleVariableSPO)
 	{
-		this._pattern = pattern;
-		this._parser = new ARQParser(handleVariableSPO);
+		_pattern = pattern;
+		_parser = new ARQParser(handleVariableSPO);
 
 		initVars();
 	}

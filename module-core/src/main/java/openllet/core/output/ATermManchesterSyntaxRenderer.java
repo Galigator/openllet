@@ -17,9 +17,6 @@ import openllet.core.utils.ATermUtils;
  * Title: ATermManchesterSyntaxRenderer
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2008
  * </p>
  * <p>
@@ -200,7 +197,7 @@ public class ATermManchesterSyntaxRenderer extends ATermBaseRenderer
 		_out.print(")");
 	}
 
-	public void visitList(ATermList list, final String op)
+	public void visitList(final ATermList list, final String op)
 	{
 		int size = list.getLength();
 		for (final ATerm term : list)

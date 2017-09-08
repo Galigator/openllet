@@ -30,9 +30,6 @@ import org.apache.jena.sparql.engine.binding.BindingMap;
  * Title: ResultSet wrapper for SPARQL-DL results.
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>

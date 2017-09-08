@@ -29,18 +29,18 @@ import org.apache.jena.vocabulary.RDFS;
 public class TaxonomyExtractor
 {
 	private final Taxonomy<ATermAppl> _taxonomyImpl;
-	private Model _model;
+	private volatile Model _model;
 	private boolean _includeIndividuals;
 
 	public TaxonomyExtractor(final Taxonomy<ATermAppl> taxonomy)
 	{
-		this._taxonomyImpl = taxonomy;
-		this._includeIndividuals = false;
+		_taxonomyImpl = taxonomy;
+		_includeIndividuals = false;
 	}
 
 	public void setIncludeIndividuals(final boolean includeIndividuals)
 	{
-		this._includeIndividuals = includeIndividuals;
+		_includeIndividuals = includeIndividuals;
 	}
 
 	public Model extractModel()
@@ -80,7 +80,7 @@ public class TaxonomyExtractor
 				{
 					final Collection<ATermAppl> individuals = getDatumInstanceAsCollectorOfATermAppl(taxonomyNode);
 
-					if ((individuals != null) && !individuals.isEmpty())
+					if (individuals != null && !individuals.isEmpty())
 						for (final ATermAppl individual : individuals)
 							model.add(typeAssertion(model, individual, aClass));
 				}
