@@ -52,11 +52,10 @@ public class InferenceTest
 		//
 		//			model.add(stmt);
 		//		}
+		// assertTrue(1 == printIndividualStatements(inf));
 
 		final PelletInfGraph graph = (PelletInfGraph) inf.getGraph();
 		final KnowledgeBaseImpl kb = (KnowledgeBaseImpl) graph.getKB();
-
-		assertTrue(1 == printIndividualStatements(inf));
 
 		addIndividualStatementToModel(model);
 
