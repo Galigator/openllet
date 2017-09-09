@@ -168,7 +168,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 		if (_logger.isLoggable(Level.FINE))
 		{
 			_kb.getTimers().createTimer("classifySub");
-			_logger.fine("Classes: " + classCount + " Individuals: " + _kb.getIndividuals().size());
+			_logger.fine("Classes: " + classCount + " Individuals: " + _kb.getIndividualsCount());
 		}
 
 		if (!_prepared)
@@ -319,8 +319,9 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 
 		// compute told subsumers for each concept
 		final TBox tbox = _kb.getTBox();
-		final Collection<ATermAppl> axioms = tbox.getAxioms();
-		for (final ATermAppl axiom : axioms)
+		tbox.axioms().forEach(axiom ->
+		//final Collection<ATermAppl> axioms = tbox.getAxioms();
+		//for (final ATermAppl axiom : axioms)
 		{
 			final ATermAppl c1 = (ATermAppl) axiom.getArgument(0);
 			final ATermAppl c2 = (ATermAppl) axiom.getArgument(1);
@@ -333,7 +334,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 				addToldRelation(c2, c1, equivalent, explanation);
 			else
 				addToldRelation(c1, c2, equivalent, explanation);
-		}
+		});
 
 		// additional step for union classes. for example, if we have
 		// C = or(A, B)

@@ -38,7 +38,7 @@ public class Clash
 		MIN_MAX("An individual contains a minCardinality restriction that is greater than a maxCardinality restriction"), //
 		MAX_CARD("The maxCardinality restriction is violated"), //
 		FUNC_MAX_CARD("An individual contains a minCardinality restriction that is greater than a maxCardinality restriction"), //
-		MAX_ZERO("The maxCardinality(0) restriction is violated"), //
+		//		MAX_ZERO("The maxCardinality(0) restriction is violated"), // dead code.
 		NOMINAL("An individual is sameAs and differentFrom another individual at the same time"), //
 		EMPTY_DATATYPE("Range restrictions on a literal is inconsistent"), //
 		VALUE_DATATYPE("The literal value does not satisfy the datatype restriction"), //
@@ -138,25 +138,25 @@ public class Clash
 		return new Clash(node, ClashType.MIN_MAX, depends);
 	}
 
-	public static Clash functionalCardinality(final Node node, final DependencySet depends)
-	{
-		return new Clash(node, ClashType.FUNC_MAX_CARD, depends);
-	}
+	//	public static Clash functionalCardinality(final Node node, final DependencySet depends)
+	//	{
+	//		return new Clash(node, ClashType.FUNC_MAX_CARD, depends);
+	//	}
 
 	public static Clash functionalCardinality(final Node node, final DependencySet depends, final ATermAppl r)
 	{
 		return new Clash(node, ClashType.FUNC_MAX_CARD, depends, new ATerm[] { r });
 	}
 
-	public static Clash missingDatatype(final Node node, final DependencySet depends)
-	{
-		return new Clash(node, ClashType.MISSING_DATATYPE, depends);
-	}
+	//	public static Clash missingDatatype(final Node node, final DependencySet depends)
+	//	{
+	//		return new Clash(node, ClashType.MISSING_DATATYPE, depends);
+	//	}
 
-	public static Clash missingDatatype(final Node node, final DependencySet depends, final ATermAppl value, final ATermAppl datatype)
-	{
-		return new Clash(node, ClashType.MISSING_DATATYPE, depends, new ATermAppl[] { value, datatype });
-	}
+	//	public static Clash missingDatatype(final Node node, final DependencySet depends, final ATermAppl value, final ATermAppl datatype)
+	//	{
+	//		return new Clash(node, ClashType.MISSING_DATATYPE, depends, new ATermAppl[] { value, datatype });
+	//	}
 
 	public static Clash nominal(final Node node, final DependencySet depends)
 	{
@@ -168,10 +168,10 @@ public class Clash
 		return new Clash(node, ClashType.NOMINAL, depends, new ATermAppl[] { other });
 	}
 
-	public static Clash valueDatatype(final Node node, final DependencySet depends)
-	{
-		return new Clash(node, ClashType.VALUE_DATATYPE, depends);
-	}
+	//	public static Clash valueDatatype(final Node node, final DependencySet depends)
+	//	{
+	//		return new Clash(node, ClashType.VALUE_DATATYPE, depends);
+	//	}
 
 	public static Clash valueDatatype(final Node node, final DependencySet depends, final ATermAppl value, final ATermAppl datatype)
 	{
@@ -198,10 +198,10 @@ public class Clash
 		return new Clash(node, ClashType.INVALID_LITERAL, depends, new ATermAppl[] { value });
 	}
 
-	public static Clash disjointProps(final Node node, final DependencySet depends)
-	{
-		return new Clash(node, ClashType.DISJOINT_PROPS, depends);
-	}
+	//	public static Clash disjointProps(final Node node, final DependencySet depends)
+	//	{
+	//		return new Clash(node, ClashType.DISJOINT_PROPS, depends);
+	//	}
 
 	public static Clash disjointProps(final Node node, final DependencySet depends, final ATermAppl p1, final ATermAppl p2)
 	{

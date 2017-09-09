@@ -60,19 +60,18 @@ import openllet.core.utils.fsm.TransitionGraph;
  */
 public class RoleImpl implements Role
 {
-	@Deprecated
-	public final static String[] TYPES = { "Untyped", "Object", "Datatype", "Annotation", "Ontology" };
-
-	@Deprecated
-	final public static int UNTYPED = 0;
-	@Deprecated
-	final public static int OBJECT = 1;
-	@Deprecated
-	final public static int DATATYPE = 2;
-	@Deprecated
-	final public static int ANNOTATION = 3;
-	@Deprecated
-	final public static int ONTOLOGY = 4;
+	//	@Deprecated
+	//	public final static String[] TYPES = { "Untyped", "Object", "Datatype", "Annotation", "Ontology" };
+	//	@Deprecated
+	//	final public static int UNTYPED = 0;
+	//	@Deprecated
+	//	final public static int OBJECT = 1;
+	//	@Deprecated
+	//	final public static int DATATYPE = 2;
+	//	@Deprecated
+	//	final public static int ANNOTATION = 3;
+	//	@Deprecated
+	//	final public static int ONTOLOGY = 4;
 
 	private final ATermAppl _name;
 
@@ -123,10 +122,10 @@ public class RoleImpl implements Role
 	private Map<ATermAppl, DependencySet> _domains = Collections.emptyMap();
 	private Map<ATermAppl, DependencySet> _ranges = Collections.emptyMap();
 
-	public RoleImpl(final ATermAppl name)
-	{
-		this(name, PropertyType.UNTYPED);
-	}
+	//	public RoleImpl(final ATermAppl name)
+	//	{
+	//		this(name, PropertyType.UNTYPED);
+	//	}
 
 	public RoleImpl(final ATermAppl name, final PropertyType type)
 	{
@@ -687,16 +686,16 @@ public class RoleImpl implements Role
 		setAsymmetric(b, DependencySet.INDEPENDENT);
 	}
 
-	/**
-	 * @param b
-	 * @param ds
-	 * @deprecated Use {@link #setAsymmetric(boolean,DependencySet)}
-	 */
-	@Deprecated
-	public void setAntisymmetric(final boolean b, final DependencySet ds)
-	{
-		setAsymmetric(b, ds);
-	}
+	//	/**
+	//	 * @param b
+	//	 * @param ds
+	//	 * @deprecated Use {@link #setAsymmetric(boolean,DependencySet)}
+	//	 */
+	//	@Deprecated
+	//	public void setAntisymmetric(final boolean b, final DependencySet ds)
+	//	{
+	//		setAsymmetric(b, ds);
+	//	}
 
 	@Override
 	public void setAsymmetric(final boolean b, final DependencySet ds)

@@ -653,7 +653,7 @@ public class JenaTests
 		assertTrue(kb.isConsistent());
 
 		assertTrue(kb.isIndividual(ATermUtils.makeTermAppl(ns + "a")));
-		assertEquals(1, kb.getIndividuals().size());
+		assertEquals(1, kb.getIndividualsCount());
 
 		assertTrue(kb.isClass(ATermUtils.makeTermAppl(ns + "C")));
 		assertEquals(1, kb.getClasses().size());

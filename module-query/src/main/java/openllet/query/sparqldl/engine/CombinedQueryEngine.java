@@ -108,7 +108,7 @@ public class CombinedQueryEngine implements QueryExec
 		// warm up the reasoner by computing the satisfiability of classes
 		// used in the query so that cached models can be used for instance
 		// checking - TODO also non-named classes
-		if ((OpenlletOptions.USE_CACHING) && !_kb.isClassified())
+		if (OpenlletOptions.USE_CACHING && !_kb.isClassified())
 			for (final QueryAtom a : _oldQuery.getAtoms())
 				for (final ATermAppl arg : a.getArguments())
 					if (_kb.isClass(arg))
@@ -332,7 +332,7 @@ public class CombinedQueryEngine implements QueryExec
 				Set<ATermAppl> instanceCandidates = null;
 				if (tI.equals(tC))
 				{
-					instanceCandidates = _kb.getIndividuals().size() < _kb.getClasses().size() ? _kb.getIndividuals() : _kb.getClasses();
+					instanceCandidates = _kb.getIndividualsCount() < _kb.getClasses().size() ? _kb.getIndividuals() : _kb.getClasses();
 					for (final ATermAppl ic : instanceCandidates)
 						if (direct ? _kb.getInstances(ic, direct).contains(ic) : _kb.isType(ic, ic))
 						{
@@ -364,7 +364,7 @@ public class CombinedQueryEngine implements QueryExec
 							classCandidates = _kb.getAllClasses();
 
 					// explore all possible bindings
-					final boolean loadInstances = (instanceCandidates == null);
+					final boolean loadInstances = instanceCandidates == null;
 					for (final ATermAppl cls : classCandidates)
 					{
 						if (loadInstances)
@@ -421,8 +421,8 @@ public class CombinedQueryEngine implements QueryExec
 					loadProperty = true;
 				}
 
-				loadSubjects = (subjectCandidates == null);
-				loadObjects = (objectCandidates == null);
+				loadSubjects = subjectCandidates == null;
+				loadObjects = objectCandidates == null;
 
 				for (final ATermAppl property : propertyCandidates)
 					// TODO replace this nasty if-cascade with some map for
@@ -628,7 +628,7 @@ public class CombinedQueryEngine implements QueryExec
 				if (scLHS.equals(scRHS))
 					// TODO optimization for _downMonotonic variables
 					for (final ATermAppl ic : _kb.getClasses())
-					runNext(binding, arguments, ic, ic);
+						runNext(binding, arguments, ic, ic);
 				else
 				{
 					final boolean lhsDM = isDownMonotonic(scLHS);
@@ -673,7 +673,7 @@ public class CombinedQueryEngine implements QueryExec
 							else
 								lhsCandidates = _kb.getClasses();
 
-						final boolean reload = (rhsCandidates == null);
+						final boolean reload = rhsCandidates == null;
 						for (final ATermAppl subject : lhsCandidates)
 						{
 							if (reload)
@@ -735,9 +735,9 @@ public class CombinedQueryEngine implements QueryExec
 				if (!dwLHS.equals(dwRHS))
 					// TODO optimizeTBox
 					for (final ATermAppl known : getSymmetricCandidates(VarType.CLASS, dwLHS, dwRHS))
-					for (final Set<ATermAppl> dependents : _kb.getDisjointClasses(known))
-					for (final ATermAppl dependent : dependents)
-					runSymetricCheck(current, dwLHS, known, dwRHS, dependent, binding);
+						for (final Set<ATermAppl> dependents : _kb.getDisjointClasses(known))
+							for (final ATermAppl dependent : dependents)
+								runSymetricCheck(current, dwLHS, known, dwRHS, dependent, binding);
 				else
 					_logger.finer("Atom " + current + "cannot be satisfied in any consistent ontology.");
 				break;
@@ -749,8 +749,8 @@ public class CombinedQueryEngine implements QueryExec
 				if (!coLHS.equals(coRHS))
 					// TODO optimizeTBox
 					for (final ATermAppl known : getSymmetricCandidates(VarType.CLASS, coLHS, coRHS))
-					for (final ATermAppl dependent : _kb.getComplements(known))
-					runSymetricCheck(current, coLHS, known, coRHS, dependent, binding);
+						for (final ATermAppl dependent : _kb.getComplements(known))
+							runSymetricCheck(current, coLHS, known, coRHS, dependent, binding);
 				else
 					_logger.finer("Atom " + current + "cannot be satisfied in any consistent ontology.");
 				break;
@@ -769,7 +769,7 @@ public class CombinedQueryEngine implements QueryExec
 				if (spLHS.equals(spRHS))
 					// TODO optimization for _downMonotonic variables
 					for (final ATermAppl ic : _kb.getProperties())
-					runNext(binding, arguments, ic, ic);
+						runNext(binding, arguments, ic, ic);
 				else
 				{
 					final boolean lhsDM = isDownMonotonic(spLHS);
@@ -803,7 +803,7 @@ public class CombinedQueryEngine implements QueryExec
 							}
 							else
 								spLhsCandidates = _kb.getProperties();
-						final boolean reload = (spRhsCandidates == null);
+						final boolean reload = spRhsCandidates == null;
 						for (final ATermAppl subject : spLhsCandidates)
 						{
 							if (reload)
@@ -1144,9 +1144,9 @@ public class CombinedQueryEngine implements QueryExec
 				if (!dwLHSp.equals(dwRHSp))
 					// TODO optimizeTBox
 					for (final ATermAppl known : getSymmetricCandidates(VarType.PROPERTY, dwLHSp, dwRHSp))
-					for (final Set<ATermAppl> dependents : _kb.getDisjointProperties(known))
-					for (final ATermAppl dependent : dependents)
-					runSymetricCheck(current, dwLHSp, known, dwRHSp, dependent, binding);
+						for (final Set<ATermAppl> dependents : _kb.getDisjointProperties(known))
+							for (final ATermAppl dependent : dependents)
+								runSymetricCheck(current, dwLHSp, known, dwRHSp, dependent, binding);
 				else
 					_logger.finer("Atom " + current + "cannot be satisfied in any consistent ontology.");
 				break;

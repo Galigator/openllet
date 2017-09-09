@@ -50,7 +50,6 @@ import openllet.core.utils.Bool;
 
 /*
  * Created on Aug 27, 2003
- *
  */
 
 /**
@@ -955,10 +954,10 @@ public class Individual extends Node implements CachedNode
 		return invR != null && _inEdges.hasEdge(invR);
 	}
 
-	public boolean hasRSuccessor(final Role r)
-	{
-		return _outEdges.hasEdge(r);
-	}
+	//	public boolean hasRSuccessor(final Role r)
+	//	{
+	//		return _outEdges.hasEdge(r);
+	//	}
 
 	@Override
 	public boolean hasSuccessor(final Node x)
@@ -1020,16 +1019,16 @@ public class Individual extends Node implements CachedNode
 		return hasValue;
 	}
 
-	public boolean hasRNeighbor(final Role r, final Node x)
-	{
-		if (hasRSuccessor(r, x))
-			return true;
-
-		if (x instanceof Individual)
-			return ((Individual) x).hasRSuccessor(r.getInverse(), this);
-
-		return false;
-	}
+	//	public boolean hasRNeighbor(final Role r, final Node x)
+	//	{
+	//		if (hasRSuccessor(r, x))
+	//			return true;
+	//
+	//		if (x instanceof Individual)
+	//			return ((Individual) x).hasRSuccessor(r.getInverse(), this);
+	//
+	//		return false;
+	//	}
 
 	@Override
 	protected void addInEdge(final Edge edge)

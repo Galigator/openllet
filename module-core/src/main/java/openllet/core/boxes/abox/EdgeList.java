@@ -96,17 +96,17 @@ public class EdgeList implements Iterable<Edge>
 		addEdgeList(edges);
 	}
 
-	/**
-	 * Create an immutable singleton EdgeList;
-	 *
-	 * @param edge
-	 */
-	public EdgeList(final Edge edge)
-	{
-		_list = new Edge[1];
-		_list[0] = edge;
-		_size = 0;
-	}
+	//	/**
+	//	 * Create an immutable singleton EdgeList;
+	//	 *
+	//	 * @param edge
+	//	 */
+	//	public EdgeList(final Edge edge)
+	//	{
+	//		_list = new Edge[1];
+	//		_list[0] = edge;
+	//		_size = 0;
+	//	}
 
 	private void allocate(final int minSize)
 	{
@@ -199,15 +199,15 @@ public class EdgeList implements Iterable<Edge>
 		return result;
 	}
 
-	public EdgeList getEdgesFromTo(final Individual from, final Node to)
-	{
-		return findEdges(null, from, to);
-	}
+	//	public EdgeList getEdgesFromTo(final Individual from, final Node to)
+	//	{
+	//		return findEdges(null, from, to);
+	//	}
 
-	public EdgeList getEdgesFrom(final Individual from)
-	{
-		return findEdges(null, from, null);
-	}
+	//	public EdgeList getEdgesFrom(final Individual from)
+	//	{
+	//		return findEdges(null, from, null);
+	//	}
 
 	public EdgeList getEdgesTo(final Node to)
 	{
@@ -308,20 +308,20 @@ public class EdgeList implements Iterable<Edge>
 		return hasEdge(from, null, null);
 	}
 
-	public boolean hasEdgeFrom(final Individual from, final Role role)
-	{
-		return hasEdge(from, role, null);
-	}
+	//	public boolean hasEdgeFrom(final Individual from, final Role role)
+	//	{
+	//		return hasEdge(from, role, null);
+	//	}
 
 	public boolean hasEdgeTo(final Node to)
 	{
 		return hasEdge(null, null, to);
 	}
 
-	public boolean hasEdgeTo(final Role role, final Node to)
-	{
-		return hasEdge(null, role, to);
-	}
+	//	public boolean hasEdgeTo(final Role role, final Node to)
+	//	{
+	//		return hasEdge(null, role, to);
+	//	}
 
 	public boolean hasEdge(final Role role)
 	{

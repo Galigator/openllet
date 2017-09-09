@@ -276,10 +276,10 @@ public abstract class Node
 		return true;
 	}
 
-	public void removeInEdges()
-	{
-		_inEdges = new EdgeList();
-	}
+	//	public void removeInEdges()
+	//	{
+	//		_inEdges = new EdgeList();
+	//	}
 
 	public void reset(final boolean onlyApplyTypes)
 	{
@@ -621,10 +621,10 @@ public abstract class Node
 		return false;
 	}
 
-	protected boolean hasPredecessor(final Individual x)
-	{
-		return x.hasSuccessor(this);
-	}
+	//	protected boolean hasPredecessor(final Individual x)
+	//	{
+	//		return x.hasSuccessor(this);
+	//	}
 
 	public abstract boolean hasSuccessor(Node x);
 
@@ -650,15 +650,15 @@ public abstract class Node
 		return _depends.keySet().stream();
 	}
 
-	public void removeTypes()
-	{
-		_depends.clear();
-	}
+	//	public void removeTypes()
+	//	{
+	//		_depends.clear();
+	//	}
 
-	public int prunedAt()
-	{
-		return _pruned.getBranch();
-	}
+	//	public int prunedAt()
+	//	{
+	//		return _pruned.getBranch();
+	//	}
 
 	public boolean isPruned()
 	{

@@ -106,15 +106,15 @@ public class RoleTaxonomyBuilder
 		_bottomRole = rbox.getRole(_taxonomyImpl.getBottomNode().getName());
 	}
 
-	public RoleTaxonomyBuilder(final RBox rbox, final boolean objectRoles)
-	{
-		_rbox = rbox;
-
-		_properties = rbox.getRoles().values();
-		_taxonomyImpl = objectRoles ? new TaxonomyImpl<>(null, TOP_OBJECT_PROPERTY, BOTTOM_OBJECT_PROPERTY) : new TaxonomyImpl<>(null, TOP_DATA_PROPERTY, BOTTOM_DATA_PROPERTY);
-		_topRole = rbox.getRole(_taxonomyImpl.getTop().getName());
-		_bottomRole = rbox.getRole(_taxonomyImpl.getBottomNode().getName());
-	}
+	//	public RoleTaxonomyBuilder(final RBox rbox, final boolean objectRoles)
+	//	{
+	//		_rbox = rbox;
+	//
+	//		_properties = rbox.getRoles().values();
+	//		_taxonomyImpl = objectRoles ? new TaxonomyImpl<>(null, TOP_OBJECT_PROPERTY, BOTTOM_OBJECT_PROPERTY) : new TaxonomyImpl<>(null, TOP_DATA_PROPERTY, BOTTOM_DATA_PROPERTY);
+	//		_topRole = rbox.getRole(_taxonomyImpl.getTop().getName());
+	//		_bottomRole = rbox.getRole(_taxonomyImpl.getBottomNode().getName());
+	//	}
 
 	public Taxonomy<ATermAppl> classify()
 	{

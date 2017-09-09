@@ -64,7 +64,7 @@ import openllet.shared.tools.Log;
  */
 public class RBoxImpl implements RBox
 {
-	public static Logger _logger = Log.getLogger(RBoxImpl.class);
+	private static Logger _logger = Log.getLogger(RBoxImpl.class);
 
 	@Override
 	public Logger getLogger()

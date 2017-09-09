@@ -70,8 +70,7 @@ public class OptimizedQueryEngine2 extends AbstractABoxEngineWrapper
 		final Collection<ATermAppl> empty = Collections.emptySet();
 		final ATermAppl clazz = q.rollUpTo(var, empty, false);
 
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Rolling up " + var + " to " + clazz);
+		_logger.fine(() -> "Rolling up " + var + " to " + clazz);
 
 		final Collection<ATermAppl> instances;
 
@@ -89,8 +88,7 @@ public class OptimizedQueryEngine2 extends AbstractABoxEngineWrapper
 
 		for (final ATermAppl b : instances)
 		{
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("trying " + var + " --> " + b);
+			_logger.fine(() -> "trying " + var + " --> " + b);
 			final ResultBinding newBinding = binding.duplicate();
 
 			newBinding.setValue(var, b);

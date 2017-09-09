@@ -207,15 +207,6 @@ public class DependencySet
 
 	/**
 	 * @param ds
-	 * @return a new DependencySet and all the elements of <code>this</code> and <code>set</code> .
-	 */
-	public DependencySet union(final IntSet ds)
-	{
-		return new DependencySet(_branch, _depends.union(ds), _explain);
-	}
-
-	/**
-	 * @param ds
 	 * @param doExplanation
 	 * @return a new DependencySet and all the elements of <code>this</code> and <code>ds</code>.
 	 */

@@ -57,11 +57,11 @@ public class NodeMerge
 		_ds = ds;
 	}
 
-	NodeMerge(final ATermAppl y, final ATermAppl z)
-	{
-		setSource(y);
-		setTarget(z);
-	}
+	//	NodeMerge(final ATermAppl y, final ATermAppl z)
+	//	{
+	//		setSource(y);
+	//		setTarget(z);
+	//	}
 
 	@Override
 	public String toString()

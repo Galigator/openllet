@@ -485,10 +485,10 @@ public class Literal extends Node
 		checkClash();
 	}
 
-	public String debugString()
-	{
-		return _name + " = " + getTypes().toString();
-	}
+	//	public String debugString()
+	//	{
+	//		return _name + " = " + getTypes().toString();
+	//	}
 
 	public NodeMerge getMergeToConstant()
 	{

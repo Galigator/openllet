@@ -464,7 +464,7 @@ public class GraphQueryHandler
 			@Override
 			public boolean contains(final KnowledgeBase kb, final GraphLoader loader, final Node subj, final Node pred, final Node obj)
 			{
-				return !kb.getIndividuals().isEmpty();
+				return 0 != kb.getIndividualsCount();
 			}
 		});
 
@@ -1428,7 +1428,7 @@ public class GraphQueryHandler
 			{
 				final ATermAppl prop1 = loader.node2term(s);
 				final ATermAppl prop2 = loader.node2term(o);
-				return ((kb.isObjectProperty(prop1) && kb.isObjectProperty(prop2)) || (kb.isDatatypeProperty(prop1) && kb.isDatatypeProperty(prop2))) && kb.isDisjointProperty(prop1, prop2);
+				return (kb.isObjectProperty(prop1) && kb.isObjectProperty(prop2) || kb.isDatatypeProperty(prop1) && kb.isDatatypeProperty(prop2)) && kb.isDisjointProperty(prop1, prop2);
 			}
 		});
 
@@ -1449,7 +1449,7 @@ public class GraphQueryHandler
 			@Override
 			public boolean contains(final KnowledgeBase kb, final GraphLoader loader, final Node s, final Node p, final Node o)
 			{
-				return !kb.getIndividuals().isEmpty();
+				return 0 != kb.getIndividualsCount(); // !kb.getIndividuals().isEmpty();
 			}
 		});
 
@@ -1497,7 +1497,7 @@ public class GraphQueryHandler
 			@Override
 			public boolean contains(final KnowledgeBase kb, final GraphLoader loader, final Node s, final Node p, final Node o)
 			{
-				return !kb.getIndividuals().isEmpty();
+				return 0 != kb.getIndividualsCount();
 			}
 		});
 
@@ -1575,7 +1575,7 @@ public class GraphQueryHandler
 			if (_logger.isLoggable(Level.WARNING))
 				_logger.warning("No query handler found for " + subj + " " + pred + " " + obj);
 
-		return (qh != null) && qh.contains(kb, loader, subj, pred, obj);
+		return qh != null && qh.contains(kb, loader, subj, pred, obj);
 	}
 
 }

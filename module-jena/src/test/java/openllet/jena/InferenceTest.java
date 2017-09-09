@@ -4,7 +4,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.InputStream;
 import java.util.logging.Logger;
-import openllet.core.KnowledgeBaseImpl;
 import openllet.shared.tools.Log;
 import org.apache.jena.rdf.model.InfModel;
 import org.apache.jena.rdf.model.Model;
@@ -54,8 +53,8 @@ public class InferenceTest
 		//		}
 		// assertTrue(1 == printIndividualStatements(inf));
 
-		final PelletInfGraph graph = (PelletInfGraph) inf.getGraph();
-		final KnowledgeBaseImpl kb = (KnowledgeBaseImpl) graph.getKB();
+		// final PelletInfGraph graph = (PelletInfGraph) inf.getGraph();
+		// final KnowledgeBaseImpl kb = (KnowledgeBaseImpl) graph.getKB();
 
 		addIndividualStatementToModel(model);
 
@@ -125,6 +124,7 @@ public class InferenceTest
 		//		}
 	}
 
+	@SuppressWarnings("unused")
 	private static void printAllStatements(final Model m, final int n)
 	{
 		LOG.info("\\/---- print all statements ---\\/" + n);

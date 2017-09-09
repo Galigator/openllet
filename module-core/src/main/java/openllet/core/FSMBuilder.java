@@ -26,7 +26,7 @@ import openllet.shared.tools.Log;
  */
 public class FSMBuilder
 {
-	public static Logger _logger = Log.getLogger(FSMBuilder.class);
+	private static Logger _logger = Log.getLogger(FSMBuilder.class);
 
 	private final RBox _rbox;
 

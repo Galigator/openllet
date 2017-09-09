@@ -31,7 +31,7 @@ import openllet.shared.tools.Logging;
  */
 public abstract class KBLoader implements Logging
 {
-	public static final Logger _logger = Log.getLogger(KBLoader.class);
+	private static final Logger _logger = Log.getLogger(KBLoader.class);
 
 	@Override
 	public Logger getLogger()

@@ -20,7 +20,6 @@ package openllet.core.boxes.abox;
  */
 public class ABoxStats
 {
-
 	/**
 	 * Total number of ABox consistency checks
 	 */
@@ -38,15 +37,6 @@ public class ABoxStats
 	public volatile int _globalRestores = 0;
 	public volatile int _localRestores = 0;
 	public volatile int _branch = 0;
-
-	public void add(final ABoxStats other)
-	{
-		_backjumps += other._backjumps;
-		_backtracks += other._backtracks;
-		_globalRestores += other._globalRestores;
-		_localRestores += other._localRestores;
-		_branch += other._branch;
-	}
 
 	@Override
 	public String toString()

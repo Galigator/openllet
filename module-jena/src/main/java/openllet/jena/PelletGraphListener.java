@@ -62,29 +62,19 @@ public class PelletGraphListener implements GraphListener
 		final ATermAppl s = JenaUtils.makeATerm(t.getSubject());
 		final ATermAppl o = JenaUtils.makeATerm(t.getObject());
 
+		if (_kb.individuals().noneMatch(s::equals)) // check if this is a new individual
+			_kb.addIndividual(s);
+
 		// check if this is a type assertion
 		if (t.getPredicate().equals(RDF.type.asNode()))
-		{
-			// check if this is a new _individual
-			if (!_kb.getIndividuals().contains(s))
-				_kb.addIndividual(s);
-
-			// add the type
-			_kb.addType(s, o);
-		}
+			_kb.addType(s, o); // add the type
 		else
 		{
-			// check if the subject is a new _individual
-			if (!_kb.getIndividuals().contains(s))
-				_kb.addIndividual(s);
-
-			// check if the object is a new _individual
-			if (!t.getObject().isLiteral() && !_kb.getIndividuals().contains(o))
+			if (!t.getObject().isLiteral() && _kb.individuals().noneMatch(o::equals)) // check if the object is a new _individual
 				_kb.addIndividual(o);
 
 			final ATermAppl p = JenaUtils.makeATerm(t.getPredicate());
-			// add the property value
-			_kb.addPropertyValue(p, s, o);
+			_kb.addPropertyValue(p, s, o); // add the property value
 		}
 	}
 

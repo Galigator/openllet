@@ -45,13 +45,6 @@ public class DefaultEdge implements Edge
 
 	private volatile DependencySet _depends; // Volatile require for backtrack on incremental classification
 
-	public DefaultEdge(final Role name, final Individual from, final Node to)
-	{
-		_role = name;
-		_from = from;
-		_to = to;
-	}
-
 	public DefaultEdge(final Role name, final Individual from, final Node to, final DependencySet d)
 	{
 		_role = name;

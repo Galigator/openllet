@@ -35,7 +35,7 @@ import openllet.shared.tools.Logging;
  */
 public class BuiltInRegistry implements Logging
 {
-	public final static Logger _logger = Log.getLogger(ABoxImpl.class); // We took the logger of the abox; also the logger is public to allow rules to use it !
+	protected final static Logger _logger = Log.getLogger(ABoxImpl.class); // We took the logger of the abox; also the logger is public to allow rules to use it !
 
 	public static final BuiltInRegistry instance = new BuiltInRegistry();
 

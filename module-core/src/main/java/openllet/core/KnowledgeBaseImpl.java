@@ -2580,6 +2580,12 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	}
 
 	@Override
+	public int getIndividualsCount()
+	{
+		return _individuals.size();
+	}
+
+	@Override
 	public Stream<ATermAppl> individuals()
 	{
 		return _individuals.stream();

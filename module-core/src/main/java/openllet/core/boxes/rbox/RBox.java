@@ -49,13 +49,13 @@ public interface RBox extends Logging
 
 	public FSMBuilder getFsmBuilder();
 
-	/**
-	 * @return Returns the getRoles().
-	 */
-	default Set<ATermAppl> getRoleNames()
-	{
-		return getRoles().keySet();
-	}
+	//	/**
+	//	 * @return Returns the getRoles().
+	//	 */
+	//	default Set<ATermAppl> getRoleNames()
+	//	{
+	//		return getRoles().keySet();
+	//	}
 
 	public boolean isObjectTaxonomyPrepared();
 
@@ -250,12 +250,6 @@ public interface RBox extends Logging
 		return role;
 	}
 
-	@Deprecated
-	default Role addOntologyRole(final ATermAppl r)
-	{
-		return addAnnotationRole(r);
-	}
-
 	default boolean addSubRole(final ATerm sub, final ATerm sup)
 	{
 		final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeSubProp(sub, sup)) : DependencySet.INDEPENDENT;
@@ -394,45 +388,45 @@ public interface RBox extends Logging
 
 	public Iterator<ATermAppl> getAssertedRanges(final Role r);
 
-	@Deprecated
-	default boolean isDomainAsserted(final ATerm p, final ATermAppl domain)
-	{
-		final Role r = getRole(p);
-		if (r == null)
-			throw new IllegalArgumentException(p + " is not defined as a property");
+	//	@Deprecated
+	//	default boolean isDomainAsserted(final ATerm p, final ATermAppl domain)
+	//	{
+	//		final Role r = getRole(p);
+	//		if (r == null)
+	//			throw new IllegalArgumentException(p + " is not defined as a property");
+	//
+	//		final Map<ATermAppl, Set<Set<ATermAppl>>> domains = getDomainAssertions().get(r);
+	//		if (domains == null)
+	//			return false;
+	//
+	//		final Set<Set<ATermAppl>> allExplanations = domains.get(domain);
+	//		if (allExplanations == null)
+	//			return false;
+	//
+	//		final Set<ATermAppl> explanation = Collections.singleton(ATermUtils.makeDomain(p, domain));
+	//
+	//		return allExplanations.contains(explanation);
+	//	}
 
-		final Map<ATermAppl, Set<Set<ATermAppl>>> domains = getDomainAssertions().get(r);
-		if (domains == null)
-			return false;
-
-		final Set<Set<ATermAppl>> allExplanations = domains.get(domain);
-		if (allExplanations == null)
-			return false;
-
-		final Set<ATermAppl> explanation = Collections.singleton(ATermUtils.makeDomain(p, domain));
-
-		return allExplanations.contains(explanation);
-	}
-
-	@Deprecated
-	default boolean isRangeAsserted(final ATerm p, final ATermAppl range)
-	{
-		final Role r = getRole(p);
-		if (r == null)
-			throw new IllegalArgumentException(p + " is not defined as a property");
-
-		final Map<ATermAppl, Set<Set<ATermAppl>>> ranges = getRangeAssertions().get(r);
-		if (ranges == null)
-			return false;
-
-		final Set<Set<ATermAppl>> allExplanations = ranges.get(range);
-		if (allExplanations == null)
-			return false;
-
-		final Set<ATermAppl> explanation = Collections.singleton(ATermUtils.makeRange(p, range));
-
-		return allExplanations.contains(explanation);
-	}
+	//	@Deprecated
+	//	default boolean isRangeAsserted(final ATerm p, final ATermAppl range)
+	//	{
+	//		final Role r = getRole(p);
+	//		if (r == null)
+	//			throw new IllegalArgumentException(p + " is not defined as a property");
+	//
+	//		final Map<ATermAppl, Set<Set<ATermAppl>>> ranges = getRangeAssertions().get(r);
+	//		if (ranges == null)
+	//			return false;
+	//
+	//		final Set<Set<ATermAppl>> allExplanations = ranges.get(range);
+	//		if (allExplanations == null)
+	//			return false;
+	//
+	//		final Set<ATermAppl> explanation = Collections.singleton(ATermUtils.makeRange(p, range));
+	//
+	//		return allExplanations.contains(explanation);
+	//	}
 
 	/**
 	 * @param r

@@ -399,7 +399,7 @@ public class SizeEstimate
 					if (!_kb.isSatisfiable(ATermUtils.makeNot(c)))
 					{
 						i.remove();
-						instancesPC.put(c, _kb.getIndividuals().size());
+						instancesPC.put(c, _kb.getIndividualsCount());
 					}
 				}
 			}

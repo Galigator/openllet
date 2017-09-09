@@ -53,7 +53,7 @@ public class IndividualIterator implements Iterator<Individual>
 		findNext();
 	}
 
-	protected void findNext()
+	private void findNext()
 	{
 		for (; _index < _stop; _index++)
 		{

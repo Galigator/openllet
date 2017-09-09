@@ -77,6 +77,12 @@ public interface KnowledgeBase extends Logging
 	public Expressivity getExpressivity();
 
 	/**
+	 * @return the total number of individuals in kb.
+	 * @since 2.6.2
+	 */
+	public int getIndividualsCount();
+
+	/**
 	 * @return the set of all individuals. Returned set is unmodifiable!
 	 */
 	public Set<ATermAppl> getIndividuals();
@@ -88,7 +94,7 @@ public interface KnowledgeBase extends Logging
 
 	public default boolean isIndividual(final ATerm ind)
 	{
-		return getIndividuals().contains(ind);
+		return individuals().anyMatch(ind::equals);
 	}
 
 	public void classify();
@@ -454,6 +460,15 @@ public interface KnowledgeBase extends Logging
 	public default Set<ATermAppl> getAllClasses()
 	{
 		return Collections.unmodifiableSet(getTBox().getAllClasses());
+	}
+
+	/**
+	 * @return same as getAllClasses but can be lazy.
+	 * @since 2.6.2
+	 */
+	public default Stream<ATermAppl> allClasses()
+	{
+		return getTBox().allClasses();
 	}
 
 	/**

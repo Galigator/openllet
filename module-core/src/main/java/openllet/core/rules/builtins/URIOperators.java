@@ -30,10 +30,8 @@ import openllet.core.exceptions.InternalReasonerException;
  */
 public class URIOperators
 {
-
 	private static class ResolveURI implements StringToStringFunction
 	{
-
 		@Override
 		public String apply(final String... args)
 		{
@@ -121,7 +119,7 @@ public class URIOperators
 
 			try
 			{
-				return (new URI(schema + host + port + path + query + fragment)).toASCIIString();
+				return new URI(schema + host + port + path + query + fragment).toASCIIString();
 			}
 			catch (final URISyntaxException e)
 			{
