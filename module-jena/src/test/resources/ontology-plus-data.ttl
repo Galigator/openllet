@@ -1,0 +1,17 @@
+@prefix : <http://ontology.tno.nl/2017/7/untitled-ontology-103#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://ontology.tno.nl/2017/7/untitled-ontology-103> .
+
+<http://ontology.tno.nl/2017/7/untitled-ontology-103> rdf:type owl:Ontology .
+
+<http://ontology.tno.nl/2017/7/untitled-ontology-103/testProperty> rdf:type owl:DatatypeProperty .
+
+<http://ontology.tno.nl/2017/7/untitled-ontology-103/TestClass> rdf:type owl:Class ;
+                                                                owl:equivalentClass [ rdf:type owl:Restriction ;
+                                                                                      owl:onProperty <http://ontology.tno.nl/2017/7/untitled-ontology-103/testProperty> ;
+                                                                                      owl:hasValue "12"
+                                                                                    ] .
