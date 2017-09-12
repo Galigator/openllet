@@ -41,12 +41,10 @@ import java.net.URL;
 import java.util.Properties;
 import java.util.logging.Logger;
 import openllet.core.exceptions.InternalReasonerException;
-import openllet.core.tableau.completion.CompletionStrategy;
 import openllet.core.utils.AnnotationClasses;
 import openllet.core.utils.progress.ConsoleProgressMonitor;
 import openllet.core.utils.progress.ProgressMonitor;
 import openllet.core.utils.progress.SilentProgressMonitor;
-import openllet.core.utils.progress.SwingProgressMonitor;
 import openllet.shared.tools.Log;
 
 /**
@@ -203,14 +201,6 @@ public class OpenlletOptions
 	public static boolean USE_SEMANTIC_BRANCHING = !SATURATE_TABLEAU & true;
 
 	/**
-	 * The default _strategy used for ABox completion. If this values is set, this _strategy will be used for all the KB's regardless of the expressivity.
-	 * <p>
-	 * <b>*********** DO NOT CHANGE THE VALUE OF THIS OPTION **************</b>
-	 */
-	@Deprecated
-	public static Class<? extends CompletionStrategy> DEFAULT_COMPLETION_STRATEGY = null;
-
-	/**
 	 * When doing a satisfiability check for a concept, do not copy the individuals even if there are nominals in the KB until you hit a nominal rule
 	 * application.
 	 */
@@ -248,7 +238,6 @@ public class OpenlletOptions
 	public static boolean PRINT_ABOX = false;
 
 	public static final boolean DEPTH_FIRST = true;
-	public static final boolean BREADTH_FIRST = false;
 
 	/**
 	 * Keep ABox assertions in the KB so they can be accessed later. Currently not used by the reasoner but could be useful for outside applications.
@@ -481,8 +470,8 @@ public class OpenlletOptions
 
 	public enum MonitorType implements EnumFactory<ProgressMonitor>
 	{
-
-		CONSOLE(ConsoleProgressMonitor.class), SWING(SwingProgressMonitor.class), NONE(SilentProgressMonitor.class);
+		CONSOLE(ConsoleProgressMonitor.class), //
+		NONE(SilentProgressMonitor.class);
 
 		private final Class<? extends ProgressMonitor> _c;
 
@@ -511,7 +500,7 @@ public class OpenlletOptions
 
 	public enum InstanceRetrievalMethod
 	{
-		BINARY, LINEAR, TRACING_BASED
+		BINARY, TRACING_BASED
 	}
 
 	/**

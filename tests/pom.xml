@@ -87,7 +87,8 @@
 				<configuration>
 					<forkCount>1</forkCount>
 					<reuseForks>true</reuseForks>
-					<argLine>-Xms1024m -Xmx1536m -XX:+UseG1GC</argLine>
+                                        <!-- Manage memory to set a more agressive GC, Openllet create a large number of small objets, so it is good. -->
+					<argLine>-XX:+UseG1GC -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=25 -XX:GCTimeRatio=18 -XX:+UseStringDeduplication</argLine>
 					<includes>
 						<include>**/PelletTestSuite.java</include>
 					</includes>

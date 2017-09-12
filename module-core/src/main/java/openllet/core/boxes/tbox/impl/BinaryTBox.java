@@ -32,7 +32,7 @@ import openllet.shared.tools.Log;
  */
 public class BinaryTBox
 {
-	public static final Logger _logger = Log.getLogger(UnaryTBox.class);
+	private static final Logger _logger = Log.getLogger(UnaryTBox.class);
 
 	private final Map<BinarySet<ATermAppl>, Unfolding> _unfoldings;
 	private final Map<ATermAppl, List<Unfolding>> _conditionalUnfoldings;
@@ -43,7 +43,7 @@ public class BinaryTBox
 		_conditionalUnfoldings = CollectionUtils.makeIdentityMap();
 	}
 
-	public void add(final BinarySet<ATermAppl> set, ATermAppl result, final Set<ATermAppl> explanation)
+	public void add(final BinarySet<ATermAppl> set, final ATermAppl result, final Set<ATermAppl> explanation)
 	{
 		_logger.fine(() -> "Add sub: (" + ATermUtils.toString(set.first()) + ", " + ATermUtils.toString(set.second()) + ") < " + ATermUtils.toString(result));
 

@@ -743,10 +743,10 @@ public abstract class Node
 
 	public abstract boolean isIndividual();
 
-	public int mergedAt()
-	{
-		return _mergeDepends.getBranch();
-	}
+	//	public int mergedAt()
+	//	{
+	//		return _mergeDepends.getBranch();
+	//	}
 
 	public boolean isMerged()
 	{

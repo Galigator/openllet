@@ -321,11 +321,6 @@ public class TuBox extends TBoxBase
 		}
 	}
 
-	public void print()
-	{
-		print(System.out);
-	}
-
 	@Override
 	public String toString()
 	{

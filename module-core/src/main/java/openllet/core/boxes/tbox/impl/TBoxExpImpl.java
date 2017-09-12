@@ -438,20 +438,20 @@ public class TBoxExpImpl implements TBox
 		return _absorbedAxioms;
 	}
 
-	public boolean containsAxiom(final ATermAppl axiom)
-	{
-		return _tboxAxioms.containsKey(axiom);
-	}
+	//	public boolean containsAxiom(final ATermAppl axiom)
+	//	{
+	//		return _tboxAxioms.containsKey(axiom);
+	//	}
 
-	public void absorb()
-	{
-		_Tg.absorb();
-	}
+	//	public void absorb()
+	//	{
+	//		_Tg.absorb();
+	//	}
 
-	public void print()
-	{
-		print(System.out);
-	}
+	//	public void print()
+	//	{
+	//		print(System.out);
+	//	}
 
 	@Override
 	public String toString()

@@ -87,10 +87,10 @@ public class TBoxBase implements Logging
 		return removed;
 	}
 
-	public boolean contains(final ATerm name)
-	{
-		return _termhash.containsKey(name);
-	}
+	//	public boolean contains(final ATerm name)
+	//	{
+	//		return _termhash.containsKey(name);
+	//	}
 
 	public TermDefinition getTD(final ATerm name)
 	{

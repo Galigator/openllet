@@ -980,22 +980,22 @@ public class TBoxImpl implements TBox
 		return _tboxAssertedAxioms;
 	}
 
-	public boolean containsAxiom(final ATermAppl axiom)
-	{
-		return _tboxAxioms.containsKey(axiom);
-	}
+	//	public boolean containsAxiom(final ATermAppl axiom)
+	//	{
+	//		return _tboxAxioms.containsKey(axiom);
+	//	}
 
-	public void print()
-	{
-		try
-		{
-			print(System.out);
-		}
-		catch (final IOException e)
-		{
-			e.printStackTrace();
-		}
-	}
+	//	public void print()
+	//	{
+	//		try
+	//		{
+	//			print(System.out);
+	//		}
+	//		catch (final IOException e)
+	//		{
+	//			e.printStackTrace();
+	//		}
+	//	}
 
 	@Override
 	public String toString()

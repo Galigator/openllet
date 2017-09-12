@@ -73,6 +73,7 @@ public class GeneralFunctionBuiltIn implements BuiltIn
 		private boolean isApplicable(final Collection<AtomVariable> bound)
 		{
 			final boolean[] boundPositions = new boolean[_atom.getAllArguments().size()];
+
 			for (int i = 0; i < boundPositions.length; i++)
 				if (bound.contains(_atom.getAllArguments().get(i)))
 					boundPositions[i] = true;

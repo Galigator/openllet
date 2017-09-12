@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.aterm.AFun;
 import openllet.aterm.ATermAppl;
@@ -46,9 +45,9 @@ import openllet.core.utils.Namespaces;
  */
 public class RuleAbsorber
 {
-	public static final Logger log = TBoxBase._logger;
+	private static final Logger log = TBoxBase._logger;
 
-	public static final Map<ATermAppl, String> FACETS = new HashMap<>();
+	private static final Map<ATermAppl, String> FACETS = new HashMap<>();
 	static
 	{
 		FACETS.put(Facet.XSD.MIN_INCLUSIVE.getName(), Namespaces.SWRLB + "greaterThanOrEqual");
@@ -84,7 +83,7 @@ public class RuleAbsorber
 					if (ATermUtils.isNot(term))
 						head = term;
 
-		if (head == null || (propertyAtoms == 0 && primitiveClassAtoms < 2))
+		if (head == null || propertyAtoms == 0 && primitiveClassAtoms < 2)
 			return false;
 
 		set.remove(head);
@@ -101,13 +100,12 @@ public class RuleAbsorber
 		final Rule rule = new Rule(headAtoms, bodyAtoms, explanation);
 		_kb.addRule(rule);
 
-		if (log.isLoggable(Level.FINE))
-			log.fine("Absorbed rule: " + rule);
+		log.fine(() -> "Absorbed rule: " + rule);
 
 		return true;
 	}
 
-	protected int processClass(final AtomIObject var, final ATermAppl c, final List<RuleAtom> atoms, final int varCountInit)
+	private int processClass(final AtomIObject var, final ATermAppl c, final List<RuleAtom> atoms, final int varCountInit)
 	{
 		int varCount = varCountInit;
 
@@ -166,7 +164,7 @@ public class RuleAbsorber
 		return varCount;
 	}
 
-	protected void processDatatype(final AtomDObject var, final ATermAppl c, final List<RuleAtom> atoms)
+	private void processDatatype(final AtomDObject var, final ATermAppl c, final List<RuleAtom> atoms)
 	{
 		final AFun afun = c.getAFun();
 		if (afun.equals(ATermUtils.ANDFUN))

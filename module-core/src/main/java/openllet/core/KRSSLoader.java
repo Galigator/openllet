@@ -65,7 +65,6 @@ import openllet.shared.tools.Log;
  */
 public class KRSSLoader extends KBLoader
 {
-	@SuppressWarnings("hiding")
 	public final static Logger _logger = Log.getLogger(KRSSLoader.class);
 
 	private final static ATermAppl XSD_INTEGER = XSDInteger.getInstance().getName();
@@ -1024,5 +1023,4 @@ public class KRSSLoader extends KBLoader
 	{
 		// nothing to do here since we load to the KB directly
 	}
-
 }

@@ -425,11 +425,11 @@ public class SROIQIncStrategy extends SROIQStrategy
 	 *
 	 * @param ind
 	 */
-	protected void readdConjunctions(final Individual ind)
+	private void readdConjunctions(final Individual ind)
 	{
-		for (final ATermAppl conj : ind.getTypes())
-			if (ATermUtils.isAnd(conj) && ind.hasType(conj))
-				addType(ind, conj, ind.getDepends(conj));
+		ind.types()//
+				.filter(conj -> ATermUtils.isAnd(conj) && ind.hasType(conj))//
+				.forEach(conj -> addType(ind, conj, ind.getDepends(conj)));
 	}
 
 	/**
@@ -437,7 +437,7 @@ public class SROIQIncStrategy extends SROIQStrategy
 	 * @param type
 	 * @return true if a type should be readded to a node
 	 */
-	protected static boolean requiredAddType(final Node node, final ATermAppl type)
+	private static boolean requiredAddType(final Node node, final ATermAppl type)
 	{
 		return !(type == null || node.hasType(type) && !ATermUtils.isAnd(type));
 	}
@@ -515,7 +515,7 @@ public class SROIQIncStrategy extends SROIQStrategy
 	 * @param removedTypes
 	 * @return
 	 */
-	protected EdgeList findAllValues(final Node node, final Set<ATermAppl> removedTypes)
+	private EdgeList findAllValues(final Node node, final Set<ATermAppl> removedTypes)
 	{
 		final EdgeList edges = new EdgeList();
 
@@ -556,7 +556,7 @@ public class SROIQIncStrategy extends SROIQStrategy
 	 * @param edge
 	 * @return
 	 */
-	protected EdgeList findAllValues(final Node node, final Individual neighbor, final Set<ATermAppl> removedTypes, final Edge edge)
+	private EdgeList findAllValues(final Node node, final Individual neighbor, final Set<ATermAppl> removedTypes, final Edge edge)
 	{
 		final EdgeList edges = new EdgeList();
 

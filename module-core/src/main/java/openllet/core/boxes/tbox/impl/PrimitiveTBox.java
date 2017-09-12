@@ -107,10 +107,10 @@ public class PrimitiveTBox
 		return false;
 	}
 
-	public boolean remove(@SuppressWarnings("unused") final ATermAppl axiom)
-	{
-		return false;
-	}
+	//	public static boolean remove(@SuppressWarnings("unused") final ATermAppl axiom)
+	//	{
+	//		return false;
+	//	}
 
 	public Iterator<Unfolding> unfold(final ATermAppl concept)
 	{

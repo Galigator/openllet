@@ -536,10 +536,10 @@ public class TgBox extends TBoxBase
 		}
 	}
 
-	public void print()
-	{
-		print(System.out);
-	}
+	//	public void print()
+	//	{
+	//		print(System.out);
+	//	}
 
 	@Override
 	public String toString()
