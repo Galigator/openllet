@@ -1215,7 +1215,7 @@ public class ATermUtils
 
 		if (af.equals(ATermUtils.NOTFUN))
 		{ // Function is a NOT
-				// Take the first argument to the NOT, then check
+			// Take the first argument to the NOT, then check
 			// the type of that argument to determine what needs to be done.
 			ATermUtils.assertTrue(af.getArity() == 1);
 			final ATermAppl arg = (ATermAppl) term.getArgument(0);

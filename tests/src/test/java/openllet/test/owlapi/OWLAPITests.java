@@ -1494,13 +1494,26 @@ public class OWLAPITests extends AbstractOWLAPITests
 	{
 		createReasoner(OWL.inverseProperties(_p, _q), OWL.inverseProperties(_q, _r));
 
-		assertStreamAsSetEquals(Stream.of(_p, _r), _reasoner.equivalentObjectProperties(_p));
-		assertStreamAsSetEquals(Stream.of(_p, _r), _reasoner.equivalentObjectProperties(_r));
-		assertStreamAsSetEquals(Stream.of(_q), _reasoner.equivalentObjectProperties(_q));
-		
-		assertStreamAsSetEquals(Stream.of(_q), _reasoner.equivalentObjectProperties(OWL.inverse(_p)));
-		assertStreamAsSetEquals(Stream.of(_q), _reasoner.equivalentObjectProperties(OWL.inverse(_r)));
-		assertStreamAsSetEquals(Stream.of(_p, _r), _reasoner.equivalentObjectProperties(OWL.inverse(_q)));
+		if (OpenlletOptions.RETURN_NON_PRIMITIVE_EQUIVALENT_PROPERTIES)
+		{
+			assertStreamAsSetEquals(Stream.of(_p, _r, OWL.inverse(_q)), _reasoner.equivalentObjectProperties(_p));
+			assertStreamAsSetEquals(Stream.of(_p, _r, OWL.inverse(_q)), _reasoner.equivalentObjectProperties(_r));
+			assertStreamAsSetEquals(Stream.of(_q, OWL.inverse(_p), OWL.inverse(_r)), _reasoner.equivalentObjectProperties(_q));
+			
+			assertStreamAsSetEquals(Stream.of(_q, OWL.inverse(_p), OWL.inverse(_r)), _reasoner.equivalentObjectProperties(OWL.inverse(_p)));
+			assertStreamAsSetEquals(Stream.of(_q, OWL.inverse(_p), OWL.inverse(_r)), _reasoner.equivalentObjectProperties(OWL.inverse(_r)));
+			assertStreamAsSetEquals(Stream.of(_p, _r, OWL.inverse(_q)), _reasoner.equivalentObjectProperties(OWL.inverse(_q)));
+		}
+		else
+		{
+			assertStreamAsSetEquals(Stream.of(_p, _r), _reasoner.equivalentObjectProperties(_p));
+			assertStreamAsSetEquals(Stream.of(_p, _r), _reasoner.equivalentObjectProperties(_r));
+			assertStreamAsSetEquals(Stream.of(_q), _reasoner.equivalentObjectProperties(_q));
+			
+			assertStreamAsSetEquals(Stream.of(_q), _reasoner.equivalentObjectProperties(OWL.inverse(_p)));
+			assertStreamAsSetEquals(Stream.of(_q), _reasoner.equivalentObjectProperties(OWL.inverse(_r)));
+			assertStreamAsSetEquals(Stream.of(_p, _r), _reasoner.equivalentObjectProperties(OWL.inverse(_q)));			
+		}
 	}
 	
 

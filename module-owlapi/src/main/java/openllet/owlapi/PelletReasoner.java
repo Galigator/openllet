@@ -303,7 +303,15 @@ public class PelletReasoner implements OpenlletReasoner
 			if (ATermUtils.BOTTOM_OBJECT_PROPERTY.equals(term))
 				return _factory.getOWLBottomObjectProperty();
 			if (ATermUtils.isInv(term))
-				return OP_MAPPER.map(term).getInverseProperty();
+				try
+				{
+					final IRI iri = IRI.create(((ATermAppl) term.getArgument(0)).getAFun().getName());
+					return _factory.getOWLObjectProperty(iri).getInverseProperty();
+				}
+				catch (final Exception e)
+				{
+					e.printStackTrace();
+				}
 			return _factory.getOWLObjectProperty(iri(term));
 		}
 	}
@@ -367,7 +375,7 @@ public class PelletReasoner implements OpenlletReasoner
 		_individualNodeSetPolicy = config.getIndividualNodeSetPolicy();
 
 		if (!getFreshEntityPolicy().equals(config.getFreshEntityPolicy()))
-			throw new IllegalConfigurationException("PelletOptions.SILENT_UNDEFINED_ENTITY_HANDLING conflicts with reasoner configuration", config);
+			throw new IllegalConfigurationException("OpenlletOptions.SILENT_UNDEFINED_ENTITY_HANDLING conflicts with reasoner configuration", config);
 
 		_ontology = ontology;
 		_monitor = config.getProgressMonitor();

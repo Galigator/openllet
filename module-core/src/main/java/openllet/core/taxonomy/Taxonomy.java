@@ -324,9 +324,7 @@ public interface Taxonomy<T> extends Logging
 		if (node == null)
 			return new HashSet<>();
 
-		final Set<T> result = new HashSet<>(node.getEquivalents());
-
-		return result;
+		return new HashSet<>(node.getEquivalents());
 	}
 
 	public default Set<T> getClasses()

@@ -33,7 +33,7 @@ public class ResultSetUtils
 {
 	private static final Logger _logger = Log.getLogger(ResultSetUtils.class);
 
-	private static final RDFNode DUMMY_FOR_BNODE = ResourceFactory.createPlainLiteral("dummy _node for bnode");
+	private static final RDFNode DUMMY_FOR_BNODE = ResourceFactory.createPlainLiteral("dummy node for bnode");
 
 	public static boolean assertEquals(final ResultSet expectedResults, final ResultSet computedResults)
 	{
@@ -44,6 +44,11 @@ public class ResultSetUtils
 		{
 			logResults("Expected", expected);
 			logResults("Real", computed);
+
+			//		System.out.println(expected.size() + " -- " + expected.getResultVars().size());
+			//		expected.getResultVars().forEach(System.out::println);
+			//		System.out.println(computed.size() + " -- " + computed.getResultVars().size());
+			//		computed.getResultVars().forEach(System.out::println);
 			Assert.fail("Expected " + expected.size() + " but got " + computed.size());
 		}
 

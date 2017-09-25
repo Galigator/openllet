@@ -334,6 +334,11 @@ public class OpenlletOptions
 	public static boolean RETURN_DEDUCTIONS_GRAPH = false;
 
 	/**
+	 *
+	 */
+	public static boolean RETURN_NON_PRIMITIVE_EQUIVALENT_PROPERTIES = true;
+
+	/**
 	 * Flag set if the completion queue should be utilized. This optimization will introduce memory overhead but will (in some cases) dramatically reduce
 	 * reasoning time. Rather than iterating over all individuals during the completion _strategy, only those which need to have the rules fired are selected
 	 * for rule applications.

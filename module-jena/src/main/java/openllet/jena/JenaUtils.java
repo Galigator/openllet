@@ -175,7 +175,13 @@ public class JenaUtils
 									if (term.getArity() == 0)
 										return NodeFactory.createURI(term.getName());
 									else
-										throw new InternalReasonerException("Invalid term found " + term);
+										if (term.equals(ATermUtils.INVFUN))
+											return OWL.inverseOf.asNode();
+
+		if (term.getName().equals(ATermUtils.INVFUN.getName()))
+			return OWL.inverseOf.asNode(); //	term.getArgument(0); // XXX Que devient le parametre ?
+
+		throw new InternalReasonerException("Invalid term found " + term);
 	}
 
 	static public Node makeGraphNode(final ATermAppl value)

@@ -4077,7 +4077,13 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		}
 
 		final Taxonomy<ATermAppl> taxonomy = getRoleTaxonomy(prop);
-		return taxonomy != null ? ATermUtils.primitiveOrBottom(taxonomy.getEquivalents(prop)) : Collections.<ATermAppl> emptySet();
+		if (null == taxonomy)
+			return Collections.<ATermAppl> emptySet();
+
+		if (OpenlletOptions.RETURN_NON_PRIMITIVE_EQUIVALENT_PROPERTIES)
+			return taxonomy.getEquivalents(prop);
+		else
+			return ATermUtils.primitiveOrBottom(taxonomy.getEquivalents(prop));
 	}
 
 	@Override
@@ -4093,7 +4099,13 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		}
 
 		final Taxonomy<ATermAppl> taxonomy = getRoleTaxonomy(prop);
-		return taxonomy != null ? ATermUtils.primitiveOrBottom(taxonomy.getAllEquivalents(prop)) : Collections.<ATermAppl> emptySet();
+		if (null == taxonomy)
+			return Collections.<ATermAppl> emptySet();
+
+		if (OpenlletOptions.RETURN_NON_PRIMITIVE_EQUIVALENT_PROPERTIES)
+			return taxonomy.getAllEquivalents(prop);
+		else
+			return ATermUtils.primitiveOrBottom(taxonomy.getAllEquivalents(prop));
 	}
 
 	/**

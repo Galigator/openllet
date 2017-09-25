@@ -598,7 +598,7 @@ public class MiscTests extends AbstractKBTests
 		assertTrue(kb.isSatisfiable(and(value(term("o1")), some(term("invR1"), TOP))));
 	}
 
-	// @Test public void testEconn1() throws Exception 
+	// @Test public void testEconn1() throws Exception
 	// {
 	// String ns = "http://www.mindswap.org/2004/multipleOnt/FactoredOntologies/EasyTests/Easy2/people.owl#";
 	//
@@ -1283,10 +1283,44 @@ public class MiscTests extends AbstractKBTests
 		kb.addInverseProperty(p, invP);
 		kb.addInverseProperty(q, invQ);
 
-		assertEquals(Collections.singleton(invP), kb.getInverses(p));
-		assertEquals(Collections.singleton(invQ), kb.getInverses(q));
-		assertEquals(Collections.singleton(p), kb.getInverses(invP));
-		assertEquals(Collections.singleton(q), kb.getInverses(invQ));
+		if (OpenlletOptions.RETURN_NON_PRIMITIVE_EQUIVALENT_PROPERTIES)
+		{
+			{
+				final Set<ATermAppl> s = kb.getInverses(p);
+				System.out.println(s);
+				assertTrue(s.contains(invP));
+				assertTrue(s.contains(inv(p)));
+				assertTrue(2 == s.size());
+			}
+			{
+				final Set<ATermAppl> s = kb.getInverses(q);
+				System.out.println(s);
+				assertTrue(s.contains(invQ));
+				assertTrue(s.contains(inv(q)));
+				assertTrue(2 == s.size());
+			}
+			{
+				final Set<ATermAppl> s = kb.getInverses(invP);
+				System.out.println(s);
+				assertTrue(s.contains(p));
+				assertTrue(s.contains(inv(invP)));
+				assertTrue(2 == s.size());
+			}
+			{
+				final Set<ATermAppl> s = kb.getInverses(invQ);
+				System.out.println(s);
+				assertTrue(s.contains(q));
+				assertTrue(s.contains(inv(invQ)));
+				assertTrue(2 == s.size());
+			}
+		}
+		else
+		{
+			assertEquals(Collections.singleton(invP), kb.getInverses(p));
+			assertEquals(Collections.singleton(invQ), kb.getInverses(q));
+			assertEquals(Collections.singleton(p), kb.getInverses(invP));
+			assertEquals(Collections.singleton(q), kb.getInverses(invQ));
+		}
 	}
 
 	@Test

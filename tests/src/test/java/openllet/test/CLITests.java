@@ -27,7 +27,6 @@ public class CLITests
 
 	private abstract class CLIMaker
 	{
-
 		protected abstract OpenlletCmdApp create();
 
 		public void run(final String... args)
