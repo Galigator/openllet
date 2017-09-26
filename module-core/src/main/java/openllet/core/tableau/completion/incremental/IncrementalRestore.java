@@ -154,8 +154,6 @@ public class IncrementalRestore
 		}
 
 		branches.remove(branch.getBranch()); // remove the actual branch
-
-		System.out.println("miaou");
 	}
 
 	/**

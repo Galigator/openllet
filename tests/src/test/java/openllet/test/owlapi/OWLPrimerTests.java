@@ -13,6 +13,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.Set;
 import java.util.stream.Collectors;
 import junit.framework.JUnit4TestAdapter;
+import openllet.core.OpenlletOptions;
 import openllet.core.utils.SetUtils;
 import openllet.owlapi.OWL;
 import openllet.owlapi.OntologyUtils;
@@ -79,7 +80,10 @@ public class OWLPrimerTests extends AbstractOWLAPITests
 
 		final Iterable<Node<E>> it = actual.nodes()::iterator;
 		for (final Node<E> node : it)
-			assertTrue("Unexpected value: " + node.entities(), expectedSet.remove(node.entities().collect(Collectors.toSet())));
+		{
+			final Set<E> entities = node.entities().collect(Collectors.toSet());
+			assertTrue("Unexpected value: " + entities + "\tremaing:{" + expectedSet + "}", expectedSet.remove(entities));
+		}
 		assertTrue("Missing values: " + expectedSet, expectedSet.isEmpty());
 	}
 
@@ -92,14 +96,44 @@ public class OWLPrimerTests extends AbstractOWLAPITests
 	@Test
 	public void testHasParentDisjoints()
 	{
+		// SubObjectPropertyOf(<http://example.com/owl/families/hasWife> <http://example.com/owl/families/hasSpouse>)
+		// SymmetricObjectProperty(<http://example.com/owl/families/hasSpouse>)
+		// DisjointObjectProperties(<http://example.com/owl/families/hasParent> <http://example.com/owl/families/hasSpouse> )
+
+		// EquivalentClasses(<http://example.com/owl/families/JohnsChildren> ObjectHasValue(<http://example.com/owl/families/hasParent> <http://example.com/owl/families/John>) )
+		// InverseObjectProperties(<http://example.com/owl/families/hasParent> <http://example.com/owl/families/hasChild>)
+		// SubObjectPropertyOf(<http://example.com/owl/families/hasFather> <http://example.com/owl/families/hasParent>)
+		// SubObjectPropertyOf(ObjectPropertyChain( <http://example.com/owl/families/hasParent> <http://example.com/owl/families/hasParent> ) <http://example.com/owl/families/hasGrandparent>)
+		// SubClassOf(<http://example.com/owl/families/ChildlessPerson> ObjectIntersectionOf(<http://example.com/owl/families/Person> ObjectComplementOf(ObjectSomeValuesFrom(ObjectInverseOf(<http://example.com/owl/families/hasParent>) owl:Thing))))
+		// SubObjectPropertyOf(<http://example.com/owl/families/hasFather> <http://example.com/owl/families/hasParent>)
+
+		// EquivalentObjectProperties(<http://example.com/owl/families/hasChild> <http://example.org/otherOntologies/families/child> )
+
 		assertTrue(_reasoner.isEntailed(OWL.disjointProperties(hasParent, hasSpouse)));
 		assertTrue(_reasoner.isEntailed(OWL.disjointProperties(hasParent, hasWife)));
 		assertTrue(_reasoner.isEntailed(OWL.disjointProperties(hasParent, child)));
 		assertTrue(_reasoner.isEntailed(OWL.disjointProperties(hasParent, hasChild)));
 		assertTrue(_reasoner.isEntailed(OWL.disjointProperties(hasParent, OWL.bottomObjectProperty)));
-		assertEquals(//
-				_reasoner.getDisjointObjectProperties(hasParent), //
-				nodeOP(hasSpouse), nodeOP(OWL.bottomObjectProperty), nodeOP(hasWife), nodeOP(hasChild, child)//
-		);
+
+		final NodeSet<OWLObjectPropertyExpression> allDisjoincts = _reasoner.getDisjointObjectProperties(hasParent);
+		allDisjoincts.entities().map(x -> x.toString()).sorted().forEach(System.out::println);
+
+		// _reasoner.getOntology().axioms().map(OWLAxiom::toString).sorted().forEach(System.out::println);
+
+		if (OpenlletOptions.RETURN_NON_PRIMITIVE_EQUIVALENT_PROPERTIES)
+			assertEquals(allDisjoincts, //
+					nodeOP(OWL.inverse(hasSpouse), hasSpouse), // hasParent != hasSpouse && hasParent != Inv(hasSpouse) because of 'SymmetricObjectProperty'
+					nodeOP(OWL.bottomObjectProperty), // Don't know how this is conclude but it doesn't look bad.
+					nodeOP(hasWife), // hasWife != hasParent because  hasParent extends hasWife
+					nodeOP(OWL.inverse(hasParent), hasChild, child)// hasParent != Inv(hasParent) by definition &  Inv(hasParent) == hasChild because of explicit axiom. Also by axiom child <-> hasChild.
+			// And we don't speak about hasFather because it is a sub property of hasParent.
+			);
+		else
+			assertEquals(allDisjoincts, //
+					nodeOP(hasSpouse), //
+					nodeOP(OWL.bottomObjectProperty), //
+					nodeOP(hasWife), //
+					nodeOP(hasChild, child)//
+			);
 	}
 }

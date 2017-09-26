@@ -742,7 +742,7 @@ public class IncConsistencyTests extends AbstractKBTests
 			System.out.println("Branches: " + _kb.getABox().getBranches());
 		}
 
-		// FIXME the following _condition is obviously incorrect
+		// FIXME the following condition is obviously incorrect
 		// there is no reason for robert to own anything since robert
 		// can be woman which has no axiom involving owns
 		assertTrue(_kb.getABox().getIndividual(_robert).hasRNeighbor(_kb.getRBox().getRole(_owns)));
@@ -1296,7 +1296,7 @@ public class IncConsistencyTests extends AbstractKBTests
 		assertTrue(_kb.isConsistent());
 
 		_kb.removeType(_victor, womanOrNotDog);
-		
+
 		assertTrue(_kb.isConsistent());
 
 		_kb.addType(_robert, womanOrNotDog);
@@ -1304,18 +1304,18 @@ public class IncConsistencyTests extends AbstractKBTests
 		_kb.addType(_victor, womanOrNotDog);
 		_kb.addType(_chris, womanOrNotDog);
 		_kb.addType(_bill, womanOrNotDog);
-		
+
 		assertTrue(_kb.isConsistent());
-		
+
 		_kb.removeType(_robert, womanOrNotDog);
 		_kb.removeType(_mary, womanOrNotDog);
 		_kb.removeType(_victor, womanOrNotDog);
 		_kb.removeType(_chris, womanOrNotDog);
 		_kb.removeType(_bill, womanOrNotDog);
-		
+
 		assertTrue(_kb.isConsistent());
 	}
-	
+
 	@Test
 	public void testSimpleABoxRemove()
 	{
@@ -1809,7 +1809,10 @@ public class IncConsistencyTests extends AbstractKBTests
 		assertTrue(!kb.isRealized());
 
 		// verify new equivalent property inference
-		assertEquals(singleton(q), kb.getEquivalentProperties(p));
+		if (OpenlletOptions.RETURN_NON_PRIMITIVE_EQUIVALENT_PROPERTIES)
+			assertEquals(SetUtils.create(p, q), kb.getEquivalentProperties(p));
+		else
+			assertEquals(singleton(q), kb.getEquivalentProperties(p));
 
 		// verify new property assertion inference
 		assertEquals(singletonList(b), kb.getPropertyValues(q, a));
