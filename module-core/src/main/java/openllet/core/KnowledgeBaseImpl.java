@@ -130,8 +130,6 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		ATermUtils.getFactory();
 	}
 
-	// Attributes
-
 	/**
 	 * Timers used in various different parts of KB. There may be many different _timers created here depending on the level of debugging or application
 	 * requirements. However, there are three major timers that are guaranteed to exist.
@@ -4080,10 +4078,10 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		if (null == taxonomy)
 			return Collections.<ATermAppl> emptySet();
 
-		if (OpenlletOptions.RETURN_NON_PRIMITIVE_EQUIVALENT_PROPERTIES)
-			return taxonomy.getEquivalents(prop);
-		else
-			return ATermUtils.primitiveOrBottom(taxonomy.getEquivalents(prop));
+		if (OpenlletOptions.RETURN_NON_PRIMITIVE_EQUIVALENT_PROPERTIES && !ATermUtils.isBuiltinProperty(prop))
+			return taxonomy.getAllEquivalents(prop);
+
+		return ATermUtils.primitiveOrBottom(taxonomy.getEquivalents(prop));
 	}
 
 	@Override
@@ -4102,10 +4100,10 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		if (null == taxonomy)
 			return Collections.<ATermAppl> emptySet();
 
-		if (OpenlletOptions.RETURN_NON_PRIMITIVE_EQUIVALENT_PROPERTIES)
+		if (OpenlletOptions.RETURN_NON_PRIMITIVE_EQUIVALENT_PROPERTIES && !ATermUtils.isBuiltinProperty(prop))
 			return taxonomy.getAllEquivalents(prop);
-		else
-			return ATermUtils.primitiveOrBottom(taxonomy.getAllEquivalents(prop));
+
+		return ATermUtils.primitiveOrBottom(taxonomy.getAllEquivalents(prop));
 	}
 
 	/**
