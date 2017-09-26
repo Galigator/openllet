@@ -79,10 +79,7 @@ public class OWLPrimerTests extends AbstractOWLAPITests
 
 		final Iterable<Node<E>> it = actual.nodes()::iterator;
 		for (final Node<E> node : it)
-		{
-			node.entities().forEach(System.out::println);
 			assertTrue("Unexpected value: " + node.entities(), expectedSet.remove(node.entities().collect(Collectors.toSet())));
-		}
 		assertTrue("Missing values: " + expectedSet, expectedSet.isEmpty());
 	}
 
@@ -95,11 +92,11 @@ public class OWLPrimerTests extends AbstractOWLAPITests
 	@Test
 	public void testHasParentDisjoints()
 	{
-		//		assertTrue(_reasoner.isEntailed(OWL.disjointProperties(hasParent, hasSpouse)));
-		//		assertTrue(_reasoner.isEntailed(OWL.disjointProperties(hasParent, hasWife)));
-		//		assertTrue(_reasoner.isEntailed(OWL.disjointProperties(hasParent, child)));
-		//		assertTrue(_reasoner.isEntailed(OWL.disjointProperties(hasParent, hasChild)));
-		//		assertTrue(_reasoner.isEntailed(OWL.disjointProperties(hasParent, OWL.bottomObjectProperty)));
+		assertTrue(_reasoner.isEntailed(OWL.disjointProperties(hasParent, hasSpouse)));
+		assertTrue(_reasoner.isEntailed(OWL.disjointProperties(hasParent, hasWife)));
+		assertTrue(_reasoner.isEntailed(OWL.disjointProperties(hasParent, child)));
+		assertTrue(_reasoner.isEntailed(OWL.disjointProperties(hasParent, hasChild)));
+		assertTrue(_reasoner.isEntailed(OWL.disjointProperties(hasParent, OWL.bottomObjectProperty)));
 		assertEquals(//
 				_reasoner.getDisjointObjectProperties(hasParent), //
 				nodeOP(hasSpouse), nodeOP(OWL.bottomObjectProperty), nodeOP(hasWife), nodeOP(hasChild, child)//

@@ -153,6 +153,7 @@ public class JenaTests
 		final String ns = "http://www.example.org/test#";
 
 		final OntModel ont = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC, null);
+		ont.setStrictMode(false);
 
 		final ObjectProperty p1 = ont.createObjectProperty(ns + "p1");
 		final ObjectProperty p2 = ont.createObjectProperty(ns + "p2");
