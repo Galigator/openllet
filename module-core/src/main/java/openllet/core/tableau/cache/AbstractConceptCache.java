@@ -505,6 +505,14 @@ public abstract class AbstractConceptCache implements ConceptCache
 		return result;
 	}
 
+	private static Set<ATermAppl> getABoxSames(final KnowledgeBase kb, final ATermAppl val)
+	{
+		final Individual ind = kb.getABox().getIndividual(val).getSame();
+		final Set<ATermAppl> samesAndMaybes = new HashSet<>();
+		kb.getABox().getSames(ind, samesAndMaybes, samesAndMaybes);
+		return samesAndMaybes;
+	}
+
 	private static Bool checkNominalEdges(final KnowledgeBase kb, final CachedNode pNode, final CachedNode cNode, final boolean checkInverses)
 	{
 		final EdgeList edges = checkInverses ? cNode.getInEdges() : cNode.getOutEdges();
@@ -538,23 +546,19 @@ public abstract class AbstractConceptCache implements ConceptCache
 					}
 				}
 				else
-				{
-					Set<ATermAppl> neighbors = null;
-
 					if (role.isSimple() || !(pNode instanceof Individual))
-						neighbors = getRNeighbors(pNode, role);
+					{
+
+						final Set<ATermAppl> samesAndMaybes = getABoxSames(kb, val);
+						found = intersectsRNeighbors(samesAndMaybes, pNode, role);
+					}
 					else
 					{
-						neighbors = new HashSet<>();
+						final Set<ATermAppl> neighbors = new HashSet<>();
 						kb.getABox().getObjectPropertyValues(pNode.getName(), role, neighbors, neighbors, false);
+						final Set<ATermAppl> samesAndMaybes = getABoxSames(kb, val);
+						found = SetUtils.intersects(samesAndMaybes, neighbors);
 					}
-
-					final Individual ind = kb.getABox().getIndividual(val).getSame();
-					final Set<ATermAppl> samesAndMaybes = new HashSet<>();
-					kb.getABox().getSames(ind, samesAndMaybes, samesAndMaybes);
-
-					found = SetUtils.intersects(samesAndMaybes, neighbors);
-				}
 
 			if (!found)
 				return Bool.FALSE;
@@ -598,5 +602,31 @@ public abstract class AbstractConceptCache implements ConceptCache
 		}
 
 		return neighbors;
+	}
+
+	private static boolean intersectsRNeighbors(final Set<ATermAppl> samesAndMaybes, final CachedNode node, final Role role)
+	{
+		if (samesAndMaybes.isEmpty())
+			return false;
+
+		for (final Edge edge : node.getOutEdges())
+		{
+			final Role r = edge.getRole();
+			if (r.isSubRoleOf(role) && samesAndMaybes.contains(edge.getToName()))
+				return true;
+		}
+
+		if (role.isObjectRole())
+		{
+			final Role invRole = role.getInverse();
+			for (final Edge edge : node.getInEdges())
+			{
+				final Role r = edge.getRole();
+				if (r.isSubRoleOf(invRole) && samesAndMaybes.contains(edge.getFromName()))
+					return true;
+			}
+		}
+
+		return false;
 	}
 }
