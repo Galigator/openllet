@@ -576,12 +576,13 @@ public class ModelExtractor
 			{
 				p = OWL.equivalentProperty.asNode();
 				for (final ATermAppl eq : _kb.getAllEquivalentProperties(name))
-				{
-					final Node o = makeGraphNode(eq);
-					addTriple(triples, s, p, o);
-					if (allSubs)
-						addTriple(triples, s, RDFS.subPropertyOf.asNode(), o);
-				}
+					if (JenaUtils._isGrapheNode.test(eq))
+					{
+						final Node o = makeGraphNode(eq);
+						addTriple(triples, s, p, o);
+						if (allSubs)
+							addTriple(triples, s, RDFS.subPropertyOf.asNode(), o);
+					}
 			}
 
 			if (invs)
@@ -591,7 +592,8 @@ public class ModelExtractor
 				{
 					p = OWL.inverseOf.asNode();
 					for (final ATermAppl inverse : inverses)
-						addTriple(triples, s, p, makeGraphNode(inverse));
+						if (JenaUtils._isGrapheNode.test(inverse))
+							addTriple(triples, s, p, makeGraphNode(inverse));
 				}
 			}
 
@@ -619,10 +621,11 @@ public class ModelExtractor
 				{
 					final Set<ATermAppl> eqs = _kb.getAllEquivalentProperties(name);
 					for (final ATermAppl eq : eqs)
-					{
-						final Node o = makeGraphNode(eq);
-						addTriple(triples, s, p, o);
-					}
+						if (JenaUtils._isGrapheNode.test(eq))
+						{
+							final Node o = makeGraphNode(eq);
+							addTriple(triples, s, p, o);
+						}
 				}
 
 				final Set<Set<ATermAppl>> supers = _kb.getSuperProperties(name, !allSubs);

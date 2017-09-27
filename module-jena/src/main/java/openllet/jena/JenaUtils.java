@@ -32,6 +32,7 @@ package openllet.jena;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.function.Predicate;
 import openllet.aterm.ATermAppl;
 import openllet.core.datatypes.Datatypes;
 import openllet.core.exceptions.InternalReasonerException;
@@ -62,6 +63,8 @@ import org.apache.jena.vocabulary.OWL;
 public class JenaUtils
 {
 	final public static Literal XSD_BOOLEAN_TRUE = ResourceFactory.createTypedLiteral(Boolean.TRUE.toString(), XSDDatatype.XSDboolean);
+
+	public static Predicate<ATermAppl> _isGrapheNode = aTermAppl -> aTermAppl.getArity() == 0 || ATermUtils.isLiteral(aTermAppl) || ATermUtils.isBnode(aTermAppl) || aTermAppl.equals(ATermUtils.TOP) || aTermAppl.equals(ATermUtils.BOTTOM) || aTermAppl.equals(ATermUtils.TOP_DATA_PROPERTY) || aTermAppl.equals(ATermUtils.BOTTOM_DATA_PROPERTY) || aTermAppl.equals(ATermUtils.TOP_OBJECT_PROPERTY) || aTermAppl.equals(ATermUtils.BOTTOM_OBJECT_PROPERTY);
 
 	static public ATermAppl makeLiteral(final LiteralLabel jenaLiteral)
 	{
@@ -174,12 +177,9 @@ public class JenaUtils
 								else
 									if (term.getArity() == 0)
 										return NodeFactory.createURI(term.getName());
-									else
-										if (term.equals(ATermUtils.INVFUN))
-											return OWL.inverseOf.asNode();
 
-		if (term.getName().equals(ATermUtils.INVFUN.getName()))
-			return OWL.inverseOf.asNode(); //	term.getArgument(0); // XXX Que devient le parametre ?
+		//		if (term.getName().equals(ATermUtils.INVFUN.getName()))
+		//			return OWL.inverseOf.asNode(); //	term.getArgument(0); // XXX Que devient le parametre ?
 
 		throw new InternalReasonerException("Invalid term found " + term);
 	}

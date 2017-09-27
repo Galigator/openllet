@@ -367,7 +367,7 @@ public class PelletInfGraph extends BaseInfGraph
 		{
 			if (!pattern.isConcrete())
 			{
-				_logger.warning(() -> "Triple patterns with variables cannot be epxlained: " + pattern);
+				_logger.warning(() -> "Triple patterns with variables cannot be explained: " + pattern);
 				return null;
 			}
 

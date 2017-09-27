@@ -48,7 +48,7 @@ public final class PelletTestCase
 
 	protected static boolean isAnonValue(final Object n)
 	{
-		return ((n instanceof Resource) && ((Resource) n).isAnon()) || ((n instanceof Statement) && ((Statement) n).getSubject().isAnon()) || ((n instanceof Statement) && isAnonValue(((Statement) n).getObject()));
+		return n instanceof Resource && ((Resource) n).isAnon() || n instanceof Statement && ((Statement) n).getSubject().isAnon() || n instanceof Statement && isAnonValue(((Statement) n).getObject());
 	}
 
 	public static <T> void assertIteratorContains(final Iterator<T> it, final T val)
@@ -97,7 +97,7 @@ public final class PelletTestCase
 			if (!found[i])
 				unfound.add(expected[i]);
 
-		assertTrue("Failed to find _expected iterator values: " + unfound, unfound.isEmpty());
+		assertTrue("Failed to find expected iterator values: " + unfound, unfound.isEmpty());
 	}
 
 	public static Set<Statement> createStatements(final Resource subject, final Property predicate, final RDFNode... objects)
@@ -271,7 +271,7 @@ public final class PelletTestCase
 
 		final long satCount = kb.getABox().getStats()._satisfiabilityCount;
 		computedSubClass = kb.isSubClassOf(c1, c2);
-		final boolean cached = (satCount == kb.getABox().getStats()._satisfiabilityCount);
+		final boolean cached = satCount == kb.getABox().getStats()._satisfiabilityCount;
 
 		assertEquals("Subclass check (Cached: " + cached + ") failed for (" + ATermUtils.toString(c1) + " [= " + ATermUtils.toString(c2) + ")", expectedSubClass, computedSubClass);
 	}

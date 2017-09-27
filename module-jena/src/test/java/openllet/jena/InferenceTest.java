@@ -35,41 +35,28 @@ public class InferenceTest
 
 		final PelletReasoner reasoner = PelletReasonerFactory.theInstance().create(null);
 		final InfModel inf = ModelFactory.createInfModel(reasoner, model);
-		//reasoner.bindSchema(inf.getGraph());
 
-		// printAllStatements(inf, 0);
-
-		assertTrue(0 == printIndividualStatements(inf));
-
-		//		{
-		//			LOG.info("---- add Individual Statement ----");
-		//			final Resource s = model.createResource(indiv);
-		//			final Property p = model.createProperty("http://www.w3.org/2002/07/owl#sameAs");
-		//			final Resource o = model.createResource(indiv);
-		//
-		//			final Statement stmt = ResourceFactory.createStatement(s, p, o);
-		//
-		//			model.add(stmt);
-		//		}
-		// assertTrue(1 == printIndividualStatements(inf));
-
-		// final PelletInfGraph graph = (PelletInfGraph) inf.getGraph();
-		// final KnowledgeBaseImpl kb = (KnowledgeBaseImpl) graph.getKB();
+		{
+			final long count = printIndividualStatements(inf);
+			assertTrue("expected 0 but get " + count, 0 == count);
+		}
 
 		addIndividualStatementToModel(model);
 
-		// printAllStatements(inf, 1);
-
-		assertTrue(4 == printIndividualStatements(inf));
+		{
+			final long count = printIndividualStatements(inf);
+			assertTrue("expected 4 but get " + count, 4 == count);
+		}
 
 		removeIndividualStatementToModel(model);
 
 		inf.rebind();
 		inf.reset();
 
-		assertTrue(0 == printIndividualStatements(inf));
-
-		// printAllStatements(inf, 2);
+		{
+			final long count = printIndividualStatements(inf);
+			assertTrue("expected 0 but get " + count, 0 == count);
+		}
 	}
 
 	private static long printIndividualStatements(final Model m)
@@ -112,16 +99,6 @@ public class InferenceTest
 
 			m.remove(stmt);
 		}
-
-		//		{
-		//			final Resource s = m.createResource(indiv);
-		//			final Property p = m.createProperty("http://www.w3.org/2002/07/owl#sameAs");
-		//			final Resource o = m.createResource(indiv);
-		//
-		//			final Statement stmt = ResourceFactory.createStatement(s, p, o);
-		//
-		//			m.remove(stmt);
-		//		}
 	}
 
 	@SuppressWarnings("unused")

@@ -153,13 +153,10 @@ public class JenaTests
 		final String ns = "http://www.example.org/test#";
 
 		final OntModel ont = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC, null);
-		if (OpenlletOptions.RETURN_NON_PRIMITIVE_EQUIVALENT_PROPERTIES)
-			ont.setStrictMode(false); // Because OWL can be return and JENA don't really have the model for it.
 
 		final ObjectProperty p1 = ont.createObjectProperty(ns + "p1");
 		final ObjectProperty p2 = ont.createObjectProperty(ns + "p2");
 		final ObjectProperty p3 = ont.createObjectProperty(ns + "p3");
-		final Property inv = OWL.inverseOf;
 
 		p2.addSubProperty(p1);
 		p2.addInverseOf(p3);
@@ -186,16 +183,8 @@ public class JenaTests
 		assertTrue(p2.isInverseOf(p3));
 		assertTrue(p3.isInverseOf(p2));
 
-		if (OpenlletOptions.RETURN_NON_PRIMITIVE_EQUIVALENT_PROPERTIES)
-		{
-			assertIteratorValues(p2.listInverseOf(), new Property[] { p3, inv });
-			assertIteratorValues(p3.listInverseOf(), new Property[] { p2, inv });
-		}
-		else
-		{
-			assertIteratorValues(p2.listInverseOf(), new Property[] { p3 });
-			assertIteratorValues(p3.listInverseOf(), new Property[] { p2 });
-		}
+		assertIteratorValues(p2.listInverseOf(), new Property[] { p3 });
+		assertIteratorValues(p3.listInverseOf(), new Property[] { p2 });
 	}
 
 	@Test

@@ -23,6 +23,7 @@ import org.apache.jena.util.iterator.WrappedIterator;
 
 public abstract class TripleQueryHandler
 {
+
 	public abstract boolean contains(KnowledgeBase kb, GraphLoader loader, Node subj, Node pred, Node obj);
 
 	public abstract ExtendedIterator<Triple> find(KnowledgeBase kb, PelletInfGraph openllet, Node subj, Node pred, Node obj);
@@ -34,7 +35,9 @@ public abstract class TripleQueryHandler
 
 	protected ExtendedIterator<Triple> objectFiller(final Node s, final Node p, final Iterator<ATermAppl> objects)
 	{
-		return WrappedIterator.create(objects).mapWith(aTermAppl -> Triple.create(s, p, JenaUtils.makeGraphNode(aTermAppl)));
+		return WrappedIterator.create(objects)//
+				.filterKeep(JenaUtils._isGrapheNode)//
+				.mapWith(aTermAppl -> Triple.create(s, p, JenaUtils.makeGraphNode(aTermAppl)));
 	}
 
 	protected ExtendedIterator<Triple> objectSetFiller(final Node s, final Node p, final Set<Set<ATermAppl>> objectSets)
@@ -49,7 +52,9 @@ public abstract class TripleQueryHandler
 
 	protected ExtendedIterator<Triple> propertyFiller(final Node s, final Iterator<ATermAppl> properties, final Node o)
 	{
-		return WrappedIterator.create(properties).mapWith(aTermAppl -> Triple.create(s, JenaUtils.makeGraphNode(aTermAppl), o));
+		return WrappedIterator.create(properties)//
+				.filterKeep(JenaUtils._isGrapheNode)//
+				.mapWith(aTermAppl -> Triple.create(s, JenaUtils.makeGraphNode(aTermAppl), o));
 	}
 
 	protected ExtendedIterator<Triple> subjectFiller(final Collection<ATermAppl> subjects, final Node p, final Node o)
@@ -59,7 +64,9 @@ public abstract class TripleQueryHandler
 
 	protected ExtendedIterator<Triple> subjectFiller(final Iterator<ATermAppl> subjects, final Node p, final Node o)
 	{
-		return WrappedIterator.create(subjects).mapWith(aTermAppl -> Triple.create(JenaUtils.makeGraphNode(aTermAppl), p, o));
+		return WrappedIterator.create(subjects)//
+				.filterKeep(JenaUtils._isGrapheNode)//
+				.mapWith(aTermAppl -> Triple.create(JenaUtils.makeGraphNode(aTermAppl), p, o));
 	}
 
 	protected ExtendedIterator<Triple> subjectSetFiller(final Set<Set<ATermAppl>> subjectSets, final Node p, final Node o)
