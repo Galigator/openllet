@@ -31,9 +31,6 @@ import org.apache.jena.util.FileUtils;
  * Title: Engine for processing DAWG test manifests
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -108,8 +105,8 @@ public class PelletSparqlDawgTester extends ARQSparqlDawgTester
 
 	public PelletSparqlDawgTester(final QueryEngineType queryEngineType, final boolean handleVariableSPO)
 	{
-		this._queryEngineType = queryEngineType;
-		this._handleVariableSPO = handleVariableSPO;
+		_queryEngineType = queryEngineType;
+		_handleVariableSPO = handleVariableSPO;
 	}
 
 	@Override
@@ -117,7 +114,7 @@ public class PelletSparqlDawgTester extends ARQSparqlDawgTester
 	{
 		final boolean useQueryGraphs = !_query.getGraphURIs().isEmpty() || !_query.getNamedGraphURIs().isEmpty();
 
-		final Collection<String> graphURIs = useQueryGraphs ? _query.getGraphURIs() : this._graphURIs;
+		final Collection<String> graphURIs = useQueryGraphs ? _query.getGraphURIs() : _graphURIs;
 		// this handler will intercept all import resolution failures and will
 		// try to load imports from resources (helps run these tests with maven)
 		OntDocumentManager.getInstance().setReadFailureHandler(new ResourceImportLoader());
@@ -130,11 +127,11 @@ public class PelletSparqlDawgTester extends ARQSparqlDawgTester
 		model.prepare();
 
 		if (PelletSparqlDawgTester.CLASSIFY_KB_IN_ADVANCE)
-			((PelletInfGraph) (model.getGraph())).getKB().classify();
+			((PelletInfGraph) model.getGraph()).getKB().classify();
 
 		final Dataset dataset = DatasetFactory.create(model);
 
-		final Collection<String> namedGraphURIs = useQueryGraphs ? _query.getNamedGraphURIs() : this._namedGraphURIs;
+		final Collection<String> namedGraphURIs = useQueryGraphs ? _query.getNamedGraphURIs() : _namedGraphURIs;
 
 		for (final String graphURI : namedGraphURIs)
 		{

@@ -27,9 +27,6 @@ import org.junit.runners.Parameterized.Parameters;
  * Title: Engine for processing DAWG test manifests
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -107,8 +104,7 @@ public class SparqlDawgTestSuite
 		final SparqlDawgTester basicSparqlDLTester = new PelletSparqlDawgTester(QueryEngineType.PELLET, false);
 		final SparqlDawgTester integratedSparqlDLTester = new PelletSparqlDawgTester(QueryEngineType.MIXED, false);
 
-		//		String dawgTests = PelletTestSuite.base
-		//				+ "sparql-dawg-tests/data-r2/_manifest-evaluation.ttl";
+		//		String dawgTests = PelletTestSuite.base + "sparql-dawg-tests/data-r2/_manifest-evaluation.ttl";
 		final String sparqldlTests = PelletTestSuite.base + "sparqldl-tests/manifest.ttl";
 		final String sparqlSameAsTests = PelletTestSuite.base + "query/sameAs/manifest.ttl";
 		final Properties noUndistVars = new Properties();
@@ -143,7 +139,7 @@ public class SparqlDawgTestSuite
 
 	public SparqlDawgTestSuite(final SparqlDawgTestCase test)
 	{
-		this._test = test;
+		_test = test;
 	}
 
 	@Test

@@ -1809,10 +1809,7 @@ public class IncConsistencyTests extends AbstractKBTests
 		assertTrue(!kb.isRealized());
 
 		// verify new equivalent property inference
-		if (OpenlletOptions.RETURN_NON_PRIMITIVE_EQUIVALENT_PROPERTIES)
-			assertEquals(SetUtils.create(p, q), kb.getEquivalentProperties(p));
-		else
-			assertEquals(singleton(q), kb.getEquivalentProperties(p));
+		assertEquals(singleton(q), kb.getEquivalentProperties(p));
 
 		// verify new property assertion inference
 		assertEquals(singletonList(b), kb.getPropertyValues(q, a));

@@ -418,7 +418,7 @@ public class SizeEstimate
 			directSubProperties.put(p, _kb.getSubProperties(p, true).size());
 			superProperties.put(p, _kb.getSuperProperties(p).size());
 			directSuperProperties.put(p, _kb.getSuperProperties(p, true).size());
-			equivProperties.put(p, _kb.getEquivalentProperties(p).size() + 1);
+			equivProperties.put(p, ATermUtils.primitiveOrBottom(_kb.getEquivalentProperties(p)).size() + 1);
 			inverses.put(p, _kb.getInverses(p).size());
 		}
 
@@ -850,8 +850,7 @@ public class SizeEstimate
 		if (!map.containsKey(sup))
 		{
 			compute(Collections.singleton(sup), Collections.emptySet());
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("Computing additionally " + sup);
+			_logger.fine(() -> "Computing additionally " + sup);
 		}
 		return map.get(sup);
 		//
@@ -866,8 +865,7 @@ public class SizeEstimate
 		if (!map.containsKey(sup))
 		{
 			compute(Collections.emptySet(), Collections.singleton(sup));
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("Computing additionally " + sup);
+			_logger.fine(() -> "Computing additionally " + sup);
 		}
 		return map.get(sup);
 	}
@@ -879,8 +877,7 @@ public class SizeEstimate
 		if (!map.containsKey(sup))
 		{
 			compute(Collections.singleton(sup), Collections.emptySet());
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("Computing additionally " + sup);
+			_logger.fine(() -> "Computing additionally " + sup);
 		}
 		return map.get(sup);
 	}
@@ -892,8 +889,7 @@ public class SizeEstimate
 		if (!map.containsKey(sup))
 		{
 			compute(Collections.emptySet(), Collections.singleton(sup));
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("Computing additionally " + sup);
+			_logger.fine(() -> "Computing additionally " + sup);
 		}
 		return map.get(sup);
 	}
@@ -903,8 +899,7 @@ public class SizeEstimate
 		if (!equivClasses.containsKey(sup))
 		{
 			compute(Collections.singleton(sup), Collections.emptySet());
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("Computing additionally " + sup);
+			_logger.fine(() -> "Computing additionally " + sup);
 		}
 		return equivClasses.get(sup);
 	}
@@ -914,8 +909,7 @@ public class SizeEstimate
 		if (!equivProperties.containsKey(sup))
 		{
 			compute(Collections.emptySet(), Collections.singleton(sup));
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("Computing additionally " + sup);
+			_logger.fine(() -> "Computing additionally " + sup);
 		}
 		return equivProperties.get(sup);
 	}
@@ -941,8 +935,7 @@ public class SizeEstimate
 		if (!disjoints.containsKey(sup))
 		{
 			compute(Collections.singleton(sup), Collections.emptySet());
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("Computing additionally " + sup);
+			_logger.fine(() -> "Computing additionally " + sup);
 		}
 		return disjoints.get(sup);
 	}
@@ -952,8 +945,7 @@ public class SizeEstimate
 		if (!complements.containsKey(sup))
 		{
 			compute(Collections.singleton(sup), Collections.emptySet());
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("Computing additionally " + sup);
+			_logger.fine(() -> "Computing additionally " + sup);
 		}
 		return complements.get(sup);
 	}
@@ -963,8 +955,7 @@ public class SizeEstimate
 		if (!inverses.containsKey(sup))
 		{
 			compute(Collections.emptySet(), Collections.singleton(sup));
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("Computing additionally " + sup);
+			_logger.fine(() -> "Computing additionally " + sup);
 		}
 		return inverses.get(sup);
 	}

@@ -4079,7 +4079,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 			return Collections.<ATermAppl> emptySet();
 
 		if (OpenlletOptions.RETURN_NON_PRIMITIVE_EQUIVALENT_PROPERTIES && !ATermUtils.isBuiltinProperty(prop))
-			return taxonomy.getAllEquivalents(prop);
+			return taxonomy.getEquivalents(prop);
 
 		return ATermUtils.primitiveOrBottom(taxonomy.getEquivalents(prop));
 	}

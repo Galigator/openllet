@@ -18,9 +18,6 @@ import org.apache.jena.rdf.model.Resource;
  * Title: Engine for processing DAWG test manifests
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -31,7 +28,6 @@ import org.apache.jena.rdf.model.Resource;
  */
 public class SparqlDawgTestCase
 {
-
 	private final Properties _pelletOptions;
 
 	private final Resource _resource;
@@ -42,10 +38,10 @@ public class SparqlDawgTestCase
 
 	public SparqlDawgTestCase(final SparqlDawgTester tester, final ManifestEngine test, final Resource resource, final Properties pelletOptions)
 	{
-		this._tester = tester;
-		this._test = test;
-		this._resource = resource;
-		this._pelletOptions = pelletOptions;
+		_tester = tester;
+		_test = test;
+		_resource = resource;
+		_pelletOptions = pelletOptions;
 	}
 
 	/**

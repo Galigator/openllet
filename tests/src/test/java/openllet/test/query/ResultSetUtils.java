@@ -44,11 +44,6 @@ public class ResultSetUtils
 		{
 			logResults("Expected", expected);
 			logResults("Real", computed);
-
-			//		System.out.println(expected.size() + " -- " + expected.getResultVars().size());
-			//		expected.getResultVars().forEach(System.out::println);
-			//		System.out.println(computed.size() + " -- " + computed.getResultVars().size());
-			//		computed.getResultVars().forEach(System.out::println);
 			Assert.fail("Expected " + expected.size() + " but got " + computed.size());
 		}
 
@@ -63,7 +58,7 @@ public class ResultSetUtils
 			{
 				logResults("Expected", expected);
 				logResults("Real", computed);
-				Assert.fail("Solution not found: " + map);
+				Assert.fail("Solution not found : " + map + "\tin results : " + results);
 
 				Assert.fail("Expected " + expected.size() + " but got " + computed.size());
 			}
@@ -78,7 +73,8 @@ public class ResultSetUtils
 		for (final String var : vars)
 		{
 			final RDFNode val = qs.get(var);
-			result.put(var, val.isAnon() ? DUMMY_FOR_BNODE : val);
+			if (null != val)
+				result.put(var, val.isAnon() ? DUMMY_FOR_BNODE : val);
 		}
 		return result;
 	}
