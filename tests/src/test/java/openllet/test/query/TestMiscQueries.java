@@ -16,7 +16,9 @@ import static openllet.query.sparqldl.model.QueryAtomFactory.PropertyValueAtom;
 import static openllet.query.sparqldl.model.QueryAtomFactory.RangeAtom;
 
 import openllet.aterm.ATermAppl;
+import openllet.core.OpenlletOptions;
 import openllet.core.datatypes.Datatypes;
+import openllet.core.utils.ATermUtils;
 import openllet.core.utils.Namespaces;
 import openllet.query.sparqldl.model.Query;
 import openllet.query.sparqldl.parser.ARQParser;
@@ -160,8 +162,10 @@ public class TestMiscQueries extends AbstractQueryTest
 
 		final Query query = query(select(v), where(InverseOfAtom(_q, v)));
 
-		testQuery(query, new ATermAppl[][] { { _p } });
-
+		if (OpenlletOptions.RETURN_NON_PRIMITIVE_EQUIVALENT_PROPERTIES)
+			testQuery(query, new ATermAppl[][] { { ATermUtils.makeInv(_q) }, { _p } });
+		else
+			testQuery(query, new ATermAppl[][] { { _p } });
 	}
 
 	@Test
