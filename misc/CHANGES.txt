@@ -1,7 +1,19 @@
 Change Log
 ==========
 
-Pellet 2.6.0 (Mar 31, 2017)
+Openllet 2.6.2 (Sep 27, 2017)
+---------------------------
+
+* Bugs corrections #21 #22, small optimisations
+
+* Upgrade dependencies
+
+* More tests & examples
+
+* Change the behaviour of equivalences, see : https://github.com/owlcs/owlapi/issues/692 
+
+
+Pellet 2.6.1 (Mar 31, 2017)
 ---------------------------
 
 * Bug correction
