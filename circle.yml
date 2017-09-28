@@ -3,7 +3,7 @@ machine:
         version: openjdk8
 
 dependencies:
-  cache_directories:
+    cache_directories:
         - "~/.m2/repository"
     override:
         - env
