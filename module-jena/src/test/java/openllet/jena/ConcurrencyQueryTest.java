@@ -23,7 +23,7 @@ import org.junit.Test;
  *
  * @author Pavel Klinov
  */
-public class ConcurrencyQueryTest
+public class ConcurrencyQueryTest extends SequentialTestsContraintInitializer
 {
 	private static final String ONTOLOGY_PATH = "/vicodi.ttl";
 	private static final Random _random = new Random();

@@ -334,7 +334,7 @@ public class OpenlletOptions
 	public static boolean RETURN_DEDUCTIONS_GRAPH = false;
 
 	/**
-	 *
+	 * If ask equivalence between property, Inverse(property) may be return.
 	 */
 	public static boolean RETURN_NON_PRIMITIVE_EQUIVALENT_PROPERTIES = true;
 
@@ -593,6 +593,8 @@ public class OpenlletOptions
 
 		USE_CLASSIFICATION_MONITOR = getEnumProperty(newOptions, "USE_CLASSIFICATION_MONITOR", USE_CLASSIFICATION_MONITOR, oldOptions);
 
+		RETURN_NON_PRIMITIVE_EQUIVALENT_PROPERTIES = getBooleanProperty(newOptions, "RETURN_NON_PRIMITIVE_EQUIVALENT_PROPERTIES", RETURN_NON_PRIMITIVE_EQUIVALENT_PROPERTIES, oldOptions);
+
 		USE_COMPLETION_QUEUE = getBooleanProperty(newOptions, "USE_COMPLETION_QUEUE", USE_COMPLETION_QUEUE, oldOptions);
 
 		USE_CONTINUOUS_RULES = getBooleanProperty(newOptions, "USE_CONTINUOUS_RULES", USE_CONTINUOUS_RULES, oldOptions);
@@ -639,6 +641,9 @@ public class OpenlletOptions
 
 	private static boolean getBooleanProperty(final Properties properties, final String property, final boolean defaultValue, final Properties defaultValues)
 	{
+		if (null == properties)
+			return defaultValue;
+
 		defaultValues.setProperty(property, String.valueOf(defaultValue));
 		String value = properties.getProperty(property);
 		boolean returnValue = defaultValue;
@@ -662,6 +667,9 @@ public class OpenlletOptions
 
 	private static double getDoubleProperty(final Properties properties, final String property, final double defaultValue, final Properties defaultValues)
 	{
+		if (null == properties)
+			return defaultValue;
+
 		defaultValues.setProperty(property, String.valueOf(defaultValue));
 		final String value = properties.getProperty(property);
 		double doubleValue = defaultValue;
@@ -683,6 +691,9 @@ public class OpenlletOptions
 
 	private static int getIntProperty(final Properties properties, final String property, final int defaultValue, final Properties defaultValues)
 	{
+		if (null == properties)
+			return defaultValue;
+
 		defaultValues.setProperty(property, String.valueOf(defaultValue));
 		final String value = properties.getProperty(property);
 		int intValue = defaultValue;
@@ -704,6 +715,9 @@ public class OpenlletOptions
 
 	private static <T extends Enum<T>> T getEnumProperty(final Properties properties, final String property, final T defaultValue, final Properties defaultValues)
 	{
+		if (null == properties)
+			return defaultValue;
+
 		defaultValues.setProperty(property, String.valueOf(defaultValue));
 		String value = properties.getProperty(property);
 		T returnValue = defaultValue;
@@ -725,5 +739,4 @@ public class OpenlletOptions
 
 		return returnValue;
 	}
-
 }

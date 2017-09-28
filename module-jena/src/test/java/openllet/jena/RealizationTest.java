@@ -16,7 +16,7 @@ import org.junit.Test;
  *
  * @author Pavel Klinov
  */
-public class RealizationTest
+public class RealizationTest extends SequentialTestsContraintInitializer
 {
 
 	private static final String ONTOLOGY_PATH = "/jena-datatypes.owl";

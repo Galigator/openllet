@@ -15,7 +15,7 @@ import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
 import org.junit.Test;
 
-public class AddDelTripleInferenceTest
+public class AddDelTripleInferenceTest extends SequentialTestsContraintInitializer
 {
 	private static final Logger LOG = Log.getLogger(AddDelTripleInferenceTest.class);
 

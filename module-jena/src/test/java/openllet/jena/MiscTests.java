@@ -3,6 +3,7 @@
  */
 package openllet.jena;
 
+import java.util.Properties;
 import java.util.logging.Logger;
 import openllet.core.OpenlletOptions;
 import openllet.core.exceptions.InconsistentOntologyException;
@@ -22,17 +23,25 @@ import org.junit.Test;
 /**
  * @author Pavel Klinov
  */
-public class MiscTests
+public class MiscTests extends SequentialTestsContraintInitializer
 {
 	private static final Logger _logger = Log.getLogger(MiscTests.class);
 
-	public static void configurePelletOptions()
+	private static Properties _savedProperties = OpenlletOptions.setOptions(null);
+
+	private static void configurePelletOptions()
 	{
+		OpenlletOptions.setOptions(_savedProperties);
 		OpenlletOptions.PROCESS_JENA_UPDATES_INCREMENTALLY = false;
 		OpenlletOptions.ALWAYS_REBUILD_RETE = false;
 		OpenlletOptions.USE_UNIQUE_NAME_ASSUMPTION = true;
 		OpenlletOptions.USE_COMPLETION_QUEUE = false;
 		OpenlletOptions.AUTO_REALIZE = false;
+	}
+
+	private static void restorePelletOptions()
+	{
+		OpenlletOptions.setOptions(_savedProperties);
 	}
 
 	private static final String NAMESPACE = "http://www.inmindcomputing.com/example";
@@ -75,9 +84,11 @@ public class MiscTests
 		}
 	}
 
+	@Override
 	@Before
 	public void setUp()
 	{
+		super.setUp();
 		_model = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
 		configurePelletOptions();
 	}
@@ -85,10 +96,13 @@ public class MiscTests
 	/**
 	 * @throws java.lang.Exception
 	 */
+	@Override
 	@After
 	public void tearDown()
 	{
 		_model.close();
+		restorePelletOptions();
+		super.tearDown();
 	}
 
 	@Test
@@ -102,5 +116,4 @@ public class MiscTests
 		Assert.assertTrue(universal.listSubProperties().toSet().contains(abstracT));
 		Assert.assertTrue(universal.listSubProperties().toSet().contains(concrete));
 	}
-
 }
