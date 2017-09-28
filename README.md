@@ -40,12 +40,12 @@ Migration :
 		<dependency>
 			<groupId>com.github.galigator.openllet</groupId>
 			<artifactId>openllet-owlapi</artifactId>
-			<version>2.6.1</version>
+			<version>2.6.2</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.galigator.openllet</groupId>
 			<artifactId>openllet-jena</artifactId>
-			<version>2.6.1</version>
+			<version>2.6.2</version>
 		</dependency>
 ```
 
