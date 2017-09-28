@@ -1,16 +1,3 @@
 machine:
     java:
         version: openjdk8
-
-dependencies:
-    cache_directories:
-        - "~/.m2/repository"
-    override:
-        - env
-        - mvn -U dependency:resolve-plugins
-
-test:
-    override:
-        - mvn -B clean install
-            environment:
-                JAVA_OPTS:-Djava.awt.headless=true -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=30 -XX:GCTimeRatio=18 -XX:+UseG1GC -XX:+UseStringDeduplication
