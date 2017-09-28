@@ -3,15 +3,11 @@ Openllet: An Open Source OWL DL reasoner for Java
 
 [![Build Status](https://api.travis-ci.org/Galigator/openllet.svg?branch=integration)](https://travis-ci.org/Galigator/openllet) 
 [![Codeship Build Status](https://codeship.com/projects/1fe60a20-f84b-0134-33ee-76e4f316aab3/status?branch=integration)](https://app.codeship.com/projects/210924)
-[![CircleCI Build Status](https://circleci.com/gh/Galigator/openllet.svg?style=shield)](https://circleci.com/gh/Galigator/openllet)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Galigator/pelletEvolution?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Twitter](https://img.shields.io/badge/twitter-openllet-blue.svg)](https://twitter.com/openllet)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/d1acfdbe2c194252a311e223cd94e64e)](https://www.codacy.com/app/sejourne_kevin/openllet?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Galigator/openllet&amp;utm_campaign=Badge_Grade)
 <a href="https://www.versioneye.com/user/projects/5832fff3e7cea00029198b38"><img src="https://www.versioneye.com/user/projects/5832fff3e7cea00029198b38/badge.svg?style=flat"/></a>
 
-<!--
-[![codecov](https://codecov.io/gh/Galigator/openllet/branch/integration/graph/badge.svg)](https://codecov.io/gh/Galigator/openllet)
--->
 
 Openllet is the OWL 2 DL reasoner: 
 --------------------------------
@@ -32,7 +28,8 @@ Openllet 2.6.X:
 * Enforce interface usage in the core system.
 * Lighter hash functions and less conflict when use in multi-thread environnement.
 
-Migration :
+### Migration :
+
 * lots of com.clarkparsia.* / com.mindswap.* are refactor into openllet.* to avoid conflict has typing change a lot.
 * dependencies on modern libs.
 
@@ -51,9 +48,50 @@ Migration :
 
 NB, the Protege plugin need a Protege that work with an 5.1.X version of the OWL-API, so the main branch of Protege isn't compatible with Openllet.
 
-Roadmap :
+### Roadmap :
+
 * Fullify strong typing in openllet core (2.7.X).
 * Add support for sesame/rdf4j reasoning (2.8.X).
+
+### Examples :
+
+Play with the Owl-Api:
+```
+try (final OWLManagerGroup group = new OWLManagerGroup())
+{
+	final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create("http://myOnotology"), 1.0);
+	final OWLHelper owl = new OWLGenericTools(group, ontId, true);
+
+	final OWLNamedIndividual x1 = OWL.Individual("#I1");
+	final OWLNamedIndividual x2 = OWL.Individual("#I2");
+
+	owl.addAxiom(OWL.equivalentClasses(ClsA, OWL.some(propB, OWL.restrict(XSD.STRING, OWL.facetRestriction(OWLFacet.PATTERN, OWL.constant("A.A"))))));
+	owl.addAxiom(OWL.propertyAssertion(x1, propB, OWL.constant("AAA")));
+	owl.addAxiom(OWL.propertyAssertion(x2, propB, OWL.constant("BBB")));
+	owl.addAxiom(OWL.differentFrom(x1, x2));
+
+	final OpenlletReasoner r = owl.getReasoner();
+	assertTrue(r.isEntailed(OWL.classAssertion(x1, ClsA)));
+	assertFalse(r.isEntailed(OWL.classAssertion(x2, ClsA)));
+}
+```
+
+Play with Jena:
+```
+	final String ns = "http://www.example.org/test#";
+
+	final OntModel model = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
+	model.read(_base + "uncle.owl");
+
+	final Individual Bob = model.getIndividual(ns + "Bob");
+	final Individual Sam = model.getIndividual(ns + "Sam");
+
+	final Property uncleOf = model.getProperty(ns + "uncleOf");
+
+	final Model uncleValues = ModelFactory.createDefaultModel();
+	addStatements(uncleValues, Bob, uncleOf, Sam);
+	assertPropertyValues(model, uncleOf, uncleValues);
+```
 
 Openllet 2.5.X:
 -----------
@@ -75,7 +113,7 @@ Pellet 1..2.3] Licences and supports:
  
 * [open source](https://github.com/complexible/pellet/blob/master/LICENSE.txt) (AGPL) or commercial license
 * pure Java
-* developed and [commercially supported](http://complexible.com/) by Complexible Inc. 
+* developed and [commercially supported](http://complexible.com/) by Complexible Inc.  [dead link]
 
 Commercial support for Pellet is [available](http://complexible.com/). 
 The [Pellet FAQ](http://clarkparsia.com/pellet/faq) answers some frequently asked questions.
@@ -85,3 +123,8 @@ You can search [pellet-users archives](http://news.gmane.org/gmane.comp.web.pell
 Bug reports and enhancement requests should be sent to the mailing list. 
 
 Thanks for using Pellet.
+
+### Others experimentals stuffs
+
+[![CircleCI Build Status](https://circleci.com/gh/Galigator/openllet.svg?style=shield)](https://circleci.com/gh/Galigator/openllet)
+[![codecov](https://codecov.io/gh/Galigator/openllet/branch/integration/graph/badge.svg)](https://codecov.io/gh/Galigator/openllet)
