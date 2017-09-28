@@ -8,6 +8,7 @@
 
 package openllet.test;
 
+import static openllet.core.OpenlletComparisonsChecker.assertIteratorValues;
 import static openllet.core.utils.ATermUtils.makeList;
 import static openllet.core.utils.TermFactory.TOP;
 import static openllet.core.utils.TermFactory.all;
@@ -22,7 +23,6 @@ import static openllet.core.utils.TermFactory.or;
 import static openllet.core.utils.TermFactory.restrict;
 import static openllet.core.utils.TermFactory.some;
 import static openllet.core.utils.TermFactory.term;
-import static openllet.test.PelletTestCase.assertIteratorValues;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -440,7 +440,7 @@ public class TracingTests extends AbstractKBTests
 		assertFalse(_kb.isConsistent());
 		final Set<ATermAppl> explanation = _kb.getExplanationSet();
 		assertIteratorValues(explanation.iterator(), new Object[] { ATermUtils.makeReflexive(relative), ATermUtils.makeTypeAtom(robert, person), ATermUtils.makeTypeAtom(robert, bobsType),
-			// ATermUtils.makePropAtom(relative, robert, victor),
+				// ATermUtils.makePropAtom(relative, robert, victor),
 		});
 
 	}
@@ -558,8 +558,8 @@ public class TracingTests extends AbstractKBTests
 		final Set<ATermAppl> explanation = _kb.getExplanationSet();
 
 		assertIteratorValues(explanation.iterator(), new Object[] {
-			// ATermUtils.makeAllDifferent(different),
-			ATermUtils.makeTypeAtom(robert, notVictorsSibling), ATermUtils.makeTransitive(sibling), ATermUtils.makePropAtom(sibling, robert, mary), ATermUtils.makePropAtom(sibling, mary, victor), });
+				// ATermUtils.makeAllDifferent(different),
+				ATermUtils.makeTypeAtom(robert, notVictorsSibling), ATermUtils.makeTransitive(sibling), ATermUtils.makePropAtom(sibling, robert, mary), ATermUtils.makePropAtom(sibling, mary, victor), });
 
 	}
 

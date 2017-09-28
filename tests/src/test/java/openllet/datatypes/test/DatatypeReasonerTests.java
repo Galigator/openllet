@@ -1,6 +1,7 @@
 package openllet.datatypes.test;
 
 import static java.util.Collections.singleton;
+import static openllet.core.OpenlletComparisonsChecker.assertSubClass;
 import static openllet.core.datatypes.Datatypes.ANY_URI;
 import static openllet.core.datatypes.Datatypes.BYTE;
 import static openllet.core.datatypes.Datatypes.DATE_TIME;
@@ -32,7 +33,6 @@ import static openllet.core.utils.TermFactory.or;
 import static openllet.core.utils.TermFactory.restrict;
 import static openllet.core.utils.TermFactory.term;
 import static openllet.core.utils.TermFactory.value;
-import static openllet.test.PelletTestCase.assertSubClass;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 

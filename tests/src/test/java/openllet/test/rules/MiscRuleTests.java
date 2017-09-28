@@ -7,6 +7,7 @@
 package openllet.test.rules;
 
 import static java.util.Collections.singleton;
+import static openllet.core.OpenlletComparisonsChecker.assertIteratorValues;
 import static openllet.core.utils.Namespaces.SWRLB;
 import static openllet.core.utils.TermFactory.TOP;
 import static openllet.core.utils.TermFactory.all;
@@ -21,7 +22,6 @@ import static openllet.core.utils.TermFactory.or;
 import static openllet.core.utils.TermFactory.some;
 import static openllet.core.utils.TermFactory.term;
 import static openllet.core.utils.TermFactory.value;
-import static openllet.test.PelletTestCase.assertIteratorValues;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
@@ -1044,14 +1044,14 @@ public class MiscRuleTests extends AbstractKBTests
 						"<http://www.semanticweb.org/ontologies/2014/3/untitled-ontology-215>\n" + //
 						"Import(<http://www.w3.org/2006/time>)\n" + //
 						"\n" + //
-						"EquivalentClasses(<http://www.w3.org/2006/time#Instant> ObjectHasSelf(<http://www.semanticweb.org/ontologies/2014/3/untitled-ontology-215#R_Instant>))\n" + // 
+						"EquivalentClasses(<http://www.w3.org/2006/time#Instant> ObjectHasSelf(<http://www.semanticweb.org/ontologies/2014/3/untitled-ontology-215#R_Instant>))\n" + //
 						"Declaration(ObjectProperty(<http://www.semanticweb.org/ontologies/2014/3/untitled-ontology-215#R_Instant>))\n" + //
 						"Declaration(NamedIndividual(<http://www.semanticweb.org/ontologies/2014/3/untitled-ontology-215#Instant1>))\n" + //
-						"ClassAssertion(<http://www.w3.org/2006/time#Instant> <http://www.semanticweb.org/ontologies/2014/3/untitled-ontology-215#Instant1>)\n" + // 
+						"ClassAssertion(<http://www.w3.org/2006/time#Instant> <http://www.semanticweb.org/ontologies/2014/3/untitled-ontology-215#Instant1>)\n" + //
 						"DataPropertyAssertion(<http://www.w3.org/2006/time#inXSDDateTime> <http://www.semanticweb.org/ontologies/2014/3/untitled-ontology-215#Instant1> \"2000-01-01T00:00:00\"^^xsd:dateTime)\n" + //
 						"Declaration(NamedIndividual(<http://www.semanticweb.org/ontologies/2014/3/untitled-ontology-215#Instant2>))\n" + //
 						"ClassAssertion(<http://www.w3.org/2006/time#Instant> <http://www.semanticweb.org/ontologies/2014/3/untitled-ontology-215#Instant2>)\n" + //
-						"DataPropertyAssertion(<http://www.w3.org/2006/time#inXSDDateTime> <http://www.semanticweb.org/ontologies/2014/3/untitled-ontology-215#Instant2> \"2003-01-01T00:00:00\"^^xsd:dateTime)\n" + // 
+						"DataPropertyAssertion(<http://www.w3.org/2006/time#inXSDDateTime> <http://www.semanticweb.org/ontologies/2014/3/untitled-ontology-215#Instant2> \"2003-01-01T00:00:00\"^^xsd:dateTime)\n" + //
 						"DLSafeRule(Body(ObjectPropertyAtom(<http://www.semanticweb.org/ontologies/2014/3/untitled-ontology-215#R_Instant> Variable(<urn:swrl#x>) Variable(<urn:swrl#x>)) " + //
 						"ObjectPropertyAtom(<http://www.semanticweb.org/ontologies/2014/3/untitled-ontology-215#R_Instant> Variable(<urn:swrl#z>) Variable(<urn:swrl#z>)) " + //
 						"DataPropertyAtom(<http://www.w3.org/2006/time#inXSDDateTime> Variable(<urn:swrl#x>) Variable(<urn:swrl#y>)) " + //
@@ -1237,7 +1237,7 @@ public class MiscRuleTests extends AbstractKBTests
 
 	/**
 	 * This test produce twice the warning.
-	 * 
+	 *
 	 * @throws Exception
 	 * @since 2.5.1
 	 */
@@ -1252,18 +1252,17 @@ public class MiscRuleTests extends AbstractKBTests
 
 	/**
 	 * This test produce three time the warning.
-	 * 
+	 *
 	 * @throws Exception
 	 * @since 2.5.1
 	 */
 	@Test
 	public void testSimpleStringDocumentCreationWithTime() throws Exception
 	{
-		OWLManager.createOWLOntologyManager()
-				.loadOntologyFromOntologyDocument(new StringDocumentSource("Ontology(" + //
-						"<http://www.semanticweb.org/ontologies/2016/6/untitled-ontology-018>\n" + //
-						"Import(<http://www.w3.org/2006/time>)\n" + //
-						")" //
+		OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(new StringDocumentSource("Ontology(" + //
+				"<http://www.semanticweb.org/ontologies/2016/6/untitled-ontology-018>\n" + //
+				"Import(<http://www.w3.org/2006/time>)\n" + //
+				")" //
 		));
 	}
 

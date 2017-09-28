@@ -7,7 +7,6 @@
 package openllet.test;
 
 import java.io.File;
-import openllet.TestATermManchesterSyntaxRenderer;
 import openllet.datatypes.test.DatatypesSuite;
 import openllet.explanation.test.ExplanationTestSuite;
 import openllet.modularity.test.ModularityTestSuite;
@@ -24,13 +23,15 @@ import openllet.test.rbox.RBoxTestSuite;
 import openllet.test.rules.RulesTestSuite;
 import openllet.test.tbox.TBoxTests;
 import openllet.test.transtree.TransTreeTestSuite;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ ATermTests.class, //
-		PellintTestSuite.class, //
+@SuiteClasses({ PellintTestSuite.class, //
 		TracingTests.class, //
 		MiscTests.class, //
 		MergeTests.class, //
@@ -51,7 +52,6 @@ import org.junit.runners.Suite.SuiteClasses;
 		ExplanationTestSuite.class, //
 		TestIsClass.class, //
 		TestKnowledgeBase.class, //
-		TestATermManchesterSyntaxRenderer.class, //
 		AnnotationsTestSuite.class, //
 		TransTreeTestSuite.class, //
 		LiebigTestSuite.class, //
@@ -65,10 +65,19 @@ import org.junit.runners.Suite.SuiteClasses;
 		openllet.test.CLITests.class })
 public class PelletTestSuite
 {
-	public static String base = ((new File("test/data/")).exists()) ? "test/data/" : "src/test/resources/test/data/";
+	public static String base = new File("test/data/").exists() ? "test/data/" : "src/test/resources/test/data/";
 
 	static
 	{
 		System.setProperty(org.slf4j.impl.SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "WARN");
+	}
+
+	@Rule
+	public TestName _currentMethodName = new TestName();
+
+	@Before
+	public void setUp()
+	{
+		System.out.println("====================BEGIN========================= [" + this.getClass().getSimpleName() + "." + _currentMethodName.getMethodName() + "] ");
 	}
 }

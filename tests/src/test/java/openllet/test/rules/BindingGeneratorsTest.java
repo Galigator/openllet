@@ -6,7 +6,7 @@
 
 package openllet.test.rules;
 
-import static openllet.test.PelletTestCase.assertIteratorValues;
+import static openllet.core.OpenlletComparisonsChecker.assertIteratorValues;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 

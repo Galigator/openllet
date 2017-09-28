@@ -8,6 +8,7 @@
 
 package openllet.test.owlapi;
 
+import static openllet.core.OpenlletComparisonsChecker.assertIteratorValues;
 import static openllet.modularity.test.TestUtils.assertStreamAsSetEquals;
 import static openllet.owlapi.OWL.Class;
 import static openllet.owlapi.OWL.DataProperty;
@@ -42,7 +43,6 @@ import static openllet.owlapi.SWRL.classAtom;
 import static openllet.owlapi.SWRL.propertyAtom;
 import static openllet.owlapi.SWRL.rule;
 import static openllet.owlapi.SWRL.variable;
-import static openllet.test.PelletTestCase.assertIteratorValues;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -1488,7 +1488,7 @@ public class OWLAPITests extends AbstractOWLAPITests
 		assertStreamAsSetEquals(Stream.of(_p, _q, _r), _reasoner.equivalentObjectProperties(_q));
 		assertStreamAsSetEquals(Stream.of(_p, _q, _r), _reasoner.equivalentObjectProperties(_r));
 	}
-	
+
 	@Test
 	public void testGetEquivalentObjectPropertiesWithInverse()
 	{
@@ -1499,7 +1499,7 @@ public class OWLAPITests extends AbstractOWLAPITests
 			assertStreamAsSetEquals(Stream.of(_p, _r, OWL.inverse(_q)), _reasoner.equivalentObjectProperties(_p));
 			assertStreamAsSetEquals(Stream.of(_p, _r, OWL.inverse(_q)), _reasoner.equivalentObjectProperties(_r));
 			assertStreamAsSetEquals(Stream.of(_q, OWL.inverse(_p), OWL.inverse(_r)), _reasoner.equivalentObjectProperties(_q));
-			
+
 			assertStreamAsSetEquals(Stream.of(_q, OWL.inverse(_p), OWL.inverse(_r)), _reasoner.equivalentObjectProperties(OWL.inverse(_p)));
 			assertStreamAsSetEquals(Stream.of(_q, OWL.inverse(_p), OWL.inverse(_r)), _reasoner.equivalentObjectProperties(OWL.inverse(_r)));
 			assertStreamAsSetEquals(Stream.of(_p, _r, OWL.inverse(_q)), _reasoner.equivalentObjectProperties(OWL.inverse(_q)));
@@ -1509,13 +1509,12 @@ public class OWLAPITests extends AbstractOWLAPITests
 			assertStreamAsSetEquals(Stream.of(_p, _r), _reasoner.equivalentObjectProperties(_p));
 			assertStreamAsSetEquals(Stream.of(_p, _r), _reasoner.equivalentObjectProperties(_r));
 			assertStreamAsSetEquals(Stream.of(_q), _reasoner.equivalentObjectProperties(_q));
-			
+
 			assertStreamAsSetEquals(Stream.of(_q), _reasoner.equivalentObjectProperties(OWL.inverse(_p)));
 			assertStreamAsSetEquals(Stream.of(_q), _reasoner.equivalentObjectProperties(OWL.inverse(_r)));
-			assertStreamAsSetEquals(Stream.of(_p, _r), _reasoner.equivalentObjectProperties(OWL.inverse(_q)));			
+			assertStreamAsSetEquals(Stream.of(_p, _r), _reasoner.equivalentObjectProperties(OWL.inverse(_q)));
 		}
 	}
-	
 
 	@Test
 	public void testGetEquivalentDataProperties()

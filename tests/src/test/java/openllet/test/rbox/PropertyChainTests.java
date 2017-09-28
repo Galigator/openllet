@@ -6,6 +6,7 @@
 
 package openllet.test.rbox;
 
+import static openllet.core.OpenlletComparisonsChecker.assertIteratorValues;
 import static openllet.core.utils.TermFactory.all;
 import static openllet.core.utils.TermFactory.hasValue;
 import static openllet.core.utils.TermFactory.inv;
@@ -13,9 +14,8 @@ import static openllet.core.utils.TermFactory.list;
 import static openllet.core.utils.TermFactory.not;
 import static openllet.core.utils.TermFactory.some;
 import static openllet.core.utils.TermFactory.term;
-import static openllet.test.PelletTestCase.addStatements;
-import static openllet.test.PelletTestCase.assertIteratorValues;
-import static openllet.test.PelletTestCase.assertPropertyValues;
+import static openllet.test.JenaStatementsChecker.addStatements;
+import static openllet.test.JenaStatementsChecker.assertPropertyValues;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

@@ -8,13 +8,13 @@
 
 package openllet.test.query;
 
+import static openllet.core.OpenlletComparisonsChecker.assertIteratorValues;
 import static openllet.core.utils.TermFactory.TOP;
 import static openllet.core.utils.TermFactory.not;
 import static openllet.query.sparqldl.model.QueryAtomFactory.NotKnownAtom;
 import static openllet.query.sparqldl.model.QueryAtomFactory.PropertyValueAtom;
 import static openllet.query.sparqldl.model.QueryAtomFactory.SubClassOfAtom;
 import static openllet.query.sparqldl.model.QueryAtomFactory.TypeAtom;
-import static openllet.test.PelletTestCase.assertIteratorValues;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;

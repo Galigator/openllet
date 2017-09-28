@@ -9,10 +9,10 @@
 
 package openllet.test;
 
-import static openllet.test.PelletTestCase.addStatements;
-import static openllet.test.PelletTestCase.assertIteratorContains;
-import static openllet.test.PelletTestCase.assertIteratorValues;
-import static openllet.test.PelletTestCase.assertPropertyValues;
+import static openllet.core.OpenlletComparisonsChecker.assertIteratorContains;
+import static openllet.core.OpenlletComparisonsChecker.assertIteratorValues;
+import static openllet.test.JenaStatementsChecker.addStatements;
+import static openllet.test.JenaStatementsChecker.assertPropertyValues;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

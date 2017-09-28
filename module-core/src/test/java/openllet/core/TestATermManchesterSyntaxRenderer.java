@@ -4,7 +4,7 @@
 // Please see LICENSE.txt for full license terms, including the availability of proprietary exceptions.
 // Questions, comments, or requests for clarification: licensing@clarkparsia.com
 
-package openllet;
+package openllet.core;
 
 import static openllet.core.utils.TermFactory.all;
 import static openllet.core.utils.TermFactory.and;
@@ -32,9 +32,6 @@ import org.junit.Test;
 /**
  * <p>
  * Title: TestNodeFormatter
- * </p>
- * <p>
- * Description:
  * </p>
  * <p>
  * Copyright: Copyright (c) 2008

@@ -7,7 +7,7 @@ Openllet: An Open Source OWL DL reasoner for Java
 [![Twitter](https://img.shields.io/badge/twitter-openllet-blue.svg)](https://twitter.com/openllet)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/d1acfdbe2c194252a311e223cd94e64e)](https://www.codacy.com/app/sejourne_kevin/openllet?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Galigator/openllet&amp;utm_campaign=Badge_Grade)
 <a href="https://www.versioneye.com/user/projects/5832fff3e7cea00029198b38"><img src="https://www.versioneye.com/user/projects/5832fff3e7cea00029198b38/badge.svg?style=flat"/></a>
-
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.galigator.openllet/openllet-owlapi/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.galigator.openllet/openllet-owlapi)
 
 Openllet is the OWL 2 DL reasoner: 
 --------------------------------

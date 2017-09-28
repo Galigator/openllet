@@ -15,9 +15,9 @@ import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
 import org.junit.Test;
 
-public class InferenceTest
+public class AddDelTripleInferenceTest
 {
-	private static final Logger LOG = Log.getLogger(InferenceTest.class);
+	private static final Logger LOG = Log.getLogger(AddDelTripleInferenceTest.class);
 
 	private static final String fname = "/ontology-plus-data.ttl";
 	private static final String indiv = "http://ontology.tno.nl/2017/7/untitled-ontology-103/indiv";
@@ -26,7 +26,7 @@ public class InferenceTest
 	public void testRemovalWithInference()
 	{
 		final Model model = ModelFactory.createDefaultModel();
-		final InputStream is = InferenceTest.class.getResourceAsStream(fname);
+		final InputStream is = AddDelTripleInferenceTest.class.getResourceAsStream(fname);
 		assert is != null;
 
 		assert model.size() == 0;

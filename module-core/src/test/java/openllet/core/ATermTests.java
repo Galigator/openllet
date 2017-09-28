@@ -4,7 +4,7 @@
 // Please see LICENSE.txt for full license terms, including the availability of proprietary exceptions.
 // Questions, comments, or requests for clarification: licensing@clarkparsia.com
 
-package openllet.test;
+package openllet.core;
 
 import static openllet.core.utils.TermFactory.all;
 import static openllet.core.utils.TermFactory.and;
@@ -20,7 +20,6 @@ import static openllet.core.utils.TermFactory.self;
 import static openllet.core.utils.TermFactory.some;
 import static openllet.core.utils.TermFactory.term;
 import static openllet.core.utils.TermFactory.value;
-import static openllet.test.PelletTestCase.assertIteratorValues;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -198,8 +197,9 @@ public class ATermTests
 		testFindPrimitives(some(_p, and(_d1, _d3)), new ATermAppl[] { _d3 });
 	}
 
+	// import static openllet.test.PelletTestCase.assertIteratorValues;
 	private static void testFindPrimitives(final ATermAppl c, final ATermAppl[] expected)
 	{
-		assertIteratorValues(ATermUtils.findPrimitives(c).iterator(), expected);
+		OpenlletComparisonsChecker.assertIteratorValues(ATermUtils.findPrimitives(c).iterator(), expected);
 	}
 }

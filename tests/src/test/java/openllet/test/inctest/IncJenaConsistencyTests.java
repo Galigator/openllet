@@ -8,8 +8,8 @@
 
 package openllet.test.inctest;
 
-import static openllet.test.PelletTestCase.assertIteratorValues;
-import static openllet.test.PelletTestCase.assertPropertyValues;
+import static openllet.core.OpenlletComparisonsChecker.assertIteratorValues;
+import static openllet.test.JenaStatementsChecker.assertPropertyValues;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -390,7 +390,7 @@ public class IncJenaConsistencyTests extends AbstractJenaTests
 		final UnionClass class4 = ontmodel.createUnionClass(null, list);
 
 		ontmodel.prepare();
-		
+
 		graph.getKB().getTimers().getTimer(ABox.IS_INC_CONSISTENT).reset();
 
 		assertIteratorValues(class3.listInstances(), new Resource[] { inds[2], inds[3], inds[4], inds[5] });

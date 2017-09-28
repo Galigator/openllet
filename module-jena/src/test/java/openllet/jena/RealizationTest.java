@@ -1,13 +1,11 @@
 /**
  *
  */
-package openllet.test.jena;
+package openllet.jena;
 
 import java.io.IOException;
 import java.io.InputStream;
 import openllet.core.OpenlletOptions;
-import openllet.jena.PelletInfGraph;
-import openllet.jena.PelletReasonerFactory;
 import org.apache.jena.ontology.Individual;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.ModelFactory;
@@ -21,14 +19,14 @@ import org.junit.Test;
 public class RealizationTest
 {
 
-	private static final String ONTOLOGY_PATH_ = "/test/data/misc/jena-datatypes.owl";
+	private static final String ONTOLOGY_PATH = "/jena-datatypes.owl";
 
 	private static final String PREFIX = "http://example.org/";
 
 	@Test
 	public void testDoNotReclassify() throws Exception
 	{
-		final OntModel ontModel = loadOntologyModel(ONTOLOGY_PATH_);
+		final OntModel ontModel = loadOntologyModel(ONTOLOGY_PATH);
 
 		ontModel.setStrictMode(false);
 		// force classification and realization
@@ -61,7 +59,7 @@ public class RealizationTest
 	{
 		final OntModel model = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
 		// read the file
-		try (InputStream ontStream = ConcurrencyTest.class.getResourceAsStream(ontologyPath))
+		try (InputStream ontStream = ConcurrencyQueryTest.class.getResourceAsStream(ontologyPath))
 		{
 			model.read(ontStream, null, "TTL");
 		}

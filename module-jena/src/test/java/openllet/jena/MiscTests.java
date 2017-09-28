@@ -1,12 +1,11 @@
 /**
  *
  */
-package openllet.test.jena;
+package openllet.jena;
 
 import java.util.logging.Logger;
 import openllet.core.OpenlletOptions;
 import openllet.core.exceptions.InconsistentOntologyException;
-import openllet.jena.PelletReasonerFactory;
 import openllet.shared.tools.Log;
 import org.apache.jena.ontology.DatatypeProperty;
 import org.apache.jena.ontology.Individual;
@@ -36,14 +35,15 @@ public class MiscTests
 		OpenlletOptions.AUTO_REALIZE = false;
 	}
 
+	private static final String NAMESPACE = "http://www.inmindcomputing.com/example";
 	private OntModel _model;
 
 	@Test
 	public void dataAssertionTest()
 	{
-		_model.read(this.getClass().getClassLoader().getResourceAsStream("test/data/misc/decimal-int.owl"), null);
-		final Individual entity = _model.getIndividual("http://www.inmindcomputing.com/example/dataAssertion.owl#ENTITY");
-		final DatatypeProperty value = _model.getDatatypeProperty("http://www.inmindcomputing.com/example/dataAssertion.owl#dataAssertionValue");
+		_model.read(MiscTests.class.getResourceAsStream("/decimal-int.owl"), null);
+		final Individual entity = _model.getIndividual(NAMESPACE + "/dataAssertion.owl#ENTITY");
+		final DatatypeProperty value = _model.getDatatypeProperty(NAMESPACE + "/dataAssertion.owl#dataAssertionValue");
 		Assert.assertTrue(value.isFunctionalProperty());
 		Assert.assertEquals(1, entity.listPropertyValues(value).toSet().size());
 	}
@@ -51,8 +51,8 @@ public class MiscTests
 	@Test
 	public void incrementalDeletionTest()
 	{
-		final Individual entity = _model.createIndividual("http://www.inmindcomputing.com/example/dataAssertion.owl#ENTITY", null);
-		final DatatypeProperty property = _model.createDatatypeProperty("http://www.inmindcomputing.com/example/dataAssertion.owl#ENTITY", true);
+		final Individual entity = _model.createIndividual(NAMESPACE + "/dataAssertion.owl#ENTITY", null);
+		final DatatypeProperty property = _model.createDatatypeProperty(NAMESPACE + "/dataAssertion.owl#ENTITY", true);
 
 		final Statement firstValue = _model.createLiteralStatement(entity, property, "1");
 		final Statement secondValue = _model.createLiteralStatement(entity, property, "2");
@@ -94,10 +94,10 @@ public class MiscTests
 	@Test
 	public void universalTest()
 	{
-		_model.read(this.getClass().getClassLoader().getResourceAsStream("test/data/misc/universal-property.owl"), null);
-		final ObjectProperty universal = _model.getObjectProperty("http://www.inmindcomputing.com/example/universal.owl#universalProperty");
-		final ObjectProperty abstracT = _model.getObjectProperty("http://www.inmindcomputing.com/example/universal.owl#abstractProperty");
-		final ObjectProperty concrete = _model.getObjectProperty("http://www.inmindcomputing.com/example/universal.owl#concreteProperty");
+		_model.read(MiscTests.class.getResourceAsStream("/universal-property.owl"), null);
+		final ObjectProperty universal = _model.getObjectProperty(NAMESPACE + "/universal.owl#universalProperty");
+		final ObjectProperty abstracT = _model.getObjectProperty(NAMESPACE + "/universal.owl#abstractProperty");
+		final ObjectProperty concrete = _model.getObjectProperty(NAMESPACE + "/universal.owl#concreteProperty");
 		Assert.assertTrue(universal.getEquivalentProperty().equals(OWL2.topObjectProperty));
 		Assert.assertTrue(universal.listSubProperties().toSet().contains(abstracT));
 		Assert.assertTrue(universal.listSubProperties().toSet().contains(concrete));

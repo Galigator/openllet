@@ -49,7 +49,7 @@ import openllet.core.utils.Namespaces;
 import openllet.core.utils.NumberUtils;
 import openllet.core.utils.TermFactory;
 import openllet.jena.PelletReasonerFactory;
-import openllet.test.PelletTestCase;
+import openllet.test.JenaStatementsChecker;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
@@ -662,14 +662,14 @@ public class BuiltInTests
 		final RDFNode lit24 = model.createTypedLiteral(24.0f);
 
 		Model inferences = ModelFactory.createDefaultModel();
-		PelletTestCase.addStatements(inferences, a, feet, model.createTypedLiteral(1f));
-		PelletTestCase.addStatements(inferences, b, feet, model.createTypedLiteral(2f));
-		PelletTestCase.assertPropertyValues(model, feet, inferences);
+		JenaStatementsChecker.addStatements(inferences, a, feet, model.createTypedLiteral(1f));
+		JenaStatementsChecker.addStatements(inferences, b, feet, model.createTypedLiteral(2f));
+		JenaStatementsChecker.assertPropertyValues(model, feet, inferences);
 
 		inferences = ModelFactory.createDefaultModel();
-		PelletTestCase.addStatements(inferences, a, inches, lit12);
-		PelletTestCase.addStatements(inferences, b, inches, lit24);
-		PelletTestCase.assertPropertyValues(model, inches, inferences);
+		JenaStatementsChecker.addStatements(inferences, a, inches, lit12);
+		JenaStatementsChecker.addStatements(inferences, b, inches, lit24);
+		JenaStatementsChecker.assertPropertyValues(model, inches, inferences);
 	}
 
 	@Test

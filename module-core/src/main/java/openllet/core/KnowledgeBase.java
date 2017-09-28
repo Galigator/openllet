@@ -94,7 +94,7 @@ public interface KnowledgeBase extends Logging
 
 	public default boolean isIndividual(final ATerm ind)
 	{
-		return individuals().anyMatch(ind::equals);
+		return getIndividuals().contains(ind);
 	}
 
 	public void classify();
