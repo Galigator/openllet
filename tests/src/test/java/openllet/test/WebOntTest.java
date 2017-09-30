@@ -341,10 +341,8 @@ public class WebOntTest
 				final Statement statusStmt = testCase.getProperty(OWLTestVocabulary.status);
 
 				final Vector<String> levels = new Vector<>();
-				// Changes according to the editors-draft. For each test there
-				// can
-				// be more than one level. Basically each Lite test is also a
-				// Full
+				// Changes according to the editors-draft. For each test there can
+				// be more than one level. Basically each Lite test is also a Full
 				// test and now this information is given explicitly in Manifest
 				// So loop through all the levels and find the tight bound
 				final int level = 3; // 0 - Lite, 1 - DL, 2 - Full
@@ -489,7 +487,7 @@ public class WebOntTest
 				System.out.println("Result: " + RESULTS.get(testResult));
 				System.out.println("--------------------------------------------------------------------");
 
-				allPassed &= (testResult == TEST_PASS);
+				allPassed &= testResult == TEST_PASS;
 			}
 
 			// FileOutputStream output = new FileOutputStream("results.rdf");
