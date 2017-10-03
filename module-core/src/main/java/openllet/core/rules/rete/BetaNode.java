@@ -24,6 +24,7 @@ public abstract class BetaNode extends ReteNode
 	{
 		final Token newToken = Token.create(wme, token);
 		for (final BetaNode beta : getBetas())
-			beta.activate(newToken);
+			if (this != beta)
+				beta.activate(newToken);
 	}
 }
