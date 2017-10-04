@@ -34,6 +34,29 @@
 
 package openllet.test;
 
+import static openllet.test.OWLTestVocabulary.Approved;
+import static openllet.test.OWLTestVocabulary.ClassificationTest;
+import static openllet.test.OWLTestVocabulary.ConsistencyTest;
+import static openllet.test.OWLTestVocabulary.DL;
+import static openllet.test.OWLTestVocabulary.ExtraCredit;
+import static openllet.test.OWLTestVocabulary.Full;
+import static openllet.test.OWLTestVocabulary.ImportEntailmentTest;
+import static openllet.test.OWLTestVocabulary.ImportLevelTest;
+import static openllet.test.OWLTestVocabulary.InconsistencyTest;
+import static openllet.test.OWLTestVocabulary.Lite;
+import static openllet.test.OWLTestVocabulary.NegativeEntailmentTest;
+import static openllet.test.OWLTestVocabulary.NotOwlFeatureTest;
+import static openllet.test.OWLTestVocabulary.OWLforOWLTest;
+import static openllet.test.OWLTestVocabulary.Obsoleted;
+import static openllet.test.OWLTestVocabulary.PositiveEntailmentTest;
+import static openllet.test.OWLTestVocabulary.Proposed;
+import static openllet.test.OWLTestVocabulary.TrueTest;
+import static openllet.test.OWLTestVocabulary.conclusionDocument;
+import static openllet.test.OWLTestVocabulary.inputDocument;
+import static openllet.test.OWLTestVocabulary.level;
+import static openllet.test.OWLTestVocabulary.premiseDocument;
+import static openllet.test.OWLTestVocabulary.status;
+
 import java.awt.Component;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -69,88 +92,98 @@ public class WebOntTest
 {
 	public static Logger _logger = Log.getLogger(WebOntTest.class);
 
-	// each test case should be handled in _timeout seconds
+	// each test case should be handled in timeout seconds
 	// or otherwise is assumed to fail that test case
-	// if _timeout is set to 0 then test case will not be stopped
+	// if timeout is set to 0 then test case will not be stopped
 	// default value is 10 seconds
 	public int _timeout = 10;
 
-	// At the _end of tests _stats about the results are displayed
-	// There are couple of _options here; short means only total
-	// number of passes are shown, long means _individual results
+	// At the end of tests stats about the results are displayed
+	// There are couple of options here; short means only total
+	// number of passes are shown, long means individual results
 	// for each test is also displayed, all means a GUI window is
-	// popped up to show these _stats
+	// popped up to show these stats
 	public final static int NO_STATS = 0;
 	public final static int SHORT_STATS = 1;
 	public final static int LONG_STATS = 2;
 	public final static int ALL_STATS = 3;
 	public int _showStats = ALL_STATS;
 
-	private String _base = "http://www.w3.org/2002/03owlt/";
+	private static String _base = "http://www.w3.org/2002/03owlt/";
 	private final String _localBase = PelletTestSuite.base;
 	private String _newBase;
 
 	public static boolean DOUBLE_CHECK_ENTAILMENTS = false;
 
-	public final static List<Resource> TYPES = Arrays.asList(new Resource[] { OWLTestVocabulary.NotOwlFeatureTest, OWLTestVocabulary.PositiveEntailmentTest, OWLTestVocabulary.NegativeEntailmentTest, OWLTestVocabulary.TrueTest, OWLTestVocabulary.OWLforOWLTest, OWLTestVocabulary.ConsistencyTest, OWLTestVocabulary.InconsistencyTest, OWLTestVocabulary.ImportEntailmentTest, OWLTestVocabulary.ImportLevelTest, OWLTestVocabulary.ClassificationTest });
+	public final static List<Resource> TYPES = Arrays.asList(new Resource[] { //
+			NotOwlFeatureTest, //
+			PositiveEntailmentTest, //
+			NegativeEntailmentTest, //
+			TrueTest, //
+			OWLforOWLTest, //
+			ConsistencyTest, //
+			InconsistencyTest, //
+			ImportEntailmentTest, //
+			ImportLevelTest, //
+			ClassificationTest//
+	});
 
-	public final static List<Resource> LEVELS = Arrays.asList(new Resource[] { OWLTestVocabulary.Lite, OWLTestVocabulary.DL, OWLTestVocabulary.Full });
-	public final static List<RDFNode> STATUS = Arrays.asList(new RDFNode[] { OWLTestVocabulary.Approved, OWLTestVocabulary.Proposed, OWLTestVocabulary.ExtraCredit, OWLTestVocabulary.Obsoleted });
+	public final static List<Resource> LEVELS = Arrays.asList(new Resource[] { Lite, DL, Full });
+	public final static List<RDFNode> STATUS = Arrays.asList(new RDFNode[] { Approved, Proposed, ExtraCredit, Obsoleted });
 
 	public boolean _avoidFailTests = false;
+
 	/**
 	 * Pellet is known to fail the following test cases either because they are not in OWL DL or they are extremely hard, e.g. more than 100 GCI's, or a very
 	 * large number restriction. Such cases are not very realistic and it is not considered to be a problem to fail those test cases. But if Pellet fails on one
 	 * of the other test cases then it indicates a problem.
 	 */
-	private static final List<Resource> AVOID = Arrays.asList(new Resource[] { ResourceFactory.createResource("http://www.w3.org/2002/03owlt/AnnotationProperty/Manifest001#test"), //
-			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/AnnotationProperty/Manifest002#test"), //
-			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/Class/Manifest005#test"), //
-			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/DatatypeProperty/Manifest001#test"), //
-			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/description-logic/Manifest661#test"), //
-			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/description-logic/Manifest662#test"), //
-			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/description-logic/Manifest663#test"), //
-			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/description-logic/Manifest664#test"), //
-			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/description-logic/Manifest903#test"), //
-			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/description-logic/Manifest905#test"), //
-			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/description-logic/Manifest906#test"), //
-			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/description-logic/Manifest907#test"), //
-			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/description-logic/Manifest908#test"), //
-			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/description-logic/Manifest909#test"), //
-			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/description-logic/Manifest910#test"), //
-			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/disjointWith/Manifest010#test"), //
-			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/equivalentClass/Manifest008#test"), //
-			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/equivalentProperty/Manifest005#test"), //
-			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/extra-credit/Manifest002#test"), //
-			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/extra-credit/Manifest003#test"), //
-			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/extra-credit/Manifest004#test"), //
-			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/I4.6/Manifest003#test"), //
-			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/I4.6/Manifest005#test"), //
-			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/I5.1/Manifest001#test"), //
-			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/I5.24/Manifest002#test"), //
-			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/I5.26/Manifest006#test"), //
-			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/I5.26/Manifest007#test"), //
-			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/I5.3/Manifest014#test"), //
-			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/I5.3/Manifest015#test"), //
-			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/I5.5/Manifest003#test"), //
-			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/I5.5/Manifest004#test"), //
-			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/I5.5/Manifest006#test"), //
-			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/I5.5/Manifest007#test"), //
-			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/I5.8/Manifest012#test"), //
-			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/I5.8/Manifest017#test"), //
-			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/miscellaneous/Manifest202#test"), //
-			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/miscellaneous/Manifest205#test"), //
-			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/miscellaneous/Manifest302#test"), //
-			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/Ontology/Manifest003#test"), //
-			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/Restriction/Manifest005#test"), //
-			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/Restriction/Manifest006#test"), //
-			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/sameAs/Manifest001#test"), //
-			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/someValuesFrom/Manifest001#test"), //
-			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/someValuesFrom/Manifest003#test"), //
-			ResourceFactory.createResource("http://www.w3.org/2002/03owlt/Thing/Manifest005#test") });
-
-	//	private final int syntacticTestCount = 0;
-	//	private final int syntacticTestPass = 0;
+	private static final List<Resource> AVOID = Arrays.asList(new Resource[] { //
+			ResourceFactory.createResource(_base + "/AnnotationProperty/Manifest001#test"), //
+			ResourceFactory.createResource(_base + "/AnnotationProperty/Manifest002#test"), //
+			ResourceFactory.createResource(_base + "/Class/Manifest005#test"), //
+			ResourceFactory.createResource(_base + "/DatatypeProperty/Manifest001#test"), //
+			ResourceFactory.createResource(_base + "/description-logic/Manifest661#test"), //
+			ResourceFactory.createResource(_base + "/description-logic/Manifest662#test"), //
+			ResourceFactory.createResource(_base + "/description-logic/Manifest663#test"), //
+			ResourceFactory.createResource(_base + "/description-logic/Manifest664#test"), //
+			ResourceFactory.createResource(_base + "/description-logic/Manifest903#test"), //
+			ResourceFactory.createResource(_base + "/description-logic/Manifest905#test"), //
+			ResourceFactory.createResource(_base + "/description-logic/Manifest906#test"), //
+			ResourceFactory.createResource(_base + "/description-logic/Manifest907#test"), //
+			ResourceFactory.createResource(_base + "/description-logic/Manifest908#test"), //
+			ResourceFactory.createResource(_base + "/description-logic/Manifest909#test"), //
+			ResourceFactory.createResource(_base + "/description-logic/Manifest910#test"), //
+			ResourceFactory.createResource(_base + "/disjointWith/Manifest010#test"), //
+			ResourceFactory.createResource(_base + "/equivalentClass/Manifest008#test"), //
+			ResourceFactory.createResource(_base + "/equivalentProperty/Manifest005#test"), //
+			ResourceFactory.createResource(_base + "/extra-credit/Manifest002#test"), //
+			ResourceFactory.createResource(_base + "/extra-credit/Manifest003#test"), //
+			ResourceFactory.createResource(_base + "/extra-credit/Manifest004#test"), //
+			ResourceFactory.createResource(_base + "/I4.6/Manifest003#test"), //
+			ResourceFactory.createResource(_base + "/I4.6/Manifest005#test"), //
+			ResourceFactory.createResource(_base + "/I5.1/Manifest001#test"), //
+			ResourceFactory.createResource(_base + "/I5.24/Manifest002#test"), //
+			ResourceFactory.createResource(_base + "/I5.26/Manifest006#test"), //
+			ResourceFactory.createResource(_base + "/I5.26/Manifest007#test"), //
+			ResourceFactory.createResource(_base + "/I5.3/Manifest014#test"), //
+			ResourceFactory.createResource(_base + "/I5.3/Manifest015#test"), //
+			ResourceFactory.createResource(_base + "/I5.5/Manifest003#test"), //
+			ResourceFactory.createResource(_base + "/I5.5/Manifest004#test"), //
+			ResourceFactory.createResource(_base + "/I5.5/Manifest006#test"), //
+			ResourceFactory.createResource(_base + "/I5.5/Manifest007#test"), //
+			ResourceFactory.createResource(_base + "/I5.8/Manifest012#test"), //
+			ResourceFactory.createResource(_base + "/I5.8/Manifest017#test"), //
+			ResourceFactory.createResource(_base + "/miscellaneous/Manifest202#test"), //
+			ResourceFactory.createResource(_base + "/miscellaneous/Manifest205#test"), //
+			ResourceFactory.createResource(_base + "/miscellaneous/Manifest302#test"), //
+			ResourceFactory.createResource(_base + "/Ontology/Manifest003#test"), //
+			ResourceFactory.createResource(_base + "/Restriction/Manifest005#test"), //
+			ResourceFactory.createResource(_base + "/Restriction/Manifest006#test"), //
+			ResourceFactory.createResource(_base + "/sameAs/Manifest001#test"), //
+			ResourceFactory.createResource(_base + "/someValuesFrom/Manifest001#test"), //
+			ResourceFactory.createResource(_base + "/someValuesFrom/Manifest003#test"), //
+			ResourceFactory.createResource(_base + "/Thing/Manifest005#test") });
 
 	final public static int TEST_PASS = 0;
 	final public static int TEST_FAIL = 1;
@@ -168,7 +201,7 @@ public class WebOntTest
 
 	private final int[][][][] _stats = new int[LEVELS.size()][STATUS.size()][TYPES.size()][RESULTS.size()];
 
-	// a table showing the test results for each _individual test case
+	// a table showing the test results for each individual test case
 	private final Vector<Vector<Object>> results = new Vector<>();
 
 	// maximum number of test cases to process
@@ -180,37 +213,21 @@ public class WebOntTest
 
 	public final static void main(final String[] args)
 	{
-		final WebOntTest owlTest = new WebOntTest();
-		owlTest.run(args);
+		new WebOntTest().run(args);
 	}
 
 	public WebOntTest()
 	{
 		for (final WebOntTester tester : _testers)
 		{
-			tester.registerURIMapping("http://www.w3.org/2002/03owlt/imports/support001-A", _localBase + "owl-test/imports/support001-A.rdf");
-			tester.registerURIMapping("http://www.w3.org/2002/03owlt/imports/support003-A", _localBase + "owl-test/imports/support003-A.rdf");
-			tester.registerURIMapping("http://www.w3.org/2002/03owlt/imports/support011-A", _localBase + "owl-test/imports/support011-A.rdf");
-			tester.registerURIMapping("http://www.w3.org/2002/03owlt/imports/support003-B", _localBase + "owl-test/imports/support003-B.rdf");
-			tester.registerURIMapping("http://www.w3.org/2002/03owlt/imports/consistent012", _localBase + "owl-test/imports/consistent012.rdf");
-			tester.registerURIMapping("http://www.w3.org/2002/03owlt/miscellaneous/consistent002", _localBase + "owl-test/miscellaneous/consistent002.rdf");
-			tester.registerURIMapping("http://www.w3.org/2002/03owlt/miscellaneous/consistent001", _localBase + "owl-test/miscellaneous/consistent001.rdf");
+			tester.registerURIMapping(_base + "/imports/support001-A", _localBase + "owl-test/imports/support001-A.rdf");
+			tester.registerURIMapping(_base + "/imports/support003-A", _localBase + "owl-test/imports/support003-A.rdf");
+			tester.registerURIMapping(_base + "/imports/support011-A", _localBase + "owl-test/imports/support011-A.rdf");
+			tester.registerURIMapping(_base + "/imports/support003-B", _localBase + "owl-test/imports/support003-B.rdf");
+			tester.registerURIMapping(_base + "/imports/consistent012", _localBase + "owl-test/imports/consistent012.rdf");
+			tester.registerURIMapping(_base + "/miscellaneous/consistent002", _localBase + "owl-test/miscellaneous/consistent002.rdf");
+			tester.registerURIMapping(_base + "/miscellaneous/consistent001", _localBase + "owl-test/miscellaneous/consistent001.rdf");
 		}
-	}
-
-	public List<WebOntTester> getTesters()
-	{
-		return Arrays.asList(_testers);
-	}
-
-	public void setTesters(final List<WebOntTester> testers)
-	{
-		_testers = testers.toArray(new WebOntTester[0]);
-	}
-
-	public String getBase()
-	{
-		return _newBase;
 	}
 
 	public void setBase(final String newBase)
@@ -224,19 +241,9 @@ public class WebOntTest
 		_newBase = newBase;
 	}
 
-	public boolean isAvoidFailTests()
-	{
-		return _avoidFailTests;
-	}
-
 	public void setAvoidFailTests(final boolean avoidFailTests)
 	{
 		_avoidFailTests = avoidFailTests;
-	}
-
-	public int getShowStats()
-	{
-		return _showStats;
 	}
 
 	public void setShowStats(final int showStats)
@@ -246,56 +253,76 @@ public class WebOntTest
 
 	public void run(final String[] args)
 	{
-		String manifestFile = _base + "Manifest.rdf";
+		String manifestFile = _base + "testOntology.rdf"; // "Manifest.rdf";
 
 		for (int i = 0; i < args.length; i++)
 		{
 			final String arg = args[i];
 
-			if ("-timeout".equals(arg))
-				_timeout = Integer.parseInt(args[++i]);
-			else
-				if ("-avoidFail".equals(arg))
+			switch (arg)
+			{
+				case "-timeout":
+				{
+					_timeout = Integer.parseInt(args[++i]);
+					break;
+				}
+				case "-avoidFail":
+				{
 					_avoidFailTests = true;
-				else
-					if ("-manifest".equals(arg))
+					break;
+				}
+				case "-manifest":
+				{
+					manifestFile = args[++i];
+					if (!manifestFile.startsWith("http://"))
+						manifestFile = _base + "/" + manifestFile;
+					break;
+				}
+				case "-validate":
+				{
+					OpenlletOptions.VALIDATE_ABOX = true;
+					break;
+				}
+				case "-n":
+				{
+					try
 					{
-						manifestFile = args[++i];
-						if (!manifestFile.startsWith("http://"))
-							manifestFile = "http://www.w3.org/2002/03owlt/" + manifestFile;
+						MAX_TEST_COUNT = Integer.parseInt(args[++i]);
 					}
-					// else if("-base".equals(_arg)) {
-					// setBase( args[++i] );
-					// }
-					else
-						if ("-validate".equals(arg))
-							OpenlletOptions.VALIDATE_ABOX = true;
-						else
-							if ("-n".equals(arg))
-								try
-								{
-									MAX_TEST_COUNT = Integer.parseInt(args[++i]);
-								}
-								catch (final Exception e)
-								{
-									System.err.println(e);
-								}
-							else
-								if ("-stats".startsWith(arg))
-								{
-									final String stats = args[++i].toLowerCase();
-									if ("no".equals(stats))
-										_showStats = NO_STATS;
-									else
-										if ("short".equals(stats))
-											_showStats = SHORT_STATS;
-										else
-											if ("long".equals(stats))
-												_showStats = LONG_STATS;
-											else
-												if ("all".equals(stats))
-													_showStats = ALL_STATS;
-								}
+					catch (final Exception e)
+					{
+						System.err.println(e);
+					}
+					break;
+				}
+				case "-stats":
+				{
+					final String stats = args[++i].toLowerCase();
+					switch (stats)
+					{
+						case "no":
+						{
+							_showStats = NO_STATS;
+							break;
+						}
+						case "short":
+						{
+							_showStats = SHORT_STATS;
+							break;
+						}
+						case "long":
+						{
+							_showStats = LONG_STATS;
+							break;
+						}
+						default:
+							_showStats = ALL_STATS;
+					}
+					break;
+				}
+				default:
+					System.err.println("Unknow parameter " + arg);
+			}
 		}
 
 		System.out.println("Reading manifest file " + manifestFile);
@@ -320,7 +347,7 @@ public class WebOntTest
 			// Create system description
 			final Resource system = ResourceFactory.createResource();
 			outputModel.add(system, RDFS.label, "Openllet");
-			outputModel.add(system, RDFS.comment, "This was generated by the Openllet reasoner which can be found at http://pellet.owldl.com/");
+			outputModel.add(system, RDFS.comment, "This was generated by the Openllet reasoner which can be found at https://github.com/Galigator/openllet");
 
 			model.read(manifestFile, "");
 
@@ -337,23 +364,21 @@ public class WebOntTest
 					continue;
 
 				// Output statements
-				Statement levelStmt = testCase.getProperty(OWLTestVocabulary.level);
-				final Statement statusStmt = testCase.getProperty(OWLTestVocabulary.status);
+				Statement levelStmt = testCase.getProperty(level);
+				final Statement statusStmt = testCase.getProperty(status);
 
 				final Vector<String> levels = new Vector<>();
-				// Changes according to the editors-draft. For each test there
-				// can
-				// be more than one level. Basically each Lite test is also a
-				// Full
+				// Changes according to the editors-draft. For each test there can
+				// be more than one level. Basically each Lite test is also a Full
 				// test and now this information is given explicitly in Manifest
 				// So loop through all the levels and find the tight bound
-				final int level = 3; // 0 - Lite, 1 - DL, 2 - Full
-				final StmtIterator si = testCase.listProperties(OWLTestVocabulary.level);
+				final int reasoningLevel = 3; // 0 - Lite, 1 - DL, 2 - Full
+				final StmtIterator si = testCase.listProperties(level);
 				while (si.hasNext())
 				{
 					final Statement s = si.nextStatement();
 					final String levelName = s.getResource().getLocalName();
-					if (level > LEVELS.indexOf(levelName))
+					if (reasoningLevel > LEVELS.indexOf(levelName))
 					{
 						levelStmt = s;
 						levels.add(levelName);
@@ -365,13 +390,13 @@ public class WebOntTest
 				final RDFNode testStatus = statusStmt.getObject();
 
 				// don't do or report anything about obsolete test cases
-				if (testStatus.equals(OWLTestVocabulary.Obsoleted))
+				if (testStatus.equals(Obsoleted))
 					continue;
 				else
 					if (testStatus.toString().startsWith("OBSOLETE"))
 						continue;
 					else
-						if (testType.equals(OWLTestVocabulary.OWLforOWLTest))
+						if (testType.equals(OWLforOWLTest))
 							continue;
 
 				testCount++;
@@ -393,9 +418,6 @@ public class WebOntTest
 				result.add(testStatus);
 
 				long time = System.currentTimeMillis();
-
-				// int testResult =
-				// doTestCase(testCase, testType, testLevel, testStatus);
 
 				int testResult = TEST_FAIL;
 
@@ -419,8 +441,7 @@ public class WebOntTest
 				}
 				catch (final StackOverflowError e)
 				{
-					// reporting failure for the bugs in our code causes
-					// problem for the approval of tests in webont wg
+					// reporting failure for the bugs in our code causes problem for the approval of tests in webont wg
 					System.err.println("Fail  : Stack overflow");
 					printStackTrace(e);
 				}
@@ -435,30 +456,24 @@ public class WebOntTest
 				// Insert test results;
 				final Resource testRun = ResourceFactory.createResource();
 				final Property type = ResourceFactory.createProperty("http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
-				final Property tcProp = ResourceFactory.createProperty("http://www.w3.org/2002/03owlt/resultsOntology#test");
-				final Resource runtype = ResourceFactory.createResource("http://www.w3.org/2002/03owlt/resultsOntology#TestRun");
-				final Property systemProp = ResourceFactory.createProperty("http://www.w3.org/2002/03owlt/resultsOntology#system");
+				final Property tcProp = ResourceFactory.createProperty(_base + "/resultsOntology#test");
+				final Resource runtype = ResourceFactory.createResource(_base + "/resultsOntology#TestRun");
+				final Property systemProp = ResourceFactory.createProperty(_base + "/resultsOntology#system");
 				Resource resultType = null;
 				if (testResult == TEST_FAIL)
 				{
 					if (time >= _timeout * 1000)
-						resultType = ResourceFactory.createResource("http://www.w3.org/2002/03owlt/resultsOntology#IncompleteRun");
+						resultType = ResourceFactory.createResource(_base + "/resultsOntology#IncompleteRun");
 					else
-						resultType = ResourceFactory.createResource("http://www.w3.org/2002/03owlt/resultsOntology#FailingRun");
+						resultType = ResourceFactory.createResource(_base + "/resultsOntology#FailingRun");
 				}
 				else
 					if (testResult == TEST_PASS)
-						resultType = ResourceFactory.createResource("http://www.w3.org/2002/03owlt/resultsOntology#PassingRun");
+						resultType = ResourceFactory.createResource(_base + "/resultsOntology#PassingRun");
 					else
 						if (testResult == TEST_SKIP)
 						{
-							// resultType =
-							// ResourceFactory.createResource("http://www.w3.org/2002/03owlt/resultsOntology#FailingRun");
-						}
-						else
-						{
-							// resultType =
-							// ResourceFactory.createResource("http://www.w3.org/2002/03owlt/resultsOntology#FailingRun");
+							/* empty because skip ! */
 						}
 
 				outputModel.add(ResourceFactory.createStatement(testRun, type, runtype));
@@ -483,18 +498,11 @@ public class WebOntTest
 
 				_stats[i1][i2][i3][i4]++;
 
-				// System.out.println("Time : " +
-				// Pellet.getTimeInfo(true));//time + " ms (" +
-				// Pellet.getTimeInfo(true) + " ms)");
 				System.out.println("Result: " + RESULTS.get(testResult));
 				System.out.println("--------------------------------------------------------------------");
 
-				allPassed &= (testResult == TEST_PASS);
+				allPassed &= testResult == TEST_PASS;
 			}
-
-			// FileOutputStream output = new FileOutputStream("results.rdf");
-			// outputModel.write(output);
-			// output.close();
 
 			printStatistics();
 		}
@@ -524,7 +532,7 @@ public class WebOntTest
 		while (!TYPES.contains(stmt.getObject()));
 
 		final Resource testCase = stmt.getSubject();
-		final Statement statusStmt = testCase.getProperty(OWLTestVocabulary.status);
+		final Statement statusStmt = testCase.getProperty(status);
 
 		final Resource testType = stmt.getResource();
 		final RDFNode testStatus = statusStmt.getObject();
@@ -532,40 +540,20 @@ public class WebOntTest
 		if (_avoidFailTests && AVOID.contains(testCase))
 			return TEST_SKIP;
 		else
-			if (testStatus.equals(OWLTestVocabulary.Obsoleted))
+			if (testStatus.equals(Obsoleted))
 				return TEST_SKIP;
 			else
 				if (testStatus.toString().startsWith("OBSOLETE"))
 					return TEST_SKIP;
 				else
-					if (testType.equals(OWLTestVocabulary.OWLforOWLTest))
+					if (testType.equals(OWLforOWLTest))
 						return TEST_SKIP;
 
 		_logger.fine("Name  : " + testCase);
 
-		//		long time = System.currentTimeMillis();
-
 		int testResult = TEST_FAIL;
 
-		// try {
 		testResult = doTestCase(testCase, testType);
-		// }
-		// catch (StackOverflowError e) {
-		// // reporting failure for the bugs in our code causes
-		// // problem for the approval of tests in webont wg
-		// testResult = TEST_FAIL;
-		// System.err.println("Fail : Stack overflow");
-		// printStackTrace(e);
-		// }
-		// catch (OutOfMemoryError e) {
-		// testResult = TEST_FAIL;
-		// System.err.println("Fail : Out of Memory");
-		// }
-
-		//		time = System.currentTimeMillis() - time;
-
-		// System.out.print( RESULTS.get(testResult) );
-		// System.out.print(ln " (" + time + "ms)");
 
 		return testResult;
 	}
@@ -577,8 +565,7 @@ public class WebOntTest
 		{
 			final Object[][] data = new Object[LEVELS.size() * (TYPES.size() + 1) + 1][RESULTS.size()];
 
-			// level,status,type,result
-			for (int r = 0; r < 3; r++)
+			for (int r = 0; r < 3; r++) // level,status,type,result
 			{
 				int columnTotal = 0;
 				for (int l = 0; l < LEVELS.size(); l++)
@@ -698,9 +685,6 @@ public class WebOntTest
 		columnNames.add("Time (ms)");
 		columnNames.add("Result");
 
-		// String[] columnNames = new String[] {
-		// "No", "Name", "Type", "Level", "Status", "Time (ms)", "Result"};
-
 		final JTable resultsTable = new JTable(results, columnNames);
 
 		resultsTable.getColumnModel().getColumn(0).setPreferredWidth(15);
@@ -727,7 +711,9 @@ public class WebOntTest
 		if (_newBase != null)
 			fileName = fileName.replaceFirst(_base, _newBase);
 
-		if (!fileName.endsWith(".rdf") && !fileName.endsWith(".owl") && !fileName.endsWith(".n3"))
+		if (!fileName.endsWith(".rdf") && //
+				!fileName.endsWith(".owl") && //
+				!fileName.endsWith(".n3"))
 			fileName += ".rdf";
 
 		return fileName;
@@ -735,7 +721,7 @@ public class WebOntTest
 
 	private int doConsistencyTest(final Resource testCase, final boolean isConsistent)
 	{
-		String inputFile = testCase.hasProperty(OWLTestVocabulary.inputDocument) ? testCase.getProperty(OWLTestVocabulary.inputDocument).getObject().toString() : null;
+		String inputFile = testCase.hasProperty(inputDocument) ? testCase.getProperty(inputDocument).getObject().toString() : null;
 
 		if (inputFile != null)
 		{
@@ -764,8 +750,8 @@ public class WebOntTest
 
 	private int doEntailmentTest(final Resource testCase, final boolean isEntailed, final boolean classifyFirst)
 	{
-		String inputFile = testCase.hasProperty(OWLTestVocabulary.premiseDocument) ? testCase.getProperty(OWLTestVocabulary.premiseDocument).getObject().toString() : null;
-		String conclusionsFile = testCase.getProperty(OWLTestVocabulary.conclusionDocument).getObject().toString();
+		String inputFile = testCase.hasProperty(premiseDocument) ? testCase.getProperty(premiseDocument).getObject().toString() : null;
+		String conclusionsFile = testCase.getProperty(conclusionDocument).getObject().toString();
 
 		if (inputFile != null)
 		{
@@ -789,15 +775,13 @@ public class WebOntTest
 				return TEST_FAIL;
 			}
 
-			// This is for the ClassificationTest used for galen, koala, SUMO,
-			// SWEET, wine
+			// This is for the ClassificationTest used for galen, koala, SUMO, SWEET, wine
 			if (classifyFirst)
 				tester.classify();
 
 			tester.testEntailment(conclusionsFile, isEntailed);
 
-			// double check for entailments after classification and realization
-			// to test for possible bugs in caching and taxonomy
+			// double check for entailments after classification and realization to test for possible bugs in caching and taxonomy
 			if (WebOntTest.DOUBLE_CHECK_ENTAILMENTS)
 			{
 				tester.classify();
@@ -813,31 +797,31 @@ public class WebOntTest
 
 	private int doTestCase(final Resource testCase, final Resource testType)
 	{
-		if (testType.equals(OWLTestVocabulary.PositiveEntailmentTest))
+		if (testType.equals(PositiveEntailmentTest))
 			return doEntailmentTest(testCase, true, false);
 		else
-			if (testType.equals(OWLTestVocabulary.NegativeEntailmentTest))
+			if (testType.equals(NegativeEntailmentTest))
 				return doEntailmentTest(testCase, false, false);
 			else
-				if (testType.equals(OWLTestVocabulary.ConsistencyTest))
+				if (testType.equals(ConsistencyTest))
 					return doConsistencyTest(testCase, true);
 				else
-					if (testType.equals(OWLTestVocabulary.InconsistencyTest))
+					if (testType.equals(InconsistencyTest))
 						return doConsistencyTest(testCase, false);
 					else
-						if (testType.equals(OWLTestVocabulary.ImportEntailmentTest))
+						if (testType.equals(ImportEntailmentTest))
 							return doEntailmentTest(testCase, true, false);
 						else
-							if (testType.equals(OWLTestVocabulary.NotOwlFeatureTest))
+							if (testType.equals(NotOwlFeatureTest))
 								return TEST_SKIP;
 							else
-								if (testType.equals(OWLTestVocabulary.ImportLevelTest))
+								if (testType.equals(ImportLevelTest))
 									return TEST_SKIP;
 								else
-									if (testType.equals(OWLTestVocabulary.OWLforOWLTest))
+									if (testType.equals(OWLforOWLTest))
 										return TEST_SKIP;
 									else
-										if (testType.equals(OWLTestVocabulary.ClassificationTest))
+										if (testType.equals(ClassificationTest))
 											return doEntailmentTest(testCase, true, true);
 
 		throw new OpenError("Unknown test type " + testType.getLocalName() + " for " + testCase);

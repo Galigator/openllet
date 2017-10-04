@@ -70,15 +70,14 @@ public class GeneralFunctionBuiltIn implements BuiltIn
 			return vars;
 		}
 
+		@SuppressWarnings("unlikely-arg-type")
 		private boolean isApplicable(final Collection<AtomVariable> bound)
 		{
 			final boolean[] boundPositions = new boolean[_atom.getAllArguments().size()];
 
 			for (int i = 0; i < boundPositions.length; i++)
-				if (bound.contains(_atom.getAllArguments().get(i)))
-					boundPositions[i] = true;
-				else
-					boundPositions[i] = false;
+				boundPositions[i] = bound.contains(_atom.getAllArguments().get(i));
+
 			return _function.isApplicable(boundPositions);
 		}
 

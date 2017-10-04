@@ -25,7 +25,7 @@ import org.semanticweb.owlapi.model.IRI;
 public class ReadOnlyTestRunner<T> implements TestRunner<T>
 {
 
-	public static ReadOnlyTestRunner<?> testRunner(IRI iri, String name)
+	public static ReadOnlyTestRunner<?> testRunner(final IRI iri, final String name)
 	{
 		return new ReadOnlyTestRunner<>(iri, name);
 	}
@@ -33,14 +33,14 @@ public class ReadOnlyTestRunner<T> implements TestRunner<T>
 	final private IRI _iri;
 	final private String _name;
 
-	public ReadOnlyTestRunner(IRI iri, String name)
+	public ReadOnlyTestRunner(final IRI iri, final String name)
 	{
-		this._iri = iri;
-		this._name = name;
+		_iri = iri;
+		_name = name;
 	}
 
 	@Override
-	public boolean equals(Object obj)
+	public boolean equals(final Object obj)
 	{
 		if (this == obj)
 			return true;
@@ -73,7 +73,7 @@ public class ReadOnlyTestRunner<T> implements TestRunner<T>
 	}
 
 	@Override
-	public Collection<TestRunResult> run(TestCase<T> testcase, long timeout)
+	public Collection<TestRunResult> run(final TestCase<T> testcase, final long timeout)
 	{
 		throw new UnsupportedOperationException();
 	}
