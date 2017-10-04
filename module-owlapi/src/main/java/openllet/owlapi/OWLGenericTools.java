@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import openllet.atom.OpenError;
 import openllet.shared.tools.Log;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;
@@ -89,7 +90,8 @@ public class OWLGenericTools implements OWLHelper
 			}
 			catch (final Exception e)
 			{
-				_logger.log(Level.SEVERE, "", e);
+				Log.error(_logger, e);
+				throw new OpenError(e);
 			}
 
 		_reasoner.get().flush();
@@ -128,7 +130,7 @@ public class OWLGenericTools implements OWLHelper
 				manager = _ontology.getOWLOntologyManager();
 			else
 			{ // Not in volatile manager.
-					// Maybe we should load it.
+				// Maybe we should load it.
 				manager = group.getOntologiesDirectory().isPresent() ? group.getPersistentManager() : group.getVolatileManager();
 				final File file = new File(group.ontology2filename(ontologyID));
 				if (file.exists())

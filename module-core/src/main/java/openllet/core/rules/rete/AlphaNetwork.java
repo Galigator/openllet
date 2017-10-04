@@ -136,7 +136,7 @@ public class AlphaNetwork implements Iterable<AlphaNode>
 
 		activateDifferents(ind);
 
-		for (final Edge edge : ind.getOutEdges())
+		for (final Edge edge : new ArrayList<>(ind.getOutEdges()))
 			if (edge.getTo().isRootNominal())
 				activateEdge(edge);
 

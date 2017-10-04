@@ -30,11 +30,9 @@
 
 package openllet.core.boxes.abox;
 
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.Vector;
 import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
 import openllet.core.boxes.rbox.Role;
@@ -43,171 +41,82 @@ import openllet.core.utils.ATermUtils;
 /**
  * @author Evren Sirin
  */
-public class EdgeList implements Iterable<Edge>
+public class EdgeList extends Vector<Edge>
 {
-	private volatile Edge[] _list;
-	private volatile int _size;
-
-	private class EdgeIterator implements Iterator<Edge>
-	{
-		private volatile int curr = 0;
-
-		public EdgeIterator()
-		{
-		}
-
-		@Override
-		public boolean hasNext()
-		{
-			return curr != _size;
-		}
-
-		@Override
-		public Edge next()
-		{
-			if (!hasNext())
-				throw new NoSuchElementException();
-
-			return _list[curr++];
-		}
-
-		@Override
-		public void remove()
-		{
-			removeEdge(--curr);
-		}
-	}
+	private static final long serialVersionUID = -4849551813090525636L;
 
 	public EdgeList()
 	{
-		this(10);
+		super();
 	}
 
 	public EdgeList(final int n)
 	{
-		_list = new Edge[n];
-		_size = 0;
+		super(n);
 	}
 
 	public EdgeList(final EdgeList edges)
 	{
-		this(edges._size);
-
+		this(edges.size());
 		addEdgeList(edges);
-	}
-
-	//	/**
-	//	 * Create an immutable singleton EdgeList;
-	//	 *
-	//	 * @param edge
-	//	 */
-	//	public EdgeList(final Edge edge)
-	//	{
-	//		_list = new Edge[1];
-	//		_list[0] = edge;
-	//		_size = 0;
-	//	}
-
-	private void allocate(final int minSize)
-	{
-		final int oldSize = _list.length;
-		if (minSize > oldSize)
-		{
-			final Edge oldList[] = _list;
-			int newSize = oldSize * 3 / 2 + 1;
-			if (newSize < minSize)
-				newSize = minSize;
-			_list = new Edge[newSize];
-			System.arraycopy(oldList, 0, _list, 0, oldSize);
-		}
 	}
 
 	public void addEdgeList(final EdgeList edges)
 	{
-		final int edgesSize = edges._size;
-		allocate(_size + edgesSize);
-		System.arraycopy(edges._list, 0, _list, _size, edgesSize);
-		_size += edgesSize;
+		super.addAll(edges);
 	}
 
 	public void addEdge(final Edge e)
 	{
-		allocate(_size + 1);
-		_list[_size++] = e;
+		super.add(e);
 	}
 
+	/**
+	 * Remove an element by replacing it by the last element. Order isn't preserved.
+	 *
+	 * @param edge to remove
+	 * @return true if removing occured
+	 */
 	public boolean removeEdge(final Edge edge)
 	{
-		for (int i = 0; i < _size; i++)
-		{
-			final Edge e = _list[i];
-			if (e.equals(edge))
+		for (int i = 0, l = size(); i < l; i++)
+			if (get(i).equals(edge))
 			{
 				removeEdge(i);
 				return true;
 			}
-		}
 
 		return false;
 	}
 
 	protected void removeEdge(final int index)
 	{
-		_list[index] = _list[--_size];
-		_list[_size] = null;
+		set(index, lastElement());
+		removeElementAt(size() - 1);
 	}
 
 	public Edge edgeAt(final int i)
 	{
-		return _list[i];
-	}
-
-	public int size()
-	{
-		return _size;
+		return get(i);
 	}
 
 	public EdgeList sort()
 	{
 		final EdgeList sorted = new EdgeList(this);
-		Arrays.sort(sorted._list, (e1, e2) -> e1.getDepends().max() - e2.getDepends().max());
+		sort((e1, e2) -> e1.getDepends().max() - e2.getDepends().max());
 		return sorted;
-	}
-
-	public boolean isEmpty()
-	{
-		return _size == 0;
-	}
-
-	@Override
-	public Iterator<Edge> iterator()
-	{
-		return new EdgeIterator();
 	}
 
 	private EdgeList findEdges(final Role role, final Individual from, final Node to)
 	{
 		final EdgeList result = new EdgeList();
 
-		for (int i = 0; i < _size; i++)
-		{
-			final Edge e = _list[i];
+		for (final Edge e : this)
 			if ((from == null || from.equals(e.getFrom())) && (role == null || e.getRole().isSubRoleOf(role)) && (to == null || to.equals(e.getTo())))
 				result.addEdge(e);
-		}
 
 		return result;
 	}
-
-	//	public EdgeList getEdgesFromTo(final Individual from, final Node to)
-	//	{
-	//		return findEdges(null, from, to);
-	//	}
-
-	//	public EdgeList getEdgesFrom(final Individual from)
-	//	{
-	//		return findEdges(null, from, null);
-	//	}
 
 	public EdgeList getEdgesTo(final Node to)
 	{
@@ -228,12 +137,9 @@ public class EdgeList implements Iterable<Edge>
 	{
 		final EdgeList result = new EdgeList();
 
-		for (int i = 0; i < _size; i++)
-		{
-			final Edge e = _list[i];
+		for (final Edge e : this)
 			if (e.getRole().isSubRoleOf(role))
 				result.addEdge(e);
-		}
 
 		return result;
 	}
@@ -242,11 +148,8 @@ public class EdgeList implements Iterable<Edge>
 	{
 		final Set<Role> result = new HashSet<>();
 
-		for (int i = 0; i < _size; i++)
-		{
-			final Edge e = _list[i];
+		for (final Edge e : this)
 			result.add(e.getRole());
-		}
 
 		return result;
 	}
@@ -255,11 +158,8 @@ public class EdgeList implements Iterable<Edge>
 	{
 		final Set<Node> result = new HashSet<>();
 
-		for (int i = 0; i < _size; i++)
-		{
-			final Edge e = _list[i];
+		for (final Edge e : this)
 			result.add(e.getNeighbor(node));
-		}
 
 		return result;
 	}
@@ -276,9 +176,8 @@ public class EdgeList implements Iterable<Edge>
 		final Set<Node> result = new HashSet<>();
 
 		String lang = null;
-		for (int i = 0; i < _size; i++)
+		for (final Edge edge : this)
 		{
-			final Edge edge = _list[i];
 			final Node neighbor = edge.getNeighbor(node);
 
 			if (!ATermUtils.isTop(c) && !neighbor.hasType(c))
@@ -308,20 +207,10 @@ public class EdgeList implements Iterable<Edge>
 		return hasEdge(from, null, null);
 	}
 
-	//	public boolean hasEdgeFrom(final Individual from, final Role role)
-	//	{
-	//		return hasEdge(from, role, null);
-	//	}
-
 	public boolean hasEdgeTo(final Node to)
 	{
 		return hasEdge(null, null, to);
 	}
-
-	//	public boolean hasEdgeTo(final Role role, final Node to)
-	//	{
-	//		return hasEdge(null, role, to);
-	//	}
 
 	public boolean hasEdge(final Role role)
 	{
@@ -340,12 +229,9 @@ public class EdgeList implements Iterable<Edge>
 	 */
 	public boolean hasEdge(final Individual from, final Role role, final Node to)
 	{
-		for (int i = 0; i < _size; i++)
-		{
-			final Edge e = _list[i];
+		for (final Edge e : this)
 			if ((from == null || from.equals(e.getFrom())) && (role == null || e.getRole().isSubRoleOf(role)) && (to == null || to.equals(e.getTo())))
 				return true;
-		}
 
 		return false;
 	}
@@ -361,12 +247,9 @@ public class EdgeList implements Iterable<Edge>
 	 */
 	public boolean hasExactEdge(final Individual from, final Role role, final Node to)
 	{
-		for (int i = 0; i < _size; i++)
-		{
-			final Edge e = _list[i];
+		for (final Edge e : this)
 			if ((from == null || from.equals(e.getFrom())) && (role == null || e.getRole().equals(role)) && (to == null || to.equals(e.getTo())))
 				return true;
-		}
 
 		return false;
 	}
@@ -378,12 +261,9 @@ public class EdgeList implements Iterable<Edge>
 
 	public Edge getExactEdge(final Individual from, final Role role, final Node to)
 	{
-		for (int i = 0; i < _size; i++)
-		{
-			final Edge e = _list[i];
+		for (final Edge e : this)
 			if ((from == null || from.equals(e.getFrom())) && (role == null || e.getRole().equals(role)) && (to == null || to.equals(e.getTo())))
 				return e;
-		}
 
 		return null;
 	}
@@ -392,31 +272,10 @@ public class EdgeList implements Iterable<Edge>
 	{
 		DependencySet ds = DependencySet.INDEPENDENT;
 
-		for (int i = 0; i < _size; i++)
-		{
-			final Edge e = _list[i];
+		for (final Edge e : this)
 			ds = ds.union(e.getDepends(), doExplanation);
-		}
 
 		return ds;
-	}
-
-	@Override
-	public String toString()
-	{
-		if (_size == 0)
-			return "[]";
-
-		final StringBuilder b = new StringBuilder();
-		b.append('[');
-		b.append(_list[0]);
-		for (int i = 1; i < _size; i++)
-		{
-			b.append(", ");
-			b.append(_list[i]);
-		}
-		b.append(']');
-		return b.toString();
 	}
 
 	/**
@@ -424,9 +283,9 @@ public class EdgeList implements Iterable<Edge>
 	 */
 	public void reset()
 	{
-		for (int i = 0; i < _size; i++)
+		for (int i = 0; i < size(); i++)
 		{
-			final Edge e = _list[i];
+			final Edge e = get(i);
 
 			if (e.getDepends().getBranch() != DependencySet.NO_BRANCH)
 				removeEdge(i--);
