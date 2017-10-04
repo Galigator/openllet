@@ -378,7 +378,7 @@ public class TrivialSatisfactionHelpers
 			final EdgeList list = node1.getRNeighborEdges(_role);
 			for (int i = 0, n = list.size(); i < n; i++)
 			{
-				final Edge edge = list.edgeAt(i);
+				final Edge edge = list.get(i);
 				if (edge.getNeighbor(node1).equals(node2))
 					return edge.getDepends();
 			}

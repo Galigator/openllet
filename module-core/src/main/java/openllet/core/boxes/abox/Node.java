@@ -181,7 +181,7 @@ public abstract class Node
 		_inEdges = new EdgeList(oldEdges.size());
 		for (int i = 0; i < oldEdges.size(); i++)
 		{
-			final Edge edge = oldEdges.edgeAt(i);
+			final Edge edge = oldEdges.get(i);
 
 			final Individual from = _abox.getIndividual(edge.getFrom().getName());
 
@@ -193,9 +193,9 @@ public abstract class Node
 
 			final Edge newEdge = new DefaultEdge(edge.getRole(), from, this, edge.getDepends());
 
-			_inEdges.addEdge(newEdge);
+			_inEdges.add(newEdge);
 			if (!isPruned())
-				from.getOutEdges().addEdge(newEdge);
+				from.getOutEdges().add(newEdge);
 		}
 	}
 
@@ -258,7 +258,7 @@ public abstract class Node
 
 	protected void addInEdge(final Edge edge)
 	{
-		_inEdges.addEdge(edge);
+		_inEdges.add(edge);
 	}
 
 	public EdgeList getInEdges()
@@ -387,7 +387,8 @@ public abstract class Node
 
 			final boolean removeType = OpenlletOptions.USE_SMART_RESTORE
 					//                ? ( !d.contains( _branch ) )
-					? d.max() >= branch : d.getBranch() > branch;
+					? d.max() >= branch
+					: d.getBranch() > branch;
 
 			if (removeType)
 			{
@@ -583,7 +584,7 @@ public abstract class Node
 
 				for (int e = 0; e < edges.size(); e++)
 				{
-					final Edge edge = edges.edgeAt(e);
+					final Edge edge = edges.get(e);
 
 					if (!edge.getDepends().isIndependent())
 					{
@@ -680,7 +681,7 @@ public abstract class Node
 
 		for (int i = 0; i < _inEdges.size(); i++)
 		{
-			final Edge edge = _inEdges.edgeAt(i);
+			final Edge edge = _inEdges.get(i);
 			final DependencySet d = edge.getDepends();
 
 			if (d.getBranch() <= branch)
@@ -954,7 +955,7 @@ public abstract class Node
 			Node node = this;
 			while (!node.getInEdges().isEmpty())
 			{
-				final Edge inEdge = node.getInEdges().edgeAt(0);
+				final Edge inEdge = node.getInEdges().get(0);
 				node = inEdge.getFrom();
 				if (cycle.contains(node))
 					break;

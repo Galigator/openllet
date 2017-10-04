@@ -61,11 +61,13 @@ public class EdgeList extends Vector<Edge>
 		addEdgeList(edges);
 	}
 
+	@Deprecated
 	public void addEdgeList(final EdgeList edges)
 	{
 		super.addAll(edges);
 	}
 
+	@Deprecated
 	public void addEdge(final Edge e)
 	{
 		super.add(e);
@@ -95,6 +97,7 @@ public class EdgeList extends Vector<Edge>
 		removeElementAt(size() - 1);
 	}
 
+	@Deprecated
 	public Edge edgeAt(final int i)
 	{
 		return get(i);

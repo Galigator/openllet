@@ -140,7 +140,7 @@ public class AlphaEdgeNode extends AlphaNode
 		else
 			if (edges.size() == 1)
 			{
-				final Edge edge = edges.edgeAt(0);
+				final Edge edge = edges.get(0);
 				return IteratorUtils.<WME> singletonIterator(createEdge(edge, dir));
 			}
 			else

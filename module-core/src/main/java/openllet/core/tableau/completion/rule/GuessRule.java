@@ -78,7 +78,7 @@ public class GuessRule extends AbstractTableauRule
 		EdgeList edges = x.getRPredecessorEdges(r.getInverse());
 		for (int e = 0; e < edges.size(); e++)
 		{
-			final Edge edge = edges.edgeAt(e);
+			final Edge edge = edges.get(e);
 			final Individual pred = edge.getFrom();
 			if (pred.isBlockable())
 			{
@@ -110,7 +110,7 @@ public class GuessRule extends AbstractTableauRule
 		edges = x.getRNeighborEdges(r);
 		for (int e = 0; e < edges.size(); e++)
 		{
-			final Edge edge = edges.edgeAt(e);
+			final Edge edge = edges.get(e);
 			ds = ds.union(edge.getDepends(), _strategy.getABox().doExplanation());
 		}
 

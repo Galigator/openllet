@@ -139,7 +139,7 @@ public class MaxCardinalityRule extends AbstractTableauRule
 		{
 			for (int e = 0; e < edges.size(); e++)
 			{
-				final Edge edge = edges.edgeAt(e);
+				final Edge edge = edges.get(e);
 				final Node neighbor = edge.getNeighbor(x);
 				final DependencySet typeDS = neighbor.getDepends(c);
 				if (typeDS != null)
@@ -288,7 +288,7 @@ public class MaxCardinalityRule extends AbstractTableauRule
 			// _neighbor list we need to first find the un-pruned _node
 			for (; edgeIndex < edgeCount; edgeIndex++)
 			{
-				final Edge edge = edges.edgeAt(edgeIndex);
+				final Edge edge = edges.get(edgeIndex);
 				head = edge.getNeighbor(x);
 
 				if (head.isPruned() || !neighbors.contains(head))
@@ -308,7 +308,7 @@ public class MaxCardinalityRule extends AbstractTableauRule
 			// that you always merge to a nominal of higher level
 			for (edgeIndex++; edgeIndex < edgeCount; edgeIndex++)
 			{
-				final Edge edge = edges.edgeAt(edgeIndex);
+				final Edge edge = edges.get(edgeIndex);
 				Node next = edge.getNeighbor(x);
 
 				if (next.isPruned() || !neighbors.contains(next))

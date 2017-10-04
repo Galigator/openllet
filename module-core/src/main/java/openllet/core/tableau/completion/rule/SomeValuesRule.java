@@ -262,7 +262,7 @@ public class SomeValuesRule extends AbstractTableauRule
 											fds = role.getExplainSuper(f.getName());
 										else
 											fds = role.getExplainSub(f.getName());
-									final Edge otherEdge = edges.edgeAt(0);
+									final Edge otherEdge = edges.get(0);
 									final Node otherNode = otherEdge.getNeighbor(x);
 									if (edge != null)
 									{
@@ -273,7 +273,7 @@ public class SomeValuesRule extends AbstractTableauRule
 								else
 								{
 									useExistingNode = true;
-									edge = edges.edgeAt(0);
+									edge = edges.get(0);
 									y = edge.getNeighbor(x);
 								}
 						}

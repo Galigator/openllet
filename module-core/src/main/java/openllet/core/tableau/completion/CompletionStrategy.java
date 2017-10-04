@@ -289,7 +289,7 @@ public abstract class CompletionStrategy
 				final EdgeList allEdges = n.getOutEdges();
 				for (int e = 0; e < allEdges.size(); e++)
 				{
-					final Edge edge = allEdges.edgeAt(e);
+					final Edge edge = allEdges.get(e);
 					if (edge.getTo().isPruned())
 						continue;
 
@@ -332,7 +332,7 @@ public abstract class CompletionStrategy
 			final EdgeList allEdges = n.getOutEdges();
 			for (int e = 0; e < allEdges.size(); e++)
 			{
-				final Edge edge = allEdges.edgeAt(e);
+				final Edge edge = allEdges.get(e);
 
 				if (edge.getTo().isPruned())
 					continue;
@@ -653,7 +653,7 @@ public abstract class CompletionStrategy
 		final EdgeList edges = subj.getEdgesTo(obj);
 		for (int i = 0, n = edges.size(); i < n; i++)
 		{
-			final Edge otherEdge = edges.edgeAt(i);
+			final Edge otherEdge = edges.get(i);
 
 			if (disjoints.contains(otherEdge.getRole()))
 			{
@@ -672,7 +672,7 @@ public abstract class CompletionStrategy
 		if (pred.isAsymmetric() && obj.hasRSuccessor(pred, subj))
 		{
 			final EdgeList edges = obj.getEdgesTo(subj, pred);
-			ds = ds.union(edges.edgeAt(0).getDepends(), _abox.doExplanation());
+			ds = ds.union(edges.get(0).getDepends(), _abox.doExplanation());
 			if (OpenlletOptions.USE_TRACING)
 				ds = ds.union(pred.getExplainAsymmetric(), _abox.doExplanation());
 			_abox.setClash(Clash.unexplained(subj, ds, "Antisymmetric property " + pred));
@@ -710,7 +710,7 @@ public abstract class CompletionStrategy
 		// find a nominal _node to use as the head
 		for (int edgeIndex = 0; edgeIndex < edges.size(); edgeIndex++)
 		{
-			final Edge edge = edges.edgeAt(edgeIndex);
+			final Edge edge = edges.get(edgeIndex);
 			final Individual ind = edge.getFrom();
 
 			if (ind.isNominal() && (head == null || ind.getNominalLevel() < head.getNominalLevel()))
@@ -728,7 +728,7 @@ public abstract class CompletionStrategy
 
 		for (int i = 0; i < edges.size(); i++)
 		{
-			final Edge edge = edges.edgeAt(i);
+			final Edge edge = edges.get(i);
 			final Individual next = edge.getFrom();
 
 			if (next.isPruned())
@@ -899,7 +899,7 @@ public abstract class CompletionStrategy
 		final EdgeList inEdges = y.getInEdges();
 		for (int e = 0; e < inEdges.size(); e++)
 		{
-			final Edge edge = inEdges.edgeAt(e);
+			final Edge edge = inEdges.get(e);
 
 			final Individual z = edge.getFrom();
 			final Role r = edge.getRole();
@@ -939,7 +939,7 @@ public abstract class CompletionStrategy
 		final EdgeList outEdges = y.getOutEdges();
 		for (int e = 0; e < outEdges.size(); e++)
 		{
-			final Edge edge = outEdges.edgeAt(e);
+			final Edge edge = outEdges.get(e);
 			final Node z = edge.getTo();
 
 			if (z.isNominal() && !y.equals(z))
@@ -977,7 +977,7 @@ public abstract class CompletionStrategy
 		final EdgeList inEdges = y.getInEdges();
 		for (int e = 0; e < inEdges.size(); e++)
 		{
-			final Edge edge = inEdges.edgeAt(e);
+			final Edge edge = inEdges.get(e);
 
 			final Individual z = edge.getFrom();
 			final Role r = edge.getRole();
@@ -999,7 +999,7 @@ public abstract class CompletionStrategy
 		y.prune(ds);
 
 		if (x.getNodeDepends() == null || y.getNodeDepends() == null)
-			throw new NullPointerException();
+			throw new OpenError("No node depend.");
 	}
 
 	@SuppressWarnings("static-method")

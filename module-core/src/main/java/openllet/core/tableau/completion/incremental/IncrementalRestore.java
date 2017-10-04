@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.logging.Level;
 import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
 import openllet.core.KnowledgeBase;
@@ -164,7 +163,7 @@ public class IncrementalRestore
 	 */
 	private void restoreBranchAdd(final ATermAppl assertion, final AddBranchDependency branch)
 	{
-		DependencyIndex._logger.fine(() -> "    Removing _branch add? " + branch.getBranch());
+		DependencyIndex._logger.fine(() -> "    Removing branch add? " + branch.getBranch());
 
 		final DependencySet ds = branch.getBranch().getTermDepends(); // get merge dependency
 
@@ -172,7 +171,7 @@ public class IncrementalRestore
 
 		if (ds.getExplain().isEmpty()) // undo merge if empty
 		{
-			DependencyIndex._logger.fine("           Actually removing _branch!");
+			DependencyIndex._logger.fine("           Actually removing branch!");
 			final ABox abox = _kb.getABox();
 
 			phase1(branch, abox); // TODO rename this function when you find the its semantic.
@@ -215,7 +214,7 @@ public class IncrementalRestore
 	{
 		if (branch.getCloseBranch().getTryNext() > -1) // only proceed if _tryNext is larger than 1!
 		{
-			DependencyIndex._logger.fine(() -> "    Undoing _branch remove - _branch " + branch.getBranch() + "  -  " + branch.getInd() + "   _tryNext: " + branch.getTryNext());
+			DependencyIndex._logger.fine(() -> "    Undoing branch remove - _branch " + branch.getBranch() + "  -  " + branch.getInd() + "   _tryNext: " + branch.getTryNext());
 			branch.getCloseBranch().shiftTryNext(branch.getTryNext()); // shift try next for _branch
 		}
 	}
@@ -283,8 +282,7 @@ public class IncrementalRestore
 	 */
 	private void restoreEdge(final ATermAppl assertion, final Edge theEdge)
 	{
-		if (DependencyIndex._logger.isLoggable(Level.FINE))
-			DependencyIndex._logger.fine("    Removing edge? " + theEdge);
+		DependencyIndex._logger.fine(() -> "    Removing edge? " + theEdge);
 
 		// the edge could have previously been removed so return
 		if (theEdge == null)
@@ -299,17 +297,15 @@ public class IncrementalRestore
 		final EdgeList edges = subj.getEdgesTo(obj, role);
 		for (int i = 0; i < edges.size(); i++)
 		{
-			final Edge edge = edges.edgeAt(i);
+			final Edge edge = edges.get(i);
 			if (edge.getRole().equals(role))
 			{
-				// get dependency set for the edge
-				final DependencySet ds = edge.getDepends();
 
-				// clean it
-				ds.removeExplain(assertion);
+				final DependencySet ds = edge.getDepends(); // get dependency set for the edge
 
-				// remove if the dependency set is empty
-				if (ds.getExplain().isEmpty())
+				ds.removeExplain(assertion); // clean it
+
+				if (ds.getExplain().isEmpty()) // remove if the dependency set is empty
 				{
 					final IncrementalChangeTracker tracker = _kb.getABox().getIncrementalChangeTracker();
 					// need to check if the
@@ -317,18 +313,14 @@ public class IncrementalRestore
 					subj.removeEdge(edge);
 					obj.removeInEdge(edge);
 
-					// update the removed set of edges
-					tracker.addDeletedEdge(edge);
+					tracker.addDeletedEdge(edge); // update the removed set of edges
 
-					// add to updated individuals
-					tracker.addUpdatedIndividual(subj);
+					tracker.addUpdatedIndividual(subj); // add to updated individuals
 
-					// TODO: Do we need to add literals?
-					if (obj instanceof Individual)
+					if (obj instanceof Individual) // TODO: Do we need to add literals?
 						tracker.addUpdatedIndividual((Individual) obj);
 
-					if (DependencyIndex._logger.isLoggable(Level.FINE))
-						DependencyIndex._logger.fine("           Actually removed edge!");
+					DependencyIndex._logger.fine("           Actually removed edge!");
 				}
 				break;
 			}
@@ -395,11 +387,7 @@ public class IncrementalRestore
 		final Node node = _kb.getABox().getNode(type.getInd());
 		final ATermAppl desc = type.getType();
 
-		if (DependencyIndex._logger.isLoggable(Level.FINE))
-			if (node instanceof Individual)
-				DependencyIndex._logger.fine("    Removing type? " + desc + " from " + ((Individual) node).debugString());
-			else
-				DependencyIndex._logger.fine("    Removing type? " + desc + " from " + node);
+		DependencyIndex._logger.fine(() -> "    Removing type? " + desc + " from " + (node instanceof Individual ? ((Individual) node).debugString() : node));
 
 		// get the dependency set - Note: we must normalize the concept
 		final DependencySet ds = node.getDepends(ATermUtils.normalize(desc));
@@ -437,8 +425,7 @@ public class IncrementalRestore
 						tracker.addUpdatedIndividual((Individual) e.getTo());
 			}
 
-			if (DependencyIndex._logger.isLoggable(Level.FINE))
-				DependencyIndex._logger.fine("           Actually removed type!");
+			DependencyIndex._logger.fine("           Actually removed type!");
 		}
 	}
 

@@ -55,7 +55,7 @@ public class SimpleAllValuesRule extends AllValuesRule
 		EdgeList edges = x.getRNeighborEdges(s);
 		for (int e = 0; e < edges.size(); e++)
 		{
-			final Edge edgeToY = edges.edgeAt(e);
+			final Edge edgeToY = edges.get(e);
 			final Node y = edgeToY.getNeighbor(x);
 			DependencySet finalDS = ds.union(edgeToY.getDepends(), _strategy.getABox().doExplanation());
 			if (_strategy.getABox().doExplanation())
@@ -79,7 +79,7 @@ public class SimpleAllValuesRule extends AllValuesRule
 				edges = x.getRNeighborEdges(r);
 				for (int e = 0; e < edges.size(); e++)
 				{
-					final Edge edgeToY = edges.edgeAt(e);
+					final Edge edgeToY = edges.get(e);
 					final Node y = edgeToY.getNeighbor(x);
 					DependencySet finalDS = ds.union(edgeToY.getDepends(), _strategy.getABox().doExplanation());
 					if (_strategy.getABox().doExplanation())

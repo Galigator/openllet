@@ -717,7 +717,7 @@ public class Individual extends Node implements CachedNode
 		final EdgeList edges = _outEdges.getEdges(r);
 		for (int i = 0, n = edges.size(); i < n; i++)
 		{
-			final Edge edge = edges.edgeAt(i);
+			final Edge edge = edges.get(i);
 			final Node other = edge.getNeighbor(this);
 			if (other.hasType(c))
 				result.add(other);
@@ -751,7 +751,7 @@ public class Individual extends Node implements CachedNode
 		final Role invR = r.getInverse();
 		// inverse of datatype properties is not defined
 		if (invR != null)
-			neighbors.addEdgeList(_inEdges.getEdges(invR));
+			neighbors.addAll(_inEdges.getEdges(invR));
 
 		return neighbors;
 	}
@@ -768,7 +768,7 @@ public class Individual extends Node implements CachedNode
 		final Role invR = r.getInverse();
 		// inverse of datatype properties is not defined
 		if (invR != null)
-			neighbors.addEdgeList(_inEdges.getEdgesFrom((Individual) node, invR));
+			neighbors.addAll(_inEdges.getEdgesFrom((Individual) node, invR));
 
 		return neighbors;
 	}
@@ -806,7 +806,7 @@ public class Individual extends Node implements CachedNode
 
 			outerloop: for (int i = 0; i < edges.size(); i++)
 			{
-				final Node y = edges.edgeAt(i).getNeighbor(this);
+				final Node y = edges.get(i).getNeighbor(this);
 
 				if (!y.hasType(c))
 					continue;
@@ -896,7 +896,7 @@ public class Individual extends Node implements CachedNode
 		final List<List<Node>> allDisjointSets = new ArrayList<>();
 		for (int i = 0; i < edges.size(); i++)
 		{
-			final Node y = edges.edgeAt(i).getNeighbor(this);
+			final Node y = edges.get(i).getNeighbor(this);
 
 			if (!y.hasType(c))
 				continue;
@@ -990,7 +990,7 @@ public class Individual extends Node implements CachedNode
 		final EdgeList edges = _outEdges.getEdges(r);
 		for (int i = 0; i < edges.size(); i++)
 		{
-			final Edge edge = edges.edgeAt(i);
+			final Edge edge = edges.get(i);
 			final DependencySet ds = edge.getDepends();
 			final Literal literal = (Literal) edge.getTo();
 			final Object literalValue = literal.getValue();
@@ -1037,7 +1037,7 @@ public class Individual extends Node implements CachedNode
 		setChanged(MAX);
 		_applyNext[MAX] = 0;
 
-		_inEdges.addEdge(edge);
+		_inEdges.add(edge);
 	}
 
 	protected void addOutEdge(final Edge edge)
@@ -1049,7 +1049,7 @@ public class Individual extends Node implements CachedNode
 		if (edge.getRole().isBottom())
 			_abox.setClash(Clash.bottomProperty(edge.getFrom(), edge.getDepends(), edge.getRole().getName()));
 		else
-			_outEdges.addEdge(edge);
+			_outEdges.add(edge);
 	}
 
 	public Edge addEdge(final Role r, final Node x, final DependencySet dsParam)
@@ -1092,7 +1092,7 @@ public class Individual extends Node implements CachedNode
 
 		final Edge edge = new DefaultEdge(r, this, x, ds);
 
-		_outEdges.addEdge(edge);
+		_outEdges.add(edge);
 		x.addInEdge(edge);
 
 		return edge;
@@ -1259,7 +1259,7 @@ public class Individual extends Node implements CachedNode
 
 		for (int i = 0; i < _outEdges.size(); i++)
 		{
-			final Edge edge = _outEdges.edgeAt(i);
+			final Edge edge = _outEdges.get(i);
 			final Node succ = edge.getTo();
 
 			if (succ.isPruned())
@@ -1281,7 +1281,7 @@ public class Individual extends Node implements CachedNode
 
 		for (int i = 0; i < _outEdges.size(); i++)
 		{
-			final Edge edge = _outEdges.edgeAt(i);
+			final Edge edge = _outEdges.get(i);
 			final DependencySet d = edge.getDepends();
 
 			if (d.getBranch() <= branch)
@@ -1347,10 +1347,10 @@ public class Individual extends Node implements CachedNode
 			_outEdges = new EdgeList(oldEdges.size());
 			for (int i = 0; i < oldEdges.size(); i++)
 			{
-				final Edge edge = oldEdges.edgeAt(i);
+				final Edge edge = oldEdges.get(i);
 				final Node to = _abox.getNode(edge.getTo().getName());
 				final Edge newEdge = new DefaultEdge(edge.getRole(), this, to, edge.getDepends());
-				_outEdges.addEdge(newEdge);
+				_outEdges.add(newEdge);
 			}
 		}
 	}

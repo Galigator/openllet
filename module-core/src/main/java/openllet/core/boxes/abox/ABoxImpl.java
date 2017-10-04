@@ -1053,7 +1053,7 @@ public class ABoxImpl implements ABox
 		final EdgeList edges = subj.getRSuccessorEdges(role);
 		for (int i = 0; i < edges.size(); i++)
 		{
-			final Edge edge = edges.edgeAt(i);
+			final Edge edge = edges.get(i);
 			final DependencySet ds = edge.getDepends();
 			final Literal literal = (Literal) edge.getTo();
 			final ATermAppl literalValue = literal.getTerm();
@@ -1132,7 +1132,7 @@ public class ABoxImpl implements ABox
 		final EdgeList edges = subj.getRNeighborEdges(role);
 		for (int i = 0; i < edges.size(); i++)
 		{
-			final Edge edge = edges.edgeAt(i);
+			final Edge edge = edges.get(i);
 			final DependencySet ds = edge.getDepends();
 			final Individual value = (Individual) edge.getNeighbor(subj);
 
@@ -1161,7 +1161,7 @@ public class ABoxImpl implements ABox
 		final EdgeList edges = subj.getRNeighborEdges(prop);
 		for (int i = 0; i < edges.size(); i++)
 		{
-			final Edge edge = edges.edgeAt(i);
+			final Edge edge = edges.get(i);
 			final DependencySet ds = edge.getDepends();
 			final Individual value = (Individual) edge.getNeighbor(subj);
 			final Role edgeRole = edge.getFrom().equals(subj) ? edge.getRole() : edge.getRole().getInverse();
@@ -1221,7 +1221,7 @@ public class ABoxImpl implements ABox
 			final EdgeList edges = subj.getRNeighborEdges(r);
 			for (int i = 0; i < edges.size(); i++)
 			{
-				final Edge edge = edges.edgeAt(i);
+				final Edge edge = edges.get(i);
 				final DependencySet ds = edge.getDepends();
 				final Individual value = (Individual) edge.getNeighbor(subj);
 
@@ -2298,7 +2298,7 @@ public class ABoxImpl implements ABox
 		EdgeList edges = node.getOutEdges();
 		for (int e = 0; e < edges.size(); e++)
 		{
-			final Edge edge = edges.edgeAt(e);
+			final Edge edge = edges.get(e);
 			final Node succ = edge.getTo();
 			if (_nodes.get(succ.getName()) != succ)
 				throw new InternalReasonerException("Invalid edge to a non-existing node: " + edge + " " + _nodes.get(succ.getName()) + "(" + _nodes.get(succ.getName()).hashCode() + ")" + succ + "(" + succ.hashCode() + ")");
@@ -2316,7 +2316,7 @@ public class ABoxImpl implements ABox
 		edges = node.getInEdges();
 		for (int e = 0; e < edges.size(); e++)
 		{
-			final Edge edge = edges.edgeAt(e);
+			final Edge edge = edges.get(e);
 			final DependencySet ds = edge.getDepends();
 			if (ds.max() > _branchIndex || ds.getBranch() > _branchIndex)
 				throw new InternalReasonerException("Invalid ds: " + edge + " " + ds);
@@ -2396,7 +2396,7 @@ public class ABoxImpl implements ABox
 			{
 				if (e > 0)
 					stream.print(", ");
-				stream.print(edges.edgeAt(e).getRole());
+				stream.print(edges.get(e).getRole());
 			}
 			stream.print("] ");
 			if (succ instanceof Individual)

@@ -106,9 +106,9 @@ public class CachedConceptNode implements CachedNode
 		subj.getABox().getObjectPropertyValues(subj.getName(), role, knowns, unknowns, false);
 
 		for (final ATermAppl val : knowns)
-			_outEdges.addEdge(new CachedOutEdge(role, val, DependencySet.INDEPENDENT));
+			_outEdges.add(new CachedOutEdge(role, val, DependencySet.INDEPENDENT));
 		for (final ATermAppl val : unknowns)
-			_outEdges.addEdge(new CachedOutEdge(role, val, DependencySet.DUMMY));
+			_outEdges.add(new CachedOutEdge(role, val, DependencySet.DUMMY));
 	}
 
 	/**
@@ -124,7 +124,7 @@ public class CachedConceptNode implements CachedNode
 		for (final Edge edge : edgeList)
 		{
 			final Edge cachedEdge = out ? new CachedOutEdge(edge) : new CachedInEdge(edge);
-			cachedEdges.addEdge(cachedEdge);
+			cachedEdges.add(cachedEdge);
 
 			if (OpenlletOptions.CHECK_NOMINAL_EDGES)
 			{
@@ -140,7 +140,7 @@ public class CachedConceptNode implements CachedNode
 						final ATermAppl n = mergedNode.getName();
 						final DependencySet ds = edgeDepends.union(entry.getValue(), false).cache();
 						final Edge e = out ? new CachedOutEdge(r, n, ds) : new CachedInEdge(r, n, ds);
-						cachedEdges.addEdge(e);
+						cachedEdges.add(e);
 					}
 				}
 			}

@@ -334,7 +334,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 		else
 			for (int i = sortedSuccessors.size() - 1; i >= 0; i--)
 			{
-				final Edge edge = sortedSuccessors.edgeAt(i);
+				final Edge edge = sortedSuccessors.get(i);
 				final Node succ = edge.getTo();
 				if (!succ.isLiteral() && !succ.equals(x))
 					_mayNeedExpanding.add((Individual) succ);
