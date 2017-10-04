@@ -547,17 +547,12 @@ public abstract class AbstractConceptCache implements ConceptCache
 				}
 				else
 					if (role.isSimple() || !(pNode instanceof Individual))
-					{
-
-						final Set<ATermAppl> samesAndMaybes = getABoxSames(kb, val);
-						found = intersectsRNeighbors(samesAndMaybes, pNode, role);
-					}
+						found = intersectsRNeighbors(getABoxSames(kb, val), pNode, role);
 					else
 					{
 						final Set<ATermAppl> neighbors = new HashSet<>();
 						kb.getABox().getObjectPropertyValues(pNode.getName(), role, neighbors, neighbors, false);
-						final Set<ATermAppl> samesAndMaybes = getABoxSames(kb, val);
-						found = SetUtils.intersects(samesAndMaybes, neighbors);
+						found = SetUtils.intersects(getABoxSames(kb, val), neighbors);
 					}
 
 			if (!found)
@@ -610,21 +605,15 @@ public abstract class AbstractConceptCache implements ConceptCache
 			return false;
 
 		for (final Edge edge : node.getOutEdges())
-		{
-			final Role r = edge.getRole();
-			if (r.isSubRoleOf(role) && samesAndMaybes.contains(edge.getToName()))
+			if (samesAndMaybes.contains(edge.getToName()) && edge.getRole().isSubRoleOf(role))
 				return true;
-		}
 
 		if (role.isObjectRole())
 		{
 			final Role invRole = role.getInverse();
 			for (final Edge edge : node.getInEdges())
-			{
-				final Role r = edge.getRole();
-				if (r.isSubRoleOf(invRole) && samesAndMaybes.contains(edge.getFromName()))
+				if (samesAndMaybes.contains(edge.getFromName()) && edge.getRole().isSubRoleOf(invRole))
 					return true;
-			}
 		}
 
 		return false;
