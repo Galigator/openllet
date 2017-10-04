@@ -78,7 +78,7 @@ public class PelletReasonerFactory implements ReasonerFactory
 	@Override
 	public PelletReasoner create(final Resource configuration)
 	{
-		return new PelletReasoner(getCapabilities());
+		return new PelletReasoner(null != configuration ? configuration.getModel() : getCapabilities());
 	}
 
 	@Override

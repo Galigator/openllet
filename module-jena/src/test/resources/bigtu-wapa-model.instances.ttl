@@ -1,0 +1,565 @@
+@prefix : <http://wapa#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix swrl: <http://www.w3.org/2003/11/swrl#> .
+@prefix swrlb: <http://www.w3.org/2003/11/swrlb#> .
+@prefix wapa: <http://bwapa#> .
+
+
+
+# #################################################################
+# #    Datatypes
+
+xsd:date a rdfs:Datatype .
+
+# #################################################################
+# #    Object Properties
+
+wapa:hasProduction a owl:ObjectProperty ;
+	owl:inverseOf wapa:isProductionOf ;
+	rdfs:range wapa:Production .
+
+wapa:hasStock a owl:ObjectProperty ;
+	owl:inverseOf wapa:isStockOf ;
+	rdfs:range wapa:Stock .
+
+wapa:isInStockAt a owl:ObjectProperty ;
+	rdfs:domain wapa:Stock  .
+
+wapa:isStockOf a owl:ObjectProperty .
+
+
+wapa:isVarietyOf a owl:ObjectProperty ;
+	rdfs:range wapa:Fruit  .
+
+# #################################################################
+# #    Data properties
+
+wapa:hasProductionType a owl:DatatypeProperty ;
+	rdfs:range xsd:string .
+
+wapa:hasProductionYear a owl:DatatypeProperty ;
+	rdfs:range xsd:date .
+
+wapa:hasQuantityValue a owl:DatatypeProperty ;
+	rdfs:range xsd:double .
+
+wapa:hasStockType a owl:DatatypeProperty ;
+	rdfs:range xsd:string .
+
+wapa:hasStockYearMonth a owl:DatatypeProperty ;
+	rdfs:range xsd:date .
+
+# #################################################################
+# #    Classes
+
+wapa:ForecastDifference3YearAverage a owl:Class ;
+	rdfs:subClassOf wapa:Production , _:genid7 .
+
+_:genid7 a owl:Restriction ;
+	owl:onProperty wapa:isMeasuredIn ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onClass wapa:percentage .
+
+wapa:ForecastDifferencePreviousYear a owl:Class ;
+	rdfs:subClassOf wapa:Production , _:genid8 .
+
+_:genid8 a owl:Restriction ;
+	owl:onProperty wapa:isMeasuredIn ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onClass wapa:percentage .
+
+wapa:MovedStock a owl:Class ;
+	rdfs:subClassOf wapa:Stock , _:genid16 .
+
+_:genid16 a owl:Restriction ;
+	owl:onProperty wapa:isMeasuredIn ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onClass wapa:ton .
+
+wapa:NorthernHemisphere a owl:Class ;
+	rdfs:subClassOf wapa:Hemisphere ;
+	owl:disjointWith wapa:SouthernHemisphere .
+
+wapa:Pear a owl:Class ;
+	rdfs:subClassOf wapa:Fruit , _:genid17 .
+
+_:genid17 a owl:Restriction ;
+	owl:onProperty wapa:hasVariety ;
+	owl:someValuesFrom wapa:PearVariety .
+
+wapa:PearVariety a owl:Class ;
+	rdfs:subClassOf wapa:FruitVariety , _:genid18 .
+
+_:genid18 a owl:Restriction ;
+	owl:onProperty wapa:isVarietyOf ;
+	owl:someValuesFrom wapa:Pear .
+
+wapa:Production a owl:Class ;
+	rdfs:subClassOf owl:Thing , _:genid19 .
+
+_:genid19 a owl:Restriction ;
+	owl:onProperty wapa:isMeasuredIn ;
+	owl:someValuesFrom wapa:Unit .
+
+wapa:Production rdfs:subClassOf _:genid20 .
+
+_:genid20 a owl:Restriction ;
+	owl:onProperty wapa:isProducedAt ;
+	owl:someValuesFrom wapa:Country .
+
+wapa:Production rdfs:subClassOf _:genid21 .
+
+_:genid21 a owl:Restriction ;
+	owl:onProperty wapa:isProductionOf ;
+	owl:someValuesFrom wapa:FruitVariety .
+
+wapa:Production rdfs:subClassOf _:genid22 .
+
+_:genid22 a owl:Restriction ;
+	owl:onProperty wapa:hasProductionYear ;
+	owl:someValuesFrom xsd:date .
+
+wapa:Production rdfs:subClassOf _:genid23 .
+
+_:genid23 a owl:Restriction ;
+	owl:onProperty wapa:hasQuantityValue ;
+	owl:someValuesFrom xsd:double .
+
+wapa:Stock a owl:Class ;
+	rdfs:subClassOf owl:Thing , _:genid25 .
+
+_:genid25 a owl:Restriction ;
+	owl:onProperty wapa:isInStockAt ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onClass wapa:Country .
+
+wapa:Stock rdfs:subClassOf _:genid26 .
+
+_:genid26 a owl:Restriction ;
+	owl:onProperty wapa:isMeasuredIn ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onClass wapa:Unit .
+
+wapa:Stock rdfs:subClassOf _:genid27 .
+
+_:genid27 a owl:Restriction ;
+	owl:onProperty wapa:isStockOf ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onClass wapa:FruitVariety .
+
+wapa:Stock rdfs:subClassOf _:genid28 .
+
+_:genid28 a owl:Restriction ;
+	owl:onProperty wapa:hasQuantityValue ;
+	owl:someValuesFrom xsd:double .
+
+wapa:Stock rdfs:subClassOf _:genid29 .
+
+_:genid29 a owl:Restriction ;
+	owl:onProperty wapa:hasStockYearMonth ;
+	owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:onDataRange xsd:date .
+
+
+# #################################################################
+# #    Individuals
+
+
+:Actual-Jun-17-0 a owl:NamedIndividual , wapa:ActualStock ;
+	wapa:isInStockAt :Netherlands ;
+	wapa:isStockOf :Boskoop ;
+	wapa:hasQuantityValue "50.0"^^xsd:double ;
+	wapa:hasStockYearMonth "2017-06-01"^^xsd:date .
+
+:Actual-Jun-17-1 a owl:NamedIndividual , wapa:ActualStock ;
+	wapa:isInStockAt :USA ;
+	wapa:isStockOf :Braeburn ;
+	wapa:hasQuantityValue "60.0"^^xsd:double ;
+	wapa:hasStockYearMonth "2017-06-01"^^xsd:date .
+
+:Actual-May-17-0 a owl:NamedIndividual , wapa:ActualStock ;
+	wapa:isInStockAt :Netherlands ;
+	wapa:isStockOf :Boskoop ;
+	wapa:hasQuantityValue "70.0"^^xsd:double ;
+	wapa:hasStockYearMonth "2017-05-01"^^xsd:date .
+
+:Actual-May-17-1 a owl:NamedIndividual , wapa:ActualStock ;
+	wapa:isInStockAt :USA ;
+	wapa:isStockOf :Braeburn ;
+	wapa:hasQuantityValue "100.0"^^xsd:double ;
+	wapa:hasStockYearMonth "2017-05-01"^^xsd:date .
+
+:Moved-Jun-17-0 a owl:NamedIndividual , wapa:MovedStock ;
+	wapa:isInStockAt :Netherlands ;
+	wapa:isStockOf :Boskoop ;
+	wapa:hasStockYearMonth "2017-06-01"^^xsd:date .
+
+:Moved-Jun-17-1 a owl:NamedIndividual , wapa:MovedStock ;
+	wapa:isInStockAt :USA ;
+	wapa:isStockOf :Braeburn ;
+	wapa:hasStockYearMonth "2017-06-01"^^xsd:date .
+
+# #################################################################
+# #    Rules
+
+:s a <http://www.w3.org/2003/11/swrl#Variable> .
+
+:u a <http://www.w3.org/2003/11/swrl#Variable> .
+
+:s1 a <http://www.w3.org/2003/11/swrl#Variable> .
+
+:q1 a <http://www.w3.org/2003/11/swrl#Variable> .
+
+:date1 a <http://www.w3.org/2003/11/swrl#Variable> .
+
+:y a <http://www.w3.org/2003/11/swrl#Variable> .
+
+:m1 a <http://www.w3.org/2003/11/swrl#Variable> .
+
+:d1 a <http://www.w3.org/2003/11/swrl#Variable> .
+
+:t1 a <http://www.w3.org/2003/11/swrl#Variable> .
+
+:v a <http://www.w3.org/2003/11/swrl#Variable> .
+
+:co a <http://www.w3.org/2003/11/swrl#Variable> .
+
+:s2 a <http://www.w3.org/2003/11/swrl#Variable> .
+
+:q2 a <http://www.w3.org/2003/11/swrl#Variable> .
+
+:date2 a <http://www.w3.org/2003/11/swrl#Variable> .
+
+:m2 a <http://www.w3.org/2003/11/swrl#Variable> .
+
+:d2 a <http://www.w3.org/2003/11/swrl#Variable> .
+
+:t2 a <http://www.w3.org/2003/11/swrl#Variable> .
+
+:moved a <http://www.w3.org/2003/11/swrl#Variable> .
+
+:c a <http://www.w3.org/2003/11/swrl#Variable> .
+
+_:genid32 <http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled> "true"^^xsd:boolean ;
+	a <http://www.w3.org/2003/11/swrl#Imp> ;
+	<http://www.w3.org/2003/11/swrl#body> _:genid35 .
+
+_:genid35 a <http://www.w3.org/2003/11/swrl#AtomList> ;
+	rdf:first _:genid36 .
+
+_:genid36 a <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+	<http://www.w3.org/2003/11/swrl#classPredicate> wapa:ActualStock ;
+	<http://www.w3.org/2003/11/swrl#argument1> :s .
+
+_:genid35 rdf:rest _:genid33 .
+
+_:genid33 a <http://www.w3.org/2003/11/swrl#AtomList> ;
+	rdf:first _:genid190 .
+
+_:genid190 a <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+	<http://www.w3.org/2003/11/swrl#classPredicate> wapa:ton ;
+	<http://www.w3.org/2003/11/swrl#argument1> :u .
+
+_:genid33 rdf:rest rdf:nil .
+
+_:genid32 <http://www.w3.org/2003/11/swrl#head> _:genid37 .
+
+_:genid37 a <http://www.w3.org/2003/11/swrl#AtomList> ;
+	rdf:first _:genid193 .
+
+_:genid193 a <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+	<http://www.w3.org/2003/11/swrl#propertyPredicate> wapa:isMeasuredIn ;
+	<http://www.w3.org/2003/11/swrl#argument1> :s ;
+	<http://www.w3.org/2003/11/swrl#argument2> :u .
+
+_:genid37 rdf:rest rdf:nil .
+
+_:genid39 <http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled> "true"^^xsd:boolean ;
+	a <http://www.w3.org/2003/11/swrl#Imp> ;
+	<http://www.w3.org/2003/11/swrl#body> _:genid88 .
+
+_:genid88 a <http://www.w3.org/2003/11/swrl#AtomList> ;
+	rdf:first _:genid89 .
+
+_:genid89 a <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+	<http://www.w3.org/2003/11/swrl#classPredicate> wapa:ActualStock ;
+	<http://www.w3.org/2003/11/swrl#argument1> :s1 .
+
+_:genid88 rdf:rest _:genid86 .
+
+_:genid86 a <http://www.w3.org/2003/11/swrl#AtomList> ;
+	rdf:first _:genid87 .
+
+_:genid87 a <http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom> ;
+	<http://www.w3.org/2003/11/swrl#propertyPredicate> wapa:hasQuantityValue ;
+	<http://www.w3.org/2003/11/swrl#argument1> :s1 ;
+	<http://www.w3.org/2003/11/swrl#argument2> :q1 .
+
+_:genid86 rdf:rest _:genid84 .
+
+_:genid84 a <http://www.w3.org/2003/11/swrl#AtomList> ;
+	rdf:first _:genid85 .
+
+_:genid85 a <http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom> ;
+	<http://www.w3.org/2003/11/swrl#propertyPredicate> wapa:hasStockYearMonth ;
+	<http://www.w3.org/2003/11/swrl#argument1> :s1 ;
+	<http://www.w3.org/2003/11/swrl#argument2> :date1 .
+
+_:genid84 rdf:rest _:genid77 .
+
+_:genid77 a <http://www.w3.org/2003/11/swrl#AtomList> ;
+	rdf:first _:genid78 .
+
+_:genid78 a <http://www.w3.org/2003/11/swrl#BuiltinAtom> ;
+	<http://www.w3.org/2003/11/swrl#builtin> <http://www.w3.org/2003/11/swrlb#date> .
+
+<http://www.w3.org/2003/11/swrlb#date> a <http://www.w3.org/2003/11/swrl#Builtin> .
+
+_:genid78 <http://www.w3.org/2003/11/swrl#arguments> _:genid83 .
+
+_:genid83 a rdf:List ;
+	rdf:first :date1 ;
+	rdf:rest _:genid82 .
+
+_:genid82 a rdf:List ;
+	rdf:first :y ;
+	rdf:rest _:genid81 .
+
+_:genid81 a rdf:List ;
+	rdf:first :m1 ;
+	rdf:rest _:genid80 .
+
+_:genid80 a rdf:List ;
+	rdf:first :d1 ;
+	rdf:rest _:genid79 .
+
+_:genid79 a rdf:List ;
+	rdf:first :t1 ;
+	rdf:rest rdf:nil .
+
+_:genid77 rdf:rest _:genid75 .
+
+_:genid75 a <http://www.w3.org/2003/11/swrl#AtomList> ;
+	rdf:first _:genid76 .
+
+_:genid76 a <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+	<http://www.w3.org/2003/11/swrl#propertyPredicate> wapa:isStockOf ;
+	<http://www.w3.org/2003/11/swrl#argument1> :s1 ;
+	<http://www.w3.org/2003/11/swrl#argument2> :v .
+
+_:genid75 rdf:rest _:genid73 .
+
+_:genid73 a <http://www.w3.org/2003/11/swrl#AtomList> ;
+	rdf:first _:genid74 .
+
+_:genid74 a <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+	<http://www.w3.org/2003/11/swrl#propertyPredicate> wapa:isInStockAt ;
+	<http://www.w3.org/2003/11/swrl#argument1> :s1 ;
+	<http://www.w3.org/2003/11/swrl#argument2> :co .
+
+_:genid73 rdf:rest _:genid71 .
+
+_:genid71 a <http://www.w3.org/2003/11/swrl#AtomList> ;
+	rdf:first _:genid72 .
+
+_:genid72 a <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+	<http://www.w3.org/2003/11/swrl#classPredicate> wapa:ActualStock ;
+	<http://www.w3.org/2003/11/swrl#argument1> :s2 .
+
+_:genid71 rdf:rest _:genid69 .
+
+_:genid69 a <http://www.w3.org/2003/11/swrl#AtomList> ;
+	rdf:first _:genid70 .
+
+_:genid70 a <http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom> ;
+	<http://www.w3.org/2003/11/swrl#propertyPredicate> wapa:hasQuantityValue ;
+	<http://www.w3.org/2003/11/swrl#argument1> :s2 ;
+	<http://www.w3.org/2003/11/swrl#argument2> :q2 .
+
+_:genid69 rdf:rest _:genid67 .
+
+_:genid67 a <http://www.w3.org/2003/11/swrl#AtomList> ;
+	rdf:first _:genid68 .
+
+_:genid68 a <http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom> ;
+	<http://www.w3.org/2003/11/swrl#propertyPredicate> wapa:hasStockYearMonth ;
+	<http://www.w3.org/2003/11/swrl#argument1> :s2 ;
+	<http://www.w3.org/2003/11/swrl#argument2> :date2 .
+
+_:genid67 rdf:rest _:genid60 .
+
+_:genid60 a <http://www.w3.org/2003/11/swrl#AtomList> ;
+	rdf:first _:genid61 .
+
+_:genid61 a <http://www.w3.org/2003/11/swrl#BuiltinAtom> ;
+	<http://www.w3.org/2003/11/swrl#builtin> <http://www.w3.org/2003/11/swrlb#date> ;
+	<http://www.w3.org/2003/11/swrl#arguments> _:genid66 .
+
+_:genid66 a rdf:List ;
+	rdf:first :date2 ;
+	rdf:rest _:genid65 .
+
+_:genid65 a rdf:List ;
+	rdf:first :y ;
+	rdf:rest _:genid64 .
+
+_:genid64 a rdf:List ;
+	rdf:first :m2 ;
+	rdf:rest _:genid63 .
+
+_:genid63 a rdf:List ;
+	rdf:first :d2 ;
+	rdf:rest _:genid62 .
+
+_:genid62 a rdf:List ;
+	rdf:first :t2 ;
+	rdf:rest rdf:nil .
+
+_:genid60 rdf:rest _:genid58 .
+
+_:genid58 a <http://www.w3.org/2003/11/swrl#AtomList> ;
+	rdf:first _:genid59 .
+
+_:genid59 a <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+	<http://www.w3.org/2003/11/swrl#propertyPredicate> wapa:isStockOf ;
+	<http://www.w3.org/2003/11/swrl#argument1> :s2 ;
+	<http://www.w3.org/2003/11/swrl#argument2> :v .
+
+_:genid58 rdf:rest _:genid56 .
+
+_:genid56 a <http://www.w3.org/2003/11/swrl#AtomList> ;
+	rdf:first _:genid57 .
+
+_:genid57 a <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+	<http://www.w3.org/2003/11/swrl#propertyPredicate> wapa:isInStockAt ;
+	<http://www.w3.org/2003/11/swrl#argument1> :s2 ;
+	<http://www.w3.org/2003/11/swrl#argument2> :co .
+
+_:genid56 rdf:rest _:genid51 .
+
+_:genid51 a <http://www.w3.org/2003/11/swrl#AtomList> ;
+	rdf:first _:genid52 .
+
+_:genid52 a <http://www.w3.org/2003/11/swrl#BuiltinAtom> ;
+	<http://www.w3.org/2003/11/swrl#builtin> <http://www.w3.org/2003/11/swrlb#subtract> .
+
+<http://www.w3.org/2003/11/swrlb#subtract> a <http://www.w3.org/2003/11/swrl#Builtin> .
+
+_:genid52 <http://www.w3.org/2003/11/swrl#arguments> _:genid55 .
+
+_:genid55 a rdf:List ;
+	rdf:first "1"^^xsd:integer ;
+	rdf:rest _:genid54 .
+
+_:genid54 a rdf:List ;
+	rdf:first :m1 ;
+	rdf:rest _:genid53 .
+
+_:genid53 a rdf:List ;
+	rdf:first :m2 ;
+	rdf:rest rdf:nil .
+
+_:genid51 rdf:rest _:genid46 .
+
+_:genid46 a <http://www.w3.org/2003/11/swrl#AtomList> ;
+	rdf:first _:genid47 .
+
+_:genid47 a <http://www.w3.org/2003/11/swrl#BuiltinAtom> ;
+	<http://www.w3.org/2003/11/swrl#builtin> <http://www.w3.org/2003/11/swrlb#subtract> ;
+	<http://www.w3.org/2003/11/swrl#arguments> _:genid50 .
+
+_:genid50 a rdf:List ;
+	rdf:first :moved ;
+	rdf:rest _:genid49 .
+
+_:genid49 a rdf:List ;
+	rdf:first :q2 ;
+	rdf:rest _:genid48 .
+
+_:genid48 a rdf:List ;
+	rdf:first :q1 ;
+	rdf:rest rdf:nil .
+
+_:genid46 rdf:rest _:genid44 .
+
+_:genid44 a <http://www.w3.org/2003/11/swrl#AtomList> ;
+	rdf:first _:genid45 .
+
+_:genid45 a <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+	<http://www.w3.org/2003/11/swrl#classPredicate> wapa:MovedStock ;
+	<http://www.w3.org/2003/11/swrl#argument1> :c .
+
+_:genid44 rdf:rest _:genid42 .
+
+_:genid42 a <http://www.w3.org/2003/11/swrl#AtomList> ;
+	rdf:first _:genid43 .
+
+_:genid43 a <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+	<http://www.w3.org/2003/11/swrl#propertyPredicate> wapa:isStockOf ;
+	<http://www.w3.org/2003/11/swrl#argument1> :c ;
+	<http://www.w3.org/2003/11/swrl#argument2> :v .
+
+_:genid42 rdf:rest _:genid40 .
+
+_:genid40 a <http://www.w3.org/2003/11/swrl#AtomList> ;
+	rdf:first _:genid41 .
+
+_:genid41 a <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+	<http://www.w3.org/2003/11/swrl#propertyPredicate> wapa:isInStockAt ;
+	<http://www.w3.org/2003/11/swrl#argument1> :c ;
+	<http://www.w3.org/2003/11/swrl#argument2> :co .
+
+_:genid40 rdf:rest rdf:nil .
+
+_:genid39 <http://www.w3.org/2003/11/swrl#head> _:genid90 .
+
+_:genid90 a <http://www.w3.org/2003/11/swrl#AtomList> ;
+	rdf:first _:genid91 .
+
+_:genid91 a <http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom> ;
+	<http://www.w3.org/2003/11/swrl#propertyPredicate> wapa:hasQuantityValue ;
+	<http://www.w3.org/2003/11/swrl#argument1> :c ;
+	<http://www.w3.org/2003/11/swrl#argument2> :moved .
+
+_:genid90 rdf:rest rdf:nil .
+
+_:genid92 <http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled> "true"^^xsd:boolean ;
+	rdfs:comment ""^^xsd:string ;
+	rdfs:label "Add unit to moved stock"^^xsd:string ;
+	a <http://www.w3.org/2003/11/swrl#Imp> ;
+	<http://www.w3.org/2003/11/swrl#body> _:genid94 .
+
+_:genid94 a <http://www.w3.org/2003/11/swrl#AtomList> ;
+	rdf:first _:genid95 .
+
+_:genid95 a <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+	<http://www.w3.org/2003/11/swrl#classPredicate> wapa:MovedStock ;
+	<http://www.w3.org/2003/11/swrl#argument1> :s .
+
+_:genid94 rdf:rest _:genid93 .
+
+_:genid93 a <http://www.w3.org/2003/11/swrl#AtomList> ;
+	rdf:first _:genid191 .
+
+_:genid191 a <http://www.w3.org/2003/11/swrl#ClassAtom> ;
+	<http://www.w3.org/2003/11/swrl#classPredicate> wapa:ton ;
+	<http://www.w3.org/2003/11/swrl#argument1> :u .
+
+_:genid93 rdf:rest rdf:nil .
+
+_:genid92 <http://www.w3.org/2003/11/swrl#head> _:genid96 .
+
+_:genid96 a <http://www.w3.org/2003/11/swrl#AtomList> ;
+	rdf:first _:genid192 .
+
+_:genid192 a <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
+	<http://www.w3.org/2003/11/swrl#propertyPredicate> wapa:isMeasuredIn ;
+	<http://www.w3.org/2003/11/swrl#argument1> :s ;
+	<http://www.w3.org/2003/11/swrl#argument2> :u .
+
+_:genid96 rdf:rest rdf:nil .
+

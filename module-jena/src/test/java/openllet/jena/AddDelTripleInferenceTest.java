@@ -1,11 +1,14 @@
 package openllet.jena;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.InputStream;
 import java.util.logging.Logger;
 import openllet.shared.tools.Log;
+import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.InfModel;
+import org.apache.jena.rdf.model.Literal;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
@@ -115,4 +118,30 @@ public class AddDelTripleInferenceTest extends SequentialTestsContraintInitializ
 		LOG.info("/\\---- print all statements ---/\\" + n);
 	}
 
+	@Test
+	public void testSWRLConsistencyWithBuiltIn()
+	{
+		final InputStream stream = AddDelTripleInferenceTest.class.getResourceAsStream("/bigtu-wapa-model.instances.ttl");
+		final OntModel ontoModelInferred = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
+		ontoModelInferred.read(stream, null, "TURTLE");
+		ontoModelInferred.prepare();
+
+		final Resource s = ontoModelInferred.createResource("http://wapa#Moved-Jun-17-1");
+		final Property p = ontoModelInferred.createProperty("http://bwapa#hasQuantityValue");
+		{
+
+			final Literal o = ontoModelInferred.createTypedLiteral(40.0);
+			final Statement stmt = ResourceFactory.createStatement(s, p, o);
+			assertTrue(ontoModelInferred.contains(stmt));
+		}
+
+		{
+			final Literal o = ontoModelInferred.createTypedLiteral(41.0);
+			final Statement stmt = ResourceFactory.createStatement(s, p, o);
+			assertFalse(ontoModelInferred.contains(stmt));
+		}
+
+		ontoModelInferred.listObjectsOfProperty(s, p).forEachRemaining(System.out::println);
+
+	}
 }

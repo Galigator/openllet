@@ -1520,7 +1520,7 @@ public class DefaultGraphLoader implements GraphLoader
 		{
 			final ATermAppl pt = node2term(p);
 			final Role role = _kb.getProperty(pt);
-			final PropertyType type = (role == null) ? PropertyType.UNTYPED : role.getType();
+			final PropertyType type = role == null ? PropertyType.UNTYPED : role.getType();
 
 			if (type == PropertyType.ANNOTATION)
 			{
@@ -2020,12 +2020,12 @@ public class DefaultGraphLoader implements GraphLoader
 					if (rangeToDatatype)
 					{
 						for (final ATermAppl range : ranges)
-							if ((range.getAFun().getArity() == 0) && (!_kb.isDatatype(range)))
+							if (range.getAFun().getArity() == 0 && !_kb.isDatatype(range))
 								defineDatatype(range);
 					}
 					else
 						for (final ATermAppl range : ranges)
-							if ((range.getAFun().getArity() == 0) && (!_kb.isClass(range)))
+							if (range.getAFun().getArity() == 0 && !_kb.isClass(range))
 								defineClass(range);
 			}
 		}
