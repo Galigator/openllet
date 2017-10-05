@@ -19,9 +19,6 @@ import org.apache.jena.vocabulary.RDFS;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
  * Description: Converts concepts expressed as ATerms to Jena triples.
  * </p>
  * <p>

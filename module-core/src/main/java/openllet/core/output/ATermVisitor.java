@@ -35,8 +35,8 @@ import openllet.aterm.ATermList;
 
 /**
  * A visitor interface specifically designed for structures in Pellet. Since the class descriptions in Pellet are all represented as ATermAppl's with different
- * functors any output (or conversion) function will need to check functors in _order to create a result. This interface defines the functions for each different
- * construct to make this process easier. A better implementation would actually integrate this functionality with the jjtraveler.Visitable interface.
+ * functors any output (or conversion) function will need to check functors in _order to create a result. This interface defines the functions for each
+ * different construct to make this process easier. A better implementation would actually integrate this functionality with the jjtraveler.Visitable interface.
  *
  * @author Evren Sirin
  */
@@ -44,118 +44,148 @@ public interface ATermVisitor
 {
 	/**
 	 * Visit a generic term which may be a class expression, _individual or a literal.
-	 * 
+	 *
 	 * @param term
 	 */
 	public void visit(ATermAppl term);
 
 	/**
 	 * Visit a primitive term (with no arguments) that stands for a URI. This URI may belong to a class, a property, an _individual or a datatype.
-	 * 
+	 *
 	 * @param term
 	 */
 	public void visitTerm(ATermAppl term);
 
 	/**
 	 * Visit the 'and' (intersectionOf) term.
-	 * 
+	 *
 	 * @param term
 	 */
 	public void visitAnd(ATermAppl term);
 
 	/**
 	 * Visit the 'or' (unionOf) term.
-	 * 
+	 *
 	 * @param term
 	 */
 	public void visitOr(ATermAppl term);
 
 	/**
 	 * Visit the 'not' (complementOf) term.
-	 * 
+	 *
 	 * @param term
 	 */
 	public void visitNot(ATermAppl term);
 
 	/**
 	 * Visit the 'some' (someValuesFrom restriction) term.
-	 * 
+	 *
 	 * @param term
 	 */
-	public void visitSome(ATermAppl term);
+	public default void visitSome(final ATermAppl term)
+	{
+		//
+	}
 
 	/**
 	 * Visit the 'all' (allValuesFrom restriction) term.
-	 * 
+	 *
 	 * @param term
 	 */
-	public void visitAll(ATermAppl term);
+	public default void visitAll(final ATermAppl term)
+	{
+		// empty
+	}
 
 	/**
 	 * Visit the 'min' (minCardinality restriction) term.
-	 * 
+	 *
 	 * @param term
 	 */
-	public void visitMin(ATermAppl term);
+	public default void visitMin(final ATermAppl term)
+	{
+		// empty
+	}
 
 	/**
 	 * Visit the 'card' (minCardinality restriction) term. This is not a standard term that ise used inside the reasoner but sometimes used for display
 	 * purposes. Normally, cardinality restrictions would be stored as a conjunction of min and max restrictions.
-	 * 
+	 *
 	 * @param term
 	 */
-	public void visitCard(ATermAppl term);
+	public default void visitCard(final ATermAppl term)
+	{
+		// empty
+	}
 
 	/**
 	 * Visit the 'max' (maxCardinality restriction) term.
-	 * 
+	 *
 	 * @param term
 	 */
-	public void visitMax(ATermAppl term);
+	public default void visitMax(final ATermAppl term)
+	{
+		// empty
+	}
 
 	/**
 	 * Visit the hasValue restriction term. This term is in the form some(property,value(_individual)) or some(property,value(literal))
-	 * 
+	 *
 	 * @param term
 	 */
-	public void visitHasValue(ATermAppl term);
+	public default void visitHasValue(final ATermAppl term)
+	{
+		// empty
+	}
 
 	/**
 	 * Visit the nominal term. This term is in the form some(property,value(_individual))
-	 * 
+	 *
 	 * @param term
 	 */
 	public void visitValue(ATermAppl term);
 
 	/**
 	 * Visit the 'oneOf' term. This term is in the form or([value(i1),value(i2),...,value(i3)] where i's are individuals or literal constants
-	 * 
+	 *
 	 * @param term
 	 */
 	public void visitOneOf(ATermAppl term);
 
 	/**
 	 * Visit the literal term. The literals are in the form literal(lexicalValue, language, datatypeURI)
-	 * 
+	 *
 	 * @param term
 	 */
-	public void visitLiteral(ATermAppl term);
+	public default void visitLiteral(final ATermAppl term)
+	{
+		// empty
+	}
 
 	/**
 	 * Visit the list structure. Lists are found in 'and' and 'or' terms.
-	 * 
+	 *
 	 * @param term
 	 */
 	public void visitList(ATermList term);
 
 	/**
 	 * Visit the self restriction term. This is in the form self(p).
-	 * 
+	 *
 	 * @param term
 	 */
-	public void visitSelf(ATermAppl term);
+	public default void visitSelf(final ATermAppl term)
+	{
+		// empty
+	}
 
-	public void visitInverse(ATermAppl p);
+	/**
+	 * @param p inverse
+	 */
+	public default void visitInverse(final ATermAppl p)
+	{
+		// empty
+	}
 
 	public void visitRestrictedDatatype(ATermAppl dt);
 }

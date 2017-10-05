@@ -243,69 +243,15 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		}
 
 		@Override
-		public void visitAll(final ATermAppl term)
-		{
-			//
-		}
-
-		@Override
 		public void visitAnd(final ATermAppl term)
 		{
 			visitList((ATermList) term.getArgument(0));
 		}
 
 		@Override
-		public void visitCard(final ATermAppl term)
-		{
-			//
-		}
-
-		@Override
-		public void visitHasValue(final ATermAppl term)
-		{
-			//
-		}
-
-		@Override
-		public void visitLiteral(final ATermAppl term)
-		{
-			//
-		}
-
-		@Override
-		public void visitMax(final ATermAppl term)
-		{
-			//
-		}
-
-		@Override
-		public void visitMin(final ATermAppl term)
-		{
-			//
-		}
-
-		@Override
 		public void visitOneOf(final ATermAppl term)
 		{
 			visitList((ATermList) term.getArgument(0));
-		}
-
-		@Override
-		public void visitSelf(final ATermAppl term)
-		{
-			//
-		}
-
-		@Override
-		public void visitSome(final ATermAppl term)
-		{
-			//
-		}
-
-		@Override
-		public void visitInverse(final ATermAppl term)
-		{
-			//
 		}
 
 		@Override

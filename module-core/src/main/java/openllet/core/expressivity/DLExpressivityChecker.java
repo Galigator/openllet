@@ -36,14 +36,13 @@ public class DLExpressivityChecker extends ProfileBasedExpressivityChecker
 {
 	private static Set<ATermAppl> TOP_SET = SetUtils.singleton(ATermUtils.TOP);
 
-	private final Visitor _visitor;
+	private final Visitor _visitor = new Visitor();
 
 	private Expressivity _expressivity;
 
 	public DLExpressivityChecker(final KnowledgeBase kb)
 	{
 		super(kb);
-		_visitor = new Visitor();
 	}
 
 	@Override
@@ -298,12 +297,6 @@ public class DLExpressivityChecker extends ProfileBasedExpressivityChecker
 		{
 			_expressivity.setHasNegation(true);
 			visitList((ATermList) term.getArgument(0));
-		}
-
-		@Override
-		public void visitLiteral(final ATermAppl term)
-		{
-			// nothing to do here
 		}
 
 		@Override
