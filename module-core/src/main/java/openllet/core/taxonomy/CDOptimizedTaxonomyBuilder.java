@@ -1317,6 +1317,9 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 
 	private boolean realizeByConcepts()
 	{
+		if (null == _classes) // This occur only on concurrent environment that involve read / write / classification at same time; a correct handling require to create a state-less KnowledgeBase.
+			classify();
+
 		_monitor.setProgressLength(_classes.size() + 2);
 		_monitor.taskStarted();
 

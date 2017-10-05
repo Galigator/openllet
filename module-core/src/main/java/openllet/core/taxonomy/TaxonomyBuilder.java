@@ -47,8 +47,6 @@ import openllet.core.utils.progress.ProgressMonitor;
  */
 public interface TaxonomyBuilder
 {
-	//	public void setKB(KnowledgeBase kb);
-
 	public void setProgressMonitor(ProgressMonitor monitor);
 
 	/**
@@ -62,7 +60,7 @@ public interface TaxonomyBuilder
 
 	/**
 	 * Realize the KB by finding the instances of each class.
-	 * 
+	 *
 	 * @return true if operation success
 	 */
 	public boolean realize();

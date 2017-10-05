@@ -55,12 +55,6 @@ public class PartialOrderTaxonomyBuilder implements TaxonomyBuilder
 	public boolean realize()
 	{
 		throw new UnsupportedOperationException();
-		/*
-		CDOptimizedTaxonomyBuilder b = new CDOptimizedTaxonomyBuilder();
-		b.setKB( _kb );
-		b.classify();
-		return b.realize();
-		 */
 	}
 
 	@Override
@@ -68,12 +62,6 @@ public class PartialOrderTaxonomyBuilder implements TaxonomyBuilder
 	{
 		throw new UnsupportedOperationException();
 	}
-
-	//	@Override
-	//	public void setKB(final KnowledgeBase kb)
-	//	{
-	//		_kb = kb;
-	//	}
 
 	public PartialOrderComparator<ATermAppl> getComparator()
 	{
