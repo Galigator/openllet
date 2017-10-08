@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
-import openllet.core.KnowledgeBaseImpl;
+import openllet.core.KnowledgeBaseImplFullSync;
 import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.exceptions.PelletRuntimeException;
 import openllet.core.utils.ATermUtils;
@@ -83,7 +83,7 @@ public class PelletReasoner implements OpenlletReasoner
 
 	private volatile OWLOntology _ontology;
 
-	private volatile KnowledgeBase _kb = new KnowledgeBaseImpl();
+	private volatile KnowledgeBase _kb = new KnowledgeBaseImplFullSync();
 
 	private volatile ReasonerProgressMonitor _monitor;
 
