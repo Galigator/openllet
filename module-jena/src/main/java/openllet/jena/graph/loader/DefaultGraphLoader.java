@@ -47,6 +47,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -2056,7 +2057,7 @@ public class DefaultGraphLoader implements GraphLoader
 	@Override
 	public void load(final Iterable<Graph> graphs) throws UnsupportedFeatureException
 	{
-		final Timer timer = _kb.getTimers().startTimer("load");
+		final Optional<Timer> timer = _kb.getTimers().startTimer("load");
 
 		_monitor.setProgressTitle("Loading");
 		_monitor.taskStarted();
@@ -2080,7 +2081,7 @@ public class DefaultGraphLoader implements GraphLoader
 
 		_monitor.taskFinished();
 
-		timer.stop();
+		timer.ifPresent(t -> t.stop());
 	}
 
 	/**

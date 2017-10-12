@@ -246,9 +246,9 @@ public class EmptySRIQStrategy extends CompletionStrategy
 
 		if (!_abox.doExplanation() && OpenlletOptions.USE_ADVANCED_CACHING)
 		{
-			final Timer t = _abox.getKB().getTimers().startTimer("cache");
+			final Optional<Timer> timer = _abox.getKB().getTimers().startTimer("cache");
 			final Bool cachedSat = isCachedSat(x);
-			t.stop();
+			timer.ifPresent(t -> t.stop());
 			if (cachedSat.isKnown())
 			{
 				if (cachedSat.isTrue())
@@ -471,7 +471,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 	@Override
 	public void restore(final Branch br)
 	{
-		final Timer timer = _timers.startTimer("restore");
+		final Optional<Timer> timer = _timers.startTimer("restore");
 
 		_abox.getStats()._globalRestores++;
 
@@ -543,7 +543,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 		if (_logger.isLoggable(Level.FINE))
 			_abox.printTree();
 
-		timer.stop();
+		timer.ifPresent(t -> t.stop());
 	}
 
 	protected boolean backtrack()
@@ -554,7 +554,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 
 		while (!branchFound)
 		{
-			_completionTimer.check();
+			_completionTimer.ifPresent(t -> t.check());
 
 			final int lastBranch = _abox.getClash().getDepends().max();
 

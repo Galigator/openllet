@@ -42,7 +42,7 @@ public class SROIQStrategy extends CompletionStrategy
 		_abox.getStats()._backtracks++;
 		while (!branchFound)
 		{
-			_completionTimer.check();
+			_completionTimer.ifPresent(t -> t.check());
 
 			final int lastBranch = _abox.getClash().getDepends().max();
 
@@ -116,7 +116,7 @@ public class SROIQStrategy extends CompletionStrategy
 		{
 			while (_abox.isChanged() && !_abox.isClosed())
 			{
-				_completionTimer.check();
+				_completionTimer.ifPresent(t -> t.check());
 
 				_abox.setChanged(false);
 

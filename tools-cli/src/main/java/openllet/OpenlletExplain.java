@@ -27,7 +27,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import openllet.atom.OpenError;
-import openllet.core.utils.Timer;
 import openllet.core.utils.progress.ConsoleProgressMonitor;
 import openllet.core.utils.progress.ProgressMonitor;
 import openllet.owlapi.OWL;
@@ -277,31 +276,33 @@ public class OpenlletExplain extends OpenlletCmdApp
 		expGen.setProgressMonitor(rendererMonitor);
 
 		final OWLClassExpression unsatClass = _converter.convert(axiom);
-		final Timer timer = _timers.startTimer("explain");
-		final Set<Set<OWLAxiom>> explanations = expGen.getExplanations(unsatClass, _maxExplanations);
-		timer.stop();
+
+		final Set<Set<OWLAxiom>> explanations = _timers.execute("explain", () -> expGen.getExplanations(unsatClass, _maxExplanations));
 
 		if (explanations.isEmpty())
-			rendererMonitor.foundNoExplanations();
-
-		if (timer.getCount() % 10 == 0)
 		{
-			// printStatistics();
+			rendererMonitor.foundNoExplanations();
 		}
 
 		final int expSize = explanations.size();
 		if (expSize == 0)
+		{
 			_errorExpCount++;
+		}
 		else
 			if (expSize == 1)
 			{
 				if (explanations.iterator().next().size() > 1)
+				{
 					_multiAxiomExpCount++;
-				// else
-				// return;
+					// else
+					// return;
+				}
 			}
 			else
+			{
 				_multipleExpCount++;
+			}
 	}
 
 	public void explainClassHierarchy() throws OWLException
@@ -334,8 +335,7 @@ public class OpenlletExplain extends OpenlletCmdApp
 
 	public void explainEquivalentClass(final OWLClass c1, final OWLClass c2)
 	{
-		if (c1.equals(c2))
-			return;
+		if (c1.equals(c2)) { return; }
 
 		final OWLAxiom axiom = OWL.equivalentClasses(c1, c2);
 
@@ -344,8 +344,7 @@ public class OpenlletExplain extends OpenlletCmdApp
 
 	public void explainInstance(final OWLIndividual ind, final OWLClass c)
 	{
-		if (c.isOWLThing())
-			return;
+		if (c.isOWLThing()) { return; }
 
 		final OWLAxiom axiom = OWL.classAssertion(ind, c);
 
@@ -359,21 +358,22 @@ public class OpenlletExplain extends OpenlletCmdApp
 	public void explainPropertyValue(final OWLIndividual s, final OWLProperty p, final OWLObject o)
 	{
 		if (p.isOWLObjectProperty())
+		{
 			explainAxiom(OWL.propertyAssertion(s, (OWLObjectProperty) p, (OWLIndividual) o));
+		}
 		else
+		{
 			explainAxiom(OWL.propertyAssertion(s, (OWLDataProperty) p, (OWLLiteral) o));
+		}
 	}
 
 	public void explainSubClass(final OWLClass sub, final OWLClass sup)
 	{
-		if (sub.equals(sup))
-			return;
+		if (sub.equals(sup)) { return; }
 
-		if (sub.isOWLNothing())
-			return;
+		if (sub.isOWLNothing()) { return; }
 
-		if (sup.isOWLThing())
-			return;
+		if (sup.isOWLThing()) { return; }
 
 		final OWLSubClassOfAxiom axiom = OWL.subClassOf(sub, sup);
 		explainAxiom(axiom);
@@ -384,7 +384,9 @@ public class OpenlletExplain extends OpenlletCmdApp
 		for (final OWLClass cls : _reasoner.getEquivalentClasses(OWL.Nothing))
 		{
 			if (cls.isOWLNothing())
+			{
 				continue;
+			}
 
 			explainUnsatisfiableClass(cls);
 		}
@@ -397,8 +399,7 @@ public class OpenlletExplain extends OpenlletCmdApp
 
 	private void explainClassHierarchy(final OWLClass cls, final Node<OWLClass> eqClasses, final Set<OWLClass> visited) throws OWLException
 	{
-		if (visited.contains(cls))
-			return;
+		if (visited.contains(cls)) { return; }
 
 		visited.add(cls);
 		visited.addAll(eqClasses.entities().collect(Collectors.toList()));
@@ -417,7 +418,9 @@ public class OpenlletExplain extends OpenlletCmdApp
 		for (final Node<OWLClass> equivalenceSet : subClasses)
 		{
 			if (equivalenceSet.isBottomNode())
+			{
 				continue;
+			}
 
 			final OWLClass subClass = equivalenceSet.getRepresentativeElement();
 			subClassEqs.put(subClass, equivalenceSet);
@@ -425,7 +428,9 @@ public class OpenlletExplain extends OpenlletCmdApp
 		}
 
 		for (final Map.Entry<OWLClass, Node<OWLClass>> entry : subClassEqs.entrySet())
+		{
 			explainClassHierarchy(entry.getKey(), entry.getValue(), visited);
+		}
 	}
 
 	private TransactionAwareSingleExpGen getSingleExplanationGenerator()
@@ -435,7 +440,9 @@ public class OpenlletExplain extends OpenlletCmdApp
 			if (_options.getOption("inconsistent") != null)
 			{
 				if (!_options.getOption("inconsistent").getValueAsBoolean())
+				{
 					return new BlackBoxExplanation(_reasoner.getRootOntology(), OpenlletReasonerFactory.getInstance(), _reasoner);
+				}
 				else
 				{
 					output("WARNING: black method cannot be used to explain inconsistency. Switching to glass.");
@@ -443,10 +450,14 @@ public class OpenlletExplain extends OpenlletCmdApp
 				}
 			}
 			else
+			{
 				return new BlackBoxExplanation(_reasoner.getRootOntology(), OpenlletReasonerFactory.getInstance(), _reasoner);
+			}
 		}
 		else
+		{
 			return new GlassBoxExplanation(_reasoner);
+		}
 	}
 
 	private void loadMethod()
@@ -454,12 +465,18 @@ public class OpenlletExplain extends OpenlletCmdApp
 		final String method = _options.getOption("method").getValueAsString();
 
 		if (method.equalsIgnoreCase("black"))
+		{
 			_useBlackBox = true;
+		}
 		else
 			if (method.equalsIgnoreCase("glass"))
+			{
 				_useBlackBox = false;
+			}
 			else
+			{
 				throw new OpenlletCmdException("Unrecognized method: " + method);
+			}
 	}
 
 	private void loadNames()
@@ -470,24 +487,28 @@ public class OpenlletExplain extends OpenlletCmdApp
 		_name3 = null;
 
 		if ((option = _options.getOption("hierarchy")) != null)
-			if (option.getValueAsBoolean())
-				return;
+		{
+			if (option.getValueAsBoolean()) { return; }
+		}
 
 		if ((option = _options.getOption("all-unsat")) != null)
+		{
 			if (option.getValueAsBoolean())
 			{
 				_name1 = OWL.Nothing;
 				return;
 			}
+		}
 
 		if ((option = _options.getOption("inconsistent")) != null)
+		{
 			if (option.getValueAsBoolean())
 			{
-				if (_useBlackBox)
-					throw new OpenlletCmdException("Black box method cannot be used to explain ontology inconsistency");
+				if (_useBlackBox) { throw new OpenlletCmdException("Black box method cannot be used to explain ontology inconsistency"); }
 				_name1 = OWL.Thing;
 				return;
 			}
+		}
 
 		if ((option = _options.getOption("unsat")) != null)
 		{
@@ -497,13 +518,16 @@ public class OpenlletExplain extends OpenlletCmdApp
 				_name1 = OntologyUtils.findEntity(unsatisfiable, _owlApiLoader.allOntologies());
 
 				if (_name1 == null)
+				{
 					throw new OpenlletCmdException("Undefined entity: " + unsatisfiable);
+				}
 				else
 					if (!_name1.isOWLClass())
+					{
 						throw new OpenlletCmdException("Not a defined class: " + unsatisfiable);
+					}
 					else
-						if (_name1.isTopEntity() && _useBlackBox)
-							throw new OpenlletCmdException("Black box method cannot be used to explain unsatisfiability of owl:Thing");
+						if (_name1.isTopEntity() && _useBlackBox) { throw new OpenlletCmdException("Black box method cannot be used to explain unsatisfiability of owl:Thing"); }
 
 				return;
 			}
@@ -515,22 +539,23 @@ public class OpenlletExplain extends OpenlletCmdApp
 			if (subclass != null)
 			{
 				final String[] names = subclass.split(",");
-				if (names.length != 2)
-					throw new OpenlletCmdException("Invalid format for subclass option: " + subclass);
+				if (names.length != 2) { throw new OpenlletCmdException("Invalid format for subclass option: " + subclass); }
 
 				_name1 = OntologyUtils.findEntity(names[0], _owlApiLoader.allOntologies());
 				_name2 = OntologyUtils.findEntity(names[1], _owlApiLoader.allOntologies());
 
 				if (_name1 == null)
+				{
 					throw new OpenlletCmdException("Undefined entity: " + names[0]);
+				}
 				else
-					if (!_name1.isOWLClass())
-						throw new OpenlletCmdException("Not a defined class: " + names[0]);
+					if (!_name1.isOWLClass()) { throw new OpenlletCmdException("Not a defined class: " + names[0]); }
 				if (_name2 == null)
+				{
 					throw new OpenlletCmdException("Undefined entity: " + names[1]);
+				}
 				else
-					if (!_name2.isOWLClass())
-						throw new OpenlletCmdException("Not a defined class: " + names[1]);
+					if (!_name2.isOWLClass()) { throw new OpenlletCmdException("Not a defined class: " + names[1]); }
 				return;
 			}
 		}
@@ -541,22 +566,23 @@ public class OpenlletExplain extends OpenlletCmdApp
 			if (instance != null)
 			{
 				final String[] names = instance.split(",");
-				if (names.length != 2)
-					throw new OpenlletCmdException("Invalid format for instance option: " + instance);
+				if (names.length != 2) { throw new OpenlletCmdException("Invalid format for instance option: " + instance); }
 
 				_name1 = OntologyUtils.findEntity(names[0], _owlApiLoader.allOntologies());
 				_name2 = OntologyUtils.findEntity(names[1], _owlApiLoader.allOntologies());
 
 				if (_name1 == null)
+				{
 					throw new OpenlletCmdException("Undefined entity: " + names[0]);
+				}
 				else
-					if (!_name1.isOWLNamedIndividual())
-						throw new OpenlletCmdException("Not a defined _individual: " + names[0]);
+					if (!_name1.isOWLNamedIndividual()) { throw new OpenlletCmdException("Not a defined _individual: " + names[0]); }
 				if (_name2 == null)
+				{
 					throw new OpenlletCmdException("Undefined entity: " + names[1]);
+				}
 				else
-					if (!_name2.isOWLClass())
-						throw new OpenlletCmdException("Not a defined class: " + names[1]);
+					if (!_name2.isOWLClass()) { throw new OpenlletCmdException("Not a defined class: " + names[1]); }
 
 				return;
 			}
@@ -568,30 +594,32 @@ public class OpenlletExplain extends OpenlletCmdApp
 			if (optionValue != null)
 			{
 				final String[] names = optionValue.split(",");
-				if (names.length != 3)
-					throw new OpenlletCmdException("Invalid format for property-value option: " + optionValue);
+				if (names.length != 3) { throw new OpenlletCmdException("Invalid format for property-value option: " + optionValue); }
 
 				_name1 = OntologyUtils.findEntity(names[0], _owlApiLoader.allOntologies());
 				_name2 = OntologyUtils.findEntity(names[1], _owlApiLoader.allOntologies());
 
 				if (_name1 == null)
+				{
 					throw new OpenlletCmdException("Undefined entity: " + names[0]);
+				}
 				else
-					if (!_name1.isOWLNamedIndividual())
-						throw new OpenlletCmdException("Not an _individual: " + names[0]);
+					if (!_name1.isOWLNamedIndividual()) { throw new OpenlletCmdException("Not an _individual: " + names[0]); }
 				if (_name2 == null)
+				{
 					throw new OpenlletCmdException("Undefined entity: " + names[1]);
+				}
 				else
-					if (!_name2.isOWLObjectProperty() && !_name2.isOWLDataProperty())
-						throw new OpenlletCmdException("Not a defined property: " + names[1]);
+					if (!_name2.isOWLObjectProperty() && !_name2.isOWLDataProperty()) { throw new OpenlletCmdException("Not a defined property: " + names[1]); }
 				if (_name2.isOWLObjectProperty())
 				{
 					_name3 = OntologyUtils.findEntity(names[2], _owlApiLoader.allOntologies());
 					if (_name3 == null)
+					{
 						throw new OpenlletCmdException("Undefined entity: " + names[2]);
+					}
 					else
-						if (!(_name3 instanceof OWLIndividual))
-							throw new OpenlletCmdException("Not a defined _individual: " + names[2]);
+						if (!(_name3 instanceof OWLIndividual)) { throw new OpenlletCmdException("Not a defined _individual: " + names[2]); }
 				}
 				else
 				{
@@ -613,27 +641,25 @@ public class OpenlletExplain extends OpenlletCmdApp
 
 		// Per default we explain why the ontology is inconsistent
 		_name1 = OWL.Thing;
-		if (_useBlackBox)
-			throw new OpenlletCmdException("Black box method cannot be used to explain ontology inconsistency");
+		if (_useBlackBox) { throw new OpenlletCmdException("Black box method cannot be used to explain ontology inconsistency"); }
 
 		return;
 	}
 
 	private void printStatistics()
 	{
-		if (!_verbose)
-			return;
+		if (!_verbose) { return; }
 
-		final Timer timer = _timers.getTimer("explain");
-		if (timer != null)
-		{
-			verbose("Subclass relations   : " + timer.getCount());
-			verbose("Multiple explanations: " + _multipleExpCount);
-			verbose("Single explanation     ");
-			verbose(" with multiple axioms: " + _multiAxiomExpCount);
-			verbose("Error explaining     : " + _errorExpCount);
-			verbose("Average time         : " + timer.getAverage() + "ms");
-		}
+		_timers.getTimer("explain")//
+				.ifPresent(timer ->
+				{
+					verbose("Subclass relations   : " + timer.getCount());
+					verbose("Multiple explanations: " + _multipleExpCount);
+					verbose("Single explanation     ");
+					verbose(" with multiple axioms: " + _multiAxiomExpCount);
+					verbose("Error explaining     : " + _errorExpCount);
+					verbose("Average time         : " + timer.getAverage() + "ms");
+				});
 	}
 
 	private class RendererExplanationProgressMonitor implements ExplanationProgressMonitor

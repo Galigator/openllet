@@ -42,6 +42,7 @@ import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -281,7 +282,7 @@ public class ABoxImpl implements ABox
 	public ABoxImpl(final KnowledgeBase kb, final ABoxImpl abox, final ATermAppl extraIndividual, final boolean copyIndividuals)
 	{
 		_kb = kb;
-		final Timer timer = kb.getTimers().startTimer("cloneABox");
+		final Optional<Timer> timer = kb.getTimers().startTimer("cloneABox");
 
 		_rulesNotApplied = true;
 		_initialized = abox._initialized;
@@ -407,8 +408,7 @@ public class ABoxImpl implements ABox
 			_branches = new ArrayList<>();
 		}
 
-		timer.stop();
-
+		timer.ifPresent(t -> t.stop());
 	}
 
 	@Override
@@ -435,7 +435,7 @@ public class ABoxImpl implements ABox
 		if (_sourceABox == null)
 			return;
 
-		final Timer t = _kb.getTimers().startTimer("copyOnWrite");
+		final Optional<Timer> timer = _kb.getTimers().startTimer("copyOnWrite");
 
 		final List<ATermAppl> currentNodeList = new ArrayList<>(_nodeList);
 		final int currentSize = currentNodeList.size();
@@ -472,7 +472,7 @@ public class ABoxImpl implements ABox
 				copy.setNodeCount(copy.getNodeCount() + 1);
 		}
 
-		t.stop();
+		timer.ifPresent(t -> t.stop());
 
 		_sourceABox = null;
 	}
@@ -556,17 +556,17 @@ public class ABoxImpl implements ABox
 
 		if (_logger.isLoggable(Level.FINE))
 		{
-			final long count = _kb.getTimers().getTimer("subClassSat") == null ? 0 : _kb.getTimers().getTimer("subClassSat").getCount();
+			final long count = _kb.getTimers().getTimer("subClassSat").map(t -> t.getCount()).orElse(0L);
 			_logger.fine(count + ") Checking subclass [" + ATermUtils.toString(c1) + " " + ATermUtils.toString(c2) + "]");
 		}
 
 		final ATermAppl notC2 = ATermUtils.negate(c2);
 		final ATermAppl c = ATermUtils.makeAnd(c1, notC2);
-		final Timer t = _kb.getTimers().startTimer("subClassSat");
+		final Optional<Timer> timer = _kb.getTimers().startTimer("subClassSat");
 		final boolean sub = !isSatisfiable(c, false);
-		t.stop();
+		timer.ifPresent(t -> t.stop());
 
-		_logger.fine(() -> " Result: " + sub + " (" + t.getLast() + "ms)");
+		_logger.fine(() -> " Result: " + sub + timer.map(t -> " (" + t.getLast() + "ms)").orElse(""));
 
 		return sub;
 	}
@@ -617,9 +617,9 @@ public class ABoxImpl implements ABox
 
 		_stats._satisfiabilityCount++;
 
-		final Timer t = _kb.getTimers().startTimer("satisfiability");
+		final Optional<Timer> timer = _kb.getTimers().startTimer("satisfiability");
 		final boolean isSat = isConsistent(Collections.emptySet(), c, cacheModel);
-		t.stop();
+		timer.ifPresent(t -> t.stop());
 
 		return isSat;
 	}
@@ -883,9 +883,9 @@ public class ABoxImpl implements ABox
 
 		final ATermAppl notC = ATermUtils.negate(c);
 
-		final Timer t = _kb.getTimers().startTimer("isType");
+		final Optional<Timer> timer = _kb.getTimers().startTimer("isType");
 		final boolean isType = !isConsistent(SetUtils.singleton(x), notC, false);
-		t.stop();
+		timer.ifPresent(t -> t.stop());
 
 		if (_logger.isLoggable(Level.FINE))
 			_logger.fine("Type " + isType + " " + ATermUtils.toString(c) + " for individual " + ATermUtils.toString(x));
@@ -1345,7 +1345,7 @@ public class ABoxImpl implements ABox
 		Collection<ATermAppl> individuals = individualsParam;
 		ATermAppl c = cParam;
 
-		final Timer t = _kb.getTimers().startTimer("isConsistent");
+		final Optional<Timer> timer = _kb.getTimers().startTimer("isConsistent");
 
 		if (_logger.isLoggable(Level.FINE))
 			if (c == null)
@@ -1414,17 +1414,7 @@ public class ABoxImpl implements ABox
 
 			_logger.fine(() -> "Strategy: " + strategy.getClass().getName());
 
-			final Timer completionTimer = _kb.getTimers().getTimer("complete");
-
-			completionTimer.start();
-			try
-			{
-				strategy.complete(expr);
-			}
-			finally
-			{
-				completionTimer.stop();
-			}
+			_kb.getTimers().execute("complete", timers -> strategy.complete(expr));
 		}
 
 		final boolean consistent = !abox.isClosed();
@@ -1434,7 +1424,7 @@ public class ABoxImpl implements ABox
 
 		if (_logger.isLoggable(Level.FINE))
 			_logger.fine("Consistent: " + consistent //
-					+ " Time: " + t.getElapsed()//
+					+ " Time: " + timer.map(t -> t.getElapsed()).orElse(0L)//
 					+ " Branches " + abox.getBranches().size()//
 					+ " Tree depth: " + abox.getStats()._treeDepth//
 					+ " Tree size: " + abox.getNodes().size()//
@@ -1452,8 +1442,7 @@ public class ABoxImpl implements ABox
 		else
 		{
 			_lastClash = abox.getClash();
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("Clash: " + abox.getClash().detailedString());
+			_logger.fine(() -> "Clash: " + abox.getClash().detailedString());
 			if (_doExplanation && OpenlletOptions.USE_TRACING)
 			{
 				if (individuals.size() == 1)
@@ -1487,7 +1476,7 @@ public class ABoxImpl implements ABox
 		else
 			_lastCompletion = null;
 
-		t.stop();
+		timer.ifPresent(t -> t.stop());
 
 		return consistent;
 	}
@@ -1500,8 +1489,8 @@ public class ABoxImpl implements ABox
 	{
 		assert isComplete() : "Initial consistency check has not been performed!";
 
-		final Timer incT = _kb.getTimers().startTimer(IS_INC_CONSISTENT);
-		final Timer t = _kb.getTimers().startTimer(IS_CONSISTENT);
+		final Optional<Timer> incT = _kb.getTimers().startTimer(IS_INC_CONSISTENT);
+		final Optional<Timer> timer = _kb.getTimers().startTimer(IS_CONSISTENT);
 
 		// throw away old information to let gc do its work
 		_lastCompletion = null;
@@ -1515,16 +1504,8 @@ public class ABoxImpl implements ABox
 
 		// set _abox to not being complete
 		setComplete(false);
-		final Timer completionTimer = _kb.getTimers().getTimer("complete");
-		completionTimer.start();
-		try
-		{
-			incStrategy.complete(_kb.getExpressivityChecker().getExpressivity());
-		}
-		finally
-		{
-			completionTimer.stop();
-		}
+
+		_kb.getTimers().execute("complete", timers -> incStrategy.complete(_kb.getExpressivityChecker().getExpressivity()));
 
 		final boolean consistent = !isClosed();
 
@@ -1542,8 +1523,8 @@ public class ABoxImpl implements ABox
 
 		_lastCompletion = this;
 
-		t.stop();
-		incT.stop();
+		timer.ifPresent(t -> t.stop());
+		incT.ifPresent(t -> t.stop());
 
 		// do not clear the _clash information
 

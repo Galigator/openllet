@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 import java.util.logging.Level;
@@ -374,17 +375,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 
 	private void incrementalClassify()
 	{
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Incremental classification starting");
-
-		final Timer timer = _timers.startTimer("incrementalClassify");
-
-		incClassifyAllModStrategy();
-
-		timer.stop();
-
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Incremental classification done");
+		_timers.execute("incrementalClassify", x -> incClassifyAllModStrategy());
 	}
 
 	public boolean isClassified()
@@ -482,27 +473,23 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 			@Override
 			public void run()
 			{
-				// classify ontology
-				Timer timer = _timers.startTimer("reasonerClassify");
-				_reasoner.flush();
-				_reasoner.getKB().classify();
-				timer.stop();
+				_timers.execute("reasonerClassify", x ->
+				{ // classify ontology
+					_reasoner.flush();
+					_reasoner.getKB().classify();
+				});
 
 				if (_logger.isLoggable(Level.FINE))
 				{
 					_logger.fine("Regular taxonomy:");
-
 					new TreeTaxonomyPrinter<ATermAppl>().print(_reasoner.getKB().getTaxonomy(), new PrintWriter(System.err));
 				}
 
-				timer = _timers.startTimer("buildClassHierarchy");
-				_taxonomyImpl = buildClassHierarchy(_reasoner);
-				timer.stop();
+				_taxonomyImpl = _timers.execute("buildClassHierarchy", () -> buildClassHierarchy(_reasoner));
 
 				if (_logger.isLoggable(Level.FINE))
 				{
 					_logger.fine("Copied taxonomy:");
-
 					new TreeTaxonomyPrinter<OWLClass>().print(_taxonomyImpl, new PrintWriter(System.err));
 				}
 			}
@@ -520,7 +507,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 
 		try
 		{
-			final Timer timer = _timers.startTimer("regularClassify");
+			final Optional<Timer> timer = _timers.startTimer("regularClassify");
 
 			if (_multiThreaded)
 			{
@@ -536,7 +523,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 				partitioning.run();
 			}
 
-			timer.stop();
+			timer.ifPresent(t -> t.stop());
 		}
 		catch (final InterruptedException e)
 		{

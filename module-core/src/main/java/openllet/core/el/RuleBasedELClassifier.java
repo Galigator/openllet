@@ -8,6 +8,7 @@ package openllet.core.el;
 
 import java.util.Collection;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Logger;
 import openllet.aterm.AFun;
@@ -73,9 +74,11 @@ public abstract class RuleBasedELClassifier extends CDOptimizedTaxonomyBuilder
 
 		_logger.info("Creating structures");
 
-		Timer t = _timers.startTimer("createConcepts");
-		processAxioms();
-		t.stop();
+		{
+			final Optional<Timer> timer = _timers.startTimer("createConcepts");
+			processAxioms();
+			timer.ifPresent(t -> t.stop());
+		}
 
 		_logger.info("Running rules");
 
@@ -84,11 +87,11 @@ public abstract class RuleBasedELClassifier extends CDOptimizedTaxonomyBuilder
 		_monitor.setProgress(_classes.size());
 
 		_logger.info("Building hierarchy");
-
-		t = _timers.startTimer("buildHierarchy");
-		buildTaxonomy(subsumers);
-		t.stop();
-
+		{
+			final Optional<Timer> timer = _timers.startTimer("buildHierarchy");
+			buildTaxonomy(subsumers);
+			timer.ifPresent(t -> t.stop());
+		}
 		_monitor.setProgress(_classes.size());
 		_monitor.taskFinished();
 

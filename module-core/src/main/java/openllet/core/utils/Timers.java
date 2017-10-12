@@ -42,6 +42,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import openllet.core.OpenlletOptions;
 import openllet.core.output.TableData;
 
 /**
@@ -66,17 +71,21 @@ public class Timers
 		_mainTimer.start();
 	}
 
+	private static Function<String, UnsupportedOperationException> _doesNotExist = name -> new UnsupportedOperationException("Timer " + name + " does not exist!");
+
 	public void addAll(final Timers other)
 	{
 		for (final Entry<String, Timer> entry : other._timers.entrySet())
 		{
 			final String name = entry.getKey();
 			final Timer otherTimer = entry.getValue();
-			final Timer thisTimer = getTimer(name);
-			if (thisTimer == null)
-				_timers.put(name, otherTimer);
+
+			final Optional<Timer> thisTimer = getTimer(name);
+
+			if (thisTimer.isPresent())
+				thisTimer.get().add(otherTimer);
 			else
-				thisTimer.add(otherTimer);
+				_timers.put(name, otherTimer);
 		}
 	}
 
@@ -87,31 +96,55 @@ public class Timers
 		return t;
 	}
 
-	public Timer startTimer(final String name)
+	public Optional<Timer> startTimer(final String name)
 	{
-		Timer t = getTimer(name);
-		if (t == null)
-			t = createTimer(name);
+		if (OpenlletOptions.USE_THREADED_KERNEL)
+			return Optional.empty();
+
+		final Timer t = getTimer(name).orElseGet(() -> createTimer(name));
 		t.start();
-		return t;
+		return Optional.of(t);
+	}
+
+	public void execute(final String name, final Consumer<Timers> consumer)
+	{
+		if (OpenlletOptions.USE_THREADED_KERNEL)
+		{
+			consumer.accept(this);
+			return;
+		}
+
+		final Optional<Timer> timer = startTimer(name);
+		consumer.accept(this);
+		timer.ifPresent(t -> t.stop());
+	}
+
+	public <RESULT> RESULT execute(final String name, final Supplier<RESULT> producer)
+	{
+		if (OpenlletOptions.USE_THREADED_KERNEL)
+			return producer.get();
+
+		final Optional<Timer> timer = startTimer(name);
+		try
+		{
+			return producer.get();
+		}
+		finally
+		{
+			timer.ifPresent(t -> t.stop());
+		}
 	}
 
 	public void checkTimer(final String name)
 	{
-		final Timer t = getTimer(name);
-		if (t == null)
-			throw new UnsupportedOperationException("Timer " + name + " does not exist!");
-
-		t.check();
+		getTimer(name).orElseThrow(() -> _doesNotExist.apply(name))//
+				.check();
 	}
 
 	public void resetTimer(final String name)
 	{
-		final Timer t = getTimer(name);
-		if (t == null)
-			throw new UnsupportedOperationException("Timer " + name + " does not exist!");
-
-		t.reset();
+		getTimer(name).orElseThrow(() -> _doesNotExist.apply(name))//
+				.reset();
 	}
 
 	public void interrupt()
@@ -121,20 +154,14 @@ public class Timers
 
 	public void setTimeout(final String name, final long timeout)
 	{
-		Timer t = getTimer(name);
-		if (t == null)
-			t = createTimer(name);
-
-		t.setTimeout(timeout);
+		getTimer(name).orElseGet(() -> createTimer(name))//
+				.setTimeout(timeout);
 	}
 
 	public void stopTimer(final String name)
 	{
-		final Timer t = getTimer(name);
-		if (t == null)
-			throw new UnsupportedOperationException("Timer " + name + " does not exist!");
-
-		t.stop();
+		getTimer(name).orElseThrow(() -> _doesNotExist.apply(name))//
+				.stop();
 	}
 
 	public void resetAll()
@@ -146,19 +173,17 @@ public class Timers
 
 	public long getTimerTotal(final String name)
 	{
-		final Timer timer = getTimer(name);
-		return timer == null ? 0 : timer.getTotal();
+		return getTimer(name).map(t -> t.getTotal()).orElse(0L);
 	}
 
 	public double getTimerAverage(final String name)
 	{
-		final Timer timer = getTimer(name);
-		return timer == null ? 0 : timer.getAverage();
+		return getTimer(name).map(t -> t.getAverage()).orElse(0.);
 	}
 
-	public Timer getTimer(final String name)
+	public Optional<Timer> getTimer(final String name)
 	{
-		return _timers.get(name);
+		return Optional.ofNullable(_timers.get(name));
 	}
 
 	public Collection<Timer> getTimers()

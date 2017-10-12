@@ -36,6 +36,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
@@ -277,7 +278,7 @@ public class PelletLoader implements FacetManagerOWL
 
 	public void load(final Set<OWLOntology> ontologies)
 	{
-		final Timer timer = _kb.getTimers().startTimer("load");
+		final Optional<Timer> timer = _kb.getTimers().startTimer("load");
 
 		final Collection<OWLOntology> toBeLoaded = new LinkedHashSet<>();
 		for (final OWLOntology ontology : ontologies)
@@ -291,7 +292,7 @@ public class PelletLoader implements FacetManagerOWL
 
 		_visitor.verify();
 
-		timer.stop();
+		timer.ifPresent(t -> t.stop());
 	}
 
 	private int load(final OWLOntology ontology, final boolean imported, final Collection<OWLOntology> toBeLoaded)

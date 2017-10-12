@@ -22,9 +22,7 @@ import org.semanticweb.owlapi.reasoner.TimeOutException;
 public interface OpenlletReasoner extends OWLReasoner, OWLOntologyChangeListener, FacetManagerOWL, FacetOntologyOWL, FacetFactoryOWL
 {
 	/**
-	 * Return the underlying Pellet knowledge base.
-	 *
-	 * @return the underlying Pellet knowledge base
+	 * @return the underlying knowledge base
 	 */
 	public KnowledgeBase getKB();
 
@@ -34,7 +32,7 @@ public interface OpenlletReasoner extends OWLReasoner, OWLOntologyChangeListener
 	 *
 	 * @param changes the changes to be applied to the reasoner
 	 * @return <code>true</code> if all changes have been processed successfully, <code>false</code> otherwise (indicates reasoner will reload the whole
-	 *         _ontology next time it needs to do reasoning)
+	 *         ontology next time it needs to do reasoning)
 	 */
 	public boolean processChanges(final List<? extends OWLOntologyChange> changes);
 

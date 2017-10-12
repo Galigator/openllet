@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -180,7 +181,7 @@ public abstract class AbstractModuleExtractor implements ModuleExtractor
 	@Override
 	public MultiValueMap<OWLEntity, OWLEntity> extractModules()
 	{
-		final Timer timer = _timers.startTimer("extractModules");
+		final Optional<Timer> timer = _timers.startTimer("extractModules");
 
 		// _cache the axiom signatures
 		processAdditions();
@@ -196,7 +197,7 @@ public abstract class AbstractModuleExtractor implements ModuleExtractor
 
 		extractModuleSignatures(_entityAxioms.keySet());
 
-		timer.stop();
+		timer.ifPresent(t -> t.stop());
 
 		return _modules;
 	}
@@ -304,7 +305,7 @@ public abstract class AbstractModuleExtractor implements ModuleExtractor
 		else
 			// recursive call to children
 			for (final TaxonomyNode<OWLClass> next : node.getSubs())
-			getAffectedRoots(axiom, next, effects, add, visited);
+				getAffectedRoots(axiom, next, effects, add, visited);
 	}
 
 	/**
@@ -525,7 +526,7 @@ public abstract class AbstractModuleExtractor implements ModuleExtractor
 			if (nextRoot instanceof OWLClass)
 				// collect all the descendants of this class
 				if (taxonomy.contains((OWLClass) nextRoot))
-				affected.addAll(taxonomy.getFlattenedSubs((OWLClass) nextRoot, false));
+					affected.addAll(taxonomy.getFlattenedSubs((OWLClass) nextRoot, false));
 		}
 
 		_logger.fine(() -> "Affected entities " + affected);
@@ -552,7 +553,7 @@ public abstract class AbstractModuleExtractor implements ModuleExtractor
 	@Override
 	public Set<OWLEntity> applyChanges(final Taxonomy<OWLClass> taxonomy) throws UnsupportedOperationException
 	{
-		final Timer timer = _timers.startTimer("updateModules");
+		final Optional<Timer> timer = _timers.startTimer("updateModules");
 
 		if (!canUpdate())
 			throw new UnsupportedOperationException("Modules cannot be updated!");
@@ -579,7 +580,7 @@ public abstract class AbstractModuleExtractor implements ModuleExtractor
 		// clear new classes as well
 		_newClasses.clear();
 
-		timer.stop();
+		timer.ifPresent(t -> t.stop());
 
 		return effects;
 	}

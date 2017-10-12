@@ -17,6 +17,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 import java.util.logging.Level;
@@ -328,7 +329,7 @@ public class SizeEstimate
 		concepts.removeAll(instancesPC.keySet());
 		properties.removeAll(pairsPP.keySet());
 
-		final Timer timer = _kb.getTimers().startTimer("sizeEstimate");
+		final Optional<Timer> timer = _kb.getTimers().startTimer("sizeEstimate");
 
 		_logger.fine("Size estimation started");
 
@@ -620,14 +621,14 @@ public class SizeEstimate
 		avgEquivProperties = average(equivProperties.values());
 		avgInversesPP = average(inverses.values());
 
-		timer.stop();
+		timer.ifPresent(t -> t.stop());
 
 		// printStatistics();
 
-		if (_logger.isLoggable(Level.FINE))
+		if (_logger.isLoggable(Level.FINE) && timer.isPresent())
 		{
 			final NumberFormat nf = new DecimalFormat("0.00");
-			_logger.fine("Size estimation finished in " + nf.format(timer.getLast() / 1000.0) + " sec");
+			_logger.fine("Size estimation finished in " + nf.format(timer.get().getLast() / 1000.0) + " sec");
 		}
 	}
 

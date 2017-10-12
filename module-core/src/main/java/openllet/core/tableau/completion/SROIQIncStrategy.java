@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
@@ -131,7 +132,7 @@ public class SROIQIncStrategy extends SROIQStrategy
 	public void initialize(final Expressivity expr)
 	{
 
-		final Timer t = _abox.getKB().getTimers().startTimer("initialize");
+		final Optional<Timer> timer = _abox.getKB().getTimers().startTimer("initialize");
 
 		_logger.fine("Initialize Started");
 
@@ -415,8 +416,7 @@ public class SROIQIncStrategy extends SROIQStrategy
 		_abox.setComplete(false);
 		_abox.setInitialized(true);
 
-		t.stop();
-
+		timer.ifPresent(t -> t.stop());
 		_logger.fine("Initialize Ended");
 	}
 

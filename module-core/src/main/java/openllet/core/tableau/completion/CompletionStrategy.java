@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -99,7 +100,7 @@ public abstract class CompletionStrategy
 	 * Timer to be used by the complete function. KB's consistency timer depends on this one and this dependency is set in the constructor. Any concrete class
 	 * that extends CompletionStrategy should check this timer to respect the timeouts defined in the KB.
 	 */
-	protected final Timer _completionTimer;
+	protected final Optional<Timer> _completionTimer;
 
 	/**
 	 * Flag to indicate that a merge operation is going on
@@ -157,7 +158,7 @@ public abstract class CompletionStrategy
 
 	public void checkTimer()
 	{
-		_completionTimer.check();
+		_completionTimer.ifPresent(t -> t.check());
 	}
 
 	/**
@@ -1177,7 +1178,7 @@ public abstract class CompletionStrategy
 		if (newBranch.getBranchIndexInABox() != _abox.getBranches().size())
 			throw new OpenError("Invalid branch created: " + newBranch.getBranchIndexInABox() + " != " + _abox.getBranches().size());
 
-		_completionTimer.check();
+		_completionTimer.ifPresent(t -> t.check());
 
 		// CHW - added for incremental deletion support
 		if (OpenlletOptions.USE_INCREMENTAL_DELETION)

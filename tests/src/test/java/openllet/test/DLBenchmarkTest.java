@@ -36,6 +36,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.core.KRSSLoader;
@@ -103,7 +104,7 @@ public class DLBenchmarkTest
 		final TableData table = new TableData(Arrays.asList(new String[] { "Name", "Size", "Time" }));
 		for (int i = 0; i < files.length; i++)
 		{
-			System.out.print((i + 1) + ") ");
+			System.out.print(i + 1 + ") ");
 
 			final List<Object> data = new ArrayList<>();
 			data.add(files[i]); // Adding a File (Name)
@@ -111,7 +112,7 @@ public class DLBenchmarkTest
 			{
 				doTBoxTest(files[i].toString());
 				data.add(Integer.valueOf(_kb.getClasses().size())); // Adding an Integer. (Size)
-				data.add(Long.toString(_kb.getTimers().getTimer("test").getTotal())); // Adding a String. (Time)
+				data.add(Long.toString(_kb.getTimers().getTimer("test").map(t -> t.getTotal()).orElse(0L))); // Adding a String. (Time)
 			}
 			catch (final Exception | OutOfMemoryError | StackOverflowError e)
 			{
@@ -138,7 +139,7 @@ public class DLBenchmarkTest
 			file = file.substring(0, index);
 		}
 		index = file.lastIndexOf(File.separator);
-		final String displayName = (index == -1) ? file : file.substring(index + 1);
+		final String displayName = index == -1 ? file : file.substring(index + 1);
 
 		if (_logger.isLoggable(Level.INFO))
 			System.out.print(displayName + " ");
@@ -148,7 +149,7 @@ public class DLBenchmarkTest
 		_kb = _loader.createKB(file + ext);
 		_kb.setTimeout(TBOX_LIMIT * 1000);
 
-		final Timer t = _kb.getTimers().startTimer("test");
+		final Optional<Timer> timer = _kb.getTimers().startTimer("test");
 
 		if (_logger.isLoggable(Level.INFO))
 			System.out.print("preparing...");
@@ -160,7 +161,7 @@ public class DLBenchmarkTest
 
 		_kb.classify();
 
-		t.stop();
+		timer.ifPresent(t -> t.stop());
 
 		if (PRINT_TREE)
 			_kb.printClassTree();
@@ -175,10 +176,9 @@ public class DLBenchmarkTest
 
 		if (_logger.isLoggable(Level.INFO))
 		{
-			System.out.print(" Prepare " + _kb.getTimers().getTimer("preprocessing").getTotal());
-			System.out.print(" Classify " + _kb.getTimers().getTimer("classify").getTotal());
-
-			System.out.println(" " + t.getTotal());
+			System.out.print(" Prepare " + _kb.getTimers().getTimerTotal("preprocessing"));
+			System.out.print(" Classify " + _kb.getTimers().getTimerTotal("classify"));
+			timer.ifPresent(t -> System.out.println(" " + t.getTotal()));
 		}
 
 		if (PRINT_TIME)
@@ -194,7 +194,7 @@ public class DLBenchmarkTest
 
 		for (int i = 0; i < files.length; i++)
 		{
-			System.out.print((i + 1) + ") " + files[i] + " ");
+			System.out.print(i + 1 + ") " + files[i] + " ");
 
 			try
 			{
@@ -266,14 +266,14 @@ public class DLBenchmarkTest
 			file = file.substring(0, index);
 		}
 		index = file.lastIndexOf(File.separator);
-		final String displayName = (index == -1) ? file : file.substring(index + 1);
+		final String displayName = index == -1 ? file : file.substring(index + 1);
 		System.out.print(displayName + " ");
 
 		_kb = _loader.createKB(file + ext);
 		_kb.getTimers().resetAll();
 		_kb.setTimeout(ABOX_LIMIT * 1000);
 
-		final Timer t = _kb.getTimers().startTimer("test");
+		final Optional<Timer> timer = _kb.getTimers().startTimer("test");
 
 		System.out.print("preparing...");
 
@@ -285,17 +285,17 @@ public class DLBenchmarkTest
 			_kb.realize();
 		}
 
-		t.stop();
+		timer.ifPresent(t -> t.stop());
 
 		System.out.print("verifying...");
 		_loader.verifyABox(file + ".query", _kb);
 
 		System.out.print("done");
 
-		System.out.print(" Prepare " + _kb.getTimers().getTimer("preprocessing").getTotal());
-		System.out.print(" Classify " + _kb.getTimers().getTimer("classify").getTotal());
+		System.out.print(" Prepare " + _kb.getTimers().getTimerTotal("preprocessing"));
+		System.out.print(" Classify " + _kb.getTimers().getTimerTotal("classify"));
 
-		System.out.println(" " + t.getTotal());
+		timer.ifPresent(t -> System.out.println(" " + t.getTotal()));
 
 		if (PRINT_TIME)
 			_kb.getTimers().print();
@@ -316,7 +316,7 @@ public class DLBenchmarkTest
 
 		for (int i = 0; i < files.length; i++)
 		{
-			System.out.print((i + 1) + ") ");
+			System.out.print(i + 1 + ") ");
 			try
 			{
 				doABoxTest(files[i].getAbsolutePath());

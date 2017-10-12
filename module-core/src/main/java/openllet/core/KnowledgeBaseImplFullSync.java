@@ -332,7 +332,7 @@ public class KnowledgeBaseImplFullSync extends KnowledgeBaseImpl
 	}
 
 	@Override
-	public synchronized Timers getTimers()
+	public Timers getTimers()
 	{
 		return super.getTimers();
 	}
@@ -344,19 +344,19 @@ public class KnowledgeBaseImplFullSync extends KnowledgeBaseImpl
 	}
 
 	@Override
-	public synchronized ABox getABox()
+	public ABox getABox()
 	{
 		return super.getABox();
 	}
 
 	@Override
-	public synchronized TBox getTBox()
+	public TBox getTBox()
 	{
 		return super.getTBox();
 	}
 
 	@Override
-	public synchronized RBox getRBox()
+	public RBox getRBox()
 	{
 		return super.getRBox();
 	}

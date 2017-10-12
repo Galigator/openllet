@@ -172,11 +172,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 		}
 
 		if (!_prepared)
-		{
-			final Timer t = _kb.getTimers().startTimer("taxBuilder.prepare");
-			prepare();
-			t.stop();
-		}
+			_kb.getTimers().execute("taxBuilder.prepare", t -> prepare());
 
 		_logger.fine("Starting classification...");
 
@@ -259,7 +255,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 						System.out.println(Thread.currentThread().getName() + " Classify on " + c + " [begin]");
 						classify(c, requireTopSearch);
 						_monitor.incrementProgress();
-						_kb.getTimers().getTimer("classify").check();
+						_kb.getTimers().getTimer("classify").ifPresent(t -> t.check());
 						System.out.println(Thread.currentThread().getName() + " Classify on " + c + " [ end ]");
 					});
 		else
@@ -270,7 +266,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 				classify(c, requireTopSearch);
 				_monitor.incrementProgress();
 
-				_kb.getTimers().getTimer("classify").check();
+				_kb.getTimers().getTimer("classify").ifPresent(t -> t.check());
 
 				if (_monitor.isCanceled())
 					return false;
@@ -313,7 +309,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 
 	private void computeToldInformation()
 	{
-		final Timer t = _kb.getTimers().startTimer("computeToldInformation");
+		final Optional<Timer> timer = _kb.getTimers().startTimer("computeToldInformation");
 
 		_toldTaxonomy = new TaxonomyImpl<>(_classes, ATermUtils.TOP, ATermUtils.BOTTOM);
 
@@ -359,7 +355,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 		_unionClasses.clear();
 		_toldTaxonomy.assertValid();
 
-		t.stop();
+		timer.ifPresent(t -> t.stop());
 	}
 
 	private synchronized DefinitionOrder createDefinitionOrder()
@@ -757,12 +753,12 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 	{
 		_logger.finer("Satisfiable ");
 
-		Timer t = _kb.getTimers().startTimer("classifySat");
+		final Optional<Timer> timer = _kb.getTimers().startTimer("classifySat");
 		boolean isSatisfiable = _kb.getABox().isSatisfiable(c, true);
-		t.stop();
+		timer.ifPresent(t -> t.stop());
 
-		if (_logger.isLoggable(Level.FINER))
-			_logger.finer((isSatisfiable ? "true" : "*****FALSE*****") + " (" + t.getLast() + "ms)");
+		if (_logger.isLoggable(Level.FINER) && timer.isPresent())
+			_logger.finer((isSatisfiable ? "true" : "*****FALSE*****") + " (" + timer.get().getLast() + "ms)");
 
 		if (!isSatisfiable)
 			_taxonomyImpl.addEquivalentNode(c, _taxonomyImpl.getBottomNode());
@@ -772,16 +768,16 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 			if (_logger.isLoggable(Level.FINER))
 				_logger.finer("...negation ");
 
-			t = _kb.getTimers().startTimer("classifySatNot");
+			final Optional<Timer> timer2 = _kb.getTimers().startTimer("classifySatNot");
 			final ATermAppl notC = ATermUtils.makeNot(c);
 			isSatisfiable = _kb.getABox().isSatisfiable(notC, true);
-			t.stop();
+			timer2.ifPresent(t -> t.stop());
 
 			if (!isSatisfiable)
 				_taxonomyImpl.addEquivalentNode(c, _taxonomyImpl.getTop());
 
-			if (_logger.isLoggable(Level.FINER))
-				_logger.finer(isSatisfiable + " (" + t.getLast() + "ms)");
+			if (_logger.isLoggable(Level.FINER) && timer2.isPresent())
+				_logger.finer(isSatisfiable + " (" + timer2.get().getLast() + "ms)");
 		}
 
 		return _taxonomyImpl.getNode(c);
@@ -853,9 +849,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 				 * already know everything about j
 				 */
 				final ATermAppl sup = supNode.getName();
-				final Timer t = _kb.getTimers().startTimer("eqCheck");
-				final boolean isEq = subsumes(c, sup);
-				t.stop();
+				final boolean isEq = _kb.getTimers().execute("eqCheck", () -> subsumes(c, sup));
 				if (isEq)
 				{
 					_logger.finer(() -> format(c) + " = " + format(sup));
@@ -1038,7 +1032,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 
 	private Collection<TaxonomyNode<ATermAppl>> search(final boolean topSearch, final ATermAppl c, final TaxonomyNode<ATermAppl> x, final Set<TaxonomyNode<ATermAppl>> visited, final List<TaxonomyNode<ATermAppl>> result)
 	{
-		final Timer t = _kb.getTimers().startTimer("search" + (topSearch ? "Top" : "Bottom"));
+		final Optional<Timer> timer = _kb.getTimers().startTimer("search" + (topSearch ? "Top" : "Bottom"));
 
 		final List<TaxonomyNode<ATermAppl>> posSucc = new ArrayList<>();
 		visited.add(x);
@@ -1062,7 +1056,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 				if (!visited.contains(y))
 					search(topSearch, c, y, visited, result);
 
-		t.stop();
+		timer.ifPresent(t -> t.stop());
 
 		return result;
 	}
@@ -1198,7 +1192,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 			final Individual x = i.next();
 
 			_monitor.incrementProgress();
-			_kb.getTimers().getTimer("realize").check();
+			_kb.getTimers().getTimer("realize").ifPresent(t -> t.check());
 
 			if (_monitor.isCanceled())
 				return false;
@@ -1273,9 +1267,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 				_logger.finer("Type checking for [" + format(n) + ", " + format(c) + "]...");
 			}
 
-			final Timer t = _kb.getTimers().startTimer("classifyType");
-			isType = _kb.isType(n, c);
-			t.stop();
+			isType = _kb.getTimers().execute("classifyType", () -> _kb.isType(n, c));
 			marked.put(c, isType);
 
 			if (_logger.isLoggable(Level.FINER))
@@ -1328,7 +1320,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 		final Collection<ATermAppl> individuals = _kb.getIndividuals();
 		if (!individuals.isEmpty())
 			realizeByConcept(ATermUtils.TOP, individuals);
-		_kb.getTimers().getTimer("realize").check();
+		_kb.getTimers().getTimer("realize").ifPresent(t -> t.check());
 
 		if (_monitor.isCanceled())
 			return false;
@@ -1343,7 +1335,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 		if (c.equals(ATermUtils.BOTTOM))
 			return Collections.emptySet();
 
-		_kb.getTimers().getTimer("realize").check();
+		_kb.getTimers().getTimer("realize").ifPresent(t -> t.check());
 
 		if (_monitor.isCanceled())
 			return null;

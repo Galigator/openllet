@@ -1937,8 +1937,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		final boolean explain = _abox.doExplanation();
 		_abox.setDoExplanation(true);
 
-		final Timer timer = _timers.startTimer("preprocessing");
-		Timer t;
+		final Optional<Timer> timer = _timers.startTimer("preprocessing");
 
 		// consistency need to be repeated after modifications
 		_state.remove(ReasoningState.CONSISTENCY);
@@ -1957,20 +1956,10 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 						&& (!_expChecker.getExpressivity().hasNominal() || OpenlletOptions.USE_PSEUDO_NOMINALS);
 
 		if (isRBoxChanged())
-		{
-			_logger.finer(() -> "Role hierarchy...");
-			t = _timers.startTimer("rbox");
-			_rbox.prepare();
-			t.stop();
-		}
+			_timers.execute("rbox", x -> _rbox.prepare());
 
 		if (isTBoxChanged())
-		{
-			_logger.finer(() -> "Prepare TBox...");
-			t = _timers.startTimer("normalize");
-			_tbox.prepare();
-			t.stop();
-		}
+			_timers.execute("normalize", x -> _tbox.prepare());
 
 		if (isRBoxChanged())
 			_rbox.propagateDomainRange();
@@ -2011,7 +2000,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 			// taxonomy = null;
 		}
 
-		timer.stop();
+		timer.ifPresent(t -> t.stop());
 
 		if (_logger.isLoggable(Level.FINE))
 		{
@@ -2178,7 +2167,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 				_logger.warning("Ignoring rule " + rule + ": " + msg);
 			}
 
-		final Timer timer = _timers.startTimer("consistency");
+		final Optional<Timer> timer = _timers.startTimer("consistency");
 
 		final boolean doExplanation = _abox.doExplanation();
 
@@ -2233,10 +2222,10 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		_state.add(ReasoningState.CONSISTENCY);
 
-		timer.stop();
+		timer.ifPresent(t -> t.stop());
 
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Consistent: " + _consistent + " (" + timer.getLast() + "ms)");
+		if (_logger.isLoggable(Level.FINE) && timer.isPresent())
+			_logger.fine("Consistent: " + _consistent + " (" + timer.get().getLast() + "ms)");
 
 		assert isConsistencyDone() : "Consistency flag not set";
 	}
@@ -2297,7 +2286,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		_logger.fine("Classifying...");
 
-		final Timer timer = _timers.startTimer("classify"); // TODO : coordination of the name of the classifier with the Taxonomy builders..
+		final Optional<Timer> timer = _timers.startTimer("classify"); // TODO : coordination of the name of the classifier with the Taxonomy builders..
 
 		final TaxonomyBuilder builder = getTaxonomyBuilder();
 		final boolean isClassified;
@@ -2306,7 +2295,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 			isClassified = builder.classify();
 		}
 
-		timer.stop();
+		timer.ifPresent(t -> t.stop());
 
 		if (!isClassified)
 			return;
@@ -2327,7 +2316,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		if (!isClassified())
 			return;
 
-		final Timer timer = _timers.startTimer("realize");
+		final Optional<Timer> timer = _timers.startTimer("realize");
 
 		// This is false if the progress monitor is canceled
 		final boolean isRealized;
@@ -2337,7 +2326,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 			isRealized = builder.realize();
 		}
 
-		timer.stop();
+		timer.ifPresent(t -> t.stop());
 
 		if (!isRealized)
 			return;
@@ -4552,7 +4541,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		final ATermAppl c = ATermUtils.normalize(d);
 
-		final Timer timer = _timers.startTimer("retrieve");
+		final Optional<Timer> timer = _timers.startTimer("retrieve");
 
 		final ATermAppl notC = ATermUtils.negate(c);
 		final List<ATermAppl> knowns = new ArrayList<>();
@@ -4599,7 +4588,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 			}
 
-		timer.stop();
+		timer.ifPresent(t -> t.stop());
 
 		final Set<ATermAppl> result = Collections.unmodifiableSet(new HashSet<>(knowns));
 

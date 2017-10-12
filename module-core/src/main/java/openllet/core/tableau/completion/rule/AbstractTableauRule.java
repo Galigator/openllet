@@ -47,23 +47,17 @@ public abstract class AbstractTableauRule implements TableauRule
 		_blockingType = blockingType;
 	}
 
-	static int x = 0;
-
 	@Override
 	public boolean apply(final IndividualIterator i)
 	{
 
 		if (OpenlletOptions.USE_THREADED_KERNEL)
 		{
-			x++;
-
 			final Blocking blocking = _strategy.getBlocking();
 
-			System.out.println("nodes : " + i.size());
 			return i.nodes()//
 					.filter(node ->
 					{
-						System.out.println(node + " block ? " + x);
 						if (blocking.isBlocked(node))
 						{
 							if (OpenlletOptions.USE_COMPLETION_QUEUE)
@@ -74,12 +68,8 @@ public abstract class AbstractTableauRule implements TableauRule
 							apply(node);
 
 							if (_strategy.getABox().isClosed())
-							{
-								System.out.println(node + " ko");
 								return true;
-							}
 						}
-						System.out.println(node + " ok");
 						return false;
 
 					}).findAny()//

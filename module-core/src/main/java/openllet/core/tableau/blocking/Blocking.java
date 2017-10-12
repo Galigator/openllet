@@ -30,6 +30,7 @@
 
 package openllet.core.tableau.blocking;
 
+import java.util.Optional;
 import java.util.logging.Logger;
 import openllet.core.OpenlletOptions;
 import openllet.core.boxes.abox.Edge;
@@ -73,17 +74,14 @@ public abstract class Blocking
 
 	public boolean isBlocked(final Individual blocked)
 	{
-		if (OpenlletOptions.USE_THREADED_KERNEL) // Timers aren't thread resilients.
-			return !blocked.isRoot() && (isIndirectlyBlocked(blocked) || isDirectlyBlockedInt(blocked));
-
-		final Timer t = blocked.getABox().getKB().getTimers().startTimer("blocking");
+		final Optional<Timer> timer = blocked.getABox().getKB().getTimers().startTimer("blocking");
 		try
 		{
 			return !blocked.isRoot() && (isIndirectlyBlocked(blocked) || isDirectlyBlockedInt(blocked));
 		}
 		finally
 		{
-			t.stop();
+			timer.ifPresent(t -> t.stop());
 		}
 	}
 
@@ -98,17 +96,14 @@ public abstract class Blocking
 
 	public boolean isDirectlyBlocked(final Individual blocked)
 	{
-		if (OpenlletOptions.USE_THREADED_KERNEL) // Timers aren't thread resilients.
-			return isDirectlyBlockedInt(blocked);
-
-		final Timer t = blocked.getABox().getKB().getTimers().startTimer("dBlocking");
+		final Optional<Timer> timer = blocked.getABox().getKB().getTimers().startTimer("dBlocking");
 		try
 		{
 			return isDirectlyBlockedInt(blocked);
 		}
 		finally
 		{
-			t.stop();
+			timer.ifPresent(t -> t.stop());
 		}
 	}
 

@@ -29,7 +29,6 @@ import openllet.core.utils.ATermUtils;
 import openllet.core.utils.CollectionUtils;
 import openllet.core.utils.MultiValueMap;
 import openllet.core.utils.TermFactory;
-import openllet.core.utils.Timer;
 import openllet.core.utils.Timers;
 import openllet.shared.tools.Log;
 
@@ -107,35 +106,21 @@ public class SimplifiedELClassifier extends CDOptimizedTaxonomyBuilder
 		_logger.fine("Reset");
 		reset();
 
-		Timer t = timers.startTimer("createConcepts");
-		_logger.fine("Creating structures");
-		createConcepts();
-		_logger.fine("Created structures");
-		t.stop();
+		timers.execute("createConcepts", t -> createConcepts());
 
 		final int queueSize = _primaryQueue.size();
 		_monitor.setProgressTitle("Classifiying");
 		_monitor.setProgressLength(queueSize);
 		_monitor.taskStarted();
 
-		_logger.fine("Processing queue");
-		t = timers.startTimer("processQueue");
-		processQueue();
-		t.stop();
-		_logger.fine("Processed queue");
+		timers.execute("processQueue", t -> processQueue());
 
 		if (_logger.isLoggable(Level.FINER))
 			print();
 
 		_monitor.setProgress(queueSize);
 
-		_logger.fine("Building hierarchy");
-		t = timers.startTimer("buildHierarchy");
-
-		_taxonomyImpl = new ELTaxonomyBuilder().build(_concepts);
-
-		t.stop();
-		_logger.fine("Builded hierarchy");
+		_taxonomyImpl = timers.execute("buildHierarchy", () -> new ELTaxonomyBuilder().build(_concepts));
 
 		_monitor.taskFinished();
 

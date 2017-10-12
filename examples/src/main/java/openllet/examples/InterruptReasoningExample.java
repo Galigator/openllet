@@ -166,7 +166,7 @@ public class InterruptReasoningExample
 
 		model.prepare();
 
-		System.out.println("finished in " + timers.getTimer("isConsistent").getLast());
+		System.out.println("finished in " + timers.getTimer("isConsistent").get().getLast());
 		System.out.println();
 	}
 
@@ -179,12 +179,12 @@ public class InterruptReasoningExample
 		try
 		{
 			((PelletInfGraph) model.getGraph()).classify();
-			System.out.println("finished in " + timers.getTimer("classify").getLast() + "ms");
+			System.out.println("finished in " + timers.getTimer("classify").get().getLast() + "ms");
 		}
 		catch (final TimeoutException e)
 		{
 			Log.error(_logger, e);
-			System.out.println("interrupted after " + timers.getTimer("classify").getElapsed() + "ms");
+			System.out.println("interrupted after " + timers.getTimer("classify").get().getElapsed() + "ms");
 		}
 
 		System.out.println("Classified: " + openllet.isClassified());
@@ -203,12 +203,12 @@ public class InterruptReasoningExample
 		try
 		{
 			openllet.realize();
-			System.out.println("finished in " + timers.getTimer("realize").getLast() + "ms");
+			System.out.println("finished in " + timers.getTimer("realize").get().getLast() + "ms");
 		}
 		catch (final TimeoutException e)
 		{
 			Log.error(_logger, e);
-			System.out.println("interrupted after " + timers.getTimer("realize").getElapsed() + "ms");
+			System.out.println("interrupted after " + timers.getTimer("realize").get().getElapsed() + "ms");
 		}
 
 		System.out.println("Realized: " + openllet.isRealized());

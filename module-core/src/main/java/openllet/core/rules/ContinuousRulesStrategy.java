@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -129,20 +130,20 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 
 	public Collection<PartialBinding> applyRete()
 	{
-		Timer t;
+		Optional<Timer> timer;
 		if (OpenlletOptions.ALWAYS_REBUILD_RETE)
 		{
-			t = _timers.startTimer("rule-rebuildRete");
+			timer = _timers.startTimer("rule-rebuildRete");
 
 			_partialBindings.clear();
 			_partialBindings.addAll(_unsafeRules);
 			_interpreter.reset();
-			t.stop();
+			timer.ifPresent(t -> t.stop());
 		}
 
-		t = _timers.startTimer("rule-reteRun");
+		timer = _timers.startTimer("rule-reteRun");
 		_interpreter.run();
-		t.stop();
+		timer.ifPresent(t -> t.stop());
 
 		return _interpreter.getBindings();
 	}
@@ -183,12 +184,10 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 	@Override
 	public void complete(final Expressivity expr)
 	{
-		Timer t;
-
 		initialize(_abox.getKB().getExpressivity());
 
 		_merging = false;
-		t = _timers.startTimer("rule-buildReteRules");
+		final Optional<Timer> timer = _timers.startTimer("rule-buildReteRules");
 		final Compiler compiler = new Compiler(this);
 		for (final Entry<Rule, Rule> e : _abox.getKB().getNormalizedRules().entrySet())
 		{
@@ -209,7 +208,7 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 				throw new OpenError("Unsupported rule " + normalizedRule, uoe);
 			}
 		}
-		t.stop();
+		timer.ifPresent(t -> t.stop());
 
 		final AlphaNetwork alphaNet = compiler.getAlphaNet();
 		if (_abox.doExplanation())
@@ -229,7 +228,7 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 		{
 			while (_abox.isChanged() && !_abox.isClosed())
 			{
-				_completionTimer.check();
+				_completionTimer.ifPresent(t -> t.check());
 
 				_abox.setChanged(false);
 

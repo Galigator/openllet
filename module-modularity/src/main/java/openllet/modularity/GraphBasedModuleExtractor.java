@@ -9,6 +9,7 @@ package openllet.modularity;
 import static java.lang.String.format;
 
 import java.util.Collections;
+import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Logger;
 import openllet.core.utils.Timer;
@@ -39,7 +40,7 @@ public class GraphBasedModuleExtractor extends AbstractModuleExtractor
 	@Override
 	protected void extractModuleSignatures(final Set<? extends OWLEntity> entities, final ProgressMonitor monitor)
 	{
-		final Timer timer = getTimers().startTimer("buildGraph");
+		final Optional<Timer> timer = getTimers().startTimer("buildGraph");
 		final GraphBuilder builder = new GraphBuilder();
 
 		axioms().forEach(builder::addAxiom);
@@ -47,9 +48,9 @@ public class GraphBasedModuleExtractor extends AbstractModuleExtractor
 		// FIXME : this suppress warnings... not the error : but we need a clean project to work on true problems.
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		final Reachability<OWLEntity> engine = (Reachability) graph; // FIXME : this is wrong but type erasure mask it.
-		timer.stop();
+		timer.ifPresent(t -> t.stop());
 
-		_logger.finer(() -> format("Built graph in %d ms", timer.getLast()));
+		_logger.finer(() -> format("Built graph in %d ms", timer.map(t -> t.getLast()).orElse(0L)));
 
 		//		DisplayGraph.display( entities, engine.getGraph(), null );
 

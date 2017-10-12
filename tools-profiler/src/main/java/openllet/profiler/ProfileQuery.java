@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
 import openllet.core.KnowledgeBase;
 import openllet.core.utils.FileUtils;
 import openllet.core.utils.MemUtils;
@@ -125,8 +126,6 @@ public class ProfileQuery
 
 	public void profile(final String[] dataset, final String queryset) throws Exception
 	{
-		Timer t = null;
-
 		final String dataName = dataset[0];
 
 		final Map<String, Query> queries = readQueries(queryset);
@@ -142,10 +141,7 @@ public class ProfileQuery
 
 		if (isSizeEstimateAll())
 		{
-			t = _timers.startTimer("sizeEstimateAll");
-			kb.getSizeEstimate().computeAll();
-			t.stop();
-
+			_timers.execute("sizeEstimateAll", x -> kb.getSizeEstimate().computeAll());
 		}
 
 		System.out.println("Parsing/Loading  : " + parseTime);
@@ -180,12 +176,18 @@ public class ProfileQuery
 
 			currResult.add(new Result<>("consistency", consTime));
 			if (isClassify())
+			{
 				currResult.add(new Result<>("classify", classifyTime));
+			}
 			if (isRealize())
+			{
 				currResult.add(new Result<>("realize", realizeTime));
+			}
 			if (isSizeEstimateAll())
+			{
 				currResult.add(new Result<>("estimate", sizeEstimateTime));
-			// currResult.add( new Result<String>( "setup", totalSetupTime ) );
+				// currResult.add( new Result<String>( "setup", totalSetupTime ) );
+			}
 
 			for (final Map.Entry<String, Query> entry : queries.entrySet())
 			{
@@ -193,12 +195,16 @@ public class ProfileQuery
 				final Query query = entry.getValue();
 
 				if (queries.size() > 1)
+				{
 					System.out.println("Query: " + queryName);
+				}
 
 				if (_printQuery)
+				{
 					System.out.println(query);
+				}
 
-				t = _timers.startTimer("query");
+				final Optional<Timer> timer = _timers.startTimer("query");
 
 				final QueryExecution queryExec = SparqlDLExecutionFactory.create(query, _model);
 
@@ -209,12 +215,14 @@ public class ProfileQuery
 
 				final int count = resultMem.size();
 
-				t.stop();
+				timer.ifPresent(t -> t.stop());
 
-				final double queryTime = t.getLast() / 1000.0;
+				final double queryTime = timer.map(t -> t.getLast() / 1000.0).orElse(0.);
 
 				if (_printQueryResults)
+				{
 					ResultSetFormatter.out(resultMem, _model);
+				}
 
 				System.out.println("Query time: " + queryTime);
 				System.out.println("Number of results: " + count);
@@ -240,46 +248,36 @@ public class ProfileQuery
 
 	public KnowledgeBase loadData(final String[] dataset)
 	{
-		Timer t = _timers.startTimer("parse");
+		{
+			final Optional<Timer> timer = _timers.startTimer("parse");
 
-		_loader.parse(dataset);
-		_model = _loader.getModel();
+			_loader.parse(dataset);
+			_model = _loader.getModel();
 
-		System.out.println();
-		System.out.println("Triples        : " + _model.getBaseModel().size());
+			System.out.println();
+			System.out.println("Triples        : " + _model.getBaseModel().size());
 
-		t.stop();
+			timer.ifPresent(t -> t.stop());
+		}
 
 		final KnowledgeBase kb = _loader.getKB();
 
-		t = _timers.startTimer("load");
-		_model.prepare();
-		t.stop();
+		_timers.execute("load", x -> _model.prepare());
 
 		ProfileUtils.printCounts(kb);
 
-		t = _timers.startTimer("consistency");
-		kb.isConsistent();
-		t.stop();
+		_timers.execute("consistency", x -> kb.isConsistent());
 
 		ProfileUtils.printCounts(kb.getABox());
 
 		if (_classify)
 		{
-			t = _timers.startTimer("classify");
-
-			kb.classify();
-
-			t.stop();
+			_timers.execute("classify", x -> kb.classify());
 		}
 
 		if (_realize)
 		{
-			t = _timers.startTimer("realize");
-
-			kb.realize();
-
-			t.stop();
+			_timers.execute("realize", x -> kb.realize());
 		}
 
 		return kb;
@@ -340,6 +338,7 @@ public class ProfileQuery
 		{
 			int c;
 			while ((c = g.getopt()) != -1)
+			{
 				switch (c)
 				{
 					case 'h':
@@ -382,6 +381,7 @@ public class ProfileQuery
 					default:
 						ProfileUtils.error("Unrecognized option: " + (char) c);
 				}
+			}
 		}
 		catch (final NumberFormatException e)
 		{
