@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
@@ -48,7 +47,7 @@ public class AlphaNetwork implements Iterable<AlphaNode>
 {
 
 	private final Map<Object, List<AlphaNode>> _map = new ConcurrentHashMap<>();
-	private final List<AlphaNode> _alphaNodes = new Vector<>();
+	private final List<AlphaNode> _alphaNodes = new ArrayList<>();
 	private final AlphaNodeCreator _creator = new AlphaNodeCreator();
 	private final ABox _abox;
 

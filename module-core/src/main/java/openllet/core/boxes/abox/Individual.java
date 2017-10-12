@@ -31,7 +31,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.Vector;
 import java.util.logging.Level;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermInt;
@@ -60,7 +59,7 @@ public class Individual extends Node implements CachedNode
 	private volatile EdgeList _outEdges;
 
 	@SuppressWarnings("unchecked")
-	private final Vector<ATermAppl>[] _types = new Vector[TYPES]; // List[] isn't a super type of Vector[]
+	private final List<ATermAppl>[] _types = new ArrayList[TYPES];
 	public final int[] _applyNext = new int[TYPES];
 
 	private volatile int _nominalLevel;
@@ -92,7 +91,7 @@ public class Individual extends Node implements CachedNode
 
 		for (int i = 0; i < TYPES; i++)
 		{
-			_types[i] = new Vector<>();
+			_types[i] = new ArrayList<>();
 			_applyNext[i] = 0;
 		}
 
@@ -108,7 +107,7 @@ public class Individual extends Node implements CachedNode
 
 		for (int i = 0; i < TYPES; i++)
 		{
-			_types[i] = new Vector<>(ind._types[i]);
+			_types[i] = new ArrayList<>(ind._types[i]);
 			_applyNext[i] = ind._applyNext[i];
 		}
 

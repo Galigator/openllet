@@ -136,8 +136,8 @@ public class SROIQStrategy extends CompletionStrategy
 
 				for (final TableauRule tableauRule : _tableauRules)
 				{
-					tableauRule.apply(i);
-					if (_abox.isClosed())
+					final boolean closed = tableauRule.apply(i);
+					if (closed)
 						break;
 				}
 

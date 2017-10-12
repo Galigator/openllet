@@ -6,8 +6,10 @@
 
 package openllet.core.boxes.abox;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Stream;
 import openllet.aterm.ATermAppl;
 import openllet.core.tableau.completion.queue.NodeSelector;
 
@@ -87,5 +89,23 @@ public class IndividualIterator implements Iterator<Individual>
 	public void remove()
 	{
 		throw new UnsupportedOperationException();
+	}
+
+	public Stream<Individual> nodes()
+	{
+		return new ArrayList<>(_nodeList)
+				//.stream()
+				.parallelStream()//
+				.filter(term ->
+				{
+					final Node node = _abox.getNode(term);
+					return !node.isPruned() && node.isIndividual();
+				})//
+				.map(_abox::getIndividual);
+	}
+
+	public int size()
+	{
+		return _nodeList.size();
 	}
 }

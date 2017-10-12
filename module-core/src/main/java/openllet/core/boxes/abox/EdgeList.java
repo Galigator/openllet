@@ -30,9 +30,9 @@
 
 package openllet.core.boxes.abox;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Vector;
 import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
 import openllet.core.boxes.rbox.Role;
@@ -41,7 +41,7 @@ import openllet.core.utils.ATermUtils;
 /**
  * @author Evren Sirin
  */
-public class EdgeList extends Vector<Edge>
+public class EdgeList extends ArrayList<Edge>
 {
 	private static final long serialVersionUID = -4849551813090525636L;
 
@@ -93,8 +93,11 @@ public class EdgeList extends Vector<Edge>
 
 	protected void removeEdge(final int index)
 	{
-		set(index, lastElement());
-		removeElementAt(size() - 1);
+		final int l = size() - 1;
+		if (index == l)
+			remove(l);
+		else
+			set(index, remove(l)); // The last one is remove (no array copy require, then it replace the element to remove)
 	}
 
 	@Deprecated

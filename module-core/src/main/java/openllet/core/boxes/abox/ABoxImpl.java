@@ -43,7 +43,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.aterm.ATerm;
@@ -237,7 +236,7 @@ public class ABoxImpl implements ABox
 	{
 		_kb = kb;
 		_nodes = Collections.synchronizedMap(new IdentityHashMap<>());
-		_nodeList = new Vector<>();
+		_nodeList = new ArrayList<>();
 		_clash = null;
 		_assertedClashes = SetUtils.create();
 		_doExplanation = false;
@@ -245,10 +244,10 @@ public class ABoxImpl implements ABox
 		_keepLastCompletion = false;
 
 		setBranchIndex(DependencySet.NO_BRANCH);
-		_branches = new Vector<>();
+		_branches = new ArrayList<>();
 		_disjBranchStats = Collections.synchronizedMap(new IdentityHashMap<>());
 
-		_toBeMerged = new Vector<>();
+		_toBeMerged = new ArrayList<>();
 		_rulesNotApplied = true;
 
 		if (OpenlletOptions.TRACK_BRANCH_EFFECTS)
@@ -298,7 +297,7 @@ public class ABoxImpl implements ABox
 		final int nodeCount = extra + (copyIndividuals ? abox._nodes.size() : 0);
 
 		_nodes = Collections.synchronizedMap(new IdentityHashMap<>(nodeCount));
-		_nodeList = new Vector<>(nodeCount);
+		_nodeList = new ArrayList<>(nodeCount);
 
 		if (OpenlletOptions.TRACK_BRANCH_EFFECTS)
 		{
@@ -386,7 +385,7 @@ public class ABoxImpl implements ABox
 		if (extraIndividual == null || copyIndividuals)
 		{
 			setBranchIndex(abox._branchIndex);
-			_branches = new Vector<>(abox._branches.size());
+			_branches = new ArrayList<>(abox._branches.size());
 			for (int i = 0, n = abox._branches.size(); i < n; i++)
 			{
 				final Branch branch = abox._branches.get(i);
@@ -405,7 +404,7 @@ public class ABoxImpl implements ABox
 		else
 		{
 			setBranchIndex(DependencySet.NO_BRANCH);
-			_branches = new Vector<>();
+			_branches = new ArrayList<>();
 		}
 
 		timer.stop();

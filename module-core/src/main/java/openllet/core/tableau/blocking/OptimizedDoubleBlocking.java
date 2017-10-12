@@ -67,11 +67,11 @@ public class OptimizedDoubleBlocking extends Blocking
 				return true;
 
 			// aBlock
-			if (block3.isBlocked(cxt) && blockMin.isBlocked(cxt))
+			if (block3Max.isBlocked(cxt) && blockMin.isBlocked(cxt))
 				return true;
 
 			// cBlock
-			if (blockMin.isBlocked(cxt) && block5.isBlocked(cxt))
+			if (blockMin.isBlocked(cxt) && blockMax.isBlocked(cxt))
 				return true;
 		}
 

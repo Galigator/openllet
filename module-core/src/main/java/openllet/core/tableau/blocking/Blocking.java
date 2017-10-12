@@ -30,7 +30,6 @@
 
 package openllet.core.tableau.blocking;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.core.OpenlletOptions;
 import openllet.core.boxes.abox.Edge;
@@ -57,10 +56,10 @@ public abstract class Blocking
 
 	protected static final BlockingCondition blockSet = new Block1Set();
 	protected static final BlockingCondition blockAll = new Block2All();
-	protected static final BlockingCondition block3 = new Block3Max();
+	protected static final BlockingCondition block3Max = new Block3Max();
 	protected static final BlockingCondition blockMin = new Block4Min();
-	protected static final BlockingCondition block5 = new Block5Max();
-	protected static final BlockingCondition block6 = new Block6MinSome();
+	protected static final BlockingCondition blockMax = new Block5Max();
+	protected static final BlockingCondition blockMinSome = new Block6MinSome();
 
 	protected Blocking()
 	{
@@ -74,6 +73,9 @@ public abstract class Blocking
 
 	public boolean isBlocked(final Individual blocked)
 	{
+		if (OpenlletOptions.USE_THREADED_KERNEL) // Timers aren't thread resilients.
+			return !blocked.isRoot() && (isIndirectlyBlocked(blocked) || isDirectlyBlockedInt(blocked));
+
 		final Timer t = blocked.getABox().getKB().getTimers().startTimer("blocking");
 		try
 		{
@@ -96,6 +98,9 @@ public abstract class Blocking
 
 	public boolean isDirectlyBlocked(final Individual blocked)
 	{
+		if (OpenlletOptions.USE_THREADED_KERNEL) // Timers aren't thread resilients.
+			return isDirectlyBlockedInt(blocked);
+
 		final Timer t = blocked.getABox().getKB().getTimers().startTimer("dBlocking");
 		try
 		{
@@ -118,8 +123,7 @@ public abstract class Blocking
 			if (isDirectlyBlockedBy(cxt))
 			{
 				blocked.setBlocked(true);
-				if (_logger.isLoggable(Level.FINER))
-					_logger.finer(blocked + " _blocked by " + cxt._blocker);
+				_logger.finer(() -> blocked + " blocked by " + cxt._blocker);
 				return true;
 			}
 

@@ -424,6 +424,8 @@ public class OpenlletOptions
 	 */
 	public static boolean IGNORE_ANNOTATION_CLASSES = true;
 
+	public static boolean USE_THREADED_KERNEL = false;
+
 	static
 	{
 		final String configFile = System.getProperty("openllet.configuration");

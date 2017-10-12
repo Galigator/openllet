@@ -6,9 +6,9 @@
 
 package openllet.core.rules.rete;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Vector;
 import java.util.logging.Logger;
 import openllet.shared.tools.Log;
 
@@ -19,7 +19,7 @@ public abstract class ReteNode
 {
 	public final static Logger _logger = Log.getLogger(ReteNode.class);
 
-	private final List<BetaNode> _children = new Vector<>();
+	private final List<BetaNode> _children = new ArrayList<>();
 
 	@SuppressWarnings("unused")
 	private boolean _marked = false;

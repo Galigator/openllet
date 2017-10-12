@@ -11,6 +11,7 @@ import openllet.core.OpenlletOptions;
 import openllet.core.boxes.abox.Individual;
 import openllet.core.boxes.abox.IndividualIterator;
 import openllet.core.boxes.abox.Node;
+import openllet.core.tableau.blocking.Blocking;
 import openllet.core.tableau.completion.CompletionStrategy;
 import openllet.core.tableau.completion.queue.NodeSelector;
 import openllet.core.tableau.completion.queue.QueueElement;
@@ -46,26 +47,65 @@ public abstract class AbstractTableauRule implements TableauRule
 		_blockingType = blockingType;
 	}
 
+	static int x = 0;
+
 	@Override
-	public void apply(final IndividualIterator i)
+	public boolean apply(final IndividualIterator i)
 	{
-		i.reset(_nodeSelector);
-		while (i.hasNext())
+
+		if (OpenlletOptions.USE_THREADED_KERNEL)
 		{
-			final Individual node = i.next();
+			x++;
 
-			if (_strategy.getBlocking().isBlocked(node))
-			{
-				if (OpenlletOptions.USE_COMPLETION_QUEUE)
-					addQueueElement(node);
-			}
-			else
-			{
-				apply(node);
+			final Blocking blocking = _strategy.getBlocking();
 
-				if (_strategy.getABox().isClosed())
-					return;
+			System.out.println("nodes : " + i.size());
+			return i.nodes()//
+					.filter(node ->
+					{
+						System.out.println(node + " block ? " + x);
+						if (blocking.isBlocked(node))
+						{
+							if (OpenlletOptions.USE_COMPLETION_QUEUE)
+								addQueueElement(node);
+						}
+						else
+						{
+							apply(node);
+
+							if (_strategy.getABox().isClosed())
+							{
+								System.out.println(node + " ko");
+								return true;
+							}
+						}
+						System.out.println(node + " ok");
+						return false;
+
+					}).findAny()//
+					.isPresent();
+		}
+		else
+		{
+			i.reset(_nodeSelector);
+			while (i.hasNext())
+			{
+				final Individual node = i.next();
+
+				if (_strategy.getBlocking().isBlocked(node))
+				{
+					if (OpenlletOptions.USE_COMPLETION_QUEUE)
+						addQueueElement(node);
+				}
+				else
+				{
+					apply(node);
+
+					if (_strategy.getABox().isClosed())
+						return true;
+				}
 			}
+			return false;
 		}
 	}
 
