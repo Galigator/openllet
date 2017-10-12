@@ -38,12 +38,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.aterm.ATerm;
@@ -236,7 +236,7 @@ public class ABoxImpl implements ABox
 	public ABoxImpl(final KnowledgeBase kb)
 	{
 		_kb = kb;
-		_nodes = new ConcurrentHashMap<>();
+		_nodes = Collections.synchronizedMap(new IdentityHashMap<>());
 		_nodeList = new Vector<>();
 		_clash = null;
 		_assertedClashes = SetUtils.create();
@@ -246,7 +246,7 @@ public class ABoxImpl implements ABox
 
 		setBranchIndex(DependencySet.NO_BRANCH);
 		_branches = new Vector<>();
-		_disjBranchStats = new ConcurrentHashMap<>();
+		_disjBranchStats = Collections.synchronizedMap(new IdentityHashMap<>());
 
 		_toBeMerged = new Vector<>();
 		_rulesNotApplied = true;
@@ -297,7 +297,7 @@ public class ABoxImpl implements ABox
 		final int extra = extraIndividual == null ? 0 : 1;
 		final int nodeCount = extra + (copyIndividuals ? abox._nodes.size() : 0);
 
-		_nodes = new ConcurrentHashMap<>(nodeCount);
+		_nodes = Collections.synchronizedMap(new IdentityHashMap<>(nodeCount));
 		_nodeList = new Vector<>(nodeCount);
 
 		if (OpenlletOptions.TRACK_BRANCH_EFFECTS)
