@@ -1,6 +1,6 @@
 package openllet.owlapi.facet;
 
-import openllet.owlapi.OpenlletReasoner;
+import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
 /**
  * @return a PelletReasoner that reason over this ontology.
@@ -12,5 +12,5 @@ public interface FacetReasonerOWL
 	 * @return a PelletReasoner that reason over a previously registered ontology.
 	 * @since 2.5.1
 	 */
-	public abstract OpenlletReasoner getReasoner();
+	public abstract OWLReasoner getReasoner();
 }

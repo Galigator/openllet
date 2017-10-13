@@ -22,7 +22,6 @@ import openllet.owlapi.OWL;
 import openllet.owlapi.OWLGenericTools;
 import openllet.owlapi.OWLHelper;
 import openllet.owlapi.OWLManagerGroup;
-import openllet.owlapi.OpenlletReasoner;
 import openllet.owlapi.SWRL;
 import openllet.owlapi.XSD;
 import openllet.shared.tools.Log;
@@ -40,6 +39,7 @@ import org.semanticweb.owlapi.model.SWRLIndividualArgument;
 import org.semanticweb.owlapi.model.SWRLLiteralArgument;
 import org.semanticweb.owlapi.model.SWRLRule;
 import org.semanticweb.owlapi.model.SWRLVariable;
+import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.vocab.OWLFacet;
 
 /**
@@ -248,7 +248,7 @@ public class TestBasic
 
 			owl.addAxiom(OWL.differentFrom(x1, x2));
 
-			final OpenlletReasoner r = owl.getReasoner();
+			final OWLReasoner r = owl.getReasoner();
 			assertTrue(r.isEntailed(OWL.classAssertion(x1, ClsA)));
 			assertFalse(r.isEntailed(OWL.classAssertion(x2, ClsA)));
 		}
@@ -273,7 +273,7 @@ public class TestBasic
 
 			owl.addAxiom(OWL.differentFrom(SetUtils.create(x0, x1, x2)));
 
-			final OpenlletReasoner r = owl.getReasoner();
+			final OWLReasoner r = owl.getReasoner();
 			assertTrue(r.isEntailed(OWL.classAssertion(x0, ClsA)));
 			assertTrue(r.isEntailed(OWL.classAssertion(x1, ClsA)));
 			assertFalse(r.isEntailed(OWL.classAssertion(x2, ClsA)));
@@ -295,7 +295,7 @@ public class TestBasic
 			owl.addAxiom(OWL.propertyAssertion(x1, propB, OWL.constant(1)));
 			owl.addAxiom(OWL.propertyAssertion(x2, propB, OWL.constant(1.)));
 
-			final OpenlletReasoner r = owl.getReasoner();
+			final OWLReasoner r = owl.getReasoner();
 			assertTrue(r.isEntailed(OWL.classAssertion(x1, ClsA)));
 			assertFalse(r.isEntailed(OWL.classAssertion(x2, ClsA)));
 		}
@@ -444,7 +444,7 @@ public class TestBasic
 							SWRL.lessThan(varX, varY)), //
 					SWRL.consequent(SWRL.propertyAtom(dpB, swrlIndA, inf))));
 
-			final OpenlletReasoner reasoner = owl.getReasoner();
+			final OWLReasoner reasoner = owl.getReasoner();
 			assertFalse(reasoner.isEntailed(OWL.propertyAssertion(a, dpB, OWL.constant("sup"))));
 			assertTrue(reasoner.isEntailed(OWL.propertyAssertion(a, dpB, OWL.constant("inf"))));
 		}
@@ -483,7 +483,7 @@ public class TestBasic
 							SWRL.lessThan(varX, SWRL.constant(11.))), //
 					SWRL.consequent(SWRL.propertyAtom(dpB, swrlIndA, inf))));
 
-			final OpenlletReasoner reasoner = owl.getReasoner();
+			final OWLReasoner reasoner = owl.getReasoner();
 			assertFalse(reasoner.isEntailed(OWL.propertyAssertion(a, dpB, OWL.constant("sup"))));
 			assertTrue(reasoner.isEntailed(OWL.propertyAssertion(a, dpB, OWL.constant("inf"))));
 		}

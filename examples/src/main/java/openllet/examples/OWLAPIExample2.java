@@ -4,7 +4,6 @@ import java.util.UUID;
 import java.util.stream.Stream;
 import openllet.owlapi.OWL;
 import openllet.owlapi.OWLHelper;
-import openllet.owlapi.OpenlletReasoner;
 import openllet.owlapi.OpenlletReasonerFactory;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
@@ -13,6 +12,7 @@ import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
 /**
  * Another example with owl-api and reasoning.
@@ -71,7 +71,7 @@ public class OWLAPIExample2
 
 		// Get the reasoner and flush the changes we just made.
 
-		final OpenlletReasoner r = h.getReasoner();
+		final OWLReasoner r = h.getReasoner();
 
 		// This ontology is consistent, lets give a try of what can be deduce.
 

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -16,6 +17,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
 /**
  * The main difference between OWLTools and OWLGenericTools is the usage of static resources by OWLTools.
@@ -36,10 +38,11 @@ public class OWLGenericTools implements OWLHelper
 	//	protected final OWLOntologyManager _manager;
 
 	protected final OWLGroup _group;
+	private volatile Function<OWLOntology, OWLReasoner> _reasonerFactory = OpenlletReasonerFactory.getInstance()::createReasoner;
 
 	protected boolean _isVolatile = true;
 
-	private Optional<OpenlletReasoner> _reasoner = Optional.empty();
+	private Optional<OWLReasoner> _reasoner = Optional.empty();
 
 	@Override
 	public Logger getLogger()
@@ -78,13 +81,13 @@ public class OWLGenericTools implements OWLHelper
 	}
 
 	@Override
-	public OpenlletReasoner getReasoner()
+	public OWLReasoner getReasoner()
 	{
 		if (!_reasoner.isPresent())
 			try
 			{
 
-				final OpenlletReasoner reasoner = OpenlletReasonerFactory.getInstance().createReasoner(getOntology());
+				final OWLReasoner reasoner = _reasonerFactory.apply(getOntology());
 				reasoner.isConsistent();
 				_reasoner = Optional.of(reasoner);
 			}
@@ -96,6 +99,12 @@ public class OWLGenericTools implements OWLHelper
 
 		_reasoner.get().flush();
 		return _reasoner.get();
+	}
+
+	public OWLGenericTools setReasonerFactory(final Function<OWLOntology, OWLReasoner> reasonerFactory)
+	{
+		_reasonerFactory = reasonerFactory;
+		return this;
 	}
 
 	/**
