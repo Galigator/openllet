@@ -13,7 +13,7 @@ import openllet.atom.OpenError;
 import openllet.shared.tools.Logging;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.dlsyntax.renderer.DLSyntaxObjectRenderer;
-import org.semanticweb.owlapi.formats.OWLXMLDocumentFormatFactory;
+import org.semanticweb.owlapi.formats.FunctionalSyntaxDocumentFormatFactory;
 import org.semanticweb.owlapi.formats.PrefixDocumentFormat;
 import org.semanticweb.owlapi.io.XMLUtils;
 import org.semanticweb.owlapi.model.IRI;
@@ -33,6 +33,7 @@ import org.semanticweb.owlapi.model.OWLOntologyID;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 import org.semanticweb.owlapi.reasoner.NodeSet;
+import org.semanticweb.owlapi.util.OWLDocumentFormatFactoryImpl;
 
 /**
  * Functions that help management of OWL related matters. NB: This interface should replace every occurrence of OWLTools every where it is possible.
@@ -53,7 +54,7 @@ public interface OWLHelper extends Logging, OWLManagementObject
 	public static final String _caseSeparator = "-";
 	public static final String _fileExtention = ".owl";
 	public static final String _delta = "owl.delta";
-	public static final OWLXMLDocumentFormatFactory _formatFactory = new OWLXMLDocumentFormatFactory();
+	public static final OWLDocumentFormatFactoryImpl _formatFactory = new FunctionalSyntaxDocumentFormatFactory(); // new RDFXMLDocumentFormatFactory(); see https://github.com/owlcs/owlapi/issues/706
 	public static final OWLDocumentFormat _format = _formatFactory.get();
 
 	/**
@@ -105,7 +106,11 @@ public interface OWLHelper extends Logging, OWLManagementObject
 		if (null == iri)
 			throw new OWLException("iri2filename(null)");
 
-		return iri.toString().replaceAll(_protocol, "").replaceAll(_secureProtocol, "").replaceAll(_webSeparator, _innerSeparator).replaceAll("&", _innerSeparator);
+		return iri.toString()//
+				.replaceAll(":", _innerSeparator)//
+				.replaceAll("/", _innerSeparator)//
+				.replaceAll(_webSeparator, _innerSeparator)//
+				.replaceAll("&", _innerSeparator);
 	}
 
 	/**

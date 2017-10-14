@@ -23,7 +23,6 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import openllet.atom.OpenError;
 import openllet.core.utils.SetUtils;
 import openllet.owlapi.parser.OWLFunctionalSyntaxParser;
@@ -92,45 +91,12 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 		_delta = log;
 		_directory = directory;
 		_owlManagerGroup = owlManagerGroup;
+		_owlManagerGroup.loadDirectory(_directory);
 
-		_owlManagerGroup.loadDirectory(_directory, _owlManagerGroup.getPersistentManager(), (m, f) ->
-		{
-			final List<OWLAxiom> axioms = new ArrayList<>();
-			final OWLOntology ontology;
+		rebuild(); // Rebuild the ontology that still doesn't exists.
+		sync(); // TODO : add a filter so after having sync/flush the ontologies, we can unload the ontologies we don't want to use ( just to free memory ).
+		flush(); // We flush the log file into ontologies file on fix schedule to avoid to much problem with the log file.
 
-			try (final BufferedReader in = new BufferedReader(new FileReader(f)))
-			{
-				ontology = m.createOntology(parseOntologyId(in.readLine()));
-				final OWLFunctionalSyntaxParser parser = new OWLFunctionalSyntaxParser(in);
-				parser.setUp(ontology, new OWLOntologyLoaderConfiguration());
-				try
-				{
-					while (true)
-						axioms.add(parser.Axiom());
-				}
-				catch (@SuppressWarnings("unused") final Exception e)
-				{
-					// The exception is the way we detected the end.
-				}
-			}
-			catch (final Exception exception)
-			{
-				Log.error(_logger, "File " + f + " lead to corrupted ontology.", exception);
-				return Optional.empty();
-			}
-			ontology.addAxioms(axioms);
-			return Optional.of(ontology);
-		});
-
-		// Rebuild the ontology that still doesn't exists.
-		rebuild();
-
-		sync();
-		// TODO : add a filter so after having sync/flush the ontologies, we can unload the ontologies we don't want to use ( just to free memory ).
-
-		flush();
-
-		// We flush the log file into ontologies file on fix schedule to avoid to much problem with the log file.
 		_future = _timer.scheduleAtFixedRate(_task, 0, _flushTimeInMinute, TimeUnit.MINUTES);
 	}
 
@@ -149,13 +115,14 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 	public void flush()
 	{
 		final List<OWLOntologyID> changed;
-		synchronized (_changed) // We don't took the synchronized over _changed directly to avoid a general stop of the application.
+		synchronized (_changed) // We don't took the synchronized over changed directly to avoid a general stop of the application.
 		{
 			changed = new ArrayList<>(_changed);
 			_changed.clear();
 		}
 
-		_owlManagerGroup.getPersistentManager().ontologies()//
+		final OWLOntologyManager manager = _owlManagerGroup.getPersistentManager();
+		manager.ontologies()//
 				.parallel()// Yes we can !
 				.filter(ontology -> ontology.getOntologyID().getOntologyIRI().isPresent())//
 				.filter(ontology -> changed.contains(ontology.getOntologyID())) //
@@ -165,10 +132,7 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 				{
 					try (final OutputStream stream = new FileOutputStream(ontology2filename(ontology)))
 					{
-						writeOntologyId(stream, ontology.getOntologyID());
-						stream.write(_lineSeparator);
-						stream.write(ontology.axioms().map(OWLAxiom::toString).distinct().collect(Collectors.joining("\n")).getBytes()); // Not sure why distinct is require, look-like sometime axioms aren't really unique.
-						stream.write(_lineSeparator);
+						manager.saveOntology(ontology, OWLHelper._format, stream);
 					} // All exceptions must be fatal to avoid loosing 'log' file. Re-apply a log isn't an issue.
 					catch (final Exception e)
 					{ // Do not make other ontologies crash at save time.

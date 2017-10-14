@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 import openllet.core.rules.builtins.BuiltInRegistry;
@@ -55,25 +56,30 @@ public class TestBasic
 		Log.setLevel(Level.WARNING, OWLGenericTools.class);
 		Log._defaultLevel = Level.INFO;
 	}
+	private static final String NS = "http://test.org#";
+	private static final Function<String, OWLNamedIndividual> i = s -> OWL.Individual(NS + s);
+	private static final Function<String, OWLObjectProperty> o = s -> OWL.ObjectProperty(NS + s);
+	private static final Function<String, OWLDataProperty> d = s -> OWL.DataProperty(NS + s);
+	private static final Function<String, OWLClass> c = s -> OWL.Class(NS + s);
 
-	private final OWLClass ClsA = OWL.Class("#ClsA");
-	private final OWLClass ClsB = OWL.Class("#ClsB");
-	private final OWLClass ClsC = OWL.Class("#ClsC");
-	private final OWLClass ClsD = OWL.Class("#ClsD");
-	private final OWLClass ClsE = OWL.Class("#ClsE");
-	private final OWLClass ClsF = OWL.Class("#ClsF");
-	private final OWLClass ClsG = OWL.Class("#ClsG");
-	private final OWLNamedIndividual Ind1 = OWL.Individual("#Ind1");
-	private final OWLObjectProperty propA = OWL.ObjectProperty("#mimiroux");
-	private final OWLDataProperty propB = OWL.DataProperty("#propB");
-	private final SWRLVariable varA = SWRL.variable(IRI.create("#a"));
+	private final OWLClass ClsA = c.apply("ClsA");
+	private final OWLClass ClsB = c.apply("ClsB");
+	private final OWLClass ClsC = c.apply("ClsC");
+	private final OWLClass ClsD = c.apply("ClsD");
+	private final OWLClass ClsE = c.apply("ClsE");
+	private final OWLClass ClsF = c.apply("ClsF");
+	private final OWLClass ClsG = c.apply("ClsG");
+	private final OWLNamedIndividual Ind1 = i.apply("Ind1");
+	private final OWLObjectProperty propA = o.apply("mimiroux");
+	private final OWLDataProperty propB = d.apply("propB");
+	private final SWRLVariable varA = SWRL.variable(IRI.create(NS + "a"));
 
 	@Test
 	public void rule() throws OWLOntologyCreationException
 	{
 		try (final OWLManagerGroup group = new OWLManagerGroup())
 		{
-			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create("http://test.org#owlapi.tests"), 1.0);
+			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create(NS + "owlapi.tests"), 1.0);
 
 			final OWLHelper owl = new OWLGenericTools(group, ontId, true);
 
@@ -161,21 +167,25 @@ public class TestBasic
 
 	@Test
 	public void incrementalStorage() throws OWLOntologyCreationException
-	{
-		final File file = new File("target/test.org#owlapi.inc.storage-test.org#owlapi.inc.storage_1.0.owl");
+	{ // RDFJsonLDDocumentFormatFactory // TurtleDocumentFormatFactory // doesn't work with : RDFXMLDocumentFormatFactory
+
+		final String ontologyName = "owlapi.inc.storage";
+		final File file = new File("target/" + "http___test.org#" + ontologyName + "-" + "http___test.org#" + ontologyName + "_1.0.owl");
+
+		final String hardString = ");alpha\"#\\\n \t\n\rbeta<xml></xml>";
 
 		try (final OWLManagerGroup group = new OWLManagerGroup())
 		{
 			group.setOntologiesDirectory(new File("target"));
 			group.getPersistentManager();
 
-			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create("http://test.org#owlapi.inc.storage"), 1.0);
+			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create(NS + ontologyName), 1.0);
 			final OWLHelper owl = new OWLGenericTools(group, ontId, false);
 
 			owl.addAxiom(OWL.declaration(ClsA));
 			owl.addAxiom(OWL.declaration(ClsB));
 			owl.addAxiom(OWL.propertyAssertion(Ind1, propA, Ind1));
-			owl.addAxiom(OWL.propertyAssertion(Ind1, propB, OWL.constant(");alpha\"#\\\n \t\n\rbeta<xml></xml>")));
+			owl.addAxiom(OWL.propertyAssertion(Ind1, propB, OWL.constant(hardString)));
 
 			// This test is good but a little too slow when building the project ten time a day.
 			//			try
@@ -190,7 +200,7 @@ public class TestBasic
 			//			}
 			group.flushIncrementalStorage();
 
-			assertTrue(file.exists());
+			assertTrue("file doesn't exist : " + file, file.exists());
 			file.delete();
 			assertTrue(owl.getObject(Ind1, propA).get().getIRI().equals(Ind1.getIRI()));
 		}
@@ -199,18 +209,23 @@ public class TestBasic
 		expected.add(OWL.declaration(ClsA));
 		expected.add(OWL.declaration(ClsB));
 		expected.add(OWL.propertyAssertion(Ind1, propA, Ind1));
-		expected.add(OWL.propertyAssertion(Ind1, propB, OWL.constant(");alpha\"#\\\n \t\n\rbeta<xml></xml>")));
+		expected.add(OWL.propertyAssertion(Ind1, propB, OWL.constant(hardString)));
 
 		try (final OWLManagerGroup group = new OWLManagerGroup())
 		{
 			group.setOntologiesDirectory(new File("target"));
 			group.getPersistentManager();
 
-			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create("http://test.org#owlapi.inc.storage"), 1.0);
+			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create(NS + ontologyName), 1.0);
 			final OWLHelper owl = new OWLGenericTools(group, ontId, false);
 
 			owl.addAxioms(expected.stream());
 		} // Autoclose force a flush.
+
+		// RDF/XML add force the addition of missing declaration.
+		expected.add(OWL.declaration(Ind1));
+		expected.add(OWL.declaration(propA));
+		expected.add(OWL.declaration(propB));
 
 		try (final OWLManagerGroup group = new OWLManagerGroup()) // Force the manager to read the file.
 		{
@@ -218,13 +233,38 @@ public class TestBasic
 			group.setOntologiesDirectory(new File("target"));
 			group.getPersistentManager();
 
-			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create("http://test.org#owlapi.inc.storage"), 1.0);
+			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create(NS + ontologyName), 1.0);
 			final OWLHelper owl = new OWLGenericTools(group, ontId, false);
 
-			final Set<OWLAxiom> set = owl.getOntology().axioms().collect(Collectors.toSet());
-			assertTrue(expected.stream().allMatch(set::contains));
-		} // Autoclose force a flush.
+			final String[] foundStrings = owl.getOntology().axioms().map(OWLAxiom::toString).sorted().toArray(String[]::new);
+			final String[] expectedStrings = expected.stream().map(OWLAxiom::toString).sorted().toArray(String[]::new);
 
+			assertTrue("hard String !", owl.getValue(Ind1, propB).map(x -> x.getLiteral().equals(hardString)).orElse(false));
+
+			assertTrue(foundStrings.length == expectedStrings.length);
+
+			for (int j = 0, l = expectedStrings.length; j < l; j++)
+			{
+				final String es = expectedStrings[j];
+				final String fs = foundStrings[j];
+
+				if (!es.equals(fs))
+				{
+					assertTrue("Axiom size different", fs.length() == es.length());
+					System.out.println(es);
+					System.out.println(fs);
+					final byte[] bE = es.getBytes();
+					final byte[] bF = fs.getBytes();
+					for (int k = 0, kl = bE.length; k < kl; k++)
+						if (bE[k] != bF[k])
+							System.out.println("Byte[" + k + "] -> " + bE[k] + " != " + bF[k]);
+				}
+
+				assertTrue(es + "!=" + fs, es.equals(fs));
+
+			}
+		} // Autoclose force a flush.
+		finally
 		{ // Delete the file.
 			assertTrue(file.exists());
 			file.delete();
@@ -236,11 +276,11 @@ public class TestBasic
 	{
 		try (final OWLManagerGroup group = new OWLManagerGroup())
 		{
-			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create("http://test.org#owlapi.inc.regex.restriction"), 1.0);
+			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create(NS + "owlapi.inc.regex.restriction"), 1.0);
 			final OWLHelper owl = new OWLGenericTools(group, ontId, true);
 
-			final OWLNamedIndividual x1 = OWL.Individual("#I1");
-			final OWLNamedIndividual x2 = OWL.Individual("#I2");
+			final OWLNamedIndividual x1 = i.apply("I1");
+			final OWLNamedIndividual x2 = i.apply("I2");
 
 			owl.addAxiom(OWL.equivalentClasses(ClsA, OWL.some(propB, OWL.restrict(XSD.STRING, OWL.facetRestriction(OWLFacet.PATTERN, OWL.constant("A.A"))))));
 			owl.addAxiom(OWL.propertyAssertion(x1, propB, OWL.constant("AAA")));
@@ -259,12 +299,12 @@ public class TestBasic
 	{
 		try (final OWLManagerGroup group = new OWLManagerGroup())
 		{
-			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create("http://test.org#owlapi.inc.maxLength.restriction"), 1.0);
+			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create(NS + "owlapi.inc.maxLength.restriction"), 1.0);
 			final OWLHelper owl = new OWLGenericTools(group, ontId, true);
 
-			final OWLNamedIndividual x0 = OWL.Individual("#I0");
-			final OWLNamedIndividual x1 = OWL.Individual("#I1");
-			final OWLNamedIndividual x2 = OWL.Individual("#I2");
+			final OWLNamedIndividual x0 = i.apply("I0");
+			final OWLNamedIndividual x1 = i.apply("I1");
+			final OWLNamedIndividual x2 = i.apply("I2");
 
 			owl.addAxiom(OWL.equivalentClasses(ClsA, OWL.some(propB, OWL.restrict(XSD.STRING, OWL.facetRestriction(OWLFacet.MAX_LENGTH, OWL.constant(3L))))));
 			owl.addAxiom(OWL.propertyAssertion(x0, propB, OWL.constant("")));
@@ -285,11 +325,11 @@ public class TestBasic
 	{
 		try (final OWLManagerGroup group = new OWLManagerGroup())
 		{
-			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create("http://test.org#owlapi.inc.integer-float.restriction"), 1.0);
+			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create(NS + "owlapi.inc.integer-float.restriction"), 1.0);
 			final OWLHelper owl = new OWLGenericTools(group, ontId, true);
 
-			final OWLNamedIndividual x1 = OWL.Individual("#I1");
-			final OWLNamedIndividual x2 = OWL.Individual("#I2");
+			final OWLNamedIndividual x1 = i.apply("I1");
+			final OWLNamedIndividual x2 = i.apply("I2");
 
 			owl.addAxiom(OWL.equivalentClasses(ClsA, OWL.some(propB, XSD.INTEGER)));
 			owl.addAxiom(OWL.propertyAssertion(x1, propB, OWL.constant(1)));
@@ -306,17 +346,17 @@ public class TestBasic
 	{
 		try (final OWLManagerGroup group = new OWLManagerGroup())
 		{
-			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create("http://test.org#owlapi.only.properties"), 1.0);
+			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create(NS + "owlapi.only.properties"), 1.0);
 			final OWLHelper owl = new OWLGenericTools(group, ontId, true);
 
-			//			final OWLNamedIndividual x1 = OWL.Individual("#I1");
-			//			final OWLNamedIndividual x2 = OWL.Individual("#I2");
+			//			final OWLNamedIndividual x1 = i.apply("I1");
+			//			final OWLNamedIndividual x2 = i.apply("I2");
 
 			//owl.addAxiom(OWL.propertyAssertion(x1, propA, x2));
-			owl.addAxiom(OWL.inverseProperties(OWL.ObjectProperty("#A"), OWL.ObjectProperty("#B")));
+			owl.addAxiom(OWL.inverseProperties(o.apply("A"), o.apply("B")));
 			//owl.addAxiom(OWL.declaration(ClsA));
 
-			owl.getReasoner().getObjectPropertyDomains(OWL.ObjectProperty("#A"));
+			owl.getReasoner().getObjectPropertyDomains(o.apply("A"));
 		} // The test is just about not crash.
 	}
 
@@ -325,23 +365,23 @@ public class TestBasic
 	{
 		try (final OWLManagerGroup group = new OWLManagerGroup())
 		{
-			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create("http://test.org#owlapi.add.remove"), 1.0);
+			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create(NS + "owlapi.add.remove"), 1.0);
 			final OWLHelper owl = new OWLGenericTools(group, ontId, true);
 
-			owl.addAxiom(OWL.declaration(OWL.DataProperty("#propA")));
-			owl.addAxiom(OWL.declaration(OWL.Class("#clsA")));
-			owl.addAxiom(OWL.equivalentClasses(OWL.Class("#clsA"), //
-					OWL.value(OWL.DataProperty("#propA"), OWL.constant(12))//
+			owl.addAxiom(OWL.declaration(OWL.DataProperty(NS + "propA")));
+			owl.addAxiom(OWL.declaration(OWL.Class(NS + "clsA")));
+			owl.addAxiom(OWL.equivalentClasses(OWL.Class(NS + "clsA"), //
+					OWL.value(OWL.DataProperty(NS + "propA"), OWL.constant(12))//
 			));
-			assertTrue(owl.getReasoner().instances(OWL.Class("#clsA")).count() == 0);
+			assertTrue(owl.getReasoner().instances(OWL.Class(NS + "clsA")).count() == 0);
 
-			final OWLNamedIndividual x1 = OWL.Individual("#I1");
+			final OWLNamedIndividual x1 = OWL.Individual(NS + "I1");
 
-			owl.addAxiom(OWL.classAssertion(x1, OWL.Class("#clsA")));
-			assertTrue(owl.getReasoner().instances(OWL.Class("#clsA")).count() == 1);
+			owl.addAxiom(OWL.classAssertion(x1, OWL.Class(NS + "clsA")));
+			assertTrue(owl.getReasoner().instances(OWL.Class(NS + "clsA")).count() == 1);
 
-			owl.removeAxiom(OWL.classAssertion(x1, OWL.Class("#clsA")));
-			assertTrue(owl.getReasoner().instances(OWL.Class("#clsA")).count() == 0);
+			owl.removeAxiom(OWL.classAssertion(x1, OWL.Class(NS + "clsA")));
+			assertTrue(owl.getReasoner().instances(OWL.Class(NS + "clsA")).count() == 0);
 
 		} // The test is just about not crash.
 	}
@@ -351,16 +391,16 @@ public class TestBasic
 	{
 		try (final OWLManagerGroup group = new OWLManagerGroup())
 		{
-			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create("http://test.org#owlapi.inc.properties"), 1.0);
+			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create(NS + "owlapi.inc.properties"), 1.0);
 			final OWLHelper owl = new OWLGenericTools(group, ontId, true);
 
-			owl.addAxiom(OWL.subPropertyOf(OWL.ObjectProperty("#P2"), OWL.ObjectProperty("#P1"))); // p2 extends p1
+			owl.addAxiom(OWL.subPropertyOf(o.apply("P2"), o.apply("P1"))); // p2 extends p1
 
-			owl.addAxiom(OWL.propertyAssertion(OWL.Individual("#I1"), OWL.ObjectProperty("#P1"), OWL.Individual("#I2")));
-			owl.addAxiom(OWL.propertyAssertion(OWL.Individual("#I3"), OWL.ObjectProperty("#P2"), OWL.Individual("#I4")));
+			owl.addAxiom(OWL.propertyAssertion(i.apply("I1"), o.apply("P1"), i.apply("I2")));
+			owl.addAxiom(OWL.propertyAssertion(i.apply("I3"), o.apply("P2"), i.apply("I4")));
 
-			assertFalse(owl.getObject(OWL.Individual("#I1"), OWL.ObjectProperty("#P2")).isPresent());
-			assertTrue(owl.getObject(OWL.Individual("#I3"), OWL.ObjectProperty("#P1")).get().equals(OWL.Individual("#I4")));
+			assertFalse(owl.getObject(i.apply("I1"), o.apply("P2")).isPresent());
+			assertTrue(owl.getObject(i.apply("I3"), o.apply("P1")).get().equals(i.apply("I4")));
 		}
 	}
 
@@ -369,12 +409,12 @@ public class TestBasic
 	{
 		try (final OWLManagerGroup group = new OWLManagerGroup())
 		{
-			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create("http://test.org#owlapi.inc.transtive.properties"), 1.0);
+			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create(NS + "owlapi.inc.transtive.properties"), 1.0);
 			final OWLHelper owl = new OWLGenericTools(group, ontId, true);
-			final OWLObjectProperty p1 = OWL.ObjectProperty("#P1");
-			final OWLObjectProperty p2 = OWL.ObjectProperty("#P2");
-			final OWLObjectProperty p3 = OWL.ObjectProperty("#P3");
-			final OWLObjectProperty p4 = OWL.ObjectProperty("#P4");
+			final OWLObjectProperty p1 = OWL.ObjectProperty(NS + "P1");
+			final OWLObjectProperty p2 = OWL.ObjectProperty(NS + "P2");
+			final OWLObjectProperty p3 = OWL.ObjectProperty(NS + "P3");
+			final OWLObjectProperty p4 = OWL.ObjectProperty(NS + "P4");
 
 			{
 				owl.addAxiom(OWL.subPropertyOf(p1, p2)); // p2 extends [P1]
@@ -390,20 +430,32 @@ public class TestBasic
 				owl.addAxiom(OWL.subPropertyOf(chain, p4)); // p4 extends [P4, P3]
 			}
 
-			owl.addAxiom(OWL.propertyAssertion(OWL.Individual("#I1"), p1, OWL.Individual("#I2")));
-			owl.addAxiom(OWL.propertyAssertion(OWL.Individual("#I2"), p1, OWL.Individual("#I3")));
-			owl.addAxiom(OWL.propertyAssertion(OWL.Individual("#I3"), p1, OWL.Individual("#I4")));
-			owl.addAxiom(OWL.propertyAssertion(OWL.Individual("#I4"), p1, OWL.Individual("#I5")));
-			owl.addAxiom(OWL.propertyAssertion(OWL.Individual("#I5"), p1, OWL.Individual("#I6")));
-			owl.addAxiom(OWL.propertyAssertion(OWL.Individual("#I6"), p1, OWL.Individual("#I7")));
-			owl.addAxiom(OWL.propertyAssertion(OWL.Individual("#I7"), p1, OWL.Individual("#I8")));
-			owl.addAxiom(OWL.propertyAssertion(OWL.Individual("#I8"), p1, OWL.Individual("#IA")));
-			owl.addAxiom(OWL.propertyAssertion(OWL.Individual("#IA"), p1, OWL.Individual("#IB")));
+			final OWLNamedIndividual i1 = i.apply("I1");
+			final OWLNamedIndividual i2 = i.apply("I2");
+			final OWLNamedIndividual i3 = i.apply("I3");
+			final OWLNamedIndividual i4 = i.apply("I4");
+			final OWLNamedIndividual i5 = i.apply("I5");
+			final OWLNamedIndividual i6 = i.apply("I6");
+			final OWLNamedIndividual i7 = i.apply("I7");
+			final OWLNamedIndividual i8 = i.apply("I8");
 
-			assertTrue("direct", owl.getObjects(OWL.Individual("#I5"), p1).map(x -> x.toString()).sorted().collect(Collectors.joining("")).equals("<#I6>"));
-			assertTrue("transitive", owl.getObjects(OWL.Individual("#I5"), p2).map(x -> x.toString()).sorted().collect(Collectors.joining("")).equals("<#I6><#I7><#I8><#IA><#IB>"));
-			assertTrue("inverse", owl.getObjects(OWL.Individual("#I5"), p3).map(x -> x.toString()).sorted().collect(Collectors.joining("")).equals("<#I4>"));
-			assertTrue("inverse transitive", owl.getObjects(OWL.Individual("#I5"), p4).map(x -> x.toString()).sorted((a, b) -> -a.compareTo(b)).collect(Collectors.joining("")).equals("<#I4><#I3><#I2><#I1>"));
+			final OWLNamedIndividual ia = i.apply("IA");
+			final OWLNamedIndividual ib = i.apply("IB");
+
+			owl.addAxiom(OWL.propertyAssertion(i1, p1, i2));
+			owl.addAxiom(OWL.propertyAssertion(i2, p1, i3));
+			owl.addAxiom(OWL.propertyAssertion(i3, p1, i4));
+			owl.addAxiom(OWL.propertyAssertion(i4, p1, i5));
+			owl.addAxiom(OWL.propertyAssertion(i5, p1, i6));
+			owl.addAxiom(OWL.propertyAssertion(i6, p1, i7));
+			owl.addAxiom(OWL.propertyAssertion(i7, p1, i8));
+			owl.addAxiom(OWL.propertyAssertion(i8, p1, ia));
+			owl.addAxiom(OWL.propertyAssertion(ia, p1, ib));
+
+			assertTrue("direct", owl.getObjects(i5, p1).map(x -> x.toString()).sorted().collect(Collectors.joining("")).equals("" + i6));
+			assertTrue("transitive", owl.getObjects(i5, p2).map(x -> x.toString()).sorted().collect(Collectors.joining("")).equals("" + i6 + i7 + i8 + ia + ib));
+			assertTrue("inverse", owl.getObjects(i5, p3).map(x -> x.toString()).sorted().collect(Collectors.joining("")).equals("" + i4));
+			assertTrue("inverse transitive", owl.getObjects(i5, p4).map(x -> x.toString()).sorted((a, b) -> -a.compareTo(b)).collect(Collectors.joining("")).equals("" + i4 + i3 + i2 + i1));
 		}
 	}
 
@@ -412,19 +464,19 @@ public class TestBasic
 	{
 		try (final OWLManagerGroup group = new OWLManagerGroup())
 		{
-			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create("http://test.org#swrl-build-in"), 1.00);
+			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create(NS + "swrl-build-in"), 1.00);
 			final OWLHelper owl = new OWLGenericTools(group, ontId, true);
 
-			final OWLDataProperty dpA = OWL.DataProperty("dpA");
-			final OWLDataProperty dpB = OWL.DataProperty("dpB");
-			final OWLNamedIndividual a = OWL.Individual("A");
-			final OWLNamedIndividual b = OWL.Individual("B");
+			final OWLDataProperty dpA = OWL.DataProperty(NS + "dpA");
+			final OWLDataProperty dpB = OWL.DataProperty(NS + "dpB");
+			final OWLNamedIndividual a = OWL.Individual(NS + "A");
+			final OWLNamedIndividual b = OWL.Individual(NS + "B");
 			final SWRLIndividualArgument swrlIndA = SWRL.individual(a);
 			final SWRLIndividualArgument swrlIndB = SWRL.individual(b);
 			final OWLLiteral ten = OWL.constant(10.);
 			final OWLLiteral eleven = OWL.constant(11.);
-			final SWRLVariable varX = SWRL.variable("x");
-			final SWRLVariable varY = SWRL.variable("y");
+			final SWRLVariable varX = SWRL.variable(NS + "x");
+			final SWRLVariable varY = SWRL.variable(NS + "y");
 			final SWRLLiteralArgument sup = SWRL.constant("sup");
 			final SWRLLiteralArgument inf = SWRL.constant("inf");
 
@@ -455,17 +507,17 @@ public class TestBasic
 	{
 		try (final OWLManagerGroup group = new OWLManagerGroup())
 		{
-			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create("http://test.org#swrl-build-in"), 1.01);
+			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create(NS + "swrl-build-in"), 1.01);
 			final OWLHelper owl = new OWLGenericTools(group, ontId, true);
 
-			final OWLDataProperty dpA = OWL.DataProperty("dpA");
-			final OWLDataProperty dpB = OWL.DataProperty("dpB");
-			final OWLNamedIndividual a = OWL.Individual("A");
-			final OWLNamedIndividual b = OWL.Individual("B");
+			final OWLDataProperty dpA = OWL.DataProperty(NS + "dpA");
+			final OWLDataProperty dpB = OWL.DataProperty(NS + "dpB");
+			final OWLNamedIndividual a = OWL.Individual(NS + "A");
+			final OWLNamedIndividual b = OWL.Individual(NS + "B");
 			final SWRLIndividualArgument swrlIndA = SWRL.individual(a);
 			final OWLLiteral ten = OWL.constant(10.);
 			final OWLLiteral eleven = OWL.constant(11.);
-			final SWRLVariable varX = SWRL.variable("x");
+			final SWRLVariable varX = SWRL.variable(NS + "x");
 			final SWRLLiteralArgument sup = SWRL.constant("sup");
 			final SWRLLiteralArgument inf = SWRL.constant("inf");
 
@@ -535,15 +587,15 @@ public class TestBasic
 
 		try (final OWLManagerGroup group = new OWLManagerGroup())
 		{
-			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create("http://test.org#swrl-special-build-in"), 1.02);
+			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create(NS + "swrl-special-build-in"), 1.02);
 			final OWLHelper owl = new OWLGenericTools(group, ontId, true);
 
-			final OWLDataProperty property = OWL.DataProperty("property");
-			final OWLNamedIndividual individual = OWL.Individual("individual");
-			final OWLClass clazz = OWL.Class("clazz");
+			final OWLDataProperty property = OWL.DataProperty(NS + "property");
+			final OWLNamedIndividual individual = OWL.Individual(NS + "individual");
+			final OWLClass clazz = OWL.Class(NS + "clazz");
 
-			final SWRLVariable varX = SWRL.variable("x");
-			final SWRLVariable varY = SWRL.variable("y");
+			final SWRLVariable varX = SWRL.variable(NS + "x");
+			final SWRLVariable varY = SWRL.variable(NS + "y");
 
 			owl.addAxiom(OWL.classAssertion(individual, clazz));
 			// owl.addAxiom(OWL.range(property, XSD.DOUBLE)); // TODO : uncomment this to show a bug.
