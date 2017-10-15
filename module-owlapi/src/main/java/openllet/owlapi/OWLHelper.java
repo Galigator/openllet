@@ -21,11 +21,9 @@ import org.semanticweb.owlapi.model.OWLAnonymousIndividual;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataFactory;
-import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLDocumentFormat;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
-import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyAlreadyExistsException;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
@@ -329,63 +327,6 @@ public interface OWLHelper extends Logging, OWLManagementObject
 	}
 
 	/**
-	 * @param name to resolve
-	 * @return an IRI using the name or information of name + namespace declaration of this ontology.
-	 * @since 2.5.1
-	 */
-	@Deprecated
-	default public IRI resolveToIRI(final String name)
-	{
-		if (IRIUtils.isIRI(name))
-			return IRI.create(name);
-		else
-		{
-			final String[] parts = getNameSpace(name);
-			return IRI.create(parts[0] + _entitySeparator + parts[1]);
-		}
-	}
-
-	/**
-	 * @param name of the individual to declare, if name is IRI then it is ok else if name is not it is also ok.
-	 * @return an individual
-	 * @since 2.5.1
-	 */
-	default public OWLNamedIndividual declareIndividual(final String name)
-	{
-		return declareIndividual(resolveToIRI(name));
-	}
-
-	/**
-	 * @param name of the property to declare, if name is IRI then it is ok else if name is not it is also ok.
-	 * @return an property
-	 * @since 2.5.1
-	 */
-	default public OWLObjectProperty declareObjectProperty(final String name)
-	{
-		return declareObjectProperty(resolveToIRI(name));
-	}
-
-	/**
-	 * @param name of the property to declare, if name is IRI then it is ok else if name is not it is also ok.
-	 * @return an property
-	 * @since 2.5.1
-	 */
-	default public OWLDataProperty declareDataProperty(final String name)
-	{
-		return declareDataProperty(resolveToIRI(name));
-	}
-
-	/**
-	 * @param name of the class to declare, if name is IRI then it is ok else if name is not it is also ok.
-	 * @return a class
-	 * @since 2.5.1
-	 */
-	default public OWLClass declareClass(final String name)
-	{
-		return declareClass(resolveToIRI(name));
-	}
-
-	/**
 	 * Axiom are parsed from the stream then add into the ontology.
 	 *
 	 * @param input is a stream of axioms
@@ -504,6 +445,52 @@ public interface OWLHelper extends Logging, OWLManagementObject
 		return buff.toString();
 	}
 
+	/**
+	 * Dispose the reasoner attached to this helper. If the reasoner wasn't attached, it doesn't buildit.
+	 * 
+	 * @since 2.6.3
+	 */
+	public void dispose();
+
+	/**
+	 * When you have finish use this Helper, you must call {dispose() and eventually getGroup().close()}
+	 * 
+	 * @param ontology an already build ontology.
+	 * @return an helper
+	 * @since 2.6.3
+	 */
+	@SuppressWarnings("resource")
+	public static OWLHelper createLightHelper(final OWLOntology ontology)
+	{
+		return new OWLGenericTools(new OWLManagerGroup(ontology), ontology, true);
+	}
+
+	/**
+	 * When you have finish use this Helper, you must call {dispose() and eventually getGroup().close()}
+	 * 
+	 * @param ontology an already build ontology.
+	 * @return an helper
+	 * @since 2.6.3
+	 */
+	public static OWLHelper createLightHelper(final InputStream inputStream)
+	{
+		try
+		{
+			return createLightHelper(OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(inputStream));
+		}
+		catch (final OWLOntologyCreationException exception)
+		{
+			throw new OpenError(exception);
+		}
+	}
+
+	/**
+	 * When you have finish use this Helper, you must call {dispose() and eventually getGroup().close()}
+	 * 
+	 * @param ontology an already build ontology.
+	 * @return an helper
+	 * @since 2.6.3
+	 */
 	public static OWLHelper createLightHelper(final OpenlletReasoner reasoner)
 	{
 		return new OWLHelper()
@@ -529,7 +516,7 @@ public interface OWLHelper extends Logging, OWLManagementObject
 			@Override
 			public OWLGroup getGroup()
 			{
-				return new OWLManagerGroup(Optional.of(getManager()), Optional.empty());
+				return new OWLManagerGroup(Optional.of(getManager()), Optional.empty()); // This is leaking resources as well.
 			}
 
 			@Override
@@ -549,6 +536,12 @@ public interface OWLHelper extends Logging, OWLManagementObject
 			public boolean isVolatile()
 			{
 				return true;
+			}
+
+			@Override
+			public void dispose()
+			{
+				reasoner.dispose();
 			}
 		};
 	}

@@ -240,4 +240,9 @@ public class OWLAPILoader extends KBLoader implements OWLHelper
 		}
 	}
 
+	@Override
+	public void dispose()
+	{
+		_reasoner.dispose();
+	}
 }

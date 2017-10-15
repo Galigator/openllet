@@ -41,6 +41,11 @@ public class OWLManagerGroup implements OWLGroup
 		storageManager.ifPresent(m -> _persistentManager = m);
 	}
 
+	public OWLManagerGroup(final OWLOntology ontology)
+	{
+		_volatileManager = ontology.getOWLOntologyManager();
+	}
+
 	@Override
 	public Logger getLogger()
 	{

@@ -97,6 +97,8 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 		sync(); // TODO : add a filter so after having sync/flush the ontologies, we can unload the ontologies we don't want to use ( just to free memory ).
 		flush(); // We flush the log file into ontologies file on fix schedule to avoid to much problem with the log file.
 
+		_logger.info("Starting incremental storage.");
+
 		_future = _timer.scheduleAtFixedRate(_task, 0, _flushTimeInMinute, TimeUnit.MINUTES);
 	}
 
@@ -130,6 +132,7 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 				// Don't filter ontology empty. There is no other way to mark an ontology as empty, so we save empty ontology.
 				.forEach(ontology ->
 				{
+					_logger.info("Saving " + ontology.getOntologyID());
 					try (final OutputStream stream = new FileOutputStream(ontology2filename(ontology)))
 					{
 						manager.saveOntology(ontology, OWLHelper._format, stream);
@@ -140,7 +143,7 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 					}
 				});
 
-		_logger.fine("flush done");
+		_logger.info("flush done");
 
 		// Make sure to not catch the saveOntology exception.
 		// Make sure everything goes correctly before removing 'log' file.

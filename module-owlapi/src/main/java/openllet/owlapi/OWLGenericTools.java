@@ -229,6 +229,15 @@ public class OWLGenericTools implements OWLHelper
 		OWLHelper.setFormat(_ontology);
 	}
 
+	public OWLGenericTools(final OWLGroup group, final OWLOntology ontology, final boolean isVolatile)
+	{
+		_group = group;
+		_ontology = ontology;
+		_isVolatile = isVolatile;
+		OWLHelper.setFormat(_ontology);
+		group.check(getManager());
+	}
+
 	public OWLGenericTools(final OWLGroup group, final OWLOntologyManager manager, final OWLOntology ontology)
 	{
 		_group = group;
@@ -268,5 +277,11 @@ public class OWLGenericTools implements OWLHelper
 	public String toString()
 	{
 		return getOntology().axioms().map(OWLAxiom::toString).sorted().collect(Collectors.joining("\n"));
+	}
+
+	@Override
+	public void dispose()
+	{
+		_reasoner.ifPresent(r -> r.dispose());
 	}
 }
