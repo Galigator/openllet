@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import openllet.atom.OpenError;
 import openllet.shared.tools.Log;
+import org.semanticweb.owlapi.io.StringDocumentSource;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
@@ -271,6 +272,14 @@ public class OWLGenericTools implements OWLHelper
 	public OWLGenericTools(final OWLGroup group, final File file) throws Exception
 	{
 		this(group, group.getPersistentManager(), file);
+	}
+
+	public OWLGenericTools(final OWLGroup group, final String ontology, final boolean isVolatile) throws Exception
+	{
+		_group = group;
+		_ontology = (isVolatile ? _group.getVolatileManager() : _group.getPersistentManager()).loadOntologyFromOntologyDocument(new StringDocumentSource(ontology));
+		_isVolatile = isVolatile;
+		OWLHelper.setFormat(_ontology);
 	}
 
 	@Override
