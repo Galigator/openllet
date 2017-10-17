@@ -221,7 +221,7 @@ public class OWLGenericTools implements OWLHelper
 		this(group, ontologyIRI, 0, isVolatile);
 	}
 
-	protected OWLGenericTools(final OWLGroup group, final InputStream is) throws OWLOntologyCreationException
+	public OWLGenericTools(final OWLGroup group, final InputStream is) throws OWLOntologyCreationException
 	{
 		_group = group;
 		_ontology = group.getVolatileManager().loadOntologyFromOntologyDocument(is);

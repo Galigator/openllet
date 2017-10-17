@@ -462,7 +462,22 @@ public interface OWLHelper extends Logging, OWLManagementObject
 	@SuppressWarnings("resource")
 	public static OWLHelper createLightHelper(final OWLOntology ontology)
 	{
-		return new OWLGenericTools(new OWLManagerGroup(ontology), ontology, true);
+		return new OWLGenericTools(new OWLManagerGroup(ontology), ontology, true)
+		{
+			@Override
+			public void dispose()
+			{
+				super.dispose();
+				try
+				{
+					getGroup().close();
+				}
+				catch (final Exception exception)
+				{
+					throw new OpenError(exception);
+				}
+			}
+		};
 	}
 
 	/**
@@ -495,6 +510,8 @@ public interface OWLHelper extends Logging, OWLManagementObject
 	{
 		return new OWLHelper()
 		{
+			private final OWLGroup _group = new OWLManagerGroup(Optional.of(getManager()), Optional.empty());
+
 			@Override
 			public Logger getLogger()
 			{
@@ -516,7 +533,7 @@ public interface OWLHelper extends Logging, OWLManagementObject
 			@Override
 			public OWLGroup getGroup()
 			{
-				return new OWLManagerGroup(Optional.of(getManager()), Optional.empty()); // This is leaking resources as well.
+				return _group; // This is leaking resources as well.
 			}
 
 			@Override
@@ -542,6 +559,15 @@ public interface OWLHelper extends Logging, OWLManagementObject
 			public void dispose()
 			{
 				reasoner.dispose();
+				if (null != _group)
+					try
+					{
+						_group.close();
+					}
+					catch (final Exception exception)
+					{
+						throw new OpenError(exception);
+					}
 			}
 		};
 	}

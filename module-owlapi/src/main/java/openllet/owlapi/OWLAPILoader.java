@@ -244,5 +244,7 @@ public class OWLAPILoader extends KBLoader implements OWLHelper
 	public void dispose()
 	{
 		_reasoner.dispose();
+		_reasoner = null;
+		_ontology = null;
 	}
 }

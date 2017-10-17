@@ -60,7 +60,7 @@ public class OWLTools extends OWLGenericTools
 		super(OWL._managerGroup, ontologyIRI, isVolatile);
 	}
 
-	protected OWLTools(final InputStream is) throws OWLOntologyCreationException
+	public OWLTools(final InputStream is) throws OWLOntologyCreationException
 	{
 		super(OWL._managerGroup, is);
 	}

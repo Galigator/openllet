@@ -72,7 +72,7 @@ public interface OWLGroup extends AutoCloseable, Logging
 	{
 		try
 		{
-			return Optional.of(new OWLGenericTools(this, ontologyID));
+			return Optional.of(new OWLGenericTools(this, ontologyID, isVolatile));
 		}
 		catch (final Exception e)
 		{
@@ -177,4 +177,10 @@ public interface OWLGroup extends AutoCloseable, Logging
 	}
 
 	public void check(final OWLOntologyManager manager);
+
+	default void remove(final OWLHelper helper)
+	{
+		helper.dispose();
+		helper.getManager().removeOntology(helper.getOntology());
+	}
 }

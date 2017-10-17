@@ -423,8 +423,15 @@ public class PelletReasoner implements OpenlletReasoner
 	public void dispose()
 	{
 		_manager.removeOntologyChangeListener(this);
-		_kb = null;
+		_kb = null; // Don't destroy box, because they can be shared with other KB.
 		_pendingChanges.clear();
+
+		_manager = null;
+		_factory = null;
+		_ontology = null;
+		_monitor = null;
+
+		_individualNodeSetPolicy = null;
 	}
 
 	/**
