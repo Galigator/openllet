@@ -279,16 +279,15 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 	@Override
 	public void dispose()
 	{
-		_reasoner.dispose();
-
 		_reasoner.getManager().removeOntologyChangeListener(this);
+		_reasoner.dispose();
 	}
 
 	@Override
 	public Node<OWLClass> getEquivalentClasses(final OWLClassExpression clsC)
 	{
 		if (clsC.isAnonymous())
-			throw new IllegalArgumentException("This _reasoner only supports named classes");
+			throw new IllegalArgumentException("This reasoner only supports named classes");
 
 		classify();
 

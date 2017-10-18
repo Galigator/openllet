@@ -109,8 +109,8 @@ public class OWLAPIExplanationTest extends AbstractExplanationTest
 			else
 			{
 				final BlackBoxExplanation bbe = (BlackBoxExplanation) _expGen.getSingleExplanationGenerator();
-				bbe.dispose();
 				_reasoner.getManager().removeOntologyChangeListener(bbe.getDefinitionTracker());
+				bbe.dispose();
 			}
 	}
 
@@ -179,7 +179,7 @@ public class OWLAPIExplanationTest extends AbstractExplanationTest
 				_representation = _base.stream()//
 						.map(axiom ->
 						{ // Inside of the SWRLRule, the representation can vary because they are 'Set'.
-						// So test can pass on some java-vm but not on some other.
+							// So test can pass on some java-vm but not on some other.
 							// The solution is to sort everything.
 							if (axiom instanceof SWRLRule)
 							{

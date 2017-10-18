@@ -77,7 +77,7 @@ public class PelletReasoner implements OpenlletReasoner
 
 	private static final Version VERSION = createVersion();
 
-	private volatile OWLOntologyManager _manager;
+	private final OWLOntologyManager _manager;
 
 	private volatile OWLDataFactory _factory;
 
@@ -426,7 +426,6 @@ public class PelletReasoner implements OpenlletReasoner
 		_kb = null; // Don't destroy box, because they can be shared with other KB.
 		_pendingChanges.clear();
 
-		_manager = null;
 		_factory = null;
 		_ontology = null;
 		_monitor = null;
