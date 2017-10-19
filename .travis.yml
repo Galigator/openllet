@@ -5,7 +5,7 @@ jdk:
 addons:
   apt:
     packages:
-      - oracle-java9-installer
+      - oracle-java8-installer
 
 #script: "mvn cobertura:cobertura"
 #script: rm -rf ~/.m2 ; mvn -U dependency:resolve-plugins
