@@ -51,6 +51,7 @@ public interface OWLHelper extends Logging, OWLManagementObject
 	public static final String _innerSeparator = "_";
 	public static final String _caseSeparator = "-";
 	public static final String _fileExtention = ".owl";
+	public static final String _fileExtentionPart = ".part";
 	public static final String _delta = "owl.delta";
 	public static final OWLDocumentFormatFactoryImpl _formatFactory = new FunctionalSyntaxDocumentFormatFactory(); // new RDFXMLDocumentFormatFactory(); see https://github.com/owlcs/owlapi/issues/706
 	public static final OWLDocumentFormat _format = _formatFactory.get();

@@ -133,17 +133,30 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 				.forEach(ontology ->
 				{
 					_logger.info("Saving " + ontology.getOntologyID());
-					try (final OutputStream stream = new FileOutputStream(ontology2filename(ontology)))
+					final String filenameOld = ontology2filename(ontology);
+					final String filenamePart = filenameOld + OWLHelper._fileExtentionPart;
+					boolean firstPhaseOk = false;
+					try (final OutputStream stream = new FileOutputStream(filenamePart))
 					{
 						manager.saveOntology(ontology, OWLHelper._format, stream);
+						firstPhaseOk = true;
 					} // All exceptions must be fatal to avoid loosing 'log' file. Re-apply a log isn't an issue.
 					catch (final Exception e)
 					{ // Do not make other ontologies crash at save time.
 						Log.error(_logger, "Crash when saving " + ontology.getOntologyID(), e);
 					}
+
+					if (firstPhaseOk) // two phases commit.
+					{
+						final File old = new File(filenameOld);
+						if (!old.exists() || old.delete())
+							(new File(filenamePart)).renameTo(old);
+						else
+							_logger.severe("Can't commit change of " + ontology.getOntologyID());
+					}
 				});
 
-		_logger.info("flush done");
+		_logger.fine("flush done");
 
 		// Make sure to not catch the saveOntology exception.
 		// Make sure everything goes correctly before removing 'log' file.

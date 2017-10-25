@@ -1,6 +1,8 @@
 package openllet.owlapi;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.logging.Level;
@@ -119,6 +121,11 @@ public class OWLManagerGroup implements OWLGroup
 		return null != _volatileManager;
 	}
 
+	/**
+	 * Load a directory of '.owl' file. The files that end with '.part' are considere as resulting of a failed/partial-failed in saving an ontology by
+	 * OWLIncrementalFlatFileStorageManagerListener. Thoses files are load/renamed dependending of the state a of corresponding '.owl' file. This is the
+	 * 'recover' strategy from the two phases commit of IncrementalFlatFileStorage.
+	 */
 	@Override
 	public void loadDirectory(final File directory, final OWLOntologyManager manager, final BiFunction<OWLOntologyManager, File, Optional<OWLOntology>> loader)
 	{
@@ -129,7 +136,8 @@ public class OWLManagerGroup implements OWLGroup
 		if (!directory.isDirectory())
 			throw new OWLException("The directory parameter must be a true existing directory. " + directory + " isn't.");
 
-		for (final File file : directory.listFiles())
+		final List<File> loaded = new ArrayList<>();
+		for (final File file : directory.listFiles()) // Load files main sequences.
 			if (file.isFile() && file.canRead() && file.getName().endsWith(OWLHelper._fileExtention))
 				try
 				{
@@ -141,6 +149,7 @@ public class OWLManagerGroup implements OWLGroup
 								OWLHelper.setFormat(ontology);
 								_logger.info(ontology.getOntologyID() + "loaded from " + file);
 							});//
+					loaded.add(file);
 				}
 				catch (final Exception e)
 				{
@@ -148,6 +157,32 @@ public class OWLManagerGroup implements OWLGroup
 				}
 			else
 				_logger.info(() -> file + " will not be load.");
+
+		for (final File file : loaded) // Manage files that have failed being saved in the first part of the commit.
+		{
+			final File partFile = new File(file.getAbsolutePath() + OWLHelper._fileExtentionPart);
+			if (partFile.exists() && partFile.isFile())
+			{
+				_logger.info(file + " removing " + partFile);
+				partFile.delete();
+			}
+		}
+
+		for (final File file : directory.listFiles()) // Manage files that have failed being commit on the second part of the commit.
+			if (file.isFile() && file.canRead() && file.getName().endsWith(OWLHelper._fileExtentionPart))
+			{
+				final String absolutePath = file.getAbsolutePath();
+				final int partSize = OWLHelper._fileExtentionPart.length();
+				final File newName = new File(absolutePath.substring(0, absolutePath.length() - partSize));
+				file.renameTo(newName);
+				_logger.info(file + " rename to " + newName);
+				loader.apply(manager, newName)// The side effect is wanted.
+						.ifPresent(ontology ->
+						{
+							OWLHelper.setFormat(ontology);
+							_logger.info(ontology.getOntologyID() + "loaded from " + file);
+						});//
+			}
 	}
 
 	@Override
