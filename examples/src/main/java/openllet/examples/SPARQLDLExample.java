@@ -17,6 +17,11 @@ import org.apache.jena.query.QueryFactory;
 import org.apache.jena.query.ResultSet;
 import org.apache.jena.query.ResultSetFormatter;
 import org.apache.jena.rdf.model.ModelFactory;
+import org.eclipse.jetty.server.Handler;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.DefaultHandler;
+import org.eclipse.jetty.server.handler.HandlerList;
+import org.eclipse.jetty.server.handler.ResourceHandler;
 
 /**
  * <p>
@@ -40,15 +45,18 @@ public class SPARQLDLExample
 	// The ontology loaded as dataset
 	private static final String ontology = "data/university0-0.owl";
 	private static final String[] queries = new String[] {
-		// One of the original LUBM queries
+			// One of the original LUBM queries
 			"data/lubm-query4.sparql",
 			// A SPARQL-DL query
 			"data/lubm-sparql-dl.sparql",
 			// A SPARQL-DL with the SPARQL-DL extensions vocabulary
 			"data/lubm-sparql-dl-extvoc.sparql" };
 
-	public void run()
+	public void run() throws Exception
 	{
+		final FileServer fs = new FileServer();
+		fs.start();
+
 		for (final String query : queries)
 		{
 			// First create a Jena ontology model backed by the Pellet reasoner
@@ -79,12 +87,43 @@ public class SPARQLDLExample
 			// And an empty line to make it pretty
 			System.out.println();
 		}
+		fs.stop();
 	}
 
 	public static void main(final String[] args)
 	{
 		final SPARQLDLExample app = new SPARQLDLExample();
-		app.run();
+		try
+		{
+			app.run();
+		}
+		catch (final Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 
+	public class FileServer
+	{
+		Server _server;
+
+		public void start() throws Exception
+		{
+			_server = new Server(8484);
+			final ResourceHandler resource_handler = new ResourceHandler();
+			resource_handler.setDirectoriesListed(true);
+			resource_handler.setResourceBase("src/main/resources/data");
+
+			final HandlerList handlers = new HandlerList();
+			handlers.setHandlers(new Handler[] { resource_handler, new DefaultHandler() });
+			_server.setHandler(handlers);
+
+			_server.start();
+		}
+
+		public void stop() throws Exception
+		{
+			_server.stop();
+		}
+	}
 }
