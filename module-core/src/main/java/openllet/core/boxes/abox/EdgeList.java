@@ -100,7 +100,6 @@ public class EdgeList extends ArrayList<Edge>
 			set(index, remove(l)); // The last one is remove (no array copy require, then it replace the element to remove)
 	}
 
-	@Deprecated
 	public Edge edgeAt(final int i)
 	{
 		return get(i);

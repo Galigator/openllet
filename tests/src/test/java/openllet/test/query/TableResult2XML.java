@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
+import openllet.atom.OpenError;
 import openllet.core.utils.ATermUtils;
 import openllet.jena.JenaUtils;
 import org.apache.jena.query.QuerySolution;
@@ -119,9 +120,9 @@ public class TableResult2XML
 							final String token = t.nextToken();
 
 							if (token.startsWith("http://") || token.startsWith("file:///"))
-								s.add(vars.get(i++), JenaUtils.makeRDFNode(ATermUtils.makeTermAppl(token), m));
+								s.add(vars.get(i++), JenaUtils.makeRDFNode(ATermUtils.makeTermAppl(token), m).orElseThrow(() -> new OpenError("term-appl")));
 							else
-								s.add(vars.get(i++), JenaUtils.makeRDFNode(ATermUtils.makePlainLiteral(token), m));
+								s.add(vars.get(i++), JenaUtils.makeRDFNode(ATermUtils.makePlainLiteral(token), m).orElseThrow(() -> new OpenError("plain-literal")));
 						}
 
 						solutions.add(s);

@@ -165,8 +165,9 @@ public class GraphQueryHandler
 					@Override
 					public Iterator<Triple> getInnerIterator(final ATermAppl prop)
 					{
-						final Node graphNode = JenaUtils.makeGraphNode(prop);
-						return findTriple(kb, openllet, s, graphNode, o);
+						return JenaUtils.makeGraphNode(prop)//
+								.map(node -> findTriple(kb, openllet, s, node, o))//
+								.orElseGet(NullIterator::instance);
 					}
 				});
 
@@ -196,8 +197,9 @@ public class GraphQueryHandler
 					@Override
 					public Iterator<Triple> getInnerIterator(final ATermAppl prop)
 					{
-						final Node graphNode = JenaUtils.makeGraphNode(prop);
-						return findTriple(kb, openllet, s, graphNode, o);
+						return JenaUtils.makeGraphNode(prop)//
+								.map(node -> findTriple(kb, openllet, s, node, o))//
+								.orElseGet(NullIterator::instance);
 					}
 				});
 
@@ -270,8 +272,9 @@ public class GraphQueryHandler
 					@Override
 					public Iterator<Triple> getInnerIterator(final ATermAppl subj)
 					{
-						final Node graphNode = JenaUtils.makeGraphNode(subj);
-						return objectFiller(graphNode, p, kb.getPropertyValues(prop, subj));
+						return JenaUtils.makeGraphNode(subj)//
+								.map(node -> objectFiller(node, p, kb.getPropertyValues(prop, subj)))//
+								.orElseGet(NullIterator::instance);
 					}
 				});
 			}

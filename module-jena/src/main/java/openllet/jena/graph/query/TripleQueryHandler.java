@@ -10,6 +10,7 @@ import static openllet.core.utils.iterator.IteratorUtils.flatten;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Optional;
 import java.util.Set;
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
@@ -37,7 +38,9 @@ public abstract class TripleQueryHandler
 	{
 		return WrappedIterator.create(objects)//
 				.filterKeep(JenaUtils._isGrapheNode)//
-				.mapWith(aTermAppl -> Triple.create(s, p, JenaUtils.makeGraphNode(aTermAppl)));
+				.mapWith(JenaUtils::makeGraphNode)//
+				.filterKeep(Optional::isPresent)//
+				.mapWith(node -> Triple.create(s, p, node.get()));
 	}
 
 	protected ExtendedIterator<Triple> objectSetFiller(final Node s, final Node p, final Set<Set<ATermAppl>> objectSets)
@@ -54,7 +57,9 @@ public abstract class TripleQueryHandler
 	{
 		return WrappedIterator.create(properties)//
 				.filterKeep(JenaUtils._isGrapheNode)//
-				.mapWith(aTermAppl -> Triple.create(s, JenaUtils.makeGraphNode(aTermAppl), o));
+				.mapWith(JenaUtils::makeGraphNode)//
+				.filterKeep(Optional::isPresent)//
+				.mapWith(node -> Triple.create(s, node.get(), o));
 	}
 
 	protected ExtendedIterator<Triple> subjectFiller(final Collection<ATermAppl> subjects, final Node p, final Node o)
@@ -66,7 +71,9 @@ public abstract class TripleQueryHandler
 	{
 		return WrappedIterator.create(subjects)//
 				.filterKeep(JenaUtils._isGrapheNode)//
-				.mapWith(aTermAppl -> Triple.create(JenaUtils.makeGraphNode(aTermAppl), p, o));
+				.mapWith(JenaUtils::makeGraphNode)//
+				.filterKeep(Optional::isPresent)//
+				.mapWith(node -> Triple.create(node.get(), p, o));
 	}
 
 	protected ExtendedIterator<Triple> subjectSetFiller(final Set<Set<ATermAppl>> subjectSets, final Node p, final Node o)

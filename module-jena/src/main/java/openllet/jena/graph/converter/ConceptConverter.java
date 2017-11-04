@@ -76,7 +76,10 @@ public class ConceptConverter extends ATermBaseVisitor
 	@Override
 	public void visitTerm(final ATermAppl term)
 	{
-		_obj = JenaUtils.makeGraphNode(term);
+		JenaUtils.makeGraphNode(term).ifPresent(node ->
+		{
+			_obj = node;
+		});
 	}
 
 	private void createClassExpression(final Property p)
@@ -225,7 +228,10 @@ public class ConceptConverter extends ATermBaseVisitor
 	@Override
 	public void visitLiteral(final ATermAppl term)
 	{
-		_obj = JenaUtils.makeGraphNode(term);
+		JenaUtils.makeGraphNode(term).ifPresent(node ->
+		{
+			_obj = node;
+		});
 	}
 
 	@Override
@@ -265,7 +271,8 @@ public class ConceptConverter extends ATermBaseVisitor
 		final Node def = NodeFactory.createBlankNode();
 
 		TripleAdder.add(_graph, def, RDF.type, RDFS.Datatype);
-		TripleAdder.add(_graph, def, OWL2.onDatatype, JenaUtils.makeGraphNode((ATermAppl) dt.getArgument(0)));
+		JenaUtils.makeGraphNode((ATermAppl) dt.getArgument(0))//
+				.ifPresent(node -> TripleAdder.add(_graph, def, OWL2.onDatatype, node));
 
 		Node list = null;
 		ATermList restrictions = (ATermList) dt.getArgument(1);
@@ -274,7 +281,12 @@ public class ConceptConverter extends ATermBaseVisitor
 			final ATermAppl facet = (ATermAppl) restrictions.getFirst();
 
 			final Node facetNode = NodeFactory.createBlankNode();
-			TripleAdder.add(_graph, facetNode, JenaUtils.makeGraphNode((ATermAppl) facet.getArgument(0)), JenaUtils.makeGraphNode((ATermAppl) facet.getArgument(1)));
+
+			JenaUtils.makeGraphNode((ATermAppl) facet.getArgument(0))//
+					.ifPresent(node0 -> //
+			JenaUtils.makeGraphNode((ATermAppl) facet.getArgument(1))//
+					.ifPresent(node1 -> TripleAdder.add(_graph, facetNode, node0, node1)//
+			));
 
 			final Node newList = NodeFactory.createBlankNode();
 			TripleAdder.add(_graph, newList, RDF.first, facetNode);

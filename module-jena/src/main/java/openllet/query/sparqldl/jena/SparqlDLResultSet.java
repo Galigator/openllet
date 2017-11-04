@@ -16,7 +16,6 @@ import openllet.jena.JenaUtils;
 import openllet.query.sparqldl.model.QueryParameters;
 import openllet.query.sparqldl.model.QueryResult;
 import openllet.query.sparqldl.model.ResultBinding;
-import org.apache.jena.graph.Node;
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSetRewindable;
 import org.apache.jena.rdf.model.Model;
@@ -140,8 +139,8 @@ public class SparqlDLResultSet implements ResultSetRewindable
 				if (value == null)
 					continue;
 
-				final Node node = JenaUtils.makeGraphNode(value);
-				result.add(Var.alloc(varName), node);
+				JenaUtils.makeGraphNode(value)//
+						.ifPresent(node -> result.add(Var.alloc(varName), node));
 			}
 
 		if (_resultVars.size() == 0)
@@ -153,7 +152,8 @@ public class SparqlDLResultSet implements ResultSetRewindable
 				final Var var = Var.alloc(varName);
 
 				if (!result.contains(var))
-					result.add(var, JenaUtils.makeGraphNode(entry.getValue()));
+					JenaUtils.makeGraphNode(entry.getValue())//
+							.ifPresent(node -> result.add(var, node));
 			}
 
 		return result;

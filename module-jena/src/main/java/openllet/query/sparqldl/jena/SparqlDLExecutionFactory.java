@@ -90,33 +90,33 @@ public class SparqlDLExecutionFactory
 		if (graph instanceof PelletInfGraph)
 			// check for obvious things not supported by Pellet
 			if (dataset.listNames().hasNext() || query.isDescribeType())
-			engineType = QueryEngineType.MIXED;
+				engineType = QueryEngineType.MIXED;
 			else
 			{
-			// try parsing the query and see if there are any problems
-			final PelletInfGraph pelletInfGraph = (PelletInfGraph) graph;
+				// try parsing the query and see if there are any problems
+				final PelletInfGraph pelletInfGraph = (PelletInfGraph) graph;
 
-			final KnowledgeBase kb = pelletInfGraph.getKB();
-			pelletInfGraph.prepare();
+				final KnowledgeBase kb = pelletInfGraph.getKB();
+				pelletInfGraph.prepare();
 
-			final ARQParser parser = new ARQParser();
-			// The parser uses the query parameterization to resolve
-			// parameters
-			// (i.e. variables) in the query
-			parser.setInitialBinding(initialBinding);
+				final ARQParser parser = new ARQParser();
+				// The parser uses the query parameterization to resolve
+				// parameters
+				// (i.e. variables) in the query
+				parser.setInitialBinding(initialBinding);
 
-			try
-			{
-			parser.parse(query, kb);
-			// parsing successful so we can use Pellet engine
-			engineType = QueryEngineType.PELLET;
-			}
-			catch (final UnsupportedQueryException e)
-			{
-			_logger.log(Level.FINER, "", e);
-			// parsing failed so we will use the mixed engine
-			engineType = QueryEngineType.MIXED;
-			}
+				try
+				{
+					parser.parse(query, kb);
+					// parsing successful so we can use Pellet engine
+					engineType = QueryEngineType.PELLET;
+				}
+				catch (final UnsupportedQueryException e)
+				{
+					_logger.log(Level.FINER, "", e);
+					// parsing failed so we will use the mixed engine
+					engineType = QueryEngineType.MIXED;
+				}
 			}
 
 		return create(query, dataset, initialBinding, engineType);

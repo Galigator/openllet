@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 import openllet.aterm.ATermAppl;
@@ -281,81 +282,64 @@ public class ModelExtractor
 
 		for (final ATermAppl c : classes)
 		{
-
 			triples.clear();
 
-			Node s, p;
-
-			s = makeGraphNode(c);
-
+			final Optional<Node> sOpt = makeGraphNode(c);
+			if (!sOpt.isPresent())
+				continue;
+			final Node s = sOpt.get();
 			addTriple(triples, s, RDF.type.asNode(), OWL.Class.asNode());
+
+			final Node p = RDFS.subClassOf.asNode();
 
 			if (subs)
 			{
-				p = RDFS.subClassOf.asNode();
-
 				if (allSubs)
 				{
 					final Set<ATermAppl> eqs = _kb.getAllEquivalentClasses(c);
 					for (final ATermAppl eq : eqs)
-					{
-						final Node o = makeGraphNode(eq);
-						addTriple(triples, s, p, o);
-					}
+						makeGraphNode(eq).ifPresent(o -> addTriple(triples, s, p, o));
 				}
 
 				final Set<Set<ATermAppl>> supers = allSubs ? _kb.getSuperClasses(c, false) : _kb.getSuperClasses(c, true);
 
 				Iterator<ATermAppl> i = IteratorUtils.flatten(supers.iterator());
 				while (i.hasNext())
-				{
-					final Node o = makeGraphNode(i.next());
-					addTriple(triples, s, p, o);
-				}
+					makeGraphNode(i.next()).ifPresent(o -> addTriple(triples, s, p, o));
 
 				if (jenaDirectSubs)
 				{
-
-					p = ReasonerVocabulary.directSubClassOf.asNode();
-
+					final Node pX = ReasonerVocabulary.directSubClassOf.asNode();
 					final Set<Set<ATermAppl>> direct = allSubs ? _kb.getSuperClasses(c, true) : supers;
 
 					i = IteratorUtils.flatten(direct.iterator());
 					while (i.hasNext())
-					{
-						final Node o = makeGraphNode(i.next());
-						addTriple(triples, s, p, o);
-					}
+						makeGraphNode(i.next()).ifPresent(o -> addTriple(triples, s, pX, o));
 				}
 			}
 
 			if (equivs)
 			{
-
-				p = OWL.equivalentClass.asNode();
+				final Node pX = OWL.equivalentClass.asNode();
 
 				final Set<ATermAppl> eqs = _kb.getAllEquivalentClasses(c);
 				for (final ATermAppl a : eqs)
-				{
-					final Node o = makeGraphNode(a);
-					addTriple(triples, s, p, o);
-				}
+					makeGraphNode(a).ifPresent(o -> addTriple(triples, s, pX, o));
 			}
 
 			if (disjs)
 			{
 				final Set<Set<ATermAppl>> disj = _kb.getDisjointClasses(c);
-
 				if (!disj.isEmpty())
 				{
-					p = OWL.disjointWith.asNode();
+					final Node pX = OWL.disjointWith.asNode();
 
 					final Iterator<ATermAppl> i = IteratorUtils.flatten(disj.iterator());
 					while (i.hasNext())
 					{
 						final ATermAppl a = i.next();
 						if (classes.contains(a))
-							addTriple(triples, s, p, makeGraphNode(a));
+							makeGraphNode(a).ifPresent(o -> addTriple(triples, s, pX, o));
 					}
 				}
 			}
@@ -363,13 +347,12 @@ public class ModelExtractor
 			if (comps)
 			{
 				final Set<ATermAppl> comp = _kb.getComplements(c);
-
 				if (!comp.isEmpty())
 				{
-					p = OWL.complementOf.asNode();
+					final Node pX = OWL.complementOf.asNode();
 					for (final ATermAppl a : comp)
 						if (classes.contains(a))
-							addTriple(triples, s, p, makeGraphNode(a));
+							makeGraphNode(a).ifPresent(o -> addTriple(triples, s, pX, o));
 				}
 			}
 			for (final Triple t : triples)
@@ -415,92 +398,86 @@ public class ModelExtractor
 
 			triples.clear();
 
-			Node s, p;
-
-			s = makeGraphNode(ind);
-
-			if (classes)
+			makeGraphNode(ind).ifPresent(s ->
 			{
-
-				p = RDF.type.asNode();
-
-				final Set<Set<ATermAppl>> types = _kb.getTypes(ind, !allClasses);
-
-				Iterator<ATermAppl> i = IteratorUtils.flatten(types.iterator());
-				while (i.hasNext())
+				if (classes)
 				{
-					final Node o = makeGraphNode(i.next());
-					addTriple(triples, s, p, o);
-				}
+					final Set<Set<ATermAppl>> types = _kb.getTypes(ind, !allClasses);
 
-				if (jenaDirectClasses)
-				{
-
-					p = ReasonerVocabulary.directRDFType.asNode();
-
-					final Set<Set<ATermAppl>> directTypes = allClasses ? _kb.getTypes(ind, true) : types;
-
-					i = IteratorUtils.flatten(directTypes.iterator());
-					while (i.hasNext())
+					Iterator<ATermAppl> i = IteratorUtils.flatten(types.iterator());
 					{
-						final Node o = makeGraphNode(i.next());
-						addTriple(triples, s, p, o);
+						final Node pX = RDF.type.asNode();
+						while (i.hasNext())
+							makeGraphNode(i.next()).ifPresent(o -> addTriple(triples, s, pX, o));
+					}
+
+					if (jenaDirectClasses)
+					{
+
+						final Node pX = ReasonerVocabulary.directRDFType.asNode();
+
+						final Set<Set<ATermAppl>> directTypes = allClasses ? _kb.getTypes(ind, true) : types;
+
+						i = IteratorUtils.flatten(directTypes.iterator());
+						while (i.hasNext())
+							makeGraphNode(i.next()).ifPresent(o -> addTriple(triples, s, pX, o));
 					}
 				}
-			}
 
-			if (sames)
-			{
-				p = OWL.sameAs.asNode();
-				addTriple(triples, s, p, s);
-				for (final ATermAppl a : _kb.getSames(ind))
-					addTriple(triples, s, p, makeGraphNode(a));
-			}
-
-			if (diffs)
-			{
-				p = OWL.differentFrom.asNode();
-				for (final ATermAppl a : _kb.getDifferents(ind))
-					addTriple(triples, s, p, makeGraphNode(a));
-			}
-
-			if (dataValues || objValues)
-				for (final Role role : _kb.getRBox().getRoles().values())
+				if (sames)
 				{
+					final Node pX = OWL.sameAs.asNode();
+					addTriple(triples, s, pX, s);
+					for (final ATermAppl a : _kb.getSames(ind))
+						makeGraphNode(a).ifPresent(node -> addTriple(triples, s, pX, node));
+				}
 
-					if (role.isAnon())
-						continue;
+				if (diffs)
+				{
+					final Node pX = OWL.differentFrom.asNode();
+					for (final ATermAppl a : _kb.getDifferents(ind))
+						makeGraphNode(a).ifPresent(node -> addTriple(triples, s, pX, node));
+				}
 
-					List<ATermAppl> values;
-					final ATermAppl name = role.getName();
-					if (role.isDatatypeRole())
+				if (dataValues || objValues)
+					for (final Role role : _kb.getRBox().getRoles().values())
 					{
-						if (dataValues)
-							values = _kb.getDataPropertyValues(name, ind);
-						else
+
+						if (role.isAnon())
 							continue;
-					}
-					else
-						if (role.isObjectRole())
+
+						List<ATermAppl> values;
+						final ATermAppl name = role.getName();
+						if (role.isDatatypeRole())
 						{
-							if (objValues)
-								values = _kb.getObjectPropertyValues(name, ind);
+							if (dataValues)
+								values = _kb.getDataPropertyValues(name, ind);
 							else
 								continue;
 						}
 						else
+							if (role.isObjectRole())
+							{
+								if (objValues)
+									values = _kb.getObjectPropertyValues(name, ind);
+								else
+									continue;
+							}
+							else
+								continue;
+
+						if (values.isEmpty())
 							continue;
 
-					if (values.isEmpty())
-						continue;
-
-					p = makeGraphNode(name);
-
-					for (final ATermAppl value : values)
-						addTriple(triples, s, p, makeGraphNode(value));
-				}
-			for (final Triple t : triples)
-				model.getGraph().add(t);
+						makeGraphNode(name).ifPresent(p ->
+						{
+							for (final ATermAppl value : values)
+								makeGraphNode(value).ifPresent(node -> addTriple(triples, s, p, node));
+						});
+					}
+				for (final Triple t : triples)
+					model.getGraph().add(t);
+			});
 		}
 
 		return model;
@@ -542,47 +519,48 @@ public class ModelExtractor
 
 		for (final Role role : _kb.getRBox().getRoles().values())
 		{
-
 			triples.clear();
 
 			if (role.isAnon())
 				continue;
 
 			final ATermAppl name = role.getName();
+			final Node s = makeGraphNode(name).orElse(null);
+			if (null == s)
+				continue;
 
-			Node s, p;
+			{
+				final Node pX = RDF.type.asNode();
 
-			s = makeGraphNode(name);
-			p = RDF.type.asNode();
-
-			if (role.isDatatypeRole())
-				addTriple(triples, s, p, OWL.DatatypeProperty.asNode());
-			else
-				if (role.isObjectRole())
-					addTriple(triples, s, p, OWL.ObjectProperty.asNode());
+				if (role.isDatatypeRole())
+					addTriple(triples, s, pX, OWL.DatatypeProperty.asNode());
 				else
-					continue;
+					if (role.isObjectRole())
+						addTriple(triples, s, pX, OWL.ObjectProperty.asNode());
+					else
+						continue;
 
-			if (role.isFunctional())
-				addTriple(triples, s, p, OWL.FunctionalProperty.asNode());
-			if (role.isInverseFunctional())
-				addTriple(triples, s, p, OWL.InverseFunctionalProperty.asNode());
-			if (role.isTransitive())
-				addTriple(triples, s, p, OWL.TransitiveProperty.asNode());
-			if (role.isSymmetric())
-				addTriple(triples, s, p, OWL.SymmetricProperty.asNode());
+				if (role.isFunctional())
+					addTriple(triples, s, pX, OWL.FunctionalProperty.asNode());
+				if (role.isInverseFunctional())
+					addTriple(triples, s, pX, OWL.InverseFunctionalProperty.asNode());
+				if (role.isTransitive())
+					addTriple(triples, s, pX, OWL.TransitiveProperty.asNode());
+				if (role.isSymmetric())
+					addTriple(triples, s, pX, OWL.SymmetricProperty.asNode());
+			}
 
 			if (equivs)
 			{
-				p = OWL.equivalentProperty.asNode();
+				final Node pX = OWL.equivalentProperty.asNode();
 				for (final ATermAppl eq : _kb.getAllEquivalentProperties(name))
 					if (JenaUtils._isGrapheNode.test(eq))
-					{
-						final Node o = makeGraphNode(eq);
-						addTriple(triples, s, p, o);
-						if (allSubs)
-							addTriple(triples, s, RDFS.subPropertyOf.asNode(), o);
-					}
+						makeGraphNode(eq).ifPresent(node ->
+						{
+							addTriple(triples, s, pX, node);
+							if (allSubs)
+								addTriple(triples, s, RDFS.subPropertyOf.asNode(), node);
+						});
 			}
 
 			if (invs)
@@ -590,10 +568,10 @@ public class ModelExtractor
 				final Set<ATermAppl> inverses = _kb.getInverses(name);
 				if (!inverses.isEmpty())
 				{
-					p = OWL.inverseOf.asNode();
+					final Node pX = OWL.inverseOf.asNode();
 					for (final ATermAppl inverse : inverses)
 						if (JenaUtils._isGrapheNode.test(inverse))
-							addTriple(triples, s, p, makeGraphNode(inverse));
+							makeGraphNode(inverse).ifPresent(node -> addTriple(triples, s, pX, node));
 				}
 			}
 
@@ -602,30 +580,24 @@ public class ModelExtractor
 				final Set<Set<ATermAppl>> disjoints = _kb.getDisjointProperties(name);
 				if (!disjoints.isEmpty())
 				{
-					p = OWL2.propertyDisjointWith.asNode();
+					final Node pX = OWL2.propertyDisjointWith.asNode();
 
 					final Iterator<ATermAppl> i = IteratorUtils.flatten(disjoints.iterator());
 					while (i.hasNext())
-					{
-						final Node o = makeGraphNode(i.next());
-						addTriple(triples, s, p, o);
-					}
+						makeGraphNode(i.next()).ifPresent(o -> addTriple(triples, s, pX, o));
 				}
 			}
 
 			if (subs)
 			{
-				p = RDFS.subPropertyOf.asNode();
+				final Node pN = RDFS.subPropertyOf.asNode();
 
 				if (allSubs)
 				{
 					final Set<ATermAppl> eqs = _kb.getAllEquivalentProperties(name);
 					for (final ATermAppl eq : eqs)
 						if (JenaUtils._isGrapheNode.test(eq))
-						{
-							final Node o = makeGraphNode(eq);
-							addTriple(triples, s, p, o);
-						}
+							makeGraphNode(eq).ifPresent(o -> addTriple(triples, s, pN, o));
 				}
 
 				final Set<Set<ATermAppl>> supers = _kb.getSuperProperties(name, !allSubs);
@@ -634,22 +606,16 @@ public class ModelExtractor
 				{
 					Iterator<ATermAppl> i = IteratorUtils.flatten(supers.iterator());
 					while (i.hasNext())
-					{
-						final Node o = makeGraphNode(i.next());
-						addTriple(triples, s, p, o);
-					}
+						makeGraphNode(i.next()).ifPresent(node -> addTriple(triples, s, pN, node));
 
 					if (jenaDirectSubs)
 					{
-						p = ReasonerVocabulary.directSubPropertyOf.asNode();
+						final Node pX = ReasonerVocabulary.directSubPropertyOf.asNode();
 
 						final Set<Set<ATermAppl>> direct = allSubs ? _kb.getSuperProperties(name, true) : supers;
 						i = IteratorUtils.flatten(direct.iterator());
 						while (i.hasNext())
-						{
-							final Node o = makeGraphNode(i.next());
-							addTriple(triples, s, p, o);
-						}
+							makeGraphNode(i.next()).ifPresent(node -> addTriple(triples, s, pX, node));
 					}
 				}
 			}

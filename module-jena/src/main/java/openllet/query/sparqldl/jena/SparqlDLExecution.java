@@ -166,9 +166,8 @@ class SparqlDLExecution implements QueryExecution
 				template.subst(set, bNodeMap, binding);
 			}
 
-			for (final Iterator<Triple> iter = set.iterator(); iter.hasNext();)
+			for (Triple t : set)
 			{
-				final Triple t = iter.next();
 				final Statement stmt = ModelUtils.tripleToStatement(model, t);
 				if (stmt != null)
 					model.add(stmt);
@@ -190,7 +189,7 @@ class SparqlDLExecution implements QueryExecution
 
 		final ResultSet results = exec();
 
-		return (results != null) ? results.hasNext() : QueryExecutionFactory.create(_query, _source, _initialBinding).execAsk();
+		return results != null ? results.hasNext() : QueryExecutionFactory.create(_query, _source, _initialBinding).execAsk();
 	}
 
 	/**
@@ -203,7 +202,7 @@ class SparqlDLExecution implements QueryExecution
 
 		final ResultSet results = exec();
 
-		return (results != null) ? results : QueryExecutionFactory.create(_query, _source, _initialBinding).execSelect();
+		return results != null ? results : QueryExecutionFactory.create(_query, _source, _initialBinding).execSelect();
 
 	}
 
@@ -300,8 +299,7 @@ class SparqlDLExecution implements QueryExecution
 	@Override
 	public Dataset getDataset()
 	{
-		throw new UnsupportedOperationException("Not supported yet!");
-		// return _source;
+		return _source;
 	}
 
 	private void ensureQueryType(final QueryType expectedType) throws QueryExecException

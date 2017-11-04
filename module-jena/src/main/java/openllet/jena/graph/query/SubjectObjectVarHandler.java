@@ -16,6 +16,7 @@ import openllet.jena.PelletInfGraph;
 import org.apache.jena.graph.Node;
 import org.apache.jena.graph.Triple;
 import org.apache.jena.util.iterator.ExtendedIterator;
+import org.apache.jena.util.iterator.NullIterator;
 import org.apache.jena.util.iterator.WrappedIterator;
 
 abstract class SubjectObjectVarHandler extends TripleQueryHandler
@@ -32,7 +33,9 @@ abstract class SubjectObjectVarHandler extends TripleQueryHandler
 			@Override
 			public Iterator<Triple> getInnerIterator(final ATermAppl subj)
 			{
-				return objectFiller(JenaUtils.makeGraphNode(subj), p, getObjects(kb, subj));
+				return JenaUtils.makeGraphNode(subj)//
+						.map(node -> objectFiller(node, p, getObjects(kb, subj)))//
+						.orElseGet(NullIterator::instance);
 			}
 		});
 	}

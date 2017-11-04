@@ -1,5 +1,6 @@
 package openllet.jena.graph.converter;
 
+import java.util.Optional;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
 import openllet.core.KnowledgeBase;
@@ -215,12 +216,13 @@ public class AxiomConverter
 			final ATermAppl ind = (ATermAppl) term.getArgument(0);
 			final ATermAppl cls = (ATermAppl) term.getArgument(1);
 
-			final Node indNode = convertAtomObject(ind);
-			final Node clsNode = _converter.convert(cls);
-
-			TripleAdder.add(_graph, atom, RDF.type, SWRL.ClassAtom);
-			TripleAdder.add(_graph, atom, SWRL.classPredicate, clsNode);
-			TripleAdder.add(_graph, atom, SWRL.argument1, indNode);
+			convertAtomObject(ind).ifPresent(indNode ->
+			{
+				final Node clsNode = _converter.convert(cls);
+				TripleAdder.add(_graph, atom, RDF.type, SWRL.ClassAtom);
+				TripleAdder.add(_graph, atom, SWRL.classPredicate, clsNode);
+				TripleAdder.add(_graph, atom, SWRL.argument1, indNode);
+			});
 		}
 		else
 			if (term.getAFun().equals(ATermUtils.PROPFUN))
@@ -229,22 +231,26 @@ public class AxiomConverter
 				final ATermAppl arg1 = (ATermAppl) term.getArgument(1);
 				final ATermAppl arg2 = (ATermAppl) term.getArgument(2);
 
-				final Node propNode = JenaUtils.makeGraphNode(prop);
-				final Node node1 = convertAtomObject(arg1);
-				final Node node2 = convertAtomObject(arg2);
+				JenaUtils.makeGraphNode(prop).ifPresent(propNode ->
+				{
+					final Optional<Node> node1 = convertAtomObject(arg1);
+					final Optional<Node> node2 = convertAtomObject(arg2);
+					if (node1.isPresent() && node2.isPresent())
 
-				if (_kb.isObjectProperty(prop))
-					TripleAdder.add(_graph, atom, RDF.type, SWRL.IndividualPropertyAtom);
-				else
-					if (_kb.isDatatypeProperty(prop))
-						TripleAdder.add(_graph, atom, RDF.type, SWRL.DatavaluedPropertyAtom);
-					else
-						throw new UnsupportedOperationException("Unknown property: " + prop);
+					{
+						if (_kb.isObjectProperty(prop))
+							TripleAdder.add(_graph, atom, RDF.type, SWRL.IndividualPropertyAtom);
+						else
+							if (_kb.isDatatypeProperty(prop))
+								TripleAdder.add(_graph, atom, RDF.type, SWRL.DatavaluedPropertyAtom);
+							else
+								throw new UnsupportedOperationException("Unknown property: " + prop);
 
-				TripleAdder.add(_graph, atom, SWRL.propertyPredicate, propNode);
-				TripleAdder.add(_graph, atom, SWRL.argument1, node1);
-				TripleAdder.add(_graph, atom, SWRL.argument2, node2);
-
+						TripleAdder.add(_graph, atom, SWRL.propertyPredicate, propNode);
+						TripleAdder.add(_graph, atom, SWRL.argument1, node1.get());
+						TripleAdder.add(_graph, atom, SWRL.argument2, node2.get());
+					}
+				});
 			}
 			else
 				if (term.getAFun().equals(ATermUtils.SAMEASFUN))
@@ -252,12 +258,15 @@ public class AxiomConverter
 					final ATermAppl arg1 = (ATermAppl) term.getArgument(1);
 					final ATermAppl arg2 = (ATermAppl) term.getArgument(2);
 
-					final Node node1 = convertAtomObject(arg1);
-					final Node node2 = convertAtomObject(arg2);
+					final Optional<Node> node1 = convertAtomObject(arg1);
+					final Optional<Node> node2 = convertAtomObject(arg2);
 
-					TripleAdder.add(_graph, atom, RDF.type, SWRL.SameIndividualAtom);
-					TripleAdder.add(_graph, atom, SWRL.argument1, node1);
-					TripleAdder.add(_graph, atom, SWRL.argument2, node2);
+					if (node1.isPresent() && node2.isPresent())
+					{
+						TripleAdder.add(_graph, atom, RDF.type, SWRL.SameIndividualAtom);
+						TripleAdder.add(_graph, atom, SWRL.argument1, node1.get());
+						TripleAdder.add(_graph, atom, SWRL.argument2, node2.get());
+					}
 				}
 				else
 					if (term.getAFun().equals(ATermUtils.DIFFERENTFUN))
@@ -265,12 +274,15 @@ public class AxiomConverter
 						final ATermAppl arg1 = (ATermAppl) term.getArgument(1);
 						final ATermAppl arg2 = (ATermAppl) term.getArgument(2);
 
-						final Node node1 = convertAtomObject(arg1);
-						final Node node2 = convertAtomObject(arg2);
+						final Optional<Node> node1 = convertAtomObject(arg1);
+						final Optional<Node> node2 = convertAtomObject(arg2);
 
-						TripleAdder.add(_graph, atom, RDF.type, SWRL.DifferentIndividualsAtom);
-						TripleAdder.add(_graph, atom, SWRL.argument1, node1);
-						TripleAdder.add(_graph, atom, SWRL.argument2, node2);
+						if (node1.isPresent() && node2.isPresent())
+						{
+							TripleAdder.add(_graph, atom, RDF.type, SWRL.DifferentIndividualsAtom);
+							TripleAdder.add(_graph, atom, SWRL.argument1, node1.get());
+							TripleAdder.add(_graph, atom, SWRL.argument2, node2.get());
+						}
 					}
 					else
 						if (term.getAFun().equals(ATermUtils.BUILTINFUN))
@@ -289,14 +301,20 @@ public class AxiomConverter
 								Node list = null;
 								for (; !args.isEmpty(); args = args.getNext())
 								{
-									final Node atomNode = convertAtomObject((ATermAppl) args.getFirst());
-									final Node newList = NodeFactory.createBlankNode();
-									TripleAdder.add(_graph, newList, RDF.first, atomNode);
-									if (list != null)
-										TripleAdder.add(_graph, list, RDF.rest, newList);
-									else
-										TripleAdder.add(_graph, atom, SWRL.arguments, newList);
-									list = newList;
+									final Optional<Node> atomNodeOpt = convertAtomObject((ATermAppl) args.getFirst());//
+									if (atomNodeOpt.isPresent())
+									{
+										final Node atomNode = atomNodeOpt.get();
+
+										final Node newList = NodeFactory.createBlankNode();
+										TripleAdder.add(_graph, newList, RDF.first, atomNode);
+										if (list != null)
+											TripleAdder.add(_graph, list, RDF.rest, newList);
+										else
+											TripleAdder.add(_graph, atom, SWRL.arguments, newList);
+										list = newList;
+
+									}
 								}
 								TripleAdder.add(_graph, list, RDF.rest, RDF.nil);
 							}
@@ -307,18 +325,17 @@ public class AxiomConverter
 		return atom;
 	}
 
-	private Node convertAtomObject(final ATermAppl t)
+	private Optional<Node> convertAtomObject(final ATermAppl t)
 	{
-		Node node;
 		if (ATermUtils.isVar(t))
 		{
-			node = JenaUtils.makeGraphNode((ATermAppl) t.getArgument(0));
-			TripleAdder.add(_graph, node, RDF.type, SWRL.Variable);
+			final Optional<Node> node = JenaUtils.makeGraphNode((ATermAppl) t.getArgument(0));
+			if (node.isPresent())
+				TripleAdder.add(_graph, node.get(), RDF.type, SWRL.Variable);
+			return node;
 		}
 		else
-			node = JenaUtils.makeGraphNode(t);
-
-		return node;
+			return JenaUtils.makeGraphNode(t);
 	}
 
 	private void convertNary(final ATermAppl axiom, final Resource type, final Property p)

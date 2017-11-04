@@ -32,10 +32,10 @@ package openllet.jena;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Predicate;
 import openllet.aterm.ATermAppl;
 import openllet.core.datatypes.Datatypes;
-import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.QNameProvider;
 import openllet.jena.vocabulary.OWL2;
@@ -181,15 +181,13 @@ public class JenaUtils
 		//		if (term.getName().equals(ATermUtils.INVFUN.getName()))
 		//			return OWL.inverseOf.asNode(); //	term.getArgument(0); // XXX Que devient le parametre ?
 
-		throw new InternalReasonerException("Invalid term found " + term);
+		//throw new InternalReasonerException("Invalid term found " + term);
+		return null;
 	}
 
-	static public Node makeGraphNode(final ATermAppl value)
+	static public Optional<Node> makeGraphNode(final ATermAppl value)
 	{
-		if (ATermUtils.isLiteral(value))
-			return makeGraphLiteral(value);
-		else
-			return makeGraphResource(value);
+		return Optional.ofNullable(ATermUtils.isLiteral(value) ? makeGraphLiteral(value) : makeGraphResource(value));
 	}
 
 	static public Literal makeLiteral(final ATermAppl literal, final Model model)
@@ -197,14 +195,14 @@ public class JenaUtils
 		return (Literal) model.asRDFNode(makeGraphLiteral(literal));
 	}
 
-	static public Resource makeResource(final ATermAppl term, final Model model)
+	static public Optional<Resource> makeResource(final ATermAppl term, final Model model)
 	{
-		return (Resource) model.asRDFNode(makeGraphResource(term));
+		return Optional.ofNullable(makeGraphResource(term)).map(model::asRDFNode).map(Resource.class::cast);
 	}
 
-	static public RDFNode makeRDFNode(final ATermAppl term, final Model model)
+	static public Optional<RDFNode> makeRDFNode(final ATermAppl term, final Model model)
 	{
-		return model.asRDFNode(makeGraphNode(term));
+		return makeGraphNode(term).map(model::asRDFNode);
 	}
 
 	static public QNameProvider makeQNameProvider(final PrefixMapping mapping)

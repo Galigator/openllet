@@ -9,6 +9,7 @@ package openllet.jena;
 import java.util.Collection;
 import java.util.HashSet;
 import openllet.aterm.ATermAppl;
+import openllet.atom.OpenError;
 import openllet.core.taxonomy.Taxonomy;
 import openllet.core.taxonomy.TaxonomyNode;
 import openllet.core.taxonomy.TaxonomyUtils;
@@ -135,6 +136,6 @@ public class TaxonomyExtractor
 
 	private static Resource createResource(final Model model, final ATermAppl term)
 	{
-		return JenaUtils.makeResource(term, model);
+		return JenaUtils.makeResource(term, model).orElseThrow(() -> new OpenError("Can't build Resource with " + term));
 	}
 }
