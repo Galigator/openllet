@@ -1214,11 +1214,6 @@ public class PelletReasoner implements OpenlletReasoner
 		return NodeFactory.getOWLClassNode(CLASS_MAPPER.map(terms));
 	}
 
-	private Stream<OWLClass> toClassNode(final Stream<ATermAppl> terms)
-	{
-		return terms.map(CLASS_MAPPER::map);
-	}
-
 	private Node<OWLDataProperty> toDataPropertyNode(final Set<ATermAppl> terms)
 	{
 		return NodeFactory.getOWLDataPropertyNode(DP_MAPPER.map(terms));
@@ -1229,11 +1224,6 @@ public class PelletReasoner implements OpenlletReasoner
 		return NodeFactory.getOWLNamedIndividualNode(IND_MAPPER.map(terms));
 	}
 
-	private Stream<OWLNamedIndividual> toIndividualNode(final Stream<ATermAppl> terms)
-	{
-		return terms.map(IND_MAPPER::map);
-	}
-
 	private Set<OWLLiteral> toLiteralSet(final Collection<ATermAppl> terms)
 	{
 		return LIT_MAPPER.map(terms);
@@ -1242,11 +1232,6 @@ public class PelletReasoner implements OpenlletReasoner
 	private Node<OWLObjectPropertyExpression> toObjectPropertyNode(final Set<ATermAppl> terms)
 	{
 		return NodeFactory.getOWLObjectPropertyNode(OP_MAPPER.map(terms));
-	}
-
-	private Stream<OWLObjectPropertyExpression> toObjectPropertyNode(final Stream<ATermAppl> terms)
-	{
-		return terms.map(OP_MAPPER::map);
 	}
 
 	private Node<OWLNamedIndividual> toIndividualNode(final ATermAppl term)

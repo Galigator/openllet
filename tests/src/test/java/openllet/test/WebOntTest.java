@@ -378,7 +378,7 @@ public class WebOntTest
 				{
 					final Statement s = si.nextStatement();
 					final String levelName = s.getResource().getLocalName();
-					if (reasoningLevel > LEVELS.indexOf(levelName))
+					if (reasoningLevel > LEVELS.indexOf(s.getResource()))
 					{
 						levelStmt = s;
 						levels.add(levelName);
