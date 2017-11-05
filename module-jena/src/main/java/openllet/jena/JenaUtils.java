@@ -181,7 +181,7 @@ public class JenaUtils
 		//		if (term.getName().equals(ATermUtils.INVFUN.getName()))
 		//			return OWL.inverseOf.asNode(); //	term.getArgument(0); // XXX Que devient le parametre ?
 
-		//throw new InternalReasonerException("Invalid term found " + term);
+		PelletReasoner._logger.warning("Term " + term + " can't be convert into Node");
 		return null;
 	}
 
