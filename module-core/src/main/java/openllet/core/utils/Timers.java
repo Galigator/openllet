@@ -131,7 +131,7 @@ public class Timers
 		}
 		finally
 		{
-			timer.ifPresent(t -> t.stop());
+			timer.ifPresent(Timer::stop);
 		}
 	}
 

@@ -3060,7 +3060,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 					unknowns.add(x);
 		}
 
-		final boolean hasInstance = !unknowns.isEmpty() && _abox.isType(unknowns, c);
+		final boolean hasInstance = !unknowns.isEmpty() && _abox.existType(unknowns, c);
 
 		return hasInstance;
 	}
@@ -4580,7 +4580,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 					if (OpenlletOptions.INSTANCE_RETRIEVAL == InstanceRetrievalMethod.TRACING_BASED && OpenlletOptions.USE_TRACING)
 						tracingBasedInstanceRetrieval(c, unknowns, knowns);
 					else
-						if (_abox.isType(unknowns, c))
+						if (_abox.existType(unknowns, c))
 							if (OpenlletOptions.INSTANCE_RETRIEVAL == InstanceRetrievalMethod.BINARY)
 								binaryInstanceRetrieval(c, unknowns, knowns);
 							else
@@ -4634,7 +4634,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		setDoExplanation(true);
 
 		final ATermAppl notC = ATermUtils.negate(c);
-		while (_abox.isType(individuals, c))
+		while (_abox.existType(individuals, c))
 		{
 			final Set<ATermAppl> explanationSet = getExplanationSet();
 
@@ -4676,10 +4676,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		if (candidates.isEmpty())
 			return;
 		else
-		{
-			final List<ATermAppl>[] partitions = partition(candidates);
-			partitionInstanceRetrieval(c, partitions, results);
-		}
+			partitionInstanceRetrieval(c, partition(candidates), results);
 	}
 
 	private void partitionInstanceRetrieval(final ATermAppl c, final List<ATermAppl>[] partitions, final Collection<ATermAppl> results)
@@ -4693,10 +4690,10 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 				results.add(i);
 		}
 		else
-			if (!_abox.isType(partitions[0], c))
+			if (!_abox.existType(partitions[0], c))
 				binaryInstanceRetrieval(c, partitions[1], results);
 			else
-				if (!_abox.isType(partitions[1], c))
+				if (!_abox.existType(partitions[1], c))
 					binaryInstanceRetrieval(c, partitions[0], results);
 				else
 				{
@@ -4713,7 +4710,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		if (n <= 1)
 		{
 			partitions[0] = candidates;
-			partitions[1] = new ArrayList<>();
+			partitions[1] = Collections.emptyList();
 		}
 		else
 		{

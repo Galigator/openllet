@@ -885,7 +885,7 @@ public class ABoxImpl implements ABox
 
 		final Optional<Timer> timer = _kb.getTimers().startTimer("isType");
 		final boolean isType = !isConsistent(SetUtils.singleton(x), notC, false);
-		timer.ifPresent(t -> t.stop());
+		timer.ifPresent(Timer::stop);
 
 		if (_logger.isLoggable(Level.FINE))
 			_logger.fine("Type " + isType + " " + ATermUtils.toString(c) + " for individual " + ATermUtils.toString(x));
@@ -894,7 +894,7 @@ public class ABoxImpl implements ABox
 	}
 
 	@Override
-	public boolean isType(final List<ATermAppl> inds, final ATermAppl cParam)
+	public boolean existType(final List<ATermAppl> inds, final ATermAppl cParam)
 	{
 		final ATermAppl c = ATermUtils.normalize(cParam);
 
@@ -1328,22 +1328,22 @@ public class ABoxImpl implements ABox
 	}
 
 	/**
-	 * Check the consistency of this ABox possibly after adding some type assertions. If <code>c</code> is null then nothing is added to ABox (pure consistency
-	 * test) and the individuals should be an empty collection. If <code>c</code> is not null but <code>individuals</code> is empty, this is a satisfiability
-	 * check for concept <code>c</code> so a new individual will be added with type <code>c</code>. If individuals is not empty, this means we will add type
-	 * <code>c</code> to each of the individuals in the collection and check the consistency.
+	 * Check the consistency of this ABox possibly after adding some type assertions. If <code>c_</code> is null then nothing is added to ABox (pure consistency
+	 * test) and the individuals should be an empty collection. If <code>c_</code> is not null but <code>individuals</code> is empty, this is a satisfiability
+	 * check for concept <code>c_</code> so a new individual will be added with type <code>c_</code>. If individuals is not empty, this means we will add type
+	 * <code>c_</code> to each of the individuals in the collection and check the consistency.
 	 * <p>
 	 * The consistency checks will be done either on a copy of the ABox or its pseudo model depending on the situation. In either case this ABox will not be
-	 * modified at all. After the consistency check _lastCompletion points to the modified ABox.
+	 * modified at all. After the consistency check lastCompletion points to the modified ABox.
 	 *
 	 * @param individuals
-	 * @param cParam
+	 * @param c_
 	 * @return true if consistent.
 	 */
-	private boolean isConsistent(final Collection<ATermAppl> individualsParam, final ATermAppl cParam, final boolean cacheModel)
+	private boolean isConsistent(final Collection<ATermAppl> individualsParam, final ATermAppl c_, final boolean cacheModel)
 	{
 		Collection<ATermAppl> individuals = individualsParam;
-		ATermAppl c = cParam;
+		ATermAppl c = c_;
 
 		final Optional<Timer> timer = _kb.getTimers().startTimer("isConsistent");
 

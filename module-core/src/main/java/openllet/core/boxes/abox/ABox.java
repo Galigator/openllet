@@ -118,7 +118,7 @@ public interface ABox extends Logging
 	 * @param inds
 	 * @return true if any of the individuals in the given list belongs to type c.
 	 */
-	public boolean isType(final List<ATermAppl> inds, ATermAppl c);
+	public boolean existType(final List<ATermAppl> inds, ATermAppl c);
 
 	public Bool hasObviousPropertyValue(final ATermAppl s, final ATermAppl p, final ATermAppl o);
 
