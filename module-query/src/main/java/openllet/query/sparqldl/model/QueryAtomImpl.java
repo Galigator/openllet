@@ -20,9 +20,6 @@ import openllet.core.utils.ATermUtils;
  * Title: Abstract implementation of the query atom.
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -50,8 +47,8 @@ public class QueryAtomImpl implements QueryAtom
 		if (predicate == null)
 			throw new OpenError("Predicate cannot be null.");
 
-		this._predicate = predicate;
-		this._arguments = arguments;
+		_predicate = predicate;
+		_arguments = arguments;
 		// this.vars = new HashSet<ATermAppl>();
 		//
 		_ground = true;
