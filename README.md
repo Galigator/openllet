@@ -9,17 +9,19 @@ Openllet: An Open Source OWL DL reasoner for Java
 <a href="https://www.versioneye.com/user/projects/5832fff3e7cea00029198b38"><img src="https://www.versioneye.com/user/projects/5832fff3e7cea00029198b38/badge.svg?style=flat"/></a>
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.galigator.openllet/openllet-owlapi/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.galigator.openllet/openllet-owlapi)
 
-Openllet is the OWL 2 DL reasoner: 
+Openllet is an OWL 2 DL reasoner: 
 --------------------------------
 
-Openllet can be used with Jena or OWL-API libraries. Openllet provides functionality to check consistency of ontologies, compute the classification hierarchy, 
+Openllet can be used with [Jena](https://jena.apache.org/) or [OWL-API](http://owlcs.github.io/owlapi/) libraries. Openllet provides functionality to check consistency of ontologies, compute the classification hierarchy, 
 explain inferences, and answer SPARQL queries.
 
-Feel free to fork this repository and submit pull requests if you want to see changes, new features, etc. in Pellet.
+Feel free to fork this repository and submit pull requests if you want to see changes, new features, etc. in Openllet.
 We need a lot more tests, send your samples if you can.
 
-There are some  code samples in the examples/ directory.
+There are some code samples in the [examples/](https://github.com/Galigator/openllet/tree/integration/examples) directory.
 Issues are on [Github](http://github.com/galigator/openllet/issues).
+Pellet community is on [pellet-users mailing list](https://groups.google.com/forum/?fromgroups#!forum/pellet-users).
+
 
 Openllet 2.6.X:
 -----------
@@ -33,17 +35,17 @@ Openllet 2.6.X:
 * lots of com.clarkparsia.* / com.mindswap.* are refactor into openllet.* to avoid conflict has typing change a lot.
 * dependencies on modern libs.
 
-```
-		<dependency>
-			<groupId>com.github.galigator.openllet</groupId>
-			<artifactId>openllet-owlapi</artifactId>
-			<version>2.6.2</version>
-		</dependency>
-		<dependency>
-			<groupId>com.github.galigator.openllet</groupId>
-			<artifactId>openllet-jena</artifactId>
-			<version>2.6.2</version>
-		</dependency>
+```xml
+	<dependency>
+		<groupId>com.github.galigator.openllet</groupId>
+		<artifactId>openllet-owlapi</artifactId>
+		<version>2.6.3</version>
+	</dependency>
+	<dependency>
+		<groupId>com.github.galigator.openllet</groupId>
+		<artifactId>openllet-jena</artifactId>
+		<version>2.6.3</version>
+	</dependency>
 ```
 
 NB, the Protege plugin need a Protege that work with an 5.1.X version of the OWL-API, so the main branch of Protege isn't compatible with Openllet.
@@ -56,7 +58,7 @@ NB, the Protege plugin need a Protege that work with an 5.1.X version of the OWL
 ### Examples :
 
 Play with the Owl-Api:
-```
+```java
 try (final OWLManagerGroup group = new OWLManagerGroup())
 {
 	final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create("http://myOnotology"), 1.0);
@@ -77,7 +79,7 @@ try (final OWLManagerGroup group = new OWLManagerGroup())
 ```
 
 Play with Jena:
-```
+```java
 	final String ns = "http://www.example.org/test#";
 
 	final OntModel model = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
@@ -112,17 +114,10 @@ Pellet 1..2.3] Licences and supports:
 -------------------------------------
  
 * [open source](https://github.com/complexible/pellet/blob/master/LICENSE.txt) (AGPL) or commercial license
-* pure Java
-* developed and [commercially supported](http://complexible.com/) by Complexible Inc.  [dead link]
+* Historically developed and commercially supported by Complexible Inc; Maybe now https://www.stardog.com/
 
-Commercial support for Pellet is [available](http://complexible.com/). 
-The [Pellet FAQ](http://clarkparsia.com/pellet/faq) answers some frequently asked questions.
 
-There is a [pellet-users mailing list](https://groups.google.com/forum/?fromgroups#!forum/pellet-users) for questions and feedback.
-You can search [pellet-users archives](http://news.gmane.org/gmane.comp.web.pellet.user).
-Bug reports and enhancement requests should be sent to the mailing list. 
-
-Thanks for using Pellet.
+Thanks for using Openllet.
 
 ### Others experimentals stuffs
 
