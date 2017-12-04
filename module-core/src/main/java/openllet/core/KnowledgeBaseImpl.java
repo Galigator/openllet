@@ -36,13 +36,10 @@ package openllet.core;
 
 import static java.lang.String.format;
 import static openllet.core.utils.TermFactory.BOTTOM;
-import static openllet.core.utils.TermFactory.and;
-import static openllet.core.utils.TermFactory.some;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -61,8 +58,6 @@ import java.util.stream.Stream;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
-import openllet.atom.OpenError;
-import openllet.core.OpenlletOptions.InstanceRetrievalMethod;
 import openllet.core.boxes.abox.ABox;
 import openllet.core.boxes.abox.ABoxImpl;
 import openllet.core.boxes.abox.Edge;
@@ -78,13 +73,13 @@ import openllet.core.boxes.tbox.TBox;
 import openllet.core.boxes.tbox.TBoxFactory;
 import openllet.core.datatypes.exceptions.InvalidLiteralException;
 import openllet.core.datatypes.exceptions.UnrecognizedDatatypeException;
-import openllet.core.el.SimplifiedELClassifier;
 import openllet.core.exceptions.InconsistentOntologyException;
-import openllet.core.exceptions.UndefinedEntityException;
 import openllet.core.exceptions.UnsupportedFeatureException;
 import openllet.core.expressivity.Expressivity;
 import openllet.core.expressivity.ExpressivityChecker;
-import openllet.core.output.ATermBaseVisitor;
+import openllet.core.knowledge.Base;
+import openllet.core.knowledge.DatatypeVisitor;
+import openllet.core.knowledge.FullyDefinedClassVisitor;
 import openllet.core.rules.ContinuousRulesStrategy;
 import openllet.core.rules.UsableRuleFilter;
 import openllet.core.rules.model.AtomDVariable;
@@ -102,7 +97,6 @@ import openllet.core.tableau.completion.EmptySRIQStrategy;
 import openllet.core.tableau.completion.SROIQStrategy;
 import openllet.core.tableau.completion.incremental.DependencyIndex;
 import openllet.core.tableau.completion.incremental.IncrementalRestore;
-import openllet.core.taxonomy.CDOptimizedTaxonomyBuilder;
 import openllet.core.taxonomy.Taxonomy;
 import openllet.core.taxonomy.TaxonomyBuilder;
 import openllet.core.taxonomy.TaxonomyNode;
@@ -147,16 +141,130 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	protected final MultiValueMap<AssertionType, ATermAppl> _aboxAssertions = new MultiValueMap<>();
 	private final Set<ATermAppl> _individuals = SetUtils.create();
 	private final Map<ATermAppl, Map<ATermAppl, Set<ATermAppl>>> _annotations;
+
+	@Override
+	public Map<ATermAppl, Map<ATermAppl, Set<ATermAppl>>> getAnnotations()
+	{
+		return _annotations;
+	}
+
 	private final Map<ATermAppl, Set<ATermAppl>> _instances = new ConcurrentHashMap<>();
-	private final FullyDefinedClassVisitor _fullyDefinedVisitor = new FullyDefinedClassVisitor();
-	private final DatatypeVisitor _datatypeVisitor = new DatatypeVisitor();
+
+	@Override
+	public Map<ATermAppl, Set<ATermAppl>> getInstances()
+	{
+		return _instances;
+	}
+
+	private final FullyDefinedClassVisitor _fullyDefinedVisitor = new FullyDefinedClassVisitor()
+	{
+
+		@Override
+		public boolean isProperty(final ATerm p)
+		{
+			return KnowledgeBaseImpl.this.isProperty(p);
+		}
+
+		@Override
+		public boolean isDatatype(final ATermAppl p)
+		{
+			return KnowledgeBaseImpl.this.isDatatype(p);
+		}
+
+		@Override
+		public TBox getTBox()
+		{
+			return _tbox;
+		}
+
+		@Override
+		public Set<ATermAppl> getIndividuals()
+		{
+			return _individuals;
+		}
+	};
+	private final DatatypeVisitor _datatypeVisitor = new DatatypeVisitor()
+	{
+		@Override
+		public ABox getABox()
+		{
+			return _abox;
+		}
+
+		@Override
+		public TBox getTBox()
+		{
+			return _tbox;
+		}
+
+		@Override
+		public RBox getRBox()
+		{
+			return _rbox;
+		}
+
+		@Override
+		public Timers getTimers()
+		{
+			return _timers;
+		}
+	};
+
+	@Override
+	public ProgressMonitor getBuilderProgressMonitor()
+	{
+		return _builderProgressMonitor;
+	}
+
+	@Override
+	public void setBuilderProgressMonitor(final ProgressMonitor builderProgressMonitor)
+	{
+		_builderProgressMonitor = builderProgressMonitor;
+	}
+
+	@Override
+	public FullyDefinedClassVisitor getFullyDefinedVisitor()
+	{
+		return _fullyDefinedVisitor;
+	}
+
+	@Override
+	public DatatypeVisitor getDatatypeVisitor()
+	{
+		return _datatypeVisitor;
+	}
 
 	protected volatile ABox _abox;
 	protected volatile TBox _tbox;
 	protected volatile RBox _rbox;
 
 	protected volatile Optional<TaxonomyBuilder> _builder = Optional.empty();
+
+	@Override
+	public Optional<TaxonomyBuilder> getOptTaxonomyBuilder()
+	{
+		return _builder;
+	}
+
+	@Override
+	public void setOptTaxonomyBuilder(final Optional<TaxonomyBuilder> builder)
+	{
+		_builder = builder;
+	}
+
 	protected volatile EnumSet<ChangeType> _changes;
+
+	@Override
+	public EnumSet<ChangeType> getChanges()
+	{
+		return _changes;
+	}
+
+	public void setChanges(final EnumSet<ChangeType> changes)
+	{
+		_changes = changes;
+	}
+
 	protected volatile boolean _canUseIncConsistency = false;
 
 	protected volatile EnumSet<ReasoningState> _state = EnumSet.noneOf(ReasoningState.class);
@@ -165,6 +273,17 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	private volatile ProgressMonitor _builderProgressMonitor;
 	private volatile SizeEstimate _estimate;
 	private volatile ExpressivityChecker _expChecker;
+
+	@Override
+	public ExpressivityChecker getExpChecker()
+	{
+		return _expChecker;
+	}
+
+	public void setExpChecker(final ExpressivityChecker expChecker)
+	{
+		_expChecker = expChecker;
+	}
 
 	/**
 	 * Rules added to this KB. The key is the asserted rule,
@@ -193,235 +312,6 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	public enum AssertionType
 	{
 		TYPE, OBJ_ROLE, DATA_ROLE
-	}
-
-	class DatatypeVisitor extends ATermBaseVisitor
-	{
-
-		private boolean _isDatatype = false;
-
-		public boolean isDatatype(final ATermAppl term)
-		{
-			_isDatatype = false;
-			visit(term);
-
-			return _isDatatype;
-		}
-
-		@Override
-		public void visit(final ATermAppl term)
-		{
-			super.visit(term);
-		}
-
-		@Override
-		public void visitOr(final ATermAppl term)
-		{
-			visitList((ATermList) term.getArgument(0));
-		}
-
-		@Override
-		public void visitValue(final ATermAppl term)
-		{
-			final ATermAppl nominal = (ATermAppl) term.getArgument(0);
-
-			if (ATermUtils.isLiteral(nominal))
-				_isDatatype = true;
-		}
-
-		@Override
-		public void visitTerm(final ATermAppl term)
-		{
-			if (getDatatypeReasoner().isDeclared(term))
-				_isDatatype = true;
-		}
-
-		@Override
-		public void visitNot(final ATermAppl term)
-		{
-			visit((ATermAppl) term.getArgument(0));
-		}
-
-		@Override
-		public void visitAnd(final ATermAppl term)
-		{
-			visitList((ATermList) term.getArgument(0));
-		}
-
-		@Override
-		public void visitOneOf(final ATermAppl term)
-		{
-			visitList((ATermList) term.getArgument(0));
-		}
-
-		@Override
-		public void visitRestrictedDatatype(final ATermAppl dt)
-		{
-			isDatatype((ATermAppl) dt.getArgument(0));
-		}
-	}
-
-	class FullyDefinedClassVisitor extends ATermBaseVisitor
-	{
-
-		private boolean _fullyDefined = true;
-
-		public boolean isFullyDefined(final ATermAppl term)
-		{
-			_fullyDefined = true;
-			visit(term);
-			return _fullyDefined;
-		}
-
-		private void visitQCR(final ATermAppl term)
-		{
-			visitRestr(term);
-			if (_fullyDefined)
-			{
-				final ATermAppl q = (ATermAppl) term.getArgument(2);
-				if (!isDatatype(q))
-					visit(q);
-			}
-		}
-
-		private void visitQR(final ATermAppl term)
-		{
-			visitRestr(term);
-			if (_fullyDefined)
-			{
-				final ATermAppl q = (ATermAppl) term.getArgument(1);
-				if (!isDatatype(q))
-					visit(q);
-			}
-		}
-
-		private void visitRestr(final ATermAppl term)
-		{
-			_fullyDefined = _fullyDefined && isProperty(term.getArgument(0));
-		}
-
-		@Override
-		public void visit(final ATermAppl term)
-		{
-			if (term.equals(ATermUtils.TOP) || term.equals(ATermUtils.BOTTOM) || term.equals(ATermUtils.TOP_LIT) || term.equals(ATermUtils.BOTTOM_LIT))
-				return;
-
-			super.visit(term);
-		}
-
-		@Override
-		public void visitAll(final ATermAppl term)
-		{
-			visitQR(term);
-		}
-
-		@Override
-		public void visitAnd(final ATermAppl term)
-		{
-			if (_fullyDefined)
-				visitList((ATermList) term.getArgument(0));
-		}
-
-		@Override
-		public void visitCard(final ATermAppl term)
-		{
-			visitQCR(term);
-		}
-
-		@Override
-		public void visitHasValue(final ATermAppl term)
-		{
-			visitQR(term);
-		}
-
-		@Override
-		public void visitLiteral(final ATermAppl term)
-		{
-			return;
-		}
-
-		@Override
-		public void visitMax(final ATermAppl term)
-		{
-			visitQCR(term);
-		}
-
-		@Override
-		public void visitMin(final ATermAppl term)
-		{
-			visitQCR(term);
-		}
-
-		@Override
-		public void visitNot(final ATermAppl term)
-		{
-			visit((ATermAppl) term.getArgument(0));
-		}
-
-		@Override
-		public void visitOneOf(final ATermAppl term)
-		{
-			if (_fullyDefined)
-				visitList((ATermList) term.getArgument(0));
-		}
-
-		@Override
-		public void visitOr(final ATermAppl term)
-		{
-			if (_fullyDefined)
-				visitList((ATermList) term.getArgument(0));
-		}
-
-		@Override
-		public void visitSelf(final ATermAppl term)
-		{
-			visitRestr(term);
-		}
-
-		@Override
-		public void visitSome(final ATermAppl term)
-		{
-			visitQR(term);
-		}
-
-		@Override
-		public void visitTerm(final ATermAppl term)
-		{
-			_fullyDefined = _fullyDefined && _tbox.getClasses().contains(term);
-			if (!_fullyDefined)
-				return;
-		}
-
-		@Override
-		public void visitValue(final ATermAppl term)
-		{
-			final ATermAppl nominal = (ATermAppl) term.getArgument(0);
-			if (ATermUtils.isLiteral(nominal))
-				_fullyDefined = false;
-			else
-				if (!ATermUtils.isLiteral(nominal))
-					_fullyDefined = _fullyDefined && _individuals.contains(nominal);
-		}
-
-		@Override
-		public void visitInverse(final ATermAppl term)
-		{
-			final ATermAppl p = (ATermAppl) term.getArgument(0);
-			if (ATermUtils.isPrimitive(p))
-				_fullyDefined = _fullyDefined && isProperty(p);
-			else
-				visitInverse(p);
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void visitRestrictedDatatype(final ATermAppl dt)
-		{
-			_fullyDefined = _fullyDefined && isDatatype((ATermAppl) dt.getArgument(0));
-		}
-
 	}
 
 	public KnowledgeBaseImpl()
@@ -509,6 +399,12 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		}
 		else
 			_state = EnumSet.noneOf(ReasoningState.class);
+	}
+
+	@Override
+	public KnowledgeBase getKnowledgeBase()
+	{
+		return this;
 	}
 
 	@Override
@@ -1394,200 +1290,6 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	}
 
 	@Override
-	public void addSubProperty(final ATerm sub, final ATermAppl sup)
-	{
-		_changes.add(ChangeType.RBOX_ADD);
-		_rbox.addSubRole(sub, sup);
-
-		_logger.finer(() -> "sub-prop " + sub + " " + sup);
-	}
-
-	@Override
-	public void addEquivalentProperty(final ATermAppl p1, final ATermAppl p2)
-	{
-		_changes.add(ChangeType.RBOX_ADD);
-		_rbox.addEquivalentRole(p1, p2);
-
-		_logger.finer(() -> "same-prop " + p1 + " " + p2);
-	}
-
-	@Override
-	public void addDisjointProperties(final ATermList properties)
-	{
-		if (null == properties)
-			return;
-
-		final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeDisjointProperties(properties)) : DependencySet.INDEPENDENT;
-
-		for (ATermList l1 = properties; !l1.isEmpty(); l1 = l1.getNext())
-		{
-			final ATermAppl p1 = (ATermAppl) l1.getFirst();
-			for (ATermList l2 = l1.getNext(); !l2.isEmpty(); l2 = l2.getNext())
-			{
-				final ATermAppl p2 = (ATermAppl) l2.getFirst();
-				addDisjointProperty(p1, p2, ds);
-			}
-		}
-		_logger.finer(() -> "disjoints " + properties);
-	}
-
-	@Override
-	public void addDisjointProperty(final ATermAppl p1, final ATermAppl p2)
-	{
-		final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeDisjointProperty(p1, p2)) : DependencySet.INDEPENDENT;
-
-		addDisjointProperty(p1, p2, ds);
-	}
-
-	public void addDisjointProperty(final ATermAppl p1, final ATermAppl p2, final DependencySet ds)
-	{
-		_changes.add(ChangeType.RBOX_ADD);
-		_rbox.addDisjointRole(p1, p2, ds);
-
-		_logger.finer(() -> "dis-prop " + p1 + " " + p2);
-	}
-
-	@Override
-	public void addInverseProperty(final ATermAppl p1, final ATermAppl p2)
-	{
-		if (null == p1 || null == p2)
-			return;
-
-		if (OpenlletOptions.IGNORE_INVERSES)
-		{
-			_logger.warning("Ignoring inverseOf(" + p1 + " " + p2 + ") axiom due to the IGNORE_INVERSES option");
-			return;
-		}
-
-		_changes.add(ChangeType.RBOX_ADD);
-
-		final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeInvProp(p1, p2)) : DependencySet.INDEPENDENT;
-
-		_rbox.addInverseRole(p1, p2, ds);
-
-		_logger.finer(() -> "inv-prop " + p1 + " " + p2);
-	}
-
-	@Override
-	public void addTransitiveProperty(final ATermAppl p)
-	{
-		if (null == p)
-			return;
-
-		_changes.add(ChangeType.RBOX_ADD);
-
-		final Role r = _rbox.getDefinedRole(p);
-
-		final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeTransitive(p)) : DependencySet.INDEPENDENT;
-
-		// r.setTransitive(true);
-		r.addSubRoleChain(ATermUtils.makeList(new ATerm[] { p, p }), ds);
-		_logger.finer(() -> "trans-prop " + p);
-	}
-
-	@Override
-	public void addSymmetricProperty(final ATermAppl p)
-	{
-		if (OpenlletOptions.IGNORE_INVERSES)
-		{
-			_logger.warning("Ignoring SymmetricProperty(" + p + ") axiom due to the IGNORE_INVERSES option");
-			return;
-		}
-
-		_changes.add(ChangeType.RBOX_ADD);
-
-		final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeSymmetric(p)) : DependencySet.INDEPENDENT;
-
-		_rbox.addInverseRole(p, p, ds);
-		_logger.finer(() -> "sym-prop " + p);
-	}
-
-	/**
-	 * @param p
-	 * @deprecated Use {@link #addAsymmetricProperty(ATermAppl)}
-	 */
-	@Deprecated
-	public void addAntisymmetricProperty(final ATermAppl p)
-	{
-		addAsymmetricProperty(p);
-	}
-
-	@Override
-	public void addAsymmetricProperty(final ATermAppl p)
-	{
-		if (null == p)
-			return;
-
-		_changes.add(ChangeType.RBOX_ADD);
-		final Role r = _rbox.getDefinedRole(p);
-
-		final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeAsymmetric(p)) : DependencySet.INDEPENDENT;
-
-		r.setAsymmetric(true, ds);
-		_logger.finer(() -> "anti-sym-prop " + p);
-	}
-
-	@Override
-	public void addReflexiveProperty(final ATermAppl p)
-	{
-		if (null == p)
-			return;
-
-		_changes.add(ChangeType.RBOX_ADD);
-		final Role r = _rbox.getDefinedRole(p);
-
-		final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeReflexive(p)) : DependencySet.INDEPENDENT;
-
-		r.setReflexive(true, ds);
-		_logger.finer(() -> "reflexive-prop " + p);
-	}
-
-	@Override
-	public void addIrreflexiveProperty(final ATermAppl p)
-	{
-		_changes.add(ChangeType.RBOX_ADD);
-		final Role r = _rbox.getDefinedRole(p);
-
-		final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeIrreflexive(p)) : DependencySet.INDEPENDENT;
-
-		r.setIrreflexive(true, ds);
-		_logger.finer(() -> "irreflexive-prop " + p);
-	}
-
-	@Override
-	public void addFunctionalProperty(final ATermAppl p)
-	{
-		_changes.add(ChangeType.RBOX_ADD);
-		final Role r = _rbox.getDefinedRole(p);
-
-		final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeFunctional(p)) : DependencySet.INDEPENDENT;
-
-		r.setFunctional(true, ds);
-		_logger.finer(() -> "func-prop " + p);
-	}
-
-	@Override
-	public void addInverseFunctionalProperty(final ATerm p)
-	{
-		if (null == p)
-			return;
-
-		if (OpenlletOptions.IGNORE_INVERSES)
-		{
-			_logger.warning("Ignoring InverseFunctionalProperty(" + p + ") axiom due to the IGNORE_INVERSES option");
-			return;
-		}
-
-		_changes.add(ChangeType.RBOX_ADD);
-		final Role role = _rbox.getDefinedRole(p);
-
-		final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeInverseFunctional(p)) : DependencySet.INDEPENDENT;
-
-		role.setInverseFunctional(true, ds);
-		_logger.finer(() -> "inv-func-prop " + p);
-	}
-
-	@Override
 	public void addDomain(final ATerm p, final ATermAppl c)
 	{
 		if (null == p || null == c)
@@ -1681,12 +1383,12 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		final Role role = getRole(p);
 		if (role == null)
 		{
-			handleUndefinedEntity(p + _isNotAnProperty);
+			Base.handleUndefinedEntity(p + _isNotAnProperty);
 			return false;
 		}
 		if (!isClass(c))
 		{
-			handleUndefinedEntity(c + _isNotAValidClassExpression);
+			Base.handleUndefinedEntity(c + _isNotAValidClassExpression);
 			return false;
 		}
 
@@ -1738,13 +1440,13 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		if (obj == null)
 		{
-			handleUndefinedEntity(ind2 + _isNotAnIndividual);
+			Base.handleUndefinedEntity(ind2 + _isNotAnIndividual);
 			return false;
 		}
 
 		if (role == null)
 		{
-			handleUndefinedEntity(p + _isNotAnProperty);
+			Base.handleUndefinedEntity(p + _isNotAnProperty);
 			return false;
 		}
 
@@ -1818,12 +1520,12 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		final Role role = getRole(p);
 		if (role == null)
 		{
-			handleUndefinedEntity(p + _isNotAnProperty);
+			Base.handleUndefinedEntity(p + _isNotAnProperty);
 			return false;
 		}
 		if (!isClass(c) && !isDatatype(c))
 		{
-			handleUndefinedEntity(c + _isNotAValidClassExpressionOrDataRange);
+			Base.handleUndefinedEntity(c + _isNotAValidClassExpressionOrDataRange);
 			return false;
 		}
 
@@ -2337,173 +2039,6 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	}
 
 	/**
-	 * @return the set of all properties.
-	 */
-	@Override
-	public Set<ATermAppl> getProperties()
-	{
-		final Set<ATermAppl> set = new HashSet<>();
-		for (final Role role : getRBox().getRoles().values())
-		{
-			final ATermAppl p = role.getName();
-			if (ATermUtils.isPrimitive(p) && (role.isObjectRole() || role.isDatatypeRole() || role.isAnnotationRole()))
-				set.add(p);
-		}
-		return set;
-	}
-
-	/**
-	 * @return the set of all object properties.
-	 */
-	@Override
-	public Set<ATermAppl> getObjectProperties()
-	{
-		final Set<ATermAppl> set = new HashSet<>();
-		for (final Role role : getRBox().getRoles().values())
-		{
-			final ATermAppl p = role.getName();
-			if (ATermUtils.isPrimitive(p) && role.isObjectRole())
-				set.add(p);
-		}
-		return set;
-	}
-
-	@Override
-	public Set<ATermAppl> getAnnotationProperties()
-	{
-		final Set<ATermAppl> set = new HashSet<>();
-		for (final Role role : _rbox.getRoles().values())
-		{
-			final ATermAppl p = role.getName();
-			if (ATermUtils.isPrimitive(p) && role.isAnnotationRole())
-				set.add(p);
-		}
-		return set;
-	}
-
-	@Override
-	public Set<ATermAppl> getTransitiveProperties()
-	{
-		final Set<ATermAppl> set = new HashSet<>();
-		for (final Role role : _rbox.getRoles().values())
-		{
-			final ATermAppl p = role.getName();
-			if (ATermUtils.isPrimitive(p) && role.isTransitive())
-				set.add(p);
-		}
-		set.add(ATermUtils.BOTTOM_OBJECT_PROPERTY);
-		return set;
-	}
-
-	@Override
-	public Set<ATermAppl> getSymmetricProperties()
-	{
-		final Set<ATermAppl> set = new HashSet<>();
-		for (final Role role : _rbox.getRoles().values())
-		{
-			final ATermAppl p = role.getName();
-			if (ATermUtils.isPrimitive(p) && role.isSymmetric())
-				set.add(p);
-		}
-		return set;
-	}
-
-	/**
-	 * @return DO NOT USE
-	 * @deprecated Use {@link #getAntisymmetricProperties()}
-	 */
-	@Deprecated
-	public Set<ATermAppl> getAntisymmetricProperties()
-	{
-		return getAsymmetricProperties();
-	}
-
-	@Override
-	public Set<ATermAppl> getAsymmetricProperties()
-	{
-		final Set<ATermAppl> set = new HashSet<>();
-		for (final Role role : _rbox.getRoles().values())
-		{
-			final ATermAppl p = role.getName();
-			if (ATermUtils.isPrimitive(p) && role.isAsymmetric())
-				set.add(p);
-		}
-		return set;
-	}
-
-	@Override
-	public Set<ATermAppl> getReflexiveProperties()
-	{
-		final Set<ATermAppl> set = new HashSet<>();
-		for (final Role role : _rbox.getRoles().values())
-		{
-			final ATermAppl p = role.getName();
-			if (ATermUtils.isPrimitive(p) && role.isReflexive())
-				set.add(p);
-		}
-		return set;
-	}
-
-	@Override
-	public Set<ATermAppl> getIrreflexiveProperties()
-	{
-		final Set<ATermAppl> set = new HashSet<>();
-		for (final Role role : _rbox.getRoles().values())
-		{
-			final ATermAppl p = role.getName();
-			if (ATermUtils.isPrimitive(p) && role.isIrreflexive())
-				set.add(p);
-		}
-		return set;
-	}
-
-	@Override
-	public Set<ATermAppl> getFunctionalProperties()
-	{
-		final Set<ATermAppl> set = new HashSet<>();
-		for (final Role role : _rbox.getRoles().values())
-		{
-			final ATermAppl p = role.getName();
-			if (ATermUtils.isPrimitive(p) && role.isFunctional())
-				set.add(p);
-		}
-		set.add(ATermUtils.BOTTOM_DATA_PROPERTY);
-		set.add(ATermUtils.BOTTOM_OBJECT_PROPERTY);
-		return set;
-	}
-
-	@Override
-	public Set<ATermAppl> getInverseFunctionalProperties()
-	{
-		final Set<ATermAppl> set = _rbox.getRoles().values().stream()//
-				.filter(role ->
-				{
-					final ATermAppl p = role.getName();
-					return ATermUtils.isPrimitive(p) && role.isInverseFunctional();
-				})//
-				.map(Role::getName)//
-				.collect(Collectors.toSet());
-		set.add(ATermUtils.BOTTOM_OBJECT_PROPERTY);
-		return set;
-	}
-
-	/**
-	 * @return the set of all object properties.
-	 */
-	@Override
-	public Set<ATermAppl> getDataProperties()
-	{
-		final Set<ATermAppl> set = new HashSet<>();
-		for (final Role role : _rbox.getRoles().values())
-		{
-			final ATermAppl p = role.getName();
-			if (ATermUtils.isPrimitive(p) && role.isDatatypeRole())
-				set.add(p);
-		}
-		return set;
-	}
-
-	/**
 	 * @return the set of all _individuals. Returned set is unmodifiable!
 	 */
 	@Override
@@ -2524,482 +2059,6 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		return _individuals.stream();
 	}
 
-	/**
-	 * @return the set of key values of the annotations map
-	 */
-	@Override
-	public Set<ATermAppl> getAnnotationSubjects()
-	{
-		return _annotations.keySet();
-	}
-
-	@Override
-	public PropertyType getPropertyType(final ATerm r)
-	{
-		final Role role = getProperty(r);
-		return role == null ? PropertyType.UNTYPED : role.getType();
-	}
-
-	@Override
-	public boolean isClass(final ATerm c)
-	{
-
-		if (_tbox.getClasses().contains(c) || c.equals(ATermUtils.TOP))
-			return true;
-		else
-			if (ATermUtils.isComplexClass(c))
-				return _fullyDefinedVisitor.isFullyDefined((ATermAppl) c);
-			else
-				return false;
-	}
-
-	@Override
-	public boolean isDatatypeProperty(final ATerm p)
-	{
-		return null != p && getPropertyType(p) == PropertyType.DATATYPE;
-	}
-
-	@Override
-	public boolean isObjectProperty(final ATerm p)
-	{
-		return null != p && getPropertyType(p) == PropertyType.OBJECT;
-	}
-
-	public boolean isABoxProperty(final ATerm p)
-	{
-		if (null == p)
-			return false;
-
-		final PropertyType type = getPropertyType(p);
-		return type == PropertyType.OBJECT || type == PropertyType.DATATYPE;
-	}
-
-	@Override
-	public boolean isAnnotationProperty(final ATerm p)
-	{
-		return p != null && getPropertyType(p) == PropertyType.ANNOTATION;
-	}
-
-	@Override
-	public boolean isTransitiveProperty(final ATermAppl r)
-	{
-		if (null == r)
-			return false;
-
-		final Role role = getRole(r);
-
-		if (role == null)
-		{
-			handleUndefinedEntity(r + _isNotAnKnowProperty);
-			return false;
-		}
-
-		if (role.isTransitive())
-		{
-			if (doExplanation())
-				_abox.setExplanation(role.getExplainTransitive());
-			return true;
-		}
-		else
-			if (!role.isObjectRole() || role.isFunctional() || role.isInverseFunctional())
-				return false;
-
-		ensureConsistency();
-
-		final ATermAppl c = ATermUtils.makeTermAppl("_C_");
-		final ATermAppl notC = ATermUtils.makeNot(c);
-		final ATermAppl test = ATermUtils.makeAnd(ATermUtils.makeSomeValues(r, ATermUtils.makeSomeValues(r, c)), ATermUtils.makeAllValues(r, notC));
-
-		return !_abox.isSatisfiable(test);
-	}
-
-	@Override
-	public boolean isSymmetricProperty(final ATermAppl p)
-	{
-		return p != null && isInverse(p, p);
-	}
-
-	@Override
-	public boolean isFunctionalProperty(final ATermAppl p)
-	{
-		if (null == p)
-			return false;
-
-		final Role role = getRole(p);
-
-		if (role == null)
-		{
-			handleUndefinedEntity(p + _isNotAnKnowProperty);
-			return false;
-		}
-
-		if (role.isAnnotationRole())
-			return false;
-
-		if (role.isBottom())
-		{
-			if (doExplanation())
-				_abox.setExplanation(DependencySet.INDEPENDENT);
-			return true;
-		}
-		else
-			if (role.isFunctional())
-			{
-				if (doExplanation())
-					_abox.setExplanation(role.getExplainFunctional());
-				return true;
-			}
-			else
-				if (!role.isSimple())
-					return false;
-
-		final ATermAppl min2P = role.isDatatypeRole() ? ATermUtils.makeMin(p, 2, ATermUtils.TOP_LIT) : ATermUtils.makeMin(p, 2, ATermUtils.TOP);
-		return !isSatisfiable(min2P);
-	}
-
-	@Override
-	public boolean isInverseFunctionalProperty(final ATermAppl p)
-	{
-		if (null == p)
-			return false;
-
-		final Role role = getRole(p);
-
-		if (role == null)
-		{
-			handleUndefinedEntity(p + _isNotAnKnowProperty);
-			return false;
-		}
-
-		if (!role.isObjectRole())
-			return false;
-		else
-			if (role.isInverseFunctional() || role.isBottom())
-			{
-				if (doExplanation())
-					_abox.setExplanation(role.getExplainInverseFunctional());
-				return true;
-			}
-
-		final ATermAppl invP = role.getInverse().getName();
-		final ATermAppl max1invP = ATermUtils.makeMax(invP, 1, ATermUtils.TOP);
-		return isSubClassOf(ATermUtils.TOP, max1invP);
-	}
-
-	@Override
-	public boolean isReflexiveProperty(final ATermAppl p)
-	{
-		if (null == p)
-			return false;
-
-		final Role role = getRole(p);
-
-		if (role == null)
-		{
-			handleUndefinedEntity(p + _isNotAnKnowProperty);
-			return false;
-		}
-
-		if (!role.isObjectRole() || role.isIrreflexive())
-			return false;
-		else
-			if (role.isReflexive())
-			{
-				if (doExplanation())
-					_abox.setExplanation(role.getExplainReflexive());
-				return true;
-			}
-
-		ensureConsistency();
-
-		final ATermAppl c = ATermUtils.makeTermAppl("_C_");
-		final ATermAppl notC = ATermUtils.makeNot(c);
-		final ATermAppl test = ATermUtils.makeAnd(c, ATermUtils.makeAllValues(p, notC));
-
-		return !_abox.isSatisfiable(test);
-	}
-
-	@Override
-	public boolean isIrreflexiveProperty(final ATermAppl p)
-	{
-		if (null == p)
-			return false;
-
-		final Role role = getRole(p);
-
-		if (role == null)
-		{
-			handleUndefinedEntity(p + _isNotAnKnowProperty);
-			return false;
-		}
-
-		if (!role.isObjectRole() || role.isReflexive())
-			return false;
-		else
-			if (role.isIrreflexive())
-			{
-				if (doExplanation())
-					_abox.setExplanation(role.getExplainIrreflexive());
-				return true;
-			}
-			else
-				if (role.isAsymmetric())
-				{
-					if (doExplanation())
-						_abox.setExplanation(role.getExplainAsymmetric());
-					return true;
-				}
-
-		ensureConsistency();
-
-		final ATermAppl test = ATermUtils.makeSelf(p);
-
-		return !_abox.isSatisfiable(test);
-	}
-
-	/**
-	 * @param p
-	 * @return DO NOT USE
-	 * @deprecated Use {@link #isAsymmetricProperty(ATermAppl)}
-	 */
-	@Deprecated
-	public boolean isAntisymmetricProperty(final ATermAppl p)
-	{
-		return isAsymmetricProperty(p);
-	}
-
-	@Override
-	public boolean isAsymmetricProperty(final ATermAppl p)
-	{
-		if (null == p)
-			return false;
-
-		final Role role = getRole(p);
-
-		if (role == null)
-		{
-			handleUndefinedEntity(p + _isNotAnKnowProperty);
-			return false;
-		}
-
-		if (!role.isObjectRole())
-			return false;
-		else
-			if (role.isAsymmetric())
-			{
-				if (doExplanation())
-					_abox.setExplanation(role.getExplainAsymmetric());
-				return true;
-			}
-
-		ensureConsistency();
-
-		final ATermAppl o = ATermUtils.makeAnonNominal(Integer.MAX_VALUE);
-		final ATermAppl nom = ATermUtils.makeValue(o);
-		final ATermAppl test = ATermUtils.makeAnd(nom, ATermUtils.makeSomeValues(p, ATermUtils.makeAnd(ATermUtils.makeNot(nom), ATermUtils.makeSomeValues(p, nom))));
-
-		return !_abox.isSatisfiable(test);
-	}
-
-	@Override
-	public boolean isSubPropertyOf(final ATermAppl sub, final ATermAppl sup)
-	{
-		if (null == sub || null == sup)
-			return false;
-
-		final Role roleSub = _rbox.getRole(sub);
-		final Role roleSup = _rbox.getRole(sup);
-
-		if (roleSub == null)
-		{
-			handleUndefinedEntity(sub + _isNotAnKnowProperty);
-			return false;
-		}
-
-		if (roleSup == null)
-		{
-			handleUndefinedEntity(sup + _isNotAnKnowProperty);
-			return false;
-		}
-
-		if (roleSub.isSubRoleOf(roleSup))
-		{
-			if (doExplanation())
-				_abox.setExplanation(roleSub.getExplainSuper(sup));
-			return true;
-		}
-
-		if (roleSub.getType() != roleSup.getType())
-			return false;
-
-		ensureConsistency();
-
-		ATermAppl test;
-		if (roleSub.isObjectRole())
-		{
-			final ATermAppl c = ATermUtils.makeTermAppl("_C_");
-			final ATermAppl notC = ATermUtils.makeNot(c);
-			test = ATermUtils.makeAnd(ATermUtils.makeSomeValues(sub, c), ATermUtils.makeAllValues(sup, notC));
-		}
-		else
-			if (roleSub.isDatatypeRole())
-			{
-				final ATermAppl anon = ATermUtils.makeLiteral(ATermUtils.makeAnonNominal(Integer.MAX_VALUE));
-				test = ATermUtils.makeAnd(ATermUtils.makeHasValue(sub, anon), ATermUtils.makeAllValues(sup, ATermUtils.makeNot(ATermUtils.makeValue(anon))));
-			}
-			else
-				if (roleSub.isAnnotationRole())
-					return false; //temporary statement until we incorporate annotation properties to the taxonomy ([t:412])
-				else
-					throw new IllegalArgumentException();
-
-		return !_abox.isSatisfiable(test);
-	}
-
-	@Override
-	public boolean isEquivalentProperty(final ATermAppl p1, final ATermAppl p2)
-	{
-		if (null == p1 || null == p2)
-			return false;
-
-		final Role role1 = _rbox.getRole(p1);
-		final Role role2 = _rbox.getRole(p2);
-
-		if (role1 == null)
-		{
-			handleUndefinedEntity(p1 + _isNotAnKnowProperty);
-			return false;
-		}
-
-		if (role2 == null)
-		{
-			handleUndefinedEntity(p2 + _isNotAnKnowProperty);
-			return false;
-		}
-
-		if (role1.isSubRoleOf(role2) && role2.isSubRoleOf(role1))
-		{
-			if (doExplanation())
-				_abox.setExplanation(role1.getExplainSuper(p2).union(role1.getExplainSub(p2), doExplanation()));
-			return true;
-		}
-
-		if (role1.isAnnotationRole() || role2.isAnnotationRole())
-			return false;
-
-		if (role1.getType() != role2.getType())
-			return false;
-
-		ensureConsistency();
-
-		ATermAppl test;
-		if (role1.isObjectRole())
-		{
-			final ATermAppl c = !role1.getRanges().isEmpty() ? role1.getRanges().iterator().next() : !role2.getRanges().isEmpty() ? role2.getRanges().iterator().next() : ATermUtils.makeTermAppl("_C_");
-			final ATermAppl notC = ATermUtils.makeNot(c);
-			test = ATermUtils.makeOr(ATermUtils.makeAnd(ATermUtils.makeSomeValues(p1, c), ATermUtils.makeAllValues(p2, notC)), ATermUtils.makeAnd(ATermUtils.makeSomeValues(p2, c), ATermUtils.makeAllValues(p1, notC)));
-		}
-		else
-			if (role1.isDatatypeRole())
-			{
-				final ATermAppl anon = ATermUtils.makeLiteral(ATermUtils.makeAnonNominal(Integer.MAX_VALUE));
-				test = ATermUtils.makeOr(ATermUtils.makeAnd(ATermUtils.makeHasValue(p1, anon), ATermUtils.makeAllValues(p2, ATermUtils.makeNot(ATermUtils.makeValue(anon)))), ATermUtils.makeAnd(ATermUtils.makeHasValue(p2, anon), ATermUtils.makeAllValues(p1, ATermUtils.makeNot(ATermUtils.makeValue(anon)))));
-			}
-			else
-				throw new IllegalArgumentException();
-
-		return !_abox.isSatisfiable(test);
-	}
-
-	@Override
-	public boolean isInverse(final ATermAppl r1, final ATermAppl r2)
-	{
-		if (null == r1 || null == r2)
-			return false;
-
-		final Role role1 = getRole(r1);
-		final Role role2 = getRole(r2);
-
-		if (role1 == null)
-		{
-			handleUndefinedEntity(r1 + _isNotAnKnowProperty);
-			return false;
-		}
-
-		if (role2 == null)
-		{
-			handleUndefinedEntity(r2 + _isNotAnKnowProperty);
-			return false;
-		}
-
-		// the following _condition is wrong due to nominals, see OWL test
-		// cases SymmetricProperty-002
-		// if( !role1.hasNamedInverse() )
-		// return false;
-
-		if (!role1.isObjectRole() || !role2.isObjectRole())
-			return false;
-
-		if (role1.getInverse().equals(role2))
-			return true;
-
-		ensureConsistency();
-
-		final ATermAppl c = ATermUtils.makeTermAppl("_C_");
-		final ATermAppl notC = ATermUtils.makeNot(c);
-
-		final ATermAppl test = ATermUtils.makeAnd(c, ATermUtils.makeOr(ATermUtils.makeSomeValues(r1, ATermUtils.makeAllValues(r2, notC)), ATermUtils.makeSomeValues(r2, ATermUtils.makeAllValues(r1, notC))));
-
-		return !_abox.isSatisfiable(test);
-	}
-
-	@Override
-	public boolean hasDomain(final ATermAppl p, final ATermAppl c)
-	{
-		if (null == p || null == c)
-			return false;
-
-		final Role r = _rbox.getRole(p);
-		if (r == null)
-		{
-			handleUndefinedEntity(p + _isNotAnProperty);
-			return false;
-		}
-
-		if (!isClass(c))
-		{
-			handleUndefinedEntity(c + _isNotAValidClassExpression);
-			return false;
-		}
-
-		final ATermAppl someP = ATermUtils.makeSomeValues(p, ATermUtils.getTop(r));
-		return isSubClassOf(someP, c);
-	}
-
-	@Override
-	public boolean hasRange(final ATermAppl p, final ATermAppl c)
-	{
-		if (null == p || null == c)
-			return false;
-
-		if (!isClass(c) && !isDatatype(c))
-		{
-			handleUndefinedEntity(c + _isNotAValidClassExpression);
-			return false;
-		}
-		final ATermAppl allValues = ATermUtils.makeAllValues(p, c);
-		return isSubClassOf(ATermUtils.TOP, allValues);
-	}
-
-	@Override
-	public boolean isDatatype(final ATermAppl c)
-	{
-		if (null == c)
-			return false;
-
-		return _datatypeVisitor.isDatatype(c);
-	}
-
 	@Override
 	public boolean isSatisfiable(final ATermAppl c)
 	{
@@ -3010,7 +2069,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		if (!isClass(c))
 		{
-			handleUndefinedEntity(c + _isNotAnKnowClass);
+			Base.handleUndefinedEntity(c + _isNotAnKnowClass);
 			return false;
 		}
 
@@ -3038,7 +2097,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		if (!isClass(d))
 		{
-			handleUndefinedEntity(d + _isNotAnClass);
+			Base.handleUndefinedEntity(d + _isNotAnClass);
 			return false;
 		}
 
@@ -3065,245 +2124,6 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		return hasInstance;
 	}
 
-	/**
-	 * @param c1
-	 * @param c2
-	 * @return true if class c1 is subclass of class c2.
-	 */
-	@Override
-	public boolean isSubClassOf(final ATermAppl c1, final ATermAppl c2)
-	{
-		if (null == c1 || null == c2)
-			return false;
-
-		ensureConsistency();
-
-		if (!isClass(c1))
-		{
-			handleUndefinedEntity(c1 + _isNotAnKnowClass);
-			return false;
-		}
-
-		if (!isClass(c2))
-		{
-			handleUndefinedEntity(c2 + _isNotAnKnowClass);
-			return false;
-		}
-
-		if (c1.equals(c2))
-			return true;
-
-		// normalize concepts
-		final ATermAppl normalC1 = ATermUtils.normalize(c1);
-		final ATermAppl normalC2 = ATermUtils.normalize(c2);
-
-		if (isClassified() && !doExplanation())
-		{
-			final Bool isSubNode = getTaxonomyBuilder().getTaxonomy().isSubNodeOf(normalC1, normalC2);
-			if (isSubNode.isKnown())
-				return isSubNode.isTrue();
-		}
-
-		return _abox.isSubClassOf(normalC1, normalC2);
-	}
-
-	/**
-	 * @param c1
-	 * @param c2
-	 * @return true if class c1 is equivalent to class c2.
-	 */
-	@Override
-	public boolean isEquivalentClass(final ATermAppl c1, final ATermAppl c2)
-	{
-		if (null == c1 || null == c2)
-			return false;
-
-		ensureConsistency();
-
-		if (!isClass(c1))
-		{
-			handleUndefinedEntity(c1 + _isNotAnKnowClass);
-			return false;
-		}
-
-		if (!isClass(c2))
-		{
-			handleUndefinedEntity(c2 + _isNotAnKnowClass);
-			return false;
-		}
-
-		if (c1.equals(c2))
-			return true;
-
-		// normalize concepts
-		final ATermAppl normalC1 = ATermUtils.normalize(c1);
-		final ATermAppl normalC2 = ATermUtils.normalize(c2);
-
-		if (!doExplanation())
-		{
-			Bool isEquivalent = Bool.UNKNOWN;
-			if (isClassified())
-				isEquivalent = getTaxonomyBuilder().getTaxonomy().isEquivalent(normalC1, normalC2);
-
-			if (isEquivalent.isUnknown())
-				isEquivalent = _abox.isKnownSubClassOf(normalC1, normalC2).and(_abox.isKnownSubClassOf(normalC2, normalC1));
-
-			if (isEquivalent.isKnown())
-				return isEquivalent.isTrue();
-		}
-
-		final ATermAppl notC2 = ATermUtils.negate(normalC2);
-		final ATermAppl notC1 = ATermUtils.negate(normalC1);
-		final ATermAppl c1NotC2 = ATermUtils.makeAnd(normalC1, notC2);
-		final ATermAppl c2NotC1 = ATermUtils.makeAnd(c2, notC1);
-		final ATermAppl test = ATermUtils.makeOr(c1NotC2, c2NotC1);
-
-		return !isSatisfiable(test);
-	}
-
-	@Override
-	public boolean isDisjoint(final ATermAppl c1, final ATermAppl c2)
-	{
-		if (null == c1 || null == c2)
-			return false;
-
-		if (isClass(c1) && isClass(c2))
-			return isDisjointClass(c1, c2);
-		else
-			if (isProperty(c1) && isProperty(c2))
-				return isDisjointProperty(c1, c2);
-			else
-				return false;
-	}
-
-	@Override
-	public boolean isDisjointClass(final ATermAppl c1, final ATermAppl c2)
-	{
-		if (null == c1 || null == c2)
-			return false;
-
-		final ATermAppl notC2 = ATermUtils.makeNot(c2);
-
-		return isSubClassOf(c1, notC2);
-	}
-
-	@Override
-	public boolean isDisjointProperty(final ATermAppl r1, final ATermAppl r2)
-	{
-		if (null == r1 || null == r2)
-			return false;
-
-		final Role role1 = getRole(r1);
-		final Role role2 = getRole(r2);
-
-		if (role1 == null)
-		{
-			handleUndefinedEntity(r1 + _isNotAnKnowProperty);
-			return false;
-		}
-
-		if (role2 == null)
-		{
-			handleUndefinedEntity(r2 + _isNotAnKnowProperty);
-			return false;
-		}
-
-		if (role1.getType() != role2.getType())
-			return false;
-		else
-			if (role1.isBottom() || role2.isBottom())
-			{
-				if (doExplanation())
-					_abox.setExplanation(DependencySet.INDEPENDENT);
-				return true;
-			}
-			else
-				if (role1.isTop() || role2.isTop())
-					return false;
-				else
-					if (role1.getSubRoles().contains(role2) || role2.getSubRoles().contains(role1))
-						return false;
-
-		if (role1.getDisjointRoles().contains(role2) && !doExplanation())
-			return true;
-
-		ensureConsistency();
-
-		ATermAppl anon = ATermUtils.makeAnonNominal(Integer.MAX_VALUE);
-		if (role1.isDatatypeRole())
-			anon = ATermUtils.makeLiteral(anon);
-		final ATermAppl nominal = ATermUtils.makeValue(anon);
-		final ATermAppl test = and(some(r1, nominal), some(r2, nominal));
-
-		return !_abox.isSatisfiable(test);
-	}
-
-	@Override
-	public boolean isComplement(final ATermAppl c1, final ATermAppl c2)
-	{
-		if (null == c1 || null == c2)
-			return false;
-
-		final ATermAppl notC2 = ATermUtils.makeNot(c2);
-
-		return isEquivalentClass(c1, notC2);
-	}
-
-	@Override
-	public Bool isKnownType(final ATermAppl x, final ATermAppl c)
-	{
-		if (null == x || null == c)
-			return Bool.FALSE;
-
-		ensureConsistency();
-
-		if (!isIndividual(x))
-		{
-			handleUndefinedEntity(x + _isNotAnIndividual);
-			return Bool.FALSE;
-		}
-		if (!isClass(c))
-		{
-			handleUndefinedEntity(c + _isNotAValidClassExpression);
-			return Bool.FALSE;
-		}
-
-		return _abox.isKnownType(x, ATermUtils.normalize(c));
-	}
-
-	@Override
-	public boolean isType(final ATermAppl x, final ATermAppl c)
-	{
-		if (null == x || null == c)
-			return false;
-
-		ensureConsistency();
-
-		if (!isIndividual(x))
-		{
-			handleUndefinedEntity(x + _isNotAnIndividual);
-			return false;
-		}
-		if (!isClass(c))
-		{
-			handleUndefinedEntity(c + _isNotAValidClassExpression);
-			return false;
-		}
-
-		if (isRealized() && !doExplanation())
-		{
-			final Taxonomy<ATermAppl> taxonomy = getTaxonomyBuilder().getTaxonomy();
-
-			if (taxonomy == null)
-				throw new NullPointerException("Taxonomy is null");
-
-			if (taxonomy.contains(c))
-				return TaxonomyUtils.isType(taxonomy, x, c);
-		}
-
-		return _abox.isType(x, c);
-	}
-
 	@Override
 	public boolean isSameAs(final ATermAppl t1, final ATermAppl t2)
 	{
@@ -3314,12 +2134,12 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		if (!isIndividual(t1))
 		{
-			handleUndefinedEntity(t1 + _isNotAnIndividual);
+			Base.handleUndefinedEntity(t1 + _isNotAnIndividual);
 			return false;
 		}
 		if (!isIndividual(t2))
 		{
-			handleUndefinedEntity(t2 + _isNotAnIndividual);
+			Base.handleUndefinedEntity(t2 + _isNotAnIndividual);
 			return false;
 		}
 
@@ -3358,13 +2178,13 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		if (ind1 == null)
 		{
-			handleUndefinedEntity(t1 + _isNotAnIndividual);
+			Base.handleUndefinedEntity(t1 + _isNotAnIndividual);
 			return false;
 		}
 
 		if (ind2 == null)
 		{
-			handleUndefinedEntity(t2 + _isNotAnIndividual);
+			Base.handleUndefinedEntity(t2 + _isNotAnIndividual);
 			return false;
 		}
 
@@ -3388,7 +2208,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		if (ind == null)
 		{
-			handleUndefinedEntity(name + _isNotAnIndividual);
+			Base.handleUndefinedEntity(name + _isNotAnIndividual);
 			return Collections.emptySet();
 		}
 
@@ -3428,13 +2248,13 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		if (!isIndividual(s))
 		{
-			handleUndefinedEntity(s + _isNotAnIndividual);
+			Base.handleUndefinedEntity(s + _isNotAnIndividual);
 			return false;
 		}
 
 		if (!isProperty(p))
 		{
-			handleUndefinedEntity(p + _isNotAnKnowProperty);
+			Base.handleUndefinedEntity(p + _isNotAnKnowProperty);
 			return false;
 		}
 
@@ -3462,53 +2282,6 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		return _abox.hasObviousPropertyValue(s, p, o);
 	}
 
-	/**
-	 * Returns the (named) superclasses of class c. Depending on the second parameter the resulting list will include either all or only the direct
-	 * superclasses. A class d is a direct superclass of c iff
-	 * <ol>
-	 * <li>d is superclass of c</li>
-	 * <li>there is no other class x such that x is superclass of c and d is superclass of x</li>
-	 * </ol>
-	 * The class c itself is not included in the list but all the other classes that are sameAs c are put into the list. Also note that the returned list will
-	 * always have at least one element. The list will either include one other concept from the hierarchy or the TOP concept if no other class subsumes c. By
-	 * definition TOP concept is superclass of every concept.
-	 * <p>
-	 * *** This function will first classify the whole ontology ***
-	 * </p>
-	 *
-	 * @param cParam class whose superclasses are returned
-	 * @param direct
-	 * @return A set of sets, where each set in the collection represents an equivalence class. The elements of the inner class are ATermAppl objects.
-	 */
-	@Override
-	public Set<Set<ATermAppl>> getSuperClasses(final ATermAppl cParam, final boolean direct)
-	{
-		if (null == cParam)
-			return Collections.emptySet();
-
-		ATermAppl c = cParam;
-		if (!isClass(c))
-		{
-			handleUndefinedEntity(c + _isNotAnClass);
-			return Collections.emptySet();
-		}
-
-		c = ATermUtils.normalize(c);
-
-		classify();
-
-		final Taxonomy<ATermAppl> taxonomy = getTaxonomyBuilder().getTaxonomy();
-
-		if (!taxonomy.contains(c))
-			getTaxonomyBuilder().classify(c);
-
-		return taxonomy//
-				.supers(c, direct)//
-				.map(ATermUtils::primitiveOrBottom)//
-				.filter(supEqSet -> !supEqSet.isEmpty())//
-				.collect(Collectors.toSet());
-	}
-
 	public Set<Set<ATermAppl>> getDisjoints(final ATermAppl c)
 	{
 		if (null == c)
@@ -3520,7 +2293,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 			if (isProperty(c))
 				return getDisjointProperties(c);
 			else
-				handleUndefinedEntity(c + _isNotAnPropertyNorAClass);
+				Base.handleUndefinedEntity(c + _isNotAnPropertyNorAClass);
 		return Collections.emptySet();
 	}
 
@@ -3532,7 +2305,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		if (!isClass(c))
 		{
-			handleUndefinedEntity(c + _isNotAnClass);
+			Base.handleUndefinedEntity(c + _isNotAnClass);
 			return Collections.emptySet();
 		}
 
@@ -3568,7 +2341,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		if (!isProperty(p))
 		{
-			handleUndefinedEntity(p + _isNotAnProperty);
+			Base.handleUndefinedEntity(p + _isNotAnProperty);
 			return Collections.emptySet();
 		}
 
@@ -3627,7 +2400,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		if (!isClass(c))
 		{
-			handleUndefinedEntity(c + _isNotAnClass);
+			Base.handleUndefinedEntity(c + _isNotAnClass);
 			return Collections.emptySet();
 		}
 
@@ -3655,7 +2428,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		if (!isIndividual(ind))
 		{
-			handleUndefinedEntity(ind + _isNotAnIndividual);
+			Base.handleUndefinedEntity(ind + _isNotAnIndividual);
 			return Collections.emptySet();
 		}
 
@@ -3684,104 +2457,6 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 				types.add(eqSet);
 		}
 		return types;
-	}
-
-	/**
-	 * Returns all the instances of concept c. If TOP concept is used every individual in the knowledge base will be returned
-	 *
-	 * @param c class whose instances are returned
-	 * @return A set of ATerm objects
-	 */
-	@Override
-	public Set<ATermAppl> getInstances(final ATermAppl c)
-	{
-		if (null == c)
-			return Collections.emptySet();
-
-		if (!isClass(c))
-		{
-			handleUndefinedEntity(c + _isNotAnClass);
-			return Collections.emptySet();
-		}
-
-		if (_instances.containsKey(c))
-			return _instances.get(c);
-		else
-			if (isRealized())
-			{
-				final Taxonomy<ATermAppl> taxonomy = getTaxonomyBuilder().getTaxonomy();
-
-				if (taxonomy == null)
-					throw new OpenError("Taxonomy is null");
-
-				if (taxonomy.contains(c) && ATermUtils.isPrimitive(c))
-					return TaxonomyUtils.getAllInstances(taxonomy, c);
-			}
-
-		return new HashSet<>(retrieve(c, _individuals));
-	}
-
-	/**
-	 * Returns the instances of class c. Depending on the second parameter the resulting list will include all or only the direct _instances. An _individual x
-	 * is a direct instance of c iff x is of type c and there is no subclass d of c such that x is of type d.
-	 * <p>
-	 * *** This function will first realize the whole ontology ***
-	 * </p>
-	 *
-	 * @param c class whose _instances are returned
-	 * @param direct if true return only the direct _instances, otherwise return all the _instances
-	 * @return A set of ATerm objects
-	 */
-	@Override
-	public Set<ATermAppl> getInstances(final ATermAppl c, final boolean direct)
-	{
-		if (null == c)
-			return Collections.emptySet();
-
-		if (!isClass(c))
-		{
-			handleUndefinedEntity(c + _isNotAnClass);
-			return Collections.emptySet();
-		}
-
-		// All _instances for anonymous concepts
-		if (!direct)
-			return getInstances(c);
-
-		realize();
-
-		final Taxonomy<ATermAppl> taxonomy = getTaxonomyBuilder().getTaxonomy();
-
-		if (taxonomy == null)
-			throw new OpenError("Taxonomy is null");
-
-		// Named concepts
-		if (ATermUtils.isPrimitive(c))
-			return TaxonomyUtils.getDirectInstances(taxonomy, c);
-
-		if (!taxonomy.contains(c))
-			getTaxonomyBuilder().classify(c);
-
-		// Direct _instances for anonymous concepts
-		final Set<ATermAppl> ret = new HashSet<>();
-		final Set<Set<ATermAppl>> sups = getSuperClasses(c, true);
-
-		for (final Set<ATermAppl> s : sups)
-		{
-			final Iterator<ATermAppl> i = s.iterator();
-			final ATermAppl term = i.next();
-			final Set<ATermAppl> cand = TaxonomyUtils.getDirectInstances(taxonomy, term);
-
-			if (ret.isEmpty())
-				ret.addAll(cand);
-			else
-				ret.retainAll(cand);
-
-			if (ret.isEmpty())
-				return ret;
-		}
-
-		return retrieve(c, ret);
 	}
 
 	/**
@@ -3822,7 +2497,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		if (!isClass(c))
 		{
-			handleUndefinedEntity(c + _isNotAnClass);
+			Base.handleUndefinedEntity(c + _isNotAnClass);
 			return Collections.emptySet();
 		}
 
@@ -3864,7 +2539,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		if (!isClass(c))
 		{
-			handleUndefinedEntity(c + _isNotAnClass);
+			Base.handleUndefinedEntity(c + _isNotAnClass);
 			return Collections.emptySet();
 		}
 
@@ -3888,203 +2563,6 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		return subs;
 	}
 
-	@Override
-	public Set<Set<ATermAppl>> getAllSuperProperties(final ATermAppl prop)
-	{
-		if (null == prop)
-			return Collections.emptySet();
-
-		if (!isProperty(prop))
-		{
-			handleUndefinedEntity(prop + _isNotAnProperty);
-			return Collections.emptySet();
-		}
-
-		final Set<Set<ATermAppl>> supers = getSuperProperties(prop);
-		supers.add(getAllEquivalentProperties(prop));
-
-		return supers;
-	}
-
-	/**
-	 * Return the super properties of p. Depending on the second parameter the result will include either all super properties or only the direct super
-	 * properties.
-	 *
-	 * @param prop
-	 * @param direct If true return only the direct super properties, otherwise return all the super properties
-	 * @return A set of sets, where each set in the collection represents a set of equivalent properties. The elements of the inner class are Role objects.
-	 */
-	@Override
-	public Set<Set<ATermAppl>> getSuperProperties(final ATermAppl prop, final boolean direct)
-	{
-		if (null == prop)
-			return Collections.emptySet();
-
-		if (!isProperty(prop))
-		{
-			handleUndefinedEntity(prop + _isNotAnProperty);
-			return Collections.emptySet();
-		}
-
-		final Set<Set<ATermAppl>> supers = new HashSet<>();
-		final Taxonomy<ATermAppl> taxonomy = getRoleTaxonomy(prop);
-		if (taxonomy != null)
-			for (final Set<ATermAppl> s : taxonomy.getSupers(prop, direct))
-			{
-				final Set<ATermAppl> supEqSet = ATermUtils.primitiveOrBottom(s);
-				if (!supEqSet.isEmpty())
-					supers.add(supEqSet);
-			}
-
-		return supers;
-	}
-
-	@Override
-	public Set<Set<ATermAppl>> getAllSubProperties(final ATermAppl prop)
-	{
-		if (null == prop)
-			return Collections.emptySet();
-
-		if (!isProperty(prop))
-		{
-			handleUndefinedEntity(prop + _isNotAnProperty);
-			return Collections.emptySet();
-		}
-
-		final Set<Set<ATermAppl>> subs = getSubProperties(prop);
-		subs.add(getAllEquivalentProperties(prop));
-
-		return subs;
-	}
-
-	/**
-	 * Return the sub properties of p. Depending on the second parameter the result will include either all subproperties or only the direct subproperties.
-	 *
-	 * @param prop
-	 * @param direct If true return only the direct subproperties, otherwise return all the subproperties
-	 * @return A set of sets, where each set in the collection represents a set of equivalent properties. The elements of the inner class are ATermAppl objects.
-	 */
-	@Override
-	public Set<Set<ATermAppl>> getSubProperties(final ATermAppl prop, final boolean direct)
-	{
-		if (null == prop)
-			return Collections.emptySet();
-
-		if (!isProperty(prop))
-		{
-			handleUndefinedEntity(prop + _isNotAnProperty);
-			return Collections.emptySet();
-		}
-
-		final Set<Set<ATermAppl>> subs = new HashSet<>();
-		final Taxonomy<ATermAppl> taxonomy = getRoleTaxonomy(prop);
-		if (taxonomy != null)
-			for (final Set<ATermAppl> s : taxonomy.getSubs(prop, direct))
-			{
-				final Set<ATermAppl> subEqSet = ATermUtils.primitiveOrBottom(s);
-				if (!subEqSet.isEmpty())
-					subs.add(subEqSet);
-			}
-		else
-			_logger.info(() -> "taxonomy is null for " + prop);
-
-		return subs;
-	}
-
-	/**
-	 * Return all the properties that are equivalent to p.
-	 *
-	 * @param prop
-	 * @return A set of ATermAppl objects.
-	 */
-	@Override
-	public Set<ATermAppl> getEquivalentProperties(final ATermAppl prop)
-	{
-		if (null == prop)
-			return Collections.emptySet();
-
-		if (!isProperty(prop))
-		{
-			handleUndefinedEntity(prop + _isNotAnProperty);
-			return Collections.emptySet();
-		}
-
-		final Taxonomy<ATermAppl> taxonomy = getRoleTaxonomy(prop);
-		if (null == taxonomy)
-			return Collections.<ATermAppl> emptySet();
-
-		if (OpenlletOptions.RETURN_NON_PRIMITIVE_EQUIVALENT_PROPERTIES && !ATermUtils.isBuiltinProperty(prop))
-			return taxonomy.getEquivalents(prop);
-
-		return ATermUtils.primitiveOrBottom(taxonomy.getEquivalents(prop));
-	}
-
-	@Override
-	public Set<ATermAppl> getAllEquivalentProperties(final ATermAppl prop)
-	{
-		if (null == prop)
-			return Collections.emptySet();
-
-		if (!isProperty(prop))
-		{
-			handleUndefinedEntity(prop + _isNotAnProperty);
-			return Collections.emptySet();
-		}
-
-		final Taxonomy<ATermAppl> taxonomy = getRoleTaxonomy(prop);
-		if (null == taxonomy)
-			return Collections.<ATermAppl> emptySet();
-
-		if (OpenlletOptions.RETURN_NON_PRIMITIVE_EQUIVALENT_PROPERTIES && !ATermUtils.isBuiltinProperty(prop))
-			return taxonomy.getAllEquivalents(prop);
-
-		return ATermUtils.primitiveOrBottom(taxonomy.getAllEquivalents(prop));
-	}
-
-	/**
-	 * @param name
-	 * @return the named inverse property and all its equivalent properties.
-	 */
-	@Override
-	public Set<ATermAppl> getInverses(final ATerm name)
-	{
-		if (null == name)
-			return Collections.emptySet();
-
-		final ATermAppl invR = getInverse(name);
-		if (invR != null)
-		{
-			final Set<ATermAppl> inverses = getAllEquivalentProperties(invR);
-			return inverses;
-		}
-
-		return Collections.emptySet();
-	}
-
-	/**
-	 * Returns the inverse of given property. This could possibly be an internal property created by the reasoner rather than a named property. In case the
-	 * given property has more than one inverse any one of them can be returned.
-	 *
-	 * @param name Property whose inverse being sought
-	 * @return Inverse property or null if given property is not defined or it is not an object property
-	 */
-	public ATermAppl getInverse(final ATerm name)
-	{
-		if (null == name)
-			return null;
-
-		final Role prop = _rbox.getRole(name);
-		if (prop == null)
-		{
-			handleUndefinedEntity(name + _isNotAnProperty);
-			return null;
-		}
-
-		final Role invProp = prop.getInverse();
-
-		return invProp != null ? invProp.getName() : null;
-	}
-
 	/**
 	 * The results of this function is not guaranteed to be complete. Use {@link #hasDomain(ATermAppl, ATermAppl)} to get complete answers.
 	 *
@@ -4102,7 +2580,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		final Role prop = _rbox.getRole(name);
 		if (prop == null)
 		{
-			handleUndefinedEntity(name + _isNotAnProperty);
+			Base.handleUndefinedEntity(name + _isNotAnProperty);
 			return Collections.emptySet();
 		}
 
@@ -4127,7 +2605,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		final Role prop = _rbox.getRole(name);
 		if (prop == null)
 		{
-			handleUndefinedEntity(name + _isNotAnProperty);
+			Base.handleUndefinedEntity(name + _isNotAnProperty);
 			return set;
 		}
 
@@ -4152,7 +2630,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		final Individual ind = _abox.getIndividual(name);
 		if (ind == null)
 		{
-			handleUndefinedEntity(name + _isNotAnIndividual);
+			Base.handleUndefinedEntity(name + _isNotAnIndividual);
 			return Collections.emptySet();
 		}
 
@@ -4205,13 +2683,13 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		if (ind == null)
 		{
-			handleUndefinedEntity(x + _isNotAnIndividual);
+			Base.handleUndefinedEntity(x + _isNotAnIndividual);
 			return Collections.emptyList();
 		}
 
 		if (role == null || !role.isDatatypeRole())
 		{
-			handleUndefinedEntity(r + _isNotAnKnowDataProperty);
+			Base.handleUndefinedEntity(r + _isNotAnKnowDataProperty);
 			return Collections.emptyList();
 		}
 
@@ -4278,13 +2756,13 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		if (role == null || !role.isObjectRole())
 		{
-			handleUndefinedEntity(r + _isNotAnKnowObjectProperty);
+			Base.handleUndefinedEntity(r + _isNotAnKnowObjectProperty);
 			return Collections.emptySet();
 		}
 
 		if (!isIndividual(x))
 		{
-			handleUndefinedEntity(x + _isNotAnKnowIndividual);
+			Base.handleUndefinedEntity(x + _isNotAnKnowIndividual);
 			return Collections.emptySet();
 		}
 
@@ -4341,7 +2819,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		if (role == null || role.isUntypedRole())
 		{
-			handleUndefinedEntity(r + _isNotAnKnowProperty);
+			Base.handleUndefinedEntity(r + _isNotAnKnowProperty);
 			return Collections.emptyList();
 		}
 
@@ -4375,7 +2853,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		if (role == null)
 		{
-			handleUndefinedEntity(r + _isNotAnKnowProperty);
+			Base.handleUndefinedEntity(r + _isNotAnKnowProperty);
 			return Collections.emptyList();
 		}
 
@@ -4470,7 +2948,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		if (!isIndividual(o))
 		{
-			handleUndefinedEntity(o + _isNotAnIndividual);
+			Base.handleUndefinedEntity(o + _isNotAnIndividual);
 			return Collections.emptyList();
 		}
 
@@ -4489,13 +2967,13 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	{
 		if (!isIndividual(s))
 		{
-			handleUndefinedEntity(s + _isNotAnIndividual);
+			Base.handleUndefinedEntity(s + _isNotAnIndividual);
 			return Collections.emptyList();
 		}
 
 		if (!isIndividual(o) && !ATermUtils.isLiteral(o))
 		{
-			handleUndefinedEntity(o + _isNotAnIndividual);
+			Base.handleUndefinedEntity(o + _isNotAnIndividual);
 			return Collections.emptyList();
 		}
 
@@ -4525,200 +3003,6 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		}
 
 		return result;
-	}
-
-	/**
-	 * @param d
-	 * @return all the individuals that belong to the given class which is not necessarily a named class.
-	 */
-	@Override
-	public Set<ATermAppl> retrieve(final ATermAppl d, final Collection<ATermAppl> individuals)
-	{
-		if (null == d || null == individuals)
-			return Collections.emptySet();
-
-		ensureConsistency();
-
-		final ATermAppl c = ATermUtils.normalize(d);
-
-		final Optional<Timer> timer = _timers.startTimer("retrieve");
-
-		final ATermAppl notC = ATermUtils.negate(c);
-		final List<ATermAppl> knowns = new ArrayList<>();
-
-		// this is mostly to ensure that a model for notC is cached
-		if (!_abox.isSatisfiable(notC))
-			// if negation is unsat c itself is TOP
-			knowns.addAll(getIndividuals());
-		else
-			if (_abox.isSatisfiable(c))
-			{
-				Set<ATermAppl> subs = Collections.emptySet();
-				if (isClassified())
-				{
-					final Taxonomy<ATermAppl> taxonomy = getTaxonomyBuilder().getTaxonomy();
-
-					if (taxonomy == null)
-						throw new NullPointerException("Taxonomy");
-
-					if (taxonomy.contains(c))
-						subs = taxonomy.getFlattenedSubs(c, false);
-				}
-
-				final List<ATermAppl> unknowns = new ArrayList<>();
-				for (final ATermAppl x : individuals)
-				{
-					final Bool isType = _abox.isKnownType(x, c, subs);
-					if (isType.isTrue())
-						knowns.add(x);
-					else
-						if (isType.isUnknown())
-							unknowns.add(x);
-				}
-
-				if (!unknowns.isEmpty())
-					if (OpenlletOptions.INSTANCE_RETRIEVAL == InstanceRetrievalMethod.TRACING_BASED && OpenlletOptions.USE_TRACING)
-						tracingBasedInstanceRetrieval(c, unknowns, knowns);
-					else
-						if (_abox.existType(unknowns, c))
-							if (OpenlletOptions.INSTANCE_RETRIEVAL == InstanceRetrievalMethod.BINARY)
-								binaryInstanceRetrieval(c, unknowns, knowns);
-							else
-								linearInstanceRetrieval(c, unknowns, knowns);
-
-			}
-
-		timer.ifPresent(t -> t.stop());
-
-		final Set<ATermAppl> result = Collections.unmodifiableSet(new HashSet<>(knowns));
-
-		if (OpenlletOptions.CACHE_RETRIEVAL)
-			_instances.put(c, result);
-
-		return result;
-	}
-
-	/**
-	 * Retrieve _individuals which possibly have a property value for the given property.
-	 */
-	@Override
-	public List<ATermAppl> retrieveIndividualsWithProperty(final ATermAppl r)
-	{
-		if (null == r)
-			return Collections.emptyList();
-
-		ensureConsistency();
-
-		final Role role = _rbox.getRole(r);
-		if (role == null)
-		{
-			handleUndefinedEntity(r + _isNotAnKnowProperty);
-			return Collections.emptyList();
-		}
-
-		final List<ATermAppl> result = new ArrayList<>();
-		for (final ATermAppl ind : _individuals)
-			if (!_abox.hasObviousPropertyValue(ind, r, null).isFalse())
-				result.add(ind);
-
-		return result;
-	}
-
-	public void tracingBasedInstanceRetrieval(final ATermAppl c, final List<ATermAppl> candidates, final Collection<ATermAppl> results)
-	{
-		if (null == c || null == candidates || null == results)
-			return;
-
-		List<ATermAppl> individuals = candidates;
-		final boolean doExplanation = doExplanation();
-		setDoExplanation(true);
-
-		final ATermAppl notC = ATermUtils.negate(c);
-		while (_abox.existType(individuals, c))
-		{
-			final Set<ATermAppl> explanationSet = getExplanationSet();
-
-			for (final ATermAppl axiom : explanationSet)
-				if (axiom.getAFun().equals(ATermUtils.TYPEFUN) && axiom.getArgument(1).equals(notC))
-				{
-					final ATermAppl ind = (ATermAppl) axiom.getArgument(0);
-					final int index = individuals.indexOf(ind);
-					if (index >= 0)
-					{
-
-						_logger.finer(() -> "Filter instance " + axiom + " while retrieving " + c);
-						Collections.swap(individuals, index, 0);
-						results.add(ind);
-						individuals = individuals.subList(1, individuals.size());
-						break;
-					}
-				}
-		}
-
-		setDoExplanation(doExplanation);
-	}
-
-	public void linearInstanceRetrieval(final ATermAppl c, final List<ATermAppl> candidates, final Collection<ATermAppl> results)
-	{
-		if (null == c || null == candidates || null == results)
-			return;
-
-		for (final ATermAppl ind : candidates)
-			if (_abox.isType(ind, c))
-				results.add(ind);
-	}
-
-	public void binaryInstanceRetrieval(final ATermAppl c, final List<ATermAppl> candidates, final Collection<ATermAppl> results)
-	{
-		if (null == c || null == candidates || null == results)
-			return;
-
-		if (candidates.isEmpty())
-			return;
-		else
-			partitionInstanceRetrieval(c, partition(candidates), results);
-	}
-
-	private void partitionInstanceRetrieval(final ATermAppl c, final List<ATermAppl>[] partitions, final Collection<ATermAppl> results)
-	{
-		if (partitions[0].size() == 1)
-		{
-			final ATermAppl i = partitions[0].get(0);
-			binaryInstanceRetrieval(c, partitions[1], results);
-
-			if (_abox.isType(i, c))
-				results.add(i);
-		}
-		else
-			if (!_abox.existType(partitions[0], c))
-				binaryInstanceRetrieval(c, partitions[1], results);
-			else
-				if (!_abox.existType(partitions[1], c))
-					binaryInstanceRetrieval(c, partitions[0], results);
-				else
-				{
-					binaryInstanceRetrieval(c, partitions[0], results);
-					binaryInstanceRetrieval(c, partitions[1], results);
-				}
-	}
-
-	@SuppressWarnings("unchecked")
-	private static List<ATermAppl>[] partition(final List<ATermAppl> candidates)
-	{
-		final List<ATermAppl>[] partitions = new List[2];
-		final int n = candidates.size();
-		if (n <= 1)
-		{
-			partitions[0] = candidates;
-			partitions[1] = Collections.emptyList();
-		}
-		else
-		{
-			partitions[0] = candidates.subList(0, n / 2);
-			partitions[1] = candidates.subList(n / 2, n);
-		}
-
-		return partitions;
 	}
 
 	/**
@@ -4824,29 +3108,6 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	}
 
 	@Override
-	public TaxonomyBuilder getTaxonomyBuilder()
-	{
-		if (!_builder.isPresent())
-		{
-			prepare();
-			TaxonomyBuilder builder;
-
-			if (_expChecker.getExpressivity().isEL() && !OpenlletOptions.DISABLE_EL_CLASSIFIER)
-				builder = new SimplifiedELClassifier(this);
-			else
-				builder = new CDOptimizedTaxonomyBuilder(this);
-			//builder = new CDOptimizedTaxonomyBuilderProb(this, Optional.ofNullable(_builderProgressMonitor));
-
-			if (_builderProgressMonitor != null)
-				builder.setProgressMonitor(_builderProgressMonitor);
-
-			_builder = Optional.of(builder);
-		}
-
-		return _builder.get();
-	}
-
-	@Override
 	public void setTaxonomyBuilderProgressMonitor(final ProgressMonitor progressMonitor)
 	{
 		if (null == progressMonitor)
@@ -4856,30 +3117,6 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		if (_builder.isPresent())
 			getTaxonomyBuilder().setProgressMonitor(progressMonitor);
-	}
-
-	@Override
-	public Taxonomy<ATermAppl> getRoleTaxonomy(final boolean objectTaxonomy)
-	{
-		prepare();
-
-		return objectTaxonomy ? _rbox.getObjectTaxonomy() : _rbox.getDataTaxonomy();
-	}
-
-	public Taxonomy<ATermAppl> getRoleTaxonomy(final ATermAppl r)
-	{
-		prepare();
-
-		if (isObjectProperty(r))
-			return _rbox.getObjectTaxonomy();
-		else
-			if (isDatatypeProperty(r))
-				return _rbox.getDataTaxonomy();
-			else
-				if (isAnnotationProperty(r))
-					return _rbox.getAnnotationTaxonomy();
-
-		return null;
 	}
 
 	@Override
@@ -5061,12 +3298,6 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		return _syntacticAssertions;
 	}
 
-	protected static void handleUndefinedEntity(final String s)
-	{
-		if (!OpenlletOptions.SILENT_UNDEFINED_ENTITY_HANDLING)
-			throw new UndefinedEntityException(s);
-	}
-
 	public Set<ATermAppl> getABoxAssertions(final AssertionType assertionType)
 	{
 		if (null == assertionType)
@@ -5112,4 +3343,5 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	{
 		_explainOnlyInconsistency = explainOnlyInconsistency;
 	}
+
 }

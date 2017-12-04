@@ -103,12 +103,13 @@ public class SharedObjectFactory
 	 * @param prototype of the openllet.shared.hash object we want the unique reference too.
 	 * @return The reference to the unique openllet.shared.hash object associated with the argument.
 	 */
-	public SharedObject build(final SharedObject prototype)
+	@SuppressWarnings("unchecked")
+	public <T extends SharedObject> T build(final T prototype)
 	{
 		final int hash = prototype.hashCode();
 		final int segmentNr = hash >>> 32 - DEFAULT_NR_OF_SEGMENTS_BITSIZE;
 
-		return _segments[segmentNr].get(prototype, hash);
+		return (T) _segments[segmentNr].get(prototype, hash);
 	}
 
 	/**

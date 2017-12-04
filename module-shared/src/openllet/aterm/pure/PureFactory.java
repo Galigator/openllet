@@ -145,7 +145,7 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 		final ATermListImpl protoList = new ATermListImpl(this);
 
 		protoList.init(FIX_POINT, null, null);
-		_empty = (ATermList) build(protoList);
+		_empty = build(protoList);
 		((ATermListImpl) _empty).init(FIX_POINT, null, null);
 	}
 
@@ -164,43 +164,43 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 	@Override
 	public AFun makeAFun(final String name, final int arity, final boolean isQuoted)
 	{
-		return (AFun) build(new AFunImpl(this, name, arity, isQuoted));
+		return build(new AFunImpl(this, name, arity, isQuoted));
 	}
 
 	@Override
 	public ATermInt makeInt(final int value)
 	{
-		return (ATermInt) build(new ATermIntImpl(this, value));
+		return build(new ATermIntImpl(this, value));
 	}
 
 	@Override
 	public ATermLong makeLong(final long value)
 	{
-		return (ATermLong) build(new ATermLongImpl(this, value));
+		return build(new ATermLongImpl(this, value));
 	}
 
 	@Override
 	public ATermReal makeReal(final double value)
 	{
-		return (ATermReal) build(new ATermRealImpl(this, value));
+		return build(new ATermRealImpl(this, value));
 	}
 
 	@Override
 	public ATermPlaceholder makePlaceholder(final ATerm type)
 	{
-		return (ATermPlaceholder) build(new ATermPlaceholderImpl(this, type));
+		return build(new ATermPlaceholderImpl(this, type));
 	}
 
 	@Override
 	public ATermBlob makeBlob(final byte[] data)
 	{
-		return (ATermBlob) build(new ATermBlobImpl(this, data));
+		return build(new ATermBlobImpl(this, data));
 	}
 
 	@Override
 	public ATermList makeList(final ATerm first, final ATermList next)
 	{
-		return (ATermList) build(new ATermListImpl(this, first, next));
+		return build(new ATermListImpl(this, first, next));
 	}
 
 	private static ATerm[] array0 = new ATerm[0];
@@ -208,7 +208,7 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 	@Override
 	public ATermAppl makeAppl(final AFun fun, final ATerm[] args)
 	{
-		return (ATermAppl) build(new ATermApplImpl(this, fun, args));
+		return build(new ATermApplImpl(this, fun, args));
 	}
 
 	@Override
@@ -936,288 +936,288 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 	@Override
 	public FunAnd and()
 	{
-		return (FunAnd) build(new FunAnd(this));
+		return build(new FunAnd(this));
 	}
 
 	@Override
 	public FunLiteral literal()
 	{
-		return (FunLiteral) build(new FunLiteral(this));
+		return build(new FunLiteral(this));
 	}
 
 	@Override
 	public FunOr or()
 	{
-		return (FunOr) build(new FunOr(this));
+		return build(new FunOr(this));
 	}
 
 	@Override
 	public FunSome some()
 	{
-		return (FunSome) build(new FunSome(this));
+		return build(new FunSome(this));
 	}
 
 	@Override
 	public FunAll all()
 	{
-		return (FunAll) build(new FunAll(this));
+		return build(new FunAll(this));
 	}
 
 	@Override
 	public FunNot not()
 	{
-		return (FunNot) build(new FunNot(this));
+		return build(new FunNot(this));
 	}
 
 	@Override
 	public FunMax max()
 	{
-		return (FunMax) build(new FunMax(this));
+		return build(new FunMax(this));
 	}
 
 	@Override
 	public FunMin min()
 	{
-		return (FunMin) build(new FunMin(this));
+		return build(new FunMin(this));
 	}
 
 	@Override
 	public FunValue value()
 	{
-		return (FunValue) build(new FunValue(this));
+		return build(new FunValue(this));
 	}
 
 	@Override
 	public FunSelf self()
 	{
-		return (FunSelf) build(new FunSelf(this));
+		return build(new FunSelf(this));
 	}
 
 	@Override
 	public FunCard card()
 	{
-		return (FunCard) build(new FunCard(this));
+		return build(new FunCard(this));
 	}
 
 	@Override
 	public FunInv inv()
 	{
-		return (FunInv) build(new FunInv(this));
+		return build(new FunInv(this));
 	}
 
 	@Override
 	public FunSubClassOf subClassOf()
 	{
-		return (FunSubClassOf) build(new FunSubClassOf(this));
+		return build(new FunSubClassOf(this));
 	}
 
 	@Override
 	public FunEquivalentClasses equivalentClasses()
 	{
-		return (FunEquivalentClasses) build(new FunEquivalentClasses(this));
+		return build(new FunEquivalentClasses(this));
 	}
 
 	@Override
 	public FunSameAs sameAs()
 	{
-		return (FunSameAs) build(new FunSameAs(this));
+		return build(new FunSameAs(this));
 	}
 
 	@Override
 	public FunDisjointWith disjointWith()
 	{
-		return (FunDisjointWith) build(new FunDisjointWith(this));
+		return build(new FunDisjointWith(this));
 	}
 
 	@Override
 	public FunDisjointClasses disjointClasses()
 	{
-		return (FunDisjointClasses) build(new FunDisjointClasses(this));
+		return build(new FunDisjointClasses(this));
 	}
 
 	@Override
 	public FunDisjointPropertyWith disjointPropertyWith()
 	{
-		return (FunDisjointPropertyWith) build(new FunDisjointPropertyWith(this));
+		return build(new FunDisjointPropertyWith(this));
 	}
 
 	@Override
 	public FunDisjointProperties disjointProperties()
 	{
-		return (FunDisjointProperties) build(new FunDisjointProperties(this));
+		return build(new FunDisjointProperties(this));
 	}
 
 	@Override
 	public FunComplementOf complementOf()
 	{
-		return (FunComplementOf) build(new FunComplementOf(this));
+		return build(new FunComplementOf(this));
 	}
 
 	@Override
 	public FunVar var()
 	{
-		return (FunVar) build(new FunVar(this));
+		return build(new FunVar(this));
 	}
 
 	@Override
 	public FunType type()
 	{
-		return (FunType) build(new FunType(this));
+		return build(new FunType(this));
 	}
 
 	@Override
 	public FunProp prop()
 	{
-		return (FunProp) build(new FunProp(this));
+		return build(new FunProp(this));
 	}
 
 	@Override
 	public FunDifferent different()
 	{
-		return (FunDifferent) build(new FunDifferent(this));
+		return build(new FunDifferent(this));
 	}
 
 	@Override
 	public FunAllDifferent allDifferent()
 	{
-		return (FunAllDifferent) build(new FunAllDifferent(this));
+		return build(new FunAllDifferent(this));
 	}
 
 	@Override
 	public FunAsymmetric asymmetric()
 	{
-		return (FunAsymmetric) build(new FunAsymmetric(this));
+		return build(new FunAsymmetric(this));
 	}
 
 	@Override
 	public FunFunctionnal functional()
 	{
-		return (FunFunctionnal) build(new FunFunctionnal(this));
+		return build(new FunFunctionnal(this));
 	}
 
 	@Override
 	public FunInverseFunctional inverseFunctional()
 	{
-		return (FunInverseFunctional) build(new FunInverseFunctional(this));
+		return build(new FunInverseFunctional(this));
 	}
 
 	@Override
 	public FunIrreflexive irreflexive()
 	{
-		return (FunIrreflexive) build(new FunIrreflexive(this));
+		return build(new FunIrreflexive(this));
 	}
 
 	@Override
 	public FunReflexive reflexive()
 	{
-		return (FunReflexive) build(new FunReflexive(this));
+		return build(new FunReflexive(this));
 	}
 
 	@Override
 	public FunSymmetric symmetric()
 	{
-		return (FunSymmetric) build(new FunSymmetric(this));
+		return build(new FunSymmetric(this));
 	}
 
 	@Override
 	public FunTransitive transitive()
 	{
-		return (FunTransitive) build(new FunTransitive(this));
+		return build(new FunTransitive(this));
 	}
 
 	@Override
 	public FunSubProperty subProperty()
 	{
-		return (FunSubProperty) build(new FunSubProperty(this));
+		return build(new FunSubProperty(this));
 	}
 
 	@Override
 	public FunEquivalentProperty equivalentProperty()
 	{
-		return (FunEquivalentProperty) build(new FunEquivalentProperty(this));
+		return build(new FunEquivalentProperty(this));
 	}
 
 	@Override
 	public FunInverseProperty inverseProperty()
 	{
-		return (FunInverseProperty) build(new FunInverseProperty(this));
+		return build(new FunInverseProperty(this));
 	}
 
 	@Override
 	public FunDomain domain()
 	{
-		return (FunDomain) build(new FunDomain(this));
+		return build(new FunDomain(this));
 	}
 
 	@Override
 	public FunRange range()
 	{
-		return (FunRange) build(new FunRange(this));
+		return build(new FunRange(this));
 	}
 
 	@Override
 	public FunRule rule()
 	{
-		return (FunRule) build(new FunRule(this));
+		return build(new FunRule(this));
 	}
 
 	@Override
 	public FunBuiltin builtin()
 	{
-		return (FunBuiltin) build(new FunBuiltin(this));
+		return build(new FunBuiltin(this));
 	}
 
 	@Override
 	public FunDatatypeDefinition datatypeDefinition()
 	{
-		return (FunDatatypeDefinition) build(new FunDatatypeDefinition(this));
+		return build(new FunDatatypeDefinition(this));
 	}
 
 	@Override
 	public FunRestrictedDatatype restrictedDatatype()
 	{
-		return (FunRestrictedDatatype) build(new FunRestrictedDatatype(this));
+		return build(new FunRestrictedDatatype(this));
 	}
 
 	@Override
 	public FunFacet facet()
 	{
-		return (FunFacet) build(new FunFacet(this));
+		return build(new FunFacet(this));
 	}
 
 	@Override
 	public FunEmpty empty()
 	{
-		return (FunEmpty) build(new FunEmpty(this));
+		return build(new FunEmpty(this));
 	}
 
 	@Override
 	public FunTop top()
 	{
-		return (FunTop) build(new FunTop(this));
+		return build(new FunTop(this));
 	}
 
 	@Override
 	public FunTopObjectProperty topObjectProperty()
 	{
-		return (FunTopObjectProperty) build(new FunTopObjectProperty(this));
+		return build(new FunTopObjectProperty(this));
 	}
 
 	@Override
 	public FunTopDataProperty topDataProperty()
 	{
-		return (FunTopDataProperty) build(new FunTopDataProperty(this));
+		return build(new FunTopDataProperty(this));
 	}
 
 	@Override
 	public FunBottomObjectProperty bottomObjectProperty()
 	{
-		return (FunBottomObjectProperty) build(new FunBottomObjectProperty(this));
+		return build(new FunBottomObjectProperty(this));
 	}
 
 	@Override
 	public FunBottomDataProperty bottomDataProperty()
 	{
-		return (FunBottomDataProperty) build(new FunBottomDataProperty(this));
+		return build(new FunBottomDataProperty(this));
 	}
 }
