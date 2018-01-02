@@ -8,7 +8,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
+import openllet.aterm.ATermList;
 import openllet.atom.OpenError;
 import openllet.core.OpenlletOptions;
 import openllet.core.OpenlletOptions.InstanceRetrievalMethod;
@@ -201,60 +203,83 @@ public interface InstancesBase extends MessageBase, Logging, Base
 
 		final ATermAppl c = ATermUtils.normalize(d);
 
-		final Optional<Timer> timer = getTimers().startTimer("retrieve");
+		if (ATermUtils.isAnd(c))
+		{
+			Set<ATermAppl> terms = new HashSet<>(individuals);
 
-		final ATermAppl notC = ATermUtils.negate(c);
-		final List<ATermAppl> knowns = new ArrayList<>();
+			if (1 != c.getArity())
+				throw new OpenError("arity isn't 1.");
 
-		// this is mostly to ensure that a model for notC is cached
-		if (!getABox().isSatisfiable(notC))
-			knowns.addAll(getIndividuals()); // if negation is unsat c itself is TOP
-		else
-			if (getABox().isSatisfiable(c))
+			if (1 == c.getArity())
 			{
-				Set<ATermAppl> subs = Collections.emptySet();
-				if (isClassified())
-				{
-					final Taxonomy<ATermAppl> taxonomy = getTaxonomyBuilder().getTaxonomy();
-
-					if (taxonomy == null)
-						throw new NullPointerException("Taxonomy");
-
-					if (taxonomy.contains(c))
-						subs = taxonomy.getFlattenedSubs(c, false);
-				}
-
-				final List<ATermAppl> unknowns = new ArrayList<>();
-				for (final ATermAppl x : individuals)
-				{
-					final Bool isType = getABox().isKnownType(x, c, subs);
-					if (isType.isTrue())
-						knowns.add(x);
-					else
-						if (isType.isUnknown())
-							unknowns.add(x);
-				}
-
-				if (!unknowns.isEmpty())
-					if (OpenlletOptions.INSTANCE_RETRIEVAL == InstanceRetrievalMethod.TRACING_BASED && OpenlletOptions.USE_TRACING)
-						tracingBasedInstanceRetrieval(c, unknowns, knowns);
-					else
-						if (getABox().existType(unknowns, c))
-							if (OpenlletOptions.INSTANCE_RETRIEVAL == InstanceRetrievalMethod.BINARY)
-								binaryInstanceRetrieval(c, unknowns, knowns);
-							else
-								linearInstanceRetrieval(c, unknowns, knowns);
-
+				final ATerm arg = c.getArgument(0);
+				if (arg instanceof ATermList)
+					for (final ATerm term : (ATermList) arg)
+						terms = retrieve((ATermAppl) term, terms);
 			}
+			else
+				for (final ATerm term : c.getArgumentArray())
+					terms = retrieve((ATermAppl) term, terms);
 
-		timer.ifPresent(t -> t.stop());
+			return terms;
+		}
+		else
+		{
+			final Optional<Timer> timer = getTimers().startTimer("retrieve");
 
-		final Set<ATermAppl> result = Collections.unmodifiableSet(new HashSet<>(knowns));
+			final ATermAppl notC = ATermUtils.negate(c);
+			final List<ATermAppl> knowns = new ArrayList<>();
 
-		if (OpenlletOptions.CACHE_RETRIEVAL)
-			getInstances().put(c, result);
+			// this is mostly to ensure that a model for notC is cached
+			if (!getABox().isSatisfiable(notC))
+				knowns.addAll(getIndividuals()); // if negation is unsat c itself is TOP
+			else
+				if (getABox().isSatisfiable(c))
+				{
+					Set<ATermAppl> subs = Collections.emptySet();
+					if (isClassified())
+					{
+						final Taxonomy<ATermAppl> taxonomy = getTaxonomyBuilder().getTaxonomy();
 
-		return result;
+						if (taxonomy == null)
+							throw new NullPointerException("Taxonomy");
+
+						if (taxonomy.contains(c))
+							subs = taxonomy.getFlattenedSubs(c, false);
+					}
+
+					final List<ATermAppl> unknowns = new ArrayList<>();
+					for (final ATermAppl x : individuals)
+					{
+						final Bool isType = getABox().isKnownType(x, c, subs);
+						if (isType.isTrue())
+							knowns.add(x);
+						else
+							if (isType.isUnknown())
+								unknowns.add(x);
+					}
+
+					if (!unknowns.isEmpty())
+						if (OpenlletOptions.INSTANCE_RETRIEVAL == InstanceRetrievalMethod.TRACING_BASED && OpenlletOptions.USE_TRACING)
+							tracingBasedInstanceRetrieval(c, unknowns, knowns);
+						else
+							if (getABox().existType(unknowns, c))
+								if (OpenlletOptions.INSTANCE_RETRIEVAL == InstanceRetrievalMethod.BINARY)
+									binaryInstanceRetrieval(c, unknowns, knowns);
+								else
+									linearInstanceRetrieval(c, unknowns, knowns);
+
+				}
+
+			timer.ifPresent(t -> t.stop());
+
+			final Set<ATermAppl> result = Collections.unmodifiableSet(new HashSet<>(knowns));
+
+			if (OpenlletOptions.CACHE_RETRIEVAL)
+				getInstances().put(c, result);
+
+			return result;
+		}
 	}
 
 	default void tracingBasedInstanceRetrieval(final ATermAppl c, final List<ATermAppl> candidates, final Collection<ATermAppl> results)
