@@ -3,6 +3,9 @@ package openllet.profiler.statistical;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.awt.Window;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashSet;
@@ -28,7 +31,7 @@ import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
 import org.jfree.chart.renderer.category.StatisticalLineAndShapeRenderer;
 import org.jfree.data.statistics.DefaultStatisticalCategoryDataset;
-import org.jfree.ui.RefineryUtilities;
+// import org.jfree.ui.RefineryUtilities;
 
 public class ReleasePerformanceVisualizer extends JFrame
 {
@@ -49,8 +52,36 @@ public class ReleasePerformanceVisualizer extends JFrame
 		final ReleasePerformanceVisualizer viz = new ReleasePerformanceVisualizer("Release Performance Visualizer");
 		viz.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		viz.pack();
-		RefineryUtilities.centerFrameOnScreen(viz);
+		centerFrameOnScreen(viz);
 		viz.setVisible(true);
+	}
+
+	/**
+	 * Positions the specified frame in the middle of the screen.
+	 *
+	 * @param frame the frame to be centered on the screen.
+	 */
+	private static void centerFrameOnScreen(final Window frame)
+	{
+		positionFrameOnScreen(frame, 0.5, 0.5);
+	}
+
+	/**
+	 * Positions the specified frame at a relative position in the screen, where 50% is considered to be the center of the screen.
+	 *
+	 * @param frame the frame.
+	 * @param horizontalPercent the relative horizontal position of the frame (0.0 to 1.0, where 0.5 is the center of the screen).
+	 * @param verticalPercent the relative vertical position of the frame (0.0 to 1.0, where 0.5 is the center of the screen).
+	 */
+	private static void positionFrameOnScreen(final Window frame, final double horizontalPercent, final double verticalPercent)
+	{
+		final Rectangle s = frame.getGraphicsConfiguration().getBounds();
+		final Dimension f = frame.getSize();
+		final int w = Math.max(s.width - f.width, 0);
+		final int h = Math.max(s.height - f.height, 0);
+		final int x = (int) (horizontalPercent * w) + s.x;
+		final int y = (int) (verticalPercent * h) + s.y;
+		frame.setBounds(x, y, f.width, f.height);
 	}
 
 	public ReleasePerformanceVisualizer(final String title)
@@ -85,7 +116,9 @@ public class ReleasePerformanceVisualizer extends JFrame
 			{
 				final List<ReleaseStatistics> stats = release.getStatistics((String) _menu._ontology.getSelectedItem());
 				if (stats != null)
+				{
 					for (final ReleaseStatistics stat : stats)
+					{
 						if (_menu._tasks.isSelectedIndex(stat.getTask().ordinal()))
 						{
 							double mean, variance;
@@ -102,6 +135,8 @@ public class ReleasePerformanceVisualizer extends JFrame
 							}
 							dataset.add(mean, Math.sqrt(variance), stat.getTask().toString(), release.getVersion());
 						}
+					}
+				}
 			}
 			count++;
 		}
@@ -114,7 +149,9 @@ public class ReleasePerformanceVisualizer extends JFrame
 		//CategoryItemRenderer renderer = new StatisticalBarRenderer();
 
 		for (int i = 0; i < dataset.getRowCount(); i++)
+		{
 			renderer.setSeriesStroke(i, new BasicStroke(5f));
+		}
 
 		final String numberAxisLabel = _menu._time.getSelectedIndex() == 0 ? "Execution Time (s)" : "Used Memory (%)";
 		final CategoryPlot plot = new CategoryPlot(dataset, new CategoryAxis("Release"), new NumberAxis(numberAxisLabel), renderer);
@@ -170,8 +207,12 @@ public class ReleasePerformanceVisualizer extends JFrame
 			//Ontology Menu
 			final Set<String> ontologies = new HashSet<>();
 			for (final Release release : manager.getReleases())
+			{
 				for (final Entry<String, List<ReleaseStatistics>> statistic : release.getAllStatistics().entrySet())
+				{
 					ontologies.add(statistic.getKey());
+				}
+			}
 			_ontology = new JComboBox<>(ontologies.toArray());
 			_ontology.setBorder(BorderFactory.createTitledBorder("Ontology"));
 			add(_ontology);
