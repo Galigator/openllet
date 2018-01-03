@@ -68,7 +68,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <asmVersion>5.0.1</asmVersion>
+    <asmVersion>6.0</asmVersion>
   </properties>
 
   <prerequisites>
