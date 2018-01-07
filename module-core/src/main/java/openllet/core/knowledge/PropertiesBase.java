@@ -1,16 +1,31 @@
 package openllet.core.knowledge;
 
+import static java.lang.String.format;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
 import openllet.core.DependencySet;
 import openllet.core.KnowledgeBase.ChangeType;
 import openllet.core.OpenlletOptions;
+import openllet.core.boxes.abox.Edge;
+import openllet.core.boxes.abox.EdgeList;
+import openllet.core.boxes.abox.Individual;
+import openllet.core.boxes.abox.Literal;
+import openllet.core.boxes.abox.Node;
 import openllet.core.boxes.rbox.Role;
+import openllet.core.datatypes.exceptions.InvalidLiteralException;
+import openllet.core.datatypes.exceptions.UnrecognizedDatatypeException;
 import openllet.core.taxonomy.Taxonomy;
 import openllet.core.utils.ATermUtils;
 import openllet.shared.tools.Logging;
@@ -22,6 +37,7 @@ import openllet.shared.tools.Logging;
  */
 public interface PropertiesBase extends MessageBase, Logging, Base
 {
+	public Set<ATermAppl> currentIndividuals();
 
 	default void addSubProperty(final ATerm sub, final ATermAppl sup)
 	{
@@ -965,5 +981,475 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 				set.add(p);
 		}
 		return set;
+	}
+
+	/**
+	 * The results of this function is not guaranteed to be complete. Use {@link #hasRange(ATermAppl, ATermAppl)} to get complete answers.
+	 *
+	 * @param name
+	 * @return the domain restrictions on the property.
+	 */
+	public default Set<ATermAppl> getRanges(final ATerm name)
+	{
+		if (null == name)
+			return Collections.emptySet();
+
+		ensureConsistency();
+
+		final Set<ATermAppl> set = Collections.emptySet();
+		final Role prop = getRBox().getRole(name);
+		if (prop == null)
+		{
+			Base.handleUndefinedEntity(name + _isNotAnProperty);
+			return set;
+		}
+
+		return ATermUtils.primitiveOrBottom(prop.getRanges());
+	}
+
+	/**
+	 * The results of this function is not guaranteed to be complete. Use {@link #hasDomain(ATermAppl, ATermAppl)} to get complete answers.
+	 *
+	 * @param name
+	 * @return the domain restrictions on the property.
+	 */
+	public default Set<ATermAppl> getDomains(final ATermAppl name)
+	{
+		if (null == name)
+			return Collections.emptySet();
+
+		ensureConsistency();
+
+		final Role prop = getRBox().getRole(name);
+		if (prop == null)
+		{
+			Base.handleUndefinedEntity(name + _isNotAnProperty);
+			return Collections.emptySet();
+		}
+
+		return ATermUtils.primitiveOrBottom(prop.getDomains());
+	}
+
+	/**
+	 * Return all property values for a given object property and subject value.
+	 *
+	 * @param r
+	 * @param x
+	 * @return A list of ATermAppl objects
+	 */
+	public default Set<ATermAppl> getObjectPropertyValuesSet(final ATermAppl r, final ATermAppl x)
+	{
+		if (null == r || null == x)
+			return Collections.emptySet();
+
+		ensureConsistency();
+
+		final Role role = getRBox().getRole(r);
+
+		if (role == null || !role.isObjectRole())
+		{
+			Base.handleUndefinedEntity(r + _isNotAnKnowObjectProperty);
+			return Collections.emptySet();
+		}
+
+		if (!isIndividual(x))
+		{
+			Base.handleUndefinedEntity(x + _isNotAnKnowIndividual);
+			return Collections.emptySet();
+		}
+
+		// TODO get rid of unnecessary Set + List creation
+		Set<ATermAppl> knowns = new HashSet<>();
+		final Set<ATermAppl> unknowns = new HashSet<>();
+
+		if (role.isTop())
+		{
+			if (!OpenlletOptions.HIDE_TOP_PROPERTY_VALUES)
+				knowns = getIndividuals();
+		}
+		else
+			if (!role.isBottom())
+				getABox().getObjectPropertyValues(x, role, knowns, unknowns, true);
+
+		if (!unknowns.isEmpty())
+		{
+			final ATermAppl valueX = ATermUtils.makeHasValue(role.getInverse().getName(), x);
+			final ATermAppl c = ATermUtils.normalize(valueX);
+
+			binaryInstanceRetrieval(c, new ArrayList<>(unknowns), knowns);
+		}
+
+		return knowns;
+	}
+
+	public default List<ATermAppl> getObjectPropertyValues(final ATermAppl r, final ATermAppl x)
+	{
+		return new ArrayList<>(getObjectPropertyValuesSet(r, x));
+	}
+
+	public default Stream<ATermAppl> objectPropertyValues(final ATermAppl r, final ATermAppl x)
+	{
+		return getObjectPropertyValuesSet(r, x).stream();
+	}
+
+	/**
+	 * Return all literal values for a given dataproperty that belongs to the specified datatype.
+	 *
+	 * @param r
+	 * @param x
+	 * @param datatype
+	 * @return List of ATermAppl objects representing literals.
+	 */
+	public default List<ATermAppl> getDataPropertyValues(final ATermAppl r, final ATermAppl x, final ATermAppl datatype)
+	{
+		if (null == r || null == x)
+			return Collections.emptyList();
+
+		ensureConsistency();
+
+		final Individual ind = getABox().getIndividual(x);
+		final Role role = getRBox().getRole(r);
+
+		if (ind == null)
+		{
+			Base.handleUndefinedEntity(x + _isNotAnIndividual);
+			return Collections.emptyList();
+		}
+
+		if (role == null || !role.isDatatypeRole())
+		{
+			Base.handleUndefinedEntity(r + _isNotAnKnowDataProperty);
+			return Collections.emptyList();
+		}
+
+		if (role.isTop())
+		{
+			final List<ATermAppl> literals = new ArrayList<>();
+			if (!OpenlletOptions.HIDE_TOP_PROPERTY_VALUES)
+				for (final Node node : getABox().getNodes().values())
+					if (node.isLiteral() && node.getTerm() != null)
+						literals.add(node.getTerm());
+			return literals;
+		}
+		else
+			if (role.isBottom())
+				return Collections.emptyList();
+			else
+				return getABox().getDataPropertyValues(x, role, datatype);
+	}
+
+	/**
+	 * List all subjects with the given value for the specified object property.
+	 *
+	 * @param r
+	 * @param o An ATerm object that is the URI of an _individual
+	 * @return List of ATermAppl objects.
+	 */
+	public default List<ATermAppl> getIndividualsWithObjectProperty(final ATermAppl r, final ATermAppl o)
+	{
+		if (null == r || null == o)
+			return Collections.emptyList();
+
+		ensureConsistency();
+
+		if (!isIndividual(o))
+		{
+			Base.handleUndefinedEntity(o + _isNotAnIndividual);
+			return Collections.emptyList();
+		}
+
+		final Role role = getRBox().getRole(r);
+
+		final ATermAppl invR = role.getInverse().getName();
+
+		return getObjectPropertyValues(invR, o);
+	}
+
+	/**
+	 * List all subjects with the given literal value for the specified _data property.
+	 *
+	 * @param r An ATerm object that contains the literal value in the form literal(lexicalValue, langIdentifier, datatypeURI). Should be created with
+	 *        ATermUtils.makeXXXLiteral() functions.
+	 * @param litValue
+	 * @return List of ATermAppl objects.
+	 */
+	public default List<ATermAppl> getIndividualsWithDataProperty(final ATermAppl r, final ATermAppl litValue)
+	{
+		if (null == r || null == litValue)
+			return Collections.emptyList();
+
+		if (!ATermUtils.isLiteral(litValue))
+			return Collections.emptyList();
+
+		ensureConsistency();
+
+		final List<ATermAppl> knowns = new ArrayList<>();
+		final List<ATermAppl> unknowns = new ArrayList<>();
+
+		ATermAppl canonicalLit;
+		try
+		{
+			canonicalLit = getDatatypeReasoner().getCanonicalRepresentation(litValue);
+		}
+		catch (final InvalidLiteralException e)
+		{
+			getLogger().warning(format("Invalid literal '%s' passed as input, returning empty set of _individuals: %s", litValue, e.getMessage()));
+			return Collections.emptyList();
+		}
+		catch (final UnrecognizedDatatypeException e)
+		{
+			getLogger().warning(format("Unrecognized datatype for literal '%s' passed as input, returning empty set of _individuals: %s", litValue, e.getMessage()));
+			return Collections.emptyList();
+		}
+		final Literal literal = getABox().getLiteral(canonicalLit);
+
+		if (literal != null)
+		{
+			final Role role = getRole(r);
+			final EdgeList edges = literal.getInEdges();
+			for (final Edge edge : edges)
+				if (edge.getRole().isSubRoleOf(role))
+				{
+					final ATermAppl subj = edge.getFrom().getName();
+					if (edge.getDepends().isIndependent())
+						knowns.add(subj);
+					else
+						unknowns.add(subj);
+				}
+
+			if (!unknowns.isEmpty())
+			{
+				final ATermAppl c = ATermUtils.normalize(ATermUtils.makeHasValue(r, litValue));
+
+				binaryInstanceRetrieval(c, unknowns, knowns);
+			}
+		}
+
+		return knowns;
+	}
+
+	public default Set<ATermAppl> getIndividualsWithAnnotation(final ATermAppl p, final ATermAppl o)
+	{
+		if (null == p || null == o)
+			return Collections.emptySet();
+
+		final Set<ATermAppl> ret = new HashSet<>();
+
+		for (final Map.Entry<ATermAppl, Map<ATermAppl, Set<ATermAppl>>> e1 : getAnnotations().entrySet())
+		{
+			final ATermAppl st = e1.getKey();
+			final Map<ATermAppl, Set<ATermAppl>> pidx = e1.getValue();
+
+			for (final Map.Entry<ATermAppl, Set<ATermAppl>> e2 : pidx.entrySet())
+			{
+				final ATermAppl pt = e2.getKey();
+				final Set<ATermAppl> oidx = e2.getValue();
+
+				if (pt.equals(p) && oidx.contains(o))
+					ret.add(st);
+			}
+		}
+
+		return ret;
+	}
+
+	/**
+	 * List all subjects with a given property and property value.
+	 *
+	 * @param r
+	 * @param x If property is an object property an ATermAppl object that is the URI of the _individual, if the property is a _data property an ATerm object
+	 *        that contains the literal value (See {#link #getIndividualsWithDataProperty(ATermAppl, ATermAppl)} for details)
+	 * @return List of ATermAppl objects.
+	 */
+	public default List<ATermAppl> getIndividualsWithProperty(final ATermAppl r, final ATermAppl x)
+	{
+		final Role role = getRBox().getRole(r);
+
+		if (role == null)
+		{
+			Base.handleUndefinedEntity(r + _isNotAnKnowProperty);
+			return Collections.emptyList();
+		}
+
+		if (role.isObjectRole())
+			return getIndividualsWithObjectProperty(r, x);
+		else
+			if (role.isDatatypeRole())
+				return getIndividualsWithDataProperty(r, x);
+			else
+				if (role.isAnnotationRole())
+					return Arrays.asList(getIndividualsWithAnnotation(r, x).toArray(new ATermAppl[0]));
+				else
+					throw new IllegalArgumentException();
+	}
+
+	/**
+	 * Return all literal values for a given dataproperty that has the specified language identifier.
+	 *
+	 * @param r
+	 * @param x
+	 * @param lang
+	 * @return List of ATermAppl objects.
+	 */
+	public default List<ATermAppl> getDataPropertyValues(final ATermAppl r, final ATermAppl x, final String lang)
+	{
+		if (null == r || null == x)
+			return Collections.emptyList();
+
+		final List<ATermAppl> values = getDataPropertyValues(r, x);
+		if (lang == null)
+			return values;
+
+		final List<ATermAppl> result = new ArrayList<>();
+		for (final ATermAppl lit : values)
+		{
+			final String litLang = ((ATermAppl) lit.getArgument(1)).getName();
+
+			if (litLang.equals(lang))
+				result.add(lit);
+		}
+
+		return result;
+	}
+
+	/**
+	 * Return all literal values for a given dataproperty and subject value.
+	 *
+	 * @param r
+	 * @param x
+	 * @return List of ATermAppl objects.
+	 */
+	public default List<ATermAppl> getDataPropertyValues(final ATermAppl r, final ATermAppl x)
+	{
+		return getDataPropertyValues(r, x, (ATermAppl) null);
+	}
+
+	/**
+	 * Return all property values for a given property and subject value.
+	 *
+	 * @param r
+	 * @param x
+	 * @return List of ATermAppl objects.
+	 */
+	public default List<ATermAppl> getPropertyValues(final ATermAppl r, final ATermAppl x)
+	{
+		if (null == r || null == x)
+			return Collections.emptyList();
+
+		final Role role = getRBox().getRole(r);
+
+		if (role == null || role.isUntypedRole())
+		{
+			Base.handleUndefinedEntity(r + _isNotAnKnowProperty);
+			return Collections.emptyList();
+		}
+
+		if (role.isObjectRole())
+			return getObjectPropertyValues(r, x);
+		else
+			if (role.isDatatypeRole())
+				return getDataPropertyValues(r, x);
+			else
+				if (role.isAnnotationRole())
+				{
+					final Set<ATermAppl> values = getAnnotations(x, r);
+					return values.isEmpty() ? Collections.<ATermAppl> emptyList() : Arrays.asList(values.toArray(new ATermAppl[0]));
+				}
+				else
+					throw new IllegalArgumentException();
+	}
+
+	public default Map<ATermAppl, List<ATermAppl>> getPropertyValues(final ATermAppl pred)
+	{
+		if (null == pred)
+			return Collections.emptyMap();
+
+		final Map<ATermAppl, List<ATermAppl>> result = new HashMap<>();
+
+		for (final ATermAppl subj : currentIndividuals())
+		{
+			final List<ATermAppl> objects = getPropertyValues(pred, subj);
+			if (!objects.isEmpty())
+				result.put(subj, objects);
+		}
+
+		return result;
+	}
+
+	/**
+	 * @param s subject
+	 * @param o object
+	 * @return all properties asserted between a subject and object.
+	 */
+	public default List<ATermAppl> getProperties(final ATermAppl s, final ATermAppl o)
+	{
+		if (!isIndividual(s))
+		{
+			Base.handleUndefinedEntity(s + _isNotAnIndividual);
+			return Collections.emptyList();
+		}
+
+		if (!isIndividual(o) && !ATermUtils.isLiteral(o))
+		{
+			Base.handleUndefinedEntity(o + _isNotAnIndividual);
+			return Collections.emptyList();
+		}
+
+		final List<ATermAppl> props = new ArrayList<>();
+
+		final Set<ATermAppl> allProps = ATermUtils.isLiteral(o) ? getDataProperties() : getObjectProperties();
+		for (final ATermAppl p : allProps)
+			if (getABox().hasPropertyValue(s, p, o))
+				props.add(p);
+
+		return props;
+	}
+
+	/**
+	 * Temporary method until we incorporate annotation properties to the taxonomy ([t:412])
+	 *
+	 * @param p
+	 * @return
+	 */
+	public default Set<ATermAppl> getSubAnnotationProperties(final ATermAppl p)
+	{
+		if (null == p)
+			return Collections.emptySet();
+
+		final Set<ATermAppl> values = new HashSet<>();
+
+		final List<ATermAppl> temp = new ArrayList<>();
+		temp.add(p);
+		while (!temp.isEmpty())
+		{
+			final ATermAppl value = temp.remove(0);
+			values.add(value);
+
+			for (final ATermAppl property : getAnnotationProperties())
+				if (value != property && isSubPropertyOf(property, value))
+					temp.add(property);
+		}
+
+		return values;
+	}
+
+	public default Set<ATermAppl> getAnnotations(final ATermAppl s, final ATermAppl p)
+	{
+		if (null == s || null == p)
+			return Collections.emptySet();
+
+		final Map<ATermAppl, Set<ATermAppl>> pidx = getAnnotations().get(s);
+
+		if (pidx == null)
+			return Collections.emptySet();
+
+		final Set<ATermAppl> values = new HashSet<>();
+
+		for (final ATermAppl subproperty : getSubAnnotationProperties(p))
+			if (pidx.get(subproperty) != null)
+				for (final ATermAppl value : pidx.get(subproperty))
+					values.add(value);
+
+		return values;
 	}
 }

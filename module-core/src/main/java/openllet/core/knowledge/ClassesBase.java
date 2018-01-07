@@ -12,6 +12,7 @@ import openllet.core.DependencySet;
 import openllet.core.boxes.rbox.Role;
 import openllet.core.taxonomy.Taxonomy;
 import openllet.core.taxonomy.TaxonomyUtils;
+import openllet.core.taxonomy.printer.ClassTreePrinter;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.Bool;
 import openllet.shared.tools.Logging;
@@ -23,7 +24,7 @@ public interface ClassesBase extends MessageBase, Logging, Base
 {
 
 	@Override
-	default boolean isSubClassOf(final ATermAppl subCls, final ATermAppl supCls)
+	public default boolean isSubClassOf(final ATermAppl subCls, final ATermAppl supCls)
 	{
 		if (null == subCls || null == supCls)
 			return false;
@@ -64,7 +65,7 @@ public interface ClassesBase extends MessageBase, Logging, Base
 	 * @param c2
 	 * @return true if class c1 is equivalent to class c2.
 	 */
-	default boolean isEquivalentClass(final ATermAppl c1, final ATermAppl c2)
+	public default boolean isEquivalentClass(final ATermAppl c1, final ATermAppl c2)
 	{
 		if (null == c1 || null == c2)
 			return false;
@@ -228,7 +229,7 @@ public interface ClassesBase extends MessageBase, Logging, Base
 	 * @param c
 	 * @return true if the term x is of the know type c (class)
 	 */
-	default Bool isKnownType(final ATermAppl x, final ATermAppl c)
+	public default Bool isKnownType(final ATermAppl x, final ATermAppl c)
 	{
 		if (null == x || null == c)
 			return Bool.FALSE;
@@ -249,7 +250,7 @@ public interface ClassesBase extends MessageBase, Logging, Base
 		return getABox().isKnownType(x, ATermUtils.normalize(c));
 	}
 
-	default boolean isType(final ATermAppl x, final ATermAppl c)
+	public default boolean isType(final ATermAppl x, final ATermAppl c)
 	{
 		if (null == x || null == c)
 			return false;
@@ -281,7 +282,7 @@ public interface ClassesBase extends MessageBase, Logging, Base
 		return getABox().isType(x, c);
 	}
 
-	default boolean hasRange(final ATermAppl p, final ATermAppl c)
+	public default boolean hasRange(final ATermAppl p, final ATermAppl c)
 	{
 		if (null == p || null == c)
 			return false;
@@ -295,7 +296,7 @@ public interface ClassesBase extends MessageBase, Logging, Base
 		return isSubClassOf(ATermUtils.TOP, allValues);
 	}
 
-	default boolean isDisjoint(final ATermAppl c1, final ATermAppl c2)
+	public default boolean isDisjoint(final ATermAppl c1, final ATermAppl c2)
 	{
 		if (null == c1 || null == c2)
 			return false;
@@ -309,7 +310,7 @@ public interface ClassesBase extends MessageBase, Logging, Base
 				return false;
 	}
 
-	default boolean isDisjointProperty(final ATermAppl r1, final ATermAppl r2)
+	public default boolean isDisjointProperty(final ATermAppl r1, final ATermAppl r2)
 	{
 		if (null == r1 || null == r2)
 			return false;
@@ -359,7 +360,7 @@ public interface ClassesBase extends MessageBase, Logging, Base
 		return !getABox().isSatisfiable(test);
 	}
 
-	default boolean isDisjointClass(final ATermAppl c1, final ATermAppl c2)
+	public default boolean isDisjointClass(final ATermAppl c1, final ATermAppl c2)
 	{
 		if (null == c1 || null == c2)
 			return false;
@@ -369,7 +370,7 @@ public interface ClassesBase extends MessageBase, Logging, Base
 		return isSubClassOf(c1, notC2);
 	}
 
-	default boolean isComplement(final ATermAppl c1, final ATermAppl c2)
+	public default boolean isComplement(final ATermAppl c1, final ATermAppl c2)
 	{
 		if (null == c1 || null == c2)
 			return false;
@@ -380,7 +381,7 @@ public interface ClassesBase extends MessageBase, Logging, Base
 	}
 
 	@Override
-	default Set<Set<ATermAppl>> getSuperClasses(final ATermAppl cParam, final boolean direct)
+	public default Set<Set<ATermAppl>> getSuperClasses(final ATermAppl cParam, final boolean direct)
 	{
 		if (null == cParam)
 			return Collections.emptySet();
@@ -406,5 +407,35 @@ public interface ClassesBase extends MessageBase, Logging, Base
 				.map(ATermUtils::primitiveOrBottom)//
 				.filter(supEqSet -> !supEqSet.isEmpty())//
 				.collect(Collectors.toSet());
+	}
+
+	/**
+	 * Returns all the classes that are equivalent to class c, excluding c itself.
+	 * <p>
+	 * *** This function will first classify the whole ontology ***
+	 * </p>
+	 *
+	 * @param c class whose equivalent classes are found
+	 * @return A set of ATerm objects
+	 */
+	public default Set<ATermAppl> getEquivalentClasses(final ATermAppl c)
+	{
+		if (null == c)
+			return Collections.emptySet();
+
+		final Set<ATermAppl> result = getAllEquivalentClasses(c);
+		result.remove(c);
+
+		return result;
+	}
+
+	/**
+	 * Print the class hierarchy on the standard output.
+	 */
+	public default void printClassTree()
+	{
+		classify();
+
+		new ClassTreePrinter().print(getTaxonomyBuilder().getTaxonomy());
 	}
 }

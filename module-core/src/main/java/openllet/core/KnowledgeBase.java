@@ -129,15 +129,6 @@ public interface KnowledgeBase extends InstancesBase, PropertiesBase, ClassesBas
 	 */
 	public Set<Rule> getRules();
 
-	public Map<ATermAppl, List<ATermAppl>> getPropertyValues(final ATermAppl pred);
-
-	/**
-	 * @param s
-	 * @param o
-	 * @return all properties asserted between a subject and object.
-	 */
-	public List<ATermAppl> getProperties(final ATermAppl s, final ATermAppl o);
-
 	public void addProperty(final ATermAppl p);
 
 	/**
@@ -153,35 +144,6 @@ public interface KnowledgeBase extends InstancesBase, PropertiesBase, ClassesBas
 
 	public boolean hasPropertyValue(final ATermAppl s, final ATermAppl p, final ATermAppl o);
 
-	/**
-	 * Return all property values for a given property and subject value.
-	 *
-	 * @param r
-	 * @param x
-	 * @return List of ATermAppl objects.
-	 */
-	public List<ATermAppl> getPropertyValues(final ATermAppl r, final ATermAppl x);
-
-	/**
-	 * The results of this function is not guaranteed to be complete. Use {@link #hasDomain(ATermAppl, ATermAppl)} to get complete answers.
-	 *
-	 * @param name
-	 * @return the domain restrictions on the property.
-	 */
-	public Set<ATermAppl> getDomains(final ATermAppl name);
-
-	/**
-	 * The results of this function is not guaranteed to be complete. Use {@link #hasRange(ATermAppl, ATermAppl)} to get complete answers.
-	 *
-	 * @param name
-	 * @return the domain restrictions on the property.
-	 */
-	public Set<ATermAppl> getRanges(final ATerm name);
-
-	public Set<ATermAppl> getIndividualsWithAnnotation(final ATermAppl p, final ATermAppl o);
-
-	public Set<ATermAppl> getAnnotations(final ATermAppl s, final ATermAppl p);
-
 	public boolean isAnnotation(final ATermAppl s, final ATermAppl p, final ATermAppl o);
 
 	public Taxonomy<ATermAppl> getToldTaxonomy();
@@ -189,15 +151,6 @@ public interface KnowledgeBase extends InstancesBase, PropertiesBase, ClassesBas
 	public Map<ATermAppl, Set<ATermAppl>> getToldDisjoints();
 
 	// ----------------------------------------- Get Classification result -----------------------------------------------------
-
-	/**
-	 * Returns the (named) classes individual belongs to. Depending on the second parameter the result will include either all types or only the direct types.
-	 *
-	 * @param ind An individual name
-	 * @param direct If true return only the direct types, otherwise return all types
-	 * @return A set of sets, where each set in the collection represents an equivalence class. The elements of the inner class are ATermAppl objects.
-	 */
-	public Set<Set<ATermAppl>> getTypes(final ATermAppl ind, final boolean direct);
 
 	/**
 	 * Get all the (named) classes _individual belongs to.
@@ -238,22 +191,6 @@ public interface KnowledgeBase extends InstancesBase, PropertiesBase, ClassesBas
 	 * @return true if there is at least one named individual that belongs to the given class
 	 */
 	public boolean hasInstance(final ATerm c);
-
-	/**
-	 * @param name
-	 * @return all the individuals asserted to be equal to the given individual including the individual itself.
-	 */
-	public Set<ATermAppl> getAllSames(final ATermAppl name);
-
-	/**
-	 * List all subjects with a given property and property value.
-	 *
-	 * @param r
-	 * @param x If property is an object property an ATermAppl object that is the URI of the _individual, if the property is a _data property an ATerm object
-	 *        that contains the literal value (See {#link #getIndividualsWithDataProperty(ATermAppl, ATermAppl)} for details)
-	 * @return List of ATermAppl objects.
-	 */
-	public List<ATermAppl> getIndividualsWithProperty(final ATermAppl r, final ATermAppl x);
 
 	// -------------------------------------------------- ADD CHANGE --------------------------------------------------------------
 
@@ -373,17 +310,6 @@ public interface KnowledgeBase extends InstancesBase, PropertiesBase, ClassesBas
 	// ----------------------------------------- Consulting -----------------------------------------------------
 
 	/**
-	 * Returns all the classes that are equivalent to class c, excluding c itself.
-	 * <p>
-	 * *** This function will first classify the whole ontology ***
-	 * </p>
-	 *
-	 * @param c class whose equivalent classes are found
-	 * @return A set of ATerm objects
-	 */
-	public Set<ATermAppl> getEquivalentClasses(final ATermAppl c);
-
-	/**
 	 * Returns all the superclasses (implicitly or explicitly defined) of class c. The class c itself is not included in the list. but all the other classes
 	 * that are sameAs c are put into the list. Also note that the returned list will always have at least one element, that is TOP concept. By definition TOP
 	 * concept is superclass of every concept. This function is equivalent to calling getSuperClasses(c, true).
@@ -416,39 +342,6 @@ public interface KnowledgeBase extends InstancesBase, PropertiesBase, ClassesBas
 
 	public boolean isDifferentFrom(final ATermAppl t1, final ATermAppl t2);
 
-	/**
-	 * Return all literal values for a given dataproperty that belongs to the specified datatype.
-	 *
-	 * @param r
-	 * @param lang
-	 * @param datatype
-	 * @return List of ATermAppl objects representing literals. These objects are in the form literal(value, lang, datatypeURI).
-	 */
-	public List<ATermAppl> getDataPropertyValues(final ATermAppl r, final ATermAppl lang, final ATermAppl datatype);
-
-	/**
-	 * Return all literal values for a given dataproperty and subject value.
-	 *
-	 * @param r
-	 * @param x
-	 * @return List of ATermAppl objects.
-	 */
-	public default List<ATermAppl> getDataPropertyValues(final ATermAppl r, final ATermAppl x)
-	{
-		return getDataPropertyValues(r, x, (ATermAppl) null);
-	}
-
-	/**
-	 * Return all property values for a given object property and subject value.
-	 *
-	 * @param r
-	 * @param x
-	 * @return A list of ATermAppl objects
-	 */
-	public List<ATermAppl> getObjectPropertyValues(final ATermAppl r, final ATermAppl x);
-
-	public Stream<ATermAppl> objectPropertyValues(final ATermAppl r, final ATermAppl x);
-
 	public Set<Set<ATermAppl>> getDisjointProperties(final ATermAppl p);
 
 	// ----------------------------------------- Consulting State -----------------------------------------------------
@@ -474,11 +367,6 @@ public interface KnowledgeBase extends InstancesBase, PropertiesBase, ClassesBas
 	 * @return A copy of this KB
 	 */
 	public KnowledgeBase copy(final boolean emptyABox);
-
-	/**
-	 * Print the class hierarchy on the standard output.
-	 */
-	public void printClassTree();
 
 	public enum ChangeType
 	{

@@ -14,6 +14,7 @@ import openllet.aterm.ATermList;
 import openllet.atom.OpenError;
 import openllet.core.OpenlletOptions;
 import openllet.core.OpenlletOptions.InstanceRetrievalMethod;
+import openllet.core.boxes.abox.Individual;
 import openllet.core.boxes.rbox.Role;
 import openllet.core.taxonomy.Taxonomy;
 import openllet.core.taxonomy.TaxonomyUtils;
@@ -40,6 +41,7 @@ public interface InstancesBase extends MessageBase, Logging, Base
 				results.add(ind);
 	}
 
+	@Override
 	default void binaryInstanceRetrieval(final ATermAppl c, final List<ATermAppl> candidates, final Collection<ATermAppl> results)
 	{
 		if (null == c || null == candidates || null == results)
@@ -340,5 +342,87 @@ public interface InstancesBase extends MessageBase, Logging, Base
 				result.add(ind);
 
 		return result;
+	}
+
+	/**
+	 * Returns the (named) classes individual belongs to. Depending on the second parameter the result will include either all types or only the direct types.
+	 *
+	 * @param ind An _individual name
+	 * @param direct If true return only the direct types, otherwise return all types
+	 * @return A set of sets, where each set in the collection represents an equivalence class. The elements of the inner class are ATermAppl objects.
+	 */
+	public default Set<Set<ATermAppl>> getTypes(final ATermAppl ind, final boolean direct)
+	{
+		if (null == ind)
+			return Collections.emptySet();
+
+		if (!isIndividual(ind))
+		{
+			Base.handleUndefinedEntity(ind + _isNotAnIndividual);
+			return Collections.emptySet();
+		}
+
+		if (OpenlletOptions.AUTO_REALIZE)
+			realize();
+
+		Set<Set<ATermAppl>> types = isClassified() ? getPrimitiveTypes(ind, direct) : Collections.<Set<ATermAppl>> emptySet();
+
+		if (types.isEmpty() && !OpenlletOptions.AUTO_REALIZE)
+		{
+			classify();
+			getTaxonomyBuilder().realize(ind);
+			types = getPrimitiveTypes(ind, direct);
+		}
+
+		return types;
+	}
+
+	public default Set<Set<ATermAppl>> getPrimitiveTypes(final ATermAppl ind, final boolean direct)
+	{
+		final Set<Set<ATermAppl>> types = new HashSet<>();
+		for (final Set<ATermAppl> t : TaxonomyUtils.getTypes(getTaxonomyBuilder().getTaxonomy(), ind, direct))
+		{
+			final Set<ATermAppl> eqSet = ATermUtils.primitiveOrBottom(t);
+			if (!eqSet.isEmpty())
+				types.add(eqSet);
+		}
+		return types;
+	}
+
+	/**
+	 * @param name
+	 * @return all the indviduals asserted to be equal to the given individual inluding the individual itself.
+	 */
+	public default Set<ATermAppl> getAllSames(final ATermAppl name)
+	{
+		if (null == name)
+			return Collections.emptySet();
+
+		ensureConsistency();
+
+		final Set<ATermAppl> knowns = new HashSet<>();
+		final Set<ATermAppl> unknowns = new HashSet<>();
+
+		final Individual ind = getABox().getIndividual(name);
+		if (ind == null)
+		{
+			Base.handleUndefinedEntity(name + _isNotAnIndividual);
+			return Collections.emptySet();
+		}
+
+		if (ind.isMerged() && !ind.getMergeDependency(true).isIndependent())
+		{
+			knowns.add(name);
+			getABox().getSames(ind.getSame(), unknowns, unknowns);
+			unknowns.remove(name);
+		}
+		else
+			getABox().getSames(ind.getSame(), knowns, unknowns);
+
+		for (final ATermAppl other : unknowns)
+			if (getABox().isSameAs(name, other))
+				knowns.add(other);
+
+		return knowns;
 	}
 }

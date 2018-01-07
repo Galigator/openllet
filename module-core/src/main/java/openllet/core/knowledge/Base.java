@@ -1,8 +1,10 @@
 package openllet.core.knowledge;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -84,7 +86,7 @@ public interface Base extends Boxes
 
 	public DatatypeVisitor getDatatypeVisitor();
 
-	default TaxonomyBuilder getTaxonomyBuilder()
+	public default TaxonomyBuilder getTaxonomyBuilder()
 	{
 		if (!getOptTaxonomyBuilder().isPresent())
 		{
@@ -124,19 +126,19 @@ public interface Base extends Boxes
 	 * @param direct
 	 * @return A set of sets, where each set in the collection represents an equivalence class. The elements of the inner class are ATermAppl objects.
 	 */
-	Set<Set<ATermAppl>> getSuperClasses(final ATermAppl cParam, final boolean direct);
+	public Set<Set<ATermAppl>> getSuperClasses(final ATermAppl cParam, final boolean direct);
 
 	/**
 	 * @param subCls
 	 * @param supCls
 	 * @return true if class subCls is subclass of class supCls.
 	 */
-	boolean isSubClassOf(final ATermAppl subCls, final ATermAppl supCls);
+	public boolean isSubClassOf(final ATermAppl subCls, final ATermAppl supCls);
 
 	/**
 	 * @return the set of all properties.
 	 */
-	default Set<ATermAppl> getProperties()
+	public default Set<ATermAppl> getProperties()
 	{
 		final Set<ATermAppl> set = new HashSet<>();
 		for (final Role role : getRBox().getRoles().values())
@@ -151,18 +153,18 @@ public interface Base extends Boxes
 	/**
 	 * @return the set of key values of the annotations map
 	 */
-	default Set<ATermAppl> getAnnotationSubjects()
+	public default Set<ATermAppl> getAnnotationSubjects()
 	{
 		return getAnnotations().keySet();
 	}
 
-	default PropertyType getPropertyType(final ATerm r)
+	public default PropertyType getPropertyType(final ATerm r)
 	{
 		final Role role = getProperty(r);
 		return role == null ? PropertyType.UNTYPED : role.getType();
 	}
 
-	default boolean isClass(final ATerm c)
+	public default boolean isClass(final ATerm c)
 	{
 
 		if (getTBox().getClasses().contains(c) || c.equals(ATermUtils.TOP))
@@ -174,12 +176,12 @@ public interface Base extends Boxes
 				return false;
 	}
 
-	default boolean isDatatypeProperty(final ATerm p)
+	public default boolean isDatatypeProperty(final ATerm p)
 	{
 		return null != p && getPropertyType(p) == PropertyType.DATATYPE;
 	}
 
-	default boolean isDatatype(final ATermAppl c)
+	public default boolean isDatatype(final ATermAppl c)
 	{
 		if (null == c)
 			return false;
@@ -187,12 +189,12 @@ public interface Base extends Boxes
 		return getDatatypeVisitor().isDatatype(c);
 	}
 
-	default boolean isObjectProperty(final ATerm p)
+	public default boolean isObjectProperty(final ATerm p)
 	{
 		return null != p && getPropertyType(p) == PropertyType.OBJECT;
 	}
 
-	default boolean isABoxProperty(final ATerm p)
+	public default boolean isABoxProperty(final ATerm p)
 	{
 		if (null == p)
 			return false;
@@ -201,7 +203,7 @@ public interface Base extends Boxes
 		return type == PropertyType.OBJECT || type == PropertyType.DATATYPE;
 	}
 
-	default boolean isAnnotationProperty(final ATerm p)
+	public default boolean isAnnotationProperty(final ATerm p)
 	{
 		return p != null && getPropertyType(p) == PropertyType.ANNOTATION;
 	}
@@ -272,4 +274,6 @@ public interface Base extends Boxes
 	{
 		return getABox().getExplanation();
 	}
+
+	public void binaryInstanceRetrieval(final ATermAppl c, final List<ATermAppl> candidates, final Collection<ATermAppl> results);
 }
