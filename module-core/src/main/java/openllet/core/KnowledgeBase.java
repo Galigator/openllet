@@ -218,26 +218,6 @@ public interface KnowledgeBase extends InstancesBase, PropertiesBase, ClassesBas
 	public void addType(final ATermAppl i, final ATermAppl c);
 
 	/**
-	 * Returns the (named) subclasses of class c. Depending on the second parameter the result will include either all subclasses or only the direct subclasses.
-	 * A class d is a direct subclass of c iff
-	 * <ol>
-	 * <li>d is subclass of c</li>
-	 * <li>there is no other class x different from c and d such that x is subclass of c and d is subclass of x</li>
-	 * </ol>
-	 * The class c itself is not included in the list but all the other classes that are sameAs c are put into the list. Also note that the returned list will
-	 * always have at least one element. The list will either include one other concept from the hierarchy or the BOTTOM concept if no other class is subsumed
-	 * by c. By definition BOTTOM concept is subclass of every concept.
-	 * <p>
-	 * *** This function will first classify the whole ontology ***
-	 * </p>
-	 *
-	 * @param c class whose subclasses are returned
-	 * @param direct If true return only the direct subclasses, otherwise return all the subclasses
-	 * @return A set of sets, where each set in the collection represents an equivalence class. The elements of the inner class are ATermAppl objects.
-	 */
-	public Set<Set<ATermAppl>> getSubClasses(final ATermAppl c, final boolean direct);
-
-	/**
 	 * Returns all the (named) subclasses of class c. The class c itself is not included in the list but all the other classes that are equivalent to c are put
 	 * into the list. Also note that the returned list will always have at least one element, that is the BOTTOM concept. By definition BOTTOM concept is
 	 * subclass of every concept. This function is equivalent to calling getSubClasses(c, true).
@@ -404,17 +384,6 @@ public interface KnowledgeBase extends InstancesBase, PropertiesBase, ClassesBas
 	public Set<ATermAppl> getEquivalentClasses(final ATermAppl c);
 
 	/**
-	 * Returns all the classes that are equivalent to class c, including c itself.
-	 * <p>
-	 * *** This function will first classify the whole ontology ***
-	 * </p>
-	 *
-	 * @param c class whose equivalent classes are found
-	 * @return A set of ATerm objects
-	 */
-	public Set<ATermAppl> getAllEquivalentClasses(final ATermAppl c);
-
-	/**
 	 * Returns all the superclasses (implicitly or explicitly defined) of class c. The class c itself is not included in the list. but all the other classes
 	 * that are sameAs c are put into the list. Also note that the returned list will always have at least one element, that is TOP concept. By definition TOP
 	 * concept is superclass of every concept. This function is equivalent to calling getSuperClasses(c, true).
@@ -429,8 +398,6 @@ public interface KnowledgeBase extends InstancesBase, PropertiesBase, ClassesBas
 	{
 		return getSuperClasses(c, false);
 	}
-
-	public Set<Set<ATermAppl>> getDisjointClasses(final ATermAppl c, final boolean direct);
 
 	public default Set<Set<ATermAppl>> getDisjointClasses(final ATermAppl c)
 	{

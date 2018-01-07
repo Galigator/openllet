@@ -4,6 +4,7 @@ import static openllet.core.utils.TermFactory.and;
 import static openllet.core.utils.TermFactory.some;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import openllet.aterm.ATermAppl;
@@ -109,6 +110,114 @@ public interface ClassesBase extends MessageBase, Logging, Base
 		final ATermAppl test = ATermUtils.makeOr(c1NotC2, c2NotC1);
 
 		return !isSatisfiable(test);
+	}
+
+	/**
+	 * Returns the (named) subclasses of class c. Depending on the second parameter the result will include either all subclasses or only the direct subclasses.
+	 * A class d is a direct subclass of c iff
+	 * <ol>
+	 * <li>d is subclass of c</li>
+	 * <li>there is no other class x different from c and d such that x is subclass of c and d is subclass of x</li>
+	 * </ol>
+	 * The class c itself is not included in the list but all the other classes that are sameAs c are put into the list. Also note that the returned list will
+	 * always have at least one element. The list will either include one other concept from the hierarchy or the BOTTOM concept if no other class is subsumed
+	 * by c. By definition BOTTOM concept is subclass of every concept.
+	 * <p>
+	 * *** This function will first classify the whole ontology ***
+	 * </p>
+	 *
+	 * @param c class whose subclasses are returned
+	 * @param direct If true return only the direct subclasses, otherwise return all the subclasses
+	 * @return A set of sets, where each set in the collection represents an equivalence class. The elements of the inner class are ATermAppl objects.
+	 */
+	public default Set<Set<ATermAppl>> getSubClasses(final ATermAppl c, final boolean direct)
+	{
+		if (null == c)
+			return Collections.emptySet();
+
+		if (!isClass(c))
+		{
+			Base.handleUndefinedEntity(c + _isNotAnClass);
+			return Collections.emptySet();
+		}
+
+		final ATermAppl normalC = ATermUtils.normalize(c);
+
+		classify();
+
+		final Taxonomy<ATermAppl> taxonomy = getTaxonomyBuilder().getTaxonomy();
+
+		if (!taxonomy.contains(normalC))
+			getTaxonomyBuilder().classify(normalC);
+
+		final Set<Set<ATermAppl>> subs = new HashSet<>();
+		for (final Set<ATermAppl> s : taxonomy.getSubs(normalC, direct))
+		{
+			final Set<ATermAppl> subEqSet = ATermUtils.primitiveOrBottom(s);
+			if (!subEqSet.isEmpty())
+				subs.add(subEqSet);
+		}
+
+		return subs;
+	}
+
+	public default Set<Set<ATermAppl>> getDisjointClasses(final ATermAppl c, final boolean direct)
+	{
+		if (null == c)
+			return Collections.emptySet();
+
+		if (!isClass(c))
+		{
+			Base.handleUndefinedEntity(c + _isNotAnClass);
+			return Collections.emptySet();
+		}
+
+		final ATermAppl notC = ATermUtils.normalize(ATermUtils.makeNot(c));
+
+		final Set<ATermAppl> complements = getAllEquivalentClasses(notC);
+		if (notC.equals(ATermUtils.BOTTOM))
+			complements.add(ATermUtils.BOTTOM);
+		if (direct && !complements.isEmpty())
+			return Collections.singleton(complements);
+
+		final Set<Set<ATermAppl>> disjoints = getSubClasses(notC, direct);
+
+		if (!complements.isEmpty())
+			disjoints.add(complements);
+
+		return disjoints;
+	}
+
+	/**
+	 * Returns all the classes that are equivalent to class c, including c itself.
+	 * <p>
+	 * *** This function will first classify the whole ontology ***
+	 * </p>
+	 *
+	 * @param c class whose equivalent classes are found
+	 * @return A set of ATerm objects
+	 */
+	public default Set<ATermAppl> getAllEquivalentClasses(final ATermAppl c)
+	{
+		if (null == c)
+			return Collections.emptySet();
+
+		if (!isClass(c))
+		{
+			Base.handleUndefinedEntity(c + _isNotAnClass);
+			return Collections.emptySet();
+		}
+
+		final ATermAppl normalC = ATermUtils.normalize(c);
+
+		classify();
+
+		final Taxonomy<ATermAppl> taxonomy = getTaxonomyBuilder().getTaxonomy();
+
+		if (!taxonomy.contains(normalC))
+			getTaxonomyBuilder().classify(normalC);
+
+		return ATermUtils.primitiveOrBottom(taxonomy.getAllEquivalents(normalC));
 	}
 
 	/**
