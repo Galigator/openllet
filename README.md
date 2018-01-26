@@ -30,9 +30,9 @@ Openllet 2.6.X:
 * Enforce interface usage in the core system.
 * Lighter hash functions and less conflict when use in multi-thread environnement.
 
-### Migration :
+### Migration :
 
-* lots of com.clarkparsia.* / com.mindswap.* are refactor into openllet.* to avoid conflict has typing change a lot.
+* lots of com.clarkparsia.* / com.mindswap.* are refactored into openllet.* to avoid conflicts and have typing changed a lot.
 * dependencies on modern libs.
 
 ```xml
@@ -50,7 +50,7 @@ Openllet 2.6.X:
 
 NB, the Protege plugin need a Protege that work with an 5.1.X version of the OWL-API, so the main branch of Protege isn't compatible with Openllet.
 
-### Roadmap :
+### Roadmap :
 
 * Fullify strong typing in openllet core (2.7.X).
 * Add support for sesame/rdf4j reasoning (2.8.X).
@@ -98,7 +98,7 @@ Play with Jena:
 Openllet 2.5.X:
 -----------
 
-* full java 8 support, java 8 is a requierement.
+* full java 8 support, java 8 is a requirement.
 * speed and stability improvement
 
 Changes :
