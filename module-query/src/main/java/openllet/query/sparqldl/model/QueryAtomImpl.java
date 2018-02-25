@@ -49,8 +49,7 @@ public class QueryAtomImpl implements QueryAtom
 
 		_predicate = predicate;
 		_arguments = arguments;
-		// this.vars = new HashSet<ATermAppl>();
-		//
+
 		_ground = true;
 		for (final ATermAppl a : arguments)
 			if (ATermUtils.isVar(a))
@@ -79,13 +78,6 @@ public class QueryAtomImpl implements QueryAtom
 		return _arguments;
 	}
 
-	// /**
-	// * {@inheritDoc}
-	// */
-	// public Set<ATermAppl> getVariables() {
-	// return vars;
-	// }
-	//
 	/**
 	 * {@inheritDoc}
 	 */

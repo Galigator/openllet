@@ -36,7 +36,7 @@ public class QuerySizeEstimator
 
 		final Set<ATermAppl> concepts = new HashSet<>();
 		final Set<ATermAppl> properties = new HashSet<>();
-		//		boolean fullDone = false;
+
 		for (final QueryAtom atom : query.getAtoms())
 			for (final ATermAppl argument : atom.getArguments())
 				if (!ATermUtils.isVar(argument))

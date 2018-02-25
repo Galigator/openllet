@@ -60,8 +60,7 @@ public abstract class AbstractABoxEngineWrapper implements QueryExec
 	@Override
 	public QueryResult exec(final Query query)
 	{
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Executing query " + query.getAtoms());
+		_logger.fine(() -> "Executing query " + query.getAtoms());
 
 		partitionQuery(query);
 
@@ -78,8 +77,7 @@ public abstract class AbstractABoxEngineWrapper implements QueryExec
 		}
 		else
 		{
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("Executing TBox query: " + schemaQuery);
+			_logger.fine(() -> "Executing TBox query: " + schemaQuery);
 			result = distCombinedQueryExec.exec(schemaQuery);
 
 			shouldHaveBinding = openllet.core.utils.SetUtils.intersects(query.getDistVarsForType(VarType.CLASS), query.getResultVars()) || openllet.core.utils.SetUtils.intersects(query.getDistVarsForType(VarType.PROPERTY), query.getResultVars());
@@ -87,8 +85,7 @@ public abstract class AbstractABoxEngineWrapper implements QueryExec
 		if (shouldHaveBinding && result.isEmpty())
 			return result;
 
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Partial _binding after schema query : " + result);
+		_logger.fine(() -> "Partial _binding after schema query : " + result);
 
 		if (aboxQuery.getAtoms().size() > 0)
 		{
@@ -113,8 +110,7 @@ public abstract class AbstractABoxEngineWrapper implements QueryExec
 		else
 		{
 			newResult = result;
-			if (_logger.isLoggable(Level.FINER))
-				_logger.finer("ABox query empty ... returning.");
+			_logger.finer("ABox query empty ... returning.");
 		}
 		return newResult;
 	}

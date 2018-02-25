@@ -22,9 +22,6 @@ import openllet.query.sparqldl.model.Query.VarType;
  * Title: Implementation of the Core of undistinguished variables.
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>

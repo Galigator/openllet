@@ -29,7 +29,7 @@ import openllet.query.sparqldl.model.UnionQueryAtom;
  * Title: AtomCostImpl
  * </p>
  * <p>
- * Description: Computes the cost _estimate for given atom.
+ * Description: Computes the cost estimate for given atom.
  * </p>
  * <p>
  * Copyright: Copyright (c) 2007
@@ -190,7 +190,7 @@ public class QueryCost
 										 * complexity of the concept.
 										 */
 										+ (isConstant(predicate) ? _estimate.avg(predicate) : _estimate.avgSubjectsPerProperty()) * _estimate.getCost(KBOperation.GET_PROPERTY_VALUE);
-								_branchCount = (isConstant(predicate) ? _estimate.size(predicate) : _estimate.avgPairsPerProperty());
+								_branchCount = isConstant(predicate) ? _estimate.size(predicate) : _estimate.avgPairsPerProperty();
 							}
 					}
 					else

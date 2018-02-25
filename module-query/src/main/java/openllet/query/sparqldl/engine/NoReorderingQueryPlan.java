@@ -15,9 +15,6 @@ import openllet.query.sparqldl.model.ResultBinding;
  * Title: Query Plan that returns the atoms in the _order as they appear in the query.
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>

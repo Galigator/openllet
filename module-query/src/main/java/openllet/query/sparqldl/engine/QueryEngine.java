@@ -100,22 +100,19 @@ public class QueryEngine
 		query.getKB().ensureConsistency();
 
 		// PREPROCESSING
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Preprocessing:\n" + query);
+		_logger.fine(() -> "Preprocessing:\n" + query);
 		final Query preprocessed = preprocess(query);
 
 		// SIMPLIFICATION
 		if (OpenlletOptions.SIMPLIFY_QUERY)
 		{
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("Simplifying:\n" + preprocessed);
+			_logger.fine(() -> "Simplifying:\n" + preprocessed);
 
 			simplify(preprocessed);
 		}
 
 		// SPLITTING
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Splitting:\n" + preprocessed);
+		_logger.fine(() -> "Splitting:\n" + preprocessed);
 
 		final List<Query> queries = split(preprocessed);
 
@@ -141,8 +138,7 @@ public class QueryEngine
 	{
 		if (!ATermUtils.isVar(t) && !kb.isObjectProperty(t))
 		{
-			if (_logger.isLoggable(Level.WARNING))
-				_logger.warning("Undefined object property used in query: " + t);
+			_logger.warning("Undefined object property used in query: " + t);
 			return false;
 		}
 
@@ -153,8 +149,7 @@ public class QueryEngine
 	{
 		if (!ATermUtils.isVar(t) && !kb.isDatatypeProperty(t))
 		{
-			if (_logger.isLoggable(Level.WARNING))
-				_logger.warning("Undefined datatype property used in query: " + t);
+			_logger.warning("Undefined datatype property used in query: " + t);
 			return false;
 		}
 
@@ -165,8 +160,7 @@ public class QueryEngine
 	{
 		if (!ATermUtils.isVar(t) && !kb.isAnnotationProperty(t))
 		{
-			if (_logger.isLoggable(Level.WARNING))
-				_logger.warning("Undefined annotation property used in query: " + t);
+			_logger.warning("Undefined annotation property used in query: " + t);
 			return false;
 		}
 
@@ -177,8 +171,7 @@ public class QueryEngine
 	{
 		if (!ATermUtils.isVar(t) && !kb.isObjectProperty(t) && !kb.isDatatypeProperty(t) && !kb.isAnnotationProperty(t))
 		{
-			if (_logger.isLoggable(Level.WARNING))
-				_logger.warning("Not an object/data/annotation property: " + t);
+			_logger.warning("Not an object/data/annotation property: " + t);
 			return false;
 		}
 
@@ -189,8 +182,7 @@ public class QueryEngine
 	{
 		if (!ATermUtils.isVar(t) && !kb.isIndividual(t))
 		{
-			if (_logger.isLoggable(Level.WARNING))
-				_logger.warning("Undefined _individual used in query: " + t);
+			_logger.warning("Undefined _individual used in query: " + t);
 			return false;
 		}
 
@@ -201,8 +193,7 @@ public class QueryEngine
 	{
 		if (!ATermUtils.isVar(t) && !kb.isClass(t))
 		{
-			if (_logger.isLoggable(Level.WARNING))
-				_logger.warning("Undefined class used in query: " + t);
+			_logger.warning("Undefined class used in query: " + t);
 			return false;
 		}
 
@@ -213,8 +204,7 @@ public class QueryEngine
 	{
 		if (!ATermUtils.isVar(t) && !kb.isDatatype(t))
 		{
-			if (_logger.isLoggable(Level.WARNING))
-				_logger.warning("Undefined datatype used in query: " + t);
+			_logger.warning("Undefined datatype used in query: " + t);
 			return false;
 		}
 
@@ -225,8 +215,7 @@ public class QueryEngine
 	{
 		final List<ATermAppl> args = atom.getArguments();
 
-		// TODO in various parts object/data property checks should be
-		// strengthened
+		// TODO in various parts object/data property checks should be strengthened
 		switch (atom.getPredicate())
 		{
 			case Type:
@@ -265,7 +254,7 @@ public class QueryEngine
 			case Domain:
 				return isProperty(args.get(0), kb) && isClass(args.get(1), kb);
 			case Range:
-				return (isObjectProperty(args.get(0), kb) && isClass(args.get(1), kb)) || (isDatatypeProperty(args.get(0), kb) && isDatatype(args.get(1), kb));
+				return isObjectProperty(args.get(0), kb) && isClass(args.get(1), kb) || isDatatypeProperty(args.get(0), kb) && isDatatype(args.get(1), kb);
 
 			case SubPropertyOf:
 			case EquivalentProperty:
@@ -320,12 +309,6 @@ public class QueryEngine
 	{
 		if (hasUndefinedTerm(query))
 			return new QueryResultImpl(query);
-
-		// if (PelletOptions.SAMPLING_RATIO > 0) {
-		// if (_logger.isLoggable( Level.FINE ))
-		// _logger.fine("Reorder\n" + query);
-		//
-		// query = reorder(query);
 
 		return getQueryExec().exec(query);
 	}
@@ -566,7 +549,7 @@ public class QueryEngine
 				if (!ATermUtils.isVar(clazz))
 				{
 					final Set<ATermAppl> inferred = allInferredTypes.get(inst);
-					if ((inferred != null) && !inferred.isEmpty())
+					if (inferred != null && !inferred.isEmpty())
 						if (inferred.contains(clazz))
 							query.remove(atom);
 						else

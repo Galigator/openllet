@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
+import openllet.core.boxes.abox.ABoxStats;
 import openllet.query.sparqldl.model.Query;
 import openllet.query.sparqldl.model.Query.VarType;
 import openllet.query.sparqldl.model.QueryResult;
@@ -52,9 +53,9 @@ public class SimpleQueryEngine extends AbstractABoxEngineWrapper
 	{
 		final QueryResult results = new QueryResultImpl(q);
 		final KnowledgeBase kb = q.getKB();
-
-		final long satCount = kb.getABox().getStats()._satisfiabilityCount;
-		final long consCount = kb.getABox().getStats()._consistencyCount;
+		final ABoxStats stats = kb.getABox().getStats();
+		final long satCount = stats._satisfiabilityCount;
+		final long consCount = stats._consistencyCount;
 
 		if (q.getDistVars().isEmpty())
 		{
@@ -69,14 +70,12 @@ public class SimpleQueryEngine extends AbstractABoxEngineWrapper
 			{
 				final ATermAppl rolledUpClass = q.rollUpTo(currVar, Collections.emptySet(), false);
 
-				if (_logger.isLoggable(Level.FINER))
-					_logger.finer("Rolled up class " + rolledUpClass);
+				_logger.finer(() -> "Rolled up class " + rolledUpClass);
 				final Set<ATermAppl> inst = kb.getInstances(rolledUpClass);
 				varBindings.put(currVar, inst);
 			}
 
-			if (_logger.isLoggable(Level.FINER))
-				_logger.finer("Var bindings: " + varBindings);
+			_logger.finer(() -> "Var bindings: " + varBindings);
 
 			final Iterator<ResultBinding> i = new BindingIterator(varBindings);
 
@@ -103,7 +102,7 @@ public class SimpleQueryEngine extends AbstractABoxEngineWrapper
 				while (i.hasNext())
 				{
 					final ResultBinding b = i.next();
-					final boolean queryTrue = (q.getDistVarsForType(VarType.INDIVIDUAL).size() == 1) || QueryEngine.execBooleanABoxQuery(q.apply(b));
+					final boolean queryTrue = q.getDistVarsForType(VarType.INDIVIDUAL).size() == 1 || QueryEngine.execBooleanABoxQuery(q.apply(b));
 					if (queryTrue)
 						results.add(b);
 				}

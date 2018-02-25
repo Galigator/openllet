@@ -6,7 +6,6 @@
 
 package openllet.query.sparqldl.engine;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.core.OpenlletOptions;
 import openllet.query.sparqldl.model.Query;
@@ -15,9 +14,6 @@ import openllet.shared.tools.Log;
 /**
  * <p>
  * Title: Optimizer of the query. Provides query atoms for the engine in particular ordering.
- * </p>
- * <p>
- * Description:
  * </p>
  * <p>
  * Copyright: Copyright (c) 2007
@@ -40,14 +36,12 @@ public class QueryOptimizer
 
 		if (query.getAtoms().size() > OpenlletOptions.STATIC_REORDERING_LIMIT)
 		{
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("Using incremental query plan.");
+			_logger.fine("Using incremental query plan.");
 			return new IncrementalQueryPlan(query);
 		}
 		else
 		{
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("Using full query plan.");
+			_logger.fine("Using full query plan.");
 			return new CostBasedQueryPlanNew(query);
 		}
 

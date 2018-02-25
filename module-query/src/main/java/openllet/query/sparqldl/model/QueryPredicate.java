@@ -13,9 +13,6 @@ package openllet.query.sparqldl.model;
  * Title: Query Predicates
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>

@@ -19,9 +19,6 @@ import openllet.core.utils.ATermUtils;
  * Title: Implementation of the Core of undistinguished variables.
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -44,8 +41,8 @@ public class CoreImpl extends QueryAtomImpl implements Core
 	{
 		super(QueryPredicate.UndistVarCore, arguments);
 
-		this._atoms = atoms;
-		this._undistVars = uv;
+		_atoms = atoms;
+		_undistVars = uv;
 	}
 
 	private void setup()

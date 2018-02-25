@@ -351,10 +351,10 @@ public class QueryImpl implements Query
 				}
 
 				// TODO
-				// else if (litVars.contains(obj)) {
-				// Datatype dtype = getDatatype(obj);
-				//
-				// return ATermUtils.makeSomeValues(pred, dtype.getName());
+				// else if (litVars.contains(obj))
+				// {
+				//    Datatype dtype = getDatatype(obj);
+				//    return ATermUtils.makeSomeValues(pred, dtype.getName());
 				// }
 
 				ATermList targetClasses = getClasses(obj);
@@ -504,7 +504,7 @@ public class QueryImpl implements Query
 				for (final ATermAppl arg : atom.getArguments())
 				{
 					final ATermAppl argValue = args[i++];
-					if ((argValue != null && argValue != arg) || stopList.contains(arg))
+					if (argValue != null && argValue != arg || stopList.contains(arg))
 					{
 						add = false;
 						break;

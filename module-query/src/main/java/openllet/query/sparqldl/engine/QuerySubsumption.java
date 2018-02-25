@@ -16,7 +16,6 @@ import openllet.query.sparqldl.model.QueryResult;
  */
 public class QuerySubsumption
 {
-
 	/**
 	 * Checks whether sub is equivalent to sup
 	 *

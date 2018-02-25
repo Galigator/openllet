@@ -13,15 +13,12 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
-import openllet.aterm.ATermAppl;
 import java.util.Set;
+import openllet.aterm.ATermAppl;
 
 /**
  * <p>
  * Title: Default implementation of {@link QueryResult}
- * </p>
- * <p>
- * Description:
  * </p>
  * <p>
  * Copyright: Copyright (c) 2007
@@ -34,19 +31,17 @@ import java.util.Set;
  */
 public class QueryResultImpl implements QueryResult
 {
-
 	private Collection<ResultBinding> _bindings;
 
 	private final List<ATermAppl> _resultVars;
-
 	private final Query _query;
 	private final QueryParameters _parameters;
 
 	public QueryResultImpl(final Query query)
 	{
-		this._query = query;
-		this._parameters = query.getQueryParameters();
-		this._resultVars = new ArrayList<>(query.getResultVars());
+		_query = query;
+		_parameters = query.getQueryParameters();
+		_resultVars = new ArrayList<>(query.getResultVars());
 
 		if (query.isDistinct())
 			_bindings = new HashSet<>();
@@ -106,15 +101,15 @@ public class QueryResultImpl implements QueryResult
 	{
 		final int PRIME = 31;
 		int result = 1;
-		result = PRIME * result + ((_bindings == null) ? 0 : _bindings.hashCode());
-		result = PRIME * result + ((_resultVars == null) ? 0 : _resultVars.hashCode());
+		result = PRIME * result + (_bindings == null ? 0 : _bindings.hashCode());
+		result = PRIME * result + (_resultVars == null ? 0 : _resultVars.hashCode());
 		return result;
 	}
 
 	@Override
 	public boolean isDistinct()
 	{
-		return (_bindings instanceof Set);
+		return _bindings instanceof Set;
 	}
 
 	/**

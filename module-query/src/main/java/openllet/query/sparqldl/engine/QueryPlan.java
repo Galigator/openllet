@@ -15,9 +15,6 @@ import openllet.query.sparqldl.model.ResultBinding;
  * Title: Query Plan abstraction.
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -33,7 +30,7 @@ public abstract class QueryPlan
 
 	public QueryPlan(final Query query)
 	{
-		this._query = query;
+		_query = query;
 	}
 
 	public Query getQuery()

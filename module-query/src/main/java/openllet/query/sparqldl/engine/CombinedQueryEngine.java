@@ -230,8 +230,7 @@ public class CombinedQueryEngine implements QueryExec
 	@Override
 	public boolean supports(final Query q)
 	{
-		// TODO cycles in undist vars and fully undist.vars queries are not
-		// supported !!!
+		// TODO cycles in undist vars and fully undist.vars queries are not supported !!!
 		return true;
 	}
 
@@ -272,8 +271,6 @@ public class CombinedQueryEngine implements QueryExec
 				if (_logger.isLoggable(Level.FINE))
 					_logger.fine("Found binding: " + binding);
 
-				//				Filter filter = query.getFilter();
-
 				if (!_result.getResultVars().containsAll(binding.getAllVariables()))
 				{
 					final ResultBinding newBinding = new ResultBindingImpl();
@@ -289,7 +286,7 @@ public class CombinedQueryEngine implements QueryExec
 				_result.add(binding);
 			}
 
-			if (_logger.isLoggable(Level.FINER))
+			if (_logger.isLoggable(Level.FINE))
 				_logger.finer("Returning ... binding=" + binding);
 			return;
 		}
@@ -306,9 +303,8 @@ public class CombinedQueryEngine implements QueryExec
 		else
 			exec(current, binding);
 
-		if (_logger.isLoggable(Level.FINER))
+		if (_logger.isLoggable(Level.FINE))
 			_logger.finer("Returning ... " + binding);
-
 		_plan.back();
 	}
 
@@ -425,9 +421,7 @@ public class CombinedQueryEngine implements QueryExec
 				loadObjects = objectCandidates == null;
 
 				for (final ATermAppl property : propertyCandidates)
-					// TODO replace this nasty if-cascade with some map for
-					// var
-					// bindings.
+					// TODO replace this nasty if-cascade with some map for var bindings.
 					if (loadObjects && loadSubjects)
 					{
 						if (pvI.equals(pvIL))
@@ -876,7 +870,6 @@ public class CombinedQueryEngine implements QueryExec
 
 				for (final ATermAppl prop : domLhsCandidates)
 					for (final ATermAppl cls : domRhsCandidates)
-						//System.out.println("Checking dom(" + prop + ", " + cls + ")");
 						if ((_kb.isDatatypeProperty(prop) || _kb.isObjectProperty(prop)) && _kb.hasDomain(prop, cls))
 							runNext(binding, arguments, prop, cls);
 
@@ -924,14 +917,12 @@ public class CombinedQueryEngine implements QueryExec
 					if (_kb.isObjectProperty(prop))
 					{
 						for (final ATermAppl cls : rangeRhsClassCandidates)
-							//System.out.println("Checking range(" + prop + ", " + cls + ")");
 							if (_kb.hasRange(prop, cls))
 								runNext(binding, arguments, prop, cls);
 					}
 					else
 						if (_kb.isDatatypeProperty(prop))
 							for (final ATermAppl dtype : rangeRhsDTypeCandidates)
-								//System.out.println("Checking range(" + prop + ", " + dtype + ")");
 								if (_kb.hasRange(prop, dtype))
 									runNext(binding, arguments, prop, dtype);
 
@@ -999,9 +990,7 @@ public class CombinedQueryEngine implements QueryExec
 					{
 						if (QueryEngine.execBooleanABoxQuery(core.getQuery()))
 							_result.add(binding);
-						// throw new OpenError(
-						// "The query contains neither dist vars, nor constants,
-						// yet evaluated by the CombinedQueryEngine !!! ");
+						// throw new OpenError("The query contains neither dist vars, nor constants, yet evaluated by the CombinedQueryEngine !!! ");
 					}
 					else
 					{
@@ -1203,40 +1192,6 @@ public class CombinedQueryEngine implements QueryExec
 
 	private Map<ATermAppl, Boolean> fastPrune(final Query q, final ATermAppl var)
 	{
-		// final Collection<ATermAppl> instances = new HashSet<ATermAppl>(_kb
-		// .getIndividuals());
-		//
-		// final KnowledgeBase _kb = q.getKB();
-		//
-		//
-		//
-		// for (final QueryAtom atom : q.findAtoms(QueryPredicate.PropertyValue,
-		// _node, null, null)) {
-		// instances.retainAll(_kb.retrieveIndividualsWithProperty(atom
-		// .getArguments().get(1)));
-		// }
-		// for (final QueryAtom atom : q.findAtoms(QueryPredicate.PropertyValue,
-		// null, null, _node)) {
-		// instances.retainAll(_kb.retrieveIndividualsWithProperty(ATermUtils
-		// .makeInv(atom.getArguments().get(1))));
-		// }
-		// return instances;
-
-		// final ATermAppl c = q.rollUpTo(var, Collections.EMPTY_SET, false);
-		//
-		// CandidateSet set = _kb.getABox().getObviousInstances(c);
-		// _logger.fine(c + " : " + set.getKnowns().size() + " : "
-		// + set.getUnknowns().size());
-		//
-		// if (set.getUnknowns().isEmpty()) {
-		// return set.getKnowns();
-		// } else {
-		// return _kb.getInstances(q
-		// .rollUpTo(var, Collections.EMPTY_SET, false));
-		// }
-
-		// return _kb.getIndividuals();
-
 		final ATermAppl c = q.rollUpTo(var, Collections.<ATermAppl> emptySet(), STOP_ROLLING_ON_CONSTANTS);
 		if (_logger.isLoggable(Level.FINER))
 			_logger.finer(var + " rolled to " + c);
@@ -1280,71 +1235,6 @@ public class CombinedQueryEngine implements QueryExec
 			distVars.add(var);
 		}
 	}
-
-	// private void execIteratedCore(final Query q, final ResultBinding binding,
-	// final Collection<ATermAppl> distVars, CoreStrategy _strategy) {
-	// if (distVars.isEmpty()) {
-	// exec(binding);
-	// } else {
-	// final ATermAppl var = distVars.iterator().next();
-	// distVars.remove(var);
-	//
-	// boolean loadAll = (distVars.isEmpty() && !_strategy
-	// .equals(CoreStrategy.ALLFAST))
-	// || _strategy.equals(CoreStrategy.OPTIMIZED);
-	//
-	// final Collection<ATermAppl> instances;
-	//
-	// final KnowledgeBase _kb = q.getKB();
-	//
-	// if (loadAll) {
-	// final ATermAppl clazz = q.rollUpTo(var, Collections.EMPTY_SET,
-	// false);
-	//
-	// if (_logger.isLoggable( Level.FINE )) {
-	// _logger
-	// .debug("Rolling up " + var + " to " + clazz
-	// + " in " + q);
-	// }
-	//
-	// instances = _kb.getInstances(clazz);
-	// } else {
-	// instances = new HashSet<ATermAppl>(_kb.getIndividuals());
-	// for (final QueryAtom atom : q.findAtoms(
-	// QueryPredicate.PropertyValue, var, null, null)) {
-	// instances.retainAll(_kb.retrieveIndividualsWithProperty(atom
-	// .getArguments().get(1)));
-	// }
-	// for (final QueryAtom atom : q.findAtoms(
-	// QueryPredicate.PropertyValue, null, null, var)) {
-	// instances.retainAll(_kb
-	// .retrieveIndividualsWithProperty(ATermUtils
-	// .makeInv(atom.getArguments().get(1))));
-	// }
-	//
-	// }
-	//
-	// if (_strategy.equals(CoreStrategy.FIRSTFAST)) {
-	// _strategy = CoreStrategy.OPTIMIZED;
-	// }
-	//
-	// for (final ATermAppl b : instances) {
-	// if (_logger.isLoggable( Level.FINE )) {
-	// _logger.fine("trying " + var + " --> " + b);
-	// }
-	// final ResultBinding newBinding = binding.clone();
-	//
-	// newBinding.setValue(var, b);
-	// final Query q2 = q.apply(newBinding);
-	//
-	// if (!loadAll || QueryEngine.execBooleanABoxQuery(q2)) {
-	// execIteratedCore(q2, newBinding, distVars, _strategy);
-	// }
-	// }
-	//
-	// distVars.add(var);
-	// }
-	// }
 
 	private void downMonotonic(final Taxonomy<ATermAppl> taxonomy, final Collection<ATermAppl> all, final boolean lhsDM, final ATermAppl lhs, final ATermAppl rhs, final ResultBinding binding, final boolean direct, final boolean strict)
 	{
