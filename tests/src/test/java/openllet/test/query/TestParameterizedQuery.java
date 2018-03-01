@@ -38,12 +38,6 @@ import org.junit.runners.Parameterized.Parameters;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2008
  * </p>
  * <p>
@@ -123,10 +117,10 @@ public class TestParameterizedQuery
 
 	public TestParameterizedQuery(final QueryEngineType queryEngine, final Query query, final QuerySolutionMap initialBinding, final QuerySolutionMap expectedResults)
 	{
-		this._queryEngine = queryEngine;
-		this._query = query;
-		this._initialBinding = initialBinding;
-		this._expected = expectedResults;
+		_queryEngine = queryEngine;
+		_query = query;
+		_initialBinding = initialBinding;
+		_expected = expectedResults;
 	}
 
 	@Test

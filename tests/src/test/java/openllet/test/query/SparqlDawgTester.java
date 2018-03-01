@@ -13,9 +13,6 @@ import java.util.Set;
  * Title: Engine for processing DAWG test manifests
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>

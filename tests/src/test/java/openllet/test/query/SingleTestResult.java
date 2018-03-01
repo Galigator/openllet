@@ -13,9 +13,6 @@ import java.net.URI;
  * Title: Engine for processing DAWG test manifests
  * </p>
  * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2007
  * </p>
  * <p>
@@ -36,9 +33,9 @@ public class SingleTestResult
 	public SingleTestResult(final URI uri, final ResultEnum result, final long time)
 	{
 		super();
-		this._uri = uri;
-		this._result = result;
-		this._time = time;
+		_uri = uri;
+		_result = result;
+		_time = time;
 	}
 
 	public URI getUri()

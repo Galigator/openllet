@@ -31,9 +31,6 @@ import org.apache.jena.sparql.engine.binding.BindingUtils;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
  * Description: Small utility to transform text result sets from TXT to XML format.
  * </p>
  * <p>

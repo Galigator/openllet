@@ -18,21 +18,15 @@ import openllet.aterm.ATermAppl;
 import openllet.core.utils.ATermUtils;
 import openllet.query.sparqldl.engine.QueryEngine;
 import openllet.query.sparqldl.model.Query;
+import openllet.query.sparqldl.model.Query.VarType;
 import openllet.query.sparqldl.model.QueryAtom;
 import openllet.query.sparqldl.model.QueryImpl;
 import openllet.query.sparqldl.model.QueryResult;
 import openllet.query.sparqldl.model.ResultBinding;
-import openllet.query.sparqldl.model.Query.VarType;
 import openllet.test.AbstractKBTests;
 import org.junit.Assert;
 
 /**
- * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
  * <p>
  * Copyright: Copyright (c) 2009
  * </p>
