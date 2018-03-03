@@ -5,8 +5,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import openllet.aterm.ATermAppl;
 import openllet.core.datatypes.Datatype;
@@ -61,37 +61,39 @@ public class RestrictedTextDatatype implements RestrictedDatatype<ATermAppl>
 	}
 
 	protected final Set<Object> _excludedValues;
-	protected final Set<Pattern> _patterns;
-	protected final Optional<Long> _maxLength;
+	protected final Predicate<String> _check;
 	protected final boolean _allowLang;
 	protected final Datatype<ATermAppl> _dt;
 
-	protected RestrictedTextDatatype(final Datatype<ATermAppl> dt, final Set<Pattern> patterns, final boolean allowLang, final Set<Object> excludedValues)
+	protected RestrictedTextDatatype(final Datatype<ATermAppl> dt, final Predicate<String> check, final boolean allowLang, final Set<Object> excludedValues)
 	{
 		_dt = dt;
-		_patterns = patterns;
+		_check = check;
 		_allowLang = allowLang;
 		_excludedValues = excludedValues;
-		_maxLength = Optional.empty();
 	}
 
-	protected RestrictedTextDatatype(final Datatype<ATermAppl> dt, final Long maxLength, final boolean allowLang, final Set<Object> excludedValues)
+	protected RestrictedTextDatatype(final RestrictedTextDatatype rtd, final Predicate<String> check)
 	{
-		_dt = dt;
-		_maxLength = Optional.of(maxLength);
-		_patterns = Collections.emptySet();
-		_allowLang = allowLang;
-		_excludedValues = excludedValues;
+		_dt = rtd._dt;
+		_check = check;
+		_allowLang = rtd._allowLang;
+		_excludedValues = rtd._excludedValues;
 	}
 
 	public RestrictedTextDatatype(final Datatype<ATermAppl> dt, final boolean allowLang)
 	{
-		this(dt, Collections.emptySet(), allowLang, Collections.emptySet());
+		this(dt, x -> true, allowLang, Collections.emptySet());
+	}
+
+	private RestrictedTextDatatype(final Datatype<ATermAppl> dt, final Pattern pattern)
+	{
+		this(dt, x -> pattern.matcher(x).matches(), false, Collections.emptySet());
 	}
 
 	public RestrictedTextDatatype(final Datatype<ATermAppl> dt, final String pattern)
 	{
-		this(dt, Collections.singleton(Pattern.compile(pattern)), false, Collections.emptySet());
+		this(dt, Pattern.compile(pattern));
 	}
 
 	@Override
@@ -109,22 +111,8 @@ public class RestrictedTextDatatype implements RestrictedDatatype<ATermAppl>
 				if (!_allowLang && !ATermUtils.EMPTY.equals(a.getArgument(ATermUtils.LIT_LANG_INDEX)))
 					return false;
 
-				if (!_patterns.isEmpty())
-				{
-					final String litValue = ((ATermAppl) a.getArgument(ATermUtils.LIT_VAL_INDEX)).getName();
-					for (final Pattern pattern : _patterns)
-						if (!pattern.matcher(litValue).matches())
-							return false;
-				}
-
-				if (_maxLength.isPresent())
-				{
-					final String litValue = ((ATermAppl) a.getArgument(ATermUtils.LIT_VAL_INDEX)).getName();
-					if (litValue.length() > _maxLength.get())
-						return false;
-				}
-
-				return true;
+				final String litValue = ((ATermAppl) a.getArgument(ATermUtils.LIT_VAL_INDEX)).getName();
+				return _check.test(litValue);
 			}
 		}
 		return false;
@@ -180,8 +168,8 @@ public class RestrictedTextDatatype implements RestrictedDatatype<ATermAppl>
 
 				final ATermAppl term = (ATermAppl) value;
 				final ATermAppl payload = (ATermAppl) term.getChildAt(0); // The 'pattern'.
-				final Set<Pattern> patterns = SetUtils.union(_patterns, Collections.singleton(Pattern.compile(payload.getName())));
-				return new RestrictedTextDatatype(_dt, patterns, _allowLang, _excludedValues);
+				final Pattern pattern = Pattern.compile(payload.getName());
+				return new RestrictedTextDatatype(_dt, _check.and(str -> pattern.matcher(str).matches()), _allowLang, _excludedValues);
 			}
 			case "lang_range":
 				throw new UnsupportedOperationException("TODO : support lang_range facets"); // TODO: support lang_range facets
@@ -189,7 +177,13 @@ public class RestrictedTextDatatype implements RestrictedDatatype<ATermAppl>
 				throw new UnsupportedOperationException("TODO : support length facets"); // TODO: support length facets
 			case "min_length": // Look-like there two syntax.
 			case "minLength":
-				throw new UnsupportedOperationException("TODO : support minLength facets"); // TODO: support minLength facets
+			{
+				if (!(value instanceof Number))
+					throw new UnsupportedOperationException("Don't know how to eval " + value + " in a max_length assertion : " + value.getClass().getName() + " a java 'long/Long' was expected");
+
+				final Long minLength = ((Number) value).longValue();
+				return new RestrictedTextDatatype(_dt, _check.and(str -> str.length() > minLength), _allowLang, _excludedValues);
+			}
 
 			case "max_length": // Look-like there two syntax.
 			case "maxLength":
@@ -198,8 +192,7 @@ public class RestrictedTextDatatype implements RestrictedDatatype<ATermAppl>
 					throw new UnsupportedOperationException("Don't know how to eval " + value + " in a max_length assertion : " + value.getClass().getName() + " a java 'long/Long' was expected");
 
 				final Long maxLength = ((Number) value).longValue();
-
-				return new RestrictedTextDatatype(_dt, _maxLength.map(ml -> ml < maxLength ? ml : maxLength).orElse(maxLength), _allowLang, _excludedValues);
+				return new RestrictedTextDatatype(_dt, _check.and(str -> str.length() < maxLength), _allowLang, _excludedValues);
 			}
 			default:
 				throw new UnsupportedOperationException(facet.getName() + " is an unknow restriction");
@@ -214,7 +207,10 @@ public class RestrictedTextDatatype implements RestrictedDatatype<ATermAppl>
 		{
 			final RestrictedTextDatatype that = (RestrictedTextDatatype) other;
 
-			return new RestrictedTextDatatype(_dt, SetUtils.union(_patterns, that._patterns), _allowLang && that._allowLang, SetUtils.union(_excludedValues, that._excludedValues));
+			return new RestrictedTextDatatype(_dt, //
+					_check.and(that._check), //
+					_allowLang && that._allowLang, //
+					SetUtils.union(_excludedValues, that._excludedValues));
 		}
 		else
 			throw new IllegalArgumentException();
@@ -225,7 +221,7 @@ public class RestrictedTextDatatype implements RestrictedDatatype<ATermAppl>
 	{
 		final Set<Object> newExcludedValues = new HashSet<>(values);
 		newExcludedValues.addAll(_excludedValues);
-		return new RestrictedTextDatatype(_dt, _patterns, _allowLang, newExcludedValues);
+		return new RestrictedTextDatatype(_dt, _check, _allowLang, newExcludedValues);
 	}
 
 	@Override
@@ -233,22 +229,16 @@ public class RestrictedTextDatatype implements RestrictedDatatype<ATermAppl>
 	{
 		if (other instanceof RestrictedTextDatatype)
 		{
-			if (!_patterns.isEmpty() || !((RestrictedTextDatatype) other)._patterns.isEmpty())
-				throw new UnsupportedOperationException();
-
 			if (_allowLang)
-				return this;
+				return this; // XXX Strange
 
-			final RestrictedTextDatatype rtd = (RestrictedTextDatatype) other;
+			final RestrictedTextDatatype that = (RestrictedTextDatatype) other;
 
-			if (_maxLength.isPresent() && !rtd._maxLength.isPresent())
-				return this;
-			if (!_maxLength.isPresent() && rtd._maxLength.isPresent())
-				return rtd;
-			if (_maxLength.isPresent() && rtd._maxLength.isPresent() && _maxLength.get().longValue() != rtd._maxLength.get().longValue())
-				throw new UnsupportedOperationException("Two different max length " + _maxLength.get() + " && " + rtd._maxLength.get());
+			// TODO : take care of the too possible errors, when values aren't the sames !!!!
+			// _allowLang = rtd._allowLang;
+			// _excludedValues = rtd._excludedValues;
 
-			return rtd;
+			return new RestrictedTextDatatype(that, _check.or(that._check));
 		}
 		else
 			throw new IllegalArgumentException();

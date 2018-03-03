@@ -54,7 +54,14 @@ public interface Facet
 	 */
 	public static enum XSD implements Facet
 	{
-		MAX_EXCLUSIVE("maxExclusive"), MAX_INCLUSIVE("maxInclusive"), MIN_EXCLUSIVE("minExclusive"), MIN_INCLUSIVE("minInclusive"), LENGTH("length"), MIN_LENGTH("minLength"), MAX_LENGTH("maxLength"), PATTERN("pattern");
+		MAX_EXCLUSIVE("maxExclusive"), //
+		MAX_INCLUSIVE("maxInclusive"), //
+		MIN_EXCLUSIVE("minExclusive"), //
+		MIN_INCLUSIVE("minInclusive"), //
+		LENGTH("length"), //
+		MIN_LENGTH("minLength"), //
+		MAX_LENGTH("maxLength"), //
+		PATTERN("pattern");
 
 		private final ATermAppl _name;
 
@@ -68,6 +75,5 @@ public interface Facet
 		{
 			return _name;
 		}
-
 	}
 }

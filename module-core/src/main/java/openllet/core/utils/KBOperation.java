@@ -22,15 +22,12 @@ package openllet.core.utils;
 public enum KBOperation
 {
 	IS_DIRECT_TYPE, // TODO
-	IS_TYPE, // if realized trivial, oth. 1 sat (more frq
-	// than hpv, but less than sc)
+	IS_TYPE, // if realized trivial, oth. 1 sat (more frq than hpv, but less than sc)
 
-	HAS_PROPERTY_VALUE, // rare sat (nonempty dependency set of
-	// an edge in Compl. G.)
+	HAS_PROPERTY_VALUE, // rare sat (nonempty dependency set of an edge in Compl. G.)
 
 	// use told taxonomy - to be provided by KB - not to classify the whole KB
-	IS_SUBCLASS_OF, IS_EQUIVALENT_CLASS, // triv.
-	// if classified, otherwise 1 sat
+	IS_SUBCLASS_OF, IS_EQUIVALENT_CLASS, // triv. if classified, otherwise 1 sat
 
 	IS_DISJOINT_WITH, IS_COMPLEMENT_OF, // 1 sat
 
@@ -39,10 +36,7 @@ public enum KBOperation
 
 	IS_OBJECT_PROPERTY, IS_DATATYPE_PROPERTY, // triv
 
-	IS_FUNCTIONAL_PROPERTY, IS_INVERSE_FUNCTIONAL_PROPERTY, IS_TRANSITIVE_PROPERTY, // one
-	// sat.
-	// check if
-	// any
+	IS_FUNCTIONAL_PROPERTY, IS_INVERSE_FUNCTIONAL_PROPERTY, IS_TRANSITIVE_PROPERTY, // one sat. check if  any
 
 	IS_INVERSE_OF, IS_SYMMETRIC_PROPERTY, GET_INVERSES, // triv.
 
@@ -50,11 +44,9 @@ public enum KBOperation
 
 	// TODO complexity get instances
 	GET_DIRECT_INSTANCES, // TODO
-	GET_INSTANCES, // if realized triv, otherwise binary
-	// retrieval
+	GET_INSTANCES, // if realized triv, otherwise binary  retrieval
 	GET_DIRECT_TYPES, // TODO
-	GET_TYPES, // if realized triv, otherwise TODO binary
-	// class retrieval.
+	GET_TYPES, // if realized triv, otherwise TODO binary class retrieval.
 	// Currently, realization
 	GET_PROPERTY_VALUE, // binary instance retrieval
 
@@ -77,10 +69,7 @@ public enum KBOperation
 	GET_DOMAINS, GET_RANGES,
 
 	// subClassOf
-	GET_SUB_OR_SUPERCLASSES, GET_EQUIVALENT_CLASSES, // triv.
-	// if
-	// classified
-	// and named, otherwise classification
+	GET_SUB_OR_SUPERCLASSES, GET_EQUIVALENT_CLASSES, // triv. if classified and named, otherwise classification
 	GET_DIRECT_SUB_OR_SUPERCLASSES, // TODO
 
 	// disjointWithClass
