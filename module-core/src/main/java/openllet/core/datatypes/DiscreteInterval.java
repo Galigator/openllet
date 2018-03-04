@@ -95,7 +95,7 @@ public abstract class DiscreteInterval<T extends Number, U extends DiscreteInter
 	private final T _lower;
 	private final T _upper;
 
-	/**
+	/** 
 	 * Create a point interval. This is equivalent to {@link #DiscreteInterval} with arguments <code>point,point</code>
 	 *
 	 * @param point Value of point interval

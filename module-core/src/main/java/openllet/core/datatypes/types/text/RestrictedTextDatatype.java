@@ -157,8 +157,8 @@ public class RestrictedTextDatatype implements RestrictedDatatype<ATermAppl>
 	@Override
 	public RestrictedDatatype<ATermAppl> applyConstrainingFacet(final ATermAppl facet, final Object value) throws InvalidConstrainingFacetException
 	{
-		// System.out.println("RestrictedTextDatatype.applyConstrainingFacet(" + facet + "\t" + value + ")");
 		final String name = facet.getName().substring(BuiltinNamespace.XSD.getURI().length());
+		// final Facet x = Facet.Registry.get(facet) // Facet.XSD;
 		switch (name)
 		{
 			case "pattern":

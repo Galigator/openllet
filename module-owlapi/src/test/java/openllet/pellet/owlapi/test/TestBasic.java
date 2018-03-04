@@ -295,6 +295,52 @@ public class TestBasic
 	}
 
 	@Test
+	public void testMultipleStringRestriction() throws OWLOntologyCreationException
+	{
+		try (final OWLManagerGroup group = new OWLManagerGroup())
+		{
+			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create(NS + "owlapi.inc.maxLength.restriction"), 1.0);
+			final OWLHelper owl = new OWLGenericTools(group, ontId, true);
+
+			final OWLNamedIndividual x0 = i.apply("I0");
+			final OWLNamedIndividual x1 = i.apply("I1");
+			final OWLNamedIndividual x2 = i.apply("I2");
+			final OWLNamedIndividual x3 = i.apply("I1");
+			final OWLNamedIndividual x4 = i.apply("I2");
+
+			owl.addAxiom(//
+					OWL.equivalentClasses(//
+							ClsA, //
+							OWL.some(//
+									propB, //
+									OWL.restrict(//
+											XSD.STRING, //
+											OWL.facetRestriction(OWLFacet.MAX_LENGTH, OWL.constant(5L)), //
+											OWL.facetRestriction(OWLFacet.MIN_LENGTH, OWL.constant(1L)), //
+											OWL.facetRestriction(OWLFacet.PATTERN, OWL.constant("A.[XYZ]A+"))//
+									)//
+							)//
+					)//
+			);
+
+			owl.addAxiom(OWL.propertyAssertion(x0, propB, OWL.constant("")));
+			owl.addAxiom(OWL.propertyAssertion(x1, propB, OWL.constant("ABXA")));
+			owl.addAxiom(OWL.propertyAssertion(x2, propB, OWL.constant("ABBA")));
+			owl.addAxiom(OWL.propertyAssertion(x3, propB, OWL.constant("AXYAA")));
+			owl.addAxiom(OWL.propertyAssertion(x4, propB, OWL.constant("AAAAAAAAA")));
+
+			owl.addAxiom(OWL.differentFrom(SetUtils.create(x0, x1, x2, x3, x4)));
+
+			final OWLReasoner r = owl.getReasoner();
+			assertFalse(r.isEntailed(OWL.classAssertion(x0, ClsA))); // > 1
+			assertTrue(r.isEntailed(OWL.classAssertion(x1, ClsA))); // match regexp
+			assertFalse(r.isEntailed(OWL.classAssertion(x2, ClsA))); // doesn't match regexp
+			assertTrue(r.isEntailed(OWL.classAssertion(x3, ClsA))); // match regexp
+			assertFalse(r.isEntailed(OWL.classAssertion(x4, ClsA))); // < 5
+		}
+	}
+
+	@Test
 	public void testMaxLengthRestriction() throws OWLOntologyCreationException
 	{
 		try (final OWLManagerGroup group = new OWLManagerGroup())
