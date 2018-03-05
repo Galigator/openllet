@@ -23,7 +23,7 @@ import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
 import openllet.core.utils.CollectionUtils;
-import org.jgrapht.DirectedGraph;
+import org.jgrapht.Graph;
 import org.jgrapht.alg.KosarajuStrongConnectivityInspector;
 import org.jgrapht.alg.interfaces.StrongConnectivityAlgorithm;
 import org.jgrapht.graph.DefaultDirectedGraph;
@@ -36,7 +36,7 @@ public class JGraphBasedDefinitionOrder extends AbstractDefinitionOrder
 {
 	private Map<ATermAppl, Set<ATermAppl>> _equivalents;
 
-	private DirectedGraph<ATermAppl, DefaultEdge> _graph;
+	private Graph<ATermAppl, DefaultEdge> _graph;
 
 	public JGraphBasedDefinitionOrder(final KnowledgeBase kb, final Comparator<ATerm> comparator)
 	{
