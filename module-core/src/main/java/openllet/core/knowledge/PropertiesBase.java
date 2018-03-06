@@ -984,7 +984,7 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 	}
 
 	/**
-	 * The results of this function is not guaranteed to be complete. Use {@link #hasRange(ATermAppl, ATermAppl)} to get complete answers.
+	 * The results of this function is not guaranteed to be complete. Use {@link ClassesBase#hasRange(ATermAppl, ATermAppl)} to get complete answers.
 	 *
 	 * @param name
 	 * @return the domain restrictions on the property.
@@ -1406,10 +1406,10 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 	}
 
 	/**
-	 * Temporary method until we incorporate annotation properties to the taxonomy ([t:412])
+	 * Annotations properties will never be include into the taxonomy, so deel with that now.
 	 *
-	 * @param p
-	 * @return
+	 * @param p is an annotation property.
+	 * @return all property that are sub property of 'p'.
 	 */
 	public default Set<ATermAppl> getSubAnnotationProperties(final ATermAppl p)
 	{

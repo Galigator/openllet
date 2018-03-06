@@ -32,9 +32,9 @@ package openllet.core.utils;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Utility functions for {#link java.util.Set Set}s.
@@ -239,7 +239,7 @@ public class SetUtils
 	}
 
 	/**
-	 * Creates a set containing all the elements in the collection
+	 * Creates a set with the given initial capacity.
 	 *
 	 * @param initialSize is the initial size of the set.
 	 * @return a fresh set resilient to concurrency.
@@ -247,18 +247,18 @@ public class SetUtils
 	 */
 	public static <T> Set<T> create(final int initialSize)
 	{
-		return Collections.newSetFromMap(new ConcurrentHashMap<>(initialSize));
+		return new HashSet<>(initialSize);
 	}
 
 	/**
-	 * Creates a set containing all the elements in the collection
+	 * Creates a default set.
 	 *
 	 * @return a fresh set resilient to concurrency.
 	 * @since 2.6.0
 	 */
 	public static <T> Set<T> create()
 	{
-		return Collections.newSetFromMap(new ConcurrentHashMap<>());
+		return new HashSet<>();
 	}
 
 	/**
@@ -267,8 +267,6 @@ public class SetUtils
 	 */
 	public static <T> Set<T> create(final Collection<? extends T> elements)
 	{
-		final Set<T> result = create();
-		result.addAll(elements);
-		return result;
+		return new HashSet<>(elements);
 	}
 }

@@ -135,13 +135,6 @@ public class RestrictedBooleanDatatype implements RestrictedDatatype<Boolean>
 		return true;
 	}
 
-	@Deprecated
-	@Override
-	public int size()
-	{
-		return (_permitTrue ? 1 : 0) + (_permitFalse ? 1 : 0);
-	}
-
 	@Override
 	public RestrictedDatatype<Boolean> union(final RestrictedDatatype<?> other)
 	{

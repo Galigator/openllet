@@ -220,7 +220,7 @@ public class RestrictedTextDatatype implements RestrictedDatatype<ATermAppl>
 	public RestrictedDatatype<ATermAppl> exclude(final Collection<?> values)
 	{
 		final Set<Object> newExcludedValues = new HashSet<>(values);
-		newExcludedValues.addAll(_excludedValues);
+		newExcludedValues.addAll(_excludedValues);// TODO : replace by _check.and(value -> !values.contains(value))
 		return new RestrictedTextDatatype(_dt, _check, _allowLang, newExcludedValues);
 	}
 

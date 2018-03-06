@@ -2,6 +2,7 @@ package openllet.shared.tools;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -140,6 +141,12 @@ public class Log implements Logging
 	public static void setLevel(final Level level, final Class<?> type)
 	{
 		setLevel(level, type.getSimpleName());
+	}
+
+	public static String error(final Logger logger, final String msg, final Function<String, Exception> pe) throws Exception
+	{
+		logger.log(Level.SEVERE, msg);
+		throw pe.apply(msg);
 	}
 
 	public static void error(final Logger logger, final Throwable e)

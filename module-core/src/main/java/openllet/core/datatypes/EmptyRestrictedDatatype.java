@@ -22,13 +22,12 @@ import openllet.aterm.ATermAppl;
  */
 public class EmptyRestrictedDatatype<T> extends EmptyDataRange<T> implements RestrictedDatatype<T>
 {
-
 	final private Datatype<? extends T> _datatype;
 
 	public EmptyRestrictedDatatype(final Datatype<? extends T> datatype)
 	{
 		super();
-		this._datatype = datatype;
+		_datatype = datatype;
 	}
 
 	@Override

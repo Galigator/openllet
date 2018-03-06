@@ -1,12 +1,18 @@
 package openllet.core.datatypes.types.duration;
 
+import static java.lang.String.format;
+
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.function.Predicate;
+import java.util.logging.Logger;
 import javax.xml.datatype.Duration;
 import openllet.aterm.ATermAppl;
 import openllet.core.datatypes.Datatype;
+import openllet.core.datatypes.Facet;
 import openllet.core.datatypes.RestrictedDatatype;
 import openllet.core.datatypes.exceptions.InvalidConstrainingFacetException;
+import openllet.shared.tools.Log;
 
 /**
  * <p>
@@ -26,24 +32,72 @@ import openllet.core.datatypes.exceptions.InvalidConstrainingFacetException;
  */
 public class RestrictedDurationDatatype implements RestrictedDatatype<Duration>
 {
+	private final static Logger _logger = Log.getLogger(RestrictedDurationDatatype.class);
+
 	private final Datatype<Duration> _dt;
+	protected final Predicate<Duration> _check;
+
+	public RestrictedDurationDatatype(final Datatype<Duration> dt, final Predicate<Duration> check)
+	{
+		_dt = dt;
+		_check = check;
+	}
 
 	public RestrictedDurationDatatype(final Datatype<Duration> dt)
 	{
-		_dt = dt;
+		this(dt, x -> true);
 	}
 
 	@Override
 	public RestrictedDatatype<Duration> applyConstrainingFacet(final ATermAppl facet, final Object value) throws InvalidConstrainingFacetException
 	{
-		// TODO: support facets
-		throw new UnsupportedOperationException();
+		if (!(value instanceof Duration))
+		{
+			final String msg = format(UNSUPPORTED_FORMAT, getDatatype(), facet, value);
+			_logger.severe(msg);
+			throw new IllegalArgumentException(msg);
+		}
+
+		final Facet f = Facet.Registry.get(facet);
+		if (f == null)
+		{
+			final String msg = format(UNSUPPORTED_FORMAT, getDatatype(), facet, value);
+			_logger.severe(msg);
+			throw new IllegalArgumentException(msg);
+		}
+
+		final Facet.XSD xsd = (Facet.XSD) f;
+		final Duration duration = (Duration) value;
+
+		switch (xsd)
+		{
+			case LENGTH:
+			case MAX_LENGTH:
+			case MAX_EXCLUSIVE:
+				return new RestrictedDurationDatatype(_dt, anotherDuration -> duration.compare(anotherDuration) > 0);
+			case MAX_INCLUSIVE:
+				return new RestrictedDurationDatatype(_dt, anotherDuration -> duration.compare(anotherDuration) >= 0);
+			case MIN_LENGTH:
+			case MIN_EXCLUSIVE:
+				return new RestrictedDurationDatatype(_dt, anotherDuration -> duration.compare(anotherDuration) < 0);
+			case MIN_INCLUSIVE:
+				return new RestrictedDurationDatatype(_dt, anotherDuration -> duration.compare(anotherDuration) <= 0);
+
+			case PATTERN: // TODO allow duration that are regexp.
+				_logger.severe("Duration as regexp pattern will come in future developpement.");
+				//$FALL-THROUGH$
+			default:
+				throw new UnsupportedOperationException();
+		}
 	}
 
 	@Override
-	public boolean contains(final Object value)
+	public boolean contains(final Object duration)
 	{
-		return value instanceof Duration;
+		if (!(duration instanceof Duration))
+			return false;
+
+		return _check.test((Duration) duration);
 	}
 
 	@Override
@@ -55,23 +109,31 @@ public class RestrictedDurationDatatype implements RestrictedDatatype<Duration>
 	@Override
 	public RestrictedDatatype<Duration> exclude(final Collection<?> values)
 	{
-		// TODO:
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public Datatype<? extends Duration> getDatatype()
-	{
-		return _dt;
+		return new RestrictedDurationDatatype(_dt, _check.and(duration -> !values.contains(duration)));
 	}
 
 	@Override
 	public RestrictedDatatype<Duration> intersect(final RestrictedDatatype<?> other, final boolean negated)
 	{
 		if (other instanceof RestrictedDurationDatatype)
-			return this;
+			return new RestrictedDurationDatatype(_dt, _check.and(((RestrictedDurationDatatype) other)._check));
 		else
 			throw new IllegalArgumentException();
+	}
+
+	@Override
+	public RestrictedDatatype<Duration> union(final RestrictedDatatype<?> other)
+	{
+		if (other instanceof RestrictedDurationDatatype)
+			return new RestrictedDurationDatatype(_dt, _check.or(((RestrictedDurationDatatype) other)._check));
+		else
+			throw new IllegalArgumentException();
+	}
+
+	@Override
+	public Datatype<? extends Duration> getDatatype()
+	{
+		return _dt;
 	}
 
 	@Override
@@ -93,18 +155,8 @@ public class RestrictedDurationDatatype implements RestrictedDatatype<Duration>
 	}
 
 	@Override
-	public RestrictedDatatype<Duration> union(final RestrictedDatatype<?> other)
-	{
-		if (other instanceof RestrictedDurationDatatype)
-			return this;
-		else
-			throw new IllegalArgumentException();
-	}
-
-	@Override
 	public Iterator<Duration> valueIterator()
 	{
 		throw new IllegalStateException();
 	}
-
 }

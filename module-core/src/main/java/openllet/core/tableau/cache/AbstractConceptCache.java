@@ -110,18 +110,16 @@ public abstract class AbstractConceptCache implements ConceptCache
 
 	private static Bool checkTrivialClash(final CachedNode node1, final CachedNode node2)
 	{
-		Bool result = null;
-
 		if (node1.isBottom() || node2.isBottom())
-			result = Bool.TRUE;
+			return Bool.TRUE;
 		else
 			if (node1.isTop() || node2.isTop())
-				result = Bool.FALSE;
+				return Bool.FALSE;
 			else
 				if (!node1.isComplete() || !node2.isComplete())
-					result = Bool.UNKNOWN;
-
-		return result;
+					return Bool.UNKNOWN;
+				else
+					return null;
 	}
 
 	@Override
@@ -147,17 +145,9 @@ public abstract class AbstractConceptCache implements ConceptCache
 				final DependencySet ds1 = entry.getValue();
 				final boolean allIndependent = isIndependent && ds1.isIndependent() && ds2.isIndependent();
 				if (allIndependent)
-				{
-					if (_logger.isLoggable(Level.FINE))
-						_logger.fine(roots[root] + " has " + c + " " + roots[otherRoot] + " has negation " + ds1.max() + " " + ds2.max());
 					return Bool.FALSE;
-				}
 				else
-				{
-					if (_logger.isLoggable(Level.FINE))
-						_logger.fine(roots[root] + " has " + c + " " + roots[otherRoot] + " has negation " + ds1.max() + " " + ds2.max());
 					result = Bool.UNKNOWN;
-				}
 			}
 		}
 
@@ -228,11 +218,7 @@ public abstract class AbstractConceptCache implements ConceptCache
 		{
 			final Bool clash = checkDisjointPropertyClash(root1, root2);
 			if (clash != null)
-			{
-				if (_logger.isLoggable(Level.FINE))
-					_logger.fine("Cannot determine if two named individuals can be merged or not: " + roots[0] + "  + roots[1]");
 				return Bool.UNKNOWN;
-			}
 		}
 
 		// if there is no obvious clash then c1 & not(c2) is satisfiable

@@ -25,6 +25,8 @@ import openllet.core.datatypes.exceptions.InvalidConstrainingFacetException;
  */
 public interface RestrictedDatatype<T> extends DataRange<T>
 {
+	public static final String UNSUPPORTED_FORMAT = "Attempt to constrain datatype (%s) with unsupported constraining facet ('%s' , '%s')";
+	public static final String UNSUPPORTED_VALUE = "Attempt to constrain datatype (%s) using constraining facet ('%s') with an unsupported value ('%s')";
 
 	/**
 	 * Query for the base datatype of a restricted datatype. This is not necessarily a primitive datatype.

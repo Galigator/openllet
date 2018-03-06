@@ -123,7 +123,7 @@ public class RestrictedRealDatatype implements RestrictedDatatype<Number>
 		final Facet f = Facet.Registry.get(facet);
 		if (f == null)
 		{
-			final String msg = format("Attempt to constrain _datatype (%s) with unsupported constraining facet ('%s' , '%s')", getDatatype(), facet, value);
+			final String msg = format(UNSUPPORTED_FORMAT, getDatatype(), facet, value);
 			_logger.severe(msg);
 			throw new IllegalArgumentException(msg);
 		}
@@ -140,7 +140,7 @@ public class RestrictedRealDatatype implements RestrictedDatatype<Number>
 		}
 		if (n == null)
 		{
-			final String msg = format("Attempt to constrain _datatype (%s) using constraining facet ('%s') with an unsupported value ('%s')", getDatatype(), f, value);
+			final String msg = format(UNSUPPORTED_VALUE, getDatatype(), f, value);
 			_logger.severe(msg);
 			throw new IllegalArgumentException(msg);
 		}
