@@ -1406,7 +1406,7 @@ public class ABoxImpl implements ABox
 			abox.setSyntacticUpdate(false);
 		}
 
-		synchronized (this) // We should not try to completion in the same time.
+		// synchronized (this) // We should not try to completion in the same time. -> only if parallel core is enable.
 		{
 			_logger.fine(() -> "Consistency check starts");
 
@@ -1476,7 +1476,7 @@ public class ABoxImpl implements ABox
 		else
 			_lastCompletion = null;
 
-		timer.ifPresent(t -> t.stop());
+		timer.ifPresent(Timer::stop);
 
 		return consistent;
 	}

@@ -74,8 +74,7 @@ public abstract class ObjectProfiler
 	 */
 	public static int sizeof(final Object obj)
 	{
-		if (obj == null)
-			return 0;
+		if (obj == null) { return 0; }
 
 		final IdentityHashMap<Object, Object> visited = new IdentityHashMap<>();
 
@@ -84,13 +83,14 @@ public abstract class ObjectProfiler
 
 	public static int sizeof(final Object obj, final Object... avoid)
 	{
-		if (obj == null)
-			return 0;
+		if (obj == null) { return 0; }
 
 		final IdentityHashMap<Object, Object> visited = new IdentityHashMap<>();
 
 		for (final Object o : avoid)
+		{
 			visited.put(o, o);
+		}
 
 		return computeSizeof(obj, visited, CLASS_METADATA_CACHE);
 	}
@@ -105,10 +105,8 @@ public abstract class ObjectProfiler
 	 */
 	public static int sizedelta(final Object base, final Object obj)
 	{
-		if (obj == null)
-			return 0;
-		if (base == null)
-			throw new IllegalArgumentException("null input: base");
+		if (obj == null) { return 0; }
+		if (base == null) { throw new IllegalArgumentException("null input: base"); }
 
 		final IdentityHashMap<Object, Object> visited = new IdentityHashMap<>();
 
@@ -126,8 +124,7 @@ public abstract class ObjectProfiler
 	 */
 	public static IObjectProfileNode profile(final Object obj)
 	{
-		if (obj == null)
-			throw new IllegalArgumentException("null input: obj");
+		if (obj == null) { throw new IllegalArgumentException("null input: obj"); }
 
 		final IdentityHashMap<Object, ObjectProfileNode> visited = new IdentityHashMap<>();
 
@@ -146,7 +143,9 @@ public abstract class ObjectProfiler
 		for (int i = 0; i < path.length; ++i)
 		{
 			if (i != 0)
+			{
 				s.append('/');
+			}
 			s.append(path[i].name());
 		}
 
@@ -163,7 +162,9 @@ public abstract class ObjectProfiler
 		Class<?> cls = clsParam;
 		int dims = 0;
 		for (; cls.isArray(); ++dims)
+		{
 			cls = cls.getComponentType();
+		}
 
 		String clsName = cls.getName();
 
@@ -171,18 +172,28 @@ public abstract class ObjectProfiler
 		{
 			final int lastDot = clsName.lastIndexOf('.');
 			if (lastDot >= 0)
+			{
 				clsName = clsName.substring(lastDot + 1);
+			}
 		}
 		else
 			if (SHORT_COMMON_TYPE_NAMES)
+			{
 				if (clsName.startsWith("java.lang."))
+				{
 					clsName = clsName.substring(10);
+				}
 				else
 					if (clsName.startsWith("java.util."))
+					{
 						clsName = clsName.substring(10);
+					}
+			}
 
 		for (int i = 0; i < dims; ++i)
+		{
 			clsName = clsName.concat("[]");
+		}
 
 		return clsName;
 	}
@@ -258,8 +269,7 @@ public abstract class ObjectProfiler
 		// graph path/width of traversal front correspondingly, so I expect
 		// dfs to use fewer resources than bfs for most Java objects;
 
-		if (obj == null)
-			return 0;
+		if (obj == null) { return 0; }
 
 		final LinkedList<Object> queue = new LinkedList<>();
 
@@ -284,17 +294,19 @@ public abstract class ObjectProfiler
 				result += sizeofArrayShell(arrayLength, componentType);
 
 				if (!componentType.isPrimitive())
+				{
 					// traverse each array slot:
 					for (int i = 0; i < arrayLength; ++i)
 					{
-					final Object ref = Array.get(obj, i);
+						final Object ref = Array.get(obj, i);
 
-					if ((ref != null) && !visited.containsKey(ref))
-					{
-					visited.put(ref, ref);
-					queue.addFirst(ref);
+						if (ref != null && !visited.containsKey(ref))
+						{
+							visited.put(ref, ref);
+							queue.addFirst(ref);
+						}
 					}
-					}
+				}
 			}
 			else
 			// the object is of a non-array type
@@ -319,7 +331,7 @@ public abstract class ObjectProfiler
 						throw new OpenError("cannot get field [" + field.getName() + "] of class [" + field.getDeclaringClass().getName() + "]: " + e.toString());
 					}
 
-					if ((ref != null) && !visited.containsKey(ref))
+					if (ref != null && !visited.containsKey(ref))
 					{
 						visited.put(ref, ref);
 						queue.addFirst(ref);
@@ -368,26 +380,30 @@ public abstract class ObjectProfiler
 				node.addFieldRef(shell);
 
 				if (!componentType.isPrimitive())
+				{
 					// traverse each array slot:
 					for (int i = 0; i < arrayLength; ++i)
 					{
-					final Object ref = Array.get(obj, i);
+						final Object ref = Array.get(obj, i);
 
-					if (ref != null)
-					{
-					ObjectProfileNode child = visited.get(ref);
-					if (child != null)
-					++child._refcount;
-					else
-					{
-					child = new ObjectProfileNode(node, ref, new ArrayIndexLink(node._link, i));
-					node.addFieldRef(child);
+						if (ref != null)
+						{
+							ObjectProfileNode child = visited.get(ref);
+							if (child != null)
+							{
+								++child._refcount;
+							}
+							else
+							{
+								child = new ObjectProfileNode(node, ref, new ArrayIndexLink(node._link, i));
+								node.addFieldRef(child);
 
-					queue.addLast(child);
-					visited.put(ref, child);
+								queue.addLast(child);
+								visited.put(ref, child);
+							}
+						}
 					}
-					}
-					}
+				}
 			}
 			else
 			// the object is of a non-array type
@@ -420,7 +436,9 @@ public abstract class ObjectProfiler
 					{
 						ObjectProfileNode child = visited.get(ref);
 						if (child != null)
+						{
 							++child._refcount;
+						}
 						else
 						{
 							child = new ObjectProfileNode(node, ref, new ClassFieldLink(field));
@@ -452,7 +470,7 @@ public abstract class ObjectProfiler
 			// note that an unfinished non-shell _node has its child count
 			// in m_size and m_children[0] is its shell _node:
 
-			if ((node._size == 1) || (lastFinished == node._children[1]))
+			if (node._size == 1 || lastFinished == node._children[1])
 			{
 				node.finish();
 				lastFinished = node;
@@ -468,9 +486,13 @@ public abstract class ObjectProfiler
 			}
 
 			if (queue.isEmpty())
+			{
 				return;
+			}
 			else
+			{
 				node = (ObjectProfileNode) queue.removeFirst();
+			}
 		}
 	}
 
@@ -479,16 +501,14 @@ public abstract class ObjectProfiler
 	 */
 	private static ClassMetadata getClassMetadata(final Class<?> cls, final Map /* Class->ClassMetadata */<Class<?>, ClassMetadata> metadataMap, final ClassAccessPrivilegedAction caAction, final FieldAccessPrivilegedAction faAction)
 	{
-		if (cls == null)
-			return null;
+		if (cls == null) { return null; }
 
 		ClassMetadata result;
 		synchronized (metadataMap)
 		{
 			result = metadataMap.get(cls);
 		}
-		if (result != null)
-			return result;
+		if (result != null) { return result; }
 
 		int primitiveFieldCount = 0;
 		int shellSize = OBJECT_SHELL_SIZE; // java.lang.Object shell
@@ -509,7 +529,9 @@ public abstract class ObjectProfiler
 		{
 			final Field field = declaredField;
 			if ((Modifier.STATIC & field.getModifiers()) != 0)
+			{
 				continue;
+			}
 
 			final Class<?> fieldType = field.getType();
 			if (fieldType.isPrimitive())
@@ -522,6 +544,7 @@ public abstract class ObjectProfiler
 			{
 				// prepare for graph traversal later:
 				if (!field.isAccessible())
+				{
 					try
 					{
 						faAction.setContext(field);
@@ -531,6 +554,7 @@ public abstract class ObjectProfiler
 					{
 						throw new OpenError("could not make field " + field + " accessible: " + pae.getException());
 					}
+				}
 
 				// memory alignment ignored:
 				shellSize += OBJREF_SIZE;
@@ -577,30 +601,48 @@ public abstract class ObjectProfiler
 	private static int sizeofPrimitiveType(final Class<?> type)
 	{
 		if (type == int.class)
+		{
 			return INT_FIELD_SIZE;
+		}
 		else
 			if (type == long.class)
+			{
 				return LONG_FIELD_SIZE;
+			}
 			else
 				if (type == short.class)
+				{
 					return SHORT_FIELD_SIZE;
+				}
 				else
 					if (type == byte.class)
+					{
 						return BYTE_FIELD_SIZE;
+					}
 					else
 						if (type == boolean.class)
+						{
 							return BOOLEAN_FIELD_SIZE;
+						}
 						else
 							if (type == char.class)
+							{
 								return CHAR_FIELD_SIZE;
+							}
 							else
 								if (type == double.class)
+								{
 									return DOUBLE_FIELD_SIZE;
+								}
 								else
 									if (type == float.class)
+									{
 										return FLOAT_FIELD_SIZE;
+									}
 									else
+									{
 										throw new IllegalArgumentException("not primitive: " + type);
+									}
 	}
 
 }

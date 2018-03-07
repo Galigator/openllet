@@ -8,6 +8,7 @@ package openllet.core.tableau.completion.rule;
 
 import java.util.logging.Logger;
 import openllet.core.OpenlletOptions;
+import openllet.core.boxes.abox.ABox;
 import openllet.core.boxes.abox.Individual;
 import openllet.core.boxes.abox.IndividualIterator;
 import openllet.core.boxes.abox.Node;
@@ -78,23 +79,37 @@ public abstract class AbstractTableauRule implements TableauRule
 		else
 		{
 			i.reset(_nodeSelector);
-			while (i.hasNext())
-			{
-				final Individual node = i.next();
 
-				if (_strategy.getBlocking().isBlocked(node))
+			final ABox abox = _strategy.getABox();
+
+			if (OpenlletOptions.USE_COMPLETION_QUEUE)
+				while (i.hasNext())
 				{
-					if (OpenlletOptions.USE_COMPLETION_QUEUE)
+					final Individual node = i.next();
+
+					if (_strategy.getBlocking().isBlocked(node))
 						addQueueElement(node);
+					else
+					{
+						apply(node);
+						if (abox.isClosed())
+							return true;
+					}
 				}
-				else
+			else
+				while (i.hasNext())
 				{
-					apply(node);
+					final Individual node = i.next();
 
-					if (_strategy.getABox().isClosed())
-						return true;
+					if (!_strategy.getBlocking().isBlocked(node))
+					{
+						apply(node);
+
+						if (abox.isClosed())
+							return true;
+					}
 				}
-			}
+
 			return false;
 		}
 	}
