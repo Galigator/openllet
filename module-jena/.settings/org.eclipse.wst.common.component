@@ -2,6 +2,5 @@
     <wb-module deploy-name="com.github.openllet.openllet-jena-2.5.1">
         <wb-resource deploy-path="/" source-path="/src/main/java"/>
         <wb-resource deploy-path="/" source-path="/src/main/resources"/>
-        <wb-resource deploy-path="/" source-path="/target/generated-sources/antlr3"/>
     </wb-module>
 </project-modules>

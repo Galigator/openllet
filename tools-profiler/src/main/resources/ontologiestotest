@@ -1,6 +1,6 @@
-../test/src/test/resources/test/data/modularity/galen.owl
-../test/src/test/resources/test/data/modularity/koala.owl
-../test/src/test/resources/test/data/modularity/miniTambis.owl
-../test/src/test/resources/test/data/modularity/SUMO.owl
-../test/src/test/resources/test/data/modularity/SWEET.owl
-../test/src/test/resources/test/data/modularity/wine.owl
+../tests/src/test/resources/test/data/modularity/galen.owl
+../tests/src/test/resources/test/data/modularity/koala.owl
+../tests/src/test/resources/test/data/modularity/miniTambis.owl
+../tests/src/test/resources/test/data/modularity/SUMO.owl
+../tests/src/test/resources/test/data/modularity/SWEET.owl
+../tests/src/test/resources/test/data/modularity/wine.owl
