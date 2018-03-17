@@ -294,6 +294,121 @@ public class TestBasic
 		}
 	}
 
+	/*
+		@Test
+		public void testDurationRestriction() throws OWLOntologyCreationException
+		{
+			try (final OWLManagerGroup group = new OWLManagerGroup())
+			{
+				final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create(NS + "owlapi.inc.regex.restriction"), 1.0);
+				final OWLHelper owl = new OWLGenericTools(group, ontId, true);
+	
+				final OWLNamedIndividual x1 = i.apply("I1");
+				final OWLNamedIndividual x2 = i.apply("I2");
+	
+				final javax.xml.datatype.Duration duration = DatatypeFactory.newInstance().newDuration(1000);// Duration of 1000ms
+	
+				System.out.println(duration.getXMLSchemaType());
+	
+				//final OWL2Datatype durationDataType = OWL2Datatype.getDatatype(IRI.create(Namespaces.XSD + "duration"));
+				final OWL2Datatype durationDataType = OWL2Datatype.XSD_DATE_TIME;
+				assertTrue(owl.getReasoner().isConsistent());
+				owl.addAxiom(//
+						OWL.equivalentClasses(ClsA, //
+								OWL.some(propB, //
+										OWL.restrict(XSD.DURATION, //
+												OWL.facetRestriction(//
+														OWLFacet.MAX_INCLUSIVE, //
+														OWL._factory.getOWLLiteral("1000", durationDataType)//  javax.xml.datatype.Duration parser convert that into 1000ms
+												)//
+										)//
+								)//
+						)//
+				);
+				assertTrue(owl.getReasoner().isConsistent());
+	
+				owl.addAxiom(OWL.propertyAssertion(x1, propB, OWL._factory.getOWLLiteral("500", durationDataType)));
+				owl.getReasoner().isConsistent();
+				final KnowledgeBase kb = ((PelletReasoner) owl.getReasoner()).getKB();
+				System.out.println(kb.getExplanation());
+	
+				assertTrue(owl.getReasoner().isConsistent());
+				owl.addAxiom(OWL.propertyAssertion(x2, propB, OWL._factory.getOWLLiteral("1500", durationDataType)));
+				assertTrue(owl.getReasoner().isConsistent());
+	
+				owl.addAxiom(OWL.differentFrom(x1, x2));
+				assertTrue(owl.getReasoner().isConsistent());
+	
+				final OWLReasoner r = owl.getReasoner();
+				assertTrue(r.isEntailed(OWL.classAssertion(x1, ClsA)));
+				assertFalse(r.isEntailed(OWL.classAssertion(x2, ClsA)));
+			}
+			catch (final DatatypeConfigurationException exception)
+			{
+				throw new OpenError(exception);
+			}
+		}
+	*/
+
+	@Test
+	public void testRestrictionConjonction() throws OWLOntologyCreationException
+	{
+		for (int loop = 0; loop < 20; loop++)
+			try (final OWLManagerGroup group = new OWLManagerGroup())
+			{
+				final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create(NS + "owlapi.inc.integer-min-max.restriction"), 1.0);
+				final OWLHelper owl = new OWLGenericTools(group, ontId, true);
+
+				final OWLNamedIndividual x1 = i.apply("I1");
+				final OWLNamedIndividual x2 = i.apply("I2");
+				final OWLNamedIndividual x3 = i.apply("I3");
+				final OWLNamedIndividual x4 = i.apply("I4");
+
+				owl.addAxiom(OWL.equivalentClasses(ClsA, OWL.some(propB, //
+						OWL.restrict(XSD.INTEGER, //
+								OWL.facetRestriction(OWLFacet.MIN_INCLUSIVE, OWL.constant(100)), //
+								OWL.facetRestriction(OWLFacet.MAX_INCLUSIVE, OWL.constant(250))//
+						))));//
+
+				owl.addAxiom(OWL.equivalentClasses(ClsB, OWL.some(propB, //
+						OWL.restrict(XSD.INTEGER, //
+								OWL.facetRestriction(OWLFacet.MIN_INCLUSIVE, OWL.constant(250)), //
+								OWL.facetRestriction(OWLFacet.MAX_INCLUSIVE, OWL.constant(252))//
+						))));//
+
+				owl.addAxiom(OWL.equivalentClasses(ClsD, OWL.and(ClsC, ClsA)));
+				owl.addAxiom(OWL.equivalentClasses(ClsE, OWL.and(ClsC, ClsB)));
+
+				owl.addAxiom(OWL.propertyAssertion(x1, propB, OWL.constant(15)));
+				owl.addAxiom(OWL.propertyAssertion(x2, propB, OWL.constant(150)));
+				owl.addAxiom(OWL.propertyAssertion(x3, propB, OWL.constant(250)));
+				owl.addAxiom(OWL.propertyAssertion(x4, propB, OWL.constant(300)));
+
+				owl.addAxiom(OWL.classAssertion(x1, ClsC));
+				owl.addAxiom(OWL.classAssertion(x2, ClsC));
+				owl.addAxiom(OWL.classAssertion(x3, ClsC));
+				owl.addAxiom(OWL.classAssertion(x4, ClsC));
+
+				{
+					final OWLReasoner r = owl.getReasoner();
+					r.types(x1).forEach(cx -> System.out.println("x1 : " + cx));
+					r.types(x2).forEach(cx -> System.out.println("x2 : " + cx));
+					r.types(x3).forEach(cx -> System.out.println("x3 : " + cx));
+					r.types(x4).forEach(cx -> System.out.println("x4 : " + cx));
+
+				}
+				//
+				//
+				//			owl.addAxiom(OWL.classAssertion(x2, ClsB));
+				//
+				//			{
+				//				final OWLReasoner r = owl.getReasoner();
+				//				assertTrue(r.isEntailed(OWL.classAssertion(x2, ClsC)));
+				//				assertFalse(r.isEntailed(OWL.classAssertion(x3, ClsC)));
+				//			}
+			}
+	}
+
 	@Test
 	public void testMultipleStringRestriction() throws OWLOntologyCreationException
 	{
