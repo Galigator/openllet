@@ -1,0 +1,2727 @@
+Prefix(:=<http://openllet.pellint.SearchMinimalBug.main()#>)
+Prefix(owl:=<http://www.w3.org/2002/07/owl#>)
+Prefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)
+Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)
+Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)
+Prefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)
+
+
+Ontology(<http://openllet.pellint.SearchMinimalBug.main()>
+<http://openllet.pellint.SearchMinimalBug.main()_0.0>
+
+Declaration(Class(<x:cls/100>))
+Declaration(Class(<x:cls/102>))
+Declaration(Class(<x:cls/103>))
+Declaration(Class(<x:cls/104>))
+Declaration(Class(<x:cls/105>))
+Declaration(Class(<x:cls/106>))
+Declaration(Class(<x:cls/107>))
+Declaration(Class(<x:cls/108>))
+Declaration(Class(<x:cls/109>))
+Declaration(Class(<x:cls/110>))
+Declaration(Class(<x:cls/111>))
+Declaration(Class(<x:cls/112>))
+Declaration(Class(<x:cls/113>))
+Declaration(Class(<x:cls/114>))
+Declaration(Class(<x:cls/115>))
+Declaration(Class(<x:cls/116>))
+Declaration(Class(<x:cls/117>))
+Declaration(Class(<x:cls/118>))
+Declaration(Class(<x:cls/119>))
+Declaration(Class(<x:cls/120>))
+Declaration(Class(<x:cls/121>))
+Declaration(Class(<x:cls/122>))
+Declaration(Class(<x:cls/123>))
+Declaration(Class(<x:cls/124>))
+Declaration(Class(<x:cls/125>))
+Declaration(Class(<x:cls/126>))
+Declaration(Class(<x:cls/127>))
+Declaration(Class(<x:cls/128>))
+Declaration(Class(<x:cls/129>))
+Declaration(Class(<x:cls/130>))
+Declaration(Class(<x:cls/131>))
+Declaration(Class(<x:cls/132>))
+Declaration(Class(<x:cls/133>))
+Declaration(Class(<x:cls/134>))
+Declaration(Class(<x:cls/136>))
+Declaration(Class(<x:cls/137>))
+Declaration(Class(<x:cls/138>))
+Declaration(Class(<x:cls/139>))
+Declaration(Class(<x:cls/141>))
+Declaration(Class(<x:cls/143>))
+Declaration(Class(<x:cls/144>))
+Declaration(Class(<x:cls/145>))
+Declaration(Class(<x:cls/146>))
+Declaration(Class(<x:cls/147>))
+Declaration(Class(<x:cls/148>))
+Declaration(Class(<x:cls/149>))
+Declaration(Class(<x:cls/150>))
+Declaration(Class(<x:cls/151>))
+Declaration(Class(<x:cls/152>))
+Declaration(Class(<x:cls/153>))
+Declaration(Class(<x:cls/154>))
+Declaration(Class(<x:cls/155>))
+Declaration(Class(<x:cls/156>))
+Declaration(Class(<x:cls/157>))
+Declaration(Class(<x:cls/158>))
+Declaration(Class(<x:cls/159>))
+Declaration(Class(<x:cls/160>))
+Declaration(Class(<x:cls/161>))
+Declaration(Class(<x:cls/162>))
+Declaration(Class(<x:cls/163>))
+Declaration(Class(<x:cls/164>))
+Declaration(Class(<x:cls/165>))
+Declaration(Class(<x:cls/166>))
+Declaration(Class(<x:cls/167>))
+Declaration(Class(<x:cls/168>))
+Declaration(Class(<x:cls/169>))
+Declaration(Class(<x:cls/170>))
+Declaration(Class(<x:cls/171>))
+Declaration(Class(<x:cls/172>))
+Declaration(Class(<x:cls/173>))
+Declaration(Class(<x:cls/174>))
+Declaration(Class(<x:cls/175>))
+Declaration(Class(<x:cls/176>))
+Declaration(Class(<x:cls/177>))
+Declaration(Class(<x:cls/178>))
+Declaration(Class(<x:cls/179>))
+Declaration(Class(<x:cls/180>))
+Declaration(Class(<x:cls/181>))
+Declaration(Class(<x:cls/182>))
+Declaration(Class(<x:cls/183>))
+Declaration(Class(<x:cls/184>))
+Declaration(Class(<x:cls/185>))
+Declaration(Class(<x:cls/186>))
+Declaration(Class(<x:cls/187>))
+Declaration(Class(<x:cls/188>))
+Declaration(Class(<x:cls/189>))
+Declaration(Class(<x:cls/190>))
+Declaration(Class(<x:cls/191>))
+Declaration(Class(<x:cls/192>))
+Declaration(Class(<x:cls/193>))
+Declaration(Class(<x:cls/194>))
+Declaration(Class(<x:cls/195>))
+Declaration(Class(<x:cls/196>))
+Declaration(Class(<x:cls/198>))
+Declaration(Class(<x:cls/199>))
+Declaration(Class(<x:cls/200>))
+Declaration(Class(<x:cls/201>))
+Declaration(Class(<x:cls/202>))
+Declaration(Class(<x:cls/203>))
+Declaration(Class(<x:cls/204>))
+Declaration(Class(<x:cls/205>))
+Declaration(Class(<x:cls/206>))
+Declaration(Class(<x:cls/207>))
+Declaration(Class(<x:cls/208>))
+Declaration(Class(<x:cls/209>))
+Declaration(Class(<x:cls/210>))
+Declaration(Class(<x:cls/211>))
+Declaration(Class(<x:cls/213>))
+Declaration(Class(<x:cls/214>))
+Declaration(Class(<x:cls/215>))
+Declaration(Class(<x:cls/216>))
+Declaration(Class(<x:cls/217>))
+Declaration(Class(<x:cls/218>))
+Declaration(Class(<x:cls/219>))
+Declaration(Class(<x:cls/220>))
+Declaration(Class(<x:cls/221>))
+Declaration(Class(<x:cls/223>))
+Declaration(Class(<x:cls/224>))
+Declaration(Class(<x:cls/225>))
+Declaration(Class(<x:cls/226>))
+Declaration(Class(<x:cls/227>))
+Declaration(Class(<x:cls/228>))
+Declaration(Class(<x:cls/229>))
+Declaration(Class(<x:cls/230>))
+Declaration(Class(<x:cls/231>))
+Declaration(Class(<x:cls/232>))
+Declaration(Class(<x:cls/233>))
+Declaration(Class(<x:cls/235>))
+Declaration(Class(<x:cls/236>))
+Declaration(Class(<x:cls/237>))
+Declaration(Class(<x:cls/239>))
+Declaration(Class(<x:cls/240>))
+Declaration(Class(<x:cls/241>))
+Declaration(Class(<x:cls/242>))
+Declaration(Class(<x:cls/243>))
+Declaration(Class(<x:cls/244>))
+Declaration(Class(<x:cls/245>))
+Declaration(Class(<x:cls/247>))
+Declaration(Class(<x:cls/248>))
+Declaration(Class(<x:cls/249>))
+Declaration(Class(<x:cls/250>))
+Declaration(Class(<x:cls/251>))
+Declaration(Class(<x:cls/252>))
+Declaration(Class(<x:cls/253>))
+Declaration(Class(<x:cls/254>))
+Declaration(Class(<x:cls/255>))
+Declaration(Class(<x:cls/256>))
+Declaration(Class(<x:cls/257>))
+Declaration(Class(<x:cls/259>))
+Declaration(Class(<x:cls/260>))
+Declaration(Class(<x:cls/262>))
+Declaration(Class(<x:cls/263>))
+Declaration(Class(<x:cls/264>))
+Declaration(Class(<x:cls/265>))
+Declaration(Class(<x:cls/266>))
+Declaration(Class(<x:cls/267>))
+Declaration(Class(<x:cls/268>))
+Declaration(Class(<x:cls/269>))
+Declaration(Class(<x:cls/270>))
+Declaration(Class(<x:cls/271>))
+Declaration(Class(<x:cls/272>))
+Declaration(Class(<x:cls/273>))
+Declaration(Class(<x:cls/274>))
+Declaration(Class(<x:cls/275>))
+Declaration(Class(<x:cls/276>))
+Declaration(Class(<x:cls/277>))
+Declaration(Class(<x:cls/278>))
+Declaration(Class(<x:cls/279>))
+Declaration(Class(<x:cls/280>))
+Declaration(Class(<x:cls/281>))
+Declaration(Class(<x:cls/282>))
+Declaration(Class(<x:cls/283>))
+Declaration(Class(<x:cls/284>))
+Declaration(Class(<x:cls/287>))
+Declaration(Class(<x:cls/288>))
+Declaration(Class(<x:cls/289>))
+Declaration(Class(<x:cls/290>))
+Declaration(Class(<x:cls/291>))
+Declaration(Class(<x:cls/292>))
+Declaration(Class(<x:cls/293>))
+Declaration(Class(<x:cls/294>))
+Declaration(Class(<x:cls/295>))
+Declaration(Class(<x:cls/296>))
+Declaration(Class(<x:cls/298>))
+Declaration(Class(<x:cls/299>))
+Declaration(Class(<x:cls/300>))
+Declaration(Class(<x:cls/301>))
+Declaration(Class(<x:cls/302>))
+Declaration(Class(<x:cls/303>))
+Declaration(Class(<x:cls/304>))
+Declaration(Class(<x:cls/305>))
+Declaration(Class(<x:cls/306>))
+Declaration(Class(<x:cls/307>))
+Declaration(Class(<x:cls/308>))
+Declaration(Class(<x:cls/309>))
+Declaration(Class(<x:cls/310>))
+Declaration(Class(<x:cls/311>))
+Declaration(Class(<x:cls/312>))
+Declaration(Class(<x:cls/313>))
+Declaration(Class(<x:cls/314>))
+Declaration(Class(<x:cls/315>))
+Declaration(Class(<x:cls/316>))
+Declaration(Class(<x:cls/317>))
+Declaration(Class(<x:cls/318>))
+Declaration(Class(<x:cls/319>))
+Declaration(Class(<x:cls/320>))
+Declaration(Class(<x:cls/321>))
+Declaration(Class(<x:cls/322>))
+Declaration(Class(<x:cls/323>))
+Declaration(Class(<x:cls/324>))
+Declaration(Class(<x:cls/325>))
+Declaration(Class(<x:cls/326>))
+Declaration(Class(<x:cls/327>))
+Declaration(Class(<x:cls/328>))
+Declaration(Class(<x:cls/330>))
+Declaration(Class(<x:cls/331>))
+Declaration(Class(<x:cls/332>))
+Declaration(Class(<x:cls/333>))
+Declaration(Class(<x:cls/336>))
+Declaration(Class(<x:cls/337>))
+Declaration(Class(<x:cls/338>))
+Declaration(Class(<x:cls/339>))
+Declaration(Class(<x:cls/340>))
+Declaration(Class(<x:cls/341>))
+Declaration(Class(<x:cls/342>))
+Declaration(Class(<x:cls/343>))
+Declaration(Class(<x:cls/344>))
+Declaration(Class(<x:cls/345>))
+Declaration(Class(<x:cls/347>))
+Declaration(Class(<x:cls/348>))
+Declaration(Class(<x:cls/349>))
+Declaration(Class(<x:cls/350>))
+Declaration(Class(<x:cls/351>))
+Declaration(Class(<x:cls/352>))
+Declaration(Class(<x:cls/353>))
+Declaration(Class(<x:cls/354>))
+Declaration(Class(<x:cls/355>))
+Declaration(Class(<x:cls/356>))
+Declaration(Class(<x:cls/357>))
+Declaration(Class(<x:cls/358>))
+Declaration(Class(<x:cls/359>))
+Declaration(Class(<x:cls/361>))
+Declaration(Class(<x:cls/362>))
+Declaration(Class(<x:cls/363>))
+Declaration(Class(<x:cls/365>))
+Declaration(Class(<x:cls/366>))
+Declaration(Class(<x:cls/367>))
+Declaration(Class(<x:cls/368>))
+Declaration(Class(<x:cls/369>))
+Declaration(Class(<x:cls/370>))
+Declaration(Class(<x:cls/371>))
+Declaration(Class(<x:cls/372>))
+Declaration(Class(<x:cls/373>))
+Declaration(Class(<x:cls/374>))
+Declaration(Class(<x:cls/375>))
+Declaration(Class(<x:cls/376>))
+Declaration(Class(<x:cls/377>))
+Declaration(Class(<x:cls/378>))
+Declaration(Class(<x:cls/379>))
+Declaration(Class(<x:cls/380>))
+Declaration(Class(<x:cls/381>))
+Declaration(Class(<x:cls/382>))
+Declaration(Class(<x:cls/383>))
+Declaration(Class(<x:cls/384>))
+Declaration(Class(<x:cls/385>))
+Declaration(Class(<x:cls/386>))
+Declaration(Class(<x:cls/387>))
+Declaration(Class(<x:cls/388>))
+Declaration(Class(<x:cls/389>))
+Declaration(Class(<x:cls/390>))
+Declaration(Class(<x:cls/391>))
+Declaration(Class(<x:cls/392>))
+Declaration(Class(<x:cls/393>))
+Declaration(Class(<x:cls/394>))
+Declaration(Class(<x:cls/395>))
+Declaration(Class(<x:cls/396>))
+Declaration(Class(<x:cls/397>))
+Declaration(Class(<x:cls/398>))
+Declaration(Class(<x:cls/399>))
+Declaration(Class(<x:cls/400>))
+Declaration(Class(<x:cls/401>))
+Declaration(Class(<x:cls/402>))
+Declaration(Class(<x:cls/403>))
+Declaration(Class(<x:cls/404>))
+Declaration(Class(<x:cls/405>))
+Declaration(Class(<x:cls/406>))
+Declaration(Class(<x:cls/407>))
+Declaration(Class(<x:cls/408>))
+Declaration(Class(<x:cls/409>))
+Declaration(Class(<x:cls/410>))
+Declaration(Class(<x:cls/411>))
+Declaration(Class(<x:cls/412>))
+Declaration(Class(<x:cls/413>))
+Declaration(Class(<x:cls/414>))
+Declaration(Class(<x:cls/415>))
+Declaration(Class(<x:cls/416>))
+Declaration(Class(<x:cls/417>))
+Declaration(Class(<x:cls/418>))
+Declaration(Class(<x:cls/419>))
+Declaration(Class(<x:cls/420>))
+Declaration(Class(<x:cls/421>))
+Declaration(Class(<x:cls/422>))
+Declaration(Class(<x:cls/424>))
+Declaration(Class(<x:cls/425>))
+Declaration(Class(<x:cls/426>))
+Declaration(Class(<x:cls/427>))
+Declaration(Class(<x:cls/428>))
+Declaration(Class(<x:cls/429>))
+Declaration(Class(<x:cls/430>))
+Declaration(Class(<x:cls/431>))
+Declaration(Class(<x:cls/432>))
+Declaration(Class(<x:cls/433>))
+Declaration(Class(<x:cls/434>))
+Declaration(Class(<x:cls/435>))
+Declaration(Class(<x:cls/436>))
+Declaration(Class(<x:cls/437>))
+Declaration(Class(<x:cls/438>))
+Declaration(Class(<x:cls/439>))
+Declaration(Class(<x:cls/440>))
+Declaration(Class(<x:cls/441>))
+Declaration(Class(<x:cls/442>))
+Declaration(Class(<x:cls/443>))
+Declaration(Class(<x:cls/444>))
+Declaration(Class(<x:cls/445>))
+Declaration(Class(<x:cls/446>))
+Declaration(Class(<x:cls/447>))
+Declaration(Class(<x:cls/448>))
+Declaration(Class(<x:cls/449>))
+Declaration(Class(<x:cls/450>))
+Declaration(Class(<x:cls/451>))
+Declaration(Class(<x:cls/452>))
+Declaration(Class(<x:cls/453>))
+Declaration(Class(<x:cls/454>))
+Declaration(Class(<x:cls/455>))
+Declaration(Class(<x:cls/456>))
+Declaration(Class(<x:cls/457>))
+Declaration(Class(<x:cls/458>))
+Declaration(Class(<x:cls/459>))
+Declaration(Class(<x:cls/460>))
+Declaration(Class(<x:cls/461>))
+Declaration(Class(<x:cls/462>))
+Declaration(Class(<x:cls/463>))
+Declaration(Class(<x:cls/464>))
+Declaration(Class(<x:cls/465>))
+Declaration(Class(<x:cls/466>))
+Declaration(Class(<x:cls/467>))
+Declaration(Class(<x:cls/468>))
+Declaration(Class(<x:cls/469>))
+Declaration(Class(<x:cls/470>))
+Declaration(Class(<x:cls/471>))
+Declaration(Class(<x:cls/473>))
+Declaration(Class(<x:cls/474>))
+Declaration(Class(<x:cls/475>))
+Declaration(Class(<x:cls/476>))
+Declaration(Class(<x:cls/477>))
+Declaration(Class(<x:cls/478>))
+Declaration(Class(<x:cls/479>))
+Declaration(Class(<x:cls/480>))
+Declaration(Class(<x:cls/481>))
+Declaration(Class(<x:cls/482>))
+Declaration(Class(<x:cls/483>))
+Declaration(Class(<x:cls/484>))
+Declaration(Class(<x:cls/485>))
+Declaration(Class(<x:cls/486>))
+Declaration(Class(<x:cls/488>))
+Declaration(Class(<x:cls/489>))
+Declaration(Class(<x:cls/490>))
+Declaration(Class(<x:cls/491>))
+Declaration(Class(<x:cls/492>))
+Declaration(Class(<x:cls/493>))
+Declaration(Class(<x:cls/494>))
+Declaration(Class(<x:cls/495>))
+Declaration(Class(<x:cls/496>))
+Declaration(Class(<x:cls/497>))
+Declaration(Class(<x:cls/498>))
+Declaration(Class(<x:cls/499>))
+Declaration(Class(<x:cls/500>))
+Declaration(Class(<x:cls/501>))
+Declaration(Class(<x:cls/502>))
+Declaration(Class(<x:cls/503>))
+Declaration(Class(<x:cls/504>))
+Declaration(Class(<x:cls/505>))
+Declaration(Class(<x:cls/506>))
+Declaration(Class(<x:cls/507>))
+Declaration(Class(<x:cls/508>))
+Declaration(Class(<x:cls/90>))
+Declaration(Class(<x:cls/91>))
+Declaration(Class(<x:cls/92>))
+Declaration(Class(<x:cls/93>))
+Declaration(Class(<x:cls/94>))
+Declaration(Class(<x:cls/95>))
+Declaration(Class(<x:cls/96>))
+Declaration(Class(<x:cls/97>))
+Declaration(Class(<x:cls/98>))
+Declaration(Class(<x:cls/99>))
+Declaration(ObjectProperty(<x:op/533>))
+Declaration(ObjectProperty(<x:op/534>))
+Declaration(ObjectProperty(<x:op/535>))
+Declaration(ObjectProperty(<x:op/536>))
+Declaration(ObjectProperty(<x:op/537>))
+Declaration(ObjectProperty(<x:op/539>))
+Declaration(ObjectProperty(<x:op/540>))
+Declaration(ObjectProperty(<x:op/541>))
+Declaration(ObjectProperty(<x:op/542>))
+Declaration(ObjectProperty(<x:op/543>))
+Declaration(ObjectProperty(<x:op/544>))
+Declaration(ObjectProperty(<x:op/545>))
+Declaration(ObjectProperty(<x:op/546>))
+Declaration(ObjectProperty(<x:op/547>))
+Declaration(ObjectProperty(<x:op/548>))
+Declaration(ObjectProperty(<x:op/549>))
+Declaration(ObjectProperty(<x:op/550>))
+Declaration(ObjectProperty(<x:op/551>))
+Declaration(ObjectProperty(<x:op/552>))
+Declaration(ObjectProperty(<x:op/553>))
+Declaration(ObjectProperty(<x:op/554>))
+Declaration(ObjectProperty(<x:op/555>))
+Declaration(ObjectProperty(<x:op/556>))
+Declaration(ObjectProperty(<x:op/557>))
+Declaration(ObjectProperty(<x:op/558>))
+Declaration(ObjectProperty(<x:op/559>))
+Declaration(ObjectProperty(<x:op/560>))
+Declaration(ObjectProperty(<x:op/561>))
+Declaration(ObjectProperty(<x:op/562>))
+Declaration(ObjectProperty(<x:op/563>))
+Declaration(ObjectProperty(<x:op/564>))
+Declaration(ObjectProperty(<x:op/565>))
+Declaration(ObjectProperty(<x:op/566>))
+Declaration(ObjectProperty(<x:op/567>))
+Declaration(ObjectProperty(<x:op/568>))
+Declaration(ObjectProperty(<x:op/569>))
+Declaration(ObjectProperty(<x:op/570>))
+Declaration(ObjectProperty(<x:op/571>))
+Declaration(DataProperty(<x:dp/521>))
+Declaration(DataProperty(<x:dp/522>))
+Declaration(DataProperty(<x:dp/523>))
+Declaration(DataProperty(<x:dp/524>))
+Declaration(DataProperty(<x:dp/525>))
+Declaration(DataProperty(<x:dp/526>))
+Declaration(DataProperty(<x:dp/527>))
+Declaration(DataProperty(<x:dp/528>))
+Declaration(DataProperty(<x:dp/529>))
+Declaration(DataProperty(<x:dp/530>))
+Declaration(DataProperty(<x:dp/531>))
+Declaration(DataProperty(<x:dp/532>))
+Declaration(NamedIndividual(<x:ind/0>))
+Declaration(NamedIndividual(<x:ind/1>))
+Declaration(NamedIndividual(<x:ind/10>))
+Declaration(NamedIndividual(<x:ind/11>))
+Declaration(NamedIndividual(<x:ind/12>))
+Declaration(NamedIndividual(<x:ind/13>))
+Declaration(NamedIndividual(<x:ind/14>))
+Declaration(NamedIndividual(<x:ind/15>))
+Declaration(NamedIndividual(<x:ind/16>))
+Declaration(NamedIndividual(<x:ind/17>))
+Declaration(NamedIndividual(<x:ind/18>))
+Declaration(NamedIndividual(<x:ind/19>))
+Declaration(NamedIndividual(<x:ind/2>))
+Declaration(NamedIndividual(<x:ind/20>))
+Declaration(NamedIndividual(<x:ind/21>))
+Declaration(NamedIndividual(<x:ind/22>))
+Declaration(NamedIndividual(<x:ind/23>))
+Declaration(NamedIndividual(<x:ind/24>))
+Declaration(NamedIndividual(<x:ind/25>))
+Declaration(NamedIndividual(<x:ind/26>))
+Declaration(NamedIndividual(<x:ind/27>))
+Declaration(NamedIndividual(<x:ind/28>))
+Declaration(NamedIndividual(<x:ind/29>))
+Declaration(NamedIndividual(<x:ind/3>))
+Declaration(NamedIndividual(<x:ind/30>))
+Declaration(NamedIndividual(<x:ind/31>))
+Declaration(NamedIndividual(<x:ind/32>))
+Declaration(NamedIndividual(<x:ind/33>))
+Declaration(NamedIndividual(<x:ind/34>))
+Declaration(NamedIndividual(<x:ind/35>))
+Declaration(NamedIndividual(<x:ind/36>))
+Declaration(NamedIndividual(<x:ind/37>))
+Declaration(NamedIndividual(<x:ind/38>))
+Declaration(NamedIndividual(<x:ind/39>))
+Declaration(NamedIndividual(<x:ind/4>))
+Declaration(NamedIndividual(<x:ind/40>))
+Declaration(NamedIndividual(<x:ind/41>))
+Declaration(NamedIndividual(<x:ind/42>))
+Declaration(NamedIndividual(<x:ind/43>))
+Declaration(NamedIndividual(<x:ind/44>))
+Declaration(NamedIndividual(<x:ind/45>))
+Declaration(NamedIndividual(<x:ind/46>))
+Declaration(NamedIndividual(<x:ind/47>))
+Declaration(NamedIndividual(<x:ind/48>))
+Declaration(NamedIndividual(<x:ind/49>))
+Declaration(NamedIndividual(<x:ind/5>))
+Declaration(NamedIndividual(<x:ind/50>))
+Declaration(NamedIndividual(<x:ind/51>))
+Declaration(NamedIndividual(<x:ind/52>))
+Declaration(NamedIndividual(<x:ind/53>))
+Declaration(NamedIndividual(<x:ind/54>))
+Declaration(NamedIndividual(<x:ind/55>))
+Declaration(NamedIndividual(<x:ind/56>))
+Declaration(NamedIndividual(<x:ind/57>))
+Declaration(NamedIndividual(<x:ind/58>))
+Declaration(NamedIndividual(<x:ind/59>))
+Declaration(NamedIndividual(<x:ind/6>))
+Declaration(NamedIndividual(<x:ind/60>))
+Declaration(NamedIndividual(<x:ind/61>))
+Declaration(NamedIndividual(<x:ind/63>))
+Declaration(NamedIndividual(<x:ind/64>))
+Declaration(NamedIndividual(<x:ind/65>))
+Declaration(NamedIndividual(<x:ind/66>))
+Declaration(NamedIndividual(<x:ind/67>))
+Declaration(NamedIndividual(<x:ind/68>))
+Declaration(NamedIndividual(<x:ind/69>))
+Declaration(NamedIndividual(<x:ind/7>))
+Declaration(NamedIndividual(<x:ind/70>))
+Declaration(NamedIndividual(<x:ind/71>))
+Declaration(NamedIndividual(<x:ind/72>))
+Declaration(NamedIndividual(<x:ind/73>))
+Declaration(NamedIndividual(<x:ind/74>))
+Declaration(NamedIndividual(<x:ind/75>))
+Declaration(NamedIndividual(<x:ind/76>))
+Declaration(NamedIndividual(<x:ind/77>))
+Declaration(NamedIndividual(<x:ind/78>))
+Declaration(NamedIndividual(<x:ind/79>))
+Declaration(NamedIndividual(<x:ind/8>))
+Declaration(NamedIndividual(<x:ind/80>))
+Declaration(NamedIndividual(<x:ind/81>))
+Declaration(NamedIndividual(<x:ind/82>))
+Declaration(NamedIndividual(<x:ind/83>))
+Declaration(NamedIndividual(<x:ind/84>))
+Declaration(NamedIndividual(<x:ind/85>))
+Declaration(NamedIndividual(<x:ind/86>))
+Declaration(NamedIndividual(<x:ind/87>))
+Declaration(NamedIndividual(<x:ind/88>))
+Declaration(NamedIndividual(<x:ind/89>))
+Declaration(NamedIndividual(<x:ind/9>))
+Declaration(AnnotationProperty(<x:ap/509>))
+Declaration(AnnotationProperty(<x:ap/510>))
+Declaration(AnnotationProperty(<x:ap/511>))
+Declaration(AnnotationProperty(<x:ap/512>))
+Declaration(AnnotationProperty(<x:ap/513>))
+Declaration(AnnotationProperty(<x:ap/514>))
+Declaration(AnnotationProperty(<x:ap/515>))
+Declaration(AnnotationProperty(<x:ap/516>))
+Declaration(AnnotationProperty(<x:ap/517>))
+Declaration(AnnotationProperty(<x:ap/518>))
+Declaration(AnnotationProperty(<x:ap/519>))
+Declaration(AnnotationProperty(<x:ap/520>))
+
+############################
+#   Object Properties
+############################
+
+# Object Property: <x:op/533> (<x:op/533>)
+
+InverseObjectProperties(<x:op/533> <x:op/534>)
+ObjectPropertyRange(<x:op/533> <x:cls/320>)
+
+# Object Property: <x:op/535> (<x:op/535>)
+
+ObjectPropertyRange(<x:op/535> <x:cls/486>)
+
+# Object Property: <x:op/536> (<x:op/536>)
+
+AnnotationAssertion(<x:ap/511> <x:op/536> "Has contraindicated measure"@en)
+AnnotationAssertion(<x:ap/511> <x:op/536> "hat kontraindizierte Massnahme"@de)
+
+# Object Property: <x:op/537> (<x:op/537>)
+
+AnnotationAssertion(<x:ap/511> <x:op/537> "Has diagnosis"@en)
+AnnotationAssertion(<x:ap/511> <x:op/537> "hat Diagnose"@de)
+ObjectPropertyDomain(<x:op/537> <x:cls/340>)
+ObjectPropertyRange(<x:op/537> <x:cls/194>)
+
+# Object Property: <x:op/539> (<x:op/539>)
+
+AnnotationAssertion(<x:ap/511> <x:op/539> "Has future recommended diagnosis"@en)
+SubObjectPropertyOf(<x:op/539> <x:op/540>)
+ObjectPropertyDomain(<x:op/539> <x:cls/340>)
+
+# Object Property: <x:op/540> (<x:op/540>)
+
+ObjectPropertyDomain(<x:op/540> <x:cls/340>)
+ObjectPropertyRange(<x:op/540> ObjectUnionOf(<x:cls/194> <x:cls/319> <x:cls/486>))
+
+# Object Property: <x:op/541> (<x:op/541>)
+
+AnnotationAssertion(<x:ap/511> <x:op/541> "Has future recommended measure"@en)
+ObjectPropertyRange(<x:op/541> <x:cls/319>)
+
+# Object Property: <x:op/542> (<x:op/542>)
+
+AnnotationAssertion(<x:ap/511> <x:op/542> "Has future recommended therapy goal"@en)
+ObjectPropertyDomain(<x:op/542> <x:cls/340>)
+
+# Object Property: <x:op/543> (<x:op/543>)
+
+InverseObjectProperties(<x:op/543> <x:op/544>)
+ObjectPropertyRange(<x:op/543> ObjectIntersectionOf(<x:cls/319> <x:cls/507>))
+
+# Object Property: <x:op/545> (<x:op/545>)
+
+SubObjectPropertyOf(<x:op/545> <x:op/547>)
+ObjectPropertyDomain(<x:op/545> <x:cls/340>)
+ObjectPropertyRange(<x:op/545> <x:cls/170>)
+
+# Object Property: <x:op/546> (<x:op/546>)
+
+AnnotationAssertion(<x:ap/511> <x:op/546> "Has non-recommended diagnosis"@en)
+SubObjectPropertyOf(<x:op/546> <x:op/547>)
+
+# Object Property: <x:op/547> (<x:op/547>)
+
+ObjectPropertyRange(<x:op/547> ObjectUnionOf(<x:cls/194> <x:cls/319> <x:cls/486>))
+
+# Object Property: <x:op/548> (<x:op/548>)
+
+ObjectPropertyRange(<x:op/548> <x:cls/319>)
+
+# Object Property: <x:op/550> (<x:op/550>)
+
+SubObjectPropertyOf(<x:op/550> <x:op/541>)
+ObjectPropertyDomain(<x:op/550> <x:cls/340>)
+
+# Object Property: <x:op/551> (<x:op/551>)
+
+ObjectPropertyRange(<x:op/551> <x:cls/194>)
+
+# Object Property: <x:op/552> (<x:op/552>)
+
+ObjectPropertyRange(<x:op/552> ObjectUnionOf(<x:cls/194> <x:cls/319> <x:cls/486>))
+
+# Object Property: <x:op/553> (<x:op/553>)
+
+SubObjectPropertyOf(<x:op/553> <x:op/541>)
+
+# Object Property: <x:op/554> (<x:op/554>)
+
+ObjectPropertyRange(<x:op/554> <x:cls/486>)
+
+# Object Property: <x:op/555> (<x:op/555>)
+
+AnnotationAssertion(<x:ap/511> <x:op/555> "hat vermutete Diagnose"@de)
+ObjectPropertyRange(<x:op/555> <x:cls/194>)
+
+# Object Property: <x:op/556> (<x:op/556>)
+
+AnnotationAssertion(<x:ap/511> <x:op/556> "Has symptom"@en)
+AnnotationAssertion(<x:ap/511> <x:op/556> "hat Symptom"@de)
+
+# Object Property: <x:op/557> (<x:op/557>)
+
+AnnotationAssertion(<x:ap/511> <x:op/557> "hat Therapieziel"@de)
+
+# Object Property: <x:op/558> (<x:op/558>)
+
+SubObjectPropertyOf(<x:op/558> <x:op/561>)
+ObjectPropertyRange(<x:op/558> <x:cls/507>)
+
+# Object Property: <x:op/562> (<x:op/562>)
+
+ObjectPropertyDomain(<x:op/562> <x:cls/507>)
+ObjectPropertyRange(<x:op/562> <x:cls/507>)
+
+# Object Property: <x:op/564> (<x:op/564>)
+
+ObjectPropertyDomain(<x:op/564> <x:cls/340>)
+
+# Object Property: <x:op/565> (<x:op/565>)
+
+SubObjectPropertyOf(<x:op/565> <x:op/566>)
+ObjectPropertyRange(<x:op/565> <x:cls/507>)
+
+# Object Property: <x:op/566> (<x:op/566>)
+
+TransitiveObjectProperty(<x:op/566>)
+
+# Object Property: <x:op/567> (<x:op/567>)
+
+SubObjectPropertyOf(<x:op/567> <x:op/568>)
+ObjectPropertyDomain(<x:op/567> <x:cls/507>)
+
+# Object Property: <x:op/569> (<x:op/569>)
+
+ObjectPropertyRange(<x:op/569> <x:cls/507>)
+
+# Object Property: <x:op/571> (<x:op/571>)
+
+ObjectPropertyDomain(<x:op/571> <x:cls/507>)
+
+
+############################
+#   Data Properties
+############################
+
+# Data Property: <x:dp/522> (<x:dp/522>)
+
+DataPropertyRange(<x:dp/522> xsd:decimal)
+
+# Data Property: <x:dp/524> (<x:dp/524>)
+
+DataPropertyRange(<x:dp/524> xsd:string)
+
+# Data Property: <x:dp/525> (<x:dp/525>)
+
+DataPropertyDomain(<x:dp/525> <x:cls/507>)
+DataPropertyRange(<x:dp/525> xsd:int)
+
+# Data Property: <x:dp/526> (<x:dp/526>)
+
+DataPropertyDomain(<x:dp/526> <x:cls/486>)
+
+# Data Property: <x:dp/532> (<x:dp/532>)
+
+DataPropertyDomain(<x:dp/532> <x:cls/505>)
+
+
+
+############################
+#   Classes
+############################
+
+# Class: <x:cls/100> (<x:cls/100>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/100> "antipsychotische Therapie"@de)
+SubClassOf(<x:cls/100> ObjectIntersectionOf(ObjectHasValue(<x:op/567> <x:ind/72>) ObjectHasValue(<x:op/567> <x:ind/82>)))
+SubClassOf(<x:cls/100> ObjectHasValue(<x:op/567> <x:ind/43>))
+
+# Class: <x:cls/102> (<x:cls/102>)
+
+SubClassOf(<x:cls/102> <x:cls/507>)
+
+# Class: <x:cls/103> (<x:cls/103>)
+
+SubClassOf(<x:cls/103> <x:cls/187>)
+SubClassOf(<x:cls/103> ObjectAllValuesFrom(<x:op/541> ObjectUnionOf(ObjectComplementOf(<x:cls/159>) ObjectHasValue(<x:op/558> <x:ind/80>))))
+
+# Class: <x:cls/104> (<x:cls/104>)
+
+SubClassOf(<x:cls/104> <x:cls/187>)
+SubClassOf(<x:cls/104> ObjectAllValuesFrom(<x:op/541> ObjectUnionOf(ObjectComplementOf(<x:cls/159>) ObjectHasValue(<x:op/559> <x:ind/12>))))
+
+# Class: <x:cls/105> (<x:cls/105>)
+
+SubClassOf(<x:cls/105> <x:cls/102>)
+DisjointClasses(<x:cls/105> <x:cls/106>)
+
+# Class: <x:cls/106> (<x:cls/106>)
+
+SubClassOf(<x:cls/106> <x:cls/102>)
+
+# Class: <x:cls/107> (<x:cls/107>)
+
+SubClassOf(<x:cls/107> <x:cls/507>)
+
+# Class: <x:cls/108> (<x:cls/108>)
+
+SubClassOf(<x:cls/108> <x:cls/115>)
+
+# Class: <x:cls/110> (<x:cls/110>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/110> "Verabreiche ein Anticholinergikum"@de)
+AnnotationAssertion(<x:ap/515> <x:cls/110> "DGPPN SG (4.5)")
+AnnotationAssertion(<x:ap/517> <x:cls/110> "C")
+SubClassOf(<x:cls/110> <x:cls/231>)
+SubClassOf(<x:cls/110> ObjectHasValue(<x:op/533> <x:ind/16>))
+
+# Class: <x:cls/111> (<x:cls/111>)
+
+EquivalentClasses(<x:cls/111> ObjectIntersectionOf(ObjectSomeValuesFrom(<x:op/533> <x:cls/97>) DataSomeValuesFrom(<x:dp/522> xsd:decimal)))
+SubClassOf(<x:cls/111> ObjectHasValue(<x:op/567> <x:ind/58>))
+
+# Class: <x:cls/112> (<x:cls/112>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/112> "Apply antipsychotic drug"@en)
+AnnotationAssertion(<x:ap/511> <x:cls/112> "Verabreiche Antipsychotikum"@de)
+AnnotationAssertion(<x:ap/512> <x:cls/112> <x:cls/105>)
+AnnotationAssertion(<x:ap/512> <x:cls/112> <x:cls/106>)
+AnnotationAssertion(<x:ap/512> <x:cls/112> <x:cls/329>)
+AnnotationAssertion(<x:ap/512> <x:cls/112> <x:cls/450>)
+EquivalentClasses(<x:cls/112> ObjectIntersectionOf(ObjectSomeValuesFrom(<x:op/533> <x:cls/99>) DataSomeValuesFrom(<x:dp/522> xsd:decimal)))
+SubClassOf(<x:cls/112> <x:cls/154>)
+SubClassOf(<x:cls/112> <x:cls/231>)
+SubClassOf(<x:cls/112> ObjectSomeValuesFrom(<x:op/533> <x:cls/320>))
+
+# Class: <x:cls/113> (<x:cls/113>)
+
+AnnotationAssertion(<x:ap/515> <x:cls/113> "DGPPN SG (4.3.1)")
+AnnotationAssertion(<x:ap/517> <x:cls/113> "C")
+SubClassOf(<x:cls/113> ObjectHasValue(<x:op/567> <x:ind/58>))
+
+# Class: <x:cls/114> (<x:cls/114>)
+
+SubClassOf(<x:cls/114> <x:cls/115>)
+SubClassOf(<x:cls/114> ObjectHasValue(<x:op/533> <x:ind/49>))
+
+# Class: <x:cls/115> (<x:cls/115>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/115> "Apply atypical antipsychotic drug"@en)
+AnnotationAssertion(<x:ap/511> <x:cls/115> "Wende atypisches Antipsychotikum an"@de)
+AnnotationAssertion(<x:ap/515> <x:cls/115> "DGPPN SG (4.3.1)")
+EquivalentClasses(<x:cls/115> ObjectIntersectionOf(ObjectUnionOf(ObjectSomeValuesFrom(<x:op/533> <x:cls/131>) ObjectSomeValuesFrom(<x:op/533> <x:cls/151>) ObjectSomeValuesFrom(<x:op/533> <x:cls/336>) ObjectSomeValuesFrom(<x:op/533> <x:cls/375>) ObjectSomeValuesFrom(<x:op/533> <x:cls/95>)) DataSomeValuesFrom(<x:dp/522> xsd:decimal)))
+
+# Class: <x:cls/116> (<x:cls/116>)
+
+SubClassOf(<x:cls/116> ObjectHasValue(<x:op/567> <x:ind/58>))
+DisjointClasses(<x:cls/116> <x:cls/130>)
+
+# Class: <x:cls/117> (<x:cls/117>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/117> "Verabreiche ein Benzodiapine"@de)
+EquivalentClasses(<x:cls/117> ObjectIntersectionOf(ObjectSomeValuesFrom(<x:op/533> <x:cls/134>) DataSomeValuesFrom(<x:dp/522> xsd:decimal)))
+
+# Class: <x:cls/118> (<x:cls/118>)
+
+SubClassOf(<x:cls/118> ObjectHasValue(<x:op/533> <x:ind/3>))
+
+# Class: <x:cls/119> (<x:cls/119>)
+
+SubClassOf(<x:cls/119> <x:cls/231>)
+
+# Class: <x:cls/120> (<x:cls/120>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/120> "Apply last satisfying antipsychotic drug again"@en)
+SubClassOf(<x:cls/120> ObjectHasValue(<x:op/567> <x:ind/58>))
+
+# Class: <x:cls/122> (<x:cls/122>)
+
+SubClassOf(<x:cls/122> <x:cls/231>)
+
+# Class: <x:cls/123> (<x:cls/123>)
+
+EquivalentClasses(<x:cls/123> ObjectIntersectionOf(ObjectSomeValuesFrom(<x:op/533> <x:cls/375>) DataSomeValuesFrom(<x:dp/522> xsd:decimal)))
+SubClassOf(<x:cls/123> <x:cls/115>)
+
+# Class: <x:cls/124> (<x:cls/124>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/124> "Apply a SSRI"@en)
+EquivalentClasses(<x:cls/124> ObjectIntersectionOf(ObjectSomeValuesFrom(<x:op/533> <x:cls/431>) DataSomeValuesFrom(<x:dp/522> xsd:decimal)))
+SubClassOf(<x:cls/124> <x:cls/231>)
+
+# Class: <x:cls/125> (<x:cls/125>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/125> "Apply current medicine with target dose"@en)
+SubClassOf(<x:cls/125> <x:cls/231>)
+SubClassOf(<x:cls/125> ObjectHasValue(<x:op/567> <x:ind/58>))
+
+# Class: <x:cls/126> (<x:cls/126>)
+
+SubClassOf(<x:cls/126> <x:cls/125>)
+
+# Class: <x:cls/127> (<x:cls/127>)
+
+SubClassOf(<x:cls/127> <x:cls/125>)
+SubClassOf(<x:cls/127> ObjectHasValue(<x:op/567> <x:ind/58>))
+
+# Class: <x:cls/128> (<x:cls/128>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/128> "Verabreiche ein trizyklisches Antidepressiva"@de)
+EquivalentClasses(<x:cls/128> ObjectIntersectionOf(ObjectSomeValuesFrom(<x:op/533> <x:cls/496>) DataSomeValuesFrom(<x:dp/522> xsd:decimal)))
+
+# Class: <x:cls/129> (<x:cls/129>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/129> "Apply typical antipsychotic drug"@en)
+EquivalentClasses(<x:cls/129> ObjectIntersectionOf(ObjectUnionOf(ObjectSomeValuesFrom(<x:op/533> <x:cls/243>) ObjectSomeValuesFrom(<x:op/533> <x:cls/244>) ObjectSomeValuesFrom(<x:op/533> <x:cls/289>) ObjectSomeValuesFrom(<x:op/533> <x:cls/350>) ObjectSomeValuesFrom(<x:op/533> <x:cls/353>)) DataSomeValuesFrom(<x:dp/522> xsd:decimal)))
+SubClassOf(<x:cls/129> ObjectHasValue(<x:op/567> <x:ind/58>))
+
+# Class: <x:cls/130> (<x:cls/130>)
+
+SubClassOf(<x:cls/130> <x:cls/113>)
+
+# Class: <x:cls/131> (<x:cls/131>)
+
+SubClassOf(<x:cls/131> <x:cls/132>)
+
+# Class: <x:cls/132> (<x:cls/132>)
+
+SubClassOf(<x:cls/132> <x:cls/99>)
+
+# Class: <x:cls/133> (<x:cls/133>)
+
+AnnotationAssertion(<x:ap/512> <x:cls/133> <x:cls/556>)
+AnnotationAssertion(<x:ap/515> <x:cls/133> "DGPPN SG (1)")
+SubClassOf(<x:cls/133> <x:cls/355>)
+SubClassOf(<x:cls/133> <x:cls/453>)
+
+# Class: <x:cls/134> (<x:cls/134>)
+
+AnnotationAssertion(<x:ap/513> <x:cls/134> <x:cls/453>)
+SubClassOf(<x:cls/134> <x:cls/97>)
+
+# Class: <x:cls/136> (<x:cls/136>)
+
+SubClassOf(<x:cls/136> <x:cls/194>)
+
+# Class: <x:cls/137> (<x:cls/137>)
+
+AnnotationAssertion(<x:ap/517> <x:cls/137> "C")
+SubClassOf(<x:cls/137> <x:cls/154>)
+SubClassOf(<x:cls/137> <x:cls/319>)
+
+# Class: <x:cls/138> (<x:cls/138>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/138> "Verabreiche nur die Hälfte der Standarddosis"@de)
+AnnotationAssertion(<x:ap/517> <x:cls/138> "C")
+
+# Class: <x:cls/139> (<x:cls/139>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/139> "kardiale Vorschädigung"@de)
+SubClassOf(<x:cls/139> <x:cls/154>)
+SubClassOf(<x:cls/139> <x:cls/194>)
+
+# Class: <x:cls/141> (<x:cls/141>)
+
+AnnotationAssertion(<x:ap/515> <x:cls/141> "DGPPN SG (7.1)")
+AnnotationAssertion(<x:ap/517> <x:cls/141> "C")
+
+# Class: <x:cls/144> (<x:cls/144>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/144> "Test for HIV"@en)
+
+# Class: <x:cls/145> (<x:cls/145>)
+
+SubClassOf(<x:cls/145> ObjectHasValue(<x:op/567> <x:ind/9>))
+
+# Class: <x:cls/146> (<x:cls/146>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/146> "Check liver data"@en)
+
+# Class: <x:cls/147> (<x:cls/147>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/147> "Check previous pathological results"@en)
+SubClassOf(<x:cls/147> <x:cls/154>)
+
+# Class: <x:cls/148> (<x:cls/148>)
+
+AnnotationAssertion(<x:ap/515> <x:cls/148> "DGPPN SG (4.3.1)")
+SubClassOf(<x:cls/148> <x:cls/319>)
+SubClassOf(<x:cls/148> ObjectHasValue(<x:op/565> <x:ind/6>))
+
+# Class: <x:cls/149> (<x:cls/149>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/149> "Check risk for suicide"@en)
+AnnotationAssertion(<x:ap/511> <x:cls/149> "Schätze Risiko für suizidales Verhalten ein"@de)
+
+# Class: <x:cls/150> (<x:cls/150>)
+
+
+# Class: <x:cls/152> (<x:cls/152>)
+
+SubClassOf(<x:cls/152> ObjectAllValuesFrom(<x:op/539> ObjectUnionOf(ObjectComplementOf(<x:cls/156>) ObjectHasValue(<x:op/559> <x:ind/8>))))
+
+# Class: <x:cls/153> (<x:cls/153>)
+
+AnnotationAssertion(<x:ap/515> <x:cls/153> "DGPPN SG (1)")
+SubClassOf(<x:cls/153> <x:cls/154>)
+SubClassOf(<x:cls/153> <x:cls/355>)
+
+# Class: <x:cls/157> (<x:cls/157>)
+
+SubClassOf(<x:cls/157> <x:cls/170>)
+SubClassOf(<x:cls/157> ObjectHasValue(<x:op/563> <x:ind/83>))
+
+# Class: <x:cls/158> (<x:cls/158>)
+
+SubClassOf(<x:cls/158> ObjectHasValue(<x:op/563> <x:ind/43>))
+
+# Class: <x:cls/159> (<x:cls/159>)
+
+AnnotationAssertion(<x:ap/520> <x:cls/159> <x:cls/115>)
+SubClassOf(<x:cls/159> ObjectHasValue(<x:op/563> <x:ind/20>))
+
+# Class: <x:cls/160> (<x:cls/160>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/160> "Question: Has patient a current drug application?"@en)
+AnnotationAssertion(<x:ap/514> <x:cls/160> <x:cls/412>)
+
+# Class: <x:cls/161> (<x:cls/161>)
+
+SubClassOf(<x:cls/161> ObjectHasValue(<x:op/563> <x:ind/35>))
+
+# Class: <x:cls/162> (<x:cls/162>)
+
+SubClassOf(<x:cls/162> ObjectHasValue(<x:op/563> <x:ind/70>))
+
+# Class: <x:cls/163> (<x:cls/163>)
+
+SubClassOf(<x:cls/163> <x:cls/170>)
+
+# Class: <x:cls/164> (<x:cls/164>)
+
+SubClassOf(<x:cls/164> <x:cls/170>)
+SubClassOf(<x:cls/164> ObjectHasValue(<x:op/563> <x:ind/51>))
+SubClassOf(<x:cls/164> ObjectHasValue(<x:op/567> <x:ind/58>))
+
+# Class: <x:cls/165> (<x:cls/165>)
+
+SubClassOf(<x:cls/165> <x:cls/170>)
+
+# Class: <x:cls/166> (<x:cls/166>)
+
+SubClassOf(<x:cls/166> <x:cls/170>)
+
+# Class: <x:cls/167> (<x:cls/167>)
+
+SubClassOf(<x:cls/167> <x:cls/170>)
+
+# Class: <x:cls/168> (<x:cls/168>)
+
+SubClassOf(<x:cls/168> <x:cls/170>)
+
+# Class: <x:cls/169> (<x:cls/169>)
+
+AnnotationAssertion(<x:ap/520> <x:cls/169> <x:cls/305>)
+SubClassOf(<x:cls/169> ObjectHasValue(<x:op/560> <x:ind/39>))
+SubClassOf(<x:cls/169> ObjectHasValue(<x:op/563> <x:ind/20>))
+
+# Class: <x:cls/170> (<x:cls/170>)
+
+SubClassOf(<x:cls/170> <x:cls/319>)
+
+# Class: <x:cls/171> (<x:cls/171>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/171> "Aufrechterhaltung der therapeutischen Beziehung"@de)
+
+# Class: <x:cls/172> (<x:cls/172>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/172> "Control mania"@en)
+AnnotationAssertion(<x:ap/515> <x:cls/172> "DGPPN SG (1)")
+SubClassOf(<x:cls/172> <x:cls/355>)
+
+# Class: <x:cls/173> (<x:cls/173>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/173> "Coordinate clinical target syndrome"@en)
+AnnotationAssertion(<x:ap/515> <x:cls/173> "DGPPN SG (4.1)")
+SubClassOf(<x:cls/173> <x:cls/319>)
+
+# Class: <x:cls/174> (<x:cls/174>)
+
+
+# Class: <x:cls/175> (<x:cls/175>)
+
+EquivalentClasses(<x:cls/175> ObjectIntersectionOf(ObjectSomeValuesFrom(<x:op/533> <x:cls/131>) DataSomeValuesFrom(<x:dp/522> DatatypeRestriction(xsd:decimal xsd:minExclusive "30.00"^^xsd:decimal))))
+
+# Class: <x:cls/176> (<x:cls/176>)
+
+EquivalentClasses(<x:cls/176> ObjectIntersectionOf(ObjectSomeValuesFrom(<x:op/533> <x:cls/151>) DataSomeValuesFrom(<x:dp/522> DatatypeRestriction(xsd:decimal xsd:minExclusive "900.00"^^xsd:decimal))))
+SubClassOf(<x:cls/176> <x:cls/119>)
+
+# Class: <x:cls/177> (<x:cls/177>)
+
+EquivalentClasses(<x:cls/177> ObjectIntersectionOf(ObjectSomeValuesFrom(<x:op/533> <x:cls/243>) DataSomeValuesFrom(<x:dp/522> DatatypeRestriction(xsd:decimal xsd:minExclusive "60.00"^^xsd:decimal))))
+
+# Class: <x:cls/178> (<x:cls/178>)
+
+EquivalentClasses(<x:cls/178> ObjectIntersectionOf(ObjectSomeValuesFrom(<x:op/533> <x:cls/244>) DataSomeValuesFrom(<x:dp/522> DatatypeRestriction(xsd:decimal xsd:minExclusive "40.00"^^xsd:decimal))))
+
+# Class: <x:cls/179> (<x:cls/179>)
+
+SubClassOf(<x:cls/179> <x:cls/119>)
+
+# Class: <x:cls/180> (<x:cls/180>)
+
+EquivalentClasses(<x:cls/180> ObjectIntersectionOf(ObjectSomeValuesFrom(<x:op/533> <x:cls/336>) DataSomeValuesFrom(<x:dp/522> DatatypeRestriction(xsd:decimal xsd:minExclusive "200.00"^^xsd:decimal))))
+SubClassOf(<x:cls/180> <x:cls/119>)
+
+# Class: <x:cls/181> (<x:cls/181>)
+
+EquivalentClasses(<x:cls/181> ObjectIntersectionOf(ObjectSomeValuesFrom(<x:op/533> <x:cls/350>) DataSomeValuesFrom(<x:dp/522> DatatypeRestriction(xsd:decimal xsd:minExclusive "56.00"^^xsd:decimal))))
+SubClassOf(<x:cls/181> <x:cls/119>)
+
+# Class: <x:cls/182> (<x:cls/182>)
+
+
+# Class: <x:cls/183> (<x:cls/183>)
+
+EquivalentClasses(<x:cls/183> ObjectIntersectionOf(ObjectSomeValuesFrom(<x:op/533> <x:cls/375>) DataSomeValuesFrom(<x:dp/522> DatatypeRestriction(xsd:decimal xsd:minExclusive "750.00"^^xsd:decimal))))
+SubClassOf(<x:cls/183> <x:cls/119>)
+
+# Class: <x:cls/184> (<x:cls/184>)
+
+SubClassOf(<x:cls/184> ObjectAllValuesFrom(<x:op/541> ObjectUnionOf(ObjectComplementOf(<x:cls/160>) ObjectHasValue(<x:op/559> <x:ind/80>))))
+
+# Class: <x:cls/185> (<x:cls/185>)
+
+SubClassOf(<x:cls/185> ObjectAllValuesFrom(<x:op/541> ObjectUnionOf(ObjectComplementOf(<x:cls/160>) ObjectHasValue(<x:op/558> <x:ind/65>))))
+
+# Class: <x:cls/186> (<x:cls/186>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/186> "Decrease the critical dose"@en)
+SubClassOf(<x:cls/186> <x:cls/319>)
+
+# Class: <x:cls/187> (<x:cls/187>)
+
+SubClassOf(<x:cls/187> <x:cls/287>)
+
+# Class: <x:cls/188> (<x:cls/188>)
+
+SubClassOf(<x:cls/188> <x:cls/187>)
+
+# Class: <x:cls/189> (<x:cls/189>)
+
+AnnotationAssertion(<x:ap/512> <x:cls/189> <x:cls/556>)
+AnnotationAssertion(<x:ap/515> <x:cls/189> "DGPPN SG (1)")
+SubClassOf(<x:cls/189> <x:cls/455>)
+
+# Class: <x:cls/190> (<x:cls/190>)
+
+AnnotationAssertion(<x:ap/510> <x:cls/190> "Set of depressive symptoms"@en)
+
+# Class: <x:cls/191> (<x:cls/191>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/191> "Entzug"@de)
+AnnotationAssertion(<x:ap/515> <x:cls/191> "DGPPN SG (1)")
+SubClassOf(<x:cls/191> <x:cls/484>)
+
+# Class: <x:cls/192> (<x:cls/192>)
+
+SubClassOf(<x:cls/192> <x:cls/452>)
+
+# Class: <x:cls/193> (<x:cls/193>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/193> "Diabetes screening"@en)
+AnnotationAssertion(<x:ap/517> <x:cls/193> "C")
+SubClassOf(<x:cls/193> <x:cls/319>)
+
+# Class: <x:cls/194> (<x:cls/194>)
+
+SubClassOf(<x:cls/194> ObjectSomeValuesFrom(<x:op/570> <x:cls/508>))
+
+# Class: <x:cls/195> (<x:cls/195>)
+
+
+# Class: <x:cls/196> (<x:cls/196>)
+
+AnnotationAssertion(<x:ap/518> <x:cls/196> "true"^^xsd:boolean)
+AnnotationAssertion(<x:ap/519> <x:cls/196> "true"^^xsd:boolean)
+SubClassOf(<x:cls/196> <x:cls/341>)
+
+# Class: <x:cls/198> (<x:cls/198>)
+
+SubClassOf(<x:cls/198> <x:cls/203>)
+
+# Class: <x:cls/199> (<x:cls/199>)
+
+SubClassOf(<x:cls/199> <x:cls/338>)
+
+# Class: <x:cls/200> (<x:cls/200>)
+
+SubClassOf(<x:cls/200> ObjectHasValue(<x:op/548> <x:ind/83>))
+
+# Class: <x:cls/201> (<x:cls/201>)
+
+SubClassOf(<x:cls/201> <x:cls/214>)
+
+# Class: <x:cls/202> (<x:cls/202>)
+
+SubClassOf(<x:cls/202> ObjectHasValue(<x:op/548> <x:ind/61>))
+
+# Class: <x:cls/204> (<x:cls/204>)
+
+SubClassOf(<x:cls/204> <x:cls/338>)
+
+# Class: <x:cls/205> (<x:cls/205>)
+
+SubClassOf(<x:cls/205> <x:cls/338>)
+
+# Class: <x:cls/207> (<x:cls/207>)
+
+EquivalentClasses(<x:cls/207> ObjectUnionOf(ObjectSomeValuesFrom(<x:op/537> <x:cls/288>) ObjectSomeValuesFrom(<x:op/543> ObjectIntersectionOf(<x:cls/144> <x:cls/506>))))
+
+# Class: <x:cls/208> (<x:cls/208>)
+
+AnnotationAssertion(<x:ap/512> <x:cls/208> <x:cls/556>)
+
+# Class: <x:cls/209> (<x:cls/209>)
+
+EquivalentClasses(<x:cls/209> ObjectIntersectionOf(ObjectSomeValuesFrom(<x:op/537> ObjectIntersectionOf(<x:cls/434> <x:cls/506>)) ObjectSomeValuesFrom(<x:op/543> ObjectIntersectionOf(<x:cls/149> DataSomeValuesFrom(<x:dp/531> DatatypeRestriction(xsd:int xsd:maxInclusive "15"^^xsd:int))))))
+SubClassOf(<x:cls/209> <x:cls/338>)
+
+# Class: <x:cls/210> (<x:cls/210>)
+
+AnnotationAssertion(<x:ap/510> <x:cls/210> "Depression as diagnosis"@en)
+SubClassOf(<x:cls/210> <x:cls/211>)
+
+# Class: <x:cls/213> (<x:cls/213>)
+
+EquivalentClasses(<x:cls/213> ObjectSomeValuesFrom(<x:op/537> ObjectIntersectionOf(<x:cls/506> <x:cls/93> ObjectSomeValuesFrom(<x:op/570> <x:cls/506>))))
+SubClassOf(<x:cls/213> <x:cls/338>)
+
+# Class: <x:cls/214> (<x:cls/214>)
+
+EquivalentClasses(<x:cls/214> ObjectSomeValuesFrom(<x:op/543> ObjectIntersectionOf(<x:cls/112> <x:cls/506>)))
+
+# Class: <x:cls/215> (<x:cls/215>)
+
+SubClassOf(<x:cls/215> ObjectHasValue(<x:op/548> <x:ind/13>))
+
+# Class: <x:cls/216> (<x:cls/216>)
+
+SubClassOf(<x:cls/216> <x:cls/338>)
+
+# Class: <x:cls/217> (<x:cls/217>)
+
+EquivalentClasses(<x:cls/217> ObjectSomeValuesFrom(<x:op/543> <x:cls/309>))
+
+# Class: <x:cls/218> (<x:cls/218>)
+
+EquivalentClasses(<x:cls/218> ObjectSomeValuesFrom(<x:op/543> <x:cls/310>))
+SubClassOf(<x:cls/218> <x:cls/338>)
+
+# Class: <x:cls/219> (<x:cls/219>)
+
+SubClassOf(<x:cls/219> <x:cls/338>)
+SubClassOf(<x:cls/219> ObjectHasValue(<x:op/548> <x:ind/7>))
+
+# Class: <x:cls/220> (<x:cls/220>)
+
+SubClassOf(<x:cls/220> ObjectHasValue(<x:op/548> <x:ind/73>))
+
+# Class: <x:cls/221> (<x:cls/221>)
+
+SubClassOf(<x:cls/221> <x:cls/338>)
+
+# Class: <x:cls/223> (<x:cls/223>)
+
+SubClassOf(<x:cls/223> <x:cls/338>)
+SubClassOf(<x:cls/223> ObjectHasValue(<x:op/548> <x:ind/71>))
+
+# Class: <x:cls/224> (<x:cls/224>)
+
+EquivalentClasses(<x:cls/224> ObjectIntersectionOf(<x:cls/408> ObjectSomeValuesFrom(<x:op/543> ObjectIntersectionOf(<x:cls/425> DataSomeValuesFrom(<x:dp/531> DatatypeRestriction(xsd:int xsd:maxInclusive "3"^^xsd:int))))))
+SubClassOf(<x:cls/224> ObjectHasValue(<x:op/548> <x:ind/52>))
+
+# Class: <x:cls/225> (<x:cls/225>)
+
+EquivalentClasses(<x:cls/225> ObjectSomeValuesFrom(<x:op/557> <x:cls/235>))
+SubClassOf(<x:cls/225> ObjectHasValue(<x:op/549> <x:ind/45>))
+
+# Class: <x:cls/226> (<x:cls/226>)
+
+EquivalentClasses(<x:cls/226> ObjectSomeValuesFrom(<x:op/543> <x:cls/237>))
+SubClassOf(<x:cls/226> <x:cls/338>)
+
+# Class: <x:cls/227> (<x:cls/227>)
+
+EquivalentClasses(<x:cls/227> ObjectSomeValuesFrom(<x:op/537> ObjectIntersectionOf(<x:cls/427> <x:cls/506>)))
+SubClassOf(<x:cls/227> <x:cls/338>)
+SubClassOf(<x:cls/227> ObjectHasValue(<x:op/546> <x:ind/68>))
+
+# Class: <x:cls/228> (<x:cls/228>)
+
+AnnotationAssertion(<x:ap/510> <x:cls/228> "Set of patients that don't get tricyclic drugs recommended"@en)
+SubClassOf(<x:cls/228> <x:cls/338>)
+
+# Class: <x:cls/229> (<x:cls/229>)
+
+EquivalentClasses(<x:cls/229> ObjectSomeValuesFrom(<x:op/543> ObjectIntersectionOf(<x:cls/112> <x:cls/130> <x:cls/506>)))
+
+# Class: <x:cls/230> (<x:cls/230>)
+
+SubClassOf(<x:cls/230> <x:cls/337>)
+SubClassOf(<x:cls/230> ObjectHasValue(<x:op/545> <x:ind/58>))
+
+# Class: <x:cls/232> (<x:cls/232>)
+
+SubClassOf(<x:cls/232> <x:cls/154>)
+
+# Class: <x:cls/233> (<x:cls/233>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/233> "Elektrokrampftherapie"@de)
+AnnotationAssertion(<x:ap/517> <x:cls/233> "C")
+SubClassOf(<x:cls/233> <x:cls/154>)
+SubClassOf(<x:cls/233> <x:cls/319>)
+
+# Class: <x:cls/235> (<x:cls/235>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/235> "Establish therapeutic relation"@en)
+SubClassOf(<x:cls/235> <x:cls/154>)
+
+# Class: <x:cls/236> (<x:cls/236>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/236> "Erregung"@de)
+AnnotationAssertion(<x:ap/511> <x:cls/236> "Excitement"@en)
+AnnotationAssertion(<x:ap/515> <x:cls/236> "DGPPN SG (1)")
+SubClassOf(<x:cls/236> <x:cls/154>)
+SubClassOf(<x:cls/236> <x:cls/460>)
+
+# Class: <x:cls/237> (<x:cls/237>)
+
+AnnotationAssertion(<x:ap/515> <x:cls/237> "DGPPN SG (4.3.1)"@de)
+AnnotationAssertion(<x:ap/517> <x:cls/237> "C"@de)
+SubClassOf(<x:cls/237> <x:cls/154>)
+SubClassOf(<x:cls/237> ObjectHasValue(<x:op/565> <x:ind/78>))
+
+# Class: <x:cls/239> (<x:cls/239>)
+
+SubClassOf(<x:cls/239> <x:cls/293>)
+DisjointClasses(<x:cls/239> <x:cls/312>)
+
+# Class: <x:cls/240> (<x:cls/240>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/240> "Finde die Ursache für die Wiederkehr der Schizophrenie"@de)
+AnnotationAssertion(<x:ap/515> <x:cls/240> "DGPPN SG (4.3.1)"@en)
+SubClassOf(<x:cls/240> <x:cls/154>)
+
+# Class: <x:cls/241> (<x:cls/241>)
+
+SubClassOf(<x:cls/241> ObjectAllValuesFrom(<x:op/541> ObjectUnionOf(ObjectComplementOf(<x:cls/155>) ObjectHasValue(<x:op/562> <x:ind/83>))))
+SubClassOf(<x:cls/241> ObjectAllValuesFrom(<x:op/541> ObjectUnionOf(ObjectComplementOf(<x:cls/166>) ObjectHasValue(<x:op/563> <x:ind/39>))))
+
+# Class: <x:cls/243> (<x:cls/243>)
+
+SubClassOf(<x:cls/243> <x:cls/497>)
+
+# Class: <x:cls/245> (<x:cls/245>)
+
+SubClassOf(<x:cls/245> ObjectHasValue(<x:op/541> <x:ind/77>))
+
+# Class: <x:cls/247> (<x:cls/247>)
+
+EquivalentClasses(<x:cls/247> ObjectSomeValuesFrom(<x:op/541> <x:cls/159>))
+SubClassOf(<x:cls/247> <x:cls/281>)
+
+# Class: <x:cls/248> (<x:cls/248>)
+
+SubClassOf(<x:cls/248> <x:cls/281>)
+SubClassOf(<x:cls/248> ObjectHasValue(<x:op/541> <x:ind/58>))
+
+# Class: <x:cls/249> (<x:cls/249>)
+
+SubClassOf(<x:cls/249> ObjectHasValue(<x:op/541> <x:ind/48>))
+SubClassOf(<x:cls/249> ObjectHasValue(<x:op/541> <x:ind/58>))
+
+# Class: <x:cls/250> (<x:cls/250>)
+
+EquivalentClasses(<x:cls/250> ObjectSomeValuesFrom(<x:op/541> <x:cls/117>))
+SubClassOf(<x:cls/250> ObjectHasValue(<x:op/541> <x:ind/42>))
+
+# Class: <x:cls/251> (<x:cls/251>)
+
+EquivalentClasses(<x:cls/251> ObjectSomeValuesFrom(<x:op/541> <x:cls/125>))
+SubClassOf(<x:cls/251> <x:cls/281>)
+SubClassOf(<x:cls/251> ObjectHasValue(<x:op/541> <x:ind/58>))
+
+# Class: <x:cls/252> (<x:cls/252>)
+
+SubClassOf(<x:cls/252> <x:cls/281>)
+
+# Class: <x:cls/253> (<x:cls/253>)
+
+EquivalentClasses(<x:cls/253> ObjectIntersectionOf(<x:cls/239> ObjectSomeValuesFrom(<x:op/541> <x:cls/137>)))
+SubClassOf(<x:cls/253> <x:cls/287>)
+SubClassOf(<x:cls/253> ObjectHasValue(<x:op/541> <x:ind/73>))
+
+# Class: <x:cls/254> (<x:cls/254>)
+
+EquivalentClasses(<x:cls/254> ObjectSomeValuesFrom(<x:op/541> <x:cls/143>))
+SubClassOf(<x:cls/254> <x:cls/287>)
+SubClassOf(<x:cls/254> ObjectHasValue(<x:op/539> <x:ind/9>))
+
+# Class: <x:cls/255> (<x:cls/255>)
+
+SubClassOf(<x:cls/255> <x:cls/281>)
+SubClassOf(<x:cls/255> ObjectHasValue(<x:op/541> <x:ind/55>))
+
+# Class: <x:cls/256> (<x:cls/256>)
+
+SubClassOf(<x:cls/256> ObjectHasValue(<x:op/541> <x:ind/28>))
+
+# Class: <x:cls/257> (<x:cls/257>)
+
+SubClassOf(<x:cls/257> <x:cls/281>)
+
+# Class: <x:cls/259> (<x:cls/259>)
+
+SubClassOf(<x:cls/259> <x:cls/287>)
+SubClassOf(<x:cls/259> ObjectHasValue(<x:op/541> <x:ind/35>))
+SubClassOf(<x:cls/259> ObjectHasValue(<x:op/541> <x:ind/71>))
+
+# Class: <x:cls/260> (<x:cls/260>)
+
+SubClassOf(<x:cls/260> <x:cls/287>)
+SubClassOf(<x:cls/260> ObjectHasValue(<x:op/541> <x:ind/7>))
+
+# Class: <x:cls/262> (<x:cls/262>)
+
+EquivalentClasses(<x:cls/262> ObjectSomeValuesFrom(<x:op/541> <x:cls/159>))
+SubClassOf(<x:cls/262> ObjectHasValue(<x:op/541> <x:ind/12>))
+SubClassOf(<x:cls/262> ObjectHasValue(<x:op/541> <x:ind/59>))
+
+# Class: <x:cls/263> (<x:cls/263>)
+
+SubClassOf(<x:cls/263> <x:cls/281>)
+SubClassOf(<x:cls/263> ObjectHasValue(<x:op/541> <x:ind/65>))
+SubClassOf(<x:cls/263> ObjectHasValue(<x:op/541> <x:ind/80>))
+
+# Class: <x:cls/264> (<x:cls/264>)
+
+EquivalentClasses(<x:cls/264> ObjectSomeValuesFrom(<x:op/541> <x:cls/161>))
+SubClassOf(<x:cls/264> ObjectHasValue(<x:op/541> <x:ind/18>))
+SubClassOf(<x:cls/264> ObjectHasValue(<x:op/541> <x:ind/21>))
+SubClassOf(<x:cls/264> ObjectHasValue(<x:op/541> <x:ind/35>))
+
+# Class: <x:cls/265> (<x:cls/265>)
+
+EquivalentClasses(<x:cls/265> ObjectSomeValuesFrom(<x:op/541> <x:cls/163>))
+SubClassOf(<x:cls/265> <x:cls/281>)
+
+# Class: <x:cls/267> (<x:cls/267>)
+
+SubClassOf(<x:cls/267> ObjectHasValue(<x:op/541> <x:ind/38>))
+
+# Class: <x:cls/268> (<x:cls/268>)
+
+SubClassOf(<x:cls/268> <x:cls/281>)
+SubClassOf(<x:cls/268> ObjectHasValue(<x:op/541> <x:ind/39>))
+SubClassOf(<x:cls/268> ObjectHasValue(<x:op/541> <x:ind/87>))
+
+# Class: <x:cls/269> (<x:cls/269>)
+
+SubClassOf(<x:cls/269> <x:cls/281>)
+
+# Class: <x:cls/270> (<x:cls/270>)
+
+SubClassOf(<x:cls/270> <x:cls/281>)
+SubClassOf(<x:cls/270> ObjectHasValue(<x:op/541> <x:ind/51>))
+SubClassOf(<x:cls/270> ObjectHasValue(<x:op/541> <x:ind/58>))
+
+# Class: <x:cls/271> (<x:cls/271>)
+
+SubClassOf(<x:cls/271> ObjectHasValue(<x:op/541> <x:ind/41>))
+
+# Class: <x:cls/272> (<x:cls/272>)
+
+EquivalentClasses(<x:cls/272> ObjectSomeValuesFrom(<x:op/539> <x:cls/372>))
+SubClassOf(<x:cls/272> <x:cls/287>)
+
+# Class: <x:cls/273> (<x:cls/273>)
+
+SubClassOf(<x:cls/273> <x:cls/287>)
+SubClassOf(<x:cls/273> ObjectHasValue(<x:op/541> <x:ind/47>))
+SubClassOf(<x:cls/273> ObjectHasValue(<x:op/541> <x:ind/66>))
+
+# Class: <x:cls/274> (<x:cls/274>)
+
+SubClassOf(<x:cls/274> <x:cls/287>)
+SubClassOf(<x:cls/274> ObjectHasValue(<x:op/541> <x:ind/26>))
+
+# Class: <x:cls/275> (<x:cls/275>)
+
+EquivalentClasses(<x:cls/275> ObjectIntersectionOf(<x:cls/274> DataSomeValuesFrom(<x:dp/523> DatatypeRestriction(xsd:int xsd:minInclusive "70"^^xsd:int))))
+SubClassOf(<x:cls/275> <x:cls/274>)
+
+# Class: <x:cls/276> (<x:cls/276>)
+
+SubClassOf(<x:cls/276> <x:cls/274>)
+SubClassOf(<x:cls/276> ObjectHasValue(<x:op/541> <x:ind/36>))
+
+# Class: <x:cls/277> (<x:cls/277>)
+
+EquivalentClasses(<x:cls/277> ObjectSomeValuesFrom(<x:op/541> <x:cls/156>))
+SubClassOf(<x:cls/277> <x:cls/282>)
+SubClassOf(<x:cls/277> ObjectHasValue(<x:op/541> <x:ind/8>))
+
+# Class: <x:cls/278> (<x:cls/278>)
+
+SubClassOf(<x:cls/278> ObjectHasValue(<x:op/541> <x:ind/10>))
+
+# Class: <x:cls/279> (<x:cls/279>)
+
+SubClassOf(<x:cls/279> ObjectHasValue(<x:op/541> <x:ind/74>))
+
+# Class: <x:cls/280> (<x:cls/280>)
+
+AnnotationAssertion(<x:ap/517> <x:cls/280> "Good clinical practise"@en)
+SubClassOf(<x:cls/280> ObjectHasValue(<x:op/567> <x:ind/7>))
+
+# Class: <x:cls/281> (<x:cls/281>)
+
+EquivalentClasses(<x:cls/281> ObjectSomeValuesFrom(<x:op/541> <x:cls/100>))
+
+# Class: <x:cls/283> (<x:cls/283>)
+
+EquivalentClasses(<x:cls/283> ObjectSomeValuesFrom(<x:op/564> <x:cls/450>))
+SubClassOf(<x:cls/283> <x:cls/419>)
+SubClassOf(<x:cls/283> ObjectAllValuesFrom(<x:op/541> ObjectUnionOf(ObjectComplementOf(<x:cls/160>) ObjectHasValue(<x:op/558> <x:ind/65>))))
+
+# Class: <x:cls/284> (<x:cls/284>)
+
+EquivalentClasses(<x:cls/284> ObjectSomeValuesFrom(<x:op/564> <x:cls/506>))
+SubClassOf(<x:cls/284> <x:cls/419>)
+SubClassOf(<x:cls/284> ObjectAllValuesFrom(<x:op/541> ObjectUnionOf(ObjectComplementOf(<x:cls/160>) ObjectHasValue(<x:op/559> <x:ind/80>))))
+
+# Class: <x:cls/287> (<x:cls/287>)
+
+AnnotationAssertion(<x:ap/510> <x:cls/287> "Depending on recommendations a patient has, it is possible to deduce every possible future recommendation too."@en)
+SubClassOf(<x:cls/287> <x:cls/413>)
+
+# Class: <x:cls/288> (<x:cls/288>)
+
+SubClassOf(<x:cls/288> <x:cls/194>)
+
+# Class: <x:cls/289> (<x:cls/289>)
+
+SubClassOf(<x:cls/289> <x:cls/497>)
+
+# Class: <x:cls/290> (<x:cls/290>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/290> "Haltungsstereotypien"@de)
+AnnotationAssertion(<x:ap/511> <x:cls/290> "TODO: 'Haltungsstereotypien'"@en)
+AnnotationAssertion(<x:ap/515> <x:cls/290> "DGPPN SG (1)")
+SubClassOf(<x:cls/290> <x:cls/460>)
+
+# Class: <x:cls/291> (<x:cls/291>)
+
+EquivalentClasses(<x:cls/291> ObjectSomeValuesFrom(<x:op/537> ObjectIntersectionOf(<x:cls/299> <x:cls/506>)))
+
+# Class: <x:cls/292> (<x:cls/292>)
+
+EquivalentClasses(<x:cls/292> ObjectSomeValuesFrom(<x:op/537> ObjectIntersectionOf(<x:cls/465> <x:cls/506>)))
+
+# Class: <x:cls/294> (<x:cls/294>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/294> "Unfähigkeit Freude zu empfinden"@de)
+AnnotationAssertion(<x:ap/512> <x:cls/294> <x:cls/351>)
+SubClassOf(<x:cls/294> <x:cls/190>)
+SubClassOf(<x:cls/294> <x:cls/324>)
+
+# Class: <x:cls/295> (<x:cls/295>)
+
+SubClassOf(<x:cls/295> <x:cls/154>)
+SubClassOf(<x:cls/295> <x:cls/324>)
+
+# Class: <x:cls/296> (<x:cls/296>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/296> "Erhöhe Dosis von Antipsychotikum"@de)
+AnnotationAssertion(<x:ap/511> <x:cls/296> "Increase or decrease dose of current drug in target dose range"@en)
+SubClassOf(<x:cls/296> <x:cls/154>)
+SubClassOf(<x:cls/296> <x:cls/319>)
+SubClassOf(<x:cls/296> ObjectHasValue(<x:op/567> <x:ind/85>))
+
+# Class: <x:cls/298> (<x:cls/298>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/298> "den Patient ueber Pharmakotherapie aufklaeren"@de)
+AnnotationAssertion(<x:ap/515> <x:cls/298> "DGPPN SG (6)")
+SubClassOf(<x:cls/298> <x:cls/154>)
+SubClassOf(<x:cls/298> <x:cls/319>)
+SubClassOf(<x:cls/298> ObjectHasValue(<x:op/567> <x:ind/38>))
+
+# Class: <x:cls/299> (<x:cls/299>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/299> "Initial dyskinesia"@en)
+
+# Class: <x:cls/300> (<x:cls/300>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/300> "Intoxication"@en)
+SubClassOf(<x:cls/300> <x:cls/154>)
+SubClassOf(<x:cls/300> <x:cls/194>)
+
+# Class: <x:cls/301> (<x:cls/301>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/301> "Kein Bedürfnis zu sozialen Kontakten"@de)
+SubClassOf(<x:cls/301> <x:cls/324>)
+
+# Class: <x:cls/302> (<x:cls/302>)
+
+SubClassOf(<x:cls/302> <x:cls/154>)
+SubClassOf(<x:cls/302> <x:cls/324>)
+
+# Class: <x:cls/303> (<x:cls/303>)
+
+SubClassOf(<x:cls/303> <x:cls/306>)
+
+# Class: <x:cls/304> (<x:cls/304>)
+
+SubClassOf(<x:cls/304> ObjectAllValuesFrom(<x:op/541> ObjectUnionOf(ObjectComplementOf(<x:cls/169>) ObjectHasValue(<x:op/558> <x:ind/39>))))
+
+# Class: <x:cls/305> (<x:cls/305>)
+
+SubClassOf(<x:cls/305> <x:cls/187>)
+SubClassOf(<x:cls/305> ObjectAllValuesFrom(<x:op/541> ObjectUnionOf(ObjectComplementOf(<x:cls/169>) ObjectHasValue(<x:op/559> <x:ind/5>))))
+
+# Class: <x:cls/306> (<x:cls/306>)
+
+DisjointClasses(<x:cls/306> <x:cls/97>)
+
+# Class: <x:cls/307> (<x:cls/307>)
+
+
+# Class: <x:cls/308> (<x:cls/308>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/308> "Festigung der therapeutischen Beziehung"@de)
+
+# Class: <x:cls/309> (<x:cls/309>)
+
+SubClassOf(<x:cls/309> <x:cls/319>)
+
+# Class: <x:cls/310> (<x:cls/310>)
+
+AnnotationAssertion(<x:ap/515> <x:cls/310> "DGPPN SG (2)")
+
+# Class: <x:cls/311> (<x:cls/311>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/311> "Erstelle körperlichen Untersuchungsbefund"@de)
+AnnotationAssertion(<x:ap/515> <x:cls/311> "DGPPN (2)")
+SubClassOf(<x:cls/311> <x:cls/154>)
+
+# Class: <x:cls/312> (<x:cls/312>)
+
+SubClassOf(<x:cls/312> <x:cls/293>)
+
+# Class: <x:cls/313> (<x:cls/313>)
+
+EquivalentClasses(<x:cls/313> ObjectIntersectionOf(ObjectSomeValuesFrom(<x:op/533> <x:cls/95>) DataSomeValuesFrom(<x:dp/522> DatatypeRestriction(xsd:decimal xsd:minInclusive "1201.00"^^xsd:decimal xsd:maxInclusive "1201.01"^^xsd:decimal))))
+
+# Class: <x:cls/315> (<x:cls/315>)
+
+EquivalentClasses(<x:cls/315> ObjectIntersectionOf(ObjectSomeValuesFrom(<x:op/533> <x:cls/243>) DataSomeValuesFrom(<x:dp/522> DatatypeRestriction(xsd:decimal xsd:minInclusive "61.00"^^xsd:decimal xsd:maxInclusive "61.01"^^xsd:decimal))))
+SubClassOf(<x:cls/315> <x:cls/122>)
+
+# Class: <x:cls/316> (<x:cls/316>)
+
+EquivalentClasses(<x:cls/316> ObjectIntersectionOf(ObjectSomeValuesFrom(<x:op/533> <x:cls/336>) DataSomeValuesFrom(<x:dp/522> DatatypeRestriction(xsd:decimal xsd:minInclusive "20.01"^^xsd:decimal xsd:maxInclusive "21.00"^^xsd:decimal))))
+
+# Class: <x:cls/317> (<x:cls/317>)
+
+EquivalentClasses(<x:cls/317> ObjectIntersectionOf(ObjectSomeValuesFrom(<x:op/533> <x:cls/353>) DataSomeValuesFrom(<x:dp/522> DatatypeRestriction(xsd:decimal xsd:minInclusive "16.01"^^xsd:decimal xsd:maxInclusive "17.00"^^xsd:decimal))))
+SubClassOf(<x:cls/317> <x:cls/122>)
+
+# Class: <x:cls/319> (<x:cls/319>)
+
+SubClassOf(<x:cls/319> <x:cls/507>)
+SubClassOf(<x:cls/319> ObjectSomeValuesFrom(<x:op/570> <x:cls/508>))
+
+# Class: <x:cls/321> (<x:cls/321>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/321> "Mild fever"@en)
+
+# Class: <x:cls/322> (<x:cls/322>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/322> "Monotherapy with antipsychotic drug"@en)
+AnnotationAssertion(<x:ap/515> <x:cls/322> "DGPPN SG (4.3.1)")
+SubClassOf(<x:cls/322> <x:cls/154>)
+SubClassOf(<x:cls/322> <x:cls/319>)
+
+# Class: <x:cls/323> (<x:cls/323>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/323> "Affektive Störung"@de)
+AnnotationAssertion(<x:ap/512> <x:cls/323> <x:cls/351>)
+SubClassOf(<x:cls/323> <x:cls/190>)
+
+# Class: <x:cls/325> (<x:cls/325>)
+
+SubClassOf(<x:cls/325> <x:cls/154>)
+
+# Class: <x:cls/326> (<x:cls/326>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/326> "nicht organische psychotische Störung"@de)
+AnnotationAssertion(<x:ap/515> <x:cls/326> "DGPPN SG (1)")
+SubClassOf(<x:cls/326> <x:cls/154>)
+
+# Class: <x:cls/327> (<x:cls/327>)
+
+SubClassOf(<x:cls/327> <x:cls/396>)
+SubClassOf(<x:cls/327> ObjectHasValue(<x:op/553> <x:ind/48>))
+
+# Class: <x:cls/328> (<x:cls/328>)
+
+EquivalentClasses(<x:cls/328> ObjectIntersectionOf(<x:cls/396> ObjectSomeValuesFrom(<x:op/543> ObjectIntersectionOf(<x:cls/129> <x:cls/506>))))
+SubClassOf(<x:cls/328> ObjectHasValue(<x:op/553> <x:ind/60>))
+
+# Class: <x:cls/331> (<x:cls/331>)
+
+SubClassOf(<x:cls/331> <x:cls/330>)
+SubClassOf(<x:cls/331> ObjectHasValue(<x:op/553> <x:ind/59>))
+
+# Class: <x:cls/332> (<x:cls/332>)
+
+SubClassOf(<x:cls/332> <x:cls/330>)
+
+# Class: <x:cls/333> (<x:cls/333>)
+
+SubClassOf(<x:cls/333> ObjectHasValue(<x:op/553> <x:ind/80>))
+
+# Class: <x:cls/336> (<x:cls/336>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/336> "Mache laborchemische Routineuntersuchung"@de)
+AnnotationAssertion(<x:ap/511> <x:cls/336> "Make routine lab-test"@en)
+
+# Class: <x:cls/338> (<x:cls/338>)
+
+SubClassOf(<x:cls/338> <x:cls/413>)
+
+# Class: <x:cls/339> (<x:cls/339>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/339> "Organic induced psychotic disorder"@en)
+AnnotationAssertion(<x:ap/511> <x:cls/339> "organisch bedingte psychische Störung"@de)
+SubClassOf(<x:cls/339> <x:cls/194>)
+
+# Class: <x:cls/340> (<x:cls/340>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/340> "Patient"@en)
+SubClassOf(<x:cls/340> <x:cls/293>)
+
+# Class: <x:cls/343> (<x:cls/343>)
+
+SubClassOf(<x:cls/343> <x:cls/413>)
+
+# Class: <x:cls/344> (<x:cls/344>)
+
+SubClassOf(<x:cls/344> <x:cls/499>)
+
+# Class: <x:cls/345> (<x:cls/345>)
+
+EquivalentClasses(<x:cls/345> ObjectSomeValuesFrom(<x:op/543> ObjectIntersectionOf(<x:cls/366> <x:cls/506>)))
+SubClassOf(<x:cls/345> <x:cls/347>)
+SubClassOf(<x:cls/345> ObjectHasValue(<x:op/548> <x:ind/39>))
+
+# Class: <x:cls/348> (<x:cls/348>)
+
+EquivalentClasses(<x:cls/348> ObjectSomeValuesFrom(<x:op/537> ObjectIntersectionOf(<x:cls/506> <x:cls/93>)))
+SubClassOf(<x:cls/348> ObjectHasValue(<x:op/553> <x:ind/46>))
+
+# Class: <x:cls/349> (<x:cls/349>)
+
+SubClassOf(<x:cls/349> <x:cls/347>)
+SubClassOf(<x:cls/349> ObjectAllValuesFrom(<x:op/541> ObjectUnionOf(ObjectComplementOf(<x:cls/155>) ObjectHasValue(<x:op/562> <x:ind/32>))))
+
+# Class: <x:cls/351> (<x:cls/351>)
+
+SubClassOf(<x:cls/351> <x:cls/452>)
+
+# Class: <x:cls/352> (<x:cls/352>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/352> "Pharmacotherapy"@en)
+
+# Class: <x:cls/354> (<x:cls/354>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/354> "Positive effect for affective symptoms"@en)
+AnnotationAssertion(<x:ap/511> <x:cls/354> "Positiver Effekt für affektive Symptome"@de)
+SubClassOf(<x:cls/354> <x:cls/154>)
+
+# Class: <x:cls/355> (<x:cls/355>)
+
+SubClassOf(<x:cls/355> <x:cls/452>)
+
+# Class: <x:cls/357> (<x:cls/357>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/357> "Post-psychotic prodromalphase"@en)
+SubClassOf(<x:cls/357> <x:cls/372>)
+
+# Class: <x:cls/358> (<x:cls/358>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/358> "Sprachverarmung"@de)
+SubClassOf(<x:cls/358> <x:cls/154>)
+
+# Class: <x:cls/359> (<x:cls/359>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/359> "Does the patient have a brain disorder?"@en)
+AnnotationAssertion(<x:ap/519> <x:cls/359> "true"^^xsd:boolean)
+SubClassOf(<x:cls/359> <x:cls/341>)
+
+# Class: <x:cls/361> (<x:cls/361>)
+
+AnnotationAssertion(<x:ap/518> <x:cls/361> "false"^^xsd:boolean)
+EquivalentClasses(<x:cls/361> ObjectIntersectionOf(<x:cls/340> ObjectComplementOf(ObjectSomeValuesFrom(<x:op/543> ObjectIntersectionOf(<x:cls/191> <x:cls/506>)))))
+
+# Class: <x:cls/362> (<x:cls/362>)
+
+AnnotationAssertion(<x:ap/510> <x:cls/362> "Patients that don't have an epilepsy"@en)
+AnnotationAssertion(<x:ap/518> <x:cls/362> "false"^^xsd:boolean)
+SubClassOf(<x:cls/362> <x:cls/341>)
+
+# Class: <x:cls/363> (<x:cls/363>)
+
+AnnotationAssertion(<x:ap/518> <x:cls/363> "false"^^xsd:boolean)
+SubClassOf(<x:cls/363> <x:cls/341>)
+
+# Class: <x:cls/365> (<x:cls/365>)
+
+AnnotationAssertion(<x:ap/519> <x:cls/365> "true"^^xsd:boolean)
+EquivalentClasses(<x:cls/365> ObjectIntersectionOf(<x:cls/340> ObjectComplementOf(ObjectSomeValuesFrom(<x:op/537> ObjectIntersectionOf(<x:cls/447> <x:cls/506>)))))
+SubClassOf(<x:cls/365> <x:cls/341>)
+
+# Class: <x:cls/366> (<x:cls/366>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/366> "Bevorzuge atypisches Antipsychotika über typisches"@de)
+AnnotationAssertion(<x:ap/511> <x:cls/366> "Prefer atypical over typical antipsychoticum"@en)
+AnnotationAssertion(<x:ap/515> <x:cls/366> "DGPPN SG (4.3.1)")
+SubClassOf(<x:cls/366> <x:cls/154>)
+SubClassOf(<x:cls/366> <x:cls/368>)
+
+# Class: <x:cls/367> (<x:cls/367>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/367> "Bevorzuge typische Antipsychotika über atypisches"@de)
+SubClassOf(<x:cls/367> <x:cls/154>)
+SubClassOf(<x:cls/367> <x:cls/368>)
+
+# Class: <x:cls/368> (<x:cls/368>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/368> "Berate bei der Wahl des antipsychotischen Medikamentes"@de)
+AnnotationAssertion(<x:ap/511> <x:cls/368> "Give advise for which antipsychotic drug to choose"@en)
+SubClassOf(<x:cls/368> <x:cls/319>)
+
+# Class: <x:cls/369> (<x:cls/369>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/369> "Ist die Patientin schwanger?"@de)
+AnnotationAssertion(<x:ap/518> <x:cls/369> "true"^^xsd:boolean)
+SubClassOf(<x:cls/369> <x:cls/341>)
+
+# Class: <x:cls/372> (<x:cls/372>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/372> "Prodromale Schizophrenie"@de)
+
+# Class: <x:cls/373> (<x:cls/373>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/373> "Patients which have sideeffects"@en)
+EquivalentClasses(<x:cls/373> ObjectIntersectionOf(<x:cls/399> ObjectSomeValuesFrom(<x:op/537> ObjectIntersectionOf(<x:cls/371> <x:cls/506>))))
+SubClassOf(<x:cls/373> ObjectHasValue(<x:op/553> <x:ind/35>))
+
+# Class: <x:cls/376> (<x:cls/376>)
+
+EquivalentClasses(<x:cls/376> ObjectIntersectionOf(<x:cls/291> ObjectSomeValuesFrom(<x:op/543> ObjectIntersectionOf(<x:cls/100> <x:cls/506>))))
+SubClassOf(<x:cls/376> <x:cls/342>)
+SubClassOf(<x:cls/376> ObjectHasValue(<x:op/553> <x:ind/70>))
+
+# Class: <x:cls/377> (<x:cls/377>)
+
+SubClassOf(<x:cls/377> <x:cls/393>)
+SubClassOf(<x:cls/377> ObjectHasValue(<x:op/553> <x:ind/61>))
+
+# Class: <x:cls/378> (<x:cls/378>)
+
+SubClassOf(<x:cls/378> <x:cls/413>)
+SubClassOf(<x:cls/378> ObjectHasValue(<x:op/553> <x:ind/37>))
+
+# Class: <x:cls/379> (<x:cls/379>)
+
+AnnotationAssertion(<x:ap/515> <x:cls/379> "DGPPN SG (2)")
+EquivalentClasses(<x:cls/379> ObjectSomeValuesFrom(<x:op/555> ObjectIntersectionOf(<x:cls/288> <x:cls/506>)))
+SubClassOf(<x:cls/379> ObjectHasValue(<x:op/553> <x:ind/56>))
+
+# Class: <x:cls/380> (<x:cls/380>)
+
+SubClassOf(<x:cls/380> <x:cls/393>)
+
+# Class: <x:cls/381> (<x:cls/381>)
+
+EquivalentClasses(<x:cls/381> ObjectIntersectionOf(<x:cls/387> ObjectSomeValuesFrom(<x:op/564> <x:cls/105>)))
+
+# Class: <x:cls/383> (<x:cls/383>)
+
+SubClassOf(<x:cls/383> <x:cls/413>)
+SubClassOf(<x:cls/383> ObjectHasValue(<x:op/553> <x:ind/10>))
+
+# Class: <x:cls/384> (<x:cls/384>)
+
+SubClassOf(<x:cls/384> ObjectHasValue(<x:op/553> <x:ind/53>))
+
+# Class: <x:cls/385> (<x:cls/385>)
+
+SubClassOf(<x:cls/385> ObjectAllValuesFrom(<x:op/541> ObjectUnionOf(ObjectComplementOf(<x:cls/166>) ObjectHasValue(<x:op/558> <x:ind/87>))))
+SubClassOf(<x:cls/385> ObjectHasValue(<x:op/553> <x:ind/66>))
+
+# Class: <x:cls/386> (<x:cls/386>)
+
+SubClassOf(<x:cls/386> <x:cls/413>)
+
+# Class: <x:cls/387> (<x:cls/387>)
+
+SubClassOf(<x:cls/387> <x:cls/413>)
+SubClassOf(<x:cls/387> ObjectHasValue(<x:op/545> <x:ind/39>))
+SubClassOf(<x:cls/387> ObjectHasValue(<x:op/553> <x:ind/35>))
+
+# Class: <x:cls/388> (<x:cls/388>)
+
+SubClassOf(<x:cls/388> <x:cls/387>)
+SubClassOf(<x:cls/388> ObjectHasValue(<x:op/548> <x:ind/11>))
+
+# Class: <x:cls/389> (<x:cls/389>)
+
+SubClassOf(<x:cls/389> <x:cls/413>)
+
+# Class: <x:cls/390> (<x:cls/390>)
+
+SubClassOf(<x:cls/390> <x:cls/413>)
+
+# Class: <x:cls/391> (<x:cls/391>)
+
+EquivalentClasses(<x:cls/391> ObjectIntersectionOf(ObjectSomeValuesFrom(<x:op/537> ObjectIntersectionOf(<x:cls/434> <x:cls/506>)) ObjectSomeValuesFrom(<x:op/543> ObjectIntersectionOf(<x:cls/298> <x:cls/505>))))
+SubClassOf(<x:cls/391> <x:cls/413>)
+
+# Class: <x:cls/392> (<x:cls/392>)
+
+EquivalentClasses(<x:cls/392> ObjectSomeValuesFrom(<x:op/543> ObjectIntersectionOf(<x:cls/506> <x:cls/98>)))
+SubClassOf(<x:cls/392> <x:cls/413>)
+SubClassOf(<x:cls/392> ObjectHasValue(<x:op/553> <x:ind/23>))
+
+# Class: <x:cls/393> (<x:cls/393>)
+
+EquivalentClasses(<x:cls/393> ObjectSomeValuesFrom(<x:op/543> ObjectIntersectionOf(<x:cls/100> <x:cls/506>)))
+SubClassOf(<x:cls/393> <x:cls/342>)
+SubClassOf(<x:cls/393> ObjectHasValue(<x:op/548> <x:ind/44>))
+SubClassOf(<x:cls/393> ObjectHasValue(<x:op/553> <x:ind/41>))
+SubClassOf(<x:cls/393> ObjectHasValue(<x:op/553> <x:ind/53>))
+SubClassOf(<x:cls/393> ObjectHasValue(<x:op/553> <x:ind/63>))
+SubClassOf(<x:cls/393> ObjectHasValue(<x:op/553> <x:ind/82>))
+
+# Class: <x:cls/394> (<x:cls/394>)
+
+EquivalentClasses(<x:cls/394> ObjectIntersectionOf(<x:cls/393> ObjectSomeValuesFrom(<x:op/543> ObjectIntersectionOf(<x:cls/129> <x:cls/506>))))
+SubClassOf(<x:cls/394> <x:cls/393>)
+
+# Class: <x:cls/395> (<x:cls/395>)
+
+SubClassOf(<x:cls/395> ObjectHasValue(<x:op/553> <x:ind/24>))
+
+# Class: <x:cls/396> (<x:cls/396>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/396> "Is the patient intoxicated?"@en)
+AnnotationAssertion(<x:ap/518> <x:cls/396> "false"^^xsd:boolean)
+AnnotationAssertion(<x:ap/519> <x:cls/396> "true"^^xsd:boolean)
+EquivalentClasses(<x:cls/396> ObjectIntersectionOf(ObjectSomeValuesFrom(<x:op/537> ObjectIntersectionOf(<x:cls/506> <x:cls/93> DataSomeValuesFrom(<x:dp/531> DatatypeRestriction(xsd:int xsd:minInclusive "14"^^xsd:int)))) ObjectSomeValuesFrom(<x:op/564> ObjectIntersectionOf(<x:cls/112> <x:cls/506> DataSomeValuesFrom(<x:dp/531> DatatypeRestriction(xsd:int xsd:minInclusive "14"^^xsd:int))))))
+
+# Class: <x:cls/397> (<x:cls/397>)
+
+AnnotationAssertion(<x:ap/518> <x:cls/397> "false"^^xsd:boolean)
+SubClassOf(<x:cls/397> <x:cls/386>)
+
+# Class: <x:cls/398> (<x:cls/398>)
+
+SubClassOf(<x:cls/398> <x:cls/387>)
+SubClassOf(<x:cls/398> ObjectHasValue(<x:op/553> <x:ind/8>))
+
+# Class: <x:cls/399> (<x:cls/399>)
+
+AnnotationAssertion(<x:ap/518> <x:cls/399> "false"^^xsd:boolean)
+
+# Class: <x:cls/400> (<x:cls/400>)
+
+SubClassOf(<x:cls/400> ObjectAllValuesFrom(<x:op/541> ObjectUnionOf(ObjectComplementOf(<x:cls/155>) ObjectHasValue(<x:op/558> <x:ind/83>))))
+
+# Class: <x:cls/401> (<x:cls/401>)
+
+EquivalentClasses(<x:cls/401> ObjectSomeValuesFrom(<x:op/537> ObjectIntersectionOf(<x:cls/372> <x:cls/506>)))
+SubClassOf(<x:cls/401> ObjectHasValue(<x:op/553> <x:ind/13>))
+
+# Class: <x:cls/402> (<x:cls/402>)
+
+SubClassOf(<x:cls/402> ObjectAllValuesFrom(<x:op/541> ObjectUnionOf(ObjectComplementOf(<x:cls/155>) ObjectHasValue(<x:op/558> <x:ind/78>))))
+
+# Class: <x:cls/405> (<x:cls/405>)
+
+AnnotationAssertion(<x:ap/510> <x:cls/405> "Recommendations for pregnant patients"@en)
+EquivalentClasses(<x:cls/405> ObjectIntersectionOf(<x:cls/370> <x:cls/404>))
+SubClassOf(<x:cls/405> <x:cls/404>)
+SubClassOf(<x:cls/405> ObjectHasValue(<x:op/550> <x:ind/89>))
+
+# Class: <x:cls/406> (<x:cls/406>)
+
+SubClassOf(<x:cls/406> <x:cls/342>)
+SubClassOf(<x:cls/406> ObjectHasValue(<x:op/553> <x:ind/48>))
+
+# Class: <x:cls/407> (<x:cls/407>)
+
+SubClassOf(<x:cls/407> <x:cls/382>)
+SubClassOf(<x:cls/407> ObjectHasValue(<x:op/553> <x:ind/60>))
+
+# Class: <x:cls/408> (<x:cls/408>)
+
+EquivalentClasses(<x:cls/408> ObjectIntersectionOf(<x:cls/292> ObjectSomeValuesFrom(<x:op/543> ObjectIntersectionOf(<x:cls/100> <x:cls/506>)) ObjectSomeValuesFrom(<x:op/543> ObjectIntersectionOf(<x:cls/112> <x:cls/506>))))
+
+# Class: <x:cls/409> (<x:cls/409>)
+
+SubClassOf(<x:cls/409> <x:cls/418>)
+SubClassOf(<x:cls/409> ObjectAllValuesFrom(<x:op/541> ObjectUnionOf(ObjectComplementOf(<x:cls/159>) ObjectHasValue(<x:op/561> <x:ind/80>))))
+
+# Class: <x:cls/410> (<x:cls/410>)
+
+EquivalentClasses(<x:cls/410> ObjectSomeValuesFrom(<x:op/543> ObjectIntersectionOf(<x:cls/113> <x:cls/506>)))
+SubClassOf(<x:cls/410> ObjectAllValuesFrom(<x:op/541> ObjectUnionOf(ObjectComplementOf(<x:cls/159>) ObjectHasValue(<x:op/561> <x:ind/12>))))
+
+# Class: <x:cls/412> (<x:cls/412>)
+
+SubClassOf(<x:cls/412> <x:cls/385>)
+SubClassOf(<x:cls/412> ObjectAllValuesFrom(<x:op/541> ObjectUnionOf(ObjectComplementOf(<x:cls/160>) ObjectHasValue(<x:op/558> <x:ind/65>))))
+SubClassOf(<x:cls/412> ObjectHasValue(<x:op/548> <x:ind/87>))
+SubClassOf(<x:cls/412> ObjectHasValue(<x:op/553> <x:ind/65>))
+
+# Class: <x:cls/413> (<x:cls/413>)
+
+AnnotationAssertion(<x:ap/515> <x:cls/413> "DGPPN SG")
+
+# Class: <x:cls/414> (<x:cls/414>)
+
+EquivalentClasses(<x:cls/414> ObjectIntersectionOf(<x:cls/386> DataSomeValuesFrom(<x:dp/523> DatatypeRestriction(xsd:int xsd:minInclusive "70"^^xsd:int))))
+SubClassOf(<x:cls/414> <x:cls/386>)
+SubClassOf(<x:cls/414> ObjectHasValue(<x:op/553> <x:ind/73>))
+
+# Class: <x:cls/415> (<x:cls/415>)
+
+SubClassOf(<x:cls/415> <x:cls/419>)
+SubClassOf(<x:cls/415> ObjectHasValue(<x:op/553> <x:ind/59>))
+
+# Class: <x:cls/416> (<x:cls/416>)
+
+SubClassOf(<x:cls/416> <x:cls/419>)
+
+# Class: <x:cls/417> (<x:cls/417>)
+
+SubClassOf(<x:cls/417> ObjectHasValue(<x:op/550> <x:ind/55>))
+
+# Class: <x:cls/418> (<x:cls/418>)
+
+SubClassOf(<x:cls/418> ObjectAllValuesFrom(<x:op/541> ObjectUnionOf(ObjectComplementOf(<x:cls/159>) ObjectHasValue(<x:op/562> <x:ind/59>))))
+SubClassOf(<x:cls/418> ObjectHasValue(<x:op/545> <x:ind/39>))
+
+# Class: <x:cls/420> (<x:cls/420>)
+
+AnnotationAssertion(<x:ap/516> <x:cls/420> <x:cls/396>)
+EquivalentClasses(<x:cls/420> ObjectSomeValuesFrom(<x:op/564> ObjectIntersectionOf(<x:cls/112> ObjectSomeValuesFrom(<x:op/570> <x:cls/505>))))
+SubClassOf(<x:cls/420> <x:cls/385>)
+
+# Class: <x:cls/421> (<x:cls/421>)
+
+SubClassOf(<x:cls/421> ObjectAllValuesFrom(<x:op/541> ObjectUnionOf(ObjectComplementOf(<x:cls/169>) ObjectHasValue(<x:op/561> <x:ind/20>))))
+
+# Class: <x:cls/422> (<x:cls/422>)
+
+EquivalentClasses(<x:cls/422> ObjectIntersectionOf(<x:cls/420> ObjectSomeValuesFrom(<x:op/564> ObjectIntersectionOf(<x:cls/450> <x:cls/505>))))
+
+# Class: <x:cls/424> (<x:cls/424>)
+
+SubClassOf(<x:cls/424> <x:cls/422>)
+SubClassOf(<x:cls/424> ObjectHasValue(<x:op/553> <x:ind/5>))
+
+# Class: <x:cls/425> (<x:cls/425>)
+
+SubClassOf(<x:cls/425> <x:cls/154>)
+SubClassOf(<x:cls/425> <x:cls/319>)
+
+# Class: <x:cls/426> (<x:cls/426>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/426> "Überprüfung von Benzodiapine Verabreichung"@de)
+SubClassOf(<x:cls/426> <x:cls/154>)
+
+# Class: <x:cls/427> (<x:cls/427>)
+
+SubClassOf(<x:cls/427> <x:cls/154>)
+SubClassOf(<x:cls/427> <x:cls/434>)
+
+# Class: <x:cls/428> (<x:cls/428>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/428> "Resume or intensify pharmacotherapy"@en)
+AnnotationAssertion(<x:ap/511> <x:cls/428> "Wiederaufnahme oder Intensivierung der Pharmakotherapie"@de)
+
+# Class: <x:cls/429> (<x:cls/429>)
+
+SubClassOf(<x:cls/429> <x:cls/507>)
+
+# Class: <x:cls/431> (<x:cls/431>)
+
+SubClassOf(<x:cls/431> <x:cls/97>)
+
+# Class: <x:cls/432> (<x:cls/432>)
+
+SubClassOf(<x:cls/432> <x:cls/187>)
+
+# Class: <x:cls/433> (<x:cls/433>)
+
+SubClassOf(<x:cls/433> <x:cls/187>)
+SubClassOf(<x:cls/433> ObjectAllValuesFrom(<x:op/541> ObjectUnionOf(ObjectComplementOf(<x:cls/169>) ObjectHasValue(<x:op/558> <x:ind/39>))))
+
+# Class: <x:cls/434> (<x:cls/434>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/434> "Schizophrenia"@en)
+AnnotationAssertion(<x:ap/511> <x:cls/434> "Schizophrenie"@de)
+
+# Class: <x:cls/435> (<x:cls/435>)
+
+SubClassOf(<x:cls/435> <x:cls/319>)
+
+# Class: <x:cls/436> (<x:cls/436>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/436> "Start cognitive behavioral therapy"@en)
+AnnotationAssertion(<x:ap/515> <x:cls/436> "DGPPN SG (5.3)")
+
+# Class: <x:cls/437> (<x:cls/437>)
+
+
+# Class: <x:cls/438> (<x:cls/438>)
+
+
+# Class: <x:cls/439> (<x:cls/439>)
+
+
+# Class: <x:cls/440> (<x:cls/440>)
+
+EquivalentClasses(<x:cls/440> ObjectIntersectionOf(ObjectSomeValuesFrom(<x:op/533> <x:cls/353>) DataSomeValuesFrom(<x:dp/522> DatatypeRestriction(xsd:decimal xsd:minInclusive "1"^^xsd:decimal xsd:maxInclusive "4"^^xsd:decimal))))
+
+# Class: <x:cls/441> (<x:cls/441>)
+
+EquivalentClasses(<x:cls/441> ObjectIntersectionOf(ObjectSomeValuesFrom(<x:op/533> <x:cls/95>) DataSomeValuesFrom(<x:dp/522> DatatypeRestriction(xsd:decimal xsd:minInclusive "200"^^xsd:decimal xsd:maxInclusive "201"^^xsd:decimal))))
+
+# Class: <x:cls/442> (<x:cls/442>)
+
+EquivalentClasses(<x:cls/442> ObjectIntersectionOf(ObjectSomeValuesFrom(<x:op/533> <x:cls/131>) DataSomeValuesFrom(<x:dp/522> DatatypeRestriction(xsd:decimal xsd:minInclusive "10.00"^^xsd:decimal xsd:maxInclusive "15.00"^^xsd:decimal))))
+
+# Class: <x:cls/443> (<x:cls/443>)
+
+SubClassOf(<x:cls/443> <x:cls/116>)
+
+# Class: <x:cls/444> (<x:cls/444>)
+
+EquivalentClasses(<x:cls/444> ObjectIntersectionOf(ObjectSomeValuesFrom(<x:op/533> <x:cls/375>) DataSomeValuesFrom(<x:dp/522> DatatypeRestriction(xsd:decimal xsd:minInclusive "50.00"^^xsd:decimal xsd:maxInclusive "51.00"^^xsd:decimal))))
+
+# Class: <x:cls/445> (<x:cls/445>)
+
+SubClassOf(<x:cls/445> <x:cls/319>)
+
+# Class: <x:cls/446> (<x:cls/446>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/446> "Stupor"@en)
+AnnotationAssertion(<x:ap/515> <x:cls/446> "DGPPN SG (1)")
+SubClassOf(<x:cls/446> <x:cls/154>)
+
+# Class: <x:cls/448> (<x:cls/448>)
+
+SubClassOf(<x:cls/448> <x:cls/187>)
+
+# Class: <x:cls/449> (<x:cls/449>)
+
+SubClassOf(<x:cls/449> ObjectAllValuesFrom(<x:op/541> ObjectUnionOf(ObjectComplementOf(<x:cls/165>) ObjectHasValue(<x:op/559> <x:ind/31>))))
+
+# Class: <x:cls/450> (<x:cls/450>)
+
+SubClassOf(<x:cls/450> <x:cls/107>)
+
+# Class: <x:cls/451> (<x:cls/451>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/451> "Förderung sozialer Integration"@de)
+AnnotationAssertion(<x:ap/511> <x:cls/451> "Support social interaction"@en)
+
+# Class: <x:cls/452> (<x:cls/452>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/452> "Suicidal ideation"@en)
+AnnotationAssertion(<x:ap/511> <x:cls/452> "Symptom"@de)
+SubClassOf(<x:cls/452> <x:cls/507>)
+SubClassOf(<x:cls/452> ObjectSomeValuesFrom(<x:op/570> <x:cls/508>))
+
+# Class: <x:cls/453> (<x:cls/453>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/453> "Symptom 1"@de)
+SubClassOf(<x:cls/453> <x:cls/454>)
+
+# Class: <x:cls/454> (<x:cls/454>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/454> "Symptom 1 To 4"@en)
+SubClassOf(<x:cls/454> ObjectHasValue(<x:op/567> <x:ind/6>))
+
+# Class: <x:cls/455> (<x:cls/455>)
+
+AnnotationAssertion(<x:ap/515> <x:cls/455> "DGPPN SG (1)")
+SubClassOf(<x:cls/455> <x:cls/454>)
+
+# Class: <x:cls/456> (<x:cls/456>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/456> "Symptom 4"@de)
+AnnotationAssertion(<x:ap/515> <x:cls/456> "DGPPN SG (1)")
+
+# Class: <x:cls/457> (<x:cls/457>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/457> "Symptom 5"@de)
+SubClassOf(<x:cls/457> <x:cls/458>)
+
+# Class: <x:cls/458> (<x:cls/458>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/458> "Symptom 5 bis 8"@de)
+AnnotationAssertion(<x:ap/515> <x:cls/458> "DGPPN SG (1)")
+
+# Class: <x:cls/459> (<x:cls/459>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/459> "Symptom 6"@en)
+AnnotationAssertion(<x:ap/515> <x:cls/459> "DGPPN SG (1)")
+SubClassOf(<x:cls/459> <x:cls/458>)
+
+# Class: <x:cls/460> (<x:cls/460>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/460> "Symptom 7"@en)
+AnnotationAssertion(<x:ap/515> <x:cls/460> "DGPPN SG (1)")
+SubClassOf(<x:cls/460> <x:cls/458>)
+
+# Class: <x:cls/461> (<x:cls/461>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/461> "Symptom 8"@de)
+SubClassOf(<x:cls/461> <x:cls/458>)
+
+# Class: <x:cls/462> (<x:cls/462>)
+
+EquivalentClasses(<x:cls/462> ObjectSomeValuesFrom(<x:op/537> <x:cls/93>))
+
+# Class: <x:cls/463> (<x:cls/463>)
+
+EquivalentClasses(<x:cls/463> ObjectSomeValuesFrom(<x:op/537> <x:cls/356>))
+SubClassOf(<x:cls/463> <x:cls/464>)
+
+# Class: <x:cls/465> (<x:cls/465>)
+
+SubClassOf(<x:cls/465> <x:cls/194>)
+
+# Class: <x:cls/466> (<x:cls/466>)
+
+SubClassOf(<x:cls/466> <x:cls/126>)
+
+# Class: <x:cls/467> (<x:cls/467>)
+
+EquivalentClasses(<x:cls/467> ObjectIntersectionOf(ObjectSomeValuesFrom(<x:op/533> <x:cls/131>) DataSomeValuesFrom(<x:dp/522> DatatypeRestriction(xsd:decimal xsd:minInclusive "15"^^xsd:decimal xsd:maxInclusive "30"^^xsd:decimal))))
+SubClassOf(<x:cls/467> <x:cls/126>)
+
+# Class: <x:cls/468> (<x:cls/468>)
+
+EquivalentClasses(<x:cls/468> ObjectIntersectionOf(ObjectSomeValuesFrom(<x:op/533> <x:cls/151>) DataSomeValuesFrom(<x:dp/522> DatatypeRestriction(xsd:decimal xsd:minInclusive "100"^^xsd:decimal xsd:maxInclusive "250"^^xsd:decimal))))
+
+# Class: <x:cls/469> (<x:cls/469>)
+
+EquivalentClasses(<x:cls/469> ObjectIntersectionOf(ObjectSomeValuesFrom(<x:op/533> <x:cls/243>) DataSomeValuesFrom(<x:dp/522> DatatypeRestriction(xsd:decimal xsd:minInclusive "2"^^xsd:decimal xsd:maxInclusive "10"^^xsd:decimal))))
+
+# Class: <x:cls/470> (<x:cls/470>)
+
+SubClassOf(<x:cls/470> <x:cls/126>)
+
+# Class: <x:cls/471> (<x:cls/471>)
+
+EquivalentClasses(<x:cls/471> ObjectIntersectionOf(ObjectSomeValuesFrom(<x:op/533> <x:cls/336>) DataSomeValuesFrom(<x:dp/522> DatatypeRestriction(xsd:decimal xsd:minInclusive "5"^^xsd:decimal xsd:maxInclusive "10"^^xsd:decimal))))
+SubClassOf(<x:cls/471> <x:cls/126>)
+
+# Class: <x:cls/473> (<x:cls/473>)
+
+SubClassOf(<x:cls/473> <x:cls/126>)
+
+# Class: <x:cls/474> (<x:cls/474>)
+
+EquivalentClasses(<x:cls/474> ObjectIntersectionOf(ObjectSomeValuesFrom(<x:op/533> <x:cls/95>) DataSomeValuesFrom(<x:dp/522> DatatypeRestriction(xsd:decimal xsd:minInclusive "400"^^xsd:decimal xsd:maxInclusive "800"^^xsd:decimal))))
+
+# Class: <x:cls/475> (<x:cls/475>)
+
+EquivalentClasses(<x:cls/475> ObjectIntersectionOf(ObjectSomeValuesFrom(<x:op/533> <x:cls/131>) DataSomeValuesFrom(<x:dp/522> DatatypeRestriction(xsd:decimal xsd:minInclusive "15"^^xsd:decimal xsd:maxInclusive "30"^^xsd:decimal))))
+
+# Class: <x:cls/476> (<x:cls/476>)
+
+EquivalentClasses(<x:cls/476> ObjectIntersectionOf(ObjectSomeValuesFrom(<x:op/533> <x:cls/151>) DataSomeValuesFrom(<x:dp/522> DatatypeRestriction(xsd:decimal xsd:minInclusive "200"^^xsd:decimal xsd:maxInclusive "450"^^xsd:decimal))))
+SubClassOf(<x:cls/476> <x:cls/127>)
+
+# Class: <x:cls/477> (<x:cls/477>)
+
+EquivalentClasses(<x:cls/477> ObjectIntersectionOf(ObjectSomeValuesFrom(<x:op/533> <x:cls/243>) DataSomeValuesFrom(<x:dp/522> DatatypeRestriction(xsd:decimal xsd:minInclusive "10"^^xsd:decimal xsd:maxInclusive "60"^^xsd:decimal))))
+
+# Class: <x:cls/478> (<x:cls/478>)
+
+EquivalentClasses(<x:cls/478> ObjectIntersectionOf(ObjectSomeValuesFrom(<x:op/533> <x:cls/244>) DataSomeValuesFrom(<x:dp/522> DatatypeRestriction(xsd:decimal xsd:minInclusive "10"^^xsd:decimal xsd:maxInclusive "20"^^xsd:decimal))))
+SubClassOf(<x:cls/478> <x:cls/127>)
+
+# Class: <x:cls/479> (<x:cls/479>)
+
+
+# Class: <x:cls/480> (<x:cls/480>)
+
+EquivalentClasses(<x:cls/480> ObjectIntersectionOf(ObjectSomeValuesFrom(<x:op/533> <x:cls/336>) DataSomeValuesFrom(<x:dp/522> DatatypeRestriction(xsd:decimal xsd:minInclusive "5"^^xsd:decimal xsd:maxInclusive "20"^^xsd:decimal))))
+
+# Class: <x:cls/481> (<x:cls/481>)
+
+
+# Class: <x:cls/482> (<x:cls/482>)
+
+
+# Class: <x:cls/483> (<x:cls/483>)
+
+
+# Class: <x:cls/484> (<x:cls/484>)
+
+SubClassOf(<x:cls/484> <x:cls/319>)
+
+# Class: <x:cls/485> (<x:cls/485>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/485> "Therapie für Frühintervention"@de)
+SubClassOf(<x:cls/485> <x:cls/154>)
+
+# Class: <x:cls/486> (<x:cls/486>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/486> "Therapieziel"@de)
+AnnotationAssertion(<x:ap/511> <x:cls/486> "Therapy goal"@en)
+
+# Class: <x:cls/488> (<x:cls/488>)
+
+SubClassOf(<x:cls/488> <x:cls/194>)
+
+# Class: <x:cls/490> (<x:cls/490>)
+
+SubClassOf(<x:cls/490> <x:cls/387>)
+SubClassOf(<x:cls/490> ObjectHasValue(<x:op/548> <x:ind/80>))
+SubClassOf(<x:cls/490> ObjectHasValue(<x:op/553> <x:ind/59>))
+
+# Class: <x:cls/491> (<x:cls/491>)
+
+SubClassOf(<x:cls/491> <x:cls/489>)
+
+# Class: <x:cls/492> (<x:cls/492>)
+
+AnnotationAssertion(<x:ap/512> <x:cls/492> <x:cls/556>)
+AnnotationAssertion(<x:ap/515> <x:cls/492> "DGPPN SG (1)")
+SubClassOf(<x:cls/492> <x:cls/453>)
+
+# Class: <x:cls/493> (<x:cls/493>)
+
+SubClassOf(<x:cls/493> <x:cls/355>)
+
+# Class: <x:cls/494> (<x:cls/494>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/494> "Gedankenentzug"@de)
+AnnotationAssertion(<x:ap/511> <x:cls/494> "Thought withdrawal"@en)
+AnnotationAssertion(<x:ap/515> <x:cls/494> "DGPPN SG (1)")
+SubClassOf(<x:cls/494> <x:cls/355>)
+
+# Class: <x:cls/495> (<x:cls/495>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/495> "Behandlung kognitiver und sozialer Defizite sowie weiterer Negativsymptomatik"@de)
+
+# Class: <x:cls/496> (<x:cls/496>)
+
+AnnotationAssertion(<x:ap/513> <x:cls/496> <x:cls/453>)
+SubClassOf(<x:cls/496> <x:cls/97>)
+
+# Class: <x:cls/497> (<x:cls/497>)
+
+SubClassOf(<x:cls/497> <x:cls/99>)
+
+# Class: <x:cls/498> (<x:cls/498>)
+
+SubClassOf(<x:cls/498> <x:cls/187>)
+
+# Class: <x:cls/499> (<x:cls/499>)
+
+SubClassOf(<x:cls/499> ObjectAllValuesFrom(<x:op/541> ObjectUnionOf(ObjectComplementOf(<x:cls/157>) ObjectHasValue(<x:op/559> <x:ind/83>))))
+
+# Class: <x:cls/500> (<x:cls/500>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/500> "Innere Unruhe"@de)
+AnnotationAssertion(<x:ap/511> <x:cls/500> "Uneasiness"@en)
+SubClassOf(<x:cls/500> <x:cls/154>)
+
+# Class: <x:cls/501> (<x:cls/501>)
+
+AnnotationAssertion(<x:ap/515> <x:cls/501> "DGPPN SG (1)")
+SubClassOf(<x:cls/501> <x:cls/355>)
+SubClassOf(<x:cls/501> <x:cls/456>)
+
+# Class: <x:cls/502> (<x:cls/502>)
+
+SubClassOf(<x:cls/502> <x:cls/306>)
+
+# Class: <x:cls/503> (<x:cls/503>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/503> "dialogische Stimmen"@de)
+AnnotationAssertion(<x:ap/512> <x:cls/503> <x:cls/556>)
+SubClassOf(<x:cls/503> <x:cls/355>)
+
+# Class: <x:cls/504> (<x:cls/504>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/504> "Repetitive transkranielle Magnetstimulation"@de)
+AnnotationAssertion(<x:ap/515> <x:cls/504> "DGPPN SG (4.2)")
+SubClassOf(<x:cls/504> <x:cls/319>)
+
+# Class: <x:cls/505> (<x:cls/505>)
+
+DisjointClasses(<x:cls/505> <x:cls/506>)
+
+# Class: <x:cls/506> (<x:cls/506>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/506> "Symptom 3"@de)
+
+# Class: <x:cls/90> (<x:cls/90>)
+
+SubClassOf(<x:cls/90> <x:cls/338>)
+SubClassOf(<x:cls/90> ObjectHasValue(<x:op/548> <x:ind/63>))
+
+# Class: <x:cls/91> (<x:cls/91>)
+
+SubClassOf(<x:cls/91> <x:cls/338>)
+SubClassOf(<x:cls/91> ObjectHasValue(<x:op/548> <x:ind/66>))
+
+# Class: <x:cls/92> (<x:cls/92>)
+
+EquivalentClasses(<x:cls/92> ObjectSomeValuesFrom(<x:op/543> <x:cls/311>))
+SubClassOf(<x:cls/92> <x:cls/338>)
+SubClassOf(<x:cls/92> ObjectHasValue(<x:op/548> <x:ind/47>))
+
+# Class: <x:cls/93> (<x:cls/93>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/93> "Akute Schizophrenie"@de)
+AnnotationAssertion(<x:ap/512> <x:cls/93> <x:cls/242>)
+SubClassOf(<x:cls/93> <x:cls/154>)
+SubClassOf(<x:cls/93> <x:cls/434>)
+
+# Class: <x:cls/94> (<x:cls/94>)
+
+AnnotationAssertion(<x:ap/517> <x:cls/94> "C")
+SubClassOf(<x:cls/94> <x:cls/154>)
+
+# Class: <x:cls/95> (<x:cls/95>)
+
+SubClassOf(<x:cls/95> <x:cls/132>)
+
+# Class: <x:cls/98> (<x:cls/98>)
+
+AnnotationAssertion(<x:ap/511> <x:cls/98> "Antidepressive therapy"@en)
+SubClassOf(<x:cls/98> <x:cls/352>)
+
+
+############################
+#   Named Individuals
+############################
+
+# Individual: <x:ind/0> (<x:ind/0>)
+
+ClassAssertion(<x:cls/242> <x:ind/0>)
+ClassAssertion(<x:cls/93> <x:ind/0>)
+ClassAssertion(ObjectComplementOf(<x:cls/429>) <x:ind/0>)
+ObjectPropertyAssertion(<x:op/570> <x:ind/0> <x:ind/69>)
+
+# Individual: <x:ind/1> (<x:ind/1>)
+
+ClassAssertion(<x:cls/100> <x:ind/1>)
+ClassAssertion(<x:cls/506> <x:ind/1>)
+ObjectPropertyAssertion(<x:op/570> <x:ind/1> <x:ind/69>)
+DataPropertyAssertion(<x:dp/530> <x:ind/1> "42780"^^xsd:integer)
+
+# Individual: <x:ind/11> (<x:ind/11>)
+
+AnnotationAssertion(<x:ap/510> <x:ind/11> "Recommendation: Apply clozapin"@en)
+
+# Individual: <x:ind/12> (<x:ind/12>)
+
+AnnotationAssertion(<x:ap/510> <x:ind/12> "Apply an antipsychotic drug in target dose"@en)
+
+# Individual: <x:ind/13> (<x:ind/13>)
+
+ClassAssertion(<x:cls/485> <x:ind/13>)
+
+# Individual: <x:ind/14> (<x:ind/14>)
+
+AnnotationAssertion(<x:ap/511> <x:ind/14> "Consolidate therapeutic relation"@en)
+ClassAssertion(<x:cls/171> <x:ind/14>)
+
+# Individual: <x:ind/15> (<x:ind/15>)
+
+ObjectPropertyAssertion(<x:op/537> <x:ind/15> <x:ind/0>)
+ObjectPropertyAssertion(<x:op/543> <x:ind/15> <x:ind/1>)
+ObjectPropertyAssertion(<x:op/543> <x:ind/15> <x:ind/34>)
+ObjectPropertyAssertion(<x:op/543> <x:ind/15> <x:ind/57>)
+ObjectPropertyAssertion(<x:op/543> <x:ind/15> <x:ind/79>)
+ObjectPropertyAssertion(<x:op/564> <x:ind/15> <x:ind/57>)
+
+# Individual: <x:ind/16> (<x:ind/16>)
+
+ClassAssertion(<x:cls/96> <x:ind/16>)
+
+# Individual: <x:ind/18> (<x:ind/18>)
+
+ClassAssertion(<x:cls/168> <x:ind/18>)
+
+# Individual: <x:ind/19> (<x:ind/19>)
+
+ClassAssertion(<x:cls/495> <x:ind/19>)
+
+# Individual: <x:ind/22> (<x:ind/22>)
+
+AnnotationAssertion(<x:ap/511> <x:ind/22> "Maintain therapeutic relation"@en)
+ClassAssertion(<x:cls/308> <x:ind/22>)
+
+# Individual: <x:ind/23> (<x:ind/23>)
+
+ClassAssertion(<x:cls/128> <x:ind/23>)
+
+# Individual: <x:ind/25> (<x:ind/25>)
+
+ClassAssertion(<x:cls/195> <x:ind/25>)
+
+# Individual: <x:ind/26> (<x:ind/26>)
+
+ClassAssertion(<x:cls/193> <x:ind/26>)
+
+# Individual: <x:ind/27> (<x:ind/27>)
+
+ClassAssertion(<x:cls/303> <x:ind/27>)
+
+# Individual: <x:ind/28> (<x:ind/28>)
+
+AnnotationAssertion(<x:ap/510> <x:ind/28> "Recommendation: Start antidepressive therapy"@en)
+
+# Individual: <x:ind/3> (<x:ind/3>)
+
+ClassAssertion(<x:cls/151> <x:ind/3>)
+
+# Individual: <x:ind/30> (<x:ind/30>)
+
+ClassAssertion(<x:cls/109> <x:ind/30>)
+
+# Individual: <x:ind/31> (<x:ind/31>)
+
+ClassAssertion(<x:cls/356> <x:ind/31>)
+
+# Individual: <x:ind/33> (<x:ind/33>)
+
+ClassAssertion(<x:cls/427> <x:ind/33>)
+
+# Individual: <x:ind/34> (<x:ind/34>)
+
+ClassAssertion(<x:cls/298> <x:ind/34>)
+
+# Individual: <x:ind/35> (<x:ind/35>)
+
+ClassAssertion(<x:cls/436> <x:ind/35>)
+
+# Individual: <x:ind/37> (<x:ind/37>)
+
+ClassAssertion(<x:cls/141> <x:ind/37>)
+
+# Individual: <x:ind/4> (<x:ind/4>)
+
+ClassAssertion(<x:cls/244> <x:ind/4>)
+
+# Individual: <x:ind/40> (<x:ind/40>)
+
+ClassAssertion(<x:cls/112> <x:ind/40>)
+
+# Individual: <x:ind/41> (<x:ind/41>)
+
+ClassAssertion(<x:cls/173> <x:ind/41>)
+
+# Individual: <x:ind/43> (<x:ind/43>)
+
+ClassAssertion(<x:cls/166> <x:ind/43>)
+
+# Individual: <x:ind/44> (<x:ind/44>)
+
+ClassAssertion(<x:cls/298> <x:ind/44>)
+
+# Individual: <x:ind/45> (<x:ind/45>)
+
+ClassAssertion(<x:cls/235> <x:ind/45>)
+
+# Individual: <x:ind/46> (<x:ind/46>)
+
+ClassAssertion(<x:cls/148> <x:ind/46>)
+
+# Individual: <x:ind/47> (<x:ind/47>)
+
+ClassAssertion(<x:cls/311> <x:ind/47>)
+
+# Individual: <x:ind/49> (<x:ind/49>)
+
+ClassAssertion(<x:cls/131> <x:ind/49>)
+
+# Individual: <x:ind/5> (<x:ind/5>)
+
+AnnotationAssertion(<x:ap/510> <x:ind/5> "Recommendation: Apply last satisfying drug again"@en)
+
+# Individual: <x:ind/50> (<x:ind/50>)
+
+ClassAssertion(<x:cls/143> <x:ind/50>)
+
+# Individual: <x:ind/54> (<x:ind/54>)
+
+AnnotationAssertion(<x:ap/511> <x:ind/54> "Support social interaction"@en)
+ClassAssertion(<x:cls/451> <x:ind/54>)
+
+# Individual: <x:ind/56> (<x:ind/56>)
+
+ClassAssertion(<x:cls/144> <x:ind/56>)
+
+# Individual: <x:ind/57> (<x:ind/57>)
+
+ClassAssertion(<x:cls/506> <x:ind/57>)
+ClassAssertion(ObjectComplementOf(<x:cls/450>) <x:ind/57>)
+ObjectPropertyAssertion(<x:op/533> <x:ind/57> <x:ind/75>)
+ObjectPropertyAssertion(<x:op/570> <x:ind/57> <x:ind/69>)
+DataPropertyAssertion(<x:dp/522> <x:ind/57> "200.00"^^xsd:decimal)
+DataPropertyAssertion(<x:dp/531> <x:ind/57> "28"^^xsd:integer)
+
+# Individual: <x:ind/58> (<x:ind/58>)
+
+ClassAssertion(<x:cls/165> <x:ind/58>)
+
+# Individual: <x:ind/59> (<x:ind/59>)
+
+ClassAssertion(<x:cls/445> <x:ind/59>)
+
+# Individual: <x:ind/6> (<x:ind/6>)
+
+AnnotationAssertion(<x:ap/510> <x:ind/6> "Recommend diagnose acute schizophrenia"@en)
+ClassAssertion(<x:cls/93> <x:ind/6>)
+
+# Individual: <x:ind/60> (<x:ind/60>)
+
+ClassAssertion(<x:cls/145> <x:ind/60>)
+
+# Individual: <x:ind/63> (<x:ind/63>)
+
+ClassAssertion(<x:cls/146> <x:ind/63>)
+
+# Individual: <x:ind/64> (<x:ind/64>)
+
+ClassAssertion(<x:cls/496> <x:ind/64>)
+
+# Individual: <x:ind/66> (<x:ind/66>)
+
+ClassAssertion(<x:cls/147> <x:ind/66>)
+
+# Individual: <x:ind/67> (<x:ind/67>)
+
+ClassAssertion(<x:cls/111> <x:ind/67>)
+
+# Individual: <x:ind/69> (<x:ind/69>)
+
+ClassAssertion(<x:cls/506> <x:ind/69>)
+
+# Individual: <x:ind/70> (<x:ind/70>)
+
+AnnotationAssertion(<x:ap/510> <x:ind/70> "Recommendation: Apply anticholinergikum"@en)
+ClassAssertion(<x:cls/110> <x:ind/70>)
+
+# Individual: <x:ind/73> (<x:ind/73>)
+
+ClassAssertion(<x:cls/113> <x:ind/73>)
+
+# Individual: <x:ind/74> (<x:ind/74>)
+
+AnnotationAssertion(<x:ap/510> <x:ind/74> "Had clozapin application?"@en)
+ClassAssertion(<x:cls/156> <x:ind/74>)
+
+# Individual: <x:ind/75> (<x:ind/75>)
+
+AnnotationAssertion(<x:ap/511> <x:ind/75> "Inform about disorder and therapy"@en)
+
+# Individual: <x:ind/76> (<x:ind/76>)
+
+ClassAssertion(<x:cls/138> <x:ind/76>)
+
+# Individual: <x:ind/78> (<x:ind/78>)
+
+AnnotationAssertion(<x:ap/510> <x:ind/78> "Recommendation: Apply an atypical antisychotic drug"@en)
+
+# Individual: <x:ind/79> (<x:ind/79>)
+
+ClassAssertion(<x:cls/280> <x:ind/79>)
+ObjectPropertyAssertion(<x:op/570> <x:ind/79> <x:ind/69>)
+
+# Individual: <x:ind/8> (<x:ind/8>)
+
+AnnotationAssertion(<x:ap/510> <x:ind/8> "Recommendation: Apply lithium"@en)
+ClassAssertion(<x:cls/121> <x:ind/8>)
+
+# Individual: <x:ind/80> (<x:ind/80>)
+
+ClassAssertion(<x:cls/296> <x:ind/80>)
+
+# Individual: <x:ind/81> (<x:ind/81>)
+
+AnnotationAssertion(<x:ap/510> <x:ind/81> "Recommendation: Give advise to omit breast feeding"@en)
+
+# Individual: <x:ind/84> (<x:ind/84>)
+
+ClassAssertion(<x:cls/157> <x:ind/84>)
+
+# Individual: <x:ind/85> (<x:ind/85>)
+
+AnnotationAssertion(<x:ap/510> <x:ind/85> "Is dose of application critical?"@en)
+ClassAssertion(<x:cls/164> <x:ind/85>)
+
+# Individual: <x:ind/88> (<x:ind/88>)
+
+ClassAssertion(<x:cls/336> <x:ind/88>)
+ClassAssertion(DataSomeValuesFrom(<x:dp/527> DatatypeRestriction(xsd:int xsd:minInclusive "5"^^xsd:int xsd:maxInclusive "15"^^xsd:int)) <x:ind/88>)
+ClassAssertion(DataSomeValuesFrom(<x:dp/529> DatatypeRestriction(xsd:int xsd:minInclusive "5"^^xsd:int xsd:maxInclusive "10"^^xsd:int)) <x:ind/88>)
+
+# Individual: <x:ind/9> (<x:ind/9>)
+
+ClassAssertion(<x:cls/232> <x:ind/9>)
+
+
+DisjointClasses(<x:cls/150> <x:cls/195> <x:cls/307>)
+DisjointClasses(<x:cls/174> <x:cls/175> <x:cls/176> <x:cls/177> <x:cls/178> <x:cls/179> <x:cls/180> <x:cls/181> <x:cls/182> <x:cls/183>)
+DisjointClasses(<x:cls/194> <x:cls/319> <x:cls/340> <x:cls/452>)
+DisjointClasses(<x:cls/437> <x:cls/438> <x:cls/439> <x:cls/440>)
+DisjointClasses(<x:cls/474> <x:cls/475> <x:cls/476> <x:cls/477> <x:cls/478> <x:cls/479> <x:cls/480> <x:cls/481> <x:cls/482> <x:cls/483>)
+SubObjectPropertyOf(ObjectPropertyChain(<x:op/566> <x:op/571>) <x:op/566>)
+SubObjectPropertyOf(ObjectPropertyChain(<x:op/567> <x:op/571>) <x:op/567>)
+AnnotationAssertion(<x:ap/511> <x:cls/101> "Angstzustand"@de)
+AnnotationAssertion(<x:ap/511> <x:cls/101> "Anxiety state"@en)
+AnnotationAssertion(<x:ap/511> <x:cls/135> "verflachte Affekte"@de)
+AnnotationAssertion(<x:ap/511> <x:cls/142> "Check for depressive symptoms"@en)
+AnnotationAssertion(<x:ap/510> <x:cls/212> "Recommend a diabetes screening every 2 months"@en)
+AnnotationAssertion(<x:ap/511> <x:cls/234> "Epilepsy"@en)
+AnnotationAssertion(<x:ap/515> <x:cls/238> "DGPPN SG (1)")
+AnnotationAssertion(<x:ap/511> <x:cls/297> "Aufklärung über Krankheits- und Behandlungskonzepte"@de)
+AnnotationAssertion(<x:ap/511> <x:cls/334> "Noticeable apathy"@en)
+AnnotationAssertion(<x:ap/515> <x:cls/335> "DGPPN SG (7.1)")
+AnnotationAssertion(<x:ap/517> <x:cls/335> "Good clinical practise")
+AnnotationAssertion(<x:ap/510> <x:cls/360> "Patients that don't have a cardiac damage"@en)
+AnnotationAssertion(<x:ap/511> <x:cls/360> "Does the patient have a cardiac damage?"@en)
+AnnotationAssertion(<x:ap/511> <x:cls/360> "Hat der Patient eine kardiale Störung"@de)
+AnnotationAssertion(<x:ap/519> <x:cls/360> "true"^^xsd:boolean)
+AnnotationAssertion(<x:ap/518> <x:cls/364> "false"^^xsd:boolean)
+AnnotationAssertion(<x:ap/511> <x:cls/560> "Warn for side-effects"@en)
+AnnotationAssertion(<x:ap/511> <x:cls/560> "Warne vor Nebenwirkungen"@de)
+AnnotationAssertion(<x:ap/510> <x:ind/62> "Recommendation: Apply half of standard dose"@en)
+)

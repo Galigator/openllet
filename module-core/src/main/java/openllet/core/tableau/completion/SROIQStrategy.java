@@ -44,29 +44,40 @@ public class SROIQStrategy extends CompletionStrategy
 		{
 			_completionTimer.ifPresent(t -> t.check());
 
-			final int lastBranch = _abox.getClash().getDepends().max();
+			final int branchCount = _abox.getBranches().size();
+			final int lastBranch;
+			{
+				int candidatLastBranch = _abox.getClash().getDepends().max();
+				while (candidatLastBranch <= 0 || candidatLastBranch > branchCount)
+				{
+					if (candidatLastBranch <= 0) // not more branches to try
+						return false;
+					_abox.getClash().getDepends().remove(candidatLastBranch);
+					candidatLastBranch = _abox.getClash().getDepends().max();
+					_logger.severe("Used the improved backupjump.");
+				}
+				lastBranch = candidatLastBranch;
+			}
 
-			if (lastBranch <= 0) // not more branches to try
-				return false;
-			else
-				if (lastBranch > _abox.getBranches().size())
-					throw new InternalReasonerException("Backtrack: Trying to backtrack to _branch " + lastBranch + " but has only " + _abox.getBranches().size() + " branches. Clash found: " + _abox.getClash());
-				else
-					if (OpenlletOptions.USE_INCREMENTAL_DELETION)
-					{
-						final Branch br = _abox.getBranches().get(lastBranch - 1); // get the last _branch
+			if (lastBranch > branchCount)
+				throw new InternalReasonerException(//
+						"Backtrack: Trying to backtrack to _branch " + lastBranch//
+								+ " but has only " + branchCount + "branches."//
+								+ " Clash found: " + _abox.getClash());
 
-						// if this is the last _disjunction, merge pair, etc. for the
-						// _branch (i.e, br.tryNext == br.tryCount-1) and there are no
-						// other branches to test (ie.
-						// _abox.getClash().depends.size()==2),
-						// then update depedency _index and return false
-						if (br.getTryNext() == br.getTryCount() - 1 && _abox.getClash().getDepends().size() == 2)
-						{
-							_abox.getKB().getDependencyIndex().addCloseBranchDependency(br, _abox.getClash().getDepends());
-							return false;
-						}
-					}
+			if (OpenlletOptions.USE_INCREMENTAL_DELETION)
+			{
+				final Branch br = _abox.getBranches().get(lastBranch - 1); // get the last _branch
+
+				// if this is the last _disjunction, merge pair, etc. for the _branch (i.e, br.tryNext == br.tryCount-1)
+				// and there are no other branches to test (ie. _abox.getClash().depends.size()==2),
+				// then update dependency _index and return false
+				if (br.getTryNext() == br.getTryCount() - 1 && _abox.getClash().getDepends().size() == 2)
+				{
+					_abox.getKB().getDependencyIndex().addCloseBranchDependency(br, _abox.getClash().getDepends());
+					return false;
+				}
+			}
 
 			final List<Branch> branches = _abox.getBranches();
 			_abox.getStats()._backjumps += branches.size() - lastBranch;
@@ -85,7 +96,7 @@ public class SROIQStrategy extends CompletionStrategy
 
 			final Branch newBranch = branches.get(lastBranch - 1); // get the _branch to try
 
-			_logger.fine(() -> "JUMP: Branch " + lastBranch);
+			_logger.fine(() -> "JUMP: Branch " + lastBranch + "\tbranchCount=" + _abox.getBranches().size());
 
 			if (lastBranch != newBranch.getBranchIndexInABox())
 				throw new InternalReasonerException("Backtrack: Trying to backtrack to _branch " + lastBranch + " but got " + newBranch.getBranchIndexInABox());

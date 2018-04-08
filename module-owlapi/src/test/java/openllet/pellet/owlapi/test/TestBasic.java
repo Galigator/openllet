@@ -34,6 +34,7 @@ import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 import org.semanticweb.owlapi.model.SWRLIndividualArgument;
@@ -353,60 +354,93 @@ public class TestBasic
 	@Test
 	public void testRestrictionConjonction() throws OWLOntologyCreationException
 	{
-		for (int loop = 0; loop < 20; loop++)
-			try (final OWLManagerGroup group = new OWLManagerGroup())
+		//		for (int loop = 0; loop < 20; loop++)
+		try (final OWLManagerGroup group = new OWLManagerGroup())
+		{
+			final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create(NS + "owlapi.inc.integer-min-max.restriction"), 1.0);
+			final OWLHelper owl = new OWLGenericTools(group, ontId, true);
+
+			final OWLNamedIndividual x1 = i.apply("I1");
+			final OWLNamedIndividual x2 = i.apply("I2");
+			final OWLNamedIndividual x3 = i.apply("I3");
+			final OWLNamedIndividual x4 = i.apply("I4");
+
+			owl.addAxiom(OWL.equivalentClasses(ClsA, OWL.some(propB, //
+					OWL.restrict(XSD.INTEGER, //
+							OWL.facetRestriction(OWLFacet.MIN_INCLUSIVE, OWL.constant(100)), //
+							OWL.facetRestriction(OWLFacet.MAX_INCLUSIVE, OWL.constant(250))//
+					))));//
+
+			owl.addAxiom(OWL.equivalentClasses(ClsB, OWL.some(propB, //
+					OWL.restrict(XSD.INTEGER, //
+							OWL.facetRestriction(OWLFacet.MIN_INCLUSIVE, OWL.constant(250)), //
+							OWL.facetRestriction(OWLFacet.MAX_INCLUSIVE, OWL.constant(252))//
+					))));//
+
+			owl.addAxiom(OWL.equivalentClasses(ClsD, OWL.and(ClsC, ClsA)));
+			owl.addAxiom(OWL.equivalentClasses(ClsE, OWL.and(ClsC, ClsB)));
+
+			owl.addAxiom(OWL.propertyAssertion(x1, propB, OWL.constant(15)));
+			owl.addAxiom(OWL.propertyAssertion(x2, propB, OWL.constant(150)));
+			owl.addAxiom(OWL.propertyAssertion(x3, propB, OWL.constant(250)));
+			owl.addAxiom(OWL.propertyAssertion(x4, propB, OWL.constant(300)));
+
+			owl.addAxiom(OWL.classAssertion(x1, ClsC));
+			owl.addAxiom(OWL.classAssertion(x2, ClsC));
+			owl.addAxiom(OWL.classAssertion(x3, ClsC));
+			owl.addAxiom(OWL.classAssertion(x4, ClsC));
+
 			{
-				final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create(NS + "owlapi.inc.integer-min-max.restriction"), 1.0);
-				final OWLHelper owl = new OWLGenericTools(group, ontId, true);
-
-				final OWLNamedIndividual x1 = i.apply("I1");
-				final OWLNamedIndividual x2 = i.apply("I2");
-				final OWLNamedIndividual x3 = i.apply("I3");
-				final OWLNamedIndividual x4 = i.apply("I4");
-
-				owl.addAxiom(OWL.equivalentClasses(ClsA, OWL.some(propB, //
-						OWL.restrict(XSD.INTEGER, //
-								OWL.facetRestriction(OWLFacet.MIN_INCLUSIVE, OWL.constant(100)), //
-								OWL.facetRestriction(OWLFacet.MAX_INCLUSIVE, OWL.constant(250))//
-						))));//
-
-				owl.addAxiom(OWL.equivalentClasses(ClsB, OWL.some(propB, //
-						OWL.restrict(XSD.INTEGER, //
-								OWL.facetRestriction(OWLFacet.MIN_INCLUSIVE, OWL.constant(250)), //
-								OWL.facetRestriction(OWLFacet.MAX_INCLUSIVE, OWL.constant(252))//
-						))));//
-
-				owl.addAxiom(OWL.equivalentClasses(ClsD, OWL.and(ClsC, ClsA)));
-				owl.addAxiom(OWL.equivalentClasses(ClsE, OWL.and(ClsC, ClsB)));
-
-				owl.addAxiom(OWL.propertyAssertion(x1, propB, OWL.constant(15)));
-				owl.addAxiom(OWL.propertyAssertion(x2, propB, OWL.constant(150)));
-				owl.addAxiom(OWL.propertyAssertion(x3, propB, OWL.constant(250)));
-				owl.addAxiom(OWL.propertyAssertion(x4, propB, OWL.constant(300)));
-
-				owl.addAxiom(OWL.classAssertion(x1, ClsC));
-				owl.addAxiom(OWL.classAssertion(x2, ClsC));
-				owl.addAxiom(OWL.classAssertion(x3, ClsC));
-				owl.addAxiom(OWL.classAssertion(x4, ClsC));
+				final OWLReasoner r = owl.getReasoner();
+				{
+					final Set<OWLClass> xTypes = r.types(x1).collect(Collectors.toSet());
+					assertTrue(xTypes.contains(ClsC));
+					assertTrue(xTypes.contains(OWL.Thing));
+					assertTrue(xTypes.size() == 2);
+				}
 
 				{
-					final OWLReasoner r = owl.getReasoner();
-					r.types(x1).forEach(cx -> System.out.println("x1 : " + cx));
-					r.types(x2).forEach(cx -> System.out.println("x2 : " + cx));
-					r.types(x3).forEach(cx -> System.out.println("x3 : " + cx));
-					r.types(x4).forEach(cx -> System.out.println("x4 : " + cx));
-
+					final Set<OWLClass> xTypes = r.types(x2).collect(Collectors.toSet());
+					assertTrue(xTypes.contains(ClsA));
+					assertTrue(xTypes.contains(ClsC));
+					assertTrue(xTypes.contains(ClsD));
+					assertTrue(xTypes.contains(OWL.Thing));
+					assertTrue(xTypes.size() == 4);
 				}
-				//
-				//
-				//			owl.addAxiom(OWL.classAssertion(x2, ClsB));
-				//
-				//			{
-				//				final OWLReasoner r = owl.getReasoner();
-				//				assertTrue(r.isEntailed(OWL.classAssertion(x2, ClsC)));
-				//				assertFalse(r.isEntailed(OWL.classAssertion(x3, ClsC)));
-				//			}
+
+				{
+					final Set<OWLClass> xTypes = r.types(x3).collect(Collectors.toSet());
+					assertTrue(xTypes.contains(ClsA));
+					assertTrue(xTypes.contains(ClsB));
+					assertTrue(xTypes.contains(ClsC));
+					assertTrue(xTypes.contains(ClsD));
+					assertTrue(xTypes.contains(ClsE));
+					assertTrue(xTypes.contains(OWL.Thing));
+					assertTrue(xTypes.size() == 6);
+				}
+
+				{
+					final Set<OWLClass> xTypes = r.types(x4).collect(Collectors.toSet());
+					assertTrue(xTypes.contains(ClsC));
+					assertTrue(xTypes.contains(OWL.Thing));
+					assertTrue(xTypes.size() == 2);
+				}
 			}
+		}
+	}
+
+	@Test
+	public void testRestrictionConjonction3() throws OWLOntologyCreationException
+	{
+		try (final OWLManagerGroup group = new OWLManagerGroup())
+		{
+			final OWLOntology ontology = group.getVolatileManager().loadOntologyFromOntologyDocument(new File("src/test/resources/test_data/restriction_conjonction.owl"));
+			final OWLHelper owl = new OWLGenericTools(group, ontology, true);
+			final OWLReasoner r = owl.getReasoner();
+			assertTrue(r.isConsistent());
+			ontology.individualsInSignature().forEach(r::getTypes);
+			ontology.classesInSignature().forEach(r::getInstances);
+		}
 	}
 
 	@Test
