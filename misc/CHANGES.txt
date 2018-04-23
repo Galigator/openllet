@@ -1,6 +1,18 @@
 Change Log
 ==========
 
+Openllet 2.6.4 (Apr 23, 2018)
+---------------------------
+
+* Bugs corrections & small optimisations
+
+* Upgrade dependencies
+
+* More tests & examples
+
+* Improve behviour of complexe restrictions on string-literals and some integers.
+
+
 Openllet 2.6.2 (Sep 27, 2017)
 ---------------------------
 

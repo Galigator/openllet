@@ -47,25 +47,22 @@ designed to
 support <a href="https://jena.apache.org/">Jena</a> and
 <a href="https://github.com/owlcs/owlapi">OWL API</a> libraries. The functionality 
 in both packages is almost equivalent. See the javadocs 
-for the details of interfaces and check out the <a href="../examples/src/org/mindswap/pellet/examples">examples directory</a> 
-for sample code. You can find the answers to some Frequently Asked Questions in <a href="http://pellet.owldl.com/faq">Openllet FAQ</a>.</p>
+for the details of interfaces and check out the <a href="../examples/src/main/java/openllet/examples">examples directory</a> 
+for sample code. You can find the answers to some Frequently Asked Questions in <a href="https://github.com/stardog-union/pellet/wiki/FAQ">Openllet FAQ</a>.</p>
 
 <a name="building"/><h3>Building Openllet</h3>
 <h4>Starting from a Distribution</h4>
 <p>If you are starting from a distribution, Openllet comes pre-built, with
 all the required libraries included in the zip file.</p>
 <h4>Starting from git</h4>
-<p>To use the Openllet build system, you need Apache Maven, version 3.3.3 or above. You can download
+<p>To use the Openllet build system, you need Apache Maven, version 3.5.2 or above. You can download
 a copy of Maven at <a href="https://maven.apache.org/">http://ant.apache.org/</a>.</p>
 <h4>Compilation</h4>
 <p>Running 'mvn clean install' in the trunk directory should be enough. The resulting 
 files are placed in the directory dist/. </p>
 
 <h4>Building your own distribution</h4>
-<p>The file will build as dist/pellet-{date}.zip.
-You can change the version string by editing the pom.xml file.  The 
-distribution file will include the source code, the Openllet jar file,
-and all supporting jar files found in the lib/ directory.</p>
+<p>The file will be available in the 'distribution/target' directory.</p>
 
 <a name="mail"/><h3>Mailing list</h3>
 
