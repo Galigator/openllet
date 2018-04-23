@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.github.galigator.openllet</groupId>
   <artifactId>openllet-parent</artifactId>
-  <version>2.6.4</version>
+  <version>2.6.5-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Openllet :: Parent POM</name>
   <description>Openllet is open-source future of Pellet OWL Reasoner</description>
@@ -466,6 +466,10 @@
   <profiles>
 
     <profile>
+        <!--
+        mvn -P ossrh clean install 
+        mvn -P ossrh deploy
+        -->
       <id>ossrh</id>
       <activation>
         <activeByDefault>false</activeByDefault>
@@ -513,7 +517,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.0.0</version>
+            <version>3.0.0-M1</version>
             <configuration>
               <show>public</show>
             </configuration>
