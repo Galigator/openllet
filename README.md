@@ -39,12 +39,12 @@ Openllet 2.6.X:
 	<dependency>
 		<groupId>com.github.galigator.openllet</groupId>
 		<artifactId>openllet-owlapi</artifactId>
-		<version>2.6.3</version>
+		<version>2.6.4</version>
 	</dependency>
 	<dependency>
 		<groupId>com.github.galigator.openllet</groupId>
 		<artifactId>openllet-jena</artifactId>
-		<version>2.6.3</version>
+		<version>2.6.4</version>
 	</dependency>
 ```
 
