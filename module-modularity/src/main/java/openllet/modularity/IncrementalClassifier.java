@@ -1334,6 +1334,8 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 
 		if (!instances.isEmpty())
 		{
+			if (null == _taxonomyImpl)
+				classify();
 			final TaxonomyNode<OWLClass> node = _taxonomyImpl.getNode(owlClass);
 
 			if (node == null)
