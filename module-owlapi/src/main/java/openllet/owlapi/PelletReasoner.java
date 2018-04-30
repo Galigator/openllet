@@ -439,7 +439,14 @@ public class PelletReasoner implements OpenlletReasoner
 	@Override
 	public void flush()
 	{
-		processChanges(_pendingChanges);
+		try
+		{
+			processChanges(_pendingChanges);
+		}
+		catch (final Exception e)
+		{
+			Log.error(_logger, e);
+		}
 		_pendingChanges.clear();
 		refreshCheck();
 	}
@@ -1124,7 +1131,7 @@ public class PelletReasoner implements OpenlletReasoner
 		{
 			_logger.fine(() -> "Changed: " + change + " in " + change.getOntology());
 
-			if (!importsClosure.contains(change.getOntology()))
+			if (null == change || !importsClosure.contains(change.getOntology()))
 				continue;
 
 			synchronized (_visitor)
