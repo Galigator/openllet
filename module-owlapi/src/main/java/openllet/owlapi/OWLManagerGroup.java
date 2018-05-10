@@ -257,8 +257,11 @@ public class OWLManagerGroup implements OWLGroup
 		}
 		if (_persistentManager != null)
 		{
-			_persistentManager.removeOntologyChangeListener(_storageListener);
-			_storageListener.close();
+			if (null != _storageListener)
+			{
+				_persistentManager.removeOntologyChangeListener(_storageListener);
+				_storageListener.close();
+			}
 			_persistentManager.clearOntologies();
 			_persistentManager.getIRIMappers().clear();
 			_persistentManager = null; // Mark for GC.
