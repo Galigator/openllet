@@ -151,8 +151,9 @@ public abstract class Blocking
 
 			if (cxt.moveBlockerDown(child))
 			{
-				if (isDirectlyBlockedByDescendant(cxt))
+				if (isDirectlyBlockedByDescendant(cxt) || cxt._blocker.isRoot())
 					return true;
+
 				cxt.moveBlockerUp();
 			}
 		}
