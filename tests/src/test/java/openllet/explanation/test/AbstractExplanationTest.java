@@ -11,7 +11,6 @@ package openllet.explanation.test;
 import static org.junit.Assume.assumeTrue;
 
 import java.net.URI;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -146,7 +145,7 @@ public abstract class AbstractExplanationTest
 	{
 		final OWLAxiom[] axioms = { OWL.equivalentClasses(_A, OWL.Thing), OWL.comment(_B, "Annotation only class") };
 
-		setupGenerators(Arrays.asList(axioms));
+		setupGenerators(Stream.of(axioms));
 		testExplanations(OWL.subClassOf(_B, _A), 0, new OWLAxiom[] { axioms[0] });
 	}
 
@@ -158,7 +157,7 @@ public abstract class AbstractExplanationTest
 	{
 		final OWLAxiom[] axioms = { OWL.subClassOf(_A, OWL.Thing), OWL.subClassOf(_B, _A), OWL.comment(_B, "Annotation only class") };
 
-		setupGenerators(Arrays.asList(axioms));
+		setupGenerators(Stream.of(axioms));
 		testExplanations(OWL.subClassOf(_B, _A), 0, new OWLAxiom[] { axioms[1] });
 	}
 
@@ -172,7 +171,7 @@ public abstract class AbstractExplanationTest
 
 		final OWLAxiom[] axioms = { OWL.propertyAssertion(_a, _p, _anon1), OWL.classAssertion(_anon1, _A), OWL.subClassOf(OWL.some(_p, _A), _B) };
 
-		setupGenerators(Arrays.asList(axioms));
+		setupGenerators(Stream.of(axioms));
 		testExplanations(OWL.classAssertion(_a, _B), 0, axioms);
 	}
 
@@ -187,7 +186,7 @@ public abstract class AbstractExplanationTest
 	{
 		final OWLAxiom[] axioms = { OWL.equivalentClasses(_A, OWL.Thing), OWL.declaration(_B) };
 
-		setupGenerators(Arrays.asList(axioms));
+		setupGenerators(Stream.of(axioms));
 		testExplanations(OWL.subClassOf(_B, _A), 0, new OWLAxiom[] { axioms[0] });
 	}
 
@@ -199,7 +198,7 @@ public abstract class AbstractExplanationTest
 	{
 		final OWLAxiom[] axioms = { OWL.subClassOf(_B, _A), OWL.declaration(_p) };
 
-		setupGenerators(Arrays.asList(axioms));
+		setupGenerators(Stream.of(axioms));
 		testExplanations(OWL.subClassOf(OWL.and(_B, OWL.some(_p, OWL.Thing)), _A), 0, new OWLAxiom[] { axioms[0] });
 	}
 
@@ -211,7 +210,7 @@ public abstract class AbstractExplanationTest
 		final OWLAxiom axiom = OWL.equivalentClasses(_A, OWL.Nothing);
 		final OWLAxiom[] explanation = new OWLAxiom[] { OWL.subClassOf(_A, OWL.some(_p, _B)), OWL.range(_p, _C), OWL.disjointClasses(_B, _C) };
 
-		setupGenerators(Arrays.asList(axioms));
+		setupGenerators(Stream.of(axioms));
 		testExplanations(axiom, 0, explanation);
 	}
 
@@ -220,7 +219,7 @@ public abstract class AbstractExplanationTest
 	{
 		final OWLAxiom[] axioms = { OWL.subClassOf(_A, OWL.some(_p, _B)), OWL.range(_p, _C), OWL.subClassOf(_B, _D), OWL.disjointClasses(_D, _C), OWL.subClassOf(_A, _E), OWL.subClassOf(_B, _F) };
 
-		setupGenerators(Arrays.asList(axioms));
+		setupGenerators(Stream.of(axioms));
 
 		// explain disjointness of _B and _C first so reasoner will _cache this
 		// result
@@ -236,7 +235,7 @@ public abstract class AbstractExplanationTest
 	{
 		final OWLAxiom[] axioms = { OWL.subClassOf(_A, _B), OWL.subClassOf(_A, _C), OWL.disjointClasses(_B, _C) };
 
-		setupGenerators(Arrays.asList(axioms));
+		setupGenerators(Stream.of(axioms));
 		testExplanations(OWL.equivalentClasses(_A, OWL.Nothing), 0, axioms);
 	}
 
@@ -262,7 +261,7 @@ public abstract class AbstractExplanationTest
 				// classifier which cached explanations
 				OWL.subClassOf(_A, OWL.all(_p, _A)) };
 
-		setupGenerators(Arrays.asList(axioms));
+		setupGenerators(Stream.of(axioms));
 		testExplanations(OWL.subClassOf(_C, _D), 0, new OWLAxiom[] { axioms[0], axioms[1] });
 		testExplanations(OWL.subClassOf(_A, _D), 0, new OWLAxiom[] { axioms[1] });
 		testExplanations(OWL.subClassOf(_B, _D), 0, new OWLAxiom[] { axioms[1], axioms[4] });
@@ -273,7 +272,7 @@ public abstract class AbstractExplanationTest
 	{
 		final OWLAxiom[] axioms = { OWL.classAssertion(_a, _A), OWL.classAssertion(_b, _B), OWL.propertyAssertion(_a, _p, _b), SWRL.rule(SWRL.antecedent(SWRL.classAtom(_A, _x)), SWRL.consequent(SWRL.classAtom(_B, _x))), SWRL.rule(SWRL.antecedent(SWRL.classAtom(_B, _x), SWRL.propertyAtom(_p, _x, _y), SWRL.classAtom(_B, _y)), SWRL.consequent(SWRL.classAtom(_C, _x))) };
 
-		setupGenerators(Arrays.asList(axioms));
+		setupGenerators(Stream.of(axioms));
 
 		testExplanations(OWL.classAssertion(_a, _A), 0, new OWLAxiom[] { axioms[0] });
 		testExplanations(OWL.classAssertion(_a, _B), 0, new OWLAxiom[] { axioms[0], axioms[3] });
@@ -285,7 +284,7 @@ public abstract class AbstractExplanationTest
 	{
 		final OWLAxiom[] axioms = { OWL.classAssertion(_a, _A), OWL.classAssertion(_b, _B), OWL.propertyAssertion(_a, _p, _b), SWRL.rule(SWRL.antecedent(SWRL.classAtom(_A, _x)), SWRL.consequent(SWRL.classAtom(_B, _x))), SWRL.rule(SWRL.antecedent(SWRL.classAtom(_B, _x), SWRL.propertyAtom(_p, _x, _y), SWRL.classAtom(_B, _y)), SWRL.consequent(SWRL.classAtom(_C, _x))) };
 
-		setupGenerators(Arrays.asList(axioms));
+		setupGenerators(Stream.of(axioms));
 
 		testExplanations(OWL.classAssertion(_a, _A), 0, new OWLAxiom[] { axioms[0] });
 		testExplanations(OWL.classAssertion(_a, _B), 0, new OWLAxiom[] { axioms[0], axioms[3] });
@@ -297,7 +296,7 @@ public abstract class AbstractExplanationTest
 	{
 		final OWLAxiom[] axioms = { OWL.subPropertyOf(_q, _p), OWL.propertyAssertion(_a, _q, _b), OWL.classAssertion(_b, _B), SWRL.rule(SWRL.antecedent(SWRL.propertyAtom(_p, _x, _y), SWRL.classAtom(_B, _y)), SWRL.consequent(SWRL.classAtom(_A, _x))) };
 
-		setupGenerators(Arrays.asList(axioms));
+		setupGenerators(Stream.of(axioms));
 
 		testExplanations(OWL.classAssertion(_a, _A), 1, axioms);
 	}
@@ -307,7 +306,7 @@ public abstract class AbstractExplanationTest
 	{
 		final OWLAxiom[] axioms = { OWL.inverseProperties(_q, _p), OWL.propertyAssertion(_b, _q, _a), OWL.classAssertion(_b, _B), SWRL.rule(SWRL.antecedent(SWRL.propertyAtom(_p, _x, _y), SWRL.classAtom(_B, _y)), SWRL.consequent(SWRL.classAtom(_A, _x))) };
 
-		setupGenerators(Arrays.asList(axioms));
+		setupGenerators(Stream.of(axioms));
 
 		testExplanations(OWL.classAssertion(_a, _A), 1, axioms);
 	}
@@ -317,7 +316,7 @@ public abstract class AbstractExplanationTest
 	{
 		final OWLAxiom[] axioms = { OWL.classAssertion(_a, _A), SWRL.rule(SWRL.antecedent(SWRL.classAtom(_A, _x)), SWRL.consequent(SWRL.classAtom(_B, _x), SWRL.classAtom(_C, _x))) };
 
-		setupGenerators(Arrays.asList(axioms));
+		setupGenerators(Stream.of(axioms));
 
 		testExplanations(OWL.classAssertion(_a, _B), 1, axioms);
 		testExplanations(OWL.classAssertion(_a, _C), 1, axioms);
@@ -328,7 +327,7 @@ public abstract class AbstractExplanationTest
 	{
 		final OWLAxiom[] axioms = { OWL.propertyAssertion(_a, _p, _b), SWRL.rule(SWRL.antecedent(SWRL.propertyAtom(_p, _x, _y)), SWRL.consequent(SWRL.classAtom(_A, _x), SWRL.classAtom(_B, _y))) };
 
-		setupGenerators(Arrays.asList(axioms));
+		setupGenerators(Stream.of(axioms));
 
 		testExplanations(OWL.classAssertion(_a, _A), 1, axioms);
 		testExplanations(OWL.classAssertion(_b, _B), 1, axioms);
@@ -339,7 +338,7 @@ public abstract class AbstractExplanationTest
 	{
 		final OWLAxiom[] axioms = { OWL.propertyAssertion(_a, _p, _b), OWL.classAssertion(_b, _B), SWRL.rule(SWRL.antecedent(SWRL.classAtom(OWL.some(_p, _B), _x)), SWRL.consequent(SWRL.classAtom(_C, _x))) };
 
-		setupGenerators(Arrays.asList(axioms));
+		setupGenerators(Stream.of(axioms));
 
 		testExplanations(OWL.classAssertion(_a, _C), 1, axioms);
 	}
@@ -349,7 +348,7 @@ public abstract class AbstractExplanationTest
 	{
 		final OWLAxiom[] axioms = { OWL.classAssertion(_a, _A), OWL.propertyAssertion(_a, dp, OWL.constant(9)), SWRL.rule(SWRL.antecedent(SWRL.classAtom(_A, _x), SWRL.propertyAtom(dp, _x, _dx), SWRL.lessThan(_dx, SWRL.constant(10))), SWRL.consequent(SWRL.classAtom(_B, _x))) };
 
-		setupGenerators(Arrays.asList(axioms));
+		setupGenerators(Stream.of(axioms));
 
 		testExplanations(OWL.classAssertion(_a, _B), 0, axioms);
 	}
@@ -359,7 +358,7 @@ public abstract class AbstractExplanationTest
 	{
 		final OWLAxiom[] axioms = { OWL.classAssertion(_a, _A), OWL.propertyAssertion(_a, dp, OWL.constant(9)), SWRL.rule(SWRL.antecedent(SWRL.classAtom(_A, _x), SWRL.propertyAtom(dp, _x, _dx), SWRL.greaterThan(_dx, SWRL.constant(5)), SWRL.lessThan(_dx, SWRL.constant(10))), SWRL.consequent(SWRL.classAtom(_B, _x))) };
 
-		setupGenerators(Arrays.asList(axioms));
+		setupGenerators(Stream.of(axioms));
 
 		testExplanations(OWL.classAssertion(_a, _B), 0, axioms);
 	}
@@ -389,7 +388,7 @@ public abstract class AbstractExplanationTest
 				) //
 		};
 
-		setupGenerators(Arrays.asList(axioms));
+		setupGenerators(Stream.of(axioms));
 
 		testExplanations(OWL.propertyAssertion(_a, year, OWL.constant(2009)), 1, new OWLAxiom[] { axioms[0], axioms[1] });
 	}
@@ -399,7 +398,7 @@ public abstract class AbstractExplanationTest
 	{
 		final OWLAxiom[] axioms = { OWL.classAssertion(_a, _A), OWL.propertyAssertion(_a, dp, OWL.constant(9)), OWL.equivalentClasses(_B, OWL.and(_A, OWL.some(dp, OWL.restrict(XSD.INTEGER, OWL.maxExclusive(10))))) };
 
-		setupGenerators(Arrays.asList(axioms));
+		setupGenerators(Stream.of(axioms));
 
 		testExplanations(OWL.classAssertion(_a, _B), 0, axioms);
 	}
@@ -409,7 +408,7 @@ public abstract class AbstractExplanationTest
 	{
 		final OWLAxiom[] axioms = { OWL.classAssertion(_a, _A), OWL.subClassOf(_A, OWL.and(OWL.max(dp, 1), OWL.some(dp, OWL.restrict(XSD.INTEGER, OWL.minExclusive(10))))), OWL.equivalentClasses(_B, OWL.and(OWL.min(dp, 1), OWL.all(dp, OWL.restrict(XSD.INTEGER, OWL.minExclusive(5))))) };
 
-		setupGenerators(Arrays.asList(axioms));
+		setupGenerators(Stream.of(axioms));
 
 		testExplanations(OWL.classAssertion(_a, _B), 0, axioms);
 	}
@@ -419,7 +418,7 @@ public abstract class AbstractExplanationTest
 	{
 		final OWLAxiom[] axioms = { OWL.classAssertion(_a, _A), OWL.propertyAssertion(_a, dp, OWL.constant(9)), OWL.equivalentClasses(_B, OWL.and(_A, OWL.some(dp, _dt))), OWL.datatypeDefinition(_dt, OWL.restrict(XSD.INTEGER, OWL.maxExclusive(10))) };
 
-		setupGenerators(Arrays.asList(axioms));
+		setupGenerators(Stream.of(axioms));
 
 		testExplanations(OWL.classAssertion(_a, _B), 0, axioms);
 	}
@@ -429,7 +428,7 @@ public abstract class AbstractExplanationTest
 	{
 		final OWLAxiom[] axioms = { OWL.propertyAssertion(_a, dp, OWL.constant(1)), OWL.propertyAssertion(_a, dp, OWL.constant(2)), OWL.equivalentClasses(_A, OWL.some(dp, _dt)), OWL.datatypeDefinition(_dt, OWL.oneOf(OWL.constant(1), OWL.constant(2), OWL.constant(3))) };
 
-		setupGenerators(Arrays.asList(axioms));
+		setupGenerators(Stream.of(axioms));
 
 		testExplanations(OWL.classAssertion(_a, _A), 0, new OWLAxiom[] { axioms[0], axioms[2], axioms[3] }, new OWLAxiom[] { axioms[1], axioms[2], axioms[3] });
 	}
@@ -439,7 +438,7 @@ public abstract class AbstractExplanationTest
 	{
 		final OWLAxiom[] axioms = { OWL.transitive(_p), OWL.propertyAssertion(_a, _p, _b), OWL.propertyAssertion(_b, _p, _c), OWL.equivalentClasses(_A, OWL.value(_p, _c)) };
 
-		setupGenerators(Arrays.asList(axioms));
+		setupGenerators(Stream.of(axioms));
 
 		testExplanations(OWL.classAssertion(_b, _A), 0, new OWLAxiom[] { axioms[2], axioms[3] });
 		testExplanations(OWL.classAssertion(_a, _A), 0, axioms);
@@ -450,7 +449,7 @@ public abstract class AbstractExplanationTest
 	{
 		final OWLAxiom[] axioms = { OWL.subPropertyOf(new OWLObjectProperty[] { _p, _q }, _r), OWL.propertyAssertion(_a, _p, _b), OWL.propertyAssertion(_b, _q, _c) };
 
-		setupGenerators(Arrays.asList(axioms));
+		setupGenerators(Stream.of(axioms));
 
 		testExplanations(OWL.propertyAssertion(_a, _p, _b), 0, new OWLAxiom[] { axioms[1] });
 		testExplanations(OWL.propertyAssertion(_a, _r, _c), 0, axioms);
@@ -461,7 +460,7 @@ public abstract class AbstractExplanationTest
 	{
 		final OWLAxiom[] axioms = { OWL.subPropertyOf(new OWLObjectProperty[] { _p, _q }, _r), OWL.propertyAssertion(_a, _p, _b), OWL.propertyAssertion(_b, _q, _c), OWL.equivalentClasses(_A, OWL.some(_r, OWL.Thing)) };
 
-		setupGenerators(Arrays.asList(axioms));
+		setupGenerators(Stream.of(axioms));
 
 		testExplanations(OWL.classAssertion(_a, _A), 0, axioms);
 	}
@@ -471,7 +470,7 @@ public abstract class AbstractExplanationTest
 	{
 		final OWLAxiom[] axioms = { OWL.subPropertyOf(_p, _r), OWL.subPropertyOf(_r, _q), OWL.propertyAssertion(_a, _p, _b) };
 
-		setupGenerators(Arrays.asList(axioms));
+		setupGenerators(Stream.of(axioms));
 
 		testExplanations(OWL.propertyAssertion(_a, _r, _b), 0, new OWLAxiom[] { axioms[0], axioms[2] });
 		testExplanations(OWL.propertyAssertion(_a, _q, _b), 0, axioms);
@@ -482,7 +481,7 @@ public abstract class AbstractExplanationTest
 	{
 		final OWLAxiom[] axioms = { OWL.range(dp, XSD.BYTE), OWL.range(dp, XSD.NON_POSITIVE_INTEGER), OWL.range(dp, XSD.NON_NEGATIVE_INTEGER), OWL.subClassOf(_A, OWL.min(dp, 1)), OWL.classAssertion(_a, _A) };
 
-		setupGenerators(Arrays.asList(axioms));
+		setupGenerators(Stream.of(axioms));
 
 		testExplanations(OWL.propertyAssertion(_a, dp, OWL.constant(0)), 0, new OWLAxiom[] { axioms[1], axioms[2], axioms[3], axioms[4] });
 	}
@@ -492,7 +491,7 @@ public abstract class AbstractExplanationTest
 	{
 		final OWLAxiom[] axioms = { OWL.functional(dp), OWL.subPropertyOf(dq, dp), OWL.subPropertyOf(dr, dp), OWL.propertyAssertion(_a, dq, OWL.constant(1)), OWL.classAssertion(_a, OWL.some(dr, XSD.INTEGER)) };
 
-		setupGenerators(Arrays.asList(axioms));
+		setupGenerators(Stream.of(axioms));
 
 		testExplanations(OWL.propertyAssertion(_a, dp, OWL.constant(1)), 0, new OWLAxiom[] { axioms[1], axioms[3] });
 		testExplanations(OWL.propertyAssertion(_a, dr, OWL.constant(1)), 0, axioms);
@@ -506,7 +505,7 @@ public abstract class AbstractExplanationTest
 		// not be used
 		final OWLAxiom[] axioms = { OWL.subClassOf(_A, _B), OWL.subClassOf(_B, _C), OWL.subClassOf(_A, OWL.all(_p, _B)) };
 
-		setupGenerators(Arrays.asList(axioms));
+		setupGenerators(Stream.of(axioms));
 
 		testExplanations(OWL.subClassOf(_A, _C), 0, axioms[0], axioms[1]);
 	}
@@ -519,7 +518,7 @@ public abstract class AbstractExplanationTest
 		// not be used
 		final OWLAxiom[] axioms = { OWL.classAssertion(_a, _A), OWL.subClassOf(_A, _B), OWL.subClassOf(_A, OWL.all(_p, _B)) };
 
-		setupGenerators(Arrays.asList(axioms));
+		setupGenerators(Stream.of(axioms));
 
 		testExplanations(OWL.classAssertion(_a, _B), 0, axioms[0], axioms[1]);
 	}
@@ -530,7 +529,7 @@ public abstract class AbstractExplanationTest
 		// this test case is to check the effect of hasObviousPropertyValue
 		final OWLAxiom[] axioms = { OWL.propertyAssertion(_a, _p, _b) };
 
-		setupGenerators(Arrays.asList(axioms));
+		setupGenerators(Stream.of(axioms));
 
 		testExplanations(OWL.propertyAssertion(_a, _p, _b), 0, axioms);
 	}
@@ -541,7 +540,7 @@ public abstract class AbstractExplanationTest
 		// this test case is to check the effect of hasObviousPropertyValue
 		final OWLAxiom[] axioms = { OWL.propertyAssertion(_a, _p, _b), OWL.subPropertyOf(_p, _q) };
 
-		setupGenerators(Arrays.asList(axioms));
+		setupGenerators(Stream.of(axioms));
 
 		testExplanations(OWL.propertyAssertion(_a, _q, _b), 0, axioms);
 	}
@@ -551,7 +550,7 @@ public abstract class AbstractExplanationTest
 	{
 		final OWLAxiom[] axioms = { OWL.functional(_p), OWL.subClassOf(_C, OWL.min(_p, 2)) };
 
-		setupGenerators(Arrays.asList(axioms));
+		setupGenerators(Stream.of(axioms));
 
 		testExplanations(OWL.subClassOf(_C, OWL.Nothing), 0, axioms);
 	}
@@ -561,7 +560,7 @@ public abstract class AbstractExplanationTest
 	{
 		final OWLAxiom[] axioms = { OWL.subClassOf(_A, OWL.some(_p, _B)), OWL.domain(_p, OWL.or(_C, _D)), OWL.disjointClasses(_A, _C) };
 
-		setupGenerators(Arrays.asList(axioms));
+		setupGenerators(Stream.of(axioms));
 		testExplanations(OWL.subClassOf(_A, _D), 0, axioms);
 	}
 
@@ -570,7 +569,7 @@ public abstract class AbstractExplanationTest
 	{
 		final OWLAxiom[] axioms = { OWL.subClassOf(_A, OWL.some(_p, _B)), OWL.range(_p, OWL.or(_C, _D)), OWL.disjointClasses(_B, _C), OWL.disjointClasses(_B, _D) };
 
-		setupGenerators(Arrays.asList(axioms));
+		setupGenerators(Stream.of(axioms));
 		testExplanations(OWL.subClassOf(_A, OWL.Nothing), 0, axioms);
 	}
 
@@ -581,7 +580,7 @@ public abstract class AbstractExplanationTest
 
 		final OWLAxiom[] axioms = { OWL.functional(_p), OWL.propertyAssertion(_a, _p, _b), OWL.propertyAssertion(_a, _p, _c), OWL.propertyAssertion(_a, _p, _d), OWL.differentFrom(_b, _c), OWL.differentFrom(_c, _d) };
 
-		setupGenerators(Arrays.asList(axioms));
+		setupGenerators(Stream.of(axioms));
 
 		testInconsistencyExplanations(0, new OWLAxiom[] { axioms[0], axioms[1], axioms[2], axioms[4] }, new OWLAxiom[] { axioms[0], axioms[2], axioms[3], axioms[5] });
 	}

@@ -175,7 +175,7 @@ public class AllValuesRule extends AbstractTableauRule
 			_logger.fine(() -> "ALL : " + subj + " -> " + pred + " -> " + obj + " : " + ATermUtils.toString(c) + " - " + ds);
 
 			// because we do not maintain the _queue it could be the case that this _node is pruned, so return
-			if (OpenlletOptions.USE_COMPLETION_QUEUE && !OpenlletOptions.MAINTAIN_COMPLETION_QUEUE && obj.isPruned())
+			if (obj.isPruned())
 				return;
 
 			_strategy.addType(obj, c, ds);

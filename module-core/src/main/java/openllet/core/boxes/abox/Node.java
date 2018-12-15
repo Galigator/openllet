@@ -507,7 +507,7 @@ public abstract class Node
 	public void addType(final ATermAppl c, final DependencySet ds)
 	{
 		if (isPruned())
-			throw new InternalReasonerException("Adding type to a pruned _node " + this + " " + c);
+			throw new InternalReasonerException("Adding type to a pruned node " + this + " " + c + "\t" + getPruned());
 		else
 			if (isMerged())
 				return;

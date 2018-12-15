@@ -1077,7 +1077,7 @@ public class Individual extends Node implements CachedNode
 		}
 
 		if (isPruned())
-			throw new InternalReasonerException("Adding edge to a pruned _node " + this + " " + r + " " + x);
+			throw new InternalReasonerException("Adding edge to a pruned _node " + this + " " + r + " " + x + "\t" + _pruned);
 		else
 			if (isMerged())
 				return null;

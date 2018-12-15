@@ -191,7 +191,7 @@ public class DatatypeReasonerImpl implements DatatypeReasoner
 		@Override
 		public Iterator<Object> valueIterator()
 		{
-			throw new UnsupportedOperationException();
+			return Collections.emptyIterator();
 		}
 
 	};
@@ -328,14 +328,10 @@ public class DatatypeReasonerImpl implements DatatypeReasoner
 					disjuncts.add(dr);
 			}
 
-			final DataRange<?> disjunction = getDisjunction(disjuncts);
-			return disjunction.containsAtLeast(n);
+			return getDisjunction(disjuncts).containsAtLeast(n);
 		}
 		else
-		{
-			final DataRange<?> dr = normalizeVarRanges(dnf);
-			return dr.containsAtLeast(n);
-		}
+			return normalizeVarRanges(dnf).containsAtLeast(n);
 
 	}
 
@@ -1213,32 +1209,18 @@ public class DatatypeReasonerImpl implements DatatypeReasoner
 	@Override
 	public Iterator<?> valueIterator(final Collection<ATermAppl> dataranges) throws InvalidConstrainingFacetException, InvalidLiteralException, UnrecognizedDatatypeException
 	{
-
 		final ATermAppl and = ATermUtils.makeAnd(ATermUtils.makeList(dataranges));
 		final ATermAppl dnf = DNF.dnf(expander.expand(and, namedDataRanges));
 		if (ATermUtils.isOr(dnf))
 		{
 			final List<DataRange<?>> disjuncts = new ArrayList<>();
 			for (ATermList l = (ATermList) dnf.getArgument(0); !l.isEmpty(); l = l.getNext())
-			{
-				final DataRange<?> dr = normalizeVarRanges((ATermAppl) l.getFirst());
-				disjuncts.add(dr);
-			}
+				disjuncts.add(normalizeVarRanges((ATermAppl) l.getFirst()));
 
-			final DataRange<?> disjunction = getDisjunction(disjuncts);
-			if (!disjunction.isEnumerable())
-				throw new IllegalArgumentException();
-			else
-				return disjunction.valueIterator();
+			return getDisjunction(disjuncts).valueIterator();
 		}
 		else
-		{
-			final DataRange<?> dr = normalizeVarRanges(dnf);
-			if (!dr.isEnumerable())
-				throw new IllegalArgumentException();
-			else
-				return dr.valueIterator();
-		}
+			return normalizeVarRanges(dnf).valueIterator();
 	}
 
 }

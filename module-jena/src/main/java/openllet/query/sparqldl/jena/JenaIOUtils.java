@@ -14,8 +14,8 @@ import openllet.atom.OpenError;
 import org.apache.jena.query.ResultSet;
 import org.apache.jena.query.ResultSetFactory;
 import org.apache.jena.rdf.model.ResourceFactory;
+import org.apache.jena.riot.ResultSetMgr;
 import org.apache.jena.sparql.resultset.ResultsFormat;
-import org.apache.jena.sparql.resultset.XMLInput;
 import org.apache.jena.util.FileManager;
 
 /**
@@ -69,9 +69,8 @@ public class JenaIOUtils
 	// TODO meanwhile just for files
 	public static boolean parseAskResult(final String resultURI) throws FileNotFoundException
 	{
-
 		if (resultURI.endsWith("srx"))
-			return XMLInput.booleanFromXML(new FileInputStream(resultURI.substring(5)));
+			return ResultSetMgr.readBoolean(new FileInputStream(resultURI.substring(5)));
 		else
 			if (resultURI.endsWith("ttl") || resultURI.endsWith("rdf"))
 				return FileManager.get().loadModel(resultURI.substring(5)).getProperty(null, ResourceFactory.createProperty("http://www.w3.org/2001/sw/DataAccess/tests/result-set#boolean")).getBoolean();
