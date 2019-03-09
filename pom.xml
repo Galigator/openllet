@@ -80,17 +80,17 @@
       <dependency>
         <groupId>org.apache.jena</groupId>
         <artifactId>jena-core</artifactId>
-        <version>[3.7.0,3.7.99]</version>
+        <version>[3.10.0,3.10.99]</version>
       </dependency>
       <dependency>
         <groupId>org.apache.jena</groupId>
         <artifactId>jena-arq</artifactId>
-        <version>[3.7.0,3.7.99]</version>
+        <version>[3.10.0,3.10.99]</version>
       </dependency>
       <dependency>
         <groupId>net.sourceforge.owlapi</groupId>
         <artifactId>owlapi-distribution</artifactId>
-        <version>[5.1.5,)</version>
+        <version>[5.1.9,)</version>
       </dependency>
       <dependency>
         <groupId>org.jgrapht</groupId>
@@ -150,14 +150,14 @@
       <dependency>
         <groupId>org.eclipse.jetty</groupId> <!-- Used for the examples. -->
         <artifactId>jetty-server</artifactId>
-        <version>9.4.14.v20181114</version>
+        <version>9.4.15.v20190215</version>
       </dependency>
 
       <!-- Dependencies of dependencies -->
       <dependency>
          <groupId>org.apache.thrift</groupId>
          <artifactId>libthrift</artifactId>
-         <version>[0.11.0,)</version>
+         <version>[0.12.0,)</version>
       </dependency>
       <dependency>
          <groupId>com.fasterxml.jackson.core</groupId>
@@ -177,17 +177,17 @@
       <dependency>
          <groupId>com.github.jsonld-java</groupId>
          <artifactId>jsonld-java</artifactId>
-         <version>0.12.0</version>
+         <version>0.12.3</version>
       </dependency>
       <dependency>
          <groupId>com.google.inject</groupId>
          <artifactId>guice</artifactId>
-         <version>4.2.0</version>
+         <version>4.2.2</version>
       </dependency>
       <dependency>
          <groupId>com.google.guava</groupId>
          <artifactId>guava</artifactId>
-         <version>24.1-jre</version>
+         <version>27.1-jre</version>
       </dependency>
       <dependency>
         <groupId>commons-io</groupId> 

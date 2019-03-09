@@ -25,6 +25,8 @@ import openllet.query.sparqldl.model.QueryParameters;
 import openllet.query.sparqldl.model.QueryParametersBuilder;
 import openllet.query.sparqldl.parser.ARQParser;
 import openllet.shared.tools.Log;
+import org.apache.jena.atlas.json.JsonArray;
+import org.apache.jena.atlas.json.JsonObject;
 import org.apache.jena.atlas.lib.NotImplemented;
 import org.apache.jena.graph.Graph;
 import org.apache.jena.graph.Node;
@@ -166,7 +168,7 @@ class SparqlDLExecution implements QueryExecution
 				template.subst(set, bNodeMap, binding);
 			}
 
-			for (Triple t : set)
+			for (final Triple t : set)
 			{
 				final Statement stmt = ModelUtils.tripleToStatement(model, t);
 				if (stmt != null)
@@ -439,5 +441,17 @@ class SparqlDLExecution implements QueryExecution
 	public boolean isClosed()
 	{
 		return false;
+	}
+
+	@Override
+	public JsonArray execJson()
+	{
+		throw new NotImplemented();
+	}
+
+	@Override
+	public Iterator<JsonObject> execJsonItems()
+	{
+		throw new NotImplemented();
 	}
 }
