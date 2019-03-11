@@ -68,7 +68,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <asmVersion>6.0</asmVersion>
+    <asmVersion>6.2</asmVersion>
   </properties>
 
   <prerequisites>
@@ -214,7 +214,7 @@
 						<configuration>
 							<rules>
 								<requireJavaVersion><!-- Check Java version -->
-                                    <version>[1.8.0-141,1.9)</version> <!-- 141 not 171 because of Travis limitation -->
+                                    <version>[1.8.0-141,11)</version>
 								</requireJavaVersion>
 
 								<requireReleaseDeps><!-- Ensure that release module does not depend on any snapshot module -->
@@ -285,9 +285,14 @@
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.7.0</version>
           <configuration>
-            <source>1.8</source>
-            <target>1.8</target>
+            <source>10</source>
+            <target>10</target>
             <encoding>UTF-8</encoding>
+					<compilerArgs>
+						<arg>--add-modules</arg>
+						<arg>java.xml.bind</arg>
+						<!--<arg>java.se.ee</arg>--><!-- ALL-MODULE-PATH -->
+					</compilerArgs>
           </configuration>
         </plugin>
 

@@ -42,11 +42,32 @@
 			<artifactId>slf4j-simple</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- java 9+ -->
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>2.3.1</version>
+		</dependency>
 	</dependencies>
 
-<!-- TODO find the correct way to activate this plugin.
+
 	<build>
 		<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<source>10</source>
+						<target>10</target>
+						<encoding>UTF-8</encoding>
+					<compilerArgs>
+						<arg>--add-modules</arg>
+						<arg>java.xml.bind</arg>
+					</compilerArgs>
+					</configuration>
+				</plugin>
+<!-- TODO find the correct way to activate this plugin.
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>javacc-maven-plugin</artifactId>
@@ -61,7 +82,8 @@
                     </execution>
                 </executions>
             </plugin>
+-->
 		</plugins>
 	</build>
--->
+
 </project>
