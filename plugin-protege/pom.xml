@@ -36,6 +36,12 @@
 			<artifactId>openllet-query</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>org.protege.common</artifactId>
@@ -58,20 +64,6 @@
 
    <build>
       <plugins>
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <configuration>
-            <source>10</source>
-            <target>10</target>
-            <encoding>UTF-8</encoding>
-					<compilerArgs>
-						<arg>--add-modules</arg>
-						<arg>java.xml.bind</arg>
-					</compilerArgs>
-          </configuration>
-        </plugin>
             <plugin>
               <groupId>org.apache.felix</groupId>
               <artifactId>maven-bundle-plugin</artifactId>
