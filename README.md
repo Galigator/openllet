@@ -39,12 +39,12 @@ Openllet 2.6.X:
 	<dependency>
 		<groupId>com.github.galigator.openllet</groupId>
 		<artifactId>openllet-owlapi</artifactId>
-		<version>2.6.4</version>
+		<version>2.6.5</version>
 	</dependency>
 	<dependency>
 		<groupId>com.github.galigator.openllet</groupId>
 		<artifactId>openllet-jena</artifactId>
-		<version>2.6.4</version>
+		<version>2.6.5</version>
 	</dependency>
 ```
 
@@ -53,7 +53,7 @@ NB, the Protege plugin need a Protege that work with an 5.1.X version of the OWL
 ### Roadmap :
 
 * Fullify strong typing in openllet core (2.7.X).
-* Add support for sesame/rdf4j reasoning (2.8.X).
+* Add support for rdf-database reasoning (2.8.X).
 
 ### Examples :
 
