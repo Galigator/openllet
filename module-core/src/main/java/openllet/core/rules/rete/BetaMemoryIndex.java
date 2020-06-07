@@ -58,7 +58,7 @@ public abstract class BetaMemoryIndex
 		{
 			if (size == index.length)
 			{
-				final int newSize = (size * 3) / 2 + 1;
+				final int newSize = size * 3 / 2 + 1;
 				index = Arrays.copyOf(index, newSize);
 			}
 
@@ -92,6 +92,7 @@ public abstract class BetaMemoryIndex
 					{
 						System.arraycopy(index, i, index, i - removed, size - i);
 						size -= removed;
+						removed = 0;
 					}
 			}
 
@@ -136,7 +137,7 @@ public abstract class BetaMemoryIndex
 
 		private JoinUnindexed(final JoinCondition joinCondition)
 		{
-			this._joinCondition = joinCondition;
+			_joinCondition = joinCondition;
 		}
 
 		@Override
@@ -197,7 +198,7 @@ public abstract class BetaMemoryIndex
 
 		private JoinIndexed(final JoinCondition joinCondition)
 		{
-			this._joinCondition = joinCondition;
+			_joinCondition = joinCondition;
 		}
 
 		@Override
