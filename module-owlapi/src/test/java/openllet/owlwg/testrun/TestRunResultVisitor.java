@@ -14,15 +14,16 @@ package openllet.owlwg.testrun;
  * Company: Clark & Parsia, LLC. <a
  * href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
  * </p>
- * 
+ *
  * @author Mike Smith &lt;msmith@clarkparsia.com&gt;
  */
-public interface TestRunResultVisitor {
+public interface TestRunResultVisitor
+{
 
-	public void visit(SyntaxConstraintRun result);
+	void visit(SyntaxConstraintRun result);
 
-	public void visit(ReasoningRun result);
+	void visit(ReasoningRun result);
 
-	public void visit(SyntaxTranslationRun result);
+	void visit(SyntaxTranslationRun result);
 
 }

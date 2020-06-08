@@ -34,18 +34,15 @@ public class TransTreeTest
 	private static void testProperty(final String ontologyURI, final String propertyURI)
 	{
 		final OWLAPILoader loader = new OWLAPILoader();
-		final KnowledgeBase kb = loader.createKB(new String[] { ontologyURI });
+		final KnowledgeBase kb = loader.createKB(ontologyURI);
 
 		final OWLEntity entity = OntologyUtils.findEntity(propertyURI, loader.allOntologies());
 
-		if (entity == null)
-			throw new IllegalArgumentException("Property not found: " + propertyURI);
+		if (entity == null) throw new IllegalArgumentException("Property not found: " + propertyURI);
 
-		if (!(entity instanceof OWLObjectProperty))
-			throw new IllegalArgumentException("Not an object property: " + propertyURI);
+		if (!(entity instanceof OWLObjectProperty)) throw new IllegalArgumentException("Not an object property: " + propertyURI);
 
-		if (!EntitySearcher.isTransitive((OWLObjectProperty) entity, loader.allOntologies()))
-			throw new IllegalArgumentException("Not a transitive property: " + propertyURI);
+		if (!EntitySearcher.isTransitive((OWLObjectProperty) entity, loader.allOntologies())) throw new IllegalArgumentException("Not a transitive property: " + propertyURI);
 
 		final ATermAppl p = ATermUtils.makeTermAppl(entity.getIRI().toString());
 
@@ -106,7 +103,8 @@ public class TransTreeTest
 	{
 		final OpenlletTransTree cli = new OpenlletTransTree();
 
-		cli.parseArgs(new String[] { "trans-tree", "-p", "http://clarkparsia.com/pellet/tutorial/pops#subProjectOf", "-f", "http://clarkparsia.com/pellet/tutorial/pops#Employee", "test/data/trans-tree-tests/ontology-010.ttl" });
+		cli.parseArgs(new String[] { "trans-tree", "-p", "http://clarkparsia.com/pellet/tutorial/pops#subProjectOf", "-f", "http://clarkparsia.com/pellet/tutorial/pops#Employee",
+				"test/data/trans-tree-tests/ontology-010.ttl" });
 		cli.run();
 
 		final Taxonomy<ATermAppl> taxonomy = cli._publicTaxonomy;
@@ -140,7 +138,8 @@ public class TransTreeTest
 	{
 		final OpenlletTransTree cli = new OpenlletTransTree();
 
-		cli.parseArgs(new String[] { "trans-tree", "-p", "http://clarkparsia.com/pellet/tutorial/pops#subProjectOf", "-f", "http://clarkparsia.com/pellet/tutorial/pops#Employee", "--individuals", "test/data/trans-tree-tests/ontology-010.ttl" });
+		cli.parseArgs(new String[] { "trans-tree", "-p", "http://clarkparsia.com/pellet/tutorial/pops#subProjectOf", "-f", "http://clarkparsia.com/pellet/tutorial/pops#Employee", "--individuals",
+				"test/data/trans-tree-tests/ontology-010.ttl" });
 		cli.run();
 
 		final Taxonomy<ATermAppl> taxonomy = cli._publicTaxonomy;
@@ -155,7 +154,8 @@ public class TransTreeTest
 	{
 		final OpenlletTransTree cli = new OpenlletTransTree();
 
-		cli.parseArgs(new String[] { "trans-tree", "-p", "http://clarkparsia.com/pellet/tutorial/pops#subProjectOf", "-f", "http://clarkparsia.com/pellet/tutorial/pops#Contractor", "--individuals", "test/data/trans-tree-tests/ontology-010.ttl" });
+		cli.parseArgs(new String[] { "trans-tree", "-p", "http://clarkparsia.com/pellet/tutorial/pops#subProjectOf", "-f", "http://clarkparsia.com/pellet/tutorial/pops#Contractor", "--individuals",
+				"test/data/trans-tree-tests/ontology-010.ttl" });
 		cli.run();
 
 		final Taxonomy<ATermAppl> taxonomy = cli._publicTaxonomy;

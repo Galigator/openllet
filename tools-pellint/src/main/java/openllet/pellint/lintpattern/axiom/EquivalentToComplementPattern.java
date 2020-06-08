@@ -61,17 +61,14 @@ public class EquivalentToComplementPattern extends AxiomLintPattern
 	public void visit(final OWLEquivalentClassesAxiom axiom)
 	{
 		final Set<OWLClassExpression> owlDescs = axiom.classExpressions().collect(Collectors.toSet());
-		if (owlDescs.size() != 2)
-			return;
+		if (owlDescs.size() != 2) return;
 
 		OWLClass namedClass = null;
 		OWLClassExpression complementOf = null;
 		for (final OWLClassExpression owlDesc : owlDescs)
 			if (!owlDesc.isAnonymous())
 				namedClass = owlDesc.asOWLClass();
-			else
-				if (owlDesc instanceof OWLObjectComplementOf)
-					complementOf = owlDesc;
+			else if (owlDesc instanceof OWLObjectComplementOf) complementOf = owlDesc;
 
 		if (namedClass != null && complementOf != null)
 		{

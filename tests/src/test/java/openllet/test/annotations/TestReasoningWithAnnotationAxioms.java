@@ -39,29 +39,29 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 public class TestReasoningWithAnnotationAxioms
 {
 
-	private KnowledgeBase kb = new KnowledgeBaseImpl();
+	private KnowledgeBase				kb										= new KnowledgeBaseImpl();
 
-	private final ATermAppl i = ATermUtils.makeTermAppl("i");
-	private final ATermAppl p1 = ATermUtils.makeTermAppl("p1");
-	private final ATermAppl o1 = ATermUtils.makePlainLiteral("o1");
-	private final ATermAppl o2 = ATermUtils.makePlainLiteral("o2");
-	private final ATermAppl p2 = ATermUtils.makeTermAppl("p2");
-	private final ATermAppl p3 = ATermUtils.makeTermAppl("p3");
+	private final ATermAppl				i										= ATermUtils.makeTermAppl("i");
+	private final ATermAppl				p1										= ATermUtils.makeTermAppl("p1");
+	private final ATermAppl				o1										= ATermUtils.makePlainLiteral("o1");
+	private final ATermAppl				o2										= ATermUtils.makePlainLiteral("o2");
+	private final ATermAppl				p2										= ATermUtils.makeTermAppl("p2");
+	private final ATermAppl				p3										= ATermUtils.makeTermAppl("p3");
 
-	private final OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
-	private final OWLNamedIndividual oi = manager.getOWLDataFactory().getOWLNamedIndividual(IRI.create("i"));
-	private final OWLAnnotationProperty op1 = manager.getOWLDataFactory().getOWLAnnotationProperty(IRI.create("p1"));
-	private final OWLAnnotationProperty op2 = manager.getOWLDataFactory().getOWLAnnotationProperty(IRI.create("p2"));
-	private final OWLAnnotationProperty op3 = manager.getOWLDataFactory().getOWLAnnotationProperty(IRI.create("p3"));
-	private final OWLAnnotationValue oo1 = manager.getOWLDataFactory().getOWLLiteral("o1");
+	private final OWLOntologyManager	manager									= OWLManager.createOWLOntologyManager();
+	private final OWLNamedIndividual	oi										= manager.getOWLDataFactory().getOWLNamedIndividual(IRI.create("i"));
+	private final OWLAnnotationProperty	op1										= manager.getOWLDataFactory().getOWLAnnotationProperty(IRI.create("p1"));
+	private final OWLAnnotationProperty	op2										= manager.getOWLDataFactory().getOWLAnnotationProperty(IRI.create("p2"));
+	private final OWLAnnotationProperty	op3										= manager.getOWLDataFactory().getOWLAnnotationProperty(IRI.create("p3"));
+	private final OWLAnnotationValue	oo1										= manager.getOWLDataFactory().getOWLLiteral("o1");
 
-	private final OntModel model = ModelFactory.createOntologyModel(openllet.jena.PelletReasonerFactory.THE_SPEC);
-	private final Resource ji = ResourceFactory.createResource("http://example.org#i");
-	private final Property jp1 = ResourceFactory.createProperty("http://example.org#p1");
-	private final Property jp2 = ResourceFactory.createProperty("http://example.org#p2");
-	private final Literal jo1 = ResourceFactory.createPlainLiteral("o1");
+	private final OntModel				model									= ModelFactory.createOntologyModel(openllet.jena.PelletReasonerFactory.THE_SPEC);
+	private final Resource				ji										= ResourceFactory.createResource("http://example.org#i");
+	private final Property				jp1										= ResourceFactory.createProperty("http://example.org#p1");
+	private final Property				jp2										= ResourceFactory.createProperty("http://example.org#p2");
+	private final Literal				jo1										= ResourceFactory.createPlainLiteral("o1");
 
-	private final boolean USE_ANNOTATION_SUPPORT_DEFAULT_VALUE = OpenlletOptions.USE_ANNOTATION_SUPPORT;
+	private final boolean				USE_ANNOTATION_SUPPORT_DEFAULT_VALUE	= OpenlletOptions.USE_ANNOTATION_SUPPORT;
 
 	public static junit.framework.Test suite()
 	{

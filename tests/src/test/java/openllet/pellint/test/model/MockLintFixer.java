@@ -23,7 +23,7 @@ public class MockLintFixer extends LintFixer
 
 	public MockLintFixer()
 	{
-		super(CollectionUtil.<OWLAxiom> makeSet(), CollectionUtil.<OWLAxiom> makeSet());
+		super(CollectionUtil.<OWLAxiom>makeSet(), CollectionUtil.<OWLAxiom>makeSet());
 	}
 
 	@Override

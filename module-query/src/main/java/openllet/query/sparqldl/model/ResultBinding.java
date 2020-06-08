@@ -27,52 +27,52 @@ public interface ResultBinding
 	/**
 	 * Gets value for given variable.
 	 *
-	 * @param variable for which return the value
-	 * @return binding for the variable
+	 * @param  var variable for which return the value
+	 * @return     binding for the variable
 	 */
-	public ATermAppl getValue(final ATermAppl var);
+	ATermAppl getValue(final ATermAppl var);
 
 	/**
 	 * Sets all variable bindings according to the bindings.
 	 *
 	 * @param bindings to be set.
 	 */
-	public void setValues(final ResultBinding bindings);
+	void setValues(final ResultBinding bindings);
 
 	/**
 	 * Sets one variable binding.
 	 *
-	 * @param bindings to be set.
-	 * @param var variable to set.
+	 * @param binding to be set.
+	 * @param var     variable to set.
 	 */
-	public void setValue(final ATermAppl var, final ATermAppl binding);
+	void setValue(final ATermAppl var, final ATermAppl binding);
 
 	/**
 	 * Checks whether given variable is bound.
 	 *
-	 * @param var variable to determine.
-	 * @return true if the given variable is bound.
+	 * @param  var variable to determine.
+	 * @return     true if the given variable is bound.
 	 */
-	public boolean isBound(final ATermAppl var);
+	boolean isBound(final ATermAppl var);
 
 	/**
 	 * Returns all variables in this binding.
 	 *
 	 * @return set of all variables.
 	 */
-	public Set<ATermAppl> getAllVariables();
+	Set<ATermAppl> getAllVariables();
 
 	/**
 	 * Checks for emptiness of the binding.
 	 *
 	 * @return true if the binding doesn't contain a variable.
 	 */
-	public boolean isEmpty();
+	boolean isEmpty();
 
 	/**
 	 * Clones the binding.
 	 *
 	 * @return new copy of the binding.
 	 */
-	public ResultBinding duplicate();
+	ResultBinding duplicate();
 }

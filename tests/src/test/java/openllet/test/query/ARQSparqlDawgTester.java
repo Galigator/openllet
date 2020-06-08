@@ -50,42 +50,20 @@ import org.apache.jena.util.FileManager;
 public class ARQSparqlDawgTester implements SparqlDawgTester
 {
 
-	private static final Logger _logger = Log.getLogger(ARQSparqlDawgTester.class);
+	private static final Logger	_logger			= Log.getLogger(ARQSparqlDawgTester.class);
 
-	private final List<String> _avoidList = Arrays.asList(new String[] {
-			// FIXME with some effort some
-			// of the following queries can
-			// be handled
+	private final List<String>	_avoidList		= Arrays.asList("open-eq-07", "open-eq-08", "open-eq-09", "open-eq-10", "open-eq-11", "open-eq-12", "dawg-optional-filter-005-not-simplified", "date-2",
+			"date-3", "unplus-1", "open-eq-03", "eq-1", "eq-2");
 
-			// The following tests require [object/data]property punning in the
-			// _data
-			"open-eq-07", "open-eq-08", "open-eq-09", "open-eq-10", "open-eq-11", "open-eq-12",
+	private String				_queryURI		= "";
 
-			// not an approved test (and in clear conflict with
-			// "dawg-optional-filter-005-simplified",
-			"dawg-optional-filter-005-not-simplified",
+	protected Set<String>		_graphURIs		= new HashSet<>();
 
-			// fails due to bugs in ARQ filter handling
-			"date-2", "date-3",
+	protected Set<String>		_namedGraphURIs	= new HashSet<>();
 
-			// ?x p "+3"^^xsd:int does not match "3"^^xsd:int
-			"unplus-1",
+	protected Query				_query			= null;
 
-			// ?x p "01"^^xsd:int does not match "1"^^xsd:int
-			"open-eq-03",
-
-			// "1"^^xsd:int does not match different lexical forms
-			"eq-1", "eq-2" });
-
-	private String _queryURI = "";
-
-	protected Set<String> _graphURIs = new HashSet<>();
-
-	protected Set<String> _namedGraphURIs = new HashSet<>();
-
-	protected Query _query = null;
-
-	private String _resultURI = null;
+	private String				_resultURI		= null;
 
 	public ARQSparqlDawgTester()
 	{
@@ -125,8 +103,7 @@ public class ARQSparqlDawgTester implements SparqlDawgTester
 	@Override
 	public void setQueryURI(final String queryURI)
 	{
-		if (_queryURI.equals(queryURI))
-			return;
+		if (_queryURI.equals(queryURI)) return;
 
 		_queryURI = queryURI;
 		_query = QueryFactory.read(queryURI);
@@ -189,41 +166,38 @@ public class ARQSparqlDawgTester implements SparqlDawgTester
 				return correct;
 
 			}
+			else if (_query.isAskType())
+			{
+				final boolean askReal = exec.execAsk();
+				final boolean askExpected = JenaIOUtils.parseAskResult(_resultURI);
+
+				_logger.fine("Expected=" + askExpected);
+				_logger.fine("Real=" + askReal);
+
+				return askReal == askExpected;
+			}
+			else if (_query.isConstructType())
+			{
+				final Model real = exec.execConstruct();
+				final Model expected = FileManager.get().loadModel(_resultURI);
+
+				_logger.fine("Expected=" + real);
+				_logger.fine("Real=" + expected);
+
+				return real.isIsomorphicWith(expected);
+			}
+			else if (_query.isDescribeType())
+			{
+				final Model real = exec.execDescribe();
+				final Model expected = FileManager.get().loadModel(_resultURI);
+
+				_logger.fine("Expected=" + real);
+				_logger.fine("Real=" + expected);
+
+				return real.isIsomorphicWith(expected);
+			}
 			else
-				if (_query.isAskType())
-				{
-					final boolean askReal = exec.execAsk();
-					final boolean askExpected = JenaIOUtils.parseAskResult(_resultURI);
-
-					_logger.fine("Expected=" + askExpected);
-					_logger.fine("Real=" + askReal);
-
-					return askReal == askExpected;
-				}
-				else
-					if (_query.isConstructType())
-					{
-						final Model real = exec.execConstruct();
-						final Model expected = FileManager.get().loadModel(_resultURI);
-
-						_logger.fine("Expected=" + real);
-						_logger.fine("Real=" + expected);
-
-						return real.isIsomorphicWith(expected);
-					}
-					else
-						if (_query.isDescribeType())
-						{
-							final Model real = exec.execDescribe();
-							final Model expected = FileManager.get().loadModel(_resultURI);
-
-							_logger.fine("Expected=" + real);
-							_logger.fine("Real=" + expected);
-
-							return real.isIsomorphicWith(expected);
-						}
-						else
-							throw new OpenError("The query has invalid type.");
+				throw new OpenError("The query has invalid type.");
 		}
 		catch (final IOException e)
 		{

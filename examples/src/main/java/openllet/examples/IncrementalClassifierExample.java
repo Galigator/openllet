@@ -41,9 +41,9 @@ public class IncrementalClassifierExample
 {
 
 	// The ontology we use for classification
-	private static final String file = "file:src/main/resources/data/simple-galen.owl";
+	private static final String	file	= "file:src/main/resources/data/simple-galen.owl";
 	// Don't modify this
-	private static final String NS = "http://www.co-ode.org/ontologies/galen#";
+	private static final String	NS		= "http://www.co-ode.org/ontologies/galen#";
 
 	public void run() throws OWLOntologyCreationException
 	{
@@ -103,8 +103,7 @@ public class IncrementalClassifierExample
 		// incremental classifier.
 		System.out.println("Timers summary");
 		for (final Timer timer : timers.getTimers())
-			if (!timer.isStarted())
-				System.out.println(timer.getName() + ": " + timer.getTotal() + "ms");
+			if (!timer.isStarted()) System.out.println(timer.getName() + ": " + timer.getTotal() + "ms");
 	}
 
 	public static void main(final String[] args) throws OWLOntologyCreationException

@@ -46,22 +46,19 @@ public class JenaClassificationTest extends AbstractClassificationTest
 			boolean entailed = true;
 			if (stmt.getPredicate().equals(RDFS.subClassOf))
 				entailed = premise.contains(stmt.getSubject(), ReasonerVocabulary.directSubClassOf, stmt.getObject());
-			else
-				if (stmt.getPredicate().equals(OWL.equivalentClass))
-					entailed = premise.contains(stmt);
+			else if (stmt.getPredicate().equals(OWL.equivalentClass)) entailed = premise.contains(stmt);
 
-			if (!entailed)
-				if (AbstractClassificationTest.FAIL_AT_FIRST_ERROR)
-					fail("Not entailed: " + format(stmt));
-				else
-				{
-					//String x = format(stmt);
-					//if (!"[MaterialProperties,subClassOf,CostDriver]".equals(x))
-					nonEntailments.add(format(stmt));
-					final Individual i = premise.getIndividual(stmt.getSubject().asResource().getURI());
-					System.out.println(i);
-					System.out.println(stmt.getPredicate());
-				}
+			if (!entailed) if (AbstractClassificationTest.FAIL_AT_FIRST_ERROR)
+				fail("Not entailed: " + format(stmt));
+			else
+			{
+				//String x = format(stmt);
+				//if (!"[MaterialProperties,subClassOf,CostDriver]".equals(x))
+				nonEntailments.add(format(stmt));
+				final Individual i = premise.getIndividual(stmt.getSubject().asResource().getURI());
+				System.out.println(i);
+				System.out.println(stmt.getPredicate());
+			}
 		}
 
 		assertTrue(nonEntailments.toString(), nonEntailments.isEmpty());

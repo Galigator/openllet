@@ -25,7 +25,6 @@ import openllet.query.sparqldl.model.ResultBinding;
  */
 public abstract class QueryPlan
 {
-
 	protected Query _query;
 
 	public QueryPlan(final Query query)
@@ -39,10 +38,8 @@ public abstract class QueryPlan
 	}
 
 	/**
-	 * Returns next atom to be executed w.r. to the _current binding.
-	 *
-	 * @param binding
-	 * @return
+	 * @param  binding
+	 * @return         next atom to be executed w.r. to the current binding.
 	 */
 	public abstract QueryAtom next(final ResultBinding binding);
 

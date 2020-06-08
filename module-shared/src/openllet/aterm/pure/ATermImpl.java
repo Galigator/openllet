@@ -5,14 +5,14 @@
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
- *     * Redistributions of source code must retain the above copyright
- *       notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the University of California, Berkeley nor the
- *       names of its contributors may be used to endorse or promote products
- *       derived from this software without specific prior written permission.
+ * * Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following disclaimer.
+ * * Redistributions in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in the
+ * documentation and/or other materials provided with the distribution.
+ * * Neither the name of the University of California, Berkeley nor the
+ * names of its contributors may be used to endorse or promote products
+ * derived from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -33,7 +33,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.LinkedList;
 import java.util.List;
-
 import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
@@ -45,11 +44,11 @@ import openllet.shared.hash.SharedObjectWithID;
 
 public abstract class ATermImpl extends ATermVisitableImpl implements ATerm, SharedObjectWithID
 {
-	protected PureFactory _factory;
+	protected PureFactory	_factory;
 
-	private int _hashCode;
+	private int				_hashCode;
 
-	private int _uniqueId;
+	private int				_uniqueId;
 
 	/**
 	 * depricated Use the new constructor instead.
@@ -78,7 +77,7 @@ public abstract class ATermImpl extends ATermVisitableImpl implements ATerm, Sha
 	 *
 	 *
 	 * @param hashCode x
-	 * @param annos x
+	 * @param annos    x
 	 */
 	protected void init(final int hashCode)
 	{
@@ -106,16 +105,14 @@ public abstract class ATermImpl extends ATermVisitableImpl implements ATerm, Sha
 	public List<Object> match(final ATerm pattern)
 	{
 		final List<Object> list = new LinkedList<>();
-		if (match(pattern, list))
-			return list;
+		if (match(pattern, list)) return list;
 		return null;
 	}
 
 	@Override
 	public boolean isEqual(final ATerm term)
 	{
-		if (term instanceof ATermImpl)
-			return this == term;
+		if (term instanceof ATermImpl) return this == term;
 
 		return _factory.isDeepEqual(this, term);
 	}
@@ -152,7 +149,7 @@ public abstract class ATermImpl extends ATermVisitableImpl implements ATerm, Sha
 		return this;
 	}
 
-	@SuppressWarnings("resource") // the resource is manage by ATermWriter 
+	@SuppressWarnings("resource") // the resource is manage by ATermWriter
 	public void writeToTextFile(final ATermWriter writer) throws IOException
 	{
 		try

@@ -27,8 +27,8 @@ import org.semanticweb.owlapi.model.OWLOntology;
  */
 public class LintFactory
 {
-	private final LintPattern _lintPattern;
-	private final OWLOntology _participatingOntology;
+	private final LintPattern	_lintPattern;
+	private final OWLOntology	_participatingOntology;
 
 	public LintFactory(final LintPattern lintPattern, final OWLOntology participatingOntology)
 	{

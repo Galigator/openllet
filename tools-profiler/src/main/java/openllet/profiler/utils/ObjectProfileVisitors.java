@@ -7,7 +7,6 @@ import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
-// ----------------------------------------------------------------------------
 /**
  * A Factory for a few stock _node visitors. See the implementation for details.
  *
@@ -15,15 +14,14 @@ import java.text.NumberFormat;
  */
 public abstract class ObjectProfileVisitors
 {
-	// public: ................................................................
-
 	/**
-	 * Factory method for creating the default plain text _node _node print visitor. It is up to the caller to buffer 'out'.
-	 * 
-	 * @param out writer to dump the _nodes into [may not be null]
-	 * @param indent indent increment string [null is equivalent to "  "]
-	 * @param format percentage formatter to use [null is equivalent to NumberFormat.getPercentInstance (), with a single fraction digit]
-	 * @param shortClassNames 'true' causes all class names to be dumped in compact [no package prefix] form
+	 * Factory method
+	 *
+	 * @param  out             writer to dump the _nodes into [may not be null]
+	 * @param  indent          indent increment string [null is equivalent to " "]
+	 * @param  format          percentage formatter to use [null is equivalent to NumberFormat.getPercentInstance (), with a single fraction digit]
+	 * @param  shortClassNames 'true' causes all class names to be dumped in compact [no package prefix] form
+	 * @return                 the default plain text _node _node print visitor. It is up to the caller to buffer 'out'.
 	 */
 	public static ObjectProfileNode.INodeVisitor newDefaultNodePrinter(final PrintWriter out, final String indent, final DecimalFormat format, final boolean shortClassNames)
 	{
@@ -31,28 +29,22 @@ public abstract class ObjectProfileVisitors
 	}
 
 	/**
-	 * Factory method for creating the XML output visitor. To create a valid XML document, start the traversal on the profile root _node. It is up to the caller
-	 * to buffer 'out'.
-	 * 
-	 * @param out stream to dump the _nodes into [may not be null]
-	 * @param indent indent increment string [null is equivalent to "  "]
-	 * @param format percentage formatter to use [null is equivalent to NumberFormat.getPercentInstance (), with a single fraction digit]
-	 * @param shortClassNames 'true' causes all class names to be dumped in compact [no package prefix] form
+	 * Factory method
+	 *
+	 * @param  out             stream to dump the _nodes into [may not be null]
+	 * @param  indent          indent increment string [null is equivalent to " "]
+	 * @param  format          percentage formatter to use [null is equivalent to NumberFormat.getPercentInstance (), with a single fraction digit]
+	 * @param  shortClassNames 'true' causes all class names to be dumped in compact [no package prefix] form
+	 * @return                 the XML output visitor. To create a valid XML document, start the traversal on the profile root _node. It is up to the caller to buffer 'out'.
 	 */
 	public static ObjectProfileNode.INodeVisitor newXMLNodePrinter(final OutputStream out, final String indent, final DecimalFormat format, final boolean shortClassNames)
 	{
 		return new XMLNodePrinter(out, indent, format, shortClassNames);
 	}
 
-	// protected: .............................................................
-
-	// package: ...............................................................
-
-	// private: ...............................................................
-
 	private ObjectProfileVisitors()
 	{
-	} // this class is not extendible
+	}
 
 	private static abstract class AbstractProfileNodeVisitor implements IObjectProfileNode.INodeVisitor
 	{
@@ -68,7 +60,7 @@ public abstract class ObjectProfileVisitors
 			// Nothing to do
 		}
 
-	} // _end of nested class
+	}
 
 	/**
 	 * This visitor prints out a _node in plain text format. The output is indented according to the length of the _node's path within its profile tree.
@@ -86,7 +78,7 @@ public abstract class ObjectProfileVisitors
 			final IObjectProfileNode root = node.root();
 
 			sb.append(node.size());
-			if (node != root) // root _node is always 100% of the overall size
+			if (node != root) // root node is always 100% of the overall size
 			{
 				sb.append(" (");
 				sb.append(_format.format((double) node.size() / root.size()));
@@ -94,7 +86,7 @@ public abstract class ObjectProfileVisitors
 			}
 			sb.append(" -> ");
 			sb.append(node.name());
-			if (node.object() != null) // skip shell pseudo-_nodes
+			if (node.object() != null) // skip shell pseudo-nodes
 			{
 				sb.append(" : ");
 				sb.append(ObjectProfiler.typeName(node.object().getClass(), _shortClassNames));
@@ -128,12 +120,12 @@ public abstract class ObjectProfileVisitors
 			_shortClassNames = shortClassNames;
 		}
 
-		private final PrintWriter _out;
-		private final String _indent;
-		private final DecimalFormat _format;
-		private final boolean _shortClassNames;
+		private final PrintWriter	_out;
+		private final String		_indent;
+		private final DecimalFormat	_format;
+		private final boolean		_shortClassNames;
 
-	} // _end of nested class
+	}
 
 	/*
 	 * This visitor can dump a profile tree in an XML file, which can be handy
@@ -175,7 +167,7 @@ public abstract class ObjectProfileVisitors
 			XMLEscape(node.name(), sb);
 			sb.append('\"');
 
-			if (node.object() != null) // skip shell pseudo-_nodes
+			if (node.object() != null) // skip shell pseudo-nodes
 			{
 				sb.append(" objclass=\"");
 
@@ -265,18 +257,16 @@ public abstract class ObjectProfileVisitors
 					default:
 						append.append(c);
 
-				} // _end of switch
+				}
 			}
 		}
 
-		private final PrintWriter _out;
-		private final String _indent;
-		private final DecimalFormat _format;
-		private final boolean _shortClassNames;
+		private final PrintWriter	_out;
+		private final String		_indent;
+		private final DecimalFormat	_format;
+		private final boolean		_shortClassNames;
 
-		private static final String ENCODING = "UTF-8";
+		private static final String	ENCODING	= "UTF-8";
 
-	} // _end of nested class
-
-} // _end of class
-// ----------------------------------------------------------------------------
+	}
+}

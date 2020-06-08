@@ -46,7 +46,7 @@ public abstract class SimpleModularityTest extends AbstractModularityTest
 	/**
 	 * Creates an ontology from the given axioms and extracts the modules for each class in the ontology.
 	 *
-	 * @param axioms that will be used to construct the ontology
+	 * @param  axioms       that will be used to construct the ontology
 	 * @throws OWLException if ontology cannot be created
 	 */
 	private void extractModules(final OWLAxiom[] axioms)
@@ -58,7 +58,7 @@ public abstract class SimpleModularityTest extends AbstractModularityTest
 	/**
 	 * Tests if the computed module of the given entity is same as the _expected module.
 	 *
-	 * @param entity for which the module is being tested
+	 * @param entity         for which the module is being tested
 	 * @param expectedModule _expected elements in the module
 	 */
 	private void testModule(final OWLEntity entity, final OWLEntity... expectedModule)

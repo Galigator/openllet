@@ -16,7 +16,7 @@ import openllet.owlwg.testcase.TestCase;
  * <p>
  * Company: Clark & Parsia, LLC. <a href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
  * </p>
- * 
+ *
  * @author Mike Smith &lt;msmith@clarkparsia.com&gt;
  */
 public class SemanticsFilter implements FilterCondition
@@ -33,18 +33,18 @@ public class SemanticsFilter implements FilterCondition
 	final private Semantics _semantics;
 
 	/**
+	 * @param  semantics            to check
 	 * @throws NullPointerException if <code>_semantics == null</code>
 	 */
-	public SemanticsFilter(Semantics semantics)
+	public SemanticsFilter(final Semantics semantics)
 	{
-		if (semantics == null)
-			throw new NullPointerException();
+		if (semantics == null) throw new NullPointerException();
 
-		this._semantics = semantics;
+		_semantics = semantics;
 	}
 
 	@Override
-	public boolean accepts(TestCase<?> testcase)
+	public boolean accepts(final TestCase<?> testcase)
 	{
 		return testcase.getApplicableSemantics().contains(_semantics);
 	}

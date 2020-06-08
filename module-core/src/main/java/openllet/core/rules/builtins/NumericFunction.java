@@ -29,12 +29,12 @@ import java.math.BigInteger;
 public interface NumericFunction
 {
 
-	public Number apply(BigDecimal... args);
+	Number apply(BigDecimal... args);
 
-	public Number apply(BigInteger... args);
+	Number apply(BigInteger... args);
 
-	public Number apply(Double... args);
+	Number apply(Double... args);
 
-	public Number apply(Float... args);
+	Number apply(Float... args);
 
 }

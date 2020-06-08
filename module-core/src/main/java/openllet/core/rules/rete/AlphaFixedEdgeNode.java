@@ -13,8 +13,8 @@ import openllet.core.boxes.rbox.Role;
 
 public class AlphaFixedEdgeNode extends AlphaEdgeNode
 {
-	protected final ATermAppl _name;
-	private Node _node;
+	protected final ATermAppl	_name;
+	private Node				_node;
 
 	public AlphaFixedEdgeNode(final ABox abox, final Role role, final ATermAppl subjectName)
 	{
@@ -25,8 +25,7 @@ public class AlphaFixedEdgeNode extends AlphaEdgeNode
 	@SuppressWarnings("unchecked")
 	protected <N extends Node> N initNode()
 	{
-		if (_node == null)
-			_node = initNode(_name);
+		if (_node == null) _node = initNode(_name);
 		assert _node != null;
 		return (N) _node;
 	}
@@ -44,13 +43,10 @@ public class AlphaFixedEdgeNode extends AlphaEdgeNode
 	@Override
 	public boolean equals(final Object obj)
 	{
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
+		if (this == obj) return true;
+		if (obj == null) return false;
 		final AlphaFixedEdgeNode other = (AlphaFixedEdgeNode) obj;
-		if (getClass() != other.getClass())
-			return false;
+		if (getClass() != other.getClass()) return false;
 		return _role.equals(other._role);
 	}
 }

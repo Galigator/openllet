@@ -29,15 +29,16 @@ import org.semanticweb.owlapi.search.EntitySearcher;
  * <p>
  * Company: Clark & Parsia, LLC. <a href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
  * </p>
- * 
- * @author Mike Smith &lt;msmith@clarkparsia.com&gt;
+ *
+ * @author     Mike Smith &lt;msmith@clarkparsia.com&gt;
+ * @param  <O>
  */
 public abstract class AbstractEntailmentTest<O> extends AbstractPremisedTest<O> implements EntailmentTest<O>
 {
-	private static final Logger _logger = Log.getLogger(AbstractEntailmentTest.class);
+	private static final Logger							_logger	= Log.getLogger(AbstractEntailmentTest.class);
 
-	private final EnumSet<SerializationFormat> conclusionFormats;
-	private final EnumMap<SerializationFormat, String> conclusionOntologyLiteral;
+	private final EnumSet<SerializationFormat>			conclusionFormats;
+	private final EnumMap<SerializationFormat, String>	conclusionOntologyLiteral;
 
 	public AbstractEntailmentTest(final OWLOntology ontology, final OWLNamedIndividual i, final boolean positive)
 	{
@@ -54,9 +55,7 @@ public abstract class AbstractEntailmentTest<O> extends AbstractPremisedTest<O> 
 			if (conclusions != null)
 			{
 				if (conclusions.size() > 1)
-				{
 					_logger.warning(format("Multiple conclusion ontologies found for testcase (%s) with serialization format (%s).  Choosing arbitrarily.", getIdentifier(), f));
-				}
 				conclusionOntologyLiteral.put(f, conclusions.iterator().next().getLiteral());
 				conclusionFormats.add(f);
 			}
@@ -70,7 +69,7 @@ public abstract class AbstractEntailmentTest<O> extends AbstractPremisedTest<O> 
 	}
 
 	@Override
-	public String getConclusionOntology(SerializationFormat format)
+	public String getConclusionOntology(final SerializationFormat format)
 	{
 		return conclusionOntologyLiteral.get(format);
 	}

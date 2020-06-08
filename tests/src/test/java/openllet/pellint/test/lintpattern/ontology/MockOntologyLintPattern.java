@@ -18,19 +18,19 @@ import org.semanticweb.owlapi.model.OWLOntology;
  */
 public class MockOntologyLintPattern implements OntologyLintPattern
 {
-	private int _intParam;
-	private String _stringParam;
+	private int		_intParam;
+	private String	_stringParam;
 
 	@Override
 	public String getName()
 	{
-		return this.toString();
+		return toString();
 	}
 
 	@Override
 	public String getDescription()
 	{
-		return this.toString();
+		return toString();
 	}
 
 	@Override

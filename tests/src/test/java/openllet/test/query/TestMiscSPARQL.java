@@ -52,7 +52,8 @@ public class TestMiscSPARQL
 
 			aModel.read(aOnt);
 
-			final String aQuery = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" + "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" + "SELECT ?x WHERE { ?y rdfs:comment ?x . }";
+			final String aQuery = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
+					+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" + "SELECT ?x WHERE { ?y rdfs:comment ?x . }";
 
 			final QueryExecution qe = SparqlDLExecutionFactory.create(QueryFactory.create(aQuery), aModel);
 
@@ -77,7 +78,8 @@ public class TestMiscSPARQL
 
 		aModel.read(aOnt);
 
-		String aQuery = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" + "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" + "SELECT ?y ?foo WHERE { ?y rdf:type ?x . }";
+		String aQuery = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" + "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+				+ "SELECT ?y ?foo WHERE { ?y rdf:type ?x . }";
 
 		QueryExecution qe = SparqlDLExecutionFactory.create(QueryFactory.create(aQuery), aModel);
 
@@ -96,7 +98,8 @@ public class TestMiscSPARQL
 			}
 		}
 
-		aQuery = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" + "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" + "SELECT ?foo WHERE { ?y rdf:type ?x . }";
+		aQuery = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" + "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+				+ "SELECT ?foo WHERE { ?y rdf:type ?x . }";
 
 		qe = SparqlDLExecutionFactory.create(QueryFactory.create(aQuery), aModel);
 
@@ -130,7 +133,8 @@ public class TestMiscSPARQL
 
 			aModel.read(aOnt);
 
-			final String aQuery = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" + "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" + "SELECT ?x WHERE { ?y rdf:type owl:Thing . ?y rdfs:comment ?x . }";
+			final String aQuery = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
+					+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" + "SELECT ?x WHERE { ?y rdf:type owl:Thing . ?y rdfs:comment ?x . }";
 
 			final QueryExecution qe = SparqlDLExecutionFactory.create(QueryFactory.create(aQuery), aModel);
 
@@ -157,7 +161,9 @@ public class TestMiscSPARQL
 
 		aModel.read(aOnt);
 
-		final String aQuery = "PREFIX xsd:<http://www.w3.org/2001/XMLSchema#>\n" + "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" + "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>\n" + "PREFIX owl:<http://www.w3.org/2002/07/owl#>\n" + "PREFIX pizza: <http://www.co-ode.org/ontologies/pizza/pizza.owl#>\n" + "SELECT ?v0 WHERE\n" + "{\n" + " ?v0 rdf:type ?v1.\n" + " ?v1 rdf:type owl:Restriction.\n" + " ?v1 owl:onProperty pizza:hasTopping.\n" + " ?v1 owl:allValuesFrom ?v2.\n" + "}";
+		final String aQuery = "PREFIX xsd:<http://www.w3.org/2001/XMLSchema#>\n" + "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+				+ "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>\n" + "PREFIX owl:<http://www.w3.org/2002/07/owl#>\n" + "PREFIX pizza: <http://www.co-ode.org/ontologies/pizza/pizza.owl#>\n"
+				+ "SELECT ?v0 WHERE\n" + "{\n" + " ?v0 rdf:type ?v1.\n" + " ?v1 rdf:type owl:Restriction.\n" + " ?v1 owl:onProperty pizza:hasTopping.\n" + " ?v1 owl:allValuesFrom ?v2.\n" + "}";
 
 		// this should not thrown an InternalReasonerException, we want the unsupported query to be detected, and
 		// the execution to fallback to using the mixed evaluator
@@ -179,7 +185,9 @@ public class TestMiscSPARQL
 
 		aModel.read(aOnt);
 
-		final String aQuery = "PREFIX xsd:<http://www.w3.org/2001/XMLSchema#>\n" + "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" + "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>\n" + "PREFIX owl:<http://www.w3.org/2002/07/owl#>\n" + "PREFIX pizza: <http://www.co-ode.org/ontologies/pizza/pizza.owl#>\n" + "SELECT ?v0 WHERE\n" + "{\n" + " ?v0 ?v1 owl:ObjectProperty.\n" + "}";
+		final String aQuery = "PREFIX xsd:<http://www.w3.org/2001/XMLSchema#>\n" + "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+				+ "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>\n" + "PREFIX owl:<http://www.w3.org/2002/07/owl#>\n" + "PREFIX pizza: <http://www.co-ode.org/ontologies/pizza/pizza.owl#>\n"
+				+ "SELECT ?v0 WHERE\n" + "{\n" + " ?v0 ?v1 owl:ObjectProperty.\n" + "}";
 
 		// this should not thrown an InternalReasonerException, we want the unsupported query to be detected, and
 		// the execution to fallback to using the mixed evaluator
@@ -199,7 +207,9 @@ public class TestMiscSPARQL
 		final InfModel aModel = ModelFactory.createInfModel(aReasoner, ModelFactory.createDefaultModel());
 
 		aModel.read(aOnt, "N3");
-		final String aQuery = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" + "PREFIX mon: <http://www.semwebtech.org/mondial/10/meta#>\n" + "PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>\n" + "PREFIX : <foo://bla/>\n" + "SELECT ?v0 WHERE\n" + "{ ?v0 rdf:type :EasternHemispherePlace. }\n";
+		final String aQuery = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
+				+ "PREFIX mon: <http://www.semwebtech.org/mondial/10/meta#>\n" + "PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>\n" + "PREFIX : <foo://bla/>\n" + "SELECT ?v0 WHERE\n"
+				+ "{ ?v0 rdf:type :EasternHemispherePlace. }\n";
 
 		final QueryExecution qe = SparqlDLExecutionFactory.create(QueryFactory.create(aQuery), aModel);
 
@@ -219,7 +229,9 @@ public class TestMiscSPARQL
 		final InfModel aModel = ModelFactory.createInfModel(aReasoner, ModelFactory.createDefaultModel());
 
 		aModel.read(aOnt, "N3");
-		final String aQuery = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" + "PREFIX mon: <http://www.semwebtech.org/mondial/10/meta#>\n" + "PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>\n" + "PREFIX : <foo://bla/>\n" + "SELECT ?v0 WHERE\n" + "{ ?v0 rdf:type :EasternHemispherePlace. }\n";
+		final String aQuery = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
+				+ "PREFIX mon: <http://www.semwebtech.org/mondial/10/meta#>\n" + "PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>\n" + "PREFIX : <foo://bla/>\n" + "SELECT ?v0 WHERE\n"
+				+ "{ ?v0 rdf:type :EasternHemispherePlace. }\n";
 
 		final QueryExecution qe = SparqlDLExecutionFactory.create(QueryFactory.create(aQuery), aModel);
 
@@ -244,7 +256,9 @@ public class TestMiscSPARQL
 			final InfModel aModel = ModelFactory.createInfModel(aReasoner, ModelFactory.createDefaultModel());
 
 			aModel.read(aOnt);
-			final String aQuery = "PREFIX : <http://www.semanticweb.org/ontologies/2010/5/ticket-210-test-case.owl#>\n" + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" + "SELECT ?x\n" + "WHERE {\n" + "?x rdfs:subClassOf [\n" + "owl:onProperty :R ;\n" + "owl:someValuesFrom :C\n" + "]\n" + "FILTER( ?x != owl:Nothing )\n" + "}";
+			final String aQuery = "PREFIX : <http://www.semanticweb.org/ontologies/2010/5/ticket-210-test-case.owl#>\n" + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+					+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" + "SELECT ?x\n" + "WHERE {\n" + "?x rdfs:subClassOf [\n" + "owl:onProperty :R ;\n" + "owl:someValuesFrom :C\n" + "]\n"
+					+ "FILTER( ?x != owl:Nothing )\n" + "}";
 
 			final QueryExecution qe = SparqlDLExecutionFactory.create(QueryFactory.create(aQuery), aModel);
 
@@ -270,7 +284,8 @@ public class TestMiscSPARQL
 		final InfModel aModel = ModelFactory.createInfModel(aReasoner, ModelFactory.createDefaultModel());
 
 		aModel.read(aOnt);
-		final String aQuery = "PREFIX : <http://www.semanticweb.org/ontologies/2010/5/ticket-421-test-case.owl#>\n" + "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" + "SELECT ?x\n" + "WHERE {\n" + "?x rdf:type :D\n" + "}";
+		final String aQuery = "PREFIX : <http://www.semanticweb.org/ontologies/2010/5/ticket-421-test-case.owl#>\n" + "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" + "SELECT ?x\n" + "WHERE {\n" + "?x rdf:type :D\n" + "}";
 
 		final QueryExecution qe = SparqlDLExecutionFactory.create(QueryFactory.create(aQuery), aModel);
 
@@ -293,7 +308,8 @@ public class TestMiscSPARQL
 		final InfModel aModel = ModelFactory.createInfModel(aReasoner, ModelFactory.createDefaultModel());
 
 		aModel.read(aOnt);
-		final String aQuery = "PREFIX : <http://www.semanticweb.org/ontologies/2010/5/ticket-444-test-case.owl#>\n" + "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" + "SELECT *\n" + "WHERE {\n" + ":c ?p ?o . OPTIONAL { ?o :hasName ?n }\n" + "}";
+		final String aQuery = "PREFIX : <http://www.semanticweb.org/ontologies/2010/5/ticket-444-test-case.owl#>\n" + "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" + "SELECT *\n" + "WHERE {\n" + ":c ?p ?o . OPTIONAL { ?o :hasName ?n }\n" + "}";
 
 		final QueryExecution qe = QueryExecutionFactory.create(QueryFactory.create(aQuery), aModel);
 

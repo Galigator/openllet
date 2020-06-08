@@ -38,8 +38,7 @@ public abstract class AbstractTimelineDatatype extends AbstractBaseDatatype<XMLG
 		if (value instanceof XMLGregorianCalendar)
 		{
 			final XMLGregorianCalendar c = (XMLGregorianCalendar) value;
-			if (!_schemaType.equals(c.getXMLSchemaType()))
-				throw new IllegalArgumentException();
+			if (!_schemaType.equals(c.getXMLSchemaType())) throw new IllegalArgumentException();
 			return ATermUtils.makeTypedLiteral(c.toXMLFormat(), getName());
 		}
 		else
@@ -59,8 +58,7 @@ public abstract class AbstractTimelineDatatype extends AbstractBaseDatatype<XMLG
 		try
 		{
 			final XMLGregorianCalendar c = getDatatypeFactory().newXMLGregorianCalendar(lexicalForm);
-			if (!_schemaType.equals(c.getXMLSchemaType()))
-				throw new InvalidLiteralException(getName(), lexicalForm);
+			if (!_schemaType.equals(c.getXMLSchemaType())) throw new InvalidLiteralException(getName(), lexicalForm);
 
 			return c;
 		}

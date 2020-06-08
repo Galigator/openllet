@@ -5,14 +5,14 @@
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
- *     * Redistributions of source code must retain the above copyright
- *       notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the University of California, Berkeley nor the
- *       names of its contributors may be used to endorse or promote products
- *       derived from this software without specific prior written permission.
+ * * Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following disclaimer.
+ * * Redistributions in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in the
+ * documentation and/or other materials provided with the distribution.
+ * * Neither the name of the University of California, Berkeley nor the
+ * names of its contributors may be used to endorse or promote products
+ * derived from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -29,7 +29,6 @@
 package openllet.aterm.pure;
 
 import java.util.List;
-
 import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
@@ -73,8 +72,8 @@ public class ATermIntImpl extends ATermImpl implements ATermInt
 	 * depricated Use the new constructor instead.
 	 *
 	 * @param hashCode x
-	 * @param annos x
-	 * @param _value x
+	 * @param annos    x
+	 * @param _value   x
 	 */
 	@Deprecated
 	protected void init(final int hashCode, final int value)
@@ -86,7 +85,7 @@ public class ATermIntImpl extends ATermImpl implements ATermInt
 	/**
 	 * depricated Use the new constructor instead.
 	 *
-	 * @param annos x
+	 * @param annos  x
 	 * @param _value x
 	 */
 	protected void initHashCode(final int value)
@@ -108,8 +107,7 @@ public class ATermIntImpl extends ATermImpl implements ATermInt
 		if (obj instanceof ATermInt)
 		{
 			final ATermInt peer = (ATermInt) obj;
-			if (peer.getType() != getType())
-				return false;
+			if (peer.getType() != getType()) return false;
 
 			return peer.getInt() == _value;
 		}
@@ -120,8 +118,7 @@ public class ATermIntImpl extends ATermImpl implements ATermInt
 	@Override
 	protected boolean match(final ATerm pattern, final List<Object> list)
 	{
-		if (equals(pattern))
-			return true;
+		if (equals(pattern)) return true;
 
 		if (pattern.getType() == ATerm.PLACEHOLDER)
 		{

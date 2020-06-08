@@ -21,10 +21,10 @@ import java.util.NoSuchElementException;
  */
 public class ArrayIntSet implements IntSet
 {
-	private static int INIT_CAPACITY = 1;
+	private static int	INIT_CAPACITY	= 1;
 
-	private int[] ints;
-	private int size;
+	private int[]		ints;
+	private int			size;
 
 	public ArrayIntSet()
 	{
@@ -63,8 +63,7 @@ public class ArrayIntSet implements IntSet
 		if (index < 0)
 		{
 			index = -index - 1;
-			if (index < size)
-				System.arraycopy(ints, index, ints, index + 1, size - index);
+			if (index < size) System.arraycopy(ints, index, ints, index + 1, size - index);
 			ints[index] = value;
 			size++;
 		}
@@ -100,11 +99,10 @@ public class ArrayIntSet implements IntSet
 
 			if (midVal < key)
 				low = mid + 1;
+			else if (midVal > key)
+				high = mid - 1;
 			else
-				if (midVal > key)
-					high = mid - 1;
-				else
-					return mid; // key found
+				return mid; // key found
 		}
 		return -(low + 1); // key not found.
 	}
@@ -136,15 +134,12 @@ public class ArrayIntSet implements IntSet
 	@Override
 	public boolean equals(final Object o)
 	{
-		if (!(o instanceof IntSet))
-			return false;
+		if (!(o instanceof IntSet)) return false;
 		final IntSet that = (IntSet) o;
-		if (size() != that.size())
-			return false;
+		if (size() != that.size()) return false;
 		final IntIterator i = iterator();
 		while (i.hasNext())
-			if (!that.contains(i.next()))
-				return false;
+			if (!that.contains(i.next())) return false;
 		return true;
 	}
 
@@ -155,8 +150,7 @@ public class ArrayIntSet implements IntSet
 		{
 			final int oldData[] = ints;
 			int newCapacity = oldCapacity * 3 / 2 + 1;
-			if (newCapacity < minCapacity)
-				newCapacity = minCapacity;
+			if (newCapacity < minCapacity) newCapacity = minCapacity;
 			ints = new int[newCapacity];
 			System.arraycopy(oldData, 0, ints, 0, size);
 		}
@@ -190,8 +184,7 @@ public class ArrayIntSet implements IntSet
 			@Override
 			public int next()
 			{
-				if (!hasNext())
-					throw new NoSuchElementException();
+				if (!hasNext()) throw new NoSuchElementException();
 
 				return ints[next++];
 			}
@@ -204,8 +197,7 @@ public class ArrayIntSet implements IntSet
 	@Override
 	public int max()
 	{
-		if (isEmpty())
-			throw new NoSuchElementException();
+		if (isEmpty()) throw new NoSuchElementException();
 
 		return ints[size - 1];
 	}
@@ -216,8 +208,7 @@ public class ArrayIntSet implements IntSet
 	@Override
 	public int min()
 	{
-		if (isEmpty())
-			throw new NoSuchElementException();
+		if (isEmpty()) throw new NoSuchElementException();
 
 		return ints[0];
 	}
@@ -232,8 +223,7 @@ public class ArrayIntSet implements IntSet
 
 		if (index >= 0)
 		{
-			if (index < size - 1)
-				System.arraycopy(ints, index + 1, ints, index, size - index - 1);
+			if (index < size - 1) System.arraycopy(ints, index + 1, ints, index, size - index - 1);
 			size--;
 		}
 	}
@@ -253,8 +243,7 @@ public class ArrayIntSet implements IntSet
 	@Override
 	public String toString()
 	{
-		if (size == 0)
-			return "[]";
+		if (size == 0) return "[]";
 
 		final StringBuilder buf = new StringBuilder();
 		buf.append('[');
@@ -286,30 +275,28 @@ public class ArrayIntSet implements IntSet
 				System.arraycopy(ints2, i2, ints, i, size2 - i2);
 				break;
 			}
+			else if (i2 == size2)
+			{
+				// we consumed ints2, so copy rest of i1 and finish
+				System.arraycopy(ints1, i1, ints, i, size1 - i1);
+				break;
+			}
+			else if (ints1[i1] < ints2[i2])
+				// element in ints1 is smaller so copy it
+				ints[i] = ints1[i1++];
 			else
-				if (i2 == size2)
-				{
-					// we consumed ints2, so copy rest of i1 and finish
-					System.arraycopy(ints1, i1, ints, i, size1 - i1);
-					break;
-				}
-				else
-					if (ints1[i1] < ints2[i2])
-						// element in ints1 is smaller so copy it
-						ints[i] = ints1[i1++];
-					else
-					{
-						// element in ints2 is not greater so copy it
-						ints[i] = ints2[i2++];
+			{
+				// element in ints2 is not greater so copy it
+				ints[i] = ints2[i2++];
 
-						// is the element we copied from ints2 same as the one in ints1?
-						if (ints[i] == ints1[i1])
-						{
-							// we have a duplicate so increment i1 and decrement size
-							i1++;
-							size--;
-						}
-					}
+				// is the element we copied from ints2 same as the one in ints1?
+				if (ints[i] == ints1[i1])
+				{
+					// we have a duplicate so increment i1 and decrement size
+					i1++;
+					size--;
+				}
+			}
 	}
 
 	@Override

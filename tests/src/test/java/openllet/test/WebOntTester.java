@@ -8,15 +8,15 @@ package openllet.test;
 
 public interface WebOntTester
 {
-	public void setInputOntology(String inputFileURI);
+	void setInputOntology(String inputFileURI);
 
-	public void setTimeout(long timeout);
+	void setTimeout(long timeout);
 
-	public boolean isConsistent();
+	boolean isConsistent();
 
-	public void classify();
+	void classify();
 
-	public void testEntailment(String entailmentFileURI, boolean positiveEntailment);
+	void testEntailment(String entailmentFileURI, boolean positiveEntailment);
 
-	public void registerURIMapping(String fromURI, String toURI);
+	void registerURIMapping(String fromURI, String toURI);
 }

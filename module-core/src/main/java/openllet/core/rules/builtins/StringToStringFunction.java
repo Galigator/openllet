@@ -25,6 +25,6 @@ package openllet.core.rules.builtins;
 public interface StringToStringFunction
 {
 
-	public String apply(String... args);
+	String apply(String... args);
 
 }

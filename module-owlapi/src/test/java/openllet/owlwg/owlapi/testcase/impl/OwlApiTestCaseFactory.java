@@ -17,32 +17,32 @@ import org.semanticweb.owlapi.model.OWLOntology;
  * <p>
  * Company: Clark & Parsia, LLC. <a href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
  * </p>
- * 
+ *
  * @author Mike Smith &lt;msmith@clarkparsia.com&gt;
  */
 public class OwlApiTestCaseFactory implements TestCaseFactory<OWLOntology>
 {
 
 	@Override
-	public OwlApiConTstImpl getConsistencyTestCase(OWLOntology o, OWLNamedIndividual i)
+	public OwlApiConTstImpl getConsistencyTestCase(final OWLOntology o, final OWLNamedIndividual i)
 	{
 		return new OwlApiConTstImpl(o, i);
 	}
 
 	@Override
-	public OwlApiIncTstImpl getInconsistencyTestCase(OWLOntology o, OWLNamedIndividual i)
+	public OwlApiIncTstImpl getInconsistencyTestCase(final OWLOntology o, final OWLNamedIndividual i)
 	{
 		return new OwlApiIncTstImpl(o, i);
 	}
 
 	@Override
-	public OwlApiNegTstImpl getNegativeEntailmentTestCase(OWLOntology o, OWLNamedIndividual i)
+	public OwlApiNegTstImpl getNegativeEntailmentTestCase(final OWLOntology o, final OWLNamedIndividual i)
 	{
 		return new OwlApiNegTstImpl(o, i);
 	}
 
 	@Override
-	public OwlApiPosTstImpl getPositiveEntailmentTestCase(OWLOntology o, OWLNamedIndividual i)
+	public OwlApiPosTstImpl getPositiveEntailmentTestCase(final OWLOntology o, final OWLNamedIndividual i)
 	{
 		return new OwlApiPosTstImpl(o, i);
 	}

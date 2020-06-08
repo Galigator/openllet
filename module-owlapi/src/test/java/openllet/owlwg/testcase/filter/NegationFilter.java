@@ -15,29 +15,28 @@ import openllet.owlwg.testcase.TestCase;
  * <p>
  * Company: Clark & Parsia, LLC. <a href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
  * </p>
- * 
+ *
  * @author Mike Smith &lt;msmith@clarkparsia.com&gt;
  */
 public class NegationFilter implements FilterCondition
 {
 
-	public final static NegationFilter not(FilterCondition condition)
+	public final static NegationFilter not(final FilterCondition condition)
 	{
 		return new NegationFilter(condition);
 	}
 
 	final private FilterCondition _condition;
 
-	public NegationFilter(FilterCondition condition)
+	public NegationFilter(final FilterCondition condition)
 	{
-		if (condition == null)
-			throw new NullPointerException();
+		if (condition == null) throw new NullPointerException();
 
-		this._condition = condition;
+		_condition = condition;
 	}
 
 	@Override
-	public boolean accepts(TestCase<?> testcase)
+	public boolean accepts(final TestCase<?> testcase)
 	{
 		return !_condition.accepts(testcase);
 	}

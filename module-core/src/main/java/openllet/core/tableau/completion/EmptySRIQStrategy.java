@@ -71,22 +71,22 @@ public class EmptySRIQStrategy extends CompletionStrategy
 	/**
 	 * List of individuals that needs to be expanded by applying tableau completion rules
 	 */
-	private LinkedList<Individual> _mayNeedExpanding = new LinkedList<>();
+	private LinkedList<Individual>				_mayNeedExpanding	= new LinkedList<>();
 
 	/**
 	 * Cached _mayNeedExpanding at a certain _branch that will be restored during backtracking
 	 */
-	private final List<List<Individual>> _mnx = new ArrayList<>();
+	private final List<List<Individual>>		_mnx				= new ArrayList<>();
 
 	/**
 	 * Nodes in the completion graph that re already being searched
 	 */
-	private final Map<Individual, ATermAppl> _cachedNodes = new HashMap<>();
+	private final Map<Individual, ATermAppl>	_cachedNodes		= new HashMap<>();
 
 	/**
 	 * Cache safety checker to decide if a cached satisfiability result can be reused for a given node in the completion graph
 	 */
-	private volatile Optional<CacheSafety> _cacheSafety = Optional.empty();
+	private volatile Optional<CacheSafety>		_cacheSafety		= Optional.empty();
 
 	public EmptySRIQStrategy(final ABox abox)
 	{
@@ -127,9 +127,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 			_abox.setComplete(true);
 			return;
 		}
-		else
-			if (_abox.getNodes().size() > 1)
-				throw new OpenError("This _strategy can only be used with an ABox that has a single _individual.");
+		else if (_abox.getNodes().size() > 1) throw new OpenError("This _strategy can only be used with an ABox that has a single _individual.");
 
 		_cacheSafety = Optional.of(_abox.getCache().getSafety().canSupport(expr) ? _abox.getCache().getSafety() : CacheSafetyFactory.createCacheSafety(expr));
 
@@ -164,30 +162,26 @@ public class EmptySRIQStrategy extends CompletionStrategy
 				else
 					_abox.setComplete(true);
 			}
-			else
-				if (expr.hasInverse() && parentNeedsExpanding(x))
-				{
-					_mayNeedExpanding.removeAll(getDescendants(x.getParent()));
-					_mayNeedExpanding.addFirst(x.getParent());
-					continue;
-				}
+			else if (expr.hasInverse() && parentNeedsExpanding(x))
+			{
+				_mayNeedExpanding.removeAll(getDescendants(x.getParent()));
+				_mayNeedExpanding.addFirst(x.getParent());
+				continue;
+			}
 		}
 
-		if (_logger.isLoggable(Level.FINE))
-			_abox.printTree();
+		if (_logger.isLoggable(Level.FINE)) _abox.printTree();
 
 		if (OpenlletOptions.USE_ADVANCED_CACHING)
 			// if completion tree is clash free _cache all sat concepts
-			if (!_abox.isClosed())
-				for (final Iterator<Individual> i = new IndividualIterator(_abox); i.hasNext();)
-				{
-					final Individual ind = i.next();
-					final ATermAppl c = _cachedNodes.get(ind);
-					if (c == null)
-						continue;
+			if (!_abox.isClosed()) for (final Iterator<Individual> i = new IndividualIterator(_abox); i.hasNext();)
+		{
+			final Individual ind = i.next();
+			final ATermAppl c = _cachedNodes.get(ind);
+			if (c == null) continue;
 
-					addCacheSat(c);
-				}
+			addCacheSat(c);
+		}
 	}
 
 	private List<Individual> getDescendants(final Individual ind)
@@ -202,17 +196,14 @@ public class EmptySRIQStrategy extends CompletionStrategy
 		descendants.add(ind);
 
 		for (final Edge edge : ind.getOutEdges())
-			if (edge.getTo().isIndividual() && !edge.getTo().equals(ind))
-				getDescendants((Individual) edge.getTo(), descendants);
+			if (edge.getTo().isIndividual() && !edge.getTo().equals(ind)) getDescendants((Individual) edge.getTo(), descendants);
 	}
 
 	private void addCacheSat(final ATermAppl c)
 	{
-		if (!_abox.getCache().putSat(c, true))
-			return;
+		if (!_abox.getCache().putSat(c, true)) return;
 
-		if (_logger.isLoggable(Level.FINEST))
-			_logger.finest("+++ Cache sat concept " + c);
+		if (_logger.isLoggable(Level.FINEST)) _logger.finest("+++ Cache sat concept " + c);
 
 		if (ATermUtils.isAnd(c))
 		{
@@ -224,16 +215,14 @@ public class EmptySRIQStrategy extends CompletionStrategy
 
 	private Individual getNextIndividual()
 	{
-		if (_mayNeedExpanding.isEmpty())
-			return null;
+		if (_mayNeedExpanding.isEmpty()) return null;
 
 		return _mayNeedExpanding.get(0);
 	}
 
 	private static boolean parentNeedsExpanding(final Individual x)
 	{
-		if (x.isRoot())
-			return false;
+		if (x.isRoot()) return false;
 
 		final Individual parent = x.getParent();
 
@@ -248,13 +237,12 @@ public class EmptySRIQStrategy extends CompletionStrategy
 		{
 			final Optional<Timer> timer = _abox.getKB().getTimers().startTimer("cache");
 			final Bool cachedSat = isCachedSat(x);
-			timer.ifPresent(t -> t.stop());
+			timer.ifPresent(Timer::stop);
 			if (cachedSat.isKnown())
 			{
 				if (cachedSat.isTrue())
 				{
-					if (_logger.isLoggable(Level.FINE))
-						_logger.fine("Stop cached " + x);
+					if (_logger.isLoggable(Level.FINE)) _logger.fine("Stop cached " + x);
 					_mayNeedExpanding.remove(0);
 				}
 				else
@@ -273,22 +261,18 @@ public class EmptySRIQStrategy extends CompletionStrategy
 		{
 			if (_blocking.isDirectlyBlocked(x))
 			{
-				if (_logger.isLoggable(Level.FINE))
-					_logger.fine("Stop _blocked " + x);
+				if (_logger.isLoggable(Level.FINE)) _logger.fine("Stop _blocked " + x);
 				_mayNeedExpanding.remove(0);
 				return;
 			}
 
 			_unfoldingRule.apply(x);
-			if (_abox.isClosed())
-				return;
+			if (_abox.isClosed()) return;
 
 			_disjunctionRule.apply(x);
-			if (_abox.isClosed())
-				return;
+			if (_abox.isClosed()) return;
 
-			if (x.canApply(Node.ATOM) || x.canApply(Node.OR))
-				continue;
+			if (x.canApply(Node.ATOM) || x.canApply(Node.OR)) continue;
 
 			if (_blocking.isDynamic() && _blocking.isDirectlyBlocked(x))
 			{
@@ -298,26 +282,21 @@ public class EmptySRIQStrategy extends CompletionStrategy
 			}
 
 			_someValuesRule.apply(x);
-			if (_abox.isClosed())
-				return;
+			if (_abox.isClosed()) return;
 
 			_minRule.apply(x);
-			if (_abox.isClosed())
-				return;
+			if (_abox.isClosed()) return;
 
 			// we don't have any inverse properties but we could have
 			// domain restrictions which means we might have to re-apply
 			// unfolding and _disjunction rules
-			if (x.canApply(Node.ATOM) || x.canApply(Node.OR))
-				continue;
+			if (x.canApply(Node.ATOM) || x.canApply(Node.OR)) continue;
 
 			_chooseRule.apply(x);
-			if (_abox.isClosed())
-				return;
+			if (_abox.isClosed()) return;
 
 			_maxRule.apply(x);
-			if (_abox.isClosed())
-				return;
+			if (_abox.isClosed()) return;
 
 		} while (x.canApply(Node.ATOM) || x.canApply(Node.OR) || x.canApply(Node.SOME) || x.canApply(Node.MIN));
 
@@ -328,16 +307,14 @@ public class EmptySRIQStrategy extends CompletionStrategy
 			for (final Edge edge : sortedSuccessors)
 			{
 				final Node succ = edge.getTo();
-				if (!succ.isLiteral() && !succ.equals(x))
-					_mayNeedExpanding.add((Individual) succ);
+				if (!succ.isLiteral() && !succ.equals(x)) _mayNeedExpanding.add((Individual) succ);
 			}
 		else
 			for (int i = sortedSuccessors.size() - 1; i >= 0; i--)
 			{
 				final Edge edge = sortedSuccessors.get(i);
 				final Node succ = edge.getTo();
-				if (!succ.isLiteral() && !succ.equals(x))
-					_mayNeedExpanding.add((Individual) succ);
+				if (!succ.isLiteral() && !succ.equals(x)) _mayNeedExpanding.add((Individual) succ);
 			}
 	}
 
@@ -347,12 +324,10 @@ public class EmptySRIQStrategy extends CompletionStrategy
 		final ATermAppl[] terms = new ATermAppl[x.getTypes().size()];
 		for (int t = 0; t < Node.TYPES; t++)
 		{
-			if (t == Node.NOM)
-				continue;
+			if (t == Node.NOM) continue;
 			for (final ATermAppl c : x.getTypes(t))
 			{
-				if (c.equals(ATermUtils.TOP))
-					continue;
+				if (c.equals(ATermUtils.TOP)) continue;
 				terms[count++] = c;
 			}
 		}
@@ -370,8 +345,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 
 	private Bool isCachedSat(final Individual x)
 	{
-		if (x.isRoot())
-			return Bool.UNKNOWN;
+		if (x.isRoot()) return Bool.UNKNOWN;
 
 		final ATermAppl c = createConcept(x);
 
@@ -382,14 +356,13 @@ public class EmptySRIQStrategy extends CompletionStrategy
 			_logger.finest(() -> "??? Cache miss for " + c);
 			_cachedNodes.put(x, c);
 		}
+		else if (!_cacheSafety.isPresent() || !_cacheSafety.get().isSafe(c, x))
+		{
+			_logger.finer(() -> "*** Cache unsafe for " + c);
+			return Bool.UNKNOWN;
+		}
 		else
-			if (!_cacheSafety.isPresent() || !_cacheSafety.get().isSafe(c, x))
-			{
-				_logger.finer(() -> "*** Cache unsafe for " + c);
-				return Bool.UNKNOWN;
-			}
-			else
-				_logger.finer(() -> "*** Cache hit for " + c + " sat = " + sat);
+			_logger.finer(() -> "*** Cache hit for " + c + " sat = " + sat);
 
 		return sat;
 	}
@@ -399,8 +372,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 		Bool sat = _abox.getCachedSat(c);
 
 		// return if we have the cached result or the class is not an intersection
-		if (sat.isKnown() || !ATermUtils.isAnd(c))
-			return sat;
+		if (sat.isKnown() || !ATermUtils.isAnd(c)) return sat;
 
 		sat = null;
 
@@ -419,45 +391,39 @@ public class EmptySRIQStrategy extends CompletionStrategy
 				sat = Bool.UNKNOWN;
 				break;
 			}
+			else if (node.isBottom())
+			{
+				// an element is unsat so the intersection is unsat
+				sat = Bool.FALSE;
+				break;
+			}
+			else if (node.isTop())
+			{
+				// do nothing, intersection with TOP is redundant
+			}
+			else if (cached1 == null)
+				cached1 = node;
+			else if (cached2 == null)
+				cached2 = node;
 			else
-				if (node.isBottom())
-				{
-					// an element is unsat so the intersection is unsat
-					sat = Bool.FALSE;
-					break;
-				}
-				else
-					if (node.isTop())
-					{
-						// do nothing, intersection with TOP is redundant
-					}
-					else
-						if (cached1 == null)
-							cached1 = node;
-						else
-							if (cached2 == null)
-								cached2 = node;
-							else
-							{
-								// if there are more than two _nodes we cannot do mergability check so give up
-								sat = Bool.UNKNOWN;
-								break;
-							}
+			{
+				// if there are more than two _nodes we cannot do mergability check so give up
+				sat = Bool.UNKNOWN;
+				break;
+			}
 		}
 
 		// we can do mergability check
-		if (sat == null)
-			if (cached2 == null)
-				// only one element in the intersection that is not TOP so the intersection is
-				// satisfiable
-				sat = Bool.TRUE;
-			else
-				// there are two classes in the intersection, so check if the cahed models can
-				// be merged without a clash
-				sat = _abox.getCache().isMergable(_abox.getKB(), cached1, cached2);
+		if (sat == null) if (cached2 == null)
+			// only one element in the intersection that is not TOP so the intersection is
+			// satisfiable
+			sat = Bool.TRUE;
+		else
+			// there are two classes in the intersection, so check if the cahed models can
+			// be merged without a clash
+			sat = _abox.getCache().isMergable(_abox.getKB(), cached1, cached2);
 
-		if (sat.isKnown())
-			_abox.getCache().putSat(c, sat.isTrue());
+		if (sat.isKnown()) _abox.getCache().putSat(c, sat.isTrue());
 
 		return sat;
 	}
@@ -500,8 +466,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 		if (_logger.isLoggable(Level.FINE))
 		{
 			_logger.fine("RESTORE: Branch " + br.getBranchIndexInABox());
-			if (br.getNodeCount() < nodeList.size())
-				_logger.fine("Remove _nodes " + nodeList.subList(br.getNodeCount(), nodeList.size()));
+			if (br.getNodeCount() < nodeList.size()) _logger.fine("Remove _nodes " + nodeList.subList(br.getNodeCount(), nodeList.size()));
 		}
 		for (int i = 0; i < nodeList.size(); i++)
 		{
@@ -512,24 +477,19 @@ public class EmptySRIQStrategy extends CompletionStrategy
 			{
 				_abox.removeNode(x);
 				final ATermAppl c = _cachedNodes.remove(node);
-				if (c != null && OpenlletOptions.USE_ADVANCED_CACHING)
-					if (clashPath.contains(x))
-					{
-						if (_logger.isLoggable(Level.FINEST))
-							_logger.finest("+++ Cache unsat concept " + c);
-						_abox.getCache().putSat(c, false);
-					}
-					else
-						if (_logger.isLoggable(Level.FINEST))
-							_logger.finest("--- Do not _cache concept " + c + " " + x + " " + clashNode + " " + clashPath);
+				if (c != null && OpenlletOptions.USE_ADVANCED_CACHING) if (clashPath.contains(x))
+				{
+					if (_logger.isLoggable(Level.FINEST)) _logger.finest("+++ Cache unsat concept " + c);
+					_abox.getCache().putSat(c, false);
+				}
+				else if (_logger.isLoggable(Level.FINEST)) _logger.finest("--- Do not _cache concept " + c + " " + x + " " + clashNode + " " + clashPath);
 			}
 			else
 			{
 				node.restore(br.getBranchIndexInABox());
 
 				// FIXME should we look at the clash path or clash _node
-				if (node.equals(clashNode))
-					_cachedNodes.remove(node);
+				if (node.equals(clashNode)) _cachedNodes.remove(node);
 			}
 		}
 		nodeList.subList(br.getNodeCount(), nodeList.size()).clear();
@@ -540,10 +500,9 @@ public class EmptySRIQStrategy extends CompletionStrategy
 			_allValuesRule.apply(ind);
 		}
 
-		if (_logger.isLoggable(Level.FINE))
-			_abox.printTree();
+		if (_logger.isLoggable(Level.FINE)) _abox.printTree();
 
-		timer.ifPresent(t -> t.stop());
+		timer.ifPresent(Timer::stop);
 	}
 
 	protected boolean backtrack()
@@ -554,12 +513,11 @@ public class EmptySRIQStrategy extends CompletionStrategy
 
 		while (!branchFound)
 		{
-			_completionTimer.ifPresent(t -> t.check());
+			_completionTimer.ifPresent(Timer::check);
 
 			final int lastBranch = _abox.getClash().getDepends().max();
 
-			if (lastBranch <= 0)
-				return false;
+			if (lastBranch <= 0) return false;
 
 			final List<Branch> branches = _abox.getBranches();
 			_abox.getStats()._backjumps += branches.size() - lastBranch;
@@ -569,13 +527,11 @@ public class EmptySRIQStrategy extends CompletionStrategy
 				branches.subList(lastBranch, branches.size()).clear();
 				newBranch = branches.get(lastBranch - 1);
 
-				if (_logger.isLoggable(Level.FINE))
-					_logger.fine("JUMP: " + lastBranch);
+				if (_logger.isLoggable(Level.FINE)) _logger.fine("JUMP: " + lastBranch);
 				if (newBranch == null || lastBranch != newBranch.getBranchIndexInABox())
 					throw new OpenError("Internal error in reasoner: Trying to backtrack _branch " + lastBranch + " but got " + newBranch);
 
-				if (newBranch.getTryNext() < newBranch.getTryCount())
-					newBranch.setLastClash(_abox.getClash().getDepends());
+				if (newBranch.getTryNext() < newBranch.getTryCount()) newBranch.setLastClash(_abox.getClash().getDepends());
 
 				newBranch.setTryNext(newBranch.getTryNext() + 1);
 
@@ -590,8 +546,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 			if (!branchFound || newBranch == null)
 			{
 				_abox.getClash().getDepends().remove(lastBranch);
-				if (_logger.isLoggable(Level.FINE))
-					_logger.fine("FAIL: " + lastBranch);
+				if (_logger.isLoggable(Level.FINE)) _logger.fine("FAIL: " + lastBranch);
 			}
 			else
 			{
@@ -599,8 +554,7 @@ public class EmptySRIQStrategy extends CompletionStrategy
 				// _branch multiple times and we want the same copy to be available every time
 				_mayNeedExpanding = new LinkedList<>(_mnx.get(newBranch.getBranchIndexInABox()));
 				_mnx.subList(newBranch.getBranchIndexInABox() + 1, _mnx.size()).clear();
-				if (_logger.isLoggable(Level.FINE))
-					_logger.fine("MNX : " + _mayNeedExpanding);
+				if (_logger.isLoggable(Level.FINE)) _logger.fine("MNX : " + _mayNeedExpanding);
 			}
 
 		}

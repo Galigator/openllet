@@ -26,17 +26,17 @@ public interface DefinitionOrder extends Iterable<ATermAppl>
 	 * Returns an iterator over all the classes in the ontology sorted based on the definition _order.
 	 */
 	@Override
-	public Iterator<ATermAppl> iterator();
+	Iterator<ATermAppl> iterator();
 
 	/**
 	 * Returns if a concept is used in cyclic definitions.
 	 *
-	 * @param concept concept to check
-	 * @return <code>true</code> if concept is used in a cyclic definition
+	 * @param  concept concept to check
+	 * @return         <code>true</code> if concept is used in a cyclic definition
 	 */
-	public boolean isCyclic(ATermAppl concept);
+	boolean isCyclic(ATermAppl concept);
 
-	default public List<ATermAppl> getList()
+	default List<ATermAppl> getList()
 	{
 		final Iterator<ATermAppl> it = iterator();
 		final ArrayList<ATermAppl> result = new ArrayList<>();

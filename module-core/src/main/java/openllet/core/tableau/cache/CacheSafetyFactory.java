@@ -24,9 +24,9 @@ public class CacheSafetyFactory
 	public static CacheSafety createCacheSafety(final Expressivity expr)
 	{
 		return expr.hasInverse() ? expr.hasNominal() ? //
-				CacheSafetyNeverSafe.getInstance() : // 
-				OpenlletOptions.USE_INVERSE_CACHING ? // 
-						new CacheSafetyDynamic(expr) : // 
+				CacheSafetyNeverSafe.getInstance() : //
+				OpenlletOptions.USE_INVERSE_CACHING ? //
+						new CacheSafetyDynamic(expr) : //
 						CacheSafetyNeverSafe.getInstance()
 				: //
 				expr.hasNominal() ? //

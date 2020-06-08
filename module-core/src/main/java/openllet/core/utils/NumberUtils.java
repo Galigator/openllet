@@ -15,28 +15,28 @@ import openllet.atom.OpenError;
 
 public class NumberUtils
 {
-	public static final int BYTE = 0;
-	public static final int SHORT = 1;
-	public static final int INT = 2;
-	public static final int LONG = 3;
-	public static final int INTEGER = 4;
-	public static final int DECIMAL = 5;
-	public static final int FLOAT = 6;
-	public static final int DOUBLE = 7;
-	private static final int TYPES = 8;
+	public static final int				BYTE			= 0;
+	public static final int				SHORT			= 1;
+	public static final int				INT				= 2;
+	public static final int				LONG			= 3;
+	public static final int				INTEGER			= 4;
+	public static final int				DECIMAL			= 5;
+	public static final int				FLOAT			= 6;
+	public static final int				DOUBLE			= 7;
+	private static final int			TYPES			= 8;
 
-	public static final Byte BYTE_ZERO = Byte.valueOf((byte) 0);
-	public static final Short SHORT_ZERO = Short.valueOf((short) 0);
-	public static final Integer INT_ZERO = Integer.valueOf(0);
-	public static final Long LONG_ZERO = Long.valueOf(0);
-	public static final BigInteger INTEGER_ZERO = BigInteger.valueOf(0);
-	public static final BigDecimal DECIMAL_ZERO = BigDecimal.valueOf(0);
-	public static final Float FLOAT_ZERO = Float.valueOf(0);
-	public static final Double DOUBLE_ZERO = Double.valueOf(0);
+	public static final Byte			BYTE_ZERO		= (byte) 0;
+	public static final Short			SHORT_ZERO		= (short) 0;
+	public static final Integer			INT_ZERO		= 0;
+	public static final Long			LONG_ZERO		= (long) 0;
+	public static final BigInteger		INTEGER_ZERO	= BigInteger.valueOf(0);
+	public static final BigDecimal		DECIMAL_ZERO	= BigDecimal.valueOf(0);
+	public static final Float			FLOAT_ZERO		= (float) 0;
+	public static final Double			DOUBLE_ZERO		= (double) 0;
 
-	private static final List<Class<?>> classes = Arrays.asList(new Class[] { Byte.class, Short.class, Integer.class, Long.class, BigInteger.class, BigDecimal.class, Float.class, Double.class });
-	private static final List<String> names = Arrays.asList(new String[] { "Byte", "Short", "Integer", "Long", "BigInteger", "BigDecimal", "Float", "Double" });
-	private static final List<Number> zeros = Arrays.asList(new Number[] { BYTE_ZERO, SHORT_ZERO, INT_ZERO, LONG_ZERO, INTEGER_ZERO, DECIMAL_ZERO, FLOAT_ZERO, DOUBLE_ZERO });
+	private static final List<Class<?>>	classes			= Arrays.asList(Byte.class, Short.class, Integer.class, Long.class, BigInteger.class, BigDecimal.class, Float.class, Double.class);
+	private static final List<String>	names			= Arrays.asList("Byte", "Short", "Integer", "Long", "BigInteger", "BigDecimal", "Float", "Double");
+	private static final List<Number>	zeros			= Arrays.asList(BYTE_ZERO, SHORT_ZERO, INT_ZERO, LONG_ZERO, INTEGER_ZERO, DECIMAL_ZERO, FLOAT_ZERO, DOUBLE_ZERO);
 
 	public static Number parseByte(final String str) throws NumberFormatException
 	{
@@ -82,19 +82,15 @@ public class NumberUtils
 	{
 		String str = strParam;
 
-		if (0 > type || type >= TYPES)
-			throw new UnsupportedOperationException("Unknown numeric type " + type);
+		if (0 > type || type >= TYPES) throw new UnsupportedOperationException("Unknown numeric type " + type);
 
-		if (type == FLOAT)
-			return Float.valueOf(str);
-		if (type == DOUBLE)
-			return Double.valueOf(str);
+		if (type == FLOAT) return Float.valueOf(str);
+		if (type == DOUBLE) return Double.valueOf(str);
 
 		int idx = 0;
 		final int len = str.length();
 
-		if (len == 0)
-			throw new NumberFormatException("Empty string");
+		if (len == 0) throw new NumberFormatException("Empty string");
 
 		boolean negate = false;
 		int start = 0;
@@ -123,8 +119,7 @@ public class NumberUtils
 				throw new NumberFormatException("Invalid char '" + str.charAt(idx) + "' in " + str);
 		}
 
-		if (idx == len)
-			throw new NumberFormatException("Invalid number that has only sign " + (negate ? '-' : '+'));
+		if (idx == len) throw new NumberFormatException("Invalid number that has only sign " + (negate ? '-' : '+'));
 
 		// skip leading '0'
 		while (idx < len && str.charAt(idx) == '0')
@@ -158,60 +153,51 @@ public class NumberUtils
 					{
 						int lastNonZeroDigit = len;
 						while (lastNonZeroDigit >= fractionPoint)
-							if (str.charAt(--lastNonZeroDigit) != '0')
-								break;
+							if (str.charAt(--lastNonZeroDigit) != '0') break;
 						if (lastNonZeroDigit <= fractionPoint)
 							number = new BigInteger(str.substring(start, fractionPoint));
+						else if (lastNonZeroDigit != len)
+							number = new BigDecimal(str.substring(start, lastNonZeroDigit));
 						else
-							if (lastNonZeroDigit != len)
-								number = new BigDecimal(str.substring(start, lastNonZeroDigit));
-							else
-								number = new BigDecimal(str.substring(start));
+							number = new BigDecimal(str.substring(start));
 					}
 					break;
 				}
 
 				prev = curr;
 			}
-			else
-				if (ch == '.')
+			else if (ch == '.')
+			{
+				int lastNonZeroDigit = len;
+				final int fractionPoint = idx - 1;
+				while (lastNonZeroDigit >= fractionPoint)
+					if (str.charAt(--lastNonZeroDigit) != '0') break;
+				if (lastNonZeroDigit <= fractionPoint)
+					number = new BigInteger(str.substring(start, fractionPoint));
+				else if (lastNonZeroDigit != len - 1)
 				{
-					int lastNonZeroDigit = len;
-					final int fractionPoint = idx - 1;
-					while (lastNonZeroDigit >= fractionPoint)
-						if (str.charAt(--lastNonZeroDigit) != '0')
-							break;
-					if (lastNonZeroDigit <= fractionPoint)
-						number = new BigInteger(str.substring(start, fractionPoint));
-					else
-						if (lastNonZeroDigit != len - 1)
-						{
-							str = str.substring(0, lastNonZeroDigit + 1);
-							number = new BigDecimal(str.substring(start));
-						}
-						else
-							number = new BigDecimal(str.substring(start));
-					break;
+					str = str.substring(0, lastNonZeroDigit + 1);
+					number = new BigDecimal(str.substring(start));
 				}
 				else
-					throw new NumberFormatException("Invalid char '" + ch + "' in " + str);
+					number = new BigDecimal(str.substring(start));
+				break;
+			}
+			else
+				throw new NumberFormatException("Invalid char '" + ch + "' in " + str);
 		}
 
-		if (number == null)
-			if (Byte.MIN_VALUE <= curr && curr <= Byte.MAX_VALUE)
-				number = Byte.valueOf((byte) curr);
-			else
-				if (Short.MIN_VALUE <= curr && curr <= Short.MAX_VALUE)
-					number = Short.valueOf((short) curr);
-				else
-					if (Integer.MIN_VALUE <= curr && curr <= Integer.MAX_VALUE)
-						number = Integer.valueOf((int) curr);
-					else
-						number = Long.valueOf(curr);
+		if (number == null) if (Byte.MIN_VALUE <= curr && curr <= Byte.MAX_VALUE)
+			number = Byte.valueOf((byte) curr);
+		else if (Short.MIN_VALUE <= curr && curr <= Short.MAX_VALUE)
+			number = Short.valueOf((short) curr);
+		else if (Integer.MIN_VALUE <= curr && curr <= Integer.MAX_VALUE)
+			number = Integer.valueOf((int) curr);
+		else
+			number = Long.valueOf(curr);
 
 		final int foundType = classes.indexOf(number.getClass());
-		if (type < foundType)
-			throw new NumberFormatException(str + " is not a valid " + names.get(type));
+		if (type < foundType) throw new NumberFormatException(str + " is not a valid " + names.get(type));
 
 		return number;
 	}
@@ -250,8 +236,7 @@ public class NumberUtils
 
 	public static String getTypeName(final Number number)
 	{
-		if (number == null)
-			return "null";
+		if (number == null) return "null";
 		return names.get(classes.indexOf(number.getClass())).toString();
 	}
 
@@ -283,11 +268,9 @@ public class NumberUtils
 
 		if (type1 != type2)
 		{
-			if (type1 > DECIMAL || type2 > DECIMAL)
-				throw new IllegalArgumentException("Trying to compare incompatible values " + n1 + " " + n2);
+			if (type1 > DECIMAL || type2 > DECIMAL) throw new IllegalArgumentException("Trying to compare incompatible values " + n1 + " " + n2);
 
-			if (type1 == DECIMAL || type2 == DECIMAL)
-				return convertToDecimal(n1).compareTo(convertToDecimal(n2));
+			if (type1 == DECIMAL || type2 == DECIMAL) return convertToDecimal(n1).compareTo(convertToDecimal(n2));
 
 			if (type1 < type2)
 				return -sign(n2);
@@ -324,8 +307,7 @@ public class NumberUtils
 		final String str = n.toString();
 		int totalDigitsInValue = str.length();
 
-		if (type >= DECIMAL && str.indexOf('.') != -1)
-			totalDigitsInValue -= 1;
+		if (type >= DECIMAL && str.indexOf('.') != -1) totalDigitsInValue -= 1;
 
 		return totalDigitsInValue;
 	}
@@ -371,8 +353,7 @@ public class NumberUtils
 
 			final int cmp = compare(number1, number2);
 
-			if (cmp != result)
-				throw new OpenError(val1 + " " + val2 + " " + cmp + " " + result);
+			if (cmp != result) throw new OpenError(val1 + " " + val2 + " " + cmp + " " + result);
 
 			final String op = cmp < 0 ? "<" : cmp == 0 ? "=" : ">";
 			System.out.println(number1 + " (" + getTypeName(number1) + ") " + op + " " + number2 + " (" + getTypeName(number2) + ")");

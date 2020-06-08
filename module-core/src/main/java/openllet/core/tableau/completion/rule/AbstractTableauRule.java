@@ -37,9 +37,9 @@ public abstract class AbstractTableauRule implements TableauRule
 		NONE, DIRECT, INDIRECT, COMPLETE
 	}
 
-	protected final CompletionStrategy _strategy;
-	protected final NodeSelector _nodeSelector;
-	protected final BlockingType _blockingType;
+	protected final CompletionStrategy	_strategy;
+	protected final NodeSelector		_nodeSelector;
+	protected final BlockingType		_blockingType;
 
 	public AbstractTableauRule(final CompletionStrategy strategy, final NodeSelector nodeSelector, final BlockingType blockingType)
 	{
@@ -61,15 +61,13 @@ public abstract class AbstractTableauRule implements TableauRule
 					{
 						if (blocking.isBlocked(node))
 						{
-							if (OpenlletOptions.USE_COMPLETION_QUEUE)
-								addQueueElement(node);
+							if (OpenlletOptions.USE_COMPLETION_QUEUE) addQueueElement(node);
 						}
 						else
 						{
 							apply(node);
 
-							if (_strategy.getABox().isClosed())
-								return true;
+							if (_strategy.getABox().isClosed()) return true;
 						}
 						return false;
 
@@ -92,8 +90,7 @@ public abstract class AbstractTableauRule implements TableauRule
 					else
 					{
 						apply(node);
-						if (abox.isClosed())
-							return true;
+						if (abox.isClosed()) return true;
 					}
 				}
 			else
@@ -105,8 +102,7 @@ public abstract class AbstractTableauRule implements TableauRule
 					{
 						apply(node);
 
-						if (abox.isClosed())
-							return true;
+						if (abox.isClosed()) return true;
 					}
 				}
 

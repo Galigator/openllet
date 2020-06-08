@@ -42,17 +42,17 @@ import openllet.shared.tools.Log;
  */
 public class DateTimeOperators
 {
-	private static Logger _logger = Log.getLogger(DateTimeOperators.class);
+	private static Logger				_logger				= Log.getLogger(DateTimeOperators.class);
 
-	public final static GeneralFunction date = new Date();
+	public final static GeneralFunction	date				= new Date();
 
-	public final static GeneralFunction dateTime = new DateTime();
+	public final static GeneralFunction	dateTime			= new DateTime();
 
-	public final static Function dayTimeDuration = new StringFunctionAdapter(new Duration(Duration.DURATIONTYPE.DAYTIME), XSD + "duration");
+	public final static Function		dayTimeDuration		= new StringFunctionAdapter(new Duration(Duration.DURATIONTYPE.DAYTIME), XSD + "duration");
 
-	public final static GeneralFunction time = new Time();
+	public final static GeneralFunction	time				= new Time();
 
-	public final static Function yearMonthDuration = new StringFunctionAdapter(new Duration(Duration.DURATIONTYPE.YEARMONTH), XSD + "duration");
+	public final static Function		yearMonthDuration	= new StringFunctionAdapter(new Duration(Duration.DURATIONTYPE.YEARMONTH), XSD + "duration");
 
 	private static class Date implements GeneralFunction, StringToStringFunction
 	{
@@ -75,20 +75,17 @@ public class DateTimeOperators
 				else
 					results[4] = abox.addLiteral(ATermUtils.makePlainLiteral(""));
 
-				if (mergeResults(args, results))
-					return true;
+				if (mergeResults(args, results)) return true;
 			}
-			else
-				if (restBound(args))
+			else if (restBound(args))
+			{
+				final Literal result = allBound.apply(abox, args[0], argList(args));
+				if (result != null)
 				{
-					final Literal result = allBound.apply(abox, args[0], argList(args));
-					if (result != null)
-					{
-						if (args[0] == null)
-							args[0] = result;
-						return true;
-					}
+					if (args[0] == null) args[0] = result;
+					return true;
 				}
+			}
 
 			return false;
 		}
@@ -96,17 +93,14 @@ public class DateTimeOperators
 		@Override
 		public String apply(final String... args)
 		{
-			if (args.length < 3 || args.length > 4)
-				return null;
+			if (args.length < 3 || args.length > 4) return null;
 
 			String tz = "";
-			if (args.length == 4)
-				tz = args[3];
+			if (args.length == 4) tz = args[3];
 
 			final String dateString = toDate(args[0], args[1], args[2]) + tz;
 
-			if (!checkValue(dateString, XSDDate.getInstance()))
-				return null;
+			if (!checkValue(dateString, XSDDate.getInstance())) return null;
 
 			return dateString;
 		}
@@ -132,8 +126,7 @@ public class DateTimeOperators
 				final Literal result = allBound.apply(abox, args[0], argList(args));
 				if (result != null)
 				{
-					if (args[0] == null)
-						args[0] = result;
+					if (args[0] == null) args[0] = result;
 					return true;
 				}
 				return false;
@@ -151,11 +144,9 @@ public class DateTimeOperators
 				results[5] = createInteger(abox, value.getMinute());
 				final BigDecimal fractionalSeconds = value.getFractionalSecond();
 				results[6] = createDecimal(abox, fractionalSeconds == null ? value.getSecond() : fractionalSeconds.add(BigDecimal.valueOf(value.getSecond())));
-				if (value.getTimezone() != DatatypeConstants.FIELD_UNDEFINED)
-					results[7] = abox.addLiteral(ATermUtils.makePlainLiteral(toTZ(value.getTimezone())));
+				if (value.getTimezone() != DatatypeConstants.FIELD_UNDEFINED) results[7] = abox.addLiteral(ATermUtils.makePlainLiteral(toTZ(value.getTimezone())));
 
-				if (mergeResults(args, results))
-					return true;
+				if (mergeResults(args, results)) return true;
 			}
 
 			return false;
@@ -164,17 +155,14 @@ public class DateTimeOperators
 		@Override
 		public String apply(final String... args)
 		{
-			if (args.length < 6 || args.length > 7)
-				return null;
+			if (args.length < 6 || args.length > 7) return null;
 
 			String tz = "";
-			if (args.length == 7)
-				tz = args[6];
+			if (args.length == 7) tz = args[6];
 
 			final String dateTimeString = toDate(args[0], args[1], args[2]) + "T" + toTime(args[3], args[4], args[5]) + tz;
 
-			if (!checkValue(dateTimeString, XSDDateTime.getInstance()))
-				return null;
+			if (!checkValue(dateTimeString, XSDDateTime.getInstance())) return null;
 
 			return dateTimeString;
 		}
@@ -192,13 +180,13 @@ public class DateTimeOperators
 	 */
 	private static class Duration implements GeneralFunction, StringToStringFunction
 	{
-		public static enum DURATIONTYPE
+		public enum DURATIONTYPE
 		{
 			FULL(0, 5), YEARMONTH(0, 2), DAYTIME(2, 5);
 
-			private int _start;
+			private int	_start;
 			@SuppressWarnings("unused")
-			private int _end;
+			private int	_end;
 
 			DURATIONTYPE(final int start, final int end)
 			{
@@ -208,10 +196,10 @@ public class DateTimeOperators
 
 		}
 
-		private static final char[] SEP = { 'Y', 'M', 'D', 'H', 'M', 'S' };
+		private static final char[]			SEP	= { 'Y', 'M', 'D', 'H', 'M', 'S' };
 
-		private final StringFunctionAdapter allBound;
-		private final DURATIONTYPE granularity;
+		private final StringFunctionAdapter	allBound;
+		private final DURATIONTYPE			granularity;
 
 		public Duration(final DURATIONTYPE dur)
 		{
@@ -227,8 +215,7 @@ public class DateTimeOperators
 				final Literal result = allBound.apply(abox, args[0], argList(args));
 				if (result != null)
 				{
-					if (args[0] == null)
-						args[0] = result;
+					if (args[0] == null) args[0] = result;
 					return true;
 				}
 				return false;
@@ -243,8 +230,7 @@ public class DateTimeOperators
 		@Override
 		public String apply(final String... args)
 		{
-			if (args.length > SEP.length + granularity._start)
-				return null;
+			if (args.length > SEP.length + granularity._start) return null;
 
 			StringBuilder result;
 			if (args[0].charAt(0) != '-')
@@ -297,8 +283,7 @@ public class DateTimeOperators
 				final Literal result = allBound.apply(abox, args[0], argList(args));
 				if (result != null)
 				{
-					if (args[0] == null)
-						args[0] = result;
+					if (args[0] == null) args[0] = result;
 					return true;
 				}
 				return false;
@@ -313,11 +298,9 @@ public class DateTimeOperators
 				results[2] = createInteger(abox, value.getMinute());
 				final BigDecimal fractionalSeconds = value.getFractionalSecond();
 				results[3] = createDecimal(abox, fractionalSeconds == null ? value.getSecond() : fractionalSeconds.add(BigDecimal.valueOf(value.getSecond())));
-				if (value.getTimezone() != DatatypeConstants.FIELD_UNDEFINED)
-					results[4] = abox.addLiteral(ATermUtils.makePlainLiteral(toTZ(value.getTimezone())));
+				if (value.getTimezone() != DatatypeConstants.FIELD_UNDEFINED) results[4] = abox.addLiteral(ATermUtils.makePlainLiteral(toTZ(value.getTimezone())));
 
-				if (mergeResults(args, results))
-					return true;
+				if (mergeResults(args, results)) return true;
 			}
 
 			return false;
@@ -327,17 +310,14 @@ public class DateTimeOperators
 		@Override
 		public String apply(final String... args)
 		{
-			if (args.length < 3 || args.length > 4)
-				return null;
+			if (args.length < 3 || args.length > 4) return null;
 
 			String tz = "";
-			if (args.length == 4)
-				tz = args[3];
+			if (args.length == 4) tz = args[3];
 
 			final String timeString = toTime(args[0], args[1], args[2]) + tz;
 
-			if (!checkValue(timeString, XSDTime.getInstance()))
-				return null;
+			if (!checkValue(timeString, XSDTime.getInstance())) return null;
 
 			return timeString;
 		}
@@ -352,15 +332,12 @@ public class DateTimeOperators
 
 	private static boolean applicability(final int minargs, final int maxargs, final boolean[] boundPositions)
 	{
-		if (boundPositions.length < minargs || boundPositions.length > maxargs)
-			return false;
+		if (boundPositions.length < minargs || boundPositions.length > maxargs) return false;
 
-		if (boundPositions[0])
-			return true;
+		if (boundPositions[0]) return true;
 
 		for (int i = 1; i < boundPositions.length; i++)
-			if (!boundPositions[i])
-				return false;
+			if (!boundPositions[i]) return false;
 		return true;
 
 	}
@@ -404,14 +381,10 @@ public class DateTimeOperators
 		for (int i = 0; i < args1.length; i++)
 			if (args1[i] == null)
 			{
-				if (args2[i] == null)
-					return false;
+				if (args2[i] == null) return false;
 				args1[i] = args2[i];
 			}
-			else
-				if (args2[i] != null)
-					if (!ComparisonTesters.equal.test(new Literal[] { args1[i], args2[i] }))
-						return false;
+			else if (args2[i] != null) if (!ComparisonTesters.equal.test(new Literal[] { args1[i], args2[i] })) return false;
 		return true;
 	}
 
@@ -429,8 +402,7 @@ public class DateTimeOperators
 	{
 
 		for (int i = 1; i < args.length; i++)
-			if (args[i] == null)
-				return false;
+			if (args[i] == null) return false;
 		return true;
 	}
 

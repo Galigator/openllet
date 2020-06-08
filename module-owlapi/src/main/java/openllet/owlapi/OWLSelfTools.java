@@ -6,7 +6,7 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 /**
  * Management of ontologies that have a reference on self.
- * 
+ *
  * @since 2.5.1
  */
 public class OWLSelfTools extends OWLTools implements OWLManagedObject

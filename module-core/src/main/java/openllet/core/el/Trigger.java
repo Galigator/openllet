@@ -20,8 +20,8 @@ import java.util.Arrays;
  */
 public class Trigger
 {
-	private final ConceptInfo[] _premises;
-	private final ConceptInfo _consequence;
+	private final ConceptInfo[]	_premises;
+	private final ConceptInfo	_consequence;
 
 	public Trigger(final ConceptInfo[] premises, final ConceptInfo consequence)
 	{
@@ -47,8 +47,7 @@ public class Trigger
 	public boolean isTriggered(final ConceptInfo ci)
 	{
 		for (final ConceptInfo premise : _premises)
-			if (!ci.hasSuperClass(premise))
-				return false;
+			if (!ci.hasSuperClass(premise)) return false;
 		return true;
 	}
 

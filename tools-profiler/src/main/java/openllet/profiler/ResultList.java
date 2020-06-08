@@ -19,15 +19,14 @@ import java.util.Map;
  * Company: Clark & Parsia, LLC. <http://www.clarkparsia.com>
  * </p>
  *
- * @author Evren Sirin
+ * @author     Evren Sirin
+ * @param  <T>
  */
 public class ResultList<T>
 {
-	private final int _colCount;
-
-	private int _colWidth = 8;
-
-	private final Map<String, Collection<Result<T>>> _results = new LinkedHashMap<>();
+	private final int									_colCount;
+	private int											_colWidth	= 8;
+	private final Map<String, Collection<Result<T>>>	_results	= new LinkedHashMap<>();
 
 	public ResultList(final int colCount, final int colWidth)
 	{
@@ -73,8 +72,7 @@ public class ResultList<T>
 		for (final Result<T> result : results)
 		{
 			System.out.format("%" + _colWidth + ".2f |", result.getAvgTime());
-			if (_colCount > 1)
-				System.out.format("%" + _colWidth + ".2f |", result.getAvgMemory());
+			if (_colCount > 1) System.out.format("%" + _colWidth + ".2f |", result.getAvgMemory());
 		}
 
 		System.out.println();
@@ -84,27 +82,25 @@ public class ResultList<T>
 	{
 		System.out.println();
 		System.out.println();
-		System.out.format("%-" + (2 * _colWidth) + "s|", " ");
+		System.out.format("%-" + 2 * _colWidth + "s|", " ");
 
-		final int headerWidth = (_colCount * _colWidth);
+		final int headerWidth = _colCount * _colWidth;
 
 		for (final Result<T> result : results)
 		{
 			String colHeader = result.getTask().toString();
-			if (colHeader.length() > headerWidth)
-				colHeader = colHeader.substring(0, headerWidth - 1) + '.';
+			if (colHeader.length() > headerWidth) colHeader = colHeader.substring(0, headerWidth - 1) + '.';
 			System.out.format(" %-" + headerWidth + "s", colHeader);
 			for (int i = 0; i < 2 * (_colCount - 1); i++)
 				System.out.print(" ");
 			System.out.print("|");
 		}
 		System.out.println();
-		System.out.format("%-" + (2 * _colWidth) + "s|", " ");
+		System.out.format("%-" + 2 * _colWidth + "s|", " ");
 		for (int i = 0; i < results.size(); i++)
 		{
 			System.out.format(" %-" + _colWidth + "s|", "Time");
-			if (_colCount > 1)
-				System.out.format(" %-" + _colWidth + "s|", "Mem");
+			if (_colCount > 1) System.out.format(" %-" + _colWidth + "s|", "Mem");
 		}
 		System.out.println();
 	}

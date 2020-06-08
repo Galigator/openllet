@@ -39,8 +39,7 @@ public class SelfRule extends AbstractTableauRule
 	{
 		for (final ATermAppl c : new ArrayList<>(node.getTypes(Node.ATOM))) // 'applyAllValues' can change the underlying types of individual; so we make a copy to iterate
 		{
-			if (!OpenlletOptions.MAINTAIN_COMPLETION_QUEUE && null == node.getDepends(c))
-				continue;
+			if (!OpenlletOptions.MAINTAIN_COMPLETION_QUEUE && null == node.getDepends(c)) continue;
 
 			if (ATermUtils.isSelf(c))
 			{
@@ -49,8 +48,7 @@ public class SelfRule extends AbstractTableauRule
 				_logger.fine(() -> "SELF: " + node + "\trole:" + role + "\tdepends:" + node.getDepends(c) + "\tRSuccessor:" + node.hasRSuccessor(role, node));
 				_strategy.addEdge(node, role, node, node.getDepends(c));
 
-				if (_strategy.getABox().isClosed())
-					return;
+				if (_strategy.getABox().isClosed()) return;
 			}
 		}
 	}

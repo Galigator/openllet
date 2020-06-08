@@ -16,7 +16,7 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 /**
  * Load and ontology in functional syntax.
- * 
+ *
  * @since 2.6.3
  */
 public class OWLFunctionalSyntax
@@ -30,7 +30,7 @@ public class OWLFunctionalSyntax
 
 		try (final BufferedReader in = new BufferedReader(new FileReader(file)))
 		{
-			ontology = (ontologyId.isPresent()) ? manager.createOntology(ontologyId.get()) : manager.createOntology();
+			ontology = ontologyId.isPresent() ? manager.createOntology(ontologyId.get()) : manager.createOntology();
 
 			final OWLFunctionalSyntaxParser parser = new OWLFunctionalSyntaxParser(in);
 			parser.setUp(ontology, new OWLOntologyLoaderConfiguration());

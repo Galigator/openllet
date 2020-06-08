@@ -15,20 +15,20 @@ import openllet.core.utils.AlphaNumericComparator;
 
 public class DLTestSuite extends TestSuite
 {
-	public static String _base = PelletTestSuite.base;
+	public static String			_base	= PelletTestSuite.base;
 
-	private final DLBenchmarkTest _test = new DLBenchmarkTest();
+	private final DLBenchmarkTest	_test	= new DLBenchmarkTest();
 
 	class DLTestCase extends TestCase
 	{
-		private final File _name;
-		private final boolean _tbox;
+		private final File		_name;
+		private final boolean	_tbox;
 
 		DLTestCase(final File name, final boolean tbox)
 		{
 			super("DLTestCase-" + name.getName());
-			this._name = name;
-			this._tbox = tbox;
+			_name = name;
+			_tbox = tbox;
 		}
 
 		@Override

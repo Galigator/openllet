@@ -58,9 +58,9 @@ import org.semanticweb.owlapi.model.OWLOntology;
 @RunWith(Parameterized.class)
 public class JenaExplanationTest extends AbstractExplanationTest
 {
-	private static final Logger _logger = Log.getLogger(JenaExplanationTest.class);
+	private static final Logger		_logger	= Log.getLogger(JenaExplanationTest.class);
 
-	private static final boolean _debug = false;
+	private static final boolean	_debug	= false;
 
 	@Parameters
 	public static Collection<Object[]> getParameters()
@@ -211,8 +211,7 @@ public class JenaExplanationTest extends AbstractExplanationTest
 
 		final Set<OWLAxiom> expectedExplanation = expectedExplanations.iterator().next();
 		final StringWriter sw = new StringWriter();
-		if (_debug)
-			ModelFactory.createModelForGraph(actual).write(System.out, "TTL");
+		if (_debug) ModelFactory.createModelForGraph(actual).write(System.out, "TTL");
 		ModelFactory.createModelForGraph(actual).write(sw, "RDF/XML");
 		final OWLOntology ont = _manager.loadOntologyFromOntologyDocument(new StringDocumentSource(sw.toString()));
 		final Set<? extends OWLAxiom> actualExplanation = ont.logicalAxioms().collect(Collectors.toSet());
@@ -236,8 +235,7 @@ public class JenaExplanationTest extends AbstractExplanationTest
 			sb.append(expectedAxiom);
 		}
 
-		if (!success)
-			_logger.severe("Error in explanation: " + sb);
+		if (!success) _logger.severe("Error in explanation: " + sb);
 
 		return success;
 	}

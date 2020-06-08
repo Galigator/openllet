@@ -30,28 +30,28 @@ public interface QueryResult extends Iterable<ResultBinding>
 	 *
 	 * @param binding to be added
 	 */
-	public void add(final ResultBinding binding);
+	void add(final ResultBinding binding);
 
 	/**
 	 * Returns result variables.
 	 *
 	 * @return variables that appear in the result
 	 */
-	public List<ATermAppl> getResultVars();
+	List<ATermAppl> getResultVars();
 
-	public boolean isDistinct();
+	boolean isDistinct();
 
 	/**
 	 * Tests whether the result is empty or not.
 	 *
 	 * @return true if the result contains not bindings
 	 */
-	public boolean isEmpty();
+	boolean isEmpty();
 
 	/**
 	 * Returns number of bindings in the result.
 	 *
 	 * @return number of bindings
 	 */
-	public int size();
+	int size();
 }

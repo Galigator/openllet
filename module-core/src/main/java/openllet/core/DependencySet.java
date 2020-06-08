@@ -49,38 +49,38 @@ import openllet.shared.tools.Log;
  */
 public class DependencySet
 {
-	public static final Logger _logger = Log.getLogger(DependencySet.class);
+	public static final Logger			_logger		= Log.getLogger(DependencySet.class);
 
-	public static final int NO_BRANCH = -1;
+	public static final int				NO_BRANCH	= -1;
 
 	/**
 	 * An empty dependency set
 	 */
-	public static final DependencySet EMPTY = new DependencySet();
+	public static final DependencySet	EMPTY		= new DependencySet();
 
 	/**
 	 * Used for assertions that are true by nature, i.e. an _individual always has type owl:Thing
 	 */
-	public static final DependencySet INDEPENDENT = new DependencySet(0);
+	public static final DependencySet	INDEPENDENT	= new DependencySet(0);
 
-	public static final IntSet ZERO = IntSetFactory.create(0);
+	public static final IntSet			ZERO		= IntSetFactory.create(0);
 
 	/**
 	 * A dummy dependency set that is used just to indicate there is a dependency
 	 */
-	public static final DependencySet DUMMY = new DependencySet(1);
+	public static final DependencySet	DUMMY		= new DependencySet(1);
 
 	/**
 	 * _index of branches this assertion _depends on
 	 */
-	private final IntSet _depends;
+	private final IntSet				_depends;
 
 	/**
 	 * _branch number when this assertion was added to ABox
 	 */
-	private int _branch = NO_BRANCH;
+	private int							_branch		= NO_BRANCH;
 
-	private volatile Set<ATermAppl> _explain;
+	private volatile Set<ATermAppl>		_explain;
 
 	/**
 	 * Create an empty set
@@ -136,8 +136,8 @@ public class DependencySet
 	}
 
 	/**
-	 * @param newBranch
-	 * @return a new DependencySet object with a new _branch number where the IntSet is openllet.shared.hash (changing one will change the other).
+	 * @param  newBranch
+	 * @return           a new DependencySet object with a new _branch number where the IntSet is openllet.shared.hash (changing one will change the other).
 	 */
 	public DependencySet copy(final int newBranch)
 	{
@@ -145,8 +145,8 @@ public class DependencySet
 	}
 
 	/**
-	 * @param b
-	 * @return true if <code>b</code> is in this set.
+	 * @param  b
+	 * @return   true if <code>b</code> is in this set.
 	 */
 	public boolean contains(final int b)
 	{
@@ -206,9 +206,9 @@ public class DependencySet
 	}
 
 	/**
-	 * @param ds
-	 * @param doExplanation
-	 * @return a new DependencySet and all the elements of <code>this</code> and <code>ds</code>.
+	 * @param  ds
+	 * @param  doExplanation
+	 * @return               a new DependencySet and all the elements of <code>this</code> and <code>ds</code>.
 	 */
 	public DependencySet union(final DependencySet ds, final boolean doExplanation)
 	{
@@ -222,14 +222,13 @@ public class DependencySet
 	}
 
 	/**
-	 * @param explain
-	 * @param doExplanation
-	 * @return the union as dependencySet
+	 * @param  explain
+	 * @param  doExplanation
+	 * @return               the union as dependencySet
 	 */
 	public DependencySet union(final Set<ATermAppl> explain, final boolean doExplanation)
 	{
-		if (!doExplanation || explain.isEmpty())
-			return this;
+		if (!doExplanation || explain.isEmpty()) return this;
 
 		return new DependencySet(_branch, _depends.copy(), SetUtils.union(_explain, explain));
 	}

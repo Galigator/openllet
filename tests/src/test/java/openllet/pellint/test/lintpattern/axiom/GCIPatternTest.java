@@ -48,17 +48,17 @@ public class GCIPatternTest extends PellintTestCase
 		OWLAxiom axiom = OWL.equivalentClasses(_cls[0], _cls[1]);
 		assertNull(_pattern.match(_ontology, axiom));
 
-		axiom = OWL.equivalentClasses(CollectionUtil.<OWLClassExpression> asSet(_cls[0], _cls[1], _cls[2]));
+		axiom = OWL.equivalentClasses(CollectionUtil.<OWLClassExpression>asSet(_cls[0], _cls[1], _cls[2]));
 		assertNull(_pattern.match(_ontology, axiom));
 
-		axiom = OWL.equivalentClasses(CollectionUtil.<OWLClassExpression> asSet(_cls[0], _P0AllC0, _cls[2]));
+		axiom = OWL.equivalentClasses(CollectionUtil.<OWLClassExpression>asSet(_cls[0], _P0AllC0, _cls[2]));
 		assertNull(_pattern.match(_ontology, axiom));
 	}
 
 	@Test
 	public void testComplexEquivalence()
 	{
-		final OWLAxiom axiom = OWL.equivalentClasses(CollectionUtil.<OWLClassExpression> asSet(_cls[0], _P0AllC0, _P0SomeC1));
+		final OWLAxiom axiom = OWL.equivalentClasses(CollectionUtil.<OWLClassExpression>asSet(_cls[0], _P0AllC0, _P0SomeC1));
 
 		final Lint lint = _pattern.match(_ontology, axiom);
 		assertNotNull(lint);
@@ -73,7 +73,7 @@ public class GCIPatternTest extends PellintTestCase
 	public void testOneOf()
 	{
 		final OWLClassExpression oneOf = OWL.oneOf(_ind);
-		final OWLAxiom axiom = OWL.equivalentClasses(CollectionUtil.<OWLClassExpression> asSet(_P0AllC0, oneOf));
+		final OWLAxiom axiom = OWL.equivalentClasses(CollectionUtil.<OWLClassExpression>asSet(_P0AllC0, oneOf));
 
 		assertNull(_pattern.match(_ontology, axiom));
 	}

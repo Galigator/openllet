@@ -52,7 +52,7 @@ public class ARQTerpParser extends SPARQLParser
 			@Override
 			public boolean accept(final Syntax syntax)
 			{
-				return (TerpSyntax.getInstance() == syntax);
+				return TerpSyntax.getInstance() == syntax;
 			}
 
 			@Override
@@ -93,8 +93,7 @@ public class ARQTerpParser extends SPARQLParser
 	protected Query parse$(final Query query, final String queryString) throws QueryParseException
 	{
 
-		if (query == null)
-			throw new NullPointerException();
+		if (query == null) throw new NullPointerException();
 
 		query.setSyntax(TerpSyntax.getInstance());
 

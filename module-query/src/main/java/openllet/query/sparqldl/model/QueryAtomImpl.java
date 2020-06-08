@@ -31,11 +31,11 @@ import openllet.core.utils.ATermUtils;
 public class QueryAtomImpl implements QueryAtom
 {
 
-	protected final QueryPredicate _predicate;
+	protected final QueryPredicate	_predicate;
 
-	protected final List<ATermAppl> _arguments;
+	protected final List<ATermAppl>	_arguments;
 
-	protected boolean _ground;
+	protected boolean				_ground;
 
 	public QueryAtomImpl(final QueryPredicate predicate, final ATermAppl... arguments)
 	{
@@ -44,8 +44,7 @@ public class QueryAtomImpl implements QueryAtom
 
 	public QueryAtomImpl(final QueryPredicate predicate, final List<ATermAppl> arguments)
 	{
-		if (predicate == null)
-			throw new OpenError("Predicate cannot be null.");
+		if (predicate == null) throw new OpenError("Predicate cannot be null.");
 
 		_predicate = predicate;
 		_arguments = arguments;
@@ -93,8 +92,7 @@ public class QueryAtomImpl implements QueryAtom
 	@Override
 	public QueryAtom apply(final ResultBinding binding)
 	{
-		if (isGround())
-			return this;
+		if (isGround()) return this;
 
 		final List<ATermAppl> newArguments = new ArrayList<>();
 
@@ -116,12 +114,9 @@ public class QueryAtomImpl implements QueryAtom
 	@Override
 	public boolean equals(final Object obj)
 	{
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (getClass() != obj.getClass()) return false;
 		final QueryAtomImpl other = (QueryAtomImpl) obj;
 
 		return _predicate.equals(other._predicate) && _arguments.equals(other._arguments);
@@ -135,8 +130,7 @@ public class QueryAtomImpl implements QueryAtom
 		for (int i = 0; i < _arguments.size(); i++)
 		{
 			final ATermAppl a = _arguments.get(i);
-			if (i > 0)
-				sb.append(", ");
+			if (i > 0) sb.append(", ");
 
 			sb.append(ATermUtils.toString(a));
 		}

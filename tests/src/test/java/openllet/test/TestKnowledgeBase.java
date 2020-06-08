@@ -383,9 +383,9 @@ public class TestKnowledgeBase
 
 	private static class TestProgressMonitor extends AbstractProgressMonitor
 	{
-		private boolean _progressLengthExceeded;
+		private boolean			_progressLengthExceeded;
 
-		private volatile int _echo = 0;
+		private volatile int	_echo	= 0;
 
 		@Override
 		public int getLastEcho()
@@ -401,8 +401,7 @@ public class TestKnowledgeBase
 		@Override
 		protected void updateProgress()
 		{
-			if (getProgress() > getProgressLength())
-				_progressLengthExceeded = true;
+			if (getProgress() > getProgressLength()) _progressLengthExceeded = true;
 		}
 
 		public boolean isProgressLengthExceeded()

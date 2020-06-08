@@ -45,7 +45,7 @@ public class EquivalentToTopPatternTest extends PellintTestCase
 	{
 		assertTrue(_pattern.isFixable());
 
-		OWLAxiom axiom = OWL.equivalentClasses(CollectionUtil.<OWLClassExpression> asSet(OWL.Nothing, _cls[2], _cls[3]));
+		OWLAxiom axiom = OWL.equivalentClasses(CollectionUtil.<OWLClassExpression>asSet(OWL.Nothing, _cls[2], _cls[3]));
 		assertNull(_pattern.match(_ontology, axiom));
 
 		axiom = OWL.subClassOf(OWL.Thing, _cls[1]);
@@ -55,7 +55,7 @@ public class EquivalentToTopPatternTest extends PellintTestCase
 	@Test
 	public void testSimple()
 	{
-		final OWLAxiom axiom = OWL.equivalentClasses(CollectionUtil.<OWLClassExpression> asSet(OWL.Thing, _cls[0], _cls[1]));
+		final OWLAxiom axiom = OWL.equivalentClasses(CollectionUtil.<OWLClassExpression>asSet(OWL.Thing, _cls[0], _cls[1]));
 		final Lint lint = _pattern.match(_ontology, axiom);
 		assertNotNull(lint);
 

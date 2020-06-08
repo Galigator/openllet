@@ -18,14 +18,14 @@ import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
  * <p>
  * Company: Clark & Parsia, LLC. <a href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
  * </p>
- * 
+ *
  * @author Mike Smith &lt;msmith@clarkparsia.com&gt;
  */
 public class OwlApiReasonerTestRunner extends OwlApiAbstractRunner
 {
 
-	private final OWLReasonerFactory _reasonerFactory;
-	private final IRI _iri;
+	private final OWLReasonerFactory	_reasonerFactory;
+	private final IRI					_iri;
 
 	public OwlApiReasonerTestRunner(final OWLReasonerFactory reasonerFactory, final IRI runnerUri)
 	{

@@ -62,17 +62,14 @@ public class EquivalentToMaxCardinalityPattern extends AxiomLintPattern
 	public void visit(final OWLEquivalentClassesAxiom axiom)
 	{
 		final Set<OWLClassExpression> owlDescs = axiom.classExpressions().collect(Collectors.toSet());
-		if (owlDescs.size() != 2)
-			return;
+		if (owlDescs.size() != 2) return;
 
 		OWLClass namedClass = null;
 		OWLClassExpression cardinalityRestriction = null;
 		for (final OWLClassExpression owlDesc : owlDescs)
 			if (!owlDesc.isAnonymous())
 				namedClass = owlDesc.asOWLClass();
-			else
-				if (owlDesc instanceof OWLObjectMaxCardinality || owlDesc instanceof OWLDataMaxCardinality)
-					cardinalityRestriction = owlDesc;
+			else if (owlDesc instanceof OWLObjectMaxCardinality || owlDesc instanceof OWLDataMaxCardinality) cardinalityRestriction = owlDesc;
 
 		if (namedClass != null && cardinalityRestriction != null)
 		{

@@ -101,7 +101,8 @@ public class TestSingleSPARQLDLQueries
 	{
 		// Handle variable SPO pattern. No fall back here
 
-		final String q = "PREFIX owl: <http://www.w3.org/2002/07/owl#> " + "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " + "PREFIX ex: <" + NS + "> " + "SELECT * WHERE { ?s ?p ?o . ?p rdf:type owl:ObjectProperty }";
+		final String q = "PREFIX owl: <http://www.w3.org/2002/07/owl#> " + "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " + "PREFIX ex: <" + NS + "> "
+				+ "SELECT * WHERE { ?s ?p ?o . ?p rdf:type owl:ObjectProperty }";
 
 		final Resource s = ResourceFactory.createResource(NS + "i");
 		final Property p = ResourceFactory.createProperty(NS + "p");

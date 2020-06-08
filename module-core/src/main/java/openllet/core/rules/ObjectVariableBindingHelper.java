@@ -33,10 +33,10 @@ import openllet.core.rules.model.AtomVariable;
 
 public class ObjectVariableBindingHelper implements BindingHelper
 {
-	private final ABox _abox;
-	private final AtomIVariable _var;
-	private volatile Individual _currentIndividual;
-	private volatile Iterator<Individual> _individualIterator;
+	private final ABox						_abox;
+	private final AtomIVariable				_var;
+	private volatile Individual				_currentIndividual;
+	private volatile Iterator<Individual>	_individualIterator;
 
 	public ObjectVariableBindingHelper(final ABox abox, final AtomIVariable var)
 	{
@@ -68,8 +68,7 @@ public class ObjectVariableBindingHelper implements BindingHelper
 	@Override
 	public boolean selectNextBinding()
 	{
-		if (_individualIterator == null || !_individualIterator.hasNext())
-			return false;
+		if (_individualIterator == null || !_individualIterator.hasNext()) return false;
 
 		_currentIndividual = _individualIterator.next();
 

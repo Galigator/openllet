@@ -24,7 +24,8 @@ package openllet.query.sparqldl.model;
 
 public enum QueryPredicate
 {
-	Type, PropertyValue, NegativePropertyValue, SameAs, DifferentFrom, SubClassOf, EquivalentClass, DisjointWith, ComplementOf, EquivalentProperty, SubPropertyOf, InverseOf, ObjectProperty, DatatypeProperty, Domain, Range, Functional, InverseFunctional, Transitive, Symmetric, Asymmetric, Reflexive, Irreflexive, propertyDisjointWith, Annotation,
+	Type, PropertyValue, NegativePropertyValue, SameAs, DifferentFrom, SubClassOf, EquivalentClass, DisjointWith, ComplementOf, EquivalentProperty, SubPropertyOf, InverseOf, ObjectProperty,
+	DatatypeProperty, Domain, Range, Functional, InverseFunctional, Transitive, Symmetric, Asymmetric, Reflexive, Irreflexive, propertyDisjointWith, Annotation,
 
 	Datatype,
 

@@ -31,13 +31,13 @@ import org.apache.jena.rdf.model.ModelFactory;
 @Deprecated // The ontology from internet as disappear
 public class QuerySubsumptionExample
 {
-	private static final String ont = "http://owldl.com/ontologies/family.owl";
-	private static final String family = "http://www.example.org/family#";
-	private static final String prefix = "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"//
+	private static final String	ont		= "http://owldl.com/ontologies/family.owl";
+	private static final String	family	= "http://www.example.org/family#";
+	private static final String	prefix	= "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"	//
 			+ "PREFIX family: <" + family + ">\r\n" + "SELECT * { ";
-	private static final String suffix = " }";
-	private final KnowledgeBase _kb;
-	private final QueryParser _parser;
+	private static final String	suffix	= " }";
+	private final KnowledgeBase	_kb;
+	private final QueryParser	_parser;
 
 	public static void main(final String[] args)
 	{
@@ -152,8 +152,7 @@ public class QuerySubsumptionExample
 			{
 				final ATermAppl var = (ATermAppl) j.next();
 				System.out.print(var.getArgument(0) + " -> " + mapping.getValue(var)); //I get var(x) as opposed to x
-				if (j.hasNext())
-					System.out.print(", ");
+				if (j.hasNext()) System.out.print(", ");
 			}
 		System.out.println();
 	}

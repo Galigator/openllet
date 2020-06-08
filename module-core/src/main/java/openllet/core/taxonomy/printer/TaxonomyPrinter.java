@@ -23,13 +23,13 @@ import openllet.core.taxonomy.Taxonomy;
  * Company: Clark & Parsia, LLC. <http://www.clarkparsia.com>
  * </p>
  *
- * @author Mike Smith
- * @param <T> kind of taxon
+ * @author     Mike Smith
+ * @param  <T> kind of taxon
  */
 public interface TaxonomyPrinter<T>
 {
 
-	public void print(Taxonomy<T> taxonomy);
+	void print(Taxonomy<T> taxonomy);
 
-	public void print(Taxonomy<T> taxonomy, PrintWriter out);
+	void print(Taxonomy<T> taxonomy, PrintWriter out);
 }

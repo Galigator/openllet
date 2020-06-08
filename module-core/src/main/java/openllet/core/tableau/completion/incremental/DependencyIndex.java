@@ -30,27 +30,27 @@ import openllet.shared.tools.Log;
  */
 public class DependencyIndex
 {
-	public final static Logger _logger = Log.getLogger(DependencyIndex.class);
+	public final static Logger							_logger			= Log.getLogger(DependencyIndex.class);
 
 	/**
 	 * Map from assertions (ATermAppl) to Dependency entries
 	 */
-	private final Map<ATermAppl, DependencyEntry> _dependencies = new ConcurrentHashMap<>();
+	private final Map<ATermAppl, DependencyEntry>		_dependencies	= new ConcurrentHashMap<>();
 
 	/**
 	 * Branch dependency index
 	 */
-	private final Map<Branch, Set<BranchDependency>> _branchIndex = new ConcurrentHashMap<>();
+	private final Map<Branch, Set<BranchDependency>>	_branchIndex	= new ConcurrentHashMap<>();
 
 	/**
 	 * Clash dependency - used for cleanup
 	 */
-	private final Set<ClashDependency> _clashIndex = SetUtils.create();
+	private final Set<ClashDependency>					_clashIndex		= SetUtils.create();
 
 	/**
 	 * KB object
 	 */
-	private final KnowledgeBase _kb;
+	private final KnowledgeBase							_kb;
 
 	/**
 	 * Default constructor
@@ -76,8 +76,8 @@ public class DependencyIndex
 	}
 
 	/**
-	 * @param assertion
-	 * @return the dependencies
+	 * @param  assertion
+	 * @return           the dependencies
 	 */
 	public DependencyEntry getDependencies(final ATermAppl assertion)
 	{
@@ -193,11 +193,10 @@ public class DependencyIndex
 					_dependencies.put(nextAtom, new DependencyEntry());
 
 				ATermAppl label = null;
-				if (branch instanceof DisjunctionBranch)
-					label = ((DisjunctionBranch) branch).getDisjunct(branch.getTryNext());
+				if (branch instanceof DisjunctionBranch) label = ((DisjunctionBranch) branch).getDisjunct(branch.getTryNext());
 
-				if (_logger.isLoggable(Level.FINE))
-					_logger.fine("DependencyIndex- Adding _branch remove ds dependency for assertion: " + nextAtom + " -  Branch id [" + branch.getBranchIndexInABox() + "]   ,  Branch [" + branch + "]   on label [" + label + "]  ,    _tryNext [" + branch.getTryNext() + "]");
+				if (_logger.isLoggable(Level.FINE)) _logger.fine("DependencyIndex- Adding _branch remove ds dependency for assertion: " + nextAtom + " -  Branch id [" + branch.getBranchIndexInABox()
+						+ "]   ,  Branch [" + branch + "]   on label [" + label + "]  ,    _tryNext [" + branch.getTryNext() + "]");
 
 				final BranchDependency newDep = _dependencies.get(nextAtom).addCloseBranchDependency(nextAtom, branch); //add the dependency
 
@@ -234,13 +233,11 @@ public class DependencyIndex
 
 		//TODO: why is this null? is this because of duplicate entries in the _index set?
 		//This seems to creep up in WebOntTest-I5.8-Manifest004 and 5 among others...
-		if (deps == null)
-			return;
+		if (deps == null) return;
 
 		for (final BranchDependency next : deps) //loop over depencies and remove them
 		{
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("DependencyIndex: RESTORE causing remove of _branch _index for assertion: " + next.getAssertion() + " _branch dep.: " + next);
+			if (_logger.isLoggable(Level.FINE)) _logger.fine("DependencyIndex: RESTORE causing remove of _branch _index for assertion: " + next.getAssertion() + " _branch dep.: " + next);
 			if (next instanceof AddBranchDependency)
 				//remove the dependency
 				_dependencies.get(next.getAssertion()).getBranchAdds().remove(next);
@@ -263,13 +260,11 @@ public class DependencyIndex
 		//first remove old entry using clashindex
 		for (final ClashDependency next : _clashIndex)
 			//remove the dependency
-			if (_dependencies.containsKey(next.getAssertion()))
-				_dependencies.get(next.getAssertion()).setClash(null);
+			if (_dependencies.containsKey(next.getAssertion())) _dependencies.get(next.getAssertion()).setClash(null);
 
 		_clashIndex.clear(); //clear the old _index
 
-		if (clash == null)
-			return;
+		if (clash == null) return;
 
 		for (final ATermAppl nextAtom : clash.getDepends().getExplain()) //loop over ds
 			if (_kb.getSyntacticAssertions().contains(nextAtom)) //check if this assertion exists
@@ -277,8 +272,7 @@ public class DependencyIndex
 				if (!_dependencies.containsKey(nextAtom)) //if this entry does not exist then create it
 					_dependencies.put(nextAtom, new DependencyEntry());
 
-				if (_logger.isLoggable(Level.FINE))
-					_logger.fine("  DependencyIndex- Adding clash dependency: Axiom [" + nextAtom + "]   ,  Clash [" + clash + "]");
+				if (_logger.isLoggable(Level.FINE)) _logger.fine("  DependencyIndex- Adding clash dependency: Axiom [" + nextAtom + "]   ,  Clash [" + clash + "]");
 
 				final ClashDependency newDep = new ClashDependency(nextAtom, clash);
 

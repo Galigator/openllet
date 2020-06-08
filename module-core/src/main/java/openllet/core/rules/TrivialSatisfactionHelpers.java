@@ -68,8 +68,8 @@ public class TrivialSatisfactionHelpers
 
 	private abstract class BinaryBindingTester<R extends AtomObject, S extends AtomObject> implements BindingTester
 	{
-		public R _arg1;
-		public S _arg2;
+		public R	_arg1;
+		public S	_arg2;
 
 		public BinaryBindingTester(final R arg1, final S arg2)
 		{
@@ -91,10 +91,10 @@ public class TrivialSatisfactionHelpers
 	private interface BindingTester
 	{
 		/**
-		 * @return true if binding supports testing _condition
-		 * @param binding
+		 * @return         true if binding supports testing _condition
+		 * @param  binding
 		 */
-		public DependencySet check(VariableBinding binding);
+		DependencySet check(VariableBinding binding);
 	}
 
 	/**
@@ -160,9 +160,9 @@ public class TrivialSatisfactionHelpers
 	private static class FilterHelper implements BindingHelper
 	{
 
-		private boolean _result = false;
-		private final BindingTester _tester;
-		private final Collection<? extends AtomVariable> _vars;
+		private boolean										_result	= false;
+		private final BindingTester							_tester;
+		private final Collection<? extends AtomVariable>	_vars;
 
 		public FilterHelper(final BindingTester tester, final Collection<? extends AtomVariable> vars)
 		{
@@ -369,18 +369,14 @@ public class TrivialSatisfactionHelpers
 		{
 			super(arg1, arg2);
 			_role = _abox.getRole(p);
-			if (_role == null)
-				throw new InternalReasonerException("Cannot retreive role!: " + p);
+			if (_role == null) throw new InternalReasonerException("Cannot retreive role!: " + p);
 		}
 
 		public DependencySet check(final Individual node1, final Node node2)
 		{
 			final EdgeList list = node1.getRNeighborEdges(_role);
 			for (final Edge edge : list)
-			{
-				if (edge.getNeighbor(node1).equals(node2))
-					return edge.getDepends();
-			}
+				if (edge.getNeighbor(node1).equals(node2)) return edge.getDepends();
 
 			return null;
 		}
@@ -450,8 +446,7 @@ public class TrivialSatisfactionHelpers
 		for (final RuleAtom atom : rule.getBody())
 		{
 			atom.accept(bodyVisitor);
-			if (bodyVisitor.getTester() != null)
-				helpers.add(new FilterHelper(bodyVisitor.getTester(), VariableUtils.getVars(atom)));
+			if (bodyVisitor.getTester() != null) helpers.add(new FilterHelper(bodyVisitor.getTester(), VariableUtils.getVars(atom)));
 		}
 
 		return helpers;

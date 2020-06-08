@@ -24,9 +24,9 @@ import org.apache.jena.sparql.engine.binding.Binding;
  */
 public class SlicedResultSet implements ResultSet
 {
-	private final ResultSet _results;
-	private int _row;
-	private final long _limit;
+	private final ResultSet	_results;
+	private int				_row;
+	private final long		_limit;
 
 	public SlicedResultSet(final ResultSet results, final long offset, final long limit)
 	{

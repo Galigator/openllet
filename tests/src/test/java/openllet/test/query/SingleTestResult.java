@@ -24,11 +24,11 @@ import java.net.URI;
 public class SingleTestResult
 {
 
-	private final URI _uri;
+	private final URI			_uri;
 
-	private final ResultEnum _result;
+	private final ResultEnum	_result;
 
-	private final long _time;
+	private final long			_time;
 
 	public SingleTestResult(final URI uri, final ResultEnum result, final long time)
 	{

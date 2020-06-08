@@ -5,14 +5,14 @@
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
- *     * Redistributions of source code must retain the above copyright
- *       notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the University of California, Berkeley nor the
- *       names of its contributors may be used to endorse or promote products
- *       derived from this software without specific prior written permission.
+ * * Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following disclaimer.
+ * * Redistributions in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in the
+ * documentation and/or other materials provided with the distribution.
+ * * Neither the name of the University of California, Berkeley nor the
+ * names of its contributors may be used to endorse or promote products
+ * derived from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -30,15 +30,20 @@ package openllet.aterm;
 
 /**
  * Any visitor class should implement the Visitor interface.
+ *
+ * @param <T> type of ATerm that is visit.
  */
 public interface Visitor<T extends ATerm>
 {
 	/**
 	 * Pay a visit to any visitable object.
+	 *
+	 * @param  any
+	 * @return     the visited in it's new state.
 	 */
-	public T visit(final T any);
+	T visit(final T any);
 
-	public T visitATerm(ATerm arg);
+	T visitATerm(ATerm arg);
 
 	default T visitInt(final ATermInt arg)
 	{
@@ -75,5 +80,5 @@ public interface Visitor<T extends ATerm>
 		return visitATerm(arg);
 	}
 
-	public T visitAFun(final AFun fun);
+	T visitAFun(final AFun fun);
 }

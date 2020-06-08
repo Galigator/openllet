@@ -45,11 +45,11 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
  */
 public class PersistenceUpdatesTest
 {
-	private static final Logger _logger = Log.getLogger(PersistenceUpdatesTest.class);
+	private static final Logger	_logger		= Log.getLogger(PersistenceUpdatesTest.class);
 
-	public static final String base = PelletTestSuite.base + "modularity/";
+	public static final String	base		= PelletTestSuite.base + "modularity/";
 
-	private static final String TEST_FILE = "test-persistence-classification.zip";
+	private static final String	TEST_FILE	= "test-persistence-classification.zip";
 
 	public ModuleExtractor createModuleExtractor()
 	{
@@ -197,7 +197,7 @@ public class PersistenceUpdatesTest
 	 * Tests whether the restored classifier can be updated. The test creates one original classifier (modular), persists it, reads it back as another
 	 * classifier (modular2). Then it performs the same modifications of the ontology on them, and checks whether their behavior is identical.
 	 *
-	 * @param inputOnt
+	 * @param  inputOnt
 	 * @throws IOException
 	 */
 	public void testUpdatesAfterPersistence(final String inputOnt) throws IOException
@@ -236,7 +236,7 @@ public class PersistenceUpdatesTest
 	 * Tests whether the restored classifier can be updated. The test creates one original classifier (modular), persists it, reads it back as another
 	 * classifier (modular2). Then it performs the same modifications of the ontology on them, and checks whether their behavior is identical.
 	 *
-	 * @param inputOnt
+	 * @param  inputOnt
 	 * @throws IOException
 	 */
 	public void testUpdatesAfterPersistence2(final String inputOnt) throws IOException

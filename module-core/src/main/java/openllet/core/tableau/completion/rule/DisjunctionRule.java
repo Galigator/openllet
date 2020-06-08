@@ -42,23 +42,20 @@ public class DisjunctionRule extends AbstractTableauRule
 	@Override
 	public void apply(final Individual node)
 	{
-		if (!node.canApply(Node.OR))
-			return;
+		if (!node.canApply(Node.OR)) return;
 
 		final List<ATermAppl> types = node.getTypes(Node.OR);
 
 		final int size = types.size();
 		final ATermAppl[] disjunctions = new ATermAppl[size - node._applyNext[Node.OR]];
 		types.subList(node._applyNext[Node.OR], size).toArray(disjunctions);
-		if (OpenlletOptions.USE_DISJUNCTION_SORTING != OpenlletOptions.NO_SORTING)
-			sortDisjunctions(node, disjunctions);
+		if (OpenlletOptions.USE_DISJUNCTION_SORTING != OpenlletOptions.NO_SORTING) sortDisjunctions(node, disjunctions);
 
 		for (final ATermAppl disjunction : disjunctions)
 		{
 			applyDisjunctionRule(node, disjunction);
 
-			if (_strategy.getABox().isClosed() || node.isMerged())
-				return;
+			if (_strategy.getABox().isClosed() || node.isMerged()) return;
 		}
 		node._applyNext[Node.OR] = size;
 	}
@@ -91,8 +88,7 @@ public class DisjunctionRule extends AbstractTableauRule
 		for (int index = 0; !disjuncts.isEmpty(); disjuncts = disjuncts.getNext(), index++)
 		{
 			disj[index] = ATermUtils.negate((ATermAppl) disjuncts.getFirst());
-			if (node.hasType(disj[index]))
-				return;
+			if (node.hasType(disj[index])) return;
 		}
 
 		final DisjunctionBranch newBranch = new DisjunctionBranch(_strategy.getABox(), _strategy, node, disjunction, node.getDepends(disjunction), disj);

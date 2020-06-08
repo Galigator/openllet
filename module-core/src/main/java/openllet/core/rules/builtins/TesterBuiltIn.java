@@ -39,8 +39,8 @@ public class TesterBuiltIn implements BuiltIn
 	private class TestHelper implements BindingHelper
 	{
 
-		private final BuiltInAtom _atom;
-		private boolean _result;
+		private final BuiltInAtom	_atom;
+		private boolean				_result;
 
 		public TestHelper(final BuiltInAtom atom)
 		{

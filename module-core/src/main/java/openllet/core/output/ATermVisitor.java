@@ -47,42 +47,42 @@ public interface ATermVisitor
 	 *
 	 * @param term
 	 */
-	public void visit(ATermAppl term);
+	void visit(ATermAppl term);
 
 	/**
 	 * Visit a primitive term (with no arguments) that stands for a URI. This URI may belong to a class, a property, an _individual or a datatype.
 	 *
 	 * @param term
 	 */
-	public void visitTerm(ATermAppl term);
+	void visitTerm(ATermAppl term);
 
 	/**
 	 * Visit the 'and' (intersectionOf) term.
 	 *
 	 * @param term
 	 */
-	public void visitAnd(ATermAppl term);
+	void visitAnd(ATermAppl term);
 
 	/**
 	 * Visit the 'or' (unionOf) term.
 	 *
 	 * @param term
 	 */
-	public void visitOr(ATermAppl term);
+	void visitOr(ATermAppl term);
 
 	/**
 	 * Visit the 'not' (complementOf) term.
 	 *
 	 * @param term
 	 */
-	public void visitNot(ATermAppl term);
+	void visitNot(ATermAppl term);
 
 	/**
 	 * Visit the 'some' (someValuesFrom restriction) term.
 	 *
 	 * @param term
 	 */
-	public default void visitSome(final ATermAppl term)
+	default void visitSome(final ATermAppl term)
 	{
 		//
 	}
@@ -92,7 +92,7 @@ public interface ATermVisitor
 	 *
 	 * @param term
 	 */
-	public default void visitAll(final ATermAppl term)
+	default void visitAll(final ATermAppl term)
 	{
 		// empty
 	}
@@ -102,7 +102,7 @@ public interface ATermVisitor
 	 *
 	 * @param term
 	 */
-	public default void visitMin(final ATermAppl term)
+	default void visitMin(final ATermAppl term)
 	{
 		// empty
 	}
@@ -113,7 +113,7 @@ public interface ATermVisitor
 	 *
 	 * @param term
 	 */
-	public default void visitCard(final ATermAppl term)
+	default void visitCard(final ATermAppl term)
 	{
 		// empty
 	}
@@ -123,7 +123,7 @@ public interface ATermVisitor
 	 *
 	 * @param term
 	 */
-	public default void visitMax(final ATermAppl term)
+	default void visitMax(final ATermAppl term)
 	{
 		// empty
 	}
@@ -133,7 +133,7 @@ public interface ATermVisitor
 	 *
 	 * @param term
 	 */
-	public default void visitHasValue(final ATermAppl term)
+	default void visitHasValue(final ATermAppl term)
 	{
 		// empty
 	}
@@ -143,21 +143,21 @@ public interface ATermVisitor
 	 *
 	 * @param term
 	 */
-	public void visitValue(ATermAppl term);
+	void visitValue(ATermAppl term);
 
 	/**
 	 * Visit the 'oneOf' term. This term is in the form or([value(i1),value(i2),...,value(i3)] where i's are individuals or literal constants
 	 *
 	 * @param term
 	 */
-	public void visitOneOf(ATermAppl term);
+	void visitOneOf(ATermAppl term);
 
 	/**
 	 * Visit the literal term. The literals are in the form literal(lexicalValue, language, datatypeURI)
 	 *
 	 * @param term
 	 */
-	public default void visitLiteral(final ATermAppl term)
+	default void visitLiteral(final ATermAppl term)
 	{
 		// empty
 	}
@@ -167,14 +167,14 @@ public interface ATermVisitor
 	 *
 	 * @param term
 	 */
-	public void visitList(ATermList term);
+	void visitList(ATermList term);
 
 	/**
 	 * Visit the self restriction term. This is in the form self(p).
 	 *
 	 * @param term
 	 */
-	public default void visitSelf(final ATermAppl term)
+	default void visitSelf(final ATermAppl term)
 	{
 		// empty
 	}
@@ -182,10 +182,10 @@ public interface ATermVisitor
 	/**
 	 * @param p inverse
 	 */
-	public default void visitInverse(final ATermAppl p)
+	default void visitInverse(final ATermAppl p)
 	{
 		// empty
 	}
 
-	public void visitRestrictedDatatype(ATermAppl dt);
+	void visitRestrictedDatatype(ATermAppl dt);
 }

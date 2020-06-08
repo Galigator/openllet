@@ -45,11 +45,11 @@ import org.apache.jena.vocabulary.ReasonerVocabulary;
  */
 public class PelletReasonerFactory implements ReasonerFactory
 {
-	private static final String URI = "http://pellet.owldl.com";
+	private static final String				URI				= "http://pellet.owldl.com";
 
-	private static PelletReasonerFactory _theInstance = new PelletReasonerFactory();
+	private static PelletReasonerFactory	_theInstance	= new PelletReasonerFactory();
 
-	public static OntModelSpec THE_SPEC = new OntModelSpec(OntModelSpec.OWL_MEM);
+	public static OntModelSpec				THE_SPEC		= new OntModelSpec(OntModelSpec.OWL_MEM);
 
 	static
 	{

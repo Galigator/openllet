@@ -42,20 +42,20 @@ public interface TBox
 	/**
 	 * Add a named class declaration
 	 *
-	 * @param term
-	 * @return <code>true</code> if TBox changed as a result of this call
+	 * @param  term
+	 * @return      <code>true</code> if TBox changed as a result of this call
 	 */
-	public boolean addClass(ATermAppl term);
+	boolean addClass(ATermAppl term);
 
 	/**
 	 * @return all the named classes
 	 */
-	public Set<ATermAppl> getClasses();
+	Set<ATermAppl> getClasses();
 
 	/**
 	 * @return all the named classes plus TOP and BOTTOM
 	 */
-	public Set<ATermAppl> getAllClasses();
+	Set<ATermAppl> getAllClasses();
 
 	/**
 	 * @return all the named classes plus TOP and BOTTOM
@@ -68,7 +68,7 @@ public interface TBox
 	/**
 	 * @return all the axioms defined in this TBox (may include new axioms introduced during absorption)
 	 */
-	public Collection<ATermAppl> getAxioms();
+	Collection<ATermAppl> getAxioms();
 
 	/**
 	 * @return all the axioms defined in this TBox (may include new axioms introduced during absorption)
@@ -81,73 +81,73 @@ public interface TBox
 	/**
 	 * @return all the asserted axioms in this TBox
 	 */
-	public Collection<ATermAppl> getAssertedAxioms();
+	Collection<ATermAppl> getAssertedAxioms();
 
 	/**
-	 * @param concept
-	 * @return all the sub and equivalent class axioms that have the given concept on the left hand side
+	 * @param  concept
+	 * @return         all the sub and equivalent class axioms that have the given concept on the left hand side
 	 */
-	public Collection<ATermAppl> getAxioms(ATermAppl concept);
+	Collection<ATermAppl> getAxioms(ATermAppl concept);
 
 	/**
 	 * Lazy unfold the given concept
 	 *
-	 * @param c
-	 * @return the concept the lazy way
+	 * @param  c
+	 * @return   the concept the lazy way
 	 */
-	public Iterator<Unfolding> unfold(ATermAppl c);
+	Iterator<Unfolding> unfold(ATermAppl c);
 
 	/**
 	 * Returns if a concept has only primitive definitions in this TBox. Only primitive definitions mean the concept did not have any equivalents defined or all
 	 * equivalence axioms has been absorbed into primitive definitions. This function returns <code>false</code> for complex class expressions.
 	 *
-	 * @param c a concept (named concept or a concept expression)
-	 * @return <code>true</code> if the concept is not complex and has only primitive definitions
+	 * @param  c a concept (named concept or a concept expression)
+	 * @return   <code>true</code> if the concept is not complex and has only primitive definitions
 	 */
-	public boolean isPrimitive(ATermAppl c);
+	boolean isPrimitive(ATermAppl c);
 
 	/**
 	 * Add a TBox axiom.
 	 *
-	 * @param axiom
-	 * @return true if operation success
+	 * @param  axiom
+	 * @return       true if operation success
 	 */
-	public boolean addAxiom(ATermAppl axiom);
+	boolean addAxiom(ATermAppl axiom);
 
 	/**
 	 * Remove {@code axiom} from TBox and all other axioms that depend on it. An axiom depends on another axiom if it is a syntactic transformation (as in
 	 * disjoint axiom is transformed into subclass) or it is obtained via absorption (as equivalent class axioms are absorbed into subclass axioms). This method
 	 * is syntactic sugar for {@link #removeAxiom(ATermAppl, ATermAppl)} where both parameters are {@code axiom}.
 	 *
-	 * @param axiom
-	 * @return true if operation success
+	 * @param  axiom
+	 * @return       true if operation success
 	 */
-	public boolean removeAxiom(ATermAppl axiom);
+	boolean removeAxiom(ATermAppl axiom);
 
 	/**
 	 * Remove all explanations for {@code dependantAxiom} that contain {@code explanationAxiom}. If no explanations remain, {@code dependantAxiom} is removed
 	 * and all axioms which depend on it are updated (and will be removed if they have no additional explanations).
 	 *
-	 * @param dependantAxiom
-	 * @param explanationAxiom
-	 * @return true if operation success
+	 * @param  dependantAxiom
+	 * @param  explanationAxiom
+	 * @return                  true if operation success
 	 */
-	public boolean removeAxiom(ATermAppl dependantAxiom, ATermAppl explanationAxiom);
+	boolean removeAxiom(ATermAppl dependantAxiom, ATermAppl explanationAxiom);
 
 	/**
-	 * @param axiom
-	 * @return a single clashExplanation for the given TBox axiom.
+	 * @param  axiom
+	 * @return       a single clashExplanation for the given TBox axiom.
 	 */
-	public Set<ATermAppl> getAxiomExplanation(ATermAppl axiom);
+	Set<ATermAppl> getAxiomExplanation(ATermAppl axiom);
 
 	/**
-	 * @param axiom
-	 * @return multiple explanations for the given TBox axiom.
+	 * @param  axiom
+	 * @return       multiple explanations for the given TBox axiom.
 	 */
-	public Set<Set<ATermAppl>> getAxiomExplanations(ATermAppl axiom);
+	Set<Set<ATermAppl>> getAxiomExplanations(ATermAppl axiom);
 
 	/**
 	 * Make any preparation necessary before reasoning.
 	 */
-	public void prepare();
+	void prepare();
 }

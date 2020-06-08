@@ -14,25 +14,30 @@ package openllet.owlwg.testcase;
  * Company: Clark & Parsia, LLC. <a
  * href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
  * </p>
- * 
+ *
  * @author Mike Smith &lt;msmith@clarkparsia.com&gt;
  */
-public class OntologyParseException extends Exception {
+public class OntologyParseException extends Exception
+{
 
-	private static final long	serialVersionUID	= 1L;
+	private static final long serialVersionUID = 1L;
 
-	public OntologyParseException() {
+	public OntologyParseException()
+	{
 	}
 
-	public OntologyParseException(String message) {
-		super( message );
+	public OntologyParseException(final String message)
+	{
+		super(message);
 	}
 
-	public OntologyParseException(Throwable cause) {
-		super( cause );
+	public OntologyParseException(final Throwable cause)
+	{
+		super(cause);
 	}
 
-	public OntologyParseException(String message, Throwable cause) {
-		super( message, cause );
+	public OntologyParseException(final String message, final Throwable cause)
+	{
+		super(message, cause);
 	}
 }

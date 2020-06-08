@@ -36,13 +36,13 @@ import org.jfree.data.statistics.DefaultStatisticalCategoryDataset;
 
 public class ReleasePerformanceVisualizer extends JFrame
 {
-	private static final long serialVersionUID = 3529811414164984003L;
-	private static String _REPOSITORY;
+	private static final long		serialVersionUID	= 3529811414164984003L;
+	private static String			_REPOSITORY;
 
-	private final JPanel _mainPanel;
-	private JPanel _chart;
-	private final MenuPanel _menu;
-	private final ReleaseManager _manager;
+	private final JPanel			_mainPanel;
+	private JPanel					_chart;
+	private final MenuPanel			_menu;
+	private final ReleaseManager	_manager;
 
 	public static void main(final String[] args) throws IOException
 	{
@@ -70,9 +70,9 @@ public class ReleasePerformanceVisualizer extends JFrame
 	/**
 	 * Positions the specified frame at a relative position in the screen, where 50% is considered to be the center of the screen.
 	 *
-	 * @param frame the frame.
+	 * @param frame             the frame.
 	 * @param horizontalPercent the relative horizontal position of the frame (0.0 to 1.0, where 0.5 is the center of the screen).
-	 * @param verticalPercent the relative vertical position of the frame (0.0 to 1.0, where 0.5 is the center of the screen).
+	 * @param verticalPercent   the relative vertical position of the frame (0.0 to 1.0, where 0.5 is the center of the screen).
 	 */
 	private static void positionFrameOnScreen(final Window frame, final double horizontalPercent, final double verticalPercent)
 	{
@@ -116,28 +116,23 @@ public class ReleasePerformanceVisualizer extends JFrame
 			if (_menu._releases.isSelectedIndex(count))
 			{
 				final List<ReleaseStatistics> stats = release.getStatistics((String) _menu._ontology.getSelectedItem());
-				if (stats != null)
-				{
-					for (final ReleaseStatistics stat : stats)
+				if (stats != null) for (final ReleaseStatistics stat : stats)
+					if (_menu._tasks.isSelectedIndex(stat.getTask().ordinal()))
 					{
-						if (_menu._tasks.isSelectedIndex(stat.getTask().ordinal()))
-						{
-							double mean, variance;
+						double mean, variance;
 
-							if (_menu._time.getSelectedIndex() == 0)
-							{
-								mean = stat.getTimeStat("avg");
-								variance = stat.getTimeStat("var");
-							}
-							else
-							{
-								mean = stat.getMemStat("avg");
-								variance = stat.getMemStat("var");
-							}
-							dataset.add(mean, Math.sqrt(variance), stat.getTask().toString(), release.getVersion());
+						if (_menu._time.getSelectedIndex() == 0)
+						{
+							mean = stat.getTimeStat("avg");
+							variance = stat.getTimeStat("var");
 						}
+						else
+						{
+							mean = stat.getMemStat("avg");
+							variance = stat.getMemStat("var");
+						}
+						dataset.add(mean, Math.sqrt(variance), stat.getTask().toString(), release.getVersion());
 					}
-				}
 			}
 			count++;
 		}
@@ -150,9 +145,7 @@ public class ReleasePerformanceVisualizer extends JFrame
 		//CategoryItemRenderer renderer = new StatisticalBarRenderer();
 
 		for (int i = 0; i < dataset.getRowCount(); i++)
-		{
 			renderer.setSeriesStroke(i, new BasicStroke(5f));
-		}
 
 		final String numberAxisLabel = _menu._time.getSelectedIndex() == 0 ? "Execution Time (s)" : "Used Memory (%)";
 		final CategoryPlot plot = new CategoryPlot(dataset, new CategoryAxis("Release"), new NumberAxis(numberAxisLabel), renderer);
@@ -179,12 +172,12 @@ public class ReleasePerformanceVisualizer extends JFrame
 	 */
 	private class MenuPanel extends JPanel
 	{
-		private static final long serialVersionUID = 8213647324959034612L;
-		private final JComboBox<?> _time;
-		private final JList<?> _tasks;
-		private final JComboBox<?> _ontology;
-		private final JList<?> _releases;
-		private final JButton _ok;
+		private static final long	serialVersionUID	= 8213647324959034612L;
+		private final JComboBox<?>	_time;
+		private final JList<?>		_tasks;
+		private final JComboBox<?>	_ontology;
+		private final JList<?>		_releases;
+		private final JButton		_ok;
 
 		public MenuPanel(final ReleaseManager manager)
 		{
@@ -208,12 +201,8 @@ public class ReleasePerformanceVisualizer extends JFrame
 			//Ontology Menu
 			final Set<String> ontologies = new HashSet<>();
 			for (final Release release : manager.getReleases())
-			{
 				for (final Entry<String, List<ReleaseStatistics>> statistic : release.getAllStatistics().entrySet())
-				{
 					ontologies.add(statistic.getKey());
-				}
-			}
 			_ontology = new JComboBox<>(ontologies.toArray());
 			_ontology.setBorder(BorderFactory.createTitledBorder("Ontology"));
 			add(_ontology);

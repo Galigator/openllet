@@ -58,8 +58,7 @@ public class UsableRuleFilter
 		public void visit(final BuiltInAtom atom)
 		{
 			final BuiltIn builtin = BuiltInRegistry.instance.getBuiltIn(atom.getPredicate());
-			if (builtin.equals(NoSuchBuiltIn.instance))
-				_notUsableMessage = "No builtin for " + atom.getPredicate();
+			if (builtin.equals(NoSuchBuiltIn.instance)) _notUsableMessage = "No builtin for " + atom.getPredicate();
 		}
 
 		@Override
@@ -86,14 +85,14 @@ public class UsableRuleFilter
 		}
 	}
 
-	private static BodyAtomFilter bodyFilter = new BodyAtomFilter();
-	private static HeadAtomFilter headFilter = new HeadAtomFilter();
+	private static BodyAtomFilter	bodyFilter	= new BodyAtomFilter();
+	private static HeadAtomFilter	headFilter	= new HeadAtomFilter();
 
 	/**
 	 * Checks if a rule can be used for reasoning.
 	 *
-	 * @param rule rule to check
-	 * @return <code>true</code> if rule can be used for reasoning
+	 * @param  rule rule to check
+	 * @return      <code>true</code> if rule can be used for reasoning
 	 */
 	public static boolean isUsable(final Rule rule)
 	{
@@ -103,8 +102,8 @@ public class UsableRuleFilter
 	/**
 	 * Returns a string explaining why a rule cannot be used for reasoning, or <code>null</code> if the rule can be used for reasoning
 	 *
-	 * @param rule rule to check
-	 * @return a string explaining why a rule cannot be used for reasoning, or <code>null</code> if the rule can be used for reasoning
+	 * @param  rule rule to check
+	 * @return      a string explaining why a rule cannot be used for reasoning, or <code>null</code> if the rule can be used for reasoning
 	 */
 	public static String explainNotUsable(final Rule rule)
 	{
@@ -113,18 +112,15 @@ public class UsableRuleFilter
 		for (final RuleAtom atom : rule.getBody())
 		{
 			final String notUsableExplanation = bodyFilter.explainNotUsable(atom);
-			if (notUsableExplanation != null)
-				return notUsableExplanation;
+			if (notUsableExplanation != null) return notUsableExplanation;
 			bodyVars.addAll(VariableUtils.getVars(atom));
 		}
 
 		for (final RuleAtom atom : rule.getHead())
 		{
-			if (!bodyVars.containsAll(VariableUtils.getVars(atom)))
-				return "Head atom " + atom + " contains variables not found in body.";
+			if (!bodyVars.containsAll(VariableUtils.getVars(atom))) return "Head atom " + atom + " contains variables not found in body.";
 			final String notUsableExplanation = headFilter.explainNotUsable(atom);
-			if (notUsableExplanation != null)
-				return notUsableExplanation;
+			if (notUsableExplanation != null) return notUsableExplanation;
 		}
 
 		return null;

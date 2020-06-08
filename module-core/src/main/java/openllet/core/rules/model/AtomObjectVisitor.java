@@ -21,19 +21,19 @@ package openllet.core.rules.model;
  */
 public interface AtomObjectVisitor
 {
-	default public void visit(@SuppressWarnings("unused") final AtomDConstant constant)
+	default void visit(@SuppressWarnings("unused") final AtomDConstant constant)
 	{//
 	}
 
-	default public void visit(@SuppressWarnings("unused") final AtomDVariable variable)
+	default void visit(@SuppressWarnings("unused") final AtomDVariable variable)
 	{//
 	}
 
-	default public void visit(@SuppressWarnings("unused") final AtomIConstant constant)
+	default void visit(@SuppressWarnings("unused") final AtomIConstant constant)
 	{//
 	}
 
-	default public void visit(@SuppressWarnings("unused") final AtomIVariable variable)
+	default void visit(@SuppressWarnings("unused") final AtomIVariable variable)
 	{//
 	}
 }

@@ -41,23 +41,22 @@ public class NumericPromotion
 		}
 
 		/**
-		 * @param t
-		 * @return true if given _type is not null and has a _rank strictly greater than this.
+		 * @param  t
+		 * @return   true if given _type is not null and has a _rank strictly greater than this.
 		 */
 		public boolean isLessThan(final Type t)
 		{
-			if (t == null)
-				return false;
+			if (t == null) return false;
 			return _rank < t._rank;
 		}
 	}
 
-	private BigInteger[] _bigIntArgs;
-	private BigDecimal[] _decimalArgs;
-	private Double[] _doubleArgs;
-	private Float[] _floatArgs;
+	private BigInteger[]	_bigIntArgs;
+	private BigDecimal[]	_decimalArgs;
+	private Double[]		_doubleArgs;
+	private Float[]			_floatArgs;
 
-	private Type _type;
+	private Type			_type;
 
 	public void accept(final NumericVisitor visitor)
 	{
@@ -90,8 +89,7 @@ public class NumericPromotion
 		for (final Number num : nums)
 		{
 			final Type type = findType(num);
-			if (largest.isLessThan(type))
-				largest = type;
+			if (largest.isLessThan(type)) largest = type;
 		}
 
 		return largest;
@@ -104,29 +102,22 @@ public class NumericPromotion
 	{
 		if (num instanceof Byte)
 			return Type.BYTE;
+		else if (num instanceof Short)
+			return Type.SHORT;
+		else if (num instanceof Integer)
+			return Type.INTEGER;
+		else if (num instanceof Long)
+			return Type.LONG;
+		else if (num instanceof BigInteger)
+			return Type.BIGINTEGER;
+		else if (num instanceof BigDecimal)
+			return Type.BIGDECIMAL;
+		else if (num instanceof Float)
+			return Type.FLOAT;
+		else if (num instanceof Double)
+			return Type.DOUBLE;
 		else
-			if (num instanceof Short)
-				return Type.SHORT;
-			else
-				if (num instanceof Integer)
-					return Type.INTEGER;
-				else
-					if (num instanceof Long)
-						return Type.LONG;
-					else
-						if (num instanceof BigInteger)
-							return Type.BIGINTEGER;
-						else
-							if (num instanceof BigDecimal)
-								return Type.BIGDECIMAL;
-							else
-								if (num instanceof Float)
-									return Type.FLOAT;
-								else
-									if (num instanceof Double)
-										return Type.DOUBLE;
-									else
-										throw new InternalReasonerException("Unexpected numeric _type '" + num.getClass() + "': " + num);
+			throw new InternalReasonerException("Unexpected numeric _type '" + num.getClass() + "': " + num);
 	}
 
 	/**
@@ -169,42 +160,35 @@ public class NumericPromotion
 	 */
 	private void promote(final Number arg, final int position, final Type type2)
 	{
-		if (type2.isLessThan(Type.BIGINTEGER))
-			throw new InternalReasonerException("Cannot promote to anything less than BigInteger");
+		if (type2.isLessThan(Type.BIGINTEGER)) throw new InternalReasonerException("Cannot promote to anything less than BigInteger");
 		final Type type1 = findType(arg);
 
 		if (type2 == Type.DOUBLE)
 			_doubleArgs[position] = arg.doubleValue();
-		else
-			if (type2 == Type.FLOAT)
-				_floatArgs[position] = arg.floatValue();
+		else if (type2 == Type.FLOAT)
+			_floatArgs[position] = arg.floatValue();
+		else if (type2 == Type.BIGDECIMAL)
+		{
+			if (type1 == Type.BIGDECIMAL)
+				_decimalArgs[position] = (BigDecimal) arg;
+			else if (type1 == Type.BIGINTEGER)
+				_decimalArgs[position] = new BigDecimal((BigInteger) arg, 0, MathContext.DECIMAL128);
+			else if (type1.isLessThan(Type.BIGINTEGER))
+				_decimalArgs[position] = new BigDecimal(arg.longValue(), MathContext.DECIMAL128);
 			else
-				if (type2 == Type.BIGDECIMAL)
-				{
-					if (type1 == Type.BIGDECIMAL)
-						_decimalArgs[position] = (BigDecimal) arg;
-					else
-						if (type1 == Type.BIGINTEGER)
-							_decimalArgs[position] = new BigDecimal((BigInteger) arg, 0, MathContext.DECIMAL128);
-						else
-							if (type1.isLessThan(Type.BIGINTEGER))
-								_decimalArgs[position] = new BigDecimal(arg.longValue(), MathContext.DECIMAL128);
-							else
-								throw new InternalReasonerException("Do not know how to convert " + type1 + " to BigDecimal.");
-				}
-				else
-					if (type2 == Type.BIGINTEGER)
-					{
-						if (type1 == Type.BIGINTEGER)
-							_bigIntArgs[position] = (BigInteger) arg;
-						else
-							if (type1.isLessThan(Type.BIGINTEGER))
-								_bigIntArgs[position] = new BigDecimal(arg.longValue(), MathContext.DECIMAL128).toBigInteger();
-							else
-								throw new InternalReasonerException("Do not know how to convert " + type1 + " to BigInteger.");
-					}
-					else
-						throw new InternalReasonerException("Do not know how to promote numbers to _type " + type2);
+				throw new InternalReasonerException("Do not know how to convert " + type1 + " to BigDecimal.");
+		}
+		else if (type2 == Type.BIGINTEGER)
+		{
+			if (type1 == Type.BIGINTEGER)
+				_bigIntArgs[position] = (BigInteger) arg;
+			else if (type1.isLessThan(Type.BIGINTEGER))
+				_bigIntArgs[position] = new BigDecimal(arg.longValue(), MathContext.DECIMAL128).toBigInteger();
+			else
+				throw new InternalReasonerException("Do not know how to convert " + type1 + " to BigInteger.");
+		}
+		else
+			throw new InternalReasonerException("Do not know how to promote numbers to _type " + type2);
 	}
 
 	/**
@@ -214,8 +198,7 @@ public class NumericPromotion
 	private void promote(final Type minType, final Number... nums)
 	{
 		Type largest = findHighestType(nums);
-		if (largest.isLessThan(minType))
-			largest = minType;
+		if (largest.isLessThan(minType)) largest = minType;
 
 		prepArray(largest, nums.length);
 		for (int i = 0; i < nums.length; i++)

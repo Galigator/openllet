@@ -11,5 +11,5 @@ package openllet.core.rules.rete;
  */
 public interface FilterCondition
 {
-	public abstract boolean test(WME wme, Token token);
+	boolean test(WME wme, Token token);
 }

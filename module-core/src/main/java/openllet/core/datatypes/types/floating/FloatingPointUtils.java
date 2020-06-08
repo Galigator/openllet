@@ -21,19 +21,18 @@ import java.math.BigInteger;
 public class FloatingPointUtils
 {
 
-	private static final long DOUBLE_MAGNITUDE_MASK = 0x7fffffffffffffffL;
-	private static final long DOUBLE_NEGATIVE_ZERO_BITS = 0x8000000000000000L;
-	private static final long DOUBLE_POSITIVE_ZERO_BITS = 0x0000000000000000L;
-	private static final long DOUBLE_SIGN_MASK = 0x8000000000000000L;
-	private static final int FLOAT_MAGNITUDE_MASK = 0x7fffffff;
-	private static final int FLOAT_NEGATIVE_ZERO_BITS = 0x80000000;
-	private static final int FLOAT_POSITIVE_ZERO_BITS = 0x00000000;
-	private static final int FLOAT_SIGN_MASK = 0x80000000;
+	private static final long	DOUBLE_MAGNITUDE_MASK		= 0x7fffffffffffffffL;
+	private static final long	DOUBLE_NEGATIVE_ZERO_BITS	= 0x8000000000000000L;
+	private static final long	DOUBLE_POSITIVE_ZERO_BITS	= 0x0000000000000000L;
+	private static final long	DOUBLE_SIGN_MASK			= 0x8000000000000000L;
+	private static final int	FLOAT_MAGNITUDE_MASK		= 0x7fffffff;
+	private static final int	FLOAT_NEGATIVE_ZERO_BITS	= 0x80000000;
+	private static final int	FLOAT_POSITIVE_ZERO_BITS	= 0x00000000;
+	private static final int	FLOAT_SIGN_MASK				= 0x80000000;
 
 	public static Double decrement(final Double n)
 	{
-		if (n.isNaN() || n.isInfinite())
-			return n;
+		if (n.isNaN() || n.isInfinite()) return n;
 
 		final long i = Double.doubleToRawLongBits(n);
 
@@ -45,20 +44,18 @@ public class FloatingPointUtils
 		/*
 		 * Positive values decrement the bit pattern by one
 		 */
+		else if ((i & DOUBLE_SIGN_MASK) == 0)
+			return Double.longBitsToDouble(i - 1L);
+		/*
+		 * Negative values increment the bit pattern by one
+		 */
 		else
-			if ((i & DOUBLE_SIGN_MASK) == 0)
-				return Double.longBitsToDouble(i - 1L);
-			/*
-			 * Negative values increment the bit pattern by one
-			 */
-			else
-				return Double.longBitsToDouble(i + 1L);
+			return Double.longBitsToDouble(i + 1L);
 	}
 
 	public static Float decrement(final Float n)
 	{
-		if (n.isNaN() || n.isInfinite())
-			return n;
+		if (n.isNaN() || n.isInfinite()) return n;
 
 		final int i = Float.floatToRawIntBits(n);
 
@@ -70,20 +67,18 @@ public class FloatingPointUtils
 		/*
 		 * Positive values decrement the bit pattern by one
 		 */
+		else if ((i & FLOAT_SIGN_MASK) == 0)
+			return Float.intBitsToFloat(i - 1);
+		/*
+		 * Negative values increment the bit pattern by one
+		 */
 		else
-			if ((i & FLOAT_SIGN_MASK) == 0)
-				return Float.intBitsToFloat(i - 1);
-			/*
-			 * Negative values increment the bit pattern by one
-			 */
-			else
-				return Float.intBitsToFloat(i + 1);
+			return Float.intBitsToFloat(i + 1);
 	}
 
 	public static Double increment(final Double n)
 	{
-		if (n.isNaN() || n.isInfinite())
-			return n;
+		if (n.isNaN() || n.isInfinite()) return n;
 
 		final long i = Double.doubleToRawLongBits(n);
 
@@ -95,20 +90,18 @@ public class FloatingPointUtils
 		/*
 		 * Positive values increment the bit pattern by one
 		 */
+		else if ((i & DOUBLE_SIGN_MASK) == 0)
+			return Double.longBitsToDouble(i + 1L);
+		/*
+		 * Negative values decrement the bit pattern by one
+		 */
 		else
-			if ((i & DOUBLE_SIGN_MASK) == 0)
-				return Double.longBitsToDouble(i + 1L);
-			/*
-			 * Negative values decrement the bit pattern by one
-			 */
-			else
-				return Double.longBitsToDouble(i - 1L);
+			return Double.longBitsToDouble(i - 1L);
 	}
 
 	public static Float increment(final Float n)
 	{
-		if (n.isNaN() || n.isInfinite())
-			return n;
+		if (n.isNaN() || n.isInfinite()) return n;
 
 		final int i = Float.floatToRawIntBits(n);
 
@@ -120,22 +113,19 @@ public class FloatingPointUtils
 		/*
 		 * Positive values increment the bit pattern by one
 		 */
+		else if ((i & FLOAT_SIGN_MASK) == 0)
+			return Float.intBitsToFloat(i + 1);
+		/*
+		 * Negative values decrement the bit pattern by one
+		 */
 		else
-			if ((i & FLOAT_SIGN_MASK) == 0)
-				return Float.intBitsToFloat(i + 1);
-			/*
-			 * Negative values decrement the bit pattern by one
-			 */
-			else
-				return Float.intBitsToFloat(i - 1);
+			return Float.intBitsToFloat(i - 1);
 	}
 
 	public static BigInteger intervalSize(final Double lower, final Double upper)
 	{
-		if (lower.isNaN())
-			throw new IllegalArgumentException();
-		if (upper.isNaN())
-			throw new IllegalArgumentException();
+		if (lower.isNaN()) throw new IllegalArgumentException();
+		if (upper.isNaN()) throw new IllegalArgumentException();
 
 		final long lowerBits = Double.doubleToRawLongBits(lower);
 		final long upperBits = Double.doubleToRawLongBits(upper);
@@ -164,10 +154,8 @@ public class FloatingPointUtils
 
 	public static long intervalSize(final Float lower, final Float upper)
 	{
-		if (lower.isNaN())
-			throw new IllegalArgumentException();
-		if (upper.isNaN())
-			throw new IllegalArgumentException();
+		if (lower.isNaN()) throw new IllegalArgumentException();
+		if (upper.isNaN()) throw new IllegalArgumentException();
 
 		final int lowerBits = Float.floatToRawIntBits(lower);
 		final int upperBits = Float.floatToRawIntBits(upper);
@@ -185,7 +173,7 @@ public class FloatingPointUtils
 			 * so all arguments are cast to longs
 			 */
 			else
-				return (long) (FLOAT_MAGNITUDE_MASK & lowerBits) + (long) (FLOAT_MAGNITUDE_MASK & upperBits) + 2l;
+				return (long) (FLOAT_MAGNITUDE_MASK & lowerBits) + (long) (FLOAT_MAGNITUDE_MASK & upperBits) + 2L;
 		}
 		/*
 		 * Both are positive, size is the difference

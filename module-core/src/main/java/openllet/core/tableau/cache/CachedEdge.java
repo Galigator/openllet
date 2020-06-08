@@ -30,10 +30,10 @@ import openllet.core.boxes.rbox.Role;
  */
 public abstract class CachedEdge implements Edge
 {
-	protected ATermAppl _neighbor;
-	private final Role _role;
+	protected ATermAppl		_neighbor;
+	private final Role		_role;
 
-	private DependencySet _depends;
+	private DependencySet	_depends;
 
 	public CachedEdge(final Role role, final ATermAppl neighbor, final DependencySet ds)
 	{

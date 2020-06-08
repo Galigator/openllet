@@ -16,7 +16,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
  * <p>
  * Company: Clark & Parsia, LLC. <a href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
  * </p>
- * 
+ *
  * @author Mike Smith &lt;msmith@clarkparsia.com&gt;
  */
 public interface OwlApiCase extends TestCase<OWLOntology>

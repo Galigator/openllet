@@ -159,23 +159,23 @@ import org.semanticweb.owlapi.model.SWRLVariable;
  */
 public class PelletVisitor implements OWLObjectVisitor
 {
-	public static Logger _logger = Log.getLogger(PelletVisitor.class);
+	public static Logger													_logger						= Log.getLogger(PelletVisitor.class);
 
-	private volatile KnowledgeBase _kb;
+	private volatile KnowledgeBase											_kb;
 
-	private volatile ATermAppl _term;
+	private volatile ATermAppl												_term;
 
-	private volatile AtomDObject _swrlDObject;
+	private volatile AtomDObject											_swrlDObject;
 
-	private volatile AtomIObject _swrlIObject;
+	private volatile AtomIObject											_swrlIObject;
 
-	private volatile RuleAtom _swrlAtom;
+	private volatile RuleAtom												_swrlAtom;
 
-	private volatile boolean _addAxioms;
+	private volatile boolean												_addAxioms;
 
-	private volatile boolean _reloadRequired;
+	private volatile boolean												_reloadRequired;
 
-	private final Set<OWLAxiom> _unsupportedAxioms = Collections.newSetFromMap(new ConcurrentHashMap<>());
+	private final Set<OWLAxiom>												_unsupportedAxioms			= Collections.newSetFromMap(new ConcurrentHashMap<>());
 
 	/*
 	 * Only simple properties can be used in cardinality restrictions,
@@ -183,9 +183,9 @@ public class PelletVisitor implements OWLObjectVisitor
 	 * constants will be used to identify why a certain property should be
 	 * treated as simple
 	 */
-	private final MultiValueMap<OWLObjectProperty, OWLObjectPropertyAxiom> _compositePropertyAxioms = new MultiValueMap<>();
+	private final MultiValueMap<OWLObjectProperty, OWLObjectPropertyAxiom>	_compositePropertyAxioms	= new MultiValueMap<>();
 
-	private final Set<OWLObjectProperty> _simpleProperties = Collections.newSetFromMap(new ConcurrentHashMap<>());
+	private final Set<OWLObjectProperty>									_simpleProperties			= Collections.newSetFromMap(new ConcurrentHashMap<>());
 
 	public PelletVisitor(final KnowledgeBase kb)
 	{
@@ -210,11 +210,9 @@ public class PelletVisitor implements OWLObjectVisitor
 
 	private void addUnsupportedAxiom(final OWLAxiom axiom)
 	{
-		if (!OpenlletOptions.IGNORE_UNSUPPORTED_AXIOMS)
-			throw new UnsupportedFeatureException("Axiom: " + axiom);
+		if (!OpenlletOptions.IGNORE_UNSUPPORTED_AXIOMS) throw new UnsupportedFeatureException("Axiom: " + axiom);
 
-		if (_unsupportedAxioms.add(axiom))
-			_logger.warning("Ignoring unsupported axiom: " + axiom);
+		if (_unsupportedAxioms.add(axiom)) _logger.warning("Ignoring unsupported axiom: " + axiom);
 	}
 
 	public Set<OWLAxiom> getUnsupportedAxioms()
@@ -250,8 +248,7 @@ public class PelletVisitor implements OWLObjectVisitor
 		{
 			final OWLObjectProperty nonSimpleProperty = entry.getKey();
 
-			if (!_simpleProperties.contains(nonSimpleProperty))
-				continue;
+			if (!_simpleProperties.contains(nonSimpleProperty)) continue;
 
 			final Set<OWLObjectPropertyAxiom> axioms = entry.getValue();
 			for (final OWLObjectPropertyAxiom axiom : axioms)
@@ -292,14 +289,12 @@ public class PelletVisitor implements OWLObjectVisitor
 	{
 		if (c.isOWLThing())
 			_term = ATermUtils.TOP;
+		else if (c.isOWLNothing())
+			_term = ATermUtils.BOTTOM;
 		else
-			if (c.isOWLNothing())
-				_term = ATermUtils.BOTTOM;
-			else
-				_term = ATermUtils.makeTermAppl(c.getIRI().toString());
+			_term = ATermUtils.makeTermAppl(c.getIRI().toString());
 
-		if (_addAxioms)
-			_kb.addClass(_term);
+		if (_addAxioms) _kb.addClass(_term);
 	}
 
 	@Override
@@ -307,8 +302,7 @@ public class PelletVisitor implements OWLObjectVisitor
 	{
 		_term = ATermUtils.makeTermAppl(prop.getIRI().toString());
 
-		if (_addAxioms)
-			_kb.addAnnotationProperty(_term);
+		if (_addAxioms) _kb.addAnnotationProperty(_term);
 	}
 
 	@Override
@@ -316,8 +310,7 @@ public class PelletVisitor implements OWLObjectVisitor
 	{
 		_term = ATermUtils.makeBnode(ind.toStringID());
 
-		if (_addAxioms)
-			_kb.addIndividual(_term);
+		if (_addAxioms) _kb.addIndividual(_term);
 	}
 
 	@Override
@@ -325,8 +318,7 @@ public class PelletVisitor implements OWLObjectVisitor
 	{
 		_term = ATermUtils.makeTermAppl(ind.getIRI().toString());
 
-		if (_addAxioms)
-			_kb.addIndividual(_term);
+		if (_addAxioms) _kb.addIndividual(_term);
 	}
 
 	@Override
@@ -334,16 +326,14 @@ public class PelletVisitor implements OWLObjectVisitor
 	{
 		if (prop.isOWLTopObjectProperty())
 			_term = ATermUtils.TOP_OBJECT_PROPERTY;
+		else if (prop.isOWLBottomObjectProperty())
+			_term = ATermUtils.BOTTOM_OBJECT_PROPERTY;
 		else
-			if (prop.isOWLBottomObjectProperty())
-				_term = ATermUtils.BOTTOM_OBJECT_PROPERTY;
-			else
-			{
-				_term = ATermUtils.makeTermAppl(prop.getIRI().toString());
+		{
+			_term = ATermUtils.makeTermAppl(prop.getIRI().toString());
 
-				if (_addAxioms)
-					_kb.addObjectProperty(_term);
-			}
+			if (_addAxioms) _kb.addObjectProperty(_term);
+		}
 	}
 
 	@Override
@@ -361,16 +351,14 @@ public class PelletVisitor implements OWLObjectVisitor
 
 		if (prop.isOWLTopDataProperty())
 			_term = ATermUtils.TOP_DATA_PROPERTY;
+		else if (prop.isOWLBottomDataProperty())
+			_term = ATermUtils.BOTTOM_DATA_PROPERTY;
 		else
-			if (prop.isOWLBottomDataProperty())
-				_term = ATermUtils.BOTTOM_DATA_PROPERTY;
-			else
-			{
-				_term = ATermUtils.makeTermAppl(prop.getIRI().toString());
+		{
+			_term = ATermUtils.makeTermAppl(prop.getIRI().toString());
 
-				if (_addAxioms)
-					_kb.addDatatypeProperty(_term);
-			}
+			if (_addAxioms) _kb.addDatatypeProperty(_term);
+		}
 	}
 
 	@Override
@@ -612,8 +600,7 @@ public class PelletVisitor implements OWLObjectVisitor
 					// if removal fails we need to reload
 					_reloadRequired = !_kb.removeAxiom(sameAxiom);
 					// if removal is required there is no point to continue
-					if (_reloadRequired)
-						return;
+					if (_reloadRequired) return;
 				}
 			}
 		}
@@ -1283,8 +1270,7 @@ public class PelletVisitor implements OWLObjectVisitor
 		axiom.getClassExpression().accept(this);
 		final ATermAppl c = _term;
 
-		if (AnnotationClasses.contains(c))
-			return;
+		if (AnnotationClasses.contains(c)) return;
 
 		axiom.getIndividual().accept(this);
 		final ATermAppl ind = _term;
@@ -1423,8 +1409,7 @@ public class PelletVisitor implements OWLObjectVisitor
 	@Override
 	public void visit(final SWRLRule rule)
 	{
-		if (!OpenlletOptions.DL_SAFE_RULES)
-			return;
+		if (!OpenlletOptions.DL_SAFE_RULES) return;
 
 		if (!_addAxioms)
 		{
@@ -1526,8 +1511,7 @@ public class PelletVisitor implements OWLObjectVisitor
 		{
 			atom.accept(this);
 
-			if (_swrlAtom == null)
-				return null;
+			if (_swrlAtom == null) return null;
 
 			atoms.add(_swrlAtom);
 		}

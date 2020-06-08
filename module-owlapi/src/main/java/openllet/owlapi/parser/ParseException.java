@@ -14,18 +14,18 @@ public class ParseException extends Exception
 	/**
 	 * The version identifier for this Serializable class. Increment only if the <i>serialized</i> form of the class changes.
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long	serialVersionUID	= 1L;
 
 	/**
 	 * The end of line string for this machine.
 	 */
-	protected static String EOL = System.getProperty("line.separator", "\n");
+	protected static String		EOL					= System.getProperty("line.separator", "\n");
 
 	/**
 	 * This constructor is used by the method "generateParseException" in the generated parser. Calling this constructor generates a new object of this type
 	 * with the fields "currentToken", "expectedTokenSequences", and "tokenImage" set.
 	 */
-	public ParseException(Token currentTokenVal, int[][] expectedTokenSequencesVal, String[] tokenImageVal)
+	public ParseException(final Token currentTokenVal, final int[][] expectedTokenSequencesVal, final String[] tokenImageVal)
 	{
 		super(initialise(currentTokenVal, expectedTokenSequencesVal, tokenImageVal));
 		currentToken = currentTokenVal;
@@ -45,7 +45,7 @@ public class ParseException extends Exception
 	}
 
 	/** Constructor with message. */
-	public ParseException(String message)
+	public ParseException(final String message)
 	{
 		super(message);
 	}
@@ -54,51 +54,42 @@ public class ParseException extends Exception
 	 * This is the last token that has been consumed successfully. If this object has been created due to a parse error, the token followng this token will
 	 * (therefore) be the first error token.
 	 */
-	public Token currentToken;
+	public Token	currentToken;
 
 	/**
 	 * Each entry in this array is an array of integers. Each array of integers represents a sequence of tokens (by their ordinal values) that is expected at
 	 * this point of the parse.
 	 */
-	public int[][] expectedTokenSequences;
+	public int[][]	expectedTokenSequences;
 
 	/**
 	 * This is a reference to the "tokenImage" array of the generated parser within which the parse error occurred. This array is defined in the generated
 	 * ...Constants interface.
 	 */
-	public String[] tokenImage;
+	public String[]	tokenImage;
 
 	/**
 	 * It uses "currentToken" and "expectedTokenSequences" to generate a parse error message and returns it. If this object has been created due to a parse
 	 * error, and you do not catch it (it gets thrown from the parser) the correct error message gets displayed.
 	 */
-	private static String initialise(Token currentToken, int[][] expectedTokenSequences, String[] tokenImage)
+	private static String initialise(final Token currentToken, final int[][] expectedTokenSequences, final String[] tokenImage)
 	{
 
 		final StringBuffer expected = new StringBuffer();
 		int maxSize = 0;
-		for (int i = 0; i < expectedTokenSequences.length; i++)
+		for (final int[] expectedTokenSequence : expectedTokenSequences)
 		{
-			if (maxSize < expectedTokenSequences[i].length)
-			{
-				maxSize = expectedTokenSequences[i].length;
-			}
-			for (int j = 0; j < expectedTokenSequences[i].length; j++)
-			{
-				expected.append(tokenImage[expectedTokenSequences[i][j]]).append(' ');
-			}
-			if (expectedTokenSequences[i][expectedTokenSequences[i].length - 1] != 0)
-			{
-				expected.append("...");
-			}
+			if (maxSize < expectedTokenSequence.length) maxSize = expectedTokenSequence.length;
+			for (int j = 0; j < expectedTokenSequence.length; j++)
+				expected.append(tokenImage[expectedTokenSequence[j]]).append(' ');
+			if (expectedTokenSequence[expectedTokenSequence.length - 1] != 0) expected.append("...");
 			expected.append(EOL).append("    ");
 		}
 		String retval = "Encountered \"";
 		Token tok = currentToken.next;
 		for (int i = 0; i < maxSize; i++)
 		{
-			if (i != 0)
-				retval += " ";
+			if (i != 0) retval += " ";
 			if (tok.kind == 0)
 			{
 				retval += tokenImage[0];
@@ -120,13 +111,9 @@ public class ParseException extends Exception
 		else
 		{
 			if (expectedTokenSequences.length == 1)
-			{
 				retval += "Was expecting:" + EOL + "    ";
-			}
 			else
-			{
 				retval += "Was expecting one of:" + EOL + "    ";
-			}
 			retval += expected.toString();
 		}
 
@@ -136,12 +123,11 @@ public class ParseException extends Exception
 	/**
 	 * Used to convert raw characters to their escaped version when these raw version cannot be used as part of an ASCII string literal.
 	 */
-	static String add_escapes(String str)
+	static String add_escapes(final String str)
 	{
 		final StringBuffer retval = new StringBuffer();
 		char ch;
 		for (int i = 0; i < str.length(); i++)
-		{
 			switch (str.charAt(i))
 			{
 				case '\b':
@@ -175,12 +161,9 @@ public class ParseException extends Exception
 						retval.append("\\u" + s.substring(s.length() - 4, s.length()));
 					}
 					else
-					{
 						retval.append(ch);
-					}
 					continue;
 			}
-		}
 		return retval.toString();
 	}
 

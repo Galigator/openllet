@@ -42,11 +42,10 @@ public class ShiftedBitIntSet extends BitIntSet
 			min = value;
 			super.add(0);
 		}
+		else if (value >= min)
+			super.add(value - min);
 		else
-			if (value >= min)
-				super.add(value - min);
-			else
-				throw new UnsupportedOperationException("Not implemented");
+			throw new UnsupportedOperationException("Not implemented");
 	}
 
 	@Override

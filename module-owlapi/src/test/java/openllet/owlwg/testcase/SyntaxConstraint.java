@@ -19,29 +19,31 @@ import org.semanticweb.owlapi.model.OWLIndividual;
  * Company: Clark & Parsia, LLC. <a
  * href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
  * </p>
- * 
+ *
  * @author Mike Smith &lt;msmith@clarkparsia.com&gt;
  */
 
-public enum SyntaxConstraint {
+public enum SyntaxConstraint
+{
 
 	DL(Individual.DL), EL(Individual.EL), QL(Individual.QL), RL(Individual.RL);
 
-	public static SyntaxConstraint get(OWLIndividual i) {
-		for( SyntaxConstraint c : values() ) {
-			if( c.getOWLIndividual().equals( i ) )
-				return c;
-		}
+	public static SyntaxConstraint get(final OWLIndividual i)
+	{
+		for (final SyntaxConstraint c : values())
+			if (c.getOWLIndividual().equals(i)) return c;
 		return null;
 	}
 
-	private final TestVocabulary.Individual	_i;
+	private final TestVocabulary.Individual _i;
 
-	private SyntaxConstraint(TestVocabulary.Individual i) {
-		this._i = i;
+	private SyntaxConstraint(final TestVocabulary.Individual i)
+	{
+		_i = i;
 	}
 
-	public OWLIndividual getOWLIndividual() {
+	public OWLIndividual getOWLIndividual()
+	{
 		return _i.getOWLIndividual();
 	}
 }

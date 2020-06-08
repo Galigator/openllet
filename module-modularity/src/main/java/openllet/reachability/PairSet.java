@@ -20,11 +20,11 @@ import java.util.Set;
 public class PairSet<T> extends AbstractSet<T>
 {
 
-	private final Set<T> _firstSet;
+	private final Set<T>	_firstSet;
 
-	private final Set<T> _secondSet;
+	private final Set<T>	_secondSet;
 
-	private final int _size;
+	private final int		_size;
 
 	/**
 	 * Iterate through first and second set filtering any duplicates that might be in both sets. We always iterate through the large set first because every
@@ -36,22 +36,22 @@ public class PairSet<T> extends AbstractSet<T>
 		/**
 		 * The first set we iterate over (not necessarily same as _firstSet)
 		 */
-		private Set<T> firstIteratedSet;
+		private Set<T>		firstIteratedSet;
 
 		/**
 		 * The iterator over the first iterated set
 		 */
-		private Iterator<T> firstIterator;
+		private Iterator<T>	firstIterator;
 
 		/**
 		 * The iterator over the second iterated set
 		 */
-		private Iterator<T> secondIterator;
+		private Iterator<T>	secondIterator;
 
 		/**
 		 * Next element to be returned, or null if both iterators are consumed
 		 */
-		private T next;
+		private T			next;
 
 		public PairIterator()
 		{
@@ -106,8 +106,7 @@ public class PairSet<T> extends AbstractSet<T>
 		@Override
 		public T next()
 		{
-			if (!hasNext())
-				throw new NoSuchElementException();
+			if (!hasNext()) throw new NoSuchElementException();
 
 			final T result = next;
 			findNext();
@@ -135,13 +134,11 @@ public class PairSet<T> extends AbstractSet<T>
 		if (_firstSet.size() < _secondSet.size())
 		{
 			for (final T e : _firstSet)
-				if (_secondSet.contains(e))
-					size--;
+				if (_secondSet.contains(e)) size--;
 		}
 		else
 			for (final T e : _secondSet)
-				if (_firstSet.contains(e))
-					size--;
+				if (_firstSet.contains(e)) size--;
 
 		return size;
 	}

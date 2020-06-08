@@ -24,19 +24,18 @@ import openllet.core.exceptions.InternalReasonerException;
  * Company: Clark & Parsia, LLC. <http://www.clarkparsia.com>
  * </p>
  *
- * @author Ron Alford
- * @param <T> kind of element
+ * @author     Ron Alford
+ * @param  <T> kind of element
  */
 public class Tuple<T>
 {
-	private final DependencySet _ds;
-	private final List<T> _elements;
+	private final DependencySet	_ds;
+	private final List<T>		_elements;
 
 	@SafeVarargs
 	public Tuple(final DependencySet ds, final T... elementArgs)
 	{
-		if (ds == null)
-			throw new InternalReasonerException("Null dependencyset argument to rete tuple");
+		if (ds == null) throw new InternalReasonerException("Null dependencyset argument to rete tuple");
 		_ds = ds;
 		this._elements = Collections.unmodifiableList(Arrays.asList(elementArgs));
 	}

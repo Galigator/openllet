@@ -26,83 +26,83 @@ public interface IntSet
 	/**
 	 * Adds a new integer to this set.
 	 *
-	 * @param value integer value to be added
+	 * @param  value                    integer value to be added
 	 * @throws IllegalArgumentException if the value is not supported by this set implementation
 	 */
-	public void add(int value) throws IllegalArgumentException;
+	void add(int value) throws IllegalArgumentException;
 
 	/**
 	 * Adds all the integers from another set to this set.
 	 *
-	 * @param other the set whose elements will be added
+	 * @param  other                    the set whose elements will be added
 	 * @throws IllegalArgumentException if any of the values in the other set is not supported by this set implementation
 	 */
-	public void addAll(IntSet other);
+	void addAll(IntSet other);
 
 	/**
 	 * Checks if the given integer value is in this set.
 	 *
-	 * @param value the integer value being checked
-	 * @return <code>true</code> if the value is in this set
+	 * @param  value the integer value being checked
+	 * @return       <code>true</code> if the value is in this set
 	 */
-	public boolean contains(int value);
+	boolean contains(int value);
 
 	/**
 	 * Creates a copy of this set.
 	 *
 	 * @return a copy of this set
 	 */
-	public IntSet copy();
+	IntSet copy();
 
 	/**
 	 * Cehcks if the set is empty.
 	 *
 	 * @return <code>true</code> if there are no elements in the set
 	 */
-	public boolean isEmpty();
+	boolean isEmpty();
 
 	/**
 	 * An iterator over the values of this set. There is no guarantee on the _order of the elements.
 	 *
 	 * @return an iterator over the values of the set
 	 */
-	public IntIterator iterator();
+	IntIterator iterator();
 
 	/**
 	 * Returns the maximum integer in this set.
 	 *
-	 * @return the maximum integer in this set
+	 * @return                        the maximum integer in this set
 	 * @throws NoSuchElementException if the set is empty
 	 */
-	public int max() throws NoSuchElementException;
+	int max() throws NoSuchElementException;
 
 	/**
 	 * Returns the minimum integer in this set.
 	 *
-	 * @return the minimum integer in this set
+	 * @return                        the minimum integer in this set
 	 * @throws NoSuchElementException if the set is empty
 	 */
-	public int min();
+	int min();
 
 	/**
 	 * Remove the given integer value from this set.
 	 *
 	 * @param value the integer value to be removed
 	 */
-	public void remove(int value);
+	void remove(int value);
 
 	/**
 	 * Creates a new IntSet that is the union of this set and the given set. Neither of the sets are changed by this operation.
 	 *
-	 * @param set the other set that will be included in the union result
-	 * @return a new IntSet instance that is the union of two sets
+	 * @param  set the other set that will be included in the union result
+	 * @return     a new IntSet instance that is the union of two sets
 	 */
-	public IntSet union(IntSet set);
+	IntSet union(IntSet set);
 
 	/**
 	 * Returns the number of elements in the set.
 	 *
 	 * @return the number of elements in the set
 	 */
-	public int size();
+	int size();
 }

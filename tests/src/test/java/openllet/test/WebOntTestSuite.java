@@ -38,8 +38,7 @@ public class WebOntTestSuite
 
 		for (final File dir : dirs)
 		{
-			if (dir.isFile())
-				continue;
+			if (dir.isFile()) continue;
 
 			final File[] files = dir.listFiles((FileFilter) file -> file.getName().indexOf("Manifest") != -1);
 
@@ -57,7 +56,7 @@ public class WebOntTestSuite
 
 	public WebOntTestSuite(final WebOntTestCase test)
 	{
-		this._test = test;
+		_test = test;
 	}
 
 	@Test

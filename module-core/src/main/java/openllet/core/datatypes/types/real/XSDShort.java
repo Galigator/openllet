@@ -42,8 +42,7 @@ public class XSDShort extends AbstractDerivedIntegerType
 		try
 		{
 			final int n = DatatypeConverter.parseInt(lexicalForm);
-			if (n < Short.MIN_VALUE || n > Short.MAX_VALUE)
-				throw new InvalidLiteralException(getName(), lexicalForm);
+			if (n < Short.MIN_VALUE || n > Short.MAX_VALUE) throw new InvalidLiteralException(getName(), lexicalForm);
 			return Short.valueOf((short) n);
 		}
 		catch (final NumberFormatException e)

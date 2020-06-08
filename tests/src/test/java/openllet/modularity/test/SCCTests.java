@@ -18,9 +18,9 @@ import org.semanticweb.owlapi.model.OWLClass;
  */
 public class SCCTests
 {
-	private ReachabilityGraph<OWLClass> _graph;
+	private ReachabilityGraph<OWLClass>	_graph;
 
-	private EntityNode<OWLClass>[] _nodes;
+	private EntityNode<OWLClass>[]		_nodes;
 
 	private void addEdge(final int in, final int out)
 	{

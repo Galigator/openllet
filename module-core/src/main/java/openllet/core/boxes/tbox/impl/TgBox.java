@@ -60,10 +60,10 @@ public class TgBox extends TBoxBase
 		_subLogger.setParent(_logger);
 	}
 
-	private Set<ATermAppl> _explanation;
+	private Set<ATermAppl>	_explanation;
 
 	// universal concept
-	private List<Unfolding> UC = null;
+	private List<Unfolding>	UC	= null;
 
 	/*
 	 * Constructors
@@ -184,16 +184,13 @@ public class TgBox extends TBoxBase
 	private boolean absorbTerm(final Set<ATermAppl> set)
 	{
 		final RuleAbsorber ruleAbsorber = new RuleAbsorber(_tbox);
-		if (_subLogger.isLoggable(Level.FINER))
-			_subLogger.finer("Absorbing term " + set);
+		if (_subLogger.isLoggable(Level.FINER)) _subLogger.finer("Absorbing term " + set);
 		while (true)
 		{
 			_subLogger.finer("Absorb rule");
-			if (OpenlletOptions.USE_RULE_ABSORPTION && ruleAbsorber.absorbRule(set, _explanation))
-				return true;
+			if (OpenlletOptions.USE_RULE_ABSORPTION && ruleAbsorber.absorbRule(set, _explanation)) return true;
 			_subLogger.finer("Absorb nominal");
-			if (!OpenlletOptions.USE_PSEUDO_NOMINALS && (OpenlletOptions.USE_NOMINAL_ABSORPTION || OpenlletOptions.USE_HASVALUE_ABSORPTION) && absorbNominal(set))
-				return true;
+			if (!OpenlletOptions.USE_PSEUDO_NOMINALS && (OpenlletOptions.USE_NOMINAL_ABSORPTION || OpenlletOptions.USE_HASVALUE_ABSORPTION) && absorbNominal(set)) return true;
 			_subLogger.finer("Absorb II");
 			if (absorbII(set))
 			{
@@ -257,31 +254,29 @@ public class TgBox extends TBoxBase
 
 				return true;
 			}
-			else
-				if (OpenlletOptions.USE_HASVALUE_ABSORPTION && ATermUtils.isHasValue(name))
-				{
-					final ATermAppl p = (ATermAppl) name.getArgument(0);
-					if (!_kb.isObjectProperty(p))
-						continue;
+			else if (OpenlletOptions.USE_HASVALUE_ABSORPTION && ATermUtils.isHasValue(name))
+			{
+				final ATermAppl p = (ATermAppl) name.getArgument(0);
+				if (!_kb.isObjectProperty(p)) continue;
 
-					i.remove();
-					final ATermAppl c = ATermUtils.makeNot(ATermUtils.makeAnd(ATermUtils.makeList(set)));
+				i.remove();
+				final ATermAppl c = ATermUtils.makeNot(ATermUtils.makeAnd(ATermUtils.makeList(set)));
 
-					final ATermAppl nominal = (ATermAppl) name.getArgument(1);
-					final ATermAppl ind = (ATermAppl) nominal.getArgument(0);
+				final ATermAppl nominal = (ATermAppl) name.getArgument(1);
+				final ATermAppl ind = (ATermAppl) nominal.getArgument(0);
 
-					final ATermAppl invP = _kb.getProperty(p).getInverse().getName();
-					final ATermAppl allInvPC = ATermUtils.makeAllValues(invP, c);
+				final ATermAppl invP = _kb.getProperty(p).getInverse().getName();
+				final ATermAppl allInvPC = ATermUtils.makeAllValues(invP, c);
 
-					_subLogger.finer(() -> "Absorb into " + ind + " with inverse of " + p + " for " + c);
+				_subLogger.finer(() -> "Absorb into " + ind + " with inverse of " + p + " for " + c);
 
-					_tbox.getAbsorbedAxioms().addAll(_explanation);
+				_tbox.getAbsorbedAxioms().addAll(_explanation);
 
-					_kb.addIndividual(ind);
-					_kb.addType(ind, allInvPC, new DependencySet(_explanation));
+				_kb.addIndividual(ind);
+				_kb.addType(ind, allInvPC, new DependencySet(_explanation));
 
-					return true;
-				}
+				return true;
+			}
 		}
 
 		return false;
@@ -327,8 +322,7 @@ public class TgBox extends TBoxBase
 				if (null == role) // FIXME null is unexpected.
 					continue;
 
-				if (role.hasComplexSubRole())
-					continue;
+				if (role.hasComplexSubRole()) continue;
 
 				final ATermAppl domain = ATermUtils.makeNot(ATermUtils.makeAnd(ATermUtils.makeList(set)));
 				_kb.addDomain(r, domain, _explanation);
@@ -337,28 +331,26 @@ public class TgBox extends TBoxBase
 				_tbox.getAbsorbedAxioms().addAll(_explanation);
 				return true;
 			}
-			else
-				if (ATermUtils.isMin(name))
+			else if (ATermUtils.isMin(name))
+			{
+				final ATermAppl r = (ATermAppl) name.getArgument(0);
+				final ATermAppl q = (ATermAppl) name.getArgument(2);
+				if (_kb.getRole(r).hasComplexSubRole() || !ATermUtils.isTop(q)) continue;
+
+				final int n = ((ATermInt) name.getArgument(1)).getInt();
+
+				// if we have min(r,1) sub ... this is also equal to a domain
+				// restriction
+				if (n == 1)
 				{
-					final ATermAppl r = (ATermAppl) name.getArgument(0);
-					final ATermAppl q = (ATermAppl) name.getArgument(2);
-					if (_kb.getRole(r).hasComplexSubRole() || !ATermUtils.isTop(q))
-						continue;
-
-					final int n = ((ATermInt) name.getArgument(1)).getInt();
-
-					// if we have min(r,1) sub ... this is also equal to a domain
-					// restriction
-					if (n == 1)
-					{
-						i.remove();
-						final ATermAppl domain = ATermUtils.makeNot(ATermUtils.makeAnd(ATermUtils.makeList(set)));
-						_kb.addDomain(r, domain, _explanation);
-						_subLogger.fine(() -> "Absorb domain: " + ATermUtils.toString(r) + " " + ATermUtils.toString(domain));
-						_tbox.getAbsorbedAxioms().addAll(_explanation);
-						return true;
-					}
+					i.remove();
+					final ATermAppl domain = ATermUtils.makeNot(ATermUtils.makeAnd(ATermUtils.makeList(set)));
+					_kb.addDomain(r, domain, _explanation);
+					_subLogger.fine(() -> "Absorb domain: " + ATermUtils.toString(r) + " " + ATermUtils.toString(domain));
+					_tbox.getAbsorbedAxioms().addAll(_explanation);
+					return true;
 				}
+			}
 		}
 
 		return false;
@@ -410,8 +402,7 @@ public class TgBox extends TBoxBase
 				td = _tbox._Tu.getTD(negatedTerm);
 			}
 
-			if (td == null || ATermUtils.isTop(td.getName()))
-				continue;
+			if (td == null || ATermUtils.isTop(td.getName())) continue;
 
 			final List<ATermAppl> eqClassAxioms = td.getEqClassAxioms();
 			if (!eqClassAxioms.isEmpty())

@@ -37,12 +37,12 @@ public class OntologyDiff
 	/**
 	 * The list of axioms that were added in the second ontology (with respect to the first ontology).
 	 */
-	private final List<OWLAxiom> additions = new ArrayList<>();
+	private final List<OWLAxiom>	additions	= new ArrayList<>();
 
 	/**
 	 * The list of axioms that were removed in the second ontology (with respect to the first ontology).
 	 */
-	private final List<OWLAxiom> deletions = new ArrayList<>();
+	private final List<OWLAxiom>	deletions	= new ArrayList<>();
 
 	/**
 	 * Private constructor to ensure that the objects of this class can only be created via the appropriate static methods.
@@ -55,9 +55,9 @@ public class OntologyDiff
 	/**
 	 * Computes the difference between two ontologies.
 	 *
-	 * @param initialOnt the initial (first) ontology
-	 * @param finalOnt the final (second or later) ontology
-	 * @return the difference between the initial and final ontology
+	 * @param  initialOnt the initial (first) ontology
+	 * @param  finalOnt   the final (second or later) ontology
+	 * @return            the difference between the initial and final ontology
 	 */
 	public static OntologyDiff diffOntologies(final OWLOntology initialOnt, final OWLOntology finalOnt)
 	{
@@ -70,9 +70,9 @@ public class OntologyDiff
 	/**
 	 * Computes the difference between a collection of ontologies and a collection of axioms
 	 *
-	 * @param initialOntologies the initial (first) ontologies
-	 * @param finalAxioms the final set of axioms (the equivalent of second ontology)
-	 * @return the difference in axioms
+	 * @param  initialOntologies the initial (first) ontologies
+	 * @param  finalAxioms       the final set of axioms (the equivalent of second ontology)
+	 * @return                   the difference in axioms
 	 */
 	public static OntologyDiff diffOntologiesWithAxioms(final Collection<OWLOntology> initialOntologies, final Collection<OWLAxiom> finalAxioms)
 	{
@@ -82,8 +82,7 @@ public class OntologyDiff
 			ontology.axioms().filter(axiom -> !finalAxioms.contains(axiom)).forEach(result.deletions::add);
 
 		for (final OWLAxiom axiom : finalAxioms)
-			if (!containsAxiom(axiom, initialOntologies))
-				result.additions.add(axiom);
+			if (!containsAxiom(axiom, initialOntologies)) result.additions.add(axiom);
 
 		return result;
 	}
@@ -91,9 +90,9 @@ public class OntologyDiff
 	/**
 	 * Computes the difference between a set of axioms and an ontology.
 	 *
-	 * @param initialAxioms the initial set of axioms (the equivalent of the first ontology)
-	 * @param finalOntologies the final set of ontologies
-	 * @return the difference in axioms
+	 * @param  initialAxioms   the initial set of axioms (the equivalent of the first ontology)
+	 * @param  finalOntologies the final set of ontologies
+	 * @return                 the difference in axioms
 	 */
 	public static OntologyDiff diffAxiomsWithOntologies(final Stream<OWLAxiom> initialAxioms, final Collection<OWLOntology> finalOntologies)
 	{
@@ -117,15 +116,14 @@ public class OntologyDiff
 	/**
 	 * Checks whether a collection of ontologies contains a specific axiom
 	 *
-	 * @param axiom the axiom whose presence should be checked
-	 * @param ontologies the collection of ontologies amongst which the presence of the axiom should be checked
-	 * @return true if there is at least one ontology in the collection that contains this axiom, false otherwise
+	 * @param  axiom      the axiom whose presence should be checked
+	 * @param  ontologies the collection of ontologies amongst which the presence of the axiom should be checked
+	 * @return            true if there is at least one ontology in the collection that contains this axiom, false otherwise
 	 */
 	private static boolean containsAxiom(final OWLAxiom axiom, final Collection<OWLOntology> ontologies)
 	{
 		for (final OWLOntology ontology : ontologies)
-			if (ontology.containsAxiom(axiom))
-				return true;
+			if (ontology.containsAxiom(axiom)) return true;
 
 		return false;
 	}
@@ -133,21 +131,19 @@ public class OntologyDiff
 	/**
 	 * Computes the difference between two sets of axioms.
 	 *
-	 * @param initialAxioms the first (initial) set of axioms
-	 * @param finalAxioms the second (final) set of axioms
-	 * @return the difference between the sets of axioms
+	 * @param  initialAxioms the first (initial) set of axioms
+	 * @param  finalAxioms   the second (final) set of axioms
+	 * @return               the difference between the sets of axioms
 	 */
 	public static OntologyDiff diffAxioms(final Collection<OWLAxiom> initialAxioms, final Collection<OWLAxiom> finalAxioms)
 	{
 		final OntologyDiff result = new OntologyDiff();
 
 		for (final OWLAxiom axiom : initialAxioms)
-			if (!finalAxioms.contains(axiom))
-				result.deletions.add(axiom);
+			if (!finalAxioms.contains(axiom)) result.deletions.add(axiom);
 
 		for (final OWLAxiom axiom : finalAxioms)
-			if (!initialAxioms.contains(axiom))
-				result.additions.add(axiom);
+			if (!initialAxioms.contains(axiom)) result.additions.add(axiom);
 
 		return result;
 	}
@@ -190,8 +186,8 @@ public class OntologyDiff
 	/**
 	 * Produces a list of ontology change objects that if applied to the initial ontology, would convert that initial ontology into the final ontology.
 	 *
-	 * @param initialOnt the initial ontology (just for the purposes of creating OWLOntologyChange objects).
-	 * @return a list of ontology change objects.
+	 * @param  initialOnt the initial ontology (just for the purposes of creating OWLOntologyChange objects).
+	 * @return            a list of ontology change objects.
 	 */
 	public Collection<OWLOntologyChange> getChanges(final OWLOntology initialOnt)
 	{
@@ -210,15 +206,14 @@ public class OntologyDiff
 	 * Identifies one ontology in a collection of ontologies, contains a given axiom. If more than one ontology contains that axiom, only the first analyzed
 	 * ontology will be returned.
 	 *
-	 * @param axiom the axiom to be searched in the collection of ontologies
-	 * @param ontologies the collection of ontologies
-	 * @return an ontology that contains the axiom, or null if no ontology contains that axiom
+	 * @param  axiom      the axiom to be searched in the collection of ontologies
+	 * @param  ontologies the collection of ontologies
+	 * @return            an ontology that contains the axiom, or null if no ontology contains that axiom
 	 */
 	private static OWLOntology identifyAxiomOntology(final OWLAxiom axiom, final Collection<OWLOntology> ontologies)
 	{
 		for (final OWLOntology ontology : ontologies)
-			if (ontology.containsAxiom(axiom))
-				return ontology;
+			if (ontology.containsAxiom(axiom)) return ontology;
 
 		return null;
 	}
@@ -227,8 +222,8 @@ public class OntologyDiff
 	 * Produces a list of ontology change objects that if applied to the set of initial ontologies, would convert that set of ontologies into the final
 	 * ontology.
 	 *
-	 * @param ontologies the set of initial ontologies (just for the purposes of creating OWLOntologyChange objects)
-	 * @return a list of ontology change objects.
+	 * @param  ontologies the set of initial ontologies (just for the purposes of creating OWLOntologyChange objects)
+	 * @return            a list of ontology change objects.
 	 */
 	public Collection<OWLOntologyChange> getChanges(final Collection<OWLOntology> ontologies)
 	{
@@ -238,8 +233,7 @@ public class OntologyDiff
 		{
 			final OWLOntology ontology = identifyAxiomOntology(axiom, ontologies);
 
-			if (null == ontology)
-				throw new IllegalArgumentException("None of the ontologies contain the added axiom");
+			if (null == ontology) throw new IllegalArgumentException("None of the ontologies contain the added axiom");
 
 			changes.add(new AddAxiom(ontology, axiom));
 		}
@@ -248,8 +242,7 @@ public class OntologyDiff
 		{
 			OWLOntology ontology = null;
 
-			if (ontologies.isEmpty())
-				throw new IllegalArgumentException("There are no ontologies defined that could have contained the removed axiom");
+			if (ontologies.isEmpty()) throw new IllegalArgumentException("There are no ontologies defined that could have contained the removed axiom");
 
 			ontology = ontologies.iterator().next();
 

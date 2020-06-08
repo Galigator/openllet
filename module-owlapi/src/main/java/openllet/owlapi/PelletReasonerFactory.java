@@ -22,7 +22,7 @@ import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
  * Company: Clark & Parsia, LLC.
  * </p>
  *
- * @author Evren Sirin
+ * @author     Evren Sirin
  * @deprecated since 2.6.0, user OpenlletReasonerFactory instead
  */
 @Deprecated

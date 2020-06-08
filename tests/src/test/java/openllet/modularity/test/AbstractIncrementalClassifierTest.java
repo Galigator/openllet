@@ -112,7 +112,8 @@ public abstract class AbstractIncrementalClassifierTest extends AbstractModulari
 	@Test
 	public void indirectSubClassTest()
 	{
-		final OWLAxiom[] axioms = { subClassOf(_A, Thing), equivalentClasses(_A, some(_p, _C)), equivalentClasses(_B, some(_p, _D)), subClassOf(_C, Thing), subClassOf(_D, _C), subClassOf(_E, Thing), subClassOf(_F, _E) };
+		final OWLAxiom[] axioms = { subClassOf(_A, Thing), equivalentClasses(_A, some(_p, _C)), equivalentClasses(_B, some(_p, _D)), subClassOf(_C, Thing), subClassOf(_D, _C), subClassOf(_E, Thing),
+				subClassOf(_F, _E) };
 		final OWLAxiom[] additions = {};
 		final OWLAxiom[] deletions = { subClassOf(_D, _C) };
 		updateTest(axioms, additions, deletions);

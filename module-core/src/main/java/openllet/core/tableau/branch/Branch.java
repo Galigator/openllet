@@ -51,19 +51,19 @@ import openllet.shared.tools.Log;
  */
 public abstract class Branch implements Comparable<Branch>
 {
-	public static final Logger _logger = Log.getLogger(Branch.class);
+	public static final Logger				_logger	= Log.getLogger(Branch.class);
 
-	protected final ABox _abox;
+	protected final ABox					_abox;
 
-	private final int _branchIndexInABox;
-	private final int _anonCount;
-	private volatile DependencySet _termDepends;
-	private volatile DependencySet _combinedClash;
+	private final int						_branchIndexInABox;
+	private final int						_anonCount;
+	private volatile DependencySet			_termDepends;
+	private volatile DependencySet			_combinedClash;
 
-	protected volatile CompletionStrategy _strategy;
-	protected volatile int _tryCount;
-	protected volatile int _tryNext;
-	protected volatile int _nodeCount;
+	protected volatile CompletionStrategy	_strategy;
+	protected volatile int					_tryCount;
+	protected volatile int					_tryNext;
+	protected volatile int					_nodeCount;
 
 	protected Branch(final ABox abox, final CompletionStrategy strategy, final DependencySet ds, final int n)
 	{
@@ -119,21 +119,17 @@ public abstract class Branch implements Comparable<Branch>
 	public boolean tryNext()
 	{
 		// nothing more to try, update the clash dependency
-		if (getTryNext() == getTryCount())
-			if (!_abox.isClosed())
-				_abox.setClash(Clash.unexplained(getNode(), _termDepends));
-			else
-				_abox.getClash().setDepends(getCombinedClash());
+		if (getTryNext() == getTryCount()) if (!_abox.isClosed())
+			_abox.setClash(Clash.unexplained(getNode(), _termDepends));
+		else
+			_abox.getClash().setDepends(getCombinedClash());
 
 		// if there is no clash try next possibility
-		if (!_abox.isClosed())
-			tryBranch();
+		if (!_abox.isClosed()) tryBranch();
 
 		// there is a clash so there is no point in trying this
 		// _branch again. remove this _branch from clash dependency
-		if (_abox.isClosed())
-			if (!OpenlletOptions.USE_INCREMENTAL_DELETION)
-				_abox.getClash().getDepends().remove(getBranchIndexInABox());
+		if (_abox.isClosed()) if (!OpenlletOptions.USE_INCREMENTAL_DELETION) _abox.getClash().getDepends().remove(getBranchIndexInABox());
 
 		return !_abox.isClosed();
 	}

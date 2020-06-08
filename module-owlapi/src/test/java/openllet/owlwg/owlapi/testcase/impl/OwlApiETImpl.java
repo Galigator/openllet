@@ -25,16 +25,16 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
  * <p>
  * Company: Clark & Parsia, LLC. <a href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
  * </p>
- * 
+ *
  * @author Mike Smith &lt;msmith@clarkparsia.com&gt;
  */
 public abstract class OwlApiETImpl extends AbstractEntailmentTest<OWLOntology> implements OwlApiCase
 {
 
-	private final EnumMap<SerializationFormat, OWLOntology> parsedConclusion;
-	private final EnumMap<SerializationFormat, OWLOntology> parsedPremise;
+	private final EnumMap<SerializationFormat, OWLOntology>	parsedConclusion;
+	private final EnumMap<SerializationFormat, OWLOntology>	parsedPremise;
 
-	public OwlApiETImpl(OWLOntology ontology, OWLNamedIndividual i, boolean positive)
+	public OwlApiETImpl(final OWLOntology ontology, final OWLNamedIndividual i, final boolean positive)
 	{
 		super(ontology, i, positive);
 
@@ -43,7 +43,7 @@ public abstract class OwlApiETImpl extends AbstractEntailmentTest<OWLOntology> i
 	}
 
 	@Override
-	public OWLOntology parseConclusionOntology(SerializationFormat format) throws OntologyParseException
+	public OWLOntology parseConclusionOntology(final SerializationFormat format) throws OntologyParseException
 	{
 		try
 		{
@@ -56,7 +56,7 @@ public abstract class OwlApiETImpl extends AbstractEntailmentTest<OWLOntology> i
 			if (o == null)
 			{
 				final String l = getConclusionOntology(format);
-				if (l == null) { return null; }
+				if (l == null) return null;
 
 				final StringDocumentSource source = new StringDocumentSource(l);
 				o = OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(source);
@@ -71,7 +71,7 @@ public abstract class OwlApiETImpl extends AbstractEntailmentTest<OWLOntology> i
 	}
 
 	@Override
-	public OWLOntology parsePremiseOntology(SerializationFormat format) throws OntologyParseException
+	public OWLOntology parsePremiseOntology(final SerializationFormat format) throws OntologyParseException
 	{
 		try
 		{
@@ -84,7 +84,7 @@ public abstract class OwlApiETImpl extends AbstractEntailmentTest<OWLOntology> i
 			if (o == null)
 			{
 				final String l = getPremiseOntology(format);
-				if (l == null) { return null; }
+				if (l == null) return null;
 
 				final StringDocumentSource source = new StringDocumentSource(l);
 				o = manager.loadOntologyFromOntologyDocument(source);

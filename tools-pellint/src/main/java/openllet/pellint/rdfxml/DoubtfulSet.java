@@ -27,9 +27,9 @@ import java.util.Set;
  */
 public class DoubtfulSet<E> extends HashSet<E>
 {
-	private static final long serialVersionUID = 1L;
+	private static final long	serialVersionUID	= 1L;
 
-	private final HashSet<E> _definite;
+	private final HashSet<E>	_definite;
 
 	public DoubtfulSet()
 	{

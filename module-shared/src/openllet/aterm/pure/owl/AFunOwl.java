@@ -1,7 +1,6 @@
 package openllet.aterm.pure.owl;
 
 import java.io.IOException;
-
 import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.Visitor;
@@ -16,8 +15,7 @@ public abstract class AFunOwl extends ATermImpl implements AFun
 	protected AFunOwl(final PureFactory factory, final boolean lateHashComputation)
 	{
 		super(factory);
-		if (!lateHashComputation)
-			setHashCode(HashFunctions.hashTerm(getName(), isQuoted(), getArity()));
+		if (!lateHashComputation) setHashCode(HashFunctions.hashTerm(getName(), isQuoted(), getArity()));
 	}
 
 	protected AFunOwl(final PureFactory factory)
@@ -184,8 +182,7 @@ public abstract class AFunOwl extends ATermImpl implements AFun
 		final String name = getName();
 		final StringBuilder result = new StringBuilder(name.length());
 
-		if (isQuoted())
-			result.append('"');
+		if (isQuoted()) result.append('"');
 
 		for (int i = 0; i < name.length(); i++)
 		{
@@ -272,8 +269,7 @@ public abstract class AFunOwl extends ATermImpl implements AFun
 			}
 		}
 
-		if (isQuoted())
-			result.append('"');
+		if (isQuoted()) result.append('"');
 
 		return result.toString();
 	}

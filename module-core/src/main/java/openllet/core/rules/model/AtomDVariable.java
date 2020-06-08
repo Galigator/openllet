@@ -39,8 +39,7 @@ public class AtomDVariable extends AtomVariable implements AtomDObject
 	@Override
 	public boolean equals(final Object other)
 	{
-		if (other instanceof AtomDVariable)
-			return super.equals(other);
+		if (other instanceof AtomDVariable) return super.equals(other);
 		return false;
 	}
 }

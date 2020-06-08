@@ -44,9 +44,9 @@ import openllet.core.utils.CollectionUtils;
  */
 public class TermDefinition
 {
-	private final List<ATermAppl> _subClassAxioms;
-	private final List<ATermAppl> _eqClassAxioms;
-	private Set<ATermAppl> _dependencies;
+	private final List<ATermAppl>	_subClassAxioms;
+	private final List<ATermAppl>	_eqClassAxioms;
+	private Set<ATermAppl>			_dependencies;
 
 	public TermDefinition()
 	{
@@ -60,8 +60,7 @@ public class TermDefinition
 	 */
 	public Set<ATermAppl> getDependencies()
 	{
-		if (_dependencies == null)
-			updateDependencies();
+		if (_dependencies == null) updateDependencies();
 		return _dependencies;
 	}
 
@@ -75,11 +74,9 @@ public class TermDefinition
 
 	public ATermAppl getName()
 	{
-		if (!_subClassAxioms.isEmpty())
-			return (ATermAppl) _subClassAxioms.get(0).getArgument(0);
+		if (!_subClassAxioms.isEmpty()) return (ATermAppl) _subClassAxioms.get(0).getArgument(0);
 
-		if (!_eqClassAxioms.isEmpty())
-			return (ATermAppl) _eqClassAxioms.get(0).getArgument(0);
+		if (!_eqClassAxioms.isEmpty()) return (ATermAppl) _eqClassAxioms.get(0).getArgument(0);
 
 		return null;
 	}
@@ -91,14 +88,12 @@ public class TermDefinition
 		final AFun fun = appl.getAFun();
 		if (fun.equals(ATermUtils.SUBFUN))
 			added = _subClassAxioms.contains(appl) ? false : _subClassAxioms.add(appl);
+		else if (fun.equals(ATermUtils.EQCLASSFUN))
+			added = _eqClassAxioms.contains(appl) ? false : _eqClassAxioms.add(appl);
 		else
-			if (fun.equals(ATermUtils.EQCLASSFUN))
-				added = _eqClassAxioms.contains(appl) ? false : _eqClassAxioms.add(appl);
-			else
-				throw new OpenError("Cannot add non-definition!");
+			throw new OpenError("Cannot add non-definition!");
 
-		if (added)
-			updateDependencies();
+		if (added) updateDependencies();
 
 		return added;
 	}
@@ -110,11 +105,10 @@ public class TermDefinition
 		final AFun fun = axiom.getAFun();
 		if (fun.equals(ATermUtils.SUBFUN))
 			removed = _subClassAxioms.remove(axiom);
+		else if (fun.equals(ATermUtils.EQCLASSFUN))
+			removed = _eqClassAxioms.remove(axiom);
 		else
-			if (fun.equals(ATermUtils.EQCLASSFUN))
-				removed = _eqClassAxioms.remove(axiom);
-			else
-				throw new OpenError("Cannot remove non-definition!");
+			throw new OpenError("Cannot remove non-definition!");
 
 		updateDependencies();
 

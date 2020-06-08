@@ -32,61 +32,60 @@ public interface Base extends Boxes
 	/**
 	 * @return the set of all individuals. Returned set is unmodifiable!
 	 */
-	public Set<ATermAppl> getIndividuals();
+	Set<ATermAppl> getIndividuals();
 
-	public default boolean isIndividual(final ATerm ind)
+	default boolean isIndividual(final ATerm ind)
 	{
 		return getIndividuals().contains(ind);
 	}
 
-	public Map<ATermAppl, Set<ATermAppl>> getInstances();
+	Map<ATermAppl, Set<ATermAppl>> getInstances();
 
-	public TaxonomyBuilder getBuilder();
+	TaxonomyBuilder getBuilder();
 
-	public ExpressivityChecker getExpChecker();
+	ExpressivityChecker getExpChecker();
 
-	public EnumSet<ChangeType> getChanges();
+	EnumSet<ChangeType> getChanges();
 
-	public Map<ATermAppl, Map<ATermAppl, Set<ATermAppl>>> getAnnotations();
+	Map<ATermAppl, Map<ATermAppl, Set<ATermAppl>>> getAnnotations();
 
-	public static void handleUndefinedEntity(final String s)
+	static void handleUndefinedEntity(final String s)
 	{
-		if (!OpenlletOptions.SILENT_UNDEFINED_ENTITY_HANDLING)
-			throw new UndefinedEntityException(s);
+		if (!OpenlletOptions.SILENT_UNDEFINED_ENTITY_HANDLING) throw new UndefinedEntityException(s);
 	}
 
-	public Optional<TaxonomyBuilder> getOptTaxonomyBuilder();
+	Optional<TaxonomyBuilder> getOptTaxonomyBuilder();
 
-	public void setOptTaxonomyBuilder(final Optional<TaxonomyBuilder> builder);
+	void setOptTaxonomyBuilder(final Optional<TaxonomyBuilder> builder);
 
-	public void ensureConsistency();
+	void ensureConsistency();
 
-	public boolean isSatisfiable(final ATermAppl c);
+	boolean isSatisfiable(final ATermAppl c);
 
-	public void realize();
+	void realize();
 
-	public void prepare();
+	void prepare();
 
-	public void classify();
+	void classify();
 
-	public KnowledgeBase getKnowledgeBase();
+	KnowledgeBase getKnowledgeBase();
 
 	/**
 	 * @return true if the classification check has been done and nothing in the KB has changed after that.
 	 */
-	public boolean isClassified();
+	boolean isClassified();
 
-	public boolean isRealized();
+	boolean isRealized();
 
-	public ProgressMonitor getBuilderProgressMonitor();
+	ProgressMonitor getBuilderProgressMonitor();
 
-	public void setBuilderProgressMonitor(ProgressMonitor builderProgressMonitor);
+	void setBuilderProgressMonitor(ProgressMonitor builderProgressMonitor);
 
-	public FullyDefinedClassVisitor getFullyDefinedVisitor();
+	FullyDefinedClassVisitor getFullyDefinedVisitor();
 
-	public DatatypeVisitor getDatatypeVisitor();
+	DatatypeVisitor getDatatypeVisitor();
 
-	public default TaxonomyBuilder getTaxonomyBuilder()
+	default TaxonomyBuilder getTaxonomyBuilder()
 	{
 		if (!getOptTaxonomyBuilder().isPresent())
 		{
@@ -99,8 +98,7 @@ public interface Base extends Boxes
 				builder = new CDOptimizedTaxonomyBuilder(getKnowledgeBase());
 			//builder = new CDOptimizedTaxonomyBuilderProb(this, Optional.ofNullable(_builderProgressMonitor));
 
-			if (getBuilderProgressMonitor() != null)
-				builder.setProgressMonitor(getBuilderProgressMonitor());
+			if (getBuilderProgressMonitor() != null) builder.setProgressMonitor(getBuilderProgressMonitor());
 
 			setOptTaxonomyBuilder(Optional.of(builder));
 		}
@@ -122,30 +120,29 @@ public interface Base extends Boxes
 	 * *** This function will first classify the whole ontology ***
 	 * </p>
 	 *
-	 * @param cParam class whose superclasses are returned
-	 * @param direct
-	 * @return A set of sets, where each set in the collection represents an equivalence class. The elements of the inner class are ATermAppl objects.
+	 * @param  cParam class whose superclasses are returned
+	 * @param  direct
+	 * @return        A set of sets, where each set in the collection represents an equivalence class. The elements of the inner class are ATermAppl objects.
 	 */
-	public Set<Set<ATermAppl>> getSuperClasses(final ATermAppl cParam, final boolean direct);
+	Set<Set<ATermAppl>> getSuperClasses(final ATermAppl cParam, final boolean direct);
 
 	/**
-	 * @param subCls
-	 * @param supCls
-	 * @return true if class subCls is subclass of class supCls.
+	 * @param  subCls
+	 * @param  supCls
+	 * @return        true if class subCls is subclass of class supCls.
 	 */
-	public boolean isSubClassOf(final ATermAppl subCls, final ATermAppl supCls);
+	boolean isSubClassOf(final ATermAppl subCls, final ATermAppl supCls);
 
 	/**
 	 * @return the set of all properties.
 	 */
-	public default Set<ATermAppl> getProperties()
+	default Set<ATermAppl> getProperties()
 	{
 		final Set<ATermAppl> set = new HashSet<>();
 		for (final Role role : getRBox().getRoles().values())
 		{
 			final ATermAppl p = role.getName();
-			if (ATermUtils.isPrimitive(p) && (role.isObjectRole() || role.isDatatypeRole() || role.isAnnotationRole()))
-				set.add(p);
+			if (ATermUtils.isPrimitive(p) && (role.isObjectRole() || role.isDatatypeRole() || role.isAnnotationRole())) set.add(p);
 		}
 		return set;
 	}
@@ -153,62 +150,59 @@ public interface Base extends Boxes
 	/**
 	 * @return the set of key values of the annotations map
 	 */
-	public default Set<ATermAppl> getAnnotationSubjects()
+	default Set<ATermAppl> getAnnotationSubjects()
 	{
 		return getAnnotations().keySet();
 	}
 
-	public default PropertyType getPropertyType(final ATerm r)
+	default PropertyType getPropertyType(final ATerm r)
 	{
 		final Role role = getProperty(r);
 		return role == null ? PropertyType.UNTYPED : role.getType();
 	}
 
-	public default boolean isClass(final ATerm c)
+	default boolean isClass(final ATerm c)
 	{
 
 		if (getTBox().getClasses().contains(c) || c.equals(ATermUtils.TOP))
 			return true;
+		else if (ATermUtils.isComplexClass(c))
+			return getFullyDefinedVisitor().isFullyDefined((ATermAppl) c);
 		else
-			if (ATermUtils.isComplexClass(c))
-				return getFullyDefinedVisitor().isFullyDefined((ATermAppl) c);
-			else
-				return false;
+			return false;
 	}
 
-	public default boolean isDatatypeProperty(final ATerm p)
+	default boolean isDatatypeProperty(final ATerm p)
 	{
 		return null != p && getPropertyType(p) == PropertyType.DATATYPE;
 	}
 
-	public default boolean isDatatype(final ATermAppl c)
+	default boolean isDatatype(final ATermAppl c)
 	{
-		if (null == c)
-			return false;
+		if (null == c) return false;
 
 		return getDatatypeVisitor().isDatatype(c);
 	}
 
-	public default boolean isObjectProperty(final ATerm p)
+	default boolean isObjectProperty(final ATerm p)
 	{
 		return null != p && getPropertyType(p) == PropertyType.OBJECT;
 	}
 
-	public default boolean isABoxProperty(final ATerm p)
+	default boolean isABoxProperty(final ATerm p)
 	{
-		if (null == p)
-			return false;
+		if (null == p) return false;
 
 		final PropertyType type = getPropertyType(p);
 		return type == PropertyType.OBJECT || type == PropertyType.DATATYPE;
 	}
 
-	public default boolean isAnnotationProperty(final ATerm p)
+	default boolean isAnnotationProperty(final ATerm p)
 	{
 		return p != null && getPropertyType(p) == PropertyType.ANNOTATION;
 	}
 
-	public default boolean isProperty(final ATerm p)
+	default boolean isProperty(final ATerm p)
 	{
 		return getRBox().isRole(p);
 	}
@@ -216,7 +210,7 @@ public interface Base extends Boxes
 	/**
 	 * @return the set of all named classes. Returned set is unmodifiable!
 	 */
-	public default Set<ATermAppl> getClasses()
+	default Set<ATermAppl> getClasses()
 	{
 		return Collections.unmodifiableSet(getTBox().getClasses());
 	}
@@ -224,35 +218,35 @@ public interface Base extends Boxes
 	/**
 	 * @return the set of all named classes including TOP and BOTTOM. Returned set is modifiable.
 	 */
-	public default Set<ATermAppl> getAllClasses()
+	default Set<ATermAppl> getAllClasses()
 	{
 		return Collections.unmodifiableSet(getTBox().getAllClasses());
 	}
 
 	/**
 	 * @return same as getAllClasses but can be lazy.
-	 * @since 2.6.2
+	 * @since  2.6.2
 	 */
-	public default Stream<ATermAppl> allClasses()
+	default Stream<ATermAppl> allClasses()
 	{
 		return getTBox().allClasses();
 	}
 
 	/**
-	 * @param term
-	 * @return a role
+	 * @param  term
+	 * @return      a role
 	 */
-	public default Role getRole(final ATerm term)
+	default Role getRole(final ATerm term)
 	{
 		return getRBox().getRole(term);
 	}
 
-	public default Role getProperty(final ATerm r)
+	default Role getProperty(final ATerm r)
 	{
 		return getRBox().getRole(r);
 	}
 
-	public default Set<ATermAppl> getExplanationSet()
+	default Set<ATermAppl> getExplanationSet()
 	{
 		return getABox().getExplanationSet();
 	}
@@ -260,20 +254,20 @@ public interface Base extends Boxes
 	/**
 	 * @param doExplanation The doExplanation to set.
 	 */
-	public default void setDoExplanation(final boolean doExplanation)
+	default void setDoExplanation(final boolean doExplanation)
 	{
 		getABox().setDoExplanation(doExplanation);
 	}
 
-	public default boolean doExplanation()
+	default boolean doExplanation()
 	{
 		return getABox().doExplanation();
 	}
 
-	public default String getExplanation()
+	default String getExplanation()
 	{
 		return getABox().getExplanation();
 	}
 
-	public void binaryInstanceRetrieval(final ATermAppl c, final List<ATermAppl> candidates, final Collection<ATermAppl> results);
+	void binaryInstanceRetrieval(final ATermAppl c, final List<ATermAppl> candidates, final Collection<ATermAppl> results);
 }

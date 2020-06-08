@@ -65,20 +65,20 @@ class SparqlDLExecution implements QueryExecution
 {
 	public static Logger _logger = Log.getLogger(SparqlDLExecution.class);
 
-	private static enum QueryType
+	private enum QueryType
 	{
 		ASK, CONSTRUCT, DESCRIBE, SELECT
 	}
 
-	private final Query _query;
+	private final Query		_query;
 
-	private final Dataset _source;
+	private final Dataset	_source;
 
-	private QuerySolution _initialBinding;
+	private QuerySolution	_initialBinding;
 
-	private boolean _purePelletQueryExec = false;
+	private boolean			_purePelletQueryExec	= false;
 
-	private boolean _handleVariableSPO = true;
+	private boolean			_handleVariableSPO		= true;
 
 	public SparqlDLExecution(final String query, final Model source)
 	{
@@ -102,11 +102,9 @@ class SparqlDLExecution implements QueryExecution
 		_handleVariableSPO = handleVariableSPO;
 
 		final Graph graph = source.getDefaultModel().getGraph();
-		if (!(graph instanceof PelletInfGraph))
-			throw new QueryException("PelletQueryExecution can only be used with Pellet-backed models");
+		if (!(graph instanceof PelletInfGraph)) throw new QueryException("PelletQueryExecution can only be used with Pellet-backed models");
 
-		if (OpenlletOptions.FULL_SIZE_ESTIMATE)
-			((PelletInfGraph) graph).getKB().getSizeEstimate().computeAll();
+		if (OpenlletOptions.FULL_SIZE_ESTIMATE) ((PelletInfGraph) graph).getKB().getSizeEstimate().computeAll();
 	}
 
 	/**
@@ -171,8 +169,7 @@ class SparqlDLExecution implements QueryExecution
 			for (final Triple t : set)
 			{
 				final Statement stmt = ModelUtils.tripleToStatement(model, t);
-				if (stmt != null)
-					model.add(stmt);
+				if (stmt != null) model.add(stmt);
 			}
 
 			close();
@@ -217,8 +214,7 @@ class SparqlDLExecution implements QueryExecution
 	{
 		try
 		{
-			if (_source.listNames().hasNext())
-				throw new UnsupportedQueryException("Named graphs is not supported by Pellet");
+			if (_source.listNames().hasNext()) throw new UnsupportedQueryException("Named graphs is not supported by Pellet");
 
 			final PelletInfGraph pelletInfGraph = (PelletInfGraph) _source.getDefaultModel().getGraph();
 			final KnowledgeBase kb = pelletInfGraph.getKB();
@@ -242,8 +238,7 @@ class SparqlDLExecution implements QueryExecution
 			ResultSet results = new SparqlDLResultSet(openllet.query.sparqldl.engine.QueryEngine.exec(q), _source.getDefaultModel(), queryParameters);
 
 			final List<SortCondition> sortConditions = _query.getOrderBy();
-			if (sortConditions != null && !sortConditions.isEmpty())
-				results = new SortedResultSet(results, sortConditions);
+			if (sortConditions != null && !sortConditions.isEmpty()) results = new SortedResultSet(results, sortConditions);
 
 			if (_query.hasOffset() || _query.hasLimit())
 			{
@@ -307,20 +302,15 @@ class SparqlDLExecution implements QueryExecution
 	private void ensureQueryType(final QueryType expectedType) throws QueryExecException
 	{
 		final QueryType actualType = getQueryType(_query);
-		if (actualType != expectedType)
-			throw new QueryExecException("Attempt to execute a " + actualType + " _query as a " + expectedType + " _query");
+		if (actualType != expectedType) throw new QueryExecException("Attempt to execute a " + actualType + " _query as a " + expectedType + " _query");
 	}
 
 	private static QueryType getQueryType(final Query query)
 	{
-		if (query.isSelectType())
-			return QueryType.SELECT;
-		if (query.isConstructType())
-			return QueryType.CONSTRUCT;
-		if (query.isDescribeType())
-			return QueryType.DESCRIBE;
-		if (query.isAskType())
-			return QueryType.ASK;
+		if (query.isSelectType()) return QueryType.SELECT;
+		if (query.isConstructType()) return QueryType.CONSTRUCT;
+		if (query.isDescribeType()) return QueryType.DESCRIBE;
+		if (query.isAskType()) return QueryType.ASK;
 		return null;
 	}
 

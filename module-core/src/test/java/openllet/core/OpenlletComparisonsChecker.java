@@ -71,8 +71,7 @@ public class OpenlletComparisonsChecker
 		// check that all _expected values were found
 		final List<T> unfound = new ArrayList<>();
 		for (int i = 0; i < expected.length; i++)
-			if (!found[i])
-				unfound.add(expected[i]);
+			if (!found[i]) unfound.add(expected[i]);
 
 		assertTrue("Failed to find expected iterator values: " + unfound, unfound.isEmpty());
 	}

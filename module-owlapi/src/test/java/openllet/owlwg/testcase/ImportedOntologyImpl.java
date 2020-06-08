@@ -34,18 +34,18 @@ import org.semanticweb.owlapi.search.EntitySearcher;
  * <p>
  * Company: Clark & Parsia, LLC. <a href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
  * </p>
- * 
+ *
  * @author Mike Smith &lt;msmith@clarkparsia.com&gt;
  */
 public class ImportedOntologyImpl implements ImportedOntology
 {
-	private static final Logger _logger = Log.getLogger(ImportedOntologyImpl.class);
+	private static final Logger							_logger	= Log.getLogger(ImportedOntologyImpl.class);
 
-	private final EnumSet<SerializationFormat> formats;
-	private final EnumMap<SerializationFormat, String> ontologyLiteral;
-	private final IRI iri;
+	private final EnumSet<SerializationFormat>			formats;
+	private final EnumMap<SerializationFormat, String>	ontologyLiteral;
+	private final IRI									iri;
 
-	public ImportedOntologyImpl(OWLOntology ontology, OWLNamedIndividual i)
+	public ImportedOntologyImpl(final OWLOntology ontology, final OWLNamedIndividual i)
 	{
 		final Map<OWLObjectPropertyExpression, Collection<OWLIndividual>> opValues = EntitySearcher.getObjectPropertyValues(i, ontology).asMap();
 
@@ -56,17 +56,14 @@ public class ImportedOntologyImpl implements ImportedOntology
 			_logger.warning(msg);
 			throw new NullPointerException(msg);
 		}
+		else if (iris.size() != 1)
+		{
+			final String msg = format("Property %s should have a single value for imported ontology %s, but has %d", IMPORTED_ONTOLOGY_IRI.getOWLObjectProperty().getIRI(), i.getIRI(), iris.size());
+			_logger.warning(msg);
+			throw new IllegalArgumentException();
+		}
 		else
-			if (iris.size() != 1)
-			{
-				final String msg = format("Property %s should have a single value for imported ontology %s, but has %d", IMPORTED_ONTOLOGY_IRI.getOWLObjectProperty().getIRI(), i.getIRI(), iris.size());
-				_logger.warning(msg);
-				throw new IllegalArgumentException();
-			}
-			else
-			{
-				iri = iris.iterator().next().asOWLNamedIndividual().getIRI();
-			}
+			iri = iris.iterator().next().asOWLNamedIndividual().getIRI();
 
 		final Map<OWLDataPropertyExpression, Collection<OWLLiteral>> values = EntitySearcher.getDataPropertyValues(i, ontology).asMap();
 
@@ -77,10 +74,7 @@ public class ImportedOntologyImpl implements ImportedOntology
 			final Collection<OWLLiteral> literals = values.get(f.getInputOWLDataProperty());
 			if (literals != null)
 			{
-				if (literals.size() > 1)
-				{
-					_logger.warning(format("Multiple ontologies found for imported ontology (%s) with serialization format (%s).  Choosing arbitrarily.", i.getIRI(), f));
-				}
+				if (literals.size() > 1) _logger.warning(format("Multiple ontologies found for imported ontology (%s) with serialization format (%s).  Choosing arbitrarily.", i.getIRI(), f));
 				ontologyLiteral.put(f, literals.iterator().next().getLiteral());
 				formats.add(f);
 			}
@@ -95,7 +89,7 @@ public class ImportedOntologyImpl implements ImportedOntology
 	}
 
 	@Override
-	public String getOntology(SerializationFormat format)
+	public String getOntology(final SerializationFormat format)
 	{
 		return ontologyLiteral.get(format);
 	}

@@ -16,11 +16,11 @@ import org.junit.rules.TestName;
  */
 public abstract class SequentialTestsContraintInitializer
 {
-	protected static final Lock _sequential = new ReentrantLock();
-	public static long _timing = 0;
+	protected static final Lock	_sequential			= new ReentrantLock();
+	public static long			_timing				= 0;
 
 	@Rule
-	public TestName _currentMethodName = new TestName();
+	public TestName				_currentMethodName	= new TestName();
 
 	@Before
 	public void setUp()

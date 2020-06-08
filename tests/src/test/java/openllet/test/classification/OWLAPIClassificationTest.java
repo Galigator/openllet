@@ -51,11 +51,10 @@ public class OWLAPIClassificationTest extends AbstractClassificationTest
 				{
 					final boolean entailed = reasoner.getSubClasses(axiom.getSuperClass(), true).containsEntity((OWLClass) axiom.getSubClass());
 
-					if (!entailed)
-						if (AbstractClassificationTest.FAIL_AT_FIRST_ERROR)
-							fail("Not entailed: " + axiom);
-						else
-							nonEntailments.add(axiom);
+					if (!entailed) if (AbstractClassificationTest.FAIL_AT_FIRST_ERROR)
+						fail("Not entailed: " + axiom);
+					else
+						nonEntailments.add(axiom);
 				}
 			}
 
@@ -65,11 +64,10 @@ public class OWLAPIClassificationTest extends AbstractClassificationTest
 				{
 					final boolean entailed = reasoner.isEntailed(axiom);
 
-					if (!entailed)
-						if (AbstractClassificationTest.FAIL_AT_FIRST_ERROR)
-							fail("Not entailed: " + axiom);
-						else
-							nonEntailments.add(axiom);
+					if (!entailed) if (AbstractClassificationTest.FAIL_AT_FIRST_ERROR)
+						fail("Not entailed: " + axiom);
+					else
+						nonEntailments.add(axiom);
 				}
 			}
 
@@ -79,11 +77,10 @@ public class OWLAPIClassificationTest extends AbstractClassificationTest
 				{
 					final boolean entailed = reasoner.getInstances(axiom.getClassExpression(), true).containsEntity((OWLNamedIndividual) axiom.getIndividual());
 
-					if (!entailed)
-						if (AbstractClassificationTest.FAIL_AT_FIRST_ERROR)
-							fail("Not entailed: " + axiom);
-						else
-							nonEntailments.add(axiom);
+					if (!entailed) if (AbstractClassificationTest.FAIL_AT_FIRST_ERROR)
+						fail("Not entailed: " + axiom);
+					else
+						nonEntailments.add(axiom);
 				}
 			}
 

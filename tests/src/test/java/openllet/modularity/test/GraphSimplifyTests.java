@@ -16,9 +16,9 @@ import org.semanticweb.owlapi.model.OWLEntity;
  */
 public class GraphSimplifyTests
 {
-	private ReachabilityGraph<OWLEntity> _graph;
-	private OWLEntity[] _entities;
-	private EntityNode<OWLEntity>[] _nodes;
+	private ReachabilityGraph<OWLEntity>	_graph;
+	private OWLEntity[]						_entities;
+	private EntityNode<OWLEntity>[]			_nodes;
 
 	private void addEdge(final int in, final int out)
 	{

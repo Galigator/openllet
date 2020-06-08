@@ -38,7 +38,7 @@ import org.junit.runners.Suite;
  * @author Harris Lin
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ // 
+@Suite.SuiteClasses({ //
 		DoubtfulSetTest.class, //
 		RDFModelTest.class, //
 		OptimizedDirectedMultigraphTest.class, //

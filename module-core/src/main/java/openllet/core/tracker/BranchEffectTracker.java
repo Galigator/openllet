@@ -31,39 +31,39 @@ public interface BranchEffectTracker
 	/**
 	 * Record that a _node is affected by a _branch
 	 *
-	 * @param branch Branch integer identifier
-	 * @param a Node name
-	 * @return boolean {@code true} if effect not already noted for _branch+_node pair, {@code false} else
+	 * @param  branch Branch integer identifier
+	 * @param  a      Node name
+	 * @return        boolean {@code true} if effect not already noted for _branch+_node pair, {@code false} else
 	 */
-	public boolean add(int branch, ATermAppl a);
+	boolean add(int branch, ATermAppl a);
 
 	/**
 	 * @return a copy of branch tracker
 	 */
-	public BranchEffectTracker copy();
+	BranchEffectTracker copy();
 
 	/**
 	 * Retrieve _nodes affected by a _branch and all subsequent branches
 	 *
-	 * @param branch Branch integer identifier
-	 * @return Names of all _nodes affected by _branch and subsequent branches
+	 * @param  branch Branch integer identifier
+	 * @return        Names of all _nodes affected by _branch and subsequent branches
 	 */
-	public Set<ATermAppl> getAll(int branch);
+	Set<ATermAppl> getAll(int branch);
 
 	/**
 	 * Remove a _branch from the tracker. Note that this causes the _branch to effects association to change for all subsequent branches and should only be used
 	 * if the _branch indices are changed in ABox and all other structures.
 	 *
-	 * @param branch Branch integer identifier
-	 * @return Names of all _nodes affected by _branch
+	 * @param  branch Branch integer identifier
+	 * @return        Names of all _nodes affected by _branch
 	 */
-	public Set<ATermAppl> remove(int branch);
+	Set<ATermAppl> remove(int branch);
 
 	/**
 	 * Remove a branch and all subsequent branches from the tracker.
 	 *
-	 * @param branch Branch integer identifier
-	 * @return Names of all _nodes affected by _branch and subsequent branches
+	 * @param  branch Branch integer identifier
+	 * @return        Names of all _nodes affected by _branch and subsequent branches
 	 */
-	public Set<ATermAppl> removeAll(int branch);
+	Set<ATermAppl> removeAll(int branch);
 }

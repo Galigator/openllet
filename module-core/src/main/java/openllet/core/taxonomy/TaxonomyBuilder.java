@@ -47,29 +47,29 @@ import openllet.core.utils.progress.ProgressMonitor;
  */
 public interface TaxonomyBuilder
 {
-	public void setProgressMonitor(ProgressMonitor monitor);
+	void setProgressMonitor(ProgressMonitor monitor);
 
 	/**
 	 * Classify the KB.
 	 *
 	 * @return true if classification success
 	 */
-	public boolean classify();
+	boolean classify();
 
-	public void classify(ATermAppl c);
+	void classify(ATermAppl c);
 
 	/**
 	 * Realize the KB by finding the instances of each class.
 	 *
 	 * @return true if operation success
 	 */
-	public boolean realize();
+	boolean realize();
 
-	public void realize(ATermAppl x);
+	void realize(ATermAppl x);
 
-	public Taxonomy<ATermAppl> getTaxonomy();
+	Taxonomy<ATermAppl> getTaxonomy();
 
-	public Taxonomy<ATermAppl> getToldTaxonomy();
+	Taxonomy<ATermAppl> getToldTaxonomy();
 
-	public Map<ATermAppl, Set<ATermAppl>> getToldDisjoints();
+	Map<ATermAppl, Set<ATermAppl>> getToldDisjoints();
 }

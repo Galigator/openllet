@@ -41,9 +41,9 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
  */
 public class PersistenceRealizationTest
 {
-	public static final String base = PelletTestSuite.base + "modularity/";
+	public static final String	base		= PelletTestSuite.base + "modularity/";
 
-	private static final String TEST_FILE = "test-persistence-realization.zip";
+	private static final String	TEST_FILE	= "test-persistence-realization.zip";
 
 	public ModuleExtractor createModuleExtractor()
 	{

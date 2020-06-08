@@ -54,12 +54,12 @@ import org.apache.jena.sparql.engine.main.StageGeneratorGeneric;
  */
 class SparqlDLStage
 {
-	public final static Logger _logger = Log.getLogger(SparqlDLStage.class);
+	public final static Logger	_logger	= Log.getLogger(SparqlDLStage.class);
 
-	private final ARQParser _parser;
+	private final ARQParser		_parser;
 
-	private final BasicPattern _pattern;
-	private Collection<String> _vars;
+	private final BasicPattern	_pattern;
+	private Collection<String>	_vars;
 
 	public SparqlDLStage(final BasicPattern pattern)
 	{
@@ -81,20 +81,16 @@ class SparqlDLStage
 		{
 			final Triple t = _pattern.get(i);
 
-			if (ARQParser.isDistinguishedVariable(t.getSubject()))
-				_vars.add(t.getSubject().getName());
-			if (t.getPredicate().isVariable())
-				_vars.add(t.getPredicate().getName());
-			if (ARQParser.isDistinguishedVariable(t.getObject()))
-				_vars.add(t.getObject().getName());
+			if (ARQParser.isDistinguishedVariable(t.getSubject())) _vars.add(t.getSubject().getName());
+			if (t.getPredicate().isVariable()) _vars.add(t.getPredicate().getName());
+			if (ARQParser.isDistinguishedVariable(t.getObject())) _vars.add(t.getObject().getName());
 		}
 	}
 
 	public QueryIterator build(final QueryIterator input, final ExecutionContext execCxt)
 	{
 		final Graph graph = execCxt.getActiveGraph();
-		if (!(graph instanceof PelletInfGraph))
-			throw new UnsupportedOperationException("A Pellet-backed model is required");
+		if (!(graph instanceof PelletInfGraph)) throw new UnsupportedOperationException("A Pellet-backed model is required");
 
 		final PelletInfGraph pellet = (PelletInfGraph) graph;
 
@@ -116,8 +112,7 @@ class SparqlDLStage
 		}
 		catch (final UnsupportedQueryException e)
 		{
-			if (_logger.isLoggable(Level.FINE))
-				_logger.log(Level.FINE, "Falling back to Jena stage", e);
+			if (_logger.isLoggable(Level.FINE)) _logger.log(Level.FINE, "Falling back to Jena stage", e);
 
 			return null;
 		}
@@ -125,8 +120,8 @@ class SparqlDLStage
 
 	private static class PelletQueryIterator extends QueryIterRepeatApply
 	{
-		private final PelletInfGraph _pellet;
-		private final Query _query;
+		private final PelletInfGraph	_pellet;
+		private final Query				_query;
 
 		/**
 		 * @param input

@@ -17,46 +17,44 @@ import openllet.owlwg.testcase.TestCase;
  * <p>
  * Company: Clark & Parsia, LLC. <a href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
  * </p>
- * 
+ *
  * @author Mike Smith &lt;msmith@clarkparsia.com&gt;
  */
 public class DisjunctionFilter implements FilterCondition
 {
 
-	public static DisjunctionFilter or(Collection<? extends FilterCondition> conditions)
+	public static DisjunctionFilter or(final Collection<? extends FilterCondition> conditions)
 	{
 		return new DisjunctionFilter(conditions);
 	}
 
-	public static DisjunctionFilter or(FilterCondition... conditions)
+	public static DisjunctionFilter or(final FilterCondition... conditions)
 	{
 		return or(Arrays.asList(conditions));
 	}
 
 	final private FilterCondition[] _conditions;
 
-	public DisjunctionFilter(Collection<? extends FilterCondition> conditions)
+	public DisjunctionFilter(final Collection<? extends FilterCondition> conditions)
 	{
-		if (conditions == null)
-			throw new NullPointerException();
+		if (conditions == null) throw new NullPointerException();
 
-		this._conditions = conditions.toArray(new FilterCondition[0]);
+		_conditions = conditions.toArray(new FilterCondition[0]);
 	}
 
-	public DisjunctionFilter(FilterCondition... conditions)
+	public DisjunctionFilter(final FilterCondition... conditions)
 	{
 		final int n = conditions.length;
 
-		this._conditions = new FilterCondition[n];
-		System.arraycopy(conditions, 0, this._conditions, 0, n);
+		_conditions = new FilterCondition[n];
+		System.arraycopy(conditions, 0, _conditions, 0, n);
 	}
 
 	@Override
-	public boolean accepts(TestCase<?> testcase)
+	public boolean accepts(final TestCase<?> testcase)
 	{
 		for (final FilterCondition c : _conditions)
-			if (c.accepts(testcase))
-				return true;
+			if (c.accepts(testcase)) return true;
 
 		return false;
 	}
@@ -65,9 +63,9 @@ public class DisjunctionFilter implements FilterCondition
 	public String toString()
 	{
 		final StringBuffer buf = new StringBuffer();
-		for (int i = 0; i < _conditions.length; i++)
+		for (final FilterCondition _condition : _conditions)
 		{
-			buf.append(_conditions[i].toString());
+			buf.append(_condition.toString());
 			buf.append(" ");
 		}
 		buf.append("or");

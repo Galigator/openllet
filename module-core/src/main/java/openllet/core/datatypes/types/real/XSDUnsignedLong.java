@@ -25,8 +25,8 @@ import openllet.core.utils.Namespaces;
 public class XSDUnsignedLong extends AbstractDerivedIntegerType
 {
 
-	private static final XSDUnsignedLong instance = new XSDUnsignedLong();
-	private static final BigInteger MAX_VALUE = new BigInteger("18446744073709551615");
+	private static final XSDUnsignedLong	instance	= new XSDUnsignedLong();
+	private static final BigInteger			MAX_VALUE	= new BigInteger("18446744073709551615");
 
 	public static XSDUnsignedLong getInstance()
 	{
@@ -44,10 +44,8 @@ public class XSDUnsignedLong extends AbstractDerivedIntegerType
 		try
 		{
 			final BigInteger n = DatatypeConverter.parseInteger(lexicalForm);
-			if (BigInteger.ZERO.compareTo(n) > 0)
-				throw new InvalidLiteralException(getName(), lexicalForm);
-			if (MAX_VALUE.compareTo(n) < 0)
-				throw new InvalidLiteralException(getName(), lexicalForm);
+			if (BigInteger.ZERO.compareTo(n) > 0) throw new InvalidLiteralException(getName(), lexicalForm);
+			if (MAX_VALUE.compareTo(n) < 0) throw new InvalidLiteralException(getName(), lexicalForm);
 			return n;
 		}
 		catch (final NumberFormatException e)

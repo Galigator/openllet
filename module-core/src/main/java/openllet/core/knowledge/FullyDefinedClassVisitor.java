@@ -33,8 +33,7 @@ public abstract class FullyDefinedClassVisitor extends ATermBaseVisitor
 		if (_fullyDefined)
 		{
 			final ATermAppl q = (ATermAppl) term.getArgument(2);
-			if (!isDatatype(q))
-				visit(q);
+			if (!isDatatype(q)) visit(q);
 		}
 	}
 
@@ -44,8 +43,7 @@ public abstract class FullyDefinedClassVisitor extends ATermBaseVisitor
 		if (_fullyDefined)
 		{
 			final ATermAppl q = (ATermAppl) term.getArgument(1);
-			if (!isDatatype(q))
-				visit(q);
+			if (!isDatatype(q)) visit(q);
 		}
 	}
 
@@ -57,8 +55,7 @@ public abstract class FullyDefinedClassVisitor extends ATermBaseVisitor
 	@Override
 	public void visit(final ATermAppl term)
 	{
-		if (term.equals(ATermUtils.TOP) || term.equals(ATermUtils.BOTTOM) || term.equals(ATermUtils.TOP_LIT) || term.equals(ATermUtils.BOTTOM_LIT))
-			return;
+		if (term.equals(ATermUtils.TOP) || term.equals(ATermUtils.BOTTOM) || term.equals(ATermUtils.TOP_LIT) || term.equals(ATermUtils.BOTTOM_LIT)) return;
 
 		super.visit(term);
 	}
@@ -72,8 +69,7 @@ public abstract class FullyDefinedClassVisitor extends ATermBaseVisitor
 	@Override
 	public void visitAnd(final ATermAppl term)
 	{
-		if (_fullyDefined)
-			visitList((ATermList) term.getArgument(0));
+		if (_fullyDefined) visitList((ATermList) term.getArgument(0));
 	}
 
 	@Override
@@ -115,15 +111,13 @@ public abstract class FullyDefinedClassVisitor extends ATermBaseVisitor
 	@Override
 	public void visitOneOf(final ATermAppl term)
 	{
-		if (_fullyDefined)
-			visitList((ATermList) term.getArgument(0));
+		if (_fullyDefined) visitList((ATermList) term.getArgument(0));
 	}
 
 	@Override
 	public void visitOr(final ATermAppl term)
 	{
-		if (_fullyDefined)
-			visitList((ATermList) term.getArgument(0));
+		if (_fullyDefined) visitList((ATermList) term.getArgument(0));
 	}
 
 	@Override
@@ -142,8 +136,7 @@ public abstract class FullyDefinedClassVisitor extends ATermBaseVisitor
 	public void visitTerm(final ATermAppl term)
 	{
 		_fullyDefined = _fullyDefined && getTBox().getClasses().contains(term);
-		if (!_fullyDefined)
-			return;
+		if (!_fullyDefined) return;
 	}
 
 	@Override
@@ -152,9 +145,7 @@ public abstract class FullyDefinedClassVisitor extends ATermBaseVisitor
 		final ATermAppl nominal = (ATermAppl) term.getArgument(0);
 		if (ATermUtils.isLiteral(nominal))
 			_fullyDefined = false;
-		else
-			if (!ATermUtils.isLiteral(nominal))
-				_fullyDefined = _fullyDefined && getIndividuals().contains(nominal);
+		else if (!ATermUtils.isLiteral(nominal)) _fullyDefined = _fullyDefined && getIndividuals().contains(nominal);
 	}
 
 	@Override

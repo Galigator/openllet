@@ -95,21 +95,22 @@ public class InterruptReasoningExample
 	// arbitrary
 	public static class WINE
 	{
-		public static final String NS = "http://www.w3.org/TR/2003/PR-owl-guide-20031209/wine#";
+		public static final String		NS				= "http://www.w3.org/TR/2003/PR-owl-guide-20031209/wine#";
 
-		public static final Resource AmericanWine = ResourceFactory.createResource(NS + "AmericanWine");
+		public static final Resource	AmericanWine	= ResourceFactory.createResource(NS + "AmericanWine");
 
-		public static final Query query = QueryFactory.create("PREFIX wine: <" + WINE.NS + ">\n" + "SELECT * WHERE {\n" + "   ?x a wine:RedWine ; \n" + "      wine:madeFromGrape ?y \n" + "}");
+		public static final Query		query			= QueryFactory
+				.create("PREFIX wine: <" + WINE.NS + ">\n" + "SELECT * WHERE {\n" + "   ?x a wine:RedWine ; \n" + "      wine:madeFromGrape ?y \n" + "}");
 	}
 
 	// the Jena model we are using
-	private final OntModel model;
+	private final OntModel			model;
 
 	// underlying openllet graph
-	private final PelletInfGraph openllet;
+	private final PelletInfGraph	openllet;
 
 	// the _timers associated with the Pellet KB
-	private final Timers timers;
+	private final Timers			timers;
 
 	public static void main(final String[] args) throws Exception
 	{
@@ -194,8 +195,7 @@ public class InterruptReasoningExample
 	public void realize()
 	{
 		// realization can only be done if classification is completed
-		if (!openllet.isClassified())
-			return;
+		if (!openllet.isClassified()) return;
 
 		System.out.println("Realize Timeout: " + Timeouts.REALIZE + "ms");
 		System.out.print("Realizing...");

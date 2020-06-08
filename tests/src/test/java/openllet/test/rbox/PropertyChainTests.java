@@ -79,8 +79,8 @@ public class PropertyChainTests extends AbstractKBTests
 
 		assertTrue(_kb.hasPropertyValue(_a, hasSibling, _b));
 		assertTrue(_kb.hasPropertyValue(_b, hasSibling, _a));
-		assertIteratorValues(_kb.getPropertyValues(hasSibling, _a).iterator(), new ATermAppl[] { _a, _b });
-		assertIteratorValues(_kb.getPropertyValues(hasSibling, _b).iterator(), new ATermAppl[] { _a, _b });
+		assertIteratorValues(_kb.getPropertyValues(hasSibling, _a).iterator(), _a, _b);
+		assertIteratorValues(_kb.getPropertyValues(hasSibling, _b).iterator(), _a, _b);
 	}
 
 	@Test
@@ -104,8 +104,8 @@ public class PropertyChainTests extends AbstractKBTests
 
 		assertTrue(_kb.hasPropertyValue(_a, hasSibling, _b));
 		assertTrue(_kb.hasPropertyValue(_b, hasSibling, _a));
-		assertIteratorValues(_kb.getPropertyValues(hasSibling, _a).iterator(), new ATermAppl[] { _a, _b });
-		assertIteratorValues(_kb.getPropertyValues(hasSibling, _b).iterator(), new ATermAppl[] { _a, _b });
+		assertIteratorValues(_kb.getPropertyValues(hasSibling, _a).iterator(), _a, _b);
+		assertIteratorValues(_kb.getPropertyValues(hasSibling, _b).iterator(), _a, _b);
 	}
 
 	@Test
@@ -282,7 +282,7 @@ public class PropertyChainTests extends AbstractKBTests
 
 		assertTrue(kb.isSubClassOf(C, D));
 		assertTrue(kb.hasPropertyValue(a, p, d));
-		assertIteratorValues(kb.getPropertyValues(p, a).iterator(), new ATermAppl[] { b, d });
+		assertIteratorValues(kb.getPropertyValues(p, a).iterator(), b, d);
 	}
 
 	@Test
@@ -363,9 +363,9 @@ public class PropertyChainTests extends AbstractKBTests
 
 		assertIteratorValues(S0.listInstances(), theList);
 
-		assertIteratorValues(R0.listInstances(), new Resource[] { a[7], a[9] });
+		assertIteratorValues(R0.listInstances(), a[7], a[9]);
 
-		assertIteratorValues(R1.listInstances(), new Resource[] { a[2], a[3], a[4], a[5], a[6] });
+		assertIteratorValues(R1.listInstances(), a[2], a[3], a[4], a[5], a[6]);
 
 		final Model rValues = ModelFactory.createDefaultModel();
 		addStatements(rValues, a[0], r, a[7], a[9]);

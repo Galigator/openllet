@@ -54,12 +54,12 @@ import org.semanticweb.owlapi.model.OWLOntology;
  */
 public class ExistentialExplosionPattern implements OntologyLintPattern
 {
-	private static final LintFormat DEFAULT_LINT_FORMAT = new SimpleLintFormat();
+	private static final LintFormat	DEFAULT_LINT_FORMAT	= new SimpleLintFormat();
 
-	private int _maxTreeSize = 10000;
+	private int						_maxTreeSize		= 10000;
 
-	private List<Lint> _accumulatedLints;
-	private LintFactory _LintFactory;
+	private List<Lint>				_accumulatedLints;
+	private LintFactory				_LintFactory;
 
 	@Override
 	public String getName()
@@ -99,8 +99,7 @@ public class ExistentialExplosionPattern implements OntologyLintPattern
 		//Stage 1 - strongly connected components on asserted existential relations
 		final OptimizedDirectedMultigraph<OWLClass> existentialRestrictionGraph = extractGraphFromSubsumptionAxiomsWith(ontology, new ExistentialClassCollector());
 		estimateTreeSizesForCycles(existentialRestrictionGraph);
-		if (!_accumulatedLints.isEmpty())
-			return _accumulatedLints;
+		if (!_accumulatedLints.isEmpty()) return _accumulatedLints;
 
 		//Stage 2 - strongly connected components on asserted and inferred (through subclasses) existential relations
 		//used as a SimpleDirectedGraph - ignoring weights
@@ -109,15 +108,13 @@ public class ExistentialExplosionPattern implements OntologyLintPattern
 		addInheritedEdges(existentialRestrictionGraph, toldSubsumptionGraph);
 		estimateTreeSizesForCycles(existentialRestrictionGraph);
 
-		if (!_accumulatedLints.isEmpty())
-			return _accumulatedLints;
+		if (!_accumulatedLints.isEmpty()) return _accumulatedLints;
 
 		//Stage 3 - strongly connected components on asserted and inferred (through subclasses) existential relations, multiplied by the number of individuals
 		final Map<OWLClass, Integer> individualCounts = countIndividuals(ontology);
 		estimateTreeSizesForCyclesWithIndividuals(existentialRestrictionGraph, toldSubsumptionGraph, individualCounts);
 
-		if (!_accumulatedLints.isEmpty())
-			return _accumulatedLints;
+		if (!_accumulatedLints.isEmpty()) return _accumulatedLints;
 
 		//Stage 4 - remove cycles, then calculate the size of the weighted tree, multiplied by the number of individuals
 		removeCyclesAndEstimateTreeSizesWithIndividuals(existentialRestrictionGraph, individualCounts);
@@ -144,8 +141,7 @@ public class ExistentialExplosionPattern implements OntologyLintPattern
 			final Set<OWLClassExpression> equivalences = axiom.classExpressions().collect(Collectors.toSet());
 			for (final OWLClassExpression equivalence1 : equivalences)
 				for (final OWLClassExpression equivalence2 : equivalences)
-					if (equivalence1 != equivalence2)
-						processSubsumption(graph, equivalence1, equivalence2, visitor);
+					if (equivalence1 != equivalence2) processSubsumption(graph, equivalence1, equivalence2, visitor);
 		});
 
 		return graph;
@@ -153,8 +149,7 @@ public class ExistentialExplosionPattern implements OntologyLintPattern
 
 	private static void processSubsumption(final OptimizedDirectedMultigraph<OWLClass> graph, final OWLClassExpression subDesc, final OWLClassExpression superDesc, final ClassCollector visitor)
 	{
-		if (subDesc.isAnonymous())
-			return;
+		if (subDesc.isAnonymous()) return;
 		final OWLClass subClass = subDesc.asOWLClass();
 
 		visitor.reset();
@@ -172,22 +167,19 @@ public class ExistentialExplosionPattern implements OntologyLintPattern
 	{
 		for (final OWLClass superClass : toldSubsumptionGraph.vertexSet())
 		{
-			if (!existentialRestrictionGraph.containsVertex(superClass))
-				continue;
+			if (!existentialRestrictionGraph.containsVertex(superClass)) continue;
 
 			final Set<DefaultWeightedEdge> ancestorEdges = existentialRestrictionGraph.outgoingEdgesOf(superClass);
 			for (final DefaultWeightedEdge subClassEdge : toldSubsumptionGraph.incomingEdgesOf(superClass))
 			{
 				final OWLClass subClass = toldSubsumptionGraph.getEdgeSource(subClassEdge);
-				if (!existentialRestrictionGraph.containsVertex(subClass))
-					continue;
+				if (!existentialRestrictionGraph.containsVertex(subClass)) continue;
 
 				for (final DefaultWeightedEdge ancestorEdge : ancestorEdges)
 				{
 					final int ancestorEdgeCount = existentialRestrictionGraph.getEdgeMultiplicity(ancestorEdge);
 					final OWLClass ancestorEdgeTarget = existentialRestrictionGraph.getEdgeTarget(ancestorEdge);
-					if (!subClass.equals(ancestorEdgeTarget))
-						existentialRestrictionGraph.addEdge(subClass, ancestorEdgeTarget, ancestorEdgeCount);
+					if (!subClass.equals(ancestorEdgeTarget)) existentialRestrictionGraph.addEdge(subClass, ancestorEdgeTarget, ancestorEdgeCount);
 				}
 			}
 		}
@@ -203,8 +195,7 @@ public class ExistentialExplosionPattern implements OntologyLintPattern
 			{
 				final OWLClass assertedClass = desc.asOWLClass();
 				Integer oldCount = individualCount.get(assertedClass);
-				if (oldCount == null)
-					oldCount = 0;
+				if (oldCount == null) oldCount = 0;
 				individualCount.put(assertedClass, oldCount + 1);
 			}
 		});
@@ -226,8 +217,7 @@ public class ExistentialExplosionPattern implements OntologyLintPattern
 		final StrongConnectivityAlgorithm<OWLClass, DefaultWeightedEdge> connectivityInspector = new KosarajuStrongConnectivityInspector<>(existentialRestrictionGraph);
 		for (final Set<OWLClass> connectedSet : connectivityInspector.stronglyConnectedSets())
 		{
-			if (connectedSet.size() <= maxSizeOfCompleteGraphToIgnore)
-				continue;
+			if (connectedSet.size() <= maxSizeOfCompleteGraphToIgnore) continue;
 
 			final AsSubgraph<OWLClass, DefaultWeightedEdge> subgraph = new AsSubgraph<>(existentialRestrictionGraph, connectedSet, null);
 			//final DirectedSubgraph<OWLClass, DefaultWeightedEdge> subgraph = new DirectedSubgraph<>(existentialRestrictionGraph, connectedSet, null);
@@ -245,13 +235,13 @@ public class ExistentialExplosionPattern implements OntologyLintPattern
 		}
 	}
 
-	private void estimateTreeSizesForCyclesWithIndividuals(final OptimizedDirectedMultigraph<OWLClass> existentialRestrictionGraph, final OptimizedDirectedMultigraph<OWLClass> toldSubsumptionGraph, final Map<OWLClass, Integer> individualCount)
+	private void estimateTreeSizesForCyclesWithIndividuals(final OptimizedDirectedMultigraph<OWLClass> existentialRestrictionGraph, final OptimizedDirectedMultigraph<OWLClass> toldSubsumptionGraph,
+			final Map<OWLClass, Integer> individualCount)
 	{
 		final StrongConnectivityAlgorithm<OWLClass, DefaultWeightedEdge> connectivityInspector = new KosarajuStrongConnectivityInspector<>(existentialRestrictionGraph);
 		for (final Set<OWLClass> connectedSet : connectivityInspector.stronglyConnectedSets())
 		{
-			if (connectedSet.size() <= 1)
-				continue;
+			if (connectedSet.size() <= 1) continue;
 			final AsSubgraph<OWLClass, DefaultWeightedEdge> subgraph = new AsSubgraph<>(existentialRestrictionGraph, connectedSet, null);
 			//final DirectedSubgraph<OWLClass, DefaultWeightedEdge> subgraph = new DirectedSubgraph<>(existentialRestrictionGraph, connectedSet, null);
 			double estimatedTreeSize = 1.0;
@@ -261,8 +251,7 @@ public class ExistentialExplosionPattern implements OntologyLintPattern
 			final Set<OWLClass> allSubclassesOfConnectedSet = new HashSet<>(connectedSet);
 			for (final OWLClass owlClass : connectedSet)
 			{
-				if (!toldSubsumptionGraph.containsVertex(owlClass))
-					continue;
+				if (!toldSubsumptionGraph.containsVertex(owlClass)) continue;
 
 				for (final DefaultWeightedEdge inEdge : toldSubsumptionGraph.incomingEdgesOf(owlClass))
 					allSubclassesOfConnectedSet.add(toldSubsumptionGraph.getEdgeSource(inEdge));
@@ -270,8 +259,7 @@ public class ExistentialExplosionPattern implements OntologyLintPattern
 
 			int totalInvolvedIndividuals = 0;
 			for (final Entry<OWLClass, Integer> entry : individualCount.entrySet())
-				if (allSubclassesOfConnectedSet.contains(entry.getKey()))
-					totalInvolvedIndividuals += entry.getValue();
+				if (allSubclassesOfConnectedSet.contains(entry.getKey())) totalInvolvedIndividuals += entry.getValue();
 
 			estimatedTreeSize *= totalInvolvedIndividuals;
 
@@ -295,16 +283,14 @@ public class ExistentialExplosionPattern implements OntologyLintPattern
 		for (final OWLClass child : nodesInACycle)
 		{
 			Double childValue = accumulatedChildren.get(child);
-			if (childValue == null)
-				childValue = existentialRestrictionGraph.outDegreeOf(child) + 1.0;
+			if (childValue == null) childValue = existentialRestrictionGraph.outDegreeOf(child) + 1.0;
 
 			for (final DefaultWeightedEdge inEdge : existentialRestrictionGraph.incomingEdgesOf(child))
 			{
 				final int inEdgeCount = existentialRestrictionGraph.getEdgeMultiplicity(inEdge);
 				final OWLClass parent = existentialRestrictionGraph.getEdgeSource(inEdge);
 				Double oldValue = accumulatedChildren.get(parent);
-				if (oldValue == null)
-					oldValue = (double) existentialRestrictionGraph.outDegreeOf(parent);
+				if (oldValue == null) oldValue = (double) existentialRestrictionGraph.outDegreeOf(parent);
 				accumulatedChildren.put(parent, oldValue + childValue * inEdgeCount);
 			}
 		}
@@ -318,16 +304,14 @@ public class ExistentialExplosionPattern implements OntologyLintPattern
 			{
 				final OWLClass node = bottomUpIt.next();
 				Double nodeSize = accumulatedChildren.get(node);
-				if (nodeSize == null)
-					nodeSize = 1.0;
+				if (nodeSize == null) nodeSize = 1.0;
 
 				for (final DefaultWeightedEdge outEdge : existentialRestrictionGraph.outgoingEdgesOf(node))
 				{
 					final int outEdgeCount = existentialRestrictionGraph.getEdgeMultiplicity(outEdge);
 					final OWLClass child = existentialRestrictionGraph.getEdgeTarget(outEdge);
 					Double childValue = accumulatedChildren.get(child);
-					if (childValue == null)
-						childValue = 1.0;
+					if (childValue == null) childValue = 1.0;
 					nodeSize += childValue * outEdgeCount;
 				}
 
@@ -347,8 +331,7 @@ public class ExistentialExplosionPattern implements OntologyLintPattern
 			{
 				final double totalCount = childCount * individualCount;
 				estimatedTotalTreeSize += totalCount;
-				if (totalCount > 0.0)
-					participatingClasses.add(owlClass);
+				if (totalCount > 0.0) participatingClasses.add(owlClass);
 			}
 		}
 
@@ -414,15 +397,13 @@ class ExistentialClassCollector extends ClassCollector
 	@Override
 	public void visit(final OWLObjectMinCardinality desc)
 	{
-		if (desc.getCardinality() > 0)
-			visitObject(desc.getFiller());
+		if (desc.getCardinality() > 0) visitObject(desc.getFiller());
 	}
 
 	@Override
 	public void visit(final OWLObjectExactCardinality desc)
 	{
-		if (desc.getCardinality() > 0)
-			visitObject(desc.getFiller());
+		if (desc.getCardinality() > 0) visitObject(desc.getFiller());
 	}
 
 	@Override
@@ -439,7 +420,6 @@ class ExistentialClassCollector extends ClassCollector
 
 	private void visitObject(final OWLClassExpression filler)
 	{
-		if (!filler.isAnonymous())
-			_classes.add(filler.asOWLClass());
+		if (!filler.isAnonymous()) _classes.add(filler.asOWLClass());
 	}
 }

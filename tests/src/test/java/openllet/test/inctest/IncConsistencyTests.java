@@ -83,41 +83,41 @@ public class IncConsistencyTests extends AbstractKBTests
 		return cases;
 	}
 
-	private boolean _preUCQ;
-	private boolean _preUIC;
-	private boolean _preUSR;
-	private boolean _preUT;
-	private boolean _preUID;
+	private boolean					_preUCQ;
+	private boolean					_preUIC;
+	private boolean					_preUSR;
+	private boolean					_preUT;
+	private boolean					_preUID;
 
-	private final boolean _ucq;
-	private final boolean _uic;
-	private final boolean _uid;
+	private final boolean			_ucq;
+	private final boolean			_uic;
+	private final boolean			_uid;
 
-	private static final boolean PRINT_ABOX = false;
+	private static final boolean	PRINT_ABOX	= false;
 
-	private final ATermAppl _robert = term("Robert"), //
-			_mary = term("Mary"), //
-			_chris = term("Chris"), //
-			_john = term("John"), //
-			_bill = term("Bill"), //
-			_victor = term("Victor"), //
-			_mbox = term("mbox"), //
-			_relative = term("relative"), //
-			_sibling = term("sibling"), //
-			_person = term("person"), //
-			_animalOwner = term("animalOwner"), //
-			_owns = term("owns"), //
-			_ownedBy = term("ownedBy"), //
-			_knows = term("knows"), //
-			_notPerson = not(_person), //
-			_man = term("man"), //
-			_woman = term("woman"), //
-			_animal = term("animal"), //
-			_dog = term("dog"), //
-			_cat = term("cat"), //
-			_notCat = not(_cat), //
-			_notDog = not(_dog), //
-			_ssn = term("ssn"), //
+	private final ATermAppl			_robert		= term("Robert"),	//
+			_mary = term("Mary"),									//
+			_chris = term("Chris"),									//
+			_john = term("John"),									//
+			_bill = term("Bill"),									//
+			_victor = term("Victor"),								//
+			_mbox = term("mbox"),									//
+			_relative = term("relative"),							//
+			_sibling = term("sibling"),								//
+			_person = term("person"),								//
+			_animalOwner = term("animalOwner"),						//
+			_owns = term("owns"),									//
+			_ownedBy = term("ownedBy"),								//
+			_knows = term("knows"),									//
+			_notPerson = not(_person),								//
+			_man = term("man"),										//
+			_woman = term("woman"),									//
+			_animal = term("animal"),								//
+			_dog = term("dog"),										//
+			_cat = term("cat"),										//
+			_notCat = not(_cat),									//
+			_notDog = not(_dog),									//
+			_ssn = term("ssn"),										//
 			_ownsAnimal = term("ownsAnimal");
 
 	public static junit.framework.Test suite()
@@ -405,8 +405,7 @@ public class IncConsistencyTests extends AbstractKBTests
 		final ATermAppl[] inds = { _mary, _chris, _victor, _john };
 		for (int i = 0; i < inds.length - 1; i++)
 			for (int j = i + 1; j < inds.length; j++)
-				if (_kb.getABox().getIndividual(inds[i]).isSame(_kb.getABox().getIndividual(inds[j])))
-					_kb.addDifferent(inds[i], inds[j]);
+				if (_kb.getABox().getIndividual(inds[i]).isSame(_kb.getABox().getIndividual(inds[j]))) _kb.addDifferent(inds[i], inds[j]);
 		assertTrue(_kb.isConsistent());
 
 		_kb.addType(_bill, not(_dog));
@@ -2021,8 +2020,8 @@ public class IncConsistencyTests extends AbstractKBTests
 
 		final AtomIVariable x = new AtomIVariable("x");
 		final AtomIVariable y = new AtomIVariable("y");
-		final List<RuleAtom> body = Arrays.<RuleAtom> asList(new IndividualPropertyAtom(p, x, y));
-		final List<RuleAtom> head = Arrays.<RuleAtom> asList(new ClassAtom(B, x));
+		final List<RuleAtom> body = Arrays.<RuleAtom>asList(new IndividualPropertyAtom(p, x, y));
+		final List<RuleAtom> head = Arrays.<RuleAtom>asList(new ClassAtom(B, x));
 
 		kb.addRule(new Rule(head, body));
 

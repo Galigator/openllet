@@ -17,10 +17,9 @@ import org.junit.Test;
 public abstract class AbstractClassificationTest
 {
 
-	
-	public static final String base = PelletTestSuite.base + "modularity/";
+	public static final String	base				= PelletTestSuite.base + "modularity/";
 
-	protected static boolean FAIL_AT_FIRST_ERROR = false;
+	protected static boolean	FAIL_AT_FIRST_ERROR	= false;
 
 	public void testFile(final String fileName) throws Exception
 	{
@@ -83,13 +82,13 @@ public abstract class AbstractClassificationTest
 	{
 		testFile("MechanicalEngineering");
 	}
-	
+
 	@Test
 	public void simpleMechanicalEngineeringTest() throws Exception
 	{
 		testFile("ME");
 	}
-	
+
 	@Test
 	public void simpleMechanicalEngineeringTest2() throws Exception
 	{

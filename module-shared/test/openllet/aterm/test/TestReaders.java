@@ -5,14 +5,14 @@
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
- *     * Redistributions of source code must retain the above copyright
- *       notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the University of California, Berkeley nor the
- *       names of its contributors may be used to endorse or promote products
- *       derived from this software without specific prior written permission.
+ * * Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following disclaimer.
+ * * Redistributions in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in the
+ * documentation and/or other materials provided with the distribution.
+ * * Neither the name of the University of California, Berkeley nor the
+ * names of its contributors may be used to endorse or promote products
+ * derived from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -31,15 +31,13 @@ package openllet.aterm.test;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-
+import openllet.aterm.ATerm;
+import openllet.aterm.ATermFactory;
+import openllet.aterm.pure.PureFactory;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-
-import openllet.aterm.ATerm;
-import openllet.aterm.ATermFactory;
-import openllet.aterm.pure.PureFactory;
 
 /**
  * Exercise the various readers. Supply the test/ directory as the
@@ -51,10 +49,10 @@ import openllet.aterm.pure.PureFactory;
  */
 public class TestReaders
 {
-	private ATermFactory _factory;
+	private ATermFactory	_factory;
 	@SuppressWarnings("unused")
-	private String _srcdir;
-	private ATerm _baseline;
+	private String			_srcdir;
+	private ATerm			_baseline;
 
 	public final static void main(final String[] args) throws IOException
 	{

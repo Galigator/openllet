@@ -37,18 +37,18 @@ import org.apache.jena.sparql.resultset.ResultSetMem;
  */
 public class ProfileQuery
 {
-	private boolean _detailedTime = false;
-	private boolean _printQueryResults = false;
-	private boolean _classify = false;
-	private boolean _realize = false;
-	private boolean _printQuery = false;
-	private boolean _sizeEstimateAll = false;
-	private int _maxIteration = 1;
-	private final Timers _timers = new Timers();
-	private final JenaLoader _loader = new JenaLoader();
-	private OntModel _model = null;
+	private boolean						_detailedTime		= false;
+	private boolean						_printQueryResults	= false;
+	private boolean						_classify			= false;
+	private boolean						_realize			= false;
+	private boolean						_printQuery			= false;
+	private boolean						_sizeEstimateAll	= false;
+	private int							_maxIteration		= 1;
+	private final Timers				_timers				= new Timers();
+	private final JenaLoader			_loader				= new JenaLoader();
+	private OntModel					_model				= null;
 
-	private final ResultList<String> _results = new ResultList<>(1, 8);
+	private final ResultList<String>	_results			= new ResultList<>(1, 8);
 
 	public ProfileQuery()
 	{
@@ -139,10 +139,7 @@ public class ProfileQuery
 		double realizeTime = 0;
 		double sizeEstimateTime = 0;
 
-		if (isSizeEstimateAll())
-		{
-			_timers.execute("sizeEstimateAll", x -> kb.getSizeEstimate().computeAll());
-		}
+		if (isSizeEstimateAll()) _timers.execute("sizeEstimateAll", x -> kb.getSizeEstimate().computeAll());
 
 		System.out.println("Parsing/Loading  : " + parseTime);
 		System.out.println("Consistency      : " + consTime);
@@ -175,34 +172,19 @@ public class ProfileQuery
 			final Collection<Result<String>> currResult = new ArrayList<>();
 
 			currResult.add(new Result<>("consistency", consTime));
-			if (isClassify())
-			{
-				currResult.add(new Result<>("classify", classifyTime));
-			}
-			if (isRealize())
-			{
-				currResult.add(new Result<>("realize", realizeTime));
-			}
-			if (isSizeEstimateAll())
-			{
-				currResult.add(new Result<>("estimate", sizeEstimateTime));
-				// currResult.add( new Result<String>( "setup", totalSetupTime ) );
-			}
+			if (isClassify()) currResult.add(new Result<>("classify", classifyTime));
+			if (isRealize()) currResult.add(new Result<>("realize", realizeTime));
+			if (isSizeEstimateAll()) currResult.add(new Result<>("estimate", sizeEstimateTime));
+			// currResult.add( new Result<String>( "setup", totalSetupTime ) );
 
 			for (final Map.Entry<String, Query> entry : queries.entrySet())
 			{
 				final String queryName = entry.getKey();
 				final Query query = entry.getValue();
 
-				if (queries.size() > 1)
-				{
-					System.out.println("Query: " + queryName);
-				}
+				if (queries.size() > 1) System.out.println("Query: " + queryName);
 
-				if (_printQuery)
-				{
-					System.out.println(query);
-				}
+				if (_printQuery) System.out.println(query);
 
 				final Optional<Timer> timer = _timers.startTimer("query");
 
@@ -215,14 +197,11 @@ public class ProfileQuery
 
 				final int count = resultMem.size();
 
-				timer.ifPresent(t -> t.stop());
+				timer.ifPresent(Timer::stop);
 
 				final double queryTime = timer.map(t -> t.getLast() / 1000.0).orElse(0.);
 
-				if (_printQueryResults)
-				{
-					ResultSetFormatter.out(resultMem, _model);
-				}
+				if (_printQueryResults) ResultSetFormatter.out(resultMem, _model);
 
 				System.out.println("Query time: " + queryTime);
 				System.out.println("Number of results: " + count);
@@ -257,7 +236,7 @@ public class ProfileQuery
 			System.out.println();
 			System.out.println("Triples        : " + _model.getBaseModel().size());
 
-			timer.ifPresent(t -> t.stop());
+			timer.ifPresent(Timer::stop);
 		}
 
 		final KnowledgeBase kb = _loader.getKB();
@@ -270,15 +249,9 @@ public class ProfileQuery
 
 		ProfileUtils.printCounts(kb.getABox());
 
-		if (_classify)
-		{
-			_timers.execute("classify", x -> kb.classify());
-		}
+		if (_classify) _timers.execute("classify", x -> kb.classify());
 
-		if (_realize)
-		{
-			_timers.execute("realize", x -> kb.realize());
-		}
+		if (_realize) _timers.execute("realize", x -> kb.realize());
 
 		return kb;
 	}
@@ -338,7 +311,6 @@ public class ProfileQuery
 		{
 			int c;
 			while ((c = g.getopt()) != -1)
-			{
 				switch (c)
 				{
 					case 'h':
@@ -381,7 +353,6 @@ public class ProfileQuery
 					default:
 						ProfileUtils.error("Unrecognized option: " + (char) c);
 				}
-			}
 		}
 		catch (final NumberFormatException e)
 		{

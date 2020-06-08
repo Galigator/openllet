@@ -19,9 +19,9 @@ import org.junit.Test;
 public class RealizationTest extends SequentialTestsContraintInitializer
 {
 
-	private static final String ONTOLOGY_PATH = "/jena-datatypes.owl";
+	private static final String	ONTOLOGY_PATH	= "/jena-datatypes.owl";
 
-	private static final String PREFIX = "http://example.org/";
+	private static final String	PREFIX			= "http://example.org/";
 
 	@Test
 	public void testDoNotReclassify() throws Exception

@@ -33,10 +33,10 @@ public class ModularityUtils
 	 * </ul>
 	 * The module types are closely related to the locality class used. Lower module is extracted with top locality and thus also called top module.
 	 *
-	 * @param ontology ontolgoy from which the module is extracted
-	 * @param signature set of entities used to extract the module
-	 * @param moduleType type of the module
-	 * @return a set of axioms representing the relevant axioms for the signature elements
+	 * @param  ontology   ontolgoy from which the module is extracted
+	 * @param  signature  set of entities used to extract the module
+	 * @param  moduleType type of the module
+	 * @return            a set of axioms representing the relevant axioms for the signature elements
 	 */
 	public static Set<OWLAxiom> extractModule(final OWLOntology ontology, final Set<OWLEntity> signature, final ModuleType moduleType)
 	{
@@ -47,11 +47,11 @@ public class ModularityUtils
 	 * Extract the module from a given set of ontologies (but not their imports) for the given signature. Only the axioms in the given set of ontologies is
 	 * considered. Only the axioms from the ontologies that explicitly exists in the given set will be included in the module.
 	 *
-	 * @see #extractModule(OWLOntology, Set, ModuleType)
-	 * @param ontologies ontologies from which the module is extracted
-	 * @param signature set of entities used to extract the module
-	 * @param moduleType type of the module
-	 * @return a set of axioms representing the relevant axioms for the signature elements
+	 * @see               #extractModule(OWLOntology, Set, ModuleType)
+	 * @param  ontologies ontologies from which the module is extracted
+	 * @param  signature  set of entities used to extract the module
+	 * @param  moduleType type of the module
+	 * @return            a set of axioms representing the relevant axioms for the signature elements
 	 */
 	public static Set<OWLAxiom> extractModule(final Set<OWLOntology> ontologies, final Set<OWLEntity> signature, final ModuleType moduleType)
 	{

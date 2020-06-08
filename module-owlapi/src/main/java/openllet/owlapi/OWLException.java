@@ -4,7 +4,7 @@ import openllet.atom.OpenError;
 
 /**
  * throw a exception for OWL related problems.
- * 
+ *
  * @since 2.5.1
  */
 public class OWLException extends OpenError

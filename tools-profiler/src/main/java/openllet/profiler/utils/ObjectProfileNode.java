@@ -10,11 +10,11 @@ import java.util.Arrays;
  */
 final class ObjectProfileNode extends AbstractProfileNode
 {
-	public final ILink _link;
-	public final Object _obj;
-	public int _refcount;
-	public AbstractShellProfileNode _shell;
-	public IObjectProfileNode[] _children;
+	public final ILink				_link;
+	public final Object				_obj;
+	public int						_refcount;
+	public AbstractShellProfileNode	_shell;
+	public IObjectProfileNode[]		_children;
 
 	@Override
 	public Object object()
@@ -49,7 +49,7 @@ final class ObjectProfileNode extends AbstractProfileNode
 	@Override
 	public boolean traverse(final INodeFilter filter, final INodeVisitor visitor)
 	{
-		if ((visitor != null) && ((filter == null) || filter.accept(this)))
+		if (visitor != null && (filter == null || filter.accept(this)))
 		{
 			visitor.previsit(this);
 

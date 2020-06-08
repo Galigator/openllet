@@ -11,7 +11,7 @@ import org.semanticweb.owlapi.model.OWLObjectProperty;
 
 public interface OWLManagedObject extends OWLManagementObject
 {
-	abstract public OWLNamedIndividual getMe();
+	OWLNamedIndividual getMe();
 
 	default Stream<OWLNamedIndividual> getObjects(final IRI property)
 	{

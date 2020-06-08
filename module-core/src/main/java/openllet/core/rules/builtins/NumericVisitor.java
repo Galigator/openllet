@@ -28,12 +28,12 @@ import java.math.BigInteger;
 public interface NumericVisitor
 {
 
-	public void visit(BigDecimal[] args);
+	void visit(BigDecimal[] args);
 
-	public void visit(BigInteger[] args);
+	void visit(BigInteger[] args);
 
-	public void visit(Double[] args);
+	void visit(Double[] args);
 
-	public void visit(Float[] args);
+	void visit(Float[] args);
 
 }

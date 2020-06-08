@@ -48,9 +48,9 @@ public class GraphBasedModuleExtractor extends AbstractModuleExtractor
 		// FIXME : this suppress warnings... not the error : but we need a clean project to work on true problems.
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		final Reachability<OWLEntity> engine = (Reachability) graph; // FIXME : this is wrong but type erasure mask it.
-		timer.ifPresent(t -> t.stop());
+		timer.ifPresent(Timer::stop);
 
-		_logger.finer(() -> format("Built graph in %d ms", timer.map(t -> t.getLast()).orElse(0L)));
+		_logger.finer(() -> format("Built graph in %d ms", timer.map(Timer::getLast).orElse(0L)));
 
 		//		DisplayGraph.display( entities, engine.getGraph(), null );
 
@@ -77,13 +77,11 @@ public class GraphBasedModuleExtractor extends AbstractModuleExtractor
 			_logger.fine(() -> "Node " + node);
 
 			if (node == null)
-			{
 				// if the entity is not in the activation engine it means it was
 				// not used in any logical axiom which implies its module contains
 				// just itself.
 				// so, update the module
 				_modules.put(ent, /*module =*/Collections.singleton(ent));
-			}
 			else
 				extractModule(engine, node, entities, monitor);
 		}
@@ -104,8 +102,7 @@ public class GraphBasedModuleExtractor extends AbstractModuleExtractor
 		for (final Object n : node.getEntities())
 		{
 			module = _modules.get(n);
-			if (module != null)
-				break;
+			if (module != null) break;
 		}
 
 		// if we don't have a module and the initial _node has a single output
@@ -145,13 +142,11 @@ public class GraphBasedModuleExtractor extends AbstractModuleExtractor
 
 			if (prevModule != null)
 			{
-				if (!prevModule.equals(module))
-					_logger.warning(format("Possible discrepancy for the module of %s ( Previous %s , Current %s )", n, prevModule, module));
+				if (!prevModule.equals(module)) _logger.warning(format("Possible discrepancy for the module of %s ( Previous %s , Current %s )", n, prevModule, module));
 			}
 			else
-				// update the monitor only for entities in the initial set
-				if (entities.contains(n))
-					monitor.incrementProgress();
+			// update the monitor only for entities in the initial set
+			if (entities.contains(n)) monitor.incrementProgress();
 		}
 
 		return module;

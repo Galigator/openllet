@@ -17,7 +17,7 @@ import openllet.owlwg.testcase.TestCase;
  * <p>
  * Company: Clark & Parsia, LLC. <a href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
  * </p>
- * 
+ *
  * @author Mike Smith &lt;msmith@clarkparsia.com&gt;
  */
 public class SyntaxConstraintRun extends AbstractRun
@@ -25,26 +25,25 @@ public class SyntaxConstraintRun extends AbstractRun
 
 	final private SyntaxConstraint _constraint;
 
-	public SyntaxConstraintRun(TestCase<?> testcase, RunResultType type, SyntaxConstraint constraint, TestRunner<?> runner)
+	public SyntaxConstraintRun(final TestCase<?> testcase, final RunResultType type, final SyntaxConstraint constraint, final TestRunner<?> runner)
 	{
 		this(testcase, type, constraint, runner, null, null);
 	}
 
-	public SyntaxConstraintRun(TestCase<?> testcase, RunResultType type, SyntaxConstraint constraint, TestRunner<?> runner, String details)
+	public SyntaxConstraintRun(final TestCase<?> testcase, final RunResultType type, final SyntaxConstraint constraint, final TestRunner<?> runner, final String details)
 	{
 		this(testcase, type, constraint, runner, details, null);
 	}
 
-	public SyntaxConstraintRun(TestCase<?> testcase, RunResultType type, SyntaxConstraint constraint, TestRunner<?> runner, String details, Throwable cause)
+	public SyntaxConstraintRun(final TestCase<?> testcase, final RunResultType type, final SyntaxConstraint constraint, final TestRunner<?> runner, final String details, final Throwable cause)
 	{
 		super(testcase, type, RunTestType.SYNTAX_CONSTRAINT, runner, details, cause);
-		if (constraint == null)
-			throw new NullPointerException();
-		this._constraint = constraint;
+		if (constraint == null) throw new NullPointerException();
+		_constraint = constraint;
 	}
 
 	@Override
-	public void accept(TestRunResultVisitor visitor)
+	public void accept(final TestRunResultVisitor visitor)
 	{
 		visitor.visit(this);
 	}

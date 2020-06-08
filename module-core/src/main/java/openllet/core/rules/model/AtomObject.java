@@ -21,5 +21,5 @@ package openllet.core.rules.model;
  */
 public interface AtomObject
 {
-	public void accept(AtomObjectVisitor visitor);
+	void accept(AtomObjectVisitor visitor);
 }

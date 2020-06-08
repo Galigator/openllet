@@ -38,9 +38,9 @@ import org.semanticweb.owlapi.model.OWLOntology;
  */
 public class PersistenceModularityTest extends AbstractModularityTest
 {
-	public static final String base = PelletTestSuite.base + "modularity/";
+	public static final String	base		= PelletTestSuite.base + "modularity/";
 
-	private static final String TEST_FILE = "test-persistence.zip";
+	private static final String	TEST_FILE	= "test-persistence.zip";
 
 	/**
 	 * {@inheritDoc}

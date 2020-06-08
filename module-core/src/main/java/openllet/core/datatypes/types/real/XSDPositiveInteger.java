@@ -43,8 +43,7 @@ public class XSDPositiveInteger extends AbstractDerivedIntegerType
 		try
 		{
 			final BigInteger n = DatatypeConverter.parseInteger(lexicalForm);
-			if (BigInteger.ZERO.compareTo(n) >= 0)
-				throw new InvalidLiteralException(getName(), lexicalForm);
+			if (BigInteger.ZERO.compareTo(n) >= 0) throw new InvalidLiteralException(getName(), lexicalForm);
 			return n;
 		}
 		catch (final NumberFormatException e)

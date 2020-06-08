@@ -34,10 +34,11 @@ import org.semanticweb.owlapi.model.OWLIndividual;
  * Company: Clark & Parsia, LLC. <a
  * href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
  * </p>
- * 
+ *
  * @author Mike Smith &lt;msmith@clarkparsia.com&gt;
  */
-public enum SerializationFormat {
+public enum SerializationFormat
+{
 
 	/**
 	 * OWL 2 Functional-Style Syntax
@@ -58,33 +59,38 @@ public enum SerializationFormat {
 	private final TestVocabulary.DatatypeProperty	_nonconclusion;
 	private final TestVocabulary.DatatypeProperty	_premise;
 
-	private SerializationFormat(TestVocabulary.Individual i, TestVocabulary.DatatypeProperty input,
-			TestVocabulary.DatatypeProperty premise, TestVocabulary.DatatypeProperty conclusion,
-			TestVocabulary.DatatypeProperty nonconclusion) {
-		this._i = i;
-		this._input = input;
-		this._premise = premise;
-		this._conclusion = conclusion;
-		this._nonconclusion = nonconclusion;
+	private SerializationFormat(final TestVocabulary.Individual i, final TestVocabulary.DatatypeProperty input, final TestVocabulary.DatatypeProperty premise,
+			final TestVocabulary.DatatypeProperty conclusion, final TestVocabulary.DatatypeProperty nonconclusion)
+	{
+		_i = i;
+		_input = input;
+		_premise = premise;
+		_conclusion = conclusion;
+		_nonconclusion = nonconclusion;
 	}
 
-	public OWLDataProperty getConclusionOWLDataProperty() {
+	public OWLDataProperty getConclusionOWLDataProperty()
+	{
 		return _conclusion.getOWLDataProperty();
 	}
 
-	public OWLDataProperty getNonConclusionOWLDataProperty() {
+	public OWLDataProperty getNonConclusionOWLDataProperty()
+	{
 		return _nonconclusion.getOWLDataProperty();
 	}
 
-	public OWLIndividual getOWLIndividual() {
+	public OWLIndividual getOWLIndividual()
+	{
 		return _i.getOWLIndividual();
 	}
 
-	public OWLDataProperty getPremiseOWLDataProperty() {
+	public OWLDataProperty getPremiseOWLDataProperty()
+	{
 		return _premise.getOWLDataProperty();
 	}
 
-	public OWLDataProperty getInputOWLDataProperty() {
+	public OWLDataProperty getInputOWLDataProperty()
+	{
 		return _input.getOWLDataProperty();
 	}
 }

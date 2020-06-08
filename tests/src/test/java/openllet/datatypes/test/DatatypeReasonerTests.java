@@ -69,7 +69,8 @@ public class DatatypeReasonerTests
 
 	private static Collection<ATermAppl> getSatisfiableDecimalEnumerations()
 	{
-		final Collection<ATermAppl> dataranges = Arrays.asList(oneOf(literal("1.0", DECIMAL), literal("2.0", DECIMAL), literal("3.0", DECIMAL)), oneOf(literal("2.0", DECIMAL), literal("4.0", DECIMAL), literal("6.0", DECIMAL)));
+		final Collection<ATermAppl> dataranges = Arrays.asList(oneOf(literal("1.0", DECIMAL), literal("2.0", DECIMAL), literal("3.0", DECIMAL)),
+				oneOf(literal("2.0", DECIMAL), literal("4.0", DECIMAL), literal("6.0", DECIMAL)));
 		return dataranges;
 	}
 
@@ -83,7 +84,8 @@ public class DatatypeReasonerTests
 
 	private static Collection<ATermAppl> getUnsatisfiableDecimalEnumerations()
 	{
-		final Collection<ATermAppl> dataranges = Arrays.asList(oneOf(literal("1.0", DECIMAL), literal("2.0", DECIMAL), literal("3.0", DECIMAL)), oneOf(literal("4.0", DECIMAL), literal("5.0", DECIMAL), literal("6.0", DECIMAL)));
+		final Collection<ATermAppl> dataranges = Arrays.asList(oneOf(literal("1.0", DECIMAL), literal("2.0", DECIMAL), literal("3.0", DECIMAL)),
+				oneOf(literal("4.0", DECIMAL), literal("5.0", DECIMAL), literal("6.0", DECIMAL)));
 		return dataranges;
 	}
 
@@ -95,9 +97,9 @@ public class DatatypeReasonerTests
 		return dataranges;
 	}
 
-	private ABoxImpl abox;
+	private ABoxImpl			abox;
 
-	private DatatypeReasoner reasoner;
+	private DatatypeReasoner	reasoner;
 
 	/**
 	 * Verify that overlapping decimal ranges for a single variable are satisfiable.
@@ -113,7 +115,7 @@ public class DatatypeReasonerTests
 		for (final ATermAppl a : getSatisfiableDecimalRanges())
 			x.addType(a, DependencySet.INDEPENDENT);
 
-		assertTrue(reasoner.isSatisfiable(singleton(x), Collections.<Literal, Set<Literal>> emptyMap()));
+		assertTrue(reasoner.isSatisfiable(singleton(x), Collections.<Literal, Set<Literal>>emptyMap()));
 	}
 
 	/**
@@ -130,7 +132,7 @@ public class DatatypeReasonerTests
 		for (final ATermAppl a : getSatisfiableDecimalEnumerations())
 			x.addType(a, DependencySet.INDEPENDENT);
 
-		assertTrue(reasoner.isSatisfiable(singleton(x), Collections.<Literal, Set<Literal>> emptyMap()));
+		assertTrue(reasoner.isSatisfiable(singleton(x), Collections.<Literal, Set<Literal>>emptyMap()));
 	}
 
 	/**
@@ -147,7 +149,7 @@ public class DatatypeReasonerTests
 		for (final ATermAppl a : getUnsatisfiableDecimalRanges())
 			x.addType(a, DependencySet.INDEPENDENT);
 
-		assertFalse(reasoner.isSatisfiable(singleton(x), Collections.<Literal, Set<Literal>> emptyMap()));
+		assertFalse(reasoner.isSatisfiable(singleton(x), Collections.<Literal, Set<Literal>>emptyMap()));
 	}
 
 	/**
@@ -164,7 +166,7 @@ public class DatatypeReasonerTests
 		for (final ATermAppl a : getUnsatisfiableDecimalEnumerations())
 			x.addType(a, DependencySet.INDEPENDENT);
 
-		assertFalse(reasoner.isSatisfiable(singleton(x), Collections.<Literal, Set<Literal>> emptyMap()));
+		assertFalse(reasoner.isSatisfiable(singleton(x), Collections.<Literal, Set<Literal>>emptyMap()));
 	}
 
 	@Before
@@ -550,7 +552,7 @@ public class DatatypeReasonerTests
 				high = tmp;
 			}
 
-			final ATermAppl floatExclusiveRandom = restrict(FLOAT, minExclusive(literal(Float.valueOf(low))), maxExclusive(literal(Float.valueOf(high))));
+			final ATermAppl floatExclusiveRandom = restrict(FLOAT, minExclusive(literal(low)), maxExclusive(literal(high)));
 
 			// Both floats are known to be in (0,1) so this will work
 			final int size = Float.floatToIntBits(high) - Float.floatToIntBits(low) - 1;

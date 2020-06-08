@@ -53,14 +53,14 @@ import openllet.shared.tools.Log;
  */
 public abstract class Blocking
 {
-	public final static Logger _logger = Log.getLogger(Blocking.class);
+	public final static Logger					_logger			= Log.getLogger(Blocking.class);
 
-	protected static final BlockingCondition blockSet = new Block1Set();
-	protected static final BlockingCondition blockAll = new Block2All();
-	protected static final BlockingCondition block3Max = new Block3Max();
-	protected static final BlockingCondition blockMin = new Block4Min();
-	protected static final BlockingCondition blockMax = new Block5Max();
-	protected static final BlockingCondition blockMinSome = new Block6MinSome();
+	protected static final BlockingCondition	blockSet		= new Block1Set();
+	protected static final BlockingCondition	blockAll		= new Block2All();
+	protected static final BlockingCondition	block3Max		= new Block3Max();
+	protected static final BlockingCondition	blockMin		= new Block4Min();
+	protected static final BlockingCondition	blockMax		= new Block5Max();
+	protected static final BlockingCondition	blockMinSome	= new Block6MinSome();
 
 	protected Blocking()
 	{
@@ -81,15 +81,14 @@ public abstract class Blocking
 		}
 		finally
 		{
-			timer.ifPresent(t -> t.stop());
+			timer.ifPresent(Timer::stop);
 		}
 	}
 
 	public boolean isIndirectlyBlocked(final Individual blocked)
 	{
 		final Individual parent = blocked.getParent();
-		if (parent == null)
-			return false;
+		if (parent == null) return false;
 		blocked.setBlocked(isBlocked(parent));
 		return blocked.isBlocked();
 	}
@@ -103,15 +102,14 @@ public abstract class Blocking
 		}
 		finally
 		{
-			timer.ifPresent(t -> t.stop());
+			timer.ifPresent(Timer::stop);
 		}
 	}
 
 	protected boolean isDirectlyBlockedInt(final Individual blocked)
 	{
 		final Individual parentBlocked = blocked.getParent();
-		if (blocked.isRoot() || parentBlocked.isRoot())
-			return false;
+		if (blocked.isRoot() || parentBlocked.isRoot()) return false;
 
 		final BlockingContext cxt = new BlockingContext(blocked);
 		while (cxt.moveBlockerUp())
@@ -134,8 +132,7 @@ public abstract class Blocking
 
 	protected boolean isDirectlyBlockedByDescendant(final BlockingContext cxt)
 	{
-		if (cxt._blocked.getParent().equals(cxt._blocker))
-			return false;
+		if (cxt._blocked.getParent().equals(cxt._blocker)) return false;
 
 		if (!cxt._blocker.isRoot() && isDirectlyBlockedBy(cxt))
 		{
@@ -151,8 +148,7 @@ public abstract class Blocking
 
 			if (cxt.moveBlockerDown(child))
 			{
-				if (isDirectlyBlockedByDescendant(cxt) || cxt._blocker.isRoot())
-					return true;
+				if (isDirectlyBlockedByDescendant(cxt) || cxt._blocker.isRoot()) return true;
 
 				cxt.moveBlockerUp();
 			}

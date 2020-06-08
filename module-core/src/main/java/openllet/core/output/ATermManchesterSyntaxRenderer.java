@@ -98,26 +98,23 @@ public class ATermManchesterSyntaxRenderer extends ATermBaseRenderer
 
 		if (datatypeURI.equals(XSDInteger.getInstance().getName()) || datatypeURI.equals(XSDDecimal.getInstance().getName()))
 			_out.print(lexicalValue.getName());
+		else if (datatypeURI.equals(XSDFloat.getInstance().getName()))
+		{
+			_out.print(lexicalValue.getName());
+			_out.print("f");
+		}
+		else if (!datatypeURI.equals(ATermUtils.PLAIN_LITERAL_DATATYPE))
+		{
+			_out.print(lexicalValue.getName());
+			_out.print("^^");
+			_out.print(datatypeURI.getName());
+		}
 		else
-			if (datatypeURI.equals(XSDFloat.getInstance().getName()))
-			{
-				_out.print(lexicalValue.getName());
-				_out.print("f");
-			}
-			else
-				if (!datatypeURI.equals(ATermUtils.PLAIN_LITERAL_DATATYPE))
-				{
-					_out.print(lexicalValue.getName());
-					_out.print("^^");
-					_out.print(datatypeURI.getName());
-				}
-				else
-				{
-					_out.print("\"" + lexicalValue.getName() + "\"");
+		{
+			_out.print("\"" + lexicalValue.getName() + "\"");
 
-					if (!lang.equals(ATermUtils.EMPTY))
-						_out.print("@" + lang);
-				}
+			if (!lang.equals(ATermUtils.EMPTY)) _out.print("@" + lang);
+		}
 	}
 
 	@Override
@@ -157,8 +154,7 @@ public class ATermManchesterSyntaxRenderer extends ATermBaseRenderer
 			final ATermAppl value = (ATermAppl) list.getFirst();
 			visit((ATermAppl) value.getArgument(0));
 			list = list.getNext();
-			if (!list.isEmpty())
-				_out.print(" ");
+			if (!list.isEmpty()) _out.print(" ");
 		}
 		_out.print("}");
 	}
@@ -204,8 +200,7 @@ public class ATermManchesterSyntaxRenderer extends ATermBaseRenderer
 		{
 			visit((ATermAppl) term);
 			size--;
-			if (size != 0)
-				_out.print(" " + op + " ");
+			if (size != 0) _out.print(" " + op + " ");
 		}
 	}
 
@@ -223,8 +218,7 @@ public class ATermManchesterSyntaxRenderer extends ATermBaseRenderer
 			_out.print(" ");
 			visit((ATermAppl) facet.getArgument(1));
 			list = list.getNext();
-			if (!list.isEmpty())
-				_out.print(", ");
+			if (!list.isEmpty()) _out.print(", ");
 		}
 		_out.print("]");
 	}

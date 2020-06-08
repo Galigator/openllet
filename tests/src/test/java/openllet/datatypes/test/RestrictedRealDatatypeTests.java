@@ -132,7 +132,7 @@ public class RestrictedRealDatatypeTests
 		assertTrue(dr.contains(Integer.MIN_VALUE));
 		assertTrue(dr.contains(Integer.MAX_VALUE));
 
-		assertTrue(dr.contains(0l));
+		assertTrue(dr.contains(0L));
 		assertTrue(dr.contains(Long.MIN_VALUE));
 		assertTrue(dr.contains(Long.MAX_VALUE));
 
@@ -179,7 +179,7 @@ public class RestrictedRealDatatypeTests
 		assertTrue(dr.contains(Integer.MIN_VALUE));
 		assertTrue(dr.contains(Integer.MAX_VALUE));
 
-		assertTrue(dr.contains(0l));
+		assertTrue(dr.contains(0L));
 		assertTrue(dr.contains(Long.MIN_VALUE));
 		assertTrue(dr.contains(Long.MAX_VALUE));
 
@@ -229,7 +229,7 @@ public class RestrictedRealDatatypeTests
 		assertFalse(dr.contains(Integer.MIN_VALUE));
 		assertFalse(dr.contains(Integer.MAX_VALUE));
 
-		assertFalse(dr.contains(0l));
+		assertFalse(dr.contains(0L));
 		assertFalse(dr.contains(Long.MIN_VALUE));
 		assertFalse(dr.contains(Long.MAX_VALUE));
 
@@ -494,8 +494,7 @@ public class RestrictedRealDatatypeTests
 		final Iterator<Number> it = dr.valueIterator();
 		for (int i = -250; i <= 350; i++)
 		{
-			if (i >= -5 && i <= -2)
-				continue;
+			if (i >= -5 && i <= -2) continue;
 
 			assertEquals(0, OWLRealUtils.compare(i, it.next()));
 		}
@@ -522,8 +521,7 @@ public class RestrictedRealDatatypeTests
 		final Iterator<Number> it = dr.valueIterator();
 		for (int i = -250; i <= 350; i++)
 		{
-			if (i >= -5 && i <= -2)
-				continue;
+			if (i >= -5 && i <= -2) continue;
 
 			assertEquals(0, OWLRealUtils.compare(i, it.next()));
 		}
@@ -837,8 +835,7 @@ public class RestrictedRealDatatypeTests
 		final Iterator<Number> it = dr.valueIterator();
 		for (int i = -10; i <= 13; i++)
 		{
-			if (i > -2 && i < 12)
-				continue;
+			if (i > -2 && i < 12) continue;
 
 			assertEquals(0, OWLRealUtils.compare(i, it.next()));
 		}

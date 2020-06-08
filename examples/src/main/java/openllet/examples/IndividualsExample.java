@@ -120,7 +120,7 @@ public class IndividualsExample
 			final String name = names.iterator().next().getLiteral();
 			System.out.println("Name: " + name);
 
-			// at least one direct type is guaranteed to exist for each _individual 
+			// at least one direct type is guaranteed to exist for each _individual
 			final OWLClass type = types.iterator().next().getRepresentativeElement();
 			System.out.println("Type:" + type);
 

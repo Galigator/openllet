@@ -34,8 +34,8 @@ import openllet.shared.tools.Log;
 public class XSDDecimal extends AbstractBaseDatatype<Number>
 {
 
-	private static final XSDDecimal _instance = new XSDDecimal();
-	private static final Logger _logger = Log.getLogger(XSDDecimal.class);
+	private static final XSDDecimal	_instance	= new XSDDecimal();
+	private static final Logger		_logger		= Log.getLogger(XSDDecimal.class);
 
 	public static XSDDecimal getInstance()
 	{

@@ -42,28 +42,28 @@ import org.apache.jena.vocabulary.RDFS;
  */
 public class OWLEntityDatabase
 {
-	public final static Logger _logger = Log.getLogger(OWLEntityDatabase.class);
+	public final static Logger			_logger					= Log.getLogger(OWLEntityDatabase.class);
 
-	private final DoubtfulSet<RDFNode> _ontologies = new DoubtfulSet<>();
-	private final DoubtfulSet<RDFNode> _classes = new DoubtfulSet<>();
-	private final DoubtfulSet<RDFNode> _datatypes = new DoubtfulSet<>();
-	private final DoubtfulSet<RDFNode> _individuals = new DoubtfulSet<>();
+	private final DoubtfulSet<RDFNode>	_ontologies				= new DoubtfulSet<>();
+	private final DoubtfulSet<RDFNode>	_classes				= new DoubtfulSet<>();
+	private final DoubtfulSet<RDFNode>	_datatypes				= new DoubtfulSet<>();
+	private final DoubtfulSet<RDFNode>	_individuals			= new DoubtfulSet<>();
 
-	private final Set<RDFNode> _allRoles = CollectionUtil.makeSet();
-	private final DoubtfulSet<RDFNode> _annotationRoles = new DoubtfulSet<>();
-	private final DoubtfulSet<RDFNode> _ontologyRoles = new DoubtfulSet<>();
-	private final DoubtfulSet<RDFNode> _objectRoles = new DoubtfulSet<>();
-	private final DoubtfulSet<RDFNode> _datatypeRoles = new DoubtfulSet<>();
+	private final Set<RDFNode>			_allRoles				= CollectionUtil.makeSet();
+	private final DoubtfulSet<RDFNode>	_annotationRoles		= new DoubtfulSet<>();
+	private final DoubtfulSet<RDFNode>	_ontologyRoles			= new DoubtfulSet<>();
+	private final DoubtfulSet<RDFNode>	_objectRoles			= new DoubtfulSet<>();
+	private final DoubtfulSet<RDFNode>	_datatypeRoles			= new DoubtfulSet<>();
 
-	private final DoubtfulSet<RDFNode> _SWRLVariables = new DoubtfulSet<>();
+	private final DoubtfulSet<RDFNode>	_SWRLVariables			= new DoubtfulSet<>();
 
-	private final Set<RDFNode> _RDFClasses = CollectionUtil.makeSet();
+	private final Set<RDFNode>			_RDFClasses				= CollectionUtil.makeSet();
 	// TODO: why is this Resource and everything else is RDFNode?  classes should be typed as Resource as well & Individuals, etc.
-	private final Set<Resource> _restrictions = CollectionUtil.makeSet();
-	private final Set<RDFNode> _literals = CollectionUtil.makeSet();
-	private final Set<Literal> _literalsAsClass = CollectionUtil.makeSet();
-	private final Set<Literal> _literalsAsIndividuals = CollectionUtil.makeSet();
-	private final Set<Resource> _resourcesAsLiterals = CollectionUtil.makeSet();
+	private final Set<Resource>			_restrictions			= CollectionUtil.makeSet();
+	private final Set<RDFNode>			_literals				= CollectionUtil.makeSet();
+	private final Set<Literal>			_literalsAsClass		= CollectionUtil.makeSet();
+	private final Set<Literal>			_literalsAsIndividuals	= CollectionUtil.makeSet();
+	private final Set<Resource>			_resourcesAsLiterals	= CollectionUtil.makeSet();
 
 	public void addOntology(final RDFNode s)
 	{
@@ -119,13 +119,12 @@ public class OWLEntityDatabase
 	{
 		_classes.add(s);
 
-		if (s instanceof Literal)
-			_literalsAsClass.add((Literal) s);
+		if (s instanceof Literal) _literalsAsClass.add((Literal) s);
 	}
 
 	public boolean containsClass(final RDFNode s)
 	{
-		return _classes.contains(s) || (s.isResource() && _restrictions.contains(s));
+		return _classes.contains(s) || s.isResource() && _restrictions.contains(s);
 	}
 
 	public Set<RDFNode> getDoubtfulClasses()
@@ -353,7 +352,8 @@ public class OWLEntityDatabase
 
 	public boolean containsResource(final RDFNode s)
 	{
-		return _ontologies.contains(s) || _classes.contains(s) || _datatypes.contains(s) || _individuals.contains(s) || _allRoles.contains(s) || _RDFClasses.contains(s) || (s.isResource() && _restrictions.contains(s)) || _literals.contains(s) || _SWRLVariables.contains(s);
+		return _ontologies.contains(s) || _classes.contains(s) || _datatypes.contains(s) || _individuals.contains(s) || _allRoles.contains(s) || _RDFClasses.contains(s)
+				|| s.isResource() && _restrictions.contains(s) || _literals.contains(s) || _SWRLVariables.contains(s);
 	}
 
 	public Map<RDFNode, List<String>> getAllMultiTypedResources()
@@ -366,8 +366,8 @@ public class OWLEntityDatabase
 	 * and an _individual. However, certain punnings are not allowed under any _condition, e.g. a resource cannot be both a datatype property and an object
 	 * property. Invalid punnings are always returned. Punnings valid for OWL 2 will be excluded based on the given parameter value.
 	 *
-	 * @param excludeValidPunning If <code>true</code> OWL 2 valid punnings will not be inluded in the result
-	 * @return resources that have multiple types
+	 * @param  excludeValidPunning If <code>true</code> OWL 2 valid punnings will not be inluded in the result
+	 * @return                     resources that have multiple types
 	 */
 	public Map<RDFNode, List<String>> getMultiTypedResources(final boolean excludeValidPunning)
 	{
@@ -397,19 +397,16 @@ public class OWLEntityDatabase
 		{
 			final List<String> types = CollectionUtil.makeList();
 			for (final Map.Entry<String, Set<RDFNode>> definiteResources : definiteResourcesByType.entrySet())
-				if (definiteResources.getValue().contains(node))
-					types.add(definiteResources.getKey());
+				if (definiteResources.getValue().contains(node)) types.add(definiteResources.getKey());
 
-			if (types.size() > 1)
-				multiTypedResources.put(node, types);
+			if (types.size() > 1) multiTypedResources.put(node, types);
 		}
 
 		if (excludeValidPunning)
 		{
 			final List<String> classDatatypePunning = Arrays.asList("Class", "Datatype");
 			for (final RDFNode node : _datatypes.getDefiniteElements())
-				if (_classes.getDefiniteElements().contains(node))
-					multiTypedResources.put(node, classDatatypePunning);
+				if (_classes.getDefiniteElements().contains(node)) multiTypedResources.put(node, classDatatypePunning);
 		}
 
 		return multiTypedResources;
@@ -434,7 +431,6 @@ public class OWLEntityDatabase
 	{
 		final Model model = ModelFactory.createDefaultModel();
 		for (final RDFNode s : subjects)
-			if (s instanceof Resource)
-				statements.add(model.createStatement((Resource) s, RDF.type, rdfType));
+			if (s instanceof Resource) statements.add(model.createStatement((Resource) s, RDF.type, rdfType));
 	}
 }

@@ -24,9 +24,9 @@ import org.apache.jena.rdf.model.Resource;
 public interface ManifestEngineProcessor
 {
 
-	public void manifestStarted(final String manifestURI);
+	void manifestStarted(final String manifestURI);
 
-	public void test(final Resource test);
+	void test(final Resource test);
 
-	public void manifestFinished(final String manifestURI);
+	void manifestFinished(final String manifestURI);
 }

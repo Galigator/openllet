@@ -32,10 +32,10 @@ import openllet.shared.tools.Log;
  */
 public class Openllet
 {
-	public static final Logger _logger = Log.getLogger(Openllet.class);
-	public static final OpenlletExceptionFormatter exceptionFormatter = new OpenlletExceptionFormatter();
+	public static final Logger							_logger				= Log.getLogger(Openllet.class);
+	public static final OpenlletExceptionFormatter		exceptionFormatter	= new OpenlletExceptionFormatter();
 
-	private static final Map<String, OpenlletCmdApp> COMMANDS = new TreeMap<>();
+	private static final Map<String, OpenlletCmdApp>	COMMANDS			= new TreeMap<>();
 	static
 	{
 		COMMANDS.put("classify", new OpenlletClassify());
@@ -79,15 +79,13 @@ public class Openllet
 	public static OpenlletCmdApp getCommand(final String name)
 	{
 		final OpenlletCmdApp cmd = COMMANDS.get(name.toLowerCase());
-		if (cmd == null)
-			throw new OpenlletCmdException("Unrecognized subcommand: " + name);
+		if (cmd == null) throw new OpenlletCmdException("Unrecognized subcommand: " + name);
 		return cmd;
 	}
 
 	private void run(final String[] args)
 	{
-		if (args.length == 0)
-			throw new OpenlletCmdException("Type 'openllet help' for usage.");
+		if (args.length == 0) throw new OpenlletCmdException("Type 'openllet help' for usage.");
 
 		final String arg = args[0];
 
@@ -101,16 +99,15 @@ public class Openllet
 				cmd.help();
 			}
 		}
+		else if ("--version".equals(arg) || "-V".equals(arg))
+			version();
 		else
-			if ("--version".equals(arg) || "-V".equals(arg))
-				version();
-			else
-			{
-				final OpenlletCmdApp cmd = getCommand(arg);
-				cmd.parseArgs(args);
-				cmd.run();
-				cmd.finish();
-			}
+		{
+			final OpenlletCmdApp cmd = getCommand(arg);
+			cmd.parseArgs(args);
+			cmd.run();
+			cmd.finish();
+		}
 	}
 
 	private void mainhelp()

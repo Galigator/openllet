@@ -10,13 +10,13 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * @author Evren Sirin
- * @param <T> kind of element
+ * @author     Evren Sirin
+ * @param  <T> kind of element
  */
 public class PairIterator<T> implements Iterator<T>
 {
-	private final Iterator<T> _first;
-	private final Iterator<T> _second;
+	private final Iterator<T>	_first;
+	private final Iterator<T>	_second;
 
 	public PairIterator(final Iterator<T> first, final Iterator<T> second)
 	{
@@ -33,8 +33,7 @@ public class PairIterator<T> implements Iterator<T>
 	@Override
 	public T next()
 	{
-		if (!hasNext())
-			throw new NoSuchElementException();
+		if (!hasNext()) throw new NoSuchElementException();
 
 		return _first.hasNext() ? _first.next() : _second.next();
 	}

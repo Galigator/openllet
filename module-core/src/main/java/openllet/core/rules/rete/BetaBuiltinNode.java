@@ -17,10 +17,10 @@ import openllet.core.utils.ATermUtils;
  */
 public class BetaBuiltinNode extends BetaNode
 {
-	private final ABox _abox;
-	private final String _name;
-	private final BuiltIn _builtin;
-	private final NodeProvider[] _args;
+	private final ABox				_abox;
+	private final String			_name;
+	private final BuiltIn			_builtin;
+	private final NodeProvider[]	_args;
 
 	public BetaBuiltinNode(final ABox abox, final String name, final BuiltIn builtin, final NodeProvider[] args)
 	{
@@ -42,8 +42,7 @@ public class BetaBuiltinNode extends BetaNode
 		final Literal[] literals = new Literal[_args.length];
 		for (int i = 0; i < literals.length; i++)
 			literals[i] = _args[i] == null ? null : (Literal) _args[i].getNode(null, token);
-		if (_builtin.apply(_abox, literals))
-			activateChildren(WME.createBuiltin(literals, DependencySet.INDEPENDENT), token);
+		if (_builtin.apply(_abox, literals)) activateChildren(WME.createBuiltin(literals, DependencySet.INDEPENDENT), token);
 	}
 
 	@Override

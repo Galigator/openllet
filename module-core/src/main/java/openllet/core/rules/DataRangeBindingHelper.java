@@ -34,11 +34,11 @@ import openllet.shared.tools.Log;
 public class DataRangeBindingHelper implements BindingHelper
 {
 
-	private static final Logger _logger = Log.getLogger(DataRangeBindingHelper.class);
+	private static final Logger		_logger	= Log.getLogger(DataRangeBindingHelper.class);
 
-	private final DatatypeReasoner _dtReasoner;
-	private final DataRangeAtom _atom;
-	private boolean _hasNext;
+	private final DatatypeReasoner	_dtReasoner;
+	private final DataRangeAtom		_atom;
+	private boolean					_hasNext;
 
 	public DataRangeBindingHelper(final ABox abox, final DataRangeAtom atom)
 	{
@@ -64,8 +64,7 @@ public class DataRangeBindingHelper implements BindingHelper
 	{
 		final Literal dValue = newBinding.get(_atom.getArgument());
 
-		if (dValue == null)
-			throw new InternalReasonerException("DataRangeBindingHelper cannot generate bindings for " + _atom);
+		if (dValue == null) throw new InternalReasonerException("DataRangeBindingHelper cannot generate bindings for " + _atom);
 
 		try
 		{

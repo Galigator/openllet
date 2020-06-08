@@ -75,15 +75,15 @@ import org.semanticweb.owlapi.util.OWLOntologyMerger;
  */
 public class Openllint extends OpenlletCmdApp
 {
-	private static final String CONFIGURATION_PROPERTY_NAME = "pellint.configuration";
-	private static final String DEFAULT_CONFIGURATION_FILE_NAME = "pellint.properties";
-	private static final IRI MERGED_ONTOLOGY_URI = IRI.create("tag:clarkparsia.com,2008:pellint:merged");
+	private static final String	CONFIGURATION_PROPERTY_NAME		= "pellint.configuration";
+	private static final String	DEFAULT_CONFIGURATION_FILE_NAME	= "pellint.properties";
+	private static final IRI	MERGED_ONTOLOGY_URI				= IRI.create("tag:clarkparsia.com,2008:pellint:merged");
 
-	private boolean _doRDF = true;
-	private boolean _doOWL = true;
-	private boolean _doRootOnly = false;
-	private String _inputOntologyPath;
-	private String _outputOntologyPath;
+	private boolean				_doRDF							= true;
+	private boolean				_doOWL							= true;
+	private boolean				_doRootOnly						= false;
+	private String				_inputOntologyPath;
+	private String				_outputOntologyPath;
 
 	public Openllint()
 	{
@@ -100,25 +100,22 @@ public class Openllint extends OpenlletCmdApp
 			setDoRDF(true);
 			setDoOWL(true);
 		}
+		else if (only.equalsIgnoreCase("RDF"))
+		{
+			setDoRDF(true);
+			setDoOWL(false);
+		}
+		else if (only.equalsIgnoreCase("OWL"))
+		{
+			setDoRDF(false);
+			setDoOWL(true);
+		}
 		else
-			if (only.equalsIgnoreCase("RDF"))
-			{
-				setDoRDF(true);
-				setDoOWL(false);
-			}
-			else
-				if (only.equalsIgnoreCase("OWL"))
-				{
-					setDoRDF(false);
-					setDoOWL(true);
-				}
-				else
-					throw new OpenlletCmdException("Invalid argument to lint --only: " + only);
+			throw new OpenlletCmdException("Invalid argument to lint --only: " + only);
 
 		setDoRootOnly(_options.getOption("root-only").getValueAsBoolean());
 
-		if (getInputFiles().length > 1)
-			throw new OpenlletCmdException("lint doesn't handle multiple input files");
+		if (getInputFiles().length > 1) throw new OpenlletCmdException("lint doesn't handle multiple input files");
 
 		setInputOntologyPath(getInputFiles()[0]);
 
@@ -173,7 +170,9 @@ public class Openllint extends OpenlletCmdApp
 		option = new OpenlletCmdOption("exclude-valid-punning");
 		option.setIsMandatory(false);
 		option.setDefaultValue(false);
-		option.setDescription("Excludes valid punnings to be reported by lint. OWL 2 allows resources\n" + "to have certain multiple types (known as punning), e.g. a resource can\n" + "be both a class and an _individual. However, certain punnings are not\n" + "allowed under any _condition, e.g. a resource cannot be both a datatype\n" + "property and an object property. All punnings are reported by default\n" + "but if this option is used punnings valid for OWL 2 will be excluded\n" + "from the report.");
+		option.setDescription("Excludes valid punnings to be reported by lint. OWL 2 allows resources\n" + "to have certain multiple types (known as punning), e.g. a resource can\n"
+				+ "be both a class and an _individual. However, certain punnings are not\n" + "allowed under any _condition, e.g. a resource cannot be both a datatype\n"
+				+ "property and an object property. All punnings are reported by default\n" + "but if this option is used punnings valid for OWL 2 will be excluded\n" + "from the report.");
 		option.setArg(NONE);
 		options.add(option);
 
@@ -213,41 +212,34 @@ public class Openllint extends OpenlletCmdApp
 			for (final AxiomLintPattern pattern : axiomLintPatterns)
 			{
 				final Lint lint = pattern.match(ontology, axiom);
-				if (lint != null)
-					ontologyLints.addLint(pattern, lint);
+				if (lint != null) ontologyLints.addLint(pattern, lint);
 			}
 		});
 
 		for (final OntologyLintPattern pattern : ontologyLintPatterns)
 		{
 			final List<Lint> lints = pattern.match(ontology);
-			if (!lints.isEmpty())
-				ontologyLints.addLints(pattern, lints);
+			if (!lints.isEmpty()) ontologyLints.addLints(pattern, lints);
 		}
 
 		ontologyLints.sort((lint0, lint1) ->
 		{
 			final Severity severity0 = lint0.getSeverity();
 			final Severity severity1 = lint1.getSeverity();
-			if (severity0 != null && severity1 != null)
-				return -severity0.compareTo(severity1);
+			if (severity0 != null && severity1 != null) return -severity0.compareTo(severity1);
 
 			final Set<OWLClass> classes0 = lint0.getParticipatingClasses();
 			final Set<OWLClass> classes1 = lint1.getParticipatingClasses();
-			if (classes0 == null || classes1 == null)
-				return 0;
-			if (classes0.size() != 1 || classes1.size() != 1)
-				return 0;
+			if (classes0 == null || classes1 == null) return 0;
+			if (classes0.size() != 1 || classes1.size() != 1) return 0;
 
 			final IRI uri0 = classes0.iterator().next().getIRI();
 			final IRI uri1 = classes1.iterator().next().getIRI();
-			if (uri0 == null || uri1 == null)
-				return 0;
+			if (uri0 == null || uri1 == null) return 0;
 
 			final String fragment0 = XMLUtils.getNCNameSuffix(uri0);
 			final String fragment1 = XMLUtils.getNCNameSuffix(uri1);
-			if (fragment0 == null || fragment1 == null)
-				return 0;
+			if (fragment0 == null || fragment1 == null) return 0;
 
 			return fragment0.compareTo(fragment1);
 		});
@@ -260,14 +252,11 @@ public class Openllint extends OpenlletCmdApp
 	{
 		try
 		{
-			if (_inputOntologyPath == null)
-				throw new IllegalPellintArgumentException("Input ontology is not specified");
+			if (_inputOntologyPath == null) throw new IllegalPellintArgumentException("Input ontology is not specified");
 
-			if (_doRDF)
-				runLintForRDFXML();
+			if (_doRDF) runLintForRDFXML();
 
-			if (_doOWL)
-				runLintForOWL();
+			if (_doOWL) runLintForOWL();
 		}
 		catch (final Exception e)
 		{
@@ -376,8 +365,7 @@ public class Openllint extends OpenlletCmdApp
 		final OWL2DLProfile owl2Profile = new OWL2DLProfile();
 		final OWLProfileReport profileReport = owl2Profile.checkOntology(ontology);
 
-		if (profileReport.isInProfile())
-			return "No OWL 2 DL violations found for ontology " + ontology.getOntologyID().toString();
+		if (profileReport.isInProfile()) return "No OWL 2 DL violations found for ontology " + ontology.getOntologyID().toString();
 
 		final StringBuffer result = new StringBuffer();
 		result.append("\n=========================================================\n");
@@ -394,10 +382,9 @@ public class Openllint extends OpenlletCmdApp
 
 	private void logLoadedPatterns(final List<AxiomLintPattern> axiomLintPatterns, final List<OntologyLintPattern> ontologyLintPatterns)
 	{
-		if (!getLogger().isLoggable(Level.FINE))
-			return;
+		if (!getLogger().isLoggable(Level.FINE)) return;
 
-		final List<LintPattern> allPatterns = CollectionUtil.<LintPattern> copy(axiomLintPatterns);
+		final List<LintPattern> allPatterns = CollectionUtil.<LintPattern>copy(axiomLintPatterns);
 		allPatterns.addAll(ontologyLintPatterns);
 		Collections.sort(allPatterns, (p0, p1) -> p0.getName().compareTo(p1.getName()));
 
@@ -436,8 +423,7 @@ public class Openllint extends OpenlletCmdApp
 		{
 			configURL = Openllint.class.getClassLoader().getResource(DEFAULT_CONFIGURATION_FILE_NAME);
 
-			if (configURL == null)
-				_logger.severe("Cannot find Openllint configuration file " + DEFAULT_CONFIGURATION_FILE_NAME);
+			if (configURL == null) _logger.severe("Cannot find Openllint configuration file " + DEFAULT_CONFIGURATION_FILE_NAME);
 		}
 		else
 		{
@@ -454,23 +440,21 @@ public class Openllint extends OpenlletCmdApp
 				configURL = Openllint.class.getClassLoader().getResource(configFile);
 			}
 
-			if (configURL == null)
-				_logger.severe("Cannot find Openllint configuration file " + configFile);
+			if (configURL == null) _logger.severe("Cannot find Openllint configuration file " + configFile);
 		}
 
-		if (configURL != null)
-			try
-			{
-				properties.load(configURL.openStream());
-			}
-			catch (final FileNotFoundException e)
-			{
-				Log.error(_logger, "Openllint configuration file cannot be found", e);
-			}
-			catch (final IOException e)
-			{
-				Log.error(_logger, "I/O error while reading Openllet configuration file", e);
-			}
+		if (configURL != null) try
+		{
+			properties.load(configURL.openStream());
+		}
+		catch (final FileNotFoundException e)
+		{
+			Log.error(_logger, "Openllint configuration file cannot be found", e);
+		}
+		catch (final IOException e)
+		{
+			Log.error(_logger, "I/O error while reading Openllet configuration file", e);
+		}
 
 		return properties;
 	}

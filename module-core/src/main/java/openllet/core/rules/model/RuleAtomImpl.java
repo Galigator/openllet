@@ -19,8 +19,8 @@ import java.util.List;
  * Company: Clark & Parsia, LLC. <http://www.clarkparsia.com>
  * </p>
  *
- * @author Ron Alford
- * @param <P> is a predicate
+ * @author     Ron Alford
+ * @param  <P> is a predicate
  */
 
 public abstract class RuleAtomImpl<P> implements RuleAtom

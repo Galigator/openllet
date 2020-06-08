@@ -33,9 +33,9 @@ import openllet.query.sparqldl.model.Query.VarType;
 public class CoreNewImpl implements Core
 {
 
-	private final QueryAtom _atom;
+	private final QueryAtom	_atom;
 
-	private final Query _query;
+	private final Query		_query;
 
 	public CoreNewImpl(final Collection<QueryAtom> atoms, final Collection<ATermAppl> uv, final KnowledgeBase kb)
 	{
@@ -54,16 +54,12 @@ public class CoreNewImpl implements Core
 					final ATermAppl a1 = atom.getArguments().get(1);
 					addI(atom.getArguments().get(0), signature, uv);
 					addI(atom.getArguments().get(2), signature, uv);
-					if (ATermUtils.isVar(a1))
-						if (!uv.contains(a1))
-							_query.addDistVar(a1, VarType.PROPERTY);
+					if (ATermUtils.isVar(a1)) if (!uv.contains(a1)) _query.addDistVar(a1, VarType.PROPERTY);
 					break;
 				case Type:
 					final ATermAppl aa1 = atom.getArguments().get(1);
 					addI(atom.getArguments().get(0), signature, uv);
-					if (ATermUtils.isVar(aa1))
-						if (!uv.contains(aa1))
-							_query.addDistVar(aa1, VarType.CLASS);
+					if (ATermUtils.isVar(aa1)) if (!uv.contains(aa1)) _query.addDistVar(aa1, VarType.CLASS);
 					break;
 				default:
 					throw new IllegalArgumentException("Atom type " + atom.getPredicate() + " is not supported in a core.");
@@ -111,12 +107,9 @@ public class CoreNewImpl implements Core
 	@Override
 	public boolean equals(final Object obj)
 	{
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (getClass() != obj.getClass()) return false;
 		final CoreNewImpl other = (CoreNewImpl) obj;
 
 		return _atom.equals(other._atom) && _query.equals(other._query);

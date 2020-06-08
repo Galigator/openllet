@@ -1,7 +1,7 @@
 package openllet.atom;
 
 /**
- * {@link AgentException} exceptions are thrown when agent related errors occur.
+ * exceptions are thrown when agent related errors occur.
  */
 public class OpenError extends RuntimeException
 {
@@ -17,7 +17,7 @@ public class OpenError extends RuntimeException
 
 	/**
 	 * Instantiates a new exception using the given message.
-	 * 
+	 *
 	 * @param message Details about the exception.
 	 */
 	public OpenError(final String message)
@@ -27,7 +27,7 @@ public class OpenError extends RuntimeException
 
 	/**
 	 * Instantiates a new exception using the given cause.
-	 * 
+	 *
 	 * @param cause Cause of the exception.
 	 */
 	public OpenError(final Throwable cause)
@@ -37,9 +37,9 @@ public class OpenError extends RuntimeException
 
 	/**
 	 * Instantiates a new exception using the given message and cause.
-	 * 
+	 *
 	 * @param message Details about the exception.
-	 * @param cause Cause of the exception.
+	 * @param cause   Cause of the exception.
 	 */
 	public OpenError(final String message, final Throwable cause)
 	{

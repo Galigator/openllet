@@ -30,5 +30,5 @@ public interface LintFormat
 	//Could add a new interface: StringBuilder format(StringBuilder builder, Lint lint)
 	//if this turns out to be too inefficient - i.e. creating lots of StringBuilder's
 	//all the time.
-	public String format(Lint lint);
+	String format(Lint lint);
 }

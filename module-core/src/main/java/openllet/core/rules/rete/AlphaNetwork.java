@@ -46,10 +46,10 @@ import openllet.core.rules.model.SameIndividualAtom;
 public class AlphaNetwork implements Iterable<AlphaNode>
 {
 
-	private final Map<Object, List<AlphaNode>> _map = new ConcurrentHashMap<>();
-	private final List<AlphaNode> _alphaNodes = new ArrayList<>();
-	private final AlphaNodeCreator _creator = new AlphaNodeCreator();
-	private final ABox _abox;
+	private final Map<Object, List<AlphaNode>>	_map		= new ConcurrentHashMap<>();
+	private final List<AlphaNode>				_alphaNodes	= new ArrayList<>();
+	private final AlphaNodeCreator				_creator	= new AlphaNodeCreator();
+	private final ABox							_abox;
 
 	public AlphaNetwork(final ABox abox)
 	{
@@ -73,20 +73,17 @@ public class AlphaNetwork implements Iterable<AlphaNode>
 		}
 		else
 			for (final AlphaNode node : nodes)
-				if (node.matches(atom))
-					return node;
+				if (node.matches(atom)) return node;
 
 		final AlphaNode node = _creator.create(atom);
-		if (node != null)
-			if (node instanceof AlphaEdgeNode)
-			{
-				final Role role = ((AlphaEdgeNode) node).getRole();
-				addAlphaNodeForSubs(role, node);
-				if (role.isObjectRole())
-					addAlphaNodeForSubs(role.getInverse(), node);
-			}
-			else
-				nodes.add(node);
+		if (node != null) if (node instanceof AlphaEdgeNode)
+		{
+			final Role role = ((AlphaEdgeNode) node).getRole();
+			addAlphaNodeForSubs(role, node);
+			if (role.isObjectRole()) addAlphaNodeForSubs(role.getInverse(), node);
+		}
+		else
+			nodes.add(node);
 
 		_alphaNodes.add(node);
 
@@ -96,8 +93,7 @@ public class AlphaNetwork implements Iterable<AlphaNode>
 	private void addAlphaNodeForSubs(final Role r, final AlphaNode node)
 	{
 		for (final Role sub : r.getSubRoles())
-			if (!sub.isBottom())
-				addAlphaNode(sub, node);
+			if (!sub.isBottom()) addAlphaNode(sub, node);
 	}
 
 	private void addAlphaNode(final Role r, final AlphaNode node)
@@ -123,8 +119,7 @@ public class AlphaNetwork implements Iterable<AlphaNode>
 	{
 		// only named non-pruned individuals
 		final boolean changed = false;
-		if (!ind.isRootNominal() || ind.isPruned())
-			return false;
+		if (!ind.isRootNominal() || ind.isPruned()) return false;
 
 		for (final ATermAppl type : new ArrayList<>(ind.getTypes(Node.ATOM)))
 			activateType(ind, type, ind.getDepends(type));
@@ -132,8 +127,7 @@ public class AlphaNetwork implements Iterable<AlphaNode>
 		activateDifferents(ind);
 
 		for (final Edge edge : new ArrayList<>(ind.getOutEdges()))
-			if (edge.getTo().isRootNominal())
-				activateEdge(edge);
+			if (edge.getTo().isRootNominal()) activateEdge(edge);
 
 		return changed;
 	}
@@ -141,40 +135,35 @@ public class AlphaNetwork implements Iterable<AlphaNode>
 	public void activateType(final Individual ind, final ATermAppl type, final DependencySet ds)
 	{
 		final List<AlphaNode> alphas = _map.get(type);
-		if (alphas != null)
-			for (final AlphaNode alpha : alphas)
-				((AlphaTypeNode) alpha).activate(ind, type, ds);
+		if (alphas != null) for (final AlphaNode alpha : alphas)
+			((AlphaTypeNode) alpha).activate(ind, type, ds);
 	}
 
 	public void activateEdge(final Edge edge)
 	{
 		Role r = edge.getRole();
-		if (r.isAnon())
-			r = r.getInverse();
+		if (r.isAnon()) r = r.getInverse();
 		final List<AlphaNode> alphas = _map.get(r.getName());
-		if (alphas != null)
-			for (final AlphaNode alpha : alphas)
-				((AlphaEdgeNode) alpha).activate(edge);
+		if (alphas != null) for (final AlphaNode alpha : alphas)
+			((AlphaEdgeNode) alpha).activate(edge);
 	}
 
 	public void activateDifferents(final Individual ind)
 	{
 		final List<AlphaNode> alphas = _map.get("DIFFERENT");
-		if (alphas != null)
-			for (final Node n : ind.getDifferents())
-			{
-				final Individual diff = (Individual) n;
-				for (final AlphaNode alpha : alphas)
-					((AlphaDiffFromNode) alpha).activate(ind, diff, ind.getDifferenceDependency(diff));
-			}
+		if (alphas != null) for (final Node n : ind.getDifferents())
+		{
+			final Individual diff = (Individual) n;
+			for (final AlphaNode alpha : alphas)
+				((AlphaDiffFromNode) alpha).activate(ind, diff, ind.getDifferenceDependency(diff));
+		}
 	}
 
 	public void activateDifferent(final Individual ind, final Individual diff, final DependencySet ds)
 	{
 		final List<AlphaNode> alphas = _map.get("DIFFERENT");
-		if (alphas != null)
-			for (final AlphaNode alpha : alphas)
-				((AlphaDiffFromNode) alpha).activate(ind, diff, ds);
+		if (alphas != null) for (final AlphaNode alpha : alphas)
+			((AlphaDiffFromNode) alpha).activate(ind, diff, ds);
 	}
 
 	public void setDoExplanation(final boolean doExplanation)
@@ -208,8 +197,7 @@ public class AlphaNetwork implements Iterable<AlphaNode>
 		{
 			_result = null;
 			atom.accept(this);
-			if (_result == null)
-				throw new UnsupportedOperationException("Not supported " + atom);
+			if (_result == null) throw new UnsupportedOperationException("Not supported " + atom);
 			return _result;
 		}
 
@@ -226,16 +214,15 @@ public class AlphaNetwork implements Iterable<AlphaNode>
 				else
 					_result = new AlphaEdgeNode(_abox, role);
 			}
-			else
-				if (s instanceof AtomConstant)
-				{
-					if (o instanceof AtomConstant)
-						_result = new AlphaNoVarEdgeNode(_abox, role, ((AtomConstant) s).getValue(), ((AtomConstant) o).getValue());
-					else
-						_result = new AlphaFixedSubjectEdgeNode(_abox, role, ((AtomConstant) s).getValue());
-				}
+			else if (s instanceof AtomConstant)
+			{
+				if (o instanceof AtomConstant)
+					_result = new AlphaNoVarEdgeNode(_abox, role, ((AtomConstant) s).getValue(), ((AtomConstant) o).getValue());
 				else
-					_result = new AlphaFixedObjectEdgeNode(_abox, role, ((AtomConstant) o).getValue());
+					_result = new AlphaFixedSubjectEdgeNode(_abox, role, ((AtomConstant) s).getValue());
+			}
+			else
+				_result = new AlphaFixedObjectEdgeNode(_abox, role, ((AtomConstant) o).getValue());
 		}
 
 		@Override

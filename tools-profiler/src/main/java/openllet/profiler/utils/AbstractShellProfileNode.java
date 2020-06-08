@@ -8,7 +8,7 @@ package openllet.profiler.utils;
  */
 abstract class AbstractShellProfileNode extends AbstractProfileNode
 {
-	// public: ................................................................    
+	// public: ................................................................
 
 	@Override
 	public final Object object()
@@ -37,7 +37,7 @@ abstract class AbstractShellProfileNode extends AbstractProfileNode
 	@Override
 	public final boolean traverse(final INodeFilter filter, final INodeVisitor visitor)
 	{
-		if ((visitor != null) && ((filter == null) || filter.accept(this)))
+		if (visitor != null && (filter == null || filter.accept(this)))
 		{
 			visitor.previsit(this);
 			visitor.postvisit(this);
@@ -60,4 +60,4 @@ abstract class AbstractShellProfileNode extends AbstractProfileNode
 	// private: ...............................................................
 
 } // _end of class
-// ----------------------------------------------------------------------------
+	// ----------------------------------------------------------------------------

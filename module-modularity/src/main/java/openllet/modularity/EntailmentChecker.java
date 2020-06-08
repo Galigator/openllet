@@ -69,10 +69,10 @@ import org.semanticweb.owlapi.reasoner.UnsupportedEntailmentTypeException;
  */
 public class EntailmentChecker implements OWLAxiomVisitor
 {
-	public static Logger _logger = Log.getLogger(EntailmentChecker.class);
+	public static Logger				_logger	= Log.getLogger(EntailmentChecker.class);
 
-	private final IncrementalClassifier _reasoner;
-	private volatile Boolean _isEntailed;
+	private final IncrementalClassifier	_reasoner;
+	private volatile Boolean			_isEntailed;
 
 	public EntailmentChecker(final IncrementalClassifier reasoner)
 	{
@@ -82,8 +82,7 @@ public class EntailmentChecker implements OWLAxiomVisitor
 	public boolean isEntailed(final Set<? extends OWLAxiom> axioms)
 	{
 		for (final OWLAxiom axiom : axioms)
-			if (!isEntailed(axiom))
-				return false;
+			if (!isEntailed(axiom)) return false;
 
 		return true;
 	}
@@ -94,8 +93,7 @@ public class EntailmentChecker implements OWLAxiomVisitor
 
 		axiom.accept(this);
 
-		if (_isEntailed == null)
-			throw new UnsupportedEntailmentTypeException(axiom);
+		if (_isEntailed == null) throw new UnsupportedEntailmentTypeException(axiom);
 
 		return _isEntailed;
 	}
@@ -192,16 +190,15 @@ public class EntailmentChecker implements OWLAxiomVisitor
 	 * Performs checks for the given array whether the classes can be pair-wise disjoint. (In other words, it tries to find whether there is information that
 	 * proves that there is a pair that cannot be disjoint.)
 	 *
-	 * @param classes an array of classes to be checked
-	 * @return true if the classes may be disjoint, false if information was found that prevents the disjointness
+	 * @param  classes an array of classes to be checked
+	 * @return         true if the classes may be disjoint, false if information was found that prevents the disjointness
 	 */
 
 	private boolean possiblyDisjoint(final OWLClass[] classes)
 	{
 		for (int i = 0; i < classes.length - 1; i++)
 			for (int j = i + 1; j < classes.length; j++)
-				if (!possiblyDisjoint(classes[i], classes[j]))
-					return false;
+				if (!possiblyDisjoint(classes[i], classes[j])) return false;
 
 		return true;
 	}
@@ -210,29 +207,27 @@ public class EntailmentChecker implements OWLAxiomVisitor
 	 * Tests whether two classes can be possibly disjoint; i.e., there are no disqualifying conditions for them to be disjoint. The disqualifying conditions
 	 * are: the classes are listed as equivalent to each other, or one class is listed as a superclass of the other.
 	 *
-	 * @param first the first class in the pair
-	 * @param next the next class in the pair
-	 * @return if the classes may be disjoint, false if the classes cannot be disjoint
+	 * @param  first the first class in the pair
+	 * @param  next  the next class in the pair
+	 * @return       if the classes may be disjoint, false if the classes cannot be disjoint
 	 */
 	private boolean possiblyDisjoint(final OWLClass first, final OWLClass next)
 	{
 		final Taxonomy<OWLClass> taxonomy = _reasoner.getTaxonomy();
 
-		if (taxonomy.getAllEquivalents(first).contains(next))
-			return false;
+		if (taxonomy.getAllEquivalents(first).contains(next)) return false;
 
 		// getting supers should be typically faster than getting subs
-		if (taxonomy.getFlattenedSupers(first, false).contains(next))
-			return false;
+		if (taxonomy.getFlattenedSupers(first, false).contains(next)) return false;
 
-		return !(taxonomy.getFlattenedSupers(next, false).contains(first));
+		return !taxonomy.getFlattenedSupers(next, false).contains(first);
 	}
 
 	/**
 	 * Checks whether the collection contains any anonymous classes (i.e., elements that cannot be converted to OWLClass).
 	 *
-	 * @param classExpressions the list of class expressions to be checked
-	 * @return true if the collection contains at least one anonymous class
+	 * @param  classExpressions the list of class expressions to be checked
+	 * @return                  true if the collection contains at least one anonymous class
 	 */
 	private static boolean containsAnonymousClasses(final Stream<OWLClassExpression> classExpressions)
 	{
@@ -431,16 +426,15 @@ public class EntailmentChecker implements OWLAxiomVisitor
 	/**
 	 * Checks whether an element is contained in the sets of set
 	 *
-	 * @param <T>
-	 * @param setOfSets the set of sets
-	 * @param element the element
-	 * @return true if the element was found in the set of sets
+	 * @param  <T>
+	 * @param  setOfSets the set of sets
+	 * @param  element   the element
+	 * @return           true if the element was found in the set of sets
 	 */
 	private static <T> boolean contains(final Set<Set<T>> setOfSets, final T element)
 	{
 		for (final Set<T> set : setOfSets)
-			if (set.contains(element))
-				return true;
+			if (set.contains(element)) return true;
 
 		return false;
 	}
@@ -448,9 +442,9 @@ public class EntailmentChecker implements OWLAxiomVisitor
 	/**
 	 * Flattens a set of sets to a single set.
 	 *
-	 * @param <T>
-	 * @param setOfSets the set to be flattened
-	 * @return the flattened set
+	 * @param  <T>
+	 * @param  setOfSets the set to be flattened
+	 * @return           the flattened set
 	 */
 	private static <T> Set<T> flatten(final Set<Set<T>> setOfSets)
 	{

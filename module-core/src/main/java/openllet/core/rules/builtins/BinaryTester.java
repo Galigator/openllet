@@ -29,8 +29,7 @@ public abstract class BinaryTester implements Tester
 	@Override
 	public boolean test(final Literal[] args)
 	{
-		if (args.length == 2)
-			return test(args[0], args[1]);
+		if (args.length == 2) return test(args[0], args[1]);
 		return false;
 	}
 

@@ -69,9 +69,9 @@ public class NoSuchBuiltIn implements BuiltIn
 
 	}
 
-	private final BindingHelper empty = new EmptyHelper();
+	private final BindingHelper	empty		= new EmptyHelper();
 
-	public static final BuiltIn instance = new NoSuchBuiltIn();
+	public static final BuiltIn	instance	= new NoSuchBuiltIn();
 
 	private NoSuchBuiltIn()
 	{

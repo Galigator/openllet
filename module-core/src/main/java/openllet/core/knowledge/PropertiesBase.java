@@ -37,7 +37,7 @@ import openllet.shared.tools.Logging;
  */
 public interface PropertiesBase extends MessageBase, Logging, Base
 {
-	public Set<ATermAppl> currentIndividuals();
+	Set<ATermAppl> currentIndividuals();
 
 	default void addSubProperty(final ATerm sub, final ATermAppl sup)
 	{
@@ -57,8 +57,7 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 
 	default void addDisjointProperties(final ATermList properties)
 	{
-		if (null == properties)
-			return;
+		if (null == properties) return;
 
 		final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(ATermUtils.makeDisjointProperties(properties)) : DependencySet.INDEPENDENT;
 
@@ -91,8 +90,7 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 
 	default void addInverseProperty(final ATermAppl p1, final ATermAppl p2)
 	{
-		if (null == p1 || null == p2)
-			return;
+		if (null == p1 || null == p2) return;
 
 		if (OpenlletOptions.IGNORE_INVERSES)
 		{
@@ -111,8 +109,7 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 
 	default void addTransitiveProperty(final ATermAppl p)
 	{
-		if (null == p)
-			return;
+		if (null == p) return;
 
 		getChanges().add(ChangeType.RBOX_ADD);
 
@@ -142,8 +139,8 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 	}
 
 	/**
-	 * @param p
-	 * @deprecated Use {@link #addAsymmetricProperty(ATermAppl)}
+	 * @param      p
+	 * @deprecated   Use {@link #addAsymmetricProperty(ATermAppl)}
 	 */
 	@Deprecated
 	default void addAntisymmetricProperty(final ATermAppl p)
@@ -153,8 +150,7 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 
 	default void addAsymmetricProperty(final ATermAppl p)
 	{
-		if (null == p)
-			return;
+		if (null == p) return;
 
 		getChanges().add(ChangeType.RBOX_ADD);
 		final Role r = getRBox().getDefinedRole(p);
@@ -167,8 +163,7 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 
 	default void addReflexiveProperty(final ATermAppl p)
 	{
-		if (null == p)
-			return;
+		if (null == p) return;
 
 		getChanges().add(ChangeType.RBOX_ADD);
 		final Role r = getRBox().getDefinedRole(p);
@@ -203,8 +198,7 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 
 	default void addInverseFunctionalProperty(final ATerm p)
 	{
-		if (null == p)
-			return;
+		if (null == p) return;
 
 		if (OpenlletOptions.IGNORE_INVERSES)
 		{
@@ -223,8 +217,7 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 
 	default Set<Set<ATermAppl>> getAllSuperProperties(final ATermAppl prop)
 	{
-		if (null == prop)
-			return Collections.emptySet();
+		if (null == prop) return Collections.emptySet();
 
 		if (!isProperty(prop))
 		{
@@ -242,10 +235,10 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 	 * Return the super properties of p. Depending on the second parameter the result will include either all super properties or only the direct super
 	 * properties.
 	 *
-	 * @param prop
-	 * @return A set of sets, where each set in the collection represents a set of equivalent properties. The elements of the inner class are Role objects.
+	 * @param  prop
+	 * @return      A set of sets, where each set in the collection represents a set of equivalent properties. The elements of the inner class are Role objects.
 	 */
-	public default Set<Set<ATermAppl>> getSuperProperties(final ATermAppl prop)
+	default Set<Set<ATermAppl>> getSuperProperties(final ATermAppl prop)
 	{
 		return getSuperProperties(prop, false);
 	}
@@ -254,14 +247,13 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 	 * Return the super properties of p. Depending on the second parameter the result will include either all super properties or only the direct super
 	 * properties.
 	 *
-	 * @param prop
-	 * @param direct If true return only the direct super properties, otherwise return all the super properties
-	 * @return A set of sets, where each set in the collection represents a set of equivalent properties. The elements of the inner class are Role objects.
+	 * @param  prop
+	 * @param  direct If true return only the direct super properties, otherwise return all the super properties
+	 * @return        A set of sets, where each set in the collection represents a set of equivalent properties. The elements of the inner class are Role objects.
 	 */
 	default Set<Set<ATermAppl>> getSuperProperties(final ATermAppl prop, final boolean direct)
 	{
-		if (null == prop)
-			return Collections.emptySet();
+		if (null == prop) return Collections.emptySet();
 
 		if (!isProperty(prop))
 		{
@@ -271,21 +263,18 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 
 		final Set<Set<ATermAppl>> supers = new HashSet<>();
 		final Taxonomy<ATermAppl> taxonomy = getRoleTaxonomy(prop);
-		if (taxonomy != null)
-			for (final Set<ATermAppl> s : taxonomy.getSupers(prop, direct))
-			{
-				final Set<ATermAppl> supEqSet = ATermUtils.primitiveOrBottom(s);
-				if (!supEqSet.isEmpty())
-					supers.add(supEqSet);
-			}
+		if (taxonomy != null) for (final Set<ATermAppl> s : taxonomy.getSupers(prop, direct))
+		{
+			final Set<ATermAppl> supEqSet = ATermUtils.primitiveOrBottom(s);
+			if (!supEqSet.isEmpty()) supers.add(supEqSet);
+		}
 
 		return supers;
 	}
 
 	default Set<Set<ATermAppl>> getAllSubProperties(final ATermAppl prop)
 	{
-		if (null == prop)
-			return Collections.emptySet();
+		if (null == prop) return Collections.emptySet();
 
 		if (!isProperty(prop))
 		{
@@ -305,12 +294,9 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 
 		if (isObjectProperty(r))
 			return getRBox().getObjectTaxonomy();
-		else
-			if (isDatatypeProperty(r))
-				return getRBox().getDataTaxonomy();
-			else
-				if (isAnnotationProperty(r))
-					return getRBox().getAnnotationTaxonomy();
+		else if (isDatatypeProperty(r))
+			return getRBox().getDataTaxonomy();
+		else if (isAnnotationProperty(r)) return getRBox().getAnnotationTaxonomy();
 
 		return null;
 	}
@@ -318,14 +304,13 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 	/**
 	 * Return the sub properties of p. Depending on the second parameter the result will include either all subproperties or only the direct subproperties.
 	 *
-	 * @param prop
-	 * @param direct If true return only the direct subproperties, otherwise return all the subproperties
-	 * @return A set of sets, where each set in the collection represents a set of equivalent properties. The elements of the inner class are ATermAppl objects.
+	 * @param  prop
+	 * @param  direct If true return only the direct subproperties, otherwise return all the subproperties
+	 * @return        A set of sets, where each set in the collection represents a set of equivalent properties. The elements of the inner class are ATermAppl objects.
 	 */
 	default Set<Set<ATermAppl>> getSubProperties(final ATermAppl prop, final boolean direct)
 	{
-		if (null == prop)
-			return Collections.emptySet();
+		if (null == prop) return Collections.emptySet();
 
 		if (!isProperty(prop))
 		{
@@ -339,8 +324,7 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 			for (final Set<ATermAppl> s : taxonomy.getSubs(prop, direct))
 			{
 				final Set<ATermAppl> subEqSet = ATermUtils.primitiveOrBottom(s);
-				if (!subEqSet.isEmpty())
-					subs.add(subEqSet);
+				if (!subEqSet.isEmpty()) subs.add(subEqSet);
 			}
 		else
 			getLogger().info(() -> "taxonomy is null for " + prop);
@@ -351,10 +335,10 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 	/**
 	 * Return all the sub properties of p.
 	 *
-	 * @param prop
-	 * @return A set of sets, where each set in the collection represents a set of equivalent properties. The elements of the inner class are ATermAppl objects.
+	 * @param  prop
+	 * @return      A set of sets, where each set in the collection represents a set of equivalent properties. The elements of the inner class are ATermAppl objects.
 	 */
-	public default Set<Set<ATermAppl>> getSubProperties(final ATermAppl prop)
+	default Set<Set<ATermAppl>> getSubProperties(final ATermAppl prop)
 	{
 		return getSubProperties(prop, false);
 	}
@@ -369,13 +353,12 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 	/**
 	 * Return all the properties that are equivalent to p.
 	 *
-	 * @param prop
-	 * @return A set of ATermAppl objects.
+	 * @param  prop
+	 * @return      A set of ATermAppl objects.
 	 */
 	default Set<ATermAppl> getEquivalentProperties(final ATermAppl prop)
 	{
-		if (null == prop)
-			return Collections.emptySet();
+		if (null == prop) return Collections.emptySet();
 
 		if (!isProperty(prop))
 		{
@@ -384,19 +367,16 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 		}
 
 		final Taxonomy<ATermAppl> taxonomy = getRoleTaxonomy(prop);
-		if (null == taxonomy)
-			return Collections.<ATermAppl> emptySet();
+		if (null == taxonomy) return Collections.<ATermAppl>emptySet();
 
-		if (OpenlletOptions.RETURN_NON_PRIMITIVE_EQUIVALENT_PROPERTIES && !ATermUtils.isBuiltinProperty(prop))
-			return taxonomy.getEquivalents(prop);
+		if (OpenlletOptions.RETURN_NON_PRIMITIVE_EQUIVALENT_PROPERTIES && !ATermUtils.isBuiltinProperty(prop)) return taxonomy.getEquivalents(prop);
 
 		return ATermUtils.primitiveOrBottom(taxonomy.getEquivalents(prop));
 	}
 
 	default Set<ATermAppl> getAllEquivalentProperties(final ATermAppl prop)
 	{
-		if (null == prop)
-			return Collections.emptySet();
+		if (null == prop) return Collections.emptySet();
 
 		if (!isProperty(prop))
 		{
@@ -405,23 +385,20 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 		}
 
 		final Taxonomy<ATermAppl> taxonomy = getRoleTaxonomy(prop);
-		if (null == taxonomy)
-			return Collections.<ATermAppl> emptySet();
+		if (null == taxonomy) return Collections.<ATermAppl>emptySet();
 
-		if (OpenlletOptions.RETURN_NON_PRIMITIVE_EQUIVALENT_PROPERTIES && !ATermUtils.isBuiltinProperty(prop))
-			return taxonomy.getAllEquivalents(prop);
+		if (OpenlletOptions.RETURN_NON_PRIMITIVE_EQUIVALENT_PROPERTIES && !ATermUtils.isBuiltinProperty(prop)) return taxonomy.getAllEquivalents(prop);
 
 		return ATermUtils.primitiveOrBottom(taxonomy.getAllEquivalents(prop));
 	}
 
 	/**
-	 * @param name
-	 * @return the named inverse property and all its equivalent properties.
+	 * @param  name
+	 * @return      the named inverse property and all its equivalent properties.
 	 */
 	default Set<ATermAppl> getInverses(final ATerm name)
 	{
-		if (null == name)
-			return Collections.emptySet();
+		if (null == name) return Collections.emptySet();
 
 		final ATermAppl invR = getInverse(name);
 		if (invR != null)
@@ -437,13 +414,12 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 	 * Returns the inverse of given property. This could possibly be an internal property created by the reasoner rather than a named property. In case the
 	 * given property has more than one inverse any one of them can be returned.
 	 *
-	 * @param name Property whose inverse being sought
-	 * @return Inverse property or null if given property is not defined or it is not an object property
+	 * @param  name Property whose inverse being sought
+	 * @return      Inverse property or null if given property is not defined or it is not an object property
 	 */
 	default ATermAppl getInverse(final ATerm name)
 	{
-		if (null == name)
-			return null;
+		if (null == name) return null;
 
 		final Role prop = getRBox().getRole(name);
 		if (prop == null)
@@ -459,8 +435,7 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 
 	default boolean isSubPropertyOf(final ATermAppl sub, final ATermAppl sup)
 	{
-		if (null == sub || null == sup)
-			return false;
+		if (null == sub || null == sup) return false;
 
 		final Role roleSub = getRBox().getRole(sub);
 		final Role roleSup = getRBox().getRole(sup);
@@ -479,13 +454,11 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 
 		if (roleSub.isSubRoleOf(roleSup))
 		{
-			if (doExplanation())
-				getABox().setExplanation(roleSub.getExplainSuper(sup));
+			if (doExplanation()) getABox().setExplanation(roleSub.getExplainSuper(sup));
 			return true;
 		}
 
-		if (roleSub.getType() != roleSup.getType())
-			return false;
+		if (roleSub.getType() != roleSup.getType()) return false;
 
 		ensureConsistency();
 
@@ -496,25 +469,22 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 			final ATermAppl notC = ATermUtils.makeNot(c);
 			test = ATermUtils.makeAnd(ATermUtils.makeSomeValues(sub, c), ATermUtils.makeAllValues(sup, notC));
 		}
+		else if (roleSub.isDatatypeRole())
+		{
+			final ATermAppl anon = ATermUtils.makeLiteral(ATermUtils.makeAnonNominal(Integer.MAX_VALUE));
+			test = ATermUtils.makeAnd(ATermUtils.makeHasValue(sub, anon), ATermUtils.makeAllValues(sup, ATermUtils.makeNot(ATermUtils.makeValue(anon))));
+		}
+		else if (roleSub.isAnnotationRole())
+			return false; //temporary statement until we incorporate annotation properties to the taxonomy ([t:412])
 		else
-			if (roleSub.isDatatypeRole())
-			{
-				final ATermAppl anon = ATermUtils.makeLiteral(ATermUtils.makeAnonNominal(Integer.MAX_VALUE));
-				test = ATermUtils.makeAnd(ATermUtils.makeHasValue(sub, anon), ATermUtils.makeAllValues(sup, ATermUtils.makeNot(ATermUtils.makeValue(anon))));
-			}
-			else
-				if (roleSub.isAnnotationRole())
-					return false; //temporary statement until we incorporate annotation properties to the taxonomy ([t:412])
-				else
-					throw new IllegalArgumentException();
+			throw new IllegalArgumentException();
 
 		return !getABox().isSatisfiable(test);
 	}
 
 	default boolean isEquivalentProperty(final ATermAppl p1, final ATermAppl p2)
 	{
-		if (null == p1 || null == p2)
-			return false;
+		if (null == p1 || null == p2) return false;
 
 		final Role role1 = getRBox().getRole(p1);
 		final Role role2 = getRBox().getRole(p2);
@@ -533,42 +503,40 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 
 		if (role1.isSubRoleOf(role2) && role2.isSubRoleOf(role1))
 		{
-			if (doExplanation())
-				getABox().setExplanation(role1.getExplainSuper(p2).union(role1.getExplainSub(p2), doExplanation()));
+			if (doExplanation()) getABox().setExplanation(role1.getExplainSuper(p2).union(role1.getExplainSub(p2), doExplanation()));
 			return true;
 		}
 
-		if (role1.isAnnotationRole() || role2.isAnnotationRole())
-			return false;
+		if (role1.isAnnotationRole() || role2.isAnnotationRole()) return false;
 
-		if (role1.getType() != role2.getType())
-			return false;
+		if (role1.getType() != role2.getType()) return false;
 
 		ensureConsistency();
 
 		ATermAppl test;
 		if (role1.isObjectRole())
 		{
-			final ATermAppl c = !role1.getRanges().isEmpty() ? role1.getRanges().iterator().next() : !role2.getRanges().isEmpty() ? role2.getRanges().iterator().next() : ATermUtils.makeTermAppl("_C_");
+			final ATermAppl c = !role1.getRanges().isEmpty() ? role1.getRanges().iterator().next()
+					: !role2.getRanges().isEmpty() ? role2.getRanges().iterator().next() : ATermUtils.makeTermAppl("_C_");
 			final ATermAppl notC = ATermUtils.makeNot(c);
-			test = ATermUtils.makeOr(ATermUtils.makeAnd(ATermUtils.makeSomeValues(p1, c), ATermUtils.makeAllValues(p2, notC)), ATermUtils.makeAnd(ATermUtils.makeSomeValues(p2, c), ATermUtils.makeAllValues(p1, notC)));
+			test = ATermUtils.makeOr(ATermUtils.makeAnd(ATermUtils.makeSomeValues(p1, c), ATermUtils.makeAllValues(p2, notC)),
+					ATermUtils.makeAnd(ATermUtils.makeSomeValues(p2, c), ATermUtils.makeAllValues(p1, notC)));
+		}
+		else if (role1.isDatatypeRole())
+		{
+			final ATermAppl anon = ATermUtils.makeLiteral(ATermUtils.makeAnonNominal(Integer.MAX_VALUE));
+			test = ATermUtils.makeOr(ATermUtils.makeAnd(ATermUtils.makeHasValue(p1, anon), ATermUtils.makeAllValues(p2, ATermUtils.makeNot(ATermUtils.makeValue(anon)))),
+					ATermUtils.makeAnd(ATermUtils.makeHasValue(p2, anon), ATermUtils.makeAllValues(p1, ATermUtils.makeNot(ATermUtils.makeValue(anon)))));
 		}
 		else
-			if (role1.isDatatypeRole())
-			{
-				final ATermAppl anon = ATermUtils.makeLiteral(ATermUtils.makeAnonNominal(Integer.MAX_VALUE));
-				test = ATermUtils.makeOr(ATermUtils.makeAnd(ATermUtils.makeHasValue(p1, anon), ATermUtils.makeAllValues(p2, ATermUtils.makeNot(ATermUtils.makeValue(anon)))), ATermUtils.makeAnd(ATermUtils.makeHasValue(p2, anon), ATermUtils.makeAllValues(p1, ATermUtils.makeNot(ATermUtils.makeValue(anon)))));
-			}
-			else
-				throw new IllegalArgumentException();
+			throw new IllegalArgumentException();
 
 		return !getABox().isSatisfiable(test);
 	}
 
 	default boolean isInverse(final ATermAppl r1, final ATermAppl r2)
 	{
-		if (null == r1 || null == r2)
-			return false;
+		if (null == r1 || null == r2) return false;
 
 		final Role role1 = getRole(r1);
 		final Role role2 = getRole(r2);
@@ -590,26 +558,24 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 		// if( !role1.hasNamedInverse() )
 		// return false;
 
-		if (!role1.isObjectRole() || !role2.isObjectRole())
-			return false;
+		if (!role1.isObjectRole() || !role2.isObjectRole()) return false;
 
-		if (role1.getInverse().equals(role2))
-			return true;
+		if (role1.getInverse().equals(role2)) return true;
 
 		ensureConsistency();
 
 		final ATermAppl c = ATermUtils.makeTermAppl("_C_");
 		final ATermAppl notC = ATermUtils.makeNot(c);
 
-		final ATermAppl test = ATermUtils.makeAnd(c, ATermUtils.makeOr(ATermUtils.makeSomeValues(r1, ATermUtils.makeAllValues(r2, notC)), ATermUtils.makeSomeValues(r2, ATermUtils.makeAllValues(r1, notC))));
+		final ATermAppl test = ATermUtils.makeAnd(c,
+				ATermUtils.makeOr(ATermUtils.makeSomeValues(r1, ATermUtils.makeAllValues(r2, notC)), ATermUtils.makeSomeValues(r2, ATermUtils.makeAllValues(r1, notC))));
 
 		return !getABox().isSatisfiable(test);
 	}
 
 	default boolean isTransitiveProperty(final ATermAppl r)
 	{
-		if (null == r)
-			return false;
+		if (null == r) return false;
 
 		final Role role = getRole(r);
 
@@ -621,13 +587,10 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 
 		if (role.isTransitive())
 		{
-			if (doExplanation())
-				getABox().setExplanation(role.getExplainTransitive());
+			if (doExplanation()) getABox().setExplanation(role.getExplainTransitive());
 			return true;
 		}
-		else
-			if (!role.isObjectRole() || role.isFunctional() || role.isInverseFunctional())
-				return false;
+		else if (!role.isObjectRole() || role.isFunctional() || role.isInverseFunctional()) return false;
 
 		ensureConsistency();
 
@@ -645,8 +608,7 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 
 	default boolean isFunctionalProperty(final ATermAppl p)
 	{
-		if (null == p)
-			return false;
+		if (null == p) return false;
 
 		final Role role = getRole(p);
 
@@ -656,25 +618,19 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 			return false;
 		}
 
-		if (role.isAnnotationRole())
-			return false;
+		if (role.isAnnotationRole()) return false;
 
 		if (role.isBottom())
 		{
-			if (doExplanation())
-				getABox().setExplanation(DependencySet.INDEPENDENT);
+			if (doExplanation()) getABox().setExplanation(DependencySet.INDEPENDENT);
 			return true;
 		}
-		else
-			if (role.isFunctional())
-			{
-				if (doExplanation())
-					getABox().setExplanation(role.getExplainFunctional());
-				return true;
-			}
-			else
-				if (!role.isSimple())
-					return false;
+		else if (role.isFunctional())
+		{
+			if (doExplanation()) getABox().setExplanation(role.getExplainFunctional());
+			return true;
+		}
+		else if (!role.isSimple()) return false;
 
 		final ATermAppl min2P = role.isDatatypeRole() ? ATermUtils.makeMin(p, 2, ATermUtils.TOP_LIT) : ATermUtils.makeMin(p, 2, ATermUtils.TOP);
 		return !isSatisfiable(min2P);
@@ -682,8 +638,7 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 
 	default boolean isInverseFunctionalProperty(final ATermAppl p)
 	{
-		if (null == p)
-			return false;
+		if (null == p) return false;
 
 		final Role role = getRole(p);
 
@@ -695,13 +650,11 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 
 		if (!role.isObjectRole())
 			return false;
-		else
-			if (role.isInverseFunctional() || role.isBottom())
-			{
-				if (doExplanation())
-					getABox().setExplanation(role.getExplainInverseFunctional());
-				return true;
-			}
+		else if (role.isInverseFunctional() || role.isBottom())
+		{
+			if (doExplanation()) getABox().setExplanation(role.getExplainInverseFunctional());
+			return true;
+		}
 
 		final ATermAppl invP = role.getInverse().getName();
 		final ATermAppl max1invP = ATermUtils.makeMax(invP, 1, ATermUtils.TOP);
@@ -710,8 +663,7 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 
 	default boolean hasDomain(final ATermAppl p, final ATermAppl c)
 	{
-		if (null == p || null == c)
-			return false;
+		if (null == p || null == c) return false;
 
 		final Role r = getRBox().getRole(p);
 		if (r == null)
@@ -732,8 +684,7 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 
 	default boolean isReflexiveProperty(final ATermAppl p)
 	{
-		if (null == p)
-			return false;
+		if (null == p) return false;
 
 		final Role role = getRole(p);
 
@@ -745,13 +696,11 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 
 		if (!role.isObjectRole() || role.isIrreflexive())
 			return false;
-		else
-			if (role.isReflexive())
-			{
-				if (doExplanation())
-					getABox().setExplanation(role.getExplainReflexive());
-				return true;
-			}
+		else if (role.isReflexive())
+		{
+			if (doExplanation()) getABox().setExplanation(role.getExplainReflexive());
+			return true;
+		}
 
 		ensureConsistency();
 
@@ -764,8 +713,7 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 
 	default boolean isIrreflexiveProperty(final ATermAppl p)
 	{
-		if (null == p)
-			return false;
+		if (null == p) return false;
 
 		final Role role = getRole(p);
 
@@ -777,20 +725,16 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 
 		if (!role.isObjectRole() || role.isReflexive())
 			return false;
-		else
-			if (role.isIrreflexive())
-			{
-				if (doExplanation())
-					getABox().setExplanation(role.getExplainIrreflexive());
-				return true;
-			}
-			else
-				if (role.isAsymmetric())
-				{
-					if (doExplanation())
-						getABox().setExplanation(role.getExplainAsymmetric());
-					return true;
-				}
+		else if (role.isIrreflexive())
+		{
+			if (doExplanation()) getABox().setExplanation(role.getExplainIrreflexive());
+			return true;
+		}
+		else if (role.isAsymmetric())
+		{
+			if (doExplanation()) getABox().setExplanation(role.getExplainAsymmetric());
+			return true;
+		}
 
 		ensureConsistency();
 
@@ -800,9 +744,9 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 	}
 
 	/**
-	 * @param p
-	 * @return DO NOT USE
-	 * @deprecated Use {@link #isAsymmetricProperty(ATermAppl)}
+	 * @param      p
+	 * @return       DO NOT USE
+	 * @deprecated   Use {@link #isAsymmetricProperty(ATermAppl)}
 	 */
 	@Deprecated
 	default boolean isAntisymmetricProperty(final ATermAppl p)
@@ -812,8 +756,7 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 
 	default boolean isAsymmetricProperty(final ATermAppl p)
 	{
-		if (null == p)
-			return false;
+		if (null == p) return false;
 
 		final Role role = getRole(p);
 
@@ -825,13 +768,11 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 
 		if (!role.isObjectRole())
 			return false;
-		else
-			if (role.isAsymmetric())
-			{
-				if (doExplanation())
-					getABox().setExplanation(role.getExplainAsymmetric());
-				return true;
-			}
+		else if (role.isAsymmetric())
+		{
+			if (doExplanation()) getABox().setExplanation(role.getExplainAsymmetric());
+			return true;
+		}
 
 		ensureConsistency();
 
@@ -851,8 +792,7 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 		for (final Role role : getRBox().getRoles().values())
 		{
 			final ATermAppl p = role.getName();
-			if (ATermUtils.isPrimitive(p) && role.isObjectRole())
-				set.add(p);
+			if (ATermUtils.isPrimitive(p) && role.isObjectRole()) set.add(p);
 		}
 		return set;
 	}
@@ -863,8 +803,7 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 		for (final Role role : getRBox().getRoles().values())
 		{
 			final ATermAppl p = role.getName();
-			if (ATermUtils.isPrimitive(p) && role.isAnnotationRole())
-				set.add(p);
+			if (ATermUtils.isPrimitive(p) && role.isAnnotationRole()) set.add(p);
 		}
 		return set;
 	}
@@ -875,8 +814,7 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 		for (final Role role : getRBox().getRoles().values())
 		{
 			final ATermAppl p = role.getName();
-			if (ATermUtils.isPrimitive(p) && role.isTransitive())
-				set.add(p);
+			if (ATermUtils.isPrimitive(p) && role.isTransitive()) set.add(p);
 		}
 		set.add(ATermUtils.BOTTOM_OBJECT_PROPERTY);
 		return set;
@@ -888,14 +826,13 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 		for (final Role role : getRBox().getRoles().values())
 		{
 			final ATermAppl p = role.getName();
-			if (ATermUtils.isPrimitive(p) && role.isSymmetric())
-				set.add(p);
+			if (ATermUtils.isPrimitive(p) && role.isSymmetric()) set.add(p);
 		}
 		return set;
 	}
 
 	/**
-	 * @return DO NOT USE
+	 * @return     DO NOT USE
 	 * @deprecated Use {@link #getAntisymmetricProperties()}
 	 */
 	@Deprecated
@@ -910,8 +847,7 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 		for (final Role role : getRBox().getRoles().values())
 		{
 			final ATermAppl p = role.getName();
-			if (ATermUtils.isPrimitive(p) && role.isAsymmetric())
-				set.add(p);
+			if (ATermUtils.isPrimitive(p) && role.isAsymmetric()) set.add(p);
 		}
 		return set;
 	}
@@ -922,8 +858,7 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 		for (final Role role : getRBox().getRoles().values())
 		{
 			final ATermAppl p = role.getName();
-			if (ATermUtils.isPrimitive(p) && role.isReflexive())
-				set.add(p);
+			if (ATermUtils.isPrimitive(p) && role.isReflexive()) set.add(p);
 		}
 		return set;
 	}
@@ -934,8 +869,7 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 		for (final Role role : getRBox().getRoles().values())
 		{
 			final ATermAppl p = role.getName();
-			if (ATermUtils.isPrimitive(p) && role.isIrreflexive())
-				set.add(p);
+			if (ATermUtils.isPrimitive(p) && role.isIrreflexive()) set.add(p);
 		}
 		return set;
 	}
@@ -946,8 +880,7 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 		for (final Role role : getRBox().getRoles().values())
 		{
 			final ATermAppl p = role.getName();
-			if (ATermUtils.isPrimitive(p) && role.isFunctional())
-				set.add(p);
+			if (ATermUtils.isPrimitive(p) && role.isFunctional()) set.add(p);
 		}
 		set.add(ATermUtils.BOTTOM_DATA_PROPERTY);
 		set.add(ATermUtils.BOTTOM_OBJECT_PROPERTY);
@@ -977,8 +910,7 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 		for (final Role role : getRBox().getRoles().values())
 		{
 			final ATermAppl p = role.getName();
-			if (ATermUtils.isPrimitive(p) && role.isDatatypeRole())
-				set.add(p);
+			if (ATermUtils.isPrimitive(p) && role.isDatatypeRole()) set.add(p);
 		}
 		return set;
 	}
@@ -986,13 +918,12 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 	/**
 	 * The results of this function is not guaranteed to be complete. Use {@link ClassesBase#hasRange(ATermAppl, ATermAppl)} to get complete answers.
 	 *
-	 * @param name
-	 * @return the domain restrictions on the property.
+	 * @param  name
+	 * @return      the domain restrictions on the property.
 	 */
-	public default Set<ATermAppl> getRanges(final ATerm name)
+	default Set<ATermAppl> getRanges(final ATerm name)
 	{
-		if (null == name)
-			return Collections.emptySet();
+		if (null == name) return Collections.emptySet();
 
 		ensureConsistency();
 
@@ -1010,13 +941,12 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 	/**
 	 * The results of this function is not guaranteed to be complete. Use {@link #hasDomain(ATermAppl, ATermAppl)} to get complete answers.
 	 *
-	 * @param name
-	 * @return the domain restrictions on the property.
+	 * @param  name
+	 * @return      the domain restrictions on the property.
 	 */
-	public default Set<ATermAppl> getDomains(final ATermAppl name)
+	default Set<ATermAppl> getDomains(final ATermAppl name)
 	{
-		if (null == name)
-			return Collections.emptySet();
+		if (null == name) return Collections.emptySet();
 
 		ensureConsistency();
 
@@ -1033,14 +963,13 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 	/**
 	 * Return all property values for a given object property and subject value.
 	 *
-	 * @param r
-	 * @param x
-	 * @return A list of ATermAppl objects
+	 * @param  r
+	 * @param  x
+	 * @return   A list of ATermAppl objects
 	 */
-	public default Set<ATermAppl> getObjectPropertyValuesSet(final ATermAppl r, final ATermAppl x)
+	default Set<ATermAppl> getObjectPropertyValuesSet(final ATermAppl r, final ATermAppl x)
 	{
-		if (null == r || null == x)
-			return Collections.emptySet();
+		if (null == r || null == x) return Collections.emptySet();
 
 		ensureConsistency();
 
@@ -1064,12 +993,9 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 
 		if (role.isTop())
 		{
-			if (!OpenlletOptions.HIDE_TOP_PROPERTY_VALUES)
-				knowns = getIndividuals();
+			if (!OpenlletOptions.HIDE_TOP_PROPERTY_VALUES) knowns = getIndividuals();
 		}
-		else
-			if (!role.isBottom())
-				getABox().getObjectPropertyValues(x, role, knowns, unknowns, true);
+		else if (!role.isBottom()) getABox().getObjectPropertyValues(x, role, knowns, unknowns, true);
 
 		if (!unknowns.isEmpty())
 		{
@@ -1082,12 +1008,12 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 		return knowns;
 	}
 
-	public default List<ATermAppl> getObjectPropertyValues(final ATermAppl r, final ATermAppl x)
+	default List<ATermAppl> getObjectPropertyValues(final ATermAppl r, final ATermAppl x)
 	{
 		return new ArrayList<>(getObjectPropertyValuesSet(r, x));
 	}
 
-	public default Stream<ATermAppl> objectPropertyValues(final ATermAppl r, final ATermAppl x)
+	default Stream<ATermAppl> objectPropertyValues(final ATermAppl r, final ATermAppl x)
 	{
 		return getObjectPropertyValuesSet(r, x).stream();
 	}
@@ -1095,15 +1021,14 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 	/**
 	 * Return all literal values for a given dataproperty that belongs to the specified datatype.
 	 *
-	 * @param r
-	 * @param x
-	 * @param datatype
-	 * @return List of ATermAppl objects representing literals.
+	 * @param  r
+	 * @param  x
+	 * @param  datatype
+	 * @return          List of ATermAppl objects representing literals.
 	 */
-	public default List<ATermAppl> getDataPropertyValues(final ATermAppl r, final ATermAppl x, final ATermAppl datatype)
+	default List<ATermAppl> getDataPropertyValues(final ATermAppl r, final ATermAppl x, final ATermAppl datatype)
 	{
-		if (null == r || null == x)
-			return Collections.emptyList();
+		if (null == r || null == x) return Collections.emptyList();
 
 		ensureConsistency();
 
@@ -1125,30 +1050,26 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 		if (role.isTop())
 		{
 			final List<ATermAppl> literals = new ArrayList<>();
-			if (!OpenlletOptions.HIDE_TOP_PROPERTY_VALUES)
-				for (final Node node : getABox().getNodes().values())
-					if (node.isLiteral() && node.getTerm() != null)
-						literals.add(node.getTerm());
+			if (!OpenlletOptions.HIDE_TOP_PROPERTY_VALUES) for (final Node node : getABox().getNodes().values())
+				if (node.isLiteral() && node.getTerm() != null) literals.add(node.getTerm());
 			return literals;
 		}
+		else if (role.isBottom())
+			return Collections.emptyList();
 		else
-			if (role.isBottom())
-				return Collections.emptyList();
-			else
-				return getABox().getDataPropertyValues(x, role, datatype);
+			return getABox().getDataPropertyValues(x, role, datatype);
 	}
 
 	/**
 	 * List all subjects with the given value for the specified object property.
 	 *
-	 * @param r
-	 * @param o An ATerm object that is the URI of an _individual
-	 * @return List of ATermAppl objects.
+	 * @param  r
+	 * @param  o An ATerm object that is the URI of an _individual
+	 * @return   List of ATermAppl objects.
 	 */
-	public default List<ATermAppl> getIndividualsWithObjectProperty(final ATermAppl r, final ATermAppl o)
+	default List<ATermAppl> getIndividualsWithObjectProperty(final ATermAppl r, final ATermAppl o)
 	{
-		if (null == r || null == o)
-			return Collections.emptyList();
+		if (null == r || null == o) return Collections.emptyList();
 
 		ensureConsistency();
 
@@ -1168,18 +1089,16 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 	/**
 	 * List all subjects with the given literal value for the specified _data property.
 	 *
-	 * @param r An ATerm object that contains the literal value in the form literal(lexicalValue, langIdentifier, datatypeURI). Should be created with
-	 *        ATermUtils.makeXXXLiteral() functions.
-	 * @param litValue
-	 * @return List of ATermAppl objects.
+	 * @param  r        An ATerm object that contains the literal value in the form literal(lexicalValue, langIdentifier, datatypeURI). Should be created with
+	 *                  ATermUtils.makeXXXLiteral() functions.
+	 * @param  litValue
+	 * @return          List of ATermAppl objects.
 	 */
-	public default List<ATermAppl> getIndividualsWithDataProperty(final ATermAppl r, final ATermAppl litValue)
+	default List<ATermAppl> getIndividualsWithDataProperty(final ATermAppl r, final ATermAppl litValue)
 	{
-		if (null == r || null == litValue)
-			return Collections.emptyList();
+		if (null == r || null == litValue) return Collections.emptyList();
 
-		if (!ATermUtils.isLiteral(litValue))
-			return Collections.emptyList();
+		if (!ATermUtils.isLiteral(litValue)) return Collections.emptyList();
 
 		ensureConsistency();
 
@@ -1228,10 +1147,9 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 		return knowns;
 	}
 
-	public default Set<ATermAppl> getIndividualsWithAnnotation(final ATermAppl p, final ATermAppl o)
+	default Set<ATermAppl> getIndividualsWithAnnotation(final ATermAppl p, final ATermAppl o)
 	{
-		if (null == p || null == o)
-			return Collections.emptySet();
+		if (null == p || null == o) return Collections.emptySet();
 
 		final Set<ATermAppl> ret = new HashSet<>();
 
@@ -1245,8 +1163,7 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 				final ATermAppl pt = e2.getKey();
 				final Set<ATermAppl> oidx = e2.getValue();
 
-				if (pt.equals(p) && oidx.contains(o))
-					ret.add(st);
+				if (pt.equals(p) && oidx.contains(o)) ret.add(st);
 			}
 		}
 
@@ -1256,12 +1173,12 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 	/**
 	 * List all subjects with a given property and property value.
 	 *
-	 * @param r
-	 * @param x If property is an object property an ATermAppl object that is the URI of the _individual, if the property is a _data property an ATerm object
-	 *        that contains the literal value (See {#link #getIndividualsWithDataProperty(ATermAppl, ATermAppl)} for details)
-	 * @return List of ATermAppl objects.
+	 * @param  r
+	 * @param  x If property is an object property an ATermAppl object that is the URI of the _individual, if the property is a _data property an ATerm object
+	 *           that contains the literal value (See {#link #getIndividualsWithDataProperty(ATermAppl, ATermAppl)} for details)
+	 * @return   List of ATermAppl objects.
 	 */
-	public default List<ATermAppl> getIndividualsWithProperty(final ATermAppl r, final ATermAppl x)
+	default List<ATermAppl> getIndividualsWithProperty(final ATermAppl r, final ATermAppl x)
 	{
 		final Role role = getRBox().getRole(r);
 
@@ -1273,40 +1190,35 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 
 		if (role.isObjectRole())
 			return getIndividualsWithObjectProperty(r, x);
+		else if (role.isDatatypeRole())
+			return getIndividualsWithDataProperty(r, x);
+		else if (role.isAnnotationRole())
+			return Arrays.asList(getIndividualsWithAnnotation(r, x).toArray(new ATermAppl[0]));
 		else
-			if (role.isDatatypeRole())
-				return getIndividualsWithDataProperty(r, x);
-			else
-				if (role.isAnnotationRole())
-					return Arrays.asList(getIndividualsWithAnnotation(r, x).toArray(new ATermAppl[0]));
-				else
-					throw new IllegalArgumentException();
+			throw new IllegalArgumentException();
 	}
 
 	/**
 	 * Return all literal values for a given dataproperty that has the specified language identifier.
 	 *
-	 * @param r
-	 * @param x
-	 * @param lang
-	 * @return List of ATermAppl objects.
+	 * @param  r
+	 * @param  x
+	 * @param  lang
+	 * @return      List of ATermAppl objects.
 	 */
-	public default List<ATermAppl> getDataPropertyValues(final ATermAppl r, final ATermAppl x, final String lang)
+	default List<ATermAppl> getDataPropertyValues(final ATermAppl r, final ATermAppl x, final String lang)
 	{
-		if (null == r || null == x)
-			return Collections.emptyList();
+		if (null == r || null == x) return Collections.emptyList();
 
 		final List<ATermAppl> values = getDataPropertyValues(r, x);
-		if (lang == null)
-			return values;
+		if (lang == null) return values;
 
 		final List<ATermAppl> result = new ArrayList<>();
 		for (final ATermAppl lit : values)
 		{
 			final String litLang = ((ATermAppl) lit.getArgument(1)).getName();
 
-			if (litLang.equals(lang))
-				result.add(lit);
+			if (litLang.equals(lang)) result.add(lit);
 		}
 
 		return result;
@@ -1315,11 +1227,11 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 	/**
 	 * Return all literal values for a given dataproperty and subject value.
 	 *
-	 * @param r
-	 * @param x
-	 * @return List of ATermAppl objects.
+	 * @param  r
+	 * @param  x
+	 * @return   List of ATermAppl objects.
 	 */
-	public default List<ATermAppl> getDataPropertyValues(final ATermAppl r, final ATermAppl x)
+	default List<ATermAppl> getDataPropertyValues(final ATermAppl r, final ATermAppl x)
 	{
 		return getDataPropertyValues(r, x, (ATermAppl) null);
 	}
@@ -1327,14 +1239,13 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 	/**
 	 * Return all property values for a given property and subject value.
 	 *
-	 * @param r
-	 * @param x
-	 * @return List of ATermAppl objects.
+	 * @param  r
+	 * @param  x
+	 * @return   List of ATermAppl objects.
 	 */
-	public default List<ATermAppl> getPropertyValues(final ATermAppl r, final ATermAppl x)
+	default List<ATermAppl> getPropertyValues(final ATermAppl r, final ATermAppl x)
 	{
-		if (null == r || null == x)
-			return Collections.emptyList();
+		if (null == r || null == x) return Collections.emptyList();
 
 		final Role role = getRBox().getRole(r);
 
@@ -1346,42 +1257,38 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 
 		if (role.isObjectRole())
 			return getObjectPropertyValues(r, x);
+		else if (role.isDatatypeRole())
+			return getDataPropertyValues(r, x);
+		else if (role.isAnnotationRole())
+		{
+			final Set<ATermAppl> values = getAnnotations(x, r);
+			return values.isEmpty() ? Collections.<ATermAppl>emptyList() : Arrays.asList(values.toArray(new ATermAppl[0]));
+		}
 		else
-			if (role.isDatatypeRole())
-				return getDataPropertyValues(r, x);
-			else
-				if (role.isAnnotationRole())
-				{
-					final Set<ATermAppl> values = getAnnotations(x, r);
-					return values.isEmpty() ? Collections.<ATermAppl> emptyList() : Arrays.asList(values.toArray(new ATermAppl[0]));
-				}
-				else
-					throw new IllegalArgumentException();
+			throw new IllegalArgumentException();
 	}
 
-	public default Map<ATermAppl, List<ATermAppl>> getPropertyValues(final ATermAppl pred)
+	default Map<ATermAppl, List<ATermAppl>> getPropertyValues(final ATermAppl pred)
 	{
-		if (null == pred)
-			return Collections.emptyMap();
+		if (null == pred) return Collections.emptyMap();
 
 		final Map<ATermAppl, List<ATermAppl>> result = new HashMap<>();
 
 		for (final ATermAppl subj : currentIndividuals())
 		{
 			final List<ATermAppl> objects = getPropertyValues(pred, subj);
-			if (!objects.isEmpty())
-				result.put(subj, objects);
+			if (!objects.isEmpty()) result.put(subj, objects);
 		}
 
 		return result;
 	}
 
 	/**
-	 * @param s subject
-	 * @param o object
-	 * @return all properties asserted between a subject and object.
+	 * @param  s subject
+	 * @param  o object
+	 * @return   all properties asserted between a subject and object.
 	 */
-	public default List<ATermAppl> getProperties(final ATermAppl s, final ATermAppl o)
+	default List<ATermAppl> getProperties(final ATermAppl s, final ATermAppl o)
 	{
 		if (!isIndividual(s))
 		{
@@ -1399,8 +1306,7 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 
 		final Set<ATermAppl> allProps = ATermUtils.isLiteral(o) ? getDataProperties() : getObjectProperties();
 		for (final ATermAppl p : allProps)
-			if (getABox().hasPropertyValue(s, p, o))
-				props.add(p);
+			if (getABox().hasPropertyValue(s, p, o)) props.add(p);
 
 		return props;
 	}
@@ -1408,13 +1314,12 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 	/**
 	 * Annotations properties will never be include into the taxonomy, so deel with that now.
 	 *
-	 * @param p is an annotation property.
-	 * @return all property that are sub property of 'p'.
+	 * @param  p is an annotation property.
+	 * @return   all property that are sub property of 'p'.
 	 */
-	public default Set<ATermAppl> getSubAnnotationProperties(final ATermAppl p)
+	default Set<ATermAppl> getSubAnnotationProperties(final ATermAppl p)
 	{
-		if (null == p)
-			return Collections.emptySet();
+		if (null == p) return Collections.emptySet();
 
 		final Set<ATermAppl> values = new HashSet<>();
 
@@ -1426,29 +1331,25 @@ public interface PropertiesBase extends MessageBase, Logging, Base
 			values.add(value);
 
 			for (final ATermAppl property : getAnnotationProperties())
-				if (value != property && isSubPropertyOf(property, value))
-					temp.add(property);
+				if (value != property && isSubPropertyOf(property, value)) temp.add(property);
 		}
 
 		return values;
 	}
 
-	public default Set<ATermAppl> getAnnotations(final ATermAppl s, final ATermAppl p)
+	default Set<ATermAppl> getAnnotations(final ATermAppl s, final ATermAppl p)
 	{
-		if (null == s || null == p)
-			return Collections.emptySet();
+		if (null == s || null == p) return Collections.emptySet();
 
 		final Map<ATermAppl, Set<ATermAppl>> pidx = getAnnotations().get(s);
 
-		if (pidx == null)
-			return Collections.emptySet();
+		if (pidx == null) return Collections.emptySet();
 
 		final Set<ATermAppl> values = new HashSet<>();
 
 		for (final ATermAppl subproperty : getSubAnnotationProperties(p))
-			if (pidx.get(subproperty) != null)
-				for (final ATermAppl value : pidx.get(subproperty))
-					values.add(value);
+			if (pidx.get(subproperty) != null) for (final ATermAppl value : pidx.get(subproperty))
+				values.add(value);
 
 		return values;
 	}

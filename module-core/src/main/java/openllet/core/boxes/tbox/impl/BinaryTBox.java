@@ -32,10 +32,10 @@ import openllet.shared.tools.Log;
  */
 public class BinaryTBox
 {
-	private static final Logger _logger = Log.getLogger(UnaryTBox.class);
+	private static final Logger							_logger	= Log.getLogger(UnaryTBox.class);
 
-	private final Map<BinarySet<ATermAppl>, Unfolding> _unfoldings;
-	private final Map<ATermAppl, List<Unfolding>> _conditionalUnfoldings;
+	private final Map<BinarySet<ATermAppl>, Unfolding>	_unfoldings;
+	private final Map<ATermAppl, List<Unfolding>>		_conditionalUnfoldings;
 
 	public BinaryTBox()
 	{
@@ -74,7 +74,7 @@ public class BinaryTBox
 	public Iterator<Unfolding> unfold(final ATermAppl concept)
 	{
 		final List<Unfolding> unfoldingList = _conditionalUnfoldings.get(concept);
-		return unfoldingList == null ? IteratorUtils.<Unfolding> emptyIterator() : unfoldingList.iterator();
+		return unfoldingList == null ? IteratorUtils.<Unfolding>emptyIterator() : unfoldingList.iterator();
 	}
 
 	public boolean contains(final ATermAppl concept)

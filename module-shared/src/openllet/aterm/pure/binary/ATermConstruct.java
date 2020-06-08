@@ -9,13 +9,13 @@ import openllet.aterm.ATerm;
  */
 class ATermConstruct
 {
-	public int type;
+	public int		type;
 
-	public int termIndex = 0;
-	public ATerm tempTerm = null;
+	public int		termIndex		= 0;
+	public ATerm	tempTerm		= null;
 
-	public int subTermIndex = 0;
-	public ATerm[] subTerms = null;
+	public int		subTermIndex	= 0;
+	public ATerm[]	subTerms		= null;
 
 	ATermConstruct(final int type, final int termIndex)
 	{

@@ -63,16 +63,15 @@ public class ParserTest
 	{
 		final Set<Integer> ignoreSet = SetUtils.create(ignoreIndices);
 		for (int i = minIndex; i <= maxIndex; i++)
-			if (!ignoreSet.contains(i))
-				parameters.add(new Object[] { prefix + ".ttl", prefix + i + ".rq", prefix + i + ".terp" });
+			if (!ignoreSet.contains(i)) parameters.add(new Object[] { prefix + ".ttl", prefix + i + ".rq", prefix + i + ".terp" });
 	}
 
-	private static ARQParser _parser;
+	private static ARQParser	_parser;
 
-	private final String _kbFile;
-	private KnowledgeBase _kb;
-	private final String _sparqlFile;
-	private final String _sparqlOWLFile;
+	private final String		_kbFile;
+	private KnowledgeBase		_kb;
+	private final String		_sparqlFile;
+	private final String		_sparqlOWLFile;
 
 	public ParserTest(final String kbFile, final String sparqlFile, final String sparqlOWLFile)
 	{

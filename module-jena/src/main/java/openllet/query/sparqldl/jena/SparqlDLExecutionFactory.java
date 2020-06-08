@@ -75,11 +75,11 @@ public class SparqlDLExecutionFactory
 	/**
 	 * Creates a QueryExecution by selecting the most appropriate {@link QueryEngineType} that can answer the given query.
 	 *
-	 * @see QueryEngineType
-	 * @param query the query
-	 * @param dataset the target of the query
-	 * @param initialBinding initial binding that will be applied before query execution or <code>null</code> if there is no initial binding
-	 * @return a <code>QueryExecution</code> that will answer the query with the given dataset
+	 * @see                   QueryEngineType
+	 * @param  query          the query
+	 * @param  dataset        the target of the query
+	 * @param  initialBinding initial binding that will be applied before query execution or <code>null</code> if there is no initial binding
+	 * @return                a <code>QueryExecution</code> that will answer the query with the given dataset
 	 */
 	public static QueryExecution create(final Query query, final Dataset dataset, final QuerySolution initialBinding)
 	{
@@ -90,34 +90,34 @@ public class SparqlDLExecutionFactory
 		if (graph instanceof PelletInfGraph)
 			// check for obvious things not supported by Pellet
 			if (dataset.listNames().hasNext() || query.isDescribeType())
-				engineType = QueryEngineType.MIXED;
+			engineType = QueryEngineType.MIXED;
 			else
+		{
+			// try parsing the query and see if there are any problems
+			final PelletInfGraph pelletInfGraph = (PelletInfGraph) graph;
+
+			final KnowledgeBase kb = pelletInfGraph.getKB();
+			pelletInfGraph.prepare();
+
+			final ARQParser parser = new ARQParser();
+			// The parser uses the query parameterization to resolve
+			// parameters
+			// (i.e. variables) in the query
+			parser.setInitialBinding(initialBinding);
+
+			try
 			{
-				// try parsing the query and see if there are any problems
-				final PelletInfGraph pelletInfGraph = (PelletInfGraph) graph;
-
-				final KnowledgeBase kb = pelletInfGraph.getKB();
-				pelletInfGraph.prepare();
-
-				final ARQParser parser = new ARQParser();
-				// The parser uses the query parameterization to resolve
-				// parameters
-				// (i.e. variables) in the query
-				parser.setInitialBinding(initialBinding);
-
-				try
-				{
-					parser.parse(query, kb);
-					// parsing successful so we can use Pellet engine
-					engineType = QueryEngineType.PELLET;
-				}
-				catch (final UnsupportedQueryException e)
-				{
-					_logger.log(Level.FINER, "", e);
-					// parsing failed so we will use the mixed engine
-					engineType = QueryEngineType.MIXED;
-				}
+				parser.parse(query, kb);
+				// parsing successful so we can use Pellet engine
+				engineType = QueryEngineType.PELLET;
 			}
+			catch (final UnsupportedQueryException e)
+			{
+				_logger.log(Level.FINER, "", e);
+				// parsing failed so we will use the mixed engine
+				engineType = QueryEngineType.MIXED;
+			}
+		}
 
 		return create(query, dataset, initialBinding, engineType);
 	}
@@ -126,11 +126,11 @@ public class SparqlDLExecutionFactory
 	 * Creates a QueryExecution with the given {@link QueryEngineType}. If the query engine cannot handle the given query a QueryException may be thrown during
 	 * query execution. Users are recommended to use {@link #create(Query, Dataset, QuerySolution)}
 	 *
-	 * @param query the query
-	 * @param dataset the target of the query
-	 * @param initialBinding used for parametrized queries
-	 * @param queryEngineType type of the query engine that will be used to answer the query
-	 * @return a <code>QueryExecution</code> that will answer the query with the given dataset
+	 * @param  query           the query
+	 * @param  dataset         the target of the query
+	 * @param  initialBinding  used for parametrized queries
+	 * @param  queryEngineType type of the query engine that will be used to answer the query
+	 * @return                 a <code>QueryExecution</code> that will answer the query with the given dataset
 	 */
 	public static QueryExecution create(final Query query, final Dataset dataset, final QuerySolution initialBinding, final QueryEngineType queryEngineType)
 	{
@@ -142,14 +142,15 @@ public class SparqlDLExecutionFactory
 	 * query execution. Users are recommended to use {@link #create(Query, Dataset, QuerySolution)} User must use a " try () {} " to manage the AutoClosable
 	 * QueryExecution.
 	 *
-	 * @param query the query
-	 * @param dataset the target of the query
-	 * @param initialBinding used for parametrized queries
-	 * @param queryEngineType type of the query engine that will be used to answer the query
-	 * @param handleVariableSPO If this variable is true then queries with variable SPO statements are not handled by the SPARQL-DL engine but fall back to ARQ
-	 * @return a <code>QueryExecution</code> that will answer the query with the given dataset
+	 * @param  query             the query
+	 * @param  dataset           the target of the query
+	 * @param  initialBinding    used for parametrized queries
+	 * @param  queryEngineType   type of the query engine that will be used to answer the query
+	 * @param  handleVariableSPO If this variable is true then queries with variable SPO statements are not handled by the SPARQL-DL engine but fall back to ARQ
+	 * @return                   a <code>QueryExecution</code> that will answer the query with the given dataset
 	 */
-	public static QueryExecution create(final Query query, final Dataset dataset, final QuerySolution initialBinding, final QueryEngineType queryEngineType, final boolean handleVariableSPO) throws QueryException
+	public static QueryExecution create(final Query query, final Dataset dataset, final QuerySolution initialBinding, final QueryEngineType queryEngineType, final boolean handleVariableSPO)
+			throws QueryException
 	{
 		// the engine we will return
 		QueryExecution queryExec = null;
@@ -173,8 +174,7 @@ public class SparqlDLExecutionFactory
 		}
 
 		// if given set the initial binding
-		if (initialBinding != null)
-			queryExec.setInitialBinding(initialBinding);
+		if (initialBinding != null) queryExec.setInitialBinding(initialBinding);
 
 		// return it
 		return queryExec;
@@ -185,9 +185,9 @@ public class SparqlDLExecutionFactory
 	 * BGPs, i.e. the ones that are not in the SPARQL-DL fragment, will be answered by the Jena query engine. With this fall-back model all types of SPARQL
 	 * queries are supported.
 	 *
-	 * @param query the query
-	 * @param model the target of the query
-	 * @return a <code>QueryExecution</code> that will answer the query with the given model
+	 * @param  query          the query
+	 * @param  model          the target of the query
+	 * @return                a <code>QueryExecution</code> that will answer the query with the given model
 	 * @throws QueryException if the given model is not associated with Pellet reasoner
 	 */
 	public static QueryExecution create(final Query query, final Model model)
@@ -198,10 +198,10 @@ public class SparqlDLExecutionFactory
 	/**
 	 * Creates a QueryExecution by selecting the most appropriate {@link QueryEngineType} that can answer the given query.
 	 *
-	 * @see QueryEngineType
-	 * @param query the query
-	 * @param dataset the target of the query
-	 * @return a <code>QueryExecution</code> that will answer the query with the given dataset
+	 * @see            QueryEngineType
+	 * @param  query   the query
+	 * @param  dataset the target of the query
+	 * @return         a <code>QueryExecution</code> that will answer the query with the given dataset
 	 */
 	public static QueryExecution create(final Query query, final Dataset dataset)
 	{
@@ -211,11 +211,11 @@ public class SparqlDLExecutionFactory
 	/**
 	 * Creates a QueryExecution by selecting the most appropriate {@link QueryEngineType} that can answer the given query.
 	 *
-	 * @see QueryEngineType
-	 * @param query the query
-	 * @param model the target of the query
-	 * @param initialBinding initial binding that will be applied before query execution or <code>null</code> if there is no initial binding
-	 * @return a <code>QueryExecution</code> that will answer the query with the given dataset
+	 * @see                   QueryEngineType
+	 * @param  query          the query
+	 * @param  model          the target of the query
+	 * @param  initialBinding initial binding that will be applied before query execution or <code>null</code> if there is no initial binding
+	 * @return                a <code>QueryExecution</code> that will answer the query with the given dataset
 	 */
 	public static QueryExecution create(final Query query, final Model model, final QuerySolution initialBinding)
 	{
@@ -226,10 +226,10 @@ public class SparqlDLExecutionFactory
 	 * Creates a Pellet query engine that will answer the given query. This function should be used only if it is known that Pellet query engine can handle the
 	 * given query. Otherwise query execution will result in an exception. for arbitrary queries it is safer to use the <code>create</code> functions.
 	 *
-	 * @see QueryEngineType
-	 * @param query the query
-	 * @param model the target of the query
-	 * @return a <code>QueryExecution</code> that will answer the query with the given model
+	 * @see          QueryEngineType
+	 * @param  query the query
+	 * @param  model the target of the query
+	 * @return       a <code>QueryExecution</code> that will answer the query with the given model
 	 */
 	public static QueryExecution createPelletExecution(final Query query, final Model model)
 	{
@@ -240,11 +240,11 @@ public class SparqlDLExecutionFactory
 	 * Creates a Pellet query engine that will answer the given query. This function should be used only if it is known that Pellet query engine can handle the
 	 * given query. Otherwise query execution will result in an exception. for arbitrary queries it is safer to use the <code>create</code> functions.
 	 *
-	 * @see QueryEngineType
-	 * @param query the query
-	 * @param model the target of the query
-	 * @param initialBinding initial binding that will be applied before query execution or <code>null</code> if there is no initial binding
-	 * @return a <code>QueryExecution</code> that will answer the query with the given model
+	 * @see                   QueryEngineType
+	 * @param  query          the query
+	 * @param  model          the target of the query
+	 * @param  initialBinding initial binding that will be applied before query execution or <code>null</code> if there is no initial binding
+	 * @return                a <code>QueryExecution</code> that will answer the query with the given model
 	 */
 	public static QueryExecution createPelletExecution(final Query query, final Model model, final QuerySolution initialBinding)
 	{
@@ -255,11 +255,11 @@ public class SparqlDLExecutionFactory
 	 * Creates a Pellet query engine that will answer the given query. This function should be used only if it is known that Pellet query engine can handle the
 	 * given query. Otherwise query execution will result in an exception. for arbitrary queries it is safer to use the <code>create</code> functions.
 	 *
-	 * @see QueryEngineType
-	 * @param query the query
-	 * @param dataset the target of the query
-	 * @param initialBinding initial binding that will be applied before query execution or <code>null</code> if there is no initial binding
-	 * @return a <code>QueryExecution</code> that will answer the query with the given dataset
+	 * @see                   QueryEngineType
+	 * @param  query          the query
+	 * @param  dataset        the target of the query
+	 * @param  initialBinding initial binding that will be applied before query execution or <code>null</code> if there is no initial binding
+	 * @return                a <code>QueryExecution</code> that will answer the query with the given dataset
 	 */
 	public static QueryExecution createPelletExecution(final Query query, final Dataset dataset)
 	{
@@ -270,11 +270,11 @@ public class SparqlDLExecutionFactory
 	 * Creates a Pellet query engine that will answer the given query. This function should be used only if it is known that Pellet query engine can handle the
 	 * given query. Otherwise query execution will result in an exception. for arbitrary queries it is safer to use the <code>create</code> functions.
 	 *
-	 * @see QueryEngineType
-	 * @param query the query
-	 * @param dataset the target of the query
-	 * @param initialBinding initial binding that will be applied before query execution or <code>null</code> if there is no initial binding
-	 * @return a <code>QueryExecution</code> that will answer the query with the given dataset
+	 * @see                   QueryEngineType
+	 * @param  query          the query
+	 * @param  dataset        the target of the query
+	 * @param  initialBinding initial binding that will be applied before query execution or <code>null</code> if there is no initial binding
+	 * @return                a <code>QueryExecution</code> that will answer the query with the given dataset
 	 */
 	public static QueryExecution createPelletExecution(final Query query, final Dataset dataset, final QuerySolution initialBinding)
 	{

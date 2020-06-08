@@ -18,16 +18,15 @@ public class BlockingFactory
 	/**
 	 * Returns the most-efficient blocking _strategy for a given expressivity.
 	 *
-	 * @param expr expressivity of the kb for which the blocking will be used
-	 * @return a blocking _strategy
+	 * @param  expr expressivity of the kb for which the blocking will be used
+	 * @return      a blocking _strategy
 	 */
 	public static Blocking createBlocking(final Expressivity expr)
 	{
-		if (expr.hasInverse())
-			if (expr.hasFunctionality() || expr.hasCardinality() || expr.hasCardinalityQ())
-				return OptimizedDoubleBlocking.getInstance();
-			else
-				return EqualityBlocking.getInstance();
+		if (expr.hasInverse()) if (expr.hasFunctionality() || expr.hasCardinality() || expr.hasCardinalityQ())
+			return OptimizedDoubleBlocking.getInstance();
+		else
+			return EqualityBlocking.getInstance();
 
 		return SubsetBlocking.getInstance();
 	}

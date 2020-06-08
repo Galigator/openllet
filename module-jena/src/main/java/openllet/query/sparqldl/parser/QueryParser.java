@@ -26,9 +26,9 @@ import openllet.query.sparqldl.model.Query;
 public interface QueryParser
 {
 
-	public Query parse(final String queryString, KnowledgeBase kb);
+	Query parse(final String queryString, KnowledgeBase kb);
 
-	public Query parse(final InputStream stream, KnowledgeBase kb);
+	Query parse(final InputStream stream, KnowledgeBase kb);
 
-	public Query parse(final org.apache.jena.query.Query stream, KnowledgeBase kb);
+	Query parse(final org.apache.jena.query.Query stream, KnowledgeBase kb);
 }

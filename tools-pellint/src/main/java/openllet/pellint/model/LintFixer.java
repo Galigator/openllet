@@ -34,8 +34,8 @@ import org.semanticweb.owlapi.model.RemoveAxiom;
  */
 public class LintFixer
 {
-	private final Set<? extends OWLAxiom> _axiomsToRemove;
-	private final Set<? extends OWLAxiom> _axiomsToAdd;
+	private final Set<? extends OWLAxiom>	_axiomsToRemove;
+	private final Set<? extends OWLAxiom>	_axiomsToAdd;
 
 	public LintFixer(final Set<? extends OWLAxiom> axiomsToRemove, final Set<? extends OWLAxiom> axiomsToAdd)
 	{
@@ -61,20 +61,19 @@ public class LintFixer
 	/**
 	 * Replace the detected OWLAxioms with a new set of OWLAxioms, and apply the change to the given OWLOntology using the given OWLOntologyManager.
 	 *
-	 * @param manager the owl ontology manager
-	 * @param ontology the ontology to fix
-	 * @return <code>true</code> if:<BR>
-	 *         1. All the OWLAxioms that are about to be removed, do exist in the given OWLOntology; and<BR>
-	 *         2. All the changes were successfully applied.<BR>
-	 *         Otherwise returns <code>false</code>.
+	 * @param  manager                                                 the owl ontology manager
+	 * @param  ontology                                                the ontology to fix
+	 * @return                                                         <code>true</code> if:<BR>
+	 *                                                                 1. All the OWLAxioms that are about to be removed, do exist in the given OWLOntology; and<BR>
+	 *                                                                 2. All the changes were successfully applied.<BR>
+	 *                                                                 Otherwise returns <code>false</code>.
 	 * @throws org.semanticweb.owlapi.model.OWLOntologyChangeException if there is an error applying a fix
 	 */
 	public boolean apply(final OWLOntologyManager manager, final OWLOntology ontology) throws OWLOntologyChangeException
 	{
 		final Set<OWLAxiom> axioms = ontology.axioms().collect(Collectors.toSet());
 
-		if (!axioms.containsAll(_axiomsToRemove))
-			return false;
+		if (!axioms.containsAll(_axiomsToRemove)) return false;
 
 		for (final OWLAxiom axiom : _axiomsToRemove)
 		{

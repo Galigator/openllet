@@ -25,6 +25,6 @@ package openllet.query.sparqldl.model;
 public interface Filter
 {
 
-	public boolean accept(final ResultBinding binding);
+	boolean accept(final ResultBinding binding);
 
 }

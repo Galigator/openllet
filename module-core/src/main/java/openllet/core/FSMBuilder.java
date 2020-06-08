@@ -26,9 +26,9 @@ import openllet.shared.tools.Log;
  */
 public class FSMBuilder
 {
-	private static Logger _logger = Log.getLogger(FSMBuilder.class);
+	private static Logger	_logger	= Log.getLogger(FSMBuilder.class);
 
-	private final RBox _rbox;
+	private final RBox		_rbox;
 
 	public FSMBuilder(final RBox rbox)
 	{
@@ -42,8 +42,7 @@ public class FSMBuilder
 
 	private TransitionGraph<Role> build(final Role s, final Set<Role> visited)
 	{
-		if (!visited.add(s))
-			return null;
+		if (!visited.add(s)) return null;
 
 		TransitionGraph<Role> tg = s.getFSM();
 		if (tg == null)
@@ -62,28 +61,24 @@ public class FSMBuilder
 
 			assert tg.isConnected();
 
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("Determinize " + s + ": " + tg.size() + "\n" + tg);
+			if (_logger.isLoggable(Level.FINE)) _logger.fine("Determinize " + s + ": " + tg.size() + "\n" + tg);
 
 			tg.determinize();
 
 			assert tg.isConnected();
 			assert tg.isDeterministic();
 
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("Minimize NFA for " + s + ": " + tg.size() + "\n" + tg);
+			if (_logger.isLoggable(Level.FINE)) _logger.fine("Minimize NFA for " + s + ": " + tg.size() + "\n" + tg);
 
 			tg.minimize();
 
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("Minimized NFA for " + s + ": " + tg.size() + "\n" + tg);
+			if (_logger.isLoggable(Level.FINE)) _logger.fine("Minimized NFA for " + s + ": " + tg.size() + "\n" + tg);
 
 			assert tg.isConnected();
 
 			tg.renumber();
 
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("Renumbered " + s + ": " + tg.size() + "\n" + tg);
+			if (_logger.isLoggable(Level.FINE)) _logger.fine("Renumbered " + s + ": " + tg.size() + "\n" + tg);
 
 			assert tg.isConnected();
 
@@ -121,31 +116,26 @@ public class FSMBuilder
 
 		tg.addTransition(i, s, f);
 
-		if (s.isBuiltin())
-			return tg;
+		if (s.isBuiltin()) return tg;
 
 		for (final Role sub : s.getProperSubRoles())
-			if (!sub.isBottom() && !sub.getInverse().isBottom())
-				tg.addTransition(i, sub, f);
+			if (!sub.isBottom() && !sub.getInverse().isBottom()) tg.addTransition(i, sub, f);
 
 		for (final ATermList subChain : s.getSubRoleChains())
-			if (!addRoleChainTransition(tg, s, subChain))
-				return null;
+			if (!addRoleChainTransition(tg, s, subChain)) return null;
 
 		final Set<Role> alphabet = new HashSet<>(tg.getAlpahabet());
 		for (final Role r : alphabet)
 			for (final Pair<State<Role>, State<Role>> pair : tg.findTransitions(r))
 			{
-				if (s.isEquivalent(r))
-					if (tg.isInitial(pair.first) || tg.isFinal(pair.second) || tg.isFinal(pair.first) && tg.isInitial(pair.second))
-						continue;
-					else
-						return null;
+				if (s.isEquivalent(r)) if (tg.isInitial(pair.first) || tg.isFinal(pair.second) || tg.isFinal(pair.first) && tg.isInitial(pair.second))
+					continue;
+				else
+					return null;
 
 				final TransitionGraph<Role> newGraph = build(r, visited);
 
-				if (newGraph == null)
-					return null;
+				if (newGraph == null) return null;
 
 				tg.insert(newGraph, pair.first, pair.second);
 			}
@@ -163,16 +153,14 @@ public class FSMBuilder
 
 		if (firstRoleSame)
 		{
-			if (lastRoleSame && length != 2)
-				return false;
+			if (lastRoleSame && length != 2) return false;
 
 			addRoleChainTransition(tg, tg.getFinalState(), tg.getFinalState(), chain.getNext(), length - 1);
 		}
+		else if (lastRoleSame)
+			addRoleChainTransition(tg, tg.getInitialState(), tg.getInitialState(), chain, length - 1);
 		else
-			if (lastRoleSame)
-				addRoleChainTransition(tg, tg.getInitialState(), tg.getInitialState(), chain, length - 1);
-			else
-				addRoleChainTransition(tg, tg.getInitialState(), tg.getFinalState(), chain, length);
+			addRoleChainTransition(tg, tg.getInitialState(), tg.getFinalState(), chain, length);
 
 		return true;
 	}

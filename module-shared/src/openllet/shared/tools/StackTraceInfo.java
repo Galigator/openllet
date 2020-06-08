@@ -6,13 +6,13 @@ import java.util.logging.Logger;
 /**
  * Utility class: Getting the name of the current executing method
  * http://stackoverflow.com/questions/442747/getting-the-name-of-the-current-executing-method
- * 
+ *
  * Provides:
- * 
+ *
  * getCurrentClassName()
  * getCurrentMethodName()
  * getCurrentFileName()
- * 
+ *
  * getInvokingClassName()
  * getInvokingMethodName()
  * getInvokingFileName()
@@ -24,16 +24,16 @@ import java.util.logging.Logger;
  */
 public class StackTraceInfo
 {
-	private static final Logger _logger = Log.getLogger(StackTraceInfo.class);
+	private static final Logger	_logger	= Log.getLogger(StackTraceInfo.class);
 
 	/** (Lifted from virgo47's stackoverflow answer) */
-	private static final int CLIENT_CODE_STACK_INDEX;
+	private static final int	CLIENT_CODE_STACK_INDEX;
 
 	/**
 	 * Accesses the native method getStackTraceElement(int depth) directly.
 	 * And stores the accessible Method in a static variable.
 	 */
-	private static Method _m;
+	private static Method		_m;
 
 	static
 	{
@@ -43,8 +43,7 @@ public class StackTraceInfo
 		for (final StackTraceElement ste : Thread.currentThread().getStackTrace())
 		{
 			i++;
-			if (ste.getClassName().equals(StackTraceInfo.class.getName()))
-				break;
+			if (ste.getClassName().equals(StackTraceInfo.class.getName())) break;
 		}
 		CLIENT_CODE_STACK_INDEX = i;
 
@@ -63,7 +62,7 @@ public class StackTraceInfo
 	public static String getCurrentMethodName()
 	{
 		// making additional overloaded method call requires +1 offset
-		return (_m != null) ? getCurrentMethodName_Main(1) : getCurrentMethodName_Backup(1);
+		return _m != null ? getCurrentMethodName_Main(1) : getCurrentMethodName_Backup(1);
 	}
 
 	public static String getCurrentMethodName_Main(final int depth)
@@ -73,7 +72,7 @@ public class StackTraceInfo
 			final StackTraceElement element = (StackTraceElement) _m.invoke(new Throwable(), depth + 1);
 			return element.getMethodName();
 		}
-		catch (final Exception e) // 3 exceptions. 
+		catch (final Exception e) // 3 exceptions.
 		{
 			Log.error(_logger, e);
 			return "";
@@ -87,7 +86,7 @@ public class StackTraceInfo
 
 	public static String getCurrentClassName()
 	{
-		return getCurrentClassName(1);      // making additional overloaded method call requires +1 offset
+		return getCurrentClassName(1); // making additional overloaded method call requires +1 offset
 	}
 
 	private static String getCurrentClassName(final int offset)
@@ -98,7 +97,7 @@ public class StackTraceInfo
 
 	public static String getCurrentFileName()
 	{
-		return getCurrentFileName(1);     // making additional overloaded method call requires +1 offset
+		return getCurrentFileName(1); // making additional overloaded method call requires +1 offset
 	}
 
 	private static String getCurrentFileName(final int offset)
@@ -116,12 +115,12 @@ public class StackTraceInfo
 
 	/**
 	 * re-uses getCurrentMethodName() with desired index
-	 * 
+	 *
 	 * @return same as getCurrentMethodName() but shorten as the given offset
 	 */
 	private static String getInvokingMethodName(final int offset)
 	{
-		return (_m != null) ? getCurrentMethodName_Main(offset + 1) : getCurrentMethodName_Backup(offset + 1);
+		return _m != null ? getCurrentMethodName_Main(offset + 1) : getCurrentMethodName_Backup(offset + 1);
 	}
 
 	public static String getInvokingClassName()
@@ -131,7 +130,7 @@ public class StackTraceInfo
 
 	private static String getInvokingClassName(final int offset)
 	{
-		return getCurrentClassName(offset + 1);     // re-uses getCurrentClassName() with desired index
+		return getCurrentClassName(offset + 1); // re-uses getCurrentClassName() with desired index
 	}
 
 	public static String getInvokingFileName()
@@ -141,7 +140,7 @@ public class StackTraceInfo
 
 	private static String getInvokingFileName(final int offset)
 	{
-		return getCurrentFileName(offset + 1);     // re-uses getCurrentFileName() with desired index
+		return getCurrentFileName(offset + 1); // re-uses getCurrentFileName() with desired index
 	}
 
 	public static String getCurrentMethodNameFqn()
@@ -152,7 +151,7 @@ public class StackTraceInfo
 	private static String getCurrentMethodNameFqn(final int offset)
 	{
 		final String currentClassName = getCurrentClassName(offset + 1);
-		final String currentMethodName = (_m != null) ? getCurrentMethodName_Main(offset + 1) : getCurrentMethodName_Backup(offset + 1);
+		final String currentMethodName = _m != null ? getCurrentMethodName_Main(offset + 1) : getCurrentMethodName_Backup(offset + 1);
 
 		return currentClassName + "." + currentMethodName;
 	}

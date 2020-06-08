@@ -21,10 +21,10 @@ import org.junit.Test;
  */
 public class LintPatternLoaderTest
 {
-	private static final String MOCK_AXIOM_LINT_PATTERN_NAME = MockAxiomLintPattern.class.getName();
-	private static final String MOCK_ONTOLOGY_LINT_PATTERN_NAME = MockOntologyLintPattern.class.getName();
-	private static final String INT_PARAM = "IntParam";
-	private static final String STRING_PARAM = "StringParam";
+	private static final String	MOCK_AXIOM_LINT_PATTERN_NAME	= MockAxiomLintPattern.class.getName();
+	private static final String	MOCK_ONTOLOGY_LINT_PATTERN_NAME	= MockOntologyLintPattern.class.getName();
+	private static final String	INT_PARAM						= "IntParam";
+	private static final String	STRING_PARAM					= "StringParam";
 
 	@Test
 	public void testAxiomLintPatternSuccess()

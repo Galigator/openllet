@@ -50,41 +50,41 @@ import org.semanticweb.owlapi.vocab.OWL2Datatype;
  */
 public class OWLAPIAxiomConversionTests
 {
-	public static String base = "file:" + PelletTestSuite.base + "misc/";
+	public static String				base			= "file:" + PelletTestSuite.base + "misc/";
 
-	private static String ns = "urn:test#";
+	private static String				ns				= "urn:test#";
 
-	private static OWLOntologyManager _manager = OWLManager.createOWLOntologyManager();
+	private static OWLOntologyManager	_manager		= OWLManager.createOWLOntologyManager();
 
-	private static OWLDataFactory _factory = _manager.getOWLDataFactory();
+	private static OWLDataFactory		_factory		= _manager.getOWLDataFactory();
 
-	private static OWLClass c1 = _factory.getOWLClass(IRI.create(ns + "c1"));
+	private static OWLClass				c1				= _factory.getOWLClass(IRI.create(ns + "c1"));
 
-	private static OWLClass c2 = _factory.getOWLClass(IRI.create(ns + "c2"));
+	private static OWLClass				c2				= _factory.getOWLClass(IRI.create(ns + "c2"));
 
-	private static OWLClass c3 = _factory.getOWLClass(IRI.create(ns + "c3"));
+	private static OWLClass				c3				= _factory.getOWLClass(IRI.create(ns + "c3"));
 
-	private static OWLObjectProperty _op1 = _factory.getOWLObjectProperty(IRI.create(ns + "op1"));
+	private static OWLObjectProperty	_op1			= _factory.getOWLObjectProperty(IRI.create(ns + "op1"));
 
-	private static OWLObjectProperty _op2 = _factory.getOWLObjectProperty(IRI.create(ns + "op2"));
+	private static OWLObjectProperty	_op2			= _factory.getOWLObjectProperty(IRI.create(ns + "op2"));
 
-	private static OWLDataProperty _dp1 = _factory.getOWLDataProperty(IRI.create(ns + "dp1"));
+	private static OWLDataProperty		_dp1			= _factory.getOWLDataProperty(IRI.create(ns + "dp1"));
 
-	private static OWLDataProperty _dp2 = _factory.getOWLDataProperty(IRI.create(ns + "dp2"));
+	private static OWLDataProperty		_dp2			= _factory.getOWLDataProperty(IRI.create(ns + "dp2"));
 
-	private static OWLIndividual _ind1 = _factory.getOWLNamedIndividual(IRI.create(ns + "ind1"));
+	private static OWLIndividual		_ind1			= _factory.getOWLNamedIndividual(IRI.create(ns + "ind1"));
 
-	private static OWLIndividual _ind2 = _factory.getOWLNamedIndividual(IRI.create(ns + "ind2"));
+	private static OWLIndividual		_ind2			= _factory.getOWLNamedIndividual(IRI.create(ns + "ind2"));
 
-	private static OWLIndividual _ind3 = _factory.getOWLNamedIndividual(IRI.create(ns + "ind3"));
+	private static OWLIndividual		_ind3			= _factory.getOWLNamedIndividual(IRI.create(ns + "ind3"));
 
-	private static OWLIndividual _ind4 = _factory.getOWLNamedIndividual(IRI.create(ns + "ind4"));
+	private static OWLIndividual		_ind4			= _factory.getOWLNamedIndividual(IRI.create(ns + "ind4"));
 
-	private static OWLLiteral _lit1 = _factory.getOWLLiteral("lit1", OWL2Datatype.XSD_STRING);
+	private static OWLLiteral			_lit1			= _factory.getOWLLiteral("lit1", OWL2Datatype.XSD_STRING);
 
-	private static OWLDatatype _d1 = _factory.getOWLDatatype(IRI.create(ns + "d1"));
+	private static OWLDatatype			_d1				= _factory.getOWLDatatype(IRI.create(ns + "d1"));
 
-	private static boolean DEFAULT_TRACING = OpenlletOptions.USE_TRACING;
+	private static boolean				DEFAULT_TRACING	= OpenlletOptions.USE_TRACING;
 
 	public static junit.framework.Test suite()
 	{
@@ -124,8 +124,7 @@ public class OWLAPIAxiomConversionTests
 		}
 		finally
 		{
-			if (ont != null)
-				_manager.removeOntology(ont);
+			if (ont != null) _manager.removeOntology(ont);
 		}
 	}
 

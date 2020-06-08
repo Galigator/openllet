@@ -21,8 +21,8 @@ import openllet.core.utils.Namespaces;
 public class XSDNormalizedString extends AbstractBaseDatatype<ATermAppl>
 {
 
-	private static final XSDNormalizedString instance = new XSDNormalizedString();
-	private static final RDFPlainLiteral RDF_PLAIN_LITERAL = RDFPlainLiteral.getInstance();
+	private static final XSDNormalizedString	instance			= new XSDNormalizedString();
+	private static final RDFPlainLiteral		RDF_PLAIN_LITERAL	= RDFPlainLiteral.getInstance();
 
 	static
 	{

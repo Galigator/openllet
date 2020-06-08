@@ -22,17 +22,16 @@ public class TestUtils
 	public static ATermAppl selectRandomConcept(final Individual ind)
 	{
 		final ATermAppl[] types = ind.types()//
-				.filter(clazz -> !((clazz == ATermUtils.TOP) || (clazz == ATermUtils.BOTTOM)))//
+				.filter(clazz -> !(clazz == ATermUtils.TOP || clazz == ATermUtils.BOTTOM))//
 				.toArray(ATermAppl[]::new);
 		ATermAppl clazz = null;
 		final int MAX = 20;
 		int count = 0;
-		if (types.length > 0)
-			do
-			{
-				count++;
-				clazz = types[_rand.nextInt(types.length)];
-			} while (count < MAX);
+		if (types.length > 0) do
+		{
+			count++;
+			clazz = types[_rand.nextInt(types.length)];
+		} while (count < MAX);
 
 		return clazz;
 	}
@@ -42,9 +41,8 @@ public class TestUtils
 		final ATermAppl[] classes = kb.getTBox().allClasses().toArray(ATermAppl[]::new);
 		ATermAppl clazz = null;
 		do
-		{
 			clazz = classes[_rand.nextInt(classes.length)];
-		} while ((clazz == ATermUtils.TOP) || (clazz == ATermUtils.BOTTOM));
+		while (clazz == ATermUtils.TOP || clazz == ATermUtils.BOTTOM);
 
 		return clazz;
 	}
@@ -56,9 +54,8 @@ public class TestUtils
 		final List<Role> roles = new ArrayList<>(kb.getRBox().getRoles().values());
 		Role role = null;
 		do
-		{
 			role = roles.get(_rand.nextInt(roles.size()));
-		} while (!role.isObjectRole());
+		while (!role.isObjectRole());
 
 		return role.getName();
 	}

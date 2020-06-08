@@ -69,16 +69,15 @@ public class NumericAdapter implements Function
 		promoter.accept(visitor);
 
 		result = visitor.getResult();
-		if (result != null)
-			if (expected != null)
-				resultLit = expected;
-			else
-			{
-				final NumberToLiteralVisitor converter = new NumberToLiteralVisitor(abox);
-				promoter.promote(result);
-				promoter.accept(converter);
-				resultLit = converter.getLiteral();
-			}
+		if (result != null) if (expected != null)
+			resultLit = expected;
+		else
+		{
+			final NumberToLiteralVisitor converter = new NumberToLiteralVisitor(abox);
+			promoter.promote(result);
+			promoter.accept(converter);
+			resultLit = converter.getLiteral();
+		}
 
 		return resultLit;
 	}

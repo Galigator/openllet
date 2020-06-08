@@ -59,24 +59,24 @@ import openllet.shared.tools.Log;
  */
 public class RoleTaxonomyBuilder
 {
-	protected static Logger _logger = Log.getLogger(RoleTaxonomyBuilder.class);
+	protected static Logger			_logger						= Log.getLogger(RoleTaxonomyBuilder.class);
 
-	public static final ATermAppl TOP_ANNOTATION_PROPERTY = ATermUtils.makeTermAppl("_TOP_ANNOTATION_PROPERTY_");
-	public static final ATermAppl BOTTOM_ANNOTATION_PROPERTY = ATermUtils.makeTermAppl("_BOTTOM_ANNOTATION_PROPERTY_");
+	public static final ATermAppl	TOP_ANNOTATION_PROPERTY		= ATermUtils.makeTermAppl("_TOP_ANNOTATION_PROPERTY_");
+	public static final ATermAppl	BOTTOM_ANNOTATION_PROPERTY	= ATermUtils.makeTermAppl("_BOTTOM_ANNOTATION_PROPERTY_");
 
-	private static enum Propagate
+	private enum Propagate
 	{
 		UP, DOWN, NONE
 	}
 
-	protected Collection<Role> _properties;
+	protected Collection<Role>		_properties;
 
-	protected Taxonomy<ATermAppl> _taxonomyImpl;
-	protected RBox _rbox;
-	protected Role _topRole;
-	protected Role _bottomRole;
-	protected PropertyType _propertyType;
-	private int count = 0;
+	protected Taxonomy<ATermAppl>	_taxonomyImpl;
+	protected RBox					_rbox;
+	protected Role					_topRole;
+	protected Role					_bottomRole;
+	protected PropertyType			_propertyType;
+	private int						count	= 0;
 
 	public RoleTaxonomyBuilder(final RBox rbox, final PropertyType type)
 	{
@@ -118,13 +118,11 @@ public class RoleTaxonomyBuilder
 
 	public Taxonomy<ATermAppl> classify()
 	{
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Properties: " + _properties.size());
+		if (_logger.isLoggable(Level.FINE)) _logger.fine("Properties: " + _properties.size());
 
 		for (final Role r : _properties)
 		{
-			if (_propertyType != r.getType())
-				continue;
+			if (_propertyType != r.getType()) continue;
 
 			classify(r);
 		}
@@ -134,23 +132,20 @@ public class RoleTaxonomyBuilder
 
 	private void classify(final Role c)
 	{
-		if (_taxonomyImpl.contains(c.getName()))
-			return;
+		if (_taxonomyImpl.contains(c.getName())) return;
 
-		if (_logger.isLoggable(Level.FINER))
-			_logger.finer("Property (" + (++count) + ") " + c + "...");
+		if (_logger.isLoggable(Level.FINER)) _logger.finer("Property (" + (++count) + ") " + c + "...");
 
 		if (null != _topRole && c.getSubRoles().contains(_topRole))
 		{
 			_taxonomyImpl.addEquivalentNode(c.getName(), _taxonomyImpl.getTop());
 			return;
 		}
-		else
-			if (null != _bottomRole && c.getSuperRoles().contains(_bottomRole))
-			{
-				_taxonomyImpl.addEquivalentNode(c.getName(), _taxonomyImpl.getBottomNode());
-				return;
-			}
+		else if (null != _bottomRole && c.getSuperRoles().contains(_bottomRole))
+		{
+			_taxonomyImpl.addEquivalentNode(c.getName(), _taxonomyImpl.getBottomNode());
+			return;
+		}
 
 		Map<TaxonomyNode<ATermAppl>, Boolean> marked = new HashMap<>();
 		mark(_taxonomyImpl.getTop(), marked, Boolean.TRUE, Propagate.NONE);
@@ -191,7 +186,8 @@ public class RoleTaxonomyBuilder
 		_taxonomyImpl.addNode(Collections.singleton(c.getName()), supers, subs, /* hidden = */false);
 	}
 
-	private Collection<TaxonomyNode<ATermAppl>> search(final boolean topSearch, final Role c, final TaxonomyNode<ATermAppl> x, final Set<TaxonomyNode<ATermAppl>> visited, final List<TaxonomyNode<ATermAppl>> result, final Map<TaxonomyNode<ATermAppl>, Boolean> marked)
+	private Collection<TaxonomyNode<ATermAppl>> search(final boolean topSearch, final Role c, final TaxonomyNode<ATermAppl> x, final Set<TaxonomyNode<ATermAppl>> visited,
+			final List<TaxonomyNode<ATermAppl>> result, final Map<TaxonomyNode<ATermAppl>, Boolean> marked)
 	{
 		final List<TaxonomyNode<ATermAppl>> posSucc = new ArrayList<>();
 		visited.add(x);
@@ -200,19 +196,15 @@ public class RoleTaxonomyBuilder
 		for (final TaxonomyNode<ATermAppl> next : list)
 			if (topSearch)
 			{
-				if (subsumes(next, c, marked))
-					posSucc.add(next);
+				if (subsumes(next, c, marked)) posSucc.add(next);
 			}
-			else
-				if (subsumed(next, c, marked))
-					posSucc.add(next);
+			else if (subsumed(next, c, marked)) posSucc.add(next);
 
 		if (posSucc.isEmpty())
 			result.add(x);
 		else
 			for (final TaxonomyNode<ATermAppl> y : posSucc)
-				if (!visited.contains(y))
-					search(topSearch, c, y, visited, result, marked);
+				if (!visited.contains(y)) search(topSearch, c, y, visited, result, marked);
 
 		return result;
 	}
@@ -220,8 +212,7 @@ public class RoleTaxonomyBuilder
 	private boolean subsumes(final TaxonomyNode<ATermAppl> node, final Role c, final Map<TaxonomyNode<ATermAppl>, Boolean> marked)
 	{
 		final Boolean cached = marked.get(node);
-		if (cached != null)
-			return cached.booleanValue();
+		if (cached != null) return cached;
 
 		// check subsumption
 		final boolean subsumes = subsumes(_rbox.getRole(node.getName()), c);
@@ -238,8 +229,7 @@ public class RoleTaxonomyBuilder
 	private boolean subsumed(final TaxonomyNode<ATermAppl> node, final Role c, final Map<TaxonomyNode<ATermAppl>, Boolean> marked)
 	{
 		final Boolean cached = marked.get(node);
-		if (cached != null)
-			return cached.booleanValue();
+		if (cached != null) return cached;
 
 		// check subsumption
 		final boolean subsumed = subsumes(c, _rbox.getRole(node.getName()));
@@ -256,11 +246,10 @@ public class RoleTaxonomyBuilder
 	private void mark(final TaxonomyNode<ATermAppl> node, final Map<TaxonomyNode<ATermAppl>, Boolean> marked, final Boolean value, final Propagate propagate)
 	{
 		final Boolean exists = marked.get(node);
-		if (exists != null)
-			if (!exists.equals(value))
-				throw new OpenError("Inconsistent classification result " + node.getName() + " " + exists + " " + value);
-			else
-				return;
+		if (exists != null) if (!exists.equals(value))
+			throw new OpenError("Inconsistent classification result " + node.getName() + " " + exists + " " + value);
+		else
+			return;
 		marked.put(node, value);
 
 		if (propagate != Propagate.NONE)

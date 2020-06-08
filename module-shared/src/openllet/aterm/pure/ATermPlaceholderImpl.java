@@ -5,14 +5,14 @@
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
- *     * Redistributions of source code must retain the above copyright
- *       notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the University of California, Berkeley nor the
- *       names of its contributors may be used to endorse or promote products
- *       derived from this software without specific prior written permission.
+ * * Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following disclaimer.
+ * * Redistributions in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in the
+ * documentation and/or other materials provided with the distribution.
+ * * Neither the name of the University of California, Berkeley nor the
+ * names of its contributors may be used to endorse or promote products
+ * derived from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -29,7 +29,6 @@
 package openllet.aterm.pure;
 
 import java.util.List;
-
 import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
@@ -71,8 +70,7 @@ public class ATermPlaceholderImpl extends ATermImpl implements ATermPlaceholder
 		if (obj instanceof ATermPlaceholder)
 		{
 			final ATermPlaceholder peer = (ATermPlaceholder) obj;
-			if (peer.getType() != getType())
-				return false;
+			if (peer.getType() != getType()) return false;
 
 			return peer.getPlaceholder() == _type;
 		}
@@ -110,74 +108,73 @@ public class ATermPlaceholderImpl extends ATermImpl implements ATermPlaceholder
 
 		if (!fun.isQuoted())
 		{
-			if (fun.getArity() == 0)
-				switch (name)
+			if (fun.getArity() == 0) switch (name)
+			{
+				case "term":
 				{
-					case "term":
-					{
-						final ATerm t = (ATerm) args.get(0);
-						args.remove(0);
-						return t;
-					}
-					case "list":
-					{
-						final ATermList l = (ATermList) args.get(0);
-						args.remove(0);
-						return l;
-					}
-					case "bool":
-					{
-						final Boolean b = (Boolean) args.get(0);
-						args.remove(0);
-						return _factory.makeAppl(_factory.makeAFun(b.toString(), 0, false));
-					}
-					case "int":
-					{
-						final Integer i = (Integer) args.get(0);
-						args.remove(0);
-						return _factory.makeInt(i.intValue());
-					}
-					case "real":
-					{
-						final Double d = (Double) args.get(0);
-						args.remove(0);
-						return _factory.makeReal(d.doubleValue());
-					}
-					case "blob":
-					{
-						final byte[] data = (byte[]) args.get(0);
-						args.remove(0);
-						return _factory.makeBlob(data);
-					}
-					case "placeholder":
-					{
-						final ATerm t = (ATerm) args.get(0);
-						args.remove(0);
-						return _factory.makePlaceholder(t);
-					}
-					case "str":
-					{
-						final String str = (String) args.get(0);
-						args.remove(0);
-						return _factory.makeAppl(_factory.makeAFun(str, 0, true));
-					}
-					case "id":
-					{
-						final String str = (String) args.get(0);
-						args.remove(0);
-						return _factory.makeAppl(_factory.makeAFun(str, 0, false));
-					}
-					case "fun":
-					{
-						final String str = (String) args.get(0);
-						args.remove(0);
-						return _factory.makeAppl(_factory.makeAFun(str, 0, false));
-					}
-					default:
-					{
-						throw new OpenError("Unknow ATerm function name : " + name);
-					}
+					final ATerm t = (ATerm) args.get(0);
+					args.remove(0);
+					return t;
 				}
+				case "list":
+				{
+					final ATermList l = (ATermList) args.get(0);
+					args.remove(0);
+					return l;
+				}
+				case "bool":
+				{
+					final Boolean b = (Boolean) args.get(0);
+					args.remove(0);
+					return _factory.makeAppl(_factory.makeAFun(b.toString(), 0, false));
+				}
+				case "int":
+				{
+					final Integer i = (Integer) args.get(0);
+					args.remove(0);
+					return _factory.makeInt(i);
+				}
+				case "real":
+				{
+					final Double d = (Double) args.get(0);
+					args.remove(0);
+					return _factory.makeReal(d);
+				}
+				case "blob":
+				{
+					final byte[] data = (byte[]) args.get(0);
+					args.remove(0);
+					return _factory.makeBlob(data);
+				}
+				case "placeholder":
+				{
+					final ATerm t = (ATerm) args.get(0);
+					args.remove(0);
+					return _factory.makePlaceholder(t);
+				}
+				case "str":
+				{
+					final String str = (String) args.get(0);
+					args.remove(0);
+					return _factory.makeAppl(_factory.makeAFun(str, 0, true));
+				}
+				case "id":
+				{
+					final String str = (String) args.get(0);
+					args.remove(0);
+					return _factory.makeAppl(_factory.makeAFun(str, 0, false));
+				}
+				case "fun":
+				{
+					final String str = (String) args.get(0);
+					args.remove(0);
+					return _factory.makeAppl(_factory.makeAFun(str, 0, false));
+				}
+				default:
+				{
+					throw new OpenError("Unknow ATerm function name : " + name);
+				}
+			}
 			if ("appl".equals(name))
 			{
 				final ATermList oldargs = appl.getArguments();
@@ -223,8 +220,7 @@ public class ATermPlaceholderImpl extends ATermImpl implements ATermPlaceholder
 	@Override
 	public ATerm setSubTerm(final int index, final ATerm t)
 	{
-		if (index == 1)
-			return setPlaceholder(t);
+		if (index == 1) return setPlaceholder(t);
 		throw new OpenError("no " + index + "-th child!");
 	}
 

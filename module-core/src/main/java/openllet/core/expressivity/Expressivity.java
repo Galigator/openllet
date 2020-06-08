@@ -49,41 +49,41 @@ public class Expressivity
 	/**
 	 * not (owl:complementOf) is used directly or indirectly
 	 */
-	private boolean _hasNegation = false;
-	private boolean _hasAllValues = false;
-	private boolean _hasDisjointClasses = false;
+	private boolean			_hasNegation			= false;
+	private boolean			_hasAllValues			= false;
+	private boolean			_hasDisjointClasses		= false;
 
 	/**
 	 * An inverse property has been defined or a property has been defined as InverseFunctional
 	 */
-	private boolean _hasInverse = false;
-	private boolean _hasFunctionality = false;
-	private boolean _hasCardinality = false;
-	private boolean _hasCardinalityQ = false;
-	private boolean _hasFunctionalityD = false;
-	private boolean _hasCardinalityD = false;
-	private boolean _hasTransitivity = false;
-	private boolean _hasRoleHierarchy = false;
-	private boolean _hasReflexivity = false;
-	private boolean _hasIrreflexivity = false;
-	private boolean _hasDisjointRoles = false;
-	private boolean _hasAsymmetry = false;
-	private boolean _hasComplexSubRoles = false;
-	private boolean _hasDatatype = false;
-	private boolean _hasUserDefinedDatatype = false;
+	private boolean			_hasInverse				= false;
+	private boolean			_hasFunctionality		= false;
+	private boolean			_hasCardinality			= false;
+	private boolean			_hasCardinalityQ		= false;
+	private boolean			_hasFunctionalityD		= false;
+	private boolean			_hasCardinalityD		= false;
+	private boolean			_hasTransitivity		= false;
+	private boolean			_hasRoleHierarchy		= false;
+	private boolean			_hasReflexivity			= false;
+	private boolean			_hasIrreflexivity		= false;
+	private boolean			_hasDisjointRoles		= false;
+	private boolean			_hasAsymmetry			= false;
+	private boolean			_hasComplexSubRoles		= false;
+	private boolean			_hasDatatype			= false;
+	private boolean			_hasUserDefinedDatatype	= false;
 
-	private boolean _hasKeys = false;
+	private boolean			_hasKeys				= false;
 
-	private boolean _hasDomain = false;
-	private boolean _hasRange = false;
+	private boolean			_hasDomain				= false;
+	private boolean			_hasRange				= false;
 
-	private boolean _hasIndividual = false;
+	private boolean			_hasIndividual			= false;
 	/**
 	 * The set of individuals in the ABox that have been used as nominals, i.e. in an owl:oneOf enumeration or target of owl:hasValue restriction
 	 */
-	private Set<ATermAppl> _nominals = new HashSet<>();
+	private Set<ATermAppl>	_nominals				= new HashSet<>();
 
-	private Set<ATermAppl> _anonInverses = new HashSet<>();
+	private Set<ATermAppl>	_anonInverses			= new HashSet<>();
 
 	public Expressivity()
 	{
@@ -136,49 +136,36 @@ public class Expressivity
 
 			if (_hasComplexSubRoles || _hasReflexivity || _hasDomain || _hasRange || _hasDisjointClasses)
 				dl += "+";
-			else
-				if (_hasRoleHierarchy)
-					dl += "H";
+			else if (_hasRoleHierarchy) dl += "H";
 		}
 		else
 		{
 			dl = "AL";
 
-			if (_hasNegation)
-				dl = "ALC";
+			if (_hasNegation) dl = "ALC";
 
-			if (_hasTransitivity)
-				dl += "R+";
+			if (_hasTransitivity) dl += "R+";
 
-			if ("ALCR+".equals(dl))
-				dl = "S";
+			if ("ALCR+".equals(dl)) dl = "S";
 
 			if (_hasComplexSubRoles)
 				dl = "SR";
-			else
-				if (_hasRoleHierarchy)
-					dl += "H";
+			else if (_hasRoleHierarchy) dl += "H";
 
-			if (hasNominal())
-				dl += "O";
+			if (hasNominal()) dl += "O";
 
-			if (_hasInverse)
-				dl += "I";
+			if (_hasInverse) dl += "I";
 
 			if (_hasCardinalityQ)
 				dl += "Q";
-			else
-				if (_hasCardinality)
-					dl += "N";
-				else
-					if (_hasFunctionality)
-						dl += "F";
+			else if (_hasCardinality)
+				dl += "N";
+			else if (_hasFunctionality) dl += "F";
 
-			if (_hasDatatype)
-				if (_hasKeys)
-					dl += "(Dk)";
-				else
-					dl += "(D)";
+			if (_hasDatatype) if (_hasKeys)
+				dl += "(Dk)";
+			else
+				dl += "(D)";
 		}
 
 		return dl;
@@ -342,8 +329,7 @@ public class Expressivity
 
 	public void setHasUserDefinedDatatype(final boolean v)
 	{
-		if (v)
-			setHasDatatype(true);
+		if (v) setHasDatatype(true);
 		_hasUserDefinedDatatype = v;
 	}
 

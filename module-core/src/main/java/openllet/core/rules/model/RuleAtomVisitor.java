@@ -22,31 +22,31 @@ package openllet.core.rules.model;
 public interface RuleAtomVisitor
 {
 
-	default public void visit(@SuppressWarnings("unused") final BuiltInAtom atom)
+	default void visit(@SuppressWarnings("unused") final BuiltInAtom atom)
 	{//
 	}
 
-	default public void visit(@SuppressWarnings("unused") final ClassAtom atom)
+	default void visit(@SuppressWarnings("unused") final ClassAtom atom)
 	{//
 	}
 
-	default public void visit(@SuppressWarnings("unused") final DataRangeAtom atom)
+	default void visit(@SuppressWarnings("unused") final DataRangeAtom atom)
 	{//
 	}
 
-	default public void visit(@SuppressWarnings("unused") final DatavaluedPropertyAtom atom)
+	default void visit(@SuppressWarnings("unused") final DatavaluedPropertyAtom atom)
 	{//
 	}
 
-	default public void visit(@SuppressWarnings("unused") final DifferentIndividualsAtom atom)
+	default void visit(@SuppressWarnings("unused") final DifferentIndividualsAtom atom)
 	{//
 	}
 
-	default public void visit(@SuppressWarnings("unused") final IndividualPropertyAtom atom)
+	default void visit(@SuppressWarnings("unused") final IndividualPropertyAtom atom)
 	{//
 	}
 
-	default public void visit(@SuppressWarnings("unused") final SameIndividualAtom atom)
+	default void visit(@SuppressWarnings("unused") final SameIndividualAtom atom)
 	{//
 	}
 }

@@ -19,12 +19,12 @@ public class TypeDependency implements Dependency
 	/**
 	 * The _type
 	 */
-	private final ATermAppl _type;
+	private final ATermAppl	_type;
 
 	/**
 	 * The _individual
 	 */
-	private final ATermAppl _ind;
+	private final ATermAppl	_ind;
 
 	/**
 	 * Constructor

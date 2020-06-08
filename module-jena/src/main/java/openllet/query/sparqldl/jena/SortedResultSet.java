@@ -30,13 +30,13 @@ import org.apache.jena.sparql.engine.binding.BindingComparator;
  */
 public class SortedResultSet implements ResultSet
 {
-	private final List<Binding> sortedRows;
+	private final List<Binding>		sortedRows;
 
-	private final Iterator<Binding> iterator;
+	private final Iterator<Binding>	iterator;
 
-	private final int row;
+	private final int				row;
 
-	private final List<String> resultVars;
+	private final List<String>		resultVars;
 
 	public SortedResultSet(final ResultSet results, final List<SortCondition> sortConditions)
 	{

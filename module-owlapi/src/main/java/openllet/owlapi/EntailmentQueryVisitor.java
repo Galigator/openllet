@@ -27,11 +27,11 @@ import org.semanticweb.owlapi.model.OWLSameIndividualAxiom;
 
 public class EntailmentQueryVisitor implements OWLAxiomVisitor, FacetReasonerOWL
 {
-	private final IndividualTermConverter _indConv;
+	private final IndividualTermConverter	_indConv;
 
-	private final OpenlletReasoner _reasoner;
+	private final OpenlletReasoner			_reasoner;
 
-	private Query _query;
+	private Query							_query;
 
 	@Override
 	public OpenlletReasoner getReasoner()

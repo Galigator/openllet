@@ -28,5 +28,5 @@ import openllet.shared.tools.Log;
  */
 public interface BindingGenerator extends Iterable<VariableBinding>
 {
-	public final static Logger _logger = Log.getLogger(ABoxImpl.class); // We took the logger of the abox; also the logger is public to allow rules to use it !
+	Logger _logger = Log.getLogger(ABoxImpl.class); // We took the logger of the abox; also the logger is public to allow rules to use it !
 }

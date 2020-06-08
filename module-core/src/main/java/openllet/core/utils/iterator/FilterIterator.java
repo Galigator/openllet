@@ -11,17 +11,17 @@ import java.util.NoSuchElementException;
  * Company: Clark & Parsia, LLC. <http://www.clarkparsia.com>
  * </p>
  *
- * @author Evren Sirin
- * @param <T> kind of element
+ * @author     Evren Sirin
+ * @param  <T> kind of element
  */
 public abstract class FilterIterator<T> implements Iterator<T>
 {
-	private final Iterator<T> _iterator;
+	private final Iterator<T>	_iterator;
 
 	/**
 	 * Next element to be returned, or null if _iterator is consumed
 	 */
-	private T _next;
+	private T					_next;
 
 	public FilterIterator(final Iterator<T> iterator)
 	{
@@ -30,16 +30,14 @@ public abstract class FilterIterator<T> implements Iterator<T>
 
 	private void findNext()
 	{
-		if (_next != null)
-			return;
+		if (_next != null) return;
 
 		while (_iterator.hasNext())
 		{
 			_next = _iterator.next();
 
 			// if this element is filter
-			if (!filter(_next))
-				return;
+			if (!filter(_next)) return;
 		}
 
 		_next = null;
@@ -56,8 +54,7 @@ public abstract class FilterIterator<T> implements Iterator<T>
 	@Override
 	public T next()
 	{
-		if (!hasNext())
-			throw new NoSuchElementException();
+		if (!hasNext()) throw new NoSuchElementException();
 
 		final T result = _next;
 		_next = null;

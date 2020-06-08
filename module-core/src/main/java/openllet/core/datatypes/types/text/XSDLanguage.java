@@ -21,8 +21,8 @@ import openllet.core.utils.Namespaces;
 public class XSDLanguage extends AbstractBaseDatatype<ATermAppl>
 {
 
-	private static final XSDLanguage instance = new XSDLanguage();
-	private static final RDFPlainLiteral RDF_PLAIN_LITERAL = RDFPlainLiteral.getInstance();
+	private static final XSDLanguage		instance			= new XSDLanguage();
+	private static final RDFPlainLiteral	RDF_PLAIN_LITERAL	= RDFPlainLiteral.getInstance();
 
 	static
 	{

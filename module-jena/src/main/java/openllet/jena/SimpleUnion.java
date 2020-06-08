@@ -28,8 +28,7 @@ public class SimpleUnion extends Polyadic
 	protected boolean graphBaseContains(final Triple t)
 	{
 		for (final Graph g : m_subGraphs)
-			if (g.contains(t))
-				return true;
+			if (g.contains(t)) return true;
 
 		return false;
 	}
@@ -41,8 +40,7 @@ public class SimpleUnion extends Polyadic
 	public boolean isEmpty()
 	{
 		for (final Graph g : m_subGraphs)
-			if (!g.isEmpty())
-				return false;
+			if (!g.isEmpty()) return false;
 
 		return true;
 	}

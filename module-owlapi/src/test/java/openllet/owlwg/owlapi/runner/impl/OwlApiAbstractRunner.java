@@ -53,28 +53,27 @@ import org.semanticweb.owlapi.model.OWLOntology;
 public abstract class OwlApiAbstractRunner implements TestRunner<OWLOntology>
 {
 
-	private static final SerializationFormat[] formatList = new SerializationFormat[] { //
+	private static final SerializationFormat[]	formatList	= new SerializationFormat[] {				//
 			SerializationFormat.RDFXML, SerializationFormat.FUNCTIONAL, SerializationFormat.OWLXML };
 
-	protected static final Logger _logger = Log.getLogger(OwlApiAbstractRunner.class);
+	protected static final Logger				_logger		= Log.getLogger(OwlApiAbstractRunner.class);
 
-	private final Runner _runner;
-	protected long _timeout;
+	private final Runner						_runner;
+	protected long								_timeout;
 
 	protected abstract class AbstractTestAsRunnable<T extends TestCase<OWLOntology>> implements TestAsRunnable
 	{
 
-		protected TestRunResult _result;
-		protected final T _testcase;
-		protected Throwable _throwable;
-		protected final RunTestType _type;
+		protected TestRunResult		_result;
+		protected final T			_testcase;
+		protected Throwable			_throwable;
+		protected final RunTestType	_type;
 
 		public AbstractTestAsRunnable(final T testcase, final RunTestType type)
 		{
 			this._testcase = testcase;
 
-			if (!EnumSet.of(CONSISTENCY, INCONSISTENCY, NEGATIVE_ENTAILMENT, POSITIVE_ENTAILMENT).contains(type))
-				throw new IllegalArgumentException();
+			if (!EnumSet.of(CONSISTENCY, INCONSISTENCY, NEGATIVE_ENTAILMENT, POSITIVE_ENTAILMENT).contains(type)) throw new IllegalArgumentException();
 
 			this._type = type;
 			_result = null;
@@ -91,10 +90,8 @@ public abstract class OwlApiAbstractRunner implements TestRunner<OWLOntology>
 		@Override
 		public TestRunResult getResult() throws Throwable
 		{
-			if (_throwable != null)
-				throw _throwable;
-			if (_result == null)
-				throw new IllegalStateException();
+			if (_throwable != null) throw _throwable;
+			if (_result == null) throw new IllegalStateException();
 
 			return _result;
 		}
@@ -123,8 +120,7 @@ public abstract class OwlApiAbstractRunner implements TestRunner<OWLOntology>
 		{
 			_results = new TestRunResult[1];
 			_results[0] = runConsistencyTest(testcase);
-			if (null == _results[0])
-				throw new OpenError("Result[0] is null");
+			if (null == _results[0]) throw new OpenError("Result[0] is null");
 		}
 
 		@Override
@@ -132,8 +128,7 @@ public abstract class OwlApiAbstractRunner implements TestRunner<OWLOntology>
 		{
 			_results = new TestRunResult[1];
 			_results[0] = runInconsistencyTest(testcase);
-			if (null == _results[0])
-				throw new OpenError("Result[0] is null");
+			if (null == _results[0]) throw new OpenError("Result[0] is null");
 		}
 
 		@Override
@@ -141,11 +136,9 @@ public abstract class OwlApiAbstractRunner implements TestRunner<OWLOntology>
 		{
 			_results = new TestRunResult[2];
 			_results[0] = runConsistencyTest(testcase);
-			if (null == _results[0])
-				throw new OpenError("Result[0] is null");
+			if (null == _results[0]) throw new OpenError("Result[0] is null");
 			_results[1] = runEntailmentTest(testcase);
-			if (null == _results[1])
-				throw new OpenError("Result[1] is null");
+			if (null == _results[1]) throw new OpenError("Result[1] is null");
 		}
 
 		@Override
@@ -153,21 +146,19 @@ public abstract class OwlApiAbstractRunner implements TestRunner<OWLOntology>
 		{
 			_results = new TestRunResult[2];
 			_results[0] = runConsistencyTest(testcase);
-			if (null == _results[0])
-				throw new OpenError("Result[0] is null");
+			if (null == _results[0]) throw new OpenError("Result[0] is null");
 			_results[1] = runEntailmentTest(testcase);
-			if (null == _results[1])
-				throw new OpenError("Result[1] is null");
+			if (null == _results[1]) throw new OpenError("Result[1] is null");
 		}
 	}
 
 	protected interface TestAsRunnable extends Runnable
 	{
-		public TestRunResult getErrorResult(Throwable th);
+		TestRunResult getErrorResult(Throwable th);
 
-		public TestRunResult getResult() throws Throwable;
+		TestRunResult getResult() throws Throwable;
 
-		public TestRunResult getTimeoutResult();
+		TestRunResult getTimeoutResult();
 	}
 
 	protected class XConsistencyTest extends AbstractTestAsRunnable<PremisedTest<OWLOntology>>
@@ -177,8 +168,7 @@ public abstract class OwlApiAbstractRunner implements TestRunner<OWLOntology>
 		{
 			super(testcase, type);
 
-			if (!EnumSet.of(CONSISTENCY, INCONSISTENCY).contains(type))
-				throw new IllegalArgumentException();
+			if (!EnumSet.of(CONSISTENCY, INCONSISTENCY).contains(type)) throw new IllegalArgumentException();
 		}
 
 		@Override
@@ -203,7 +193,7 @@ public abstract class OwlApiAbstractRunner implements TestRunner<OWLOntology>
 				final long parseStart = System.currentTimeMillis();
 				o = _testcase.parsePremiseOntology(fmt);
 				final long parseEnd = System.currentTimeMillis();
-				System.err.println(_testcase.getIdentifier() + " parse time " + ((parseEnd - parseStart) / 1000));
+				System.err.println(_testcase.getIdentifier() + " parse time " + (parseEnd - parseStart) / 1000);
 			}
 			catch (final OntologyParseException e)
 			{
@@ -235,8 +225,7 @@ public abstract class OwlApiAbstractRunner implements TestRunner<OWLOntology>
 		{
 			super(testcase, type);
 
-			if (!EnumSet.of(POSITIVE_ENTAILMENT, NEGATIVE_ENTAILMENT).contains(type))
-				throw new IllegalArgumentException();
+			if (!EnumSet.of(POSITIVE_ENTAILMENT, NEGATIVE_ENTAILMENT).contains(type)) throw new IllegalArgumentException();
 		}
 
 		@Override
@@ -273,7 +262,7 @@ public abstract class OwlApiAbstractRunner implements TestRunner<OWLOntology>
 				premise = _testcase.parsePremiseOntology(pFmt);
 				conclusion = _testcase.parseConclusionOntology(cFmt);
 				final long parseEnd = System.currentTimeMillis();
-				System.err.println(_testcase.getIdentifier() + " parse time " + ((parseEnd - parseStart) / 1000));
+				System.err.println(_testcase.getIdentifier() + " parse time " + (parseEnd - parseStart) / 1000);
 			}
 			catch (final OntologyParseException e)
 			{

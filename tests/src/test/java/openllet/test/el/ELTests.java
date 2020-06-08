@@ -53,9 +53,9 @@ import org.junit.Test;
  */
 public class ELTests extends AbstractKBTests
 {
-	private static final Logger _logger = Log.getLogger(AbstractKBTests.class);
+	private static final Logger			_logger	= Log.getLogger(AbstractKBTests.class);
 
-	private static final ATermAppl[] X = new ATermAppl[5];
+	private static final ATermAppl[]	X		= new ATermAppl[5];
 
 	@BeforeClass
 	public static void initTerms()
@@ -900,7 +900,7 @@ public class ELTests extends AbstractKBTests
 
 		final KBLoader loader = new JenaLoader();
 
-		final KnowledgeBase kb = loader.createKB(new String[] { "file:" + PelletTestSuite.base + "misc/ticket-424-test-case.owl" });
+		final KnowledgeBase kb = loader.createKB("file:" + PelletTestSuite.base + "misc/ticket-424-test-case.owl");
 
 		final Taxonomy<ATermAppl> toldTaxonomy = kb.getToldTaxonomy();
 
@@ -973,7 +973,7 @@ public class ELTests extends AbstractKBTests
 
 			final KBLoader loader = new JenaLoader();
 
-			final KnowledgeBase kb = loader.createKB(new String[] { "file:" + PelletTestSuite.base + "misc/ticket-424-test-case.owl" });
+			final KnowledgeBase kb = loader.createKB("file:" + PelletTestSuite.base + "misc/ticket-424-test-case.owl");
 
 			assertEquals(SimplifiedELClassifier.class, kb.getTaxonomyBuilder().getClass());
 		}
@@ -997,7 +997,7 @@ public class ELTests extends AbstractKBTests
 
 			final KBLoader loader = new JenaLoader();
 
-			final KnowledgeBase kb = loader.createKB(new String[] { "file:" + PelletTestSuite.base + "misc/ticket-424-test-case.owl" });
+			final KnowledgeBase kb = loader.createKB("file:" + PelletTestSuite.base + "misc/ticket-424-test-case.owl");
 
 			assertFalse(SimplifiedELClassifier.class.equals(kb.getTaxonomyBuilder().getClass()));
 		}

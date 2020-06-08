@@ -53,17 +53,17 @@ import org.semanticweb.owlapi.reasoner.OWLReasoner;
  */
 public class TestUtils
 {
-	private final static boolean _randomDesactivated = false;
-	private final static Random _rand = new Random();
+	private final static boolean	_randomDesactivated	= false;
+	private final static Random		_rand				= new Random();
 
 	/**
 	 * Checks if there is a difference between two array of elements and prints a sorted, easy to read message showing the differences between two arrays. The
 	 * elements of the array are compared with toString() values so this function is suitable only if the array elements have a unique string representation.
 	 * For example, if the array element is a set then this function cannot be used reliabily.
 	 *
-	 * @param _expected _expected values
-	 * @param computed computed values
-	 * @return <code>true</code> if there is a difference between the modules
+	 * @param  _expected _expected values
+	 * @param  computed  computed values
+	 * @return           <code>true</code> if there is a difference between the modules
 	 */
 	public static <T> void assertToStringEquals(final String msg, final T[] expected, final T[] computed)
 	{
@@ -85,17 +85,16 @@ public class TestUtils
 				i++;
 				j++;
 			}
+			else if (comparator.compare(computed[i], expected[j]) < 0)
+			{
+				onlyInComputed.add(computed[i]);
+				i++;
+			}
 			else
-				if (comparator.compare(computed[i], expected[j]) < 0)
-				{
-					onlyInComputed.add(computed[i]);
-					i++;
-				}
-				else
-				{
-					onlyInExpected.add(expected[j]);
-					j++;
-				}
+			{
+				onlyInExpected.add(expected[j]);
+				j++;
+			}
 
 		while (i < computed.length)
 			onlyInComputed.add(computed[i++]);
@@ -136,8 +135,7 @@ public class TestUtils
 		int i = 0;
 		while (i < t_expected.length && i < t_actual.length)
 		{
-			if (!t_expected[i].equals(t_actual[i]))
-				return Optional.of(message + " : [expected is " + t_expected[i] + "] [actual is " + t_actual[i] + "]");
+			if (!t_expected[i].equals(t_actual[i])) return Optional.of(message + " : [expected is " + t_expected[i] + "] [actual is " + t_actual[i] + "]");
 			i++;
 		}
 
@@ -205,9 +203,9 @@ public class TestUtils
 	/**
 	 * Selects a set of random axioms from an ontology
 	 *
-	 * @param ontology is the repository of axioms
-	 * @param count number of axiom to return at max.
-	 * @return count random axioms or less
+	 * @param  ontology is the repository of axioms
+	 * @param  count    number of axiom to return at max.
+	 * @return          count random axioms or less
 	 */
 	public static Set<OWLAxiom> selectRandomAxioms(final OWLOntology ontology, final int count)
 	{
@@ -219,11 +217,9 @@ public class TestUtils
 		// get the size
 		final int N = list.size();
 
-		if (K > N)
-			throw new IllegalArgumentException(K + " > " + N);
+		if (K > N) throw new IllegalArgumentException(K + " > " + N);
 
-		if (_randomDesactivated)
-			return new HashSet<>(list.subList(0, K));
+		if (_randomDesactivated) return new HashSet<>(list.subList(0, K));
 
 		for (int k = 0; k < K; k++)
 		{
@@ -294,37 +290,37 @@ public class TestUtils
 
 	public static void runDisjointnessTest(final OWLOntology ontology, final ModuleExtractor modExtractor)
 	{
-		runComparisonTest(ontology, modExtractor, (expected, actual) -> assertDisjointnessEquals(expected, actual));
+		runComparisonTest(ontology, modExtractor, TestUtils::assertDisjointnessEquals);
 	}
 
 	public static void runDisjointnessUpdateTest(final OWLOntology ontology, final ModuleExtractor modExtractor, final Collection<OWLAxiom> additions, final Collection<OWLAxiom> deletions)
 	{
-		runComparisonUpdateTest(ontology, modExtractor, additions, deletions, (expected, actual) -> assertDisjointnessEquals(expected, actual));
+		runComparisonUpdateTest(ontology, modExtractor, additions, deletions, TestUtils::assertDisjointnessEquals);
 	}
 
 	public static void runInstancesTest(final OWLOntology ontology, final ModuleExtractor modExtractor)
 	{
-		runComparisonTest(ontology, modExtractor, (expected, actual) -> assertInstancesEquals(expected, actual));
+		runComparisonTest(ontology, modExtractor, TestUtils::assertInstancesEquals);
 	}
 
 	public static void runInstancesUpdateTest(final OWLOntology ontology, final ModuleExtractor modExtractor, final Collection<OWLAxiom> additions, final Collection<OWLAxiom> deletions)
 	{
-		runComparisonUpdateTest(ontology, modExtractor, additions, deletions, (expected, actual) -> assertInstancesEquals(expected, actual));
+		runComparisonUpdateTest(ontology, modExtractor, additions, deletions, TestUtils::assertInstancesEquals);
 	}
 
 	public static void runTypesTest(final OWLOntology ontology, final ModuleExtractor modExtractor)
 	{
-		runComparisonTest(ontology, modExtractor, (expected, actual) -> assertTypesEquals(expected, actual));
+		runComparisonTest(ontology, modExtractor, TestUtils::assertTypesEquals);
 	}
 
 	public static void runTypesUpdateTest(final OWLOntology ontology, final ModuleExtractor modExtractor, final Collection<OWLAxiom> additions, final Collection<OWLAxiom> deletions)
 	{
-		runComparisonUpdateTest(ontology, modExtractor, additions, deletions, (expected, actual) -> assertTypesEquals(expected, actual));
+		runComparisonUpdateTest(ontology, modExtractor, additions, deletions, TestUtils::assertTypesEquals);
 	}
 
 	public static void runUpdateTest(final OWLOntology ontology, final ModuleExtractor modExtractor, final Collection<OWLAxiom> additions, final Collection<OWLAxiom> deletions)
 	{
-		runComparisonUpdateTest(ontology, modExtractor, additions, deletions, (expected, actual) -> assertClassificationEquals(expected, actual));
+		runComparisonUpdateTest(ontology, modExtractor, additions, deletions, TestUtils::assertClassificationEquals);
 	}
 
 	private static void runComparisonTest(final OWLOntology ontology, final ModuleExtractor modExtractor, final ReasonerComparisonMethod comparisonMethod)
@@ -381,6 +377,6 @@ public class TestUtils
 
 	private interface ReasonerComparisonMethod
 	{
-		public void compare(OWLReasoner expected, OWLReasoner actual);
+		void compare(OWLReasoner expected, OWLReasoner actual);
 	}
 }

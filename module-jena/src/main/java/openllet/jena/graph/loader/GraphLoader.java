@@ -29,56 +29,56 @@ public interface GraphLoader
 	/**
 	 * Clear all internal caches (essentially used for mapping bnodes to ATerm structures)
 	 */
-	public void clear();
+	void clear();
 
 	/**
 	 * Get the Jena graph used in the loader.
 	 *
 	 * @return
 	 */
-	public Graph getGraph();
+	Graph getGraph();
 
 	/**
 	 * Returns the unsupported axioms ignored by the loader.
 	 *
 	 * @return
 	 */
-	public Set<String> getUnpportedFeatures();
+	Set<String> getUnpportedFeatures();
 
 	/**
 	 * Load the axioms from the Jena graphs to the given KB.
 	 *
 	 * @throws UnsupportedFeatureException
 	 */
-	public void load(final Iterable<Graph> graphs) throws UnsupportedFeatureException;
+	void load(final Iterable<Graph> graphs) throws UnsupportedFeatureException;
 
 	/**
 	 * Translate the given graph _node into an ATerm object.
 	 *
-	 * @param _node
+	 * @param  _node
 	 * @return
 	 */
-	public ATermAppl node2term(final Node node);
+	ATermAppl node2term(final Node node);
 
 	/**
 	 * Do the preprocessing steps necessary to _cache any information that will be used for loading.
 	 */
-	public void preprocess();
+	void preprocess();
 
 	/**
 	 * Set the graph that will be used during loading.
 	 *
 	 * @param graph
 	 */
-	public void setGraph(final Graph graph);
+	void setGraph(final Graph graph);
 
 	/**
 	 * Returns if the loader will load the Abox triples.
 	 *
 	 * @return boolean value indicating if ABox triples will be loaded
-	 * @see #setLoadABox(boolean)
+	 * @see    #setLoadABox(boolean)
 	 */
-	public boolean isLoadABox();
+	boolean isLoadABox();
 
 	/**
 	 * Sets the flag that tells the loader to skip ABox (instance) statements. Only TBox (class) and RBox (property) axioms will be loaded. Improves loading
@@ -86,19 +86,19 @@ public interface GraphLoader
 	 *
 	 * @param loadABox
 	 */
-	public void setLoadABox(final boolean loadABox);
+	void setLoadABox(final boolean loadABox);
 
-	public boolean isLoadTBox();
+	boolean isLoadTBox();
 
-	public void setLoadTBox(final boolean loadTBox);
+	void setLoadTBox(final boolean loadTBox);
 
 	/**
 	 * Returns if the loader will preprocess rdf:type triples.
 	 *
 	 * @return boolean value indicating if rdf:type triples will be preprocessed
-	 * @see #setPreprocessTypeTriples(boolean)
+	 * @see    #setPreprocessTypeTriples(boolean)
 	 */
-	public boolean isPreprocessTypeTriples();
+	boolean isPreprocessTypeTriples();
 
 	/**
 	 * This option forces the loader to process type triples before processing other triples. Not preprocessing the type triples improves loading time 5% to 10%
@@ -107,14 +107,14 @@ public interface GraphLoader
 	 * processed. These problems depend on the _order triples are processed and highly unpredictable. Loading the schema first with preprocessing and loading
 	 * the instance _data without preprocessing would be a viable option if schema and instance _data are in separate files.
 	 */
-	public void setPreprocessTypeTriples(final boolean preprocessTypeTriples);
+	void setPreprocessTypeTriples(final boolean preprocessTypeTriples);
 
 	/**
 	 * Set the progress monitor that will show the load progress.
 	 *
 	 * @param monitor
 	 */
-	public void setProgressMonitor(final ProgressMonitor monitor);
+	void setProgressMonitor(final ProgressMonitor monitor);
 
-	public void setKB(final KnowledgeBase kb);
+	void setKB(final KnowledgeBase kb);
 }

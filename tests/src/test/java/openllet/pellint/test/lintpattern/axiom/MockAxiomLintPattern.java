@@ -15,19 +15,19 @@ import openllet.pellint.lintpattern.axiom.AxiomLintPattern;
  */
 public class MockAxiomLintPattern extends AxiomLintPattern
 {
-	private int _intParam;
-	private String _stringParam;
+	private int		_intParam;
+	private String	_stringParam;
 
 	@Override
 	public String getName()
 	{
-		return this.toString();
+		return toString();
 	}
 
 	@Override
 	public String getDescription()
 	{
-		return this.toString();
+		return toString();
 	}
 
 	@Override

@@ -40,21 +40,21 @@ import org.apache.jena.sparql.engine.binding.BindingMap;
  */
 public class SparqlDLResultSet implements ResultSetRewindable
 {
-	private final Model _model;
+	private final Model				_model;
 
-	private final List<ATermAppl> _resultVars;
+	private final List<ATermAppl>	_resultVars;
 
-	private final List<String> _resultVarsString;
+	private final List<String>		_resultVarsString;
 
-	private final QueryResult _queryResult;
+	private final QueryResult		_queryResult;
 
-	private int _index;
+	private int						_index;
 
-	private Iterator<ResultBinding> _bindings;
+	private Iterator<ResultBinding>	_bindings;
 
-	private final Binding _parent;
+	private final Binding			_parent;
 
-	private QueryParameters _parameters;
+	private QueryParameters			_parameters;
 
 	public SparqlDLResultSet(final QueryResult answers, final Model model)
 	{
@@ -90,8 +90,7 @@ public class SparqlDLResultSet implements ResultSetRewindable
 		}
 
 		// Ensure initial _bindings is not a null pointer
-		if (parameters == null)
-			_parameters = new QueryParameters();
+		if (parameters == null) _parameters = new QueryParameters();
 	}
 
 	protected String getVarName(final ATermAppl term)
@@ -136,25 +135,22 @@ public class SparqlDLResultSet implements ResultSetRewindable
 
 				final ATermAppl value = binding.getValue(var);
 
-				if (value == null)
-					continue;
+				if (value == null) continue;
 
 				JenaUtils.makeGraphNode(value)//
 						.ifPresent(node -> result.add(Var.alloc(varName), node));
 			}
 
-		if (_resultVars.size() == 0)
-			for (final Entry<ATermAppl, ATermAppl> entry : _parameters.entrySet())
-			{
-				final ATermAppl term = entry.getKey();
+		if (_resultVars.size() == 0) for (final Entry<ATermAppl, ATermAppl> entry : _parameters.entrySet())
+		{
+			final ATermAppl term = entry.getKey();
 
-				final String varName = getVarName(term);
-				final Var var = Var.alloc(varName);
+			final String varName = getVarName(term);
+			final Var var = Var.alloc(varName);
 
-				if (!result.contains(var))
-					JenaUtils.makeGraphNode(entry.getValue())//
-							.ifPresent(node -> result.add(var, node));
-			}
+			if (!result.contains(var)) JenaUtils.makeGraphNode(entry.getValue())//
+					.ifPresent(node -> result.add(var, node));
+		}
 
 		return result;
 	}

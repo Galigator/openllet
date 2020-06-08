@@ -67,11 +67,11 @@ public class ParserTestParentQueries
 		return parameters;
 	}
 
-	private static KnowledgeBase _kb;
-	private static ARQParser _parser;
+	private static KnowledgeBase	_kb;
+	private static ARQParser		_parser;
 
-	private final String _sparqlFile;
-	private final String _sparqlOWLFile;
+	private final String			_sparqlFile;
+	private final String			_sparqlOWLFile;
 
 	public ParserTestParentQueries(final String sparqlFile, final String sparqlOWLFile)
 	{

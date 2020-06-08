@@ -5,14 +5,14 @@
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
- *     * Redistributions of source code must retain the above copyright
- *       notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the University of California, Berkeley nor the
- *       names of its contributors may be used to endorse or promote products
- *       derived from this software without specific prior written permission.
+ * * Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following disclaimer.
+ * * Redistributions in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in the
+ * documentation and/or other materials provided with the distribution.
+ * * Neither the name of the University of California, Berkeley nor the
+ * names of its contributors may be used to endorse or promote products
+ * derived from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -33,7 +33,6 @@ import java.io.OutputStream;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
-
 import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
@@ -50,15 +49,16 @@ import openllet.aterm.stream.BufferedOutputStreamWriter;
 class ATermWriter extends ATermFwdVoid
 {
 
-	private static char[] TOBASE64 = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '/' };
+	private static char[]						TOBASE64	= { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a',
+			'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '/' };
 
-	private final BufferedOutputStreamWriter stream;
+	private final BufferedOutputStreamWriter	stream;
 
-	private int position;
+	private int									position;
 
-	private Map<ATerm, Integer> table;
+	private Map<ATerm, Integer>					table;
 
-	private int next_abbrev;
+	private int									next_abbrev;
 
 	ATermWriter(final OutputStream stream)
 	{
@@ -78,8 +78,7 @@ class ATermWriter extends ATermFwdVoid
 
 		final StringBuilder buf = new StringBuilder();
 
-		if (abbrev == 0)
-			buf.append(TOBASE64[0]);
+		if (abbrev == 0) buf.append(TOBASE64[0]);
 
 		while (abbrev > 0)
 		{
@@ -98,7 +97,7 @@ class ATermWriter extends ATermFwdVoid
 			final Integer abbrev = table.get(child);
 			if (abbrev != null)
 			{
-				emitAbbrev(abbrev.intValue());
+				emitAbbrev(abbrev);
 				return;
 			}
 		}
@@ -119,8 +118,7 @@ class ATermWriter extends ATermFwdVoid
 		if (table != null)
 		{
 			final int length = position - start;
-			if (length > PureFactory.abbrevSize(next_abbrev))
-				table.put(child, next_abbrev++);
+			if (length > PureFactory.abbrevSize(next_abbrev)) table.put(child, next_abbrev++);
 		}
 	}
 

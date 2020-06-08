@@ -30,58 +30,56 @@ import org.apache.jena.vocabulary.OWL;
  */
 public class ClassTree
 {
-	private final OntModel _model;
+	private final OntModel			_model;
 
-	private Set<OntResource> _unsatConcepts;
+	private Set<OntResource>		_unsatConcepts;
 
 	// render the classes using the prefixes from the _model
-	private final TreeCellRenderer _treeCellRenderer = new DefaultTreeCellRenderer()
-	{
-		private static final long serialVersionUID = 5769333442039176739L;
+	private final TreeCellRenderer	_treeCellRenderer	= new DefaultTreeCellRenderer()
+														{
+															private static final long serialVersionUID = 1L;
 
-		@Override
-		@SuppressWarnings("unchecked")
-		public Component getTreeCellRendererComponent(final JTree tree, final Object value, final boolean sel, final boolean expanded, final boolean leaf, final int row, final boolean hasFocusParam)
-		{
+															@Override
+															@SuppressWarnings("unchecked")
+															public Component getTreeCellRendererComponent(final JTree tree, final Object value, final boolean sel, final boolean expanded,
+																	final boolean leaf, final int row, final boolean hasFocusParam)
+															{
 
-			super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocusParam);
+																super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocusParam);
 
-			final DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
+																final DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
 
-			// each _node represents a set of classes
-			final Set<OntResource> set = (Set<OntResource>) node.getUserObject();
-			final StringBuffer label = new StringBuffer();
+																// each _node represents a set of classes
+																final Set<OntResource> set = (Set<OntResource>) node.getUserObject();
+																final StringBuffer label = new StringBuffer();
 
-			// a set may contain one or more elements
-			if (set.size() > 1)
-				label.append("[");
-			final Iterator<OntResource> i = set.iterator();
+																// a set may contain one or more elements
+																if (set.size() > 1) label.append("[");
+																final Iterator<OntResource> i = set.iterator();
 
-			// get the first one and add it to the label
-			final OntResource first = i.next();
-			label.append(_model.shortForm(first.getURI()));
-			// add the rest (if they exist)
-			while (i.hasNext())
-			{
-				final OntResource c = i.next();
+																// get the first one and add it to the label
+																final OntResource first = i.next();
+																label.append(_model.shortForm(first.getURI()));
+																// add the rest (if they exist)
+																while (i.hasNext())
+																{
+																	final OntResource c = i.next();
 
-				label.append(" = ");
-				label.append(_model.shortForm(c.getURI()));
-			}
-			if (set.size() > 1)
-				label.append("]");
+																	label.append(" = ");
+																	label.append(_model.shortForm(c.getURI()));
+																}
+																if (set.size() > 1) label.append("]");
 
-			// show unsatisfiable concepts red
-			if (_unsatConcepts.contains(first))
-				setForeground(Color.RED);
+																// show unsatisfiable concepts red
+																if (_unsatConcepts.contains(first)) setForeground(Color.RED);
 
-			setText(label.toString());
-			setIcon(getDefaultClosedIcon());
+																setText(label.toString());
+																setIcon(getDefaultClosedIcon());
 
-			return this;
-		}
+																return this;
+															}
 
-	};
+														};
 
 	public ClassTree(final String ontology)
 	{
@@ -104,14 +102,13 @@ public class ClassTree
 		System.out.println("done");
 	}
 
-	public Set<OntResource> collect(final Iterator<?> i)
+	public static Set<OntResource> collect(final Iterator<?> i)
 	{
 		final Set<OntResource> set = new HashSet<>();
 		while (i.hasNext())
 		{
 			final OntResource res = (OntResource) i.next();
-			if (res.isAnon())
-				continue;
+			if (res.isAnon()) continue;
 
 			set.add(res);
 		}
@@ -144,8 +141,7 @@ public class ClassTree
 			{
 				final OntClass unsat = (OntClass) i.next();
 
-				if (unsat.equals(owlNothing))
-					continue;
+				if (unsat.equals(owlNothing)) continue;
 
 				final DefaultMutableTreeNode node = createSingletonNode(unsat);
 				nothing.add(node);
@@ -168,14 +164,13 @@ public class ClassTree
 
 	/**
 	 * Create a root node for the given concepts and add child nodes for the subclasses.
-	 * 
-	 * @param cls are classes of the tree.
-	 * @return null for owl:Nothing
+	 *
+	 * @param  cls are classes of the tree.
+	 * @return     null for owl:Nothing
 	 */
 	private DefaultMutableTreeNode createTree(final OntClass cls)
 	{
-		if (_unsatConcepts.contains(cls))
-			return null;
+		if (_unsatConcepts.contains(cls)) return null;
 
 		final DefaultMutableTreeNode root = createNode(cls);
 
@@ -187,11 +182,9 @@ public class ClassTree
 		{
 			final OntClass sub = (OntClass) subs.next();
 
-			if (sub.isAnon())
-				continue;
+			if (sub.isAnon()) continue;
 
-			if (processedSubs.contains(sub))
-				continue;
+			if (processedSubs.contains(sub)) continue;
 
 			final DefaultMutableTreeNode node = createTree(sub);
 			// if set contains owl:Nothing tree will be null
@@ -206,25 +199,25 @@ public class ClassTree
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private void add(final Set<?> processedSubs, Object set)
+	private static void add(final Set<?> processedSubs, final Object set)
 	{
 		processedSubs.addAll((Set) set);
 	}
 
 	/**
-	 * @param entity
-	 * @return a new TreeNode for the given class
+	 * @param  entity
+	 * @return        a new TreeNode for the given class
 	 */
-	private DefaultMutableTreeNode createSingletonNode(final OntResource cls)
+	private static DefaultMutableTreeNode createSingletonNode(final OntResource cls)
 	{
 		return new DefaultMutableTreeNode(Collections.singleton(cls));
 	}
 
 	/**
-	 * @param entity
-	 * @return a new TreeNode for the given set of classes
+	 * @param  entity
+	 * @return        a new TreeNode for the given set of classes
 	 */
-	private DefaultMutableTreeNode createNode(final OntClass cls)
+	private static DefaultMutableTreeNode createNode(final OntClass cls)
 	{
 		final Set<OntResource> eqs = collect(cls.listEquivalentClasses());
 

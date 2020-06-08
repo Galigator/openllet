@@ -25,7 +25,7 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
  * <p>
  * Company: Clark & Parsia, LLC. <a href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
  * </p>
- * 
+ *
  * @author Mike Smith &lt;msmith@clarkparsia.com&gt;
  */
 public abstract class OwlApixCTImpl extends AbstractPremisedTest<OWLOntology> implements OwlApiCase
@@ -33,7 +33,7 @@ public abstract class OwlApixCTImpl extends AbstractPremisedTest<OWLOntology> im
 
 	private final EnumMap<SerializationFormat, OWLOntology> parsedPremise;
 
-	public OwlApixCTImpl(OWLOntology ontology, OWLNamedIndividual i)
+	public OwlApixCTImpl(final OWLOntology ontology, final OWLNamedIndividual i)
 	{
 		super(ontology, i);
 
@@ -48,7 +48,7 @@ public abstract class OwlApixCTImpl extends AbstractPremisedTest<OWLOntology> im
 	}
 
 	@Override
-	public OWLOntology parsePremiseOntology(SerializationFormat format) throws OntologyParseException
+	public OWLOntology parsePremiseOntology(final SerializationFormat format) throws OntologyParseException
 	{
 		try
 		{
@@ -61,7 +61,7 @@ public abstract class OwlApixCTImpl extends AbstractPremisedTest<OWLOntology> im
 			if (o == null)
 			{
 				final String l = getPremiseOntology(format);
-				if (l == null) { return null; }
+				if (l == null) return null;
 
 				final StringDocumentSource source = new StringDocumentSource(l);
 				o = manager.loadOntologyFromOntologyDocument(source);

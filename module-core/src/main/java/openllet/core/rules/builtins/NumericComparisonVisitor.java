@@ -34,8 +34,7 @@ public class NumericComparisonVisitor implements NumericVisitor
 
 	private static void argCheck(final Number[] args)
 	{
-		if (args.length != 2)
-			throw new InternalReasonerException("Wrong number of arguments to comparison visitor.");
+		if (args.length != 2) throw new InternalReasonerException("Wrong number of arguments to comparison visitor.");
 	}
 
 	public int getComparison()

@@ -37,11 +37,10 @@ public class RDFModelWriter
 	{
 		if (v.isLiteral())
 			return ((Literal) v).getLexicalForm();
+		else if (v.isAnon())
+			return ANON_URI + v.asNode().getBlankNodeLabel();
 		else
-			if (v.isAnon())
-				return ANON_URI + v.asNode().getBlankNodeLabel();
-			else
-				return ((Resource) v).getURI();
+			return ((Resource) v).getURI();
 	}
 
 	public void write(final OutputStream out, final RDFModel m)

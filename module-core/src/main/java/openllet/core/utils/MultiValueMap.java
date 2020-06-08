@@ -21,9 +21,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * Company: Clark & Parsia, LLC. <http://www.clarkparsia.com>
  * </p>
  *
- * @author Evren Sirin
- * @param <K> key
- * @param <V> value
+ * @author     Evren Sirin
+ * @param  <K> key
+ * @param  <V> value
  */
 public class MultiValueMap<K, V> extends ConcurrentHashMap<K, Set<V>> implements MultiMap<K, V>
 {
@@ -92,8 +92,7 @@ public class MultiValueMap<K, V> extends ConcurrentHashMap<K, Set<V>> implements
 		{
 			removed = values.remove(value);
 
-			if (values.isEmpty())
-				super.remove(key);
+			if (values.isEmpty()) super.remove(key);
 		}
 
 		return removed;
@@ -102,8 +101,7 @@ public class MultiValueMap<K, V> extends ConcurrentHashMap<K, Set<V>> implements
 	public boolean contains(final K key, final V value)
 	{
 		final Set<V> values = get(key);
-		if (null == values)
-			return false;
+		if (null == values) return false;
 
 		return values.contains(value);
 	}
@@ -112,16 +110,15 @@ public class MultiValueMap<K, V> extends ConcurrentHashMap<K, Set<V>> implements
 	{
 		return new Iterator<>()
 		{
-			private final Iterator<Set<V>> _setIterator = values().iterator();
-			private volatile Iterator<V> _valueIterator = null;
+			private final Iterator<Set<V>>	_setIterator	= values().iterator();
+			private volatile Iterator<V>	_valueIterator	= null;
 
 			@Override
 			public boolean hasNext()
 			{
 				while (_valueIterator == null || !_valueIterator.hasNext())
 				{
-					if (!_setIterator.hasNext())
-						return false;
+					if (!_setIterator.hasNext()) return false;
 
 					_valueIterator = _setIterator.next().iterator();
 				}
@@ -131,8 +128,7 @@ public class MultiValueMap<K, V> extends ConcurrentHashMap<K, Set<V>> implements
 			@Override
 			public V next()
 			{
-				if (!hasNext())
-					throw new NoSuchElementException();
+				if (!hasNext()) throw new NoSuchElementException();
 
 				return _valueIterator.next();
 			}

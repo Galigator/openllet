@@ -68,16 +68,16 @@ public class GlassBoxExplanation extends SingleExplanationGeneratorImpl
 		OpenlletOptions.USE_TRACING = true;
 	}
 
-	public static final Logger _logger = Log.getLogger(GlassBoxExplanation.class);
+	public static final Logger		_logger				= Log.getLogger(GlassBoxExplanation.class);
 
 	/**
 	 * Alternative reasoner. We use a second reasoner because we do not want to lose the state in the original reasoner.
 	 */
-	private OpenlletReasoner _altReasoner = null;
+	private OpenlletReasoner		_altReasoner		= null;
 
-	private boolean _altReasonerEnabled = false;
+	private boolean					_altReasonerEnabled	= false;
 
-	private final AxiomConverter _axiomConverter;
+	private final AxiomConverter	_axiomConverter;
 
 	public GlassBoxExplanation(final OWLOntology ontology, final OpenlletReasonerFactory factory)
 	{
@@ -98,37 +98,32 @@ public class GlassBoxExplanation extends SingleExplanationGeneratorImpl
 
 	private void setAltReasonerEnabled(final boolean enabled)
 	{
-		if (enabled)
-			if (_altReasoner == null)
-			{
-				_logger.fine("Create alt reasoner");
-				_altReasoner = getReasonerFactory().createNonBufferingReasoner(getOntology());
-			}
+		if (enabled) if (_altReasoner == null)
+		{
+			_logger.fine("Create alt reasoner");
+			_altReasoner = getReasonerFactory().createNonBufferingReasoner(getOntology());
+		}
 
 		_altReasonerEnabled = enabled;
 	}
 
 	private OWLClass getNegation(final OWLClassExpression desc)
 	{
-		if (!(desc instanceof OWLObjectComplementOf))
-			return null;
+		if (!(desc instanceof OWLObjectComplementOf)) return null;
 
 		final OWLClassExpression not = ((OWLObjectComplementOf) desc).getOperand();
-		if (not.isAnonymous())
-			return null;
+		if (not.isAnonymous()) return null;
 
 		return (OWLClass) not;
 	}
 
 	private Pair<OWLClass, OWLClass> getSubClassAxiom(final OWLClassExpression desc)
 	{
-		if (!(desc instanceof OWLObjectIntersectionOf))
-			return null;
+		if (!(desc instanceof OWLObjectIntersectionOf)) return null;
 
 		final OWLObjectIntersectionOf conj = (OWLObjectIntersectionOf) desc;
 
-		if (conj.operands().count() != 2)
-			return null;
+		if (conj.operands().count() != 2) return null;
 
 		final Iterator<OWLClassExpression> conjuncts = conj.operands().iterator();
 		final OWLClassExpression c1 = conjuncts.next();
@@ -142,15 +137,13 @@ public class GlassBoxExplanation extends SingleExplanationGeneratorImpl
 			sub = (OWLClass) c1;
 			sup = getNegation(c2);
 		}
-		else
-			if (!c2.isAnonymous())
-			{
-				sub = (OWLClass) c2;
-				sup = getNegation(c2);
-			}
+		else if (!c2.isAnonymous())
+		{
+			sub = (OWLClass) c2;
+			sup = getNegation(c2);
+		}
 
-		if (sup == null)
-			return null;
+		if (sup == null) return null;
 
 		return new Pair<>(sub, sup);
 	}
@@ -159,8 +152,7 @@ public class GlassBoxExplanation extends SingleExplanationGeneratorImpl
 	{
 		final OpenlletReasoner pellet = getReasoner();
 
-		if (!pellet.getKB().isClassified())
-			return null;
+		if (!pellet.getKB().isClassified()) return null;
 
 		final Pair<OWLClass, OWLClass> pair = getSubClassAxiom(unsatClass);
 
@@ -171,8 +163,7 @@ public class GlassBoxExplanation extends SingleExplanationGeneratorImpl
 			if (exps != null)
 			{
 				final Set<OWLAxiom> result = convertExplanation(exps.iterator().next());
-				if (_logger.isLoggable(Level.FINE))
-					_logger.fine("Cached explanation: " + result);
+				if (_logger.isLoggable(Level.FINE)) _logger.fine("Cached explanation: " + result);
 				return result;
 			}
 		}
@@ -187,8 +178,7 @@ public class GlassBoxExplanation extends SingleExplanationGeneratorImpl
 
 		final boolean firstExplanation = isFirstExplanation();
 
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Explain: " + unsatClass + " " + "First: " + firstExplanation);
+		if (_logger.isLoggable(Level.FINE)) _logger.fine("Explain: " + unsatClass + " " + "First: " + firstExplanation);
 
 		if (firstExplanation)
 		{
@@ -196,8 +186,7 @@ public class GlassBoxExplanation extends SingleExplanationGeneratorImpl
 
 			result = getCachedExplanation(unsatClass);
 
-			if (result == null)
-				result = getReasonerExplanation(unsatClass);
+			if (result == null) result = getReasonerExplanation(unsatClass);
 		}
 		else
 		{
@@ -267,16 +256,14 @@ public class GlassBoxExplanation extends SingleExplanationGeneratorImpl
 
 	private Set<OWLAxiom> convertExplanation(final Set<ATermAppl> explanation)
 	{
-		if (explanation == null || explanation.isEmpty())
-			throw new OWLRuntimeException("No explanation computed");
+		if (explanation == null || explanation.isEmpty()) throw new OWLRuntimeException("No explanation computed");
 
 		final Set<OWLAxiom> result = new HashSet<>();
 
 		for (final ATermAppl term : explanation)
 		{
 			final OWLAxiom axiom = _axiomConverter.convert(term);
-			if (axiom == null)
-				throw new OWLRuntimeException("Cannot convert: " + term);
+			if (axiom == null) throw new OWLRuntimeException("Cannot convert: " + term);
 			result.add(axiom);
 		}
 
@@ -302,8 +289,7 @@ public class GlassBoxExplanation extends SingleExplanationGeneratorImpl
 
 			// we can only prune if there is more than one axiom in the
 			// explanation
-			if (prunedExplanation.size() <= 1)
-				return prunedExplanation;
+			if (prunedExplanation.size() <= 1) return prunedExplanation;
 
 			// create an ontology from the explanation axioms
 			final OWLOntology debuggingOntology = OWL.Ontology(explanation);
@@ -315,11 +301,9 @@ public class GlassBoxExplanation extends SingleExplanationGeneratorImpl
 			// existing reasoner
 			OpenlletReasoner reasoner = getReasonerFactory().createNonBufferingReasoner(debuggingOntology);
 
-			if (!defTracker.isDefined(unsatClass))
-				_logger.warning("Some of the entities in " + unsatClass + " are not defined in the explanation " + explanation);
+			if (!defTracker.isDefined(unsatClass)) _logger.warning("Some of the entities in " + unsatClass + " are not defined in the explanation " + explanation);
 
-			if (isSatisfiable(reasoner, unsatClass, true))
-				_logger.warning("Explanation incomplete: Concept " + unsatClass + " is satisfiable in the explanation " + explanation);
+			if (isSatisfiable(reasoner, unsatClass, true)) _logger.warning("Explanation incomplete: Concept " + unsatClass + " is satisfiable in the explanation " + explanation);
 
 			// simply remove axioms one at a time. If the unsatClass turns
 			// satisfiable then we know that axiom cannot be a part of minimal
@@ -328,13 +312,11 @@ public class GlassBoxExplanation extends SingleExplanationGeneratorImpl
 			{
 				_logger.finer(() -> "Try pruning " + axiom);
 
-				if (!incremental)
-					reasoner.dispose();
+				if (!incremental) reasoner.dispose();
 
 				debuggingOntology.remove(axiom);
 
-				if (!incremental)
-					reasoner = getReasonerFactory().createNonBufferingReasoner(debuggingOntology);
+				if (!incremental) reasoner = getReasonerFactory().createNonBufferingReasoner(debuggingOntology);
 
 				reasoner.getKB().prepare();
 
@@ -380,8 +362,7 @@ public class GlassBoxExplanation extends SingleExplanationGeneratorImpl
 	public void dispose()
 	{
 		getOntologyManager().removeOntologyChangeListener(getDefinitionTracker());
-		if (_altReasoner != null)
-			_altReasoner.dispose();
+		if (_altReasoner != null) _altReasoner.dispose();
 	}
 
 	@Override

@@ -67,7 +67,7 @@ public class RationalTests
 		assertEquals(1, rational("-1/3").compareTo(rational("-18/51")));
 		assertEquals(-1, rational("-1/3").compareTo(rational("-16/51")));
 
-		assertEquals(0, new Rational(1, 3).compareTo(new Rational(1l, 3l)));
+		assertEquals(0, new Rational(1, 3).compareTo(new Rational(1L, 3L)));
 	}
 
 	/**
@@ -86,7 +86,7 @@ public class RationalTests
 		/*
 		 * The following holds because !Integer(1).equals(Long(1))
 		 */
-		assertFalse(new Rational(1, 3).equals(new Rational(1l, 3l)));
+		assertFalse(new Rational(1, 3).equals(new Rational(1L, 3L)));
 	}
 
 	/**

@@ -30,13 +30,13 @@ public class MockLintPattern implements LintPattern
 	@Override
 	public String getName()
 	{
-		return this.toString();
+		return toString();
 	}
 
 	@Override
 	public String getDescription()
 	{
-		return this.toString();
+		return toString();
 	}
 
 	@Override

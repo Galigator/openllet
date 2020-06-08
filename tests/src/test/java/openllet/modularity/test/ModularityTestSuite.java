@@ -34,7 +34,7 @@ import org.junit.runners.Suite.SuiteClasses;
 		GraphBasedModularityTestSuite.class, //
 		PersistenceModularityTest.class, //
 		PersistenceClassificationTest.class, //
-		PersistenceRealizationTest.class, // 
+		PersistenceRealizationTest.class, //
 		PersistenceUpdatesTest.class //
 })
 public class ModularityTestSuite

@@ -35,11 +35,11 @@ import openllet.shared.tools.Logging;
  */
 public class BuiltInRegistry implements Logging
 {
-	protected final static Logger _logger = Log.getLogger(ABoxImpl.class); // We took the logger of the abox; also the logger is public to allow rules to use it !
+	protected final static Logger		_logger		= Log.getLogger(ABoxImpl.class);	// We took the logger of the abox; also the logger is public to allow rules to use it !
 
-	public static final BuiltInRegistry instance = new BuiltInRegistry();
+	public static final BuiltInRegistry	instance	= new BuiltInRegistry();
 
-	private final Map<String, BuiltIn> builtIns;
+	private final Map<String, BuiltIn>	builtIns;
 
 	private BuiltInRegistry()
 	{
@@ -113,14 +113,13 @@ public class BuiltInRegistry implements Logging
 	}
 
 	/**
-	 * @return a built-in registered by the given name. If none exists, return a built-in that will create an empty binding helper.
-	 * @param name
+	 * @return      a built-in registered by the given name. If none exists, return a built-in that will create an empty binding helper.
+	 * @param  name
 	 */
 	public BuiltIn getBuiltIn(final String name)
 	{
 		BuiltIn builtIn = builtIns.get(name);
-		if (builtIn == null)
-			builtIn = NoSuchBuiltIn.instance;
+		if (builtIn == null) builtIn = NoSuchBuiltIn.instance;
 		return builtIn;
 	}
 

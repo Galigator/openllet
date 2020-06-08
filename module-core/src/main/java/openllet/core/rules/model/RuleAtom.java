@@ -23,16 +23,16 @@ import java.util.List;
  */
 public interface RuleAtom
 {
-	public void accept(RuleAtomVisitor visitor);
+	void accept(RuleAtomVisitor visitor);
 
 	/**
 	 * @return all arguments (constants and variables) to the rule atom.
 	 */
-	public List<? extends AtomObject> getAllArguments();
+	List<? extends AtomObject> getAllArguments();
 
 	/**
 	 * @return the predicate for the rule atom. The type of this predicate will depend on the implementation of this interface. Use the RuleAtomVisitor for type
 	 *         safety.
 	 */
-	public Object getPredicate();
+	Object getPredicate();
 }

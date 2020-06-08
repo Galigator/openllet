@@ -5,14 +5,14 @@
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
- *     * Redistributions of source code must retain the above copyright
- *       notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the University of California, Berkeley nor the
- *       names of its contributors may be used to endorse or promote products
- *       derived from this software without specific prior written permission.
+ * * Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following disclaimer.
+ * * Redistributions in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in the
+ * documentation and/or other materials provided with the distribution.
+ * * Neither the name of the University of California, Berkeley nor the
+ * names of its contributors may be used to endorse or promote products
+ * derived from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -31,7 +31,6 @@ package openllet.aterm;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
-
 import openllet.shared.hash.HashFunctions;
 
 /**
@@ -44,47 +43,47 @@ import openllet.shared.hash.HashFunctions;
  */
 public interface ATerm extends Visitable, Identifiable
 {
-	public static final int GOLDEN_RATIO = HashFunctions.GOLDEN_RATIO;
+	int	GOLDEN_RATIO	= HashFunctions.GOLDEN_RATIO;
 
 	/**
 	 * A term of type INT
 	 */
-	public static final int INT = 2;
+	int	INT				= 2;
 
 	/**
 	 * A term of type REAL
 	 */
-	public static final int REAL = 3;
+	int	REAL			= 3;
 
 	/**
 	 * A term of type APPL (function application)
 	 */
-	public static final int APPL = 1;
+	int	APPL			= 1;
 
 	/**
 	 * A term of type LIST
 	 */
-	public static final int LIST = 4;
+	int	LIST			= 4;
 
 	/**
 	 * A term of type PLACEHOLDER
 	 */
-	public static final int PLACEHOLDER = 5;
+	int	PLACEHOLDER		= 5;
 
 	/**
 	 * A term of type BLOB (Binary Large OBject)
 	 */
-	public static final int BLOB = 6;
+	int	BLOB			= 6;
 
 	/**
 	 * A term of type AFUN (function symbol)
 	 */
-	public static final int AFUN = 7;
+	int	AFUN			= 7;
 
 	/**
 	 * A term of type LONG
 	 */
-	public static final int LONG = 8;
+	int	LONG			= 8;
 
 	/**
 	 * Gets the type of this term.
@@ -92,16 +91,16 @@ public interface ATerm extends Visitable, Identifiable
 	 *
 	 * @return the type of this ATerm.
 	 *
-	 * @see #INT
-	 * @see #REAL
-	 * @see #APPL
-	 * @see #LIST
-	 * @see #PLACEHOLDER
-	 * @see #BLOB
-	 * @see #AFUN
-	 * @see #LONG
+	 * @see    #INT
+	 * @see    #REAL
+	 * @see    #APPL
+	 * @see    #LIST
+	 * @see    #PLACEHOLDER
+	 * @see    #BLOB
+	 * @see    #AFUN
+	 * @see    #LONG
 	 */
-	public int getType();
+	int getType();
 
 	/**
 	 * Gets a hashcode value of this term.
@@ -110,35 +109,35 @@ public interface ATerm extends Visitable, Identifiable
 	 *
 	 */
 	@Override
-	public int hashCode();
+	int hashCode();
 
 	/**
 	 * Matches this term against a String pattern. The pattern is
 	 * parsed into a term, which this term is then matched against.
 	 *
-	 * @param pattern the string pattern to match this term against.
+	 * @param  pattern    the string pattern to match this term against.
 	 *
-	 * @return a list containing the subterms matching the placeholders
-	 *         if the match succeeds, or null if the match fails.
+	 * @return            a list containing the subterms matching the placeholders
+	 *                    if the match succeeds, or null if the match fails.
 	 *
 	 * @throws ParseError if pattern cannot be parsed into a term.
 	 *
-	 * @see #match(ATerm)
+	 * @see               #match(ATerm)
 	 */
-	public List<Object> match(final String pattern);
+	List<Object> match(final String pattern);
 
 	/**
 	 * Matches this term against a term pattern. A list containing
 	 * the subterms matching the placeholders in the pattern is
 	 * built as this term is matched against the pattern.
 	 *
-	 * @param pattern The term pattern to match this term against.
+	 * @param  pattern The term pattern to match this term against.
 	 *
-	 * @return a list containing the subterms matching the placeholders
-	 *         if the match succeeds, or null if the match fails.
+	 * @return         a list containing the subterms matching the placeholders
+	 *                 if the match succeeds, or null if the match fails.
 	 *
 	 */
-	public List<Object> match(final ATerm pattern);
+	List<Object> match(final ATerm pattern);
 
 	/**
 	 * Checks equality of this term against another term.
@@ -147,56 +146,56 @@ public interface ATerm extends Visitable, Identifiable
 	 * the {@link #equals} method.
 	 *
 	 *
-	 * @param term the term to check for equality.
+	 * @param  term the term to check for equality.
 	 *
-	 * @return true iff terms are equal (including
-	 *         any annotations they might have!), false otherwise.
+	 * @return      true iff terms are equal (including
+	 *              any annotations they might have!), false otherwise.
 	 *
-	 * @see #equals(Object)
+	 * @see         #equals(Object)
 	 *
 	 */
-	public boolean isEqual(final ATerm term);
+	boolean isEqual(final ATerm term);
 
 	/**
 	 * Checks equality of this term against any java object.
 	 * Note that for two terms to be equal, any annotations they
 	 * might have must be equal as well.
 	 *
-	 * @param obj the object to check for equality.
+	 * @param  obj the object to check for equality.
 	 *
-	 * @return true iff term equals obj (including annotations).
+	 * @return     true iff term equals obj (including annotations).
 	 *
-	 * @see #isEqual
+	 * @see        #isEqual
 	 */
 	@Override
-	public boolean equals(final Object obj);
+	boolean equals(final Object obj);
 
 	/**
 	 * Write a term to a text file/stream.
 	 *
-	 * @param stream the stream to write to
+	 * @param  stream      the stream to write to
 	 * @throws IOException ex
 	 */
-	public void writeToTextFile(final OutputStream stream) throws IOException;
+	void writeToTextFile(final OutputStream stream) throws IOException;
 
 	/**
 	 * Write a term to a openllet.shared.hash text file/stream.
 	 * An efficient openllet.shared.hash ASCII representation of this term is written to
 	 * the stream.
 	 *
-	 * @param stream the stream to write this term to
+	 * @param  stream      the stream to write this term to
 	 * @throws IOException ex
 	 */
-	public void writeToSharedTextFile(final OutputStream stream) throws IOException;
+	void writeToSharedTextFile(final OutputStream stream) throws IOException;
 
 	/**
 	 * Create a new term based on this term as a pattern and a list of arguments.
 	 *
-	 * @param args the list of arguments used to fill up holes in the pattern
+	 * @param  args the list of arguments used to fill up holes in the pattern
 	 *
-	 * @return the constructed openllet.aterm
+	 * @return      the constructed openllet.aterm
 	 */
-	public ATerm make(final List<Object> args);
+	ATerm make(final List<Object> args);
 
 	/**
 	 * Retrieves the factory responsible for creating this ATerm.
@@ -204,7 +203,7 @@ public interface ATerm extends Visitable, Identifiable
 	 * @return the factory that created this ATerm object.
 	 */
 
-	public ATermFactory getFactory();
+	ATermFactory getFactory();
 
 	/**
 	 * Gets a string representation of this term.
@@ -214,5 +213,5 @@ public interface ATerm extends Visitable, Identifiable
 	 *
 	 */
 	@Override
-	public String toString();
+	String toString();
 }

@@ -7,16 +7,16 @@ import openllet.core.utils.VersionInfo;
 
 /**
  * Contains information about the performance of a certain release
- * 
+ *
  * @author Pedro Oliveira <pedro@clarkparsia.com>
  */
 public class Release
 {
 
-	private final String _version;
-	private final Long _releaseDate;
+	private final String								_version;
+	private final Long									_releaseDate;
 
-	private final Map<String, List<ReleaseStatistics>> _statistics = new LinkedHashMap<>();
+	private final Map<String, List<ReleaseStatistics>>	_statistics	= new LinkedHashMap<>();
 
 	public Release(final String version, final Long releaseDate)
 	{
@@ -46,7 +46,7 @@ public class Release
 
 	public void addStatistics(final String ontology, final List<ReleaseStatistics> statistics)
 	{
-		this._statistics.put(ontology, statistics);
+		_statistics.put(ontology, statistics);
 	}
 
 	public Map<String, List<ReleaseStatistics>> getAllStatistics()

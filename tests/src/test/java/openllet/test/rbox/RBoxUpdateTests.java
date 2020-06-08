@@ -22,6 +22,7 @@ import java.util.Properties;
 import junit.framework.JUnit4TestAdapter;
 import openllet.core.OpenlletOptions;
 import openllet.core.utils.PropertiesBuilder;
+import openllet.owlapi.PelletLoader;
 import openllet.owlapi.XSD;
 import openllet.test.owlapi.AbstractOWLAPITests;
 import org.junit.AfterClass;

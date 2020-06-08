@@ -84,10 +84,8 @@ public class EquivalentAndSubclassAxiomPattern implements OntologyLintPattern
 					}
 			}
 
-			if (badEquivalents.isEmpty())
-				continue;
-			if (badEquivalents.size() == 1 && subclasses.isEmpty())
-				continue;
+			if (badEquivalents.isEmpty()) continue;
+			if (badEquivalents.size() == 1 && subclasses.isEmpty()) continue;
 
 			final Lint lint = new Lint(this, ontology);
 			lint.addParticipatingClass(owlClass);

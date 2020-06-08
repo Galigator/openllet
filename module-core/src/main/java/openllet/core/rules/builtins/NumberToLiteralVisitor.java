@@ -33,18 +33,17 @@ import openllet.core.utils.Namespaces;
 public class NumberToLiteralVisitor implements NumericVisitor
 {
 
-	private final ABox _abox;
-	private Literal _result;
+	private final ABox	_abox;
+	private Literal		_result;
 
 	public NumberToLiteralVisitor(final ABox abox)
 	{
-		this._abox = abox;
+		_abox = abox;
 	}
 
 	private static void argCheck(final Number[] args)
 	{
-		if (args.length != 1)
-			throw new InternalReasonerException("Wrong number of arguments to visitor.");
+		if (args.length != 1) throw new InternalReasonerException("Wrong number of arguments to visitor.");
 	}
 
 	public Literal getLiteral()

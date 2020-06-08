@@ -425,9 +425,9 @@ public class MiscTests extends AbstractKBTests
 		assertFalse(_kb.hasPropertyValue(_c, _r, _c));
 
 		final Map<ATermAppl, List<ATermAppl>> allRs = _kb.getPropertyValues(_r);
-		assertIteratorValues(allRs.get(_a).iterator(), new ATermAppl[] { _a });
-		assertIteratorValues(allRs.get(_b).iterator(), new ATermAppl[] { _b });
-		assertIteratorValues(allRs.get(_c).iterator(), new ATermAppl[] { _a, _b });
+		assertIteratorValues(allRs.get(_a).iterator(), _a);
+		assertIteratorValues(allRs.get(_b).iterator(), _b);
+		assertIteratorValues(allRs.get(_c).iterator(), _a, _b);
 
 		assertTrue(_kb.isType(_a, _C));
 		assertTrue(_kb.isType(_b, _C));
@@ -471,7 +471,10 @@ public class MiscTests extends AbstractKBTests
 		kb.addClass(E);
 
 		kb.addDatatypeProperty(p);
-		kb.addRange(p, ATermUtils.makeRestrictedDatatype(XSDInteger.getInstance().getName(), new ATermAppl[] { ATermUtils.makeFacetRestriction(Facet.XSD.MIN_INCLUSIVE.getName(), ATermUtils.makeTypedLiteral(Byte.toString(MIN), XSDByte.getInstance().getName())), ATermUtils.makeFacetRestriction(Facet.XSD.MAX_INCLUSIVE.getName(), ATermUtils.makeTypedLiteral(Byte.toString(MAX), XSDByte.getInstance().getName())) }));
+		kb.addRange(p,
+				ATermUtils.makeRestrictedDatatype(XSDInteger.getInstance().getName(),
+						new ATermAppl[] { ATermUtils.makeFacetRestriction(Facet.XSD.MIN_INCLUSIVE.getName(), ATermUtils.makeTypedLiteral(Byte.toString(MIN), XSDByte.getInstance().getName())),
+								ATermUtils.makeFacetRestriction(Facet.XSD.MAX_INCLUSIVE.getName(), ATermUtils.makeTypedLiteral(Byte.toString(MAX), XSDByte.getInstance().getName())) }));
 
 		kb.addSubClass(C, card(p, COUNT + 1, ATermUtils.TOP_LIT));
 		kb.addSubClass(D, card(p, COUNT, ATermUtils.TOP_LIT));
@@ -854,8 +857,8 @@ public class MiscTests extends AbstractKBTests
 		kb.addPropertyValue(p, a, plain);
 		kb.addPropertyValue(q, a, typed);
 
-		assertIteratorValues(kb.getDataPropertyValues(p, a).iterator(), new ATermAppl[] { plain });
-		assertIteratorValues(kb.getDataPropertyValues(q, a).iterator(), new ATermAppl[] { typed });
+		assertIteratorValues(kb.getDataPropertyValues(p, a).iterator(), plain);
+		assertIteratorValues(kb.getDataPropertyValues(q, a).iterator(), typed);
 
 	}
 
@@ -1420,8 +1423,7 @@ public class MiscTests extends AbstractKBTests
 				}
 
 			for (final ATermAppl p : kb.getObjectProperties())
-				if (!ATermUtils.isBuiltinProperty(p))
-					assertFalse(p.toString(), kb.isTransitiveProperty(p));
+				if (!ATermUtils.isBuiltinProperty(p)) assertFalse(p.toString(), kb.isTransitiveProperty(p));
 		}
 	}
 
@@ -1571,7 +1573,7 @@ public class MiscTests extends AbstractKBTests
 		assertTrue(kb.hasPropertyValue(a, p, c));
 		assertTrue(kb.hasPropertyValue(a, p, d));
 		assertTrue(kb.hasPropertyValue(a, p, e));
-		assertIteratorValues(kb.getPropertyValues(p, a).iterator(), new ATermAppl[] { b, c, d, e });
+		assertIteratorValues(kb.getPropertyValues(p, a).iterator(), b, c, d, e);
 	}
 
 	@Test
@@ -1631,10 +1633,8 @@ public class MiscTests extends AbstractKBTests
 				kb.addDatatypeProperty(p);
 				kb.addDatatypeProperty(q);
 
-				if (rangeP != null)
-					kb.addRange(p, rangeP);
-				if (rangeQ != null)
-					kb.addRange(q, rangeQ);
+				if (rangeP != null) kb.addRange(p, rangeP);
+				if (rangeQ != null) kb.addRange(q, rangeQ);
 
 				assertTrue(kb.isConsistent());
 
@@ -1738,29 +1738,29 @@ public class MiscTests extends AbstractKBTests
 
 		assertTrue(kb.isConsistent());
 
-		assertIteratorValues(kb.getDisjointClasses(TOP).iterator(), new Object[] { singleton(BOTTOM) });
-		assertIteratorValues(kb.getDisjointClasses(A).iterator(), new Object[] { singleton(BOTTOM) });
-		assertIteratorValues(kb.getDisjointClasses(B).iterator(), new Object[] { singleton(BOTTOM), singleton(C), singleton(D) });
-		assertIteratorValues(kb.getDisjointClasses(C).iterator(), new Object[] { singleton(BOTTOM), singleton(B) });
-		assertIteratorValues(kb.getDisjointClasses(D).iterator(), new Object[] { singleton(BOTTOM), singleton(B) });
-		assertIteratorValues(kb.getDisjointClasses(BOTTOM).iterator(), new Object[] { singleton(TOP), singleton(A), singleton(B), singleton(C), singleton(D), singleton(BOTTOM) });
+		assertIteratorValues(kb.getDisjointClasses(TOP).iterator(), singleton(BOTTOM));
+		assertIteratorValues(kb.getDisjointClasses(A).iterator(), singleton(BOTTOM));
+		assertIteratorValues(kb.getDisjointClasses(B).iterator(), singleton(BOTTOM), singleton(C), singleton(D));
+		assertIteratorValues(kb.getDisjointClasses(C).iterator(), singleton(BOTTOM), singleton(B));
+		assertIteratorValues(kb.getDisjointClasses(D).iterator(), singleton(BOTTOM), singleton(B));
+		assertIteratorValues(kb.getDisjointClasses(BOTTOM).iterator(), singleton(TOP), singleton(A), singleton(B), singleton(C), singleton(D), singleton(BOTTOM));
 
-		assertIteratorValues(kb.getComplements(TOP).iterator(), new Object[] { BOTTOM });
+		assertIteratorValues(kb.getComplements(TOP).iterator(), BOTTOM);
 		assertTrue(kb.getComplements(A).isEmpty());
-		assertIteratorValues(kb.getComplements(B).iterator(), new Object[] { C });
-		assertIteratorValues(kb.getComplements(C).iterator(), new Object[] { B });
+		assertIteratorValues(kb.getComplements(B).iterator(), C);
+		assertIteratorValues(kb.getComplements(C).iterator(), B);
 		assertTrue(kb.getComplements(D).isEmpty());
-		assertIteratorValues(kb.getComplements(BOTTOM).iterator(), new Object[] { TOP });
+		assertIteratorValues(kb.getComplements(BOTTOM).iterator(), TOP);
 
-		assertIteratorValues(kb.getDisjointClasses(not(A)).iterator(), new Object[] { singleton(BOTTOM), singleton(A), singleton(B) });
-		assertIteratorValues(kb.getDisjointClasses(not(B)).iterator(), new Object[] { singleton(BOTTOM), singleton(B) });
-		assertIteratorValues(kb.getDisjointClasses(not(C)).iterator(), new Object[] { singleton(BOTTOM), singleton(C), singleton(D) });
-		assertIteratorValues(kb.getDisjointClasses(not(D)).iterator(), new Object[] { singleton(BOTTOM), singleton(D) });
+		assertIteratorValues(kb.getDisjointClasses(not(A)).iterator(), singleton(BOTTOM), singleton(A), singleton(B));
+		assertIteratorValues(kb.getDisjointClasses(not(B)).iterator(), singleton(BOTTOM), singleton(B));
+		assertIteratorValues(kb.getDisjointClasses(not(C)).iterator(), singleton(BOTTOM), singleton(C), singleton(D));
+		assertIteratorValues(kb.getDisjointClasses(not(D)).iterator(), singleton(BOTTOM), singleton(D));
 
-		assertIteratorValues(kb.getComplements(not(A)).iterator(), new Object[] { A });
-		assertIteratorValues(kb.getComplements(not(B)).iterator(), new Object[] { B });
-		assertIteratorValues(kb.getComplements(not(C)).iterator(), new Object[] { C });
-		assertIteratorValues(kb.getComplements(not(D)).iterator(), new Object[] { D });
+		assertIteratorValues(kb.getComplements(not(A)).iterator(), A);
+		assertIteratorValues(kb.getComplements(not(B)).iterator(), B);
+		assertIteratorValues(kb.getComplements(not(C)).iterator(), C);
+		assertIteratorValues(kb.getComplements(not(D)).iterator(), D);
 	}
 
 	/**

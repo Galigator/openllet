@@ -1,7 +1,6 @@
 package openllet.owlwg.testcase;
 
 import java.util.Set;
-
 import org.semanticweb.owlapi.model.IRI;
 
 /**
@@ -20,14 +19,15 @@ import org.semanticweb.owlapi.model.IRI;
  * Company: Clark & Parsia, LLC. <a
  * href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
  * </p>
- * 
+ *
  * @author Mike Smith &lt;msmith@clarkparsia.com&gt;
  */
-public interface ImportedOntology {
+public interface ImportedOntology
+{
 
-	public Set<SerializationFormat> getFormats();
+	Set<SerializationFormat> getFormats();
 
-	public String getOntology(SerializationFormat format);
+	String getOntology(SerializationFormat format);
 
-	public IRI getIRI();
+	IRI getIRI();
 }

@@ -21,9 +21,9 @@ import openllet.core.utils.progress.ProgressMonitor;
 public class PartialOrderTaxonomyBuilder implements TaxonomyBuilder
 {
 
-	private final PartialOrderBuilder<ATermAppl> _builder;
-	private final KnowledgeBase _kb;
-	private final TaxonomyImpl<ATermAppl> _tax;
+	private final PartialOrderBuilder<ATermAppl>	_builder;
+	private final KnowledgeBase						_kb;
+	private final TaxonomyImpl<ATermAppl>			_tax;
 
 	public PartialOrderTaxonomyBuilder(final KnowledgeBase kb)
 	{

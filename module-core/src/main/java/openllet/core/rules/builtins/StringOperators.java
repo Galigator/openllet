@@ -101,8 +101,7 @@ public class StringOperators
 		@Override
 		public String apply(final String... args)
 		{
-			if (args.length != 1)
-				return null;
+			if (args.length != 1) return null;
 
 			return args[0].toLowerCase();
 		}
@@ -140,8 +139,7 @@ public class StringOperators
 		@Override
 		public String apply(final String... args)
 		{
-			if (args.length != 1)
-				return null;
+			if (args.length != 1) return null;
 			return args[0].trim().replaceAll("\\s+", " ");
 		}
 
@@ -153,8 +151,7 @@ public class StringOperators
 		@Override
 		public String apply(final String... args)
 		{
-			if (args.length != 3)
-				return null;
+			if (args.length != 3) return null;
 
 			final String from = args[1];
 			final String to = args[2];
@@ -215,8 +212,7 @@ public class StringOperators
 		@Override
 		public Literal apply(final ABox abox, final Literal expected, final Literal... args)
 		{
-			if (args.length != 1)
-				return null;
+			if (args.length != 1) return null;
 
 			final String val = ATermUtils.getLiteralValue(args[0].getTerm());
 			final String length = Integer.toString(val.length());
@@ -233,8 +229,7 @@ public class StringOperators
 		@Override
 		public String apply(final String... args)
 		{
-			if (args.length < 2 || args.length > 3)
-				return null;
+			if (args.length < 2 || args.length > 3) return null;
 			long beginIndex = 0;
 			long endIndex = args[0].length();
 			try
@@ -256,10 +251,8 @@ public class StringOperators
 				return "";
 			}
 
-			if (beginIndex > Integer.MAX_VALUE)
-				beginIndex = Integer.MAX_VALUE;
-			if (endIndex > Integer.MAX_VALUE)
-				endIndex = Integer.MAX_VALUE;
+			if (beginIndex > Integer.MAX_VALUE) beginIndex = Integer.MAX_VALUE;
+			if (endIndex > Integer.MAX_VALUE) endIndex = Integer.MAX_VALUE;
 
 			return args[0].substring((int) beginIndex, (int) endIndex);
 		}
@@ -271,15 +264,12 @@ public class StringOperators
 		@Override
 		public String apply(final String... args)
 		{
-			if (args.length != 2)
-				return null;
+			if (args.length != 2) return null;
 
-			if (args[1].equals(""))
-				return "";
+			if (args[1].equals("")) return "";
 
 			final int index = args[0].indexOf(args[1]);
-			if (index < 0)
-				return "";
+			if (index < 0) return "";
 
 			return args[0].substring(index + args[1].length());
 		}
@@ -292,15 +282,12 @@ public class StringOperators
 		@Override
 		public String apply(final String... args)
 		{
-			if (args.length != 2)
-				return null;
+			if (args.length != 2) return null;
 
-			if (args[1].equals(""))
-				return "";
+			if (args[1].equals("")) return "";
 
 			final int index = args[0].indexOf(args[1]);
-			if (index < 0)
-				return "";
+			if (index < 0) return "";
 
 			return args[0].substring(0, index);
 		}
@@ -313,10 +300,10 @@ public class StringOperators
 		private static class TokenizeBindingHelper implements BindingHelper
 		{
 
-			private final BuiltInAtom _atom;
-			private AtomDObject _head;
-			private String _match;
-			private Iterator<String> _tokens;
+			private final BuiltInAtom	_atom;
+			private AtomDObject			_head;
+			private String				_match;
+			private Iterator<String>	_tokens;
 
 			public TokenizeBindingHelper(final BuiltInAtom atom)
 			{
@@ -336,15 +323,12 @@ public class StringOperators
 					{
 						_head = obj;
 						// Can only bind first argument to tokenize
-						if (!VariableUtils.isVariable(_head))
-							return Collections.emptySet();
+						if (!VariableUtils.isVariable(_head)) return Collections.emptySet();
 					}
 					else
-						// Cannot bind a variable that occurs in multiple places.
-						if (_head.equals(obj))
-							return Collections.emptySet();
-				if (_head == null)
-					return Collections.emptySet();
+					// Cannot bind a variable that occurs in multiple places.
+					if (_head.equals(obj)) return Collections.emptySet();
+				if (_head == null) return Collections.emptySet();
 				return Collections.singleton((AtomVariable) _head);
 			}
 
@@ -368,8 +352,7 @@ public class StringOperators
 				}
 
 				final Literal matchLit = newBinding.get(_atom.getAllArguments().get(0));
-				if (matchLit != null)
-					_match = ATermUtils.getLiteralValue(matchLit.getTerm());
+				if (matchLit != null) _match = ATermUtils.getLiteralValue(matchLit.getTerm());
 
 				final String splittingString = ATermUtils.getLiteralValue(newBinding.get(_atom.getAllArguments().get(1)).getTerm());
 
@@ -377,16 +360,15 @@ public class StringOperators
 
 				final String[] splits = splittingString.split(splittingPattern);
 				_tokens = Arrays.asList(splits).iterator();
-				if (_match != null)
-					while (_tokens.hasNext())
+				if (_match != null) while (_tokens.hasNext())
+				{
+					final String token = _tokens.next();
+					if (token.equals(_match))
 					{
-						final String token = _tokens.next();
-						if (token.equals(_match))
-						{
-							_tokens = Collections.singleton(token).iterator();
-							break;
-						}
+						_tokens = Collections.singleton(token).iterator();
+						break;
 					}
+				}
 
 			}
 
@@ -439,8 +421,7 @@ public class StringOperators
 		@Override
 		public String apply(final String... args)
 		{
-			if (args.length != 3)
-				return null;
+			if (args.length != 3) return null;
 
 			final String src = args[1];
 			final String dst = args[2];
@@ -452,9 +433,7 @@ public class StringOperators
 				final int replPos = src.indexOf(c);
 				if (replPos < 0)
 					result.append(c);
-				else
-					if (replPos < dst.length())
-						result.append(dst.charAt(replPos));
+				else if (replPos < dst.length()) result.append(dst.charAt(replPos));
 			}
 
 			return result.toString();
@@ -468,29 +447,28 @@ public class StringOperators
 		@Override
 		public String apply(final String... args)
 		{
-			if (args.length != 1)
-				return null;
+			if (args.length != 1) return null;
 			return args[0].toUpperCase();
 		}
 
 	}
 
-	public final static Tester contains = new Contains();
-	public final static Tester containsIgnoreCase = new ContainsIgnoreCase();
-	public final static Tester endsWith = new EndsWith();
-	public final static Function lowerCase = new StringFunctionAdapter(new LowerCase());
-	public final static Tester matches = new Matches();
-	public final static Function normalizeSpace = new StringFunctionAdapter(new NormalizeSpace());
-	public final static Function replace = new StringFunctionAdapter(new Replace());
-	public final static Tester startsWith = new StartsWith();
-	public final static Function stringConcat = new StringFunctionAdapter(new StringConcat());
-	public final static Tester stringEqualIgnoreCase = new StringEqualIgnoreCase();
-	public final static Function stringLength = new StringLength();
-	public final static Function substring = new StringFunctionAdapter(new SubString());
-	public final static Function substringAfter = new StringFunctionAdapter(new SubStringAfter());
-	public final static Function substringBefore = new StringFunctionAdapter(new SubStringBefore());
-	public final static BuiltIn tokenize = new Tokenize();
-	public final static Function translate = new StringFunctionAdapter(new Translate());
-	public final static Function upperCase = new StringFunctionAdapter(new UpperCase());
+	public final static Tester		contains				= new Contains();
+	public final static Tester		containsIgnoreCase		= new ContainsIgnoreCase();
+	public final static Tester		endsWith				= new EndsWith();
+	public final static Function	lowerCase				= new StringFunctionAdapter(new LowerCase());
+	public final static Tester		matches					= new Matches();
+	public final static Function	normalizeSpace			= new StringFunctionAdapter(new NormalizeSpace());
+	public final static Function	replace					= new StringFunctionAdapter(new Replace());
+	public final static Tester		startsWith				= new StartsWith();
+	public final static Function	stringConcat			= new StringFunctionAdapter(new StringConcat());
+	public final static Tester		stringEqualIgnoreCase	= new StringEqualIgnoreCase();
+	public final static Function	stringLength			= new StringLength();
+	public final static Function	substring				= new StringFunctionAdapter(new SubString());
+	public final static Function	substringAfter			= new StringFunctionAdapter(new SubStringAfter());
+	public final static Function	substringBefore			= new StringFunctionAdapter(new SubStringBefore());
+	public final static BuiltIn		tokenize				= new Tokenize();
+	public final static Function	translate				= new StringFunctionAdapter(new Translate());
+	public final static Function	upperCase				= new StringFunctionAdapter(new UpperCase());
 
 }

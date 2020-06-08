@@ -44,13 +44,15 @@ public abstract class ATermBaseRenderer extends ATermBaseVisitor implements ATer
 {
 	PrintWriter _out;
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.mindswap.pellet.utils.ATermRenderer#setWriter(org.mindswap.pellet.utils.OutputFormatter)
 	 */
 	@Override
 	public void setWriter(final PrintWriter out)
 	{
-		this._out = out;
+		_out = out;
 	}
 
 	/* (non-Javadoc)
@@ -68,7 +70,7 @@ public abstract class ATermBaseRenderer extends ATermBaseVisitor implements ATer
 	@Override
 	public void setWriter(final Writer out)
 	{
-		this._out = new PrintWriter(out);
+		_out = new PrintWriter(out);
 	}
 
 	/* (non-Javadoc)

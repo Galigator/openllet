@@ -20,15 +20,15 @@ import org.semanticweb.owlapi.model.OWLOntology;
  * <p>
  * Company: Clark & Parsia, LLC.
  * </p>
- * 
+ *
  * @author Mike Smith &lt;msmith@clarkparsia.com&gt;
  */
 public class PelletTestRunner extends OwlApiAbstractRunner
 {
 
-	private static final OpenlletReasonerFactory _reasonerFactory = new OpenlletReasonerFactory();
+	private static final OpenlletReasonerFactory	_reasonerFactory	= new OpenlletReasonerFactory();
 
-	private static final IRI _iri = IRI.create("http://clarkparsia.com/pellet");
+	private static final IRI						_iri				= IRI.create("http://clarkparsia.com/pellet");
 
 	@Override
 	public String getName()

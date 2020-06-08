@@ -38,10 +38,10 @@ import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
  */
 public class LargeDisjunctionPattern extends AxiomLintPattern
 {
-	private static final LintFormat DEFAULT_LINT_FORMAT = new SimpleLintFormat();
+	private static final LintFormat			DEFAULT_LINT_FORMAT	= new SimpleLintFormat();
 
-	private int _maxAllowed = 10;
-	private final DisjunctionSizeCollector _visitor;
+	private int								_maxAllowed			= 10;
+	private final DisjunctionSizeCollector	_visitor;
 
 	public LargeDisjunctionPattern()
 	{
@@ -134,8 +134,7 @@ class DisjunctionSizeCollector extends OWLDeepEntityVisitorAdapter
 	public Collection<OWLEntity> visit(final OWLObjectUnionOf union)
 	{
 		final long size = union.operands().count();
-		if (size > _size)
-			_size = size;
+		if (size > _size) _size = size;
 		return super.visit(union);
 	}
 }

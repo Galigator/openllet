@@ -13,14 +13,14 @@ import java.io.IOException;
 
 public class WebOntTestCase
 {
-	private final File _manifest;
-	private final WebOntTest _test;
+	private final File			_manifest;
+	private final WebOntTest	_test;
 
 	public WebOntTestCase(final WebOntTest test, final File manifest, @SuppressWarnings("unused") final String name)
 	{
 		//        super( "OWLTestCase-" + name );
-		this._test = test;
-		this._manifest = manifest;
+		_test = test;
+		_manifest = manifest;
 	}
 
 	public void runTest() throws IOException

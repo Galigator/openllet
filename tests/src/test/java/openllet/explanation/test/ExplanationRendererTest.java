@@ -40,11 +40,11 @@ import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
  */
 public class ExplanationRendererTest
 {
-	private static final OWLClass _A = OWL.Class("A");
-	private static final OWLClass _B = OWL.Class("B");
-	private static final OWLObjectProperty _p = OWL.ObjectProperty("p");
-	private static final OWLObjectProperty _q = OWL.ObjectProperty("q");
-	private static final OWLIndividual _a = OWL.Individual("a");
+	private static final OWLClass			_A	= OWL.Class("A");
+	private static final OWLClass			_B	= OWL.Class("B");
+	private static final OWLObjectProperty	_p	= OWL.ObjectProperty("p");
+	private static final OWLObjectProperty	_q	= OWL.ObjectProperty("q");
+	private static final OWLIndividual		_a	= OWL.Individual("a");
 
 	protected void assertRendering(final String expected, final OWLObject obj)
 	{

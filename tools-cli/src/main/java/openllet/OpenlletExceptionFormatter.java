@@ -26,10 +26,8 @@ public class OpenlletExceptionFormatter
 
 		if (!_verbose)
 		{
-			if (cause instanceof FileNotFoundException)
-				return format((FileNotFoundException) cause);
-			if (cause instanceof OpenlletCmdException)
-				return format((OpenlletCmdException) cause);
+			if (cause instanceof FileNotFoundException) return format((FileNotFoundException) cause);
+			if (cause instanceof OpenlletCmdException) return format((OpenlletCmdException) cause);
 			return formatGeneric(cause);
 		}
 
@@ -63,8 +61,7 @@ public class OpenlletExceptionFormatter
 		if (msg != null)
 		{
 			final int index = msg.indexOf('\n', 0);
-			if (index != -1)
-				msg = msg.substring(0, index);
+			if (index != -1) msg = msg.substring(0, index);
 		}
 
 		return msg + "\nUse -v for detail.";
@@ -72,7 +69,7 @@ public class OpenlletExceptionFormatter
 
 	public void setVerbose(final boolean verbose)
 	{
-		this._verbose = verbose;
+		_verbose = verbose;
 	}
 
 }

@@ -16,7 +16,7 @@ import org.semanticweb.owlapi.model.OWLIndividual;
  * <p>
  * Company: Clark & Parsia, LLC. <a href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
  * </p>
- * 
+ *
  * @author Mike Smith &lt;msmith@clarkparsia.com&gt;
  */
 public enum Semantics
@@ -34,8 +34,7 @@ public enum Semantics
 	public static Semantics get(final OWLIndividual i)
 	{
 		for (final Semantics s : values())
-			if (s.getOWLIndividual().equals(i))
-				return s;
+			if (s.getOWLIndividual().equals(i)) return s;
 		return null;
 	}
 

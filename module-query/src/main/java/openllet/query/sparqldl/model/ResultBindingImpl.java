@@ -38,7 +38,7 @@ public class ResultBindingImpl implements ResultBinding
 
 	private ResultBindingImpl(final Map<ATermAppl, ATermAppl> bindings)
 	{
-		this._bindings.putAll(bindings);
+		_bindings.putAll(bindings);
 	}
 
 	/**
@@ -96,7 +96,7 @@ public class ResultBindingImpl implements ResultBinding
 	@Override
 	public ResultBinding duplicate()
 	{
-		return new ResultBindingImpl(this._bindings);
+		return new ResultBindingImpl(_bindings);
 	}
 
 	@Override
@@ -119,28 +119,22 @@ public class ResultBindingImpl implements ResultBinding
 	{
 		final int PRIME = 31;
 		int result = 1;
-		result = PRIME * result + ((_bindings == null) ? 0 : _bindings.hashCode());
+		result = PRIME * result + (_bindings == null ? 0 : _bindings.hashCode());
 		return result;
 	}
 
 	@Override
 	public boolean equals(final Object obj)
 	{
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (getClass() != obj.getClass()) return false;
 		final ResultBindingImpl other = (ResultBindingImpl) obj;
 		if (_bindings == null)
 		{
-			if (other._bindings != null)
-				return false;
+			if (other._bindings != null) return false;
 		}
-		else
-			if (!_bindings.equals(other._bindings))
-				return false;
+		else if (!_bindings.equals(other._bindings)) return false;
 		return true;
 	}
 }

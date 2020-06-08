@@ -5,14 +5,14 @@
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
- *     * Redistributions of source code must retain the above copyright
- *       notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the University of California, Berkeley nor the
- *       names of its contributors may be used to endorse or promote products
- *       derived from this software without specific prior written permission.
+ * * Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following disclaimer.
+ * * Redistributions in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in the
+ * documentation and/or other materials provided with the distribution.
+ * * Neither the name of the University of California, Berkeley nor the
+ * names of its contributors may be used to endorse or promote products
+ * derived from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -31,7 +31,6 @@ package openllet.aterm;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-
 import openllet.aterm.pure.owl.FunAll;
 import openllet.aterm.pure.owl.FunAllDifferent;
 import openllet.aterm.pure.owl.FunAnd;
@@ -92,29 +91,29 @@ import openllet.aterm.pure.owl.FunVar;
  */
 public interface ATermFactory
 {
-	public static byte START_OF_SHARED_TEXT_FILE = (byte) '!';
+	byte START_OF_SHARED_TEXT_FILE = (byte) '!';
 
 	/**
 	 * Creates a new ATerm by parsing a string.
 	 *
-	 * @param trm the string representation of the term
+	 * @param  trm the string representation of the term
 	 *
-	 * @return the parsed term.
+	 * @return     the parsed term.
 	 *
-	 * @see #make(String)
+	 * @see        #make(String)
 	 */
-	public ATerm parse(String trm);
+	ATerm parse(String trm);
 
 	/**
 	 * Equivalent of parse.
 	 *
-	 * @param trm the string representation of the term
+	 * @param  trm the string representation of the term
 	 *
-	 * @return the parsed term.
+	 * @return     the parsed term.
 	 *
-	 * @see #parse(String)
+	 * @see        #parse(String)
 	 */
-	public ATerm make(String trm);
+	ATerm make(String trm);
 
 	/**
 	 * Creates a new ATerm given a string pattern and a list of arguments.
@@ -122,406 +121,406 @@ public interface ATermFactory
 	 * Then the holes in the pattern are filled with arguments taken from
 	 * the supplied list of arguments.
 	 *
-	 * @param pattern the string pattern containing a placeholder for each
-	 *            argument.
-	 * @param args the list of arguments to be filled into the placeholders.
+	 * @param  pattern the string pattern containing a placeholder for each
+	 *                 argument.
+	 * @param  args    the list of arguments to be filled into the placeholders.
 	 *
-	 * @return the constructed term.
+	 * @return         the constructed term.
 	 */
-	public ATerm make(String pattern, List<Object> args);
+	ATerm make(String pattern, List<Object> args);
 
 	/**
 	 * Creates a new ATerm given a pattern and a list of arguments.
 	 * The holes in the pattern are filled with arguments taken from
 	 * the supplied list of arguments.
 	 *
-	 * @param pattern the pattern containing a placeholder for each argument.
-	 * @param args the list of arguments to be filled into the placeholders.
+	 * @param  pattern the pattern containing a placeholder for each argument.
+	 * @param  args    the list of arguments to be filled into the placeholders.
 	 *
-	 * @return the constructed term.
+	 * @return         the constructed term.
 	 */
-	public ATerm make(ATerm pattern, List<Object> args);
+	ATerm make(ATerm pattern, List<Object> args);
 
 	/**
 	 * Creates a new ATerm given a pattern and a single argument.
 	 * This convenience method creates an ATerm from a pattern and one
 	 * argument.
 	 *
-	 * @param pattern the pattern containing a placeholder for the argument.
-	 * @param arg1 the argument to be filled into the hole.
+	 * @param  pattern the pattern containing a placeholder for the argument.
+	 * @param  arg1    the argument to be filled into the hole.
 	 *
-	 * @return the constructed term.
+	 * @return         the constructed term.
 	 */
-	public ATerm make(String pattern, Object arg1);
+	ATerm make(String pattern, Object arg1);
 
 	/**
 	 * Creates a new ATerm given a pattern and a fixed number of arguments.
 	 * This convenience method creates an ATerm from a pattern and two
 	 * arguments.
 	 *
-	 * @param pattern the pattern containing a placeholder for the arguments.
-	 * @param arg1 the argument to be filled into the first hole.
-	 * @param arg2 the argument to be filled into the second hole.
+	 * @param  pattern the pattern containing a placeholder for the arguments.
+	 * @param  arg1    the argument to be filled into the first hole.
+	 * @param  arg2    the argument to be filled into the second hole.
 	 *
-	 * @return the constructed term.
+	 * @return         the constructed term.
 	 */
-	public ATerm make(String pattern, Object arg1, Object arg2);
+	ATerm make(String pattern, Object arg1, Object arg2);
 
 	/**
 	 * Creates a new ATerm given a pattern and a fixed number of arguments.
 	 * This convenience method creates an ATerm from a pattern and three
 	 * arguments.
 	 *
-	 * @param pattern the pattern containing a placeholder for the arguments.
-	 * @param arg1 the argument to be filled into the first hole.
-	 * @param arg2 the argument to be filled into the second hole.
-	 * @param arg3 the argument to be filled into the third hole.
+	 * @param  pattern the pattern containing a placeholder for the arguments.
+	 * @param  arg1    the argument to be filled into the first hole.
+	 * @param  arg2    the argument to be filled into the second hole.
+	 * @param  arg3    the argument to be filled into the third hole.
 	 *
-	 * @return the constructed term.
+	 * @return         the constructed term.
 	 */
-	public ATerm make(String pattern, Object arg1, Object arg2, Object arg3);
+	ATerm make(String pattern, Object arg1, Object arg2, Object arg3);
 
 	/**
 	 * Creates a new ATermInt object
 	 *
-	 * @param val the integer value to be stored.
+	 * @param  val the integer value to be stored.
 	 *
-	 * @return the constructed ATermInt object.
+	 * @return     the constructed ATermInt object.
 	 */
-	public ATermInt makeInt(int val);
+	ATermInt makeInt(int val);
 
 	/**
 	 * Creates a new ATermLong object
 	 *
-	 * @param val the long value to be stored.
+	 * @param  val the long value to be stored.
 	 *
-	 * @return the constructed ATermLong object.
+	 * @return     the constructed ATermLong object.
 	 */
-	public ATermLong makeLong(long val);
+	ATermLong makeLong(long val);
 
 	/**
 	 * Creates a new ATermReal object
 	 *
-	 * @param val the double value to be stored.
+	 * @param  val the double value to be stored.
 	 *
-	 * @return the constructed ATermReal object.
+	 * @return     the constructed ATermReal object.
 	 */
-	public ATermReal makeReal(double val);
+	ATermReal makeReal(double val);
 
 	/**
 	 * Creates an empty ATermList object
 	 *
 	 * @return the (empty) ATermList.
 	 */
-	public ATermList makeList();
+	ATermList makeList();
 
 	/**
 	 * Creates a singleton ATermList object.
 	 *
-	 * @param single the element to be placed in the list.
+	 * @param  single the element to be placed in the list.
 	 *
-	 * @return the singleton ATermList object.
+	 * @return        the singleton ATermList object.
 	 */
-	public ATermList makeList(ATerm single);
+	ATermList makeList(ATerm single);
 
 	/**
 	 * Creates a head-tail style ATermList.
 	 *
-	 * @param head the head of the list.
-	 * @param tail the tail of the list.
+	 * @param  head the head of the list.
+	 * @param  tail the tail of the list.
 	 *
-	 * @return the constructed ATermList.
+	 * @return      the constructed ATermList.
 	 */
-	public ATermList makeList(ATerm head, ATermList tail);
+	ATermList makeList(ATerm head, ATermList tail);
 
 	/**
 	 * Creates an ATermPlaceholder object.
 	 *
-	 * @param type the type of the hole in the placeholder.
+	 * @param  type the type of the hole in the placeholder.
 	 *
-	 * @return the constructed ATermPlaceholder.
+	 * @return      the constructed ATermPlaceholder.
 	 */
-	public ATermPlaceholder makePlaceholder(ATerm type);
+	ATermPlaceholder makePlaceholder(ATerm type);
 
 	/**
 	 * Creates an ATermBlob (Binary Large OBject).
 	 *
-	 * @param data the data to be stored in the blob.
+	 * @param  data the data to be stored in the blob.
 	 *
-	 * @return the constructed ATermBlob.
+	 * @return      the constructed ATermBlob.
 	 */
-	public ATermBlob makeBlob(byte[] data);
+	ATermBlob makeBlob(byte[] data);
 
 	/**
 	 * Creates an AFun object
 	 *
-	 * @param name the name of the function symbol.
-	 * @param arity the arity of the function symbol.
-	 * @param isQuoted whether the function symbol is quoted ("foo") or not (foo).
+	 * @param  name     the name of the function symbol.
+	 * @param  arity    the arity of the function symbol.
+	 * @param  isQuoted whether the function symbol is quoted ("foo") or not (foo).
 	 *
-	 * @return the constructed AFun.
+	 * @return          the constructed AFun.
 	 */
-	public AFun makeAFun(String name, int arity, boolean isQuoted);
+	AFun makeAFun(String name, int arity, boolean isQuoted);
 
 	/**
 	 * Creates a function application.
 	 *
-	 * @param fun the function symbol of the application.
+	 * @param  fun the function symbol of the application.
 	 *
-	 * @return the constructed function application.
+	 * @return     the constructed function application.
 	 */
-	public ATermAppl makeAppl(AFun fun);
+	ATermAppl makeAppl(AFun fun);
 
 	/**
 	 * Creates a function application.
 	 *
-	 * @param fun the function symbol of the application.
-	 * @param arg the argument of the application.
+	 * @param  fun the function symbol of the application.
+	 * @param  arg the argument of the application.
 	 *
-	 * @return the constructed function application.
+	 * @return     the constructed function application.
 	 */
-	public ATermAppl makeAppl(AFun fun, ATerm arg);
+	ATermAppl makeAppl(AFun fun, ATerm arg);
 
 	/**
 	 * Creates a function application.
 	 *
-	 * @param fun the function symbol of the application.
-	 * @param arg1 the first argument of the application.
-	 * @param arg2 the second argument of the application.
+	 * @param  fun  the function symbol of the application.
+	 * @param  arg1 the first argument of the application.
+	 * @param  arg2 the second argument of the application.
 	 *
-	 * @return the constructed function application.
+	 * @return      the constructed function application.
 	 */
-	public ATermAppl makeAppl(AFun fun, ATerm arg1, ATerm arg2);
+	ATermAppl makeAppl(AFun fun, ATerm arg1, ATerm arg2);
 
 	/**
 	 * Creates a function application.
 	 *
-	 * @param fun the function symbol of the application.
-	 * @param arg1 the first argument of the application.
-	 * @param arg2 the second argument of the application.
-	 * @param arg3 the third argument of the application.
+	 * @param  fun  the function symbol of the application.
+	 * @param  arg1 the first argument of the application.
+	 * @param  arg2 the second argument of the application.
+	 * @param  arg3 the third argument of the application.
 	 *
-	 * @return the constructed function application.
+	 * @return      the constructed function application.
 	 */
-	public ATermAppl makeAppl(AFun fun, ATerm arg1, ATerm arg2, ATerm arg3);
+	ATermAppl makeAppl(AFun fun, ATerm arg1, ATerm arg2, ATerm arg3);
 
 	/**
 	 * Creates a function application.
 	 *
-	 * @param fun the function symbol of the application.
-	 * @param arg1 the first argument of the application.
-	 * @param arg2 the second argument of the application.
-	 * @param arg3 the third argument of the application.
-	 * @param arg4 the fourth argument of the application.
+	 * @param  fun  the function symbol of the application.
+	 * @param  arg1 the first argument of the application.
+	 * @param  arg2 the second argument of the application.
+	 * @param  arg3 the third argument of the application.
+	 * @param  arg4 the fourth argument of the application.
 	 *
-	 * @return the constructed function application.
+	 * @return      the constructed function application.
 	 */
-	public ATermAppl makeAppl(AFun fun, ATerm arg1, ATerm arg2, ATerm arg3, ATerm arg4);
+	ATermAppl makeAppl(AFun fun, ATerm arg1, ATerm arg2, ATerm arg3, ATerm arg4);
 
 	/**
 	 * Creates a function application.
 	 *
-	 * @param fun the function symbol of the application.
-	 * @param arg1 the first argument of the application.
-	 * @param arg2 the second argument of the application.
-	 * @param arg3 the third argument of the application.
-	 * @param arg4 the fourth argument of the application.
-	 * @param arg5 the fifth argument of the application.
+	 * @param  fun  the function symbol of the application.
+	 * @param  arg1 the first argument of the application.
+	 * @param  arg2 the second argument of the application.
+	 * @param  arg3 the third argument of the application.
+	 * @param  arg4 the fourth argument of the application.
+	 * @param  arg5 the fifth argument of the application.
 	 *
-	 * @return the constructed function application.
+	 * @return      the constructed function application.
 	 */
-	public ATermAppl makeAppl(AFun fun, ATerm arg1, ATerm arg2, ATerm arg3, ATerm arg4, ATerm arg5);
+	ATermAppl makeAppl(AFun fun, ATerm arg1, ATerm arg2, ATerm arg3, ATerm arg4, ATerm arg5);
 
 	/**
 	 * Creates a function application.
 	 *
-	 * @param fun the function symbol of the application.
-	 * @param arg1 the first argument of the application.
-	 * @param arg2 the second argument of the application.
-	 * @param arg3 the third argument of the application.
-	 * @param arg4 the fourth argument of the application.
-	 * @param arg5 the fifth argument of the application.
-	 * @param arg6 the sixth argument of the application.
+	 * @param  fun  the function symbol of the application.
+	 * @param  arg1 the first argument of the application.
+	 * @param  arg2 the second argument of the application.
+	 * @param  arg3 the third argument of the application.
+	 * @param  arg4 the fourth argument of the application.
+	 * @param  arg5 the fifth argument of the application.
+	 * @param  arg6 the sixth argument of the application.
 	 *
-	 * @return the constructed function application.
+	 * @return      the constructed function application.
 	 */
-	public ATermAppl makeAppl(AFun fun, ATerm arg1, ATerm arg2, ATerm arg3, ATerm arg4, ATerm arg5, ATerm arg6);
+	ATermAppl makeAppl(AFun fun, ATerm arg1, ATerm arg2, ATerm arg3, ATerm arg4, ATerm arg5, ATerm arg6);
 
 	/**
 	 * Creates a function application.
 	 *
-	 * @param fun the function symbol of the application.
-	 * @param args an array containing the arguments.
+	 * @param  fun  the function symbol of the application.
+	 * @param  args an array containing the arguments.
 	 *
-	 * @return the constructed function application.
+	 * @return      the constructed function application.
 	 */
-	public ATermAppl makeAppl(AFun fun, ATerm[] args);
+	ATermAppl makeAppl(AFun fun, ATerm[] args);
 
 	/**
 	 * Creates a function application.
 	 *
-	 * @param fun the function symbol of the application.
-	 * @param args an ATermList containing the arguments.
+	 * @param  fun  the function symbol of the application.
+	 * @param  args an ATermList containing the arguments.
 	 *
-	 * @return the constructed function application.
+	 * @return      the constructed function application.
 	 */
-	public ATermAppl makeApplList(AFun fun, ATermList args);
+	ATermAppl makeApplList(AFun fun, ATermList args);
 
-	public FunLiteral literal();
+	FunLiteral literal();
 
-	public FunAnd and();
+	FunAnd and();
 
-	public FunOr or();
+	FunOr or();
 
-	public FunSome some();
+	FunSome some();
 
-	public FunAll all();
+	FunAll all();
 
-	public FunNot not();
+	FunNot not();
 
-	public FunMax max();
+	FunMax max();
 
-	public FunMin min();
+	FunMin min();
 
-	public FunValue value();
+	FunValue value();
 
-	public FunSelf self();
+	FunSelf self();
 
-	public FunCard card();
+	FunCard card();
 
-	public FunInv inv();
+	FunInv inv();
 
-	public FunSubClassOf subClassOf();
+	FunSubClassOf subClassOf();
 
-	public FunEquivalentClasses equivalentClasses();
+	FunEquivalentClasses equivalentClasses();
 
-	public FunSameAs sameAs();
+	FunSameAs sameAs();
 
-	public FunDisjointWith disjointWith();
+	FunDisjointWith disjointWith();
 
-	public FunDisjointClasses disjointClasses();
+	FunDisjointClasses disjointClasses();
 
-	public FunDisjointPropertyWith disjointPropertyWith();
+	FunDisjointPropertyWith disjointPropertyWith();
 
-	public FunDisjointProperties disjointProperties();
+	FunDisjointProperties disjointProperties();
 
-	public FunComplementOf complementOf();
+	FunComplementOf complementOf();
 
-	public FunVar var();
+	FunVar var();
 
-	public FunType type();
+	FunType type();
 
-	public FunProp prop();
+	FunProp prop();
 
-	public FunDifferent different();
+	FunDifferent different();
 
-	public FunAllDifferent allDifferent();
+	FunAllDifferent allDifferent();
 
-	public FunAsymmetric asymmetric();
+	FunAsymmetric asymmetric();
 
-	public FunFunctionnal functional();
+	FunFunctionnal functional();
 
-	public FunInverseFunctional inverseFunctional();
+	FunInverseFunctional inverseFunctional();
 
-	public FunIrreflexive irreflexive();
+	FunIrreflexive irreflexive();
 
-	public FunReflexive reflexive();
+	FunReflexive reflexive();
 
-	public FunSymmetric symmetric();
+	FunSymmetric symmetric();
 
-	public FunTransitive transitive();
+	FunTransitive transitive();
 
-	public FunSubProperty subProperty();
+	FunSubProperty subProperty();
 
-	public FunEquivalentProperty equivalentProperty();
+	FunEquivalentProperty equivalentProperty();
 
-	public FunInverseProperty inverseProperty();
+	FunInverseProperty inverseProperty();
 
-	public FunDomain domain();
+	FunDomain domain();
 
-	public FunRange range();
+	FunRange range();
 
-	public FunRule rule();
+	FunRule rule();
 
-	public FunBuiltin builtin();
+	FunBuiltin builtin();
 
-	public FunDatatypeDefinition datatypeDefinition();
+	FunDatatypeDefinition datatypeDefinition();
 
-	public FunRestrictedDatatype restrictedDatatype();
+	FunRestrictedDatatype restrictedDatatype();
 
-	public FunFacet facet();
+	FunFacet facet();
 
-	public FunEmpty empty();
+	FunEmpty empty();
 
-	public FunTop top();
+	FunTop top();
 
-	public FunTopObjectProperty topObjectProperty();
+	FunTopObjectProperty topObjectProperty();
 
-	public FunTopDataProperty topDataProperty();
+	FunTopDataProperty topDataProperty();
 
-	public FunBottomObjectProperty bottomObjectProperty();
+	FunBottomObjectProperty bottomObjectProperty();
 
-	public FunBottomDataProperty bottomDataProperty();
+	FunBottomDataProperty bottomDataProperty();
 
 	/**
 	 * Creates an ATerm from a text stream.
 	 *
-	 * @param stream the inputstream to read the ATerm from.
+	 * @param  stream      the inputstream to read the ATerm from.
 	 *
-	 * @return the parsed ATerm.
+	 * @return             the parsed ATerm.
 	 * @throws IOException
 	 */
-	public ATerm readFromTextFile(InputStream stream) throws IOException;
+	ATerm readFromTextFile(InputStream stream) throws IOException;
 
 	/**
 	 * Creates an ATerm from a openllet.shared.hash text stream.
 	 *
-	 * @param stream the inputstream to read the ATerm from.
+	 * @param  stream      the inputstream to read the ATerm from.
 	 *
-	 * @return the parsed ATerm.
+	 * @return             the parsed ATerm.
 	 * @throws IOException
 	 */
-	public ATerm readFromSharedTextFile(InputStream stream) throws IOException;
+	ATerm readFromSharedTextFile(InputStream stream) throws IOException;
 
 	/**
 	 * Creates an ATerm from a binary stream.
 	 *
-	 * @param stream the inputstream to read the ATerm from.
+	 * @param  stream      the inputstream to read the ATerm from.
 	 *
-	 * @return the parsed ATerm.
+	 * @return             the parsed ATerm.
 	 * @throws IOException
 	 */
-	public ATerm readFromBinaryFile(InputStream stream) throws IOException;
+	ATerm readFromBinaryFile(InputStream stream) throws IOException;
 
 	/**
 	 * Creates an ATerm from a stream.
 	 * This function determines the type of stream (text, openllet.shared.hash, binary)
 	 * and parses the ATerm accordingly.
 	 *
-	 * @param stream the inputstream to read the ATerm from.
+	 * @param  stream      the inputstream to read the ATerm from.
 	 *
-	 * @return the parsed ATerm.
+	 * @return             the parsed ATerm.
 	 * @throws IOException
 	 */
-	public ATerm readFromFile(InputStream stream) throws IOException;
+	ATerm readFromFile(InputStream stream) throws IOException;
 
 	/**
 	 * Creates an ATerm from a given filename.
 	 *
-	 * @param file the filename to read the ATerm from.
+	 * @param  file        the filename to read the ATerm from.
 	 *
-	 * @return the parsed ATerm.
+	 * @return             the parsed ATerm.
 	 * @throws IOException
 	 */
-	public ATerm readFromFile(String file) throws IOException;
+	ATerm readFromFile(String file) throws IOException;
 
 	/**
 	 * Creates an ATerm by importing it from another ATermFactory.
 	 *
-	 * @param term the term (possibly from another ATermFactory) to rebuild in
-	 *            this factory.
+	 * @param  term the term (possibly from another ATermFactory) to rebuild in
+	 *              this factory.
 	 *
-	 * @return the imported ATerm.
+	 * @return      the imported ATerm.
 	 */
-	public ATerm importTerm(ATerm term);
+	ATerm importTerm(ATerm term);
 }

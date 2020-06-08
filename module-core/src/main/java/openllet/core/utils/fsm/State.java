@@ -18,16 +18,16 @@ import openllet.core.boxes.rbox.Role;
  * Company: Clark & Parsia, LLC. <http://www.clarkparsia.com>
  * </p>
  *
- * @author Evren Sirin
- * @param <T> kind of states
+ * @author     Evren Sirin
+ * @param  <T> kind of states
  */
 public class State<T>
 {
-	private static int next_unused_name = 0;
+	private static int					next_unused_name	= 0;
 
-	private int _name; // number of state
+	private int							_name;					// number of state
 
-	private final Set<Transition<T>> _transitions; // set of outgoing edges from state
+	private final Set<Transition<T>>	_transitions;			// set of outgoing edges from state
 
 	public State()
 	{
@@ -43,11 +43,9 @@ public class State<T>
 	 */
 	public void addTransition(final T symbol, final State<T> s)
 	{
-		if (symbol == null || s == null)
-			throw new NullPointerException();
+		if (symbol == null || s == null) throw new NullPointerException();
 
-		if (!(symbol instanceof Role))
-			throw new ClassCastException();
+		if (!(symbol instanceof Role)) throw new ClassCastException();
 
 		final Transition<T> t = new Transition<>(symbol, s);
 		_transitions.add(t);
@@ -60,8 +58,7 @@ public class State<T>
 	 */
 	public void addTransition(final State<T> s)
 	{
-		if (s == null)
-			throw new NullPointerException();
+		if (s == null) throw new NullPointerException();
 
 		final Transition<T> t = new Transition<>(s);
 		_transitions.add(t);
@@ -80,14 +77,13 @@ public class State<T>
 	/**
 	 * Returns a state reached from this state with the given symbol. If more than one state can be reached with the given symbol, an arbitrary one is returned.
 	 *
-	 * @param symbol
-	 * @return a state reached from this state with the given symbol, <code>null</code> otherwise
+	 * @param  symbol
+	 * @return        a state reached from this state with the given symbol, <code>null</code> otherwise
 	 */
 	public State<T> move(final T symbol)
 	{
 		for (final Transition<T> t : _transitions)
-			if (t.hasName(symbol))
-				return t.getTo();
+			if (t.hasName(symbol)) return t.getTo();
 		return null;
 	}
 

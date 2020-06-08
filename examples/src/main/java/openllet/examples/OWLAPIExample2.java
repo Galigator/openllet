@@ -16,7 +16,7 @@ import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
 /**
  * Another example with owl-api and reasoning.
- * 
+ *
  * @since 2.6.1
  */
 public class OWLAPIExample2

@@ -30,72 +30,72 @@ import openllet.core.utils.progress.ProgressMonitor;
 public interface KnowledgeBase extends InstancesBase, PropertiesBase, ClassesBase
 {
 
-	public void clear();
+	void clear();
 
-	public SizeEstimate getSizeEstimate();
+	SizeEstimate getSizeEstimate();
 
 	/**
 	 * Set a timeout for the main timer. Used to stop an automated test after a reasonable amount of time has passed.
 	 *
 	 * @param timeout
 	 */
-	public void setTimeout(final long timeout);
+	void setTimeout(final long timeout);
 
-	public void clearABox();
+	void clearABox();
 
-	public Expressivity getExpressivity();
+	Expressivity getExpressivity();
 
 	/**
 	 * @return the total number of individuals in kb.
-	 * @since 2.6.2
+	 * @since  2.6.2
 	 */
-	public int getIndividualsCount();
+	int getIndividualsCount();
 
 	/**
 	 * @return all individuals.
 	 */
-	public Stream<ATermAppl> individuals();
+	Stream<ATermAppl> individuals();
 
-	public boolean isConsistent();
+	boolean isConsistent();
 
 	/**
 	 * @return true if the consistency check has been done and nothing in the KB has changed after that.
 	 */
-	public boolean isConsistencyDone();
+	boolean isConsistencyDone();
 
 	/**
 	 * @return the classification results.
 	 */
-	public Taxonomy<ATermAppl> getTaxonomy();
+	Taxonomy<ATermAppl> getTaxonomy();
 
-	public ExpressivityChecker getExpressivityChecker();
+	ExpressivityChecker getExpressivityChecker();
 
 	/**
 	 * @return the dependency index for syntactic assertions in this kb
 	 */
-	public DependencyIndex getDependencyIndex();
+	DependencyIndex getDependencyIndex();
 
 	/**
 	 * @return syntactic assertions in the kb
 	 */
-	public Set<ATermAppl> getSyntacticAssertions();
+	Set<ATermAppl> getSyntacticAssertions();
 
 	/**
 	 * @return the deletedAssertions
 	 */
-	public Set<ATermAppl> getDeletedAssertions();
+	Set<ATermAppl> getDeletedAssertions();
 
 	/**
 	 * Choose a completion strategy based on the expressivity of the KB. The abox given is not necessarily the ABox that belongs to this KB but can be a
 	 * derivative.
 	 *
-	 * @param abox
-	 * @param expressivity
-	 * @return a Completion strategy choose.
+	 * @param  abox
+	 * @param  expressivity
+	 * @return              a Completion strategy choose.
 	 */
-	public CompletionStrategy chooseStrategy(final ABox abox, final Expressivity expressivity);
+	CompletionStrategy chooseStrategy(final ABox abox, final Expressivity expressivity);
 
-	public default CompletionStrategy chooseStrategy(final ABox abox)
+	default CompletionStrategy chooseStrategy(final ABox abox)
 	{
 		return chooseStrategy(abox, getExpressivity());
 	}
@@ -106,7 +106,7 @@ public interface KnowledgeBase extends InstancesBase, PropertiesBase, ClassesBas
 	 *
 	 * @return all unsatisfiable classes in the KB excluding the BOTTOM concept
 	 */
-	public Set<ATermAppl> getUnsatisfiableClasses();
+	Set<ATermAppl> getUnsatisfiableClasses();
 
 	/**
 	 * Returns all unsatisfiable classes in the KB including the BOTTOM concept. Since BOTTOM concept is built-in the result will always have at least one
@@ -114,7 +114,7 @@ public interface KnowledgeBase extends InstancesBase, PropertiesBase, ClassesBas
 	 *
 	 * @return all unsatisfiable classes in the KB including the BOTTOM concept
 	 */
-	public Set<ATermAppl> getAllUnsatisfiableClasses();
+	Set<ATermAppl> getAllUnsatisfiableClasses();
 
 	/**
 	 * Return the asserted rules with their normalized form. A normalized rule is a rule where any class expression occurring in the rules is in normalized
@@ -122,33 +122,33 @@ public interface KnowledgeBase extends InstancesBase, PropertiesBase, ClassesBas
 	 *
 	 * @return set of rules where
 	 */
-	public Map<Rule, Rule> getNormalizedRules();
+	Map<Rule, Rule> getNormalizedRules();
 
 	/**
 	 * @return all the asserted rules.
 	 */
-	public Set<Rule> getRules();
+	Set<Rule> getRules();
 
-	public void addProperty(final ATermAppl p);
+	void addProperty(final ATermAppl p);
 
 	/**
 	 * Answers the hasPropertyValue question without doing any satisfiability check. It might return <code>Boolean.TRUE</code>, <code>Boolean.FALSE</code>, or
 	 * <code>null</code> (unknown). If the null value is returned <code>hasPropertyValue</code> function needs to be called to get the answer.
 	 *
-	 * @param s Subject
-	 * @param p Predicate
-	 * @param o Object (<code>null</code> can be used as wildcard)
-	 * @return true if the hasPropertyValue question without doing any satisfiability check.
+	 * @param  s Subject
+	 * @param  p Predicate
+	 * @param  o Object (<code>null</code> can be used as wildcard)
+	 * @return   true if the hasPropertyValue question without doing any satisfiability check.
 	 */
-	public Bool hasKnownPropertyValue(final ATermAppl s, final ATermAppl p, final ATermAppl o);
+	Bool hasKnownPropertyValue(final ATermAppl s, final ATermAppl p, final ATermAppl o);
 
-	public boolean hasPropertyValue(final ATermAppl s, final ATermAppl p, final ATermAppl o);
+	boolean hasPropertyValue(final ATermAppl s, final ATermAppl p, final ATermAppl o);
 
-	public boolean isAnnotation(final ATermAppl s, final ATermAppl p, final ATermAppl o);
+	boolean isAnnotation(final ATermAppl s, final ATermAppl p, final ATermAppl o);
 
-	public Taxonomy<ATermAppl> getToldTaxonomy();
+	Taxonomy<ATermAppl> getToldTaxonomy();
 
-	public Map<ATermAppl, Set<ATermAppl>> getToldDisjoints();
+	Map<ATermAppl, Set<ATermAppl>> getToldDisjoints();
 
 	// ----------------------------------------- Get Classification result -----------------------------------------------------
 
@@ -158,17 +158,17 @@ public interface KnowledgeBase extends InstancesBase, PropertiesBase, ClassesBas
 	 * *** This function will first realize the whole ontology ***
 	 * </p>
 	 *
-	 * @param ind An individual name
-	 * @return A set of sets, where each set in the collection represents an equivalence class. The elements of the inner class are ATermAppl objects.
+	 * @param  ind An individual name
+	 * @return     A set of sets, where each set in the collection represents an equivalence class. The elements of the inner class are ATermAppl objects.
 	 */
-	public default Set<Set<ATermAppl>> getTypes(final ATermAppl ind)
+	default Set<Set<ATermAppl>> getTypes(final ATermAppl ind)
 	{
 		return getTypes(ind, /* direct = */false);
 	}
 
-	public void addType(final ATermAppl i, final ATermAppl c, final DependencySet ds);
+	void addType(final ATermAppl i, final ATermAppl c, final DependencySet ds);
 
-	public void addType(final ATermAppl i, final ATermAppl c);
+	void addType(final ATermAppl i, final ATermAppl c);
 
 	/**
 	 * Returns all the (named) subclasses of class c. The class c itself is not included in the list but all the other classes that are equivalent to c are put
@@ -178,134 +178,134 @@ public interface KnowledgeBase extends InstancesBase, PropertiesBase, ClassesBas
 	 * *** This function will first classify the whole ontology ***
 	 * </p>
 	 *
-	 * @param c class whose subclasses are returned
-	 * @return A set of sets, where each set in the collection represents an equivalence class. The elements of the inner class are ATermAppl objects.
+	 * @param  c class whose subclasses are returned
+	 * @return   A set of sets, where each set in the collection represents an equivalence class. The elements of the inner class are ATermAppl objects.
 	 */
-	public default Set<Set<ATermAppl>> getSubClasses(final ATermAppl c)
+	default Set<Set<ATermAppl>> getSubClasses(final ATermAppl c)
 	{
 		return getSubClasses(c, false);
 	}
 
 	/**
-	 * @param c is a classes
-	 * @return true if there is at least one named individual that belongs to the given class
+	 * @param  c is a classes
+	 * @return   true if there is at least one named individual that belongs to the given class
 	 */
-	public boolean hasInstance(final ATerm c);
+	boolean hasInstance(final ATerm c);
 
 	// -------------------------------------------------- ADD CHANGE --------------------------------------------------------------
 
 	/**
 	 * Add a new object property. If property was earlier defined to be a datatype property then this function will simply return without changing the KB.
 	 *
-	 * @param p Name of the property
-	 * @return True if property is added, false if not
+	 * @param  p Name of the property
+	 * @return   True if property is added, false if not
 	 */
-	public boolean addObjectProperty(final ATerm p);
+	boolean addObjectProperty(final ATerm p);
 
 	/**
 	 * Add a new object property. If property was earlier defined to be a datatype property then this function will simply return without changing the KB.
 	 *
-	 * @param p
-	 * @return True if property is added, false if not
+	 * @param  p
+	 * @return   True if property is added, false if not
 	 */
-	public boolean addDatatypeProperty(final ATerm p);
+	boolean addDatatypeProperty(final ATerm p);
 
-	public void addClass(final ATermAppl c);
+	void addClass(final ATermAppl c);
 
-	public Individual addIndividual(final ATermAppl i);
+	Individual addIndividual(final ATermAppl i);
 
-	public void addEquivalentClass(final ATermAppl c1, final ATermAppl c2);
+	void addEquivalentClass(final ATermAppl c1, final ATermAppl c2);
 
-	public void addSubClass(final ATermAppl sub, final ATermAppl sup);
+	void addSubClass(final ATermAppl sub, final ATermAppl sup);
 
-	public void addDisjointClasses(final ATermList classes);
+	void addDisjointClasses(final ATermList classes);
 
-	public void addDisjointClasses(final List<ATermAppl> classes);
+	void addDisjointClasses(final List<ATermAppl> classes);
 
-	public void addComplementClass(final ATermAppl c1, final ATermAppl c2);
+	void addComplementClass(final ATermAppl c1, final ATermAppl c2);
 
-	public void addDisjointClass(final ATermAppl c1, final ATermAppl c2);
+	void addDisjointClass(final ATermAppl c1, final ATermAppl c2);
 
-	public void addDomain(final ATerm p, final ATermAppl c);
+	void addDomain(final ATerm p, final ATermAppl c);
 
-	public void addDomain(final ATerm p, final ATermAppl c, final Set<ATermAppl> explain);
+	void addDomain(final ATerm p, final ATermAppl c, final Set<ATermAppl> explain);
 
-	public void addRange(final ATerm p, final ATermAppl c);
+	void addRange(final ATerm p, final ATermAppl c);
 
-	public void addRange(final ATerm p, final ATermAppl c, final Set<ATermAppl> explain);
+	void addRange(final ATerm p, final ATermAppl c, final Set<ATermAppl> explain);
 
-	public boolean addPropertyValue(final ATermAppl p, final ATermAppl s, final ATermAppl o);
+	boolean addPropertyValue(final ATermAppl p, final ATermAppl s, final ATermAppl o);
 
-	public boolean addNegatedPropertyValue(final ATermAppl p, final ATermAppl s, final ATermAppl o);
+	boolean addNegatedPropertyValue(final ATermAppl p, final ATermAppl s, final ATermAppl o);
 
-	public void addSame(final ATermAppl i1, final ATermAppl i2);
+	void addSame(final ATermAppl i1, final ATermAppl i2);
 
-	public void addDifferent(final ATermAppl i1, final ATermAppl i2);
+	void addDifferent(final ATermAppl i1, final ATermAppl i2);
 
-	public void addAllDifferent(final ATermList list);
+	void addAllDifferent(final ATermList list);
 
-	public boolean addAnnotation(final ATermAppl s, final ATermAppl p, final ATermAppl o);
+	boolean addAnnotation(final ATermAppl s, final ATermAppl p, final ATermAppl o);
 
-	public boolean addAnnotationProperty(final ATerm p);
+	boolean addAnnotationProperty(final ATerm p);
 
-	public void addDatatype(final ATermAppl p);
+	void addDatatype(final ATermAppl p);
 
-	public void addKey(final ATermAppl c, final Set<ATermAppl> properties);
+	void addKey(final ATermAppl c, final Set<ATermAppl> properties);
 
 	/**
 	 * Adds a new datatype defined to be equivalent to the given data range expression.
 	 *
-	 * @param name name of the datatype
-	 * @param datarange a data range expression
-	 * @return true if the add success
+	 * @param  name      name of the datatype
+	 * @param  datarange a data range expression
+	 * @return           true if the add success
 	 */
-	public boolean addDatatypeDefinition(final ATermAppl name, final ATermAppl datarange);
+	boolean addDatatypeDefinition(final ATermAppl name, final ATermAppl datarange);
 
 	/**
 	 * Add a rule to the KB.
 	 *
-	 * @param rule
-	 * @return true if the add success
+	 * @param  rule
+	 * @return      true if the add success
 	 */
-	public boolean addRule(final Rule rule);
+	boolean addRule(final Rule rule);
 
 	// -------------------------------------------------- REMOVE CHANGE --------------------------------------------------------------
 
-	public boolean removeType(final ATermAppl ind, final ATermAppl c);
+	boolean removeType(final ATermAppl ind, final ATermAppl c);
 
 	/**
 	 * Removes (if possible) the given property domain axiom from the KB and return <code>true</code> if removal was successful. See also
 	 * {@link #addDomain(ATerm, ATermAppl)}.
 	 *
-	 * @param p Property in domain axiom
-	 * @param c Class in domain axiom
-	 * @return <code>true</code> if axiom is removed, <code>false</code> if removal failed
+	 * @param  p Property in domain axiom
+	 * @param  c Class in domain axiom
+	 * @return   <code>true</code> if axiom is removed, <code>false</code> if removal failed
 	 */
-	public boolean removeDomain(final ATerm p, final ATermAppl c);
+	boolean removeDomain(final ATerm p, final ATermAppl c);
 
 	/**
 	 * Removes (if possible) the given property range axiom from the KB and return <code>true</code> if removal was successful. See also
 	 * {@link #addRange(ATerm, ATermAppl)}.
 	 *
-	 * @param p Property in range axiom
-	 * @param c Class or datatype in range axiom
-	 * @return <code>true</code> if axiom is removed, <code>false</code> if removal failed
+	 * @param  p Property in range axiom
+	 * @param  c Class or datatype in range axiom
+	 * @return   <code>true</code> if axiom is removed, <code>false</code> if removal failed
 	 */
-	public boolean removeRange(final ATerm p, final ATermAppl c);
+	boolean removeRange(final ATerm p, final ATermAppl c);
 
-	public boolean removePropertyValue(final ATermAppl p, final ATermAppl i1, final ATermAppl i2);
+	boolean removePropertyValue(final ATermAppl p, final ATermAppl i1, final ATermAppl i2);
 
 	/**
 	 * Removes (if possible) the given TBox axiom from the KB and return <code>true</code> if removal was successful.
 	 *
-	 * @param axiom TBox axiom to remove
-	 * @return <code>true</code> if axiom is removed, <code>false</code> if removal failed
+	 * @param  axiom TBox axiom to remove
+	 * @return       <code>true</code> if axiom is removed, <code>false</code> if removal failed
 	 */
-	public boolean removeAxiom(final ATermAppl axiom);
+	boolean removeAxiom(final ATermAppl axiom);
 
 	// ----------------------------------------- Monitor -----------------------------------------------------
 
-	public void setTaxonomyBuilderProgressMonitor(final ProgressMonitor progressMonitor);
+	void setTaxonomyBuilderProgressMonitor(final ProgressMonitor progressMonitor);
 
 	// ----------------------------------------- Consulting -----------------------------------------------------
 
@@ -317,43 +317,43 @@ public interface KnowledgeBase extends InstancesBase, PropertiesBase, ClassesBas
 	 * *** This function will first classify the whole ontology ***
 	 * </p>
 	 *
-	 * @param c class whose superclasses are returned
-	 * @return A set of sets, where each set in the collection represents an equivalence class. The elements of the inner class are ATermAppl objects.
+	 * @param  c class whose superclasses are returned
+	 * @return   A set of sets, where each set in the collection represents an equivalence class. The elements of the inner class are ATermAppl objects.
 	 */
-	public default Set<Set<ATermAppl>> getSuperClasses(final ATermAppl c)
+	default Set<Set<ATermAppl>> getSuperClasses(final ATermAppl c)
 	{
 		return getSuperClasses(c, false);
 	}
 
-	public default Set<Set<ATermAppl>> getDisjointClasses(final ATermAppl c)
+	default Set<Set<ATermAppl>> getDisjointClasses(final ATermAppl c)
 	{
 		return getDisjointClasses(c, false);
 	}
 
-	public Set<ATermAppl> getComplements(final ATermAppl c);
+	Set<ATermAppl> getComplements(final ATermAppl c);
 
 	/**
-	 * @param name
-	 * @return all the individuals asserted to be equal to the given individual but not the the individual itself.
+	 * @param  name
+	 * @return      all the individuals asserted to be equal to the given individual but not the the individual itself.
 	 */
-	public Set<ATermAppl> getSames(final ATermAppl name);
+	Set<ATermAppl> getSames(final ATermAppl name);
 
-	public Set<ATermAppl> getDifferents(final ATermAppl name);
+	Set<ATermAppl> getDifferents(final ATermAppl name);
 
-	public boolean isDifferentFrom(final ATermAppl t1, final ATermAppl t2);
+	boolean isDifferentFrom(final ATermAppl t1, final ATermAppl t2);
 
-	public Set<Set<ATermAppl>> getDisjointProperties(final ATermAppl p);
+	Set<Set<ATermAppl>> getDisjointProperties(final ATermAppl p);
 
 	// ----------------------------------------- Consulting State -----------------------------------------------------
 
-	public boolean isSameAs(final ATermAppl t1, final ATermAppl t2);
+	boolean isSameAs(final ATermAppl t1, final ATermAppl t2);
 
 	/**
 	 * Create a copy of this KB with a completely new ABox copy but pointing to the same RBox and TBox.
 	 *
 	 * @return A copy of this KB
 	 */
-	public default KnowledgeBase copy()
+	default KnowledgeBase copy()
 	{
 		return copy(false);
 	}
@@ -363,15 +363,15 @@ public interface KnowledgeBase extends InstancesBase, PropertiesBase, ClassesBas
 	 * an empty ABox. If <code>emptyABox</code> parameter is true but the original KB contains nominals in its RBox or TBox the new KB will have the definition
 	 * of those _individuals (but not ) In either case, the new KB will point to the same RBox and TBox so changing one KB's RBox or TBox will affect other.
 	 *
-	 * @param emptyABox If <code>true</code> ABox is not copied to the new KB
-	 * @return A copy of this KB
+	 * @param  emptyABox If <code>true</code> ABox is not copied to the new KB
+	 * @return           A copy of this KB
 	 */
-	public KnowledgeBase copy(final boolean emptyABox);
+	KnowledgeBase copy(final boolean emptyABox);
 
 	public enum ChangeType
 	{
 		ABOX_ADD, ABOX_DEL, TBOX_ADD, TBOX_DEL, RBOX_ADD, RBOX_DEL
 	}
 
-	public boolean isChanged(final ChangeType change);
+	boolean isChanged(final ChangeType change);
 }

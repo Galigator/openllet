@@ -42,8 +42,8 @@ import org.semanticweb.owlapi.model.OWLOntology;
 public class OpenlletEntailment extends OpenlletCmdApp
 {
 
-	private String entailmentFile;
-	private boolean findAll;
+	private String	entailmentFile;
+	private boolean	findAll;
 
 	public OpenlletEntailment()
 	{

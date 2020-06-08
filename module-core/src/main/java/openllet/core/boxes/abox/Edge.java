@@ -28,40 +28,40 @@ public interface Edge
 	/**
 	 * Given a node upon which this edge is incident, the opposite incident _node is returned.
 	 *
-	 * @param node a node upon which this edge is incident
-	 * @return the other node this edge is incident upon
+	 * @param  node a node upon which this edge is incident
+	 * @return      the other node this edge is incident upon
 	 */
-	public abstract Node getNeighbor(Node node);
+	Node getNeighbor(Node node);
 
 	/**
 	 * @return Returns the depends.
 	 */
-	public abstract DependencySet getDepends();
+	DependencySet getDepends();
 
-	public abstract void setDepends(DependencySet ds);
+	void setDepends(DependencySet ds);
 
 	/**
 	 * @return Returns the source of this edge
 	 */
-	public abstract Individual getFrom();
+	Individual getFrom();
 
 	/**
 	 * @return Returns the name of the source node
 	 */
-	public abstract ATermAppl getFromName();
+	ATermAppl getFromName();
 
 	/**
 	 * @return Returns the role.
 	 */
-	public abstract Role getRole();
+	Role getRole();
 
 	/**
 	 * @return Returns the target of the edge
 	 */
-	public abstract Node getTo();
+	Node getTo();
 
 	/**
 	 * @return Returns the name of the target node
 	 */
-	public abstract ATermAppl getToName();
+	ATermAppl getToName();
 }

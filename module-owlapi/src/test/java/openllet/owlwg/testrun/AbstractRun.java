@@ -16,36 +16,32 @@ import openllet.owlwg.testcase.TestCase;
  * <p>
  * Company: Clark & Parsia, LLC. <a href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
  * </p>
- * 
+ *
  * @author Mike Smith &lt;msmith@clarkparsia.com&gt;
  */
 public abstract class AbstractRun implements TestRunResult
 {
 
-	private final Throwable _cause;
-	private final String _details;
-	private final RunResultType _resultType;
-	private final TestRunner<?> _runner;
-	private final TestCase<?> _testcase;
-	private final RunTestType _testType;
+	private final Throwable		_cause;
+	private final String		_details;
+	private final RunResultType	_resultType;
+	private final TestRunner<?>	_runner;
+	private final TestCase<?>	_testcase;
+	private final RunTestType	_testType;
 
-	public AbstractRun(TestCase<?> testcase, RunResultType resultType, RunTestType testType, TestRunner<?> runner, String details, Throwable cause)
+	public AbstractRun(final TestCase<?> testcase, final RunResultType resultType, final RunTestType testType, final TestRunner<?> runner, final String details, final Throwable cause)
 	{
-		if (testcase == null)
-			throw new NullPointerException();
-		if (resultType == null)
-			throw new NullPointerException();
-		if (testType == null)
-			throw new NullPointerException();
-		if (runner == null)
-			throw new NullPointerException();
+		if (testcase == null) throw new NullPointerException();
+		if (resultType == null) throw new NullPointerException();
+		if (testType == null) throw new NullPointerException();
+		if (runner == null) throw new NullPointerException();
 
-		this._testcase = testcase;
-		this._resultType = resultType;
-		this._testType = testType;
-		this._runner = runner;
-		this._details = details;
-		this._cause = cause;
+		_testcase = testcase;
+		_resultType = resultType;
+		_testType = testType;
+		_runner = runner;
+		_details = details;
+		_cause = cause;
 	}
 
 	@Override

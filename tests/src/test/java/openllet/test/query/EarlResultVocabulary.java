@@ -26,22 +26,22 @@ import org.apache.jena.rdf.model.ResourceFactory;
 public class EarlResultVocabulary
 {
 
-	public static final String doapBase = "http://usefulinc.com/ns/doap#";
+	public static final String		doapBase	= "http://usefulinc.com/ns/doap#";
 
-	public static final String doapBaseNs = "doap";
+	public static final String		doapBaseNs	= "doap";
 
 	// DOAP
 	// general classes
-	public static final Resource Project = ResourceFactory.createResource(doapBase + "Project");
+	public static final Resource	Project		= ResourceFactory.createResource(doapBase + "Project");
 
-	public static final Resource Version = ResourceFactory.createResource(doapBase + "Version");
+	public static final Resource	Version		= ResourceFactory.createResource(doapBase + "Version");
 
 	// general properties
-	public static final Property doapName = ResourceFactory.createProperty(doapBase + "name");
+	public static final Property	doapName	= ResourceFactory.createProperty(doapBase + "name");
 
-	public static final Property created = ResourceFactory.createProperty(doapBase + "created");
+	public static final Property	created		= ResourceFactory.createProperty(doapBase + "created");
 
-	public static final Property release = ResourceFactory.createProperty(doapBase + "release");
+	public static final Property	release		= ResourceFactory.createProperty(doapBase + "release");
 
-	public static final Property revision = ResourceFactory.createProperty(doapBase + "release");
+	public static final Property	revision	= ResourceFactory.createProperty(doapBase + "release");
 }

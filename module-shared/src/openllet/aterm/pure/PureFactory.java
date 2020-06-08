@@ -5,14 +5,14 @@
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
- *     * Redistributions of source code must retain the above copyright
- *       notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the University of California, Berkeley nor the
- *       names of its contributors may be used to endorse or promote products
- *       derived from this software without specific prior written permission.
+ * * Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following disclaimer.
+ * * Redistributions in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in the
+ * documentation and/or other materials provided with the distribution.
+ * * Neither the name of the University of California, Berkeley nor the
+ * names of its contributors may be used to endorse or promote products
+ * derived from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -40,7 +40,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
-
 import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
@@ -113,9 +112,9 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 	 * empty.hashcode = empty.getAnnotations().hashCode
 	 * this magic value can be found using: findEmptyHashCode()
 	 */
-	public final static int FIX_POINT = 240146486;
+	public final static int	FIX_POINT	= 240146486;
 
-	private final ATermList _empty;
+	private final ATermList	_empty;
 
 	private static boolean isBase64(final int c)
 	{
@@ -127,8 +126,7 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 		int abbrev = strTerm;
 		int size = 1;
 
-		if (abbrev == 0)
-			return 2;
+		if (abbrev == 0) return 2;
 
 		while (abbrev > 0)
 		{
@@ -295,20 +293,16 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 			abbrev *= 64;
 			if (c >= 'A' && c <= 'Z')
 				abbrev += c - 'A';
+			else if (c >= 'a' && c <= 'z')
+				abbrev += c - 'a' + 26;
+			else if (c >= '0' && c <= '9')
+				abbrev += c - '0' + 52;
+			else if (c == '+')
+				abbrev += 62;
+			else if (c == '/')
+				abbrev += 63;
 			else
-				if (c >= 'a' && c <= 'z')
-					abbrev += c - 'a' + 26;
-				else
-					if (c >= '0' && c <= '9')
-						abbrev += c - '0' + 52;
-					else
-						if (c == '+')
-							abbrev += 62;
-						else
-							if (c == '/')
-								abbrev += 63;
-							else
-								throw new OpenError("not a base-64 digit: " + c);
+				throw new OpenError("not a base-64 digit: " + c);
 
 			c = reader.read();
 		}
@@ -340,59 +334,56 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 			}
 			result = makeInt(val);
 		}
-		else
-			if (reader.getLastChar() == 'l' || reader.getLastChar() == 'L')
+		else if (reader.getLastChar() == 'l' || reader.getLastChar() == 'L')
+		{
+			reader.read();
+			long val;
+			try
 			{
-				reader.read();
-				long val;
-				try
-				{
-					val = Long.parseLong(str.toString());
-				}
-				catch (final NumberFormatException e)
-				{
-					throw new ParseError("malformed long", e);
-				}
-				result = makeLong(val);
+				val = Long.parseLong(str.toString());
 			}
-			else
+			catch (final NumberFormatException e)
 			{
-				if (reader.getLastChar() == '.')
-				{
-					str.append('.');
-					reader.read();
-					if (!Character.isDigit(reader.getLastChar()))
-						throw new ParseError("digit expected");
-					do
-						str.append((char) reader.getLastChar());
-					while (Character.isDigit(reader.read()));
-				}
-				if (reader.getLastChar() == 'e' || reader.getLastChar() == 'E')
+				throw new ParseError("malformed long", e);
+			}
+			result = makeLong(val);
+		}
+		else
+		{
+			if (reader.getLastChar() == '.')
+			{
+				str.append('.');
+				reader.read();
+				if (!Character.isDigit(reader.getLastChar())) throw new ParseError("digit expected");
+				do
+					str.append((char) reader.getLastChar());
+				while (Character.isDigit(reader.read()));
+			}
+			if (reader.getLastChar() == 'e' || reader.getLastChar() == 'E')
+			{
+				str.append((char) reader.getLastChar());
+				reader.read();
+				if (reader.getLastChar() == '-' || reader.getLastChar() == '+')
 				{
 					str.append((char) reader.getLastChar());
 					reader.read();
-					if (reader.getLastChar() == '-' || reader.getLastChar() == '+')
-					{
-						str.append((char) reader.getLastChar());
-						reader.read();
-					}
-					if (!Character.isDigit(reader.getLastChar()))
-						throw new ParseError("digit expected!");
-					do
-						str.append((char) reader.getLastChar());
-					while (Character.isDigit(reader.read()));
 				}
-				double val;
-				try
-				{
-					val = Double.valueOf(str.toString()).doubleValue();
-				}
-				catch (final NumberFormatException e)
-				{
-					throw new ParseError("malformed real", e);
-				}
-				result = makeReal(val);
+				if (!Character.isDigit(reader.getLastChar())) throw new ParseError("digit expected!");
+				do
+					str.append((char) reader.getLastChar());
+				while (Character.isDigit(reader.read()));
 			}
+			double val;
+			try
+			{
+				val = Double.valueOf(str.toString());
+			}
+			catch (final NumberFormatException e)
+			{
+				throw new ParseError("malformed real", e);
+			}
+			result = makeReal(val);
+		}
 		return result;
 	}
 
@@ -426,8 +417,7 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 			}
 
 			final int lastChar = reader.getLastChar();
-			if (lastChar == -1)
-				throw new ParseError("Unterminated quoted function symbol: " + str);
+			if (lastChar == -1) throw new ParseError("Unterminated quoted function symbol: " + str);
 
 			if (escaped)
 				switch (lastChar)
@@ -469,9 +459,7 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 					default:
 						str.append('\\').append((char) reader.getLastChar());
 				}
-			else
-				if (lastChar != '\"')
-					str.append((char) lastChar);
+			else if (lastChar != '\"') str.append((char) lastChar);
 		} while (escaped || reader.getLastChar() != '"');
 
 		return str.toString();
@@ -525,8 +513,7 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 
 			case '[':
 				c = reader.readSkippingWS();
-				if (c == -1)
-					throw new ParseError("premature EOF encountered.");
+				if (c == -1) throw new ParseError("premature EOF encountered.");
 
 				if (c == ']')
 				{
@@ -536,8 +523,7 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 				else
 				{
 					result = parseATerms(reader);
-					if (reader.getLastChar() != ']')
-						throw new ParseError("expected ']' but got '" + (char) reader.getLastChar() + "'");
+					if (reader.getLastChar() != ']') throw new ParseError("expected ']' but got '" + (char) reader.getLastChar() + "'");
 					c = reader.readSkippingWS();
 				}
 
@@ -547,8 +533,7 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 				c = reader.readSkippingWS();
 				final ATerm ph = parseFromReader(reader);
 
-				if (reader.getLastChar() != '>')
-					throw new ParseError("expected '>' but got '" + (char) reader.getLastChar() + "'");
+				if (reader.getLastChar() != '>') throw new ParseError("expected '>' but got '" + (char) reader.getLastChar() + "'");
 
 				c = reader.readSkippingWS();
 
@@ -563,16 +548,14 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 				if (reader.getLastChar() == '(')
 				{
 					c = reader.readSkippingWS();
-					if (c == -1)
-						throw new ParseError("premature EOF encountered.");
+					if (c == -1) throw new ParseError("premature EOF encountered.");
 					if (reader.getLastChar() == ')')
 						result = makeAppl(makeAFun(funname, 0, true));
 					else
 					{
 						final ATerm[] list = parseATermsArray(reader);
 
-						if (reader.getLastChar() != ')')
-							throw new ParseError("_expected ')' but got '" + reader.getLastChar() + "'");
+						if (reader.getLastChar() != ')') throw new ParseError("_expected ')' but got '" + reader.getLastChar() + "'");
 						result = makeAppl(makeAFun(funname, list.length, true), list);
 					}
 					c = reader.readSkippingWS();
@@ -584,16 +567,14 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 
 			case '(':
 				c = reader.readSkippingWS();
-				if (c == -1)
-					throw new ParseError("premature EOF encountered.");
+				if (c == -1) throw new ParseError("premature EOF encountered.");
 				if (reader.getLastChar() == ')')
 					result = makeAppl(makeAFun("", 0, false));
 				else
 				{
 					final ATerm[] list = parseATermsArray(reader);
 
-					if (reader.getLastChar() != ')')
-						throw new ParseError("_expected ')' but got '" + (char) reader.getLastChar() + "'");
+					if (reader.getLastChar() != ')') throw new ParseError("_expected ')' but got '" + (char) reader.getLastChar() + "'");
 					result = makeAppl(makeAFun("", list.length, false), list);
 				}
 				c = reader.readSkippingWS();
@@ -624,16 +605,14 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 					if (reader.getLastChar() == '(')
 					{
 						c = reader.readSkippingWS();
-						if (c == -1)
-							throw new ParseError("premature EOF encountered.");
+						if (c == -1) throw new ParseError("premature EOF encountered.");
 						if (reader.getLastChar() == ')')
 							result = makeAppl(makeAFun(funname, 0, false));
 						else
 						{
 							final ATerm[] list = parseATermsArray(reader);
 
-							if (reader.getLastChar() != ')')
-								throw new ParseError("_expected ')' but got '" + (char) reader.getLastChar() + "'");
+							if (reader.getLastChar() != ')') throw new ParseError("_expected ')' but got '" + (char) reader.getLastChar() + "'");
 							result = makeAppl(makeAFun(funname, list.length, false), list);
 						}
 						c = reader.readSkippingWS();
@@ -645,22 +624,18 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 					throw new ParseError("illegal character: '" + (char) reader.getLastChar() + "'");
 		}
 
-		if (reader.getLastChar() == '{')
-			if (reader.readSkippingWS() == '}')
-				reader.readSkippingWS();
-			else
-			{
-				if (reader.getLastChar() != '}')
-					throw new ParseError("'}' _expected '" + (char) reader.getLastChar() + "'");
-				reader.readSkippingWS();
-			}
+		if (reader.getLastChar() == '{') if (reader.readSkippingWS() == '}')
+			reader.readSkippingWS();
+		else
+		{
+			if (reader.getLastChar() != '}') throw new ParseError("'}' _expected '" + (char) reader.getLastChar() + "'");
+			reader.readSkippingWS();
+		}
 
 		/* Parse some ToolBus anomalies for backwards compatibility */
-		if (reader.getLastChar() == ':')
-			reader.read();
+		if (reader.getLastChar() == ':') reader.read();
 
-		if (reader.getLastChar() == '?')
-			reader.readSkippingWS();
+		if (reader.getLastChar() == '?') reader.readSkippingWS();
 
 		end = reader.getPosition();
 		reader.storeNextTerm(result, end - start);
@@ -736,8 +711,7 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 
 	protected boolean isDeepEqual(final ATerm t1, final ATerm t2)
 	{
-		if (t1.getType() != t2.getType())
-			return false;
+		if (t1.getType() != t2.getType()) return false;
 
 		// TODO : Need an implemention of Comparable<XTerm> for each type of ATerm.
 		throw new UnsupportedOperationException("Not yet implemented! " + t1 + ", " + t2);
@@ -769,8 +743,7 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 		final ATermReader reader = new ATermReader(new BufferedReader(new InputStreamReader(stream)));
 		reader.readSkippingWS();
 
-		if (reader.getLastChar() != '!')
-			throw new IOException("not a openllet.shared.hash text file!");
+		if (reader.getLastChar() != '!') throw new IOException("not a openllet.shared.hash text file!");
 
 		reader.readSkippingWS();
 
@@ -806,8 +779,7 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 		do
 		{
 			firstToken = stream.read();
-			if (firstToken == -1)
-				throw new IOException("Premature EOF.");
+			if (firstToken == -1) throw new IOException("Premature EOF.");
 		} while (Character.isWhitespace((char) firstToken));
 
 		final char typeByte = (char) firstToken;
@@ -832,13 +804,10 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 			{
 				if (Character.isLetterOrDigit(typeByte))
 					return readShiftFromFile(stream, typeByte);
-				else
-					if (firstToken == 0)
-						try (final BufferedInputStream bis = new BufferedInputStream(stream))
-						{
-							if (BAFReader.isBinaryATerm(bis))
-								return readFromBinaryFile(bis, true);
-						}
+				else if (firstToken == 0) try (final BufferedInputStream bis = new BufferedInputStream(stream))
+				{
+					if (BAFReader.isBinaryATerm(bis)) return readFromBinaryFile(bis, true);
+				}
 			}
 		}
 
@@ -871,8 +840,7 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 	public ATerm importTerm(final ATerm term)
 	{
 		final SharedObject object = (SharedObject) term;
-		if (contains(object))
-			return term;
+		if (contains(object)) return term;
 
 		ATerm result;
 

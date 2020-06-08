@@ -33,9 +33,9 @@ import org.semanticweb.owlapi.model.OWLOntology;
  */
 public class TooManyDifferentIndividualsPattern implements OntologyLintPattern
 {
-	private static final LintFormat DEFAULT_LINT_FORMAT = new CompactClassLintFormat();
+	private static final LintFormat	DEFAULT_LINT_FORMAT	= new CompactClassLintFormat();
 
-	private int _maxAllowed = 50;
+	private int						_maxAllowed			= 50;
 
 	@Override
 	public String getName()

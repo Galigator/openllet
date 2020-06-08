@@ -41,67 +41,20 @@ import org.apache.jena.util.FileUtils;
  */
 public class PelletSparqlDawgTester extends ARQSparqlDawgTester
 {
-	public static boolean CLASSIFY_KB_IN_ADVANCE = false;
+	public static boolean		CLASSIFY_KB_IN_ADVANCE	= false;
 
-	private final List<String> _avoidList = Arrays.asList(new String[] {
-			// FIXME with some effort some of the following queries can be handled
+	private final List<String>	_avoidList				= Arrays.asList("open-eq-01", "open-eq-02", "open-eq-05", "open-eq-07", "open-eq-08", "open-eq-09", "open-eq-10", "open-eq-11", "open-eq-12",
+			"term-3", "construct-1", "construct-3", "construct-4", "construct-5", "dawg-sort-builtin", "dawg-sort-function", "list-1", "list-2", "list-3", "list-4", "distinct-2", "no-distinct-2",
+			"join-combo-1", "join-combo-2", "dawg-optional-filter-005-not-simplified", "date-2", "date-3", "unplus-1", "open-eq-03", "var-1", "var-2", "open-eq-04", "nested-opt-1", "nested-opt-2",
+			"opt-filter-1", "opt-filter-2", "filter-scope-1", "dawg-optional-complex-2", "dawg-optional-filter-001", "dawg-optional-filter-002", "dawg-optional-filter-003",
+			"dawg-optional-filter-005-simplified", "dawg-graph-01", "dawg-graph-03", "dawg-graph-05", "dawg-graph-06", "dawg-graph-07", "dawg-graph-08", "dawg-graph-11", "dawg-dataset-01",
+			"dawg-dataset-03", "dawg-dataset-05", "dawg-dataset-06", "dawg-dataset-07", "dawg-dataset-08", "dawg-dataset-11", "dawg-dataset-12", "dawg-dataset-12b", "no-distinct-1", "distinct-1",
+			"dawg-sort-4", "dawg-sort-5", "dawg-sort-7", "dawg-sort-9", "dawg-sort-10", "limit-1", "limit-2", "limit-4", "offset-1", "offset-2", "offset-4", "slice-1", "slice-2", "slice-4",
+			"slice-5");
 
-			// The following test assumes simple entailment but Pellet does
-			// D-entailment
-			"open-eq-01",
+	protected QueryEngineType	_queryEngineType;
 
-			// The following test requires distinguishing different undefined
-			// datatypes
-			"open-eq-02",
-
-			// The following test requires properly handling undefined datatypes
-			"open-eq-05",
-
-			// The following tests require [object/_data]property punning in the
-			// _data
-			"open-eq-07", "open-eq-08", "open-eq-09", "open-eq-10", "open-eq-11", "open-eq-12",
-
-			// Pellet returns extra type owl:thing in the results
-			"term-3",
-
-			// ?s ?p ?o atom mapped to PropertyValue causing incompleteness
-			"construct-1", "construct-3", "construct-4", "construct-5",
-
-			// variables not mentioned in the SELECT but used in ORDER BY not
-			// handled
-			"dawg-sort-builtin", "dawg-sort-function",
-
-			// rdf:List vocabulary not supported
-			"list-1", "list-2", "list-3", "list-4",
-
-			// fails due to the same reasons in MiscTests.testCanonicalLiteral
-			"distinct-2", "no-distinct-2",
-
-			// requires OWL-Full compatibility (support rdf:Property)
-			"join-combo-1", "join-combo-2",
-
-			// not an approved test (and in clear conflict with
-			// "dawg-optional-filter-005-simplified",
-			"dawg-optional-filter-005-not-simplified",
-
-			// fails due to bugs in ARQ filter handling
-			"date-2", "date-3",
-
-			// ?x p "+3"^^xsd:int does not match "3"^^xsd:int
-			"unplus-1",
-
-			// ?x p "01"^^xsd:int does not match "1"^^xsd:int
-			"open-eq-03",
-
-			// The following tests will not pass because they require
-			// alternative literal forms in results. Mostly, this is
-			// xsd:integer when Pellet returns xsd:decimal
-
-			"var-1", "var-2", "open-eq-04", "nested-opt-1", "nested-opt-2", "opt-filter-1", "opt-filter-2", "filter-scope-1", "dawg-optional-complex-2", "dawg-optional-filter-001", "dawg-optional-filter-002", "dawg-optional-filter-003", "dawg-optional-filter-005-simplified", "dawg-graph-01", "dawg-graph-03", "dawg-graph-05", "dawg-graph-06", "dawg-graph-07", "dawg-graph-08", "dawg-graph-11", "dawg-dataset-01", "dawg-dataset-03", "dawg-dataset-05", "dawg-dataset-06", "dawg-dataset-07", "dawg-dataset-08", "dawg-dataset-11", "dawg-dataset-12", "dawg-dataset-12b", "no-distinct-1", "distinct-1", "dawg-sort-4", "dawg-sort-5", "dawg-sort-7", "dawg-sort-9", "dawg-sort-10", "limit-1", "limit-2", "limit-4", "offset-1", "offset-2", "offset-4", "slice-1", "slice-2", "slice-4", "slice-5" });
-
-	protected QueryEngineType _queryEngineType;
-
-	protected boolean _handleVariableSPO = true;
+	protected boolean			_handleVariableSPO		= true;
 
 	public PelletSparqlDawgTester(final QueryEngineType queryEngineType, final boolean handleVariableSPO)
 	{
@@ -126,8 +79,7 @@ public class PelletSparqlDawgTester extends ARQSparqlDawgTester
 
 		model.prepare();
 
-		if (PelletSparqlDawgTester.CLASSIFY_KB_IN_ADVANCE)
-			((PelletInfGraph) model.getGraph()).getKB().classify();
+		if (PelletSparqlDawgTester.CLASSIFY_KB_IN_ADVANCE) ((PelletInfGraph) model.getGraph()).getKB().classify();
 
 		final Dataset dataset = DatasetFactory.create(model);
 

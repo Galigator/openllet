@@ -18,10 +18,10 @@ import openllet.shared.tools.Log;
  */
 public class VersionInfo
 {
-	public final static Logger _logger = Log.getLogger(VersionInfo.class);
-	private Properties versionProperties = null;
+	public final static Logger	_logger				= Log.getLogger(VersionInfo.class);
+	private Properties			versionProperties	= null;
 
-	private static String UNKNOWN = "(unknown)";
+	private static String		UNKNOWN				= "(unknown)";
 
 	public VersionInfo()
 	{
@@ -29,26 +29,25 @@ public class VersionInfo
 
 		try (final InputStream vstream = VersionInfo.class.getResourceAsStream("src/main/resources/openllet/version.properties.in"))
 		{
-			if (vstream != null)
+			if (vstream != null) try
+			{
+				versionProperties.load(vstream);
+			}
+			catch (final IOException e)
+			{
+				_logger.log(Level.SEVERE, "Could not load version properties", e);
+			}
+			finally
+			{
 				try
 				{
-					versionProperties.load(vstream);
+					vstream.close();
 				}
 				catch (final IOException e)
 				{
-					_logger.log(Level.SEVERE, "Could not load version properties", e);
+					_logger.log(Level.SEVERE, "Could not close version properties", e);
 				}
-				finally
-				{
-					try
-					{
-						vstream.close();
-					}
-					catch (final IOException e)
-					{
-						_logger.log(Level.SEVERE, "Could not close version properties", e);
-					}
-				}
+			}
 		}
 		catch (final IOException exception)
 		{

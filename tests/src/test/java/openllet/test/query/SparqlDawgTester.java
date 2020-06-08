@@ -25,41 +25,41 @@ import java.util.Set;
 public interface SparqlDawgTester
 {
 
-	public void setQueryURI(final String queryURI);
+	void setQueryURI(final String queryURI);
 
-	public void setDatasetURIs(final Set<String> graphURIs, final Set<String> namedGraphURIs);
+	void setDatasetURIs(final Set<String> graphURIs, final Set<String> namedGraphURIs);
 
-	public void setResult(final String queryURI);
+	void setResult(final String queryURI);
 
 	/**
 	 * Checks whether the given query can be parsed.
 	 *
 	 * @return true if the query can be parsed.
 	 */
-	public boolean isParsable();
+	boolean isParsable();
 
 	/**
 	 * Checks whether the query is correctly evaluated with respect to given graph (dataURI), named graphs (namedDataURIs) and _expected results (result URI)
 	 *
-	 * @param dataURI URI of the graph to be the query executed against
-	 * @param namedDataURIs URIs of the named graphs
-	 * @param resultURI URI of the results
-	 * @return true if the _expected and actual results match
+	 * @param  dataURI       URI of the graph to be the query executed against
+	 * @param  namedDataURIs URIs of the named graphs
+	 * @param  resultURI     URI of the results
+	 * @return               true if the _expected and actual results match
 	 */
-	public boolean isCorrectlyEvaluated();
+	boolean isCorrectlyEvaluated();
 
 	/**
 	 * Determines whether the given test name is applicable for the given tester. Allows for using avoid lists.
 	 *
-	 * @param name name of the test
-	 * @return true, if the tester can be run on the test.
+	 * @param  name name of the test
+	 * @return      true, if the tester can be run on the test.
 	 */
-	public boolean isApplicable(final String testURI);
+	boolean isApplicable(final String testURI);
 
 	/**
 	 * Returns a user-friendly name for this tester
 	 *
 	 * @return the name of this tester.
 	 */
-	public String getName();
+	String getName();
 }

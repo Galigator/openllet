@@ -61,9 +61,9 @@ import openllet.core.output.TableData;
  */
 public class Timers
 {
-	private final Map<String, Timer> _timers = new LinkedHashMap<>();
+	private final Map<String, Timer>	_timers	= new LinkedHashMap<>();
 
-	public final Timer _mainTimer;
+	public final Timer					_mainTimer;
 
 	public Timers()
 	{
@@ -98,8 +98,7 @@ public class Timers
 
 	public Optional<Timer> startTimer(final String name)
 	{
-		if (OpenlletOptions.USE_THREADED_KERNEL)
-			return Optional.empty();
+		if (OpenlletOptions.USE_THREADED_KERNEL) return Optional.empty();
 
 		final Timer t = getTimer(name).orElseGet(() -> createTimer(name));
 		t.start();
@@ -116,13 +115,12 @@ public class Timers
 
 		final Optional<Timer> timer = startTimer(name);
 		consumer.accept(this);
-		timer.ifPresent(t -> t.stop());
+		timer.ifPresent(Timer::stop);
 	}
 
 	public <RESULT> RESULT execute(final String name, final Supplier<RESULT> producer)
 	{
-		if (OpenlletOptions.USE_THREADED_KERNEL)
-			return producer.get();
+		if (OpenlletOptions.USE_THREADED_KERNEL) return producer.get();
 
 		final Optional<Timer> timer = startTimer(name);
 		try
@@ -173,12 +171,12 @@ public class Timers
 
 	public long getTimerTotal(final String name)
 	{
-		return getTimer(name).map(t -> t.getTotal()).orElse(0L);
+		return getTimer(name).map(Timer::getTotal).orElse(0L);
 	}
 
 	public double getTimerAverage(final String name)
 	{
-		return getTimer(name).map(t -> t.getAverage()).orElse(0.);
+		return getTimer(name).map(Timer::getAverage).orElse(0.);
 	}
 
 	public Optional<Timer> getTimer(final String name)
@@ -219,28 +217,23 @@ public class Timers
 		final boolean[] alignment = shortForm ? new boolean[] { false, true } : new boolean[] { false, true, true, true };
 
 		final List<Timer> list = new ArrayList<>(_timers.values());
-		if (sortBy != null)
-			Collections.sort(list, (o1, o2) ->
+		if (sortBy != null) Collections.sort(list, (o1, o2) ->
+		{
+			if (sortBy.equalsIgnoreCase("Total"))
 			{
-				if (sortBy.equalsIgnoreCase("Total"))
-				{
-					long t1 = o1.getTotal();
-					long t2 = o2.getTotal();
-					if (t1 == 0)
-						t1 = o1.getElapsed();
-					if (t2 == 0)
-						t2 = o2.getElapsed();
-					return (int) (t2 - t1);
-				}
-				else
-					if (sortBy.equalsIgnoreCase("Avg"))
-						return (int) (o2.getAverage() - o1.getAverage());
-					else
-						if (sortBy.equalsIgnoreCase("Count"))
-							return (int) (o2.getCount() - o1.getCount());
-						else
-							return AlphaNumericComparator.CASE_INSENSITIVE.compare(o1, o2);
-			});
+				long t1 = o1.getTotal();
+				long t2 = o2.getTotal();
+				if (t1 == 0) t1 = o1.getElapsed();
+				if (t2 == 0) t2 = o2.getElapsed();
+				return (int) (t2 - t1);
+			}
+			else if (sortBy.equalsIgnoreCase("Avg"))
+				return (int) (o2.getAverage() - o1.getAverage());
+			else if (sortBy.equalsIgnoreCase("Count"))
+				return (int) (o2.getCount() - o1.getCount());
+			else
+				return AlphaNumericComparator.CASE_INSENSITIVE.compare(o1, o2);
+		});
 
 		final NumberFormat nf = new DecimalFormat("0.00");
 

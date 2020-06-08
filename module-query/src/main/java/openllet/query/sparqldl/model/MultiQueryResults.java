@@ -32,11 +32,11 @@ import openllet.aterm.ATermAppl;
 public class MultiQueryResults implements QueryResult
 {
 
-	private final List<ATermAppl> _resultVars;
+	private final List<ATermAppl>	_resultVars;
 
-	private final List<QueryResult> _queryResults;
+	private final List<QueryResult>	_queryResults;
 
-	private int _size;
+	private int						_size;
 
 	public MultiQueryResults(final List<ATermAppl> resultVars, final List<QueryResult> queryResults)
 	{
@@ -73,8 +73,7 @@ public class MultiQueryResults implements QueryResult
 	public boolean isDistinct()
 	{
 		for (final QueryResult result : _queryResults)
-			if (!result.isDistinct())
-				return false;
+			if (!result.isDistinct()) return false;
 
 		return true;
 	}
@@ -96,11 +95,11 @@ public class MultiQueryResults implements QueryResult
 	{
 		return new Iterator<>()
 		{
-			private final List<Iterator<ResultBinding>> iterators = new ArrayList<>();
+			private final List<Iterator<ResultBinding>>	iterators	= new ArrayList<>();
 
-			private final List<ResultBinding> bindings = new ArrayList<>();
+			private final List<ResultBinding>			bindings	= new ArrayList<>();
 
-			private boolean hasNext = init();
+			private boolean								hasNext		= init();
 
 			private boolean init()
 			{
@@ -108,8 +107,7 @@ public class MultiQueryResults implements QueryResult
 				{
 					final Iterator<ResultBinding> iterator = result.iterator();
 
-					if (!iterator.hasNext())
-						return false;
+					if (!iterator.hasNext()) return false;
 
 					iterators.add(iterator);
 					bindings.add(iterator.next());
@@ -130,18 +128,17 @@ public class MultiQueryResults implements QueryResult
 						bindings.set(index, iterator.next());
 						return;
 					}
+					else if (index == iterators.size() - 1)
+					{
+						hasNext = false;
+						return;
+					}
 					else
-						if (index == iterators.size() - 1)
-						{
-							hasNext = false;
-							return;
-						}
-						else
-						{
-							iterator = _queryResults.get(index).iterator();
-							i.set(iterator);
-							bindings.set(index, iterator.next());
-						}
+					{
+						iterator = _queryResults.get(index).iterator();
+						i.set(iterator);
+						bindings.set(index, iterator.next());
+					}
 				}
 			}
 
@@ -154,8 +151,7 @@ public class MultiQueryResults implements QueryResult
 			@Override
 			public ResultBinding next()
 			{
-				if (!hasNext())
-					throw new NoSuchElementException();
+				if (!hasNext()) throw new NoSuchElementException();
 
 				final ResultBinding result = new ResultBindingImpl();
 				for (final ResultBinding binding : bindings)

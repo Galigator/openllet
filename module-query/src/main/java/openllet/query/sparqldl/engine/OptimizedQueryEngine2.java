@@ -40,11 +40,11 @@ import openllet.shared.tools.Log;
 public class OptimizedQueryEngine2 extends AbstractABoxEngineWrapper
 {
 	@SuppressWarnings("hiding")
-	public static final Logger _logger = Log.getLogger(QueryEngine.class);
+	public static final Logger	_logger	= Log.getLogger(QueryEngine.class);
 
-	private QueryResult _results;
+	private QueryResult			_results;
 
-	private KnowledgeBase _kb;
+	private KnowledgeBase		_kb;
 
 	/**
 	 * {@inheritDoc}

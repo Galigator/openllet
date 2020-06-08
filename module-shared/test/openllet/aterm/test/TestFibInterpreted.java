@@ -5,14 +5,14 @@
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
- *     * Redistributions of source code must retain the above copyright
- *       notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the University of California, Berkeley nor the
- *       names of its contributors may be used to endorse or promote products
- *       derived from this software without specific prior written permission.
+ * * Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following disclaimer.
+ * * Redistributions in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in the
+ * documentation and/or other materials provided with the distribution.
+ * * Neither the name of the University of California, Berkeley nor the
+ * names of its contributors may be used to endorse or promote products
+ * derived from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -40,28 +40,28 @@ import org.junit.Test;
 public class TestFibInterpreted
 {
 
-	private ATermFactory _factory;
+	private ATermFactory	_factory;
 
-	private AFun zero, suc, plus, fib;
-	private ATermAppl tzero;
-	private ATerm fail;
+	private AFun			zero, suc, plus, fib;
+	private ATermAppl		tzero;
+	private ATerm			fail;
 
-	private ATerm lhs[];
-	private ATerm rhs[];
+	private ATerm			lhs[];
+	private ATerm			rhs[];
 
 	@Before
 	public void setUp()
 	{
-		this._factory = new PureFactory();
+		_factory = new PureFactory();
 
-		this.zero = _factory.makeAFun("zero", 0, false);
-		this.suc = _factory.makeAFun("suc", 1, false);
-		this.plus = _factory.makeAFun("plus", 2, false);
-		this.fib = _factory.makeAFun("fib", 1, false);
-		this.tzero = _factory.makeAppl(this.zero);
-		this.fail = _factory.parse("fail");
+		zero = _factory.makeAFun("zero", 0, false);
+		suc = _factory.makeAFun("suc", 1, false);
+		plus = _factory.makeAFun("plus", 2, false);
+		fib = _factory.makeAFun("fib", 1, false);
+		tzero = _factory.makeAppl(zero);
+		fail = _factory.parse("fail");
 
-		this.initRules();
+		initRules();
 	}
 
 	@Test
@@ -70,7 +70,7 @@ public class TestFibInterpreted
 		test1(5);
 	}
 
-	public final static void main(String[] args)
+	public final static void main(final String[] args)
 	{
 		final TestFibInterpreted t = newTestFibInterpreted(new PureFactory());
 
@@ -78,7 +78,7 @@ public class TestFibInterpreted
 		t.test1(5);
 	}
 
-	public static TestFibInterpreted newTestFibInterpreted(ATermFactory factory)
+	public static TestFibInterpreted newTestFibInterpreted(final ATermFactory factory)
 	{
 		final TestFibInterpreted t = new TestFibInterpreted();
 		t._factory = factory;
@@ -136,19 +136,19 @@ public class TestFibInterpreted
 
 	}
 
-	public ATerm oneStep(ATerm subject)
+	public ATerm oneStep(final ATerm subject)
 	{
 		int ruleNumber = 0;
 		List<Object> list;
 
 		// fib(zero) -> suc(zero)
 		list = subject.match(lhs[ruleNumber]);
-		if (list != null) { return rhs[ruleNumber]; }
+		if (list != null) return rhs[ruleNumber];
 		ruleNumber++;
 
 		// fib(suc(zero)) -> suc(zero)
 		list = subject.match(lhs[ruleNumber]);
-		if (list != null) { return rhs[ruleNumber]; }
+		if (list != null) return rhs[ruleNumber];
 		ruleNumber++;
 
 		// fib(suc(suc(X))) -> plus(fib(X),fib(suc(X)))
@@ -163,12 +163,12 @@ public class TestFibInterpreted
 
 		// plus(zero,X) -> X
 		list = subject.match(lhs[ruleNumber]);
-		if (list != null) { return _factory.make(rhs[ruleNumber], list); }
+		if (list != null) return _factory.make(rhs[ruleNumber], list);
 		ruleNumber++;
 
 		// plus(suc(X),Y) -> plus(X,suc(Y))
 		list = subject.match(lhs[ruleNumber]);
-		if (list != null) { return _factory.make(rhs[ruleNumber], list); }
+		if (list != null) return _factory.make(rhs[ruleNumber], list);
 		ruleNumber++;
 
 		// congruence (suc)
@@ -178,7 +178,7 @@ public class TestFibInterpreted
 			//System.out.println("congsuc"); // applied 1184122 times fir fib(14)
 			final ATerm X = (ATerm) list.get(0);
 			final ATerm Xp = oneStep(X);
-			if (Xp.equals(fail)) { return fail; }
+			if (Xp.equals(fail)) return fail;
 			list.clear();
 			list.add(Xp);
 			return _factory.make(rhs[ruleNumber], list);
@@ -196,7 +196,7 @@ public class TestFibInterpreted
 			{
 				final ATerm Y = (ATerm) list.get(1);
 				final ATerm Yp = oneStep(Y);
-				if (Yp.equals(fail)) { return fail; }
+				if (Yp.equals(fail)) return fail;
 				list.clear();
 				list.add(X);
 				list.add(Yp);
@@ -213,17 +213,17 @@ public class TestFibInterpreted
 		return fail;
 	}
 
-	public ATerm oneStepInnermost(ATerm subject)
+	public ATerm oneStepInnermost(final ATerm subject)
 	{
 		List<Object> list;
 
 		// fib(zero) -> suc(zero)
 		list = subject.match(lhs[0]);
-		if (list != null) { return rhs[0]; }
+		if (list != null) return rhs[0];
 
 		// fib(suc(zero)) -> suc(zero)
 		list = subject.match(lhs[1]);
-		if (list != null) { return rhs[1]; }
+		if (list != null) return rhs[1];
 
 		// fib(suc(suc(X))) -> plus(fib(X),fib(suc(X)))
 		list = subject.match(lhs[2]);
@@ -237,16 +237,16 @@ public class TestFibInterpreted
 
 		// plus(zero,X) -> X
 		list = subject.match(lhs[3]);
-		if (list != null) { return (ATerm) list.get(0); }
+		if (list != null) return (ATerm) list.get(0);
 
 		// plus(suc(X),Y) -> plus(X,suc(Y)))
 		list = subject.match(lhs[4]);
-		if (list != null) { return _factory.make(rhs[4], list); }
+		if (list != null) return _factory.make(rhs[4], list);
 
 		return fail;
 	}
 
-	public ATerm normalize(ATerm t_)
+	public ATerm normalize(final ATerm t_)
 	{
 		ATerm s = t_;
 		ATerm t = t_;
@@ -258,13 +258,11 @@ public class TestFibInterpreted
 		return t;
 	}
 
-	public void test1(int n)
+	public void test1(final int n)
 	{
 		ATermAppl N = tzero;
 		for (int i = 0; i < n; i++)
-		{
 			N = _factory.makeAppl(suc, N);
-		}
 		final ATerm tfib = _factory.makeAppl(fib, N);
 		normalize(tfib);
 	}

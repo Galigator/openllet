@@ -244,21 +244,20 @@ public class MiscExplanationTests
 		final OWLClass Volcano = OWL.Class("http://test#a_VOLCANO");
 		final OWLClass UplandArea = OWL.Class("http://test#a_UPLANDAREA");
 
-		final OWLAxiom[] axioms = 
-			{ //
-					OWL.subClassOf(VolcanicMountain, Mountain),// 
-					OWL.subClassOf(VolcanicMountain, Volcano), //
-					OWL.subClassOf(Mountain, UplandArea), //
-					OWL.subClassOf(UplandArea, OWL.not(Volcano)),//
-					OWL.disjointClasses(UplandArea, Volcano) //
-			};
+		final OWLAxiom[] axioms = { //
+				OWL.subClassOf(VolcanicMountain, Mountain), // 
+				OWL.subClassOf(VolcanicMountain, Volcano), //
+				OWL.subClassOf(Mountain, UplandArea), //
+				OWL.subClassOf(UplandArea, OWL.not(Volcano)), //
+				OWL.disjointClasses(UplandArea, Volcano) //
+		};
 
 		final OWLOntology ontology = OWL.Ontology(axioms);
 		final OpenlletReasoner reasoner = OpenlletReasonerFactory.getInstance().createReasoner(ontology);
 		final PelletExplanation explain = new PelletExplanation(reasoner);
 
 		assertTrue(explain != null);
-		
+
 		// bug 453 manifested by throwing an OWLRuntimeException from the following statement
 		// (number of explanations is important -- there are two explanations in this case, and the problem
 		// only occurs if both of them are produced)
@@ -268,10 +267,10 @@ public class MiscExplanationTests
 		final Set<OWLAxiom> s = SetUtils.create(axioms[0], axioms[1], axioms[2], axioms[4]);
 		final Set<Set<OWLAxiom>> expected = SetUtils.create(f, s);
 
-		for(Set<OWLAxiom> sae : expected)
+		for (final Set<OWLAxiom> sae : expected)
 		{
 			boolean b = false;
-			for(Set<OWLAxiom> saa : actual)
+			for (final Set<OWLAxiom> saa : actual)
 				b |= sae.equals(saa);
 			if (!b)
 			{
@@ -279,10 +278,10 @@ public class MiscExplanationTests
 				sae.stream().map(OWLAxiom::toString).sorted().forEach(System.out::println);
 			}
 		}
-		
+
 		// I only disable the assertion to let the code run and detect problems.
 		// assertEquals(expected, actual); // FIXME : there is a bug here.
-		
+
 		// The problem occured when I remove annotations from Aterm, but I can't see any thing directly related to it.
 		// Maybe an indirect impact over hashcode change in ordering of hashmap.
 	}
@@ -317,7 +316,6 @@ public class MiscExplanationTests
 
 		assertEquals(expected.listStatements().toSet(), actual.listStatements().toSet());
 	}
-
 
 	@SuppressWarnings("unused")
 	private void loadFromResource(final OntModel model, final String resource)

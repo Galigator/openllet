@@ -34,11 +34,9 @@ public class AlphaDiffFromNode extends AlphaNode
 	@Override
 	public Iterator<WME> getMatches(final int argIndex, final Node arg)
 	{
-		if (argIndex != 0 && argIndex != 1)
-			throw new IndexOutOfBoundsException();
+		if (argIndex != 0 && argIndex != 1) throw new IndexOutOfBoundsException();
 
-		if (!(arg instanceof Individual))
-			throw new IllegalArgumentException();
+		if (!(arg instanceof Individual)) throw new IllegalArgumentException();
 
 		return toWMEs(arg);
 	}

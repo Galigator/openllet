@@ -154,8 +154,7 @@ public class SROIQIncStrategy extends SROIQStrategy
 		_abox.setBranchIndex(0);
 
 		_mergeList.addAll(_abox.getToBeMerged());
-		if (!_mergeList.isEmpty())
-			mergeAll();
+		if (!_mergeList.isEmpty()) mergeAll();
 
 		//Apply necessary initialization to any new _individual added
 		//Currently, this is a replication of the code
@@ -163,8 +162,7 @@ public class SROIQIncStrategy extends SROIQStrategy
 		{
 			final Individual n = newIt.next();
 
-			if (n.isMerged())
-				continue;
+			if (n.isMerged()) continue;
 
 			applyUniversalRestrictions(n);
 
@@ -179,8 +177,7 @@ public class SROIQIncStrategy extends SROIQStrategy
 
 			_nominalRule.apply(n);
 
-			if (n.isMerged())
-				n = n.getSame();
+			if (n.isMerged()) n = n.getSame();
 
 			_allValuesRule.apply(n);
 		}
@@ -192,25 +189,19 @@ public class SROIQIncStrategy extends SROIQStrategy
 
 			final Individual subj = edge.getFrom();
 			final Node obj = edge.getTo();
-			if (subj.isMerged())
-				subj.getSame();
-			if (subj.isPruned())
-				continue;
+			if (subj.isMerged()) subj.getSame();
+			if (subj.isPruned()) continue;
 
-			if (obj.isMerged())
-				obj.getSame();
-			if (obj.isPruned())
-				continue;
+			if (obj.isMerged()) obj.getSame();
+			if (obj.isPruned()) continue;
 
 			final Role pred = edge.getRole();
 			final DependencySet ds = edge.getDepends();
 
 			applyDomainRange(subj, pred, obj, ds);
-			if (subj.isPruned() || obj.isPruned())
-				return;
+			if (subj.isPruned() || obj.isPruned()) return;
 			applyFunctionality(subj, pred, obj);
-			if (subj.isPruned() || obj.isPruned())
-				return;
+			if (subj.isPruned() || obj.isPruned()) return;
 
 			if (pred.isObjectRole())
 			{
@@ -226,8 +217,7 @@ public class SROIQIncStrategy extends SROIQStrategy
 		}
 
 		//merge again if necessary
-		if (!_mergeList.isEmpty())
-			mergeAll();
+		if (!_mergeList.isEmpty()) mergeAll();
 
 		//set appropriate _branch
 		_abox.setBranchIndex(_abox.getBranches().size() + 1);
@@ -291,19 +281,17 @@ public class SROIQIncStrategy extends SROIQStrategy
 				//get out edges and check domains, some values and min values
 				for (final Edge e : ind.getOutEdges())
 				{
-					if (e.getFrom().isPruned() || e.getTo().isPruned())
-						continue;
+					if (e.getFrom().isPruned() || e.getTo().isPruned()) continue;
 
 					final Role pred = e.getRole();
 					final Node obj = e.getTo();
 					final DependencySet ds = e.getDepends();
 
 					for (final ATermAppl domain : pred.getDomains())
-						if (requiredAddType(ind, domain))
-							if (!OpenlletOptions.USE_TRACING)
-								addType(ind, domain, ds.union(DependencySet.EMPTY, _abox.doExplanation()));
-							else
-								addType(ind, domain, ds.union(pred.getExplainDomain(domain), _abox.doExplanation()));
+						if (requiredAddType(ind, domain)) if (!OpenlletOptions.USE_TRACING)
+							addType(ind, domain, ds.union(DependencySet.EMPTY, _abox.doExplanation()));
+						else
+							addType(ind, domain, ds.union(pred.getExplainDomain(domain), _abox.doExplanation()));
 
 					//it could be the case that this label prevented the firing of the all values, some, or min rules of the _neighbor
 					if (obj instanceof Individual)
@@ -325,19 +313,17 @@ public class SROIQIncStrategy extends SROIQStrategy
 			//get out edges
 			for (final Edge e : node.getInEdges())
 			{
-				if (e.getFrom().isPruned() || e.getTo().isPruned())
-					continue;
+				if (e.getFrom().isPruned() || e.getTo().isPruned()) continue;
 
 				final Individual subj = e.getFrom();
 				final Role pred = e.getRole();
 				final DependencySet ds = e.getDepends();
 
 				for (final ATermAppl range : pred.getRanges())
-					if (requiredAddType(node, range))
-						if (!OpenlletOptions.USE_TRACING)
-							addType(node, range, ds.union(DependencySet.EMPTY, _abox.doExplanation()));
-						else
-							addType(node, range, ds.union(pred.getExplainRange(range), _abox.doExplanation()));
+					if (requiredAddType(node, range)) if (!OpenlletOptions.USE_TRACING)
+						addType(node, range, ds.union(DependencySet.EMPTY, _abox.doExplanation()));
+					else
+						addType(node, range, ds.union(pred.getExplainRange(range), _abox.doExplanation()));
 
 				//it could be the case that this label prevented the firing of the all values, some, or min rules of the _neighbor
 				subj._applyNext[Node.ALL] = 0;
@@ -378,8 +364,7 @@ public class SROIQIncStrategy extends SROIQStrategy
 				//get out edges
 				for (final Edge e : ind.getOutEdges())
 				{
-					if (!e.getFrom().isPruned() && !e.getTo().isPruned())
-						applyPropertyRestrictions(e);
+					if (!e.getFrom().isPruned() && !e.getTo().isPruned()) applyPropertyRestrictions(e);
 
 					final Node obj = e.getTo();
 					if (obj instanceof Individual)
@@ -393,8 +378,7 @@ public class SROIQIncStrategy extends SROIQStrategy
 				//get out edges
 				for (final Edge e : ind.getInEdges())
 				{
-					if (!e.getFrom().isPruned() && !e.getTo().isPruned())
-						applyPropertyRestrictions(e);
+					if (!e.getFrom().isPruned() && !e.getTo().isPruned()) applyPropertyRestrictions(e);
 
 					final Individual subj = e.getFrom();
 					subj._applyNext[Node.ALL] = 0;
@@ -407,7 +391,7 @@ public class SROIQIncStrategy extends SROIQStrategy
 		_abox.setComplete(false);
 		_abox.setInitialized(true);
 
-		timer.ifPresent(t -> t.stop());
+		timer.ifPresent(Timer::stop);
 		_logger.fine("Initialize Ended");
 	}
 
@@ -424,9 +408,9 @@ public class SROIQIncStrategy extends SROIQStrategy
 	}
 
 	/**
-	 * @param node
-	 * @param type
-	 * @return true if a type should be readded to a node
+	 * @param  node
+	 * @param  type
+	 * @return      true if a type should be readded to a node
 	 */
 	private static boolean requiredAddType(final Node node, final ATermAppl type)
 	{
@@ -451,9 +435,7 @@ public class SROIQIncStrategy extends SROIQStrategy
 
 			//apply the all values rules
 			for (final Edge e : av)
-			{
 				_allValuesRule.applyAllValues(e.getFrom(), e.getRole(), e.getTo(), e.getDepends());
-			}
 		}
 
 		for (final Iterator<Node> i = tracker.unprunedNodes(); i.hasNext();)
@@ -498,8 +480,8 @@ public class SROIQIncStrategy extends SROIQStrategy
 	/**
 	 * Find applicable all values for a removed type during a restore
 	 *
-	 * @param _node
-	 * @param removedTypes
+	 * @param  _node
+	 * @param  removedTypes
 	 * @return
 	 */
 	private EdgeList findAllValues(final Node node, final Set<ATermAppl> removedTypes)
@@ -526,8 +508,7 @@ public class SROIQIncStrategy extends SROIQStrategy
 
 				final Role inv = e.getRole().getInverse();
 
-				if (inv != null && to instanceof Individual)
-					edges.addAll(findAllValues(ind, (Individual) to, removedTypes, new DefaultEdge(inv, (Individual) to, ind, e.getDepends())));
+				if (inv != null && to instanceof Individual) edges.addAll(findAllValues(ind, (Individual) to, removedTypes, new DefaultEdge(inv, (Individual) to, ind, e.getDepends())));
 			}
 		}
 
@@ -537,10 +518,10 @@ public class SROIQIncStrategy extends SROIQStrategy
 	/**
 	 * Method to find the edges which an all values could be applied to
 	 *
-	 * @param _node
-	 * @param _neighbor
-	 * @param removedTypes
-	 * @param edge
+	 * @param  _node
+	 * @param  _neighbor
+	 * @param  removedTypes
+	 * @param  edge
 	 * @return
 	 */
 	private EdgeList findAllValues(final Node node, final Individual neighbor, final Set<ATermAppl> removedTypes, final Edge edge)
@@ -559,8 +540,7 @@ public class SROIQIncStrategy extends SROIQStrategy
 			final ATermAppl type = (ATermAppl) avType.getArgument(1);
 
 			//if we cannot use this edge then continue
-			if (edge != null && !edge.getRole().isSubRoleOf(_abox.getRole(role)))
-				continue;
+			if (edge != null && !edge.getRole().isSubRoleOf(_abox.getRole(role))) continue;
 
 			if (containsType(type, removedTypes))
 			{
@@ -570,8 +550,7 @@ public class SROIQIncStrategy extends SROIQStrategy
 		}
 
 		//only proceed if necessary
-		if (!applicable)
-			return edges;
+		if (!applicable) return edges;
 
 		//two cases depending on input
 		if (edge == null)
@@ -590,8 +569,8 @@ public class SROIQIncStrategy extends SROIQStrategy
 	/**
 	 * Check if a _node contains a particular type that has been removed
 	 *
-	 * @param type
-	 * @param removedTypes
+	 * @param  type
+	 * @param  removedTypes
 	 * @return
 	 */
 	private boolean containsType(final ATermAppl type, final Set<ATermAppl> removedTypes)
@@ -609,9 +588,7 @@ public class SROIQIncStrategy extends SROIQStrategy
 					break;
 				}
 			}
-		else
-			if (removedTypes.contains(type))
-				contains = true;
+		else if (removedTypes.contains(type)) contains = true;
 
 		return contains;
 	}

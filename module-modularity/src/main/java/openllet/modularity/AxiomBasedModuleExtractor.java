@@ -37,9 +37,9 @@ import org.semanticweb.owlapi.model.OWLEntity;
 public class AxiomBasedModuleExtractor extends AbstractModuleExtractor
 {
 	@SuppressWarnings("hiding")
-	public static final Logger _logger = Log.getLogger(AxiomBasedModuleExtractor.class);
+	public static final Logger	_logger						= Log.getLogger(AxiomBasedModuleExtractor.class);
 
-	private boolean _optimizeForSharedModules = true;
+	private boolean				_optimizeForSharedModules	= true;
 
 	public AxiomBasedModuleExtractor()
 	{
@@ -102,8 +102,7 @@ public class AxiomBasedModuleExtractor extends AbstractModuleExtractor
 			{
 
 				// ignore self references
-				if (myCycle.contains(member))
-					continue;
+				if (myCycle.contains(member)) continue;
 
 				// if we have never seen this entity extract its module
 				if (!_modules.containsKey(member))
@@ -132,15 +131,14 @@ public class AxiomBasedModuleExtractor extends AbstractModuleExtractor
 					}
 				}
 				// entity is in a cycle
+				else if (stackElements.contains(member))
+				{
+					currentCycle.addAll(myCycle);
+					return member;
+				}
 				else
-					if (stackElements.contains(member))
-					{
-						currentCycle.addAll(myCycle);
-						return member;
-					}
-					else
-						// simply retrieve and copy the precomputed module
-						module.addAll(_modules.get(member));
+					// simply retrieve and copy the precomputed module
+					module.addAll(_modules.get(member));
 			}
 
 			for (final OWLEntity e : myCycle)
@@ -205,12 +203,10 @@ public class AxiomBasedModuleExtractor extends AbstractModuleExtractor
 			for (final OWLEntity member : newMembers)
 			{
 				// ignore self references
-				if (member.equals(entity))
-					continue;
+				if (member.equals(entity)) continue;
 
 				// if we have never seen this entity extract its module
-				if (!_modules.containsKey(member))
-					extractModuleSignature(member, modEqCls, stack, stackElements);
+				if (!_modules.containsKey(member)) extractModuleSignature(member, modEqCls, stack, stackElements);
 				// the _node might even be on the stack
 				if (stackElements.contains(member))
 				{
@@ -233,8 +229,7 @@ public class AxiomBasedModuleExtractor extends AbstractModuleExtractor
 		}
 
 		for (final OWLEntity other : modEqCls.elements())
-			if (modEqCls.isSame(entity, other))
-				_modules.get(other).addAll(module);
+			if (modEqCls.isSame(entity, other)) _modules.get(other).addAll(module);
 
 		stack.remove(stack.size() - 1);
 		stackElements.remove(entity);
@@ -245,7 +240,7 @@ public class AxiomBasedModuleExtractor extends AbstractModuleExtractor
 	{
 		final Set<OWLEntity> nonLocalModule = new HashSet<>();
 		axioms()//
-				.filter(axiom -> !isLocal(axiom, Collections.<OWLEntity> emptySet())) //
+				.filter(axiom -> !isLocal(axiom, Collections.<OWLEntity>emptySet())) //
 				.forEach(axiom -> nonLocalModule.addAll(axiom.signature().collect(Collectors.toList())));
 
 		// iterate over classes passed in, and extract all their modules
@@ -253,16 +248,14 @@ public class AxiomBasedModuleExtractor extends AbstractModuleExtractor
 		{
 			monitor.incrementProgress();
 
-			if (!(ent instanceof OWLClass))
-				continue;
+			if (!(ent instanceof OWLClass)) continue;
 
 			_logger.fine(() -> "Class: " + ent);
 
-			if (!_modules.containsKey(ent))
-				if (_optimizeForSharedModules)
-					extractModuleSignature(ent, new HashSet<OWLEntity>(), new ArrayList<OWLEntity>(), new HashSet<>(nonLocalModule));
-				else
-					extractModuleSignature(ent, new DisjointSet<OWLEntity>(), new ArrayList<OWLEntity>(), new HashSet<>(nonLocalModule));
+			if (!_modules.containsKey(ent)) if (_optimizeForSharedModules)
+				extractModuleSignature(ent, new HashSet<OWLEntity>(), new ArrayList<OWLEntity>(), new HashSet<>(nonLocalModule));
+			else
+				extractModuleSignature(ent, new DisjointSet<OWLEntity>(), new ArrayList<OWLEntity>(), new HashSet<>(nonLocalModule));
 		}
 	}
 
@@ -272,19 +265,17 @@ public class AxiomBasedModuleExtractor extends AbstractModuleExtractor
 	@Override
 	public Set<OWLAxiom> extractModule(final Set<? extends OWLEntity> signature)
 	{
-		if (isChanged())
-			resetModules();
+		if (isChanged()) resetModules();
 
 		final Set<OWLEntity> module = new HashSet<>(signature);
 		axioms()//
-				.filter(axiom -> !isLocal(axiom, Collections.<OWLEntity> emptySet())) //
+				.filter(axiom -> !isLocal(axiom, Collections.<OWLEntity>emptySet())) //
 				.forEach(axiom -> module.addAll(axiom.signature().collect(Collectors.toList())));
 
-		if (!_entityAxioms.isEmpty())
-			if (_optimizeForSharedModules)
-				extractModuleSignature(null, new HashSet<OWLEntity>(), new ArrayList<OWLEntity>(), module);
-			else
-				extractModuleSignature(null, new DisjointSet<OWLEntity>(), new ArrayList<OWLEntity>(), module);
+		if (!_entityAxioms.isEmpty()) if (_optimizeForSharedModules)
+			extractModuleSignature(null, new HashSet<OWLEntity>(), new ArrayList<OWLEntity>(), module);
+		else
+			extractModuleSignature(null, new DisjointSet<OWLEntity>(), new ArrayList<OWLEntity>(), module);
 
 		return getModuleAxioms(module);
 	}

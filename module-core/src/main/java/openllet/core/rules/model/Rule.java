@@ -30,12 +30,12 @@ import openllet.core.utils.ATermUtils;
  */
 public class Rule
 {
-	private final ATermAppl _name;
+	private final ATermAppl					_name;
 
-	private final List<? extends RuleAtom> _body;// FIXME : use an ordered collection here.
-	private final List<? extends RuleAtom> _head;
+	private final List<? extends RuleAtom>	_body;			// FIXME : use an ordered collection here.
+	private final List<? extends RuleAtom>	_head;
 
-	private volatile Set<ATermAppl> _explanation;
+	private volatile Set<ATermAppl>			_explanation;
 
 	public Rule(final List<? extends RuleAtom> head, final List<? extends RuleAtom> body)
 	{
@@ -62,8 +62,7 @@ public class Rule
 
 	public Set<ATermAppl> getExplanation(final RulesToATermTranslator translator)
 	{
-		if (_explanation == null)
-			_explanation = singleton(translator.translate(this));
+		if (_explanation == null) _explanation = singleton(translator.translate(this));
 		return _explanation;
 	}
 

@@ -15,15 +15,16 @@ import java.util.Set;
  * <p>
  * Company: Clark & Parsia, LLC. <a href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
  * </p>
- * 
- * @author Mike Smith &lt;msmith@clarkparsia.com&gt;
+ *
+ * @author     Mike Smith &lt;msmith@clarkparsia.com&gt;
+ * @param  <O>
  */
 public interface PremisedTest<O> extends TestCase<O>
 {
 
-	public Set<SerializationFormat> getPremiseFormats();
+	Set<SerializationFormat> getPremiseFormats();
 
-	public String getPremiseOntology(final SerializationFormat format);
+	String getPremiseOntology(final SerializationFormat format);
 
-	public O parsePremiseOntology(final SerializationFormat format) throws OntologyParseException;
+	O parsePremiseOntology(final SerializationFormat format) throws OntologyParseException;
 }

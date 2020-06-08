@@ -61,9 +61,9 @@ public class OWLClassTreePrinter extends TreeTaxonomyPrinter<OWLClass>
 	/**
 	 * Retrieves direct instances of a class from Taxonomy
 	 *
-	 * @param t the taxonomy
-	 * @param c the class
-	 * @return a set of direct instances
+	 * @param  t the taxonomy
+	 * @param  c the class
+	 * @return   a set of direct instances
 	 */
 	@SuppressWarnings("unchecked")
 	public static Set<OWLNamedIndividual> getDirectInstances(final Taxonomy<OWLClass> t, final OWLClass c)
@@ -72,8 +72,7 @@ public class OWLClassTreePrinter extends TreeTaxonomyPrinter<OWLClass>
 		final Set<OWLNamedIndividual> instances = (Set<OWLNamedIndividual>) t.getDatum(c, TaxonomyUtils.TaxonomyKey.INSTANCES_KEY);
 		if (instances == null)
 		{
-			if (t.contains(c))
-				return Collections.emptySet();
+			if (t.contains(c)) return Collections.emptySet();
 
 			throw new OWLException(c + " is an unknown class!");
 		}

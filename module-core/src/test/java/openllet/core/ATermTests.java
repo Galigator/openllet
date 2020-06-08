@@ -38,19 +38,19 @@ import org.junit.Test;
 public class ATermTests
 {
 	// Constants to be used as concepts
-	public static ATermAppl _a = term("a");
-	public static ATermAppl _b = term("b");
-	public static ATermAppl _c = term("c");
-	public static ATermAppl _d = term("d");
+	public static ATermAppl	_a	= term("a");
+	public static ATermAppl	_b	= term("b");
+	public static ATermAppl	_c	= term("c");
+	public static ATermAppl	_d	= term("d");
 
 	// Constants to be used as roles
-	public static ATermAppl _p = term("p");
-	public static ATermAppl _q = term("q");
-	public static ATermAppl _r = term("r");
+	public static ATermAppl	_p	= term("p");
+	public static ATermAppl	_q	= term("q");
+	public static ATermAppl	_r	= term("r");
 
-	public static ATermAppl _d1 = restrict(Datatypes.INTEGER, minInclusive(literal(1)));
-	public static ATermAppl _d2 = restrict(Datatypes.INTEGER, maxExclusive(literal(2)));
-	public static ATermAppl _d3 = Datatypes.INTEGER;
+	public static ATermAppl	_d1	= restrict(Datatypes.INTEGER, minInclusive(literal(1)));
+	public static ATermAppl	_d2	= restrict(Datatypes.INTEGER, maxExclusive(literal(2)));
+	public static ATermAppl	_d3	= Datatypes.INTEGER;
 
 	public static junit.framework.Test suite()
 	{

@@ -11,8 +11,8 @@ import java.util.LinkedList;
  */
 abstract class AbstractProfileNode implements IObjectProfileNode, Comparable<AbstractProfileNode>
 {
-	public static final IObjectProfileNode[] EMPTY_OBJECTPROFILENODE_ARRAY = new IObjectProfileNode[0];
-	public int _size;
+	public static final IObjectProfileNode[]	EMPTY_OBJECTPROFILENODE_ARRAY	= new IObjectProfileNode[0];
+	public int									_size;
 
 	@Override
 	public final int size()
@@ -94,7 +94,7 @@ abstract class AbstractProfileNode implements IObjectProfileNode, Comparable<Abs
 	@Override
 	public final int compareTo(final AbstractProfileNode obj)
 	{
-		return obj._size - this._size;
+		return obj._size - _size;
 	}
 
 	@Override
@@ -108,7 +108,7 @@ abstract class AbstractProfileNode implements IObjectProfileNode, Comparable<Abs
 		_parent = parent;
 	}
 
-	private final IObjectProfileNode _parent;
-	private transient IObjectProfileNode[] _profilePath;
+	private final IObjectProfileNode		_parent;
+	private transient IObjectProfileNode[]	_profilePath;
 
 }

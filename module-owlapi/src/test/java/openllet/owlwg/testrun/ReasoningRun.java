@@ -22,31 +22,30 @@ import openllet.owlwg.testcase.TestCase;
  * <p>
  * Company: Clark & Parsia, LLC. <a href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
  * </p>
- * 
+ *
  * @author Mike Smith &lt;msmith@clarkparsia.com&gt;
  */
 public class ReasoningRun extends AbstractRun
 {
 
-	public ReasoningRun(TestCase<?> testcase, RunResultType resultType, RunTestType testType, TestRunner<?> runner)
+	public ReasoningRun(final TestCase<?> testcase, final RunResultType resultType, final RunTestType testType, final TestRunner<?> runner)
 	{
 		this(testcase, resultType, testType, runner, null, null);
 	}
 
-	public ReasoningRun(TestCase<?> testcase, RunResultType resultType, RunTestType testType, TestRunner<?> runner, String details)
+	public ReasoningRun(final TestCase<?> testcase, final RunResultType resultType, final RunTestType testType, final TestRunner<?> runner, final String details)
 	{
 		this(testcase, resultType, testType, runner, details, null);
 	}
 
-	public ReasoningRun(TestCase<?> testcase, RunResultType resultType, RunTestType testType, TestRunner<?> runner, String details, Throwable cause)
+	public ReasoningRun(final TestCase<?> testcase, final RunResultType resultType, final RunTestType testType, final TestRunner<?> runner, final String details, final Throwable cause)
 	{
 		super(testcase, resultType, testType, runner, details, cause);
-		if (!EnumSet.of(CONSISTENCY, INCONSISTENCY, NEGATIVE_ENTAILMENT, POSITIVE_ENTAILMENT).contains(testType))
-			throw new IllegalArgumentException();
+		if (!EnumSet.of(CONSISTENCY, INCONSISTENCY, NEGATIVE_ENTAILMENT, POSITIVE_ENTAILMENT).contains(testType)) throw new IllegalArgumentException();
 	}
 
 	@Override
-	public void accept(TestRunResultVisitor visitor)
+	public void accept(final TestRunResultVisitor visitor)
 	{
 		visitor.visit(this);
 	}

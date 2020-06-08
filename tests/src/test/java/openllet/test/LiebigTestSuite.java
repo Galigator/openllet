@@ -21,9 +21,9 @@ import org.junit.runners.Parameterized.Parameters;
 @RunWith(Parameterized.class)
 public class LiebigTestSuite
 {
-	public static String _base = PelletTestSuite.base + "liebig-tests/";
+	public static String		_base		= PelletTestSuite.base + "liebig-tests/";
 
-	private static List<String> TIMEOUTS = Arrays.asList(new String[] { "Manifest1b.rdf", "Manifest2b.rdf", "Manifest10a.rdf" });
+	private static List<String>	TIMEOUTS	= Arrays.asList("Manifest1b.rdf", "Manifest2b.rdf", "Manifest10a.rdf");
 
 	@Parameters
 	public static List<Object[]> getParameters()
@@ -41,9 +41,8 @@ public class LiebigTestSuite
 
 		Arrays.sort(files, AlphaNumericComparator.CASE_INSENSITIVE);
 
-		for (int j = 0; j < files.length; j++)
-			if (!TIMEOUTS.contains(files[j].getName()))
-				parameters.add(new Object[] { new WebOntTestCase(test, files[j], "liebig-" + files[j].getName()) });
+		for (final File file : files)
+			if (!TIMEOUTS.contains(file.getName())) parameters.add(new Object[] { new WebOntTestCase(test, file, "liebig-" + file.getName()) });
 
 		return parameters;
 	}
@@ -52,7 +51,7 @@ public class LiebigTestSuite
 
 	public LiebigTestSuite(final WebOntTestCase test)
 	{
-		this._test = test;
+		_test = test;
 	}
 
 	@Test

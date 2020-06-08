@@ -13,15 +13,15 @@ public class AndNode extends Node
 {
 
 	//	private final int	activationLimit;
-	private int _activatedInputs;
+	private int			_activatedInputs;
 
-	private final int _id;
+	private final int	_id;
 
 	public AndNode(final int id)
 	{
-		this._id = id;
+		_id = id;
 		//		this.activationLimit = activationLimit;
-		this._activatedInputs = 0;
+		_activatedInputs = 0;
 
 		//		if( activationLimit < 2 )
 		//			throw new IllegalArgumentException();
@@ -33,13 +33,13 @@ public class AndNode extends Node
 		//		if( _activatedInputs >= activationLimit )
 		//			throw new IllegalStateException();
 
-		return (++_activatedInputs == _inputs.size());
+		return ++_activatedInputs == _inputs.size();
 	}
 
 	@Override
 	public boolean isActive()
 	{
-		return (_activatedInputs == _inputs.size());
+		return _activatedInputs == _inputs.size();
 	}
 
 	@Override

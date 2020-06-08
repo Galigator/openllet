@@ -21,9 +21,9 @@ import java.util.function.Consumer;
  */
 public interface IntIterator
 {
-	public boolean hasNext();
+	boolean hasNext();
 
-	public int next();
+	int next();
 
 	default void remove()
 	{

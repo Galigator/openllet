@@ -22,8 +22,8 @@ import openllet.core.utils.ATermUtils;
  * Company: Clark & Parsia, LLC. <http://www.clarkparsia.com>
  * </p>
  *
- * @author Ron Alford
- * @param <A> kind of atom
+ * @author     Ron Alford
+ * @param  <A> kind of atom
  */
 public abstract class UnaryAtom<A extends AtomObject> extends RuleAtomImpl<ATermAppl>
 {

@@ -35,15 +35,13 @@ public abstract class DatatypeVisitor extends ATermBaseVisitor implements Boxes
 	{
 		final ATermAppl nominal = (ATermAppl) term.getArgument(0);
 
-		if (ATermUtils.isLiteral(nominal))
-			_isDatatype = true;
+		if (ATermUtils.isLiteral(nominal)) _isDatatype = true;
 	}
 
 	@Override
 	public void visitTerm(final ATermAppl term)
 	{
-		if (getDatatypeReasoner().isDeclared(term))
-			_isDatatype = true;
+		if (getDatatypeReasoner().isDeclared(term)) _isDatatype = true;
 	}
 
 	@Override

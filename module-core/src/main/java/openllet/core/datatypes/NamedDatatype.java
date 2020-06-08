@@ -16,15 +16,13 @@ import openllet.core.utils.ATermUtils;
  */
 class NamedDatatype<T> implements Datatype<T>
 {
-	private final ATermAppl _name;
-	private final RestrictedDatatype<T> _range;
+	private final ATermAppl				_name;
+	private final RestrictedDatatype<T>	_range;
 
 	NamedDatatype(final ATermAppl name, final RestrictedDatatype<T> range)
 	{
-		if (name == null)
-			throw new NullPointerException();
-		if (name.getArity() != 0)
-			throw new IllegalArgumentException();
+		if (name == null) throw new NullPointerException();
+		if (name.getArity() != 0) throw new IllegalArgumentException();
 
 		_name = name;
 		_range = range;
@@ -39,21 +37,15 @@ class NamedDatatype<T> implements Datatype<T>
 	@Override
 	public boolean equals(final Object obj)
 	{
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (getClass() != obj.getClass()) return false;
 		final NamedDatatype<?> other = (NamedDatatype<?>) obj;
 		if (_name == null)
 		{
-			if (other._name != null)
-				return false;
+			if (other._name != null) return false;
 		}
-		else
-			if (!_name.equals(other._name))
-				return false;
+		else if (!_name.equals(other._name)) return false;
 		return true;
 	}
 
@@ -69,9 +61,7 @@ class NamedDatatype<T> implements Datatype<T>
 		if (value instanceof ATermAppl)
 		{
 			final ATermAppl a = (ATermAppl) value;
-			if (ATermUtils.isLiteral(a))
-				if (_name.equals(a.getArgument(ATermUtils.LIT_URI_INDEX)))
-					return a;
+			if (ATermUtils.isLiteral(a)) if (_name.equals(a.getArgument(ATermUtils.LIT_URI_INDEX))) return a;
 		}
 		throw new IllegalArgumentException();
 	}
@@ -93,8 +83,7 @@ class NamedDatatype<T> implements Datatype<T>
 	{
 		final T value = _range.getDatatype().getValue(literal);
 
-		if (!_range.contains(value))
-			throw new InvalidLiteralException(_name, literal.getArgument(ATermUtils.LIT_VAL_INDEX).toString());
+		if (!_range.contains(value)) throw new InvalidLiteralException(_name, literal.getArgument(ATermUtils.LIT_VAL_INDEX).toString());
 
 		return value;
 	}

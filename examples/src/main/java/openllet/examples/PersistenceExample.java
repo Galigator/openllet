@@ -41,13 +41,13 @@ public class PersistenceExample
 {
 
 	// The ontology we use for classification
-	private static final String file = "file:src/main/resources/data/simple-galen.owl";
+	private static final String	file			= "file:src/main/resources/data/simple-galen.owl";
 
 	// The zip archive that will be created to store the internal _data of the incremental classifier
-	private static final String persistenceFile = "incrementalClassifierData.zip";
+	private static final String	persistenceFile	= "incrementalClassifierData.zip";
 
 	// Don't modify this
-	private static final String NS = "http://www.co-ode.org/ontologies/galen#";
+	private static final String	NS				= "http://www.co-ode.org/ontologies/galen#";
 
 	public void run() throws OWLOntologyCreationException
 	{
@@ -128,10 +128,10 @@ public class PersistenceExample
 		// Now query both of the classifiers for subclasses of "Pain" class. Both of the classifiers will incrementally update their state, and should print
 		// the same information
 
-		System.out.println("[Original classifier] Subclasses of " + pain + ": " + // 
+		System.out.println("[Original classifier] Subclasses of " + pain + ": " + //
 				classifier.getSubClasses(pain, true).entities().map(OWLClass::toString).collect(Collectors.joining(",")) + "\n");
-		System.out.println("[Restored classifier] Subclasses of " + pain + ": " + // 
-				((restoredClassifier != null) ? restoredClassifier.getSubClasses(pain, true).entities().map(OWLClass::toString).collect(Collectors.joining(",")) : "") + "\n");
+		System.out.println("[Restored classifier] Subclasses of " + pain + ": " + //
+				(restoredClassifier != null ? restoredClassifier.getSubClasses(pain, true).entities().map(OWLClass::toString).collect(Collectors.joining(",")) : "") + "\n");
 
 		// clean up by removing the file containing the persisted state
 		final File fileToDelete = new File(persistenceFile);

@@ -115,29 +115,29 @@ import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
  */
 public class OWL implements FacetManagerOWL, FacetFactoryOWL, Logging
 {
-	private static final Logger _logger = Log.getLogger(OWL.class);
+	private static final Logger				_logger					= Log.getLogger(OWL.class);
 
-	public static final OWLOntologyManager _manager = OWLManager.createConcurrentOWLOntologyManager();
+	public static final OWLOntologyManager	_manager				= OWLManager.createConcurrentOWLOntologyManager();
 
-	public static final OWLGroup _managerGroup = OWLGroup.fromVolatileManager(_manager);
+	public static final OWLGroup			_managerGroup			= OWLGroup.fromVolatileManager(_manager);
 
-	public static final OWLDataFactory _factory = _manager.getOWLDataFactory();
+	public static final OWLDataFactory		_factory				= _manager.getOWLDataFactory();
 
-	public static final OWLClass Nothing = _factory.getOWLNothing(); //InternalizedEntities.OWL_NOTHING;
+	public static final OWLClass			Nothing					= _factory.getOWLNothing();									//InternalizedEntities.OWL_NOTHING;
 
-	public static final OWLClass Thing = _factory.getOWLThing(); // InternalizedEntities.OWL_THING;
+	public static final OWLClass			Thing					= _factory.getOWLThing();									// InternalizedEntities.OWL_THING;
 
-	public static final OWLObjectProperty topObjectProperty = ObjectProperty(Namespaces.OWL + "topObjectProperty"); // InternalizedEntities.OWL_TOP_OBJECT_PROPERTY;
+	public static final OWLObjectProperty	topObjectProperty		= ObjectProperty(Namespaces.OWL + "topObjectProperty");		// InternalizedEntities.OWL_TOP_OBJECT_PROPERTY;
 
-	public static final OWLObjectProperty bottomObjectProperty = ObjectProperty(Namespaces.OWL + "bottomObjectProperty"); // InternalizedEntities.OWL_BOTTOM_OBJECT_PROPERTY;//
+	public static final OWLObjectProperty	bottomObjectProperty	= ObjectProperty(Namespaces.OWL + "bottomObjectProperty");	// InternalizedEntities.OWL_BOTTOM_OBJECT_PROPERTY;//
 
-	public static final OWLDataProperty topDataProperty = DataProperty(Namespaces.OWL + "topDataProperty");// InternalizedEntities.OWL_TOP_DATA_PROPERTY;
+	public static final OWLDataProperty		topDataProperty			= DataProperty(Namespaces.OWL + "topDataProperty");			// InternalizedEntities.OWL_TOP_DATA_PROPERTY;
 
-	public static final OWLDataProperty bottomDataProperty = DataProperty(Namespaces.OWL + "bottomDataProperty"); // InternalizedEntities.OWL_BOTTOM_DATA_PROPERTY;
+	public static final OWLDataProperty		bottomDataProperty		= DataProperty(Namespaces.OWL + "bottomDataProperty");		// InternalizedEntities.OWL_BOTTOM_DATA_PROPERTY;
 
-	public static final OWLLiteral TRUE = _factory.getOWLLiteral(true);
+	public static final OWLLiteral			TRUE					= _factory.getOWLLiteral(true);
 
-	public static final OWLLiteral FALSE = _factory.getOWLLiteral(false);
+	public static final OWLLiteral			FALSE					= _factory.getOWLLiteral(false);
 
 	@Override
 	public Logger getLogger()
@@ -238,6 +238,7 @@ public class OWL implements FacetManagerOWL, FacetFactoryOWL, Logging
 	/**
 	 * @deprecated 2.5.1 Use {@link #all(OWLObjectPropertyExpression, OWLClassExpression)} instead
 	 */
+	@SuppressWarnings("javadoc")
 	@Deprecated
 	public static OWLObjectAllValuesFrom allValuesFrom(final OWLObjectPropertyExpression property, final OWLClassExpression description)
 	{
@@ -319,12 +320,14 @@ public class OWL implements FacetManagerOWL, FacetFactoryOWL, Logging
 
 	public static OWLAnnotationAssertionAxiom comment(final OWLEntity entity, final String comment)
 	{
-		return _factory.getOWLAnnotationAssertionAxiom(entity.getIRI(), _factory.getOWLAnnotation(_factory.getOWLAnnotationProperty(OWLRDFVocabulary.RDFS_COMMENT.getIRI()), _factory.getOWLLiteral(comment)));
+		return _factory.getOWLAnnotationAssertionAxiom(entity.getIRI(),
+				_factory.getOWLAnnotation(_factory.getOWLAnnotationProperty(OWLRDFVocabulary.RDFS_COMMENT.getIRI()), _factory.getOWLLiteral(comment)));
 	}
 
 	/**
 	 * @deprecated 2.5.1 Use {@link #not(OWLClassExpression)} instead
 	 */
+	@SuppressWarnings("javadoc")
 	@Deprecated
 	public static OWLObjectComplementOf complementOf(final OWLClassExpression description)
 	{
@@ -334,8 +337,8 @@ public class OWL implements FacetManagerOWL, FacetFactoryOWL, Logging
 	/**
 	 * Convenience method that obtains a constant typed as an integer.
 	 *
-	 * @param value The value of the constant
-	 * @return An <code>OWLLiteral</code> whose literal is the lexical value of the integer, and whose _data type is xsd:boolean.
+	 * @param  value The value of the constant
+	 * @return       An <code>OWLLiteral</code> whose literal is the lexical value of the integer, and whose _data type is xsd:boolean.
 	 */
 	public static OWLLiteral constant(final boolean value)
 	{
@@ -345,8 +348,8 @@ public class OWL implements FacetManagerOWL, FacetFactoryOWL, Logging
 	/**
 	 * Convenience method that obtains a constant typed as an integer.
 	 *
-	 * @param value The value of the constant
-	 * @return An <code>OWLLiteral</code> whose literal is the lexical value of the integer, and whose _data type is xsd:double.
+	 * @param  value The value of the constant
+	 * @return       An <code>OWLLiteral</code> whose literal is the lexical value of the integer, and whose _data type is xsd:double.
 	 */
 	public static OWLLiteral constant(final double value)
 	{
@@ -356,8 +359,8 @@ public class OWL implements FacetManagerOWL, FacetFactoryOWL, Logging
 	/**
 	 * Convenience method that obtains a constant typed as an integer.
 	 *
-	 * @param value The value of the constant
-	 * @return An <code>OWLLiteral</code> whose literal is the lexical value of the integer, and whose _data type is xsd:float.
+	 * @param  value The value of the constant
+	 * @return       An <code>OWLLiteral</code> whose literal is the lexical value of the integer, and whose _data type is xsd:float.
 	 */
 	public static OWLLiteral constant(final float value)
 	{
@@ -367,8 +370,8 @@ public class OWL implements FacetManagerOWL, FacetFactoryOWL, Logging
 	/**
 	 * Convenience method that obtains a constant typed as an integer.
 	 *
-	 * @param value The value of the constant
-	 * @return An <code>OWLLiteral</code> whose literal is the lexical value of the integer, and whose _data type is xsd:integer.
+	 * @param  value The value of the constant
+	 * @return       An <code>OWLLiteral</code> whose literal is the lexical value of the integer, and whose _data type is xsd:integer.
 	 */
 	public static OWLLiteral constant(final int value)
 	{
@@ -922,11 +925,11 @@ public class OWL implements FacetManagerOWL, FacetFactoryOWL, Logging
 	/**
 	 * Return a class expression that is a logical and between a set of properties (objets/datas) and classes.
 	 *
-	 * @param objects to intersect
-	 * @param datas to intersect
-	 * @param classes to intersect
-	 * @return the intersection between objects properties and data properties and classes declarations.
-	 * @since 2.6.0
+	 * @param  objects to intersect
+	 * @param  datas   to intersect
+	 * @param  classes to intersect
+	 * @return         the intersection between objects properties and data properties and classes declarations.
+	 * @since          2.6.0
 	 */
 	public static OWLClassExpression and(final Set<OWLObjectPropertyExpression> objects, final Set<OWLDataPropertyExpression> datas, final Set<OWLClassExpression> classes)
 	{
@@ -942,10 +945,10 @@ public class OWL implements FacetManagerOWL, FacetFactoryOWL, Logging
 	/**
 	 * Convert a java class into an owl schema for the class.
 	 *
-	 * @param <T> is type of the class.
-	 * @param iface is the interface that define the java class.
-	 * @return a set of axiom that define the given class and it's inheritance hierarchy
-	 * @since 2.6.0
+	 * @param  <T>   is type of the class.
+	 * @param  iface is the interface that define the java class.
+	 * @return       a set of axiom that define the given class and it's inheritance hierarchy
+	 * @since        2.6.0
 	 */
 	public static <T> Set<OWLAxiom> schema(final Class<T> iface)
 	{

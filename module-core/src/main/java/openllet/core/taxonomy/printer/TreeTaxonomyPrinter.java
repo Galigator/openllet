@@ -38,13 +38,13 @@ import openllet.core.taxonomy.Taxonomy;
 import openllet.core.utils.Comparators;
 
 /**
- * @author Evren Sirin
- * @param <T> kind of taxon
+ * @author     Evren Sirin
+ * @param  <T> kind of taxon
  */
 public class TreeTaxonomyPrinter<T> implements TaxonomyPrinter<T>
 {
-	protected volatile Taxonomy<T> _taxonomyImpl;
-	protected volatile PrintWriter _out;
+	protected volatile Taxonomy<T>	_taxonomyImpl;
+	protected volatile PrintWriter	_out;
 
 	public TreeTaxonomyPrinter()
 	{
@@ -83,8 +83,7 @@ public class TreeTaxonomyPrinter<T> implements TaxonomyPrinter<T>
 		bottom.add(_taxonomyImpl.getBottomNode().getName());
 		bottom.addAll(_taxonomyImpl.getBottomNode().getEquivalents());
 
-		if (bottom.size() > 1)
-			printNode(bottom, " ");
+		if (bottom.size() > 1) printNode(bottom, " ");
 	}
 
 	/**
@@ -95,8 +94,7 @@ public class TreeTaxonomyPrinter<T> implements TaxonomyPrinter<T>
 	 */
 	protected void printTree(final Set<T> set, final String indent)
 	{
-		if (set.contains(_taxonomyImpl.getBottomNode().getName()))
-			return;
+		if (set.contains(_taxonomyImpl.getBottomNode().getName())) return;
 
 		printNode(set, indent);
 
@@ -107,8 +105,7 @@ public class TreeTaxonomyPrinter<T> implements TaxonomyPrinter<T>
 		while (j.hasNext())
 		{
 			final Set<T> eqs = j.next();
-			if (eqs.contains(c))
-				continue;
+			if (eqs.contains(c)) continue;
 
 			printTree(s(eqs), indent + "   ");
 		}

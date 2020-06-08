@@ -207,30 +207,26 @@ public class SWRL
 
 	public static SWRLRule rule(final IRI uri, final Set<? extends SWRLAtom> antecendent, final Set<? extends SWRLAtom> consequent)
 	{
-		if (null == uri)
-			return OWL._factory.getSWRLRule(antecendent, consequent);
+		if (null == uri) return OWL._factory.getSWRLRule(antecendent, consequent);
 		return OWL._factory.getSWRLRule(antecendent, consequent, Collections.singleton(labelAnnotation(uri)));
 	}
 
 	public static SWRLRule rule(final IRI uri, final boolean anonymous, final Set<? extends SWRLAtom> antecendent, final Set<? extends SWRLAtom> consequent)
 	{
-		if (anonymous)
-			return OWL._factory.getSWRLRule(antecendent, consequent);
+		if (anonymous) return OWL._factory.getSWRLRule(antecendent, consequent);
 		return OWL._factory.getSWRLRule(antecendent, consequent, Collections.singleton(labelAnnotation(uri)));
 	}
 
 	public static SWRLRule rule(final String label, final Set<? extends SWRLAtom> antecendent, final Set<? extends SWRLAtom> consequent)
 	{
-		if (null == label)
-			return OWL._factory.getSWRLRule(antecendent, consequent);
+		if (null == label) return OWL._factory.getSWRLRule(antecendent, consequent);
 
 		return OWL._factory.getSWRLRule(antecendent, consequent, Collections.singleton(labelAnnotation(label)));
 	}
 
 	public static SWRLRule rule(final String label, final boolean anonymous, final Set<? extends SWRLAtom> antecendent, final Set<? extends SWRLAtom> consequent)
 	{
-		if (anonymous)
-			return OWL._factory.getSWRLRule(antecendent, consequent);
+		if (anonymous) return OWL._factory.getSWRLRule(antecendent, consequent);
 
 		return OWL._factory.getSWRLRule(antecendent, consequent, Collections.singleton(labelAnnotation(label)));
 	}

@@ -29,9 +29,9 @@ import openllet.core.utils.SetUtils;
  */
 public class GenericTaxonomyBuilder
 {
-	private Taxonomy<ATermAppl> _taxonomyImpl;
+	private Taxonomy<ATermAppl>					_taxonomyImpl;
 
-	private MultiValueMap<ATermAppl, ATermAppl> _subsumers;
+	private MultiValueMap<ATermAppl, ATermAppl>	_subsumers;
 
 	public Taxonomy<ATermAppl> build(final MultiValueMap<ATermAppl, ATermAppl> subsumers)
 	{
@@ -39,17 +39,15 @@ public class GenericTaxonomyBuilder
 		_taxonomyImpl = new TaxonomyImpl<>(null, ATermUtils.TOP, ATermUtils.BOTTOM);
 
 		for (final ATermAppl subsumer : subsumers.get(ATermUtils.TOP))
-			if (ATermUtils.isPrimitive(subsumer))
-				_taxonomyImpl.addEquivalentNode(subsumer, _taxonomyImpl.getTop());
+			if (ATermUtils.isPrimitive(subsumer)) _taxonomyImpl.addEquivalentNode(subsumer, _taxonomyImpl.getTop());
 
 		for (final Entry<ATermAppl, Set<ATermAppl>> entry : subsumers.entrySet())
 		{
 			final ATermAppl c = entry.getKey();
-			if (ATermUtils.isPrimitive(c))
-				if (entry.getValue().contains(ATermUtils.BOTTOM))
-					_taxonomyImpl.addEquivalentNode(c, _taxonomyImpl.getBottomNode());
-				else
-					add(c);
+			if (ATermUtils.isPrimitive(c)) if (entry.getValue().contains(ATermUtils.BOTTOM))
+				_taxonomyImpl.addEquivalentNode(c, _taxonomyImpl.getBottomNode());
+			else
+				add(c);
 		}
 
 		return _taxonomyImpl;
@@ -66,8 +64,7 @@ public class GenericTaxonomyBuilder
 
 			for (final ATermAppl subsumer : _subsumers.get(c))
 			{
-				if (c.equals(subsumer) || !ATermUtils.isPrimitive(subsumer))
-					continue;
+				if (c.equals(subsumer) || !ATermUtils.isPrimitive(subsumer)) continue;
 
 				if (_subsumers.get(subsumer).contains(c))
 					equivalents.add(subsumer);

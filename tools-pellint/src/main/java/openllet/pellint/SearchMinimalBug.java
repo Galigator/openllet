@@ -29,11 +29,11 @@ import org.semanticweb.owlapi.util.OWLEntityRenamer;
 
 public class SearchMinimalBug
 {
-	private static String minimalOntologyFile = "minimalOntologyFile.owl";
-	private static final int nCPU = Runtime.getRuntime().availableProcessors();
-	private static ExecutorService _executor = Executors.newFixedThreadPool(nCPU);
-	private final Random _random = new Random();
-	private int _minimalAxiomsCount = -1;
+	private static String			minimalOntologyFile	= "minimalOntologyFile.owl";
+	private static final int		nCPU				= Runtime.getRuntime().availableProcessors();
+	private static ExecutorService	_executor			= Executors.newFixedThreadPool(nCPU);
+	private final Random			_random				= new Random();
+	private int						_minimalAxiomsCount	= -1;
 
 	private List<OWLAxiom> randomizeAxioms(final OWLAxiom[] axioms)
 	{
@@ -67,10 +67,10 @@ public class SearchMinimalBug
 
 	class Worker implements Runnable
 	{
-		private final List<OWLAxiom> _allAxioms;
-		private final List<OWLAxiom> _removedAxioms;
-		private final String NS = OWLHelper._protocol + Thread.currentThread().getName();
-		private final int _tryCount = 0;
+		private final List<OWLAxiom>	_allAxioms;
+		private final List<OWLAxiom>	_removedAxioms;
+		private final String			NS			= OWLHelper._protocol + Thread.currentThread().getName();
+		private final int				_tryCount	= 0;
 
 		public Worker(final OWLAxiom[] axioms)
 		{

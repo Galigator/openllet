@@ -17,23 +17,23 @@ import openllet.owlwg.testcase.TestCase;
  * <p>
  * Company: Clark & Parsia, LLC. <a href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
  * </p>
- * 
+ *
  * @author Mike Smith &lt;msmith@clarkparsia.com&gt;
  */
 public interface TestRunResult
 {
 
-	public void accept(TestRunResultVisitor visitor);
+	void accept(TestRunResultVisitor visitor);
 
-	public Throwable getCause();
+	Throwable getCause();
 
-	public String getDetails();
+	String getDetails();
 
-	public RunResultType getResultType();
+	RunResultType getResultType();
 
-	public TestCase<?> getTestCase();
+	TestCase<?> getTestCase();
 
-	public TestRunner<?> getTestRunner();
+	TestRunner<?> getTestRunner();
 
-	public RunTestType getTestType();
+	RunTestType getTestType();
 }

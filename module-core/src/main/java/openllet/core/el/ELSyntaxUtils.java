@@ -32,8 +32,8 @@ public class ELSyntaxUtils
 	 * Checks is this concept is a valid EL concept expression. Only valid EL constructs are <code>and</code> and <code>some</code> (although EL++ allows
 	 * limited use of nominals Pellet's specialized EL classifier currently does not support nominals so we treat them as non-EL).
 	 *
-	 * @param concept
-	 * @return true if the the term is EL
+	 * @param  concept
+	 * @return         true if the the term is EL
 	 */
 	public static boolean isEL(final ATermAppl concept)
 	{
@@ -42,28 +42,25 @@ public class ELSyntaxUtils
 		boolean isEL = false;
 		if (ATermUtils.isPrimitive(concept) || ATermUtils.isBottom(concept))
 			isEL = true;
-		else
-			if (fun.equals(ATermUtils.ANDFUN))
-			{
-				ATermList listEL = (ATermList) concept.getArgument(0);
+		else if (fun.equals(ATermUtils.ANDFUN))
+		{
+			ATermList listEL = (ATermList) concept.getArgument(0);
 
-				while (!listEL.isEmpty())
-				{
-					if (!isEL((ATermAppl) listEL.getFirst()))
-						break;
-					listEL = listEL.getNext();
-				}
-				isEL = listEL.isEmpty();
+			while (!listEL.isEmpty())
+			{
+				if (!isEL((ATermAppl) listEL.getFirst())) break;
+				listEL = listEL.getNext();
 			}
-			else
-				if (fun.equals(ATermUtils.SOMEFUN))
-				{
-					final ATermAppl p = (ATermAppl) concept.getArgument(0);
-					final ATermAppl q = (ATermAppl) concept.getArgument(1);
-					isEL = ATermUtils.isPrimitive(p) && isEL(q);
-				}
-				else
-					isEL = false;
+			isEL = listEL.isEmpty();
+		}
+		else if (fun.equals(ATermUtils.SOMEFUN))
+		{
+			final ATermAppl p = (ATermAppl) concept.getArgument(0);
+			final ATermAppl q = (ATermAppl) concept.getArgument(1);
+			isEL = ATermUtils.isPrimitive(p) && isEL(q);
+		}
+		else
+			isEL = false;
 
 		return isEL;
 	}
@@ -72,8 +69,8 @@ public class ELSyntaxUtils
 	 * Simplifies an EL class expression. Simplification flattens <code>and</code> constructs and propagates <code>owl:Nothing</code> (Concept
 	 * <code>p some owl:Nothing</code> and any <code>and</code> construct with <code>owl:Nothing</code> in it is simplified to <code>owl:Nothing</code>.
 	 *
-	 * @param elConcept an EL class expression
-	 * @return a simplified form of the given class expression
+	 * @param  elConcept                 an EL class expression
+	 * @return                           a simplified form of the given class expression
 	 * @throws InternalReasonerException if the concept is not an LE class expression
 	 */
 	public static ATermAppl simplify(final ATermAppl elConcept) throws InternalReasonerException
@@ -90,35 +87,28 @@ public class ELSyntaxUtils
 				final ATermAppl c = i.next();
 				if (ATermUtils.isAnd(c))
 					i.append((ATermList) c.getArgument(0));
-				else
-					if (c.equals(ATermUtils.BOTTOM))
-						return ATermUtils.BOTTOM;
-					else
-						if (!c.equals(ATermUtils.TOP))
-							set.add(c);
+				else if (c.equals(ATermUtils.BOTTOM))
+					return ATermUtils.BOTTOM;
+				else if (!c.equals(ATermUtils.TOP)) set.add(c);
 			}
 
 			if (set.size() > 1)
 				simp = ATermUtils.makeAnd(ATermUtils.toSet(set));
-			else
-				if (set.size() == 1)
-					simp = set.iterator().next();
+			else if (set.size() == 1) simp = set.iterator().next();
 		}
-		else
-			if (fun.equals(ATermUtils.SOMEFUN))
-			{
-				final ATerm p = elConcept.getArgument(0);
-				final ATermAppl q = (ATermAppl) elConcept.getArgument(1); // complex
-				// role?
-				final ATermAppl qSimp = simplify(q);
-				if (qSimp.equals(ATermUtils.BOTTOM))
-					simp = ATermUtils.BOTTOM;
-				else
-					simp = ATermUtils.makeSomeValues(p, qSimp);
-			}
+		else if (fun.equals(ATermUtils.SOMEFUN))
+		{
+			final ATerm p = elConcept.getArgument(0);
+			final ATermAppl q = (ATermAppl) elConcept.getArgument(1); // complex
+			// role?
+			final ATermAppl qSimp = simplify(q);
+			if (qSimp.equals(ATermUtils.BOTTOM))
+				simp = ATermUtils.BOTTOM;
 			else
-				if (!ATermUtils.isPrimitive(elConcept) && !ATermUtils.isBottom(elConcept) && !ATermUtils.isTop(elConcept))
-					throw new InternalReasonerException("Concept " + elConcept + " is not an EL concept");
+				simp = ATermUtils.makeSomeValues(p, qSimp);
+		}
+		else if (!ATermUtils.isPrimitive(elConcept) && !ATermUtils.isBottom(elConcept) && !ATermUtils.isTop(elConcept))
+			throw new InternalReasonerException("Concept " + elConcept + " is not an EL concept");
 
 		return simp;
 	}

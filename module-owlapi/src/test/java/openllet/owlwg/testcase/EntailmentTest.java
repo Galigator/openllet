@@ -16,14 +16,16 @@ import java.util.Set;
  * Company: Clark & Parsia, LLC. <a
  * href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
  * </p>
- * 
- * @author Mike Smith &lt;msmith@clarkparsia.com&gt;
+ *
+ * @author     Mike Smith &lt;msmith@clarkparsia.com&gt;
+ * @param  <O>
  */
-public interface EntailmentTest<O> extends PremisedTest<O> {
+public interface EntailmentTest<O> extends PremisedTest<O>
+{
 
-	public Set<SerializationFormat> getConclusionFormats();
+	Set<SerializationFormat> getConclusionFormats();
 
-	public String getConclusionOntology(SerializationFormat format);
+	String getConclusionOntology(SerializationFormat format);
 
-	public O parseConclusionOntology(SerializationFormat format) throws OntologyParseException;
+	O parseConclusionOntology(SerializationFormat format) throws OntologyParseException;
 }

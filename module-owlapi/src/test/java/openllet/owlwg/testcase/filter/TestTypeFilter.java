@@ -19,7 +19,7 @@ import openllet.owlwg.testcase.TestCase;
  * <p>
  * Company: Clark & Parsia, LLC. <a href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
  * </p>
- * 
+ *
  * @author Mike Smith &lt;msmith@clarkparsia.com&gt;
  */
 public class TestTypeFilter implements FilterCondition
@@ -39,9 +39,9 @@ public class TestTypeFilter implements FilterCondition
 	private final Class<? extends TestCase> _cls;
 
 	@SuppressWarnings("rawtypes")
-	public TestTypeFilter(Class<? extends TestCase> cls)
+	public TestTypeFilter(final Class<? extends TestCase> cls)
 	{
-		this._cls = cls;
+		_cls = cls;
 	}
 
 	@Override

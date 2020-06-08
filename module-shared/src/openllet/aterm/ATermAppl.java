@@ -5,14 +5,14 @@
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
- *     * Redistributions of source code must retain the above copyright
- *       notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the University of California, Berkeley nor the
- *       names of its contributors may be used to endorse or promote products
- *       derived from this software without specific prior written permission.
+ * * Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following disclaimer.
+ * * Redistributions in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in the
+ * documentation and/or other materials provided with the distribution.
+ * * Neither the name of the University of California, Berkeley nor the
+ * names of its contributors may be used to endorse or promote products
+ * derived from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -43,7 +43,7 @@ public interface ATermAppl extends AFun
 	 * @return the function symbol of this application.
 	 *
 	 */
-	public AFun getAFun();
+	AFun getAFun();
 
 	/**
 	 * Gets the function name of this application.
@@ -52,14 +52,14 @@ public interface ATermAppl extends AFun
 	 *
 	 */
 	@Override
-	public String getName();
+	String getName();
 
 	/**
 	 * Gets the arguments of this application.
 	 *
 	 * @return a list containing all arguments of this application.
 	 */
-	public ATermList getArguments();
+	ATermList getArguments();
 
 	/**
 	 * Gets the arguments of this application as an array of ATerm objects.
@@ -68,26 +68,26 @@ public interface ATermAppl extends AFun
 	 *
 	 */
 
-	public ATerm[] getArgumentArray();
+	ATerm[] getArgumentArray();
 
 	/**
 	 * Gets a specific argument of this application.
 	 *
-	 * @param i the index of the argument to be retrieved.
+	 * @param  i the index of the argument to be retrieved.
 	 *
-	 * @return the ith argument of the application.
+	 * @return   the ith argument of the application.
 	 */
-	public ATerm getArgument(int i); // TODO : seriously try to change the return type to ATermAppl
+	ATerm getArgument(int i); // TODO : seriously try to change the return type to ATermAppl
 
 	/**
 	 * Sets a specific argument of this application.
 	 *
-	 * @param arg the new ith argument.
-	 * @param i the index of the argument to be set.
+	 * @param  arg the new ith argument.
+	 * @param  i   the index of the argument to be set.
 	 *
-	 * @return a copy of this application with argument i replaced by arg.
+	 * @return     a copy of this application with argument i replaced by arg.
 	 */
-	public ATermAppl setArgument(ATerm arg, int i);
+	ATermAppl setArgument(ATerm arg, int i);
 
 	/**
 	 * Checks if this application is quoted. A quoted application looks
@@ -96,7 +96,7 @@ public interface ATermAppl extends AFun
 	 * @return true if this application is quoted, false otherwise.
 	 */
 	@Override
-	public boolean isQuoted();
+	boolean isQuoted();
 
 	/**
 	 * Gets the arity of this application. Arity is the number
@@ -105,5 +105,5 @@ public interface ATermAppl extends AFun
 	 * @return the number of arguments of this application.
 	 */
 	@Override
-	public int getArity();
+	int getArity();
 }

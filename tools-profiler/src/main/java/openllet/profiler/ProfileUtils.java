@@ -48,9 +48,9 @@ public class ProfileUtils
 	 * Turns the given file path into a more user-friendly format. Strips the file extension and makes sure the formatted string does not exceed the given
 	 * length limit.
 	 *
-	 * @param fileNameParam file name to be formatted
-	 * @param length max length of the formatted string
-	 * @return formatted name
+	 * @param  fileNameParam file name to be formatted
+	 * @param  length        max length of the formatted string
+	 * @return               formatted name
 	 */
 	public static String formatFileName(final String fileNameParam, final int length)
 	{
@@ -60,11 +60,10 @@ public class ProfileUtils
 
 		if (lastDot < lastSlash)
 			fileName = fileName.substring(lastSlash);
+		else if (lastSlash - lastDot > length)
+			fileName = fileName.substring(lastSlash, lastSlash + length);
 		else
-			if (lastSlash - lastDot > length)
-				fileName = fileName.substring(lastSlash, lastSlash + length);
-			else
-				fileName = fileName.substring(lastSlash, lastDot);
+			fileName = fileName.substring(lastSlash, lastDot);
 
 		return fileName;
 	}

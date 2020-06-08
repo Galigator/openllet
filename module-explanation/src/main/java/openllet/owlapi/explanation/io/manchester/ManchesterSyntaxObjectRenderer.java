@@ -109,17 +109,17 @@ import org.semanticweb.owlapi.vocab.XSDVocabulary;
 
 public class ManchesterSyntaxObjectRenderer implements OWLObjectVisitor
 {
-	private boolean _wrapLines = true;
-	private boolean _smartIndent = true;
+	private boolean			_wrapLines		= true;
+	private boolean			_smartIndent	= true;
 
-	protected BlockWriter _writer;
+	protected BlockWriter	_writer;
 
 	/**
 	 * @param _writer
 	 */
 	public ManchesterSyntaxObjectRenderer(final BlockWriter writer)
 	{
-		this._writer = writer;
+		_writer = writer;
 	}
 
 	public boolean isSmartIndent()
@@ -134,29 +134,27 @@ public class ManchesterSyntaxObjectRenderer implements OWLObjectVisitor
 
 	public void setSmartIndent(final boolean smartIndent)
 	{
-		this._smartIndent = smartIndent;
+		_smartIndent = smartIndent;
 	}
 
 	public void setWrapLines(final boolean wrapLines)
 	{
-		this._wrapLines = wrapLines;
+		_wrapLines = wrapLines;
 	}
 
 	/**
 	 * Return the short form (local name) for a URI identifier
 	 *
-	 * @param theIRI the URI
-	 * @return the local name part of the URI identifier
+	 * @param  theIRI the URI
+	 * @return        the local name part of the URI identifier
 	 */
 	protected String shortForm(final IRI theIRI)
 	{
 		final String fragment = XMLUtils.getNCNameSuffix(theIRI);
-		if (fragment != null)
-			return fragment;
+		if (fragment != null) return fragment;
 		final String str = theIRI.toString();
 		final int lastSlashIndex = str.lastIndexOf('/');
-		if (lastSlashIndex != -1)
-			return str.substring(lastSlashIndex + 1, str.length());
+		if (lastSlashIndex != -1) return str.substring(lastSlashIndex + 1, str.length());
 		return str;
 	}
 
@@ -604,23 +602,21 @@ public class ManchesterSyntaxObjectRenderer implements OWLObjectVisitor
 				write(node.getLang());
 			}
 		}
+		else if (node.getDatatype().getIRI().equals(XSDVocabulary.INTEGER.getIRI()) || node.getDatatype().getIRI().equals(XSDVocabulary.DECIMAL.getIRI()))
+			write(node.getLiteral());
+		else if (node.getDatatype().getIRI().equals(XSDVocabulary.FLOAT.getIRI()))
+		{
+			write(node.getLiteral());
+			write("f");
+		}
 		else
-			if (node.getDatatype().getIRI().equals(XSDVocabulary.INTEGER.getIRI()) || node.getDatatype().getIRI().equals(XSDVocabulary.DECIMAL.getIRI()))
-				write(node.getLiteral());
-			else
-				if (node.getDatatype().getIRI().equals(XSDVocabulary.FLOAT.getIRI()))
-				{
-					write(node.getLiteral());
-					write("f");
-				}
-				else
-				{
-					write("\"");
-					write(node.getLiteral());
-					write("\"");
-					write("^^");
-					write(node.getDatatype());
-				}
+		{
+			write("\"");
+			write(node.getLiteral());
+			write("\"");
+			write("^^");
+			write(node.getDatatype());
+		}
 	}
 
 	@Override
@@ -765,14 +761,13 @@ public class ManchesterSyntaxObjectRenderer implements OWLObjectVisitor
 		write(")");
 	}
 
-	protected void writeNaryKeyword(final Keyword theKeyword, Stream<? extends OWLObject> theObjects)
+	protected void writeNaryKeyword(final Keyword theKeyword, final Stream<? extends OWLObject> theObjects)
 	{
 		final Iterator<? extends OWLObject> aIter = theObjects.sorted().iterator();
 
 		// write( "(" );
 
-		if (_smartIndent)
-			_writer.startBlock();
+		if (_smartIndent) _writer.startBlock();
 
 		write(aIter.next());
 		while (aIter.hasNext())
@@ -791,8 +786,7 @@ public class ManchesterSyntaxObjectRenderer implements OWLObjectVisitor
 			write(aIter.next());
 		}
 
-		if (_smartIndent)
-			_writer.endBlock();
+		if (_smartIndent) _writer.endBlock();
 
 		// write( ")" );
 	}
@@ -808,9 +802,9 @@ public class ManchesterSyntaxObjectRenderer implements OWLObjectVisitor
 	/**
 	 * Render an n-ary axiom with special handling for the binary case.
 	 *
-	 * @param objs objects to be rendered
+	 * @param objs   objects to be rendered
 	 * @param binary keyword used for binary case
-	 * @param nary keyword used for n-ary case
+	 * @param nary   keyword used for n-ary case
 	 */
 	protected <T extends OWLObject> void writeNaryAxiom(final Stream<T> objs, final Keyword binary, final Keyword nary)
 	{
@@ -922,7 +916,7 @@ public class ManchesterSyntaxObjectRenderer implements OWLObjectVisitor
 		}
 	}
 
-	protected void writeCollection(Collection<? extends OWLObject> objects, final String separator, final boolean sort)
+	protected void writeCollection(final Collection<? extends OWLObject> objects, final String separator, final boolean sort)
 	{
 		writeCollection(objects.stream(), separator, sort);
 	}

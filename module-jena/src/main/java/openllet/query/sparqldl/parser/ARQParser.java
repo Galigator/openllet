@@ -87,21 +87,21 @@ import org.apache.jena.vocabulary.RDFS;
  */
 public class ARQParser implements QueryParser
 {
-	public static Logger _logger = Log.getLogger(ARQParser.class);
+	public static Logger		_logger				= Log.getLogger(ARQParser.class);
 
-	private Set<Triple> _triples;
+	private Set<Triple>			_triples;
 
-	private Map<Node, ATerm> _terms;
+	private Map<Node, ATerm>	_terms;
 
-	private KnowledgeBase _kb;
+	private KnowledgeBase		_kb;
 
-	private QuerySolution _initialBinding;
+	private QuerySolution		_initialBinding;
 
 	/*
 	 * If this variable is true then queries with variable SPO statements are
 	 * not handled by the SPARQL-DL engine but fall back to ARQ
 	 */
-	private boolean _handleVariableSPO = true;
+	private boolean				_handleVariableSPO	= true;
 
 	public ARQParser()
 	{
@@ -162,19 +162,17 @@ public class ARQParser implements QueryParser
 	{
 		_kb = kb;
 
-		if (sparql.isDescribeType())
-			throw new UnsupportedQueryException("DESCRIBE queries cannot be answered with PelletQueryEngine");
+		if (sparql.isDescribeType()) throw new UnsupportedQueryException("DESCRIBE queries cannot be answered with PelletQueryEngine");
 
 		final Element pattern = sparql.getQueryPattern();
 
-		if (!(pattern instanceof ElementGroup))
-			throw new UnsupportedQueryException("ElementGroup was _expected, but found '" + pattern.getClass() + "'.");
+		if (!(pattern instanceof ElementGroup)) throw new UnsupportedQueryException("ElementGroup was _expected, but found '" + pattern.getClass() + "'.");
 
 		final ElementGroup elementGroup = (ElementGroup) pattern;
 
 		final List<Element> elements = elementGroup.getElements();
 		final Element first = elements.get(0);
-		if (elements.size() != 1 || (!(first instanceof ElementTriplesBlock) && !(first instanceof ElementPathBlock)))
+		if (elements.size() != 1 || !(first instanceof ElementTriplesBlock) && !(first instanceof ElementPathBlock))
 			throw new UnsupportedQueryException("Complex query patterns are not supported yet.");
 
 		List<Triple> triples;
@@ -183,8 +181,7 @@ public class ARQParser implements QueryParser
 			triples = new ArrayList<>();
 			for (final TriplePath path : ((ElementPathBlock) first).getPattern())
 			{
-				if (!path.isTriple())
-					throw new UnsupportedQueryException("Path expressions are not supported yet.");
+				if (!path.isTriple()) throw new UnsupportedQueryException("Path expressions are not supported yet.");
 				triples.add(path.asTriple());
 			}
 		}
@@ -252,15 +249,13 @@ public class ARQParser implements QueryParser
 
 		for (final Triple t : new ArrayList<>(_triples))
 		{
-			if (!_triples.contains(t))
-				continue;
+			if (!_triples.contains(t)) continue;
 
 			final Node subj = t.getSubject();
 			final Node pred = t.getPredicate();
 			final Node obj = t.getObject();
 
-			if (BuiltinTerm.isSyntax(pred) || BuiltinTerm.isSyntax(obj))
-				continue;
+			if (BuiltinTerm.isSyntax(pred) || BuiltinTerm.isSyntax(obj)) continue;
 
 			cache(subj);
 			cache(pred);
@@ -270,8 +265,7 @@ public class ARQParser implements QueryParser
 		final Set<ATermAppl> possibleLiteralVars = new HashSet<>();
 
 		//throw exception if _triples is empty
-		if (_triples.isEmpty())
-			throw new UnsupportedQueryException("Empty BGT");
+		if (_triples.isEmpty()) throw new UnsupportedQueryException("Empty BGT");
 
 		for (final Triple t : _triples)
 		{
@@ -303,694 +297,645 @@ public class ARQParser implements QueryParser
 				}
 
 				//NamedIndividual(p)
-				else
-					if (obj.equals(OWL2.NamedIndividual.asNode()))
+				else if (obj.equals(OWL2.NamedIndividual.asNode()))
+				{
+					query.add(QueryAtomFactory.TypeAtom(s, TermFactory.TOP));
+					if (ATermUtils.isVar(s))
 					{
-						query.add(QueryAtomFactory.TypeAtom(s, TermFactory.TOP));
-						if (ATermUtils.isVar(s))
+						ensureDistinguished(subj);
+						query.addDistVar(s, VarType.CLASS);
+						if (_handleVariableSPO)
 						{
-							ensureDistinguished(subj);
-							query.addDistVar(s, VarType.CLASS);
-							if (_handleVariableSPO)
-							{
-								variablePredicates.remove(s);
-								variableSubjects.add(s);
-							}
+							variablePredicates.remove(s);
+							variableSubjects.add(s);
 						}
 					}
+				}
 
-					// ObjectProperty(p)
-					else
-						if (obj.equals(OWL.ObjectProperty.asNode()))
+				// ObjectProperty(p)
+				else if (obj.equals(OWL.ObjectProperty.asNode()))
+				{
+					query.add(QueryAtomFactory.ObjectPropertyAtom(s));
+					if (ATermUtils.isVar(s))
+					{
+						ensureDistinguished(subj);
+						query.addDistVar(s, VarType.PROPERTY);
+						if (_handleVariableSPO)
 						{
-							query.add(QueryAtomFactory.ObjectPropertyAtom(s));
-							if (ATermUtils.isVar(s))
-							{
-								ensureDistinguished(subj);
-								query.addDistVar(s, VarType.PROPERTY);
-								if (_handleVariableSPO)
-								{
-									variablePredicates.remove(s);
-									variableSubjects.add(s);
-								}
-							}
-							else
-								ensureTypedProperty(s);
+							variablePredicates.remove(s);
+							variableSubjects.add(s);
 						}
+					}
+					else
+						ensureTypedProperty(s);
+				}
 
-						// DatatypeProperty(p)
-						else
-							if (obj.equals(OWL.DatatypeProperty.asNode()))
-							{
-								query.add(QueryAtomFactory.DatatypePropertyAtom(s));
-								if (ATermUtils.isVar(s))
-								{
-									ensureDistinguished(subj);
-									query.addDistVar(s, VarType.PROPERTY);
-									if (_handleVariableSPO)
-									{
-										variablePredicates.remove(s);
-										variableSubjects.add(s);
-									}
-								}
-								else
-									ensureTypedProperty(s);
-							}
+				// DatatypeProperty(p)
+				else if (obj.equals(OWL.DatatypeProperty.asNode()))
+				{
+					query.add(QueryAtomFactory.DatatypePropertyAtom(s));
+					if (ATermUtils.isVar(s))
+					{
+						ensureDistinguished(subj);
+						query.addDistVar(s, VarType.PROPERTY);
+						if (_handleVariableSPO)
+						{
+							variablePredicates.remove(s);
+							variableSubjects.add(s);
+						}
+					}
+					else
+						ensureTypedProperty(s);
+				}
 
-							// Property(p)
-							else
-								if (obj.equals(RDF.Property.asNode()))
-								{
-									if (ATermUtils.isVar(s))
-									{
-										ensureDistinguished(subj);
-										query.addDistVar(s, VarType.PROPERTY);
-										if (_handleVariableSPO)
-										{
-											variablePredicates.remove(s);
-											variableSubjects.add(s);
-										}
-									}
-									else
-										ensureTypedProperty(s);
-								}
+				// Property(p)
+				else if (obj.equals(RDF.Property.asNode()))
+				{
+					if (ATermUtils.isVar(s))
+					{
+						ensureDistinguished(subj);
+						query.addDistVar(s, VarType.PROPERTY);
+						if (_handleVariableSPO)
+						{
+							variablePredicates.remove(s);
+							variableSubjects.add(s);
+						}
+					}
+					else
+						ensureTypedProperty(s);
+				}
 
-								// Functional(p)
-								else
-									if (obj.equals(OWL.FunctionalProperty.asNode()))
-									{
-										query.add(QueryAtomFactory.FunctionalAtom(s));
-										if (ATermUtils.isVar(s))
-										{
-											ensureDistinguished(subj);
-											query.addDistVar(s, VarType.PROPERTY);
-											if (_handleVariableSPO)
-											{
-												variablePredicates.remove(s);
-												variableSubjects.add(s);
-											}
-										}
-										else
-											ensureTypedProperty(s);
-									}
+				// Functional(p)
+				else if (obj.equals(OWL.FunctionalProperty.asNode()))
+				{
+					query.add(QueryAtomFactory.FunctionalAtom(s));
+					if (ATermUtils.isVar(s))
+					{
+						ensureDistinguished(subj);
+						query.addDistVar(s, VarType.PROPERTY);
+						if (_handleVariableSPO)
+						{
+							variablePredicates.remove(s);
+							variableSubjects.add(s);
+						}
+					}
+					else
+						ensureTypedProperty(s);
+				}
 
-									// InverseFunctional(p)
-									else
-										if (obj.equals(OWL.InverseFunctionalProperty.asNode()))
-										{
-											query.add(QueryAtomFactory.InverseFunctionalAtom(s));
-											if (ATermUtils.isVar(s))
-											{
-												ensureDistinguished(subj);
-												query.addDistVar(s, VarType.PROPERTY);
-												if (_handleVariableSPO)
-												{
-													variablePredicates.remove(s);
-													variableSubjects.add(s);
-												}
-											}
-											else
-												ensureTypedProperty(s);
-										}
+				// InverseFunctional(p)
+				else if (obj.equals(OWL.InverseFunctionalProperty.asNode()))
+				{
+					query.add(QueryAtomFactory.InverseFunctionalAtom(s));
+					if (ATermUtils.isVar(s))
+					{
+						ensureDistinguished(subj);
+						query.addDistVar(s, VarType.PROPERTY);
+						if (_handleVariableSPO)
+						{
+							variablePredicates.remove(s);
+							variableSubjects.add(s);
+						}
+					}
+					else
+						ensureTypedProperty(s);
+				}
 
-										// Transitive(p)
-										else
-											if (obj.equals(OWL.TransitiveProperty.asNode()))
-											{
-												query.add(QueryAtomFactory.TransitiveAtom(s));
-												if (ATermUtils.isVar(s))
-												{
-													ensureDistinguished(subj);
-													query.addDistVar(s, VarType.PROPERTY);
-													if (_handleVariableSPO)
-													{
-														variablePredicates.remove(s);
-														variableSubjects.add(s);
-													}
-												}
-												else
-													ensureTypedProperty(s);
-											}
+				// Transitive(p)
+				else if (obj.equals(OWL.TransitiveProperty.asNode()))
+				{
+					query.add(QueryAtomFactory.TransitiveAtom(s));
+					if (ATermUtils.isVar(s))
+					{
+						ensureDistinguished(subj);
+						query.addDistVar(s, VarType.PROPERTY);
+						if (_handleVariableSPO)
+						{
+							variablePredicates.remove(s);
+							variableSubjects.add(s);
+						}
+					}
+					else
+						ensureTypedProperty(s);
+				}
 
-											// Symmetric(p)
-											else
-												if (obj.equals(OWL.SymmetricProperty.asNode()))
-												{
-													query.add(QueryAtomFactory.SymmetricAtom(s));
-													if (ATermUtils.isVar(s))
-													{
-														ensureDistinguished(subj);
-														query.addDistVar(s, VarType.PROPERTY);
-														if (_handleVariableSPO)
-														{
-															variablePredicates.remove(s);
-															variableSubjects.add(s);
-														}
-													}
-													else
-														ensureTypedProperty(s);
-												}
+				// Symmetric(p)
+				else if (obj.equals(OWL.SymmetricProperty.asNode()))
+				{
+					query.add(QueryAtomFactory.SymmetricAtom(s));
+					if (ATermUtils.isVar(s))
+					{
+						ensureDistinguished(subj);
+						query.addDistVar(s, VarType.PROPERTY);
+						if (_handleVariableSPO)
+						{
+							variablePredicates.remove(s);
+							variableSubjects.add(s);
+						}
+					}
+					else
+						ensureTypedProperty(s);
+				}
 
-												// Asymmetric(p)
-												else
-													if (obj.equals(OWL2.AsymmetricProperty.asNode()))
-													{
-														query.add(QueryAtomFactory.AsymmetricAtom(s));
-														if (ATermUtils.isVar(s))
-														{
-															ensureDistinguished(subj);
-															query.addDistVar(s, VarType.PROPERTY);
-															if (_handleVariableSPO)
-															{
-																variablePredicates.remove(s);
-																variableSubjects.add(s);
-															}
-														}
-														else
-															ensureTypedProperty(s);
-													}
+				// Asymmetric(p)
+				else if (obj.equals(OWL2.AsymmetricProperty.asNode()))
+				{
+					query.add(QueryAtomFactory.AsymmetricAtom(s));
+					if (ATermUtils.isVar(s))
+					{
+						ensureDistinguished(subj);
+						query.addDistVar(s, VarType.PROPERTY);
+						if (_handleVariableSPO)
+						{
+							variablePredicates.remove(s);
+							variableSubjects.add(s);
+						}
+					}
+					else
+						ensureTypedProperty(s);
+				}
 
-													// Reflexive(p)
-													else
-														if (obj.equals(OWL2.ReflexiveProperty.asNode()))
-														{
-															query.add(QueryAtomFactory.ReflexiveAtom(s));
-															if (ATermUtils.isVar(s))
-															{
-																ensureDistinguished(subj);
-																query.addDistVar(s, VarType.PROPERTY);
-																if (_handleVariableSPO)
-																{
-																	variablePredicates.remove(s);
-																	variableSubjects.add(s);
-																}
-															}
-															else
-																ensureTypedProperty(s);
-														}
+				// Reflexive(p)
+				else if (obj.equals(OWL2.ReflexiveProperty.asNode()))
+				{
+					query.add(QueryAtomFactory.ReflexiveAtom(s));
+					if (ATermUtils.isVar(s))
+					{
+						ensureDistinguished(subj);
+						query.addDistVar(s, VarType.PROPERTY);
+						if (_handleVariableSPO)
+						{
+							variablePredicates.remove(s);
+							variableSubjects.add(s);
+						}
+					}
+					else
+						ensureTypedProperty(s);
+				}
 
-														// Irreflexive(p)
-														else
-															if (obj.equals(OWL2.IrreflexiveProperty.asNode()))
-															{
-																query.add(QueryAtomFactory.IrreflexiveAtom(s));
-																if (ATermUtils.isVar(s))
-																{
-																	ensureDistinguished(subj);
-																	query.addDistVar(s, VarType.PROPERTY);
-																	if (_handleVariableSPO)
-																	{
-																		variablePredicates.remove(s);
-																		variableSubjects.add(s);
-																	}
-																}
-																else
-																	ensureTypedProperty(s);
-															}
+				// Irreflexive(p)
+				else if (obj.equals(OWL2.IrreflexiveProperty.asNode()))
+				{
+					query.add(QueryAtomFactory.IrreflexiveAtom(s));
+					if (ATermUtils.isVar(s))
+					{
+						ensureDistinguished(subj);
+						query.addDistVar(s, VarType.PROPERTY);
+						if (_handleVariableSPO)
+						{
+							variablePredicates.remove(s);
+							variableSubjects.add(s);
+						}
+					}
+					else
+						ensureTypedProperty(s);
+				}
 
-															// Annotation(s,pa,o)
-															else
-																if (hasObject(pred, RDF.type.asNode(), OWL.AnnotationProperty.asNode()))
-																{
-																	query.add(QueryAtomFactory.AnnotationAtom(s, p, o));
-																	if (ATermUtils.isVar(s) || ATermUtils.isVar(p) || ATermUtils.isVar(o))
-																		throw new UnsupportedQueryException("Variables in annotation atom are not supported.");
-																	else
-																		ensureTypedProperty(p);
-																}
+				// Annotation(s,pa,o)
+				else if (hasObject(pred, RDF.type.asNode(), OWL.AnnotationProperty.asNode()))
+				{
+					query.add(QueryAtomFactory.AnnotationAtom(s, p, o));
+					if (ATermUtils.isVar(s) || ATermUtils.isVar(p) || ATermUtils.isVar(o))
+						throw new UnsupportedQueryException("Variables in annotation atom are not supported.");
+					else
+						ensureTypedProperty(p);
+				}
 
-																// Type(i,c)
-																else
-																{
-																	query.add(QueryAtomFactory.TypeAtom(s, o));
+				// Type(i,c)
+				else
+				{
+					query.add(QueryAtomFactory.TypeAtom(s, o));
 
-																	if (ATermUtils.isVar(o))
-																	{
-																		ensureDistinguished(obj);
-																		query.addDistVar(o, VarType.CLASS);
-																	}
-																	else
-																		if (!kb.isClass(o))
-																			if (_logger.isLoggable(Level.FINE))
-																				_logger.fine("Class " + o + " used in the query is not defined in the KB.");
+					if (ATermUtils.isVar(o))
+					{
+						ensureDistinguished(obj);
+						query.addDistVar(o, VarType.CLASS);
+					}
+					else if (!kb.isClass(o)) if (_logger.isLoggable(Level.FINE)) _logger.fine("Class " + o + " used in the query is not defined in the KB.");
 
-																	if (isDistinguishedVariable(subj))
-																		query.addDistVar(s, VarType.INDIVIDUAL);
-																}
+					if (isDistinguishedVariable(subj)) query.addDistVar(s, VarType.INDIVIDUAL);
+				}
 			}
 
 			// SameAs(i1,i2)
-			else
-				if (pred.equals(OWL.sameAs.asNode()))
+			else if (pred.equals(OWL.sameAs.asNode()))
+			{
+				query.add(QueryAtomFactory.SameAsAtom(s, o));
+				if (isDistinguishedVariable(subj)) query.addDistVar(s, VarType.INDIVIDUAL);
+
+				if (isDistinguishedVariable(obj)) query.addDistVar(o, VarType.INDIVIDUAL);
+
+			}
+
+			// DifferentFrom(i1,i2)
+			else if (pred.equals(OWL.differentFrom.asNode()))
+			{
+				query.add(QueryAtomFactory.DifferentFromAtom(s, o));
+				if (isDistinguishedVariable(subj)) query.addDistVar(s, VarType.INDIVIDUAL);
+
+				if (isDistinguishedVariable(obj)) query.addDistVar(o, VarType.INDIVIDUAL);
+
+			}
+
+			// SubClassOf(c1,c2)
+			else if (pred.equals(RDFS.subClassOf.asNode()))
+			{
+				query.add(QueryAtomFactory.SubClassOfAtom(s, o));
+				if (ATermUtils.isVar(s))
 				{
-					query.add(QueryAtomFactory.SameAsAtom(s, o));
-					if (isDistinguishedVariable(subj))
-						query.addDistVar(s, VarType.INDIVIDUAL);
+					ensureDistinguished(subj);
+					query.addDistVar(s, VarType.CLASS);
+				}
+				if (ATermUtils.isVar(o))
+				{
+					ensureDistinguished(obj);
+					query.addDistVar(o, VarType.CLASS);
+				}
+			}
 
-					if (isDistinguishedVariable(obj))
-						query.addDistVar(o, VarType.INDIVIDUAL);
+			// strict subclass - nonmonotonic
+			else if (pred.equals(SparqldlExtensionsVocabulary.strictSubClassOf.asNode()))
+			{
+				query.add(QueryAtomFactory.StrictSubClassOfAtom(s, o));
+				if (ATermUtils.isVar(s))
+				{
+					ensureDistinguished(subj);
+					query.addDistVar(s, VarType.CLASS);
+				}
+				if (ATermUtils.isVar(o))
+				{
+					ensureDistinguished(obj);
+					query.addDistVar(o, VarType.CLASS);
+				}
+			}
 
+			// direct subclass - nonmonotonic
+			else if (pred.equals(SparqldlExtensionsVocabulary.directSubClassOf.asNode()))
+			{
+				query.add(QueryAtomFactory.DirectSubClassOfAtom(s, o));
+				if (ATermUtils.isVar(s))
+				{
+					ensureDistinguished(subj);
+					query.addDistVar(s, VarType.CLASS);
+				}
+				if (ATermUtils.isVar(o))
+				{
+					ensureDistinguished(obj);
+					query.addDistVar(o, VarType.CLASS);
+				}
+			}
+
+			// EquivalentClass(c1,c2)
+			else if (pred.equals(OWL.equivalentClass.asNode()))
+			{
+				query.add(QueryAtomFactory.EquivalentClassAtom(s, o));
+				if (ATermUtils.isVar(s))
+				{
+					ensureDistinguished(subj);
+					query.addDistVar(s, VarType.CLASS);
+				}
+				if (ATermUtils.isVar(o))
+				{
+					ensureDistinguished(obj);
+					query.addDistVar(o, VarType.CLASS);
+				}
+			}
+
+			// DisjointWith(c1,c2)
+			else if (pred.equals(OWL.disjointWith.asNode()))
+			{
+				query.add(QueryAtomFactory.DisjointWithAtom(s, o));
+				if (ATermUtils.isVar(s))
+				{
+					ensureDistinguished(subj);
+					query.addDistVar(s, VarType.CLASS);
+				}
+				if (ATermUtils.isVar(o))
+				{
+					ensureDistinguished(obj);
+					query.addDistVar(o, VarType.CLASS);
 				}
 
-				// DifferentFrom(i1,i2)
-				else
-					if (pred.equals(OWL.differentFrom.asNode()))
+			}
+
+			// ComplementOf(c1,c2)
+			else if (pred.equals(OWL.complementOf.asNode()))
+			{
+				query.add(QueryAtomFactory.ComplementOfAtom(s, o));
+				if (ATermUtils.isVar(s))
+				{
+					ensureDistinguished(subj);
+					query.addDistVar(s, VarType.CLASS);
+				}
+				if (ATermUtils.isVar(o))
+				{
+					ensureDistinguished(obj);
+					query.addDistVar(o, VarType.CLASS);
+				}
+			}
+
+			// propertyDisjointWith(p1,p2)
+			else if (pred.equals(OWL2.propertyDisjointWith.asNode()))
+			{
+				ensureTypedProperty(s);
+				ensureTypedProperty(o);
+
+				query.add(QueryAtomFactory.PropertyDisjointWithAtom(s, o));
+
+				if (ATermUtils.isVar(s))
+				{
+					ensureDistinguished(subj);
+					query.addDistVar(s, VarType.PROPERTY);
+					if (_handleVariableSPO)
 					{
-						query.add(QueryAtomFactory.DifferentFromAtom(s, o));
-						if (isDistinguishedVariable(subj))
-							query.addDistVar(s, VarType.INDIVIDUAL);
-
-						if (isDistinguishedVariable(obj))
-							query.addDistVar(o, VarType.INDIVIDUAL);
-
+						variablePredicates.remove(s);
+						variableSubjects.add(s);
 					}
+				}
+				if (ATermUtils.isVar(o))
+				{
+					ensureDistinguished(obj);
+					query.addDistVar(o, VarType.PROPERTY);
+					if (_handleVariableSPO)
+					{
+						variablePredicates.remove(o);
+						variableSubjects.add(o);
+					}
+				}
 
-					// SubClassOf(c1,c2)
-					else
-						if (pred.equals(RDFS.subClassOf.asNode()))
-						{
-							query.add(QueryAtomFactory.SubClassOfAtom(s, o));
-							if (ATermUtils.isVar(s))
-							{
-								ensureDistinguished(subj);
-								query.addDistVar(s, VarType.CLASS);
-							}
-							if (ATermUtils.isVar(o))
-							{
-								ensureDistinguished(obj);
-								query.addDistVar(o, VarType.CLASS);
-							}
-						}
+			}
 
-						// strict subclass - nonmonotonic
-						else
-							if (pred.equals(SparqldlExtensionsVocabulary.strictSubClassOf.asNode()))
-							{
-								query.add(QueryAtomFactory.StrictSubClassOfAtom(s, o));
-								if (ATermUtils.isVar(s))
-								{
-									ensureDistinguished(subj);
-									query.addDistVar(s, VarType.CLASS);
-								}
-								if (ATermUtils.isVar(o))
-								{
-									ensureDistinguished(obj);
-									query.addDistVar(o, VarType.CLASS);
-								}
-							}
+			// SubPropertyOf(p1,p2)
+			else if (pred.equals(RDFS.subPropertyOf.asNode()))
+			{
+				ensureTypedProperty(s);
+				ensureTypedProperty(o);
 
-							// direct subclass - nonmonotonic
-							else
-								if (pred.equals(SparqldlExtensionsVocabulary.directSubClassOf.asNode()))
-								{
-									query.add(QueryAtomFactory.DirectSubClassOfAtom(s, o));
-									if (ATermUtils.isVar(s))
-									{
-										ensureDistinguished(subj);
-										query.addDistVar(s, VarType.CLASS);
-									}
-									if (ATermUtils.isVar(o))
-									{
-										ensureDistinguished(obj);
-										query.addDistVar(o, VarType.CLASS);
-									}
-								}
+				query.add(QueryAtomFactory.SubPropertyOfAtom(s, o));
+				if (ATermUtils.isVar(s))
+				{
+					ensureDistinguished(subj);
+					query.addDistVar(s, VarType.PROPERTY);
+					if (_handleVariableSPO)
+					{
+						variablePredicates.remove(s);
+						variableSubjects.add(s);
+					}
+				}
+				if (ATermUtils.isVar(o))
+				{
+					ensureDistinguished(obj);
+					query.addDistVar(o, VarType.PROPERTY);
+					if (_handleVariableSPO)
+					{
+						variablePredicates.remove(o);
+						variableSubjects.add(o);
+					}
+				}
+			}
 
-								// EquivalentClass(c1,c2)
-								else
-									if (pred.equals(OWL.equivalentClass.asNode()))
-									{
-										query.add(QueryAtomFactory.EquivalentClassAtom(s, o));
-										if (ATermUtils.isVar(s))
-										{
-											ensureDistinguished(subj);
-											query.addDistVar(s, VarType.CLASS);
-										}
-										if (ATermUtils.isVar(o))
-										{
-											ensureDistinguished(obj);
-											query.addDistVar(o, VarType.CLASS);
-										}
-									}
+			// DirectSubPropertyOf(i,p) - nonmonotonic
+			else if (pred.equals(SparqldlExtensionsVocabulary.directSubPropertyOf.asNode()))
+			{
+				ensureTypedProperty(s);
+				ensureTypedProperty(o);
 
-									// DisjointWith(c1,c2)
-									else
-										if (pred.equals(OWL.disjointWith.asNode()))
-										{
-											query.add(QueryAtomFactory.DisjointWithAtom(s, o));
-											if (ATermUtils.isVar(s))
-											{
-												ensureDistinguished(subj);
-												query.addDistVar(s, VarType.CLASS);
-											}
-											if (ATermUtils.isVar(o))
-											{
-												ensureDistinguished(obj);
-												query.addDistVar(o, VarType.CLASS);
-											}
+				query.add(QueryAtomFactory.DirectSubPropertyOfAtom(s, o));
+				if (ATermUtils.isVar(s))
+				{
+					ensureDistinguished(subj);
+					query.addDistVar(s, VarType.PROPERTY);
+					if (_handleVariableSPO)
+					{
+						variablePredicates.remove(s);
+						variableSubjects.add(s);
+					}
+				}
+				if (ATermUtils.isVar(o))
+				{
+					ensureDistinguished(obj);
+					query.addDistVar(o, VarType.PROPERTY);
+					if (_handleVariableSPO)
+					{
+						variablePredicates.remove(o);
+						variableSubjects.add(o);
+					}
+				}
+			}
 
-										}
+			// StrictSubPropertyOf(i,p) - nonmonotonic
+			else if (pred.equals(SparqldlExtensionsVocabulary.strictSubPropertyOf.asNode()))
+			{
+				ensureTypedProperty(s);
+				ensureTypedProperty(o);
 
-										// ComplementOf(c1,c2)
-										else
-											if (pred.equals(OWL.complementOf.asNode()))
-											{
-												query.add(QueryAtomFactory.ComplementOfAtom(s, o));
-												if (ATermUtils.isVar(s))
-												{
-													ensureDistinguished(subj);
-													query.addDistVar(s, VarType.CLASS);
-												}
-												if (ATermUtils.isVar(o))
-												{
-													ensureDistinguished(obj);
-													query.addDistVar(o, VarType.CLASS);
-												}
-											}
+				query.add(QueryAtomFactory.StrictSubPropertyOfAtom(s, o));
+				if (ATermUtils.isVar(s))
+				{
+					ensureDistinguished(subj);
+					query.addDistVar(s, VarType.PROPERTY);
+					if (_handleVariableSPO)
+					{
+						variablePredicates.remove(s);
+						variableSubjects.add(s);
+					}
+				}
+				if (ATermUtils.isVar(o))
+				{
+					ensureDistinguished(obj);
+					query.addDistVar(o, VarType.PROPERTY);
+					if (_handleVariableSPO)
+					{
+						variablePredicates.remove(o);
+						variableSubjects.add(o);
+					}
+				}
+			}
 
-											// propertyDisjointWith(p1,p2)
-											else
-												if (pred.equals(OWL2.propertyDisjointWith.asNode()))
-												{
-													ensureTypedProperty(s);
-													ensureTypedProperty(o);
+			// EquivalentProperty(p1,p2)
+			else if (pred.equals(OWL.equivalentProperty.asNode()))
+			{
+				ensureTypedProperty(s);
+				ensureTypedProperty(o);
 
-													query.add(QueryAtomFactory.PropertyDisjointWithAtom(s, o));
+				query.add(QueryAtomFactory.EquivalentPropertyAtom(s, o));
+				if (ATermUtils.isVar(s))
+				{
+					ensureDistinguished(subj);
+					query.addDistVar(s, VarType.PROPERTY);
+					if (_handleVariableSPO)
+					{
+						variablePredicates.remove(s);
+						variableSubjects.add(s);
+					}
+				}
+				if (ATermUtils.isVar(o))
+				{
+					ensureDistinguished(obj);
+					query.addDistVar(o, VarType.PROPERTY);
+					if (_handleVariableSPO)
+					{
+						variablePredicates.remove(o);
+						variableSubjects.add(o);
+					}
+				}
+			}
+			// Domain(p1, c)
+			else if (pred.equals(RDFS.domain.asNode()))
+			{
+				ensureTypedProperty(s);
 
-													if (ATermUtils.isVar(s))
-													{
-														ensureDistinguished(subj);
-														query.addDistVar(s, VarType.PROPERTY);
-														if (_handleVariableSPO)
-														{
-															variablePredicates.remove(s);
-															variableSubjects.add(s);
-														}
-													}
-													if (ATermUtils.isVar(o))
-													{
-														ensureDistinguished(obj);
-														query.addDistVar(o, VarType.PROPERTY);
-														if (_handleVariableSPO)
-														{
-															variablePredicates.remove(o);
-															variableSubjects.add(o);
-														}
-													}
+				query.add(QueryAtomFactory.DomainAtom(s, o));
+				if (ATermUtils.isVar(s))
+				{
+					ensureDistinguished(subj);
+					query.addDistVar(s, VarType.PROPERTY);
+					if (_handleVariableSPO)
+					{
+						variablePredicates.remove(s);
+						variableSubjects.add(s);
+					}
+				}
+				if (ATermUtils.isVar(o))
+				{
+					ensureDistinguished(obj);
+					query.addDistVar(s, VarType.CLASS);
+				}
+			}
+			// Range(p1, c)
+			else if (pred.equals(RDFS.range.asNode()))
+			{
+				ensureTypedProperty(s);
 
-												}
+				query.add(QueryAtomFactory.RangeAtom(s, o));
+				if (ATermUtils.isVar(s))
+				{
+					ensureDistinguished(subj);
+					query.addDistVar(s, VarType.PROPERTY);
+					if (_handleVariableSPO)
+					{
+						variablePredicates.remove(s);
+						variableSubjects.add(s);
+					}
+				}
+				if (ATermUtils.isVar(o))
+				{
+					ensureDistinguished(obj);
+					// TODO it could also range over datatypes.
+					query.addDistVar(s, VarType.CLASS);
+				}
+			}
+			// InverseOf(p1,p2)
+			else if (pred.equals(OWL.inverseOf.asNode()))
+			{
+				ensureTypedProperty(s);
+				ensureTypedProperty(o);
 
-												// SubPropertyOf(p1,p2)
-												else
-													if (pred.equals(RDFS.subPropertyOf.asNode()))
-													{
-														ensureTypedProperty(s);
-														ensureTypedProperty(o);
+				query.add(QueryAtomFactory.InverseOfAtom(s, o));
+				if (ATermUtils.isVar(s))
+				{
+					ensureDistinguished(subj);
+					query.addDistVar(s, VarType.PROPERTY);
+					if (_handleVariableSPO)
+					{
+						variablePredicates.remove(s);
+						variableSubjects.add(s);
+					}
+				}
+				if (ATermUtils.isVar(o))
+				{
+					ensureDistinguished(obj);
+					query.addDistVar(o, VarType.PROPERTY);
+					if (_handleVariableSPO)
+					{
+						variablePredicates.remove(o);
+						variableSubjects.add(o);
+					}
+				}
+			}
 
-														query.add(QueryAtomFactory.SubPropertyOfAtom(s, o));
-														if (ATermUtils.isVar(s))
-														{
-															ensureDistinguished(subj);
-															query.addDistVar(s, VarType.PROPERTY);
-															if (_handleVariableSPO)
-															{
-																variablePredicates.remove(s);
-																variableSubjects.add(s);
-															}
-														}
-														if (ATermUtils.isVar(o))
-														{
-															ensureDistinguished(obj);
-															query.addDistVar(o, VarType.PROPERTY);
-															if (_handleVariableSPO)
-															{
-																variablePredicates.remove(o);
-																variableSubjects.add(o);
-															}
-														}
-													}
+			// DirectType(i,c) - nonmonotonic
+			else if (pred.equals(SparqldlExtensionsVocabulary.directType.asNode()))
+			{
+				query.add(QueryAtomFactory.DirectTypeAtom(s, o));
+				if (isDistinguishedVariable(subj)) query.addDistVar(s, VarType.INDIVIDUAL);
+				if (ATermUtils.isVar(o))
+				{
+					ensureDistinguished(obj);
+					query.addDistVar(o, VarType.CLASS);
+				}
+			}
 
-													// DirectSubPropertyOf(i,p) - nonmonotonic
-													else
-														if (pred.equals(SparqldlExtensionsVocabulary.directSubPropertyOf.asNode()))
-														{
-															ensureTypedProperty(s);
-															ensureTypedProperty(o);
+			else if (kb.isAnnotationProperty(p))
+			{
+				if (!OpenlletOptions.USE_ANNOTATION_SUPPORT) throw new UnsupportedQueryException("Cannot answer annotation queries when PelletOptions.USE_ANNOTATION_SUPPORT is false!");
 
-															query.add(QueryAtomFactory.DirectSubPropertyOfAtom(s, o));
-															if (ATermUtils.isVar(s))
-															{
-																ensureDistinguished(subj);
-																query.addDistVar(s, VarType.PROPERTY);
-																if (_handleVariableSPO)
-																{
-																	variablePredicates.remove(s);
-																	variableSubjects.add(s);
-																}
-															}
-															if (ATermUtils.isVar(o))
-															{
-																ensureDistinguished(obj);
-																query.addDistVar(o, VarType.PROPERTY);
-																if (_handleVariableSPO)
-																{
-																	variablePredicates.remove(o);
-																	variableSubjects.add(o);
-																}
-															}
-														}
+				query.add(QueryAtomFactory.AnnotationAtom(s, p, o));
+				if (ATermUtils.isVar(s))
+				{
+					ensureDistinguished(subj);
+					query.addDistVar(s, VarType.PROPERTY);
+					if (_handleVariableSPO)
+					{
+						variablePredicates.remove(s);
+						variableSubjects.add(s);
+					}
+				}
+				if (ATermUtils.isVar(o))
+				{
+					ensureDistinguished(obj);
+					query.addDistVar(o, VarType.PROPERTY);
+					if (_handleVariableSPO)
+					{
+						variablePredicates.remove(o);
+						variableSubjects.add(o);
+					}
+				}
+				// throw new UnsupportedQueryException(
+				// "Annotation properties are not supported in queries." );
+			}
 
-														// StrictSubPropertyOf(i,p) - nonmonotonic
-														else
-															if (pred.equals(SparqldlExtensionsVocabulary.strictSubPropertyOf.asNode()))
-															{
-																ensureTypedProperty(s);
-																ensureTypedProperty(o);
+			// PropertyValue(i,p,j)
+			else
+			{
+				if (s == null || p == null || o == null) throw new UnsupportedQueryException("Atom conversion incomplete for: " + t);
+				ensureTypedProperty(p);
 
-																query.add(QueryAtomFactory.StrictSubPropertyOfAtom(s, o));
-																if (ATermUtils.isVar(s))
-																{
-																	ensureDistinguished(subj);
-																	query.addDistVar(s, VarType.PROPERTY);
-																	if (_handleVariableSPO)
-																	{
-																		variablePredicates.remove(s);
-																		variableSubjects.add(s);
-																	}
-																}
-																if (ATermUtils.isVar(o))
-																{
-																	ensureDistinguished(obj);
-																	query.addDistVar(o, VarType.PROPERTY);
-																	if (_handleVariableSPO)
-																	{
-																		variablePredicates.remove(o);
-																		variableSubjects.add(o);
-																	}
-																}
-															}
+				query.add(QueryAtomFactory.PropertyValueAtom(s, p, o));
 
-															// EquivalentProperty(p1,p2)
-															else
-																if (pred.equals(OWL.equivalentProperty.asNode()))
-																{
-																	ensureTypedProperty(s);
-																	ensureTypedProperty(o);
+				if (ATermUtils.isVar(p))
+				{
+					ensureDistinguished(pred);
+					query.addDistVar(p, VarType.PROPERTY);
 
-																	query.add(QueryAtomFactory.EquivalentPropertyAtom(s, o));
-																	if (ATermUtils.isVar(s))
-																	{
-																		ensureDistinguished(subj);
-																		query.addDistVar(s, VarType.PROPERTY);
-																		if (_handleVariableSPO)
-																		{
-																			variablePredicates.remove(s);
-																			variableSubjects.add(s);
-																		}
-																	}
-																	if (ATermUtils.isVar(o))
-																	{
-																		ensureDistinguished(obj);
-																		query.addDistVar(o, VarType.PROPERTY);
-																		if (_handleVariableSPO)
-																		{
-																			variablePredicates.remove(o);
-																			variableSubjects.add(o);
-																		}
-																	}
-																}
-																// Domain(p1, c)
-																else
-																	if (pred.equals(RDFS.domain.asNode()))
-																	{
-																		ensureTypedProperty(s);
+					// If the predicate is a variable used in a subject position
+					// we don't have to consider it as it is bound to another
+					// triple pattern
+					if (!variableSubjects.contains(p)) variablePredicates.add(p);
+				}
 
-																		query.add(QueryAtomFactory.DomainAtom(s, o));
-																		if (ATermUtils.isVar(s))
-																		{
-																			ensureDistinguished(subj);
-																			query.addDistVar(s, VarType.PROPERTY);
-																			if (_handleVariableSPO)
-																			{
-																				variablePredicates.remove(s);
-																				variableSubjects.add(s);
-																			}
-																		}
-																		if (ATermUtils.isVar(o))
-																		{
-																			ensureDistinguished(obj);
-																			query.addDistVar(s, VarType.CLASS);
-																		}
-																	}
-																	// Range(p1, c)
-																	else
-																		if (pred.equals(RDFS.range.asNode()))
-																		{
-																			ensureTypedProperty(s);
+				if (isDistinguishedVariable(subj)) query.addDistVar(s, VarType.INDIVIDUAL);
 
-																			query.add(QueryAtomFactory.RangeAtom(s, o));
-																			if (ATermUtils.isVar(s))
-																			{
-																				ensureDistinguished(subj);
-																				query.addDistVar(s, VarType.PROPERTY);
-																				if (_handleVariableSPO)
-																				{
-																					variablePredicates.remove(s);
-																					variableSubjects.add(s);
-																				}
-																			}
-																			if (ATermUtils.isVar(o))
-																			{
-																				ensureDistinguished(obj);
-																				// TODO it could also range over datatypes.
-																				query.addDistVar(s, VarType.CLASS);
-																			}
-																		}
-																		// InverseOf(p1,p2)
-																		else
-																			if (pred.equals(OWL.inverseOf.asNode()))
-																			{
-																				ensureTypedProperty(s);
-																				ensureTypedProperty(o);
-
-																				query.add(QueryAtomFactory.InverseOfAtom(s, o));
-																				if (ATermUtils.isVar(s))
-																				{
-																					ensureDistinguished(subj);
-																					query.addDistVar(s, VarType.PROPERTY);
-																					if (_handleVariableSPO)
-																					{
-																						variablePredicates.remove(s);
-																						variableSubjects.add(s);
-																					}
-																				}
-																				if (ATermUtils.isVar(o))
-																				{
-																					ensureDistinguished(obj);
-																					query.addDistVar(o, VarType.PROPERTY);
-																					if (_handleVariableSPO)
-																					{
-																						variablePredicates.remove(o);
-																						variableSubjects.add(o);
-																					}
-																				}
-																			}
-
-																			// DirectType(i,c) - nonmonotonic
-																			else
-																				if (pred.equals(SparqldlExtensionsVocabulary.directType.asNode()))
-																				{
-																					query.add(QueryAtomFactory.DirectTypeAtom(s, o));
-																					if (isDistinguishedVariable(subj))
-																						query.addDistVar(s, VarType.INDIVIDUAL);
-																					if (ATermUtils.isVar(o))
-																					{
-																						ensureDistinguished(obj);
-																						query.addDistVar(o, VarType.CLASS);
-																					}
-																				}
-
-																				else
-																					if (kb.isAnnotationProperty(p))
-																					{
-																						if (!OpenlletOptions.USE_ANNOTATION_SUPPORT)
-																							throw new UnsupportedQueryException("Cannot answer annotation queries when PelletOptions.USE_ANNOTATION_SUPPORT is false!");
-
-																						query.add(QueryAtomFactory.AnnotationAtom(s, p, o));
-																						if (ATermUtils.isVar(s))
-																						{
-																							ensureDistinguished(subj);
-																							query.addDistVar(s, VarType.PROPERTY);
-																							if (_handleVariableSPO)
-																							{
-																								variablePredicates.remove(s);
-																								variableSubjects.add(s);
-																							}
-																						}
-																						if (ATermUtils.isVar(o))
-																						{
-																							ensureDistinguished(obj);
-																							query.addDistVar(o, VarType.PROPERTY);
-																							if (_handleVariableSPO)
-																							{
-																								variablePredicates.remove(o);
-																								variableSubjects.add(o);
-																							}
-																						}
-																						// throw new UnsupportedQueryException(
-																						// "Annotation properties are not supported in queries." );
-																					}
-
-																					// PropertyValue(i,p,j)
-																					else
-																					{
-																						if (s == null || p == null || o == null)
-																							throw new UnsupportedQueryException("Atom conversion incomplete for: " + t);
-																						ensureTypedProperty(p);
-
-																						query.add(QueryAtomFactory.PropertyValueAtom(s, p, o));
-
-																						if (ATermUtils.isVar(p))
-																						{
-																							ensureDistinguished(pred);
-																							query.addDistVar(p, VarType.PROPERTY);
-
-																							// If the predicate is a variable used in a subject position
-																							// we don't have to consider it as it is bound to another
-																							// triple pattern
-																							if (!variableSubjects.contains(p))
-																								variablePredicates.add(p);
-																						}
-
-																						if (isDistinguishedVariable(subj))
-																							query.addDistVar(s, VarType.INDIVIDUAL);
-
-																						if (isDistinguishedVariable(obj))
-																							if (ATermUtils.isVar(p))
-																								possibleLiteralVars.add(o);
-																							else
-																								if (kb.isObjectProperty(p))
-																									query.addDistVar(o, VarType.INDIVIDUAL);
-																								else
-																									if (kb.isDatatypeProperty(p))
-																										query.addDistVar(o, VarType.LITERAL);
-																					}
+				if (isDistinguishedVariable(obj)) if (ATermUtils.isVar(p))
+					possibleLiteralVars.add(o);
+				else if (kb.isObjectProperty(p))
+					query.addDistVar(o, VarType.INDIVIDUAL);
+				else if (kb.isDatatypeProperty(p)) query.addDistVar(o, VarType.LITERAL);
+			}
 		}
 
 		for (final ATermAppl v : possibleLiteralVars)
 		{
-			if (!query.getDistVars().contains(v))
-				query.addDistVar(v, VarType.LITERAL);
+			if (!query.getDistVars().contains(v)) query.addDistVar(v, VarType.LITERAL);
 			query.addDistVar(v, VarType.INDIVIDUAL);
 		}
 
-		if (!_handleVariableSPO)
-			return query;
+		if (!_handleVariableSPO) return query;
 
-		if (variablePredicates.isEmpty())
-			return query;
+		if (variablePredicates.isEmpty()) return query;
 
-		throw new UnsupportedQueryException("Queries with variable predicates are not supported " + "(add the pattern {?p rdf:type owl:ObjectProperty} or" + " {?p rdf:type owl:DatatypeProperty} to the query)");
+		throw new UnsupportedQueryException(
+				"Queries with variable predicates are not supported " + "(add the pattern {?p rdf:type owl:ObjectProperty} or" + " {?p rdf:type owl:DatatypeProperty} to the query)");
 
 	}
 
@@ -1006,22 +951,18 @@ public class ARQParser implements QueryParser
 
 	private static void ensureDistinguished(final Node pred, final String errorNonDist)
 	{
-		if (!isDistinguishedVariable(pred))
-			throw new UnsupportedQueryException(errorNonDist + pred);
+		if (!isDistinguishedVariable(pred)) throw new UnsupportedQueryException(errorNonDist + pred);
 	}
 
 	private void ensureTypedProperty(final ATermAppl pred)
 	{
 
-		if (ATermUtils.isVar(pred))
-			return;
+		if (ATermUtils.isVar(pred)) return;
 
 		final Role r = _kb.getRole(pred);
-		if (r == null)
-			throw new UnsupportedQueryException("Unknown role: " + pred);
+		if (r == null) throw new UnsupportedQueryException("Unknown role: " + pred);
 
-		if (r.isUntypedRole())
-			throw new UnsupportedQueryException("Untyped role: " + pred);
+		if (r.isUntypedRole()) throw new UnsupportedQueryException("Untyped role: " + pred);
 	}
 
 	public static boolean isDistinguishedVariable(final Node node)
@@ -1047,8 +988,7 @@ public class ARQParser implements QueryParser
 	private boolean hasObject(final Node subj, final Node pred)
 	{
 		for (final Triple t : _triples)
-			if (subj.equals(t.getSubject()) && pred.equals(t.getPredicate()))
-				return true;
+			if (subj.equals(t.getSubject()) && pred.equals(t.getPredicate())) return true;
 
 		return false;
 	}
@@ -1061,8 +1001,7 @@ public class ARQParser implements QueryParser
 			if (subj.equals(t.getSubject()) && pred.equals(t.getPredicate()))
 			{
 				i.remove();
-				if (obj.equals(t.getObject()))
-					return true;
+				if (obj.equals(t.getObject())) return true;
 				throw new UnsupportedQueryException("Expecting rdf:type " + obj + " but found rdf:type " + t.getObject());
 			}
 		}
@@ -1074,9 +1013,7 @@ public class ARQParser implements QueryParser
 	{
 		if (node.equals(RDF.nil.asNode()))
 			return ATermUtils.EMPTY_LIST;
-		else
-			if (_terms.containsKey(node))
-				return (ATermList) _terms.get(node);
+		else if (_terms.containsKey(node)) return (ATermList) _terms.get(node);
 
 		hasObject(node, RDF.type.asNode(), RDF.List.asNode());
 
@@ -1102,12 +1039,10 @@ public class ARQParser implements QueryParser
 		final Node p = getObject(node, OWL.onProperty.asNode());
 
 		// TODO warning message: no owl:onProperty
-		if (p == null)
-			return aTerm;
+		if (p == null) return aTerm;
 
 		final ATermAppl pt = node2term(p);
-		if (!_kb.isProperty(pt))
-			throw new UnsupportedQueryException("Property " + pt + " is not present in KB.");
+		if (!_kb.isProperty(pt)) throw new UnsupportedQueryException("Property " + pt + " is not present in KB.");
 
 		// TODO warning message: multiple owl:onProperty
 		Node o = null;
@@ -1120,8 +1055,7 @@ public class ARQParser implements QueryParser
 				else
 				{
 					final ATermAppl ind = ATermUtils.makeTermAppl(o.getURI());
-					if (!_kb.isIndividual(ind))
-						throw new UnsupportedQueryException("Individual " + ind + " is not present in KB.");
+					if (!_kb.isIndividual(ind)) throw new UnsupportedQueryException("Individual " + ind + " is not present in KB.");
 
 					final ATermAppl nom = ATermUtils.makeTermAppl(o.getURI() + "_nom");
 
@@ -1135,58 +1069,49 @@ public class ARQParser implements QueryParser
 				aTerm = ATermUtils.makeHasValue(pt, ot);
 			}
 		}
-		else
-			if ((o = getObject(node, OWL2.hasSelf.asNode())) != null)
-			{
-				final ATermAppl ot = node2term(o);
+		else if ((o = getObject(node, OWL2.hasSelf.asNode())) != null)
+		{
+			final ATermAppl ot = node2term(o);
 
-				if (ATermUtils.isVar(ot))
-					throw new UnsupportedQueryException("Variables not supported in hasSelf restriction");
-				else
-					aTerm = ATermUtils.makeSelf(pt);
-			}
+			if (ATermUtils.isVar(ot))
+				throw new UnsupportedQueryException("Variables not supported in hasSelf restriction");
 			else
-				if ((o = getObject(node, OWL.allValuesFrom.asNode())) != null)
-				{
-					final ATermAppl ot = node2term(o);
+				aTerm = ATermUtils.makeSelf(pt);
+		}
+		else if ((o = getObject(node, OWL.allValuesFrom.asNode())) != null)
+		{
+			final ATermAppl ot = node2term(o);
 
-					if (ATermUtils.isVar(ot))
-						throw new UnsupportedQueryException("Variables not supported in allValuesFrom restriction");
-					else
-						aTerm = ATermUtils.makeAllValues(pt, ot);
-				}
-				else
-					if ((o = getObject(node, OWL.someValuesFrom.asNode())) != null)
-					{
-						final ATermAppl ot = node2term(o);
+			if (ATermUtils.isVar(ot))
+				throw new UnsupportedQueryException("Variables not supported in allValuesFrom restriction");
+			else
+				aTerm = ATermUtils.makeAllValues(pt, ot);
+		}
+		else if ((o = getObject(node, OWL.someValuesFrom.asNode())) != null)
+		{
+			final ATermAppl ot = node2term(o);
 
-						if (ATermUtils.isVar(ot))
-							throw new UnsupportedQueryException("Variables not supported in someValuesFrom restriction");
-						else
-							aTerm = ATermUtils.makeSomeValues(pt, ot);
-					}
-					else
-						if ((o = getObject(node, OWL.minCardinality.asNode())) != null)
-							aTerm = createCardinalityRestriction(node, OWL.minCardinality.asNode(), pt, o);
-						else
-							if ((o = getObject(node, OWL2.minQualifiedCardinality.asNode())) != null)
-								aTerm = createCardinalityRestriction(node, OWL2.minQualifiedCardinality.asNode(), pt, o);
-							else
-								if ((o = getObject(node, OWL.maxCardinality.asNode())) != null)
-									aTerm = createCardinalityRestriction(node, OWL.maxCardinality.asNode(), pt, o);
-								else
-									if ((o = getObject(node, OWL2.maxQualifiedCardinality.asNode())) != null)
-										aTerm = createCardinalityRestriction(node, OWL2.maxQualifiedCardinality.asNode(), pt, o);
-									else
-										if ((o = getObject(node, OWL.cardinality.asNode())) != null)
-											aTerm = createCardinalityRestriction(node, OWL.cardinality.asNode(), pt, o);
-										else
-											if ((o = getObject(node, OWL2.qualifiedCardinality.asNode())) != null)
-												aTerm = createCardinalityRestriction(node, OWL2.qualifiedCardinality.asNode(), pt, o);
-											else
-											{
-												// TODO print warning message (invalid restriction type)
-											}
+			if (ATermUtils.isVar(ot))
+				throw new UnsupportedQueryException("Variables not supported in someValuesFrom restriction");
+			else
+				aTerm = ATermUtils.makeSomeValues(pt, ot);
+		}
+		else if ((o = getObject(node, OWL.minCardinality.asNode())) != null)
+			aTerm = createCardinalityRestriction(node, OWL.minCardinality.asNode(), pt, o);
+		else if ((o = getObject(node, OWL2.minQualifiedCardinality.asNode())) != null)
+			aTerm = createCardinalityRestriction(node, OWL2.minQualifiedCardinality.asNode(), pt, o);
+		else if ((o = getObject(node, OWL.maxCardinality.asNode())) != null)
+			aTerm = createCardinalityRestriction(node, OWL.maxCardinality.asNode(), pt, o);
+		else if ((o = getObject(node, OWL2.maxQualifiedCardinality.asNode())) != null)
+			aTerm = createCardinalityRestriction(node, OWL2.maxQualifiedCardinality.asNode(), pt, o);
+		else if ((o = getObject(node, OWL.cardinality.asNode())) != null)
+			aTerm = createCardinalityRestriction(node, OWL.cardinality.asNode(), pt, o);
+		else if ((o = getObject(node, OWL2.qualifiedCardinality.asNode())) != null)
+			aTerm = createCardinalityRestriction(node, OWL2.qualifiedCardinality.asNode(), pt, o);
+		else
+		{
+			// TODO print warning message (invalid restriction type)
+		}
 
 		return aTerm;
 	}
@@ -1200,44 +1125,37 @@ public class ARQParser implements QueryParser
 			Node qualification = null;
 			if ((qualification = getObject(node, OWL2.onClass.asNode())) != null)
 			{
-				if (qualification.isVariable())
-					throw new UnsupportedQueryException("Variables not allowed in cardinality qualification");
+				if (qualification.isVariable()) throw new UnsupportedQueryException("Variables not allowed in cardinality qualification");
 
-				if (!_kb.isObjectProperty(pt))
-					return null;
+				if (!_kb.isObjectProperty(pt)) return null;
+				c = node2term(qualification);
+			}
+			else if ((qualification = getObject(node, OWL2.onDataRange.asNode())) != null)
+			{
+				if (qualification.isVariable()) throw new UnsupportedQueryException("Variables not allowed in cardinality qualification");
+
+				if (!_kb.isDatatypeProperty(pt)) return null;
 				c = node2term(qualification);
 			}
 			else
-				if ((qualification = getObject(node, OWL2.onDataRange.asNode())) != null)
-				{
-					if (qualification.isVariable())
-						throw new UnsupportedQueryException("Variables not allowed in cardinality qualification");
-
-					if (!_kb.isDatatypeProperty(pt))
-						return null;
-					c = node2term(qualification);
-				}
+			{
+				final PropertyType propType = _kb.getPropertyType(pt);
+				if (propType == PropertyType.OBJECT)
+					c = ATermUtils.TOP;
+				else if (propType == PropertyType.DATATYPE)
+					c = ATermUtils.TOP_LIT;
 				else
-				{
-					final PropertyType propType = _kb.getPropertyType(pt);
-					if (propType == PropertyType.OBJECT)
-						c = ATermUtils.TOP;
-					else
-						if (propType == PropertyType.DATATYPE)
-							c = ATermUtils.TOP_LIT;
-						else
-							c = ATermUtils.TOP;
-				}
+					c = ATermUtils.TOP;
+			}
 
 			final int cardinality = Integer.parseInt(card.getLiteralLexicalForm());
 
 			if (restrictionType.equals(OWL.minCardinality.asNode()) || restrictionType.equals(OWL2.minQualifiedCardinality.asNode()))
 				return ATermUtils.makeMin(pt, cardinality, c);
+			else if (restrictionType.equals(OWL.maxCardinality.asNode()) || restrictionType.equals(OWL2.maxQualifiedCardinality.asNode()))
+				return ATermUtils.makeMax(pt, cardinality, c);
 			else
-				if (restrictionType.equals(OWL.maxCardinality.asNode()) || restrictionType.equals(OWL2.maxQualifiedCardinality.asNode()))
-					return ATermUtils.makeMax(pt, cardinality, c);
-				else
-					return ATermUtils.makeCard(pt, cardinality, c);
+				return ATermUtils.makeCard(pt, cardinality, c);
 		}
 		catch (final Exception ex)
 		{
@@ -1249,94 +1167,85 @@ public class ARQParser implements QueryParser
 
 	private ATermAppl node2term(final Node node)
 	{
-		if (!_terms.containsKey(node))
-			cache(node);
+		if (!_terms.containsKey(node)) cache(node);
 		return (ATermAppl) _terms.get(node);
 	}
 
 	private void cache(final Node node)
 	{
-		if (_terms.containsKey(node) || BuiltinTerm.isBuiltin(node))
-			return;
+		if (_terms.containsKey(node) || BuiltinTerm.isBuiltin(node)) return;
 
 		ATerm aTerm = null;
 
 		if (node.isLiteral())
 			aTerm = JenaUtils.makeLiteral(node.getLiteral());
-		else
-			if (hasObject(node, OWL.onProperty.asNode()))
+		else if (hasObject(node, OWL.onProperty.asNode()))
+		{
+			aTerm = createRestriction(node);
+			_terms.put(node, aTerm);
+		}
+		else if (node.isBlank() || node.isVariable())
+		{
+			Node o = null;
+			if ((o = getObject(node, OWL.intersectionOf.asNode())) != null)
 			{
-				aTerm = createRestriction(node);
-				_terms.put(node, aTerm);
-			}
-			else
-				if (node.isBlank() || node.isVariable())
-				{
-					Node o = null;
-					if ((o = getObject(node, OWL.intersectionOf.asNode())) != null)
-					{
-						final ATermList list = createList(o);
-						hasObject(node, RDF.type.asNode(), OWL.Class.asNode());
+				final ATermList list = createList(o);
+				hasObject(node, RDF.type.asNode(), OWL.Class.asNode());
 
-						aTerm = ATermUtils.makeAnd(list);
+				aTerm = ATermUtils.makeAnd(list);
+			}
+			else if ((o = getObject(node, OWL.unionOf.asNode())) != null)
+			{
+				final ATermList list = createList(o);
+				hasObject(node, RDF.type.asNode(), OWL.Class.asNode());
+
+				aTerm = ATermUtils.makeOr(list);
+			}
+			else if ((o = getObject(node, OWL.oneOf.asNode())) != null)
+			{
+				final ATermList list = createList(o);
+				hasObject(node, RDF.type.asNode(), OWL.Class.asNode());
+
+				ATermList result = ATermUtils.EMPTY_LIST;
+				for (ATermList l = list; !l.isEmpty(); l = l.getNext())
+				{
+					final ATermAppl c = (ATermAppl) l.getFirst();
+					if (OpenlletOptions.USE_PSEUDO_NOMINALS)
+					{
+						final ATermAppl nominal = ATermUtils.makeTermAppl(c.getName() + "_nominal");
+						result = result.insert(nominal);
 					}
 					else
-						if ((o = getObject(node, OWL.unionOf.asNode())) != null)
-						{
-							final ATermList list = createList(o);
-							hasObject(node, RDF.type.asNode(), OWL.Class.asNode());
-
-							aTerm = ATermUtils.makeOr(list);
-						}
-						else
-							if ((o = getObject(node, OWL.oneOf.asNode())) != null)
-							{
-								final ATermList list = createList(o);
-								hasObject(node, RDF.type.asNode(), OWL.Class.asNode());
-
-								ATermList result = ATermUtils.EMPTY_LIST;
-								for (ATermList l = list; !l.isEmpty(); l = l.getNext())
-								{
-									final ATermAppl c = (ATermAppl) l.getFirst();
-									if (OpenlletOptions.USE_PSEUDO_NOMINALS)
-									{
-										final ATermAppl nominal = ATermUtils.makeTermAppl(c.getName() + "_nominal");
-										result = result.insert(nominal);
-									}
-									else
-									{
-										final ATermAppl nominal = ATermUtils.makeValue(c);
-										result = result.insert(nominal);
-									}
-								}
-
-								aTerm = ATermUtils.makeOr(result);
-							}
-							else
-								if (Var.isBlankNodeVar(node) && (o = getObject(node, OWL.complementOf.asNode())) != null)
-								{
-									final ATermAppl complement = node2term(o);
-									hasObject(node, RDF.type.asNode(), OWL.Class.asNode());
-
-									aTerm = ATermUtils.makeNot(complement);
-								}
-								else
-									if (node.isVariable())
-										aTerm = ATermUtils.makeVar(node.getName());
-									else
-									{
-										if (((o = getObject(node, OWL.complementOf.asNode())) != null))
-											_logger.info("Blank _nodes in class variable positions are not supported");
-
-										aTerm = ATermUtils.makeBnode(node.getBlankNodeId().toString());
-									}
+					{
+						final ATermAppl nominal = ATermUtils.makeValue(c);
+						result = result.insert(nominal);
+					}
 				}
-				else
-				{
-					final String uri = node.getURI();
 
-					aTerm = ATermUtils.makeTermAppl(uri);
-				}
+				aTerm = ATermUtils.makeOr(result);
+			}
+			else if (Var.isBlankNodeVar(node) && (o = getObject(node, OWL.complementOf.asNode())) != null)
+			{
+				final ATermAppl complement = node2term(o);
+				hasObject(node, RDF.type.asNode(), OWL.Class.asNode());
+
+				aTerm = ATermUtils.makeNot(complement);
+			}
+			else if (node.isVariable())
+				aTerm = ATermUtils.makeVar(node.getName());
+			else
+			{
+				if ((o = getObject(node, OWL.complementOf.asNode())) != null) _logger.info("Blank _nodes in class variable positions are not supported");
+
+				aTerm = ATermUtils.makeBnode(node.getBlankNodeId().toString());
+			}
+		}
+		else
+		{
+			final String uri = node.getURI();
+
+			aTerm = ATermUtils.makeTermAppl(uri);
+		}
 
 		_terms.put(node, aTerm);
 	}
@@ -1349,19 +1258,16 @@ public class ARQParser implements QueryParser
 	 */
 	private List<Triple> resolveParameterization(final List<?> triples)
 	{
-		if (triples == null)
-			throw new NullPointerException("The set of _triples cannot be null");
+		if (triples == null) throw new NullPointerException("The set of _triples cannot be null");
 
 		// Ensure that the initial binding is not a null pointer
-		if (_initialBinding == null)
-			_initialBinding = new QuerySolutionMap();
+		if (_initialBinding == null) _initialBinding = new QuerySolutionMap();
 
 		final List<Triple> ret = new ArrayList<>();
 
 		for (final Triple t : triples.toArray(new Triple[triples.size()]))
 		{
-			if (!triples.contains(t))
-				continue;
+			if (!triples.contains(t)) continue;
 
 			final Node s = resolveParameterization(t.getSubject());
 			final Node p = resolveParameterization(t.getPredicate());
@@ -1375,18 +1281,14 @@ public class ARQParser implements QueryParser
 
 	private Node resolveParameterization(final Node node)
 	{
-		if (node == null)
-			throw new NullPointerException("Node is null");
-		if (_initialBinding == null)
-			throw new NullPointerException("Initial binding is null");
+		if (node == null) throw new NullPointerException("Node is null");
+		if (_initialBinding == null) throw new NullPointerException("Initial binding is null");
 
-		if (node.isConcrete())
-			return node;
+		if (node.isConcrete()) return node;
 
 		final RDFNode binding = _initialBinding.get(node.getName());
 
-		if (binding == null)
-			return node;
+		if (binding == null) return node;
 
 		return binding.asNode();
 	}

@@ -214,7 +214,7 @@ public class OWLAPITests extends AbstractOWLAPITests
 		assertTrue(reasoner.isEntailed(propertyAssertion(ind1, p, ind1)));
 		assertTrue(reasoner.isEntailed(classAssertion(ind1, test2)));
 		assertTrue(reasoner.isEntailed(classAssertion(ind1, test3)));
-		assertIteratorValues(reasoner.getTypes(ind1, false).entities().iterator(), new Object[] { OWL.Thing, C, test2, test3 });
+		assertIteratorValues(reasoner.getTypes(ind1, false).entities().iterator(), OWL.Thing, C, test2, test3);
 
 		assertTrue(reasoner.isEntailed(subClassOf(Teenager, OlderThan10)));
 		assertTrue(reasoner.isEntailed(subClassOf(Teenager, YoungerThan20)));
@@ -310,13 +310,13 @@ public class OWLAPITests extends AbstractOWLAPITests
 
 		assertIteratorValues(reasoner.getInstances(S0, false).entities().iterator(), theList);
 
-		assertIteratorValues(reasoner.getInstances(R0, false).entities().iterator(), new OWLIndividual[] { a[7], a[9] });
+		assertIteratorValues(reasoner.getInstances(R0, false).entities().iterator(), a[7], a[9]);
 
-		assertIteratorValues(reasoner.getInstances(R1, false).entities().iterator(), new OWLIndividual[] { a[2], a[3], a[4], a[5], a[6] });
+		assertIteratorValues(reasoner.getInstances(R1, false).entities().iterator(), a[2], a[3], a[4], a[5], a[6]);
 
-		assertIteratorValues(reasoner.getObjectPropertyValues(a[0], r).entities().iterator(), new OWLIndividual[] { a[7], a[9] });
+		assertIteratorValues(reasoner.getObjectPropertyValues(a[0], r).entities().iterator(), a[7], a[9]);
 
-		assertIteratorValues(reasoner.getObjectPropertyValues(a[1], r).entities().iterator(), new OWLIndividual[] { a[2], a[3], a[4], a[5], a[6] });
+		assertIteratorValues(reasoner.getObjectPropertyValues(a[1], r).entities().iterator(), a[2], a[3], a[4], a[5], a[6]);
 
 		assertIteratorValues(reasoner.getObjectPropertyValues(a[0], s).entities().iterator(), theList);
 	}
@@ -442,8 +442,7 @@ public class OWLAPITests extends AbstractOWLAPITests
 
 		final OWLLiteral newVal = OWL.constant(0.0D);
 		ont.add(propertyAssertion(ind, pDouble, newVal));
-		if (buffering)
-			reasoner.flush();
+		if (buffering) reasoner.flush();
 
 		assertTrue(reasoner.isConsistent());
 	}
@@ -732,8 +731,7 @@ public class OWLAPITests extends AbstractOWLAPITests
 
 		for (int test = 0; test < 2; test++)
 		{
-			if (test != 0)
-				reasoner.prepareReasoner();
+			if (test != 0) reasoner.prepareReasoner();
 
 			assertTrue(reasoner.isEntailed(propertyAssertion(Abel, sibling, Cain)));
 
@@ -760,7 +758,7 @@ public class OWLAPITests extends AbstractOWLAPITests
 			assertTrue(reasoner.isEntailed(classAssertion(Oedipus, Child)));
 		}
 
-		assertIteratorValues(reasoner.getTypes(Cain, true).entities().iterator(), new Object[] { BadChild, Child, Person });
+		assertIteratorValues(reasoner.getTypes(Cain, true).entities().iterator(), BadChild, Child, Person);
 	}
 
 	@Test
@@ -780,12 +778,11 @@ public class OWLAPITests extends AbstractOWLAPITests
 
 		for (int test = 0; test < 1; test++)
 		{
-			if (test != 0)
-				reasoner.prepareReasoner();
+			if (test != 0) reasoner.prepareReasoner();
 
-			assertIteratorValues(reasoner.getInstances(DreamTeamMember, false).entities().iterator(), new Object[] { Alice, Bob, Charlie });
-			assertIteratorValues(reasoner.getInstances(DreamTeamMember1, false).entities().iterator(), new Object[] { Alice, Bob, Charlie });
-			assertIteratorValues(reasoner.getInstances(DreamTeamMember2, false).entities().iterator(), new Object[] { Alice, Bob, Charlie });
+			assertIteratorValues(reasoner.getInstances(DreamTeamMember, false).entities().iterator(), Alice, Bob, Charlie);
+			assertIteratorValues(reasoner.getInstances(DreamTeamMember1, false).entities().iterator(), Alice, Bob, Charlie);
+			assertIteratorValues(reasoner.getInstances(DreamTeamMember2, false).entities().iterator(), Alice, Bob, Charlie);
 		}
 	}
 
@@ -810,7 +807,8 @@ public class OWLAPITests extends AbstractOWLAPITests
 		assertTrue(reasoner.isEntailed(classAssertion(y, C)));
 		assertTrue(reasoner.isEntailed(classAssertion(z, C)));
 
-		final OWLAxiom[] axioms = new OWLAxiom[] { functional(p1), inverseFunctional(p1), irreflexive(p1), asymmetric(p1), disjointProperties(p1, p2), subClassOf(C, min(p1, 2)), classAssertion(x, max(p1, 3)), disjointClasses(C, min(p1, 2)) };
+		final OWLAxiom[] axioms = new OWLAxiom[] { functional(p1), inverseFunctional(p1), irreflexive(p1), asymmetric(p1), disjointProperties(p1, p2), subClassOf(C, min(p1, 2)),
+				classAssertion(x, max(p1, 3)), disjointClasses(C, min(p1, 2)) };
 
 		for (final OWLAxiom axiom : axioms)
 		{
@@ -840,8 +838,7 @@ public class OWLAPITests extends AbstractOWLAPITests
 			}
 
 		for (final ATermAppl p : kb.getObjectProperties())
-			if (!ATermUtils.isBuiltinProperty(p))
-				assertFalse(p.toString(), kb.isTransitiveProperty(p));
+			if (!ATermUtils.isBuiltinProperty(p)) assertFalse(p.toString(), kb.isTransitiveProperty(p));
 	}
 
 	@Test
@@ -1311,7 +1308,8 @@ public class OWLAPITests extends AbstractOWLAPITests
 	@Test
 	public void testTopBottomPropertyAssertion()
 	{
-		final OWLAxiom[] axioms = { OWL.propertyAssertion(_a, OWL.topObjectProperty, _b), OWL.propertyAssertion(_a, OWL.topDataProperty, _lit), OWL.propertyAssertion(_a, OWL.bottomObjectProperty, _b), OWL.propertyAssertion(_a, OWL.bottomDataProperty, _lit) };
+		final OWLAxiom[] axioms = { OWL.propertyAssertion(_a, OWL.topObjectProperty, _b), OWL.propertyAssertion(_a, OWL.topDataProperty, _lit), OWL.propertyAssertion(_a, OWL.bottomObjectProperty, _b),
+				OWL.propertyAssertion(_a, OWL.bottomDataProperty, _lit) };
 
 		for (int i = 0; i < axioms.length; i++)
 		{
@@ -1385,7 +1383,9 @@ public class OWLAPITests extends AbstractOWLAPITests
 		final OWLDatatype between5and10 = OWL.Datatype("between5and10");
 		final OWLDatatype between6and8 = OWL.Datatype("between6and8");
 
-		createReasoner(OWL.datatypeDefinition(between5and10, OWL.restrict(XSD.INTEGER, OWL.minInclusive(5), OWL.maxInclusive(10))), OWL.datatypeDefinition(between6and8, OWL.restrict(XSD.INTEGER, OWL.minInclusive(6), OWL.maxInclusive(8))), OWL.equivalentClasses(_A, OWL.some(_dp, between5and10)), OWL.equivalentClasses(_B, OWL.some(_dp, between6and8)), OWL.propertyAssertion(_a, _dp, OWL.constant(9)), OWL.propertyAssertion(_b, _dp, OWL.constant(7)));
+		createReasoner(OWL.datatypeDefinition(between5and10, OWL.restrict(XSD.INTEGER, OWL.minInclusive(5), OWL.maxInclusive(10))),
+				OWL.datatypeDefinition(between6and8, OWL.restrict(XSD.INTEGER, OWL.minInclusive(6), OWL.maxInclusive(8))), OWL.equivalentClasses(_A, OWL.some(_dp, between5and10)),
+				OWL.equivalentClasses(_B, OWL.some(_dp, between6and8)), OWL.propertyAssertion(_a, _dp, OWL.constant(9)), OWL.propertyAssertion(_b, _dp, OWL.constant(7)));
 
 		assertTrue(_reasoner.isEntailed(OWL.subClassOf(_B, _A)));
 		assertTrue(_reasoner.isEntailed(OWL.classAssertion(_a, _A)));

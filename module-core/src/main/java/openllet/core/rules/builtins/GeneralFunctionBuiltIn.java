@@ -44,9 +44,9 @@ public class GeneralFunctionBuiltIn implements BuiltIn
 	private class GeneralFunctionHelper implements BindingHelper
 	{
 
-		private final BuiltInAtom _atom;
-		private VariableBinding _partial;
-		private boolean _used;
+		private final BuiltInAtom	_atom;
+		private VariableBinding		_partial;
+		private boolean				_used;
 
 		public GeneralFunctionHelper(final BuiltInAtom atom)
 		{
@@ -56,8 +56,7 @@ public class GeneralFunctionBuiltIn implements BuiltIn
 		@Override
 		public Collection<? extends AtomVariable> getBindableVars(final Collection<AtomVariable> bound)
 		{
-			if (!isApplicable(bound))
-				return Collections.emptySet();
+			if (!isApplicable(bound)) return Collections.emptySet();
 
 			return SetUtils.difference(VariableUtils.getVars(_atom), bound);
 		}
@@ -102,13 +101,11 @@ public class GeneralFunctionBuiltIn implements BuiltIn
 					if (current != null && !current.equals(result))
 					{
 						// Oops, we overwrote an argument.
-						if (newBinding.get(arg) != null)
-							throw new InternalReasonerException("General Function implementation overwrote one of its arguments!");
+						if (newBinding.get(arg) != null) throw new InternalReasonerException("General Function implementation overwrote one of its arguments!");
 						BuiltInRegistry._logger.info("Function results in multiple simultaneous values for variable");
 						return;
 					}
-					if (current == null)
-						newBinding.set(arg, result);
+					if (current == null) newBinding.set(arg, result);
 				}
 
 				_used = false;

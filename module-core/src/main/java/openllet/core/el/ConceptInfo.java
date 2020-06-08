@@ -24,13 +24,13 @@ import openllet.core.utils.SetUtils;
  */
 class ConceptInfo
 {
-	private final ATermAppl _concept;
-	private final Set<Trigger> _triggers;
+	private final ATermAppl								_concept;
+	private final Set<Trigger>							_triggers;
 
-	private final MultiValueMap<ATermAppl, ConceptInfo> _successors;
-	private final MultiValueMap<ATermAppl, ConceptInfo> _predecessors = new MultiValueMap<>();
+	private final MultiValueMap<ATermAppl, ConceptInfo>	_successors;
+	private final MultiValueMap<ATermAppl, ConceptInfo>	_predecessors	= new MultiValueMap<>();
 
-	private final Set<ConceptInfo> superClasses = SetUtils.create();
+	private final Set<ConceptInfo>						superClasses	= SetUtils.create();
 
 	public ConceptInfo(final ATermAppl c, final boolean storeSuccessors, final boolean noTriggers)
 	{
@@ -46,8 +46,7 @@ class ConceptInfo
 	{
 		if (ci._predecessors.add(p, this))
 		{
-			if (_successors != null)
-				_successors.add(p, ci);
+			if (_successors != null) _successors.add(p, ci);
 
 			return true;
 		}

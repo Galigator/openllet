@@ -39,31 +39,31 @@ import openllet.core.utils.TermFactory;
  */
 public class QueryImpl implements Query
 {
-	private static final ATermAppl DEFAULT_NAME = TermFactory.term("query");
+	private static final ATermAppl				DEFAULT_NAME	= TermFactory.term("query");
 
 	// COMMON PART
-	private ATermAppl _name = DEFAULT_NAME;
+	private ATermAppl							_name			= DEFAULT_NAME;
 
-	private final List<QueryAtom> _allAtoms;
+	private final List<QueryAtom>				_allAtoms;
 
-	private KnowledgeBase _kb;
+	private KnowledgeBase						_kb;
 
-	private List<ATermAppl> _resultVars;
+	private List<ATermAppl>						_resultVars;
 
-	private Set<ATermAppl> _allVars;
+	private Set<ATermAppl>						_allVars;
 
-	private Set<ATermAppl> _individualsAndLiterals;
+	private Set<ATermAppl>						_individualsAndLiterals;
 
-	private boolean _ground;
+	private boolean								_ground;
 
-	private final boolean _distinct;
+	private final boolean						_distinct;
 
-	private Filter _filter;
+	private Filter								_filter;
 
-	private QueryParameters _parameters;
+	private QueryParameters						_parameters;
 
 	// VARIABLES
-	private EnumMap<VarType, Set<ATermAppl>> _distVars;
+	private EnumMap<VarType, Set<ATermAppl>>	_distVars;
 
 	public QueryImpl(final KnowledgeBase kb, final boolean distinct)
 	{
@@ -96,20 +96,15 @@ public class QueryImpl implements Query
 	@Override
 	public void add(final QueryAtom atom)
 	{
-		if (_allAtoms.contains(atom))
-			return;
+		if (_allAtoms.contains(atom)) return;
 		_allAtoms.add(atom);
 
 		for (final ATermAppl a : atom.getArguments())
 			if (ATermUtils.isVar(a))
 			{
-				if (!_allVars.contains(a))
-					_allVars.add(a);
+				if (!_allVars.contains(a)) _allVars.add(a);
 			}
-			else
-				if (ATermUtils.isLiteral(a) || _kb.isIndividual(a))
-					if (!_individualsAndLiterals.contains(a))
-						_individualsAndLiterals.add(a);
+			else if (ATermUtils.isLiteral(a) || _kb.isIndividual(a)) if (!_individualsAndLiterals.contains(a)) _individualsAndLiterals.add(a);
 
 		_ground = _ground && atom.isGround();
 	}
@@ -131,8 +126,7 @@ public class QueryImpl implements Query
 	{
 		final Set<ATermAppl> set = _distVars.get(type);
 
-		if (!set.contains(a))
-			set.add(a);
+		if (!set.contains(a)) set.add(a);
 	}
 
 	/**
@@ -252,8 +246,7 @@ public class QueryImpl implements Query
 
 		for (final VarType type : VarType.values())
 			for (final ATermAppl atom : getDistVarsForType(type))
-				if (!binding.isBound(atom))
-					query.addDistVar(atom, type);
+				if (!binding.isBound(atom)) query.addDistVar(atom, type);
 
 		for (final QueryAtom atom : atoms)
 			query.add(atom);
@@ -274,8 +267,7 @@ public class QueryImpl implements Query
 
 		final Set<ATermAppl> visited = new HashSet<>();
 
-		if (stopOnConstants)
-			visited.addAll(getConstants());
+		if (stopOnConstants) visited.addAll(getConstants());
 
 		final Collection<QueryAtom> inEdges = findAtoms(QueryPredicate.PropertyValue, null, null, var);
 		for (final QueryAtom a : inEdges)
@@ -298,13 +290,11 @@ public class QueryImpl implements Query
 		for (final QueryAtom atom : findAtoms(QueryPredicate.Type, a, null))
 		{
 			final ATermAppl arg = atom.getArguments().get(1);
-			if (ATermUtils.isVar(arg))
-				throw new InternalReasonerException("Variables as predicates are not supported yet");
+			if (ATermUtils.isVar(arg)) throw new InternalReasonerException("Variables as predicates are not supported yet");
 			aterms.add(arg);
 		}
 
-		if (!ATermUtils.isVar(a))
-			aterms.add(ATermUtils.makeValue(a));
+		if (!ATermUtils.isVar(a)) aterms.add(ATermUtils.makeValue(a));
 
 		return ATermUtils.makeList(aterms);
 	}
@@ -360,8 +350,7 @@ public class QueryImpl implements Query
 				ATermList targetClasses = getClasses(obj);
 
 				for (final QueryAtom in : _findAtoms(stopList, allowed, null, null, obj))
-					if (!in.equals(atom))
-						targetClasses = targetClasses.append(rollEdgeIn(allowed, in, visited, stopList));
+					if (!in.equals(atom)) targetClasses = targetClasses.append(rollEdgeIn(allowed, in, visited, stopList));
 
 				final List<QueryAtom> targetOuts = _findAtoms(stopList, allowed, obj, null, null);
 
@@ -386,24 +375,23 @@ public class QueryImpl implements Query
 						return ATermUtils.makeSomeValues(pred, ATermUtils.makeAnd(outs));
 					}
 				}
+				else if (targetOuts.size() == 0)
+					// this is a simple leaf _node, but with classes specified
+					return ATermUtils.makeSomeValues(pred, ATermUtils.makeAnd(targetClasses));
 				else
-					if (targetOuts.size() == 0)
-						// this is a simple leaf _node, but with classes specified
-						return ATermUtils.makeSomeValues(pred, ATermUtils.makeAnd(targetClasses));
-					else
-					{
-						// not a leaf _node, recurse over all outgoing edges
-						ATermList outs = ATermUtils.EMPTY_LIST;
+				{
+					// not a leaf _node, recurse over all outgoing edges
+					ATermList outs = ATermUtils.EMPTY_LIST;
 
-						for (final QueryAtom currEdge : targetOuts)
-							outs = outs.append(rollEdgeOut(allowed, currEdge, visited, stopList));
+					for (final QueryAtom currEdge : targetOuts)
+						outs = outs.append(rollEdgeOut(allowed, currEdge, visited, stopList));
 
-						for (int i = 0; i < targetClasses.getLength(); i++)
-							outs = outs.append(targetClasses.elementAt(i));
+					for (int i = 0; i < targetClasses.getLength(); i++)
+						outs = outs.append(targetClasses.elementAt(i));
 
-						return ATermUtils.makeSomeValues(pred, ATermUtils.makeAnd(outs));
+					return ATermUtils.makeSomeValues(pred, ATermUtils.makeAnd(outs));
 
-					}
+				}
 			default:
 				throw new OpenError("This atom cannot be included to rolling-up : " + atom);
 		}
@@ -420,8 +408,7 @@ public class QueryImpl implements Query
 				final ATermAppl obj = atom.getArguments().get(2);
 				final ATermAppl invPred = _kb.getRBox().getRole(pred).getInverse().getName();
 
-				if (ATermUtils.isVar(pred))
-					throw new InternalReasonerException("Variables as predicates are not supported yet");
+				if (ATermUtils.isVar(pred)) throw new InternalReasonerException("Variables as predicates are not supported yet");
 				// // TODO variables as predicates are not supported yet.
 				// return ATermUtils.TOP;
 
@@ -446,8 +433,7 @@ public class QueryImpl implements Query
 				final List<QueryAtom> targetIns = _findAtoms(stopList, allowed, null, null, subj);
 
 				for (final QueryAtom o : _findAtoms(stopList, allowed, subj, null, null))
-					if (!o.equals(atom))
-						targetClasses = targetClasses.append(rollEdgeOut(allowed, o, visited, stopList));
+					if (!o.equals(atom)) targetClasses = targetClasses.append(rollEdgeOut(allowed, o, visited, stopList));
 
 				if (targetClasses.isEmpty())
 				{
@@ -470,23 +456,22 @@ public class QueryImpl implements Query
 						return ATermUtils.makeSomeValues(invPred, ATermUtils.makeAnd(ins));
 					}
 				}
+				else if (targetIns.isEmpty())
+					return ATermUtils.makeSomeValues(invPred, ATermUtils.makeAnd(targetClasses));
 				else
-					if (targetIns.isEmpty())
-						return ATermUtils.makeSomeValues(invPred, ATermUtils.makeAnd(targetClasses));
-					else
-					{
-						// not a leaf _node, recurse over all outgoing edges
-						ATermList ins = ATermUtils.EMPTY_LIST;
+				{
+					// not a leaf _node, recurse over all outgoing edges
+					ATermList ins = ATermUtils.EMPTY_LIST;
 
-						for (final QueryAtom currEdge : targetIns)
-							ins = ins.append(rollEdgeIn(allowed, currEdge, visited, stopList));
+					for (final QueryAtom currEdge : targetIns)
+						ins = ins.append(rollEdgeIn(allowed, currEdge, visited, stopList));
 
-						for (int i = 0; i < targetClasses.getLength(); i++)
-							ins = ins.append(targetClasses.elementAt(i));
+					for (int i = 0; i < targetClasses.getLength(); i++)
+						ins = ins.append(targetClasses.elementAt(i));
 
-						return ATermUtils.makeSomeValues(invPred, ATermUtils.makeAnd(ins));
+					return ATermUtils.makeSomeValues(invPred, ATermUtils.makeAnd(ins));
 
-					}
+				}
 			default:
 				throw new OpenError("This atom cannot be included to rolling-up : " + atom);
 
@@ -511,8 +496,7 @@ public class QueryImpl implements Query
 					}
 				}
 
-				if (add)
-					list.add(atom);
+				if (add) list.add(atom);
 			}
 		return list;
 	}
@@ -523,7 +507,7 @@ public class QueryImpl implements Query
 	@Override
 	public List<QueryAtom> findAtoms(final QueryPredicate predicate, final ATermAppl... args)
 	{
-		return _findAtoms(Collections.<ATermAppl> emptySet(), predicate, args);
+		return _findAtoms(Collections.<ATermAppl>emptySet(), predicate, args);
 	}
 
 	/**
@@ -532,8 +516,7 @@ public class QueryImpl implements Query
 	@Override
 	public Query reorder(final int[] ordering)
 	{
-		if (ordering.length != _allAtoms.size())
-			throw new InternalReasonerException("Ordering permutation must be of the same size as the query : " + ordering.length);
+		if (ordering.length != _allAtoms.size()) throw new InternalReasonerException("Ordering permutation must be of the same size as the query : " + ordering.length);
 		final QueryImpl newQuery = new QueryImpl(this);
 
 		// shallow copies for faster processing
@@ -555,8 +538,7 @@ public class QueryImpl implements Query
 	@Override
 	public void remove(final QueryAtom atom)
 	{
-		if (!_allAtoms.contains(atom))
-			return;
+		if (!_allAtoms.contains(atom)) return;
 
 		_allAtoms.remove(atom);
 
@@ -600,8 +582,7 @@ public class QueryImpl implements Query
 		for (int i = 0; i < _resultVars.size(); i++)
 		{
 			final ATermAppl var = _resultVars.get(i);
-			if (i > 0)
-				sb.append(", ");
+			if (i > 0) sb.append(", ");
 			sb.append(ATermUtils.toString(var));
 		}
 		sb.append(")");
@@ -609,16 +590,14 @@ public class QueryImpl implements Query
 		if (_allAtoms.size() > 0)
 		{
 			sb.append(" :-");
-			if (multiLine)
-				sb.append("\n");
+			if (multiLine) sb.append("\n");
 			for (int i = 0; i < _allAtoms.size(); i++)
 			{
 				final QueryAtom a = _allAtoms.get(i);
 				if (i > 0)
 				{
 					sb.append(",");
-					if (multiLine)
-						sb.append("\n");
+					if (multiLine) sb.append("\n");
 				}
 
 				sb.append(indent);
@@ -627,8 +606,7 @@ public class QueryImpl implements Query
 		}
 
 		sb.append(".");
-		if (multiLine)
-			sb.append("\n");
+		if (multiLine) sb.append("\n");
 		return sb.toString();
 	}
 

@@ -33,7 +33,8 @@ public final class JenaStatementsChecker extends OpenlletComparisonsChecker
 {
 	protected static boolean isAnonValue(final Object n)
 	{
-		return n instanceof Resource && ((Resource) n).isAnon() || n instanceof Statement && ((Statement) n).getSubject().isAnon() || n instanceof Statement && isAnonValue(((Statement) n).getObject());
+		return n instanceof Resource && ((Resource) n).isAnon() || n instanceof Statement && ((Statement) n).getSubject().isAnon()
+				|| n instanceof Statement && isAnonValue(((Statement) n).getObject());
 	}
 
 	@SuppressWarnings("unused")

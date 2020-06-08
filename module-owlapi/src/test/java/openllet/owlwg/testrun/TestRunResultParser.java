@@ -55,17 +55,17 @@ import org.semanticweb.owlapi.search.EntitySearcher;
  * <p>
  * Company: Clark & Parsia, LLC. <a href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
  * </p>
- * 
+ *
  * @author Mike Smith &lt;msmith@clarkparsia.com&gt;
  */
 public class TestRunResultParser
 {
 
-	private static final Logger _logger = Log.getLogger(TestRunResultParser.class);
+	private static final Logger						_logger		= Log.getLogger(TestRunResultParser.class);
 
-	private static final Map<IRI, TestRunner<?>> _runners = new ConcurrentHashMap<>();
+	private static final Map<IRI, TestRunner<?>>	_runners	= new ConcurrentHashMap<>();
 
-	private static TestRunner<?> getRunner(OWLNamedIndividual i, OWLOntology o)
+	private static TestRunner<?> getRunner(final OWLNamedIndividual i, final OWLOntology o)
 	{
 		final IRI iri = i.getIRI();
 		TestRunner<?> runner = _runners.get(iri);
@@ -74,13 +74,9 @@ public class TestRunResultParser
 			String name;
 			final Collection<OWLAnnotation> s = EntitySearcher.getAnnotations(i.getIRI(), o, o.getOWLOntologyManager().getOWLDataFactory().getRDFSLabel()).collect(Collectors.toList());
 			if (s == null || s.isEmpty())
-			{
 				name = i.getIRI().toURI().toASCIIString();
-			}
 			else
-			{
 				name = s.iterator().next().getValue().toString();
-			}
 
 			runner = new ReadOnlyTestRunner<>(iri, name);
 			_runners.put(iri, runner);
@@ -88,7 +84,7 @@ public class TestRunResultParser
 		return runner;
 	}
 
-	public Collection<TestRunResult> getResults(OWLOntology o, Map<String, ? extends TestCase<?>> tests)
+	public Collection<TestRunResult> getResults(final OWLOntology o, final Map<String, ? extends TestCase<?>> tests)
 	{
 
 		final List<TestRunResult> results = new ArrayList<>();
@@ -112,10 +108,7 @@ public class TestRunResultParser
 			{
 				final String id = c.getLiteral();
 				testCase = tests.get(id);
-				if (testCase != null)
-				{
-					break;
-				}
+				if (testCase != null) break;
 			}
 
 			if (testCase == null)
@@ -137,82 +130,61 @@ public class TestRunResultParser
 
 			RunResultType resultType = null;
 			for (final RunResultType t : RunResultType.values())
-			{
 				if (types.contains(t.getOWLClass()))
 				{
 					resultType = t;
 					break;
 				}
-			}
 			if (resultType == null)
 			{
 				_logger.warning(format("Skipping result, missing result type (\"%s\")", i.getIRI()));
 				continue;
 			}
 
-			final Collection<OWLAnnotation> detailsAnnotations = EntitySearcher.getAnnotations(i, o, o.getOWLOntologyManager().getOWLDataFactory().getOWLAnnotationProperty(DETAILS.getAnnotationPropertyIRI())).collect(Collectors.toList());
+			final Collection<OWLAnnotation> detailsAnnotations = EntitySearcher
+					.getAnnotations(i, o, o.getOWLOntologyManager().getOWLDataFactory().getOWLAnnotationProperty(DETAILS.getAnnotationPropertyIRI())).collect(Collectors.toList());
 			String details = null;
 			final int ndetails = detailsAnnotations.size();
 			if (ndetails > 0)
 			{
-				if (ndetails > 1)
-				{
-					_logger.info(format("Result contains multiple details annotations, ignoring all but first (\"%s\")", i.getIRI()));
-				}
+				if (ndetails > 1) _logger.info(format("Result contains multiple details annotations, ignoring all but first (\"%s\")", i.getIRI()));
 				details = detailsAnnotations.iterator().next().getValue().toString();
 			}
 
 			TestRunResult result = null;
 			if (types.contains(SYNTAX_TRANSLATION_RUN.getOWLClass()))
-			{
 				result = details == null ? new SyntaxTranslationRun(testCase, resultType, runner) : new SyntaxTranslationRun(testCase, resultType, runner, details);
-			}
-			else
-				if (types.contains(SYNTAX_CONSTRAINT_RUN.getOWLClass()))
+			else if (types.contains(SYNTAX_CONSTRAINT_RUN.getOWLClass()))
+			{
+				final Collection<OWLIndividual> constraints = oValues.get(ResultVocabulary.ObjectProperty.SYNTAX_CONSTRAINT.getOWLObjectProperty());
+				SyntaxConstraint constraint = null;
+				if (constraints.size() != 1)
 				{
-					final Collection<OWLIndividual> constraints = oValues.get(ResultVocabulary.ObjectProperty.SYNTAX_CONSTRAINT.getOWLObjectProperty());
-					SyntaxConstraint constraint = null;
-					if (constraints.size() != 1)
-					{
-						_logger.warning(format("Skipping result, missing or more than one syntax constraint assertion (\"%s\",%s)", i.getIRI(), constraints));
-						continue;
-					}
-					final OWLNamedIndividual ind = constraints.iterator().next().asOWLNamedIndividual();
-					for (final SyntaxConstraint c : SyntaxConstraint.values())
-					{
-						if (c.getOWLIndividual().equals(ind))
-						{
-							constraint = c;
-							break;
-						}
-					}
-					if (constraint == null)
-					{
-						_logger.warning(format("Skipping result, unknown syntax constraint assertion (\"%s\",%s)", i.getIRI(), ind));
-						continue;
-					}
-					result = details == null ? new SyntaxConstraintRun(testCase, resultType, constraint, runner) : new SyntaxConstraintRun(testCase, resultType, constraint, runner, details);
+					_logger.warning(format("Skipping result, missing or more than one syntax constraint assertion (\"%s\",%s)", i.getIRI(), constraints));
+					continue;
 				}
-				else
-					if (types.contains(CONSISTENCY_RUN.getOWLClass()))
+				final OWLNamedIndividual ind = constraints.iterator().next().asOWLNamedIndividual();
+				for (final SyntaxConstraint c : SyntaxConstraint.values())
+					if (c.getOWLIndividual().equals(ind))
 					{
-						result = details == null ? new ReasoningRun(testCase, resultType, CONSISTENCY, runner) : new ReasoningRun(testCase, resultType, CONSISTENCY, runner, details);
+						constraint = c;
+						break;
 					}
-					else
-						if (types.contains(INCONSISTENCY_RUN.getOWLClass()))
-						{
-							result = details == null ? new ReasoningRun(testCase, resultType, INCONSISTENCY, runner) : new ReasoningRun(testCase, resultType, INCONSISTENCY, runner, details);
-						}
-						else
-							if (types.contains(NEGATIVE_ENTAILMENT_RUN.getOWLClass()))
-							{
-								result = details == null ? new ReasoningRun(testCase, resultType, NEGATIVE_ENTAILMENT, runner) : new ReasoningRun(testCase, resultType, NEGATIVE_ENTAILMENT, runner, details);
-							}
-							else
-								if (types.contains(POSITIVE_ENTAILMENT_RUN.getOWLClass()))
-								{
-									result = details == null ? new ReasoningRun(testCase, resultType, POSITIVE_ENTAILMENT, runner) : new ReasoningRun(testCase, resultType, POSITIVE_ENTAILMENT, runner, details);
-								}
+				if (constraint == null)
+				{
+					_logger.warning(format("Skipping result, unknown syntax constraint assertion (\"%s\",%s)", i.getIRI(), ind));
+					continue;
+				}
+				result = details == null ? new SyntaxConstraintRun(testCase, resultType, constraint, runner) : new SyntaxConstraintRun(testCase, resultType, constraint, runner, details);
+			}
+			else if (types.contains(CONSISTENCY_RUN.getOWLClass()))
+				result = details == null ? new ReasoningRun(testCase, resultType, CONSISTENCY, runner) : new ReasoningRun(testCase, resultType, CONSISTENCY, runner, details);
+			else if (types.contains(INCONSISTENCY_RUN.getOWLClass()))
+				result = details == null ? new ReasoningRun(testCase, resultType, INCONSISTENCY, runner) : new ReasoningRun(testCase, resultType, INCONSISTENCY, runner, details);
+			else if (types.contains(NEGATIVE_ENTAILMENT_RUN.getOWLClass()))
+				result = details == null ? new ReasoningRun(testCase, resultType, NEGATIVE_ENTAILMENT, runner) : new ReasoningRun(testCase, resultType, NEGATIVE_ENTAILMENT, runner, details);
+			else if (types.contains(POSITIVE_ENTAILMENT_RUN.getOWLClass()))
+				result = details == null ? new ReasoningRun(testCase, resultType, POSITIVE_ENTAILMENT, runner) : new ReasoningRun(testCase, resultType, POSITIVE_ENTAILMENT, runner, details);
 
 			results.add(result);
 		}

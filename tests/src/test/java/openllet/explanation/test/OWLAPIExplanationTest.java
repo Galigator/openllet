@@ -58,16 +58,16 @@ import org.semanticweb.owlapi.model.SWRLRule;
 @RunWith(Parameterized.class)
 public class OWLAPIExplanationTest extends AbstractExplanationTest
 {
-	private static final Logger _logger = Log.getLogger(JenaExplanationTest.class);
+	private static final Logger			_logger		= Log.getLogger(JenaExplanationTest.class);
 
-	private OpenlletReasoner _reasoner;
-	private final boolean _useGlassBox;
+	private OpenlletReasoner			_reasoner;
+	private final boolean				_useGlassBox;
 
-	private SatisfiabilityConverter _converter;
-	private ConciseExplanationRenderer _renderer;
-	private HSTExplanationGenerator _expGen;
+	private SatisfiabilityConverter		_converter;
+	private ConciseExplanationRenderer	_renderer;
+	private HSTExplanationGenerator		_expGen;
 
-	private int axiomCount = 0;
+	private int							axiomCount	= 0;
 
 	@Parameters
 	public static Collection<Object[]> getParameters()
@@ -99,19 +99,18 @@ public class OWLAPIExplanationTest extends AbstractExplanationTest
 	{
 		super.after();
 
-		if (_expGen != null)
-			if (_useGlassBox)
-			{
-				final GlassBoxExplanation gbe = (GlassBoxExplanation) _expGen.getSingleExplanationGenerator();
-				gbe.dispose();
-				_reasoner.dispose();
-			}
-			else
-			{
-				final BlackBoxExplanation bbe = (BlackBoxExplanation) _expGen.getSingleExplanationGenerator();
-				_reasoner.getManager().removeOntologyChangeListener(bbe.getDefinitionTracker());
-				bbe.dispose();
-			}
+		if (_expGen != null) if (_useGlassBox)
+		{
+			final GlassBoxExplanation gbe = (GlassBoxExplanation) _expGen.getSingleExplanationGenerator();
+			gbe.dispose();
+			_reasoner.dispose();
+		}
+		else
+		{
+			final BlackBoxExplanation bbe = (BlackBoxExplanation) _expGen.getSingleExplanationGenerator();
+			_reasoner.getManager().removeOntologyChangeListener(bbe.getDefinitionTracker());
+			bbe.dispose();
+		}
 	}
 
 	@Override
@@ -170,8 +169,8 @@ public class OWLAPIExplanationTest extends AbstractExplanationTest
 
 	final class Explanation implements Comparable<Explanation> // TODO : expose this class in interface.
 	{
-		private final Set<OWLAxiom> _base;
-		private transient String _representation = null; // java.util.Optional ?
+		private final Set<OWLAxiom>	_base;
+		private transient String	_representation	= null;	// java.util.Optional ?
 
 		public String getRepresentation()
 		{
@@ -238,8 +237,7 @@ public class OWLAPIExplanationTest extends AbstractExplanationTest
 	{
 		final OWLClassExpression unsatClass = _converter.convert(axiom);
 
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Axiom " + (++axiomCount) + ": " + axiom + " Expecting " + expectedExplanationsUnordered.size() + " explanations");
+		if (_logger.isLoggable(Level.FINE)) _logger.fine("Axiom " + (++axiomCount) + ": " + axiom + " Expecting " + expectedExplanationsUnordered.size() + " explanations");
 
 		final Set<Set<OWLAxiom>> generatedExplanationsUnordered = _expGen.getExplanations(unsatClass, max);
 

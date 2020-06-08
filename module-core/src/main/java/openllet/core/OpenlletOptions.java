@@ -57,7 +57,7 @@ import openllet.shared.tools.Log;
  */
 public class OpenlletOptions
 {
-	public final static Logger _logger = Log.getLogger(OpenlletOptions.class);
+	public final static Logger				_logger										= Log.getLogger(OpenlletOptions.class);
 
 	/**
 	 * When this option is set completion will go on even if a clash is detected until the completion graph is saturated. Turning this option has very severe
@@ -65,20 +65,20 @@ public class OpenlletOptions
 	 * <p>
 	 * <b>*********** DO NOT CHANGE THE VALUE OF THIS OPTION **************</b>
 	 */
-	public static boolean SATURATE_TABLEAU = false;
+	public static boolean					SATURATE_TABLEAU							= false;
 
 	/**
 	 * This option tells Pellet to treat every _individual with a distinct URI to be different from each other. This is against the semantics of OWL but is much
 	 * more efficient than adding an <code><owl:AllDifferent></code> definition with all the individuals. This option does not affect b-_nodes, they can still
 	 * be inferred to be same.
 	 */
-	public static boolean USE_UNIQUE_NAME_ASSUMPTION = false;
+	public static boolean					USE_UNIQUE_NAME_ASSUMPTION					= false;
 
 	/**
 	 * Track the association betweens _nodes changed and _branch. Reduces the work done during restoration (and during some incremental reasoning changes), at
 	 * the cost of memory overhead necessary for tracking.
 	 */
-	public static boolean TRACK_BRANCH_EFFECTS = false;
+	public static boolean					TRACK_BRANCH_EFFECTS						= false;
 
 	/**
 	 * According to SPARQL semantics all variables are distinguished by definition and bnodes in the query are non-distinguished variables. This option
@@ -86,74 +86,74 @@ public class OpenlletOptions
 	 * individuals or existing bnodes in the dataset but not to inferred individuals (e.g. an _individual whose existence is inferred due to an
 	 * <code>owl:someValuesFrom</code> restriction)
 	 */
-	public static boolean TREAT_ALL_VARS_DISTINGUISHED = true;
+	public static boolean					TREAT_ALL_VARS_DISTINGUISHED				= true;
 
 	/**
 	 * Sort the disjuncts based on the statistics
 	 */
-	public static boolean USE_DISJUNCT_SORTING = true && !SATURATE_TABLEAU;
+	public static boolean					USE_DISJUNCT_SORTING						= true && !SATURATE_TABLEAU;
 
-	public static MonitorType USE_CLASSIFICATION_MONITOR = MonitorType.CONSOLE;
+	public static MonitorType				USE_CLASSIFICATION_MONITOR					= MonitorType.CONSOLE;
 
-	public static final String NO_SORTING = "NO";
-	public static final String OLDEST_FIRST = "OLDEST_FIRST";
-	public static String USE_DISJUNCTION_SORTING = OLDEST_FIRST;
+	public static final String				NO_SORTING									= "NO";
+	public static final String				OLDEST_FIRST								= "OLDEST_FIRST";
+	public static String					USE_DISJUNCTION_SORTING						= OLDEST_FIRST;
 
 	/**
 	 * TBox absorption will be used to move some of the General Inclusion Axioms (GCI) from Tg to Tu.
 	 */
-	public static boolean USE_ABSORPTION = true;
+	public static boolean					USE_ABSORPTION								= true;
 
 	/**
 	 * If <code>EXCEPTION</code> an exception is thrown when the reasoner encounters an undefined (and unsupported) datatype. If <code>EMPTY</code> it is
 	 * treated as an empty datatype and has no valid lexical forms. If <code>INFINITE</code> it is treated as an infinite datatype and all lexical forms are
 	 * valid and in which equality and identity is based on lexical form.
 	 */
-	public static UndefinedDatatypeHandling UNDEFINED_DATATYPE_HANDLING = UndefinedDatatypeHandling.INFINITE_STRING;
+	public static UndefinedDatatypeHandling	UNDEFINED_DATATYPE_HANDLING					= UndefinedDatatypeHandling.INFINITE_STRING;
 
 	/**
 	 * Absorb TBox axioms into domain/range restrictions in RBox
 	 */
-	public static boolean USE_ROLE_ABSORPTION = true;
+	public static boolean					USE_ROLE_ABSORPTION							= true;
 
 	/**
 	 * Absorb TBox axioms about nominals into ABox assertions
 	 */
-	public static boolean USE_NOMINAL_ABSORPTION = true;
+	public static boolean					USE_NOMINAL_ABSORPTION						= true;
 
-	public static boolean USE_HASVALUE_ABSORPTION = true;
+	public static boolean					USE_HASVALUE_ABSORPTION						= true;
 
-	public static boolean USE_RULE_ABSORPTION = false;
+	public static boolean					USE_RULE_ABSORPTION							= false;
 
-	public static boolean USE_BINARY_ABSORPTION = true;
+	public static boolean					USE_BINARY_ABSORPTION						= true;
 
 	/**
 	 * Use dependency directed backjumping
 	 */
-	public static boolean USE_BACKJUMPING = !SATURATE_TABLEAU & true;
+	public static boolean					USE_BACKJUMPING								= !SATURATE_TABLEAU & true;
 
 	/**
 	 * Check the cardinality restrictions on datatype properties and handle inverse functional datatype properties
 	 */
-	public static boolean USE_FULL_DATATYPE_REASONING = true;
+	public static boolean					USE_FULL_DATATYPE_REASONING					= true;
 
 	/**
 	 * Cache the pseudo models for named classes and individuals.
 	 */
-	public static boolean USE_CACHING = true;
+	public static boolean					USE_CACHING									= true;
 
 	/**
 	 * Cache the pseudo models for anonymous classes. Used inside EmptySHNStrategy to prevent the expansion of completion graph _nodes whose satisfiability
 	 * status is already cached.
 	 */
-	public static boolean USE_ADVANCED_CACHING = true;
+	public static boolean					USE_ADVANCED_CACHING						= true;
 
 	/**
 	 * Cache the pseudo models for anonymous classes when inverses are present. This can improve reasoning performance but will introduce memory overhead.
 	 */
-	public static boolean USE_INVERSE_CACHING = true;
+	public static boolean					USE_INVERSE_CACHING							= true;
 
-	public static boolean USE_ANYWHERE_BLOCKING = true;
+	public static boolean					USE_ANYWHERE_BLOCKING						= true;
 
 	/**
 	 * The maximum number of cached pseudo models for anonymous classes. The named concepts (and their negations) are always cached regardless of this limit.
@@ -161,58 +161,58 @@ public class OpenlletOptions
 	 * anonymous classes the subsequent additions will be handled specially (default behavior is to remove the Least Recently Used (LRU) element from _cache).
 	 * Setting this value too high will increase the memory requirements and setting it too low will slow down the reasoning process.
 	 */
-	public static int MAX_ANONYMOUS_CACHE = 20000;
+	public static int						MAX_ANONYMOUS_CACHE							= 20000;
 
 	/**
 	 * To decide if _individual <code>i</code> has type class <code>_c</code> check if the edges from cached model of <code>_c</code> to nominal _nodes also
 	 * exists for the cached model of <code>i</code>.
 	 */
-	public static boolean CHECK_NOMINAL_EDGES = true;
+	public static boolean					CHECK_NOMINAL_EDGES							= true;
 
 	/**
 	 * Treat nominals (classes defined by enumeration) as named atomic concepts rather than _individual names. Turning this option improves the performance but
 	 * soundness and completeness cannot be established.
 	 */
-	public static boolean USE_PSEUDO_NOMINALS = false;
+	public static boolean					USE_PSEUDO_NOMINALS							= false;
 
 	/**
 	 * This option is mainly used for debugging and causes the reasoner to ignore all inverse properties including inverseOf, InverseFunctionalProperty and
 	 * SymmetricProperty definitions.
 	 */
-	public static boolean IGNORE_INVERSES = false;
+	public static boolean					IGNORE_INVERSES								= false;
 
 	/**
 	 * Dynamically find the best completion _strategy for the KB. If disabled SROIQ _strategy will be used for all the ontologies.
 	 */
-	public static boolean USE_COMPLETION_STRATEGY = !SATURATE_TABLEAU & true;
+	public static boolean					USE_COMPLETION_STRATEGY						= !SATURATE_TABLEAU & true;
 
 	/**
 	 * Use continuous rete execution for applying rules.
 	 */
-	public static boolean USE_CONTINUOUS_RULES = true;
+	public static boolean					USE_CONTINUOUS_RULES						= true;
 
 	/**
 	 * Always rebuild rete (no incremental update)
 	 */
-	public static boolean ALWAYS_REBUILD_RETE = false;
+	public static boolean					ALWAYS_REBUILD_RETE							= false;
 
 	/**
 	 * Use semantic branching, i.e. add the negation of a disjunct when the next _branch is being tried
 	 */
-	public static boolean USE_SEMANTIC_BRANCHING = !SATURATE_TABLEAU & true;
+	public static boolean					USE_SEMANTIC_BRANCHING						= !SATURATE_TABLEAU & true;
 
 	/**
 	 * When doing a satisfiability check for a concept, do not copy the individuals even if there are nominals in the KB until you hit a nominal rule
 	 * application.
 	 */
-	public static boolean COPY_ON_WRITE = true;
+	public static boolean					COPY_ON_WRITE								= true;
 
 	/**
 	 * Control the behavior if a function such as kb.getInstances(), kb.getTypes(), kb.getPropertyValues() is called with a parameter that is an undefined
 	 * class, property or _individual. If this option is set to false then an exception is thrown each time this occurs, if true set the corresponding function
 	 * returns a false value (or an empty set where appropriate).
 	 */
-	public static boolean SILENT_UNDEFINED_ENTITY_HANDLING = true;
+	public static boolean					SILENT_UNDEFINED_ENTITY_HANDLING			= true;
 
 	/**
 	 * Control the realization _strategy where we loop over individuals or concepts. When this flag is set we loop over each _individual and find the most
@@ -220,45 +220,45 @@ public class OpenlletOptions
 	 * the instances. Then any _individual that is also an instance of a subclass is removed. Both techniques have advantages and disadvantages. Best
 	 * performance depends on the ontology characteristics.
 	 */
-	public static boolean REALIZE_INDIVIDUAL_AT_A_TIME = false;
+	public static boolean					REALIZE_INDIVIDUAL_AT_A_TIME				= false;
 
 	/**
 	 * When this options is set, all the individuals in the KB are realized automatically when the types for one _individual is retrieved. This might be quite
 	 * costly when there are a large number of individuals and might be wasted computation if the KB is changed frequently.
 	 */
-	public static boolean AUTO_REALIZE = true;
+	public static boolean					AUTO_REALIZE								= true;
 
 	/**
 	 * Validate ABox structure during completion (Should be used only for debugging purposes).
 	 */
-	public static boolean VALIDATE_ABOX = false;
+	public static boolean					VALIDATE_ABOX								= false;
 
 	/**
 	 * Print completion graph after each iteration (Should be used only for debugging purposes).
 	 */
-	public static boolean PRINT_ABOX = false;
+	public static boolean					PRINT_ABOX									= false;
 
-	public static final boolean DEPTH_FIRST = true;
+	public static final boolean				DEPTH_FIRST									= true;
 
 	/**
 	 * Keep ABox assertions in the KB so they can be accessed later. Currently not used by the reasoner but could be useful for outside applications.
 	 */
-	public static boolean KEEP_ABOX_ASSERTIONS = false;
+	public static boolean					KEEP_ABOX_ASSERTIONS						= false;
 
-	public static boolean SEARCH_TYPE = DEPTH_FIRST;
+	public static boolean					SEARCH_TYPE									= DEPTH_FIRST;
 
-	public static InstanceRetrievalMethod INSTANCE_RETRIEVAL = InstanceRetrievalMethod.BINARY;
+	public static InstanceRetrievalMethod	INSTANCE_RETRIEVAL							= InstanceRetrievalMethod.BINARY;
 
 	/**
 	 * If <code>true</code> invalid literals cause inconsistencies. If <code>false</code> they cause exceptions to be generated.
 	 */
-	public static boolean INVALID_LITERAL_AS_INCONSISTENCY = true;
+	public static boolean					INVALID_LITERAL_AS_INCONSISTENCY			= true;
 
 	/**
 	 * When this option is set the query engine for distinguished variables uses taxonomies to prune downmonotonic variables in subClassOf and subPropertyOf
 	 * atoms.
 	 */
-	public static boolean OPTIMIZE_DOWN_MONOTONIC = false;
+	public static boolean					OPTIMIZE_DOWN_MONOTONIC						= false;
 
 	/**
 	 * Remove query atoms that are trivially entailed by other atoms. For example, the query <blockquote>
@@ -266,50 +266,50 @@ public class OpenlletOptions
 	 * <code>query(x, y) :- worksAt(x, y)</code> </blockquote> if the domain of <code>worksAt</code> is <code>Person</code> and the range is
 	 * <code>Organization</code>.
 	 */
-	public static boolean SIMPLIFY_QUERY = true;
+	public static boolean					SIMPLIFY_QUERY								= true;
 
 	/**
 	 * The ratio of individuals that will be inspected while generating the size estimate. The query reordering optimization uses size estimates for classes and
 	 * properties to estimate the cost of a certain query ordering. The size estimates are computed by random sampling. Increasing the sampling ratio yields
 	 * more accurate results but is very costly for large ABoxes.
 	 */
-	public static double SAMPLING_RATIO = 0.2;
+	public static double					SAMPLING_RATIO								= 0.2;
 
 	/**
 	 * The number of query atoms in a query that will trigger the switch from static query reordering to dynamic (incremental) query reordering.
 	 */
-	public static int STATIC_REORDERING_LIMIT = 8;
+	public static int						STATIC_REORDERING_LIMIT						= 8;
 
 	/**
 	 * This option controls if the size estimates for all the classes and properties in a KB will be computed fully when the PelletQueryExecution object is
 	 * created.
 	 */
-	public static boolean FULL_SIZE_ESTIMATE = false;
+	public static boolean					FULL_SIZE_ESTIMATE							= false;
 
-	public static boolean CACHE_RETRIEVAL = false;
+	public static boolean					CACHE_RETRIEVAL								= false;
 
-	public static boolean USE_TRACING = false;
+	public static boolean					USE_TRACING									= false;
 
-	public static String DEFAULT_CONFIGURATION_FILE = "openllet.properties";
+	public static String					DEFAULT_CONFIGURATION_FILE					= "openllet.properties";
 
 	/**
 	 * With this option all triples that contains an unrecognized term from RDF, RDF-S, OWL, OWL 2, or XSD namespaces will be ignored.
 	 */
-	public static boolean FREEZE_BUILTIN_NAMESPACES = true;
+	public static boolean					FREEZE_BUILTIN_NAMESPACES					= true;
 
 	/**
 	 * This option causes all classes and properties defined as deprecated (using <code>owl:DeprecetedClass</code> or <code>owl:DeprecetedProperty</code>) to be
 	 * ignored. If turned off, these will be treated as ordinary classes and properties. Note that, even if this option is turned on deprecated entities used in
 	 * ordinary axioms will be added to the KB.
 	 */
-	public static boolean IGNORE_DEPRECATED_TERMS = true;
+	public static boolean					IGNORE_DEPRECATED_TERMS						= true;
 
 	/**
 	 * This option controls the behavior of Pellet while an ontology is being loaded. Some axioms, e.g. cardinality restrictions on transitive properties, is
 	 * not supported by Pellet. If an axiom is used in the input ontology Pellet can just ignore that axiom (and print a warning) or simply throw an exception
 	 * at the time that axiom is added to the KB. Default behavior is to ignore unsupported axioms.
 	 */
-	public static boolean IGNORE_UNSUPPORTED_AXIOMS = true;
+	public static boolean					IGNORE_UNSUPPORTED_AXIOMS					= true;
 
 	/**
 	 * This option tells the reasoner to enable support for DL-safe rules (encoded in SWRL). If the value is set to ture then the rules will be taken into
@@ -317,7 +317,7 @@ public class OpenlletOptions
 	 * BuiltinAtom is not supported. The behavior for what happens when rules containing such atoms is controlled by the {@link #IGNORE_UNSUPPORTED_AXIOMS}
 	 * option, e.g. such rules can be ignored or reasoner can throw an exception.
 	 */
-	public static boolean DL_SAFE_RULES = true;
+	public static boolean					DL_SAFE_RULES								= true;
 
 	/**
 	 * This option controls the behavior of <code>PelletInfGraph.getDeductionsGraph()</code> function affecting in turn how
@@ -332,41 +332,41 @@ public class OpenlletOptions
 	 *             Model.listStatements() can be used to retrieve all the asserted and inferred statements.
 	 */
 	@Deprecated
-	public static boolean RETURN_DEDUCTIONS_GRAPH = false;
+	public static boolean					RETURN_DEDUCTIONS_GRAPH						= false;
 
 	/**
 	 * If ask equivalence between property, Inverse(property) may be return.
 	 */
-	public static boolean RETURN_NON_PRIMITIVE_EQUIVALENT_PROPERTIES = true;
+	public static boolean					RETURN_NON_PRIMITIVE_EQUIVALENT_PROPERTIES	= true;
 
 	/**
 	 * Flag set if the completion queue should be utilized. This optimization will introduce memory overhead but will (in some cases) dramatically reduce
 	 * reasoning time. Rather than iterating over all individuals during the completion _strategy, only those which need to have the rules fired are selected
 	 * for rule applications.
 	 */
-	public static boolean USE_COMPLETION_QUEUE = false;
+	public static boolean					USE_COMPLETION_QUEUE						= false;
 
 	/**
 	 * Flag set if the optimized basic completion _queue should be used. The difference between the basic completion _queue is that it maintains queues of
 	 * individuals for each rule type. In contrast the basic completion queue simply one list of individuals which all rules iterate over
 	 */
-	public static boolean USE_OPTIMIZED_BASIC_COMPLETION_QUEUE = USE_COMPLETION_QUEUE && false;
+	public static boolean					USE_OPTIMIZED_BASIC_COMPLETION_QUEUE		= USE_COMPLETION_QUEUE && false;
 
 	/**
 	 * During backjumping use dependency set information to restore _node labels rather than restoring the label exactly to the previous state.
 	 */
-	public static boolean USE_SMART_RESTORE = true;
+	public static boolean					USE_SMART_RESTORE							= true;
 
 	/**
 	 * Flag set if incremental consistency checking should be used. Currently it can only be used on KBs with SHIQ or SHOQ expressivity
 	 */
-	public static boolean USE_INCREMENTAL_CONSISTENCY = USE_COMPLETION_QUEUE && false;
+	public static boolean					USE_INCREMENTAL_CONSISTENCY					= USE_COMPLETION_QUEUE && false;
 
 	/**
 	 * Flag set if incremental support for deletions should be used. Currently it can only be used on KBs with SHIQ or SHOQ expressivity. This flag is used as
 	 * incremental deletions introduces memory overhead, which may not be suitable for some KBs
 	 */
-	public static boolean USE_INCREMENTAL_DELETION = USE_INCREMENTAL_CONSISTENCY && USE_TRACING && false;
+	public static boolean					USE_INCREMENTAL_DELETION					= USE_INCREMENTAL_CONSISTENCY && USE_TRACING && false;
 
 	/**
 	 * Flag if the completion _queue should be maintained through incremental deletions. It can be the case that a removal of a syntactic assertion will require
@@ -376,21 +376,21 @@ public class OpenlletOptions
 	 * <p>
 	 * <b>*********** DO NOT CHANGE THE VALUE OF THIS OPTION **************</b>
 	 */
-	public static boolean MAINTAIN_COMPLETION_QUEUE = USE_TRACING && USE_COMPLETION_QUEUE && false;
+	public static boolean					MAINTAIN_COMPLETION_QUEUE					= USE_TRACING && USE_COMPLETION_QUEUE && false;
 
 	/**
 	 * Use (if applicable) special optimization for completely defined (CD) concepts during classification.
 	 */
-	public static boolean USE_CD_CLASSIFICATION = true;
+	public static boolean					USE_CD_CLASSIFICATION						= true;
 
 	@Deprecated
-	public static boolean USE_NAIVE_QUERY_ENGINE = false;
+	public static boolean					USE_NAIVE_QUERY_ENGINE						= false;
 
 	/**
 	 * Activate annotation support in Pellet. If this variable is true, Ontology annotations are stored to the KB and they can be retrieved, either by querying
 	 * the KB or using the query engines.
 	 */
-	public static boolean USE_ANNOTATION_SUPPORT = false;
+	public static boolean					USE_ANNOTATION_SUPPORT						= false;
 
 	/**
 	 * Do not include owl:topObjectProperty and owl:topDataProperty values when retrieving the property values for an _individual. Even tough such values are
@@ -398,9 +398,9 @@ public class OpenlletOptions
 	 * queries (asking whether a towl:topObjectProperty b is entailed will still return true) or property queries (sub and super property queries will include
 	 * top properties).
 	 */
-	public static boolean HIDE_TOP_PROPERTY_VALUES = true;
+	public static boolean					HIDE_TOP_PROPERTY_VALUES					= true;
 
-	public static boolean USE_LEGACY_TBOX = true;
+	public static boolean					USE_LEGACY_TBOX								= true;
 
 	/**
 	 * Classifier orders classes based on their usage to guarantee the correctness of the classification results. In certain cases, there might be no semantic
@@ -408,14 +408,14 @@ public class OpenlletOptions
 	 * This option ensures that the reasoner will use same ordering at every run. Disabling this option means the classifier will break ties randomly which
 	 * might result in different classification times.
 	 */
-	public static OrderedClassification ORDERED_CLASSIFICATION = OrderedClassification.ENABLED;
+	public static OrderedClassification		ORDERED_CLASSIFICATION						= OrderedClassification.ENABLED;
 
 	/**
 	 * Do not use EL Classifier, even if the ontology is EL
 	 */
-	public static boolean DISABLE_EL_CLASSIFIER = false;
+	public static boolean					DISABLE_EL_CLASSIFIER						= false;
 
-	public static boolean PROCESS_JENA_UPDATES_INCREMENTALLY = true;
+	public static boolean					PROCESS_JENA_UPDATES_INCREMENTALLY			= true;
 
 	/**
 	 * In some ontologies, such as the ones from OBO, annotations may be nested and contain type assertions on annotation values. Such type assertions will be
@@ -423,9 +423,9 @@ public class OpenlletOptions
 	 * have significant impact on performance. This options tells Pellet to ignore such annotations. The set of URIs that will be treated as annotation classes
 	 * are defined in {@link AnnotationClasses} and has to be programmatically modified. Annotation classes from OBO are included by default.
 	 */
-	public static boolean IGNORE_ANNOTATION_CLASSES = true;
+	public static boolean					IGNORE_ANNOTATION_CLASSES					= true;
 
-	public static boolean USE_THREADED_KERNEL = false;
+	public static boolean					USE_THREADED_KERNEL							= false;
 
 	static
 	{
@@ -452,28 +452,26 @@ public class OpenlletOptions
 				url = OpenlletOptions.class.getClassLoader().getResource(configFile);
 			}
 
-			if (url == null)
-				_logger.severe("Cannot file Openllet configuration file " + configFile);
+			if (url == null) _logger.severe("Cannot file Openllet configuration file " + configFile);
 		}
 
-		if (url != null)
-			try
-			{
-				load(url);
-			}
-			catch (final FileNotFoundException e)
-			{
-				Log.error(_logger, "Openllet configuration file cannot be found", e);
-			}
-			catch (final IOException e)
-			{
-				Log.error(_logger, "I/O error while reading Openllet configuration file", e);
-			}
+		if (url != null) try
+		{
+			load(url);
+		}
+		catch (final FileNotFoundException e)
+		{
+			Log.error(_logger, "Openllet configuration file cannot be found", e);
+		}
+		catch (final IOException e)
+		{
+			Log.error(_logger, "I/O error while reading Openllet configuration file", e);
+		}
 	}
 
 	private interface EnumFactory<T>
 	{
-		public T create();
+		T create();
 	}
 
 	public enum MonitorType implements EnumFactory<ProgressMonitor>
@@ -523,8 +521,8 @@ public class OpenlletOptions
 	/**
 	 * Sets the Pellet configuration options and returns the old values for the options.
 	 *
-	 * @param newOptions the new values for configuration options
-	 * @return the old properties.
+	 * @param  newOptions the new values for configuration options
+	 * @return            the old properties.
 	 */
 	public static Properties setOptions(final Properties newOptions)
 	{
@@ -643,8 +641,7 @@ public class OpenlletOptions
 
 	private static boolean getBooleanProperty(final Properties properties, final String property, final boolean defaultValue, final Properties defaultValues)
 	{
-		if (null == properties)
-			return defaultValue;
+		if (null == properties) return defaultValue;
 
 		defaultValues.setProperty(property, String.valueOf(defaultValue));
 		String value = properties.getProperty(property);
@@ -655,11 +652,10 @@ public class OpenlletOptions
 			value = value.trim();
 			if ("true".equalsIgnoreCase(value))
 				returnValue = true;
+			else if ("false".equalsIgnoreCase(value))
+				returnValue = false;
 			else
-				if ("false".equalsIgnoreCase(value))
-					returnValue = false;
-				else
-					_logger.severe("Ignoring invalid value (" + value + ") for the configuration option " + property);
+				_logger.severe("Ignoring invalid value (" + value + ") for the configuration option " + property);
 		}
 
 		properties.setProperty(property, String.valueOf(returnValue));
@@ -669,22 +665,20 @@ public class OpenlletOptions
 
 	private static double getDoubleProperty(final Properties properties, final String property, final double defaultValue, final Properties defaultValues)
 	{
-		if (null == properties)
-			return defaultValue;
+		if (null == properties) return defaultValue;
 
 		defaultValues.setProperty(property, String.valueOf(defaultValue));
 		final String value = properties.getProperty(property);
 		double doubleValue = defaultValue;
 
-		if (value != null)
-			try
-			{
-				doubleValue = Double.parseDouble(value);
-			}
-			catch (final NumberFormatException e)
-			{
-				Log.error(_logger, "Ignoring invalid double value (" + value + ") for the configuration option " + property, e);
-			}
+		if (value != null) try
+		{
+			doubleValue = Double.parseDouble(value);
+		}
+		catch (final NumberFormatException e)
+		{
+			Log.error(_logger, "Ignoring invalid double value (" + value + ") for the configuration option " + property, e);
+		}
 
 		properties.setProperty(property, String.valueOf(doubleValue));
 
@@ -693,22 +687,20 @@ public class OpenlletOptions
 
 	private static int getIntProperty(final Properties properties, final String property, final int defaultValue, final Properties defaultValues)
 	{
-		if (null == properties)
-			return defaultValue;
+		if (null == properties) return defaultValue;
 
 		defaultValues.setProperty(property, String.valueOf(defaultValue));
 		final String value = properties.getProperty(property);
 		int intValue = defaultValue;
 
-		if (value != null)
-			try
-			{
-				intValue = Integer.parseInt(value);
-			}
-			catch (final NumberFormatException e)
-			{
-				Log.error(_logger, "Ignoring invalid int value (" + value + ") for the configuration option " + property, e);
-			}
+		if (value != null) try
+		{
+			intValue = Integer.parseInt(value);
+		}
+		catch (final NumberFormatException e)
+		{
+			Log.error(_logger, "Ignoring invalid int value (" + value + ") for the configuration option " + property, e);
+		}
 
 		properties.setProperty(property, String.valueOf(intValue));
 
@@ -717,8 +709,7 @@ public class OpenlletOptions
 
 	private static <T extends Enum<T>> T getEnumProperty(final Properties properties, final String property, final T defaultValue, final Properties defaultValues)
 	{
-		if (null == properties)
-			return defaultValue;
+		if (null == properties) return defaultValue;
 
 		defaultValues.setProperty(property, String.valueOf(defaultValue));
 		String value = properties.getProperty(property);

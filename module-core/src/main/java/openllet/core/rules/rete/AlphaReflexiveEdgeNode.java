@@ -67,7 +67,8 @@ public class AlphaReflexiveEdgeNode extends AlphaEdgeNode
 	@Override
 	public boolean matches(final RuleAtom atom)
 	{
-		return ((atom instanceof IndividualPropertyAtom) || (atom instanceof DatavaluedPropertyAtom)) && atom.getPredicate().equals(_role.getName()) && ((BinaryAtom<?, ?, ?>) atom).getArgument1() instanceof AtomVariable && ((BinaryAtom<?, ?, ?>) atom).getArgument2().equals(((BinaryAtom<?, ?, ?>) atom).getArgument1());
+		return (atom instanceof IndividualPropertyAtom || atom instanceof DatavaluedPropertyAtom) && atom.getPredicate().equals(_role.getName())
+				&& ((BinaryAtom<?, ?, ?>) atom).getArgument1() instanceof AtomVariable && ((BinaryAtom<?, ?, ?>) atom).getArgument2().equals(((BinaryAtom<?, ?, ?>) atom).getArgument1());
 	}
 
 	@Override

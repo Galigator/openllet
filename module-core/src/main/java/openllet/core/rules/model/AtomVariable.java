@@ -42,10 +42,8 @@ public abstract class AtomVariable implements AtomObject
 	@Override
 	public boolean equals(final Object other)
 	{
-		if (this == other)
-			return true;
-		if (!(other instanceof AtomVariable))
-			return false;
+		if (this == other) return true;
+		if (!(other instanceof AtomVariable)) return false;
 		return getName().equals(((AtomVariable) other).getName());
 	}
 

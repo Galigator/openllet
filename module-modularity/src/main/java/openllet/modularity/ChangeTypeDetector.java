@@ -13,8 +13,8 @@ public class ChangeTypeDetector
 	/**
 	 * Checks whether the given OWLAxiom is a TBox axiom
 	 *
-	 * @param axiom the axiom to be checked
-	 * @return true if the axiom is a TBox axiom
+	 * @param  axiom the axiom to be checked
+	 * @return       true if the axiom is a TBox axiom
 	 */
 	public static boolean isTBoxAxiom(final OWLAxiom axiom)
 	{
@@ -24,8 +24,8 @@ public class ChangeTypeDetector
 	/**
 	 * Checks whether the given OWLAxiom is a RBox axiom
 	 *
-	 * @param axiom the axiom to be checked
-	 * @return true if the axiom is a RBox axiom
+	 * @param  axiom the axiom to be checked
+	 * @return       true if the axiom is a RBox axiom
 	 */
 	public static boolean isRBoxAxiom(final OWLAxiom axiom)
 	{
@@ -35,8 +35,8 @@ public class ChangeTypeDetector
 	/**
 	 * Checks whether the given OWLAxiom is a ABox axiom
 	 *
-	 * @param axiom the axiom to be checked
-	 * @return true if the axiom is a ABox axiom
+	 * @param  axiom the axiom to be checked
+	 * @return       true if the axiom is a ABox axiom
 	 */
 	public static boolean isABoxAxiom(final OWLAxiom axiom)
 	{

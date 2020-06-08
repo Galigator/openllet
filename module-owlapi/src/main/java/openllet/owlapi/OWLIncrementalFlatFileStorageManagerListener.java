@@ -59,32 +59,32 @@ import uk.ac.manchester.cs.owl.owlapi.OWLImportsDeclarationImpl;
  */
 public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntologyChangeListener
 {
-	private static final Logger _logger = Log.getLogger(OWLIncrementalFlatFileStorageManagerListener.class);
+	private static final Logger									_logger				= Log.getLogger(OWLIncrementalFlatFileStorageManagerListener.class);
 
-	public static final int _flushTimeInMinute = 1;
-	public static final byte[] _lineSeparator = "\n".getBytes();
+	public static final int										_flushTimeInMinute	= 1;
+	public static final byte[]									_lineSeparator		= "\n".getBytes();
 
-	private final File _delta;
-	private final File _directory;
-	private final ScheduledThreadPoolExecutor _timer = new ScheduledThreadPoolExecutor(1);
-	private final Set<OWLOntologyID> _changed = SetUtils.create();
-	private final Map<OWLOntologyID, OWLFunctionalSyntaxParser> _parsers = new ConcurrentHashMap<>();
-	private final OWLManagerGroup _owlManagerGroup;
-	private final Lock _sequential = new ReentrantLock();
-	private volatile Optional<OutputStream> _deltaStream = Optional.empty();
-	private volatile ScheduledFuture<?> _future;
+	private final File											_delta;
+	private final File											_directory;
+	private final ScheduledThreadPoolExecutor					_timer				= new ScheduledThreadPoolExecutor(1);
+	private final Set<OWLOntologyID>							_changed			= SetUtils.create();
+	private final Map<OWLOntologyID, OWLFunctionalSyntaxParser>	_parsers			= new ConcurrentHashMap<>();
+	private final OWLManagerGroup								_owlManagerGroup;
+	private final Lock											_sequential			= new ReentrantLock();
+	private volatile Optional<OutputStream>						_deltaStream		= Optional.empty();
+	private volatile ScheduledFuture<?>							_future;
 
-	private final Runnable _task = () ->
-	{
-		try
-		{
-			flush();
-		}
-		catch (final Exception e)
-		{
-			Log.error(_logger, e);
-		}
-	};
+	private final Runnable										_task				= () ->
+																					{
+																						try
+																						{
+																							flush();
+																						}
+																						catch (final Exception e)
+																						{
+																							Log.error(_logger, e);
+																						}
+																					};
 
 	public OWLIncrementalFlatFileStorageManagerListener(final File directory, final File log, final OWLManagerGroup owlManagerGroup) throws OWLOntologyCreationException
 	{
@@ -109,10 +109,6 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 
 	/**
 	 * Save the ontology with there current state, so the log can be empty at that moment.
-	 *
-	 * @throws OWLOntologyStorageException when something bad append when storing an ontology.
-	 * @throws IOException when something bad append when storing an ontology.
-	 * @throws FileNotFoundException when something bad append when storing an ontology.
 	 */
 	public void flush()
 	{
@@ -150,7 +146,7 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 					{
 						final File old = new File(filenameOld);
 						if (!old.exists() || old.delete())
-							(new File(filenamePart)).renameTo(old);
+							new File(filenamePart).renameTo(old);
 						else
 							_logger.severe("Can't commit change of " + ontology.getOntologyID());
 					}
@@ -204,14 +200,13 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 
 		if (parts.length == 2)
 			return new OWLOntologyID(IRI.create(parts[0]), IRI.create(parts[1]));
+		else if (parts.length == 1)
+			return new OWLOntologyID(IRI.create(ontologyId));
 		else
-			if (parts.length == 1)
-				return new OWLOntologyID(IRI.create(ontologyId));
-			else
-			{
-				_logger.log(Level.SEVERE, "Malformed OntologyID " + ontologyId);
-				return null;
-			}
+		{
+			_logger.log(Level.SEVERE, "Malformed OntologyID " + ontologyId);
+			return null;
+		}
 	}
 
 	private static byte[] bytesOfChange(final OWLOntologyChange change)
@@ -224,20 +219,17 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 
 			return ToStringRenderer.getInstance().render(change.getAxiom()).getBytes();
 		}
+		else if (change instanceof AnnotationChange)
+			return ToStringRenderer.getInstance().render(((AnnotationChange) change).getAnnotation()).getBytes();
+		else if (change instanceof ImportChange)
+			return ((ImportChange) change).getImportDeclaration().getIRI().toString().getBytes();
+		else if (change instanceof SetOntologyID)
+			return bytesOfOntologyId(((SetOntologyID) change).getNewOntologyID());
 		else
-			if (change instanceof AnnotationChange)
-				return ToStringRenderer.getInstance().render(((AnnotationChange) change).getAnnotation()).getBytes();
-			else
-				if (change instanceof ImportChange)
-					return (((ImportChange) change).getImportDeclaration()).getIRI().toString().getBytes();
-				else
-					if (change instanceof SetOntologyID)
-						return bytesOfOntologyId(((SetOntologyID) change).getNewOntologyID());
-					else
-					{
-						_logger.severe("No bytes available for " + change);
-						return null;
-					}
+		{
+			_logger.severe("No bytes available for " + change);
+			return null;
+		}
 	}
 
 	@SuppressWarnings("resource") // resources are close when calling the 'close()' method, that why this class is auto-closable too
@@ -251,8 +243,7 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 				try
 				{
 					_sequential.lock();
-					if (!_deltaStream.isPresent())
-						_deltaStream = Optional.of(new FileOutputStream(_delta, true));
+					if (!_deltaStream.isPresent()) _deltaStream = Optional.of(new FileOutputStream(_delta, true));
 				}
 				finally
 				{
@@ -296,12 +287,12 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 
 	private class DeltaReader extends Reader implements Iterator<OWLOntologyChange>
 	{
-		private final OWLOntologyManager _manager = _owlManagerGroup.getPersistentManager();
-		private final BufferedReader _in;
+		private final OWLOntologyManager	_manager		= _owlManagerGroup.getPersistentManager();
+		private final BufferedReader		_in;
 
-		private volatile char[] _data;
-		private volatile int _localOffset = 0;
-		private volatile int _line = 0;
+		private volatile char[]				_data;
+		private volatile int				_localOffset	= 0;
+		private volatile int				_line			= 0;
 
 		public DeltaReader(final BufferedReader in)
 		{
@@ -315,16 +306,15 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 			{
 				parser = new OWLFunctionalSyntaxParser(this);
 				OWLOntology ontology = _manager.getOntology(ontId);
-				if (ontology == null)
-					try
-					{
-						_logger.info("Creation of " + ontId.getOntologyIRI());
-						ontology = new OWLGenericTools(_owlManagerGroup, ontId, false).getOntology();
-					}
-					catch (final OWLOntologyCreationException exception)
-					{
-						throw new OWLException("Ontology id lead to non existant ontology : " + ontId + ". And we can't create it.", exception);
-					}
+				if (ontology == null) try
+				{
+					_logger.info("Creation of " + ontId.getOntologyIRI());
+					ontology = new OWLGenericTools(_owlManagerGroup, ontId, false).getOntology();
+				}
+				catch (final OWLOntologyCreationException exception)
+				{
+					throw new OWLException("Ontology id lead to non existant ontology : " + ontId + ". And we can't create it.", exception);
+				}
 
 				parser.setUp(ontology, new OWLOntologyLoaderConfiguration());
 				_parsers.put(ontId, parser);
@@ -335,13 +325,12 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 		@Override
 		public int read(final char[] cbuf, final int off, final int len) throws IOException
 		{
-			if (_data == null)
-				return 0;
+			if (_data == null) return 0;
 
 			int i = _localOffset;
 			int j = off;
 			int wrote = 0;
-			for (; (j < cbuf.length) && wrote < len && i < _data.length; i++, j++, wrote++)
+			for (; j < cbuf.length && wrote < len && i < _data.length; i++, j++, wrote++)
 				cbuf[j] = _data[i];
 
 			_localOffset = i;
@@ -383,7 +372,7 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 			}
 			catch (final Exception exception)
 			{
-				throw new OWLException("Malformed File near " + (_line * 3) + " on " + axiomStr, exception);
+				throw new OWLException("Malformed File near " + _line * 3 + " on " + axiomStr, exception);
 			}
 		}
 
@@ -396,7 +385,7 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 				return aa.annotations().findAny().orElseThrow(() -> new OWLException("Invalid annotation axiom : " + data));
 			}
 			else
-				throw new OWLException("Invalid annotation near " + (_line * 3) + "(line " + _line + ")" + " on axiom : " + data);
+				throw new OWLException("Invalid annotation near " + _line * 3 + "(line " + _line + ")" + " on axiom : " + data);
 		}
 
 		@Override
@@ -413,7 +402,7 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 			} // If the triple readLine fail we are in a malformed file.
 			catch (final Exception e)
 			{
-				_logger.log(Level.SEVERE, "Malformed File near " + (_line * 3), e);
+				_logger.log(Level.SEVERE, "Malformed File near " + _line * 3, e);
 				return null;
 			}
 
@@ -491,7 +480,7 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 					} // If the triple readLine fail we are in a malformed file.
 					catch (final Exception e)
 					{
-						Log.error(_logger, "Malformed File near " + (line * 3), e);
+						Log.error(_logger, "Malformed File near " + line * 3, e);
 						return null;
 					}
 			}
@@ -506,44 +495,42 @@ public class OWLIncrementalFlatFileStorageManagerListener implements OWLOntology
 
 	private void rebuild() throws OWLOntologyCreationException
 	{
-		if (_delta.exists())
-			for (final String sIri : (new Builder()).scan())
-				if (sIri != null && !sIri.equals(""))
-				{
-					final String[] parts = sIri.split(" ");
-					// Aim at reload ontology before access.
-					final OWLOntologyID ontId;
-					if (parts.length == 2)
-						ontId = new OWLOntologyID(IRI.create(parts[0]), IRI.create(parts[1]));
-					else
-						ontId = new OWLOntologyID(IRI.create(sIri));
+		if (_delta.exists()) for (final String sIri : new Builder().scan())
+			if (sIri != null && !sIri.equals(""))
+			{
+				final String[] parts = sIri.split(" ");
+				// Aim at reload ontology before access.
+				final OWLOntologyID ontId;
+				if (parts.length == 2)
+					ontId = new OWLOntologyID(IRI.create(parts[0]), IRI.create(parts[1]));
+				else
+					ontId = new OWLOntologyID(IRI.create(sIri));
 
-					// Build or load the ontology
-					final OWLHelper tools = new OWLGenericTools(_owlManagerGroup, ontId, false); // Do not delete this line. It effectively load the ontology.
-					_logger.info(tools.getOntology().getOntologyID() + " have been load.");
+				// Build or load the ontology
+				final OWLHelper tools = new OWLGenericTools(_owlManagerGroup, ontId, false); // Do not delete this line. It effectively load the ontology.
+				_logger.info(tools.getOntology().getOntologyID() + " have been load.");
 
-					// Add it to save list if just build.
-					_changed.add(ontId);
-				}
+				// Add it to save list if just build.
+				_changed.add(ontId);
+			}
 	}
 
 	private void sync()
 	{
 		final List<OWLOntologyChange> changes = new ArrayList<>();
 
-		if (_delta.exists())
-			try (final BufferedReader br = new BufferedReader(new FileReader(_delta)))
+		if (_delta.exists()) try (final BufferedReader br = new BufferedReader(new FileReader(_delta)))
+		{
+			try (final DeltaReader reader = new DeltaReader(br))
 			{
-				try (final DeltaReader reader = new DeltaReader(br))
-				{
-					while (reader.hasNext())
-						changes.add(reader.next());
-				}
+				while (reader.hasNext())
+					changes.add(reader.next());
 			}
-			catch (final Exception e)
-			{
-				Log.error(_logger, e);
-			}
+		}
+		catch (final Exception e)
+		{
+			Log.error(_logger, e);
+		}
 	}
 
 	/**

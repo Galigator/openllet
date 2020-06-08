@@ -71,8 +71,7 @@ public class XSDDateTimeStamp extends AbstractTimelineDatatype
 	public XMLGregorianCalendar getValue(final ATermAppl literal) throws InvalidLiteralException
 	{
 		final XMLGregorianCalendar c = super.getValue(literal);
-		if (c.getTimezone() == DatatypeConstants.FIELD_UNDEFINED)
-			throw new InvalidLiteralException(getName(), ATermUtils.getLiteralValue(literal));
+		if (c.getTimezone() == DatatypeConstants.FIELD_UNDEFINED) throw new InvalidLiteralException(getName(), ATermUtils.getLiteralValue(literal));
 		return c;
 	}
 

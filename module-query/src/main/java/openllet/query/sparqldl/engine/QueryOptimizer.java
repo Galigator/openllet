@@ -31,8 +31,7 @@ public class QueryOptimizer
 
 	public QueryPlan getExecutionPlan(final Query query)
 	{
-		if (OpenlletOptions.SAMPLING_RATIO == 0)
-			return new NoReorderingQueryPlan(query);
+		if (OpenlletOptions.SAMPLING_RATIO == 0) return new NoReorderingQueryPlan(query);
 
 		if (query.getAtoms().size() > OpenlletOptions.STATIC_REORDERING_LIMIT)
 		{

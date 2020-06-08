@@ -51,15 +51,15 @@ import org.apache.jena.vocabulary.ReasonerVocabulary;
  */
 public class PelletReasoner implements Reasoner
 {
-	protected static Logger _logger = Log.getLogger(PelletReasoner.class);
+	protected static Logger		_logger	= Log.getLogger(PelletReasoner.class);
 
-	private final Model _reasonerCapabilities;
+	private final Model			_reasonerCapabilities;
 
-	private final Capabilities _graphCapabilities;
+	private final Capabilities	_graphCapabilities;
 
-	private final Graph _schema;
+	private final Graph			_schema;
 
-	private boolean _fixedSchema;
+	private boolean				_fixedSchema;
 
 	public PelletReasoner()
 	{
@@ -177,8 +177,7 @@ public class PelletReasoner implements Reasoner
 	public boolean supportsProperty(final Property property)
 	{
 		final Model caps = getReasonerCapabilities();
-		if (caps == null)
-			return false;
+		if (caps == null) return false;
 		return caps.contains(null, ReasonerVocabulary.supportsP, property);
 	}
 

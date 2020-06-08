@@ -42,7 +42,10 @@ public class TestMiscQueries extends AbstractQueryTest
 
 		final Query query = query(select(pv, cv), where(DomainAtom(pv, cv)));
 
-		testQuery(query, new ATermAppl[][] { { _p, TOP }, { _q, TOP }, { _r, TOP }, { TOP_OBJECT_PROPERTY, TOP }, { TOP_DATA_PROPERTY, TOP }, { BOTTOM_OBJECT_PROPERTY, TOP }, { BOTTOM_DATA_PROPERTY, TOP }, { BOTTOM_DATA_PROPERTY, BOTTOM }, { BOTTOM_OBJECT_PROPERTY, BOTTOM }, { _p, _C }, { _q, _C }, { BOTTOM_DATA_PROPERTY, _C }, { BOTTOM_OBJECT_PROPERTY, _C }, { BOTTOM_DATA_PROPERTY, _D }, { BOTTOM_OBJECT_PROPERTY, _D } });
+		testQuery(query,
+				new ATermAppl[][] { { _p, TOP }, { _q, TOP }, { _r, TOP }, { TOP_OBJECT_PROPERTY, TOP }, { TOP_DATA_PROPERTY, TOP }, { BOTTOM_OBJECT_PROPERTY, TOP }, { BOTTOM_DATA_PROPERTY, TOP },
+						{ BOTTOM_DATA_PROPERTY, BOTTOM }, { BOTTOM_OBJECT_PROPERTY, BOTTOM }, { _p, _C }, { _q, _C }, { BOTTOM_DATA_PROPERTY, _C }, { BOTTOM_OBJECT_PROPERTY, _C },
+						{ BOTTOM_DATA_PROPERTY, _D }, { BOTTOM_OBJECT_PROPERTY, _D } });
 
 	}
 
@@ -97,7 +100,8 @@ public class TestMiscQueries extends AbstractQueryTest
 
 		final Query query = query(select(pv, cv), where(RangeAtom(pv, cv), ObjectPropertyAtom(pv)));
 
-		testQuery(query, new ATermAppl[][] { { _p, TOP }, { _q, TOP }, { TOP_OBJECT_PROPERTY, TOP }, { BOTTOM_OBJECT_PROPERTY, TOP }, { BOTTOM_OBJECT_PROPERTY, BOTTOM }, { _p, _C }, { _q, _C }, { BOTTOM_OBJECT_PROPERTY, _C }, { BOTTOM_OBJECT_PROPERTY, _D } });
+		testQuery(query, new ATermAppl[][] { { _p, TOP }, { _q, TOP }, { TOP_OBJECT_PROPERTY, TOP }, { BOTTOM_OBJECT_PROPERTY, TOP }, { BOTTOM_OBJECT_PROPERTY, BOTTOM }, { _p, _C }, { _q, _C },
+				{ BOTTOM_OBJECT_PROPERTY, _C }, { BOTTOM_OBJECT_PROPERTY, _D } });
 
 	}
 

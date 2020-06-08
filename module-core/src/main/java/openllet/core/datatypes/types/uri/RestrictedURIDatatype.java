@@ -29,8 +29,8 @@ import openllet.core.utils.SetUtils;
  */
 public class RestrictedURIDatatype implements RestrictedDatatype<ATermAppl>
 {
-	private final Datatype<ATermAppl> _dt;
-	private final Set<Object> _excludedValues;
+	private final Datatype<ATermAppl>	_dt;
+	private final Set<Object>			_excludedValues;
 
 	public RestrictedURIDatatype(final Datatype<ATermAppl> dt)
 	{
@@ -57,11 +57,9 @@ public class RestrictedURIDatatype implements RestrictedDatatype<ATermAppl>
 		{
 			final ATermAppl a = (ATermAppl) value;
 
-			if (_excludedValues.contains(a))
-				return false;
+			if (_excludedValues.contains(a)) return false;
 
-			if (ATermUtils.isLiteral(a) && XSDAnyURI.NAME.equals(a.getArgument(ATermUtils.LIT_URI_INDEX)))
-				return true;
+			if (ATermUtils.isLiteral(a) && XSDAnyURI.NAME.equals(a.getArgument(ATermUtils.LIT_URI_INDEX))) return true;
 		}
 		return false;
 	}

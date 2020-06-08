@@ -54,29 +54,29 @@ import org.semanticweb.owlapi.model.RemoveAxiom;
  */
 public abstract class AbstractOWLAPITests
 {
-	public static String _base = "file:" + PelletTestSuite.base + "misc/";
+	public static String							_base		= "file:" + PelletTestSuite.base + "misc/";
 
-	protected static final OWLClass _A = Class("A");
-	protected static final OWLClass _B = Class("B");
-	protected static final OWLClass _C = Class("C");
-	protected static final OWLClass _D = Class("D");
-	protected static final OWLClass _E = Class("E");
-	protected static final OWLClass _F = Class("F");
-	protected static final OWLObjectProperty _p = ObjectProperty("p");
-	protected static final OWLObjectProperty _q = ObjectProperty("q");
-	protected static final OWLObjectProperty _r = ObjectProperty("r");
-	protected static final OWLDataProperty _dp = DataProperty("dp");
-	protected static final OWLDataProperty _dq = DataProperty("dq");
-	protected static final OWLDataProperty _dr = DataProperty("dr");
-	protected static final OWLNamedIndividual _a = Individual("a");
-	protected static final OWLNamedIndividual _b = Individual("b");
-	protected static final OWLNamedIndividual _c = Individual("c");
-	protected static final OWLAnonymousIndividual _anon = AnonymousIndividual();
-	protected static final OWLLiteral _lit = constant("lit");
+	protected static final OWLClass					_A			= Class("A");
+	protected static final OWLClass					_B			= Class("B");
+	protected static final OWLClass					_C			= Class("C");
+	protected static final OWLClass					_D			= Class("D");
+	protected static final OWLClass					_E			= Class("E");
+	protected static final OWLClass					_F			= Class("F");
+	protected static final OWLObjectProperty		_p			= ObjectProperty("p");
+	protected static final OWLObjectProperty		_q			= ObjectProperty("q");
+	protected static final OWLObjectProperty		_r			= ObjectProperty("r");
+	protected static final OWLDataProperty			_dp			= DataProperty("dp");
+	protected static final OWLDataProperty			_dq			= DataProperty("dq");
+	protected static final OWLDataProperty			_dr			= DataProperty("dr");
+	protected static final OWLNamedIndividual		_a			= Individual("a");
+	protected static final OWLNamedIndividual		_b			= Individual("b");
+	protected static final OWLNamedIndividual		_c			= Individual("c");
+	protected static final OWLAnonymousIndividual	_anon		= AnonymousIndividual();
+	protected static final OWLLiteral				_lit		= constant("lit");
 
-	private final OWLOntologyManager _manager = OWLManager.createOWLOntologyManager();
-	protected volatile OWLOntology _ontology;
-	protected volatile OpenlletReasoner _reasoner;
+	private final OWLOntologyManager				_manager	= OWLManager.createOWLOntologyManager();
+	protected volatile OWLOntology					_ontology;
+	protected volatile OpenlletReasoner				_reasoner;
 
 	public void createReasoner(final OWLAxiom... axioms)
 	{
@@ -96,8 +96,7 @@ public abstract class AbstractOWLAPITests
 	{
 		_manager.clearOntologies();
 		_ontology = null;
-		if (_reasoner != null)
-			_reasoner.dispose();
+		if (_reasoner != null) _reasoner.dispose();
 	}
 
 	protected boolean processAdd(final OWLAxiom axiom)

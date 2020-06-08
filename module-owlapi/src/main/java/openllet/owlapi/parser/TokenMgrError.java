@@ -10,7 +10,7 @@ public class TokenMgrError extends Error
 	/**
 	 * The version identifier for this Serializable class. Increment only if the <i>serialized</i> form of the class changes.
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long	serialVersionUID		= 1L;
 
 	/*
 	 * Ordinals for various reasons why an Error of this type can be thrown.
@@ -19,37 +19,36 @@ public class TokenMgrError extends Error
 	/**
 	 * Lexical error occurred.
 	 */
-	public static final int LEXICAL_ERROR = 0;
+	public static final int		LEXICAL_ERROR			= 0;
 
 	/**
 	 * An attempt was made to create a second instance of a static token manager.
 	 */
-	public static final int STATIC_LEXER_ERROR = 1;
+	public static final int		STATIC_LEXER_ERROR		= 1;
 
 	/**
 	 * Tried to change to an invalid lexical state.
 	 */
-	public static final int INVALID_LEXICAL_STATE = 2;
+	public static final int		INVALID_LEXICAL_STATE	= 2;
 
 	/**
 	 * Detected (and bailed out of) an infinite loop in the token manager.
 	 */
-	public static final int LOOP_DETECTED = 3;
+	public static final int		LOOP_DETECTED			= 3;
 
 	/**
 	 * Indicates the reason why the exception is thrown. It will have one of the above 4 values.
 	 */
-	int errorCode;
+	int							errorCode;
 
 	/**
 	 * Replaces unprintable characters by their escaped (or unicode escaped) equivalents in the given string
 	 */
-	protected static final String addEscapes(String str)
+	protected static final String addEscapes(final String str)
 	{
 		final StringBuffer retval = new StringBuffer();
 		char ch;
 		for (int i = 0; i < str.length(); i++)
-		{
 			switch (str.charAt(i))
 			{
 				case '\b':
@@ -83,12 +82,9 @@ public class TokenMgrError extends Error
 						retval.append("\\u" + s.substring(s.length() - 4, s.length()));
 					}
 					else
-					{
 						retval.append(ch);
-					}
 					continue;
 			}
-		}
 		return retval.toString();
 	}
 
@@ -98,10 +94,11 @@ public class TokenMgrError extends Error
 	 * number when the error occurred errorAfter : prefix that was seen before this error occurred curchar : the offending character Note: You can customize the
 	 * lexical error message by modifying this method.
 	 */
-	protected static String LexicalErr(boolean EOFSeen, int lexState, int errorLine, int errorColumn, String errorAfter, int curChar)
+	protected static String LexicalErr(final boolean EOFSeen, final int lexState, final int errorLine, final int errorColumn, final String errorAfter, final int curChar)
 	{
 		final char curChar1 = (char) curChar;
-		return ("Lexical error at line " + errorLine + ", column " + errorColumn + ".  Encountered: " + (EOFSeen ? "<EOF> " : ("\"" + addEscapes(String.valueOf(curChar1)) + "\"") + " (" + curChar + "), ") + "after : \"" + addEscapes(errorAfter) + "\"");
+		return "Lexical error at line " + errorLine + ", column " + errorColumn + ".  Encountered: "
+				+ (EOFSeen ? "<EOF> " : "\"" + addEscapes(String.valueOf(curChar1)) + "\"" + " (" + curChar + "), ") + "after : \"" + addEscapes(errorAfter) + "\"";
 	}
 
 	/**
@@ -125,14 +122,14 @@ public class TokenMgrError extends Error
 	}
 
 	/** Constructor with message and reason. */
-	public TokenMgrError(String message, int reason)
+	public TokenMgrError(final String message, final int reason)
 	{
 		super(message);
 		errorCode = reason;
 	}
 
 	/** Full Constructor. */
-	public TokenMgrError(boolean EOFSeen, int lexState, int errorLine, int errorColumn, String errorAfter, int curChar, int reason)
+	public TokenMgrError(final boolean EOFSeen, final int lexState, final int errorLine, final int errorColumn, final String errorAfter, final int curChar, final int reason)
 	{
 		this(LexicalErr(EOFSeen, lexState, errorLine, errorColumn, errorAfter, curChar), reason);
 	}

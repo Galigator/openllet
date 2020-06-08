@@ -43,8 +43,8 @@ import org.junit.Test;
  */
 public class TestBooleanQueries extends AbstractKBTests
 {
-	private static final ATermAppl x = ATermUtils.makeVar("x");
-	private static final ATermAppl y = ATermUtils.makeVar("y");
+	private static final ATermAppl	x	= ATermUtils.makeVar("x");
+	private static final ATermAppl	y	= ATermUtils.makeVar("y");
 
 	private Query query(final QueryAtom... atoms)
 	{
@@ -133,7 +133,7 @@ public class TestBooleanQueries extends AbstractKBTests
 			results.add(result.getValue(x));
 		}
 
-		assertIteratorValues(results.iterator(), new ATermAppl[] { _A, _C });
+		assertIteratorValues(results.iterator(), _A, _C);
 	}
 
 	@Test

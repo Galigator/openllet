@@ -33,25 +33,25 @@ public interface QueryAtom
 	 *
 	 * @return predicate of the query atom
 	 */
-	public QueryPredicate getPredicate();
+	QueryPredicate getPredicate();
 
 	/**
 	 * Returns arguments of the atom.
 	 *
 	 * @return arguments of the atom
 	 */
-	public List<ATermAppl> getArguments();
+	List<ATermAppl> getArguments();
 
 	/**
 	 * @return true if the atom is ground, i.e. does not use variables, either distinguished or undistinguished ones.
 	 */
-	public boolean isGround();
+	boolean isGround();
 
 	/**
 	 * Applies variable binding to the _current atom and returns the result which might be same as the _current atom. Current atom is not affected.
 	 *
-	 * @param binding QueryBinding to apply
-	 * @return a query atom with applied query binding
+	 * @param  binding QueryBinding to apply
+	 * @return         a query atom with applied query binding
 	 */
-	public QueryAtom apply(final ResultBinding binding);
+	QueryAtom apply(final ResultBinding binding);
 }

@@ -23,25 +23,25 @@ public interface ProgressMonitor
 		return 10;
 	}
 
-	public int getLastEcho();
+	int getLastEcho();
 
-	public int getProgress();
+	int getProgress();
 
-	public int getProgressPercent();
+	int getProgressPercent();
 
-	public void incrementProgress();
+	void incrementProgress();
 
-	public boolean isCanceled();
+	boolean isCanceled();
 
-	public void setProgress(int value);
+	void setProgress(int value);
 
-	public void setProgressLength(int length);
+	void setProgressLength(int length);
 
-	public void setProgressMessage(String message);
+	void setProgressMessage(String message);
 
-	public void setProgressTitle(String title);
+	void setProgressTitle(String title);
 
-	public void taskFinished();
+	void taskFinished();
 
-	public void taskStarted();
+	void taskStarted();
 }

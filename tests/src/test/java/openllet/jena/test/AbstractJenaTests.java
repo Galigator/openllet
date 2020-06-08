@@ -29,20 +29,20 @@ import org.junit.Before;
 
 public abstract class AbstractJenaTests
 {
-	protected static final Resource _A = ResourceFactory.createResource("A");
-	protected static final Resource _B = ResourceFactory.createResource("B");
-	protected static final Resource _C = ResourceFactory.createResource("C");
-	protected static final Resource _D = ResourceFactory.createResource("D");
-	protected static final Resource _E = ResourceFactory.createResource("E");
+	protected static final Resource	_A	= ResourceFactory.createResource("A");
+	protected static final Resource	_B	= ResourceFactory.createResource("B");
+	protected static final Resource	_C	= ResourceFactory.createResource("C");
+	protected static final Resource	_D	= ResourceFactory.createResource("D");
+	protected static final Resource	_E	= ResourceFactory.createResource("E");
 
-	protected static final Resource _a = ResourceFactory.createResource("a");
-	protected static final Resource _b = ResourceFactory.createResource("b");
-	protected static final Resource _c = ResourceFactory.createResource("c");
-	protected static final Resource _d = ResourceFactory.createResource("d");
-	protected static final Resource _e = ResourceFactory.createResource("e");
+	protected static final Resource	_a	= ResourceFactory.createResource("a");
+	protected static final Resource	_b	= ResourceFactory.createResource("b");
+	protected static final Resource	_c	= ResourceFactory.createResource("c");
+	protected static final Resource	_d	= ResourceFactory.createResource("d");
+	protected static final Resource	_e	= ResourceFactory.createResource("e");
 
-	protected OntModel _model;
-	protected OntModel _reasoner;
+	protected OntModel				_model;
+	protected OntModel				_reasoner;
 
 	@Before
 	public void before()

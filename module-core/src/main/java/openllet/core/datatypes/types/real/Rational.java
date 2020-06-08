@@ -31,8 +31,8 @@ import openllet.core.datatypes.OWLRealUtils;
  */
 public class Rational extends Number implements Comparable<Rational>
 {
-	private static final long serialVersionUID = 1L;
-	private static final Pattern _lexicalPattern = Pattern.compile("\\s*([+-])?\\s*(\\d+)\\s*/\\s*(\\d+)\\s*");
+	private static final long		serialVersionUID	= 1L;
+	private static final Pattern	_lexicalPattern		= Pattern.compile("\\s*([+-])?\\s*(\\d+)\\s*/\\s*(\\d+)\\s*");
 
 	public static int compare(final Rational a, final Rational b)
 	{
@@ -71,12 +71,10 @@ public class Rational extends Number implements Comparable<Rational>
 
 	public static Rational valueOf(final String s) throws NumberFormatException
 	{
-		if (s == null)
-			throw new NullPointerException();
+		if (s == null) throw new NullPointerException();
 
 		final Matcher m = _lexicalPattern.matcher(s);
-		if (!m.matches())
-			throw new NumberFormatException(s);
+		if (!m.matches()) throw new NumberFormatException(s);
 
 		final String sLex = m.group(1);
 		final String nLex = m.group(2);
@@ -84,8 +82,7 @@ public class Rational extends Number implements Comparable<Rational>
 
 		final Number n = OWLRealUtils.getCanonicalObject(DatatypeConverter.parseInteger(sLex == null ? nLex : sLex + nLex));
 		final Number d = OWLRealUtils.getCanonicalObject(DatatypeConverter.parseInteger(dLex));
-		if (OWLRealUtils.signum(d) != 1)
-			throw new NumberFormatException(s);
+		if (OWLRealUtils.signum(d) != 1) throw new NumberFormatException(s);
 
 		return new Rational(n, d);
 	}
@@ -111,10 +108,10 @@ public class Rational extends Number implements Comparable<Rational>
 			return new Rational(canonicalNum, canonicalDenom);
 	}
 
-	private final Number _denominator;
-	private final boolean exact;
-	private final Number _numerator;
-	private final Number quotient;
+	private final Number	_denominator;
+	private final boolean	exact;
+	private final Number	_numerator;
+	private final Number	quotient;
 
 	@Override
 	public String toString()
@@ -140,60 +137,46 @@ public class Rational extends Number implements Comparable<Rational>
 	 * Compares this <code>Rational</code> with the specified <code>Object</code> for equality. Unlike compareTo, this method considers two
 	 * <code>Rational</code> objects equal only if they are equal in _numerator and _denominator.
 	 *
-	 * @param obj <code>Object</code> to which this <code>Rational</code> is to be compared
-	 * @return <code>true> if and only if the specified <code>Object</code> is a <code>Rational</code> whose _numerator and _denominator are equal to this
-	 *         <code>Rational</code>'s.
+	 * @param  obj <code>Object</code> to which this <code>Rational</code> is to be compared
+	 * @return     <code>true> if and only if the specified <code>Object</code> is a <code>Rational</code> whose _numerator and _denominator are equal to this
+	 *             <code>Rational</code>'s.
 	 */
 	@Override
 	public boolean equals(final Object obj)
 	{
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (getClass() != obj.getClass()) return false;
 		final Rational other = (Rational) obj;
 		if (_denominator == null)
 		{
-			if (other._denominator != null)
-				return false;
+			if (other._denominator != null) return false;
 		}
-		else
-			if (!_denominator.equals(other._denominator))
-				return false;
+		else if (!_denominator.equals(other._denominator)) return false;
 		if (_numerator == null)
 		{
-			if (other._numerator != null)
-				return false;
+			if (other._numerator != null) return false;
 		}
-		else
-			if (!_numerator.equals(other._numerator))
-				return false;
+		else if (!_numerator.equals(other._numerator)) return false;
 		return true;
 	}
 
 	/**
 	 * Construct a rational number from
 	 *
-	 * @param numerator An integer value
-	 * @param denominator A positive integer value
+	 * @param  numerator                An integer value
+	 * @param  denominator              A positive integer value
 	 * @throws IllegalArgumentException if this _condition does not hold for the input parameters
-	 *         <code>OWLRealUtils.acceptable(_numerator) && OWLRealUtils.isInteger(_numerator) && OWLRealUtils.acceptable(_denominator) && OWLRealUtils.isInteger(_denominator) && _denominator > 0</code>
+	 *                                  <code>OWLRealUtils.acceptable(_numerator) && OWLRealUtils.isInteger(_numerator) && OWLRealUtils.acceptable(_denominator) && OWLRealUtils.isInteger(_denominator) && _denominator > 0</code>
 	 */
 	public Rational(final Number numerator, final Number denominator)
 	{
-		if (numerator == null)
-			throw new NullPointerException();
-		if (!OWLRealUtils.isInteger(numerator))
-			throw new IllegalArgumentException();
+		if (numerator == null) throw new NullPointerException();
+		if (!OWLRealUtils.isInteger(numerator)) throw new IllegalArgumentException();
 
-		if (denominator == null)
-			throw new NullPointerException();
-		if (OWLRealUtils.signum(denominator) <= 0)
-			throw new IllegalArgumentException();
-		if (!OWLRealUtils.isInteger(denominator))
-			throw new IllegalArgumentException();
+		if (denominator == null) throw new NullPointerException();
+		if (OWLRealUtils.signum(denominator) <= 0) throw new IllegalArgumentException();
+		if (!OWLRealUtils.isInteger(denominator)) throw new IllegalArgumentException();
 
 		_numerator = numerator;
 		_denominator = denominator;

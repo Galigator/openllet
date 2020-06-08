@@ -23,8 +23,8 @@ import org.junit.Test;
  */
 public class DoubtfulSetTest
 {
-	private DoubtfulSet<String> _set;
-	private String[] _str;
+	private DoubtfulSet<String>	_set;
+	private String[]			_str;
 
 	@Before
 	public void setUp()

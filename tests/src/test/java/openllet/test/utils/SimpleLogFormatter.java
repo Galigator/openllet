@@ -24,8 +24,7 @@ public class SimpleLogFormatter extends Formatter
 
 	private static String getStackTrace(final Throwable t)
 	{
-		if (t == null)
-			return "";
+		if (t == null) return "";
 
 		final StringWriter sw = new StringWriter();
 		t.printStackTrace(new PrintWriter(sw));

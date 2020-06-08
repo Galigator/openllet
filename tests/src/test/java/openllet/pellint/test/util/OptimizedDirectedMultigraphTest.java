@@ -20,8 +20,8 @@ import org.junit.Test;
  */
 public class OptimizedDirectedMultigraphTest
 {
-	private static final String V[] = new String[] { "a", "b", "c" };
-	private OptimizedDirectedMultigraph<String> _graph;
+	private static final String					V[]	= new String[] { "a", "b", "c" };
+	private OptimizedDirectedMultigraph<String>	_graph;
 
 	@Before
 	public void setUp()

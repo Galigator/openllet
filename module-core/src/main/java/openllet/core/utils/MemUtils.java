@@ -16,11 +16,11 @@ import java.text.NumberFormat;
  */
 public class MemUtils
 {
-	private static final Runtime runtime = Runtime.getRuntime();
+	private static final Runtime		runtime			= Runtime.getRuntime();
 
-	public static final double BYTES_PER_MB = 1048576.0;
+	public static final double			BYTES_PER_MB	= 1048576.0;
 
-	private static final DecimalFormat MB_FORMAT = (DecimalFormat) NumberFormat.getNumberInstance();
+	private static final DecimalFormat	MB_FORMAT		= (DecimalFormat) NumberFormat.getNumberInstance();
 
 	static
 	{
@@ -45,7 +45,7 @@ public class MemUtils
 	private static void _runGC()
 	{
 		long usedMem1 = usedMemory(), usedMem2 = Long.MAX_VALUE;
-		for (int i = 0; (usedMem1 < usedMem2) && (i < 500); ++i)
+		for (int i = 0; usedMem1 < usedMem2 && i < 500; ++i)
 		{
 			runtime.runFinalization();
 			runtime.gc();

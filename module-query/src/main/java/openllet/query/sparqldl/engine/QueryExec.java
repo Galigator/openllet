@@ -28,7 +28,7 @@ import openllet.query.sparqldl.model.QueryResult;
 public interface QueryExec
 {
 
-	public QueryResult exec(Query plan);
+	QueryResult exec(Query plan);
 
-	public boolean supports(Query q);
+	boolean supports(Query q);
 }

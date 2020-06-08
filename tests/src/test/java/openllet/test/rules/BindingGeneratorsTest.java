@@ -98,12 +98,14 @@ public class BindingGeneratorsTest
 
 	}
 
-	private KnowledgeBaseImpl _kb;
+	private KnowledgeBaseImpl		_kb;
 
-	private static final ATermAppl data1 = ATermUtils.makePlainLiteral("data1"), data2 = ATermUtils.makePlainLiteral("data2"), data3 = ATermUtils.makePlainLiteral("data3"), data4 = ATermUtils.makeTypedLiteral("4", Namespaces.XSD + "decimal"), dp1 = ATermUtils.makeTermAppl("dataProp1"), dp2 = ATermUtils.makeTermAppl("dataProp2"), mary = ATermUtils.makeTermAppl("Mary"), p = ATermUtils.makeTermAppl("p"), robert = ATermUtils.makeTermAppl("Robert"), victor = ATermUtils.makeTermAppl("Victor");
+	private static final ATermAppl	data1	= ATermUtils.makePlainLiteral("data1"), data2 = ATermUtils.makePlainLiteral("data2"), data3 = ATermUtils.makePlainLiteral("data3"),
+			data4 = ATermUtils.makeTypedLiteral("4", Namespaces.XSD + "decimal"), dp1 = ATermUtils.makeTermAppl("dataProp1"), dp2 = ATermUtils.makeTermAppl("dataProp2"),
+			mary = ATermUtils.makeTermAppl("Mary"), p = ATermUtils.makeTermAppl("p"), robert = ATermUtils.makeTermAppl("Robert"), victor = ATermUtils.makeTermAppl("Victor");
 
-	private AtomIVariable _x, _y;
-	private AtomDVariable _z;
+	private AtomIVariable			_x, _y;
+	private AtomDVariable			_z;
 
 	@Before
 	public void setUp()
@@ -166,7 +168,7 @@ public class BindingGeneratorsTest
 
 		final BindingHelper patternHelper = new DatavaluePropertyBindingHelper(_kb.getABox(), pattern);
 		final BindingHelper rangeHelper = new DataRangeBindingHelper(_kb.getABox(), atom);
-		final BindingGenerator gen = new BindingGeneratorImpl(new VariableBinding(_kb.getABox()), Arrays.asList(new BindingHelper[] { patternHelper, rangeHelper, }));
+		final BindingGenerator gen = new BindingGeneratorImpl(new VariableBinding(_kb.getABox()), Arrays.asList(patternHelper, rangeHelper));
 
 		final VariableBinding expectedBinding = new VariableBinding(_kb.getABox());
 		expectedBinding.set(_x, _kb.getABox().getIndividual(victor));
@@ -186,7 +188,7 @@ public class BindingGeneratorsTest
 
 		final BindingHelper genHelper1 = new DatavaluePropertyBindingHelper(_kb.getABox(), pattern1);
 		final BindingHelper genHelper2 = new DatavaluePropertyBindingHelper(_kb.getABox(), pattern2);
-		final BindingGenerator gen = new BindingGeneratorImpl(new VariableBinding(_kb.getABox()), Arrays.asList(new BindingHelper[] { genHelper1, genHelper2 }));
+		final BindingGenerator gen = new BindingGeneratorImpl(new VariableBinding(_kb.getABox()), Arrays.asList(genHelper1, genHelper2));
 
 		final List<VariableBinding> expected = new LinkedList<>();
 		VariableBinding binding;
@@ -221,7 +223,7 @@ public class BindingGeneratorsTest
 
 		final BindingHelper genHelper1 = new DatavaluePropertyBindingHelper(_kb.getABox(), pattern1);
 		final BindingHelper genHelper2 = new DatavaluePropertyBindingHelper(_kb.getABox(), pattern2);
-		final BindingGenerator gen = new BindingGeneratorImpl(new VariableBinding(_kb.getABox()), Arrays.asList(new BindingHelper[] { genHelper1, genHelper2 }));
+		final BindingGenerator gen = new BindingGeneratorImpl(new VariableBinding(_kb.getABox()), Arrays.asList(genHelper1, genHelper2));
 
 		final List<VariableBinding> expected = new LinkedList<>();
 		VariableBinding binding;
@@ -248,7 +250,7 @@ public class BindingGeneratorsTest
 
 		final BindingHelper genHelper = new DatavaluePropertyBindingHelper(_kb.getABox(), pattern);
 		final BindingGenerator gen = new BindingGeneratorImpl(new VariableBinding(_kb.getABox()), Collections.singletonList(genHelper));
-		assertIteratorValues(new BindingToMapIterator(gen.iterator()), new Object[] { Collections.singletonMap(_z, data1), Collections.singletonMap(_z, data2), });
+		assertIteratorValues(new BindingToMapIterator(gen.iterator()), Collections.singletonMap(_z, data1), Collections.singletonMap(_z, data2));
 
 	}
 
@@ -260,7 +262,7 @@ public class BindingGeneratorsTest
 		final BindingHelper genHelper = new DatavaluePropertyBindingHelper(_kb.getABox(), pattern);
 		final BindingGenerator gen = new BindingGeneratorImpl(new VariableBinding(_kb.getABox()), Collections.singletonList(genHelper));
 
-		assertIteratorValues(new BindingToMapIterator(gen.iterator()), new Object[] { Collections.singletonMap(_x, mary), Collections.singletonMap(_x, robert), });
+		assertIteratorValues(new BindingToMapIterator(gen.iterator()), Collections.singletonMap(_x, mary), Collections.singletonMap(_x, robert));
 
 	}
 
@@ -291,7 +293,7 @@ public class BindingGeneratorsTest
 		final BindingHelper genHelper = new ObjectVariableBindingHelper(_kb.getABox(), _x);
 		final BindingGenerator gen = new BindingGeneratorImpl(new VariableBinding(_kb.getABox()), Collections.singletonList(genHelper));
 
-		assertIteratorValues(new BindingToMapIterator(gen.iterator()), new Object[] { Collections.singletonMap(_x, mary), Collections.singletonMap(_x, robert), Collections.singletonMap(_x, victor), });
+		assertIteratorValues(new BindingToMapIterator(gen.iterator()), Collections.singletonMap(_x, mary), Collections.singletonMap(_x, robert), Collections.singletonMap(_x, victor));
 	}
 
 }

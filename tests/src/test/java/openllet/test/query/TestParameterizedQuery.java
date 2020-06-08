@@ -50,10 +50,10 @@ import org.junit.runners.Parameterized.Parameters;
 @RunWith(Parameterized.class)
 public class TestParameterizedQuery
 {
-	private static final String NS = "http://example.org#";
-	private static final String PREFIX = "PREFIX : <" + NS + ">";
+	private static final String	NS		= "http://example.org#";
+	private static final String	PREFIX	= "PREFIX : <" + NS + ">";
 
-	private static Dataset dataset;
+	private static Dataset		dataset;
 
 	private static QuerySolutionMap binding(final String var, final RDFNode value)
 	{
@@ -110,10 +110,10 @@ public class TestParameterizedQuery
 		return params;
 	}
 
-	private final QueryEngineType _queryEngine;
-	private final Query _query;
-	private final QuerySolution _initialBinding;
-	private final QuerySolution _expected;
+	private final QueryEngineType	_queryEngine;
+	private final Query				_query;
+	private final QuerySolution		_initialBinding;
+	private final QuerySolution		_expected;
 
 	public TestParameterizedQuery(final QueryEngineType queryEngine, final Query query, final QuerySolutionMap initialBinding, final QuerySolutionMap expectedResults)
 	{
@@ -129,8 +129,7 @@ public class TestParameterizedQuery
 		final QueryExecution qe = SparqlDLExecutionFactory.create(_query, dataset, _initialBinding, _queryEngine);
 		final ResultSet rs = qe.execSelect();
 
-		if (!rs.hasNext())
-			assertTrue("No results found", rs.hasNext());
+		if (!rs.hasNext()) assertTrue("No results found", rs.hasNext());
 
 		final QuerySolution computed = rs.nextSolution();
 

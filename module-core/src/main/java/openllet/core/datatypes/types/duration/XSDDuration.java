@@ -30,8 +30,8 @@ import openllet.core.utils.Namespaces;
 public class XSDDuration extends AbstractBaseDatatype<Duration>
 {
 
-	private static final XSDDuration instance;
-	private static final ATermAppl NAME;
+	private static final XSDDuration	instance;
+	private static final ATermAppl		NAME;
 
 	static
 	{

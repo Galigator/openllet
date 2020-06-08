@@ -29,17 +29,17 @@ import openllet.core.utils.ATermUtils;
  */
 public class RDFXMLTaxonomyPrinter implements TaxonomyPrinter<ATermAppl>
 {
-	public final static String OWL_EQUIVALENT_CLASS = "owl:equivalentClass";
-	public final static String RDFS_SUB_CLASS_OF = "rdfs:subClassOf";
-	public final static String RDF_TYPE = "rdf:type";
+	public final static String	OWL_EQUIVALENT_CLASS	= "owl:equivalentClass";
+	public final static String	RDFS_SUB_CLASS_OF		= "rdfs:subClassOf";
+	public final static String	RDF_TYPE				= "rdf:type";
 
-	protected boolean onlyDirectSubclass;
+	protected boolean			onlyDirectSubclass;
 
-	private Taxonomy<ATermAppl> _taxonomyImpl;
+	private Taxonomy<ATermAppl>	_taxonomyImpl;
 
-	private PrintWriter _out;
+	private PrintWriter			_out;
 
-	private Set<ATermAppl> _visited;
+	private Set<ATermAppl>		_visited;
 
 	public RDFXMLTaxonomyPrinter()
 	{
@@ -87,8 +87,7 @@ public class RDFXMLTaxonomyPrinter implements TaxonomyPrinter<ATermAppl>
 
 	protected void printTree(final ATermAppl c)
 	{
-		if (_visited.contains(c))
-			return;
+		if (_visited.contains(c)) return;
 
 		final Set<ATermAppl> eqClasses = ATermUtils.primitiveOrBottom(_taxonomyImpl.getEquivalents(c));
 
@@ -124,8 +123,7 @@ public class RDFXMLTaxonomyPrinter implements TaxonomyPrinter<ATermAppl>
 		final Set<ATermAppl> instances = TaxonomyUtils.getDirectInstances(_taxonomyImpl, c);
 		for (final ATermAppl instance : instances)
 		{
-			if (ATermUtils.isBnode(instance))
-				return;
+			if (ATermUtils.isBnode(instance)) return;
 
 			_out.print("<rdf:Description rdf:about=\"");
 			_out.print(instance.getName());
@@ -160,11 +158,10 @@ public class RDFXMLTaxonomyPrinter implements TaxonomyPrinter<ATermAppl>
 		String uri = null;
 		if (c.equals(ATermUtils.TOP))
 			uri = "http://www.w3.org/2002/07/owl#Thing";
+		else if (c.equals(ATermUtils.BOTTOM))
+			uri = "http://www.w3.org/2002/07/owl#Nothing";
 		else
-			if (c.equals(ATermUtils.BOTTOM))
-				uri = "http://www.w3.org/2002/07/owl#Nothing";
-			else
-				uri = c.getName();
+			uri = c.getName();
 
 		_out.print(uri);
 	}

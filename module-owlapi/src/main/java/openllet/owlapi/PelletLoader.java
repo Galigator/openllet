@@ -74,32 +74,32 @@ import org.semanticweb.owlapi.model.SetOntologyID;
  */
 public class PelletLoader implements FacetManagerOWL
 {
-	public static Logger _logger = Log.getLogger(PelletLoader.class);
+	public static Logger								_logger				= Log.getLogger(PelletLoader.class);
 
-	private volatile KnowledgeBase _kb;
+	private volatile KnowledgeBase						_kb;
 
-	private volatile OWLOntologyManager _manager;
+	private volatile OWLOntologyManager					_manager;
 
-	private final Set<OWLOntology> _ontologies = SetUtils.create();
+	private final Set<OWLOntology>						_ontologies			= SetUtils.create();
 
 	/**
 	 * Flag to check if imports will be automatically loaded/unloaded
 	 */
-	private volatile boolean _processImports;
+	private volatile boolean							_processImports;
 
 	/**
 	 * Ontologies that are loaded due to imports but they have not been included in an explicit load statement by the user
 	 */
-	private final Set<OWLOntology> _notImported = SetUtils.create();
+	private final Set<OWLOntology>						_notImported		= SetUtils.create();
 
 	/**
 	 * This is the reverse mapping of imports. The key is an ontology and the value is a set of ontology that imports the ontology used as the key
 	 */
-	private final Map<OWLOntology, Set<OWLOntology>> _importDependencies = new ConcurrentHashMap<>();
+	private final Map<OWLOntology, Set<OWLOntology>>	_importDependencies	= new ConcurrentHashMap<>();
 
-	private final PelletVisitor _visitor;
+	private final PelletVisitor							_visitor;
 
-	private final ChangeVisitor _changeVisitor = new ChangeVisitor();
+	private final ChangeVisitor							_changeVisitor		= new ChangeVisitor();
 
 	@Override
 	public OWLOntologyManager getManager()
@@ -130,8 +130,8 @@ public class PelletLoader implements FacetManagerOWL
 		/**
 		 * Process a change, providing a single call for common reset,accept,isReloadRequired pattern.
 		 *
-		 * @param change the {@link OWLOntologyChange} to process
-		 * @return <code>true</code> if change is handled, <code>false</code> if a reload is required
+		 * @param  change the {@link OWLOntologyChange} to process
+		 * @return        <code>true</code> if change is handled, <code>false</code> if a reload is required
 		 */
 		public boolean process(final OWLOntologyChange change)
 		{
@@ -206,6 +206,7 @@ public class PelletLoader implements FacetManagerOWL
 	/**
 	 * @deprecated Use {@link #getProcessImports()} instead
 	 */
+	@SuppressWarnings("javadoc")
 	@Deprecated
 	public boolean loadImports()
 	{
@@ -216,7 +217,7 @@ public class PelletLoader implements FacetManagerOWL
 	 * @deprecated Use {@link #setProcessImports(boolean)} instead
 	 */
 	@Deprecated
-	public void setLoadImports(final boolean loadImports)
+	public void setLoadImports(@SuppressWarnings("javadoc") final boolean loadImports)
 	{
 		setProcessImports(loadImports);
 	}
@@ -258,8 +259,7 @@ public class PelletLoader implements FacetManagerOWL
 
 		final ATermAppl a = _visitor.result();
 
-		if (a == null)
-			throw new InternalReasonerException("Cannot create ATerm from description " + d);
+		if (a == null) throw new InternalReasonerException("Cannot create ATerm from description " + d);
 
 		return a;
 	}
@@ -292,41 +292,38 @@ public class PelletLoader implements FacetManagerOWL
 
 		_visitor.verify();
 
-		timer.ifPresent(t -> t.stop());
+		timer.ifPresent(Timer::stop);
 	}
 
 	private int load(final OWLOntology ontology, final boolean imported, final Collection<OWLOntology> toBeLoaded)
 	{
 		// if not imported add it to notImported set
-		if (!imported)
-			_notImported.add(ontology);
+		if (!imported) _notImported.add(ontology);
 
 		// add to the loaded _ontologies
 		final boolean added = _ontologies.add(ontology);
 
 		// if it was already there, nothing more to do
-		if (!added)
-			return 0;
+		if (!added) return 0;
 
 		int axiomCount = ontology.getAxiomCount();
 		toBeLoaded.add(ontology);
 
 		// if processing imports load the imported ontologies
-		if (_processImports)
-			for (final OWLOntology importedOnt : ontology.imports().collect(Collectors.toList()))
-			{
-				// load the importedOnt
-				axiomCount += load(importedOnt, true, toBeLoaded);
+		if (_processImports) for (final OWLOntology importedOnt : ontology.imports().collect(Collectors.toList()))
+		{
+			// load the importedOnt
+			axiomCount += load(importedOnt, true, toBeLoaded);
 
-				// update the import dependencies
-				Set<OWLOntology> importees = _importDependencies.get(importedOnt);
-				if (importees == null)
-				{
-					importees = new HashSet<>();
-					_importDependencies.put(importedOnt, importees);
-				}
-				importees.add(ontology);
+			// update the import dependencies
+			Set<OWLOntology> importees = _importDependencies.get(importedOnt);
+			if (importees == null)
+			{
+				importees = new HashSet<>();
+				_importDependencies.put(importedOnt, importees);
 			}
+			importees.add(ontology);
+		}
 
 		return axiomCount;
 	}
@@ -347,29 +344,27 @@ public class PelletLoader implements FacetManagerOWL
 		final boolean removed = _ontologies.remove(ontology);
 
 		// if it is not there silently return
-		if (!removed)
-			return;
+		if (!removed) return;
 
 		// remove it from notImported set, too
 		_notImported.remove(ontology);
 
 		// if we are processing imports we might need to unload the imported ontologies
-		if (_processImports)
-			ontology.imports().forEach(importOnt ->
+		if (_processImports) ontology.imports().forEach(importOnt ->
+		{
+			// see if the importedOnt is imported by any other ontology
+			final Set<OWLOntology> importees = _importDependencies.get(importOnt);
+			if (importees != null)
 			{
-				// see if the importedOnt is imported by any other ontology
-				final Set<OWLOntology> importees = _importDependencies.get(importOnt);
-				if (importees != null)
+				importees.remove(ontology); // remove the unloaded ontology from the dependencies
+				if (importees.isEmpty()) // if nothing is left
 				{
-					importees.remove(ontology); // remove the unloaded ontology from the dependencies
-					if (importees.isEmpty()) // if nothing is left
-					{
-						_importDependencies.remove(importOnt); // remove the empty set from dependencies
-						if (!_notImported.contains(importOnt)) // only unload if this ontology was not loaded by the user explicitly
-							unload(importOnt);
-					}
+					_importDependencies.remove(importOnt); // remove the empty set from dependencies
+					if (!_notImported.contains(importOnt)) // only unload if this ontology was not loaded by the user explicitly
+						unload(importOnt);
 				}
-			});
+			}
+		});
 	}
 
 	/**
@@ -383,8 +378,8 @@ public class PelletLoader implements FacetManagerOWL
 	/**
 	 * Apply the given changes to the Pellet KB.
 	 *
-	 * @param changes List of ontology changes to be applied
-	 * @return <code>true</code> if changes applied successfully, <code>false</code> otherwise indicating a reload is required
+	 * @param  changes      List of ontology changes to be applied
+	 * @return              <code>true</code> if changes applied successfully, <code>false</code> otherwise indicating a reload is required
 	 * @throws OWLException
 	 */
 	public boolean applyChanges(final List<? extends OWLOntologyChange> changes)
@@ -392,8 +387,7 @@ public class PelletLoader implements FacetManagerOWL
 
 		for (final OWLOntologyChange change : changes)
 		{
-			if (!_ontologies.contains(change.getOntology()))
-				continue;
+			if (!_ontologies.contains(change.getOntology())) continue;
 
 			if (!_changeVisitor.process(change))
 			{

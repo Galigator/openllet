@@ -66,9 +66,9 @@ import openllet.shared.tools.Log;
  */
 public class QueryEngine
 {
-	public static Logger _logger = Log.getLogger(QueryEngine.class);
+	public static Logger		_logger		= Log.getLogger(QueryEngine.class);
 
-	public static CoreStrategy STRATEGY = CoreStrategy.ALLFAST;
+	public static CoreStrategy	STRATEGY	= CoreStrategy.ALLFAST;
 
 	public static QueryExec getQueryExec()
 	{
@@ -119,17 +119,16 @@ public class QueryEngine
 		QueryResult r = null;
 		if (queries.isEmpty())
 			throw new InternalReasonerException("Splitting query returned no results!");
+		else if (queries.size() == 1)
+			r = execSingleQuery(queries.get(0));
 		else
-			if (queries.size() == 1)
-				r = execSingleQuery(queries.get(0));
-			else
-			{
-				final List<QueryResult> results = new ArrayList<>(queries.size());
-				for (final Query q : queries)
-					results.add(execSingleQuery(q));
+		{
+			final List<QueryResult> results = new ArrayList<>(queries.size());
+			for (final Query q : queries)
+				results.add(execSingleQuery(q));
 
-				r = new MultiQueryResults(query.getResultVars(), results);
-			}
+			r = new MultiQueryResults(query.getResultVars(), results);
+		}
 
 		return r;
 	}
@@ -276,8 +275,7 @@ public class QueryEngine
 
 			case Union:
 				for (final List<QueryAtom> atoms : ((UnionQueryAtom) atom).getUnion())
-					if (hasUndefinedTerm(atoms, kb))
-						return false;
+					if (hasUndefinedTerm(atoms, kb)) return false;
 				return true;
 
 			case Datatype:
@@ -294,8 +292,7 @@ public class QueryEngine
 	private static boolean hasUndefinedTerm(final List<QueryAtom> atoms, final KnowledgeBase kb)
 	{
 		for (final QueryAtom atom : atoms)
-			if (!hasDefinedTerms(atom, kb))
-				return true;
+			if (!hasDefinedTerms(atom, kb)) return true;
 
 		return false;
 	}
@@ -307,8 +304,7 @@ public class QueryEngine
 
 	private static QueryResult execSingleQuery(final Query query)
 	{
-		if (hasUndefinedTerm(query))
-			return new QueryResultImpl(query);
+		if (hasUndefinedTerm(query)) return new QueryResultImpl(query);
 
 		return getQueryExec().exec(query);
 	}
@@ -318,8 +314,8 @@ public class QueryEngine
 	 * combined at the _end by taking Cartesian product.(we combine results on a tuple basis as results are iterated. This way we avoid generating the full
 	 * Cartesian product. Splitting the query ensures the correctness of the answer, e.g. rolling-up technique becomes applicable.
 	 *
-	 * @param query Query to be split
-	 * @return List of queries (contains the initial query if the initial query is connected)
+	 * @param  query Query to be split
+	 * @return       List of queries (contains the initial query if the initial query is connected)
 	 */
 	public static List<Query> split(final Query query)
 	{
@@ -335,20 +331,17 @@ public class QueryEngine
 
 				for (final ATermAppl arg : atom.getArguments())
 				{
-					if (!ATermUtils.isVar(arg))
-						continue;
+					if (!ATermUtils.isVar(arg)) continue;
 
 					disjointSet.add(arg);
-					if (toMerge != null)
-						disjointSet.union(toMerge, arg);
+					if (toMerge != null) disjointSet.union(toMerge, arg);
 					toMerge = arg;
 				}
 			}
 
 			final Collection<Set<ATermAppl>> equivalenceSets = disjointSet.getEquivalanceSets();
 
-			if (equivalenceSets.size() == 1)
-				return Collections.singletonList(query);
+			if (equivalenceSets.size() == 1) return Collections.singletonList(query);
 
 			final Map<ATermAppl, Query> queries = new HashMap<>();
 			Query groundQuery = null;
@@ -365,8 +358,7 @@ public class QueryEngine
 				Query newQuery = null;
 				if (representative == null)
 				{
-					if (groundQuery == null)
-						groundQuery = new QueryImpl(query);
+					if (groundQuery == null) groundQuery = new QueryImpl(query);
 					newQuery = groundQuery;
 				}
 				else
@@ -379,12 +371,10 @@ public class QueryEngine
 					}
 					for (final ATermAppl arg : atom.getArguments())
 					{
-						if (resultVars.contains(arg))
-							newQuery.addResultVar(arg);
+						if (resultVars.contains(arg)) newQuery.addResultVar(arg);
 
 						for (final VarType v : VarType.values())
-							if (query.getDistVarsForType(v).contains(arg))
-								newQuery.addDistVar(arg, v);
+							if (query.getDistVarsForType(v).contains(arg)) newQuery.addDistVar(arg, v);
 					}
 				}
 
@@ -393,8 +383,7 @@ public class QueryEngine
 
 			final List<Query> list = new ArrayList<>(queries.values());
 
-			if (groundQuery != null)
-				list.add(0, groundQuery);
+			if (groundQuery != null) list.add(0, groundQuery);
 
 			return list;
 		}
@@ -436,18 +425,13 @@ public class QueryEngine
 				boolean replaceA1 = false;
 				boolean replaceA2 = false;
 
-				if (!a1.equals(a2))
-					if (undistVars.contains(a1))
-						replaceA1 = true;
-					else
-						if (undistVars.contains(a2))
-							replaceA2 = true;
-						else
-							if (ATermUtils.isVar(a1) && !q.getResultVars().contains(a1))
-								replaceA1 = true;
-							else
-								if (ATermUtils.isVar(a2) && !q.getResultVars().contains(a2))
-									replaceA2 = true;
+				if (!a1.equals(a2)) if (undistVars.contains(a1))
+					replaceA1 = true;
+				else if (undistVars.contains(a2))
+					replaceA2 = true;
+				else if (ATermUtils.isVar(a1) && !q.getResultVars().contains(a1))
+					replaceA1 = true;
+				else if (ATermUtils.isVar(a2) && !q.getResultVars().contains(a2)) replaceA2 = true;
 
 				if (replaceA1 || replaceA2)
 				{
@@ -480,8 +464,7 @@ public class QueryEngine
 
 			// Could remove sameAs with result vars if we could guarantee the query still contained an
 			// atom containing the variable.
-			if (a1.equals(a2) && !q.getResultVars().contains(a1) && q.getAtoms().size() > 1)
-				q.remove(atom);
+			if (a1.equals(a2) && !q.getResultVars().contains(a1) && q.getAtoms().size() > 1) q.remove(atom);
 		}
 
 		// Undistinguished variables + CLASS and PROPERTY variables
@@ -495,8 +478,7 @@ public class QueryEngine
 				case DirectType:
 					final ATermAppl clazz = a.getArguments().get(1);
 
-					if (undistVars.contains(clazz) && undistVars.contains(a.getArguments().get(0)))
-						q.add(QueryAtomFactory.SubClassOfAtom(clazz, clazz));
+					if (undistVars.contains(clazz) && undistVars.contains(a.getArguments().get(0))) q.add(QueryAtomFactory.SubClassOfAtom(clazz, clazz));
 					break;
 				case PropertyValue:
 					final ATermAppl property = a.getArguments().get(1);
@@ -529,16 +511,13 @@ public class QueryEngine
 
 			// domain simplification
 			for (final QueryAtom pattern : query.findAtoms(QueryPredicate.PropertyValue, var, null, null))
-				if (!ATermUtils.isVar(pattern.getArguments().get(1)))
-					inferredTypes.addAll(kb.getDomains(pattern.getArguments().get(1)));
+				if (!ATermUtils.isVar(pattern.getArguments().get(1))) inferredTypes.addAll(kb.getDomains(pattern.getArguments().get(1)));
 
 			// range simplification
 			for (final QueryAtom pattern : query.findAtoms(QueryPredicate.PropertyValue, null, null, var))
-				if (!ATermUtils.isVar(pattern.getArguments().get(1)))
-					inferredTypes.addAll(kb.getRanges(pattern.getArguments().get(1)));
+				if (!ATermUtils.isVar(pattern.getArguments().get(1))) inferredTypes.addAll(kb.getRanges(pattern.getArguments().get(1)));
 
-			if (!inferredTypes.isEmpty())
-				allInferredTypes.put(var, inferredTypes);
+			if (!inferredTypes.isEmpty()) allInferredTypes.put(var, inferredTypes);
 		}
 
 		for (final QueryAtom atom : new ArrayList<>(query.getAtoms()))
@@ -549,17 +528,14 @@ public class QueryEngine
 				if (!ATermUtils.isVar(clazz))
 				{
 					final Set<ATermAppl> inferred = allInferredTypes.get(inst);
-					if (inferred != null && !inferred.isEmpty())
-						if (inferred.contains(clazz))
-							query.remove(atom);
-						else
-							if (kb.isClassified())
-							{
-								final Set<ATermAppl> subs = kb.getTaxonomy().getFlattenedSubs(clazz, false);
-								final Set<ATermAppl> eqs = kb.getAllEquivalentClasses(clazz);
-								if (SetUtils.intersects(inferred, subs) || SetUtils.intersects(inferred, eqs))
-									query.remove(atom);
-							}
+					if (inferred != null && !inferred.isEmpty()) if (inferred.contains(clazz))
+						query.remove(atom);
+					else if (kb.isClassified())
+					{
+						final Set<ATermAppl> subs = kb.getTaxonomy().getFlattenedSubs(clazz, false);
+						final Set<ATermAppl> eqs = kb.getAllEquivalentClasses(clazz);
+						if (SetUtils.intersects(inferred, subs) || SetUtils.intersects(inferred, eqs)) query.remove(atom);
+					}
 				}
 			}
 	}
@@ -567,8 +543,8 @@ public class QueryEngine
 	/**
 	 * Executes all boolean ABox atoms
 	 *
-	 * @param query
-	 * @return
+	 * @param  query
+	 * @return       true if query is satisfied
 	 */
 	public static boolean execBooleanABoxQuery(final Query query)
 	{
@@ -615,53 +591,49 @@ public class QueryEngine
 			// to see if there is a triple that is obviously false
 			if (tripleSatisfied.isUnknown())
 				allTriplesSatisfied = Bool.UNKNOWN;
-			else
-				if (tripleSatisfied.isFalse())
-				{
-					// if one triple is false then the whole query, which is the
-					// conjunction of
-					// all triples, is false. We can _stop now.
-					allTriplesSatisfied = Bool.FALSE;
+			else if (tripleSatisfied.isFalse())
+			{
+				// if one triple is false then the whole query, which is the
+				// conjunction of
+				// all triples, is false. We can _stop now.
+				allTriplesSatisfied = Bool.FALSE;
 
-					if (_logger.isLoggable(Level.FINER))
-						_logger.finer("Failed atom: " + atom);
+				if (_logger.isLoggable(Level.FINER)) _logger.finer("Failed atom: " + atom);
 
-					break;
-				}
+				break;
+			}
 		}
 
 		// if we reached a verdict, return it
 		if (allTriplesSatisfied.isKnown())
 			querySatisfied = allTriplesSatisfied.isTrue();
 		else
-			// do the unavoidable consistency check
-			if (!query.getConstants().isEmpty())
-			{
-				final ATermAppl testInd = query.getConstants().iterator().next();
-				final ATermAppl testClass = query.rollUpTo(testInd, Collections.<ATermAppl> emptySet(), false);
+		// do the unavoidable consistency check
+		if (!query.getConstants().isEmpty())
+		{
+			final ATermAppl testInd = query.getConstants().iterator().next();
+			final ATermAppl testClass = query.rollUpTo(testInd, Collections.<ATermAppl>emptySet(), false);
 
-				if (_logger.isLoggable(Level.FINER))
-					_logger.finer("Boolean query: " + testInd + " -> " + testClass);
+			if (_logger.isLoggable(Level.FINER)) _logger.finer("Boolean query: " + testInd + " -> " + testClass);
 
-				querySatisfied = kb.isType(testInd, testClass);
-			}
-			else
-			{
-				final ATermAppl testVar = query.getUndistVars().iterator().next();
-				final ATermAppl testClass = query.rollUpTo(testVar, Collections.<ATermAppl> emptySet(), false);
+			querySatisfied = kb.isType(testInd, testClass);
+		}
+		else
+		{
+			final ATermAppl testVar = query.getUndistVars().iterator().next();
+			final ATermAppl testClass = query.rollUpTo(testVar, Collections.<ATermAppl>emptySet(), false);
 
-				final ATermAppl newUC = ATermUtils.normalize(ATermUtils.makeNot(testClass));
+			final ATermAppl newUC = ATermUtils.normalize(ATermUtils.makeNot(testClass));
 
-				final Role topObjectRole = kb.getRole(TOP_OBJECT_PROPERTY);
-				final boolean added = topObjectRole.addDomain(newUC, DependencySet.INDEPENDENT);
+			final Role topObjectRole = kb.getRole(TOP_OBJECT_PROPERTY);
+			final boolean added = topObjectRole.addDomain(newUC, DependencySet.INDEPENDENT);
 
-				final ABox copy = kb.getABox().copy();
-				copy.setInitialized(false);
-				querySatisfied = !copy.isConsistent();
+			final ABox copy = kb.getABox().copy();
+			copy.setInitialized(false);
+			querySatisfied = !copy.isConsistent();
 
-				if (added)
-					topObjectRole.removeDomain(newUC, DependencySet.INDEPENDENT);
-			}
+			if (added) topObjectRole.removeDomain(newUC, DependencySet.INDEPENDENT);
+		}
 
 		return querySatisfied;
 	}
@@ -691,8 +663,7 @@ public class QueryEngine
 				return kb.isSubClassOf(arguments.get(0), arguments.get(1));
 			case DirectSubClassOf:
 				for (final Set<ATermAppl> a : kb.getSubClasses(arguments.get(1), true))
-					if (a.contains(arguments.get(0)))
-						return true;
+					if (a.contains(arguments.get(0))) return true;
 				return false;
 			case StrictSubClassOf:
 				return kb.isSubClassOf(arguments.get(0), arguments.get(1)) && !kb.getEquivalentClasses(arguments.get(1)).contains(arguments.get(0));
@@ -706,8 +677,7 @@ public class QueryEngine
 				return kb.isSubPropertyOf(arguments.get(0), arguments.get(1));
 			case DirectSubPropertyOf:
 				for (final Set<ATermAppl> a : kb.getSubProperties(arguments.get(1), true))
-					if (a.contains(arguments.get(0)))
-						return true;
+					if (a.contains(arguments.get(0))) return true;
 				return false;
 			case StrictSubPropertyOf:
 				return kb.isSubPropertyOf(arguments.get(0), arguments.get(1)) && !kb.getEquivalentProperties(arguments.get(1)).contains(arguments.get(0));
@@ -737,8 +707,7 @@ public class QueryEngine
 				return kb.isTransitiveProperty(arguments.get(0));
 			case NotKnown:
 				for (final QueryAtom notAtom : ((NotKnownQueryAtom) atom).getAtoms())
-					if (!checkGround(notAtom, kb))
-						return true;
+					if (!checkGround(notAtom, kb)) return true;
 				return false;
 			case NegativePropertyValue:
 				return kb.isType(arguments.get(0), not(hasValue(arguments.get(1), arguments.get(2))));
@@ -746,8 +715,7 @@ public class QueryEngine
 				for (final List<QueryAtom> atoms : ((UnionQueryAtom) atom).getUnion())
 				{
 					for (final QueryAtom unionAtom : atoms)
-						if (!checkGround(unionAtom, kb))
-							break; // Go to next sequence of atoms
+						if (!checkGround(unionAtom, kb)) break; // Go to next sequence of atoms
 					return true;
 				}
 				return false;
@@ -755,8 +723,7 @@ public class QueryEngine
 				final ATermAppl l = arguments.get(0);
 				final ATermAppl d = arguments.get(1);
 
-				if (!ATermUtils.isLiteral(l))
-					return false;
+				if (!ATermUtils.isLiteral(l)) return false;
 
 				final DatatypeReasoner dtReasoner = kb.getDatatypeReasoner();
 				try

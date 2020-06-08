@@ -13,6 +13,7 @@ import openllet.core.datatypes.Datatypes;
 import openllet.core.datatypes.exceptions.InvalidConstrainingFacetException;
 import openllet.core.datatypes.exceptions.InvalidLiteralException;
 import openllet.core.datatypes.exceptions.UnrecognizedDatatypeException;
+import openllet.core.datatypes.types.text.RestrictedTextDatatype;
 import org.junit.Test;
 
 /**

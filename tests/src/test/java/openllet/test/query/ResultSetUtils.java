@@ -31,9 +31,9 @@ import org.junit.Assert;
  */
 public class ResultSetUtils
 {
-	private static final Logger _logger = Log.getLogger(ResultSetUtils.class);
+	private static final Logger		_logger			= Log.getLogger(ResultSetUtils.class);
 
-	private static final RDFNode DUMMY_FOR_BNODE = ResourceFactory.createPlainLiteral("dummy node for bnode");
+	private static final RDFNode	DUMMY_FOR_BNODE	= ResourceFactory.createPlainLiteral("dummy node for bnode");
 
 	public static boolean assertEquals(final ResultSet expectedResults, final ResultSet computedResults)
 	{
@@ -73,8 +73,7 @@ public class ResultSetUtils
 		for (final String var : vars)
 		{
 			final RDFNode val = qs.get(var);
-			if (null != val)
-				result.put(var, val.isAnon() ? DUMMY_FOR_BNODE : val);
+			if (null != val) result.put(var, val.isAnon() ? DUMMY_FOR_BNODE : val);
 		}
 		return result;
 	}

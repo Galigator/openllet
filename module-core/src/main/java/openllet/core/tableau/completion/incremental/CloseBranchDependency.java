@@ -32,9 +32,9 @@ import openllet.core.tableau.branch.Branch;
  */
 public class CloseBranchDependency extends BranchDependency
 {
-	private final int _tryNext;
+	private final int		_tryNext;
 
-	private final Branch _closeBranch;
+	private final Branch	_closeBranch;
 
 	public CloseBranchDependency(final ATermAppl assertion, final int tryNext, final Branch theBranch)
 	{

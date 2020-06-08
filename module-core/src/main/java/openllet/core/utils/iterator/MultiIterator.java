@@ -19,16 +19,16 @@ import java.util.NoSuchElementException;
  * Company: Clark & Parsia, LLC. <http://www.clarkparsia.com>
  * </p>
  *
- * @author Evren Sirin
- * @param <T> kind of elements
+ * @author     Evren Sirin
+ * @param  <T> kind of elements
  */
 public class MultiIterator<T> implements Iterator<T>
 {
-	private final List<Iterator<? extends T>> _list = new ArrayList<>(2);
+	private final List<Iterator<? extends T>>	_list	= new ArrayList<>(2);
 
-	private volatile int _index = 0;
+	private volatile int						_index	= 0;
 
-	private volatile Iterator<? extends T> _curr;
+	private volatile Iterator<? extends T>		_curr;
 
 	public MultiIterator(final Iterator<? extends T> first)
 	{
@@ -53,19 +53,17 @@ public class MultiIterator<T> implements Iterator<T>
 	@Override
 	public T next()
 	{
-		if (!hasNext())
-			throw new NoSuchElementException("multi iterator");
+		if (!hasNext()) throw new NoSuchElementException("multi iterator");
 
 		return _curr.next();
 	}
 
 	public void append(final Iterator<? extends T> other)
 	{
-		if (other.hasNext())
-			if (other instanceof MultiIterator)
-				_list.addAll(((MultiIterator<? extends T>) other)._list);
-			else
-				_list.add(other);
+		if (other.hasNext()) if (other instanceof MultiIterator)
+			_list.addAll(((MultiIterator<? extends T>) other)._list);
+		else
+			_list.add(other);
 	}
 
 	@Override

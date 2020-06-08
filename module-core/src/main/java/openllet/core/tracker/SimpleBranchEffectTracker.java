@@ -59,8 +59,7 @@ public class SimpleBranchEffectTracker implements BranchEffectTracker
 	@Override
 	public boolean add(final int branch, final ATermAppl a)
 	{
-		if (branch <= 0)
-			return false;
+		if (branch <= 0) return false;
 
 		final int diff = branch - _effects.size();
 		if (diff > 0)
@@ -100,18 +99,15 @@ public class SimpleBranchEffectTracker implements BranchEffectTracker
 	public Set<ATermAppl> getAll(final int branch)
 	{
 
-		if (branch < 1)
-			throw new IllegalArgumentException();
+		if (branch < 1) throw new IllegalArgumentException();
 
-		if (branch > _effects.size())
-			return Collections.emptySet();
+		if (branch > _effects.size()) return Collections.emptySet();
 
 		final Set<ATermAppl> ret = new HashSet<>();
 		for (int i = branch - 1; i < _effects.size(); i++)
 		{
 			final Set<ATermAppl> s = _effects.get(i);
-			if (s != null)
-				ret.addAll(s);
+			if (s != null) ret.addAll(s);
 		}
 
 		return ret;
@@ -125,15 +121,12 @@ public class SimpleBranchEffectTracker implements BranchEffectTracker
 	@Override
 	public Set<ATermAppl> remove(final int branch)
 	{
-		if (branch < 1)
-			throw new IllegalArgumentException();
+		if (branch < 1) throw new IllegalArgumentException();
 
-		if (branch > _effects.size())
-			return Collections.emptySet();
+		if (branch > _effects.size()) return Collections.emptySet();
 
 		final Set<ATermAppl> ret = _effects.remove(branch - 1);
-		if (ret == null)
-			return Collections.emptySet();
+		if (ret == null) return Collections.emptySet();
 
 		return ret;
 	}
@@ -147,18 +140,15 @@ public class SimpleBranchEffectTracker implements BranchEffectTracker
 	public Set<ATermAppl> removeAll(final int branch)
 	{
 
-		if (branch < 1)
-			throw new IllegalArgumentException();
+		if (branch < 1) throw new IllegalArgumentException();
 
-		if (branch > _effects.size())
-			return Collections.emptySet();
+		if (branch > _effects.size()) return Collections.emptySet();
 
 		final Set<ATermAppl> ret = new HashSet<>();
 		for (int i = _effects.size() - 1; i >= branch - 1; i--)
 		{
 			final Set<ATermAppl> s = _effects.remove(i);
-			if (s != null)
-				ret.addAll(s);
+			if (s != null) ret.addAll(s);
 		}
 
 		return ret;

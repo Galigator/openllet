@@ -36,11 +36,11 @@ import openllet.core.utils.CollectionUtils;
  */
 public class CachedConceptNode implements CachedNode
 {
-	private final ATermAppl _name;
-	private final EdgeList _inEdges;
-	private final EdgeList _outEdges;
-	private final Map<ATermAppl, DependencySet> _types;
-	private final boolean _isIndependent;
+	private final ATermAppl						_name;
+	private final EdgeList						_inEdges;
+	private final EdgeList						_outEdges;
+	private final Map<ATermAppl, DependencySet>	_types;
+	private final boolean						_isIndependent;
 
 	/**
 	 * @param name
@@ -60,8 +60,7 @@ public class CachedConceptNode implements CachedNode
 		_inEdges = copyEdgeList(node, false);
 
 		// collect all transitive property values
-		if (node.getABox().getKB().getExpressivity().hasNominal())
-			collectComplexPropertyValues(node);
+		if (node.getABox().getKB().getExpressivity().hasNominal()) collectComplexPropertyValues(node);
 
 		_types = CollectionUtils.makeIdentityMap(node.getDepends());
 		for (final Map.Entry<ATermAppl, DependencySet> e : _types.entrySet())
@@ -79,8 +78,7 @@ public class CachedConceptNode implements CachedNode
 			// TODO we might not need to collect all non-simple roles
 			// collecting only the base ones, i.e. minimal w.r.t. role
 			// ordering, would be enough
-			if (role.isSimple() || !collected.add(role))
-				continue;
+			if (role.isSimple() || !collected.add(role)) continue;
 
 			collected.add(role);
 
@@ -91,8 +89,7 @@ public class CachedConceptNode implements CachedNode
 		{
 			final Role role = edge.getRole().getInverse();
 
-			if (role.isSimple() || !collected.add(role))
-				continue;
+			if (role.isSimple() || !collected.add(role)) continue;
 
 			collectComplexPropertyValues(subj, role);
 		}
@@ -114,7 +111,7 @@ public class CachedConceptNode implements CachedNode
 	/**
 	 * Create an immutable copy of the given edge list and trimmed to the size.
 	 *
-	 * @param edgeList
+	 * @param  edgeList
 	 * @return
 	 */
 	private static EdgeList copyEdgeList(final Individual node, final boolean out)

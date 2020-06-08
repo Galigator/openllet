@@ -39,29 +39,25 @@ public class BooleanOperators
 		@Override
 		public boolean apply(final ABox abox, final Literal[] args)
 		{
-			if (args.length != 2)
-				return false;
+			if (args.length != 2) return false;
 
 			if (args[0] == null)
 			{
 				if (args[1] != null && args[1].getValue() instanceof Boolean)
 				{
-					args[0] = abox.addLiteral(((Boolean) args[1].getValue()).booleanValue() ? FALSE_TERM : TRUE_TERM);
+					args[0] = abox.addLiteral(((Boolean) args[1].getValue()) ? FALSE_TERM : TRUE_TERM);
 					return true;
 				}
 			}
-			else
-				if (args[1] == null)
+			else if (args[1] == null)
+			{
+				if (args[0].getValue() instanceof Boolean)
 				{
-					if (args[0].getValue() instanceof Boolean)
-					{
-						args[1] = abox.addLiteral(((Boolean) args[0].getValue()).booleanValue() ? FALSE_TERM : TRUE_TERM);
-						return true;
-					}
+					args[1] = abox.addLiteral(((Boolean) args[0].getValue()) ? FALSE_TERM : TRUE_TERM);
+					return true;
 				}
-				else
-					if (args[0].getValue() instanceof Boolean && args[1].getValue() instanceof Boolean)
-						return !args[0].equals(args[1]);
+			}
+			else if (args[0].getValue() instanceof Boolean && args[1].getValue() instanceof Boolean) return !args[0].equals(args[1]);
 
 			return false;
 		}
@@ -69,16 +65,15 @@ public class BooleanOperators
 		@Override
 		public boolean isApplicable(final boolean[] boundPositions)
 		{
-			if (boundPositions.length != 2)
-				return false;
+			if (boundPositions.length != 2) return false;
 
 			return !Arrays.equals(boundPositions, new boolean[] { false, false });
 		}
 	}
 
-	public final static GeneralFunction booleanNot;
+	public final static GeneralFunction	booleanNot;
 
-	private static final ATermAppl TRUE_TERM, FALSE_TERM;
+	private static final ATermAppl		TRUE_TERM, FALSE_TERM;
 
 	static
 	{

@@ -18,14 +18,14 @@ import openllet.shared.tools.Log;
 public class StatisticsTable<ROW, COL>
 {
 
-	private static final Logger _logger = Log.getLogger(StatisticsTable.class);
+	private static final Logger					_logger				= Log.getLogger(StatisticsTable.class);
 
-	private final Map<COL, Map<ROW, Number>> _statistics = new HashMap<>();
+	private final Map<COL, Map<ROW, Number>>	_statistics			= new HashMap<>();
 
-	private final List<COL> _cols = new ArrayList<>();
-	private final List<ROW> _rows = new ArrayList<>();
+	private final List<COL>						_cols				= new ArrayList<>();
+	private final List<ROW>						_rows				= new ArrayList<>();
 
-	private int _firstColumnSize = 10;
+	private int									_firstColumnSize	= 10;
 
 	public void add(final ROW row, final COL col, final Number stat)
 	{
@@ -42,13 +42,11 @@ public class StatisticsTable<ROW, COL>
 
 		if (getStat != null)
 			_logger.warning("Overwriting [" + row + " : " + col + "].");
-		else
-			if (!_rows.contains(row))
-			{
-				if (_firstColumnSize < row.toString().length())
-					_firstColumnSize = row.toString().length();
-				_rows.add(row);
-			}
+		else if (!_rows.contains(row))
+		{
+			if (_firstColumnSize < row.toString().length()) _firstColumnSize = row.toString().length();
+			_rows.add(row);
+		}
 
 		getCol.put(row, stat);
 	}
@@ -112,7 +110,7 @@ public class StatisticsTable<ROW, COL>
 			rowName = row.toString();
 			// }
 
-			s += String.format(firstCol, new Object[] { rowName }) + String.format(lineFormat.toString(), rowData.toArray());
+			s += String.format(firstCol, rowName) + String.format(lineFormat.toString(), rowData.toArray());
 		}
 
 		s += separator + "\n";

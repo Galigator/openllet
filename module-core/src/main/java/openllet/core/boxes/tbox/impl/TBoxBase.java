@@ -41,12 +41,12 @@ import openllet.shared.tools.Logging;
 
 public class TBoxBase implements Logging
 {
-	public static Logger _logger = Log.getLogger(TBoxBase.class);
+	public static Logger						_logger		= Log.getLogger(TBoxBase.class);
 
-	protected final KnowledgeBase _kb;
-	protected final TBoxExpImpl _tbox;
+	protected final KnowledgeBase				_kb;
+	protected final TBoxExpImpl					_tbox;
 
-	protected Map<ATermAppl, TermDefinition> _termhash = CollectionUtils.makeIdentityMap();
+	protected Map<ATermAppl, TermDefinition>	_termhash	= CollectionUtils.makeIdentityMap();
 
 	public TBoxBase(final TBoxExpImpl tbox)
 	{
@@ -81,8 +81,7 @@ public class TBoxBase implements Logging
 
 		final ATermAppl name = (ATermAppl) axiom.getArgument(0);
 		final TermDefinition td = getTD(name);
-		if (td != null)
-			removed = td.removeDef(axiom);
+		if (td != null) removed = td.removeDef(axiom);
 
 		return removed;
 	}

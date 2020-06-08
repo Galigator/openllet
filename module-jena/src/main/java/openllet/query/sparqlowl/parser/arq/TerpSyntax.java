@@ -28,9 +28,9 @@ import org.apache.jena.query.Syntax;
 public class TerpSyntax extends Syntax
 {
 
-	private static final TerpSyntax INSTANCE;
-	private static final String NAME;
-	private static final String URI;
+	private static final TerpSyntax	INSTANCE;
+	private static final String		NAME;
+	private static final String		URI;
 
 	static
 	{

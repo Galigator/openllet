@@ -52,13 +52,11 @@ public class AllValuesRule extends AbstractTableauRule
 			final ATermAppl av = i.next();
 			final DependencySet avDepends = x.getDepends(av);
 
-			if (!OpenlletOptions.MAINTAIN_COMPLETION_QUEUE && avDepends == null)
-				continue;
+			if (!OpenlletOptions.MAINTAIN_COMPLETION_QUEUE && avDepends == null) continue;
 
 			applyAllValues(x, av, avDepends);
 
-			if (x.isMerged() || _strategy.getABox().isClosed())
-				return;
+			if (x.isMerged() || _strategy.getABox().isClosed()) return;
 
 			// if there are self links through transitive properties restart
 			if (size != allValues.size())
@@ -79,8 +77,7 @@ public class AllValuesRule extends AbstractTableauRule
 	 */
 	public void applyAllValues(final Individual x, final ATermAppl av, final DependencySet ds)
 	{
-		if (av.getArity() == 0)
-			throw new InternalReasonerException();
+		if (av.getArity() == 0) throw new InternalReasonerException();
 		final ATerm p = av.getArgument(0);
 		final ATermAppl c = (ATermAppl) av.getArgument(1);
 
@@ -115,16 +112,14 @@ public class AllValuesRule extends AbstractTableauRule
 
 			if (roleChain.isEmpty())
 				applyAllValues(x, s, y, c, finalDS);
-			else
-				if (y.isIndividual())
-				{
-					final ATermAppl allRC = ATermUtils.makeAllValues(roleChain, c);
+			else if (y.isIndividual())
+			{
+				final ATermAppl allRC = ATermUtils.makeAllValues(roleChain, c);
 
-					_strategy.addType(y, allRC, finalDS);
-				}
+				_strategy.addType(y, allRC, finalDS);
+			}
 
-			if (x.isMerged() || _strategy.getABox().isClosed())
-				return;
+			if (x.isMerged() || _strategy.getABox().isClosed()) return;
 		}
 
 		if (!s.isSimple())
@@ -133,13 +128,11 @@ public class AllValuesRule extends AbstractTableauRule
 			for (final ATermList chain : subRoleChains)
 			{
 				final DependencySet subChainDS = ds.union(s.getExplainSub(chain), _strategy.getABox().doExplanation());
-				if (!applyAllValuesPropertyChain(x, chain, c, subChainDS))
-					return;
+				if (!applyAllValuesPropertyChain(x, chain, c, subChainDS)) return;
 			}
 		}
 
-		if (!roleChain.isEmpty())
-			applyAllValuesPropertyChain(x, (ATermList) p, c, ds);
+		if (!roleChain.isEmpty()) applyAllValuesPropertyChain(x, (ATermList) p, c, ds);
 	}
 
 	protected boolean applyAllValuesPropertyChain(final Individual x, final ATermList chain, final ATermAppl c, final DependencySet ds)
@@ -158,8 +151,7 @@ public class AllValuesRule extends AbstractTableauRule
 
 				applyAllValues(x, r, y, allRC, finalDS);
 
-				if (x.isMerged() || _strategy.getABox().isClosed())
-					return false;
+				if (x.isMerged() || _strategy.getABox().isClosed()) return false;
 			}
 		}
 
@@ -173,8 +165,7 @@ public class AllValuesRule extends AbstractTableauRule
 			_logger.fine(() -> "ALL : " + subj + " -> " + pred + " -> " + obj + " : " + ATermUtils.toString(c) + " - " + ds);
 
 			// because we do not maintain the _queue it could be the case that this _node is pruned, so return
-			if (obj.isPruned())
-				return;
+			if (obj.isPruned()) return;
 
 			_strategy.addType(obj, c, ds);
 		}
@@ -213,8 +204,7 @@ public class AllValuesRule extends AbstractTableauRule
 			if (s.isTop() && s.isObjectRole())
 			{
 				applyAllValuesTop(av, c, ds);
-				if (_strategy.getABox().isClosed())
-					return;
+				if (_strategy.getABox().isClosed()) return;
 				continue;
 			}
 
@@ -225,16 +215,14 @@ public class AllValuesRule extends AbstractTableauRule
 				finalDS = finalDS.union(s.getExplainSubOrInv(pred), _strategy.getABox().doExplanation());
 				if (roleChain.isEmpty())
 					applyAllValues(subj, s, obj, c, finalDS);
-				else
-					if (obj.isIndividual())
-					{
-						final ATermAppl allRC = ATermUtils.makeAllValues(roleChain, c);
+				else if (obj.isIndividual())
+				{
+					final ATermAppl allRC = ATermUtils.makeAllValues(roleChain, c);
 
-						_strategy.addType(obj, allRC, finalDS);
-					}
+					_strategy.addType(obj, allRC, finalDS);
+				}
 
-				if (_strategy.getABox().isClosed())
-					return;
+				if (_strategy.getABox().isClosed()) return;
 			}
 
 			if (!s.isSimple())
@@ -245,20 +233,18 @@ public class AllValuesRule extends AbstractTableauRule
 				{
 					//                    if( !pred.getName().equals( chain.getFirst() ) )
 					final Role firstRole = _strategy.getABox().getRole(chain.getFirst());
-					if (!pred.isSubRoleOf(firstRole))
-						continue;
+					if (!pred.isSubRoleOf(firstRole)) continue;
 
 					final ATermAppl allRC = ATermUtils.makeAllValues(chain.getNext(), c);
 
-					applyAllValues(subj, pred, obj, allRC, finalDS.union(firstRole.getExplainSub(pred.getName()), _strategy.getABox().doExplanation()).union(s.getExplainSub(chain), _strategy.getABox().doExplanation()));
+					applyAllValues(subj, pred, obj, allRC,
+							finalDS.union(firstRole.getExplainSub(pred.getName()), _strategy.getABox().doExplanation()).union(s.getExplainSub(chain), _strategy.getABox().doExplanation()));
 
-					if (subj.isMerged() || _strategy.getABox().isClosed())
-						return;
+					if (subj.isMerged() || _strategy.getABox().isClosed()) return;
 				}
 			}
 
-			if (subj.isMerged())
-				return;
+			if (subj.isMerged()) return;
 
 			obj = obj.getSame();
 
@@ -286,8 +272,7 @@ public class AllValuesRule extends AbstractTableauRule
 				node.addType(c, ds);
 				node.addType(allTopC, ds);
 
-				if (_strategy.getABox().isClosed())
-					break;
+				if (_strategy.getABox().isClosed()) break;
 			}
 
 	}

@@ -31,9 +31,9 @@ import openllet.aterm.ATermAppl;
  */
 public class NotKnownQueryAtom implements QueryAtom
 {
-	private final List<QueryAtom> _atoms;
-	private boolean _isGround;
-	private final List<ATermAppl> _args;
+	private final List<QueryAtom>	_atoms;
+	private boolean					_isGround;
+	private final List<ATermAppl>	_args;
 
 	public NotKnownQueryAtom(final QueryAtom atom)
 	{
@@ -42,15 +42,14 @@ public class NotKnownQueryAtom implements QueryAtom
 
 	public NotKnownQueryAtom(final List<QueryAtom> atoms)
 	{
-		this._atoms = Collections.unmodifiableList(atoms);
+		_atoms = Collections.unmodifiableList(atoms);
 
 		_isGround = true;
 		_args = new ArrayList<>();
 		for (final QueryAtom atom : atoms)
 		{
 			_args.addAll(atom.getArguments());
-			if (_isGround && !atom.isGround())
-				_isGround = false;
+			if (_isGround && !atom.isGround()) _isGround = false;
 		}
 	}
 
@@ -73,8 +72,7 @@ public class NotKnownQueryAtom implements QueryAtom
 	@Override
 	public boolean equals(final Object obj)
 	{
-		if (!(obj instanceof NotKnownQueryAtom))
-			return false;
+		if (!(obj instanceof NotKnownQueryAtom)) return false;
 
 		return _atoms.equals(((NotKnownQueryAtom) obj)._atoms);
 	}

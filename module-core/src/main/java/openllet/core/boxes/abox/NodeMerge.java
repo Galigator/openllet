@@ -40,9 +40,9 @@ import openllet.core.DependencySet;
  */
 public class NodeMerge
 {
-	private ATermAppl _source;
-	private ATermAppl _target;
-	private DependencySet _ds;
+	private ATermAppl		_source;
+	private ATermAppl		_target;
+	private DependencySet	_ds;
 
 	public NodeMerge(final Node y, final Node z)
 	{

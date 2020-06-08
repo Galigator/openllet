@@ -2,29 +2,28 @@ package openllet.aterm.pure;
 
 import java.io.IOException;
 import java.io.Reader;
-
 import openllet.aterm.ATerm;
 import openllet.aterm.ParseError;
 import openllet.atom.OpenError;
 
 public class ATermReader
 {
-	private static final int INITIAL_TABLE_SIZE = 2048;
-	private static final int TABLE_INCREMENT = 4096;
+	private static final int	INITIAL_TABLE_SIZE	= 2048;
+	private static final int	TABLE_INCREMENT		= 4096;
 
-	private static final int INITIAL_BUFFER_SIZE = 1024;
+	private static final int	INITIAL_BUFFER_SIZE	= 1024;
 
-	private final Reader reader;
+	private final Reader		reader;
 
-	public int last_char;
-	private int pos;
+	public int					last_char;
+	private int					pos;
 
-	private int nr_terms;
-	private ATerm[] table;
+	private int					nr_terms;
+	private ATerm[]				table;
 
-	private char[] buffer;
-	private int limit;
-	private int bufferPos;
+	private char[]				buffer;
+	private int					limit;
+	private int					bufferPos;
 
 	public ATermReader(final Reader reader)
 	{
@@ -53,11 +52,9 @@ public class ATermReader
 
 	public void storeNextTerm(final ATerm t, final int size)
 	{
-		if (table == null)
-			return;
+		if (table == null) return;
 
-		if (size <= PureFactory.abbrevSize(nr_terms))
-			return;
+		if (size <= PureFactory.abbrevSize(nr_terms)) return;
 
 		if (nr_terms == table.length)
 		{
@@ -71,8 +68,7 @@ public class ATermReader
 
 	public ATerm getTerm(final int index)
 	{
-		if (index < 0 || index >= nr_terms)
-			throw new OpenError("illegal index");
+		if (index < 0 || index >= nr_terms) throw new OpenError("illegal index");
 		return table[index];
 	}
 
@@ -118,13 +114,11 @@ public class ATermReader
 		int val = Character.digit(last_char, 8);
 		val += Character.digit(read(), 8);
 
-		if (val < 0)
-			throw new ParseError("octal must have 3 octdigits.");
+		if (val < 0) throw new ParseError("octal must have 3 octdigits.");
 
 		val += Character.digit(read(), 8);
 
-		if (val < 0)
-			throw new ParseError("octal must have 3 octdigits");
+		if (val < 0) throw new ParseError("octal must have 3 octdigits");
 
 		return val;
 	}

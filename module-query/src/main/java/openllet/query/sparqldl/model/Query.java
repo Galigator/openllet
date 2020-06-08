@@ -34,175 +34,160 @@ public interface Query
 	}
 
 	/**
-	 * Sets the filter for this query.
-	 *
-	 * @return
+	 * @param filter to sets for this query.
 	 */
-	public void setFilter(final Filter filter);
+	void setFilter(final Filter filter);
 
 	/**
-	 * Sets the filter for this query.
-	 *
-	 * @return
+	 * @return the filter for this query.
 	 */
-	public Filter getFilter();
+	Filter getFilter();
 
 	/**
-	 * Returns true if distinct results are required.
-	 *
-	 * @return
+	 * @return true if distinct results are required.
 	 */
-	public boolean isDistinct();
+	boolean isDistinct();
 
 	/**
-	 * Returns variables that occur in the subquery specified by the given type.
-	 *
-	 * @return
+	 * @param  queryType #VarType
+	 * @return           variables that occur in the subquery specified by the given type.
 	 */
-	public Set<ATermAppl> getDistVarsForType(final VarType queryType);
+	Set<ATermAppl> getDistVarsForType(final VarType queryType);
 
 	/**
 	 * Adds an query atom to the query.
 	 *
 	 * @param atom
 	 */
-	public void add(final QueryAtom atom);
+	void add(final QueryAtom atom);
 
 	/**
 	 * Adds a distinguished variable to the query with its type - there can be more variable types to support punning.
 	 *
-	 * @param atom
+	 * @param a
+	 * @param type
 	 */
-	public void addDistVar(final ATermAppl a, final VarType type);
+	void addDistVar(final ATermAppl a, final VarType type);
 
 	/**
-	 * Adds a distinguished variable that appears in the result projection to the query;
-	 *
-	 * @param atom
+	 * @param a is the distinguished variable to add that appears in the result projection to the query;
 	 */
-	public void addResultVar(final ATermAppl a);
+	void addResultVar(final ATermAppl a);
 
 	/**
-	 * Return all the variables used in this query.
-	 *
-	 * @return Set of variables
+	 * @return all the variables used in this query.
 	 */
-	public Set<ATermAppl> getVars();
+	Set<ATermAppl> getVars();
 
 	/**
 	 * Return all undistinguished variables used in this query.
 	 *
 	 * @return Set of variables
 	 */
-	public Set<ATermAppl> getUndistVars();
+	Set<ATermAppl> getUndistVars();
 
 	/**
-	 * Return individuals and literals used in this query.
-	 *
-	 * @return
+	 * @return individuals and literals used in this query.
 	 */
-	public Set<ATermAppl> getConstants();
+	Set<ATermAppl> getConstants();
 
 	/**
 	 * Return all the variables that will be in the results. For SPARQL, these are the variables in the SELECT clause.
 	 *
 	 * @return Set of variables
 	 */
-	public List<ATermAppl> getResultVars();
+	List<ATermAppl> getResultVars();
 
 	/**
 	 * Return all the distinguished variables. These are variables that will be bound to individuals (or _data values) existing in the KB.
 	 *
 	 * @return Set of variables
 	 */
-	public Set<ATermAppl> getDistVars();
+	Set<ATermAppl> getDistVars();
 
 	/**
-	 * Get all the atoms in the query.
-	 *
-	 * @return
+	 * @return all the atoms in the query.
 	 */
-	public List<QueryAtom> getAtoms();
+	List<QueryAtom> getAtoms();
 
 	/**
-	 * The KB that will be used to answer this query.
-	 *
-	 * @return
+	 * @return The KB that will be used to answer this query.
 	 */
-	public KnowledgeBase getKB();
+	KnowledgeBase getKB();
 
 	/**
 	 * Sets the KB that will be used to answer this query.
 	 *
 	 * @param kb KB that will be used to answer this query
 	 */
-	public void setKB(KnowledgeBase kb);
+	void setKB(KnowledgeBase kb);
 
 	/**
 	 * Checks whether the query is ground.
 	 *
 	 * @return true iff the query is ground
 	 */
-	public boolean isGround();
+	boolean isGround();
 
 	/**
 	 * Replace the variables in the query with the values specified in the binding and return a new query instance (without modifying this query).
 	 *
-	 * @param binding
-	 * @return
+	 * @param  binding
+	 * @return         the query changed
 	 */
-	public Query apply(ResultBinding binding);
+	Query apply(ResultBinding binding);
 
 	/**
-	 * Rolls up the query to the given variable.
-	 *
-	 * @param distVar
-	 * @return
+	 * @param  distVar
+	 * @param  avoidList
+	 * @param  stopOnConstants
+	 * @return                 Rolls up the query to the given variable.
 	 */
-	public ATermAppl rollUpTo(final ATermAppl distVar, final Collection<ATermAppl> avoidList, final boolean stopOnConstants);
+	ATermAppl rollUpTo(final ATermAppl distVar, final Collection<ATermAppl> avoidList, final boolean stopOnConstants);
 
 	/**
 	 * Creates a subquery from the given query. Atoms are listed according to the 'atoms' parameter.
 	 *
-	 * @param atoms selected atom indices
-	 * @return subquery
+	 * @param  atoms selected atom indices
+	 * @return       subquery
 	 */
-	public Query reorder(int[] atoms);
+	Query reorder(int[] atoms);
 
-	public void remove(final QueryAtom atom);
+	void remove(final QueryAtom atom);
 
 	/**
 	 * Searches for given atom pattern. This also might be used for different types of rolling-up, involving various sets of allowed atom types.
 	 *
-	 * @return query atoms in the _order as they appear in the query
+	 * @param  predicate
+	 * @param  arguments
+	 *
+	 * @return           query atoms in the order as they appear in the query
 	 */
-	public List<QueryAtom> findAtoms(final QueryPredicate predicate, final ATermAppl... arguments);
+	List<QueryAtom> findAtoms(final QueryPredicate predicate, final ATermAppl... arguments);
 
 	/**
-	 * Set the query parameterization
-	 *
-	 * @params parameters
+	 * @param parameters to set for the query parameterization
 	 */
-	public void setQueryParameters(QueryParameters parameters);
+	void setQueryParameters(QueryParameters parameters);
 
 	/**
 	 * Get the query parameterization values
 	 *
 	 * @return QueryParameters
 	 */
-	public QueryParameters getQueryParameters();
+	QueryParameters getQueryParameters();
 
 	/**
 	 * Return the name of this query
 	 *
 	 * @return name of the query
 	 */
-	public ATermAppl getName();
+	ATermAppl getName();
 
 	/**
 	 * Sets the name of this query
 	 *
 	 * @param name name of the query
 	 */
-	public void setName(ATermAppl name);
+	void setName(ATermAppl name);
 }

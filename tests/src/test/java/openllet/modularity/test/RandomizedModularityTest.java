@@ -83,8 +83,7 @@ public abstract class RandomizedModularityTest extends AbstractModularityTest
 		for (final Iterator<OWLAxiom> i = expected.iterator(); i.hasNext();)
 		{
 			final OWLAxiom axiom = i.next();
-			if (axiom.getAxiomType() == AxiomType.SAME_INDIVIDUAL || axiom.getAxiomType() == AxiomType.DIFFERENT_INDIVIDUALS)
-				i.remove();
+			if (axiom.getAxiomType() == AxiomType.SAME_INDIVIDUAL || axiom.getAxiomType() == AxiomType.DIFFERENT_INDIVIDUALS) i.remove();
 		}
 
 		TestUtils.assertToStringEquals("Modules diff for " + signature, expected.toArray(new OWLAxiom[0]), computed.toArray(new OWLAxiom[0]));

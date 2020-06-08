@@ -43,8 +43,8 @@ public class SPARQLDLExample
 {
 
 	// The ontology loaded as dataset
-	private static final String ontology = "data/university0-0.owl";
-	private static final String[] queries = new String[] {
+	private static final String		ontology	= "data/university0-0.owl";
+	private static final String[]	queries		= new String[] {
 			// One of the original LUBM queries
 			"data/lubm-query4.sparql",
 			// A SPARQL-DL query

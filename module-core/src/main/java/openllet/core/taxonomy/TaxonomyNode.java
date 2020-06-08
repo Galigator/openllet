@@ -39,26 +39,26 @@ import java.util.concurrent.ConcurrentHashMap;
 import openllet.core.utils.SetUtils;
 
 /**
- * @author Evren Sirin
- * @param <T> type of the node name.
+ * @author     Evren Sirin
+ * @param  <T> type of the node name.
  */
 public class TaxonomyNode<T>
 {
 
-	private final Map<Object, Object> _dataMap = new ConcurrentHashMap<>();
+	private final Map<Object, Object>	_dataMap	= new ConcurrentHashMap<>();
 
-	private final Set<TaxonomyNode<T>> _subs = SetUtils.create(2);
-	private final Set<TaxonomyNode<T>> _supers = SetUtils.create();
+	private final Set<TaxonomyNode<T>>	_subs		= SetUtils.create(2);
+	private final Set<TaxonomyNode<T>>	_supers		= SetUtils.create();
 
-	private volatile Set<T> _equivalents; // Most time it won't change. But it happen some time.
-	private volatile boolean _hidden;
+	private volatile Set<T>				_equivalents;							// Most time it won't change. But it happen some time.
+	private volatile boolean			_hidden;
 
-	private volatile boolean _checkMark;
-	private volatile boolean _seen = false; // Is the checkMark meaningfull
+	private volatile boolean			_checkMark;
+	private volatile boolean			_seen		= false;					// Is the checkMark meaningfull
 
-	private volatile T _name; // Can be null :-(
+	private volatile T					_name;									// Can be null :-(
 
-	protected volatile short _depth = 0;
+	protected volatile short			_depth		= 0;
 
 	public TaxonomyNode(final T name, final boolean hidden)
 	{
@@ -117,12 +117,10 @@ public class TaxonomyNode<T>
 
 	public void addSub(final TaxonomyNode<T> other)
 	{
-		if (equals(other) || _subs.contains(other))
-			return;
+		if (equals(other) || _subs.contains(other)) return;
 
 		_subs.add(other);
-		if (!_hidden)
-			other._supers.add(this);
+		if (!_hidden) other._supers.add(this);
 	}
 
 	public void addSubs(final Collection<TaxonomyNode<T>> others)
@@ -133,9 +131,8 @@ public class TaxonomyNode<T>
 	public void addSupers(final Collection<TaxonomyNode<T>> others)
 	{
 		_supers.addAll(others);
-		if (!_hidden)
-			for (final TaxonomyNode<T> other : others)
-				other._subs.add(this);
+		if (!_hidden) for (final TaxonomyNode<T> other : others)
+			other._subs.add(this);
 	}
 
 	public void clearData()
@@ -212,16 +209,14 @@ public class TaxonomyNode<T>
 
 	public void print(final String indentLvl)
 	{
-		if (_subs.isEmpty())
-			return;
+		if (_subs.isEmpty()) return;
 
 		System.out.print(indentLvl);
 		final Iterator<T> i = _equivalents.iterator();
 		while (i.hasNext())
 		{
 			System.out.print(i.next());
-			if (i.hasNext())
-				System.out.print(" = ");
+			if (i.hasNext()) System.out.print(" = ");
 		}
 		System.out.println();
 
@@ -242,18 +237,16 @@ public class TaxonomyNode<T>
 
 	public void removeMultiplePaths()
 	{
-		if (!_hidden)
-			for (final TaxonomyNode<T> sup : _supers)
-				for (final TaxonomyNode<T> sub : _subs)
-					sup.removeSub(sub);
+		if (!_hidden) for (final TaxonomyNode<T> sup : _supers)
+			for (final TaxonomyNode<T> sub : _subs)
+				sup.removeSub(sub);
 	}
 
 	public void removeEquivalent(final T t)
 	{
 		_equivalents.remove(t);
 
-		if (_name != null && _name.equals(t))
-			_name = _equivalents.iterator().next();
+		if (_name != null && _name.equals(t)) _name = _equivalents.iterator().next();
 	}
 
 	public void removeSub(final TaxonomyNode<T> other)

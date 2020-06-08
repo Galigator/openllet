@@ -32,9 +32,9 @@ import org.apache.jena.vocabulary.RDFS;
  */
 public class ConceptConverter extends ATermBaseVisitor
 {
-	private final Graph _graph;
-	private Node _subj;
-	private Node _obj;
+	private final Graph	_graph;
+	private Node		_subj;
+	private Node		_obj;
 
 	public ConceptConverter(final Graph g)
 	{
@@ -54,14 +54,12 @@ public class ConceptConverter extends ATermBaseVisitor
 
 		if (term instanceof ATermAppl)
 			visit((ATermAppl) term);
+		else if (term instanceof ATermInt)
+			_obj = NodeFactory.createLiteral(term.toString(), null, XSDDatatype.XSDnonNegativeInteger);
+		else if (term instanceof ATermList)
+			visitList((ATermList) term);
 		else
-			if (term instanceof ATermInt)
-				_obj = NodeFactory.createLiteral(term.toString(), null, XSDDatatype.XSDnonNegativeInteger);
-			else
-				if (term instanceof ATermList)
-					visitList((ATermList) term);
-				else
-					throw new IllegalArgumentException(term.toString());
+			throw new IllegalArgumentException(term.toString());
 
 		_subj = prevSubj;
 
@@ -133,8 +131,7 @@ public class ConceptConverter extends ATermBaseVisitor
 		final Node restr = createRestriction(term, restrType);
 
 		final Node qual = convert(term.getArgument(2));
-		if (!ATermUtils.isTop((ATermAppl) term.getArgument(2)))
-			TripleAdder.add(_graph, restr, OWL2.onClass, qual);
+		if (!ATermUtils.isTop((ATermAppl) term.getArgument(2))) TripleAdder.add(_graph, restr, OWL2.onClass, qual);
 
 		_obj = restr;
 
@@ -284,9 +281,9 @@ public class ConceptConverter extends ATermBaseVisitor
 
 			JenaUtils.makeGraphNode((ATermAppl) facet.getArgument(0))//
 					.ifPresent(node0 -> //
-			JenaUtils.makeGraphNode((ATermAppl) facet.getArgument(1))//
-					.ifPresent(node1 -> TripleAdder.add(_graph, facetNode, node0, node1)//
-			));
+					JenaUtils.makeGraphNode((ATermAppl) facet.getArgument(1))//
+							.ifPresent(node1 -> TripleAdder.add(_graph, facetNode, node0, node1)//
+							));
 
 			final Node newList = NodeFactory.createBlankNode();
 			TripleAdder.add(_graph, newList, RDF.first, facetNode);

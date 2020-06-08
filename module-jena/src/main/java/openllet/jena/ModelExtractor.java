@@ -141,37 +141,37 @@ public class ModelExtractor
 		/**
 		 * All statements about classes
 		 */
-		public static final EnumSet<StatementType> ALL_CLASS_STATEMENTS;
+		public static final EnumSet<StatementType>	ALL_CLASS_STATEMENTS;
 
 		/**
 		 * All statements about individuals
 		 */
-		public static final EnumSet<StatementType> ALL_INDIVIDUAL_STATEMENTS;
+		public static final EnumSet<StatementType>	ALL_INDIVIDUAL_STATEMENTS;
 
 		/**
 		 * All statements about properties
 		 */
-		public static final EnumSet<StatementType> ALL_PROPERTY_STATEMENTS;
+		public static final EnumSet<StatementType>	ALL_PROPERTY_STATEMENTS;
 
 		/**
 		 * All statements (without Jena predicates for direct relations)
 		 */
-		public static final EnumSet<StatementType> ALL_STATEMENTS;
+		public static final EnumSet<StatementType>	ALL_STATEMENTS;
 
 		/**
 		 * All statements (including Jena predicates for direct relations)
 		 */
-		public static final EnumSet<StatementType> ALL_STATEMENTS_INCLUDING_JENA;
+		public static final EnumSet<StatementType>	ALL_STATEMENTS_INCLUDING_JENA;
 
 		/**
 		 * All property values (both object and _data)
 		 */
-		public static final EnumSet<StatementType> PROPERTY_VALUE;
+		public static final EnumSet<StatementType>	PROPERTY_VALUE;
 
 		/**
 		 * Default statements
 		 */
-		public static final EnumSet<StatementType> DEFAULT_STATEMENTS;
+		public static final EnumSet<StatementType>	DEFAULT_STATEMENTS;
 
 		static
 		{
@@ -185,7 +185,8 @@ public class ModelExtractor
 
 			ALL_STATEMENTS_INCLUDING_JENA = EnumSet.allOf(StatementType.class);
 
-			DEFAULT_STATEMENTS = EnumSet.of(StatementType.DIRECT_SUBCLASS, StatementType.EQUIVALENT_CLASS, StatementType.DIRECT_INSTANCE, StatementType.OBJECT_PROPERTY_VALUE, StatementType.DATA_PROPERTY_VALUE, StatementType.DIRECT_SUBPROPERTY, StatementType.EQUIVALENT_PROPERTY, StatementType.INVERSE_PROPERTY);
+			DEFAULT_STATEMENTS = EnumSet.of(StatementType.DIRECT_SUBCLASS, StatementType.EQUIVALENT_CLASS, StatementType.DIRECT_INSTANCE, StatementType.OBJECT_PROPERTY_VALUE,
+					StatementType.DATA_PROPERTY_VALUE, StatementType.DIRECT_SUBPROPERTY, StatementType.EQUIVALENT_PROPERTY, StatementType.INVERSE_PROPERTY);
 
 			PROPERTY_VALUE = EnumSet.of(StatementType.DATA_PROPERTY_VALUE, StatementType.OBJECT_PROPERTY_VALUE);
 		}
@@ -194,22 +195,22 @@ public class ModelExtractor
 	/**
 	 * A _filter that does not accept anything.
 	 */
-	public static final Predicate<Triple> FILTER_NONE = t -> false;
+	public static final Predicate<Triple>	FILTER_NONE	= t -> false;
 
 	/**
 	 * Associated KB
 	 */
-	private KnowledgeBase _kb;
+	private KnowledgeBase					_kb;
 
 	/**
 	 * Filter that will be used to drop inferences
 	 */
-	private Predicate<Triple> _filter = FILTER_NONE;
+	private Predicate<Triple>				_filter		= FILTER_NONE;
 
 	/**
 	 * Controls the selected statements for methods where no _selector is passed (initial setup intended to be backwards compatible)
 	 */
-	private EnumSet<StatementType> _selector = StatementType.DEFAULT_STATEMENTS;
+	private EnumSet<StatementType>			_selector	= StatementType.DEFAULT_STATEMENTS;
 
 	/**
 	 * Initialize an empty extractor
@@ -248,15 +249,14 @@ public class ModelExtractor
 	 * Creates and adds the triple to the given list if the triple passes the _filter.
 	 *
 	 * @param triples List to be added
-	 * @param s subject of the triple
-	 * @param p predicate of the triple
-	 * @param o object of the triple
+	 * @param s       subject of the triple
+	 * @param p       predicate of the triple
+	 * @param o       object of the triple
 	 */
 	private void addTriple(final List<Triple> triples, final Node s, final Node p, final Node o)
 	{
 		final Triple triple = Triple.create(s, p, o);
-		if (!_filter.test(triple))
-			triples.add(triple);
+		if (!_filter.test(triple)) triples.add(triple);
 	}
 
 	public Model extractClassModel()
@@ -273,8 +273,7 @@ public class ModelExtractor
 		final boolean disjs = _selector.contains(StatementType.DISJOINT_CLASS);
 		final boolean comps = _selector.contains(StatementType.COMPLEMENT_CLASS);
 
-		if (subs || equivs || disjs || comps)
-			_kb.classify();
+		if (subs || equivs || disjs || comps) _kb.classify();
 
 		final List<Triple> triples = new ArrayList<>();
 
@@ -285,8 +284,7 @@ public class ModelExtractor
 			triples.clear();
 
 			final Optional<Node> sOpt = makeGraphNode(c);
-			if (!sOpt.isPresent())
-				continue;
+			if (!sOpt.isPresent()) continue;
 			final Node s = sOpt.get();
 			addTriple(triples, s, RDF.type.asNode(), OWL.Class.asNode());
 
@@ -338,8 +336,7 @@ public class ModelExtractor
 					while (i.hasNext())
 					{
 						final ATermAppl a = i.next();
-						if (classes.contains(a))
-							makeGraphNode(a).ifPresent(o -> addTriple(triples, s, pX, o));
+						if (classes.contains(a)) makeGraphNode(a).ifPresent(o -> addTriple(triples, s, pX, o));
 					}
 				}
 			}
@@ -351,8 +348,7 @@ public class ModelExtractor
 				{
 					final Node pX = OWL.complementOf.asNode();
 					for (final ATermAppl a : comp)
-						if (classes.contains(a))
-							makeGraphNode(a).ifPresent(o -> addTriple(triples, s, pX, o));
+						if (classes.contains(a)) makeGraphNode(a).ifPresent(o -> addTriple(triples, s, pX, o));
 				}
 			}
 			for (final Triple t : triples)
@@ -388,8 +384,7 @@ public class ModelExtractor
 		final boolean objValues = _selector.contains(StatementType.OBJECT_PROPERTY_VALUE);
 		final boolean dataValues = _selector.contains(StatementType.DATA_PROPERTY_VALUE);
 
-		if (classes)
-			_kb.realize();
+		if (classes) _kb.realize();
 
 		final List<Triple> triples = new ArrayList<>();
 
@@ -439,42 +434,38 @@ public class ModelExtractor
 						makeGraphNode(a).ifPresent(node -> addTriple(triples, s, pX, node));
 				}
 
-				if (dataValues || objValues)
-					for (final Role role : _kb.getRBox().getRoles().values())
+				if (dataValues || objValues) for (final Role role : _kb.getRBox().getRoles().values())
+				{
+
+					if (role.isAnon()) continue;
+
+					List<ATermAppl> values;
+					final ATermAppl name = role.getName();
+					if (role.isDatatypeRole())
 					{
-
-						if (role.isAnon())
-							continue;
-
-						List<ATermAppl> values;
-						final ATermAppl name = role.getName();
-						if (role.isDatatypeRole())
-						{
-							if (dataValues)
-								values = _kb.getDataPropertyValues(name, ind);
-							else
-								continue;
-						}
+						if (dataValues)
+							values = _kb.getDataPropertyValues(name, ind);
 						else
-							if (role.isObjectRole())
-							{
-								if (objValues)
-									values = _kb.getObjectPropertyValues(name, ind);
-								else
-									continue;
-							}
-							else
-								continue;
-
-						if (values.isEmpty())
 							continue;
-
-						makeGraphNode(name).ifPresent(p ->
-						{
-							for (final ATermAppl value : values)
-								makeGraphNode(value).ifPresent(node -> addTriple(triples, s, p, node));
-						});
 					}
+					else if (role.isObjectRole())
+					{
+						if (objValues)
+							values = _kb.getObjectPropertyValues(name, ind);
+						else
+							continue;
+					}
+					else
+						continue;
+
+					if (values.isEmpty()) continue;
+
+					makeGraphNode(name).ifPresent(p ->
+					{
+						for (final ATermAppl value : values)
+							makeGraphNode(value).ifPresent(node -> addTriple(triples, s, p, node));
+					});
+				}
 				for (final Triple t : triples)
 					model.getGraph().add(t);
 			});
@@ -521,46 +512,37 @@ public class ModelExtractor
 		{
 			triples.clear();
 
-			if (role.isAnon())
-				continue;
+			if (role.isAnon()) continue;
 
 			final ATermAppl name = role.getName();
 			final Node s = makeGraphNode(name).orElse(null);
-			if (null == s)
-				continue;
+			if (null == s) continue;
 
 			{
 				final Node pX = RDF.type.asNode();
 
 				if (role.isDatatypeRole())
 					addTriple(triples, s, pX, OWL.DatatypeProperty.asNode());
+				else if (role.isObjectRole())
+					addTriple(triples, s, pX, OWL.ObjectProperty.asNode());
 				else
-					if (role.isObjectRole())
-						addTriple(triples, s, pX, OWL.ObjectProperty.asNode());
-					else
-						continue;
+					continue;
 
-				if (role.isFunctional())
-					addTriple(triples, s, pX, OWL.FunctionalProperty.asNode());
-				if (role.isInverseFunctional())
-					addTriple(triples, s, pX, OWL.InverseFunctionalProperty.asNode());
-				if (role.isTransitive())
-					addTriple(triples, s, pX, OWL.TransitiveProperty.asNode());
-				if (role.isSymmetric())
-					addTriple(triples, s, pX, OWL.SymmetricProperty.asNode());
+				if (role.isFunctional()) addTriple(triples, s, pX, OWL.FunctionalProperty.asNode());
+				if (role.isInverseFunctional()) addTriple(triples, s, pX, OWL.InverseFunctionalProperty.asNode());
+				if (role.isTransitive()) addTriple(triples, s, pX, OWL.TransitiveProperty.asNode());
+				if (role.isSymmetric()) addTriple(triples, s, pX, OWL.SymmetricProperty.asNode());
 			}
 
 			if (equivs)
 			{
 				final Node pX = OWL.equivalentProperty.asNode();
 				for (final ATermAppl eq : _kb.getAllEquivalentProperties(name))
-					if (JenaUtils._isGrapheNode.test(eq))
-						makeGraphNode(eq).ifPresent(node ->
-						{
-							addTriple(triples, s, pX, node);
-							if (allSubs)
-								addTriple(triples, s, RDFS.subPropertyOf.asNode(), node);
-						});
+					if (JenaUtils._isGrapheNode.test(eq)) makeGraphNode(eq).ifPresent(node ->
+					{
+						addTriple(triples, s, pX, node);
+						if (allSubs) addTriple(triples, s, RDFS.subPropertyOf.asNode(), node);
+					});
 			}
 
 			if (invs)
@@ -570,8 +552,7 @@ public class ModelExtractor
 				{
 					final Node pX = OWL.inverseOf.asNode();
 					for (final ATermAppl inverse : inverses)
-						if (JenaUtils._isGrapheNode.test(inverse))
-							makeGraphNode(inverse).ifPresent(node -> addTriple(triples, s, pX, node));
+						if (JenaUtils._isGrapheNode.test(inverse)) makeGraphNode(inverse).ifPresent(node -> addTriple(triples, s, pX, node));
 				}
 			}
 
@@ -596,8 +577,7 @@ public class ModelExtractor
 				{
 					final Set<ATermAppl> eqs = _kb.getAllEquivalentProperties(name);
 					for (final ATermAppl eq : eqs)
-						if (JenaUtils._isGrapheNode.test(eq))
-							makeGraphNode(eq).ifPresent(o -> addTriple(triples, s, pN, o));
+						if (JenaUtils._isGrapheNode.test(eq)) makeGraphNode(eq).ifPresent(o -> addTriple(triples, s, pN, o));
 				}
 
 				final Set<Set<ATermAppl>> supers = _kb.getSuperProperties(name, !allSubs);
@@ -681,8 +661,7 @@ public class ModelExtractor
 	 */
 	public void setFilter(final Predicate<Triple> filter)
 	{
-		if (filter == null)
-			throw new NullPointerException("Filter cannot be null");
+		if (filter == null) throw new NullPointerException("Filter cannot be null");
 
 		_filter = filter;
 	}

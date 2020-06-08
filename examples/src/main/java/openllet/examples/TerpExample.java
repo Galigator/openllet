@@ -40,8 +40,8 @@ public class TerpExample
 {
 
 	// The ontology loaded as dataset
-	private static final String ontology = "file:examples/data/university0-0.owl";
-	private static final String[] queries = new String[] { "file:examples/data/lubm-query.terp", "file:examples/data/lubm-query3.terp", "file:examples/data/lubm-query5.terp" };
+	private static final String		ontology	= "file:examples/data/university0-0.owl";
+	private static final String[]	queries		= new String[] { "file:examples/data/lubm-query.terp", "file:examples/data/lubm-query3.terp", "file:examples/data/lubm-query5.terp" };
 
 	public void run()
 	{

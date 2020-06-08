@@ -89,7 +89,7 @@ public class JenaReasoner
 		// print superclasses using the utility function
 		final OntClass c = model.getOntClass(ns + "MaleStudentWith3Daughters");
 		printIterator(c.listSuperClasses(), "All super classes of " + c.getLocalName());
-		// OntClass provides function to print *only* the direct subclasses 
+		// OntClass provides function to print *only* the direct subclasses
 		printIterator(c.listSuperClasses(true), "Direct superclasses of " + c.getLocalName());
 
 		System.out.println();

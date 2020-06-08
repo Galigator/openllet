@@ -31,9 +31,9 @@ import openllet.shared.tools.Log;
  */
 public class ContinuousRealInterval
 {
-	private static final Logger _logger = Log.getLogger(ContinuousRealInterval.class);
+	private static final Logger				_logger			= Log.getLogger(ContinuousRealInterval.class);
 
-	private static ContinuousRealInterval _unconstrained = new ContinuousRealInterval(null, null, true, true);
+	private static ContinuousRealInterval	_unconstrained	= new ContinuousRealInterval(null, null, true, true);
 
 	public static ContinuousRealInterval allReals()
 	{
@@ -49,79 +49,71 @@ public class ContinuousRealInterval
 			final int ul = compareUpperLower(a, b);
 			if (ul < 0)
 				return IntervalRelations.PRECEDES;
-			else
-				if (ul == 0)
+			else if (ul == 0)
+			{
+				if (a.inclusiveUpper())
 				{
-					if (a.inclusiveUpper())
-					{
-						if (b.inclusiveLower())
-							return IntervalRelations.OVERLAPS;
-						else
-							return IntervalRelations.MEETS;
-					}
-					else
-						if (b.inclusiveLower())
-							return IntervalRelations.MEETS;
-						else
-							return IntervalRelations.PRECEDES;
-				}
-				else
-				{
-					final int uu = compareUpperUpper(a, b);
-					if (uu < 0)
+					if (b.inclusiveLower())
 						return IntervalRelations.OVERLAPS;
 					else
-						if (uu == 0)
-							return IntervalRelations.FINISHED_BY;
-						else
-							return IntervalRelations.CONTAINS;
+						return IntervalRelations.MEETS;
 				}
-		}
-		else
-			if (ll == 0)
+				else if (b.inclusiveLower())
+					return IntervalRelations.MEETS;
+				else
+					return IntervalRelations.PRECEDES;
+			}
+			else
 			{
 				final int uu = compareUpperUpper(a, b);
 				if (uu < 0)
-					return IntervalRelations.STARTS;
+					return IntervalRelations.OVERLAPS;
+				else if (uu == 0)
+					return IntervalRelations.FINISHED_BY;
 				else
-					if (uu == 0)
-						return IntervalRelations.EQUALS;
+					return IntervalRelations.CONTAINS;
+			}
+		}
+		else if (ll == 0)
+		{
+			final int uu = compareUpperUpper(a, b);
+			if (uu < 0)
+				return IntervalRelations.STARTS;
+			else if (uu == 0)
+				return IntervalRelations.EQUALS;
+			else
+				return IntervalRelations.STARTED_BY;
+		}
+		else
+		{
+			final int lu = -compareUpperLower(b, a);
+			if (lu < 0)
+			{
+				final int uu = compareUpperUpper(a, b);
+				if (uu < 0)
+					return IntervalRelations.DURING;
+				else if (uu == 0)
+					return IntervalRelations.FINISHES;
+				else
+					return IntervalRelations.OVERLAPPED_BY;
+			}
+			else if (lu == 0)
+			{
+				if (b.inclusiveUpper())
+				{
+					if (a.inclusiveLower())
+						return IntervalRelations.OVERLAPPED_BY;
 					else
-						return IntervalRelations.STARTED_BY;
+						return IntervalRelations.MET_BY;
+				}
+				else if (a.inclusiveLower())
+					return IntervalRelations.MET_BY;
+				else
+					return IntervalRelations.PRECEDED_BY;
 			}
 			else
-			{
-				final int lu = -compareUpperLower(b, a);
-				if (lu < 0)
-				{
-					final int uu = compareUpperUpper(a, b);
-					if (uu < 0)
-						return IntervalRelations.DURING;
-					else
-						if (uu == 0)
-							return IntervalRelations.FINISHES;
-						else
-							return IntervalRelations.OVERLAPPED_BY;
-				}
-				else
-					if (lu == 0)
-					{
-						if (b.inclusiveUpper())
-						{
-							if (a.inclusiveLower())
-								return IntervalRelations.OVERLAPPED_BY;
-							else
-								return IntervalRelations.MET_BY;
-						}
-						else
-							if (a.inclusiveLower())
-								return IntervalRelations.MET_BY;
-							else
-								return IntervalRelations.PRECEDED_BY;
-					}
-					else
-						return IntervalRelations.PRECEDED_BY;
-			}
+				return IntervalRelations.PRECEDED_BY;
+		}
 	}
 
 	private static int compareLowerLower(final ContinuousRealInterval a, final ContinuousRealInterval other)
@@ -134,22 +126,17 @@ public class ContinuousRealInterval
 			else
 				ll = -1;
 		}
+		else if (!other.boundLower())
+			ll = 1;
 		else
-			if (!other.boundLower())
-				ll = 1;
-			else
+		{
+			ll = OWLRealUtils.compare(a.getLower(), other.getLower());
+			if (ll == 0) if (a.inclusiveLower())
 			{
-				ll = OWLRealUtils.compare(a.getLower(), other.getLower());
-				if (ll == 0)
-					if (a.inclusiveLower())
-					{
-						if (!other.inclusiveLower())
-							ll = -1;
-					}
-					else
-						if (other.inclusiveLower())
-							ll = 1;
+				if (!other.inclusiveLower()) ll = -1;
 			}
+			else if (other.inclusiveLower()) ll = 1;
+		}
 		return ll;
 	}
 
@@ -158,11 +145,10 @@ public class ContinuousRealInterval
 		int ul;
 		if (!a.boundUpper())
 			ul = 1;
+		else if (!b.boundLower())
+			ul = 1;
 		else
-			if (!b.boundLower())
-				ul = 1;
-			else
-				ul = OWLRealUtils.compare(a.getUpper(), b.getLower());
+			ul = OWLRealUtils.compare(a.getUpper(), b.getLower());
 		return ul;
 	}
 
@@ -176,30 +162,25 @@ public class ContinuousRealInterval
 			else
 				uu = 1;
 		}
+		else if (!b.boundUpper())
+			uu = -1;
 		else
-			if (!b.boundUpper())
-				uu = -1;
-			else
+		{
+			uu = OWLRealUtils.compare(a.getUpper(), b.getUpper());
+			if (uu == 0) if (a.inclusiveUpper())
 			{
-				uu = OWLRealUtils.compare(a.getUpper(), b.getUpper());
-				if (uu == 0)
-					if (a.inclusiveUpper())
-					{
-						if (!b.inclusiveUpper())
-							uu = 1;
-					}
-					else
-						if (b.inclusiveUpper())
-							uu = -1;
+				if (!b.inclusiveUpper()) uu = 1;
 			}
+			else if (b.inclusiveUpper()) uu = -1;
+		}
 		return uu;
 	}
 
-	private final boolean _inclusiveLower;
-	private final boolean _inclusiveUpper;
-	private final Number _lower;
-	private final boolean _point;
-	private final Number _upper;
+	private final boolean	_inclusiveLower;
+	private final boolean	_inclusiveUpper;
+	private final Number	_lower;
+	private final boolean	_point;
+	private final Number	_upper;
 
 	/**
 	 * Create a _point interval. This is equivalent to OWLRealInterval(Number, Number, boolean, boolean) with arguments <code>point,point,true,true</code>
@@ -218,8 +199,8 @@ public class ContinuousRealInterval
 	/**
 	 * Create an interval. <code>null</code> should be used to indicate unbound (i.e., infinite intervals).
 	 *
-	 * @param lower Interval _lower bound
-	 * @param upper Interval _upper bound
+	 * @param lower          Interval _lower bound
+	 * @param upper          Interval _upper bound
 	 * @param inclusiveLower <code>true</code> if _lower bound is inclusive, <code>false</code> for exclusive. Ignored if <code>_lower == null</code>.
 	 * @param inclusiveUpper <code>true</code> if _upper bound is inclusive, <code>false</code> for exclusive. Ignored if <code>_upper == null</code>.
 	 */
@@ -234,14 +215,12 @@ public class ContinuousRealInterval
 				_logger.severe(msg);
 				throw new IllegalArgumentException(msg);
 			}
-			else
-				if (cmp == 0)
-					if (!inclusiveLower || !inclusiveUpper)
-					{
-						final String msg = "Point intervals must be inclusive";
-						_logger.severe(msg);
-						throw new IllegalArgumentException(msg);
-					}
+			else if (cmp == 0) if (!inclusiveLower || !inclusiveUpper)
+			{
+				final String msg = "Point intervals must be inclusive";
+				_logger.severe(msg);
+				throw new IllegalArgumentException(msg);
+			}
 		}
 
 		_lower = lower;
@@ -279,19 +258,15 @@ public class ContinuousRealInterval
 		if (boundLower())
 		{
 			comp = OWLRealUtils.compare(getLower(), n);
-			if (comp > 0)
-				return false;
-			if (comp == 0 && !inclusiveLower())
-				return false;
+			if (comp > 0) return false;
+			if (comp == 0 && !inclusiveLower()) return false;
 		}
 
 		if (boundUpper())
 		{
 			comp = OWLRealUtils.compare(getUpper(), n);
-			if (comp < 0)
-				return false;
-			if (comp == 0 && !inclusiveUpper())
-				return false;
+			if (comp < 0) return false;
+			if (comp == 0 && !inclusiveUpper()) return false;
 		}
 
 		return true;
@@ -300,39 +275,26 @@ public class ContinuousRealInterval
 	@Override
 	public boolean equals(final Object obj)
 	{
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (getClass() != obj.getClass()) return false;
 		final ContinuousRealInterval other = (ContinuousRealInterval) obj;
-		if (_inclusiveLower != other._inclusiveLower)
-			return false;
-		if (_inclusiveUpper != other._inclusiveUpper)
-			return false;
+		if (_inclusiveLower != other._inclusiveLower) return false;
+		if (_inclusiveUpper != other._inclusiveUpper) return false;
 		if (_lower == null)
 		{
-			if (other._lower != null)
-				return false;
+			if (other._lower != null) return false;
 		}
-		else
-			if (other._lower == null)
-				return false;
-			else
-				if (OWLRealUtils.compare(_lower, other._lower) != 0)
-					return false;
+		else if (other._lower == null)
+			return false;
+		else if (OWLRealUtils.compare(_lower, other._lower) != 0) return false;
 		if (_upper == null)
 		{
-			if (other._upper != null)
-				return false;
+			if (other._upper != null) return false;
 		}
-		else
-			if (other._upper == null)
-				return false;
-			else
-				if (OWLRealUtils.compare(_upper, other._upper) != 0)
-					return false;
+		else if (other._upper == null)
+			return false;
+		else if (OWLRealUtils.compare(_upper, other._upper) != 0) return false;
 		return true;
 	}
 
@@ -349,16 +311,14 @@ public class ContinuousRealInterval
 	/**
 	 * Get the subinterval greater than n
 	 *
-	 * @param n
-	 * @return a new interval, formed by intersecting this interval with (n,+inf) or <code>null</code> if that intersection is empty
+	 * @param  n
+	 * @return   a new interval, formed by intersecting this interval with (n,+inf) or <code>null</code> if that intersection is empty
 	 */
 	public ContinuousRealInterval greater(final Number n)
 	{
 		if (boundLower() && OWLRealUtils.compare(n, getLower()) < 0)
 			return this;
-		else
-			if (boundUpper() && OWLRealUtils.compare(n, getUpper()) >= 0)
-				return null;
+		else if (boundUpper() && OWLRealUtils.compare(n, getUpper()) >= 0) return null;
 		return new ContinuousRealInterval(n, getUpper(), false, inclusiveUpper());
 	}
 
@@ -469,16 +429,14 @@ public class ContinuousRealInterval
 	/**
 	 * Get the subinterval less than n
 	 *
-	 * @param n
-	 * @return a new interval, formed by intersecting this interval with (-inf,n) or <code>null</code> if that intersection is empty
+	 * @param  n
+	 * @return   a new interval, formed by intersecting this interval with (-inf,n) or <code>null</code> if that intersection is empty
 	 */
 	public ContinuousRealInterval less(final Number n)
 	{
 		if (boundUpper() && OWLRealUtils.compare(n, getUpper()) > 0)
 			return this;
-		else
-			if (boundLower() && OWLRealUtils.compare(n, getLower()) <= 0)
-				return null;
+		else if (boundLower() && OWLRealUtils.compare(n, getLower()) <= 0) return null;
 		return new ContinuousRealInterval(getLower(), n, inclusiveLower(), false);
 	}
 
@@ -531,10 +489,8 @@ public class ContinuousRealInterval
 		}
 
 		final List<ContinuousRealInterval> ret = new ArrayList<>();
-		if (before != null)
-			ret.add(before);
-		if (after != null)
-			ret.add(after);
+		if (before != null) ret.add(before);
+		if (after != null) ret.add(after);
 
 		return ret;
 	}

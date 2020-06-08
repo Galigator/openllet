@@ -5,12 +5,14 @@ import org.apache.commons.math3.exception.MathRuntimeException;
 import org.apache.commons.math3.exception.util.DummyLocalizable;
 import org.apache.commons.math3.stat.StatUtils;
 import org.apache.commons.math3.stat.inference.TTest;
+import org.apache.commons.math3.util.FastMath;
 
 /**
  * Some statistical utilities based on the Apache Commons Math package
- * 
+ *
  * @author Pedro Oliveira <pedro@clarkparsia.com>
  */
+@SuppressWarnings("javadoc")
 public class MathStatUtils extends TTest
 {
 	private final TDistribution _distribution = new TDistribution(1);
@@ -21,7 +23,7 @@ public class MathStatUtils extends TTest
 	public boolean tTest(final double m1, final double m2, final double v1, final double v2, final double n1, final double n2, final double alpha)
 	{
 		checkSignificanceLevel(alpha);
-		return (tTest(m1, m2, v1, v2, n1, n2) < alpha);
+		return tTest(m1, m2, v1, v2, n1, n2) < alpha;
 	}
 
 	/**
@@ -30,7 +32,7 @@ public class MathStatUtils extends TTest
 	public boolean tTest(final double m, final double mu, final double v, final double n, final double alpha)
 	{
 		checkSignificanceLevel(alpha);
-		return (tTest(m, mu, v, n) < alpha);
+		return tTest(m, mu, v, n) < alpha;
 	}
 
 	/**
@@ -48,14 +50,13 @@ public class MathStatUtils extends TTest
 	{
 		checkSignificanceLevel(alpha);
 		//_distribution.setDegreesOfFreedom(n - 1);
-		final double t = Math.abs(_distribution.inverseCumulativeProbability(alpha / 2));
+		final double t = FastMath.abs(_distribution.inverseCumulativeProbability(alpha / 2));
 		final double val = t * Math.sqrt(v / n);
 		return new double[] { m - val, m + val };
 	}
 
-	private void checkSignificanceLevel(final double alpha) throws IllegalArgumentException
+	private static void checkSignificanceLevel(final double alpha) throws IllegalArgumentException
 	{
-		if ((alpha <= 0) || (alpha > 0.5))
-			throw new MathRuntimeException(new DummyLocalizable("out of bounds significance level {0}, must be between {1} and {2}"), alpha, 0.0, 0.5);
+		if (alpha <= 0 || alpha > 0.5) throw new MathRuntimeException(new DummyLocalizable("out of bounds significance level {0}, must be between {1} and {2}"), alpha, 0.0, 0.5);
 	}
 }

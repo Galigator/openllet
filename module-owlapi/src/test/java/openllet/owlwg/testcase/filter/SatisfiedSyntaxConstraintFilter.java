@@ -16,7 +16,7 @@ import openllet.owlwg.testcase.TestCase;
  * <p>
  * Company: Clark & Parsia, LLC. <a href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
  * </p>
- * 
+ *
  * @author Mike Smith &lt;msmith@clarkparsia.com&gt;
  */
 public class SatisfiedSyntaxConstraintFilter implements FilterCondition
@@ -35,18 +35,18 @@ public class SatisfiedSyntaxConstraintFilter implements FilterCondition
 	final private SyntaxConstraint _constraint;
 
 	/**
+	 * @param  constraint           to check.
 	 * @throws NullPointerException if <code>_constraint == null</code>
 	 */
-	public SatisfiedSyntaxConstraintFilter(SyntaxConstraint constraint)
+	public SatisfiedSyntaxConstraintFilter(final SyntaxConstraint constraint)
 	{
-		if (constraint == null)
-			throw new NullPointerException();
+		if (constraint == null) throw new NullPointerException();
 
-		this._constraint = constraint;
+		_constraint = constraint;
 	}
 
 	@Override
-	public boolean accepts(TestCase<?> testcase)
+	public boolean accepts(final TestCase<?> testcase)
 	{
 		return testcase.getSatisfiedConstraints().contains(_constraint);
 	}

@@ -69,13 +69,11 @@ public class ComparisonTesters
 				final NumericComparisonVisitor visitor = new NumericComparisonVisitor();
 				promoter.accept(visitor);
 
-				if (visitor.getComparison() == 0)
-					return true ^ _flip;
+				if (visitor.getComparison() == 0) return true ^ _flip;
 				return false ^ _flip;
 			}
 
-			if (a.getValue() != null && b.getValue() != null)
-				return (aval.getClass().equals(bval.getClass()) && aval.equals(bval)) ^ _flip;
+			if (a.getValue() != null && b.getValue() != null) return (aval.getClass().equals(bval.getClass()) && aval.equals(bval)) ^ _flip;
 			return false;
 		}
 	}
@@ -93,10 +91,8 @@ public class ComparisonTesters
 
 		private boolean comparesWell(final int comparison)
 		{
-			if (_lt && comparison < 0)
-				return true;
-			if (!_lt && comparison > 0)
-				return true;
+			if (_lt && comparison < 0) return true;
+			if (!_lt && comparison > 0) return true;
 			return _inclusive && comparison == 0;
 		}
 
@@ -119,8 +115,7 @@ public class ComparisonTesters
 				final String l1data = ATermUtils.getLiteralDatatype(l1term);
 				final String l2data = ATermUtils.getLiteralDatatype(l2term);
 
-				if (l1lang.equals(l2lang) && l1data.equals(l2data))
-					return comparesWell(l1str.compareTo(l2str));
+				if (l1lang.equals(l2lang) && l1data.equals(l2data)) return comparesWell(l1str.compareTo(l2str));
 				return false;
 			}
 
@@ -170,20 +165,19 @@ public class ComparisonTesters
 		}
 	}
 
-	public final static Tester equal = new EqualityTester(false), greaterThan = new OrderingTester(false, false), greaterThanOrEqual = new OrderingTester(false, true), lessThan = new OrderingTester(true, false), lessThanOrEqual = new OrderingTester(true, true), notEqual = new EqualityTester(true);
+	public final static Tester equal = new EqualityTester(false), greaterThan = new OrderingTester(false, false), greaterThanOrEqual = new OrderingTester(false, true),
+			lessThan = new OrderingTester(true, false), lessThanOrEqual = new OrderingTester(true, true), notEqual = new EqualityTester(true);
 
 	/**
-	 * @param expected
-	 * @param result
-	 * @return the second argument if the first is null, else return the first . Else, return the literal if its value equals the string. Otherwise return null.
+	 * @param  expected
+	 * @param  result
+	 * @return          the second argument if the first is null, else return the first . Else, return the literal if its value equals the string. Otherwise return null.
 	 */
 	public static Literal expectedIfEquals(final Literal expected, final Literal result)
 	{
-		if (expected == null)
-			return result;
+		if (expected == null) return result;
 
-		if (ComparisonTesters.equal.test(new Literal[] { expected, result }))
-			return expected;
+		if (ComparisonTesters.equal.test(new Literal[] { expected, result })) return expected;
 		return null;
 	}
 }

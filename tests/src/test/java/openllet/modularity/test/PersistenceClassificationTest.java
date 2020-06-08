@@ -39,9 +39,9 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
  */
 public class PersistenceClassificationTest
 {
-	public static final String base = PelletTestSuite.base + "modularity/";
+	public static final String	base		= PelletTestSuite.base + "modularity/";
 
-	private static final String TEST_FILE = "test-persistence-classification.zip";
+	private static final String	TEST_FILE	= "test-persistence-classification.zip";
 
 	public ModuleExtractor createModuleExtractor()
 	{

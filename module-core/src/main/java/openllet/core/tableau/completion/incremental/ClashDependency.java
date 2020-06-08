@@ -20,12 +20,12 @@ public class ClashDependency implements Dependency
 	/**
 	 * The assertion
 	 */
-	private final ATermAppl _assertion;
+	private final ATermAppl	_assertion;
 
 	/**
 	 * The clash
 	 */
-	private final Clash _clash;
+	private final Clash		_clash;
 
 	/**
 	 * Constructor
@@ -55,7 +55,8 @@ public class ClashDependency implements Dependency
 	public boolean equals(final Object other)
 	{
 		if (other instanceof ClashDependency)
-			return _assertion.equals(((ClashDependency) other)._assertion) && _clash.getNode().equals(((ClashDependency) other)._clash.getNode()) && _clash.getType() == ((ClashDependency) other)._clash.getType() && _clash.getDepends().equals(((ClashDependency) other)._clash.getDepends());
+			return _assertion.equals(((ClashDependency) other)._assertion) && _clash.getNode().equals(((ClashDependency) other)._clash.getNode())
+					&& _clash.getType() == ((ClashDependency) other)._clash.getType() && _clash.getDepends().equals(((ClashDependency) other)._clash.getDepends());
 		else
 			return false;
 	}

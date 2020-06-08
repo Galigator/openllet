@@ -9,7 +9,7 @@ package openllet.owlapi.explanation.io.manchester;
 public enum Keyword
 {
 	AND("and", "purple", 3), //
-	OR("or", "purple", 3), // 
+	OR("or", "purple", 3), //
 	ONLY("only", "purple", 3), //
 	SOME("some", "purple", 3), EXACTLY("exactly", "purple", 3), //
 	NOT("not", "purple", 3), //
@@ -64,11 +64,11 @@ public enum Keyword
 	FUNCTIONAL("Functional", "green", 3), //
 	HAS_KEY("hasKey", "green", 3);//
 
-	private int _mSize;
-	private String _mColor;
-	private String _mLabel;
-	private String _mFace;
-	private String _mStyleClass;
+	private int		_mSize;
+	private String	_mColor;
+	private String	_mLabel;
+	private String	_mFace;
+	private String	_mStyleClass;
 
 	Keyword(final String theLabel, final String theStyleClass)
 	{

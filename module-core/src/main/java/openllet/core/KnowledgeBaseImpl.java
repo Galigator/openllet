@@ -133,11 +133,11 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	 * in a certain amount of time.</li>
 	 * </ul>
 	 */
-	public final Timers _timers;
+	public final Timers												_timers;
 
-	protected final MultiValueMap<AssertionType, ATermAppl> _aboxAssertions = new MultiValueMap<>();
-	private final Set<ATermAppl> _individuals = SetUtils.create();
-	private final Map<ATermAppl, Map<ATermAppl, Set<ATermAppl>>> _annotations;
+	protected final MultiValueMap<AssertionType, ATermAppl>			_aboxAssertions	= new MultiValueMap<>();
+	private final Set<ATermAppl>									_individuals	= SetUtils.create();
+	private final Map<ATermAppl, Map<ATermAppl, Set<ATermAppl>>>	_annotations;
 
 	@Override
 	public Map<ATermAppl, Map<ATermAppl, Set<ATermAppl>>> getAnnotations()
@@ -153,59 +153,59 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		return _instances;
 	}
 
-	private final FullyDefinedClassVisitor _fullyDefinedVisitor = new FullyDefinedClassVisitor()
-	{
+	private final FullyDefinedClassVisitor	_fullyDefinedVisitor	= new FullyDefinedClassVisitor()
+																	{
 
-		@Override
-		public boolean isProperty(final ATerm p)
-		{
-			return KnowledgeBaseImpl.this.isProperty(p);
-		}
+																		@Override
+																		public boolean isProperty(final ATerm p)
+																		{
+																			return KnowledgeBaseImpl.this.isProperty(p);
+																		}
 
-		@Override
-		public boolean isDatatype(final ATermAppl p)
-		{
-			return KnowledgeBaseImpl.this.isDatatype(p);
-		}
+																		@Override
+																		public boolean isDatatype(final ATermAppl p)
+																		{
+																			return KnowledgeBaseImpl.this.isDatatype(p);
+																		}
 
-		@Override
-		public TBox getTBox()
-		{
-			return _tbox;
-		}
+																		@Override
+																		public TBox getTBox()
+																		{
+																			return _tbox;
+																		}
 
-		@Override
-		public Set<ATermAppl> getIndividuals()
-		{
-			return _individuals;
-		}
-	};
-	private final DatatypeVisitor _datatypeVisitor = new DatatypeVisitor()
-	{
-		@Override
-		public ABox getABox()
-		{
-			return _abox;
-		}
+																		@Override
+																		public Set<ATermAppl> getIndividuals()
+																		{
+																			return _individuals;
+																		}
+																	};
+	private final DatatypeVisitor			_datatypeVisitor		= new DatatypeVisitor()
+																	{
+																		@Override
+																		public ABox getABox()
+																		{
+																			return _abox;
+																		}
 
-		@Override
-		public TBox getTBox()
-		{
-			return _tbox;
-		}
+																		@Override
+																		public TBox getTBox()
+																		{
+																			return _tbox;
+																		}
 
-		@Override
-		public RBox getRBox()
-		{
-			return _rbox;
-		}
+																		@Override
+																		public RBox getRBox()
+																		{
+																			return _rbox;
+																		}
 
-		@Override
-		public Timers getTimers()
-		{
-			return _timers;
-		}
-	};
+																		@Override
+																		public Timers getTimers()
+																		{
+																			return _timers;
+																		}
+																	};
 
 	@Override
 	public ProgressMonitor getBuilderProgressMonitor()
@@ -231,11 +231,11 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		return _datatypeVisitor;
 	}
 
-	protected volatile ABox _abox;
-	protected volatile TBox _tbox;
-	protected volatile RBox _rbox;
+	protected volatile ABox							_abox;
+	protected volatile TBox							_tbox;
+	protected volatile RBox							_rbox;
 
-	protected volatile Optional<TaxonomyBuilder> _builder = Optional.empty();
+	protected volatile Optional<TaxonomyBuilder>	_builder	= Optional.empty();
 
 	@Override
 	public Optional<TaxonomyBuilder> getOptTaxonomyBuilder()
@@ -262,14 +262,14 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		_changes = changes;
 	}
 
-	protected volatile boolean _canUseIncConsistency = false;
+	protected volatile boolean					_canUseIncConsistency		= false;
 
-	protected volatile EnumSet<ReasoningState> _state = EnumSet.noneOf(ReasoningState.class);
-	private volatile boolean _consistent = false;
-	private volatile boolean _explainOnlyInconsistency = false;
-	private volatile ProgressMonitor _builderProgressMonitor;
-	private volatile SizeEstimate _estimate;
-	private volatile ExpressivityChecker _expChecker;
+	protected volatile EnumSet<ReasoningState>	_state						= EnumSet.noneOf(ReasoningState.class);
+	private volatile boolean					_consistent					= false;
+	private volatile boolean					_explainOnlyInconsistency	= false;
+	private volatile ProgressMonitor			_builderProgressMonitor;
+	private volatile SizeEstimate				_estimate;
+	private volatile ExpressivityChecker		_expChecker;
 
 	@Override
 	public ExpressivityChecker getExpChecker()
@@ -285,16 +285,16 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	/**
 	 * Rules added to this KB. The key is the asserted rule,
 	 */
-	private final Map<Rule, Rule> _rules = new HashMap<>(); // All operations are atomic (and we must allow null normalized rules).
+	private final Map<Rule, Rule>		_rules					= new HashMap<>();	// All operations are atomic (and we must allow null normalized rules).
 
 	/** Structure for tracking which assertions are deleted */
-	private final Set<ATermAppl> _deletedAssertions = SetUtils.create();
+	private final Set<ATermAppl>		_deletedAssertions		= SetUtils.create();
 
 	/** set of syntactic assertions */
-	private final Set<ATermAppl> _syntacticAssertions = SetUtils.create();
+	private final Set<ATermAppl>		_syntacticAssertions	= SetUtils.create();
 
 	/** Index used for abox deletions */
-	private volatile DependencyIndex _dependencyIndex;
+	private volatile DependencyIndex	_dependencyIndex;
 
 	/**
 	 * The state of KB w.r.t. reasoning. The state is not valid if KB is changed, i.e. !changes.isEmpty(). These states are added in the _order CONSISTENCY <
@@ -321,8 +321,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		_timers.createTimer("complete");
 		_state = EnumSet.noneOf(ReasoningState.class);
 
-		if (OpenlletOptions.USE_INCREMENTAL_DELETION)
-			_dependencyIndex = new DependencyIndex(this);
+		if (OpenlletOptions.USE_INCREMENTAL_DELETION) _dependencyIndex = new DependencyIndex(this);
 
 		_annotations = new ConcurrentHashMap<>();
 	}
@@ -346,8 +345,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		_changes = kb._changes.clone();
 
-		if (OpenlletOptions.USE_INCREMENTAL_DELETION)
-			_dependencyIndex = new DependencyIndex(this);
+		if (OpenlletOptions.USE_INCREMENTAL_DELETION) _dependencyIndex = new DependencyIndex(this);
 
 		if (emptyABox)
 		{
@@ -364,13 +362,11 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		{
 			_abox = kb._abox.copy(this);
 
-			if (OpenlletOptions.KEEP_ABOX_ASSERTIONS)
-				for (final AssertionType assertionType : AssertionType.values())
-				{
-					final Set<ATermAppl> assertions = kb._aboxAssertions.get(assertionType);
-					if (!assertions.isEmpty())
-						_aboxAssertions.put(assertionType, SetUtils.create(assertions));
-				}
+			if (OpenlletOptions.KEEP_ABOX_ASSERTIONS) for (final AssertionType assertionType : AssertionType.values())
+			{
+				final Set<ATermAppl> assertions = kb._aboxAssertions.get(assertionType);
+				if (!assertions.isEmpty()) _aboxAssertions.put(assertionType, SetUtils.create(assertions));
+			}
 
 			_individuals.addAll(kb._individuals);
 			_instances.clear();
@@ -379,8 +375,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 			_deletedAssertions.addAll(kb.getDeletedAssertions()); // copy deleted assertions
 			_syntacticAssertions.addAll(kb._syntacticAssertions); // copy syntactic assertions
 
-			if (OpenlletOptions.USE_INCREMENTAL_CONSISTENCY && OpenlletOptions.USE_INCREMENTAL_DELETION)
-				_dependencyIndex = new DependencyIndex(this, kb._dependencyIndex); // copy the dependency _index
+			if (OpenlletOptions.USE_INCREMENTAL_CONSISTENCY && OpenlletOptions.USE_INCREMENTAL_DELETION) _dependencyIndex = new DependencyIndex(this, kb._dependencyIndex); // copy the dependency _index
 		}
 
 		if (kb.isConsistencyDone())
@@ -451,8 +446,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	{
 		// if we can use incremental reasoning then expressivity has been
 		// updated as only the ABox was incrementally changed
-		if (canUseIncConsistency())
-			return _expChecker;
+		if (canUseIncConsistency()) return _expChecker;
 
 		prepare();
 
@@ -519,8 +513,8 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	 * an empty ABox. If <code>emptyABox</code> parameter is true but the original KB contains nominals in its RBox or TBox the new KB will have the definition
 	 * of those _individuals (but not ) In either case, the new KB will point to the same RBox and TBox so changing one KB's RBox or TBox will affect other.
 	 *
-	 * @param emptyABox If <code>true</code> ABox is not copied to the new KB
-	 * @return A copy of this KB
+	 * @param  emptyABox If <code>true</code> ABox is not copied to the new KB
+	 * @return           A copy of this KB
 	 */
 	@Override
 	public KnowledgeBase copy(final boolean emptyABox)
@@ -531,8 +525,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public void addClass(final ATermAppl c)
 	{
-		if (null == c || c.equals(ATermUtils.TOP) || ATermUtils.isComplexClass(c))
-			return;
+		if (null == c || c.equals(ATermUtils.TOP) || ATermUtils.isComplexClass(c)) return;
 
 		final boolean added = _tbox.addClass(c);
 
@@ -547,8 +540,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public void addSubClass(final ATermAppl sub, final ATermAppl sup)
 	{
-		if (null == sub || null == sup || sub.equals(sup))
-			return;
+		if (null == sub || null == sup || sub.equals(sup)) return;
 
 		_changes.add(ChangeType.TBOX_ADD);
 
@@ -560,8 +552,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public void addEquivalentClass(final ATermAppl c1, final ATermAppl c2)
 	{
-		if (null == c1 || null == c2 || c1.equals(c2))
-			return;
+		if (null == c1 || null == c2 || c1.equals(c2)) return;
 
 		_changes.add(ChangeType.TBOX_ADD);
 
@@ -573,8 +564,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public void addKey(final ATermAppl c, final Set<ATermAppl> properties)
 	{
-		if (null == c || null == properties)
-			return;
+		if (null == c || null == properties) return;
 
 		int varId = 0;
 		final List<RuleAtom> head = new ArrayList<>();
@@ -595,13 +585,12 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 				body.add(new IndividualPropertyAtom(property, x, z));
 				body.add(new IndividualPropertyAtom(property, y, z));
 			}
-			else
-				if (isDatatypeProperty(property))
-				{
-					final AtomDVariable z = new AtomDVariable("z" + varId);
-					body.add(new DatavaluedPropertyAtom(property, x, z));
-					body.add(new DatavaluedPropertyAtom(property, y, z));
-				}
+			else if (isDatatypeProperty(property))
+			{
+				final AtomDVariable z = new AtomDVariable("z" + varId);
+				body.add(new DatavaluedPropertyAtom(property, x, z));
+				body.add(new DatavaluedPropertyAtom(property, y, z));
+			}
 
 			varId++;
 		}
@@ -616,8 +605,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public void addDisjointClasses(final ATermList classes)
 	{
-		if (null == classes)
-			return;
+		if (null == classes) return;
 
 		_changes.add(ChangeType.TBOX_ADD);
 
@@ -629,8 +617,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public void addDisjointClasses(final List<ATermAppl> classes)
 	{
-		if (null == classes)
-			return;
+		if (null == classes) return;
 
 		addDisjointClasses(ATermUtils.toSet(classes));
 	}
@@ -638,8 +625,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public void addDisjointClass(final ATermAppl c1, final ATermAppl c2)
 	{
-		if (null == c1 || null == c2)
-			return;
+		if (null == c1 || null == c2) return;
 
 		_changes.add(ChangeType.TBOX_ADD);
 
@@ -651,14 +637,12 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public void addComplementClass(final ATermAppl c1, final ATermAppl c2)
 	{
-		if (null == c1 || null == c2)
-			return;
+		if (null == c1 || null == c2) return;
 
 		_changes.add(ChangeType.TBOX_ADD);
 		final ATermAppl notC2 = ATermUtils.makeNot(c2);
 
-		if (c1.equals(notC2))
-			return;
+		if (c1.equals(notC2)) return;
 
 		_tbox.addAxiom(ATermUtils.makeEqClasses(c1, notC2));
 
@@ -668,20 +652,16 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public Individual addIndividual(final ATermAppl i)
 	{
-		if (null == i)
-			return null;
+		if (null == i) return null;
 
 		final Node node = _abox.getNode(i);
 		if (node != null)
 		{
-			if (node instanceof Literal)
-				throw new UnsupportedFeatureException("Trying to use a literal as an _individual: " + ATermUtils.toString(i));
+			if (node instanceof Literal) throw new UnsupportedFeatureException("Trying to use a literal as an _individual: " + ATermUtils.toString(i));
 
 			return (Individual) node;
 		}
-		else
-			if (ATermUtils.isLiteral(i))
-				throw new UnsupportedFeatureException("Trying to use a literal as an _individual: " + ATermUtils.toString(i));
+		else if (ATermUtils.isLiteral(i)) throw new UnsupportedFeatureException("Trying to use a literal as an _individual: " + ATermUtils.toString(i));
 
 		final int remember = _abox.getBranchIndex();
 		_abox.setBranchIndex(DependencySet.NO_BRANCH);
@@ -715,9 +695,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 			// need to update the _branch _node count as this is _node has been
 			// added otherwise during back jumping this _node can be removed
 			for (final Branch branch : _abox.getBranches())
-			{
 				branch.setNodeCount(branch.getNodeCount() + 1);
-			}
 
 			// track updated and new _individuals; this is needed for the
 			// incremental completion _strategy
@@ -734,11 +712,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public void addType(final ATermAppl i, final ATermAppl c)
 	{
-		if (null == i || null == c)
-			return;
+		if (null == i || null == c) return;
 
-		if (AnnotationClasses.contains(c))
-			return;
+		if (AnnotationClasses.contains(c)) return;
 
 		final ATermAppl typeAxiom = ATermUtils.makeTypeAtom(i, c);
 		final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(typeAxiom) : DependencySet.INDEPENDENT;
@@ -751,8 +727,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 			_dependencyIndex.addTypeDependency(i, c, ds);
 		}
 
-		if (OpenlletOptions.KEEP_ABOX_ASSERTIONS)
-			_aboxAssertions.add(AssertionType.TYPE, typeAxiom);
+		if (OpenlletOptions.KEEP_ABOX_ASSERTIONS) _aboxAssertions.add(AssertionType.TYPE, typeAxiom);
 
 		addType(i, c, ds);
 	}
@@ -760,8 +735,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public void addType(final ATermAppl i, final ATermAppl c, final DependencySet ds)
 	{
-		if (null == i || null == c || null == ds)
-			return;
+		if (null == i || null == c || null == ds) return;
 
 		// set addition flag
 		_changes.add(ChangeType.ABOX_ADD);
@@ -793,8 +767,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public void addSame(final ATermAppl i1, final ATermAppl i2)
 	{
-		if (null == i1 || null == i2)
-			return;
+		if (null == i1 || null == i2) return;
 
 		// set addition flag
 		_changes.add(ChangeType.ABOX_ADD);
@@ -819,8 +792,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public void addAllDifferent(final ATermList list)
 	{
-		if (null == list)
-			return;
+		if (null == list) return;
 
 		// set addition flag
 		_changes.add(ChangeType.ABOX_ADD);
@@ -861,8 +833,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public void addDifferent(final ATermAppl i1, final ATermAppl i2)
 	{
-		if (null == i1 || null == i2)
-			return;
+		if (null == i1 || null == i2) return;
 
 		// set addition flag
 		_changes.add(ChangeType.ABOX_ADD);
@@ -890,10 +861,10 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	}
 
 	/**
-	 * @param p
-	 * @param s
-	 * @param o
-	 * @deprecated 2.5.1 Use addPropertyValue instead
+	 * @param      p
+	 * @param      s
+	 * @param      o
+	 * @deprecated   2.5.1 Use addPropertyValue instead
 	 */
 	@Deprecated
 	public void addObjectPropertyValue(final ATermAppl p, final ATermAppl s, final ATermAppl o)
@@ -904,8 +875,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean addPropertyValue(final ATermAppl p, final ATermAppl s, final ATermAppl o)
 	{
-		if (null == p || null == s || null == o)
-			return false;
+		if (null == p || null == s || null == o) return false;
 
 		final Individual subj = _abox.getIndividual(s);
 		final Role role = getRole(p);
@@ -923,8 +893,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 			return false;
 		}
 
-		if (!role.isObjectRole() && !role.isDatatypeRole())
-			return false;
+		if (!role.isObjectRole() && !role.isDatatypeRole()) return false;
 
 		final ATermAppl propAxiom = ATermUtils.makePropAtom(p, s, o);
 
@@ -933,32 +902,28 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		if (role.isObjectRole())
 		{
 			obj = _abox.getIndividual(o);
-			if (obj == null)
-				if (ATermUtils.isLiteral(o))
-				{
-					_logger.warning("Ignoring literal value " + o + " for object property " + p);
-					return false;
-				}
-				else
-				{
-					_logger.warning(o + _isNotAnKnowIndividual);
-					return false;
-				}
-			if (OpenlletOptions.KEEP_ABOX_ASSERTIONS)
-				_aboxAssertions.add(AssertionType.OBJ_ROLE, propAxiom);
-		}
-		else
-			if (role.isDatatypeRole())
+			if (obj == null) if (ATermUtils.isLiteral(o))
 			{
-				if (!ATermUtils.isLiteral(o))
-				{
-					_logger.warning("Ignoring non-literal value " + o + " for _data property " + p);
-					return false;
-				}
-				obj = _abox.addLiteral(o, ds);
-				if (OpenlletOptions.KEEP_ABOX_ASSERTIONS)
-					_aboxAssertions.add(AssertionType.DATA_ROLE, propAxiom);
+				_logger.warning("Ignoring literal value " + o + " for object property " + p);
+				return false;
 			}
+			else
+			{
+				_logger.warning(o + _isNotAnKnowIndividual);
+				return false;
+			}
+			if (OpenlletOptions.KEEP_ABOX_ASSERTIONS) _aboxAssertions.add(AssertionType.OBJ_ROLE, propAxiom);
+		}
+		else if (role.isDatatypeRole())
+		{
+			if (!ATermUtils.isLiteral(o))
+			{
+				_logger.warning("Ignoring non-literal value " + o + " for _data property " + p);
+				return false;
+			}
+			obj = _abox.addLiteral(o, ds);
+			if (OpenlletOptions.KEEP_ABOX_ASSERTIONS) _aboxAssertions.add(AssertionType.DATA_ROLE, propAxiom);
+		}
 
 		// set addition flag
 		_changes.add(ChangeType.ABOX_ADD);
@@ -984,46 +949,42 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 				_dependencyIndex.addEdgeDependency(edge, edge.getDepends());
 			}
 		}
-		else
-			if (canUseIncConsistency())
+		else if (canUseIncConsistency())
+		{
+			// TODO: refactor the access to the updatedIndividuals and
+			// newIndividuals - add get method
+			// add this _individual to the affected list
+			_abox.getIncrementalChangeTracker().addUpdatedIndividual(_abox.getIndividual(s));
+
+			if (role.isObjectRole())
 			{
-				// TODO: refactor the access to the updatedIndividuals and
-				// newIndividuals - add get method
-				// add this _individual to the affected list
-				_abox.getIncrementalChangeTracker().addUpdatedIndividual(_abox.getIndividual(s));
+				// if this is an object property then add the object to the
+				// affected list
+				_abox.getIncrementalChangeTracker().addUpdatedIndividual(_abox.getIndividual(o));
 
-				if (role.isObjectRole())
-				{
-					// if this is an object property then add the object to the
-					// affected list
-					_abox.getIncrementalChangeTracker().addUpdatedIndividual(_abox.getIndividual(o));
-
-					obj = _abox.getIndividual(o);
-					if (obj.isPruned() || obj.isMerged())
-						obj = obj.getSame();
-				}
-
-				// get the subject
-				Individual subj2 = _abox.getIndividual(s);
-				if (subj2.isPruned() || subj2.isMerged())
-					subj2 = subj2.getSame();
-
-				// generate dependency for new edge
-				ds = OpenlletOptions.USE_TRACING ? new DependencySet(ATermUtils.makePropAtom(p, s, o)) : DependencySet.INDEPENDENT;
-
-				// add to pseudomodel - note _branch must be temporarily set to 0 to
-				// ensure that assertion
-				// will not be restored during backtracking
-				final int branch = _abox.getBranchIndex();
-				_abox.setBranchIndex(DependencySet.NO_BRANCH);
-				// add the edge
-				final Edge newEdge = subj2.addEdge(role, obj, ds);
-				_abox.setBranchIndex(branch);
-
-				// add new edge to affected set
-				if (newEdge != null)
-					_abox.getIncrementalChangeTracker().addNewEdge(newEdge);
+				obj = _abox.getIndividual(o);
+				if (obj.isPruned() || obj.isMerged()) obj = obj.getSame();
 			}
+
+			// get the subject
+			Individual subj2 = _abox.getIndividual(s);
+			if (subj2.isPruned() || subj2.isMerged()) subj2 = subj2.getSame();
+
+			// generate dependency for new edge
+			ds = OpenlletOptions.USE_TRACING ? new DependencySet(ATermUtils.makePropAtom(p, s, o)) : DependencySet.INDEPENDENT;
+
+			// add to pseudomodel - note _branch must be temporarily set to 0 to
+			// ensure that assertion
+			// will not be restored during backtracking
+			final int branch = _abox.getBranchIndex();
+			_abox.setBranchIndex(DependencySet.NO_BRANCH);
+			// add the edge
+			final Edge newEdge = subj2.addEdge(role, obj, ds);
+			_abox.setBranchIndex(branch);
+
+			// add new edge to affected set
+			if (newEdge != null) _abox.getIncrementalChangeTracker().addNewEdge(newEdge);
+		}
 
 		_logger.finer(() -> "prop-value " + s + " " + p + " " + o);
 
@@ -1033,8 +994,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean addNegatedPropertyValue(final ATermAppl p, final ATermAppl s, final ATermAppl o)
 	{
-		if (null == p || null == s || null == o)
-			return false;
+		if (null == p || null == s || null == o) return false;
 
 		_changes.add(ChangeType.ABOX_ADD);
 
@@ -1059,21 +1019,18 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		if (role.isObjectRole())
 		{
-			if (_abox.getIndividual(o) == null)
-				if (ATermUtils.isLiteral(o))
-				{
-					_logger.warning("Ignoring literal value " + o + " for object property " + p);
-					return false;
-				}
-				else
-				{
-					_logger.warning(o + _isNotAnKnowIndividual);
-					return false;
-				}
+			if (_abox.getIndividual(o) == null) if (ATermUtils.isLiteral(o))
+			{
+				_logger.warning("Ignoring literal value " + o + " for object property " + p);
+				return false;
+			}
+			else
+			{
+				_logger.warning(o + _isNotAnKnowIndividual);
+				return false;
+			}
 		}
-		else
-			if (role.isDatatypeRole())
-				_abox.addLiteral(o, ds);
+		else if (role.isDatatypeRole()) _abox.addLiteral(o, ds);
 
 		final ATermAppl C = ATermUtils.makeNot(ATermUtils.makeHasValue(p, o));
 
@@ -1095,14 +1052,13 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	/**
 	 * Add a new object property. If property was earlier defined to be a datatype property then this function will simply return without changing the KB.
 	 *
-	 * @param p Name of the property
-	 * @return True if property is added, false if not
+	 * @param  p Name of the property
+	 * @return   True if property is added, false if not
 	 */
 	@Override
 	public boolean addObjectProperty(final ATerm p)
 	{
-		if (null == p)
-			return false;
+		if (null == p) return false;
 
 		final boolean exists = getPropertyType(p) == PropertyType.OBJECT;
 
@@ -1121,14 +1077,13 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	/**
 	 * Add a new object property. If property was earlier defined to be a datatype property then this function will simply return without changing the KB.
 	 *
-	 * @param p
-	 * @return True if property is added, false if not
+	 * @param  p
+	 * @return   True if property is added, false if not
 	 */
 	@Override
 	public boolean addDatatypeProperty(final ATerm p)
 	{
-		if (null == p)
-			return false;
+		if (null == p) return false;
 
 		final boolean exists = getPropertyType(p) == PropertyType.DATATYPE;
 
@@ -1152,8 +1107,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean addAnnotationProperty(final ATerm p)
 	{
-		if (null == p)
-			return false;
+		if (null == p) return false;
 
 		final boolean exists = getPropertyType(p) == PropertyType.ANNOTATION;
 
@@ -1180,13 +1134,11 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		{
 			Map<ATermAppl, Set<ATermAppl>> pidx = _annotations.get(s);
 
-			if (pidx == null)
-				pidx = new HashMap<>();
+			if (pidx == null) pidx = new HashMap<>();
 
 			Set<ATermAppl> oidx = pidx.get(p);
 
-			if (oidx == null)
-				oidx = new HashSet<>();
+			if (oidx == null) oidx = new HashSet<>();
 
 			oidx.add(o);
 			pidx.put(p, oidx);
@@ -1203,8 +1155,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	{
 		final Set<ATermAppl> oidx = getAnnotations(s, p);
 
-		if (oidx == null)
-			return false;
+		if (oidx == null) return false;
 
 		return oidx.contains(o);
 	}
@@ -1212,8 +1163,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public void addDomain(final ATerm p, final ATermAppl c)
 	{
-		if (null == p || null == c)
-			return;
+		if (null == p || null == c) return;
 
 		_changes.add(ChangeType.RBOX_ADD);
 
@@ -1251,8 +1201,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public void addRange(final ATerm p, final ATermAppl c, final Set<ATermAppl> explain)
 	{
-		if (null == p || null == c || null == explain)
-			return;
+		if (null == p || null == c || null == explain) return;
 
 		_changes.add(ChangeType.RBOX_ADD);
 
@@ -1264,8 +1213,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public void addDatatype(final ATermAppl p)
 	{
-		if (null == p)
-			return;
+		if (null == p) return;
 
 		getDatatypeReasoner().declare(p);
 	}
@@ -1273,15 +1221,14 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	/**
 	 * Adds a new datatype defined to be equivalent to the given data range expression.
 	 *
-	 * @param name name of the datatype
-	 * @param datarange a data range expression
-	 * @return true if the add success
+	 * @param  name      name of the datatype
+	 * @param  datarange a data range expression
+	 * @return           true if the add success
 	 */
 	@Override
 	public boolean addDatatypeDefinition(final ATermAppl name, final ATermAppl datarange)
 	{
-		if (null == name || null == datarange)
-			return false;
+		if (null == name || null == datarange) return false;
 
 		return getDatatypeReasoner().define(name, datarange);
 	}
@@ -1290,15 +1237,14 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	 * Removes (if possible) the given property domain axiom from the KB and return <code>true</code> if removal was successful. See also
 	 * {@link #addDomain(ATerm, ATermAppl)}.
 	 *
-	 * @param p Property in domain axiom
-	 * @param c Class in domain axiom
-	 * @return <code>true</code> if axiom is removed, <code>false</code> if removal failed
+	 * @param  p Property in domain axiom
+	 * @param  c Class in domain axiom
+	 * @return   <code>true</code> if axiom is removed, <code>false</code> if removal failed
 	 */
 	@Override
 	public boolean removeDomain(final ATerm p, final ATermAppl c)
 	{
-		if (null == p || null == c)
-			return false;
+		if (null == p || null == c) return false;
 
 		final Role role = getRole(p);
 		if (role == null)
@@ -1314,8 +1260,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		final boolean removed = getRBox().removeDomain(p, c);
 
-		if (removed)
-			_changes.add(ChangeType.RBOX_DEL);
+		if (removed) _changes.add(ChangeType.RBOX_DEL);
 
 		_logger.finer(() -> "Remove domain " + p + " " + c);
 
@@ -1325,8 +1270,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean removePropertyValue(final ATermAppl p, final ATermAppl i1, final ATermAppl i2)
 	{
-		if (null == p || null == i1 || null == i2)
-			return false;
+		if (null == p || null == i1 || null == i2) return false;
 
 		final ATermAppl ind1 = i1;
 		final ATermAppl ind2;
@@ -1352,11 +1296,10 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		final Node obj = _abox.getNode(ind2);
 		final Role role = getRole(p);
 
-		if (subj == null)
-			if (OpenlletOptions.SILENT_UNDEFINED_ENTITY_HANDLING)
-				throw new UnsupportedFeatureException(ind1 + _isNotAnIndividual);
-			else
-				return false;
+		if (subj == null) if (OpenlletOptions.SILENT_UNDEFINED_ENTITY_HANDLING)
+			throw new UnsupportedFeatureException(ind1 + _isNotAnIndividual);
+		else
+			return false;
 
 		if (obj == null)
 		{
@@ -1375,11 +1318,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		// make sure edge exists in assertions
 		Edge edge = subj.getOutEdges().getExactEdge(subj, role, obj);
 
-		if (edge == null && obj.isMerged())
-			edge = obj.getInEdges().getExactEdge(subj, role, obj);
+		if (edge == null && obj.isMerged()) edge = obj.getInEdges().getExactEdge(subj, role, obj);
 
-		if (edge == null)
-			return false;
+		if (edge == null) return false;
 
 		// set deletion flag
 		_changes.add(ChangeType.ABOX_DEL);
@@ -1407,8 +1348,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 			// if this is an object property then add the object to the affected
 			// list
-			if (!role.isDatatypeRole())
-				_abox.getIncrementalChangeTracker().addUpdatedIndividual((Individual) obj);
+			if (!role.isDatatypeRole()) _abox.getIncrementalChangeTracker().addUpdatedIndividual((Individual) obj);
 		}
 
 		if (OpenlletOptions.KEEP_ABOX_ASSERTIONS)
@@ -1427,15 +1367,14 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	 * Removes (if possible) the given property range axiom from the KB and return <code>true</code> if removal was successful. See also
 	 * {@link #addRange(ATerm, ATermAppl)}.
 	 *
-	 * @param p Property in range axiom
-	 * @param c Class or datatype in range axiom
-	 * @return <code>true</code> if axiom is removed, <code>false</code> if removal failed
+	 * @param  p Property in range axiom
+	 * @param  c Class or datatype in range axiom
+	 * @return   <code>true</code> if axiom is removed, <code>false</code> if removal failed
 	 */
 	@Override
 	public boolean removeRange(final ATerm p, final ATermAppl c)
 	{
-		if (null == p || null == c)
-			return false;
+		if (null == p || null == c) return false;
 
 		final Role role = getRole(p);
 		if (role == null)
@@ -1451,8 +1390,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		final boolean removed = getRBox().removeRange(p, c);
 
-		if (removed)
-			_changes.add(ChangeType.RBOX_DEL);
+		if (removed) _changes.add(ChangeType.RBOX_DEL);
 
 		_logger.finer(() -> "Remove range" + p + " " + c);
 
@@ -1462,22 +1400,19 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean removeType(final ATermAppl ind, final ATermAppl c)
 	{
-		if (null == ind || null == c)
-			return false;
+		if (null == ind || null == c) return false;
 
 		final Individual subj = _abox.getIndividual(ind);
 
-		if (subj == null)
-			if (OpenlletOptions.SILENT_UNDEFINED_ENTITY_HANDLING)
-				return false;
-			else
-				throw new UnsupportedFeatureException(ind + _isNotAnIndividual);
+		if (subj == null) if (OpenlletOptions.SILENT_UNDEFINED_ENTITY_HANDLING)
+			return false;
+		else
+			throw new UnsupportedFeatureException(ind + _isNotAnIndividual);
 
 		final ATermAppl normC = ATermUtils.normalize(c);
 		final DependencySet ds = subj.getDepends(normC);
 
-		if (ds == null || !ds.isIndependent())
-			return false;
+		if (ds == null || !ds.isIndependent()) return false;
 
 		boolean removed = true;
 
@@ -1521,14 +1456,13 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	/**
 	 * Removes (if possible) the given TBox axiom from the KB and return <code>true</code> if removal was successful.
 	 *
-	 * @param axiom TBox axiom to remove
-	 * @return <code>true</code> if axiom is removed, <code>false</code> if removal failed
+	 * @param  axiom TBox axiom to remove
+	 * @return       <code>true</code> if axiom is removed, <code>false</code> if removal failed
 	 */
 	@Override
 	public boolean removeAxiom(final ATermAppl axiom)
 	{
-		if (null == axiom)
-			return false;
+		if (null == axiom) return false;
 
 		boolean removed = false;
 
@@ -1541,11 +1475,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 			_logger.log(Level.SEVERE, "Removal failed for axiom " + axiom, e);
 		}
 
-		if (removed)
-			_changes.add(ChangeType.TBOX_DEL);
+		if (removed) _changes.add(ChangeType.TBOX_DEL);
 
-		if (_logger.isLoggable(Level.FINER))
-			_logger.finer("Remove " + axiom + ": " + removed);
+		if (_logger.isLoggable(Level.FINER)) _logger.finer("Remove " + axiom + ": " + removed);
 
 		return removed;
 	}
@@ -1553,8 +1485,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public void prepare()
 	{
-		if (!isChanged())
-			return;
+		if (!isChanged()) return;
 
 		final boolean explain = _abox.doExplanation();
 		_abox.setDoExplanation(true);
@@ -1577,26 +1508,19 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 						// there are no nominals
 						&& (!_expChecker.getExpressivity().hasNominal() || OpenlletOptions.USE_PSEUDO_NOMINALS);
 
-		if (isRBoxChanged())
-			_timers.execute("rbox", x -> _rbox.prepare());
+		if (isRBoxChanged()) _timers.execute("rbox", x -> _rbox.prepare());
 
-		if (isTBoxChanged())
-			_timers.execute("normalize", x -> _tbox.prepare());
+		if (isTBoxChanged()) _timers.execute("normalize", x -> _tbox.prepare());
 
-		if (isRBoxChanged())
-			_rbox.propagateDomainRange();
+		if (isRBoxChanged()) _rbox.propagateDomainRange();
 
 		_canUseIncConsistency = canUseIncConsistency();
 
-		if (_abox.isComplete())
-			if (_changes.contains(ChangeType.TBOX_DEL) || _changes.contains(ChangeType.RBOX_DEL) || !_canUseIncConsistency && _changes.contains(ChangeType.ABOX_DEL))
-				_abox.reset();
-			else
-				if (_changes.contains(ChangeType.TBOX_ADD) || _changes.contains(ChangeType.RBOX_ADD))
-					_abox.resetQueue();
-				else
-					if (_canUseIncConsistency && _changes.contains(ChangeType.ABOX_DEL))
-						IncrementalRestore.restoreDependencies(this);
+		if (_abox.isComplete()) if (_changes.contains(ChangeType.TBOX_DEL) || _changes.contains(ChangeType.RBOX_DEL) || !_canUseIncConsistency && _changes.contains(ChangeType.ABOX_DEL))
+			_abox.reset();
+		else if (_changes.contains(ChangeType.TBOX_ADD) || _changes.contains(ChangeType.RBOX_ADD))
+			_abox.resetQueue();
+		else if (_canUseIncConsistency && _changes.contains(ChangeType.ABOX_DEL)) IncrementalRestore.restoreDependencies(this);
 
 		// reset flags
 		_changes.clear();
@@ -1622,7 +1546,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 			// taxonomy = null;
 		}
 
-		timer.ifPresent(t -> t.stop());
+		timer.ifPresent(Timer::stop);
 
 		if (_logger.isLoggable(Level.FINE))
 		{
@@ -1644,12 +1568,10 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	 */
 	public void updateExpressivity(final ATermAppl i, final ATermAppl c)
 	{
-		if (null == i || null == c)
-			return;
+		if (null == i || null == c) return;
 
 		// if the _tbox or _rbox changed then we cannot use incremental reasoning!
-		if (!isChanged() || isTBoxChanged() || isRBoxChanged())
-			return;
+		if (!isChanged() || isTBoxChanged() || isRBoxChanged()) return;
 
 		// update expressivity given this _individual
 		_expChecker.updateWithIndividual(i, c);
@@ -1669,8 +1591,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		buffer.append("Individuals: " + _individuals.size() + " ");
 
 		final Expressivity expressivity = _expChecker.getExpressivity();
-		if (expressivity.hasNominal())
-			buffer.append("Nominals: " + expressivity.getNominals().size() + " ");
+		if (expressivity.hasNominal()) buffer.append("Nominals: " + expressivity.getNominals().size() + " ");
 
 		return buffer.toString();
 	}
@@ -1758,14 +1679,12 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 			aUnsatClasses = includeBottom ? getAllEquivalentClasses(ATermUtils.BOTTOM) : getEquivalentClasses(ATermUtils.BOTTOM);
 		else
 		{
-			if (includeBottom)
-				aUnsatClasses.add(BOTTOM);
+			if (includeBottom) aUnsatClasses.add(BOTTOM);
 
 			// if not, check for them like this, without triggering classification
 			final Set<ATermAppl> aClasses = getClasses();
 			for (final ATermAppl aClass : aClasses)
-				if (!isSatisfiable(aClass))
-					aUnsatClasses.add(aClass);
+				if (!isSatisfiable(aClass)) aUnsatClasses.add(aClass);
 		}
 
 		return aUnsatClasses;
@@ -1773,8 +1692,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 	private void consistency()
 	{
-		if (isConsistencyDone())
-			return;
+		if (isConsistencyDone()) return;
 
 		_abox.setInitialized(false);
 
@@ -1793,18 +1711,15 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		final boolean doExplanation = _abox.doExplanation();
 
-		if (OpenlletOptions.USE_TRACING && !_explainOnlyInconsistency)
-			_abox.setDoExplanation(true);
+		if (OpenlletOptions.USE_TRACING && !_explainOnlyInconsistency) _abox.setDoExplanation(true);
 
 		// perform the consistency check
 		_consistent = _canUseIncConsistency ? _abox.isIncConsistent() : _abox.isConsistent();
 
 		// final clean up
-		if (OpenlletOptions.USE_INCREMENTAL_CONSISTENCY)
-			_abox.getIncrementalChangeTracker().clear();
+		if (OpenlletOptions.USE_INCREMENTAL_CONSISTENCY) _abox.getIncrementalChangeTracker().clear();
 
-		if (OpenlletOptions.USE_INCREMENTAL_DELETION)
-			getDeletedAssertions().clear();
+		if (OpenlletOptions.USE_INCREMENTAL_DELETION) getDeletedAssertions().clear();
 
 		if (!_consistent)
 		{
@@ -1833,21 +1748,18 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 				_abox.setDoExplanation(false);
 			}
 
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("Inconsistent ontology. Reason: " + getExplanation());
+			if (_logger.isLoggable(Level.FINE)) _logger.fine("Inconsistent ontology. Reason: " + getExplanation());
 
-			if (OpenlletOptions.USE_TRACING && _logger.isLoggable(Level.FINE))
-				_logger.fine(renderExplanationSet());
+			if (OpenlletOptions.USE_TRACING && _logger.isLoggable(Level.FINE)) _logger.fine(renderExplanationSet());
 		}
 
 		_abox.setDoExplanation(doExplanation);
 
 		_state.add(ReasoningState.CONSISTENCY);
 
-		timer.ifPresent(t -> t.stop());
+		timer.ifPresent(Timer::stop);
 
-		if (_logger.isLoggable(Level.FINE) && timer.isPresent())
-			_logger.fine("Consistent: " + _consistent + " (" + timer.get().getLast() + "ms)");
+		if (_logger.isLoggable(Level.FINE) && timer.isPresent()) _logger.fine("Consistent: " + _consistent + " (" + timer.get().getLast() + "ms)");
 
 		assert isConsistencyDone() : "Consistency flag not set";
 	}
@@ -1892,10 +1804,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public void ensureConsistency()
 	{
-		if (!isConsistent())
-			throw new InconsistentOntologyException("Cannot do reasoning with inconsistent ontologies!\n"//
-					+ "Reason for inconsistency: " + getExplanation()//
-					+ (OpenlletOptions.USE_TRACING ? "\n" + renderExplanationSet() : ""));
+		if (!isConsistent()) throw new InconsistentOntologyException("Cannot do reasoning with inconsistent ontologies!\n"//
+				+ "Reason for inconsistency: " + getExplanation()//
+				+ (OpenlletOptions.USE_TRACING ? "\n" + renderExplanationSet() : ""));
 	}
 
 	@Override
@@ -1903,8 +1814,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	{
 		ensureConsistency();
 
-		if (isClassified())
-			return;
+		if (isClassified()) return;
 
 		_logger.fine("Classifying...");
 
@@ -1917,10 +1827,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 			isClassified = builder.classify();
 		}
 
-		timer.ifPresent(t -> t.stop());
+		timer.ifPresent(Timer::stop);
 
-		if (!isClassified)
-			return;
+		if (!isClassified) return;
 
 		_state.add(ReasoningState.CLASSIFY);
 
@@ -1930,13 +1839,11 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public void realize()
 	{
-		if (isRealized())
-			return;
+		if (isRealized()) return;
 
 		classify();
 
-		if (!isClassified())
-			return;
+		if (!isClassified()) return;
 
 		final Optional<Timer> timer = _timers.startTimer("realize");
 
@@ -1948,10 +1855,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 			isRealized = builder.realize();
 		}
 
-		timer.ifPresent(t -> t.stop());
+		timer.ifPresent(Timer::stop);
 
-		if (!isRealized)
-			return;
+		if (!isRealized) return;
 
 		_state.add(ReasoningState.REALIZE);
 
@@ -1991,8 +1897,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean isSatisfiable(final ATermAppl c)
 	{
-		if (null == c)
-			return false;
+		if (null == c) return false;
 
 		ensureConsistency();
 
@@ -2007,22 +1912,20 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		if (isClassified() && !doExplanation())
 		{
 			final Bool equivToBottom = getTaxonomyBuilder().getTaxonomy().isEquivalent(ATermUtils.BOTTOM, normalClass);
-			if (equivToBottom.isKnown())
-				return equivToBottom.isFalse();
+			if (equivToBottom.isKnown()) return equivToBottom.isFalse();
 		}
 
 		return _abox.isSatisfiable(normalClass);
 	}
 
 	/**
-	 * @param d
-	 * @return true if there is at least one named individual that belongs to the given class
+	 * @param  d
+	 * @return   true if there is at least one named individual that belongs to the given class
 	 */
 	@Override
 	public boolean hasInstance(final ATerm d)
 	{
-		if (null == d)
-			return false;
+		if (null == d) return false;
 
 		if (!isClass(d))
 		{
@@ -2043,9 +1946,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 			final Bool knownType = _abox.isKnownType(x, c);
 			if (knownType.isTrue())
 				return true;
-			else
-				if (knownType.isUnknown())
-					unknowns.add(x);
+			else if (knownType.isUnknown()) unknowns.add(x);
 		}
 
 		final boolean hasInstance = !unknowns.isEmpty() && _abox.existType(unknowns, c);
@@ -2056,8 +1957,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean isSameAs(final ATermAppl t1, final ATermAppl t2)
 	{
-		if (null == t1 || null == t2)
-			return false;
+		if (null == t1 || null == t2) return false;
 
 		ensureConsistency();
 
@@ -2072,8 +1972,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 			return false;
 		}
 
-		if (t1.equals(t2))
-			return true;
+		if (t1.equals(t2)) return true;
 
 		final Set<ATermAppl> knowns = new HashSet<>();
 		final Set<ATermAppl> unknowns = new HashSet<>();
@@ -2086,12 +1985,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		if (knowns.contains(t2))
 		{
-			if (!doExplanation())
-				return true;
+			if (!doExplanation()) return true;
 		}
-		else
-			if (!unknowns.contains(t2))
-				return false;
+		else if (!unknowns.contains(t2)) return false;
 
 		return _abox.isSameAs(t1, t2);
 	}
@@ -2099,8 +1995,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean isDifferentFrom(final ATermAppl t1, final ATermAppl t2)
 	{
-		if (null == t1 || null == t2)
-			return false;
+		if (null == t1 || null == t2) return false;
 
 		final Individual ind1 = _abox.getIndividual(t1);
 		final Individual ind2 = _abox.getIndividual(t2);
@@ -2117,8 +2012,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 			return false;
 		}
 
-		if (ind1.isDifferent(ind2) && !doExplanation())
-			return true;
+		if (ind1.isDifferent(ind2) && !doExplanation()) return true;
 
 		final ATermAppl c = ATermUtils.makeNot(ATermUtils.makeValue(t2));
 
@@ -2128,8 +2022,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public Set<ATermAppl> getDifferents(final ATermAppl name)
 	{
-		if (null == name)
-			return Collections.emptySet();
+		if (null == name) return Collections.emptySet();
 
 		ensureConsistency();
 
@@ -2156,12 +2049,9 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 			final Bool isType = _abox.isKnownType(x, c);
 			if (isIndependent && isType.isKnown())
 			{
-				if (isType.isTrue())
-					differents.add(x);
+				if (isType.isTrue()) differents.add(x);
 			}
-			else
-				if (isType(x, c))
-					differents.add(x);
+			else if (isType(x, c)) differents.add(x);
 		}
 
 		return differents;
@@ -2170,8 +2060,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean hasPropertyValue(final ATermAppl s, final ATermAppl p, final ATermAppl o)
 	{
-		if (null == s || null == p)
-			return false;
+		if (null == s || null == p) return false;
 
 		ensureConsistency();
 
@@ -2187,15 +2076,11 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 			return false;
 		}
 
-		if (o != null)
-			if (isDatatypeProperty(p))
-			{
-				if (!ATermUtils.isLiteral(o))
-					return false;
-			}
-			else
-				if (!isIndividual(o))
-					return false;
+		if (o != null) if (isDatatypeProperty(p))
+		{
+			if (!ATermUtils.isLiteral(o)) return false;
+		}
+		else if (!isIndividual(o)) return false;
 
 		return _abox.hasPropertyValue(s, p, o);
 	}
@@ -2203,8 +2088,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public Bool hasKnownPropertyValue(final ATermAppl s, final ATermAppl p, final ATermAppl o)
 	{
-		if (null == s || null == p || null == o)
-			return Bool.FALSE;
+		if (null == s || null == p || null == o) return Bool.FALSE;
 
 		ensureConsistency();
 
@@ -2213,32 +2097,28 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 	public Set<Set<ATermAppl>> getDisjoints(final ATermAppl c)
 	{
-		if (null == c)
-			return Collections.emptySet();
+		if (null == c) return Collections.emptySet();
 
 		if (isClass(c))
 			return getDisjointClasses(c);
+		else if (isProperty(c))
+			return getDisjointProperties(c);
 		else
-			if (isProperty(c))
-				return getDisjointProperties(c);
-			else
-				Base.handleUndefinedEntity(c + _isNotAnPropertyNorAClass);
+			Base.handleUndefinedEntity(c + _isNotAnPropertyNorAClass);
 		return Collections.emptySet();
 	}
 
 	@Override
 	public Set<Set<ATermAppl>> getDisjointProperties(final ATermAppl p)
 	{
-		if (null == p)
-			return Collections.emptySet();
+		if (null == p) return Collections.emptySet();
 
 		return getDisjointProperties(p, false);
 	}
 
 	public Set<Set<ATermAppl>> getDisjointProperties(final ATermAppl p, final boolean direct)
 	{
-		if (null == p)
-			return Collections.emptySet();
+		if (null == p) return Collections.emptySet();
 
 		if (!isProperty(p))
 		{
@@ -2248,8 +2128,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		final Role role = _rbox.getRole(p);
 
-		if (!role.isObjectRole() && !role.isDatatypeRole())
-			return Collections.emptySet();
+		if (!role.isObjectRole() && !role.isDatatypeRole()) return Collections.emptySet();
 
 		final Set<Set<ATermAppl>> disjoints = new HashSet<>();
 
@@ -2263,15 +2142,13 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		{
 			node = visit.get(i);
 
-			if (node.isHidden() || node.getEquivalents().isEmpty() || marked.contains(node))
-				continue;
+			if (node.isHidden() || node.getEquivalents().isEmpty() || marked.contains(node)) continue;
 
 			final ATermAppl r = node.getName();
 			if (isDisjointProperty(p, r))
 			{
 				final Set<ATermAppl> eqs = getAllEquivalentProperties(r);
-				if (!eqs.isEmpty())
-					disjoints.add(eqs);
+				if (!eqs.isEmpty()) disjoints.add(eqs);
 				if (direct)
 					mark(node, marked);
 				else
@@ -2296,8 +2173,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public Set<ATermAppl> getComplements(final ATermAppl c)
 	{
-		if (null == c)
-			return Collections.emptySet();
+		if (null == c) return Collections.emptySet();
 
 		if (!isClass(c))
 		{
@@ -2308,8 +2184,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		final ATermAppl notC = ATermUtils.normalize(ATermUtils.makeNot(c));
 		final Set<ATermAppl> complements = getAllEquivalentClasses(notC);
 
-		if (notC.equals(ATermUtils.BOTTOM))
-			complements.add(ATermUtils.BOTTOM);
+		if (notC.equals(ATermUtils.BOTTOM)) complements.add(ATermUtils.BOTTOM);
 
 		return complements;
 	}
@@ -2317,8 +2192,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public Set<ATermAppl> getSames(final ATermAppl name)
 	{
-		if (null == name)
-			return Collections.emptySet();
+		if (null == name) return Collections.emptySet();
 
 		final Set<ATermAppl> sames = getAllSames(name);
 		sames.remove(name);
@@ -2328,8 +2202,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 	public void printClassTree(final PrintWriter out)
 	{
-		if (null == out)
-			return;
+		if (null == out) return;
 
 		classify();
 
@@ -2337,8 +2210,8 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	}
 
 	/**
-	 * @param doDepAxioms
-	 * @deprecated Use setDoExplanation instead
+	 * @param      doDepAxioms
+	 * @deprecated             Use setDoExplanation instead
 	 */
 	@Deprecated
 	public void setDoDependencyAxioms(final boolean doDepAxioms)
@@ -2347,7 +2220,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	}
 
 	/**
-	 * @return DO NOT USE
+	 * @return     DO NOT USE
 	 * @deprecated Use getExplanation instead
 	 */
 	@Deprecated
@@ -2359,8 +2232,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public CompletionStrategy chooseStrategy(final ABox abox)
 	{
-		if (null == abox)
-			return null;
+		if (null == abox) return null;
 
 		return chooseStrategy(abox, getExpressivity());
 	}
@@ -2374,22 +2246,18 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public CompletionStrategy chooseStrategy(final ABox abox, final Expressivity expressivity)
 	{
-		if (null == abox || null == expressivity)
-			return null;
+		if (null == abox || null == expressivity) return null;
 
 		final boolean conceptSatisfiability = abox.size() == 1 && new IndividualIterator(abox).next().isConceptRoot();
 
 		// We don't need to use rules _strategy if we are checking concept satisfiability unless
 		// there are nominals because then rules may affect concept satisfiability and we need
 		// to use _rules _strategy
-		if (getRules().size() > 0 && (expressivity.hasNominal() || !conceptSatisfiability))
-			return new ContinuousRulesStrategy(abox);
+		if (getRules().size() > 0 && (expressivity.hasNominal() || !conceptSatisfiability)) return new ContinuousRulesStrategy(abox);
 
 		final boolean fullDatatypeReasoning = OpenlletOptions.USE_FULL_DATATYPE_REASONING && (expressivity.hasCardinalityD() || expressivity.hasKeys());
 
-		if (!fullDatatypeReasoning)
-			if (conceptSatisfiability && !expressivity.hasNominal())
-				return new EmptySRIQStrategy(abox);
+		if (!fullDatatypeReasoning) if (conceptSatisfiability && !expressivity.hasNominal()) return new EmptySRIQStrategy(abox);
 
 		return new SROIQStrategy(abox);
 	}
@@ -2420,13 +2288,11 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public void setTaxonomyBuilderProgressMonitor(final ProgressMonitor progressMonitor)
 	{
-		if (null == progressMonitor)
-			return;
+		if (null == progressMonitor) return;
 
 		_builderProgressMonitor = progressMonitor;
 
-		if (_builder.isPresent())
-			getTaxonomyBuilder().setProgressMonitor(progressMonitor);
+		if (_builder.isPresent()) getTaxonomyBuilder().setProgressMonitor(progressMonitor);
 	}
 
 	@Override
@@ -2441,8 +2307,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	@Override
 	public boolean addRule(final Rule rule)
 	{
-		if (null == rule)
-			return false;
+		if (null == rule) return false;
 
 		// DL-safe _rules affects the ABox so we might redo the reasoning
 		_changes.add(ChangeType.ABOX_ADD);
@@ -2456,8 +2321,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 	private Rule normalize(final Rule rule)
 	{
-		if (!UsableRuleFilter.isUsable(rule))
-			return null;
+		if (!UsableRuleFilter.isUsable(rule)) return null;
 
 		final List<RuleAtom> head = rule.getHead().stream().map(atom ->
 		{
@@ -2466,8 +2330,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 				final ClassAtom ca = (ClassAtom) atom;
 				final ATermAppl rawCls = ca.getPredicate();
 				final ATermAppl normCls = ATermUtils.normalize(rawCls);
-				if (rawCls != normCls)
-					return new ClassAtom(normCls, ca.getArgument());
+				if (rawCls != normCls) return new ClassAtom(normCls, ca.getArgument());
 			}
 			return atom;
 		}).collect(Collectors.toList());
@@ -2484,16 +2347,14 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 				if (subj instanceof AtomIVariable)
 				{
 					final Set<ATermAppl> domains = getRole(prop).getDomains();
-					if (domains != null)
-						MultiMapUtils.addAll(types, subj, domains);
+					if (domains != null) MultiMapUtils.addAll(types, subj, domains);
 				}
 
 				final AtomIObject obj = propAtom.getArgument2();
 				if (obj instanceof AtomIVariable)
 				{
 					final Set<ATermAppl> ranges = getRole(prop).getRanges();
-					if (ranges != null)
-						MultiMapUtils.addAll(types, obj, ranges);
+					if (ranges != null) MultiMapUtils.addAll(types, obj, ranges);
 				}
 			}
 
@@ -2505,8 +2366,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 				final AtomIObject arg = ca.getArgument();
 				final ATermAppl rawCls = ca.getPredicate();
 				final ATermAppl normCls = ATermUtils.normalize(rawCls);
-				if (!MultiMapUtils.contains(types, arg, normCls))
-					body.add(rawCls == normCls ? atom : new ClassAtom(normCls, arg));
+				if (!MultiMapUtils.contains(types, arg, normCls)) body.add(rawCls == normCls ? atom : new ClassAtom(normCls, arg));
 				// else the class is drop.
 			}
 			else
@@ -2543,8 +2403,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	{
 		// can we do incremental consistency checking
 		final Expressivity expressivity = _expChecker.getExpressivity();
-		if (expressivity == null)
-			return false;
+		if (expressivity == null) return false;
 
 		return !(expressivity.hasNominal() && expressivity.hasInverse())//
 				&& getRules().isEmpty() //
@@ -2558,34 +2417,27 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 	public void ensureIncConsistency(final boolean aboxDeletion)
 	{
-		if (canUseIncConsistency())
-			return;
+		if (canUseIncConsistency()) return;
 
 		final Expressivity expressivity = _expChecker.getExpressivity();
 
 		String msg = "ABox " + (aboxDeletion ? "deletion" : "addition") + " failed because ";
 		if (expressivity == null)
 			msg += "an initial consistency check has not been performed on this KB";
+		else if (expressivity.hasNominal())
+			msg += "KB has nominals";
+		else if (expressivity.hasInverse())
+			msg += "KB has inverse properties";
+		else if (isTBoxChanged())
+			msg += "TBox changed";
+		else if (isRBoxChanged())
+			msg += "RBox changed";
+		else if (OpenlletOptions.USE_INCREMENTAL_CONSISTENCY)
+			msg += "configuration option USE_INCREMENTAL_CONSISTENCY is enabled";
+		else if (aboxDeletion)
+			msg += "configuration option USE_INCREMENTAL_DELETION is not enabled";
 		else
-			if (expressivity.hasNominal())
-				msg += "KB has nominals";
-			else
-				if (expressivity.hasInverse())
-					msg += "KB has inverse properties";
-				else
-					if (isTBoxChanged())
-						msg += "TBox changed";
-					else
-						if (isRBoxChanged())
-							msg += "RBox changed";
-						else
-							if (OpenlletOptions.USE_INCREMENTAL_CONSISTENCY)
-								msg += "configuration option USE_INCREMENTAL_CONSISTENCY is enabled";
-							else
-								if (aboxDeletion)
-									msg += "configuration option USE_INCREMENTAL_DELETION is not enabled";
-								else
-									msg += "of an unknown reason";
+			msg += "of an unknown reason";
 
 		throw new UnsupportedOperationException(msg);
 	}
@@ -2610,8 +2462,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 	public Set<ATermAppl> getABoxAssertions(final AssertionType assertionType)
 	{
-		if (null == assertionType)
-			return Collections.emptySet();
+		if (null == assertionType) return Collections.emptySet();
 
 		final Set<ATermAppl> assertions = _aboxAssertions.get(assertionType);
 
@@ -2633,7 +2484,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 	/**
 	 * Returns _current value of explainOnlyInconsistency option.
 	 *
-	 * @see #setExplainOnlyInconsistency(boolean)
+	 * @see    #setExplainOnlyInconsistency(boolean)
 	 * @return current value of explainOnlyInconsistency option
 	 */
 	public boolean isExplainOnlyInconsistency()

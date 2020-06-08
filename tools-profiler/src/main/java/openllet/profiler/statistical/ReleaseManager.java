@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * Manages information about several releases
- * 
+ *
  * @author Pedro Oliveira <pedro@clarkparsia.com>
  */
 public class ReleaseManager
@@ -27,8 +27,7 @@ public class ReleaseManager
 
 	public Release getLatestRelease()
 	{
-		if (releases.size() > 0)
-			return releases.get(0);
+		if (releases.size() > 0) return releases.get(0);
 		return null;
 	}
 
@@ -49,8 +48,7 @@ public class ReleaseManager
 		if (f.isDirectory())
 		{
 			for (final File file : f.listFiles())
-				if (file.isFile() && !file.isHidden())
-					addReleaseFromFile(file.getAbsolutePath());
+				if (file.isFile() && !file.isHidden()) addReleaseFromFile(file.getAbsolutePath());
 		}
 		else
 			addReleaseFromFile(filename);

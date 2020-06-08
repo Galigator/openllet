@@ -20,10 +20,10 @@ import openllet.aterm.ATermAppl;
 public class InvalidLiteralException extends DatatypeReasonerException
 {
 
-	private static final long serialVersionUID = 1L;
+	private static final long	serialVersionUID	= 1L;
 
-	private final ATermAppl _dt;
-	private final String _value;
+	private final ATermAppl		_dt;
+	private final String		_value;
 
 	public InvalidLiteralException(final ATermAppl dt, final String value)
 	{

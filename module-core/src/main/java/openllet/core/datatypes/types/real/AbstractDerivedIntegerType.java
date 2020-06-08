@@ -26,19 +26,16 @@ import openllet.core.utils.ATermUtils;
  */
 public abstract class AbstractDerivedIntegerType extends AbstractBaseDatatype<Number>
 {
-	private static final XSDDecimal XSD_DECIMAL = XSDDecimal.getInstance();
-	private final RestrictedDatatype<Number> _dataRange;
+	private static final XSDDecimal				XSD_DECIMAL	= XSDDecimal.getInstance();
+	private final RestrictedDatatype<Number>	_dataRange;
 
 	public AbstractDerivedIntegerType(final ATermAppl name, final Number lower, final Number upper)
 	{
 		super(name);
 
-		if (lower != null && !OWLRealUtils.isInteger(lower))
-			throw new IllegalArgumentException();
-		if (upper != null && !OWLRealUtils.isInteger(upper))
-			throw new IllegalArgumentException();
-		if (lower != null && upper != null && OWLRealUtils.compare(lower, upper) > 0)
-			throw new IllegalArgumentException();
+		if (lower != null && !OWLRealUtils.isInteger(lower)) throw new IllegalArgumentException();
+		if (upper != null && !OWLRealUtils.isInteger(upper)) throw new IllegalArgumentException();
+		if (lower != null && upper != null && OWLRealUtils.compare(lower, upper) > 0) throw new IllegalArgumentException();
 
 		final IntegerInterval i = new IntegerInterval(lower == null ? null : OWLRealUtils.getCanonicalObject(lower), upper == null ? null : OWLRealUtils.getCanonicalObject(upper));
 		_dataRange = new RestrictedRealDatatype(this, i, null, null);
@@ -53,8 +50,8 @@ public abstract class AbstractDerivedIntegerType extends AbstractBaseDatatype<Nu
 	/**
 	 * Parse and validate a lexical form of the literal.
 	 *
-	 * @param lexicalForm
-	 * @return a <code>Number</code> representation of the literal
+	 * @param  lexicalForm
+	 * @return                         a <code>Number</code> representation of the literal
 	 * @throws InvalidLiteralException if the literal form is invalid or the value is out of range
 	 */
 	protected abstract Number fromLexicalForm(String lexicalForm) throws InvalidLiteralException;

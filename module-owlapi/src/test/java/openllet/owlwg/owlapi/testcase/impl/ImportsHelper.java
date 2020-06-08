@@ -23,7 +23,7 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
  * <p>
  * Company: Clark & Parsia, LLC. <a href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
  * </p>
- * 
+ *
  * @author Mike Smith &lt;msmith@clarkparsia.com&gt;
  */
 public class ImportsHelper
@@ -34,7 +34,6 @@ public class ImportsHelper
 	{
 
 		for (final IRI iri : t.getImportedOntologies())
-		{
 			if (!manager.contains(iri))
 			{
 				final String str = t.getImportedOntology(iri, format);
@@ -58,7 +57,6 @@ public class ImportsHelper
 					}
 				}
 			}
-		}
 	}
 
 }

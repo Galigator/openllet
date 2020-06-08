@@ -30,8 +30,8 @@ import openllet.core.boxes.abox.Node;
  */
 public class AllNamedIndividualsIterator implements Iterator<Individual>
 {
-	private Individual _nextIndividual;
-	private final Iterator<Individual> _nodeIterator;
+	private Individual					_nextIndividual;
+	private final Iterator<Individual>	_nodeIterator;
 
 	public AllNamedIndividualsIterator(final ABox abox)
 	{
@@ -41,8 +41,7 @@ public class AllNamedIndividualsIterator implements Iterator<Individual>
 	@Override
 	public boolean hasNext()
 	{
-		if (_nextIndividual != null)
-			return true;
+		if (_nextIndividual != null) return true;
 
 		while (_nodeIterator.hasNext())
 		{
@@ -60,8 +59,7 @@ public class AllNamedIndividualsIterator implements Iterator<Individual>
 	@Override
 	public Individual next()
 	{
-		if (!hasNext())
-			throw new NoSuchElementException();
+		if (!hasNext()) throw new NoSuchElementException();
 		final Individual result = _nextIndividual;
 		_nextIndividual = null;
 		return result;

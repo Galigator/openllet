@@ -22,7 +22,8 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author Mike Smith
  */
 @RunWith(Suite.class)
-@SuiteClasses({ DatatypeReasonerTests.class, FloatingPointUtilsTests.class, ContinuousRealIntervalTests.class, IntegerIntervalTests.class, RationalTests.class, RestrictedRealDatatypeTests.class, RestrictedTimelineDatatypeTests.class, DatatypeRestrictionTests.class })
+@SuiteClasses({ DatatypeReasonerTests.class, FloatingPointUtilsTests.class, ContinuousRealIntervalTests.class, IntegerIntervalTests.class, RationalTests.class, RestrictedRealDatatypeTests.class,
+		RestrictedTimelineDatatypeTests.class, DatatypeRestrictionTests.class })
 public class DatatypesSuite
 {
 	public static junit.framework.Test suite()

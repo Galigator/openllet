@@ -40,11 +40,11 @@ public class PelletExplanation
 		GlassBoxExplanation.setup();
 	}
 
-	private final OWLDataFactory _factory;
+	private final OWLDataFactory			_factory;
 
-	private final HSTExplanationGenerator _expGen;
+	private final HSTExplanationGenerator	_expGen;
 
-	private final SatisfiabilityConverter _converter;
+	private final SatisfiabilityConverter	_converter;
 
 	public PelletExplanation(final OWLOntology ontology)
 	{
@@ -147,9 +147,9 @@ public class PelletExplanation
 
 	/**
 	 * Returns a single explanation for an arbitrary class expression, or empty set if the given expression is satisfiable.
-	 * 
-	 * @param unsatClass an unsatisfiabile class expression which is will be explained
-	 * @return set of axioms explaining the unsatisfiability of given class expression, or empty set if the given expression is satisfiable.
+	 *
+	 * @param  unsatClass an unsatisfiabile class expression which is will be explained
+	 * @return            set of axioms explaining the unsatisfiability of given class expression, or empty set if the given expression is satisfiable.
 	 */
 	public Set<OWLAxiom> getUnsatisfiableExplanation(final OWLClassExpression unsatClass)
 	{
@@ -158,9 +158,9 @@ public class PelletExplanation
 
 	/**
 	 * Returns all the explanations for the given unsatisfiable class.
-	 * 
-	 * @param unsatClass The class that is unsatisfiable for which an explanation will be generated.
-	 * @return All explanations for the given unsatisfiable class, or an empty set if the concept is satisfiable
+	 *
+	 * @param  unsatClass The class that is unsatisfiable for which an explanation will be generated.
+	 * @return            All explanations for the given unsatisfiable class, or an empty set if the concept is satisfiable
 	 */
 	public Set<Set<OWLAxiom>> getUnsatisfiableExplanations(final OWLClassExpression unsatClass)
 	{
@@ -170,10 +170,10 @@ public class PelletExplanation
 	/**
 	 * Return a specified number of explanations for the given unsatisfiable class. A smaller number of explanations can be returned if there are not as many
 	 * explanations for the given concept. The returned set will be empty if the given class is satisfiable,
-	 * 
-	 * @param unsatClass The class that is unsatisfiable for which an explanation will be generated.
-	 * @param maxExplanations Maximum number of explanations requested, or 0 to get all the explanations
-	 * @return A specified number of explanations for the given unsatisfiable class, or an empty set if the concept is satisfiable
+	 *
+	 * @param  unsatClass      The class that is unsatisfiable for which an explanation will be generated.
+	 * @param  maxExplanations Maximum number of explanations requested, or 0 to get all the explanations
+	 * @return                 A specified number of explanations for the given unsatisfiable class, or an empty set if the concept is satisfiable
 	 */
 	public Set<Set<OWLAxiom>> getUnsatisfiableExplanations(final OWLClassExpression unsatClass, final int maxExplanations)
 	{

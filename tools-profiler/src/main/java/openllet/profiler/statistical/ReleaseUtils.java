@@ -20,8 +20,8 @@ public class ReleaseUtils
 	/**
 	 * Read release performance results from file
 	 *
-	 * @param filename
-	 * @return
+	 * @param  filename
+	 * @return           the release performance results.
 	 * @throws Exception
 	 */
 	public static Release readFromFile(final String filename) throws Exception
@@ -66,8 +66,8 @@ public class ReleaseUtils
 	/**
 	 * Write release performance results to file
 	 *
-	 * @param release
-	 * @param filename
+	 * @param  release
+	 * @param  filename
 	 * @throws Exception
 	 */
 	public static void writeToFile(final Release release, final String filename) throws Exception

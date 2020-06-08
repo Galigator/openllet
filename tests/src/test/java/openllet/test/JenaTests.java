@@ -183,8 +183,8 @@ public class JenaTests
 		assertTrue(p2.isInverseOf(p3));
 		assertTrue(p3.isInverseOf(p2));
 
-		assertIteratorValues(p2.listInverseOf(), new Property[] { p3 });
-		assertIteratorValues(p3.listInverseOf(), new Property[] { p2 });
+		assertIteratorValues(p2.listInverseOf(), p3);
+		assertIteratorValues(p3.listInverseOf(), p2);
 	}
 
 	@Test
@@ -233,7 +233,7 @@ public class JenaTests
 		assertTrue(ir.hasRDFType(OWL2.IrreflexiveProperty));
 		assertTrue(as.hasRDFType(OWL2.AsymmetricProperty));
 
-		final OntClass union = factory.createUnionClass(null, factory.createList(new RDFNode[] { D1, D2, D3 }));
+		final OntClass union = factory.createUnionClass(null, factory.createList(D1, D2, D3));
 		assertTrue(model.listStatements(D, OWL.equivalentClass, union, factory).hasNext());
 		assertTrue(model.contains(D, OWL.equivalentClass, test1));
 		assertTrue(D1.isDisjointWith(D2));
@@ -254,7 +254,7 @@ public class JenaTests
 		assertTrue(model.contains(ind7, OWL.differentFrom, ind8));
 		assertTrue(model.contains(ind8, OWL.differentFrom, ind7));
 		assertTrue(model.contains(ind1, dp, model.createTypedLiteral(false)));
-		assertIteratorValues(ind1.listRDFTypes(false), new Object[] { OWL.Thing, C, test2, test3 });
+		assertIteratorValues(ind1.listRDFTypes(false), OWL.Thing, C, test2, test3);
 
 		assertTrue(model.contains(Teenager, RDFS.subClassOf, OlderThan10));
 		assertTrue(model.contains(Teenager, RDFS.subClassOf, YoungerThan20));
@@ -321,7 +321,10 @@ public class JenaTests
 		assertTrue(pellet.contains(y, RDF.type, C));
 		assertTrue(pellet.contains(z, RDF.type, C));
 
-		final Statement[] statements = new Statement[] { ont.createStatement(p1, RDF.type, OWL.FunctionalProperty), ont.createStatement(p1, RDF.type, OWL.InverseFunctionalProperty), ont.createStatement(p1, RDF.type, OWL2.IrreflexiveProperty), ont.createStatement(p1, RDF.type, OWL2.AsymmetricProperty), ont.createStatement(p1, OWL2.propertyDisjointWith, p2), ont.createStatement(C, RDFS.subClassOf, ont.createMinCardinalityRestriction(null, p1, 2)), ont.createStatement(x, RDF.type, ont.createMaxCardinalityRestriction(null, p1, 3)), ont.createStatement(C, OWL.disjointWith, ont.createCardinalityRestriction(null, p1, 2)), };
+		final Statement[] statements = new Statement[] { ont.createStatement(p1, RDF.type, OWL.FunctionalProperty), ont.createStatement(p1, RDF.type, OWL.InverseFunctionalProperty),
+				ont.createStatement(p1, RDF.type, OWL2.IrreflexiveProperty), ont.createStatement(p1, RDF.type, OWL2.AsymmetricProperty), ont.createStatement(p1, OWL2.propertyDisjointWith, p2),
+				ont.createStatement(C, RDFS.subClassOf, ont.createMinCardinalityRestriction(null, p1, 2)), ont.createStatement(x, RDF.type, ont.createMaxCardinalityRestriction(null, p1, 3)),
+				ont.createStatement(C, OWL.disjointWith, ont.createCardinalityRestriction(null, p1, 2)), };
 
 		for (final Statement statement : statements)
 		{
@@ -345,7 +348,7 @@ public class JenaTests
 		final ObjectProperty p1 = ont.createObjectProperty("p1");
 		final ObjectProperty p2 = ont.createObjectProperty("p2");
 
-		final RDFList pChain = ont.createList(new RDFNode[] { p1, p2 });
+		final RDFList pChain = ont.createList(p1, p2);
 		ont.add(p1, OWL2.propertyChainAxiom, pChain);
 
 		final Individual x = ont.createIndividual(OWL.Thing);
@@ -364,7 +367,9 @@ public class JenaTests
 		final Restriction min = ont.createMinCardinalityRestriction(null, p1, 2);
 		final Restriction max = ont.createMaxCardinalityRestriction(null, p1, 3);
 		final Restriction card = ont.createCardinalityRestriction(null, p1, 2);
-		final Statement[] statements = new Statement[] { ont.createStatement(p1, RDF.type, OWL.FunctionalProperty), ont.createStatement(p1, RDF.type, OWL.InverseFunctionalProperty), ont.createStatement(p1, RDF.type, OWL2.IrreflexiveProperty), ont.createStatement(p1, RDF.type, OWL2.AsymmetricProperty), ont.createStatement(p1, OWL2.propertyDisjointWith, p2), ont.createStatement(C, RDFS.subClassOf, min), ont.createStatement(x, RDF.type, max), ont.createStatement(C, OWL.disjointWith, card), };
+		final Statement[] statements = new Statement[] { ont.createStatement(p1, RDF.type, OWL.FunctionalProperty), ont.createStatement(p1, RDF.type, OWL.InverseFunctionalProperty),
+				ont.createStatement(p1, RDF.type, OWL2.IrreflexiveProperty), ont.createStatement(p1, RDF.type, OWL2.AsymmetricProperty), ont.createStatement(p1, OWL2.propertyDisjointWith, p2),
+				ont.createStatement(C, RDFS.subClassOf, min), ont.createStatement(x, RDF.type, max), ont.createStatement(C, OWL.disjointWith, card), };
 
 		for (final Statement statement : statements)
 		{
@@ -408,7 +413,11 @@ public class JenaTests
 	public void testEscher1()
 	{
 		final String ns = "foo://bla/names#";
-		final String source = "@prefix owl: <http://www.w3.org/2002/07/owl#>.\r\n" + "@prefix owl11: <http://www.w3.org/2006/12/owl11#>.\r\n" + "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.\r\n" + "@prefix : <foo://bla/names#>.\r\n" + "\r\n" + ":Corner owl:oneOf (:a :b :c);\r\n" + "  rdfs:subClassOf\r\n" + "  [a owl:Restriction; owl:onProperty :higher; owl:cardinality 1].\r\n" + "owl:AllDifferent owl:distinctMembers (:a :b :c).\r\n" + ":higher rdfs:domain :Corner; rdfs:range :Corner.\r\n" + ":higher a owl:FunctionalProperty. ## redundant, note cardinality 1\r\n" + ":higher a owl:AsymmetricProperty.\r\n" + ":higher a owl11:IrreflexiveProperty.\r\n" + ":a :higher :b.\r\n";
+		final String source = "@prefix owl: <http://www.w3.org/2002/07/owl#>.\r\n" + "@prefix owl11: <http://www.w3.org/2006/12/owl11#>.\r\n"
+				+ "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.\r\n" + "@prefix : <foo://bla/names#>.\r\n" + "\r\n" + ":Corner owl:oneOf (:a :b :c);\r\n" + "  rdfs:subClassOf\r\n"
+				+ "  [a owl:Restriction; owl:onProperty :higher; owl:cardinality 1].\r\n" + "owl:AllDifferent owl:distinctMembers (:a :b :c).\r\n"
+				+ ":higher rdfs:domain :Corner; rdfs:range :Corner.\r\n" + ":higher a owl:FunctionalProperty. ## redundant, note cardinality 1\r\n" + ":higher a owl:AsymmetricProperty.\r\n"
+				+ ":higher a owl11:IrreflexiveProperty.\r\n" + ":a :higher :b.\r\n";
 
 		final OntModel model = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
 		model.read(new StringReader(source), "", "N3");
@@ -420,14 +429,18 @@ public class JenaTests
 
 		final OntProperty higher = model.getOntProperty(ns + "higher");
 
-		assertIteratorValues(model.listStatements(null, higher, (RDFNode) null), new Statement[] { model.createStatement(a, higher, b), model.createStatement(b, higher, c), model.createStatement(c, higher, a), });
+		assertIteratorValues(model.listStatements(null, higher, (RDFNode) null), model.createStatement(a, higher, b), model.createStatement(b, higher, c), model.createStatement(c, higher, a));
 	}
 
 	@Test
 	public void testEscher2()
 	{
 		final String ns = "foo://bla/names#";
-		final String source = "@prefix owl: <http://www.w3.org/2002/07/owl#>.\r\n" + "@prefix owl11: <http://www.w3.org/2006/12/owl11#>.\r\n" + "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.\r\n" + "@prefix : <foo://bla/names#>.\r\n" + "\r\n" + ":Corner owl:oneOf (:a :b :c);\r\n" + "  rdfs:subClassOf\r\n" + "  [a owl:Restriction; owl:onProperty :higher; owl:cardinality 1].\r\n" + "owl:AllDifferent owl:distinctMembers (:a :b :c).\r\n" + ":higher rdfs:domain :Corner; rdfs:range :Corner.\r\n" + ":higher a owl:FunctionalProperty. ## redundant, note cardinality 1\r\n" + ":higher a owl:AsymmetricProperty.\r\n" + ":higher a owl11:IrreflexiveProperty.\r\n" + ":a :higher :b.\r\n" + ":b :higher :d. :d a :Corner.\r\n" + ":c a owl:Thing.\r\n";
+		final String source = "@prefix owl: <http://www.w3.org/2002/07/owl#>.\r\n" + "@prefix owl11: <http://www.w3.org/2006/12/owl11#>.\r\n"
+				+ "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.\r\n" + "@prefix : <foo://bla/names#>.\r\n" + "\r\n" + ":Corner owl:oneOf (:a :b :c);\r\n" + "  rdfs:subClassOf\r\n"
+				+ "  [a owl:Restriction; owl:onProperty :higher; owl:cardinality 1].\r\n" + "owl:AllDifferent owl:distinctMembers (:a :b :c).\r\n"
+				+ ":higher rdfs:domain :Corner; rdfs:range :Corner.\r\n" + ":higher a owl:FunctionalProperty. ## redundant, note cardinality 1\r\n" + ":higher a owl:AsymmetricProperty.\r\n"
+				+ ":higher a owl11:IrreflexiveProperty.\r\n" + ":a :higher :b.\r\n" + ":b :higher :d. :d a :Corner.\r\n" + ":c a owl:Thing.\r\n";
 
 		final OntModel model = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
 		model.read(new StringReader(source), "", "N3");
@@ -440,7 +453,8 @@ public class JenaTests
 
 		final OntProperty higher = model.getOntProperty(ns + "higher");
 
-		assertIteratorValues(model.listStatements(null, higher, (RDFNode) null), new Statement[] { model.createStatement(a, higher, b), model.createStatement(b, higher, c), model.createStatement(b, higher, d), model.createStatement(c, higher, a), model.createStatement(d, higher, a), });
+		assertIteratorValues(model.listStatements(null, higher, (RDFNode) null), model.createStatement(a, higher, b), model.createStatement(b, higher, c), model.createStatement(b, higher, d),
+				model.createStatement(c, higher, a), model.createStatement(d, higher, a));
 
 		assertTrue(c.isSameAs(d));
 		assertTrue(d.isSameAs(c));
@@ -494,10 +508,10 @@ public class JenaTests
 		model.prepare();
 
 		assertTrue(a.isSameAs(b));
-		assertIteratorValues(a.listSameAs(), new Resource[] { a, b });
+		assertIteratorValues(a.listSameAs(), a, b);
 
 		assertTrue(b.hasProperty(op, c));
-		assertIteratorValues(b.listPropertyValues(op), new Resource[] { c });
+		assertIteratorValues(b.listPropertyValues(op), c);
 	}
 
 	@Ignore("Inverse functional datatype properties are only supported with asserted literals")
@@ -530,7 +544,7 @@ public class JenaTests
 		model.prepare();
 
 		assertTrue(i1.isSameAs(i2));
-		assertIteratorValues(i1.listSameAs(), new Resource[] { i1, i2 });
+		assertIteratorValues(i1.listSameAs(), i1, i2);
 
 		assertTrue(!i1.isSameAs(i3));
 
@@ -569,8 +583,8 @@ public class JenaTests
 
 		assertTrue(a.isSameAs(b));
 		assertTrue(b.isSameAs(a));
-		assertIteratorValues(a.listSameAs(), new Resource[] { a, b });
-		assertIteratorValues(b.listSameAs(), new Resource[] { a, b });
+		assertIteratorValues(a.listSameAs(), a, b);
+		assertIteratorValues(b.listSameAs(), a, b);
 
 		assertTrue(!c.isSameAs(a));
 		assertTrue(!c.isSameAs(b));
@@ -595,7 +609,7 @@ public class JenaTests
 
 		final Literal oneDecimal = model.createTypedLiteral("1", TypeMapper.getInstance().getTypeByName(XSD.decimal.getURI()));
 
-		assertIteratorValues(a.listPropertyValues(dp), new Literal[] { one });
+		assertIteratorValues(a.listPropertyValues(dp), one);
 		assertTrue(a.hasProperty(dp, oneDecimal));
 	}
 
@@ -749,7 +763,7 @@ public class JenaTests
 		final OntClass X = model.createClass(ns + "X");
 		final ObjectProperty hasX = model.createObjectProperty(ns + "hasX");
 		final OntClass AllX = model.createAllValuesFromRestriction(null, hasX, X);
-		final OntClass Y = model.createIntersectionClass(ns + "Y", model.createList(new RDFNode[] { X, AllX }));
+		final OntClass Y = model.createIntersectionClass(ns + "Y", model.createList(X, AllX));
 
 		assertTrue("AllX is not a superclass of Y", Y.hasSuperClass(AllX));
 	}
@@ -818,21 +832,13 @@ public class JenaTests
 
 		model.contains(OWL.Nothing, RDF.type, OWL.Class);
 
-		assertIteratorValues(model.listStatements(x, RDF.type, (Resource) null), new Object[] { model.createStatement(x, RDF.type, OWL.Thing), model.createStatement(x, RDF.type, c)
+		assertIteratorValues(model.listStatements(x, RDF.type, (Resource) null), model.createStatement(x, RDF.type, OWL.Thing), model.createStatement(x, RDF.type, c));
 
-		});
+		assertIteratorValues(model.listStatements(anon, RDF.type, (Resource) null), model.createStatement(anon, RDF.type, OWL.Thing), model.createStatement(anon, RDF.type, c));
 
-		assertIteratorValues(model.listStatements(anon, RDF.type, (Resource) null), new Object[] { model.createStatement(anon, RDF.type, OWL.Thing), model.createStatement(anon, RDF.type, c)
+		assertIteratorValues(model.listStatements(null, RDF.type, OWL.Thing), model.createStatement(anon, RDF.type, OWL.Thing), model.createStatement(x, RDF.type, OWL.Thing));
 
-		});
-
-		assertIteratorValues(model.listStatements(null, RDF.type, OWL.Thing), new Object[] { model.createStatement(anon, RDF.type, OWL.Thing), model.createStatement(x, RDF.type, OWL.Thing)
-
-		});
-
-		assertIteratorValues(model.listStatements(null, RDF.type, c), new Object[] { model.createStatement(anon, RDF.type, c), model.createStatement(x, RDF.type, c)
-
-		});
+		assertIteratorValues(model.listStatements(null, RDF.type, c), model.createStatement(anon, RDF.type, c), model.createStatement(x, RDF.type, c));
 
 	}
 
@@ -901,7 +907,7 @@ public class JenaTests
 
 			model.add(x, RDFS.seeAlso, y);
 
-			assertIteratorValues(model.listSubjectsWithProperty(RDFS.seeAlso, y), new Resource[] { x });
+			assertIteratorValues(model.listSubjectsWithProperty(RDFS.seeAlso, y), x);
 		}
 		finally
 		{
@@ -933,19 +939,19 @@ public class JenaTests
 		inds[4].addRDFType(class2);
 		inds[5].addRDFType(class2);
 
-		assertIteratorValues(class1.listInstances(), new Resource[] { inds[0], inds[1], inds[2], inds[3] });
+		assertIteratorValues(class1.listInstances(), inds[0], inds[1], inds[2], inds[3]);
 
-		assertIteratorValues(class2.listInstances(), new Resource[] { inds[2], inds[3], inds[4], inds[5] });
+		assertIteratorValues(class2.listInstances(), inds[2], inds[3], inds[4], inds[5]);
 
-		final RDFList list = ontmodel.createList(new RDFNode[] { class1, class2 });
+		final RDFList list = ontmodel.createList(class1, class2);
 
 		final IntersectionClass class3 = ontmodel.createIntersectionClass(null, list);
 
 		final UnionClass class4 = ontmodel.createUnionClass(null, list);
 
-		assertIteratorValues(class3.listInstances(), new Resource[] { inds[2], inds[3] });
+		assertIteratorValues(class3.listInstances(), inds[2], inds[3]);
 
-		assertIteratorValues(class4.listInstances(), new Resource[] { inds[0], inds[1], inds[2], inds[3], inds[4], inds[5] });
+		assertIteratorValues(class4.listInstances(), inds[0], inds[1], inds[2], inds[3], inds[4], inds[5]);
 
 	}
 
@@ -985,11 +991,11 @@ public class JenaTests
 		final OntClass A = model.createClass(ns + "A");
 		final OntClass B = model.createClass(ns + "B");
 		final ObjectProperty P = model.createObjectProperty(ns + "P");
-		P.addDomain(model.createUnionClass(null, model.createList(new RDFNode[] { A, B })));
+		P.addDomain(model.createUnionClass(null, model.createList(A, B)));
 
 		final OntClass oc = model.getOntClass(ns + "B");
 
-		assertIteratorValues(oc.listDeclaredProperties(), new Resource[] { P });
+		assertIteratorValues(oc.listDeclaredProperties(), P);
 	}
 
 	@Test
@@ -1017,13 +1023,13 @@ public class JenaTests
 
 		model.prepare();
 
-		assertIteratorValues(a.listDifferentFrom(), new Resource[] { c, d });
+		assertIteratorValues(a.listDifferentFrom(), c, d);
 
-		assertIteratorValues(model.listSubjectsWithProperty(OWL.differentFrom, a), new Resource[] { c, d });
+		assertIteratorValues(model.listSubjectsWithProperty(OWL.differentFrom, a), c, d);
 
-		assertIteratorValues(b.listDifferentFrom(), new Resource[] { c });
+		assertIteratorValues(b.listDifferentFrom(), c);
 
-		assertIteratorValues(model.listSubjectsWithProperty(OWL.differentFrom, b), new Resource[] { c });
+		assertIteratorValues(model.listSubjectsWithProperty(OWL.differentFrom, b), c);
 	}
 
 	@Test
@@ -1051,17 +1057,17 @@ public class JenaTests
 
 		model.prepare();
 
-		assertIteratorValues(a.listPropertyValues(p), new Resource[] { b, c });
+		assertIteratorValues(a.listPropertyValues(p), b, c);
 
-		assertIteratorValues(a.listPropertyValues(q), new Resource[] { b, c });
+		assertIteratorValues(a.listPropertyValues(q), b, c);
 
-		assertIteratorValues(b.listPropertyValues(p), new Resource[] { b, c });
+		assertIteratorValues(b.listPropertyValues(p), b, c);
 
-		assertIteratorValues(b.listPropertyValues(q), new Resource[] { a });
+		assertIteratorValues(b.listPropertyValues(q), a);
 
-		assertIteratorValues(c.listPropertyValues(p), new Resource[] { b, c });
+		assertIteratorValues(c.listPropertyValues(p), b, c);
 
-		assertIteratorValues(c.listPropertyValues(q), new Resource[] { a });
+		assertIteratorValues(c.listPropertyValues(q), a);
 
 	}
 
@@ -1106,21 +1112,21 @@ public class JenaTests
 		final OntModel model = ModelFactory.createOntologyModel(ontModelSpec);
 		final Individual i1 = model.createIndividual("http://test#i1", OWL.Thing);
 		final Individual i2 = model.createIndividual("http://test#i2", OWL.Thing);
-		final OntClass c = model.createEnumeratedClass("http://test#C", model.createList(new RDFNode[] { i1, i2 }));
+		final OntClass c = model.createEnumeratedClass("http://test#C", model.createList(i1, i2));
 		final Individual i3 = model.createIndividual("http://test#i3", c);
 
 		assertTrue(!i1.isSameAs(i2));
 		assertTrue(!i1.isSameAs(i3));
-		assertIteratorValues(i1.listSameAs(), new Resource[] { i1 });
+		assertIteratorValues(i1.listSameAs(), i1);
 
 		assertTrue(!i2.isSameAs(i1));
 		assertTrue(!i2.isSameAs(i3));
-		assertIteratorValues(i2.listSameAs(), new Resource[] { i2 });
+		assertIteratorValues(i2.listSameAs(), i2);
 
 		assertTrue(!i3.isSameAs(i1));
 
 		assertTrue(!i3.isSameAs(i2));
-		assertIteratorValues(i3.listSameAs(), new Resource[] { i3 });
+		assertIteratorValues(i3.listSameAs(), i3);
 	}
 
 	@Test
@@ -1184,7 +1190,7 @@ public class JenaTests
 
 		c.addSameAs(b);
 
-		assertIteratorValues(a.listPropertyValues(p), new Resource[] { b, c, d });
+		assertIteratorValues(a.listPropertyValues(p), b, c, d);
 
 		final Model values = ModelFactory.createDefaultModel();
 		addStatements(values, a, OWL.sameAs, a);
@@ -1270,19 +1276,20 @@ public class JenaTests
 
 		assertTrue(((PelletInfGraph) model.getGraph()).getKB().isConsistent());
 
-		assertIteratorValues(model.listObjectsOfProperty(Bob, hasParent), new Resource[] { Mom, Dad });
+		assertIteratorValues(model.listObjectsOfProperty(Bob, hasParent), Mom, Dad);
 
-		assertIteratorValues(model.listObjectsOfProperty(hasFather), new Object[] { Dad });
+		assertIteratorValues(model.listObjectsOfProperty(hasFather), Dad);
 
-		assertIteratorValues(model.listObjectsOfProperty(hasMother), new Object[] { Mom });
+		assertIteratorValues(model.listObjectsOfProperty(hasMother), Mom);
 
-		assertIteratorValues(model.listStatements(null, hasParent, (Resource) null), new Statement[] { ResourceFactory.createStatement(Bob, hasParent, Mom), ResourceFactory.createStatement(Bob, hasParent, Dad) });
+		assertIteratorValues(model.listStatements(null, hasParent, (Resource) null), ResourceFactory.createStatement(Bob, hasParent, Mom), ResourceFactory.createStatement(Bob, hasParent, Dad));
 
-		assertIteratorValues(model.listStatements(Bob, null, Dad), new Statement[] { ResourceFactory.createStatement(Bob, topObjProp, Dad), ResourceFactory.createStatement(Bob, hasParent, Dad), ResourceFactory.createStatement(Bob, hasFather, Dad) });
+		assertIteratorValues(model.listStatements(Bob, null, Dad), ResourceFactory.createStatement(Bob, topObjProp, Dad), ResourceFactory.createStatement(Bob, hasParent, Dad),
+				ResourceFactory.createStatement(Bob, hasFather, Dad));
 
-		assertIteratorValues(model.listObjectsOfProperty(Bob, hasFather), new Resource[] { Dad });
+		assertIteratorValues(model.listObjectsOfProperty(Bob, hasFather), Dad);
 
-		assertIteratorValues(model.listObjectsOfProperty(Bob, hasMother), new Resource[] { Mom });
+		assertIteratorValues(model.listObjectsOfProperty(Bob, hasMother), Mom);
 	}
 
 	@Test
@@ -1313,17 +1320,17 @@ public class JenaTests
 
 		assertTrue(MixedTeam.hasSuperClass(Team));
 		assertFalse(MixedTeam.hasSuperClass(SingletonTeam));
-		assertIteratorValues(MixedTeam.listSuperClasses(), new Resource[] { Team, NonSingletonTeam, OWL.Thing });
-		assertIteratorValues(MixedTeam.listSuperClasses(true), new Resource[] { NonSingletonTeam });
+		assertIteratorValues(MixedTeam.listSuperClasses(), Team, NonSingletonTeam, OWL.Thing);
+		assertIteratorValues(MixedTeam.listSuperClasses(true), NonSingletonTeam);
 
 		assertTrue(NonSingletonTeam.hasSubClass(MixedTeam));
-		assertIteratorValues(NonSingletonTeam.listSubClasses(), new Resource[] { MixedTeam, OWL.Nothing });
-		assertIteratorValues(NonSingletonTeam.listSubClasses(true), new Resource[] { MixedTeam });
+		assertIteratorValues(NonSingletonTeam.listSubClasses(), MixedTeam, OWL.Nothing);
+		assertIteratorValues(NonSingletonTeam.listSubClasses(true), MixedTeam);
 
 		assertTrue(t1.hasRDFType(MixedTeam));
 		assertTrue(t1.hasRDFType(MixedTeam, true));
-		assertIteratorValues(t1.listRDFTypes(false), new Resource[] { Team, NonSingletonTeam, MixedTeam, OWL.Thing });
-		assertIteratorValues(t1.listRDFTypes(true), new Resource[] { MixedTeam });
+		assertIteratorValues(t1.listRDFTypes(false), Team, NonSingletonTeam, MixedTeam, OWL.Thing);
+		assertIteratorValues(t1.listRDFTypes(true), MixedTeam);
 
 		Male.removeDisjointWith(Female);
 		Female.removeDisjointWith(Male);
@@ -1334,16 +1341,16 @@ public class JenaTests
 		assertTrue(!Chris.isDifferentFrom(Sam));
 
 		assertTrue(MixedTeam.hasSuperClass(Team));
-		assertIteratorValues(MixedTeam.listSuperClasses(), new Resource[] { Team, OWL.Thing });
+		assertIteratorValues(MixedTeam.listSuperClasses(), Team, OWL.Thing);
 
 		assertTrue(!NonSingletonTeam.hasSuperClass(MixedTeam));
-		assertIteratorValues(NonSingletonTeam.listSuperClasses(), new Resource[] { Team, OWL.Thing });
-		assertIteratorValues(NonSingletonTeam.listSuperClasses(true), new Resource[] { Team });
+		assertIteratorValues(NonSingletonTeam.listSuperClasses(), Team, OWL.Thing);
+		assertIteratorValues(NonSingletonTeam.listSuperClasses(true), Team);
 
 		assertTrue(t1.hasRDFType(MixedTeam));
 		assertTrue(t1.hasRDFType(MixedTeam, true));
-		assertIteratorValues(t1.listRDFTypes(false), new Resource[] { Team, MixedTeam, OWL.Thing });
-		assertIteratorValues(t1.listRDFTypes(true), new Resource[] { MixedTeam });
+		assertIteratorValues(t1.listRDFTypes(false), Team, MixedTeam, OWL.Thing);
+		assertIteratorValues(t1.listRDFTypes(true), MixedTeam);
 	}
 
 	@Test
@@ -1365,9 +1372,9 @@ public class JenaTests
 
 		model = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC, model);
 
-		assertIteratorValues(model.listObjectsOfProperty(Bob, hasFather), new Resource[] { Dad });
+		assertIteratorValues(model.listObjectsOfProperty(Bob, hasFather), Dad);
 
-		assertIteratorValues(model.listObjectsOfProperty(Bob, hasBioFather), new Resource[] { Dad });
+		assertIteratorValues(model.listObjectsOfProperty(Bob, hasBioFather), Dad);
 	}
 
 	@Test
@@ -1386,9 +1393,14 @@ public class JenaTests
 
 		assertTrue("Forest_Service, comprises, Executive", model.contains(Forest_Service, comprises, Executive));
 
-		assertIteratorValues(model.listObjectsOfProperty(Forest_Service, comprises), new Resource[] { USDA, Executive });
+		assertIteratorValues(model.listObjectsOfProperty(Forest_Service, comprises), USDA, Executive);
 
-		assertIteratorValues(model.listSubjectsWithProperty(comprises, Executive), new Resource[] { model.getIndividual(ns + "USDA"), model.getIndividual(ns + "DOE"), model.getIndividual(ns + "DHS"), model.getIndividual(ns + "HHS"), model.getIndividual(ns + "HUD"), model.getIndividual(ns + "DOC"), model.getIndividual(ns + "DOD"), model.getIndividual(ns + "DOI"), model.getIndividual(ns + "Research__Economics___Education"), model.getIndividual(ns + "Forest_Service"), model.getIndividual(ns + "Rural_Development"), model.getIndividual(ns + "Natural_Resources_Conservation_Service"), model.getIndividual(ns + "Economic_Research_Service"), model.getIndividual(ns + "Farm_Service_Agency"), model.getIndividual(ns + "Cooperative_State_Research__Education__and_Extension_Service"), model.getIndividual(ns + "Animal___Plant_Health_Inspection_Service"), model.getIndividual(ns + "Agricultural_Research_Service"), model.getIndividual(ns + "National_Agricultural_Library"), });
+		assertIteratorValues(model.listSubjectsWithProperty(comprises, Executive), model.getIndividual(ns + "USDA"), model.getIndividual(ns + "DOE"), model.getIndividual(ns + "DHS"),
+				model.getIndividual(ns + "HHS"), model.getIndividual(ns + "HUD"), model.getIndividual(ns + "DOC"), model.getIndividual(ns + "DOD"), model.getIndividual(ns + "DOI"),
+				model.getIndividual(ns + "Research__Economics___Education"), model.getIndividual(ns + "Forest_Service"), model.getIndividual(ns + "Rural_Development"),
+				model.getIndividual(ns + "Natural_Resources_Conservation_Service"), model.getIndividual(ns + "Economic_Research_Service"), model.getIndividual(ns + "Farm_Service_Agency"),
+				model.getIndividual(ns + "Cooperative_State_Research__Education__and_Extension_Service"), model.getIndividual(ns + "Animal___Plant_Health_Inspection_Service"),
+				model.getIndividual(ns + "Agricultural_Research_Service"), model.getIndividual(ns + "National_Agricultural_Library"));
 	}
 
 	@Test
@@ -1406,7 +1418,7 @@ public class JenaTests
 		final Individual Instance2 = model.getIndividual(ns + "Instance2");
 		final Individual Instance3 = model.getIndividual(ns + "Instance3");
 
-		assertIteratorValues(Probe.listInstances(), new Resource[] { Instance1, Instance2, Instance3 });
+		assertIteratorValues(Probe.listInstances(), Instance1, Instance2, Instance3);
 	}
 
 	@Test
@@ -1500,15 +1512,15 @@ public class JenaTests
 		assertTrue(!model.contains(a, hasRelative, g));
 
 		// checking get functions
-		assertIteratorValues(model.listObjectsOfProperty(a, hasRelative), new Resource[] { b, c, f });
+		assertIteratorValues(model.listObjectsOfProperty(a, hasRelative), b, c, f);
 
-		assertIteratorValues(model.listObjectsOfProperty(a, knows), new Resource[] { b, c, d, f });
+		assertIteratorValues(model.listObjectsOfProperty(a, knows), b, c, d, f);
 
-		assertIteratorValues(model.listObjectsOfProperty(b, knows), new Resource[] { c, e, f });
+		assertIteratorValues(model.listObjectsOfProperty(b, knows), c, e, f);
 
-		assertIteratorValues(model.listSubjectsWithProperty(knows, e), new Resource[] { b, d });
+		assertIteratorValues(model.listSubjectsWithProperty(knows, e), b, d);
 
-		assertIteratorValues(model.listSubjectsWithProperty(hasRelative, f), new Resource[] { a, b, c });
+		assertIteratorValues(model.listSubjectsWithProperty(hasRelative, f), a, b, c);
 	}
 
 	@Test
@@ -1555,7 +1567,7 @@ public class JenaTests
 
 		assertTrue(model.contains(HasFourPrimaryColors, RDFS.subClassOf, OWL.Nothing));
 
-		assertIteratorValues(Color.listSubClasses(), new Resource[] { PrimaryColors, MyFavoriteColors, HasFourPrimaryColors, OWL.Nothing });
+		assertIteratorValues(Color.listSubClasses(), PrimaryColors, MyFavoriteColors, HasFourPrimaryColors, OWL.Nothing);
 	}
 
 	@Test
@@ -1573,7 +1585,7 @@ public class JenaTests
 
 		assertTrue(model.validate().isValid());
 
-		assertIteratorValues(model.listSubjectsWithProperty(email, "john.doe@unknown.org"), new Resource[] { john });
+		assertIteratorValues(model.listSubjectsWithProperty(email, "john.doe@unknown.org"), john);
 
 		assertTrue(model.contains(null, email, "john.doe@unknown.org"));
 
@@ -1693,7 +1705,7 @@ public class JenaTests
 
 		assertTrue(model.contains(JohnDoe, RDF.type, Person));
 		assertTrue(model.contains(USA, OWL.sameAs, UnitedStates));
-		assertIteratorValues(model.listObjectsOfProperty(JohnDoe, livesIn), new Resource[] { USA, UnitedStates });
+		assertIteratorValues(model.listObjectsOfProperty(JohnDoe, livesIn), USA, UnitedStates);
 	}
 
 	@Test
@@ -1716,9 +1728,9 @@ public class JenaTests
 		assertTrue(jdl62.isSameAs(jdl63));
 		assertTrue(jdl63.isSameAs(jdl62));
 
-		assertIteratorValues(jdl62.listSameAs(), new Resource[] { jdl62, jdl63 });
+		assertIteratorValues(jdl62.listSameAs(), jdl62, jdl63);
 
-		assertIteratorValues(jdl63.listSameAs(), new Resource[] { jdl62, jdl63 });
+		assertIteratorValues(jdl63.listSameAs(), jdl62, jdl63);
 
 		model.getDocumentManager().setProcessImports(true);
 		// ((PelletInfGraph) model.getGraph()).getKB().timers.print();
@@ -1832,7 +1844,11 @@ public class JenaTests
 	{
 		final String ns = "urn:test:";
 
-		final Object[] datatypes = { XSD.anyURI, "http://www.w3.com", "\nhttp://www.w3.com\r", XSD.xboolean, "true", "1", "\ntrue", XSD.xbyte, "8", "\t\r\n8 ", XSD.date, "2004-03-15", XSD.dateTime, "2003-12-25T08:30:00", "2003-12-25T08:30:00.001", "2003-12-25T08:30:00-05:00", "2003-12-25T08:30:00Z", XSD.decimal, "3.1415292", XSD.xdouble, "3.1415292", "INF", "NaN", XSD.duration, "P8M3DT7H33M2S", "P1Y", "P1M", "P1Y2MT2H", XSD.xfloat, "3.1415292", "-1E4", "12.78e-2", "INF", "NaN", XSD.gDay, "---11", XSD.gMonth, "--02", XSD.gMonthDay, "--02-14", XSD.gYear, "0001", "1999", XSD.gYearMonth, "1972-08", XSD.xint, "77", XSD.integer, "77", XSD.xlong, "214", XSD.negativeInteger, "-123", XSD.nonNegativeInteger, "2", XSD.nonPositiveInteger, "0", XSD.positiveInteger, "500", XSD.xshort, "476", XSD.xstring, "Test", XSD.time, "13:02:00", };
+		final Object[] datatypes = { XSD.anyURI, "http://www.w3.com", "\nhttp://www.w3.com\r", XSD.xboolean, "true", "1", "\ntrue", XSD.xbyte, "8", "\t\r\n8 ", XSD.date, "2004-03-15", XSD.dateTime,
+				"2003-12-25T08:30:00", "2003-12-25T08:30:00.001", "2003-12-25T08:30:00-05:00", "2003-12-25T08:30:00Z", XSD.decimal, "3.1415292", XSD.xdouble, "3.1415292", "INF", "NaN", XSD.duration,
+				"P8M3DT7H33M2S", "P1Y", "P1M", "P1Y2MT2H", XSD.xfloat, "3.1415292", "-1E4", "12.78e-2", "INF", "NaN", XSD.gDay, "---11", XSD.gMonth, "--02", XSD.gMonthDay, "--02-14", XSD.gYear,
+				"0001", "1999", XSD.gYearMonth, "1972-08", XSD.xint, "77", XSD.integer, "77", XSD.xlong, "214", XSD.negativeInteger, "-123", XSD.nonNegativeInteger, "2", XSD.nonPositiveInteger, "0",
+				XSD.positiveInteger, "500", XSD.xshort, "476", XSD.xstring, "Test", XSD.time, "13:02:00", };
 
 		final OntModel model = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
 		final Individual ind = model.createIndividual(ns + "test", OWL.Thing);
@@ -1906,8 +1922,7 @@ public class JenaTests
 					final Individual ind = model.createIndividual(ns + "test", OWL.Thing);
 
 					final OntProperty p = model.createDatatypeProperty(ns + "prop_" + datatype.getLocalName());
-					if (addRangeRestriction)
-						p.addRange(datatype);
+					if (addRangeRestriction) p.addRange(datatype);
 
 					final Literal value = model.createTypedLiteral((String) datatypes[i], datatype.getURI());
 					ind.addProperty(p, value);
@@ -1946,7 +1961,11 @@ public class JenaTests
 	{
 		final String ns = "urn:test:";
 
-		final Object[] datatypes = { XSD.anyURI, "http://www.w3.com", XSD.xboolean, "true", "1", XSD.xbyte, "8", XSD.date, "2004-03-15", XSD.dateTime, "2003-12-25T08:30:00", "2003-12-25T08:30:00.001", "2003-12-25T08:30:00-05:00", "2003-12-25T08:30:00Z", XSD.decimal, "3.1415292", XSD.xdouble, "3.1415292", "INF", "NaN", XSD.duration, "P8M3DT7H33M2S", "P1Y", "P1M", "P1Y2MT2H", XSD.xfloat, "3.1415292", "-1E4", "12.78e-2", "INF", "NaN", XSD.gDay, "---11", XSD.gMonth, "--02", XSD.gMonthDay, "--02-14", XSD.gYear, "0001", "1999", XSD.gYearMonth, "1972-08", XSD.xint, "77", XSD.integer, "77", XSD.xlong, "214", XSD.negativeInteger, "-123", XSD.nonNegativeInteger, "2", XSD.nonPositiveInteger, "0", XSD.positiveInteger, "500", XSD.xshort, "476", XSD.xstring, "Test", XSD.time, "13:02:00", };
+		final Object[] datatypes = { XSD.anyURI, "http://www.w3.com", XSD.xboolean, "true", "1", XSD.xbyte, "8", XSD.date, "2004-03-15", XSD.dateTime, "2003-12-25T08:30:00", "2003-12-25T08:30:00.001",
+				"2003-12-25T08:30:00-05:00", "2003-12-25T08:30:00Z", XSD.decimal, "3.1415292", XSD.xdouble, "3.1415292", "INF", "NaN", XSD.duration, "P8M3DT7H33M2S", "P1Y", "P1M", "P1Y2MT2H",
+				XSD.xfloat, "3.1415292", "-1E4", "12.78e-2", "INF", "NaN", XSD.gDay, "---11", XSD.gMonth, "--02", XSD.gMonthDay, "--02-14", XSD.gYear, "0001", "1999", XSD.gYearMonth, "1972-08",
+				XSD.xint, "77", XSD.integer, "77", XSD.xlong, "214", XSD.negativeInteger, "-123", XSD.nonNegativeInteger, "2", XSD.nonPositiveInteger, "0", XSD.positiveInteger, "500", XSD.xshort,
+				"476", XSD.xstring, "Test", XSD.time, "13:02:00", };
 
 		for (int i = 0; i < datatypes.length;)
 		{
@@ -2026,8 +2045,7 @@ public class JenaTests
 
 		for (int test = 0; test < 2; test++)
 		{
-			if (test != 0)
-				kb.realize();
+			if (test != 0) kb.realize();
 
 			assertTrue(hasAncestor.hasRDFType(OWL.TransitiveProperty));
 			assertTrue(hasDescendant.hasRDFType(OWL.TransitiveProperty));
@@ -2169,16 +2187,15 @@ public class JenaTests
 
 		for (int test = 0; test < 1; test++)
 		{
-			if (test != 0)
-				kb.realize();
+			if (test != 0) kb.realize();
 
 			assertTrue(Abel.hasProperty(sibling, Cain));
 
-			assertIteratorValues(Abel.listPropertyValues(sibling), new Resource[] { Cain });
+			assertIteratorValues(Abel.listPropertyValues(sibling), Cain);
 
 			assertTrue(Cain.hasProperty(sibling, Abel));
 
-			assertIteratorValues(Cain.listPropertyValues(sibling), new Resource[] { Abel });
+			assertIteratorValues(Cain.listPropertyValues(sibling), Abel);
 
 			assertTrue(Cain.hasProperty(hates, Abel));
 
@@ -2197,7 +2214,7 @@ public class JenaTests
 			assertTrue(Oedipus.hasRDFType(Child));
 		}
 
-		assertIteratorValues(Cain.listRDFTypes(true), new Object[] { BadChild, Child, Person });
+		assertIteratorValues(Cain.listRDFTypes(true), BadChild, Child, Person);
 	}
 
 	@Test
@@ -2222,21 +2239,29 @@ public class JenaTests
 
 		for (int test = 0; test < 1; test++)
 		{
-			if (test != 0)
-				kb.realize();
+			if (test != 0) kb.realize();
 
-			assertIteratorValues(DreamTeamMember.listInstances(), new Object[] { Alice, Bob, Charlie });
+			assertIteratorValues(DreamTeamMember.listInstances(), Alice, Bob, Charlie);
 
-			assertIteratorValues(DreamTeamMember1.listInstances(), new Object[] { Alice, Bob, Charlie });
+			assertIteratorValues(DreamTeamMember1.listInstances(), Alice, Bob, Charlie);
 
-			assertIteratorValues(DreamTeamMember2.listInstances(), new Object[] { Alice, Bob, Charlie });
+			assertIteratorValues(DreamTeamMember2.listInstances(), Alice, Bob, Charlie);
 		}
 	}
 
 	@Test
 	public void testMergeRestore()
 	{
-		final String src = "" + "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.\r\n" + "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.\r\n" + "@prefix owl: <http://www.w3.org/2002/07/owl#>.\r\n" + "@prefix : <foo:bla#>.\r\n" + "\r\n" + ":one a :NoLeft .\r\n" + ":one :right :two .\r\n" + ":two :right :three .\r\n" + ":three :right :four .\r\n" + ":four :right :five .\r\n" + ":five a :NoRight .\r\n" + "\r\n" + ":NoRight a owl:Class;\r\n" + "      owl:intersectionOf ( " + "      [" + "         a owl:Restriction; " + "         owl:onProperty :right; " + "         owl:cardinality 0 " + "      ] \r\n" + "      [" + "         a owl:Restriction; " + "         owl:onProperty :_neighbor; " + "         owl:cardinality 1 " + "      ] ) .\r\n" + "\r\n" + ":NoLeft a owl:Class;\r\n" + "      owl:intersectionOf ( " + "      [" + "         a owl:Restriction; " + "         owl:onProperty :left; " + "         owl:cardinality 0 " + "      ] \r\n" + "      [" + "         a owl:Restriction; " + "         owl:onProperty :_neighbor; " + "         owl:cardinality 1 " + "      ] ) .\r\n" + "\r\n" + ":left a owl:FunctionalProperty; owl:inverseOf :right;\r\n" + "      rdfs:subPropertyOf :_neighbor .\r\n" + ":right a owl:FunctionalProperty; \r\n" + "      rdfs:subPropertyOf :_neighbor .\r\n" + "\r\n" + ":Universe a owl:Class;\r\n" + "   owl:oneOf (:one :two :three :four :five );\r\n" + "   rdfs:subClassOf [" + "          a owl:Restriction; " + "          owl:onProperty :_neighbor;\r\n" + "          owl:maxCardinality 2 ] .\r\n" + "\r\n" + ":_neighbor rdfs:domain :Universe; rdfs:range :Universe .\r\n" + "\r\n" + ":x :_neighbor :y . \r\n" + "";
+		final String src = "" + "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.\r\n" + "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.\r\n"
+				+ "@prefix owl: <http://www.w3.org/2002/07/owl#>.\r\n" + "@prefix : <foo:bla#>.\r\n" + "\r\n" + ":one a :NoLeft .\r\n" + ":one :right :two .\r\n" + ":two :right :three .\r\n"
+				+ ":three :right :four .\r\n" + ":four :right :five .\r\n" + ":five a :NoRight .\r\n" + "\r\n" + ":NoRight a owl:Class;\r\n" + "      owl:intersectionOf ( " + "      ["
+				+ "         a owl:Restriction; " + "         owl:onProperty :right; " + "         owl:cardinality 0 " + "      ] \r\n" + "      [" + "         a owl:Restriction; "
+				+ "         owl:onProperty :_neighbor; " + "         owl:cardinality 1 " + "      ] ) .\r\n" + "\r\n" + ":NoLeft a owl:Class;\r\n" + "      owl:intersectionOf ( " + "      ["
+				+ "         a owl:Restriction; " + "         owl:onProperty :left; " + "         owl:cardinality 0 " + "      ] \r\n" + "      [" + "         a owl:Restriction; "
+				+ "         owl:onProperty :_neighbor; " + "         owl:cardinality 1 " + "      ] ) .\r\n" + "\r\n" + ":left a owl:FunctionalProperty; owl:inverseOf :right;\r\n"
+				+ "      rdfs:subPropertyOf :_neighbor .\r\n" + ":right a owl:FunctionalProperty; \r\n" + "      rdfs:subPropertyOf :_neighbor .\r\n" + "\r\n" + ":Universe a owl:Class;\r\n"
+				+ "   owl:oneOf (:one :two :three :four :five );\r\n" + "   rdfs:subClassOf [" + "          a owl:Restriction; " + "          owl:onProperty :_neighbor;\r\n"
+				+ "          owl:maxCardinality 2 ] .\r\n" + "\r\n" + ":_neighbor rdfs:domain :Universe; rdfs:range :Universe .\r\n" + "\r\n" + ":x :_neighbor :y . \r\n" + "";
 
 		final OntModel model = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
 
@@ -2260,10 +2285,8 @@ public class JenaTests
 		final Model leftValues = ModelFactory.createDefaultModel();
 		for (int i = 1; i <= 5; i++)
 		{
-			if (i != 5)
-				addStatements(rightValues, r[i], right, r[i + 1]);
-			if (i != 1)
-				addStatements(leftValues, r[i], left, r[i - 1]);
+			if (i != 5) addStatements(rightValues, r[i], right, r[i + 1]);
+			if (i != 1) addStatements(leftValues, r[i], left, r[i - 1]);
 		}
 
 		assertPropertyValues(model, left, leftValues);
@@ -2280,9 +2303,9 @@ public class JenaTests
 		final OntClass B = model.createClass(ns + "B");
 		final OntClass notA = model.createComplementClass(null, A);
 		final OntClass notB = model.createComplementClass(null, B);
-		final OntClass AorB = model.createUnionClass(null, model.createList(new OntClass[] { A, B }));
-		final OntClass AorNotB = model.createUnionClass(null, model.createList(new OntClass[] { A, notB }));
-		final OntClass notAorB = model.createUnionClass(null, model.createList(new OntClass[] { notA, B }));
+		final OntClass AorB = model.createUnionClass(null, model.createList(A, B));
+		final OntClass AorNotB = model.createUnionClass(null, model.createList(A, notB));
+		final OntClass notAorB = model.createUnionClass(null, model.createList(notA, B));
 
 		final Individual x = model.createIndividual(ns + "x", OWL.Thing);
 		x.addRDFType(AorB);
@@ -2347,15 +2370,15 @@ public class JenaTests
 		assertPropertyValues(reasoner, RDFS.subPropertyOf, inferences);
 
 		// check for direct sub-properties
-		assertIteratorValues(p.listSubProperties(true), new RDFNode[] { subP });
-		assertIteratorValues(subP.listSuperProperties(true), new RDFNode[] { p });
-		assertIteratorValues(subP.listSubProperties(true), new RDFNode[] { subSubP });
-		assertIteratorValues(subSubP.listSuperProperties(true), new RDFNode[] { subP });
+		assertIteratorValues(p.listSubProperties(true), subP);
+		assertIteratorValues(subP.listSuperProperties(true), p);
+		assertIteratorValues(subP.listSubProperties(true), subSubP);
+		assertIteratorValues(subSubP.listSuperProperties(true), subP);
 
-		assertIteratorValues(q.listSubProperties(true), new RDFNode[] { subQ });
-		assertIteratorValues(subQ.listSuperProperties(true), new RDFNode[] { q });
-		assertIteratorValues(subQ.listSubProperties(true), new RDFNode[] { subSubQ });
-		assertIteratorValues(subSubQ.listSuperProperties(true), new RDFNode[] { subQ });
+		assertIteratorValues(q.listSubProperties(true), subQ);
+		assertIteratorValues(subQ.listSuperProperties(true), q);
+		assertIteratorValues(subQ.listSubProperties(true), subSubQ);
+		assertIteratorValues(subSubQ.listSuperProperties(true), subQ);
 	}
 
 	@Test
@@ -2394,8 +2417,7 @@ public class JenaTests
 				addStatements(inferences, OWL.Nothing, OWL.disjointWith, c1);
 				for (int j = k; j < k + 3; j++)
 				{
-					if (i == j)
-						continue;
+					if (i == j) continue;
 					final Resource c2 = model.getResource(ns + "C" + j);
 					addStatements(inferences, c1, OWL.disjointWith, c2);
 				}
@@ -2426,8 +2448,7 @@ public class JenaTests
 					}
 					for (int j = k; j < k + 3; j++)
 					{
-						if (i == j)
-							continue;
+						if (i == j) continue;
 						final Resource c2 = model.getResource(ns + prefix + j);
 						addStatements(inferences, c1, OWL2.propertyDisjointWith, c2);
 					}
@@ -2441,8 +2462,7 @@ public class JenaTests
 				final Resource c1 = model.getResource(ns + "ind" + i);
 				for (int j = k; j < k + 3; j++)
 				{
-					if (i == j)
-						continue;
+					if (i == j) continue;
 					final Resource c2 = model.getResource(ns + "ind" + j);
 					addStatements(inferences, c1, OWL.differentFrom, c2);
 				}
@@ -2461,7 +2481,7 @@ public class JenaTests
 		final Resource j = model.createResource(ns + "j");
 		final Resource k = model.createResource(ns + "k");
 		final Property p = model.createObjectProperty(ns + "p");
-		final RDFList list = model.createList(new RDFNode[] { p });
+		final RDFList list = model.createList(p);
 
 		model.add(C, OWL2.hasKey, list);
 		model.add(i, RDF.type, C);
@@ -2488,7 +2508,7 @@ public class JenaTests
 		final Resource l = model.createResource(ns + "l");
 		final Property p1 = model.createObjectProperty(ns + "p1");
 		final Property p2 = model.createObjectProperty(ns + "p2");
-		final RDFList list = model.createList(new RDFNode[] { p1, p2 });
+		final RDFList list = model.createList(p1, p2);
 
 		model.add(C, OWL2.hasKey, list);
 		model.add(i, RDF.type, C);
@@ -2515,7 +2535,7 @@ public class JenaTests
 		final Resource j = model.createResource(ns + "j");
 		final Literal k = model.createLiteral("k");
 		final Property p = model.createDatatypeProperty(ns + "p");
-		final RDFList list = model.createList(new RDFNode[] { p });
+		final RDFList list = model.createList(p);
 
 		model.add(C, OWL2.hasKey, list);
 		model.add(i, RDF.type, C);
@@ -2541,7 +2561,7 @@ public class JenaTests
 		final Resource j = model.createResource(ns + "j");
 		final Resource k = model.createResource(ns + "k");
 		final Property p = model.createObjectProperty(ns + "p");
-		final RDFList list = model.createList(new RDFNode[] { p });
+		final RDFList list = model.createList(p);
 
 		model.add(C, OWL2.hasKey, list);
 		model.add(i, RDF.type, C);
@@ -2567,7 +2587,7 @@ public class JenaTests
 		final Resource k = model.createResource(ns + "k");
 		final Resource l = model.createResource(ns + "l");
 		final Property p = model.createObjectProperty(ns + "p");
-		final RDFList list = model.createList(new RDFNode[] { p });
+		final RDFList list = model.createList(p);
 
 		model.add(C, OWL2.hasKey, list);
 		model.add(i, RDF.type, C);
@@ -2593,7 +2613,7 @@ public class JenaTests
 		final Resource k = model.createResource(ns + "k");
 		final Property p = model.createObjectProperty(ns + "p");
 		final Property q = model.createObjectProperty(ns + "q");
-		final RDFList list = model.createList(new RDFNode[] { p });
+		final RDFList list = model.createList(p);
 
 		model.add(C, OWL2.hasKey, list);
 		model.add(i, RDF.type, C);
@@ -2615,12 +2635,12 @@ public class JenaTests
 
 		final OntClass D = model.createClass(ns + "D");
 		final OntClass E = model.createClass(ns + "E");
-		final OntClass C = model.createIntersectionClass(null, model.createList(new RDFNode[] { D, E }));
+		final OntClass C = model.createIntersectionClass(null, model.createList(D, E));
 		final Resource i = model.createResource(ns + "i");
 		final Resource j = model.createResource(ns + "j");
 		final Resource k = model.createResource(ns + "k");
 		final Property p = model.createObjectProperty(ns + "p");
-		final RDFList list = model.createList(new RDFNode[] { p });
+		final RDFList list = model.createList(p);
 
 		model.add(C, OWL2.hasKey, list);
 		model.add(i, RDF.type, C);
@@ -2644,7 +2664,7 @@ public class JenaTests
 		final Resource j = model.createResource(ns + "j");
 		final Resource k = model.createResource(ns + "k");
 		final Property p = model.createObjectProperty(ns + "p");
-		final RDFList list = model.createList(new RDFNode[] { p });
+		final RDFList list = model.createList(p);
 
 		model.add(OWL.Thing, OWL2.hasKey, list);
 		model.add(i, RDF.type, OWL.Thing);
@@ -2662,7 +2682,9 @@ public class JenaTests
 	public void testDataPropertyDefinition()
 	{
 		final String ns = "foo://example#";
-		final String source1 = "@prefix owl: <http://www.w3.org/2002/07/owl#>.\r\n" + "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.\r\n" + "@prefix : <foo://example#>.\r\n" + ":C rdfs:subClassOf [\n" + "      a owl:Class; \n" + "      owl:intersectionOf( [\n" + "                  a owl:Restriction;\n" + "                  owl:onProperty :p ;\n" + "                  owl:minCardinality \"1\"\n" + "                ] ) ] .";
+		final String source1 = "@prefix owl: <http://www.w3.org/2002/07/owl#>.\r\n" + "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.\r\n" + "@prefix : <foo://example#>.\r\n"
+				+ ":C rdfs:subClassOf [\n" + "      a owl:Class; \n" + "      owl:intersectionOf( [\n" + "                  a owl:Restriction;\n" + "                  owl:onProperty :p ;\n"
+				+ "                  owl:minCardinality \"1\"\n" + "                ] ) ] .";
 
 		final String source2 = "@prefix owl: <http://www.w3.org/2002/07/owl#>.\n" + "@prefix : <foo://example#>.\n" + ":p a owl:DatatypeProperty .\n";
 
@@ -2695,13 +2717,13 @@ public class JenaTests
 		model.add(a, RDF.type, C);
 		subModel.add(b, RDF.type, C);
 
-		assertIteratorValues(model.listIndividuals(C), new Resource[] { a });
+		assertIteratorValues(model.listIndividuals(C), a);
 
 		model.addSubModel(subModel);
-		assertIteratorValues(model.listIndividuals(C), new Resource[] { a, b });
+		assertIteratorValues(model.listIndividuals(C), a, b);
 
 		model.removeSubModel(subModel);
-		assertIteratorValues(model.listIndividuals(C), new Resource[] { a });
+		assertIteratorValues(model.listIndividuals(C), a);
 	}
 
 	@Test
@@ -2741,7 +2763,8 @@ public class JenaTests
 		final Resource b = model.createResource("b", OWL.Thing);
 		final Literal lit = model.createLiteral("l");
 
-		final Statement[] stats = new Statement[] { model.createStatement(a, OWL2.topObjectProperty, b), model.createStatement(a, OWL2.topDataProperty, lit), model.createStatement(a, OWL2.bottomObjectProperty, b), model.createStatement(a, OWL2.bottomDataProperty, lit) };
+		final Statement[] stats = new Statement[] { model.createStatement(a, OWL2.topObjectProperty, b), model.createStatement(a, OWL2.topDataProperty, lit),
+				model.createStatement(a, OWL2.bottomObjectProperty, b), model.createStatement(a, OWL2.bottomDataProperty, lit) };
 
 		for (int i = 0; i < stats.length; i++)
 		{
@@ -2859,7 +2882,7 @@ public class JenaTests
 		final Resource b9 = model.createResource();
 		model.add(b9, RDF.type, RDFS.Datatype);
 		model.add(b9, OWL2.onDatatype, i);
-		model.add(b9, OWL2.withRestrictions, model.createList(new RDFNode[] { fr9 }));
+		model.add(b9, OWL2.withRestrictions, model.createList(fr9));
 		final RDFNode[] l9 = new RDFNode[2];
 		l9[0] = pi;
 		l9[1] = b9;
@@ -2870,7 +2893,7 @@ public class JenaTests
 		final DatatypeProperty p = model.createDatatypeProperty(ns + "p");
 		final Resource b10 = model.createResource();
 		model.add(b10, RDF.type, RDFS.Datatype);
-		model.add(b10, OWL.unionOf, model.createList(new RDFNode[] { pi, ni }));
+		model.add(b10, OWL.unionOf, model.createList(pi, ni));
 		model.add(p, RDFS.range, b10);
 		c10.addEquivalentClass(model.createSomeValuesFromRestriction(null, p, XSD.anyURI));
 		assertTrue(model.contains(c10, RDFS.subClassOf, OWL.Nothing));
@@ -3274,7 +3297,8 @@ public class JenaTests
 
 		final Statement[] stmts = { ResourceFactory.createStatement(a, RDF.type, A), ResourceFactory.createStatement(a, p, b), ResourceFactory.createStatement(a, q, l),
 
-				ResourceFactory.createStatement(a, RDF.type, OWL.Thing), ResourceFactory.createStatement(a, RDF.type, B), ResourceFactory.createStatement(a, OWL.sameAs, a), ResourceFactory.createStatement(a, OWL.sameAs, c) };
+				ResourceFactory.createStatement(a, RDF.type, OWL.Thing), ResourceFactory.createStatement(a, RDF.type, B), ResourceFactory.createStatement(a, OWL.sameAs, a),
+				ResourceFactory.createStatement(a, OWL.sameAs, c) };
 
 		final Model m = ModelFactory.createDefaultModel();
 		m.add(stmts[0]);

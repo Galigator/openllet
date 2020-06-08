@@ -43,15 +43,15 @@ public class ARQParserUtilities
 	/**
 	 * Set containing all OWL 2 datatypes
 	 */
-	private static final Set<Node> OWL2_DATATYPES;
+	private static final Set<Node>	OWL2_DATATYPES;
 	/**
 	 * Jena _node for "false"^^xsd:boolean
 	 */
-	public static final Node XSD_BOOLEAN_FALSE;
+	public static final Node		XSD_BOOLEAN_FALSE;
 	/**
 	 * Jena _node for "true"^^xsd:boolean
 	 */
-	public static final Node XSD_BOOLEAN_TRUE;
+	public static final Node		XSD_BOOLEAN_TRUE;
 
 	static
 	{
@@ -62,14 +62,19 @@ public class ARQParserUtilities
 		 * After merging the newer datatype reasoner, the Collection below
 		 * should be pulled from that code.
 		 */
-		OWL2_DATATYPES = Collections.unmodifiableSet(new HashSet<>(Arrays.<Node> asList(NodeFactory.createURI(OWL.getURI() + "real"), NodeFactory.createURI(OWL.getURI() + "rational"), XSD.decimal.asNode(), XSD.integer.asNode(), XSD.nonNegativeInteger.asNode(), XSD.nonPositiveInteger.asNode(), XSD.negativeInteger.asNode(), XSD.positiveInteger.asNode(), XSD.xlong.asNode(), XSD.xint.asNode(), XSD.xshort.asNode(), XSD.xbyte.asNode(), XSD.unsignedLong.asNode(), XSD.unsignedInt.asNode(), XSD.unsignedShort.asNode(), XSD.unsignedByte.asNode(), XSD.xdouble.asNode(), XSD.xfloat.asNode(), XSD.xstring.asNode(), XSD.normalizedString.asNode(), XSD.token.asNode(), XSD.language.asNode(), XSD.Name.asNode(), XSD.NCName.asNode(), XSD.xboolean.asNode(), XSD.hexBinary.asNode(), XSD.base64Binary.asNode(), XSD.anyURI.asNode(), XSD.dateTime.asNode(), NodeFactory.createURI(XSD.getURI() + "dateTimeStamp"), NodeFactory.createURI(RDF.getURI() + "XMLLiteral"))));
+		OWL2_DATATYPES = Collections.unmodifiableSet(new HashSet<>(Arrays.<Node>asList(NodeFactory.createURI(OWL.getURI() + "real"), NodeFactory.createURI(OWL.getURI() + "rational"),
+				XSD.decimal.asNode(), XSD.integer.asNode(), XSD.nonNegativeInteger.asNode(), XSD.nonPositiveInteger.asNode(), XSD.negativeInteger.asNode(), XSD.positiveInteger.asNode(),
+				XSD.xlong.asNode(), XSD.xint.asNode(), XSD.xshort.asNode(), XSD.xbyte.asNode(), XSD.unsignedLong.asNode(), XSD.unsignedInt.asNode(), XSD.unsignedShort.asNode(),
+				XSD.unsignedByte.asNode(), XSD.xdouble.asNode(), XSD.xfloat.asNode(), XSD.xstring.asNode(), XSD.normalizedString.asNode(), XSD.token.asNode(), XSD.language.asNode(), XSD.Name.asNode(),
+				XSD.NCName.asNode(), XSD.xboolean.asNode(), XSD.hexBinary.asNode(), XSD.base64Binary.asNode(), XSD.anyURI.asNode(), XSD.dateTime.asNode(),
+				NodeFactory.createURI(XSD.getURI() + "dateTimeStamp"), NodeFactory.createURI(RDF.getURI() + "XMLLiteral"))));
 	}
 
 	/**
 	 * Create an xsd:nonNegativeInteger literal from a string. Useful when parsing number restrictions.
 	 *
-	 * @param s A <code>String</code> of the number to be parsed
-	 * @return A literal <code>Node</code>
+	 * @param  s A <code>String</code> of the number to be parsed
+	 * @return   A literal <code>Node</code>
 	 */
 	public static Node createNonNegativeInteger(final String s)
 	{
@@ -79,8 +84,8 @@ public class ARQParserUtilities
 	/**
 	 * Test if a <code>Node</code> is an OWL 2 datatype.
 	 *
-	 * @param n The <code>Node</code> to test
-	 * @return <code>true</code> if <code>n</code> matches the URI of an OWL 2 datatype, else <code>false</code>
+	 * @param  n The <code>Node</code> to test
+	 * @return   <code>true</code> if <code>n</code> matches the URI of an OWL 2 datatype, else <code>false</code>
 	 */
 	public static boolean isOWL2Datatype(final Node n)
 	{
@@ -90,9 +95,9 @@ public class ARQParserUtilities
 	/**
 	 * Construct an RDF container from a <code>List</code> of _nodes, preserving the ordering
 	 *
-	 * @param _nodes The list of <code>Node</code>s
-	 * @param triples A mutable container to which the <code>Triple</code>s representing the container will be added.
-	 * @return The blank _node used as the start of the container
+	 * @param  _nodes  The list of <code>Node</code>s
+	 * @param  triples A mutable container to which the <code>Triple</code>s representing the container will be added.
+	 * @return         The blank _node used as the start of the container
 	 */
 	public static Node listToTriples(final List<Node> nodes, final Collection<Triple> triples)
 	{

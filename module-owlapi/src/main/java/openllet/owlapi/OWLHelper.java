@@ -40,70 +40,69 @@ import org.semanticweb.owlapi.util.OWLDocumentFormatFactoryImpl;
  */
 public interface OWLHelper extends Logging, OWLManagementObject
 {
-	final static boolean _debug = false;
+	boolean							_debug				= false;
 
-	public static final String _protocol = "http://";
-	public static final String _secureProtocol = "https://";
-	public static final String _localProtocol = "file:/";
-	public static final String _webSeparator = "/";
-	public static final String _prefixSeparator = ":";
-	public static final String _entitySeparator = "#";
-	public static final String _innerSeparator = "_";
-	public static final String _caseSeparator = "-";
-	public static final String _fileExtention = ".owl";
-	public static final String _fileExtentionPart = ".part";
-	public static final String _delta = "owl.delta";
-	public static final OWLDocumentFormatFactoryImpl _formatFactory = new FunctionalSyntaxDocumentFormatFactory(); // new RDFXMLDocumentFormatFactory(); see https://github.com/owlcs/owlapi/issues/706
-	public static final OWLDocumentFormat _format = _formatFactory.get();
+	String							_protocol			= "http://";
+	String							_secureProtocol		= "https://";
+	String							_localProtocol		= "file:/";
+	String							_webSeparator		= "/";
+	String							_prefixSeparator	= ":";
+	String							_entitySeparator	= "#";
+	String							_innerSeparator		= "_";
+	String							_caseSeparator		= "-";
+	String							_fileExtention		= ".owl";
+	String							_fileExtentionPart	= ".part";
+	String							_delta				= "owl.delta";
+	OWLDocumentFormatFactoryImpl	_formatFactory		= new FunctionalSyntaxDocumentFormatFactory();	// new RDFXMLDocumentFormatFactory(); see https://github.com/owlcs/owlapi/issues/706
+	OWLDocumentFormat				_format				= _formatFactory.get();
 
 	/**
 	 * @return true if this ontology isn't persistent.
-	 * @since 2.5.1
+	 * @since  2.5.1
 	 */
-	public abstract boolean isVolatile();
+	boolean isVolatile();
 
 	/**
 	 * Add the export format in the configuration of the provided ontology
 	 *
 	 * @param ontology you consider.
-	 * @since 2.6.1
+	 * @since          2.6.1
 	 */
-	public static void setFormat(final OWLOntology ontology)
+	static void setFormat(final OWLOntology ontology)
 	{
 		ontology.getOWLOntologyManager().setOntologyFormat(ontology, _format);
 	}
 
 	/**
-	 * @param ontologyIRI is the id of the ontology without version. The ontology name.
-	 * @param version is the short representation you want for this ontology.
-	 * @return the complete representation of the version for the given identifier of ontology.
-	 * @since 2.5.1
+	 * @param  ontologyIRI is the id of the ontology without version. The ontology name.
+	 * @param  version     is the short representation you want for this ontology.
+	 * @return             the complete representation of the version for the given identifier of ontology.
+	 * @since              2.5.1
 	 */
-	public static IRI buildVersion(final IRI ontologyIRI, final double version)
+	static IRI buildVersion(final IRI ontologyIRI, final double version)
 	{
 		return IRI.create(ontologyIRI + _innerSeparator + version);
 	}
 
 	/**
-	 * @param ontologyIRI is the id of the ontology without version. The ontology name.
-	 * @param version is the short representation you want for this ontology.
-	 * @return the complete ontologyID
-	 * @since 2.6.0
+	 * @param  ontologyIRI is the id of the ontology without version. The ontology name.
+	 * @param  version     is the short representation you want for this ontology.
+	 * @return             the complete ontologyID
+	 * @since              2.6.0
 	 */
-	public static OWLOntologyID getVersion(final IRI ontologyIRI, final double version)
+	static OWLOntologyID getVersion(final IRI ontologyIRI, final double version)
 	{
 		return new OWLOntologyID(ontologyIRI, buildVersion(ontologyIRI, version));
 	}
 
 	/**
-	 * @param iri that should be use to generate a filename
-	 * @return a relative path filename that reflect the iri.
-	 * @since 2.5.1
+	 * @param  iri that should be use to generate a filename
+	 * @return     a relative path filename that reflect the iri.
+	 * @since      2.5.1
 	 */
-	public static String iri2filename(final IRI iri)
+	static String iri2filename(final IRI iri)
 	{
-		if (null == iri)
-			throw new OWLException("iri2filename(null)");
+		if (null == iri) throw new OWLException("iri2filename(null)");
 
 		return iri.toString()//
 				.replaceAll(":", _innerSeparator)//
@@ -113,26 +112,26 @@ public interface OWLHelper extends Logging, OWLManagementObject
 	}
 
 	/**
-	 * @param directory where the ontology will be put
-	 * @param ontId is the id the ontology to convert.
-	 * @return a full path filename that reflect the name of this ontology.
-	 * @since 2.5.1
+	 * @param  directory where the ontology will be put
+	 * @param  ontId     is the id the ontology to convert.
+	 * @return           a full path filename that reflect the name of this ontology.
+	 * @since            2.5.1
 	 */
-	public static String ontology2filename(final File directory, final OWLOntologyID ontId)
+	static String ontology2filename(final File directory, final OWLOntologyID ontId)
 	{
 		final String id = iri2filename(ontId.getOntologyIRI().get());
 		final IRI versionIRI = ontId.getVersionIRI().get();
-		final String version = (versionIRI != null) ? (iri2filename(versionIRI)) : "0";
+		final String version = versionIRI != null ? iri2filename(versionIRI) : "0";
 		return directory + _webSeparator + id + _caseSeparator + version + _fileExtention;
 	}
 
 	/**
-	 * @param directory where the ontology will be put
-	 * @param ontology is the ontology from witch we want a name
-	 * @return a full path filename that reflect the name of this ontology.
-	 * @since 2.5.1
+	 * @param  directory where the ontology will be put
+	 * @param  ontology  is the ontology from witch we want a name
+	 * @return           a full path filename that reflect the name of this ontology.
+	 * @since            2.5.1
 	 */
-	public static String ontology2filename(final File directory, final OWLOntology ontology)
+	static String ontology2filename(final File directory, final OWLOntology ontology)
 	{
 		return ontology2filename(directory, ontology.getOntologyID());
 	}
@@ -141,19 +140,19 @@ public interface OWLHelper extends Logging, OWLManagementObject
 
 	/**
 	 * @return the namespace utils that can resolve prefix.
-	 * @since 2.5.1
+	 * @since  2.5.1
 	 */
-	public default Optional<PrefixDocumentFormat> getNamespaces()
+	default Optional<PrefixDocumentFormat> getNamespaces()
 	{
 		final OWLDocumentFormat format = getManager().getOntologyFormat(getOntology());
-		return (format.isPrefixOWLDocumentFormat()) ? Optional.of((PrefixDocumentFormat) format) : Optional.empty();
+		return format.isPrefixOWLDocumentFormat() ? Optional.of((PrefixDocumentFormat) format) : Optional.empty();
 	}
 
 	/**
 	 * @return the root of the default object insert in the ontology without namespace.
-	 * @since 2.5.1
+	 * @since  2.5.1
 	 */
-	default public IRI getRootIri()
+	default IRI getRootIri()
 	{
 		return IRI.create(getOntology().getOntologyID().getOntologyIRI().get().getNamespace());
 	}
@@ -161,10 +160,12 @@ public interface OWLHelper extends Logging, OWLManagementObject
 	/**
 	 * This function exist because the one in IRI is deprecated and will be remove : We want the memory of calling it 'fragment' preserved.
 	 *
-	 * @return the NCNameSuffix
-	 * @since 2.5.1
+	 * @param  iri to convert to XML from NCNameSuffix.
+	 *
+	 * @return     the NCNameSuffix
+	 * @since      2.5.1
 	 */
-	default public String getFragment(final IRI iri)
+	default String getFragment(final IRI iri)
 	{
 		return XMLUtils.getNCNameSuffix(iri);
 	}
@@ -172,24 +173,23 @@ public interface OWLHelper extends Logging, OWLManagementObject
 	/**
 	 * The standard 'getOntology' from the OWLManager don't really take care of versionning. This function is here to enforce the notion of version
 	 *
-	 * @param ontologyID with version information
-	 * @return the ontology if already load into the given manager.
-	 * @since 2.5.1
+	 * @param  ontologyID with version information
+	 * @return            the ontology if already load into the given manager.
+	 * @since             2.5.1
 	 */
-	public default Optional<OWLOntology> getOntology(final OWLOntologyID ontologyID)
+	default Optional<OWLOntology> getOntology(final OWLOntologyID ontologyID)
 	{
 		return OWLGroup.getOntology(getManager(), ontologyID);
 	}
 
 	/**
 	 * @return the shortest representation of the version of an ontology. Defaulting on 'zero' if no-version information.
-	 * @since 2.5.1
+	 * @since  2.5.1
 	 */
-	default public double getVersion()
+	default double getVersion()
 	{
 		final IRI version = getOntology().getOntologyID().getVersionIRI().get();
-		if (null == version)
-			return 0;
+		if (null == version) return 0;
 		try
 		{
 			final String fragment = getFragment(version);
@@ -204,13 +204,13 @@ public interface OWLHelper extends Logging, OWLManagementObject
 	}
 
 	@SuppressWarnings("resource") // ressource is manage by the helper.
-	default public Optional<OWLHelper> look(final IRI ontology, final double version)
+	default Optional<OWLHelper> look(final IRI ontology, final double version)
 	{
 		return getGroup().getOntology(ontology, version, isVolatile());
 	}
 
 	@SuppressWarnings("resource") // ressource is manage by the helper.
-	default public Optional<OWLHelper> look(final IRI ontology)
+	default Optional<OWLHelper> look(final IRI ontology)
 	{
 		return getGroup().getOntology(new OWLOntologyID(ontology), isVolatile());
 	}
@@ -219,19 +219,17 @@ public interface OWLHelper extends Logging, OWLManagementObject
 	 * Clone into another ontology with the same axioms and same manager. NB : In a future version this function may return an ontology that share axiom with
 	 * previous for memory saving.
 	 *
-	 * @param version that will have the new ontology.
-	 * @return a new ontology with the axioms of the given one.
+	 * @param  version                      that will have the new ontology.
+	 * @return                              a new ontology with the axioms of the given one.
 	 * @throws OWLOntologyCreationException if we can't create the ontology.
-	 * @since 2.5.1
+	 * @since                               2.5.1
 	 */
-	default public OWLHelper derivate(final double version) throws OWLOntologyCreationException
+	default OWLHelper derivate(final double version) throws OWLOntologyCreationException
 	{
 		final Optional<OWLHelper> result = look(this.getOntology().getOntologyID().getOntologyIRI().get(), version);
-		if (!result.isPresent())
-			throw new OWLOntologyCreationException("Can't derivate to version " + version);
+		if (!result.isPresent()) throw new OWLOntologyCreationException("Can't derivate to version " + version);
 
-		if (result.get().getOntology().getAxiomCount() != 0)
-			getLogger().warning(() -> "The ontology you try to derivate from " + getVersion() + " to version " + version + " already exist.");
+		if (result.get().getOntology().getAxiomCount() != 0) getLogger().warning(() -> "The ontology you try to derivate from " + getVersion() + " to version " + version + " already exist.");
 
 		result.get().addAxioms(getOntology().axioms());
 		return result.get();
@@ -240,34 +238,33 @@ public interface OWLHelper extends Logging, OWLManagementObject
 	/**
 	 * Same as derivate but with a version number based on EPOCH time.
 	 *
-	 * @return a new ontology with the axioms of the given one.
-	 * @throws OWLOntologyCreationException if we can't create the ontology.
-	 * @since 2.5.1
-	 * @Deprecated because we want this function to return an OWLHelper
+	 * @return                                  a new ontology with the axioms of the given one.
+	 * @throws     OWLOntologyCreationException if we can't create the ontology.
+	 * @since                                   2.5.1
+	 * @Deprecated                              because we want this function to return an OWLHelper
 	 */
-	default public OWLHelper derivate() throws OWLOntologyCreationException
+	default OWLHelper derivate() throws OWLOntologyCreationException
 	{
 		return derivate(System.currentTimeMillis());
 	}
 
 	/**
-	 * @param quoteExpression an expression with " at begin and end.
-	 * @return the same expression without the first and last char.
-	 * @since 1.1
+	 * @param  quoteExpression an expression with " at begin and end.
+	 * @return                 the same expression without the first and last char.
+	 * @since                  1.1
 	 */
-	default public String removeFirstLast(final String quoteExpression)
+	default String removeFirstLast(final String quoteExpression)
 	{
 		String expression = quoteExpression;
-		if (quoteExpression != null)
-			expression = quoteExpression.substring(1, quoteExpression.length() - 1); // Remove the " at begin and end of literal.
+		if (quoteExpression != null) expression = quoteExpression.substring(1, quoteExpression.length() - 1); // Remove the " at begin and end of literal.
 
 		return expression;
 	}
 
 	/**
-	 * @param parts of an uri
-	 * @return a join of all parts separated by an entitySeparator.
-	 * @since 2.5.1
+	 * @param  parts of an uri
+	 * @return       a join of all parts separated by an entitySeparator.
+	 * @since        2.5.1
 	 */
 	default String path(final String[] parts)
 	{
@@ -281,16 +278,15 @@ public interface OWLHelper extends Logging, OWLManagementObject
 	}
 
 	/**
-	 * @param identifier to resolve
-	 * @return parts of the identifiers using optionnaly prefix resolution.
-	 * @since 2.5.1
+	 * @param  identifier to resolve
+	 * @return            parts of the identifiers using optionnaly prefix resolution.
+	 * @since             2.5.1
 	 */
-	default public String[] resolvPrefix(final String identifier)
+	default String[] resolvPrefix(final String identifier)
 	{
 		final String[] parts = identifier.split(":");
 
-		if (parts.length == 0)
-			return new String[] { getRootIri().toString(), "" };
+		if (parts.length == 0) return new String[] { getRootIri().toString(), "" };
 
 		final Optional<PrefixDocumentFormat> space = getNamespaces();
 		if (space.isPresent())
@@ -305,8 +301,8 @@ public interface OWLHelper extends Logging, OWLManagementObject
 	}
 
 	/**
-	 * @param identifier of the data.
-	 * @return an array of size 2, with the first element that contain the namespace and the second that contain the fragment.
+	 * @param  identifier of the data.
+	 * @return            an array of size 2, with the first element that contain the namespace and the second that contain the fragment.
 	 */
 	default String[] getNameSpace(final String identifier)
 	{
@@ -332,12 +328,12 @@ public interface OWLHelper extends Logging, OWLManagementObject
 	/**
 	 * Axiom are parsed from the stream then add into the ontology.
 	 *
-	 * @param input is a stream of axioms
+	 * @param  input                        is a stream of axioms
 	 * @throws OWLOntologyCreationException if we can't load the ontology.
-	 * @throws IOException if there is an problem when reading.
-	 * @since 2.5.1
+	 * @throws IOException                  if there is an problem when reading.
+	 * @since                               2.5.1
 	 */
-	default public void deserializeAxiomsInto(final String input) throws OWLOntologyCreationException, IOException
+	default void deserializeAxiomsInto(final String input) throws OWLOntologyCreationException, IOException
 	{
 		try (final InputStream stream = new ByteArrayInputStream(input.getBytes()))
 		{
@@ -359,13 +355,13 @@ public interface OWLHelper extends Logging, OWLManagementObject
 	}
 
 	/**
-	 * @param input is a stream of axioms
-	 * @return the set of axiom contains in the input
+	 * @param  input                        is a stream of axioms
+	 * @return                              the set of axiom contains in the input
 	 * @throws OWLOntologyCreationException if we can't load the ontology.
-	 * @throws IOException if there is an problem when reading.
-	 * @since 2.5.1
+	 * @throws IOException                  if there is an problem when reading.
+	 * @since                               2.5.1
 	 */
-	default public Stream<OWLAxiom> deserializeAxioms(final String input) throws OWLOntologyCreationException, IOException
+	default Stream<OWLAxiom> deserializeAxioms(final String input) throws OWLOntologyCreationException, IOException
 	{
 		try (final InputStream stream = new ByteArrayInputStream(input.getBytes()))
 		{
@@ -376,12 +372,12 @@ public interface OWLHelper extends Logging, OWLManagementObject
 	}
 
 	/**
-	 * @return the axioms as a single blob string.
+	 * @return                             the axioms as a single blob string.
 	 * @throws OWLOntologyStorageException if we can't store the ontology.
-	 * @throws IOException if there is an problem when reading. * @since 1.2
-	 * @since 2.5.1
+	 * @throws IOException                 if there is an problem when reading. * @since 1.2
+	 * @since                              2.5.1
 	 */
-	default public String serializeAxioms() throws OWLOntologyStorageException, IOException
+	default String serializeAxioms() throws OWLOntologyStorageException, IOException
 	{
 		try (final ByteArrayOutputStream stream = new ByteArrayOutputStream())
 		{
@@ -398,16 +394,17 @@ public interface OWLHelper extends Logging, OWLManagementObject
 	/**
 	 * Compute the types of an individual. Use this function only if you mix Named and Anonymous individuals.
 	 *
-	 * @param ind the individual named _or_ anonymous
-	 * @return the classes of the individual.
-	 * @since 2.5.1
+	 * @param  ind the individual named _or_ anonymous
+	 * @return     the classes of the individual.
+	 * @since      2.5.1
 	 */
-	default public NodeSet<OWLClass> getTypes(final OWLIndividual ind)
+	default NodeSet<OWLClass> getTypes(final OWLIndividual ind)
 	{
 		if (ind instanceof OWLAnonymousIndividual)
 		{
 			// We create a temporary named Individual to allow the reasoner to work.
-			final OWLNamedIndividual individual = getFactory().getOWLNamedIndividual(IRI.create(_protocol + OWLHelper.class.getPackage().getName() + _webSeparator + OWLHelper.class.getSimpleName() + _entitySeparator + IRIUtils.randId(OWLHelper.class.getSimpleName())));
+			final OWLNamedIndividual individual = getFactory().getOWLNamedIndividual(IRI.create(
+					_protocol + OWLHelper.class.getPackage().getName() + _webSeparator + OWLHelper.class.getSimpleName() + _entitySeparator + IRIUtils.randId(OWLHelper.class.getSimpleName())));
 			final Stream<OWLAxiom> axioms = Stream.of( //
 					getFactory().getOWLDeclarationAxiom(individual), //
 					getFactory().getOWLSameIndividualAxiom(individual, ind) // The temporary named is the same as the anonymous one.
@@ -422,12 +419,12 @@ public interface OWLHelper extends Logging, OWLManagementObject
 	}
 
 	/**
-	 * @param buff is the target for the axioms rendered in DL syntax
-	 * @param msg is insert before and after the axioms to detach it from its background (use "" if you don't know what to do with that).
-	 * @return the given buffer
-	 * @since 2.5.1
+	 * @param  buff is the target for the axioms rendered in DL syntax
+	 * @param  msg  is insert before and after the axioms to detach it from its background (use "" if you don't know what to do with that).
+	 * @return      the given buffer
+	 * @since       2.5.1
 	 */
-	default public StringBuffer ontologyToString(final StringBuffer buff, final String msg)
+	default StringBuffer ontologyToString(final StringBuffer buff, final String msg)
 	{
 		final DLSyntaxObjectRenderer syntax = new DLSyntaxObjectRenderer();
 		buff.append("====\\/==" + msg + "===\\/====\n");
@@ -437,11 +434,11 @@ public interface OWLHelper extends Logging, OWLManagementObject
 	}
 
 	/**
-	 * @return the axioms rendered in DL syntax
-	 * @param msg is insert before and after the axioms to detach it from its background (use "" if you don't know what to do with that).
-	 * @since 2.5.1
+	 * @return     the axioms rendered in DL syntax
+	 * @param  msg is insert before and after the axioms to detach it from its background (use "" if you don't know what to do with that).
+	 * @since      2.5.1
 	 */
-	default public String ontologyToString(final String msg)
+	default String ontologyToString(final String msg)
 	{
 		final StringBuffer buff = new StringBuffer();
 		ontologyToString(buff, msg);
@@ -450,20 +447,20 @@ public interface OWLHelper extends Logging, OWLManagementObject
 
 	/**
 	 * Dispose the reasoner attached to this helper. If the reasoner wasn't attached, it doesn't buildit.
-	 * 
+	 *
 	 * @since 2.6.3
 	 */
-	public void dispose();
+	void dispose();
 
 	/**
 	 * When you have finish use this Helper, you must call {dispose() and eventually getGroup().close()}
-	 * 
-	 * @param ontology an already build ontology.
-	 * @return an helper
-	 * @since 2.6.3
+	 *
+	 * @param  ontology an already build ontology.
+	 * @return          an helper
+	 * @since           2.6.3
 	 */
 	@SuppressWarnings("resource")
-	public static OWLHelper createLightHelper(final OWLOntology ontology)
+	static OWLHelper createLightHelper(final OWLOntology ontology)
 	{
 		return new OWLGenericTools(new OWLManagerGroup(ontology), ontology, true)
 		{
@@ -485,12 +482,12 @@ public interface OWLHelper extends Logging, OWLManagementObject
 
 	/**
 	 * When you have finish use this Helper, you must call {dispose() and eventually getGroup().close()}
-	 * 
-	 * @param ontology an already build ontology.
-	 * @return an helper
-	 * @since 2.6.3
+	 *
+	 * @param  inputStream ontology an already build ontology.
+	 * @return             an helper
+	 * @since              2.6.3
 	 */
-	public static OWLHelper createLightHelper(final InputStream inputStream)
+	static OWLHelper createLightHelper(final InputStream inputStream)
 	{
 		try
 		{
@@ -504,12 +501,12 @@ public interface OWLHelper extends Logging, OWLManagementObject
 
 	/**
 	 * When you have finish use this Helper, you must call {dispose() and eventually getGroup().close()}
-	 * 
-	 * @param ontology an already build ontology.
-	 * @return an helper
-	 * @since 2.6.3
+	 *
+	 * @param  reasoner backed on an ontology already build.
+	 * @return          an helper
+	 * @since           2.6.3
 	 */
-	public static OWLHelper createLightHelper(final OpenlletReasoner reasoner)
+	static OWLHelper createLightHelper(final OpenlletReasoner reasoner)
 	{
 		return new OWLHelper()
 		{
@@ -562,15 +559,14 @@ public interface OWLHelper extends Logging, OWLManagementObject
 			public void dispose()
 			{
 				reasoner.dispose();
-				if (null != _group)
-					try
-					{
-						_group.close();
-					}
-					catch (final Exception exception)
-					{
-						throw new OpenError(exception);
-					}
+				if (null != _group) try
+				{
+					_group.close();
+				}
+				catch (final Exception exception)
+				{
+					throw new OpenError(exception);
+				}
 			}
 		};
 	}

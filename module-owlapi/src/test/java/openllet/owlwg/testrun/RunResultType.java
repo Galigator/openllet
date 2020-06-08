@@ -20,20 +20,23 @@ import org.semanticweb.owlapi.model.OWLClass;
  * Company: Clark & Parsia, LLC. <a
  * href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
  * </p>
- * 
+ *
  * @author Mike Smith &lt;msmith@clarkparsia.com&gt;
  */
-public enum RunResultType {
+public enum RunResultType
+{
 
 	FAILING(FAILING_RUN), INCOMPLETE(INCOMPLETE_RUN), PASSING(PASSING_RUN);
 
-	private final OWLClass	_c;
+	private final OWLClass _c;
 
-	private RunResultType(ResultVocabulary.Class c) {
-		this._c = c.getOWLClass();
+	private RunResultType(final ResultVocabulary.Class c)
+	{
+		_c = c.getOWLClass();
 	}
 
-	public OWLClass getOWLClass() {
+	public OWLClass getOWLClass()
+	{
 		return _c;
 	}
 }

@@ -20,15 +20,15 @@ import java.util.List;
  * Company: Clark & Parsia, LLC. <http://www.clarkparsia.com>
  * </p>
  *
- * @author Ron Alford
- * @param <P>
- * @param <A>
- * @param <B>
+ * @author     Ron Alford
+ * @param  <P>
+ * @param  <A>
+ * @param  <B>
  */
 public abstract class BinaryAtom<P, A extends AtomObject, B extends AtomObject> extends RuleAtomImpl<P>
 {
-	private final A _argument1;
-	private final B _argument2;
+	private final A	_argument1;
+	private final B	_argument2;
 
 	public BinaryAtom(final P predicate, final A argument1, final B argument2)
 	{

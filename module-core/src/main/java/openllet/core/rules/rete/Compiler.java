@@ -66,11 +66,11 @@ import openllet.core.utils.SetUtils;
  */
 public class Compiler
 {
-	protected ContinuousRulesStrategy _strategy;
-	private final ABox _abox;
-	private final AlphaNetwork _alphaNet;
+	protected ContinuousRulesStrategy	_strategy;
+	private final ABox					_abox;
+	private final AlphaNetwork			_alphaNet;
 
-	private final SafetyChecker _safetyChecker = new SafetyChecker();
+	private final SafetyChecker			_safetyChecker	= new SafetyChecker();
 
 	public Compiler(final ContinuousRulesStrategy strategy)
 	{
@@ -91,8 +91,7 @@ public class Compiler
 			for (int i = 0; i < atoms.size(); i++)
 			{
 				final RuleAtom atom = atoms.get(i);
-				if (_safetyChecker.isSafe(atom))
-					return atoms.remove(i);
+				if (_safetyChecker.isSafe(atom)) return atoms.remove(i);
 			}
 		else
 			for (int i = 0; i < atoms.size(); i++)
@@ -101,8 +100,7 @@ public class Compiler
 				if (SetUtils.intersects(bound, atom.getAllArguments()))
 				{
 					index = i;
-					if (_safetyChecker.isSafe(atom))
-						break;
+					if (_safetyChecker.isSafe(atom)) break;
 				}
 			}
 
@@ -117,13 +115,12 @@ public class Compiler
 		for (final RuleAtom atom : rule.getBody())
 			if (atom instanceof BuiltInAtom)
 				builtins.add(new BuiltInCall(_abox, (BuiltInAtom) atom));
+			else if (atom instanceof DataRangeAtom)
+			{
+				//				builtins.add(new Pair<RuleAtom, BindingHelper>(_atom, new DataRangeBindingHelper(_abox, (DataRangeAtom) _atom)));
+			}
 			else
-				if (atom instanceof DataRangeAtom)
-				{
-					//				builtins.add(new Pair<RuleAtom, BindingHelper>(_atom, new DataRangeBindingHelper(_abox, (DataRangeAtom) _atom)));
-				}
-				else
-					atoms.add(atom);
+				atoms.add(atom);
 
 		final Set<AtomVariable> bound = new HashSet<>();
 		final List<RuleAtom> processed = new ArrayList<>();
@@ -149,17 +146,15 @@ public class Compiler
 			final List<? extends AtomObject> args = atom.getAllArguments();
 
 			final List<FilterCondition> conditions = new ArrayList<>();
-			if (!processed.isEmpty())
-				for (int i = 0, n = args.size(); i < n; i++)
+			if (!processed.isEmpty()) for (int i = 0, n = args.size(); i < n; i++)
+			{
+				final AtomObject arg = args.get(i);
+				if (arg instanceof AtomVariable)
 				{
-					final AtomObject arg = args.get(i);
-					if (arg instanceof AtomVariable)
-					{
-						final TokenNodeProvider provider = createNodeProvider((AtomVariable) arg, processed);
-						if (provider != null)
-							conditions.add(new JoinCondition(new WMENodeProvider(i), provider));
-					}
+					final TokenNodeProvider provider = createNodeProvider((AtomVariable) arg, processed);
+					if (provider != null) conditions.add(new JoinCondition(new WMENodeProvider(i), provider));
 				}
+			}
 
 			processed.add(atom);
 
@@ -170,30 +165,28 @@ public class Compiler
 				if (bound.containsAll(call.getPrerequisitesVars(bound)))
 				{
 					final Collection<? extends AtomVariable> bindableVars = call.getBindableVars(bound);
-					if (bindableVars.isEmpty() || bound.containsAll(bindableVars))
-						conditions.add(call.createCondition(processed));
+					if (bindableVars.isEmpty() || bound.containsAll(bindableVars)) conditions.add(call.createCondition(processed));
 					// i.remove();
 				}
 
 			BetaNode newBeta = null;
 
-			if (canReuseBeta)
-				if (node == null) // First beta node.
-				{
-					for (final BetaNode existingBeta : alpha.getBetas())
-						if (existingBeta.isTop())
-						{
-							newBeta = existingBeta;
-							break;
-						}
-				}
-				else
-					for (final BetaNode existingBeta : SetUtils.intersection(alpha.getBetas(), node.getBetas()))
-						if (existingBeta instanceof BetaMemoryNode && conditions.equals(((BetaMemoryNode) existingBeta).getConditions()))
-						{
-							newBeta = existingBeta;
-							break;
-						}
+			if (canReuseBeta) if (node == null) // First beta node.
+			{
+				for (final BetaNode existingBeta : alpha.getBetas())
+					if (existingBeta.isTop())
+					{
+						newBeta = existingBeta;
+						break;
+					}
+			}
+			else
+				for (final BetaNode existingBeta : SetUtils.intersection(alpha.getBetas(), node.getBetas()))
+					if (existingBeta instanceof BetaMemoryNode && conditions.equals(((BetaMemoryNode) existingBeta).getConditions()))
+					{
+						newBeta = existingBeta;
+						break;
+					}
 
 			if (null == newBeta)
 			{
@@ -202,8 +195,7 @@ public class Compiler
 			}
 
 			alpha.addChild(newBeta);
-			if (node != null)
-				node.addChild(newBeta);
+			if (node != null) node.addChild(newBeta);
 			node = newBeta;
 
 			// process builtins at the _end since binding builtins may change
@@ -229,33 +221,28 @@ public class Compiler
 			}
 		}
 
-		if (!builtins.isEmpty())
-			throw new UnsupportedOperationException("Builtin using unsafe variables: " + builtins);
+		if (!builtins.isEmpty()) throw new UnsupportedOperationException("Builtin using unsafe variables: " + builtins);
 
 		if (lastSafe == 0)
 			_strategy.addUnsafeRule(rule, explain);
+		else if (lastSafe > 0)
+		{
+			final Map<AtomVariable, NodeProvider> args = new HashMap<>();
+			for (int i = 0; i < lastSafe; i++)
+				for (final AtomObject arg : processed.get(i).getAllArguments())
+					if (arg instanceof AtomVariable && !args.containsKey(arg)) args.put((AtomVariable) arg, createNodeProvider((AtomVariable) arg, processed));
+			if (lastSafeBeta != null) lastSafeBeta.addChild(new ProductionNode.ProduceBinding(_strategy, explain, rule, args));
+		}
+
+		if (node != null) if (rule.getHead().isEmpty())
+			node.addChild(new ProductionNode.Inconsistency(_strategy, explain));
 		else
-			if (lastSafe > 0)
-			{
-				final Map<AtomVariable, NodeProvider> args = new HashMap<>();
-				for (int i = 0; i < lastSafe; i++)
-					for (final AtomObject arg : processed.get(i).getAllArguments())
-						if (arg instanceof AtomVariable && !args.containsKey(arg))
-							args.put((AtomVariable) arg, createNodeProvider((AtomVariable) arg, processed));
-				if (lastSafeBeta != null)
-					lastSafeBeta.addChild(new ProductionNode.ProduceBinding(_strategy, explain, rule, args));
-			}
+		{
+			final ProductionNodeCreator creator = new ProductionNodeCreator(processed, explain);
 
-		if (node != null)
-			if (rule.getHead().isEmpty())
-				node.addChild(new ProductionNode.Inconsistency(_strategy, explain));
-			else
-			{
-				final ProductionNodeCreator creator = new ProductionNodeCreator(processed, explain);
-
-				for (final RuleAtom headAtom : rule.getHead())
-					node.addChild(creator.create(headAtom));
-			}
+			for (final RuleAtom headAtom : rule.getHead())
+				node.addChild(creator.create(headAtom));
+		}
 	}
 
 	private static TokenNodeProvider createNodeProvider(final AtomVariable arg, final List<RuleAtom> processed)
@@ -269,11 +256,10 @@ public class Compiler
 		{
 			final RuleAtom sharedAtom = processed.get(index);
 			final int indexArg = sharedAtom.getAllArguments().indexOf(arg);
-			if (indexArg != -1)
-				if (lastWME && index == n - 1)
-					return new WMENodeProvider(indexArg);
-				else
-					return new TokenNodeProvider(index, indexArg);
+			if (indexArg != -1) if (lastWME && index == n - 1)
+				return new WMENodeProvider(indexArg);
+			else
+				return new TokenNodeProvider(index, indexArg);
 		}
 
 		return null;
@@ -285,8 +271,8 @@ public class Compiler
 		private boolean result = false;
 
 		/**
-		 * @param atom
-		 * @return maybe true if _atom is something that will be added to the ABox during completion.
+		 * @param  atom
+		 * @return      maybe true if _atom is something that will be added to the ABox during completion.
 		 */
 		public boolean isSafe(final RuleAtom atom)
 		{
@@ -340,10 +326,10 @@ public class Compiler
 
 	private class ProductionNodeCreator implements RuleAtomVisitor
 	{
-		private final AtomObjectTranslator _translator;
+		private final AtomObjectTranslator	_translator;
 
-		private final Set<ATermAppl> _explain;
-		private ProductionNode _node;
+		private final Set<ATermAppl>		_explain;
+		private ProductionNode				_node;
 
 		public ProductionNodeCreator(final List<RuleAtom> processed, final Set<ATermAppl> explain)
 		{
@@ -355,8 +341,7 @@ public class Compiler
 		{
 			_node = null;
 			atom.accept(this);
-			if (_node == null)
-				throw new UnsupportedOperationException("Not supported " + atom);
+			if (_node == null) throw new UnsupportedOperationException("Not supported " + atom);
 			return _node;
 		}
 
@@ -418,12 +403,12 @@ public class Compiler
 
 	private static class AtomObjectTranslator implements AtomObjectVisitor
 	{
-		private DependencySet _dependency = DependencySet.INDEPENDENT;
-		private NodeProvider _result = null;
+		private DependencySet			_dependency	= DependencySet.INDEPENDENT;
+		private NodeProvider			_result		= null;
 
-		private final ABox _translatorAbox;
-		private final List<RuleAtom> _processed;
-		private final boolean _lastWME;
+		private final ABox				_translatorAbox;
+		private final List<RuleAtom>	_processed;
+		private final boolean			_lastWME;
 
 		public AtomObjectTranslator(final ABox abox, final List<RuleAtom> processed, final boolean lastWME)
 		{
@@ -447,8 +432,7 @@ public class Compiler
 		{
 			_dependency = DependencySet.INDEPENDENT;
 			obj.accept(this);
-			if (_result == null && !allowNull)
-				throw new UnsupportedOperationException();
+			if (_result == null && !allowNull) throw new UnsupportedOperationException();
 			return _result;
 		}
 
@@ -506,10 +490,10 @@ public class Compiler
 
 	private static class BuiltInCall
 	{
-		private final ABox _builtInCallAbox;
-		private final BuiltInAtom _atom;
-		private final BuiltIn _builtin;
-		private final BindingHelper _helper;
+		private final ABox			_builtInCallAbox;
+		private final BuiltInAtom	_atom;
+		private final BuiltIn		_builtin;
+		private final BindingHelper	_helper;
 
 		public BuiltInCall(final ABox abox, final BuiltInAtom atom)
 		{

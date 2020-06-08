@@ -26,11 +26,11 @@ import org.apache.jena.util.FileManager;
  */
 public class JenaLoader extends KBLoader
 {
-	private static final FileManager _manager = FileManager.get();
+	private static final FileManager	_manager	= FileManager.get();
 
-	private OntModel _model;
+	private OntModel					_model;
 
-	private PelletInfGraph _pellet;
+	private PelletInfGraph				_pellet;
 
 	public JenaLoader()
 	{
@@ -80,8 +80,7 @@ public class JenaLoader extends KBLoader
 	@Override
 	public void clear()
 	{
-		if (_model != null)
-			_model.close();
+		if (_model != null) _model.close();
 		_model = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
 		_pellet = (PelletInfGraph) _model.getGraph();
 	}

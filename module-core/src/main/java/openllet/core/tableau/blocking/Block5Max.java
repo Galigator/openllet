@@ -32,8 +32,7 @@ public class Block5Max implements BlockingCondition
 	public boolean isBlocked(final BlockingContext cxt)
 	{
 		for (final ATermAppl normMax : cxt._blocker.getTypes(Node.MAX))
-			if (!_maxBlock.test(cxt, normMax))
-				return false;
+			if (!_maxBlock.test(cxt, normMax)) return false;
 
 		return true;
 	}

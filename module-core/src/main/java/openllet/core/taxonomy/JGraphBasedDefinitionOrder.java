@@ -34,9 +34,9 @@ import org.jgrapht.graph.DefaultEdge;
  */
 public class JGraphBasedDefinitionOrder extends AbstractDefinitionOrder
 {
-	private Map<ATermAppl, Set<ATermAppl>> _equivalents;
+	private Map<ATermAppl, Set<ATermAppl>>	_equivalents;
 
-	private Graph<ATermAppl, DefaultEdge> _graph;
+	private Graph<ATermAppl, DefaultEdge>	_graph;
 
 	public JGraphBasedDefinitionOrder(final KnowledgeBase kb, final Comparator<ATerm> comparator)
 	{
@@ -45,7 +45,7 @@ public class JGraphBasedDefinitionOrder extends AbstractDefinitionOrder
 
 	private Set<ATermAppl> createSet()
 	{
-		return _comparator != null ? new TreeSet<>(_comparator) : CollectionUtils.<ATermAppl> makeIdentitySet();
+		return _comparator != null ? new TreeSet<>(_comparator) : CollectionUtils.<ATermAppl>makeIdentitySet();
 	}
 
 	private Queue<ATermAppl> createQueue()
@@ -80,7 +80,7 @@ public class JGraphBasedDefinitionOrder extends AbstractDefinitionOrder
 	private Set<ATermAppl> getEquivalents(final ATermAppl key)
 	{
 		final Set<ATermAppl> values = _equivalents.get(key);
-		return values != null ? values : Collections.<ATermAppl> emptySet();
+		return values != null ? values : Collections.<ATermAppl>emptySet();
 	}
 
 	@Override
@@ -100,9 +100,7 @@ public class JGraphBasedDefinitionOrder extends AbstractDefinitionOrder
 	{
 		if (c.equals(TOP))
 			addEquivalent(TOP, usedByC);
-		else
-			if (!c.equals(usedByC))
-				_graph.addEdge(c, usedByC);
+		else if (!c.equals(usedByC)) _graph.addEdge(c, usedByC);
 	}
 
 	@Override
@@ -116,8 +114,7 @@ public class JGraphBasedDefinitionOrder extends AbstractDefinitionOrder
 		final List<Set<ATermAppl>> sccList = scInspector.stronglyConnectedSets();
 		for (final Set<ATermAppl> scc : sccList)
 		{
-			if (scc.size() == 1)
-				continue;
+			if (scc.size() == 1) continue;
 
 			cyclicConcepts.addAll(scc);
 
@@ -141,15 +138,13 @@ public class JGraphBasedDefinitionOrder extends AbstractDefinitionOrder
 			for (final DefaultEdge edge : _graph.incomingEdgesOf(node))
 			{
 				final ATermAppl incoming = _graph.getEdgeSource(edge);
-				if (!incoming.equals(rep))
-					_graph.addEdge(incoming, rep);
+				if (!incoming.equals(rep)) _graph.addEdge(incoming, rep);
 			}
 
 			for (final DefaultEdge edge : _graph.outgoingEdgesOf(node))
 			{
 				final ATermAppl outgoing = _graph.getEdgeTarget(edge);
-				if (!outgoing.equals(rep))
-					_graph.addEdge(rep, outgoing);
+				if (!outgoing.equals(rep)) _graph.addEdge(rep, outgoing);
 			}
 
 			_graph.removeVertex(node);
@@ -178,8 +173,7 @@ public class JGraphBasedDefinitionOrder extends AbstractDefinitionOrder
 		final Queue<ATermAppl> nodesPending = createQueue();
 
 		for (final ATermAppl node : _graph.vertexSet())
-			if (_graph.outDegreeOf(node) == 0)
-				nodesPending.add(node);
+			if (_graph.outDegreeOf(node) == 0) nodesPending.add(node);
 
 		while (!nodesPending.isEmpty())
 		{
@@ -192,8 +186,7 @@ public class JGraphBasedDefinitionOrder extends AbstractDefinitionOrder
 			for (final DefaultEdge edge : _graph.incomingEdgesOf(node))
 			{
 				final ATermAppl source = _graph.getEdgeSource(edge);
-				if (_graph.outDegreeOf(source) == 1)
-					nodesPending.add(source);
+				if (_graph.outDegreeOf(source) == 1) nodesPending.add(source);
 			}
 
 			_graph.removeVertex(node);

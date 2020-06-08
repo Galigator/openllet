@@ -16,7 +16,7 @@ import openllet.owlwg.testcase.TestCase;
  * <p>
  * Company: Clark & Parsia, LLC. <a href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
  * </p>
- * 
+ *
  * @author Mike Smith &lt;msmith@clarkparsia.com&gt;
  */
 public class StatusFilter implements FilterCondition
@@ -36,15 +36,15 @@ public class StatusFilter implements FilterCondition
 	final private Status _status;
 
 	/**
-	 * @param _status {@link Status} for test case or <code>null</code> if filter should match cases that have no _status
+	 * @param status {@link Status} for test case or <code>null</code> if filter should match cases that have no _status
 	 */
-	public StatusFilter(Status status)
+	public StatusFilter(final Status status)
 	{
-		this._status = status;
+		_status = status;
 	}
 
 	@Override
-	public boolean accepts(TestCase<?> testcase)
+	public boolean accepts(final TestCase<?> testcase)
 	{
 		return testcase.getStatus() == _status;
 	}
@@ -52,7 +52,7 @@ public class StatusFilter implements FilterCondition
 	@Override
 	public String toString()
 	{
-		return (_status == null) ? "NO-STATUS" : _status.toString();
+		return _status == null ? "NO-STATUS" : _status.toString();
 	}
 
 }

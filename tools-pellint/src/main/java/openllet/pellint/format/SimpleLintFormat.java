@@ -39,15 +39,13 @@ public class SimpleLintFormat implements LintFormat
 	{
 		final Set<OWLClass> participatingClasses = lint.getParticipatingClasses();
 		final Set<OWLClassAxiom> participatingAxioms = lint.getParticipatingAxioms();
-		if ((participatingClasses == null || participatingClasses.isEmpty()) && (participatingAxioms == null || participatingAxioms.isEmpty()))
-			return "";
+		if ((participatingClasses == null || participatingClasses.isEmpty()) && (participatingAxioms == null || participatingAxioms.isEmpty())) return "";
 
 		final Severity severity = lint.getSeverity();
 		final StringBuilder strBuilder = new StringBuilder();
 		strBuilder.append(" - ");
 
-		if (severity != null)
-			strBuilder.append(severity).append(' ');
+		if (severity != null) strBuilder.append(severity).append(' ');
 
 		if (participatingClasses != null && !participatingClasses.isEmpty())
 		{
@@ -67,10 +65,8 @@ public class SimpleLintFormat implements LintFormat
 
 			strBuilder.append('\n');
 		}
-		else
-			if (participatingAxioms != null && !participatingAxioms.isEmpty())
-				for (final OWLClassAxiom axiom : participatingAxioms)
-					strBuilder.append(axiom).append('\n');
+		else if (participatingAxioms != null && !participatingAxioms.isEmpty()) for (final OWLClassAxiom axiom : participatingAxioms)
+			strBuilder.append(axiom).append('\n');
 
 		return strBuilder.toString();
 	}

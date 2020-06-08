@@ -14,17 +14,19 @@ package openllet.owlwg.testcase;
  * Company: Clark & Parsia, LLC. <a
  * href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
  * </p>
- * 
- * @author Mike Smith &lt;msmith@clarkparsia.com&gt;
+ *
+ * @author     Mike Smith &lt;msmith@clarkparsia.com&gt;
+ * @param  <O>
  */
 
-public interface TestCaseVisitor<O> {
+public interface TestCaseVisitor<O>
+{
 
-	public void visit(ConsistencyTest<O> testcase);
+	void visit(ConsistencyTest<O> testcase);
 
-	public void visit(InconsistencyTest<O> testcase);
+	void visit(InconsistencyTest<O> testcase);
 
-	public void visit(PositiveEntailmentTest<O> testcase);
+	void visit(PositiveEntailmentTest<O> testcase);
 
-	public void visit(NegativeEntailmentTest<O> testcase);
+	void visit(NegativeEntailmentTest<O> testcase);
 }

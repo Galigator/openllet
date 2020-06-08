@@ -13,8 +13,9 @@ package openllet.owlwg.testcase;
  * <p>
  * Company: Clark & Parsia, LLC. <a href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
  * </p>
- * 
- * @author Mike Smith &lt;msmith@clarkparsia.com&gt;
+ *
+ * @author     Mike Smith &lt;msmith@clarkparsia.com&gt;
+ * @param  <O>
  */
 public interface PositiveEntailmentTest<O> extends EntailmentTest<O>
 {

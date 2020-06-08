@@ -23,10 +23,10 @@ import openllet.core.utils.ATermUtils;
  */
 public class ExpressivityChecker
 {
-	private final KnowledgeBase _KB;
-	private final ELExpressivityChecker _ELChecker;
-	private final DLExpressivityChecker _DLChecker;
-	private volatile Expressivity _expressivity;
+	private final KnowledgeBase			_KB;
+	private final ELExpressivityChecker	_ELChecker;
+	private final DLExpressivityChecker	_DLChecker;
+	private volatile Expressivity		_expressivity;
 
 	public ExpressivityChecker(final KnowledgeBase kb)
 	{
@@ -44,8 +44,7 @@ public class ExpressivityChecker
 	public void prepare()
 	{
 		_expressivity = new Expressivity();
-		if (_ELChecker.compute(_expressivity))
-			return;
+		if (_ELChecker.compute(_expressivity)) return;
 
 		_expressivity = new Expressivity();
 		// force expressivity to be non-EL
@@ -60,8 +59,7 @@ public class ExpressivityChecker
 
 	public Expressivity getExpressivityWith(final ATermAppl c)
 	{
-		if (c == null)
-			return _expressivity;
+		if (c == null) return _expressivity;
 
 		final Expressivity newExp = new Expressivity(_expressivity);
 		_DLChecker.updateWith(newExp, c);
@@ -79,8 +77,7 @@ public class ExpressivityChecker
 	{
 		final ATermAppl nominal = ATermUtils.makeValue(i);
 
-		if (concept.equals(nominal))
-			return;
+		if (concept.equals(nominal)) return;
 
 		_DLChecker.updateWith(_expressivity, concept);
 	}

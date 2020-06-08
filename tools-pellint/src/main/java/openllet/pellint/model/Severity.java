@@ -13,8 +13,8 @@ import java.text.DecimalFormat;
  * Title: Severity
  * </p>
  * <p>
- * Description: The severity for a {@link com.clarkparsia.pellint.model.Lint} relative to all the {@link com.clarkparsia.pellint.model.Lint} found within a
- * particular {@link com.clarkparsia.pellint.lintpattern.LintPattern}. It currently wraps Double, and a higer value represents higher severity.
+ * Description: The severity for a {@link openllet.pellint.model.Lint} relative to all the {@link openllet.pellint.model.Lint} found within a
+ * particular {@link openllet.pellint.lintpattern.LintPattern}. It currently wraps Double, and a higher value represents higher severity.
  * </p>
  * <p>
  * Copyright: Copyright (c) 2008
@@ -27,11 +27,11 @@ import java.text.DecimalFormat;
  */
 public class Severity implements Comparable<Severity>
 {
-	private static final DecimalFormat FORMAT_EXP = new DecimalFormat("0.00E0");
-	private static final DecimalFormat FORMAT_NORMAL = new DecimalFormat("0");
-	private static final int STRING_LENGTH = 6;
+	private static final DecimalFormat	FORMAT_EXP		= new DecimalFormat("0.00E0");
+	private static final DecimalFormat	FORMAT_NORMAL	= new DecimalFormat("0");
+	private static final int			STRING_LENGTH	= 6;
 
-	private final Double _value;
+	private final Double				_value;
 
 	public Severity(final double v)
 	{
@@ -61,7 +61,7 @@ public class Severity implements Comparable<Severity>
 		final StringBuilder strBuilder = new StringBuilder();
 		strBuilder.append('[');
 
-		final String value = (_value >= Math.pow(10, STRING_LENGTH) - 0.5) ? FORMAT_EXP.format(_value) : FORMAT_NORMAL.format(_value);
+		final String value = _value >= Math.pow(10, STRING_LENGTH) - 0.5 ? FORMAT_EXP.format(_value) : FORMAT_NORMAL.format(_value);
 
 		for (int i = STRING_LENGTH - value.length(); i > 0; i--)
 			strBuilder.append(' ');

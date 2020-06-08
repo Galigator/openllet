@@ -8,9 +8,9 @@ package openllet.aterm;
 
 public class VisitFailure extends RuntimeException
 {
-	private static final long serialVersionUID = -1190261403667634678L;
+	private static final long	serialVersionUID	= -1190261403667634678L;
 
-	private String _message;
+	private String				_message;
 
 	public VisitFailure()
 	{
@@ -26,7 +26,7 @@ public class VisitFailure extends RuntimeException
 
 	public void setMessage(final String message)
 	{
-		this._message = message;
+		_message = message;
 	}
 
 	@Override

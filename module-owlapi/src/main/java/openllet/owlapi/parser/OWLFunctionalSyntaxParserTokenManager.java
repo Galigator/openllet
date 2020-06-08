@@ -11,12 +11,12 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 	public java.io.PrintStream debugStream = System.out;
 
 	/** Set debug output. */
-	public void setDebugStream(java.io.PrintStream ds)
+	public void setDebugStream(final java.io.PrintStream ds)
 	{
 		debugStream = ds;
 	}
 
-	private final int jjStopStringLiteralDfa_0(int pos, long active0, long active1)
+	private final int jjStopStringLiteralDfa_0(final int pos, final long active0, final long active1)
 	{
 		switch (pos)
 		{
@@ -44,8 +44,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 				}
 				return -1;
 			case 3:
-				if ((active1 & 0x6000000000L) != 0L)
-					return 27;
+				if ((active1 & 0x6000000000L) != 0L) return 27;
 				if ((active0 & 0xffffffffffe7c000L) != 0L || (active1 & 0x3fff9fffffffffL) != 0L)
 				{
 					jjmatchedKind = 122;
@@ -63,8 +62,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 					}
 					return 27;
 				}
-				if ((active0 & 0x200008000L) != 0L || (active1 & 0xa008000100000L) != 0L)
-					return 27;
+				if ((active0 & 0x200008000L) != 0L || (active1 & 0xa008000100000L) != 0L) return 27;
 				return -1;
 			case 5:
 				if ((active0 & 0xfffffffdbfe64000L) != 0L || (active1 & 0x35ff9ff9ffffffL) != 0L)
@@ -73,12 +71,10 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 					jjmatchedPos = 5;
 					return 27;
 				}
-				if ((active0 & 0x40010000L) != 0L || (active1 & 0x6000000L) != 0L)
-					return 27;
+				if ((active0 & 0x40010000L) != 0L || (active1 & 0x6000000L) != 0L) return 27;
 				return -1;
 			case 6:
-				if ((active0 & 0x20000L) != 0L || (active1 & 0x20000000L) != 0L)
-					return 27;
+				if ((active0 & 0x20000L) != 0L || (active1 & 0x20000000L) != 0L) return 27;
 				if ((active0 & 0xfffffffdbfe44000L) != 0L || (active1 & 0x35ff9fd9ffffffL) != 0L)
 				{
 					jjmatchedKind = 122;
@@ -96,12 +92,10 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 					}
 					return 27;
 				}
-				if ((active0 & 0x1802000004000L) != 0L || (active1 & 0x400000000000L) != 0L)
-					return 27;
+				if ((active0 & 0x1802000004000L) != 0L || (active1 & 0x400000000000L) != 0L) return 27;
 				return -1;
 			case 8:
-				if ((active0 & 0x4000000000L) != 0L || (active1 & 0x8018000000L) != 0L)
-					return 27;
+				if ((active0 & 0x4000000000L) != 0L || (active1 & 0x8018000000L) != 0L) return 27;
 				if ((active0 & 0xffffff9dbfe40000L) != 0L || (active1 & 0x35bf1fc1ffffffL) != 0L)
 				{
 					jjmatchedKind = 122;
@@ -110,8 +104,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 				}
 				return -1;
 			case 9:
-				if ((active0 & 0x37040000L) != 0L || (active1 & 0x1000000000L) != 0L)
-					return 27;
+				if ((active0 & 0x37040000L) != 0L || (active1 & 0x1000000000L) != 0L) return 27;
 				if ((active0 & 0xffffff9d88e00000L) != 0L || (active1 & 0x35bf0fc1ffffffL) != 0L)
 				{
 					if (jjmatchedPos != 9)
@@ -123,8 +116,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 				}
 				return -1;
 			case 10:
-				if ((active0 & 0x28080000000L) != 0L || (active1 & 0x20080400000000L) != 0L)
-					return 27;
+				if ((active0 & 0x28080000000L) != 0L || (active1 & 0x20080400000000L) != 0L) return 27;
 				if ((active0 & 0xfffffd1d3ee00000L) != 0L || (active1 & 0x15b70bc1ffffffL) != 0L)
 				{
 					jjmatchedKind = 122;
@@ -133,8 +125,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 				}
 				return -1;
 			case 11:
-				if ((active0 & 0x800000800000000L) != 0L || (active1 & 0x403c0818000L) != 0L)
-					return 27;
+				if ((active0 & 0x800000800000000L) != 0L || (active1 & 0x403c0818000L) != 0L) return 27;
 				if ((active0 & 0xf7fffd153ee00000L) != 0L || (active1 & 0x15b308017e7fffL) != 0L)
 				{
 					if (jjmatchedPos != 11)
@@ -152,12 +143,10 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 					jjmatchedPos = 12;
 					return 27;
 				}
-				if ((active0 & 0x20040100800000L) != 0L || (active1 & 0x14010000000000L) != 0L)
-					return 27;
+				if ((active0 & 0x20040100800000L) != 0L || (active1 & 0x14010000000000L) != 0L) return 27;
 				return -1;
 			case 13:
-				if ((active0 & 0x8000080400000000L) != 0L || (active1 & 0x120800340018L) != 0L)
-					return 27;
+				if ((active0 & 0x8000080400000000L) != 0L || (active1 & 0x120800340018L) != 0L) return 27;
 				if ((active0 & 0x77dff1103e600000L) != 0L || (active1 & 0x1a40001cbffe7L) != 0L)
 				{
 					if (jjmatchedPos != 13)
@@ -169,8 +158,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 				}
 				return -1;
 			case 14:
-				if ((active0 & 0x101000400000L) != 0L)
-					return 27;
+				if ((active0 & 0x101000400000L) != 0L) return 27;
 				if ((active0 & 0xf7dfe1003e200000L) != 0L || (active1 & 0x1b60001ebffffL) != 0L)
 				{
 					jjmatchedKind = 122;
@@ -188,12 +176,10 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 					}
 					return 27;
 				}
-				if ((active0 & 0x400000000000L) != 0L || (active1 & 0x1840000000000L) != 0L)
-					return 27;
+				if ((active0 & 0x400000000000L) != 0L || (active1 & 0x1840000000000L) != 0L) return 27;
 				return -1;
 			case 16:
-				if ((active0 & 0x200000000200000L) != 0L || (active1 & 0x11000L) != 0L)
-					return 27;
+				if ((active0 & 0x200000000200000L) != 0L || (active1 & 0x11000L) != 0L) return 27;
 				if ((active0 & 0xf5dfa1003e000000L) != 0L || (active1 & 0xb20001eaefffL) != 0L)
 				{
 					jjmatchedKind = 122;
@@ -202,8 +188,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 				}
 				return -1;
 			case 17:
-				if ((active0 & 0x3405010032000000L) != 0L || (active1 & 0x120000008000L) != 0L)
-					return 27;
+				if ((active0 & 0x3405010032000000L) != 0L || (active1 & 0x120000008000L) != 0L) return 27;
 				if ((active0 & 0xc1daa0000c000000L) != 0L || (active1 & 0xa00001ea6fffL) != 0L)
 				{
 					if (jjmatchedPos != 17)
@@ -221,12 +206,10 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 					jjmatchedPos = 18;
 					return 27;
 				}
-				if ((active0 & 0x8008800004000000L) != 0L || (active1 & 0x11L) != 0L)
-					return 27;
+				if ((active0 & 0x8008800004000000L) != 0L || (active1 & 0x11L) != 0L) return 27;
 				return -1;
 			case 19:
-				if ((active0 & 0x40d2000000000000L) != 0L || (active1 & 0xa00000080008L) != 0L)
-					return 27;
+				if ((active0 & 0x40d2000000000000L) != 0L || (active1 & 0xa00000080008L) != 0L) return 27;
 				if ((active0 & 0x100200038000000L) != 0L || (active1 & 0x1e26fe6L) != 0L)
 				{
 					if (jjmatchedPos != 19)
@@ -238,8 +221,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 				}
 				return -1;
 			case 20:
-				if ((active1 & 0x800000L) != 0L)
-					return 27;
+				if ((active1 & 0x800000L) != 0L) return 27;
 				if ((active0 & 0x100200038000000L) != 0L || (active1 & 0x200001626fe6L) != 0L)
 				{
 					jjmatchedKind = 122;
@@ -248,8 +230,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 				}
 				return -1;
 			case 21:
-				if ((active0 & 0x100000000000000L) != 0L || (active1 & 0x24000L) != 0L)
-					return 27;
+				if ((active0 & 0x100000000000000L) != 0L || (active1 & 0x24000L) != 0L) return 27;
 				if ((active0 & 0x200038000000L) != 0L || (active1 & 0x200001602fe6L) != 0L)
 				{
 					jjmatchedKind = 122;
@@ -264,12 +245,10 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 					jjmatchedPos = 22;
 					return 27;
 				}
-				if ((active0 & 0x200028000000L) != 0L || (active1 & 0x200280L) != 0L)
-					return 27;
+				if ((active0 & 0x200028000000L) != 0L || (active1 & 0x200280L) != 0L) return 27;
 				return -1;
 			case 23:
-				if ((active0 & 0x10000000L) != 0L || (active1 & 0x200000002c24L) != 0L)
-					return 27;
+				if ((active0 & 0x10000000L) != 0L || (active1 & 0x200000002c24L) != 0L) return 27;
 				if ((active1 & 0x1400142L) != 0L)
 				{
 					jjmatchedKind = 122;
@@ -278,8 +257,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 				}
 				return -1;
 			case 24:
-				if ((active1 & 0x100L) != 0L)
-					return 27;
+				if ((active1 & 0x100L) != 0L) return 27;
 				if ((active1 & 0x1400042L) != 0L)
 				{
 					jjmatchedKind = 122;
@@ -294,8 +272,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 					jjmatchedPos = 25;
 					return 27;
 				}
-				if ((active1 & 0x2L) != 0L)
-					return 27;
+				if ((active1 & 0x2L) != 0L) return 27;
 				return -1;
 			case 26:
 				if ((active1 & 0x1400040L) != 0L)
@@ -320,8 +297,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 					jjmatchedPos = 28;
 					return 27;
 				}
-				if ((active1 & 0x1000000L) != 0L)
-					return 27;
+				if ((active1 & 0x1000000L) != 0L) return 27;
 				return -1;
 			case 29:
 				if ((active1 & 0x400040L) != 0L)
@@ -336,12 +312,12 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		}
 	}
 
-	private final int jjStartNfa_0(int pos, long active0, long active1)
+	private final int jjStartNfa_0(final int pos, final long active0, final long active1)
 	{
 		return jjMoveNfa_0(jjStopStringLiteralDfa_0(pos, active0, active1), pos + 1);
 	}
 
-	private int jjStopAtPos(int pos, int kind)
+	private int jjStopAtPos(final int pos, final int kind)
 	{
 		jjmatchedKind = kind;
 		jjmatchedPos = pos;
@@ -415,7 +391,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		}
 	}
 
-	private int jjMoveStringLiteralDfa1_0(long active0, long active1)
+	private int jjMoveStringLiteralDfa1_0(final long active0, final long active1)
 	{
 		try
 		{
@@ -431,8 +407,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 			case 76:
 				return jjMoveStringLiteralDfa2_0(active0, 0L, active1, 0x1000000000L);
 			case 94:
-				if ((active0 & 0x100000L) != 0L)
-					return jjStopAtPos(1, 20);
+				if ((active0 & 0x100000L) != 0L) return jjStopAtPos(1, 20);
 				break;
 			case 97:
 				return jjMoveStringLiteralDfa2_0(active0, 0x7e01c1f840008000L, active1, 0x205502b0858000L);
@@ -468,10 +443,9 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		return jjStartNfa_0(0, active0, active1);
 	}
 
-	private int jjMoveStringLiteralDfa2_0(long old0, long active0, long old1, long active1)
+	private int jjMoveStringLiteralDfa2_0(final long old0, long active0, final long old1, long active1)
 	{
-		if (((active0 &= old0) | (active1 &= old1)) == 0L)
-			return jjStartNfa_0(0, old0, old1);
+		if (((active0 &= old0) | (active1 &= old1)) == 0L) return jjStartNfa_0(0, old0, old1);
 		try
 		{
 			curChar = input_stream.readChar();
@@ -529,10 +503,9 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		return jjStartNfa_0(1, active0, active1);
 	}
 
-	private int jjMoveStringLiteralDfa3_0(long old0, long active0, long old1, long active1)
+	private int jjMoveStringLiteralDfa3_0(final long old0, long active0, final long old1, long active1)
 	{
-		if (((active0 &= old0) | (active1 &= old1)) == 0L)
-			return jjStartNfa_0(1, old0, old1);
+		if (((active0 &= old0) | (active1 &= old1)) == 0L) return jjStartNfa_0(1, old0, old1);
 		try
 		{
 			curChar = input_stream.readChar();
@@ -565,8 +538,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 			case 99:
 				return jjMoveStringLiteralDfa4_0(active0, 0L, active1, 0x1800800020020L);
 			case 100:
-				if ((active1 & 0x4000000000L) != 0L)
-					return jjStartNfaWithStates_0(3, 102, 27);
+				if ((active1 & 0x4000000000L) != 0L) return jjStartNfaWithStates_0(3, 102, 27);
 				break;
 			case 101:
 				return jjMoveStringLiteralDfa4_0(active0, 0x81fe3e1400008000L, active1, 0x1e120000240158L);
@@ -593,8 +565,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 			case 117:
 				return jjMoveStringLiteralDfa4_0(active0, 0x100000000L, active1, 0L);
 			case 121:
-				if ((active1 & 0x2000000000L) != 0L)
-					return jjStartNfaWithStates_0(3, 101, 27);
+				if ((active1 & 0x2000000000L) != 0L) return jjStartNfaWithStates_0(3, 101, 27);
 				break;
 			default:
 				break;
@@ -602,10 +573,9 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		return jjStartNfa_0(2, active0, active1);
 	}
 
-	private int jjMoveStringLiteralDfa4_0(long old0, long active0, long old1, long active1)
+	private int jjMoveStringLiteralDfa4_0(final long old0, long active0, final long old1, long active1)
 	{
-		if (((active0 &= old0) | (active1 &= old1)) == 0L)
-			return jjStartNfa_0(2, old0, old1);
+		if (((active0 &= old0) | (active1 &= old1)) == 0L) return jjStartNfa_0(2, old0, old1);
 		try
 		{
 			curChar = input_stream.readChar();
@@ -654,8 +624,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 			case 105:
 				return jjMoveStringLiteralDfa5_0(active0, 0L, active1, 0x2000000L);
 			case 108:
-				if ((active0 & 0x8000L) != 0L)
-					return jjStartNfaWithStates_0(4, 15, 27);
+				if ((active0 & 0x8000L) != 0L) return jjStartNfaWithStates_0(4, 15, 27);
 				return jjMoveStringLiteralDfa5_0(active0, 0x44000L, active1, 0x400000000L);
 			case 109:
 				return jjMoveStringLiteralDfa5_0(active0, 0x100000000L, active1, 0x400L);
@@ -671,12 +640,9 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 					jjmatchedKind = 33;
 					jjmatchedPos = 4;
 				}
-				else
-					if ((active1 & 0x2000000000000L) != 0L)
-						return jjStartNfaWithStates_0(4, 113, 27);
-					else
-						if ((active1 & 0x8000000000000L) != 0L)
-							return jjStartNfaWithStates_0(4, 115, 27);
+				else if ((active1 & 0x2000000000000L) != 0L)
+					return jjStartNfaWithStates_0(4, 113, 27);
+				else if ((active1 & 0x8000000000000L) != 0L) return jjStartNfaWithStates_0(4, 115, 27);
 				return jjMoveStringLiteralDfa5_0(active0, 0L, active1, 0x8000100800L);
 			case 116:
 				return jjMoveStringLiteralDfa5_0(active0, 0x1802037000000L, active1, 0x80805420020L);
@@ -690,10 +656,9 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		return jjStartNfa_0(3, active0, active1);
 	}
 
-	private int jjMoveStringLiteralDfa5_0(long old0, long active0, long old1, long active1)
+	private int jjMoveStringLiteralDfa5_0(final long old0, long active0, final long old1, long active1)
 	{
-		if (((active0 &= old0) | (active1 &= old1)) == 0L)
-			return jjStartNfa_0(3, old0, old1);
+		if (((active0 &= old0) | (active1 &= old1)) == 0L) return jjStartNfa_0(3, old0, old1);
 		try
 		{
 			curChar = input_stream.readChar();
@@ -720,8 +685,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 			case 101:
 				return jjMoveStringLiteralDfa6_0(active0, 0x100000000L, active1, 0x1000000400L);
 			case 104:
-				if ((active1 & 0x4000000L) != 0L)
-					return jjStartNfaWithStates_0(5, 90, 27);
+				if ((active1 & 0x4000000L) != 0L) return jjStartNfaWithStates_0(5, 90, 27);
 				break;
 			case 105:
 				return jjMoveStringLiteralDfa6_0(active0, 0x1000000000c00000L, active1, 0x1800801424824L);
@@ -738,16 +702,13 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 			case 115:
 				return jjMoveStringLiteralDfa6_0(active0, 0x200000000000L, active1, 0x14000000000040L);
 			case 116:
-				if ((active0 & 0x10000L) != 0L)
-					return jjStartNfaWithStates_0(5, 16, 27);
+				if ((active0 & 0x10000L) != 0L) return jjStartNfaWithStates_0(5, 16, 27);
 				return jjMoveStringLiteralDfa6_0(active0, 0x81fe1e0400000000L, active1, 0x20000201218L);
 			case 120:
-				if ((active1 & 0x2000000L) != 0L)
-					return jjStartNfaWithStates_0(5, 89, 27);
+				if ((active1 & 0x2000000L) != 0L) return jjStartNfaWithStates_0(5, 89, 27);
 				return jjMoveStringLiteralDfa6_0(active0, 0x4000000000000000L, active1, 0x80L);
 			case 121:
-				if ((active0 & 0x40000000L) != 0L)
-					return jjStartNfaWithStates_0(5, 30, 27);
+				if ((active0 & 0x40000000L) != 0L) return jjStartNfaWithStates_0(5, 30, 27);
 				return jjMoveStringLiteralDfa6_0(active0, 0x1802000000000L, active1, 0L);
 			default:
 				break;
@@ -755,10 +716,9 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		return jjStartNfa_0(4, active0, active1);
 	}
 
-	private int jjMoveStringLiteralDfa6_0(long old0, long active0, long old1, long active1)
+	private int jjMoveStringLiteralDfa6_0(final long old0, long active0, final long old1, long active1)
 	{
-		if (((active0 &= old0) | (active1 &= old1)) == 0L)
-			return jjStartNfa_0(4, old0, old1);
+		if (((active0 &= old0) | (active1 &= old1)) == 0L) return jjStartNfa_0(4, old0, old1);
 		try
 		{
 			curChar = input_stream.readChar();
@@ -807,8 +767,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 			case 109:
 				return jjMoveStringLiteralDfa7_0(active0, 0x400400000000000L, active1, 0L);
 			case 110:
-				if ((active1 & 0x20000000L) != 0L)
-					return jjStartNfaWithStates_0(6, 93, 27);
+				if ((active1 & 0x20000000L) != 0L) return jjStartNfaWithStates_0(6, 93, 27);
 				return jjMoveStringLiteralDfa7_0(active0, 0x1000001100c00000L, active1, 0x90000004004L);
 			case 111:
 				return jjMoveStringLiteralDfa7_0(active0, 0x808000000L, active1, 0x40800838020L);
@@ -819,8 +778,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 			case 115:
 				return jjMoveStringLiteralDfa7_0(active0, 0x800000000040000L, active1, 0x14000000100000L);
 			case 116:
-				if ((active0 & 0x20000L) != 0L)
-					return jjStartNfaWithStates_0(6, 17, 27);
+				if ((active0 & 0x20000L) != 0L) return jjStartNfaWithStates_0(6, 17, 27);
 				return jjMoveStringLiteralDfa7_0(active0, 0x10037000000L, active1, 0x8000000c00L);
 			case 118:
 				return jjMoveStringLiteralDfa7_0(active0, 0L, active1, 0x1400000L);
@@ -832,10 +790,9 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		return jjStartNfa_0(5, active0, active1);
 	}
 
-	private int jjMoveStringLiteralDfa7_0(long old0, long active0, long old1, long active1)
+	private int jjMoveStringLiteralDfa7_0(final long old0, long active0, final long old1, long active1)
 	{
-		if (((active0 &= old0) | (active1 &= old1)) == 0L)
-			return jjStartNfa_0(5, old0, old1);
+		if (((active0 &= old0) | (active1 &= old1)) == 0L) return jjStartNfa_0(5, old0, old1);
 		try
 		{
 			curChar = input_stream.readChar();
@@ -871,9 +828,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 					jjmatchedKind = 37;
 					jjmatchedPos = 7;
 				}
-				else
-					if ((active1 & 0x400000000000L) != 0L)
-						return jjStartNfaWithStates_0(7, 110, 27);
+				else if ((active1 & 0x400000000000L) != 0L) return jjStartNfaWithStates_0(7, 110, 27);
 				return jjMoveStringLiteralDfa8_0(active0, 0x401810000200000L, active1, 0x14000001402002L);
 			case 103:
 				return jjMoveStringLiteralDfa8_0(active0, 0L, active1, 0x10400000000L);
@@ -900,8 +855,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 			case 120:
 				return jjMoveStringLiteralDfa8_0(active0, 0x100000000000000L, active1, 0x100L);
 			case 121:
-				if ((active0 & 0x4000L) != 0L)
-					return jjStartNfaWithStates_0(7, 14, 27);
+				if ((active0 & 0x4000L) != 0L) return jjStartNfaWithStates_0(7, 14, 27);
 				break;
 			default:
 				break;
@@ -909,10 +863,9 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		return jjStartNfa_0(6, active0, active1);
 	}
 
-	private int jjMoveStringLiteralDfa8_0(long old0, long active0, long old1, long active1)
+	private int jjMoveStringLiteralDfa8_0(final long old0, long active0, final long old1, long active1)
 	{
-		if (((active0 &= old0) | (active1 &= old1)) == 0L)
-			return jjStartNfa_0(6, old0, old1);
+		if (((active0 &= old0) | (active1 &= old1)) == 0L) return jjStartNfa_0(6, old0, old1);
 		try
 		{
 			curChar = input_stream.readChar();
@@ -945,23 +898,19 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 			case 101:
 				return jjMoveStringLiteralDfa9_0(active0, 0x20800000000L, active1, 0x50000918080L);
 			case 102:
-				if ((active0 & 0x4000000000L) != 0L)
-					return jjStartNfaWithStates_0(8, 38, 27);
+				if ((active0 & 0x4000000000L) != 0L) return jjStartNfaWithStates_0(8, 38, 27);
 				break;
 			case 104:
 				if ((active1 & 0x8000000L) != 0L)
 					return jjStartNfaWithStates_0(8, 91, 27);
-				else
-					if ((active1 & 0x10000000L) != 0L)
-						return jjStartNfaWithStates_0(8, 92, 27);
+				else if ((active1 & 0x10000000L) != 0L) return jjStartNfaWithStates_0(8, 92, 27);
 				break;
 			case 105:
 				return jjMoveStringLiteralDfa9_0(active0, 0x41080000000L, active1, 0x1800400000500L);
 			case 108:
 				return jjMoveStringLiteralDfa9_0(active0, 0x8400000000000L, active1, 0x1000000000L);
 			case 109:
-				if ((active1 & 0x8000000000L) != 0L)
-					return jjStartNfaWithStates_0(8, 103, 27);
+				if ((active1 & 0x8000000000L) != 0L) return jjStartNfaWithStates_0(8, 103, 27);
 				return jjMoveStringLiteralDfa9_0(active0, 0x14000000000000L, active1, 0L);
 			case 110:
 				return jjMoveStringLiteralDfa9_0(active0, 0x40008000200000L, active1, 0x2002L);
@@ -985,10 +934,9 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		return jjStartNfa_0(7, active0, active1);
 	}
 
-	private int jjMoveStringLiteralDfa9_0(long old0, long active0, long old1, long active1)
+	private int jjMoveStringLiteralDfa9_0(final long old0, long active0, final long old1, long active1)
 	{
-		if (((active0 &= old0) | (active1 &= old1)) == 0L)
-			return jjStartNfa_0(7, old0, old1);
+		if (((active0 &= old0) | (active1 &= old1)) == 0L) return jjStartNfa_0(7, old0, old1);
 		try
 		{
 			curChar = input_stream.readChar();
@@ -1021,12 +969,10 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 			case 99:
 				return jjMoveStringLiteralDfa10_0(active0, 0x100000000000000L, active1, 0x400L);
 			case 101:
-				if ((active1 & 0x1000000000L) != 0L)
-					return jjStartNfaWithStates_0(9, 100, 27);
+				if ((active1 & 0x1000000000L) != 0L) return jjStartNfaWithStates_0(9, 100, 27);
 				return jjMoveStringLiteralDfa10_0(active0, 0x13d00000000000L, active1, 0x20000000000800L);
 			case 102:
-				if ((active0 & 0x40000L) != 0L)
-					return jjStartNfaWithStates_0(9, 18, 27);
+				if ((active0 & 0x40000L) != 0L) return jjStartNfaWithStates_0(9, 18, 27);
 				break;
 			case 105:
 				return jjMoveStringLiteralDfa10_0(active0, 0L, active1, 0x100bc0040000L);
@@ -1059,10 +1005,9 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		return jjStartNfa_0(8, active0, active1);
 	}
 
-	private int jjMoveStringLiteralDfa10_0(long old0, long active0, long old1, long active1)
+	private int jjMoveStringLiteralDfa10_0(final long old0, long active0, final long old1, long active1)
 	{
-		if (((active0 &= old0) | (active1 &= old1)) == 0L)
-			return jjStartNfa_0(8, old0, old1);
+		if (((active0 &= old0) | (active1 &= old1)) == 0L) return jjStartNfa_0(8, old0, old1);
 		try
 		{
 			curChar = input_stream.readChar();
@@ -1099,9 +1044,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 			case 102:
 				if ((active0 & 0x8000000000L) != 0L)
 					return jjStartNfaWithStates_0(10, 39, 27);
-				else
-					if ((active0 & 0x20000000000L) != 0L)
-						return jjStartNfaWithStates_0(10, 41, 27);
+				else if ((active0 & 0x20000000000L) != 0L) return jjStartNfaWithStates_0(10, 41, 27);
 				return jjMoveStringLiteralDfa11_0(active0, 0x1000000000000L, active1, 0L);
 			case 103:
 				return jjMoveStringLiteralDfa11_0(active0, 0L, active1, 0x800000000L);
@@ -1112,12 +1055,10 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 			case 108:
 				return jjMoveStringLiteralDfa11_0(active0, 0x404000000000000L, active1, 0L);
 			case 109:
-				if ((active1 & 0x80000000000L) != 0L)
-					return jjStartNfaWithStates_0(10, 107, 27);
+				if ((active1 & 0x80000000000L) != 0L) return jjStartNfaWithStates_0(10, 107, 27);
 				return jjMoveStringLiteralDfa11_0(active0, 0x400000000000L, active1, 0L);
 			case 110:
-				if ((active0 & 0x80000000L) != 0L)
-					return jjStartNfaWithStates_0(10, 31, 27);
+				if ((active0 & 0x80000000L) != 0L) return jjStartNfaWithStates_0(10, 31, 27);
 				return jjMoveStringLiteralDfa11_0(active0, 0x40000000000L, active1, 0x1a00000080000L);
 			case 112:
 				return jjMoveStringLiteralDfa11_0(active0, 0L, active1, 0x1000L);
@@ -1126,9 +1067,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 			case 115:
 				if ((active1 & 0x400000000L) != 0L)
 					return jjStartNfaWithStates_0(10, 98, 27);
-				else
-					if ((active1 & 0x20000000000000L) != 0L)
-						return jjStartNfaWithStates_0(10, 117, 27);
+				else if ((active1 & 0x20000000000000L) != 0L) return jjStartNfaWithStates_0(10, 117, 27);
 				return jjMoveStringLiteralDfa11_0(active0, 0x800000000000L, active1, 0L);
 			case 116:
 				return jjMoveStringLiteralDfa11_0(active0, 0x100000800000000L, active1, 0x5000191c000L);
@@ -1142,10 +1081,9 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		return jjStartNfa_0(9, active0, active1);
 	}
 
-	private int jjMoveStringLiteralDfa11_0(long old0, long active0, long old1, long active1)
+	private int jjMoveStringLiteralDfa11_0(final long old0, long active0, final long old1, long active1)
 	{
-		if (((active0 &= old0) | (active1 &= old1)) == 0L)
-			return jjStartNfa_0(9, old0, old1);
+		if (((active0 &= old0) | (active1 &= old1)) == 0L) return jjStartNfa_0(9, old0, old1);
 		try
 		{
 			curChar = input_stream.readChar();
@@ -1174,18 +1112,13 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 			case 101:
 				if ((active0 & 0x800000000000000L) != 0L)
 					return jjStartNfaWithStates_0(11, 59, 27);
-				else
-					if ((active1 & 0x40000000L) != 0L)
-						return jjStartNfaWithStates_0(11, 94, 27);
-					else
-						if ((active1 & 0x80000000L) != 0L)
-							return jjStartNfaWithStates_0(11, 95, 27);
-						else
-							if ((active1 & 0x100000000L) != 0L)
-								return jjStartNfaWithStates_0(11, 96, 27);
-							else
-								if ((active1 & 0x200000000L) != 0L)
-									return jjStartNfaWithStates_0(11, 97, 27);
+				else if ((active1 & 0x40000000L) != 0L)
+					return jjStartNfaWithStates_0(11, 94, 27);
+				else if ((active1 & 0x80000000L) != 0L)
+					return jjStartNfaWithStates_0(11, 95, 27);
+				else if ((active1 & 0x100000000L) != 0L)
+					return jjStartNfaWithStates_0(11, 96, 27);
+				else if ((active1 & 0x200000000L) != 0L) return jjStartNfaWithStates_0(11, 97, 27);
 				return jjMoveStringLiteralDfa12_0(active0, 0x204400000000000L, active1, 0x401004L);
 			case 105:
 				return jjMoveStringLiteralDfa12_0(active0, 0x3001000000000000L, active1, 0x800100000L);
@@ -1216,10 +1149,9 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		return jjStartNfa_0(10, active0, active1);
 	}
 
-	private int jjMoveStringLiteralDfa12_0(long old0, long active0, long old1, long active1)
+	private int jjMoveStringLiteralDfa12_0(final long old0, long active0, final long old1, long active1)
 	{
-		if (((active0 &= old0) | (active1 &= old1)) == 0L)
-			return jjStartNfa_0(10, old0, old1);
+		if (((active0 &= old0) | (active1 &= old1)) == 0L) return jjStartNfa_0(10, old0, old1);
 		try
 		{
 			curChar = input_stream.readChar();
@@ -1252,9 +1184,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 			case 102:
 				if ((active0 & 0x40000000000L) != 0L)
 					return jjStartNfaWithStates_0(12, 42, 27);
-				else
-					if ((active0 & 0x20000000000000L) != 0L)
-						return jjStartNfaWithStates_0(12, 53, 27);
+				else if ((active0 & 0x20000000000000L) != 0L) return jjStartNfaWithStates_0(12, 53, 27);
 				break;
 			case 105:
 				return jjMoveStringLiteralDfa13_0(active0, 0L, active1, 0x200000080040L);
@@ -1263,21 +1193,16 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 			case 108:
 				return jjMoveStringLiteralDfa13_0(active0, 0x10000000000000L, active1, 0L);
 			case 109:
-				if ((active1 & 0x10000000000L) != 0L)
-					return jjStartNfaWithStates_0(12, 104, 27);
+				if ((active1 & 0x10000000000L) != 0L) return jjStartNfaWithStates_0(12, 104, 27);
 				return jjMoveStringLiteralDfa13_0(active0, 0x4000000000000L, active1, 0L);
 			case 110:
 				if ((active0 & 0x800000L) != 0L)
 					return jjStartNfaWithStates_0(12, 23, 27);
-				else
-					if ((active0 & 0x100000000L) != 0L)
-						return jjStartNfaWithStates_0(12, 32, 27);
-					else
-						if ((active1 & 0x4000000000000L) != 0L)
-							return jjStartNfaWithStates_0(12, 114, 27);
-						else
-							if ((active1 & 0x10000000000000L) != 0L)
-								return jjStartNfaWithStates_0(12, 116, 27);
+				else if ((active0 & 0x100000000L) != 0L)
+					return jjStartNfaWithStates_0(12, 32, 27);
+				else if ((active1 & 0x4000000000000L) != 0L)
+					return jjStartNfaWithStates_0(12, 114, 27);
+				else if ((active1 & 0x10000000000000L) != 0L) return jjStartNfaWithStates_0(12, 116, 27);
 				return jjMoveStringLiteralDfa13_0(active0, 0x3001400008000000L, active1, 0L);
 			case 111:
 				return jjMoveStringLiteralDfa13_0(active0, 0x32000000L, active1, 0x100000L);
@@ -1297,10 +1222,9 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		return jjStartNfa_0(11, active0, active1);
 	}
 
-	private int jjMoveStringLiteralDfa13_0(long old0, long active0, long old1, long active1)
+	private int jjMoveStringLiteralDfa13_0(final long old0, long active0, final long old1, long active1)
 	{
-		if (((active0 &= old0) | (active1 &= old1)) == 0L)
-			return jjStartNfa_0(11, old0, old1);
+		if (((active0 &= old0) | (active1 &= old1)) == 0L) return jjStartNfa_0(11, old0, old1);
 		try
 		{
 			curChar = input_stream.readChar();
@@ -1323,8 +1247,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 			case 99:
 				return jjMoveStringLiteralDfa14_0(active0, 0x2000000000000L, active1, 0x280L);
 			case 101:
-				if ((active0 & 0x80000000000L) != 0L)
-					return jjStartNfaWithStates_0(13, 43, 27);
+				if ((active0 & 0x80000000000L) != 0L) return jjStartNfaWithStates_0(13, 43, 27);
 				return jjMoveStringLiteralDfa14_0(active0, 0xc000004400000L, active1, 0xc23L);
 			case 105:
 				return jjMoveStringLiteralDfa14_0(active0, 0x40c1810000000000L, active1, 0L);
@@ -1338,8 +1261,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 				}
 				return jjMoveStringLiteralDfa14_0(active0, 0L, active1, 0x100000000000L);
 			case 110:
-				if ((active1 & 0x100000L) != 0L)
-					return jjStartNfaWithStates_0(13, 84, 27);
+				if ((active1 & 0x100000L) != 0L) return jjStartNfaWithStates_0(13, 84, 27);
 				break;
 			case 111:
 				return jjMoveStringLiteralDfa14_0(active0, 0L, active1, 0x8040L);
@@ -1348,8 +1270,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 			case 114:
 				return jjMoveStringLiteralDfa14_0(active0, 0x100000000000000L, active1, 0x1004000L);
 			case 115:
-				if ((active1 & 0x800000000L) != 0L)
-					return jjStartNfaWithStates_0(13, 99, 27);
+				if ((active1 & 0x800000000L) != 0L) return jjStartNfaWithStates_0(13, 99, 27);
 				return jjMoveStringLiteralDfa14_0(active0, 0x400000000200000L, active1, 0x800000L);
 			case 116:
 				return jjMoveStringLiteralDfa14_0(active0, 0x400000000000L, active1, 0x40000401004L);
@@ -1370,10 +1291,9 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		return jjStartNfa_0(12, active0, active1);
 	}
 
-	private int jjMoveStringLiteralDfa14_0(long old0, long active0, long old1, long active1)
+	private int jjMoveStringLiteralDfa14_0(final long old0, long active0, final long old1, long active1)
 	{
-		if (((active0 &= old0) | (active1 &= old1)) == 0L)
-			return jjStartNfa_0(12, old0, old1);
+		if (((active0 &= old0) | (active1 &= old1)) == 0L) return jjStartNfa_0(12, old0, old1);
 		try
 		{
 			curChar = input_stream.readChar();
@@ -1406,14 +1326,12 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 			case 101:
 				return jjMoveStringLiteralDfa15_0(active0, 0x10000032000000L, active1, 0x100L);
 			case 102:
-				if ((active0 & 0x100000000000L) != 0L)
-					return jjStartNfaWithStates_0(14, 44, 27);
+				if ((active0 & 0x100000000000L) != 0L) return jjStartNfaWithStates_0(14, 44, 27);
 				break;
 			case 105:
 				return jjMoveStringLiteralDfa15_0(active0, 0L, active1, 0x200000080000L);
 			case 108:
-				if ((active0 & 0x1000000000L) != 0L)
-					return jjStartNfaWithStates_0(14, 36, 27);
+				if ((active0 & 0x1000000000L) != 0L) return jjStartNfaWithStates_0(14, 36, 27);
 				return jjMoveStringLiteralDfa15_0(active0, 0x3000000000000000L, active1, 0L);
 			case 109:
 				return jjMoveStringLiteralDfa15_0(active0, 0L, active1, 0x8000L);
@@ -1426,8 +1344,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 			case 114:
 				return jjMoveStringLiteralDfa15_0(active0, 0x20020000c000000L, active1, 0x1L);
 			case 115:
-				if ((active0 & 0x400000L) != 0L)
-					return jjStartNfaWithStates_0(14, 22, 27);
+				if ((active0 & 0x400000L) != 0L) return jjStartNfaWithStates_0(14, 22, 27);
 				return jjMoveStringLiteralDfa15_0(active0, 0x8000000200000L, active1, 0x800000L);
 			case 116:
 				return jjMoveStringLiteralDfa15_0(active0, 0x3000000000000L, active1, 0x280L);
@@ -1439,10 +1356,9 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		return jjStartNfa_0(13, active0, active1);
 	}
 
-	private int jjMoveStringLiteralDfa15_0(long old0, long active0, long old1, long active1)
+	private int jjMoveStringLiteralDfa15_0(final long old0, long active0, final long old1, long active1)
 	{
-		if (((active0 &= old0) | (active1 &= old1)) == 0L)
-			return jjStartNfa_0(13, old0, old1);
+		if (((active0 &= old0) | (active1 &= old1)) == 0L) return jjStartNfa_0(13, old0, old1);
 		try
 		{
 			curChar = input_stream.readChar();
@@ -1469,8 +1385,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 			case 101:
 				return jjMoveStringLiteralDfa16_0(active0, 0x200000L, active1, 0x800000L);
 			case 102:
-				if ((active0 & 0x400000000000L) != 0L)
-					return jjStartNfaWithStates_0(15, 46, 27);
+				if ((active0 & 0x400000000000L) != 0L) return jjStartNfaWithStates_0(15, 46, 27);
 				break;
 			case 103:
 				return jjMoveStringLiteralDfa16_0(active0, 0L, active1, 0x10000L);
@@ -1484,8 +1399,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 			case 105:
 				return jjMoveStringLiteralDfa16_0(active0, 0x3103000000000000L, active1, 0L);
 			case 109:
-				if ((active1 & 0x40000000000L) != 0L)
-					return jjStartNfaWithStates_0(15, 106, 27);
+				if ((active1 & 0x40000000000L) != 0L) return jjStartNfaWithStates_0(15, 106, 27);
 				break;
 			case 110:
 				return jjMoveStringLiteralDfa16_0(active0, 0x10000000000L, active1, 0L);
@@ -1505,10 +1419,9 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		return jjStartNfa_0(14, active0, active1);
 	}
 
-	private int jjMoveStringLiteralDfa16_0(long old0, long active0, long old1, long active1)
+	private int jjMoveStringLiteralDfa16_0(final long old0, long active0, final long old1, long active1)
 	{
-		if (((active0 &= old0) | (active1 &= old1)) == 0L)
-			return jjStartNfa_0(14, old0, old1);
+		if (((active0 &= old0) | (active1 &= old1)) == 0L) return jjStartNfa_0(14, old0, old1);
 		try
 		{
 			curChar = input_stream.readChar();
@@ -1531,20 +1444,17 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 			case 97:
 				return jjMoveStringLiteralDfa17_0(active0, 0x8000000000000000L, active1, 0L);
 			case 101:
-				if ((active1 & 0x10000L) != 0L)
-					return jjStartNfaWithStates_0(16, 80, 27);
+				if ((active1 & 0x10000L) != 0L) return jjStartNfaWithStates_0(16, 80, 27);
 				return jjMoveStringLiteralDfa17_0(active0, 0L, active1, 0x1004000L);
 			case 102:
-				if ((active1 & 0x1000L) != 0L)
-					return jjStartNfaWithStates_0(16, 76, 27);
+				if ((active1 & 0x1000L) != 0L) return jjStartNfaWithStates_0(16, 76, 27);
 				break;
 			case 105:
 				return jjMoveStringLiteralDfa17_0(active0, 0x800004000000L, active1, 0x8000L);
 			case 108:
 				return jjMoveStringLiteralDfa17_0(active0, 0x40c0000000000000L, active1, 0x40L);
 			case 109:
-				if ((active0 & 0x200000000000000L) != 0L)
-					return jjStartNfaWithStates_0(16, 57, 27);
+				if ((active0 & 0x200000000000000L) != 0L) return jjStartNfaWithStates_0(16, 57, 27);
 				return jjMoveStringLiteralDfa17_0(active0, 0L, active1, 0x8L);
 			case 110:
 				return jjMoveStringLiteralDfa17_0(active0, 0x100000000000000L, active1, 0x10L);
@@ -1555,8 +1465,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 			case 114:
 				return jjMoveStringLiteralDfa17_0(active0, 0x8000000000000L, active1, 0x800280L);
 			case 115:
-				if ((active0 & 0x200000L) != 0L)
-					return jjStartNfaWithStates_0(16, 21, 27);
+				if ((active0 & 0x200000L) != 0L) return jjStartNfaWithStates_0(16, 21, 27);
 				return jjMoveStringLiteralDfa17_0(active0, 0L, active1, 0x200000L);
 			case 116:
 				return jjMoveStringLiteralDfa17_0(active0, 0x3000000032000000L, active1, 0x100L);
@@ -1570,10 +1479,9 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		return jjStartNfa_0(15, active0, active1);
 	}
 
-	private int jjMoveStringLiteralDfa17_0(long old0, long active0, long old1, long active1)
+	private int jjMoveStringLiteralDfa17_0(final long old0, long active0, final long old1, long active1)
 	{
-		if (((active0 &= old0) | (active1 &= old1)) == 0L)
-			return jjStartNfa_0(15, old0, old1);
+		if (((active0 &= old0) | (active1 &= old1)) == 0L) return jjStartNfa_0(15, old0, old1);
 		try
 		{
 			curChar = input_stream.readChar();
@@ -1596,9 +1504,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 			case 102:
 				if ((active0 & 0x10000000000L) != 0L)
 					return jjStartNfaWithStates_0(17, 40, 27);
-				else
-					if ((active0 & 0x4000000000000L) != 0L)
-						return jjStartNfaWithStates_0(17, 50, 27);
+				else if ((active0 & 0x4000000000000L) != 0L) return jjStartNfaWithStates_0(17, 50, 27);
 				break;
 			case 103:
 				return jjMoveStringLiteralDfa18_0(active0, 0L, active1, 0x10L);
@@ -1607,19 +1513,14 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 			case 109:
 				if ((active0 & 0x400000000000000L) != 0L)
 					return jjStartNfaWithStates_0(17, 58, 27);
-				else
-					if ((active1 & 0x20000000000L) != 0L)
-						return jjStartNfaWithStates_0(17, 105, 27);
-					else
-						if ((active1 & 0x100000000000L) != 0L)
-							return jjStartNfaWithStates_0(17, 108, 27);
+				else if ((active1 & 0x20000000000L) != 0L)
+					return jjStartNfaWithStates_0(17, 105, 27);
+				else if ((active1 & 0x100000000000L) != 0L) return jjStartNfaWithStates_0(17, 108, 27);
 				break;
 			case 110:
 				if ((active0 & 0x1000000000000L) != 0L)
 					return jjStartNfaWithStates_0(17, 48, 27);
-				else
-					if ((active1 & 0x8000L) != 0L)
-						return jjStartNfaWithStates_0(17, 79, 27);
+				else if ((active1 & 0x8000L) != 0L) return jjStartNfaWithStates_0(17, 79, 27);
 				return jjMoveStringLiteralDfa18_0(active0, 0x2000000000000L, active1, 0L);
 			case 111:
 				return jjMoveStringLiteralDfa18_0(active0, 0x8800004000000L, active1, 0x280L);
@@ -1637,12 +1538,9 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 					jjmatchedKind = 25;
 					jjmatchedPos = 17;
 				}
-				else
-					if ((active0 & 0x1000000000000000L) != 0L)
-						return jjStartNfaWithStates_0(17, 60, 27);
-					else
-						if ((active0 & 0x2000000000000000L) != 0L)
-							return jjStartNfaWithStates_0(17, 61, 27);
+				else if ((active0 & 0x1000000000000000L) != 0L)
+					return jjStartNfaWithStates_0(17, 60, 27);
+				else if ((active0 & 0x2000000000000000L) != 0L) return jjStartNfaWithStates_0(17, 61, 27);
 				return jjMoveStringLiteralDfa18_0(active0, 0x30000000L, active1, 0L);
 			default:
 				break;
@@ -1650,10 +1548,9 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		return jjStartNfa_0(16, active0, active1);
 	}
 
-	private int jjMoveStringLiteralDfa18_0(long old0, long active0, long old1, long active1)
+	private int jjMoveStringLiteralDfa18_0(final long old0, long active0, final long old1, long active1)
 	{
-		if (((active0 &= old0) | (active1 &= old1)) == 0L)
-			return jjStartNfa_0(16, old0, old1);
+		if (((active0 &= old0) | (active1 &= old1)) == 0L) return jjStartNfa_0(16, old0, old1);
 		try
 		{
 			curChar = input_stream.readChar();
@@ -1674,30 +1571,24 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 			case 98:
 				return jjMoveStringLiteralDfa19_0(active0, 0L, active1, 0x40L);
 			case 101:
-				if ((active1 & 0x10L) != 0L)
-					return jjStartNfaWithStates_0(18, 68, 27);
+				if ((active1 & 0x10L) != 0L) return jjStartNfaWithStates_0(18, 68, 27);
 				return jjMoveStringLiteralDfa19_0(active0, 0L, active1, 0x422004L);
 			case 102:
-				if ((active1 & 0x1L) != 0L)
-					return jjStartNfaWithStates_0(18, 64, 27);
+				if ((active1 & 0x1L) != 0L) return jjStartNfaWithStates_0(18, 64, 27);
 				break;
 			case 105:
 				return jjMoveStringLiteralDfa19_0(active0, 0L, active1, 0x800008L);
 			case 108:
 				return jjMoveStringLiteralDfa19_0(active0, 0x100000000000000L, active1, 0xa00000080000L);
 			case 109:
-				if ((active0 & 0x8000000000000L) != 0L)
-					return jjStartNfaWithStates_0(18, 51, 27);
+				if ((active0 & 0x8000000000000L) != 0L) return jjStartNfaWithStates_0(18, 51, 27);
 				break;
 			case 110:
 				if ((active0 & 0x4000000L) != 0L)
 					return jjStartNfaWithStates_0(18, 26, 27);
-				else
-					if ((active0 & 0x800000000000L) != 0L)
-						return jjStartNfaWithStates_0(18, 47, 27);
-					else
-						if ((active0 & 0x8000000000000000L) != 0L)
-							return jjStartNfaWithStates_0(18, 63, 27);
+				else if ((active0 & 0x800000000000L) != 0L)
+					return jjStartNfaWithStates_0(18, 47, 27);
+				else if ((active0 & 0x8000000000000000L) != 0L) return jjStartNfaWithStates_0(18, 63, 27);
 				break;
 			case 111:
 				return jjMoveStringLiteralDfa19_0(active0, 0x10000000000000L, active1, 0xc22L);
@@ -1713,10 +1604,9 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		return jjStartNfa_0(17, active0, active1);
 	}
 
-	private int jjMoveStringLiteralDfa19_0(long old0, long active0, long old1, long active1)
+	private int jjMoveStringLiteralDfa19_0(final long old0, long active0, final long old1, long active1)
 	{
-		if (((active0 &= old0) | (active1 &= old1)) == 0L)
-			return jjStartNfa_0(17, old0, old1);
+		if (((active0 &= old0) | (active1 &= old1)) == 0L) return jjStartNfa_0(17, old0, old1);
 		try
 		{
 			curChar = input_stream.readChar();
@@ -1731,24 +1621,20 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 			case 97:
 				return jjMoveStringLiteralDfa20_0(active0, 0x20000000L, active1, 0L);
 			case 101:
-				if ((active1 & 0x800000000000L) != 0L)
-					return jjStartNfaWithStates_0(19, 111, 27);
+				if ((active1 & 0x800000000000L) != 0L) return jjStartNfaWithStates_0(19, 111, 27);
 				return jjMoveStringLiteralDfa20_0(active0, 0L, active1, 0x280L);
 			case 102:
-				if ((active0 & 0x2000000000000L) != 0L)
-					return jjStartNfaWithStates_0(19, 49, 27);
+				if ((active0 & 0x2000000000000L) != 0L) return jjStartNfaWithStates_0(19, 49, 27);
 				break;
 			case 105:
 				return jjMoveStringLiteralDfa20_0(active0, 0x100000000000000L, active1, 0x4000L);
 			case 106:
 				return jjMoveStringLiteralDfa20_0(active0, 0L, active1, 0x40L);
 			case 109:
-				if ((active0 & 0x10000000000000L) != 0L)
-					return jjStartNfaWithStates_0(19, 52, 27);
+				if ((active0 & 0x10000000000000L) != 0L) return jjStartNfaWithStates_0(19, 52, 27);
 				break;
 			case 110:
-				if ((active1 & 0x8L) != 0L)
-					return jjStartNfaWithStates_0(19, 67, 27);
+				if ((active1 & 0x8L) != 0L) return jjStartNfaWithStates_0(19, 67, 27);
 				break;
 			case 111:
 				return jjMoveStringLiteralDfa20_0(active0, 0x10000000L, active1, 0x800100L);
@@ -1768,12 +1654,9 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 			case 121:
 				if ((active0 & 0x40000000000000L) != 0L)
 					return jjStartNfaWithStates_0(19, 54, 27);
-				else
-					if ((active0 & 0x80000000000000L) != 0L)
-						return jjStartNfaWithStates_0(19, 55, 27);
-					else
-						if ((active0 & 0x4000000000000000L) != 0L)
-							return jjStartNfaWithStates_0(19, 62, 27);
+				else if ((active0 & 0x80000000000000L) != 0L)
+					return jjStartNfaWithStates_0(19, 55, 27);
+				else if ((active0 & 0x4000000000000000L) != 0L) return jjStartNfaWithStates_0(19, 62, 27);
 				return jjMoveStringLiteralDfa20_0(active0, 0L, active1, 0x1000000L);
 			default:
 				break;
@@ -1781,10 +1664,9 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		return jjStartNfa_0(18, active0, active1);
 	}
 
-	private int jjMoveStringLiteralDfa20_0(long old0, long active0, long old1, long active1)
+	private int jjMoveStringLiteralDfa20_0(final long old0, long active0, final long old1, long active1)
 	{
-		if (((active0 &= old0) | (active1 &= old1)) == 0L)
-			return jjStartNfa_0(18, old0, old1);
+		if (((active0 &= old0) | (active1 &= old1)) == 0L) return jjStartNfa_0(18, old0, old1);
 		try
 		{
 			curChar = input_stream.readChar();
@@ -1805,8 +1687,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 			case 109:
 				return jjMoveStringLiteralDfa21_0(active0, 0x10000000L, active1, 0L);
 			case 110:
-				if ((active1 & 0x800000L) != 0L)
-					return jjStartNfaWithStates_0(20, 87, 27);
+				if ((active1 & 0x800000L) != 0L) return jjStartNfaWithStates_0(20, 87, 27);
 				return jjMoveStringLiteralDfa21_0(active0, 0x20000000L, active1, 0L);
 			case 112:
 				return jjMoveStringLiteralDfa21_0(active0, 0L, active1, 0x100L);
@@ -1822,10 +1703,9 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		return jjStartNfa_0(19, active0, active1);
 	}
 
-	private int jjMoveStringLiteralDfa21_0(long old0, long active0, long old1, long active1)
+	private int jjMoveStringLiteralDfa21_0(final long old0, long active0, final long old1, long active1)
 	{
-		if (((active0 &= old0) | (active1 &= old1)) == 0L)
-			return jjStartNfa_0(19, old0, old1);
+		if (((active0 &= old0) | (active1 &= old1)) == 0L) return jjStartNfa_0(19, old0, old1);
 		try
 		{
 			curChar = input_stream.readChar();
@@ -1854,17 +1734,14 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 			case 114:
 				return jjMoveStringLiteralDfa22_0(active0, 0L, active1, 0xc22L);
 			case 115:
-				if ((active1 & 0x4000L) != 0L)
-					return jjStartNfaWithStates_0(21, 78, 27);
+				if ((active1 & 0x4000L) != 0L) return jjStartNfaWithStates_0(21, 78, 27);
 				return jjMoveStringLiteralDfa22_0(active0, 0L, active1, 0x1000000L);
 			case 116:
 				return jjMoveStringLiteralDfa22_0(active0, 0L, active1, 0x200000000280L);
 			case 121:
 				if ((active0 & 0x100000000000000L) != 0L)
 					return jjStartNfaWithStates_0(21, 56, 27);
-				else
-					if ((active1 & 0x20000L) != 0L)
-						return jjStartNfaWithStates_0(21, 81, 27);
+				else if ((active1 & 0x20000L) != 0L) return jjStartNfaWithStates_0(21, 81, 27);
 				return jjMoveStringLiteralDfa22_0(active0, 0L, active1, 0x400000L);
 			default:
 				break;
@@ -1872,10 +1749,9 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		return jjStartNfa_0(20, active0, active1);
 	}
 
-	private int jjMoveStringLiteralDfa22_0(long old0, long active0, long old1, long active1)
+	private int jjMoveStringLiteralDfa22_0(final long old0, long active0, final long old1, long active1)
 	{
-		if (((active0 &= old0) | (active1 &= old1)) == 0L)
-			return jjStartNfa_0(20, old0, old1);
+		if (((active0 &= old0) | (active1 &= old1)) == 0L) return jjStartNfa_0(20, old0, old1);
 		try
 		{
 			curChar = input_stream.readChar();
@@ -1890,35 +1766,29 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 			case 65:
 				return jjMoveStringLiteralDfa23_0(active0, 0L, active1, 0x400000L);
 			case 101:
-				if ((active0 & 0x20000000L) != 0L)
-					return jjStartNfaWithStates_0(22, 29, 27);
+				if ((active0 & 0x20000000L) != 0L) return jjStartNfaWithStates_0(22, 29, 27);
 				return jjMoveStringLiteralDfa23_0(active0, 0L, active1, 0x2004L);
 			case 102:
-				if ((active0 & 0x8000000L) != 0L)
-					return jjStartNfaWithStates_0(22, 27, 27);
+				if ((active0 & 0x8000000L) != 0L) return jjStartNfaWithStates_0(22, 27, 27);
 				break;
 			case 105:
 				return jjMoveStringLiteralDfa23_0(active0, 0x10000000L, active1, 0L);
 			case 110:
-				if ((active1 & 0x200000L) != 0L)
-					return jjStartNfaWithStates_0(22, 85, 27);
+				if ((active1 & 0x200000L) != 0L) return jjStartNfaWithStates_0(22, 85, 27);
 				break;
 			case 111:
 				return jjMoveStringLiteralDfa23_0(active0, 0L, active1, 0x200000000000L);
 			case 114:
 				return jjMoveStringLiteralDfa23_0(active0, 0L, active1, 0x100L);
 			case 115:
-				if ((active0 & 0x200000000000L) != 0L)
-					return jjStartNfaWithStates_0(22, 45, 27);
+				if ((active0 & 0x200000000000L) != 0L) return jjStartNfaWithStates_0(22, 45, 27);
 				return jjMoveStringLiteralDfa23_0(active0, 0L, active1, 0x1000000L);
 			case 116:
 				return jjMoveStringLiteralDfa23_0(active0, 0L, active1, 0xc62L);
 			case 121:
 				if ((active1 & 0x80L) != 0L)
 					return jjStartNfaWithStates_0(22, 71, 27);
-				else
-					if ((active1 & 0x200L) != 0L)
-						return jjStartNfaWithStates_0(22, 73, 27);
+				else if ((active1 & 0x200L) != 0L) return jjStartNfaWithStates_0(22, 73, 27);
 				break;
 			default:
 				break;
@@ -1926,10 +1796,9 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		return jjStartNfa_0(21, active0, active1);
 	}
 
-	private int jjMoveStringLiteralDfa23_0(long old0, long active0, long old1, long active1)
+	private int jjMoveStringLiteralDfa23_0(final long old0, long active0, final long old1, long active1)
 	{
-		if (((active0 &= old0) | (active1 &= old1)) == 0L)
-			return jjStartNfa_0(21, old0, old1);
+		if (((active0 &= old0) | (active1 &= old1)) == 0L) return jjStartNfa_0(21, old0, old1);
 		try
 		{
 			curChar = input_stream.readChar();
@@ -1948,31 +1817,24 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 			case 105:
 				return jjMoveStringLiteralDfa24_0(active0, 0L, active1, 0x2L);
 			case 109:
-				if ((active1 & 0x200000000000L) != 0L)
-					return jjStartNfaWithStates_0(23, 109, 27);
+				if ((active1 & 0x200000000000L) != 0L) return jjStartNfaWithStates_0(23, 109, 27);
 				break;
 			case 110:
-				if ((active0 & 0x10000000L) != 0L)
-					return jjStartNfaWithStates_0(23, 28, 27);
+				if ((active0 & 0x10000000L) != 0L) return jjStartNfaWithStates_0(23, 28, 27);
 				break;
 			case 115:
 				if ((active1 & 0x4L) != 0L)
 					return jjStartNfaWithStates_0(23, 66, 27);
-				else
-					if ((active1 & 0x2000L) != 0L)
-						return jjStartNfaWithStates_0(23, 77, 27);
+				else if ((active1 & 0x2000L) != 0L) return jjStartNfaWithStates_0(23, 77, 27);
 				return jjMoveStringLiteralDfa24_0(active0, 0L, active1, 0x400000L);
 			case 116:
 				return jjMoveStringLiteralDfa24_0(active0, 0L, active1, 0x100L);
 			case 121:
 				if ((active1 & 0x20L) != 0L)
 					return jjStartNfaWithStates_0(23, 69, 27);
-				else
-					if ((active1 & 0x400L) != 0L)
-						return jjStartNfaWithStates_0(23, 74, 27);
-					else
-						if ((active1 & 0x800L) != 0L)
-							return jjStartNfaWithStates_0(23, 75, 27);
+				else if ((active1 & 0x400L) != 0L)
+					return jjStartNfaWithStates_0(23, 74, 27);
+				else if ((active1 & 0x800L) != 0L) return jjStartNfaWithStates_0(23, 75, 27);
 				break;
 			default:
 				break;
@@ -1980,10 +1842,9 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		return jjStartNfa_0(22, active0, active1);
 	}
 
-	private int jjMoveStringLiteralDfa24_0(long old0, long active0, long old1, long active1)
+	private int jjMoveStringLiteralDfa24_0(final long old0, long active0, final long old1, long active1)
 	{
-		if (((active0 &= old0) | (active1 &= old1)) == 0L)
-			return jjStartNfa_0(22, old0, old1);
+		if (((active0 &= old0) | (active1 &= old1)) == 0L) return jjStartNfa_0(22, old0, old1);
 		try
 		{
 			curChar = input_stream.readChar();
@@ -2002,8 +1863,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 			case 115:
 				return jjMoveStringLiteralDfa25_0(active1, 0x400000L);
 			case 121:
-				if ((active1 & 0x100L) != 0L)
-					return jjStartNfaWithStates_0(24, 72, 27);
+				if ((active1 & 0x100L) != 0L) return jjStartNfaWithStates_0(24, 72, 27);
 				break;
 			default:
 				break;
@@ -2011,10 +1871,9 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		return jjStartNfa_0(23, 0L, active1);
 	}
 
-	private int jjMoveStringLiteralDfa25_0(long old1, long active1)
+	private int jjMoveStringLiteralDfa25_0(final long old1, long active1)
 	{
-		if (((active1 &= old1)) == 0L)
-			return jjStartNfa_0(23, 0L, old1);
+		if ((active1 &= old1) == 0L) return jjStartNfa_0(23, 0L, old1);
 		try
 		{
 			curChar = input_stream.readChar();
@@ -2031,8 +1890,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 			case 111:
 				return jjMoveStringLiteralDfa26_0(active1, 0x40L);
 			case 115:
-				if ((active1 & 0x2L) != 0L)
-					return jjStartNfaWithStates_0(25, 65, 27);
+				if ((active1 & 0x2L) != 0L) return jjStartNfaWithStates_0(25, 65, 27);
 				break;
 			case 116:
 				return jjMoveStringLiteralDfa26_0(active1, 0x1000000L);
@@ -2042,10 +1900,9 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		return jjStartNfa_0(24, 0L, active1);
 	}
 
-	private int jjMoveStringLiteralDfa26_0(long old1, long active1)
+	private int jjMoveStringLiteralDfa26_0(final long old1, long active1)
 	{
-		if (((active1 &= old1)) == 0L)
-			return jjStartNfa_0(24, 0L, old1);
+		if ((active1 &= old1) == 0L) return jjStartNfa_0(24, 0L, old1);
 		try
 		{
 			curChar = input_stream.readChar();
@@ -2069,10 +1926,9 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		return jjStartNfa_0(25, 0L, active1);
 	}
 
-	private int jjMoveStringLiteralDfa27_0(long old1, long active1)
+	private int jjMoveStringLiteralDfa27_0(final long old1, long active1)
 	{
-		if (((active1 &= old1)) == 0L)
-			return jjStartNfa_0(25, 0L, old1);
+		if ((active1 &= old1) == 0L) return jjStartNfa_0(25, 0L, old1);
 		try
 		{
 			curChar = input_stream.readChar();
@@ -2096,10 +1952,9 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		return jjStartNfa_0(26, 0L, active1);
 	}
 
-	private int jjMoveStringLiteralDfa28_0(long old1, long active1)
+	private int jjMoveStringLiteralDfa28_0(final long old1, long active1)
 	{
-		if (((active1 &= old1)) == 0L)
-			return jjStartNfa_0(26, 0L, old1);
+		if ((active1 &= old1) == 0L) return jjStartNfa_0(26, 0L, old1);
 		try
 		{
 			curChar = input_stream.readChar();
@@ -2114,8 +1969,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 			case 105:
 				return jjMoveStringLiteralDfa29_0(active1, 0x400000L);
 			case 110:
-				if ((active1 & 0x1000000L) != 0L)
-					return jjStartNfaWithStates_0(28, 88, 27);
+				if ((active1 & 0x1000000L) != 0L) return jjStartNfaWithStates_0(28, 88, 27);
 				break;
 			case 114:
 				return jjMoveStringLiteralDfa29_0(active1, 0x40L);
@@ -2125,10 +1979,9 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		return jjStartNfa_0(27, 0L, active1);
 	}
 
-	private int jjMoveStringLiteralDfa29_0(long old1, long active1)
+	private int jjMoveStringLiteralDfa29_0(final long old1, long active1)
 	{
-		if (((active1 &= old1)) == 0L)
-			return jjStartNfa_0(27, 0L, old1);
+		if ((active1 &= old1) == 0L) return jjStartNfa_0(27, 0L, old1);
 		try
 		{
 			curChar = input_stream.readChar();
@@ -2150,10 +2003,9 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		return jjStartNfa_0(28, 0L, active1);
 	}
 
-	private int jjMoveStringLiteralDfa30_0(long old1, long active1)
+	private int jjMoveStringLiteralDfa30_0(final long old1, long active1)
 	{
-		if (((active1 &= old1)) == 0L)
-			return jjStartNfa_0(28, 0L, old1);
+		if ((active1 &= old1) == 0L) return jjStartNfa_0(28, 0L, old1);
 		try
 		{
 			curChar = input_stream.readChar();
@@ -2166,12 +2018,10 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		switch (curChar)
 		{
 			case 110:
-				if ((active1 & 0x400000L) != 0L)
-					return jjStartNfaWithStates_0(30, 86, 27);
+				if ((active1 & 0x400000L) != 0L) return jjStartNfaWithStates_0(30, 86, 27);
 				break;
 			case 121:
-				if ((active1 & 0x40L) != 0L)
-					return jjStartNfaWithStates_0(30, 70, 27);
+				if ((active1 & 0x40L) != 0L) return jjStartNfaWithStates_0(30, 70, 27);
 				break;
 			default:
 				break;
@@ -2179,7 +2029,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		return jjStartNfa_0(29, 0L, active1);
 	}
 
-	private int jjStartNfaWithStates_0(int pos, int kind, int state)
+	private int jjStartNfaWithStates_0(final int pos, final int kind, final int state)
 	{
 		jjmatchedKind = kind;
 		jjmatchedPos = pos;
@@ -2194,21 +2044,21 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		return jjMoveNfa_0(state, pos + 1);
 	}
 
-	static final long[] jjbitVec0 = { 0xfffffffffffffffeL, 0xffffffffffffffffL, 0xffffffffffffffffL, 0xffffffffffffffffL };
-	static final long[] jjbitVec2 = { 0x0L, 0x0L, 0xffffffffffffffffL, 0xffffffffffffffffL };
-	static final long[] jjbitVec3 = { 0xfffe7000fffffff6L, 0xffffffffffffffffL, 0xffffffffffffffffL, 0x5e00000000ffffffL };
-	static final long[] jjbitVec4 = { 0x0L, 0x0L, 0x0L, 0xff7fffffff7fffffL };
-	static final long[] jjbitVec5 = { 0x0L, 0xbfff000000000000L, 0xffffffffffffffffL, 0xffffffffffffffffL };
-	static final long[] jjbitVec6 = { 0x3000L, 0xffff000000000000L, 0xffffffffffffffffL, 0xffffffffffffffffL };
-	static final long[] jjbitVec7 = { 0xffffffffffffffffL, 0xffffffffffffffffL, 0xffffL, 0x0L };
-	static final long[] jjbitVec8 = { 0xffffffffffffffffL, 0xffffffffffffffffL, 0xffffffffffffffffL, 0xffffffffffffL };
-	static final long[] jjbitVec9 = { 0xffffffffffffffffL, 0xffffffffffffffffL, 0xffffffffffffffffL, 0xffff00000000ffffL };
-	static final long[] jjbitVec10 = { 0xffffffffffffffffL, 0xffffffffffffffffL, 0xffffffffffffffffL, 0x3fffffffffffffffL };
-	static final long[] jjbitVec11 = { 0x0L, 0x0L, 0x80000000000000L, 0xff7fffffff7fffffL };
-	static final long[] jjbitVec12 = { 0xffffffffffffffffL, 0xbfffffffffffffffL, 0xffffffffffffffffL, 0xffffffffffffffffL };
-	static final long[] jjbitVec13 = { 0x8000000000003000L, 0xffff000000000001L, 0xffffffffffffffffL, 0xffffffffffffffffL };
+	static final long[]	jjbitVec0	= { 0xfffffffffffffffeL, 0xffffffffffffffffL, 0xffffffffffffffffL, 0xffffffffffffffffL };
+	static final long[]	jjbitVec2	= { 0x0L, 0x0L, 0xffffffffffffffffL, 0xffffffffffffffffL };
+	static final long[]	jjbitVec3	= { 0xfffe7000fffffff6L, 0xffffffffffffffffL, 0xffffffffffffffffL, 0x5e00000000ffffffL };
+	static final long[]	jjbitVec4	= { 0x0L, 0x0L, 0x0L, 0xff7fffffff7fffffL };
+	static final long[]	jjbitVec5	= { 0x0L, 0xbfff000000000000L, 0xffffffffffffffffL, 0xffffffffffffffffL };
+	static final long[]	jjbitVec6	= { 0x3000L, 0xffff000000000000L, 0xffffffffffffffffL, 0xffffffffffffffffL };
+	static final long[]	jjbitVec7	= { 0xffffffffffffffffL, 0xffffffffffffffffL, 0xffffL, 0x0L };
+	static final long[]	jjbitVec8	= { 0xffffffffffffffffL, 0xffffffffffffffffL, 0xffffffffffffffffL, 0xffffffffffffL };
+	static final long[]	jjbitVec9	= { 0xffffffffffffffffL, 0xffffffffffffffffL, 0xffffffffffffffffL, 0xffff00000000ffffL };
+	static final long[]	jjbitVec10	= { 0xffffffffffffffffL, 0xffffffffffffffffL, 0xffffffffffffffffL, 0x3fffffffffffffffL };
+	static final long[]	jjbitVec11	= { 0x0L, 0x0L, 0x80000000000000L, 0xff7fffffff7fffffL };
+	static final long[]	jjbitVec12	= { 0xffffffffffffffffL, 0xbfffffffffffffffL, 0xffffffffffffffffL, 0xffffffffffffffffL };
+	static final long[]	jjbitVec13	= { 0x8000000000003000L, 0xffff000000000001L, 0xffffffffffffffffL, 0xffffffffffffffffL };
 
-	private int jjMoveNfa_0(int startState, int curPos)
+	private int jjMoveNfa_0(final int startState, int curPos)
 	{
 		int startsAt = 0;
 		jjnewStateCnt = 27;
@@ -2217,47 +2067,36 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		int kind = 0x7fffffff;
 		for (;;)
 		{
-			if (++jjround == 0x7fffffff)
-				ReInitRounds();
+			if (++jjround == 0x7fffffff) ReInitRounds();
 			if (curChar < 64)
 			{
 				final long l = 1L << curChar;
 				do
-				{
 					switch (jjstateSet[--i])
 					{
 						case 1:
 							if ((0x3ff200000000000L & l) != 0L)
 							{
-								if (kind > 126)
-									kind = 126;
+								if (kind > 126) kind = 126;
 							}
-							else
-								if (curChar == 58)
+							else if (curChar == 58)
+							{
+								if (kind > 121) kind = 121;
 								{
-									if (kind > 121)
-										kind = 121;
-									{
-										jjCheckNAdd(21);
-									}
+									jjCheckNAdd(21);
 								}
-								else
-									if (curChar == 60)
-									{
-										jjCheckNAddTwoStates(2, 3);
-									}
+							}
+							else if (curChar == 60) jjCheckNAddTwoStates(2, 3);
 							if ((0x3ff000000000000L & l) != 0L)
 							{
-								if (kind > 122)
-									kind = 122;
+								if (kind > 122) kind = 122;
 								{
 									jjCheckNAddTwoStates(5, 6);
 								}
 							}
 							if ((0x3ff000000000000L & l) != 0L)
 							{
-								if (kind > 119)
-									kind = 119;
+								if (kind > 119) kind = 119;
 								{
 									jjCheckNAdd(0);
 								}
@@ -2265,579 +2104,349 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 							break;
 						case 27:
 							if ((0x3ff600000000000L & l) != 0L)
-							{
 								jjCheckNAddTwoStates(24, 25);
-							}
-							else
-								if (curChar == 58)
-								{
-									jjCheckNAdd(21);
-								}
+							else if (curChar == 58) jjCheckNAdd(21);
 							if ((0x3ff600000000000L & l) != 0L)
-							{
 								jjCheckNAddTwoStates(18, 19);
-							}
-							else
-								if (curChar == 58)
-								{
-									if (kind > 121)
-										kind = 121;
-								}
-							if ((0x3ff600000000000L & l) != 0L)
-							{
-								jjCheckNAddTwoStates(5, 6);
-							}
-							if ((0x3ff600000000000L & l) != 0L)
-							{
-								jjCheckNAddTwoStates(15, 16);
-							}
-							if ((0x3ff200000000000L & l) != 0L)
-							{
-								if (kind > 124)
-									kind = 124;
-							}
-							if ((0x3ff200000000000L & l) != 0L)
-								jjstateSet[jjnewStateCnt++] = 20;
-							if ((0x3ff200000000000L & l) != 0L)
-							{
-								if (kind > 122)
-									kind = 122;
-							}
-							if ((0x3ff200000000000L & l) != 0L)
-								jjstateSet[jjnewStateCnt++] = 17;
+							else if (curChar == 58) if (kind > 121) kind = 121;
+							if ((0x3ff600000000000L & l) != 0L) jjCheckNAddTwoStates(5, 6);
+							if ((0x3ff600000000000L & l) != 0L) jjCheckNAddTwoStates(15, 16);
+							if ((0x3ff200000000000L & l) != 0L) if (kind > 124) kind = 124;
+							if ((0x3ff200000000000L & l) != 0L) jjstateSet[jjnewStateCnt++] = 20;
+							if ((0x3ff200000000000L & l) != 0L) if (kind > 122) kind = 122;
+							if ((0x3ff200000000000L & l) != 0L) jjstateSet[jjnewStateCnt++] = 17;
 							break;
 						case 0:
-							if ((0x3ff000000000000L & l) == 0L)
-								break;
-							if (kind > 119)
-								kind = 119;
-							{
-								jjCheckNAdd(0);
-							}
+							if ((0x3ff000000000000L & l) == 0L) break;
+							if (kind > 119) kind = 119;
+						{
+							jjCheckNAdd(0);
+						}
 							break;
 						case 2:
-							if ((0xbffffffeffffffffL & l) != 0L)
-							{
-								jjCheckNAddTwoStates(2, 3);
-							}
+							if ((0xbffffffeffffffffL & l) != 0L) jjCheckNAddTwoStates(2, 3);
 							break;
 						case 3:
-							if (curChar == 62)
-								kind = 120;
+							if (curChar == 62) kind = 120;
 							break;
 						case 4:
-							if ((0x3ff000000000000L & l) == 0L)
-								break;
-							if (kind > 122)
-								kind = 122;
-							{
-								jjCheckNAddTwoStates(5, 6);
-							}
+							if ((0x3ff000000000000L & l) == 0L) break;
+							if (kind > 122) kind = 122;
+						{
+							jjCheckNAddTwoStates(5, 6);
+						}
 							break;
 						case 5:
-							if ((0x3ff600000000000L & l) != 0L)
-							{
-								jjCheckNAddTwoStates(5, 6);
-							}
+							if ((0x3ff600000000000L & l) != 0L) jjCheckNAddTwoStates(5, 6);
 							break;
 						case 6:
-							if ((0x3ff200000000000L & l) != 0L && kind > 122)
-								kind = 122;
+							if ((0x3ff200000000000L & l) != 0L && kind > 122) kind = 122;
 							break;
 						case 7:
-							if ((0x3ff200000000000L & l) != 0L && kind > 126)
-								kind = 126;
+							if ((0x3ff200000000000L & l) != 0L && kind > 126) kind = 126;
 							break;
 						case 9:
-							if (curChar == 58)
-								jjstateSet[jjnewStateCnt++] = 10;
+							if (curChar == 58) jjstateSet[jjnewStateCnt++] = 10;
 							break;
 						case 10:
-							if ((0x3ff000000000000L & l) == 0L)
-								break;
-							if (kind > 128)
-								kind = 128;
-							{
-								jjCheckNAddTwoStates(11, 12);
-							}
+							if ((0x3ff000000000000L & l) == 0L) break;
+							if (kind > 128) kind = 128;
+						{
+							jjCheckNAddTwoStates(11, 12);
+						}
 							break;
 						case 11:
-							if ((0x3ff600000000000L & l) != 0L)
-							{
-								jjCheckNAddTwoStates(11, 12);
-							}
+							if ((0x3ff600000000000L & l) != 0L) jjCheckNAddTwoStates(11, 12);
 							break;
 						case 12:
-							if ((0x3ff200000000000L & l) != 0L && kind > 128)
-								kind = 128;
+							if ((0x3ff200000000000L & l) != 0L && kind > 128) kind = 128;
 							break;
 						case 15:
-							if ((0x3ff600000000000L & l) != 0L)
-							{
-								jjCheckNAddTwoStates(15, 16);
-							}
+							if ((0x3ff600000000000L & l) != 0L) jjCheckNAddTwoStates(15, 16);
 							break;
 						case 16:
-							if ((0x3ff200000000000L & l) != 0L)
-								jjstateSet[jjnewStateCnt++] = 17;
+							if ((0x3ff200000000000L & l) != 0L) jjstateSet[jjnewStateCnt++] = 17;
 							break;
 						case 17:
-							if (curChar == 58 && kind > 121)
-								kind = 121;
+							if (curChar == 58 && kind > 121) kind = 121;
 							break;
 						case 18:
-							if ((0x3ff600000000000L & l) != 0L)
-							{
-								jjCheckNAddTwoStates(18, 19);
-							}
+							if ((0x3ff600000000000L & l) != 0L) jjCheckNAddTwoStates(18, 19);
 							break;
 						case 19:
-							if ((0x3ff200000000000L & l) != 0L)
-								jjstateSet[jjnewStateCnt++] = 20;
+							if ((0x3ff200000000000L & l) != 0L) jjstateSet[jjnewStateCnt++] = 20;
 							break;
 						case 20:
-							if (curChar == 58)
-							{
-								jjCheckNAdd(21);
-							}
+							if (curChar == 58) jjCheckNAdd(21);
 							break;
 						case 21:
-							if ((0x3ff000000000000L & l) == 0L)
-								break;
-							if (kind > 123)
-								kind = 123;
-							{
-								jjCheckNAddTwoStates(22, 23);
-							}
+							if ((0x3ff000000000000L & l) == 0L) break;
+							if (kind > 123) kind = 123;
+						{
+							jjCheckNAddTwoStates(22, 23);
+						}
 							break;
 						case 22:
-							if ((0x3ff600000000000L & l) != 0L)
-							{
-								jjCheckNAddTwoStates(22, 23);
-							}
+							if ((0x3ff600000000000L & l) != 0L) jjCheckNAddTwoStates(22, 23);
 							break;
 						case 23:
-							if ((0x3ff200000000000L & l) != 0L && kind > 123)
-								kind = 123;
+							if ((0x3ff200000000000L & l) != 0L && kind > 123) kind = 123;
 							break;
 						case 24:
-							if ((0x3ff600000000000L & l) != 0L)
-							{
-								jjCheckNAddTwoStates(24, 25);
-							}
+							if ((0x3ff600000000000L & l) != 0L) jjCheckNAddTwoStates(24, 25);
 							break;
 						case 25:
-							if ((0x3ff200000000000L & l) != 0L && kind > 124)
-								kind = 124;
+							if ((0x3ff200000000000L & l) != 0L && kind > 124) kind = 124;
 							break;
 						case 26:
-							if (curChar != 58)
-								break;
-							if (kind > 121)
-								kind = 121;
-							{
-								jjCheckNAdd(21);
-							}
+							if (curChar != 58) break;
+							if (kind > 121) kind = 121;
+						{
+							jjCheckNAdd(21);
+						}
 							break;
 						default:
 							break;
 					}
-				} while (i != startsAt);
+				while (i != startsAt);
+			}
+			else if (curChar < 128)
+			{
+				final long l = 1L << (curChar & 077);
+				do
+					switch (jjstateSet[--i])
+					{
+						case 1:
+							if ((0x7fffffe87fffffeL & l) != 0L) if (kind > 127) kind = 127;
+							if ((0x7fffffe87fffffeL & l) != 0L) if (kind > 126) kind = 126;
+							if ((0x7fffffe87fffffeL & l) != 0L)
+							{
+								if (kind > 122) kind = 122;
+								{
+									jjCheckNAddTwoStates(5, 6);
+								}
+							}
+							if ((0x7fffffe07fffffeL & l) != 0L)
+							{
+								if (kind > 124) kind = 124;
+								{
+									jjCheckNAddStates(0, 7);
+								}
+							}
+							else if (curChar == 95) jjstateSet[jjnewStateCnt++] = 9;
+							break;
+						case 27:
+							if ((0x7fffffe87fffffeL & l) != 0L) if (kind > 124) kind = 124;
+							if ((0x7fffffe87fffffeL & l) != 0L) jjCheckNAddTwoStates(24, 25);
+							if ((0x7fffffe87fffffeL & l) != 0L) jjCheckNAdd(20);
+							if ((0x7fffffe87fffffeL & l) != 0L) jjCheckNAddTwoStates(18, 19);
+							if ((0x7fffffe87fffffeL & l) != 0L) if (kind > 122) kind = 122;
+							if ((0x7fffffe87fffffeL & l) != 0L) jjCheckNAddTwoStates(5, 6);
+							if ((0x7fffffe87fffffeL & l) != 0L) jjCheckNAdd(17);
+							if ((0x7fffffe87fffffeL & l) != 0L) jjCheckNAddTwoStates(15, 16);
+							break;
+						case 2:
+						{
+							jjAddStates(8, 9);
+						}
+							break;
+						case 4:
+							if ((0x7fffffe87fffffeL & l) == 0L) break;
+							if (kind > 122) kind = 122;
+						{
+							jjCheckNAddTwoStates(5, 6);
+						}
+							break;
+						case 5:
+							if ((0x7fffffe87fffffeL & l) != 0L) jjCheckNAddTwoStates(5, 6);
+							break;
+						case 6:
+							if ((0x7fffffe87fffffeL & l) != 0L && kind > 122) kind = 122;
+							break;
+						case 7:
+							if ((0x7fffffe87fffffeL & l) != 0L && kind > 126) kind = 126;
+							break;
+						case 8:
+							if ((0x7fffffe87fffffeL & l) != 0L && kind > 127) kind = 127;
+							break;
+						case 10:
+							if ((0x7fffffe87fffffeL & l) == 0L) break;
+							if (kind > 128) kind = 128;
+						{
+							jjCheckNAddTwoStates(11, 12);
+						}
+							break;
+						case 11:
+							if ((0x7fffffe87fffffeL & l) != 0L) jjCheckNAddTwoStates(11, 12);
+							break;
+						case 12:
+							if ((0x7fffffe87fffffeL & l) != 0L && kind > 128) kind = 128;
+							break;
+						case 13:
+							if (curChar == 95) jjstateSet[jjnewStateCnt++] = 9;
+							break;
+						case 14:
+							if ((0x7fffffe07fffffeL & l) == 0L) break;
+							if (kind > 124) kind = 124;
+						{
+							jjCheckNAddStates(0, 7);
+						}
+							break;
+						case 15:
+							if ((0x7fffffe87fffffeL & l) != 0L) jjCheckNAddTwoStates(15, 16);
+							break;
+						case 16:
+							if ((0x7fffffe87fffffeL & l) != 0L) jjCheckNAdd(17);
+							break;
+						case 18:
+							if ((0x7fffffe87fffffeL & l) != 0L) jjCheckNAddTwoStates(18, 19);
+							break;
+						case 19:
+							if ((0x7fffffe87fffffeL & l) != 0L) jjCheckNAdd(20);
+							break;
+						case 21:
+							if ((0x7fffffe87fffffeL & l) == 0L) break;
+							if (kind > 123) kind = 123;
+						{
+							jjCheckNAddTwoStates(22, 23);
+						}
+							break;
+						case 22:
+							if ((0x7fffffe87fffffeL & l) != 0L) jjCheckNAddTwoStates(22, 23);
+							break;
+						case 23:
+							if ((0x7fffffe87fffffeL & l) != 0L && kind > 123) kind = 123;
+							break;
+						case 24:
+							if ((0x7fffffe87fffffeL & l) != 0L) jjCheckNAddTwoStates(24, 25);
+							break;
+						case 25:
+							if ((0x7fffffe87fffffeL & l) != 0L && kind > 124) kind = 124;
+							break;
+						default:
+							break;
+					}
+				while (i != startsAt);
 			}
 			else
-				if (curChar < 128)
-				{
-					final long l = 1L << (curChar & 077);
-					do
+			{
+				final int hiByte = curChar >> 8;
+				final int i1 = hiByte >> 6;
+				final long l1 = 1L << (hiByte & 077);
+				final int i2 = (curChar & 0xff) >> 6;
+				final long l2 = 1L << (curChar & 077);
+				do
+					switch (jjstateSet[--i])
 					{
-						switch (jjstateSet[--i])
-						{
-							case 1:
-								if ((0x7fffffe87fffffeL & l) != 0L)
-								{
-									if (kind > 127)
-										kind = 127;
-								}
-								if ((0x7fffffe87fffffeL & l) != 0L)
-								{
-									if (kind > 126)
-										kind = 126;
-								}
-								if ((0x7fffffe87fffffeL & l) != 0L)
-								{
-									if (kind > 122)
-										kind = 122;
-									{
-										jjCheckNAddTwoStates(5, 6);
-									}
-								}
-								if ((0x7fffffe07fffffeL & l) != 0L)
-								{
-									if (kind > 124)
-										kind = 124;
-									{
-										jjCheckNAddStates(0, 7);
-									}
-								}
-								else
-									if (curChar == 95)
-										jjstateSet[jjnewStateCnt++] = 9;
-								break;
-							case 27:
-								if ((0x7fffffe87fffffeL & l) != 0L)
-								{
-									if (kind > 124)
-										kind = 124;
-								}
-								if ((0x7fffffe87fffffeL & l) != 0L)
-								{
-									jjCheckNAddTwoStates(24, 25);
-								}
-								if ((0x7fffffe87fffffeL & l) != 0L)
-								{
-									jjCheckNAdd(20);
-								}
-								if ((0x7fffffe87fffffeL & l) != 0L)
-								{
-									jjCheckNAddTwoStates(18, 19);
-								}
-								if ((0x7fffffe87fffffeL & l) != 0L)
-								{
-									if (kind > 122)
-										kind = 122;
-								}
-								if ((0x7fffffe87fffffeL & l) != 0L)
-								{
-									jjCheckNAddTwoStates(5, 6);
-								}
-								if ((0x7fffffe87fffffeL & l) != 0L)
-								{
-									jjCheckNAdd(17);
-								}
-								if ((0x7fffffe87fffffeL & l) != 0L)
-								{
-									jjCheckNAddTwoStates(15, 16);
-								}
-								break;
-							case 2:
+						case 1:
+							if (jjCanMove_1(hiByte, i1, i2, l1, l2))
 							{
-								jjAddStates(8, 9);
+								if (kind > 122) kind = 122;
+								{
+									jjCheckNAddTwoStates(5, 6);
+								}
 							}
-								break;
-							case 4:
-								if ((0x7fffffe87fffffeL & l) == 0L)
-									break;
-								if (kind > 122)
-									kind = 122;
-								{
-									jjCheckNAddTwoStates(5, 6);
-								}
-								break;
-							case 5:
-								if ((0x7fffffe87fffffeL & l) != 0L)
-								{
-									jjCheckNAddTwoStates(5, 6);
-								}
-								break;
-							case 6:
-								if ((0x7fffffe87fffffeL & l) != 0L && kind > 122)
-									kind = 122;
-								break;
-							case 7:
-								if ((0x7fffffe87fffffeL & l) != 0L && kind > 126)
-									kind = 126;
-								break;
-							case 8:
-								if ((0x7fffffe87fffffeL & l) != 0L && kind > 127)
-									kind = 127;
-								break;
-							case 10:
-								if ((0x7fffffe87fffffeL & l) == 0L)
-									break;
-								if (kind > 128)
-									kind = 128;
-								{
-									jjCheckNAddTwoStates(11, 12);
-								}
-								break;
-							case 11:
-								if ((0x7fffffe87fffffeL & l) != 0L)
-								{
-									jjCheckNAddTwoStates(11, 12);
-								}
-								break;
-							case 12:
-								if ((0x7fffffe87fffffeL & l) != 0L && kind > 128)
-									kind = 128;
-								break;
-							case 13:
-								if (curChar == 95)
-									jjstateSet[jjnewStateCnt++] = 9;
-								break;
-							case 14:
-								if ((0x7fffffe07fffffeL & l) == 0L)
-									break;
-								if (kind > 124)
-									kind = 124;
+							if (jjCanMove_2(hiByte, i1, i2, l1, l2)) if (kind > 126) kind = 126;
+							if (jjCanMove_1(hiByte, i1, i2, l1, l2)) if (kind > 127) kind = 127;
+							if (jjCanMove_1(hiByte, i1, i2, l1, l2))
+							{
+								if (kind > 124) kind = 124;
 								{
 									jjCheckNAddStates(0, 7);
 								}
-								break;
-							case 15:
-								if ((0x7fffffe87fffffeL & l) != 0L)
-								{
-									jjCheckNAddTwoStates(15, 16);
-								}
-								break;
-							case 16:
-								if ((0x7fffffe87fffffeL & l) != 0L)
-								{
-									jjCheckNAdd(17);
-								}
-								break;
-							case 18:
-								if ((0x7fffffe87fffffeL & l) != 0L)
-								{
-									jjCheckNAddTwoStates(18, 19);
-								}
-								break;
-							case 19:
-								if ((0x7fffffe87fffffeL & l) != 0L)
-								{
-									jjCheckNAdd(20);
-								}
-								break;
-							case 21:
-								if ((0x7fffffe87fffffeL & l) == 0L)
-									break;
-								if (kind > 123)
-									kind = 123;
-								{
-									jjCheckNAddTwoStates(22, 23);
-								}
-								break;
-							case 22:
-								if ((0x7fffffe87fffffeL & l) != 0L)
-								{
-									jjCheckNAddTwoStates(22, 23);
-								}
-								break;
-							case 23:
-								if ((0x7fffffe87fffffeL & l) != 0L && kind > 123)
-									kind = 123;
-								break;
-							case 24:
-								if ((0x7fffffe87fffffeL & l) != 0L)
-								{
-									jjCheckNAddTwoStates(24, 25);
-								}
-								break;
-							case 25:
-								if ((0x7fffffe87fffffeL & l) != 0L && kind > 124)
-									kind = 124;
-								break;
-							default:
-								break;
-						}
-					} while (i != startsAt);
-				}
-				else
-				{
-					final int hiByte = (curChar >> 8);
-					final int i1 = hiByte >> 6;
-					final long l1 = 1L << (hiByte & 077);
-					final int i2 = (curChar & 0xff) >> 6;
-					final long l2 = 1L << (curChar & 077);
-					do
-					{
-						switch (jjstateSet[--i])
+							}
+							break;
+						case 27:
+							if (jjCanMove_2(hiByte, i1, i2, l1, l2)) jjCheckNAddTwoStates(15, 16);
+							if (jjCanMove_2(hiByte, i1, i2, l1, l2)) jjCheckNAdd(17);
+							if (jjCanMove_2(hiByte, i1, i2, l1, l2)) jjCheckNAddTwoStates(5, 6);
+							if (jjCanMove_2(hiByte, i1, i2, l1, l2)) if (kind > 122) kind = 122;
+							if (jjCanMove_2(hiByte, i1, i2, l1, l2)) jjCheckNAddTwoStates(18, 19);
+							if (jjCanMove_2(hiByte, i1, i2, l1, l2)) jjCheckNAdd(20);
+							if (jjCanMove_2(hiByte, i1, i2, l1, l2)) jjCheckNAddTwoStates(24, 25);
+							if (jjCanMove_2(hiByte, i1, i2, l1, l2)) if (kind > 124) kind = 124;
+							break;
+						case 2:
+							if (jjCanMove_0(hiByte, i1, i2, l1, l2)) jjAddStates(8, 9);
+							break;
+						case 4:
+							if (!jjCanMove_1(hiByte, i1, i2, l1, l2)) break;
+							if (kind > 122) kind = 122;
 						{
-							case 1:
-								if (jjCanMove_1(hiByte, i1, i2, l1, l2))
-								{
-									if (kind > 122)
-										kind = 122;
-									{
-										jjCheckNAddTwoStates(5, 6);
-									}
-								}
-								if (jjCanMove_2(hiByte, i1, i2, l1, l2))
-								{
-									if (kind > 126)
-										kind = 126;
-								}
-								if (jjCanMove_1(hiByte, i1, i2, l1, l2))
-								{
-									if (kind > 127)
-										kind = 127;
-								}
-								if (jjCanMove_1(hiByte, i1, i2, l1, l2))
-								{
-									if (kind > 124)
-										kind = 124;
-									{
-										jjCheckNAddStates(0, 7);
-									}
-								}
-								break;
-							case 27:
-								if (jjCanMove_2(hiByte, i1, i2, l1, l2))
-								{
-									jjCheckNAddTwoStates(15, 16);
-								}
-								if (jjCanMove_2(hiByte, i1, i2, l1, l2))
-								{
-									jjCheckNAdd(17);
-								}
-								if (jjCanMove_2(hiByte, i1, i2, l1, l2))
-								{
-									jjCheckNAddTwoStates(5, 6);
-								}
-								if (jjCanMove_2(hiByte, i1, i2, l1, l2))
-								{
-									if (kind > 122)
-										kind = 122;
-								}
-								if (jjCanMove_2(hiByte, i1, i2, l1, l2))
-								{
-									jjCheckNAddTwoStates(18, 19);
-								}
-								if (jjCanMove_2(hiByte, i1, i2, l1, l2))
-								{
-									jjCheckNAdd(20);
-								}
-								if (jjCanMove_2(hiByte, i1, i2, l1, l2))
-								{
-									jjCheckNAddTwoStates(24, 25);
-								}
-								if (jjCanMove_2(hiByte, i1, i2, l1, l2))
-								{
-									if (kind > 124)
-										kind = 124;
-								}
-								break;
-							case 2:
-								if (jjCanMove_0(hiByte, i1, i2, l1, l2))
-								{
-									jjAddStates(8, 9);
-								}
-								break;
-							case 4:
-								if (!jjCanMove_1(hiByte, i1, i2, l1, l2))
-									break;
-								if (kind > 122)
-									kind = 122;
-								{
-									jjCheckNAddTwoStates(5, 6);
-								}
-								break;
-							case 5:
-								if (jjCanMove_2(hiByte, i1, i2, l1, l2))
-								{
-									jjCheckNAddTwoStates(5, 6);
-								}
-								break;
-							case 6:
-								if (jjCanMove_2(hiByte, i1, i2, l1, l2) && kind > 122)
-									kind = 122;
-								break;
-							case 7:
-								if (jjCanMove_2(hiByte, i1, i2, l1, l2) && kind > 126)
-									kind = 126;
-								break;
-							case 8:
-								if (jjCanMove_1(hiByte, i1, i2, l1, l2) && kind > 127)
-									kind = 127;
-								break;
-							case 10:
-								if (!jjCanMove_1(hiByte, i1, i2, l1, l2))
-									break;
-								if (kind > 128)
-									kind = 128;
-								{
-									jjCheckNAddTwoStates(11, 12);
-								}
-								break;
-							case 11:
-								if (jjCanMove_2(hiByte, i1, i2, l1, l2))
-								{
-									jjCheckNAddTwoStates(11, 12);
-								}
-								break;
-							case 12:
-								if (jjCanMove_2(hiByte, i1, i2, l1, l2) && kind > 128)
-									kind = 128;
-								break;
-							case 14:
-								if (!jjCanMove_1(hiByte, i1, i2, l1, l2))
-									break;
-								if (kind > 124)
-									kind = 124;
-								{
-									jjCheckNAddStates(0, 7);
-								}
-								break;
-							case 15:
-								if (jjCanMove_2(hiByte, i1, i2, l1, l2))
-								{
-									jjCheckNAddTwoStates(15, 16);
-								}
-								break;
-							case 16:
-								if (jjCanMove_2(hiByte, i1, i2, l1, l2))
-								{
-									jjCheckNAdd(17);
-								}
-								break;
-							case 18:
-								if (jjCanMove_2(hiByte, i1, i2, l1, l2))
-								{
-									jjCheckNAddTwoStates(18, 19);
-								}
-								break;
-							case 19:
-								if (jjCanMove_2(hiByte, i1, i2, l1, l2))
-								{
-									jjCheckNAdd(20);
-								}
-								break;
-							case 21:
-								if (!jjCanMove_1(hiByte, i1, i2, l1, l2))
-									break;
-								if (kind > 123)
-									kind = 123;
-								{
-									jjCheckNAddTwoStates(22, 23);
-								}
-								break;
-							case 22:
-								if (jjCanMove_2(hiByte, i1, i2, l1, l2))
-								{
-									jjCheckNAddTwoStates(22, 23);
-								}
-								break;
-							case 23:
-								if (jjCanMove_2(hiByte, i1, i2, l1, l2) && kind > 123)
-									kind = 123;
-								break;
-							case 24:
-								if (jjCanMove_2(hiByte, i1, i2, l1, l2))
-								{
-									jjCheckNAddTwoStates(24, 25);
-								}
-								break;
-							case 25:
-								if (jjCanMove_2(hiByte, i1, i2, l1, l2) && kind > 124)
-									kind = 124;
-								break;
-							default:
-								if (i1 == 0 || l1 == 0 || i2 == 0 || l2 == 0)
-									break;
-								else
-									break;
+							jjCheckNAddTwoStates(5, 6);
 						}
-					} while (i != startsAt);
-				}
+							break;
+						case 5:
+							if (jjCanMove_2(hiByte, i1, i2, l1, l2)) jjCheckNAddTwoStates(5, 6);
+							break;
+						case 6:
+							if (jjCanMove_2(hiByte, i1, i2, l1, l2) && kind > 122) kind = 122;
+							break;
+						case 7:
+							if (jjCanMove_2(hiByte, i1, i2, l1, l2) && kind > 126) kind = 126;
+							break;
+						case 8:
+							if (jjCanMove_1(hiByte, i1, i2, l1, l2) && kind > 127) kind = 127;
+							break;
+						case 10:
+							if (!jjCanMove_1(hiByte, i1, i2, l1, l2)) break;
+							if (kind > 128) kind = 128;
+						{
+							jjCheckNAddTwoStates(11, 12);
+						}
+							break;
+						case 11:
+							if (jjCanMove_2(hiByte, i1, i2, l1, l2)) jjCheckNAddTwoStates(11, 12);
+							break;
+						case 12:
+							if (jjCanMove_2(hiByte, i1, i2, l1, l2) && kind > 128) kind = 128;
+							break;
+						case 14:
+							if (!jjCanMove_1(hiByte, i1, i2, l1, l2)) break;
+							if (kind > 124) kind = 124;
+						{
+							jjCheckNAddStates(0, 7);
+						}
+							break;
+						case 15:
+							if (jjCanMove_2(hiByte, i1, i2, l1, l2)) jjCheckNAddTwoStates(15, 16);
+							break;
+						case 16:
+							if (jjCanMove_2(hiByte, i1, i2, l1, l2)) jjCheckNAdd(17);
+							break;
+						case 18:
+							if (jjCanMove_2(hiByte, i1, i2, l1, l2)) jjCheckNAddTwoStates(18, 19);
+							break;
+						case 19:
+							if (jjCanMove_2(hiByte, i1, i2, l1, l2)) jjCheckNAdd(20);
+							break;
+						case 21:
+							if (!jjCanMove_1(hiByte, i1, i2, l1, l2)) break;
+							if (kind > 123) kind = 123;
+						{
+							jjCheckNAddTwoStates(22, 23);
+						}
+							break;
+						case 22:
+							if (jjCanMove_2(hiByte, i1, i2, l1, l2)) jjCheckNAddTwoStates(22, 23);
+							break;
+						case 23:
+							if (jjCanMove_2(hiByte, i1, i2, l1, l2) && kind > 123) kind = 123;
+							break;
+						case 24:
+							if (jjCanMove_2(hiByte, i1, i2, l1, l2)) jjCheckNAddTwoStates(24, 25);
+							break;
+						case 25:
+							if (jjCanMove_2(hiByte, i1, i2, l1, l2) && kind > 124) kind = 124;
+							break;
+						default:
+							if (i1 == 0 || l1 == 0 || i2 == 0 || l2 == 0)
+								break;
+							else
+								break;
+					}
+				while (i != startsAt);
+			}
 			if (kind != 0x7fffffff)
 			{
 				jjmatchedKind = kind;
@@ -2845,8 +2454,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 				kind = 0x7fffffff;
 			}
 			++curPos;
-			if ((i = jjnewStateCnt) == (startsAt = 27 - (jjnewStateCnt = startsAt)))
-				return curPos;
+			if ((i = jjnewStateCnt) == (startsAt = 27 - (jjnewStateCnt = startsAt))) return curPos;
 			try
 			{
 				curChar = input_stream.readChar();
@@ -2858,7 +2466,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		}
 	}
 
-	private final int jjStopStringLiteralDfa_2(int pos, long active0)
+	private final int jjStopStringLiteralDfa_2(final int pos, final long active0)
 	{
 		switch (pos)
 		{
@@ -2867,7 +2475,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		}
 	}
 
-	private final int jjStartNfa_2(int pos, long active0)
+	private final int jjStartNfa_2(final int pos, final long active0)
 	{
 		return jjMoveNfa_2(jjStopStringLiteralDfa_2(pos, active0), pos + 1);
 	}
@@ -2883,7 +2491,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		}
 	}
 
-	private int jjMoveNfa_2(int startState, int curPos)
+	private int jjMoveNfa_2(final int startState, int curPos)
 	{
 		int startsAt = 0;
 		jjnewStateCnt = 3;
@@ -2892,82 +2500,69 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		int kind = 0x7fffffff;
 		for (;;)
 		{
-			if (++jjround == 0x7fffffff)
-				ReInitRounds();
+			if (++jjround == 0x7fffffff) ReInitRounds();
 			if (curChar < 64)
 			{
 				final long l = 1L << curChar;
 				do
-				{
 					switch (jjstateSet[--i])
 					{
 						case 0:
-							if ((0xfffffffbffffffffL & l) != 0L && kind > 10)
-								kind = 10;
+							if ((0xfffffffbffffffffL & l) != 0L && kind > 10) kind = 10;
 							break;
 						case 1:
-							if (kind > 9)
-								kind = 9;
+							if (kind > 9) kind = 9;
 							break;
 						default:
 							break;
 					}
-				} while (i != startsAt);
+				while (i != startsAt);
+			}
+			else if (curChar < 128)
+			{
+				final long l = 1L << (curChar & 077);
+				do
+					switch (jjstateSet[--i])
+					{
+						case 0:
+							if (kind > 10) kind = 10;
+							if (curChar == 92) jjstateSet[jjnewStateCnt++] = 1;
+							break;
+						case 1:
+							if (kind > 9) kind = 9;
+							break;
+						case 2:
+							if (kind > 10) kind = 10;
+							break;
+						default:
+							break;
+					}
+				while (i != startsAt);
 			}
 			else
-				if (curChar < 128)
-				{
-					final long l = 1L << (curChar & 077);
-					do
+			{
+				final int hiByte = curChar >> 8;
+				final int i1 = hiByte >> 6;
+				final long l1 = 1L << (hiByte & 077);
+				final int i2 = (curChar & 0xff) >> 6;
+				final long l2 = 1L << (curChar & 077);
+				do
+					switch (jjstateSet[--i])
 					{
-						switch (jjstateSet[--i])
-						{
-							case 0:
-								if (kind > 10)
-									kind = 10;
-								if (curChar == 92)
-									jjstateSet[jjnewStateCnt++] = 1;
+						case 0:
+							if (jjCanMove_0(hiByte, i1, i2, l1, l2) && kind > 10) kind = 10;
+							break;
+						case 1:
+							if (jjCanMove_0(hiByte, i1, i2, l1, l2) && kind > 9) kind = 9;
+							break;
+						default:
+							if (i1 == 0 || l1 == 0 || i2 == 0 || l2 == 0)
 								break;
-							case 1:
-								if (kind > 9)
-									kind = 9;
+							else
 								break;
-							case 2:
-								if (kind > 10)
-									kind = 10;
-								break;
-							default:
-								break;
-						}
-					} while (i != startsAt);
-				}
-				else
-				{
-					final int hiByte = (curChar >> 8);
-					final int i1 = hiByte >> 6;
-					final long l1 = 1L << (hiByte & 077);
-					final int i2 = (curChar & 0xff) >> 6;
-					final long l2 = 1L << (curChar & 077);
-					do
-					{
-						switch (jjstateSet[--i])
-						{
-							case 0:
-								if (jjCanMove_0(hiByte, i1, i2, l1, l2) && kind > 10)
-									kind = 10;
-								break;
-							case 1:
-								if (jjCanMove_0(hiByte, i1, i2, l1, l2) && kind > 9)
-									kind = 9;
-								break;
-							default:
-								if (i1 == 0 || l1 == 0 || i2 == 0 || l2 == 0)
-									break;
-								else
-									break;
-						}
-					} while (i != startsAt);
-				}
+					}
+				while (i != startsAt);
+			}
 			if (kind != 0x7fffffff)
 			{
 				jjmatchedKind = kind;
@@ -2975,8 +2570,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 				kind = 0x7fffffff;
 			}
 			++curPos;
-			if ((i = jjnewStateCnt) == (startsAt = 3 - (jjnewStateCnt = startsAt)))
-				return curPos;
+			if ((i = jjnewStateCnt) == (startsAt = 3 - (jjnewStateCnt = startsAt))) return curPos;
 			try
 			{
 				curChar = input_stream.readChar();
@@ -2988,7 +2582,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		}
 	}
 
-	private final int jjStopStringLiteralDfa_1(int pos, long active0)
+	private final int jjStopStringLiteralDfa_1(final int pos, final long active0)
 	{
 		switch (pos)
 		{
@@ -2997,7 +2591,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		}
 	}
 
-	private final int jjStartNfa_1(int pos, long active0)
+	private final int jjStartNfa_1(final int pos, final long active0)
 	{
 		return jjMoveNfa_1(jjStopStringLiteralDfa_1(pos, active0), pos + 1);
 	}
@@ -3013,7 +2607,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		}
 	}
 
-	private int jjMoveNfa_1(int startState, int curPos)
+	private int jjMoveNfa_1(final int startState, int curPos)
 	{
 		int startsAt = 0;
 		jjnewStateCnt = 1;
@@ -3022,63 +2616,56 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		int kind = 0x7fffffff;
 		for (;;)
 		{
-			if (++jjround == 0x7fffffff)
-				ReInitRounds();
+			if (++jjround == 0x7fffffff) ReInitRounds();
 			if (curChar < 64)
 			{
 				final long l = 1L << curChar;
 				do
-				{
 					switch (jjstateSet[--i])
 					{
 						case 0:
-							if ((0xfffffffffffffbffL & l) != 0L)
-								kind = 6;
+							if ((0xfffffffffffffbffL & l) != 0L) kind = 6;
 							break;
 						default:
 							break;
 					}
-				} while (i != startsAt);
+				while (i != startsAt);
+			}
+			else if (curChar < 128)
+			{
+				final long l = 1L << (curChar & 077);
+				do
+					switch (jjstateSet[--i])
+					{
+						case 0:
+							kind = 6;
+							break;
+						default:
+							break;
+					}
+				while (i != startsAt);
 			}
 			else
-				if (curChar < 128)
-				{
-					final long l = 1L << (curChar & 077);
-					do
+			{
+				final int hiByte = curChar >> 8;
+				final int i1 = hiByte >> 6;
+				final long l1 = 1L << (hiByte & 077);
+				final int i2 = (curChar & 0xff) >> 6;
+				final long l2 = 1L << (curChar & 077);
+				do
+					switch (jjstateSet[--i])
 					{
-						switch (jjstateSet[--i])
-						{
-							case 0:
-								kind = 6;
+						case 0:
+							if (jjCanMove_0(hiByte, i1, i2, l1, l2) && kind > 6) kind = 6;
+							break;
+						default:
+							if (i1 == 0 || l1 == 0 || i2 == 0 || l2 == 0)
 								break;
-							default:
+							else
 								break;
-						}
-					} while (i != startsAt);
-				}
-				else
-				{
-					final int hiByte = (curChar >> 8);
-					final int i1 = hiByte >> 6;
-					final long l1 = 1L << (hiByte & 077);
-					final int i2 = (curChar & 0xff) >> 6;
-					final long l2 = 1L << (curChar & 077);
-					do
-					{
-						switch (jjstateSet[--i])
-						{
-							case 0:
-								if (jjCanMove_0(hiByte, i1, i2, l1, l2) && kind > 6)
-									kind = 6;
-								break;
-							default:
-								if (i1 == 0 || l1 == 0 || i2 == 0 || l2 == 0)
-									break;
-								else
-									break;
-						}
-					} while (i != startsAt);
-				}
+					}
+				while (i != startsAt);
+			}
 			if (kind != 0x7fffffff)
 			{
 				jjmatchedKind = kind;
@@ -3086,8 +2673,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 				kind = 0x7fffffff;
 			}
 			++curPos;
-			if ((i = jjnewStateCnt) == (startsAt = 1 - (jjnewStateCnt = startsAt)))
-				return curPos;
+			if ((i = jjnewStateCnt) == (startsAt = 1 - (jjnewStateCnt = startsAt))) return curPos;
 			try
 			{
 				curChar = input_stream.readChar();
@@ -3101,75 +2687,119 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 
 	static final int[] jjnextStates = { 15, 16, 17, 18, 19, 20, 24, 25, 2, 3, };
 
-	private static final boolean jjCanMove_0(int hiByte, int i1, int i2, long l1, long l2)
+	private static final boolean jjCanMove_0(final int hiByte, final int i1, final int i2, final long l1, final long l2)
 	{
 		switch (hiByte)
 		{
 			case 0:
-				return ((jjbitVec2[i2] & l2) != 0L);
+				return (jjbitVec2[i2] & l2) != 0L;
 			default:
-				if ((jjbitVec0[i1] & l1) != 0L)
-					return true;
+				if ((jjbitVec0[i1] & l1) != 0L) return true;
 				return false;
 		}
 	}
 
-	private static final boolean jjCanMove_1(int hiByte, int i1, int i2, long l1, long l2)
+	private static final boolean jjCanMove_1(final int hiByte, final int i1, final int i2, final long l1, final long l2)
 	{
 		switch (hiByte)
 		{
 			case 0:
-				return ((jjbitVec4[i2] & l2) != 0L);
+				return (jjbitVec4[i2] & l2) != 0L;
 			case 3:
-				return ((jjbitVec5[i2] & l2) != 0L);
+				return (jjbitVec5[i2] & l2) != 0L;
 			case 32:
-				return ((jjbitVec6[i2] & l2) != 0L);
+				return (jjbitVec6[i2] & l2) != 0L;
 			case 33:
-				return ((jjbitVec7[i2] & l2) != 0L);
+				return (jjbitVec7[i2] & l2) != 0L;
 			case 47:
-				return ((jjbitVec8[i2] & l2) != 0L);
+				return (jjbitVec8[i2] & l2) != 0L;
 			case 48:
-				return ((jjbitVec0[i2] & l2) != 0L);
+				return (jjbitVec0[i2] & l2) != 0L;
 			case 253:
-				return ((jjbitVec9[i2] & l2) != 0L);
+				return (jjbitVec9[i2] & l2) != 0L;
 			case 255:
-				return ((jjbitVec10[i2] & l2) != 0L);
+				return (jjbitVec10[i2] & l2) != 0L;
 			default:
-				if ((jjbitVec3[i1] & l1) != 0L)
-					return true;
+				if ((jjbitVec3[i1] & l1) != 0L) return true;
 				return false;
 		}
 	}
 
-	private static final boolean jjCanMove_2(int hiByte, int i1, int i2, long l1, long l2)
+	private static final boolean jjCanMove_2(final int hiByte, final int i1, final int i2, final long l1, final long l2)
 	{
 		switch (hiByte)
 		{
 			case 0:
-				return ((jjbitVec11[i2] & l2) != 0L);
+				return (jjbitVec11[i2] & l2) != 0L;
 			case 3:
-				return ((jjbitVec12[i2] & l2) != 0L);
+				return (jjbitVec12[i2] & l2) != 0L;
 			case 32:
-				return ((jjbitVec13[i2] & l2) != 0L);
+				return (jjbitVec13[i2] & l2) != 0L;
 			case 33:
-				return ((jjbitVec7[i2] & l2) != 0L);
+				return (jjbitVec7[i2] & l2) != 0L;
 			case 47:
-				return ((jjbitVec8[i2] & l2) != 0L);
+				return (jjbitVec8[i2] & l2) != 0L;
 			case 48:
-				return ((jjbitVec0[i2] & l2) != 0L);
+				return (jjbitVec0[i2] & l2) != 0L;
 			case 253:
-				return ((jjbitVec9[i2] & l2) != 0L);
+				return (jjbitVec9[i2] & l2) != 0L;
 			case 255:
-				return ((jjbitVec10[i2] & l2) != 0L);
+				return (jjbitVec10[i2] & l2) != 0L;
 			default:
-				if ((jjbitVec3[i1] & l1) != 0L)
-					return true;
+				if ((jjbitVec3[i1] & l1) != 0L) return true;
 				return false;
 		}
 	}
 
 	/** Token literal values. */
-	public static final String[] jjstrLiteralImages = { "", null, null, null, null, null, null, null, null, null, null, null, "\50", "\51", "\117\156\164\157\154\157\147\171", "\114\141\142\145\154", "\111\155\160\157\162\164", "\103\157\155\155\145\156\164", "\123\165\142\103\154\141\163\163\117\146", "\100", "\136\136", "\105\161\165\151\166\141\154\145\156\164\103\154\141\163\163\145\163", "\104\151\163\152\157\151\156\164\103\154\141\163\163\145\163", "\104\151\163\152\157\151\156\164\125\156\151\157\156", "\101\156\156\157\164\141\164\151\157\156", "\101\156\156\157\164\141\164\151\157\156\120\162\157\160\145\162\164\171", "\101\156\156\157\164\141\164\151\157\156\101\163\163\145\162\164\151\157\156", "\123\165\142\101\156\156\157\164\141\164\151\157\156\120\162\157\160\145\162\164\171\117\146", "\101\156\156\157\164\141\164\151\157\156\120\162\157\160\145\162\164\171\104\157\155\141\151\156", "\101\156\156\157\164\141\164\151\157\156\120\162\157\160\145\162\164\171\122\141\156\147\145", "\110\141\163\113\145\171", "\104\145\143\154\141\162\141\164\151\157\156", "\104\157\143\165\155\145\156\164\141\164\151\157\156", "\103\154\141\163\163", "\117\142\152\145\143\164\120\162\157\160\145\162\164\171", "\104\141\164\141\120\162\157\160\145\162\164\171", "\116\141\155\145\144\111\156\144\151\166\151\144\165\141\154", "\104\141\164\141\164\171\160\145", "\104\141\164\141\117\156\145\117\146", "\104\141\164\141\125\156\151\157\156\117\146", "\104\141\164\141\111\156\164\145\162\163\145\143\164\151\157\156\117\146", "\117\142\152\145\143\164\117\156\145\117\146", "\117\142\152\145\143\164\125\156\151\157\156\117\146", "\117\142\152\145\143\164\110\141\163\126\141\154\165\145", "\117\142\152\145\143\164\111\156\166\145\162\163\145\117\146", "\111\156\166\145\162\163\145\117\142\152\145\143\164\120\162\157\160\145\162\164\151\145\163", "\104\141\164\141\103\157\155\160\154\145\155\145\156\164\117\146", "\104\141\164\141\164\171\160\145\122\145\163\164\162\151\143\164\151\157\156", "\104\141\164\141\164\171\160\145\104\145\146\151\156\151\164\151\157\156", "\117\142\152\145\143\164\111\156\164\145\162\163\145\143\164\151\157\156\117\146", "\117\142\152\145\143\164\103\157\155\160\154\145\155\145\156\164\117\146", "\117\142\152\145\143\164\101\154\154\126\141\154\165\145\163\106\162\157\155", "\117\142\152\145\143\164\123\157\155\145\126\141\154\165\145\163\106\162\157\155", "\117\142\152\145\143\164\110\141\163\123\145\154\146", "\117\142\152\145\143\164\115\151\156\103\141\162\144\151\156\141\154\151\164\171", "\117\142\152\145\143\164\115\141\170\103\141\162\144\151\156\141\154\151\164\171", "\117\142\152\145\143\164\105\170\141\143\164\103\141\162\144\151\156\141\154\151\164\171", "\104\141\164\141\101\154\154\126\141\154\165\145\163\106\162\157\155", "\104\141\164\141\123\157\155\145\126\141\154\165\145\163\106\162\157\155", "\104\141\164\141\110\141\163\126\141\154\165\145", "\104\141\164\141\115\151\156\103\141\162\144\151\156\141\154\151\164\171", "\104\141\164\141\115\141\170\103\141\162\144\151\156\141\154\151\164\171", "\104\141\164\141\105\170\141\143\164\103\141\162\144\151\156\141\154\151\164\171", "\117\142\152\145\143\164\120\162\157\160\145\162\164\171\103\150\141\151\156", "\123\165\142\117\142\152\145\143\164\120\162\157\160\145\162\164\171\117\146", "\105\161\165\151\166\141\154\145\156\164\117\142\152\145\143\164\120\162\157\160\145\162\164\151\145\163", "\104\151\163\152\157\151\156\164\117\142\152\145\143\164\120\162\157\160\145\162\164\151\145\163", "\117\142\152\145\143\164\120\162\157\160\145\162\164\171\104\157\155\141\151\156", "\117\142\152\145\143\164\120\162\157\160\145\162\164\171\122\141\156\147\145", "\106\165\156\143\164\151\157\156\141\154\117\142\152\145\143\164\120\162\157\160\145\162\164\171", "\111\156\166\145\162\163\145\106\165\156\143\164\151\157\156\141\154\117\142\152\145\143\164\120\162\157\160\145\162\164\171", "\122\145\146\154\145\170\151\166\145\117\142\152\145\143\164\120\162\157\160\145\162\164\171", "\111\162\162\145\146\154\145\170\151\166\145\117\142\152\145\143\164\120\162\157\160\145\162\164\171", "\123\171\155\155\145\164\162\151\143\117\142\152\145\143\164\120\162\157\160\145\162\164\171", "\101\163\171\155\155\145\164\162\151\143\117\142\152\145\143\164\120\162\157\160\145\162\164\171", "\124\162\141\156\163\151\164\151\166\145\117\142\152\145\143\164\120\162\157\160\145\162\164\171", "\123\165\142\104\141\164\141\120\162\157\160\145\162\164\171\117\146", "\105\161\165\151\166\141\154\145\156\164\104\141\164\141\120\162\157\160\145\162\164\151\145\163", "\104\151\163\152\157\151\156\164\104\141\164\141\120\162\157\160\145\162\164\151\145\163", "\104\141\164\141\120\162\157\160\145\162\164\171\104\157\155\141\151\156", "\104\141\164\141\120\162\157\160\145\162\164\171\122\141\156\147\145", "\106\165\156\143\164\151\157\156\141\154\104\141\164\141\120\162\157\160\145\162\164\171", "\123\141\155\145\111\156\144\151\166\151\144\165\141\154", "\104\151\146\146\145\162\145\156\164\111\156\144\151\166\151\144\165\141\154\163", "\103\154\141\163\163\101\163\163\145\162\164\151\157\156", "\117\142\152\145\143\164\120\162\157\160\145\162\164\171\101\163\163\145\162\164\151\157\156", "\116\145\147\141\164\151\166\145\117\142\152\145\143\164\120\162\157\160\145\162\164\171\101\163\163\145\162\164\151\157\156", "\104\141\164\141\120\162\157\160\145\162\164\171\101\163\163\145\162\164\151\157\156", "\116\145\147\141\164\151\166\145\104\141\164\141\120\162\157\160\145\162\164\171\101\163\163\145\162\164\151\157\156", "\120\162\145\146\151\170", "\154\145\156\147\164\150", "\155\151\156\114\145\156\147\164\150", "\155\141\170\114\145\156\147\164\150", "\160\141\164\164\145\162\156", "\155\151\156\111\156\143\154\165\163\151\166\145", "\155\141\170\111\156\143\154\165\163\151\166\145", "\155\151\156\105\170\143\154\165\163\151\166\145", "\155\141\170\105\170\143\154\165\163\151\166\145", "\164\157\164\141\154\104\151\147\151\164\163", "\146\162\141\143\164\151\157\156\104\151\147\151\164\163", "\104\114\123\141\146\145\122\165\154\145", "\102\157\144\171", "\110\145\141\144", "\103\154\141\163\163\101\164\157\155", "\104\141\164\141\122\141\156\147\145\101\164\157\155", "\117\142\152\145\143\164\120\162\157\160\145\162\164\171\101\164\157\155", "\104\141\164\141\120\162\157\160\145\162\164\171\101\164\157\155", "\102\165\151\154\164\111\156\101\164\157\155", "\123\141\155\145\111\156\144\151\166\151\144\165\141\154\101\164\157\155", "\104\151\146\146\145\162\145\156\164\111\156\144\151\166\151\144\165\141\154\163\101\164\157\155", "\126\141\162\151\141\142\154\145", "\104\145\163\143\162\151\160\164\151\157\156\107\162\141\160\150\122\165\154\145", "\104\145\163\143\162\151\160\164\151\157\156\107\162\141\160\150", "\116\157\144\145\163", "\116\157\144\145\101\163\163\145\162\164\151\157\156", "\105\144\147\145\163", "\105\144\147\145\101\163\163\145\162\164\151\157\156", "\115\141\151\156\103\154\141\163\163\145\163", "\75", null, null, null, null, null, null, null, null, null, null, null, };
+	public static final String[] jjstrLiteralImages = { "", null, null, null, null, null, null, null, null, null, null, null, "\50", "\51", "\117\156\164\157\154\157\147\171", "\114\141\142\145\154",
+			"\111\155\160\157\162\164", "\103\157\155\155\145\156\164", "\123\165\142\103\154\141\163\163\117\146", "\100", "\136\136",
+			"\105\161\165\151\166\141\154\145\156\164\103\154\141\163\163\145\163", "\104\151\163\152\157\151\156\164\103\154\141\163\163\145\163",
+			"\104\151\163\152\157\151\156\164\125\156\151\157\156", "\101\156\156\157\164\141\164\151\157\156", "\101\156\156\157\164\141\164\151\157\156\120\162\157\160\145\162\164\171",
+			"\101\156\156\157\164\141\164\151\157\156\101\163\163\145\162\164\151\157\156", "\123\165\142\101\156\156\157\164\141\164\151\157\156\120\162\157\160\145\162\164\171\117\146",
+			"\101\156\156\157\164\141\164\151\157\156\120\162\157\160\145\162\164\171\104\157\155\141\151\156",
+			"\101\156\156\157\164\141\164\151\157\156\120\162\157\160\145\162\164\171\122\141\156\147\145", "\110\141\163\113\145\171", "\104\145\143\154\141\162\141\164\151\157\156",
+			"\104\157\143\165\155\145\156\164\141\164\151\157\156", "\103\154\141\163\163", "\117\142\152\145\143\164\120\162\157\160\145\162\164\171",
+			"\104\141\164\141\120\162\157\160\145\162\164\171", "\116\141\155\145\144\111\156\144\151\166\151\144\165\141\154", "\104\141\164\141\164\171\160\145",
+			"\104\141\164\141\117\156\145\117\146", "\104\141\164\141\125\156\151\157\156\117\146", "\104\141\164\141\111\156\164\145\162\163\145\143\164\151\157\156\117\146",
+			"\117\142\152\145\143\164\117\156\145\117\146", "\117\142\152\145\143\164\125\156\151\157\156\117\146", "\117\142\152\145\143\164\110\141\163\126\141\154\165\145",
+			"\117\142\152\145\143\164\111\156\166\145\162\163\145\117\146", "\111\156\166\145\162\163\145\117\142\152\145\143\164\120\162\157\160\145\162\164\151\145\163",
+			"\104\141\164\141\103\157\155\160\154\145\155\145\156\164\117\146", "\104\141\164\141\164\171\160\145\122\145\163\164\162\151\143\164\151\157\156",
+			"\104\141\164\141\164\171\160\145\104\145\146\151\156\151\164\151\157\156", "\117\142\152\145\143\164\111\156\164\145\162\163\145\143\164\151\157\156\117\146",
+			"\117\142\152\145\143\164\103\157\155\160\154\145\155\145\156\164\117\146", "\117\142\152\145\143\164\101\154\154\126\141\154\165\145\163\106\162\157\155",
+			"\117\142\152\145\143\164\123\157\155\145\126\141\154\165\145\163\106\162\157\155", "\117\142\152\145\143\164\110\141\163\123\145\154\146",
+			"\117\142\152\145\143\164\115\151\156\103\141\162\144\151\156\141\154\151\164\171", "\117\142\152\145\143\164\115\141\170\103\141\162\144\151\156\141\154\151\164\171",
+			"\117\142\152\145\143\164\105\170\141\143\164\103\141\162\144\151\156\141\154\151\164\171", "\104\141\164\141\101\154\154\126\141\154\165\145\163\106\162\157\155",
+			"\104\141\164\141\123\157\155\145\126\141\154\165\145\163\106\162\157\155", "\104\141\164\141\110\141\163\126\141\154\165\145",
+			"\104\141\164\141\115\151\156\103\141\162\144\151\156\141\154\151\164\171", "\104\141\164\141\115\141\170\103\141\162\144\151\156\141\154\151\164\171",
+			"\104\141\164\141\105\170\141\143\164\103\141\162\144\151\156\141\154\151\164\171", "\117\142\152\145\143\164\120\162\157\160\145\162\164\171\103\150\141\151\156",
+			"\123\165\142\117\142\152\145\143\164\120\162\157\160\145\162\164\171\117\146", "\105\161\165\151\166\141\154\145\156\164\117\142\152\145\143\164\120\162\157\160\145\162\164\151\145\163",
+			"\104\151\163\152\157\151\156\164\117\142\152\145\143\164\120\162\157\160\145\162\164\151\145\163", "\117\142\152\145\143\164\120\162\157\160\145\162\164\171\104\157\155\141\151\156",
+			"\117\142\152\145\143\164\120\162\157\160\145\162\164\171\122\141\156\147\145", "\106\165\156\143\164\151\157\156\141\154\117\142\152\145\143\164\120\162\157\160\145\162\164\171",
+			"\111\156\166\145\162\163\145\106\165\156\143\164\151\157\156\141\154\117\142\152\145\143\164\120\162\157\160\145\162\164\171",
+			"\122\145\146\154\145\170\151\166\145\117\142\152\145\143\164\120\162\157\160\145\162\164\171",
+			"\111\162\162\145\146\154\145\170\151\166\145\117\142\152\145\143\164\120\162\157\160\145\162\164\171",
+			"\123\171\155\155\145\164\162\151\143\117\142\152\145\143\164\120\162\157\160\145\162\164\171",
+			"\101\163\171\155\155\145\164\162\151\143\117\142\152\145\143\164\120\162\157\160\145\162\164\171",
+			"\124\162\141\156\163\151\164\151\166\145\117\142\152\145\143\164\120\162\157\160\145\162\164\171", "\123\165\142\104\141\164\141\120\162\157\160\145\162\164\171\117\146",
+			"\105\161\165\151\166\141\154\145\156\164\104\141\164\141\120\162\157\160\145\162\164\151\145\163",
+			"\104\151\163\152\157\151\156\164\104\141\164\141\120\162\157\160\145\162\164\151\145\163", "\104\141\164\141\120\162\157\160\145\162\164\171\104\157\155\141\151\156",
+			"\104\141\164\141\120\162\157\160\145\162\164\171\122\141\156\147\145", "\106\165\156\143\164\151\157\156\141\154\104\141\164\141\120\162\157\160\145\162\164\171",
+			"\123\141\155\145\111\156\144\151\166\151\144\165\141\154", "\104\151\146\146\145\162\145\156\164\111\156\144\151\166\151\144\165\141\154\163",
+			"\103\154\141\163\163\101\163\163\145\162\164\151\157\156", "\117\142\152\145\143\164\120\162\157\160\145\162\164\171\101\163\163\145\162\164\151\157\156",
+			"\116\145\147\141\164\151\166\145\117\142\152\145\143\164\120\162\157\160\145\162\164\171\101\163\163\145\162\164\151\157\156",
+			"\104\141\164\141\120\162\157\160\145\162\164\171\101\163\163\145\162\164\151\157\156",
+			"\116\145\147\141\164\151\166\145\104\141\164\141\120\162\157\160\145\162\164\171\101\163\163\145\162\164\151\157\156", "\120\162\145\146\151\170", "\154\145\156\147\164\150",
+			"\155\151\156\114\145\156\147\164\150", "\155\141\170\114\145\156\147\164\150", "\160\141\164\164\145\162\156", "\155\151\156\111\156\143\154\165\163\151\166\145",
+			"\155\141\170\111\156\143\154\165\163\151\166\145", "\155\151\156\105\170\143\154\165\163\151\166\145", "\155\141\170\105\170\143\154\165\163\151\166\145",
+			"\164\157\164\141\154\104\151\147\151\164\163", "\146\162\141\143\164\151\157\156\104\151\147\151\164\163", "\104\114\123\141\146\145\122\165\154\145", "\102\157\144\171",
+			"\110\145\141\144", "\103\154\141\163\163\101\164\157\155", "\104\141\164\141\122\141\156\147\145\101\164\157\155",
+			"\117\142\152\145\143\164\120\162\157\160\145\162\164\171\101\164\157\155", "\104\141\164\141\120\162\157\160\145\162\164\171\101\164\157\155",
+			"\102\165\151\154\164\111\156\101\164\157\155", "\123\141\155\145\111\156\144\151\166\151\144\165\141\154\101\164\157\155",
+			"\104\151\146\146\145\162\145\156\164\111\156\144\151\166\151\144\165\141\154\163\101\164\157\155", "\126\141\162\151\141\142\154\145",
+			"\104\145\163\143\162\151\160\164\151\157\156\107\162\141\160\150\122\165\154\145", "\104\145\163\143\162\151\160\164\151\157\156\107\162\141\160\150", "\116\157\144\145\163",
+			"\116\157\144\145\101\163\163\145\162\164\151\157\156", "\105\144\147\145\163", "\105\144\147\145\101\163\163\145\162\164\151\157\156", "\115\141\151\156\103\154\141\163\163\145\163",
+			"\75", null, null, null, null, null, null, null, null, null, null, null, };
 
 	protected Token jjFillToken()
 	{
@@ -3180,7 +2810,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		final int beginColumn;
 		final int endColumn;
 		final String im = jjstrLiteralImages[jjmatchedKind];
-		curTokenImage = (im == null) ? input_stream.GetImage() : im;
+		curTokenImage = im == null ? input_stream.GetImage() : im;
 		beginLine = input_stream.getBeginLine();
 		beginColumn = input_stream.getBeginColumn();
 		endLine = input_stream.getEndLine();
@@ -3195,12 +2825,12 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		return t;
 	}
 
-	int curLexState = 0;
-	int defaultLexState = 0;
-	int jjnewStateCnt;
-	int jjround;
-	int jjmatchedPos;
-	int jjmatchedKind;
+	int	curLexState		= 0;
+	int	defaultLexState	= 0;
+	int	jjnewStateCnt;
+	int	jjround;
+	int	jjmatchedPos;
+	int	jjmatchedKind;
 
 	/** Get the next Token. */
 	public Token getNextToken()
@@ -3230,7 +2860,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 						try
 						{
 							input_stream.backup(0);
-							while (curChar <= 32 && (0x100002600L & (1L << curChar)) != 0L)
+							while (curChar <= 32 && (0x100002600L & 1L << curChar) != 0L)
 								curChar = input_stream.BeginToken();
 						}
 						catch (final java.io.IOException e1)
@@ -3240,10 +2870,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 						jjmatchedKind = 0x7fffffff;
 						jjmatchedPos = 0;
 						curPos = jjMoveStringLiteralDfa0_0();
-						if (jjmatchedPos == 0 && jjmatchedKind > 129)
-						{
-							jjmatchedKind = 129;
-						}
+						if (jjmatchedPos == 0 && jjmatchedKind > 129) jjmatchedKind = 129;
 						break;
 					case 1:
 						jjmatchedKind = 0x7fffffff;
@@ -3258,24 +2885,19 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 				}
 				if (jjmatchedKind != 0x7fffffff)
 				{
-					if (jjmatchedPos + 1 < curPos)
-						input_stream.backup(curPos - jjmatchedPos - 1);
-					if ((jjtoToken[jjmatchedKind >> 6] & (1L << (jjmatchedKind & 077))) != 0L)
+					if (jjmatchedPos + 1 < curPos) input_stream.backup(curPos - jjmatchedPos - 1);
+					if ((jjtoToken[jjmatchedKind >> 6] & 1L << (jjmatchedKind & 077)) != 0L)
 					{
 						matchedToken = jjFillToken();
-						if (jjnewLexState[jjmatchedKind] != -1)
-							curLexState = jjnewLexState[jjmatchedKind];
+						if (jjnewLexState[jjmatchedKind] != -1) curLexState = jjnewLexState[jjmatchedKind];
 						return matchedToken;
 					}
-					else
-						if ((jjtoSkip[jjmatchedKind >> 6] & (1L << (jjmatchedKind & 077))) != 0L)
-						{
-							if (jjnewLexState[jjmatchedKind] != -1)
-								curLexState = jjnewLexState[jjmatchedKind];
-							continue EOFLoop;
-						}
-					if (jjnewLexState[jjmatchedKind] != -1)
-						curLexState = jjnewLexState[jjmatchedKind];
+					else if ((jjtoSkip[jjmatchedKind >> 6] & 1L << (jjmatchedKind & 077)) != 0L)
+					{
+						if (jjnewLexState[jjmatchedKind] != -1) curLexState = jjnewLexState[jjmatchedKind];
+						continue EOFLoop;
+					}
+					if (jjnewLexState[jjmatchedKind] != -1) curLexState = jjnewLexState[jjmatchedKind];
 					curPos = 0;
 					jjmatchedKind = 0x7fffffff;
 					try
@@ -3318,7 +2940,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		}
 	}
 
-	private void jjCheckNAdd(int state)
+	private void jjCheckNAdd(final int state)
 	{
 		if (jjrounds[state] != jjround)
 		{
@@ -3327,47 +2949,44 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 		}
 	}
 
-	private void jjAddStates(int start, int end)
+	private void jjAddStates(int start, final int end)
 	{
 		do
-		{
 			jjstateSet[jjnewStateCnt++] = jjnextStates[start];
-		} while (start++ != end);
+		while (start++ != end);
 	}
 
-	private void jjCheckNAddTwoStates(int state1, int state2)
+	private void jjCheckNAddTwoStates(final int state1, final int state2)
 	{
 		jjCheckNAdd(state1);
 		jjCheckNAdd(state2);
 	}
 
-	private void jjCheckNAddStates(int start, int end)
+	private void jjCheckNAddStates(int start, final int end)
 	{
 		do
-		{
 			jjCheckNAdd(jjnextStates[start]);
-		} while (start++ != end);
+		while (start++ != end);
 	}
 
 	/** Constructor. */
-	public OWLFunctionalSyntaxParserTokenManager(SimpleCharStream stream)
+	public OWLFunctionalSyntaxParserTokenManager(final SimpleCharStream stream)
 	{
 
-		if (SimpleCharStream.staticFlag)
-			throw new Error("ERROR: Cannot use a static CharStream class with a non-static lexical analyzer.");
+		if (SimpleCharStream.staticFlag) throw new Error("ERROR: Cannot use a static CharStream class with a non-static lexical analyzer.");
 
 		input_stream = stream;
 	}
 
 	/** Constructor. */
-	public OWLFunctionalSyntaxParserTokenManager(SimpleCharStream stream, int lexState)
+	public OWLFunctionalSyntaxParserTokenManager(final SimpleCharStream stream, final int lexState)
 	{
 		ReInit(stream);
 		SwitchTo(lexState);
 	}
 
 	/** Reinitialise parser. */
-	public void ReInit(SimpleCharStream stream)
+	public void ReInit(final SimpleCharStream stream)
 	{
 
 		jjmatchedPos = jjnewStateCnt = 0;
@@ -3385,7 +3004,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 	}
 
 	/** Reinitialise parser. */
-	public void ReInit(SimpleCharStream stream, int lexState)
+	public void ReInit(final SimpleCharStream stream, final int lexState)
 	{
 
 		ReInit(stream);
@@ -3393,7 +3012,7 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 	}
 
 	/** Switch to specified lex state. */
-	public void SwitchTo(int lexState)
+	public void SwitchTo(final int lexState)
 	{
 		if (lexState >= 3 || lexState < 0)
 			throw new TokenMgrError("Error: Ignoring invalid lexical state : " + lexState + ". State unchanged.", TokenMgrError.INVALID_LEXICAL_STATE);
@@ -3402,17 +3021,19 @@ public class OWLFunctionalSyntaxParserTokenManager implements OWLFunctionalSynta
 	}
 
 	/** Lexer state names. */
-	public static final String[] lexStateNames = { "DEFAULT", "IN_COMMENT", "IN_STRING_LITERAL", };
+	public static final String[]	lexStateNames	= { "DEFAULT", "IN_COMMENT", "IN_STRING_LITERAL", };
 
 	/** Lex State array. */
-	public static final int[] jjnewLexState = { -1, -1, -1, -1, -1, 1, -1, 0, 2, -1, -1, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, };
-	static final long[] jjtoToken = { 0xfffffffffffff801L, 0xffffffffffffffffL, 0x3L, };
-	static final long[] jjtoSkip = { 0xdeL, 0x0L, 0x0L, };
-	static final long[] jjtoMore = { 0x720L, 0x0L, 0x0L, };
-	protected SimpleCharStream input_stream;
+	public static final int[]		jjnewLexState	= { -1, -1, -1, -1, -1, 1, -1, 0, 2, -1, -1, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+			-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+			-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, };
+	static final long[]				jjtoToken		= { 0xfffffffffffff801L, 0xffffffffffffffffL, 0x3L, };
+	static final long[]				jjtoSkip		= { 0xdeL, 0x0L, 0x0L, };
+	static final long[]				jjtoMore		= { 0x720L, 0x0L, 0x0L, };
+	protected SimpleCharStream		input_stream;
 
-	private final int[] jjrounds = new int[27];
-	private final int[] jjstateSet = new int[2 * 27];
+	private final int[]				jjrounds		= new int[27];
+	private final int[]				jjstateSet		= new int[2 * 27];
 
-	protected int curChar;
+	protected int					curChar;
 }

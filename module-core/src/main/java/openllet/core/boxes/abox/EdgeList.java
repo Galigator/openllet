@@ -64,8 +64,8 @@ public class EdgeList extends ArrayList<Edge>
 	/**
 	 * Remove an element by replacing it by the last element. Order isn't preserved.
 	 *
-	 * @param edge to remove
-	 * @return true if removing occured
+	 * @param  edge to remove
+	 * @return      true if removing occured
 	 */
 	public boolean removeEdge(final Edge edge)
 	{
@@ -105,8 +105,7 @@ public class EdgeList extends ArrayList<Edge>
 		final EdgeList result = new EdgeList();
 
 		for (final Edge e : this)
-			if ((from == null || from.equals(e.getFrom())) && (role == null || e.getRole().isSubRoleOf(role)) && (to == null || to.equals(e.getTo())))
-				result.add(e);
+			if ((from == null || from.equals(e.getFrom())) && (role == null || e.getRole().isSubRoleOf(role)) && (to == null || to.equals(e.getTo()))) result.add(e);
 
 		return result;
 	}
@@ -131,8 +130,7 @@ public class EdgeList extends ArrayList<Edge>
 		final EdgeList result = new EdgeList();
 
 		for (final Edge e : this)
-			if (e.getRole().isSubRoleOf(role))
-				result.add(e);
+			if (e.getRole().isSubRoleOf(role)) result.add(e);
 
 		return result;
 	}
@@ -160,9 +158,9 @@ public class EdgeList extends ArrayList<Edge>
 	/**
 	 * Find the neighbors of a _node that has a certain type. For literals, we collect only the ones with the same language tag.
 	 *
-	 * @param node The _node whose neighbors are being sought
-	 * @param c The concept (or datatype) that each _neighbor should belong to
-	 * @return Set of _nodes
+	 * @param  node The _node whose neighbors are being sought
+	 * @param  c    The concept (or datatype) that each _neighbor should belong to
+	 * @return      Set of _nodes
 	 */
 	public Set<Node> getFilteredNeighbors(final Individual node, final ATermAppl c)
 	{
@@ -175,21 +173,18 @@ public class EdgeList extends ArrayList<Edge>
 
 			if (!ATermUtils.isTop(c) && !neighbor.hasType(c))
 				continue;
-			else
-				if (neighbor instanceof Literal)
+			else if (neighbor instanceof Literal)
+			{
+				final Literal lit = (Literal) neighbor;
+				if (lang == null)
 				{
-					final Literal lit = (Literal) neighbor;
-					if (lang == null)
-					{
-						lang = lit.getLang();
-						result.add(neighbor);
-					}
-					else
-						if (lang.equals(lit.getLang()))
-							result.add(neighbor);
-				}
-				else
+					lang = lit.getLang();
 					result.add(neighbor);
+				}
+				else if (lang.equals(lit.getLang())) result.add(neighbor);
+			}
+			else
+				result.add(neighbor);
 		}
 
 		return result;
@@ -215,16 +210,15 @@ public class EdgeList extends ArrayList<Edge>
 	 * predicates are matched by considering the subproperty hierarchy, i.e. passing the parameter <code>sup</code> to this function will return
 	 * <code>true</code> if an edge with subproperty <code>sub</code> exists.
 	 *
-	 * @param from
-	 * @param role
-	 * @param to
-	 * @return true if contains an edge that match
+	 * @param  from
+	 * @param  role
+	 * @param  to
+	 * @return      true if contains an edge that match
 	 */
 	public boolean hasEdge(final Individual from, final Role role, final Node to)
 	{
 		for (final Edge e : this)
-			if ((from == null || from.equals(e.getFrom())) && (role == null || e.getRole().isSubRoleOf(role)) && (to == null || to.equals(e.getTo())))
-				return true;
+			if ((from == null || from.equals(e.getFrom())) && (role == null || e.getRole().isSubRoleOf(role)) && (to == null || to.equals(e.getTo()))) return true;
 
 		return false;
 	}
@@ -233,16 +227,15 @@ public class EdgeList extends ArrayList<Edge>
 	 * Similar to {@link #hasEdge(Individual, Role, Node)} but does not consider subproperty hierarchy for matching so only exact predicate matches are
 	 * considered.
 	 *
-	 * @param from
-	 * @param role
-	 * @param to
-	 * @return true if contains an edge that match
+	 * @param  from
+	 * @param  role
+	 * @param  to
+	 * @return      true if contains an edge that match
 	 */
 	public boolean hasExactEdge(final Individual from, final Role role, final Node to)
 	{
 		for (final Edge e : this)
-			if ((from == null || from.equals(e.getFrom())) && (role == null || e.getRole().equals(role)) && (to == null || to.equals(e.getTo())))
-				return true;
+			if ((from == null || from.equals(e.getFrom())) && (role == null || e.getRole().equals(role)) && (to == null || to.equals(e.getTo()))) return true;
 
 		return false;
 	}
@@ -255,8 +248,7 @@ public class EdgeList extends ArrayList<Edge>
 	public Edge getExactEdge(final Individual from, final Role role, final Node to)
 	{
 		for (final Edge e : this)
-			if ((from == null || from.equals(e.getFrom())) && (role == null || e.getRole().equals(role)) && (to == null || to.equals(e.getTo())))
-				return e;
+			if ((from == null || from.equals(e.getFrom())) && (role == null || e.getRole().equals(role)) && (to == null || to.equals(e.getTo()))) return e;
 
 		return null;
 	}
@@ -280,8 +272,7 @@ public class EdgeList extends ArrayList<Edge>
 		{
 			final Edge e = get(i);
 
-			if (e.getDepends().getBranch() != DependencySet.NO_BRANCH)
-				removeEdge(i--);
+			if (e.getDepends().getBranch() != DependencySet.NO_BRANCH) removeEdge(i--);
 		}
 	}
 }

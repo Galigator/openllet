@@ -27,27 +27,27 @@ import openllet.shared.tools.Logging;
  */
 public interface RBox extends Logging
 {
-	public Taxonomy<ATermAppl> getObjectTaxonomy();
+	Taxonomy<ATermAppl> getObjectTaxonomy();
 
-	public void setObjectTaxonomy(Taxonomy<ATermAppl> objectTaxonomy);
+	void setObjectTaxonomy(Taxonomy<ATermAppl> objectTaxonomy);
 
-	public Taxonomy<ATermAppl> getDataTaxonomy();
+	Taxonomy<ATermAppl> getDataTaxonomy();
 
-	public void setDataTaxonomy(Taxonomy<ATermAppl> dataTaxonomy);
+	void setDataTaxonomy(Taxonomy<ATermAppl> dataTaxonomy);
 
-	public Taxonomy<ATermAppl> getAnnotationTaxonomy();
+	Taxonomy<ATermAppl> getAnnotationTaxonomy();
 
-	public void setAnnotationTaxonomy(Taxonomy<ATermAppl> annotationTaxonomy);
+	void setAnnotationTaxonomy(Taxonomy<ATermAppl> annotationTaxonomy);
 
-	public Map<ATermAppl, Role> getRoles();
+	Map<ATermAppl, Role> getRoles();
 
-	public Set<Role> getReflexiveRoles();
+	Set<Role> getReflexiveRoles();
 
-	public Map<Role, Map<ATermAppl, Set<Set<ATermAppl>>>> getDomainAssertions();
+	Map<Role, Map<ATermAppl, Set<Set<ATermAppl>>>> getDomainAssertions();
 
-	public Map<Role, Map<ATermAppl, Set<Set<ATermAppl>>>> getRangeAssertions();
+	Map<Role, Map<ATermAppl, Set<Set<ATermAppl>>>> getRangeAssertions();
 
-	public FSMBuilder getFsmBuilder();
+	FSMBuilder getFsmBuilder();
 
 	//	/**
 	//	 * @return Returns the getRoles().
@@ -57,15 +57,15 @@ public interface RBox extends Logging
 	//		return getRoles().keySet();
 	//	}
 
-	public boolean isObjectTaxonomyPrepared();
+	boolean isObjectTaxonomyPrepared();
 
-	public boolean isDataTaxonomyPrepared();
+	boolean isDataTaxonomyPrepared();
 
-	public boolean isAnnotationTaxonomyPrepared();
+	boolean isAnnotationTaxonomyPrepared();
 
 	/**
-	 * @param r Name (URI) of the role
-	 * @return the role with the given name
+	 * @param  r Name (URI) of the role
+	 * @return   the role with the given name
 	 */
 	default Role getRole(final ATerm r)
 	{
@@ -73,15 +73,14 @@ public interface RBox extends Logging
 	}
 
 	/**
-	 * @param r Name (URI) of the role
-	 * @return the role with the given name and throw and exception if it is not found.
+	 * @param  r Name (URI) of the role
+	 * @return   the role with the given name and throw and exception if it is not found.
 	 */
 	default Role getDefinedRole(final ATerm r)
 	{
 		final Role role = getRoles().get(r);
 
-		if (role == null)
-			throw new OpenError(r + " is not defined as a property");
+		if (role == null) throw new OpenError(r + " is not defined as a property");
 
 		return role;
 	}
@@ -99,30 +98,29 @@ public interface RBox extends Logging
 		return role;
 	}
 
-	abstract void propogateDomain(final Role role, final Map<ATermAppl, Set<Set<ATermAppl>>> domains);
+	void propogateDomain(final Role role, final Map<ATermAppl, Set<Set<ATermAppl>>> domains);
 
-	abstract void propogateRange(final Role role, final Map<ATermAppl, Set<Set<ATermAppl>>> ranges);
+	void propogateRange(final Role role, final Map<ATermAppl, Set<Set<ATermAppl>>> ranges);
 
-	abstract void computeImmediateSubRoles(final Role r, final Map<ATerm, DependencySet> subs);
+	void computeImmediateSubRoles(final Role r, final Map<ATerm, DependencySet> subs);
 
-	abstract void computeSubRoles(final Role r, final Set<Role> subRoles, final Set<ATermList> subRoleChains, final Map<ATerm, DependencySet> dependencies, final DependencySet ds);
+	void computeSubRoles(final Role r, final Set<Role> subRoles, final Set<ATermList> subRoleChains, final Map<ATerm, DependencySet> dependencies, final DependencySet ds);
 
 	/**
 	 * Add a non-asserted property range axiom
 	 *
-	 * @param p The property
-	 * @param range
-	 * @param explanation
-	 * @param a A class expression for the domain
-	 * @param clashExplanation A set of {@link ATermAppl}s that explain the range axiom.
-	 * @return <code>true</code> if range add was successful, <code>false</code> else
+	 * @param  p                        The property
+	 * @param  range
+	 * @param  explanation
+	 * @param  a                        A class expression for the domain
+	 * @param  clashExplanation         A set of {@link ATermAppl}s that explain the range axiom.
+	 * @return                          <code>true</code> if range add was successful, <code>false</code> else
 	 * @throws IllegalArgumentException if <code>p</code> is not a defined property.
 	 */
 	default boolean addRange(final ATerm p, final ATermAppl range, final Set<ATermAppl> explanation)
 	{
 		final Role r = getRole(p);
-		if (r == null)
-			throw new IllegalArgumentException(p + " is not defined as a property");
+		if (r == null) throw new IllegalArgumentException(p + " is not defined as a property");
 
 		Map<ATermAppl, Set<Set<ATermAppl>>> ranges = getRangeAssertions().get(r);
 		if (ranges == null)
@@ -144,9 +142,9 @@ public interface RBox extends Logging
 	/**
 	 * Add an asserted property range axiom
 	 *
-	 * @param p The property
-	 * @param range A class expression for the range
-	 * @return <code>true</code> if range add was successful, <code>false</code> else
+	 * @param  p                        The property
+	 * @param  range                    A class expression for the range
+	 * @return                          <code>true</code> if range add was successful, <code>false</code> else
 	 * @throws IllegalArgumentException if <code>p</code> is not a defined property.
 	 */
 	default boolean addRange(final ATerm p, final ATermAppl range)
@@ -263,17 +261,15 @@ public interface RBox extends Logging
 
 		if (roleSup == null)
 			return false;
+		else if (sub.getType() == ATerm.LIST)
+			roleSup.addSubRoleChain((ATermList) sub, ds);
+		else if (roleSub == null)
+			return false;
 		else
-			if (sub.getType() == ATerm.LIST)
-				roleSup.addSubRoleChain((ATermList) sub, ds);
-			else
-				if (roleSub == null)
-					return false;
-				else
-				{
-					roleSup.addSubRole(roleSub, ds);
-					roleSub.addSuperRole(roleSup, ds);
-				}
+		{
+			roleSup.addSubRole(roleSub, ds);
+			roleSub.addSuperRole(roleSup, ds);
+		}
 
 		// TODO Need to figure out what to do about about role lists
 		// explanationTable.add(ATermUtils.makeSub(sub, sup), ds);
@@ -291,8 +287,7 @@ public interface RBox extends Logging
 		final Role roleS = getRole(s);
 		final Role roleR = getRole(r);
 
-		if (roleS == null || roleR == null)
-			return false;
+		if (roleS == null || roleR == null) return false;
 
 		roleR.addSubRole(roleS, ds);
 		roleR.addSuperRole(roleS, ds);
@@ -315,8 +310,7 @@ public interface RBox extends Logging
 		final Role roleS = getRole(s);
 		final Role roleR = getRole(r);
 
-		if (roleS == null || roleR == null)
-			return false;
+		if (roleS == null || roleR == null) return false;
 
 		roleR.addDisjointRole(roleS, ds);
 		roleS.addDisjointRole(roleR, ds);
@@ -327,17 +321,16 @@ public interface RBox extends Logging
 	/**
 	 * Add a non-asserted property domain axiom
 	 *
-	 * @param p The property
-	 * @param domain A class expression for the domain
-	 * @param explanation A set of {@link ATermAppl}s that explain the domain axiom.
-	 * @return <code>true</code> if domain add was successful, <code>false</code> else
+	 * @param  p                        The property
+	 * @param  domain                   A class expression for the domain
+	 * @param  explanation              A set of {@link ATermAppl}s that explain the domain axiom.
+	 * @return                          <code>true</code> if domain add was successful, <code>false</code> else
 	 * @throws IllegalArgumentException if <code>p</code> is not a defined property.
 	 */
 	default boolean addDomain(final ATerm p, final ATermAppl domain, final Set<ATermAppl> explanation)
 	{
 		final Role r = getRole(p);
-		if (r == null)
-			throw new IllegalArgumentException(p + " is not defined as a property");
+		if (r == null) throw new IllegalArgumentException(p + " is not defined as a property");
 
 		Map<ATermAppl, Set<Set<ATermAppl>>> domains = getDomainAssertions().get(r);
 		if (domains == null)
@@ -359,9 +352,9 @@ public interface RBox extends Logging
 	/**
 	 * Add an asserted property domain axiom
 	 *
-	 * @param p The property
-	 * @param a A class expression for the domain
-	 * @return <code>true</code> if domain add was successful, <code>false</code> else
+	 * @param  p                        The property
+	 * @param  a                        A class expression for the domain
+	 * @return                          <code>true</code> if domain add was successful, <code>false</code> else
 	 * @throws IllegalArgumentException if <code>p</code> is not a defined property.
 	 */
 	default boolean addDomain(final ATerm p, final ATermAppl a)
@@ -384,9 +377,9 @@ public interface RBox extends Logging
 		return true;
 	}
 
-	public Iterator<ATermAppl> getAssertedDomains(final Role r);
+	Iterator<ATermAppl> getAssertedDomains(final Role r);
 
-	public Iterator<ATermAppl> getAssertedRanges(final Role r);
+	Iterator<ATermAppl> getAssertedRanges(final Role r);
 
 	//	@Deprecated
 	//	default boolean isDomainAsserted(final ATerm p, final ATermAppl domain)
@@ -429,8 +422,8 @@ public interface RBox extends Logging
 	//	}
 
 	/**
-	 * @param r
-	 * @return true if the term is declared as a role
+	 * @param  r
+	 * @return   true if the term is declared as a role
 	 */
 	default boolean isRole(final ATerm r)
 	{
@@ -480,23 +473,14 @@ public interface RBox extends Logging
 			{
 				if (invR.isTransitive() && !role.isTransitive())
 					role.setTransitive(true, invR.getExplainTransitive());
-				else
-					if (role.isTransitive() && !invR.isTransitive())
-						invR.setTransitive(true, role.getExplainTransitive());
-				if (invR.isFunctional() && !role.isInverseFunctional())
-					role.setInverseFunctional(true, invR.getExplainFunctional());
-				if (role.isFunctional() && !invR.isInverseFunctional())
-					invR.setInverseFunctional(true, role.getExplainFunctional());
-				if (invR.isInverseFunctional() && !role.isFunctional())
-					role.setFunctional(true, invR.getExplainInverseFunctional());
-				if (invR.isAsymmetric() && !role.isAsymmetric())
-					role.setAsymmetric(true, invR.getExplainAsymmetric());
-				if (role.isAsymmetric() && !invR.isAsymmetric())
-					invR.setAsymmetric(true, role.getExplainAsymmetric());
-				if (invR.isReflexive() && !role.isReflexive())
-					role.setReflexive(true, invR.getExplainReflexive());
-				if (role.isReflexive() && !invR.isReflexive())
-					invR.setReflexive(true, role.getExplainReflexive());
+				else if (role.isTransitive() && !invR.isTransitive()) invR.setTransitive(true, role.getExplainTransitive());
+				if (invR.isFunctional() && !role.isInverseFunctional()) role.setInverseFunctional(true, invR.getExplainFunctional());
+				if (role.isFunctional() && !invR.isInverseFunctional()) invR.setInverseFunctional(true, role.getExplainFunctional());
+				if (invR.isInverseFunctional() && !role.isFunctional()) role.setFunctional(true, invR.getExplainInverseFunctional());
+				if (invR.isAsymmetric() && !role.isAsymmetric()) role.setAsymmetric(true, invR.getExplainAsymmetric());
+				if (role.isAsymmetric() && !invR.isAsymmetric()) invR.setAsymmetric(true, role.getExplainAsymmetric());
+				if (invR.isReflexive() && !role.isReflexive()) role.setReflexive(true, invR.getExplainReflexive());
+				if (role.isReflexive() && !invR.isReflexive()) invR.setReflexive(true, role.getExplainReflexive());
 
 				for (final Role disjointR : role.getDisjointRoles())
 					invR.addDisjointRole(disjointR.getInverse(), role.getExplainDisjointRole(disjointR));
@@ -504,10 +488,8 @@ public interface RBox extends Logging
 
 			for (final Role s : role.getSubRoles())
 			{
-				if (role.isForceSimple())
-					s.setForceSimple(true);
-				if (!s.isSimple())
-					role.setSimple(false);
+				if (role.isForceSimple()) s.setForceSimple(true);
+				if (!s.isSimple()) role.setSimple(false);
 			}
 		}
 
@@ -516,8 +498,7 @@ public interface RBox extends Logging
 		{
 			if (r.isForceSimple())
 			{
-				if (!r.isSimple())
-					ignoreTransitivity(r);
+				if (!r.isSimple()) ignoreTransitivity(r);
 			}
 			else
 			{
@@ -533,17 +514,14 @@ public interface RBox extends Logging
 						}
 						r.addTransitiveSubRole(s);
 					}
-				if (isTransitive != r.isTransitive())
-					r.setTransitive(isTransitive, transitiveDS);
+				if (isTransitive != r.isTransitive()) r.setTransitive(isTransitive, transitiveDS);
 			}
 
-			if (r.isFunctional())
-				r.addFunctionalSuper(r);
+			if (r.isFunctional()) r.addFunctionalSuper(r);
 
 			for (final Role s : r.getSuperRoles())
 			{
-				if (s.equals(r))
-					continue;
+				if (s.equals(r)) continue;
 
 				final DependencySet supDS = OpenlletOptions.USE_TRACING ? r.getExplainSuper(s.getName()) : DependencySet.INDEPENDENT;
 
@@ -573,8 +551,7 @@ public interface RBox extends Logging
 				}
 			}
 
-			if (r.isReflexive() && !r.isAnon())
-				getReflexiveRoles().add(r);
+			if (r.isReflexive() && !r.isAnon()) getReflexiveRoles().add(r);
 
 			getLogger().fine(() -> r.debugString());
 		}
@@ -611,56 +588,44 @@ public interface RBox extends Logging
 
 	default boolean removeDomain(final ATerm p, final ATermAppl domain)
 	{
-		if (!OpenlletOptions.USE_TRACING)
-			return false;
+		if (!OpenlletOptions.USE_TRACING) return false;
 
 		final Role r = getRole(p);
-		if (r == null)
-			return false;
+		if (r == null) return false;
 
 		final Map<ATermAppl, Set<Set<ATermAppl>>> domains = getDomainAssertions().get(r);
-		if (domains == null)
-			return false;
+		if (domains == null) return false;
 
 		final Set<Set<ATermAppl>> allExplanations = domains.get(domain);
-		if (allExplanations == null)
-			return false;
+		if (allExplanations == null) return false;
 
 		final Set<ATermAppl> explanation = Collections.singleton(ATermUtils.makeDomain(p, domain));
 
-		if (!allExplanations.remove(explanation))
-			return false;
+		if (!allExplanations.remove(explanation)) return false;
 
-		if (allExplanations.isEmpty())
-			domains.remove(domain);
+		if (allExplanations.isEmpty()) domains.remove(domain);
 
 		return true;
 	}
 
 	default boolean removeRange(final ATerm p, final ATermAppl range)
 	{
-		if (!OpenlletOptions.USE_TRACING)
-			return false;
+		if (!OpenlletOptions.USE_TRACING) return false;
 
 		final Role r = getRole(p);
-		if (r == null)
-			return false;
+		if (r == null) return false;
 
 		final Map<ATermAppl, Set<Set<ATermAppl>>> ranges = getRangeAssertions().get(r);
-		if (ranges == null)
-			return false;
+		if (ranges == null) return false;
 
 		final Set<Set<ATermAppl>> allExplanations = ranges.get(range);
-		if (allExplanations == null)
-			return false;
+		if (allExplanations == null) return false;
 
 		final Set<ATermAppl> explanation = Collections.singleton(ATermUtils.makeRange(p, range));
 
-		if (!allExplanations.remove(explanation))
-			return false;
+		if (!allExplanations.remove(explanation)) return false;
 
-		if (allExplanations.isEmpty())
-			ranges.remove(range);
+		if (allExplanations.isEmpty()) ranges.remove(range);
 
 		return true;
 	}
@@ -671,8 +636,7 @@ public interface RBox extends Logging
 
 		final String msg = "Unsupported axiom: Ignoring transitivity and/or complex subproperty axioms for " + namedRole;
 
-		if (!OpenlletOptions.IGNORE_UNSUPPORTED_AXIOMS)
-			throw new UnsupportedFeatureException(msg);
+		if (!OpenlletOptions.IGNORE_UNSUPPORTED_AXIOMS) throw new UnsupportedFeatureException(msg);
 
 		getLogger().warning(msg);
 
@@ -690,8 +654,8 @@ public interface RBox extends Logging
 	/**
 	 * For each role in the list finds an inverse role and returns the new list.
 	 *
-	 * @param roles
-	 * @return inverses of the roles
+	 * @param  roles
+	 * @return       inverses of the roles
 	 */
 	default ATermList inverse(final ATermList roles)
 	{

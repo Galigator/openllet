@@ -11,18 +11,18 @@ import openllet.core.utils.Timers;
  */
 public interface Boxes
 {
-	public ABox getABox();
+	ABox getABox();
 
-	public TBox getTBox();
+	TBox getTBox();
 
-	public RBox getRBox();
+	RBox getRBox();
 
-	public Timers getTimers();
+	Timers getTimers();
 
 	/**
 	 * @return Returns the DatatypeReasoner
 	 */
-	public default DatatypeReasoner getDatatypeReasoner()
+	default DatatypeReasoner getDatatypeReasoner()
 	{
 		return getABox().getDatatypeReasoner();
 	}

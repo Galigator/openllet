@@ -17,7 +17,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
  * Title: Axiom-based Lint Pattern Abstract Class
  * </p>
  * <p>
- * Description: Provides convenience (protected) methods to create and set {@link com.clarkparsia.pellint.model.Lint}, and methods to traverse an OWLAxiom
+ * Description: Provides convenience (protected) methods to create and set {@link openllet.pellint.model.Lint}, and methods to traverse an OWLAxiom
  * (through OWLAxiomVisitorAdapter).
  * </p>
  * <p>
@@ -31,8 +31,8 @@ import org.semanticweb.owlapi.model.OWLOntology;
  */
 public abstract class AxiomLintPattern implements LintPattern, OWLAxiomVisitor
 {
-	private Lint _Lint;
-	private OWLOntology _Ontology;
+	private Lint		_Lint;
+	private OWLOntology	_Ontology;
 
 	protected Lint makeLint()
 	{
@@ -45,12 +45,15 @@ public abstract class AxiomLintPattern implements LintPattern, OWLAxiomVisitor
 	}
 
 	/**
-	 * Match an OWLAxiom and returns a {@link com.clarkparsia.pellint.model.Lint} for the axiom if found. Do not override this method. To create and return a
-	 * {@link com.clarkparsia.pellint.model.Lint}, implementers of this class should call {@link #makeLint()} first, set any necessary information on the
-	 * {@link com.clarkparsia.pellint.model.Lint}, and lastly call {@link #setLint(Lint)}.
+	 * Match an OWLAxiom and returns a {@link openllet.pellint.model.Lint} for the axiom if found. Do not override this method. To create and return a
+	 * {@link openllet.pellint.model.Lint}, implementers of this class should call {@link #makeLint()} first, set any necessary information on the
+	 * {@link openllet.pellint.model.Lint}, and lastly call {@link #setLint(Lint)}.
+	 * 
+	 * @param  ontology
+	 * @param  axiom
 	 *
-	 * @return {@link com.clarkparsia.pellint.model.Lint} for the OWLAxiom, otherwise <code>null</code>.
-	 * @see com.clarkparsia.pellint.model.Lint
+	 * @return          {@link openllet.pellint.model.Lint} for the OWLAxiom, otherwise <code>null</code>.
+	 * @see             openllet.pellint.model.Lint
 	 */
 	public final Lint match(final OWLOntology ontology, final OWLAxiom axiom)
 	{

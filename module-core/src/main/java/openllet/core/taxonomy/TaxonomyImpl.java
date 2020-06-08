@@ -49,15 +49,15 @@ import openllet.shared.tools.Log;
 
 /**
  * @param <T> kind of Node
- * @since 2.6.0
+ * @since     2.6.0
  */
 public class TaxonomyImpl<T> implements Taxonomy<T>
 {
 	private class DatumEquivalentsPairIterator<U> implements Iterator<Map.Entry<Set<U>, Object>>
 	{
 
-		private final Iterator<TaxonomyNode<U>> _i;
-		private final Object _key;
+		private final Iterator<TaxonomyNode<U>>	_i;
+		private final Object					_key;
 
 		public DatumEquivalentsPairIterator(final TaxonomyImpl<U> t, final Object key)
 		{
@@ -88,9 +88,9 @@ public class TaxonomyImpl<T> implements Taxonomy<T>
 	private class DepthFirstDatumOnlyIterator<U> implements Iterator<Object>
 	{
 
-		private final Object _key;
-		private final List<TaxonomyNode<U>> _pending;
-		private final Set<TaxonomyNode<U>> _visited;
+		private final Object				_key;
+		private final List<TaxonomyNode<U>>	_pending;
+		private final Set<TaxonomyNode<U>>	_visited;
 
 		public DepthFirstDatumOnlyIterator(final TaxonomyImpl<U> t, final U u, final Object key)
 		{
@@ -98,8 +98,7 @@ public class TaxonomyImpl<T> implements Taxonomy<T>
 			_visited = new HashSet<>();
 			_pending = new ArrayList<>();
 			final TaxonomyNode<U> node = t.getNode(u);
-			if (node != null)
-				_pending.add(node);
+			if (node != null) _pending.add(node);
 		}
 
 		@Override
@@ -111,14 +110,12 @@ public class TaxonomyImpl<T> implements Taxonomy<T>
 		@Override
 		public Object next()
 		{
-			if (_pending.isEmpty())
-				throw new NoSuchElementException();
+			if (_pending.isEmpty()) throw new NoSuchElementException();
 
 			final TaxonomyNode<U> current = _pending.remove(_pending.size() - 1);
 			_visited.add(current);
 			for (final TaxonomyNode<U> sub : current.getSubs())
-				if (!_visited.contains(sub))
-					_pending.add(sub);
+				if (!_visited.contains(sub)) _pending.add(sub);
 
 			return current.getDatum(_key);
 		}
@@ -133,8 +130,8 @@ public class TaxonomyImpl<T> implements Taxonomy<T>
 	private class SimpleImmutableEntry<K, V> implements Map.Entry<K, V>
 	{
 
-		private final K _key;
-		private final V _value;
+		private final K	_key;
+		private final V	_value;
 
 		public SimpleImmutableEntry(final K key, final V value)
 		{
@@ -162,18 +159,18 @@ public class TaxonomyImpl<T> implements Taxonomy<T>
 		}
 	}
 
-	public static final Logger _logger = Log.getLogger(TaxonomyImpl.class);
+	public static final Logger					_logger			= Log.getLogger(TaxonomyImpl.class);
 
-	private static final boolean SUB = true;
+	private static final boolean				SUB				= true;
 
-	private static final boolean SUPER = false;
+	private static final boolean				SUPER			= false;
 
-	protected volatile TaxonomyNode<T> _bottomNode;
-	protected volatile Map<T, TaxonomyNode<T>> _nodes;
-	protected volatile TaxonomyNode<T> _topNode;
+	protected volatile TaxonomyNode<T>			_bottomNode;
+	protected volatile Map<T, TaxonomyNode<T>>	_nodes;
+	protected volatile TaxonomyNode<T>			_topNode;
 
-	protected volatile short _depth = 0;
-	protected volatile int _totalBranching = 0;
+	protected volatile short					_depth			= 0;
+	protected volatile int						_totalBranching	= 0;
 
 	@Override
 	public Logger getLogger()
@@ -284,8 +281,8 @@ public class TaxonomyImpl<T> implements Taxonomy<T>
 	 * Iterate over nodes in taxonomy (no specific order)returning pair of equivalence set and datum associated with {@code key} for each. Useful, e.g., to
 	 * collect equivalence sets matching some condition on the datum (as in all classes which have a particular instances)
 	 *
-	 * @param key key associated with datum returned
-	 * @return iterator over equivalence set, datum pairs
+	 * @param  key key associated with datum returned
+	 * @return     iterator over equivalence set, datum pairs
 	 */
 	@Override
 	public Iterator<Map.Entry<Set<T>, Object>> datumEquivalentsPair(final TaxonomyKey key)
@@ -297,9 +294,9 @@ public class TaxonomyImpl<T> implements Taxonomy<T>
 	 * Iterate down taxonomy in a _depth first traversal, beginning with class {@code c}, returning only datum associated with {@code _key} for each. Useful,
 	 * e.g., to collect datum values in a transitive closure (as in all instances of a class).
 	 *
-	 * @param t starting location in taxonomy
-	 * @param key _key associated with datum returned
-	 * @return datum iterator
+	 * @param  t   starting location in taxonomy
+	 * @param  key _key associated with datum returned
+	 * @return     datum iterator
 	 */
 	@Override
 	public Iterator<Object> depthFirstDatumOnly(final T t, final TaxonomyKey key)
@@ -332,14 +329,12 @@ public class TaxonomyImpl<T> implements Taxonomy<T>
 		{
 			node = visit.get(i);
 
-			if (node.isHidden())
-				continue;
+			if (node.isHidden()) continue;
 
 			final Set<T> add = node.getEquivalents();
 			result.addAll(add);
 
-			if (!direct)
-				visit.addAll(subOrSuper == SUB ? node.getSubs() : node.getSupers());
+			if (!direct) visit.addAll(subOrSuper == SUB ? node.getSubs() : node.getSupers());
 		}
 
 		return result;
@@ -365,9 +360,9 @@ public class TaxonomyImpl<T> implements Taxonomy<T>
 	 * always have at least one element. The list will either include one other concept from the hierarchy or the BOTTOM concept if no other class is subsumed
 	 * by c. By definition BOTTOM concept is subclass of every concept.
 	 *
-	 * @param t Class whose subclasses are found
-	 * @param direct If true return only direct subclasses elese return all the subclasses
-	 * @return A set of sets, where each set in the collection represents an equivalence class. The elements of the inner class are ATermAppl objects.
+	 * @param  t      Class whose subclasses are found
+	 * @param  direct If true return only direct subclasses elese return all the subclasses
+	 * @return        A set of sets, where each set in the collection represents an equivalence class. The elements of the inner class are ATermAppl objects.
 	 */
 	@Override
 	public Set<Set<T>> getSubs(final T t, final boolean direct)
@@ -382,8 +377,7 @@ public class TaxonomyImpl<T> implements Taxonomy<T>
 	{
 		TaxonomyNode<T> node = _nodes.get(t);
 
-		if (node == null)
-			return Collections.emptySet();
+		if (node == null) return Collections.emptySet();
 
 		final Set<Set<T>> result = new HashSet<>();
 
@@ -394,15 +388,12 @@ public class TaxonomyImpl<T> implements Taxonomy<T>
 		{
 			node = visit.get(i);
 
-			if (node.isHidden())
-				continue;
+			if (node.isHidden()) continue;
 
 			final Set<T> add = new HashSet<>(node.getEquivalents());
-			if (!add.isEmpty())
-				result.add(add);
+			if (!add.isEmpty()) result.add(add);
 
-			if (!direct)
-				visit.addAll(subOrSuper == SUB ? node.getSubs() : node.getSupers());
+			if (!direct) visit.addAll(subOrSuper == SUB ? node.getSubs() : node.getSupers());
 		}
 
 		return result;
@@ -413,8 +404,8 @@ public class TaxonomyImpl<T> implements Taxonomy<T>
 	 * that are sameAs c are put into the list. Also note that the returned list will always have at least one element, that is TOP concept. By definition TOP
 	 * concept is superclass of every concept. This function is equivalent to calling getSuperClasses(c, true).
 	 *
-	 * @param t class whose superclasses are returned
-	 * @return A set of sets, where each set in the collection represents an equivalence class. The elements of the inner class are ATermAppl objects.
+	 * @param  t class whose superclasses are returned
+	 * @return   A set of sets, where each set in the collection represents an equivalence class. The elements of the inner class are ATermAppl objects.
 	 */
 	@Override
 	public Set<Set<T>> getSupers(final T t)
@@ -433,9 +424,9 @@ public class TaxonomyImpl<T> implements Taxonomy<T>
 	 * always have at least one element. The list will either include one other concept from the hierarchy or the TOP concept if no other class subsumes c. By
 	 * definition TOP concept is superclass of every concept.
 	 *
-	 * @param t Class whose subclasses are found
-	 * @param direct If true return all the superclasses else return only direct superclasses
-	 * @return A set of sets, where each set in the collection represents an equivalence class. The elements of the inner class are ATermAppl objects.
+	 * @param  t      Class whose subclasses are found
+	 * @param  direct If true return all the superclasses else return only direct superclasses
+	 * @return        A set of sets, where each set in the collection represents an equivalence class. The elements of the inner class are ATermAppl objects.
 	 */
 	@Override
 	public Set<Set<T>> getSupers(final T t, final boolean direct)
@@ -477,11 +468,10 @@ public class TaxonomyImpl<T> implements Taxonomy<T>
 		TaxonomyNode<T> node = null;
 		if (mergeList.contains(_topNode))
 			node = _topNode;
+		else if (mergeList.contains(_bottomNode))
+			node = _bottomNode;
 		else
-			if (mergeList.contains(_bottomNode))
-				node = _bottomNode;
-			else
-				node = mergeList.get(0);
+			node = mergeList.get(0);
 
 		final Set<TaxonomyNode<T>> merged = new HashSet<>();
 		merged.add(node);
@@ -497,16 +487,14 @@ public class TaxonomyImpl<T> implements Taxonomy<T>
 			for (final TaxonomyNode<T> sub : other.getSubs())
 				if (sub != _bottomNode && !mergeList.contains(sub))
 				{
-					if (node.getSubs().size() == 1 && node.getSubs().iterator().next() == _bottomNode)
-						node.removeSub(_bottomNode);
+					if (node.getSubs().size() == 1 && node.getSubs().iterator().next() == _bottomNode) node.removeSub(_bottomNode);
 					node.addSub(sub);
 				}
 
 			for (final TaxonomyNode<T> sup : other.getSupers())
 				if (sup != _topNode && !mergeList.contains(sup))
 				{
-					if (node.getSupers().size() == 1 && node.getSupers().iterator().next() == _topNode)
-						_topNode.removeSub(node);
+					if (node.getSupers().size() == 1 && node.getSupers().iterator().next() == _topNode) _topNode.removeSub(node);
 					sup.addSub(node);
 				}
 
@@ -519,11 +507,9 @@ public class TaxonomyImpl<T> implements Taxonomy<T>
 
 		node.clearData();
 
-		if (node != _topNode && node.getSupers().isEmpty())
-			_topNode.addSub(node);
+		if (node != _topNode && node.getSupers().isEmpty()) _topNode.addSub(node);
 
-		if (node != _bottomNode && node.getSubs().isEmpty())
-			node.addSub(_bottomNode);
+		if (node != _bottomNode && node.getSubs().isEmpty()) node.addSub(_bottomNode);
 
 		return node;
 	}
@@ -534,8 +520,7 @@ public class TaxonomyImpl<T> implements Taxonomy<T>
 	@Override
 	public void removeCycles(final TaxonomyNode<T> node)
 	{
-		if (!_nodes.get(node.getName()).equals(node))
-			throw new InternalReasonerException("This _node does not exist in the taxonomy: " + node.getName());
+		if (!_nodes.get(node.getName()).equals(node)) throw new InternalReasonerException("This _node does not exist in the taxonomy: " + node.getName());
 		removeCycles(node, new ArrayList<TaxonomyNode<T>>());
 	}
 
@@ -563,8 +548,7 @@ public class TaxonomyImpl<T> implements Taxonomy<T>
 				removeCycles(sup, path);
 				// if the super has been removed then no need
 				// to increment the _index
-				if (i < supers.size() && supers.get(i).equals(sup))
-					i++;
+				if (i < supers.size() && supers.get(i).equals(sup)) i++;
 			}
 
 			// remove the _node from the path

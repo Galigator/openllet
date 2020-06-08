@@ -47,8 +47,7 @@ public class AlphaFixedObjectEdgeNode extends AlphaFixedEdgeNode
 	@Override
 	public Iterator<WME> getMatches(final int argIndex, final Node arg)
 	{
-		if (argIndex != 0)
-			throw new UnsupportedOperationException();
+		if (argIndex != 0) throw new UnsupportedOperationException();
 
 		final Node object = initNode();
 		return getMatches((Individual) arg, _role, object);
@@ -65,7 +64,9 @@ public class AlphaFixedObjectEdgeNode extends AlphaFixedEdgeNode
 	@SuppressWarnings("rawtypes")
 	public boolean matches(final RuleAtom atom)
 	{
-		return ((atom instanceof IndividualPropertyAtom) || (atom instanceof DatavaluedPropertyAtom)) && atom.getPredicate().equals(_role.getName()) && ((BinaryAtom) atom).getArgument1() instanceof AtomVariable && ((BinaryAtom) atom).getArgument2() instanceof AtomIConstant && ((AtomIConstant) ((BinaryAtom) atom).getArgument2()).getValue().equals(_name);
+		return (atom instanceof IndividualPropertyAtom || atom instanceof DatavaluedPropertyAtom) && atom.getPredicate().equals(_role.getName())
+				&& ((BinaryAtom) atom).getArgument1() instanceof AtomVariable && ((BinaryAtom) atom).getArgument2() instanceof AtomIConstant
+				&& ((AtomIConstant) ((BinaryAtom) atom).getArgument2()).getValue().equals(_name);
 	}
 
 	@Override

@@ -28,7 +28,7 @@ import org.semanticweb.owlapi.model.OWLIndividual;
  * <p>
  * Company: Clark & Parsia, LLC. <a href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
  * </p>
- * 
+ *
  * @author Mike Smith &lt;msmith@clarkparsia.com&gt;
  */
 public class TestRunResultAdapter
@@ -39,7 +39,7 @@ public class TestRunResultAdapter
 
 		private List<OWLAxiom> axioms;
 
-		public List<OWLAxiom> process(TestRunResult result)
+		public List<OWLAxiom> process(final TestRunResult result)
 		{
 			axioms = new ArrayList<>();
 			result.accept(this);
@@ -47,20 +47,20 @@ public class TestRunResultAdapter
 		}
 
 		@Override
-		public void visit(SyntaxConstraintRun result)
+		public void visit(final SyntaxConstraintRun result)
 		{
 			axioms.add(_dataFactory.getOWLClassAssertionAxiom(result.getTestType().getOWLClass(), _currentIndividual));
 			axioms.add(_dataFactory.getOWLObjectPropertyAssertionAxiom(SYNTAX_CONSTRAINT.getOWLObjectProperty(), _currentIndividual, result.getConstraint().getOWLIndividual()));
 		}
 
 		@Override
-		public void visit(ReasoningRun result)
+		public void visit(final ReasoningRun result)
 		{
 			axioms.add(_dataFactory.getOWLClassAssertionAxiom(result.getTestType().getOWLClass(), _currentIndividual));
 		}
 
 		@Override
-		public void visit(SyntaxTranslationRun result)
+		public void visit(final SyntaxTranslationRun result)
 		{
 			axioms.add(_dataFactory.getOWLClassAssertionAxiom(result.getTestType().getOWLClass(), _currentIndividual));
 		}
@@ -71,7 +71,7 @@ public class TestRunResultAdapter
 
 	static
 	{
-		bnodeid = Integer.valueOf(0);
+		bnodeid = 0;
 	}
 
 	private static URI mintBNode()
@@ -80,21 +80,21 @@ public class TestRunResultAdapter
 		return URI.create(String.format("testrunadapter_%d", bnodeid));
 	}
 
-	private OWLAnonymousIndividual _currentIndividual;
-	private final OWLDataFactory _dataFactory;
-	private final RunTypeAdapter _runTypeAdapter;
+	private OWLAnonymousIndividual	_currentIndividual;
+	private final OWLDataFactory	_dataFactory;
+	private final RunTypeAdapter	_runTypeAdapter;
 
-	public TestRunResultAdapter(OWLDataFactory dataFactory)
+	public TestRunResultAdapter(final OWLDataFactory dataFactory)
 	{
-		if (dataFactory == null) { throw new NullPointerException(); }
+		if (dataFactory == null) throw new NullPointerException();
 
-		this._dataFactory = dataFactory;
+		_dataFactory = dataFactory;
 		_runTypeAdapter = new RunTypeAdapter();
 	}
 
-	public Collection<OWLAxiom> asOWLAxioms(TestRunResult r, OWLAnonymousIndividual i)
+	public Collection<OWLAxiom> asOWLAxioms(final TestRunResult r, final OWLAnonymousIndividual i)
 	{
-		if (r == null) { throw new NullPointerException(); }
+		if (r == null) throw new NullPointerException();
 
 		final List<OWLAxiom> axioms = new ArrayList<>();
 
@@ -106,12 +106,11 @@ public class TestRunResultAdapter
 		final OWLIndividual testAnonIndividual = _dataFactory.getOWLAnonymousIndividual(mintBNode().toString());
 
 		axioms.add(_dataFactory.getOWLObjectPropertyAssertionAxiom(ObjectProperty.TEST.getOWLObjectProperty(), _currentIndividual, testAnonIndividual));
-		axioms.add(_dataFactory.getOWLDataPropertyAssertionAxiom(TestVocabulary.DatatypeProperty.IDENTIFIER.getOWLDataProperty(), testAnonIndividual, _dataFactory.getOWLLiteral(r.getTestCase().getIdentifier())));
+		axioms.add(_dataFactory.getOWLDataPropertyAssertionAxiom(TestVocabulary.DatatypeProperty.IDENTIFIER.getOWLDataProperty(), testAnonIndividual,
+				_dataFactory.getOWLLiteral(r.getTestCase().getIdentifier())));
 		final String details = r.getDetails();
-		if (details != null && details.length() > 0)
-		{
-			axioms.add(_dataFactory.getOWLAnnotationAssertionAxiom(_dataFactory.getOWLAnnotationProperty(AnnotationProperty.DETAILS.getAnnotationPropertyIRI()), i, _dataFactory.getOWLLiteral(details)));
-		}
+		if (details != null && details.length() > 0) axioms
+				.add(_dataFactory.getOWLAnnotationAssertionAxiom(_dataFactory.getOWLAnnotationProperty(AnnotationProperty.DETAILS.getAnnotationPropertyIRI()), i, _dataFactory.getOWLLiteral(details)));
 
 		axioms.addAll(_runTypeAdapter.process(r));
 

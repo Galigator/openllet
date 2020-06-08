@@ -19,15 +19,15 @@ import java.util.Set;
 public class QNameProvider
 {
 
-	private static String OWL = Namespaces.OWL;
-	private static String RDFS = Namespaces.RDFS;
-	private static String RDF = Namespaces.RDF;
-	private static String XSD = Namespaces.XSD;
-	private static String DC = "http://purl.org/dc/elements/1.1/";
+	private static String				OWL		= Namespaces.OWL;
+	private static String				RDFS	= Namespaces.RDFS;
+	private static String				RDF		= Namespaces.RDF;
+	private static String				XSD		= Namespaces.XSD;
+	private static String				DC		= "http://purl.org/dc/elements/1.1/";
 
 	// stores a map of uri -> prefix
-	private final Map<String, String> _uriToPrefix;
-	private final Map<String, String> _prefixToUri;
+	private final Map<String, String>	_uriToPrefix;
+	private final Map<String, String>	_prefixToUri;
 
 	public QNameProvider()
 	{
@@ -68,9 +68,7 @@ public class QNameProvider
 				nameStartIndex = strIndex;
 				foundNameChar = true;
 			}
-			else
-				if (foundNameChar && !isNameChar(letter))
-					break;
+			else if (foundNameChar && !isNameChar(letter)) break;
 		}
 		return nameStartIndex;
 	}
@@ -98,8 +96,7 @@ public class QNameProvider
 		for (nameIndex = startIndex; nameIndex < strChars.length; nameIndex++)
 		{
 			final char letter = strChars[nameIndex];
-			if (!isNameChar(letter))
-				break;
+			if (!isNameChar(letter)) break;
 		}
 		return nameIndex;
 	}
@@ -111,8 +108,7 @@ public class QNameProvider
 		final String[] bpn = new String[3];
 
 		nameStart = findLastNameIndex(uriString);
-		if (nameStart < 0)
-			return null;
+		if (nameStart < 0) return null;
 		name = uriString.substring(nameStart);
 		if (nameStart == 0)
 		{
@@ -187,18 +183,16 @@ public class QNameProvider
 		String base, possible_prefix, prefix, name;
 		String qname;
 
-		if (bpn == null)
-			if (default_to_uri)
-				return uri;
-			else
-				return null;
+		if (bpn == null) if (default_to_uri)
+			return uri;
+		else
+			return null;
 
 		base = bpn[0];
 		possible_prefix = bpn[1];
 		name = bpn[2];
 
-		if (possible_prefix.endsWith(".owl") || possible_prefix.endsWith(".rdf") || possible_prefix.endsWith(".xml"))
-			possible_prefix = possible_prefix.substring(0, possible_prefix.length() - 4);
+		if (possible_prefix.endsWith(".owl") || possible_prefix.endsWith(".rdf") || possible_prefix.endsWith(".xml")) possible_prefix = possible_prefix.substring(0, possible_prefix.length() - 4);
 
 		if (possible_prefix.length() > 1 && !Character.isUpperCase(possible_prefix.charAt(1)))
 			possible_prefix = Character.toLowerCase(possible_prefix.charAt(0)) + possible_prefix.substring(1, possible_prefix.length());

@@ -5,14 +5,14 @@
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
- *     * Redistributions of source code must retain the above copyright
- *       notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the University of California, Berkeley nor the
- *       names of its contributors may be used to endorse or promote products
- *       derived from this software without specific prior written permission.
+ * * Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following disclaimer.
+ * * Redistributions in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in the
+ * documentation and/or other materials provided with the distribution.
+ * * Neither the name of the University of California, Berkeley nor the
+ * names of its contributors may be used to endorse or promote products
+ * derived from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -39,46 +39,46 @@ import openllet.atom.SList;
 public interface ATermList extends ATerm, SList<ATerm>
 {
 	@Override
-	public ATermList getEmpty();
+	ATermList getEmpty();
 
 	@Override
-	public ATermList getNext();
+	ATermList getNext();
 
-	public ATermList concat(ATermList rhs);
-
-	@Override
-	public ATermList append(ATerm el);
+	ATermList concat(ATermList rhs);
 
 	@Override
-	public ATermList remove(ATerm el);
+	ATermList append(ATerm el);
 
 	@Override
-	public ATermList removeElementAt(int i);
+	ATermList remove(ATerm el);
 
 	@Override
-	public ATermList removeAll(ATerm el);
+	ATermList removeElementAt(int i);
 
 	@Override
-	public ATermList insert(ATerm el);
+	ATermList removeAll(ATerm el);
 
 	@Override
-	public ATermList insertAt(ATerm el, int i);
+	ATermList insert(ATerm el);
 
 	@Override
-	public ATermList getPrefix();
+	ATermList insertAt(ATerm el, int i);
 
 	@Override
-	public ATermList getSlice(int start, int end);
+	ATermList getPrefix();
 
 	@Override
-	public ATermList replace(ATerm el, int i);
+	ATermList getSlice(int start, int end);
 
 	@Override
-	public ATermList reverse();
+	ATermList replace(ATerm el, int i);
 
 	@Override
-	public ATermList dictPut(ATerm key, ATerm value);
+	ATermList reverse();
 
 	@Override
-	public ATermList dictRemove(ATerm key);
+	ATermList dictPut(ATerm key, ATerm value);
+
+	@Override
+	ATermList dictRemove(ATerm key);
 }

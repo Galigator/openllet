@@ -22,10 +22,10 @@ import openllet.aterm.ATermAppl;
 public interface Core extends QueryAtom
 {
 
-	public abstract Collection<ATermAppl> getConstants();
+	Collection<ATermAppl> getConstants();
 
-	public abstract Collection<ATermAppl> getDistVars();
+	Collection<ATermAppl> getDistVars();
 
-	public abstract Collection<ATermAppl> getUndistVars();
+	Collection<ATermAppl> getUndistVars();
 
 }

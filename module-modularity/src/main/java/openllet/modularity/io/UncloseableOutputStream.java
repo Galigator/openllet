@@ -39,12 +39,12 @@ public class UncloseableOutputStream extends OutputStream
 
 	/**
 	 * Wraps an output stream with a wrapper that does not allow the underlying stream to be closed.
-	 * 
+	 *
 	 * @param stream the underlying stream to be protected from closing.
 	 */
 	public UncloseableOutputStream(final OutputStream stream)
 	{
-		this._stream = stream;
+		_stream = stream;
 	}
 
 	/**

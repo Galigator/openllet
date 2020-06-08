@@ -2,25 +2,25 @@ package openllet.profiler.statistical;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import openllet.profiler.Result;
 import openllet.profiler.ProfileKB.Task;
+import openllet.profiler.Result;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
 /**
  * Provides some statistics about the performance of a certain task
- * 
+ *
  * @author Pedro Oliveira <pedro@clarkparsia.com>
  */
 public class ReleaseStatistics
 {
 
-	private final Task _task;
-	private final Map<String, Double> _memStats;
-	private final Map<String, Double> _timeStats;
+	private final Task					_task;
+	private final Map<String, Double>	_memStats;
+	private final Map<String, Double>	_timeStats;
 
 	public ReleaseStatistics(final Task task)
 	{
-		this._task = task;
+		_task = task;
 		_memStats = new LinkedHashMap<>();
 		_timeStats = new LinkedHashMap<>();
 	}

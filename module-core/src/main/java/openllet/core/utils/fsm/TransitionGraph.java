@@ -28,18 +28,18 @@ import openllet.core.utils.Pair;
  * Company: Clark & Parsia, LLC. <http://www.clarkparsia.com>
  * </p>
  *
- * @author Evren Sirin
- * @param <T> kind of states
+ * @author     Evren Sirin
+ * @param  <T> kind of states
  */
 public class TransitionGraph<T>
 {
-	private volatile State<T> _initialState; // the initial state for the TG
+	private volatile State<T>		_initialState;	// the initial state for the TG
 
-	private final Set<State<T>> _allStates; // set of all states in the TG
+	private final Set<State<T>>		_allStates;		// set of all states in the TG
 
-	private volatile Set<State<T>> _finalStates; // set of final states for the TG
+	private volatile Set<State<T>>	_finalStates;	// set of final states for the TG
 
-	private final Set<T> _alphabet; // set of all characters in TG
+	private final Set<T>			_alphabet;		// set of all characters in TG
 
 	public TransitionGraph()
 	{
@@ -103,17 +103,14 @@ public class TransitionGraph<T>
 
 		if (size == 0)
 			throw new OpenError("There are no final states!");
-		else
-			if (size > 1)
-				throw new OpenError("There is more than one final state!");
+		else if (size > 1) throw new OpenError("There is more than one final state!");
 
 		return _finalStates.iterator().next();
 	}
 
 	public void addTransition(final State<T> begin, final T transition, final State<T> end)
 	{
-		if (transition == null)
-			throw new NullPointerException();
+		if (transition == null) throw new NullPointerException();
 
 		begin.addTransition(transition, end);
 		_alphabet.add(transition);
@@ -132,8 +129,7 @@ public class TransitionGraph<T>
 		{
 			final State<T> s2 = s1.move(transition);
 
-			if (s2 != null)
-				result.add(new Pair<>(s1, s2));
+			if (s2 != null) result.add(new Pair<>(s1, s2));
 		}
 
 		return result;
@@ -155,8 +151,7 @@ public class TransitionGraph<T>
 	public boolean isAnyFinal(final Set<State<T>> ss)
 	{
 		for (final State<T> st : ss)
-			if (_finalStates.contains(st))
-				return true;
+			if (_finalStates.contains(st)) return true;
 		return false;
 	}
 
@@ -178,8 +173,7 @@ public class TransitionGraph<T>
 			while (i.hasNext())
 			{
 				buf.append(i.next());
-				if (i.hasNext())
-					buf.append(", ");
+				if (i.hasNext()) buf.append(", ");
 			}
 
 			buf.append("\n");
@@ -223,8 +217,7 @@ public class TransitionGraph<T>
 			processed.add(s);
 
 			for (final Transition<T> e : s.getTransitions())
-				if (processed.add(e.getTo()))
-					workList.addLast(e.getTo());
+				if (processed.add(e.getTo())) workList.addLast(e.getTo());
 		}
 
 		return this;
@@ -296,8 +289,7 @@ public class TransitionGraph<T>
 			// for all the edges from state st
 			for (final Transition<T> e : st.getTransitions())
 				// add the 'to' state if transition matches
-				if (e.hasName(c))
-					result.add(e.getTo());
+				if (e.hasName(c)) result.add(e.getTo());
 
 		return result;
 	}
@@ -320,8 +312,7 @@ public class TransitionGraph<T>
 			// if this is an epsilon transition and the result
 			// does not contain 'to' state then add the epsilon
 			// closure of 'to' state to the result set
-			if (e.isEpsilon() && !result.contains(e.getTo()))
-				result = epsilonClosure(e.getTo(), result);
+			if (e.isEpsilon() && !result.contains(e.getTo())) result = epsilonClosure(e.getTo(), result);
 
 		return result;
 	}
@@ -343,8 +334,7 @@ public class TransitionGraph<T>
 
 	public boolean isDeterministic()
 	{
-		if (!_allStates.contains(_initialState))
-			throw new InternalReasonerException();
+		if (!_allStates.contains(_initialState)) throw new InternalReasonerException();
 
 		for (final State<T> s : _allStates)
 		{
@@ -353,8 +343,7 @@ public class TransitionGraph<T>
 			{
 				final T symbol = t.getName();
 
-				if (t.isEpsilon() || !seenSymbols.add(symbol))
-					return false;
+				if (t.isEpsilon() || !seenSymbols.add(symbol)) return false;
 			}
 		}
 
@@ -373,12 +362,10 @@ public class TransitionGraph<T>
 		{
 			final State<T> state = stack.pop();
 
-			if (!_allStates.contains(state))
-				return false;
+			if (!_allStates.contains(state)) return false;
 
 			for (final Transition<T> t : state.getTransitions())
-				if (visited.add(t.getTo()))
-					stack.push(t.getTo());
+				if (visited.add(t.getTo())) stack.push(t.getTo());
 
 		}
 
@@ -423,8 +410,7 @@ public class TransitionGraph<T>
 				ss = entry.getKey();
 				moreToProcess = processList.contains(s);
 
-				if (moreToProcess)
-					break;
+				if (moreToProcess) break;
 			}
 
 			if (moreToProcess)
@@ -434,8 +420,7 @@ public class TransitionGraph<T>
 					// find epsilon closure of move with a
 					U = epsilonClosure(move(ss, a));
 					// if result is empty continue
-					if (U.size() == 0)
-						continue;
+					if (U.size() == 0) continue;
 					// check if this set of NFA states are
 					// already in dStates
 					u = dStates.get(U);
@@ -450,9 +435,7 @@ public class TransitionGraph<T>
 						processList.add(u);
 						dStates.put(U, u);
 					}
-					else
-						if (u.equals(s))
-							u = s;
+					else if (u.equals(s)) u = s;
 					s.addTransition(a, u);
 				}
 				// update s in dStates (since key is unchanged only
@@ -474,8 +457,7 @@ public class TransitionGraph<T>
 			// add DFA state to state set
 			_allStates.add(s);
 			// if any of NFA states are final update accepting states
-			if (isAnyFinal(ss))
-				acceptingStates.add(s);
+			if (isAnyFinal(ss)) acceptingStates.add(s);
 		}
 		// accepting states becomes final states
 		_finalStates.clear();
@@ -569,8 +551,7 @@ public class TransitionGraph<T>
 			final Iterator<State<T>> i = partitions.get(p).iterator();
 			final State<T> s = i.next();
 			partitionRep.put(s, s);
-			if (p == startPartition)
-				_initialState = s;
+			if (p == startPartition) _initialState = s;
 			while (i.hasNext())
 			{
 				final State<T> t = i.next();
@@ -594,10 +575,8 @@ public class TransitionGraph<T>
 
 	protected boolean isEquivalentState(final State<T> s1, final State<T> s2, final Map<State<T>, Integer> partitionNum)
 	{
-		if (s1 == s2)
-			return true;
-		if (s1 == null || s2 == null)
-			return false;
+		if (s1 == s2) return true;
+		if (s1 == null || s2 == null) return false;
 		return partitionNum.get(s1).equals(partitionNum.get(s2));
 	}
 }

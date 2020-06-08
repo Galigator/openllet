@@ -7,6 +7,7 @@
 package openllet.pellint.lintpattern;
 
 import openllet.pellint.format.LintFormat;
+import openllet.pellint.model.LintFixer;
 
 /**
  * <p>
@@ -42,13 +43,13 @@ public interface LintPattern
 	 * every {@link com.clarkparsia.pellint.model.Lint} can be made available by calling {@link com.clarkparsia.pellint.model.Lint#setLintFixer(LintFixer)}.
 	 *
 	 * @return <code>true</code> if this pattern provides an automatic fix for every {@link com.clarkparsia.pellint.model.Lint} it matches.
-	 * @see com.clarkparsia.pellint.model.Lint#setLintFixer(LintFixer)
+	 * @see    com.clarkparsia.pellint.model.Lint#setLintFixer(LintFixer)
 	 */
 	boolean isFixable();
 
 	/**
 	 * @return The default {@link LintFormat} for this pattern.
-	 * @see LintFormat
+	 * @see    LintFormat
 	 */
 	LintFormat getDefaultLintFormat();
 }

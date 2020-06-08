@@ -36,21 +36,21 @@ import org.junit.Test;
  */
 public class OWLSyntaxCheckerTest
 {
-	private static final String NS = "tag:clarkparsia.com,2010:pellint:test#";
+	private static final String		NS		= "tag:clarkparsia.com,2010:pellint:test#";
 
-	private static final Resource _C = ResourceFactory.createResource(NS + "C");
+	private static final Resource	_C		= ResourceFactory.createResource(NS + "C");
 
-	private static final Property _p = ResourceFactory.createProperty(NS + "P");
+	private static final Property	_p		= ResourceFactory.createProperty(NS + "P");
 
-	private static final Resource _a = ResourceFactory.createResource(NS + "a");
-	private static final Resource _b = ResourceFactory.createResource(NS + "b");
+	private static final Resource	_a		= ResourceFactory.createResource(NS + "a");
+	private static final Resource	_b		= ResourceFactory.createResource(NS + "b");
 
-	private static final Resource _anon = ResourceFactory.createResource();
+	private static final Resource	_anon	= ResourceFactory.createResource();
 
-	private static final Literal _lit = ResourceFactory.createPlainLiteral("lit");
+	private static final Literal	_lit	= ResourceFactory.createPlainLiteral("lit");
 
-	private RDFModel _rdfModel;
-	private OWLSyntaxChecker _checker;
+	private RDFModel				_rdfModel;
+	private OWLSyntaxChecker		_checker;
 
 	@Before
 	public void before()

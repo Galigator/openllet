@@ -29,16 +29,15 @@ public class RulesExample
 	{
 		final String ont = "file:src/main/resources/data/dl-safe.owl";
 		final String base = "http://owldl.com/ontologies/dl-safe.owl";
-		
+
 		final OntModel model = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC, null);
 		model.read(ont);
-		
 
 		final ObjectProperty sibling = model.getObjectProperty(base + "#sibling");
 
 		final OntClass BadChild = model.getOntClass(base + "#BadChild");
 		final OntClass Child = model.getOntClass(base + "#Child");
-		
+
 		final Individual Abel = model.getIndividual(base + "#Abel");
 		final Individual Cain = model.getIndividual(base + "#Cain");
 		final Individual Remus = model.getIndividual(base + "#Remus");
@@ -70,7 +69,7 @@ public class RulesExample
 		System.out.print(ind.getLocalName() + " has " + prop.getLocalName() + "(s): ");
 		final ExtendedIterator<RDFNode> rsc = ind.listPropertyValues(prop);
 		@SuppressWarnings("rawtypes")
-		final ExtendedIterator<? extends Resource> rsc2 = (ExtendedIterator) rsc; //  Resource extends RDFNode 
+		final ExtendedIterator<? extends Resource> rsc2 = (ExtendedIterator) rsc; //  Resource extends RDFNode
 		printIterator(rsc2);
 	}
 
@@ -89,8 +88,7 @@ public class RulesExample
 			{
 				final Resource val = i.next();
 				System.out.print(val.getLocalName());
-				if (i.hasNext())
-					System.out.print(", ");
+				if (i.hasNext()) System.out.print(", ");
 			}
 		System.out.println();
 	}

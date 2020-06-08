@@ -21,14 +21,14 @@ import java.util.Set;
  * Company: Clark & Parsia, LLC. <http://www.clarkparsia.com>
  * </p>
  *
- * @author Mike Smith
- * @param <T> kind of elements
+ * @author     Mike Smith
+ * @param  <T> kind of elements
  */
 public class UnionDataRange<T> implements DataRange<T>
 {
 
-	private final ArrayList<RestrictedDatatype<? extends T>> _ranges;
-	private final Set<? extends T> _values;
+	private final ArrayList<RestrictedDatatype<? extends T>>	_ranges;
+	private final Set<? extends T>								_values;
 
 	public UnionDataRange(final Collection<RestrictedDatatype<? extends T>> ranges, final Collection<? extends T> values)
 	{
@@ -39,12 +39,10 @@ public class UnionDataRange<T> implements DataRange<T>
 	@Override
 	public boolean contains(final Object value)
 	{
-		if (_values.contains(value))
-			return true;
+		if (_values.contains(value)) return true;
 
 		for (final RestrictedDatatype<? extends T> rd : _ranges)
-			if (rd.contains(value))
-				return true;
+			if (rd.contains(value)) return true;
 
 		return false;
 	}
@@ -54,13 +52,11 @@ public class UnionDataRange<T> implements DataRange<T>
 	public boolean containsAtLeast(final int n)
 	{
 		int values = n - _values.size();
-		if (values <= 0)
-			return true;
+		if (values <= 0) return true;
 
 		for (final RestrictedDatatype<?> rd : _ranges)
 		{
-			if (rd.containsAtLeast(n))
-				return true;
+			if (rd.containsAtLeast(n)) return true;
 
 			values -= rd.size(); // FIXME This may crash.
 		}
@@ -98,21 +94,19 @@ public class UnionDataRange<T> implements DataRange<T>
 		 */
 		return new Iterator<>()
 		{
-			final Iterator<? extends T> enumIt = _values.iterator();
-			final Iterator<RestrictedDatatype<? extends T>> rangeIt = _ranges.iterator();
-			Iterator<? extends T> valueIt = null;
+			final Iterator<? extends T>						enumIt	= _values.iterator();
+			final Iterator<RestrictedDatatype<? extends T>>	rangeIt	= _ranges.iterator();
+			Iterator<? extends T>							valueIt	= null;
 
 			@Override
 			public boolean hasNext()
 			{
-				if (enumIt.hasNext())
-					return true;
+				if (enumIt.hasNext()) return true;
 
-				if (valueIt == null)
-					if (rangeIt.hasNext())
-						valueIt = rangeIt.next().valueIterator();
-					else
-						return false;
+				if (valueIt == null) if (rangeIt.hasNext())
+					valueIt = rangeIt.next().valueIterator();
+				else
+					return false;
 
 				while (!valueIt.hasNext())
 					if (rangeIt.hasNext())
@@ -125,11 +119,9 @@ public class UnionDataRange<T> implements DataRange<T>
 			@Override
 			public T next()
 			{
-				if (!hasNext())
-					throw new NoSuchElementException();
+				if (!hasNext()) throw new NoSuchElementException();
 
-				if (valueIt == null)
-					return enumIt.next();
+				if (valueIt == null) return enumIt.next();
 
 				return valueIt.next();
 			}

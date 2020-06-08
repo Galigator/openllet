@@ -62,9 +62,11 @@ import org.apache.jena.vocabulary.OWL;
  */
 public class JenaUtils
 {
-	final public static Literal XSD_BOOLEAN_TRUE = ResourceFactory.createTypedLiteral(Boolean.TRUE.toString(), XSDDatatype.XSDboolean);
+	final public static Literal			XSD_BOOLEAN_TRUE	= ResourceFactory.createTypedLiteral(Boolean.TRUE.toString(), XSDDatatype.XSDboolean);
 
-	public static Predicate<ATermAppl> _isGrapheNode = aTermAppl -> aTermAppl.getArity() == 0 || ATermUtils.isLiteral(aTermAppl) || ATermUtils.isBnode(aTermAppl) || aTermAppl.equals(ATermUtils.TOP) || aTermAppl.equals(ATermUtils.BOTTOM) || aTermAppl.equals(ATermUtils.TOP_DATA_PROPERTY) || aTermAppl.equals(ATermUtils.BOTTOM_DATA_PROPERTY) || aTermAppl.equals(ATermUtils.TOP_OBJECT_PROPERTY) || aTermAppl.equals(ATermUtils.BOTTOM_OBJECT_PROPERTY);
+	public static Predicate<ATermAppl>	_isGrapheNode		= aTermAppl -> aTermAppl.getArity() == 0 || ATermUtils.isLiteral(aTermAppl) || ATermUtils.isBnode(aTermAppl)
+			|| aTermAppl.equals(ATermUtils.TOP) || aTermAppl.equals(ATermUtils.BOTTOM) || aTermAppl.equals(ATermUtils.TOP_DATA_PROPERTY) || aTermAppl.equals(ATermUtils.BOTTOM_DATA_PROPERTY)
+			|| aTermAppl.equals(ATermUtils.TOP_OBJECT_PROPERTY) || aTermAppl.equals(ATermUtils.BOTTOM_OBJECT_PROPERTY);
 
 	static public ATermAppl makeLiteral(final LiteralLabel jenaLiteral)
 	{
@@ -74,11 +76,10 @@ public class JenaUtils
 
 		if (datatypeURI != null)
 			literalValue = ATermUtils.makeTypedLiteral(lexicalValue, datatypeURI);
+		else if (jenaLiteral.language() != null)
+			literalValue = ATermUtils.makePlainLiteral(lexicalValue, jenaLiteral.language());
 		else
-			if (jenaLiteral.language() != null)
-				literalValue = ATermUtils.makePlainLiteral(lexicalValue, jenaLiteral.language());
-			else
-				literalValue = ATermUtils.makePlainLiteral(lexicalValue);
+			literalValue = ATermUtils.makePlainLiteral(lexicalValue);
 
 		return literalValue;
 	}
@@ -92,35 +93,26 @@ public class JenaUtils
 	{
 		if (node.isLiteral())
 			return makeLiteral(node.getLiteral());
-		else
-			if (node.isBlank())
-				return ATermUtils.makeBnode(node.getBlankNodeLabel());
+		else if (node.isBlank())
+			return ATermUtils.makeBnode(node.getBlankNodeLabel());
+		else if (node.isURI())
+		{
+			if (node.equals(OWL.Thing.asNode()))
+				return ATermUtils.TOP;
+			else if (node.equals(OWL.Nothing.asNode()))
+				return ATermUtils.BOTTOM;
+			else if (node.equals(OWL2.topDataProperty.asNode()))
+				return ATermUtils.TOP_DATA_PROPERTY;
+			else if (node.equals(OWL2.bottomDataProperty.asNode()))
+				return ATermUtils.BOTTOM_DATA_PROPERTY;
+			else if (node.equals(OWL2.topObjectProperty.asNode()))
+				return ATermUtils.TOP_OBJECT_PROPERTY;
+			else if (node.equals(OWL2.bottomObjectProperty.asNode()))
+				return ATermUtils.BOTTOM_OBJECT_PROPERTY;
 			else
-				if (node.isURI())
-				{
-					if (node.equals(OWL.Thing.asNode()))
-						return ATermUtils.TOP;
-					else
-						if (node.equals(OWL.Nothing.asNode()))
-							return ATermUtils.BOTTOM;
-						else
-							if (node.equals(OWL2.topDataProperty.asNode()))
-								return ATermUtils.TOP_DATA_PROPERTY;
-							else
-								if (node.equals(OWL2.bottomDataProperty.asNode()))
-									return ATermUtils.BOTTOM_DATA_PROPERTY;
-								else
-									if (node.equals(OWL2.topObjectProperty.asNode()))
-										return ATermUtils.TOP_OBJECT_PROPERTY;
-									else
-										if (node.equals(OWL2.bottomObjectProperty.asNode()))
-											return ATermUtils.BOTTOM_OBJECT_PROPERTY;
-										else
-											return ATermUtils.makeTermAppl(node.getURI());
-				}
-				else
-					if (node.isVariable())
-						return ATermUtils.makeVar(node.getName());
+				return ATermUtils.makeTermAppl(node.getURI());
+		}
+		else if (node.isVariable()) return ATermUtils.makeVar(node.getName());
 
 		return null;
 	}
@@ -140,14 +132,13 @@ public class JenaUtils
 			else
 				node = NodeFactory.createLiteral(lexicalValue, lang.getName(), false);
 		}
+		else if (datatype.equals(Datatypes.XML_LITERAL))
+			node = NodeFactory.createLiteral(lexicalValue, "", true);
 		else
-			if (datatype.equals(Datatypes.XML_LITERAL))
-				node = NodeFactory.createLiteral(lexicalValue, "", true);
-			else
-			{
-				final RDFDatatype type = TypeMapper.getInstance().getTypeByName(datatype.getName());
-				node = NodeFactory.createLiteral(lexicalValue, "", type);
-			}
+		{
+			final RDFDatatype type = TypeMapper.getInstance().getTypeByName(datatype.getName());
+			node = NodeFactory.createLiteral(lexicalValue, "", type);
+		}
 
 		return node;
 	}
@@ -156,27 +147,19 @@ public class JenaUtils
 	{
 		if (ATermUtils.isBnode(term))
 			return NodeFactory.createBlankNode(new BlankNodeId(((ATermAppl) term.getArgument(0)).getName()));
-		else
-			if (term.equals(ATermUtils.TOP))
-				return OWL.Thing.asNode();
-			else
-				if (term.equals(ATermUtils.BOTTOM))
-					return OWL.Nothing.asNode();
-				else
-					if (term.equals(ATermUtils.TOP_DATA_PROPERTY))
-						return OWL2.topDataProperty.asNode();
-					else
-						if (term.equals(ATermUtils.BOTTOM_DATA_PROPERTY))
-							return OWL2.bottomDataProperty.asNode();
-						else
-							if (term.equals(ATermUtils.TOP_OBJECT_PROPERTY))
-								return OWL2.topObjectProperty.asNode();
-							else
-								if (term.equals(ATermUtils.BOTTOM_OBJECT_PROPERTY))
-									return OWL2.bottomObjectProperty.asNode();
-								else
-									if (term.getArity() == 0)
-										return NodeFactory.createURI(term.getName());
+		else if (term.equals(ATermUtils.TOP))
+			return OWL.Thing.asNode();
+		else if (term.equals(ATermUtils.BOTTOM))
+			return OWL.Nothing.asNode();
+		else if (term.equals(ATermUtils.TOP_DATA_PROPERTY))
+			return OWL2.topDataProperty.asNode();
+		else if (term.equals(ATermUtils.BOTTOM_DATA_PROPERTY))
+			return OWL2.bottomDataProperty.asNode();
+		else if (term.equals(ATermUtils.TOP_OBJECT_PROPERTY))
+			return OWL2.topObjectProperty.asNode();
+		else if (term.equals(ATermUtils.BOTTOM_OBJECT_PROPERTY))
+			return OWL2.bottomObjectProperty.asNode();
+		else if (term.getArity() == 0) return NodeFactory.createURI(term.getName());
 
 		//		if (term.getName().equals(ATermUtils.INVFUN.getName()))
 		//			return OWL.inverseOf.asNode(); //	term.getArgument(0); // XXX Que devient le parametre ?

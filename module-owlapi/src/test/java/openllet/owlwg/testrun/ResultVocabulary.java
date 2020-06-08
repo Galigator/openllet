@@ -22,55 +22,60 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
  * Company: Clark & Parsia, LLC. <a
  * href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
  * </p>
- * 
+ *
  * @author Mike Smith &lt;msmith@clarkparsia.com&gt;
  */
-public class ResultVocabulary {
+public class ResultVocabulary
+{
 
-	public enum AnnotationProperty {
+	public enum AnnotationProperty
+	{
 		DETAILS("details");
 
-		private final IRI	iri;
+		private final IRI iri;
 
-		private AnnotationProperty(String localName) {
-			iri = IRI.create( IRI_BASE + localName );
+		private AnnotationProperty(final String localName)
+		{
+			iri = IRI.create(IRI_BASE + localName);
 		}
 
-		public IRI getAnnotationPropertyIRI() {
+		public IRI getAnnotationPropertyIRI()
+		{
 			return iri;
 		}
 	}
 
-	public enum Class {
-		CONSISTENCY_RUN("ConsistencyRun"), FAILING_RUN("FailingRun"),
-		INCOMPLETE_RUN("IncompleteRun"), INCONSISTENCY_RUN("InconsistencyRun"),
-		NEGATIVE_ENTAILMENT_RUN("NegativeEntailmentRun"), PASSING_RUN("PassingRun"),
-		POSITIVE_ENTAILMENT_RUN("PositiveEntailmentRun"),
-		SYNTAX_CONSTRAINT_RUN("SyntaxConstraintRun"),
-		SYNTAX_TRANSLATION_RUN("SyntaxTranslationRun"), TEST_RUN("TestRun");
+	public enum Class
+	{
+		CONSISTENCY_RUN("ConsistencyRun"), FAILING_RUN("FailingRun"), INCOMPLETE_RUN("IncompleteRun"), INCONSISTENCY_RUN("InconsistencyRun"), NEGATIVE_ENTAILMENT_RUN("NegativeEntailmentRun"),
+		PASSING_RUN("PassingRun"), POSITIVE_ENTAILMENT_RUN("PositiveEntailmentRun"), SYNTAX_CONSTRAINT_RUN("SyntaxConstraintRun"), SYNTAX_TRANSLATION_RUN("SyntaxTranslationRun"), TEST_RUN("TestRun");
 
-		private final OWLClass	cls;
+		private final OWLClass cls;
 
-		private Class(String localName) {
-			cls = manager.getOWLDataFactory().getOWLClass( IRI.create( IRI_BASE + localName ) );
+		private Class(final String localName)
+		{
+			cls = manager.getOWLDataFactory().getOWLClass(IRI.create(IRI_BASE + localName));
 		}
 
-		public OWLClass getOWLClass() {
+		public OWLClass getOWLClass()
+		{
 			return cls;
 		}
 	}
 
-	public enum ObjectProperty {
+	public enum ObjectProperty
+	{
 		SYNTAX_CONSTRAINT("syntaxConstraint"), RUNNER("runner"), TEST("test");
 
-		private final OWLObjectProperty	op;
+		private final OWLObjectProperty op;
 
-		private ObjectProperty(String localName) {
-			op = manager.getOWLDataFactory().getOWLObjectProperty(
-					IRI.create( IRI_BASE + localName ) );
+		private ObjectProperty(final String localName)
+		{
+			op = manager.getOWLDataFactory().getOWLObjectProperty(IRI.create(IRI_BASE + localName));
 		}
 
-		public OWLObjectProperty getOWLObjectProperty() {
+		public OWLObjectProperty getOWLObjectProperty()
+		{
 			return op;
 		}
 	}
@@ -80,10 +85,11 @@ public class ResultVocabulary {
 
 	private static final String				IRI_BASE;
 
-	static {
+	static
+	{
 		final String ontiri = "http://www.w3.org/2007/OWL/testResultOntology";
 
-		ONTOLOGY_IRI = IRI.create( ontiri );
+		ONTOLOGY_IRI = IRI.create(ontiri);
 		IRI_BASE = ontiri + "#";
 
 		manager = OWLManager.createOWLOntologyManager();

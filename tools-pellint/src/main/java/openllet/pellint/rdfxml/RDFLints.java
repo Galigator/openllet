@@ -31,8 +31,8 @@ import org.apache.jena.rdf.model.Statement;
  */
 public class RDFLints
 {
-	private final Map<String, List<String>> _report;
-	private final List<Statement> _missingStatements;
+	private final Map<String, List<String>>	_report;
+	private final List<Statement>			_missingStatements;
 
 	public RDFLints()
 	{
@@ -42,8 +42,7 @@ public class RDFLints
 
 	public void add(final String category, final List<String> msgs)
 	{
-		if (!msgs.isEmpty())
-			_report.put(category, msgs);
+		if (!msgs.isEmpty()) _report.put(category, msgs);
 	}
 
 	public void addMissingStatements(final List<Statement> stmts)
@@ -64,8 +63,7 @@ public class RDFLints
 	@Override
 	public String toString()
 	{
-		if (_report.isEmpty())
-			return "No RDF lints found.";
+		if (_report.isEmpty()) return "No RDF lints found.";
 
 		final StringBuilder builder = new StringBuilder();
 

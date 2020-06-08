@@ -68,14 +68,10 @@ public class TreeARQDriver
 		final SparqlOwlTreeARQ treeWalker = new SparqlOwlTreeARQ(nodes);
 		final Query q = treeWalker.query(null);
 
-		if (q.getPrefix("rdf") == null)
-			q.setPrefix("rdf", RDF.getURI());
-		if (q.getPrefix("rdfs") == null)
-			q.setPrefix("rdfs", RDFS.getURI());
-		if (q.getPrefix("owl") == null)
-			q.setPrefix("owl", OWL.getURI());
-		if (q.getPrefix("xsd") == null)
-			q.setPrefix("xsd", XSD.getURI());
+		if (q.getPrefix("rdf") == null) q.setPrefix("rdf", RDF.getURI());
+		if (q.getPrefix("rdfs") == null) q.setPrefix("rdfs", RDFS.getURI());
+		if (q.getPrefix("owl") == null) q.setPrefix("owl", OWL.getURI());
+		if (q.getPrefix("xsd") == null) q.setPrefix("xsd", XSD.getURI());
 
 		System.out.print("\nARQ Query\n---------\n");
 		q.serialize(System.out);

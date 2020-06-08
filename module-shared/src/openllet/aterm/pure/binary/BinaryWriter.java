@@ -5,14 +5,14 @@
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
- *     * Redistributions of source code must retain the above copyright
- *       notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the University of California, Berkeley nor the
- *       names of its contributors may be used to endorse or promote products
- *       derived from this software without specific prior written permission.
+ * * Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following disclaimer.
+ * * Redistributions in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in the
+ * documentation and/or other materials provided with the distribution.
+ * * Neither the name of the University of California, Berkeley nor the
+ * names of its contributors may be used to endorse or promote products
+ * derived from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -37,7 +37,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
@@ -73,26 +72,26 @@ import openllet.aterm.ATermReal;
  */
 public class BinaryWriter extends ATermFwdVoid
 {
-	private final static int ISSHAREDFLAG = 0x00000080;
-	private final static int ISFUNSHARED = 0x00000040;
-	private final static int APPLQUOTED = 0x00000020;
+	private final static int			ISSHAREDFLAG		= 0x00000080;
+	private final static int			ISFUNSHARED			= 0x00000040;
+	private final static int			APPLQUOTED			= 0x00000020;
 
-	private final static int STACKSIZE = 256;
+	private final static int			STACKSIZE			= 256;
 
-	private final static int MINIMUMFREESPACE = 10;
+	private final static int			MINIMUMFREESPACE	= 10;
 
-	private final Map<ATerm, Integer> _sharedTerms;
-	private int _currentKey;
-	private final Map<AFun, Integer> _applSignatures;
-	private int _sigKey;
+	private final Map<ATerm, Integer>	_sharedTerms;
+	private int							_currentKey;
+	private final Map<AFun, Integer>	_applSignatures;
+	private int							_sigKey;
 
-	private ATermMapping[] _stack;
-	private int _stackPosition;
-	private ATerm _currentTerm;
-	private int _indexInTerm;
-	private byte[] _tempNameWriteBuffer;
+	private ATermMapping[]				_stack;
+	private int							_stackPosition;
+	private ATerm						_currentTerm;
+	private int							_indexInTerm;
+	private byte[]						_tempNameWriteBuffer;
 
-	private ByteBuffer _currentBuffer;
+	private ByteBuffer					_currentBuffer;
 
 	/**
 	 * Constructor.
@@ -132,14 +131,13 @@ public class BinaryWriter extends ATermFwdVoid
 
 		while (_currentTerm != null)
 		{
-			if (buffer.remaining() < MINIMUMFREESPACE)
-				break;
+			if (buffer.remaining() < MINIMUMFREESPACE) break;
 
 			final Integer id = _sharedTerms.get(_currentTerm);
 			if (id != null)
 			{
 				buffer.put((byte) ISSHAREDFLAG);
-				writeInt(id.intValue());
+				writeInt(id);
 
 				_stackPosition--; // Pop the term from the _stack, since it's subtree is openllet.shared.hash.
 			}
@@ -147,8 +145,7 @@ public class BinaryWriter extends ATermFwdVoid
 			{
 				visit(_currentTerm);
 
-				if (_currentTerm.getType() == ATerm.LIST)
-					_stack[_stackPosition].nextPartOfList = (ATermList) _currentTerm; // <- for ATermList->next optimizaton.
+				if (_currentTerm.getType() == ATerm.LIST) _stack[_stackPosition].nextPartOfList = (ATermList) _currentTerm; // <- for ATermList->next optimizaton.
 
 				// Don't add the term to the openllet.shared.hash list until we are completely done with it.
 				if (_indexInTerm == 0)
@@ -231,9 +228,9 @@ public class BinaryWriter extends ATermFwdVoid
 	/**
 	 * Returns a header for the given term.
 	 *
-	 * @param term
-	 *            The term we are requesting a header for.
-	 * @return The constructed header.
+	 * @param  term
+	 *              The term we are requesting a header for.
+	 * @return      The constructed header.
 	 */
 	private static byte getHeader(final ATerm term)
 	{
@@ -256,8 +253,7 @@ public class BinaryWriter extends ATermFwdVoid
 			final Integer key = _applSignatures.get(fun);
 			if (key == null)
 			{
-				if (arg.isQuoted())
-					header = (byte) (header | APPLQUOTED);
+				if (arg.isQuoted()) header = (byte) (header | APPLQUOTED);
 				_currentBuffer.put(header);
 
 				writeInt(arg.getArity());
@@ -269,8 +265,7 @@ public class BinaryWriter extends ATermFwdVoid
 
 				int endIndex = length;
 				final int remaining = _currentBuffer.remaining();
-				if (remaining < endIndex)
-					endIndex = remaining;
+				if (remaining < endIndex) endIndex = remaining;
 
 				_currentBuffer.put(nameBytes, 0, endIndex);
 
@@ -287,7 +282,7 @@ public class BinaryWriter extends ATermFwdVoid
 				header = (byte) (header | ISFUNSHARED);
 				_currentBuffer.put(header);
 
-				writeInt(key.intValue());
+				writeInt(key);
 			}
 		}
 		else
@@ -296,8 +291,7 @@ public class BinaryWriter extends ATermFwdVoid
 
 			int endIndex = length;
 			final int remaining = _currentBuffer.remaining();
-			if (_indexInTerm + remaining < endIndex)
-				endIndex = _indexInTerm + remaining;
+			if (_indexInTerm + remaining < endIndex) endIndex = _indexInTerm + remaining;
 
 			_currentBuffer.put(_tempNameWriteBuffer, _indexInTerm, endIndex - _indexInTerm);
 			_indexInTerm = endIndex;
@@ -330,14 +324,12 @@ public class BinaryWriter extends ATermFwdVoid
 
 		int bytesToWrite = size - _indexInTerm;
 		final int remaining = _currentBuffer.remaining();
-		if (remaining < bytesToWrite)
-			bytesToWrite = remaining;
+		if (remaining < bytesToWrite) bytesToWrite = remaining;
 
 		_currentBuffer.put(blobBytes, _indexInTerm, bytesToWrite);
 		_indexInTerm += bytesToWrite;
 
-		if (_indexInTerm == size)
-			_indexInTerm = 0;
+		if (_indexInTerm == size) _indexInTerm = 0;
 	}
 
 	/**
@@ -406,9 +398,9 @@ public class BinaryWriter extends ATermFwdVoid
 		writeDouble(arg.getReal());
 	}
 
-	private final static int SEVENBITS = 0x0000007f;
-	private final static int SIGNBIT = 0x00000080;
-	private final static int LONGBITS = 8;
+	private final static int	SEVENBITS	= 0x0000007f;
+	private final static int	SIGNBIT		= 0x00000080;
+	private final static int	LONGBITS	= 8;
 
 	/**
 	 * Splits the given integer in separate bytes and writes it to the buffer. It will occupy the
@@ -418,7 +410,7 @@ public class BinaryWriter extends ATermFwdVoid
 	 * hand a large number will occupy 5 bytes instead of the regular 4.
 	 *
 	 * @param value
-	 *            The integer that needs to be split and written.
+	 *              The integer that needs to be split and written.
 	 */
 	private void writeInt(final int value)
 	{
@@ -461,7 +453,7 @@ public class BinaryWriter extends ATermFwdVoid
 	 * the high order bits to be occupied.
 	 *
 	 * @param value
-	 *            The integer that needs to be split and written.
+	 *              The integer that needs to be split and written.
 	 */
 	private void writeDouble(final double value)
 	{
@@ -478,12 +470,12 @@ public class BinaryWriter extends ATermFwdVoid
 	/**
 	 * Writes the given openllet.aterm to the given file. Blocks of 65536 bytes will be used.
 	 *
-	 * @param aTerm
-	 *            The ATerm that needs to be writen to file.
-	 * @param file
-	 *            The file to write to.
+	 * @param  aTerm
+	 *                     The ATerm that needs to be writen to file.
+	 * @param  file
+	 *                     The file to write to.
 	 * @throws IOException
-	 *             Thrown when an error occurs while writing to the given file.
+	 *                     Thrown when an error occurs while writing to the given file.
 	 */
 	public static void writeTermToSAFFile(final ATerm aTerm, final File file) throws IOException
 	{
@@ -526,9 +518,9 @@ public class BinaryWriter extends ATermFwdVoid
 	 * automatically encoded in UTF-16 format (which would completely mess everything up). Blocks
 	 * of 65536 bytes will be used.
 	 *
-	 * @param aTerm
-	 *            The ATerm that needs to be written to a byte array.
-	 * @return The serialized representation of the given ATerm contained in a byte array.
+	 * @param  aTerm
+	 *               The ATerm that needs to be written to a byte array.
+	 * @return       The serialized representation of the given ATerm contained in a byte array.
 	 */
 	public static byte[] writeTermToSAFString(final ATerm aTerm)
 	{

@@ -16,29 +16,29 @@ import openllet.owlwg.testcase.TestCase;
  * <p>
  * Company: Clark & Parsia, LLC. <a href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
  * </p>
- * 
+ *
  * @author Mike Smith &lt;msmith@clarkparsia.com&gt;
  */
 public class SyntaxTranslationRun extends AbstractRun
 {
 
-	public SyntaxTranslationRun(TestCase<?> testcase, RunResultType type, TestRunner<?> runner)
+	public SyntaxTranslationRun(final TestCase<?> testcase, final RunResultType type, final TestRunner<?> runner)
 	{
 		this(testcase, type, runner, null, null);
 	}
 
-	public SyntaxTranslationRun(TestCase<?> testcase, RunResultType type, TestRunner<?> runner, @SuppressWarnings("unused") String details)
+	public SyntaxTranslationRun(final TestCase<?> testcase, final RunResultType type, final TestRunner<?> runner, @SuppressWarnings("unused") final String details)
 	{
 		this(testcase, type, runner, null, null);
 	}
 
-	public SyntaxTranslationRun(TestCase<?> testcase, RunResultType type, TestRunner<?> runner, String details, Throwable cause)
+	public SyntaxTranslationRun(final TestCase<?> testcase, final RunResultType type, final TestRunner<?> runner, final String details, final Throwable cause)
 	{
 		super(testcase, type, RunTestType.SYNTAX_TRANSLATION, runner, details, cause);
 	}
 
 	@Override
-	public void accept(TestRunResultVisitor visitor)
+	public void accept(final TestRunResultVisitor visitor)
 	{
 		visitor.visit(this);
 	}

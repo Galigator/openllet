@@ -1,63 +1,63 @@
 package openllet.profiler.utils;
 
-// ----------------------------------------------------------------------------
+import java.io.PrintWriter;
+import java.text.DecimalFormat;
+
 /**
  * The main interface for exploring an object profile tree. See _individual methods for details.
- * 
- * @see ObjectProfiler#profile(Object)
+ *
+ * @see    ObjectProfiler#profile(Object)
  * @author (C) <a href="http://www.javaworld.com/columns/jw-qna-_index.shtml">Vlad Roubtsov</a>, 2003
  */
 public interface IObjectProfileNode
 {
-	// public: ................................................................
-
 	/**
-	 * A generic interface for defining _node filters. A _node filter is used as a guard to determine whether a given visitor should be given a shot as doing
-	 * something with a profile tree _node.
+	 * A generic interface for defining node filters. A node filter is used as a guard to determine whether a given visitor should be given a shot as doing
+	 * something with a profile tree node.
 	 */
 	interface INodeFilter
 	{
 		/**
-		 * @param _node about to be visited [never null]
-		 * @return 'true' if '_node' and its children should be visited
+		 * @param  node about to be visited [never null]
+		 * @return      'true' if 'node' and its children should be visited
 		 */
 		boolean accept(IObjectProfileNode node);
 
-	} // _end of nested interface
+	}
 
 	/**
-	 * A generic interface for defining _node visitors. A _node visitor is applied to a profile tree _node both before and after visiting the _node's children, if
+	 * A generic interface for defining _node visitors. A node visitor is applied to a profile tree node both before and after visiting the node's children, if
 	 * any.
 	 */
 	interface INodeVisitor
 	{
 		/**
-		 * Pre-_order visit.
-		 * 
-		 * @param _node being visited [never null]
+		 * Pre-order visit.
+		 *
+		 * @param node being visited [never null]
 		 */
 		void previsit(IObjectProfileNode node);
 
 		/**
-		 * Post-_order visit.
-		 * 
-		 * @param _node being visited [never null]
+		 * Post-order visit.
+		 *
+		 * @param node being visited [never null]
 		 */
 		void postvisit(IObjectProfileNode node);
 
-	} // _end of nested interface
+	}
 
 	/**
-	 * Returns the object associated with this _node. This is never null except for shell pseudo-_nodes.
-	 * 
-	 * @return object instance [null only for shell _nodes]
+	 * Returns the object associated with this node. This is never null except for shell pseudo-nodes.
+	 *
+	 * @return object instance [null only for shell nodes]
 	 */
 	Object object();
 
 	/**
-	 * Returns a human-readable name for this _node, usually derived from the class field or array _index that was used to reach the {@link #object() object}
-	 * associated with this _node.
-	 * 
+	 * Returns a human-readable name for this node, usually derived from the class field or array index that was used to reach the {@link #object() object}
+	 * associated with this node.
+	 *
 	 * @return _node name [never null]
 	 */
 	String name();
@@ -65,22 +65,22 @@ public interface IObjectProfileNode
 	/**
 	 * Returns the full size (in bytes) assigned to this _node in its profile tree. This is the sum of sizes of the _node class's {@link #shell() shell} and its
 	 * non-primitive non-null {@link #children() instance fields}, computed as a closure over the spanning tree produced by {@link ObjectProfiler#profile}.
-	 * 
-	 * @return total _node size [always positive]
+	 *
+	 * @return total node size [always positive]
 	 */
 	int size();
 
 	/**
 	 * Returns the reference count for the associated {@link #object()}. This is exactly the number of unique references to this object in the object graph
 	 * submitted to {@link ObjectProfiler#profile}.
-	 * 
+	 *
 	 * @return reference count [always positive]
 	 */
 	int refcount();
 
 	/**
 	 * Returns the assigned ownership parent for this _node. This is null for the root _node.
-	 * 
+	 *
 	 * @return parent _node [null only for the root _node]
 	 */
 	IObjectProfileNode parent();
@@ -90,7 +90,7 @@ public interface IObjectProfileNode
 	 * The result is sorted in decreasing {@link #size() size} _order.
 	 * <P>
 	 * Note: the returned array also contains the {@link #shell() shell} pseudo-_node.
-	 * 
+	 *
 	 * @return array of children _nodes, sorted by size [never null, may be empty]
 	 */
 	IObjectProfileNode[] children();
@@ -105,32 +105,32 @@ public interface IObjectProfileNode
 	 * <P>
 	 * The returned reference is also guaranteed to be present somewhere in the array returned by {@link #children()}. This _data is kept in a separate _node
 	 * instance to simplify tree visiting and _node filtering.
-	 * 
+	 *
 	 * @return shell pseudo-_node [null only for shell _nodes]
 	 */
 	IObjectProfileNode shell();
 
 	/**
-	 * Returns the full path from the profile tree root to this _node, in that direction. The result includes the root _node as well as the _current _node.
+	 * Returns the full path from the profile tree root to this node, in that direction. The result includes the root node as well as the current node.
 	 * <P>
-	 * Invariant: _node.root() == _node.path()[0] Invariant: _node.path()[_node.path().length - 1] == _node Invariant: _node.path().length == _node.pathlength()
-	 * 
-	 * @return _node tree path [never null/empty]
+	 * Invariant: node.root() == node.path()[0] Invariant: node.path()[_node.path().length - 1] == node Invariant: node.path().length == node.pathlength()
+	 *
+	 * @return node tree path [never null/empty]
 	 */
 	IObjectProfileNode[] path();
 
 	/**
-	 * A convenience method for retrieving the root _node from any _node in a profile tree.
+	 * A convenience method for retrieving the root node from any node in a profile tree.
 	 * <P>
-	 * Invariant: _node.root() == _node iff '_node' is the root of its profile tree Invariant: _node.root() == _node.path()[0]
-	 * 
-	 * @return the root _node for the profile tree that the _current _node is a part of [never null]
+	 * Invariant: node.root() == node iff 'node' is the root of its profile tree Invariant: node.root() == node.path()[0]
+	 *
+	 * @return the root node for the profile tree that the current node is a part of [never null]
 	 */
 	IObjectProfileNode root();
 
 	/**
-	 * A convenience method for retrieving this _node's tree path length.
-	 * 
+	 * A convenience method for retrieving this node's tree path length.
+	 *
 	 * @return path length [always positive]
 	 */
 	int pathlength();
@@ -138,19 +138,18 @@ public interface IObjectProfileNode
 	/**
 	 * A generic hook for traversing profile trees using {@link INodeFilter filters} and {@link INodeVisitor visitors}. See IObjectProfileNode.INodeFilter and
 	 * IObjectProfileNode.INodeVisitor for more details
-	 * 
-	 * @param filter [null is equivalent to no filtering]
-	 * @param visitor [may not be null]
-	 * @return 'true' iff either 'filter' was null or it returned 'true' for this _node
+	 *
+	 * @param  filter  [null is equivalent to no filtering]
+	 * @param  visitor [may not be null]
+	 * @return         'true' iff either 'filter' was null or it returned 'true' for this node
 	 */
 	boolean traverse(INodeFilter filter, INodeVisitor visitor);
 
 	/**
-	 * Dumps this _node into a flat-text format used by the {@link ObjectProfileVisitors#newDefaultNodePrinter()} default _node visitor.
-	 * 
+	 * Dumps this node into a flat-text format used by the {@link ObjectProfileVisitors#newDefaultNodePrinter(PrintWriter, String, DecimalFormat, boolean)} default node visitor.
+	 *
 	 * @return indented dump string [could be very large]
 	 */
 	String dump();
 
-} // _end of interface
-// ----------------------------------------------------------------------------
+}

@@ -87,7 +87,7 @@ public class EquivalentAndSubclassAxiomPatternTest extends PellintTestCase
 
 		addAxiom(OWL.subClassOf(_cls[0], _P0AllC0));
 		addAxiom(OWL.equivalentClasses(_cls[0], OWL.Thing));
-		addAxiom(OWL.equivalentClasses(CollectionUtil.<OWLClassExpression> asSet(_cls[0], _cls[3], _cls[4])));
+		addAxiom(OWL.equivalentClasses(CollectionUtil.<OWLClassExpression>asSet(_cls[0], _cls[3], _cls[4])));
 
 		final List<Lint> lints = _pattern.match(_ontology);
 		assertEquals(1, lints.size());

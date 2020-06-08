@@ -38,12 +38,12 @@ import openllet.core.boxes.abox.Node;
  */
 public class SimpleIncrementalChangeTracker implements IncrementalChangeTracker
 {
-	private final HashSet<Edge> _deletedEdges;
-	private final HashMap<Node, Set<ATermAppl>> _deletedTypes;
-	private final HashSet<Edge> _newEdges;
-	private final HashSet<Individual> _newIndividuals;
-	private final HashSet<Node> _unprunedNodes;
-	private final HashSet<Individual> _updatedIndividuals;
+	private final HashSet<Edge>					_deletedEdges;
+	private final HashMap<Node, Set<ATermAppl>>	_deletedTypes;
+	private final HashSet<Edge>					_newEdges;
+	private final HashSet<Individual>			_newIndividuals;
+	private final HashSet<Node>					_unprunedNodes;
+	private final HashSet<Individual>			_updatedIndividuals;
 
 	public SimpleIncrementalChangeTracker()
 	{
@@ -64,11 +64,9 @@ public class SimpleIncrementalChangeTracker implements IncrementalChangeTracker
 		for (final Edge se : src._deletedEdges)
 		{
 			final Individual s = target.getIndividual(se.getFrom().getName());
-			if (s == null)
-				throw new NullPointerException();
+			if (s == null) throw new NullPointerException();
 			final Node o = target.getNode(se.getTo().getName());
-			if (o == null)
-				throw new NullPointerException();
+			if (o == null) throw new NullPointerException();
 
 			_newEdges.add(new DefaultEdge(se.getRole(), s, o, se.getDepends()));
 		}
@@ -78,19 +76,16 @@ public class SimpleIncrementalChangeTracker implements IncrementalChangeTracker
 		for (final Map.Entry<Node, Set<ATermAppl>> e : src._deletedTypes.entrySet())
 		{
 			final Node n = target.getNode(e.getKey().getName());
-			if (n == null)
-				throw new NullPointerException();
+			if (n == null) throw new NullPointerException();
 			_deletedTypes.put(n, new HashSet<>(e.getValue()));
 		}
 
 		for (final Edge se : src._newEdges)
 		{
 			final Individual s = target.getIndividual(se.getFrom().getName());
-			if (s == null)
-				throw new NullPointerException();
+			if (s == null) throw new NullPointerException();
 			final Node o = target.getNode(se.getTo().getName());
-			if (o == null)
-				throw new NullPointerException();
+			if (o == null) throw new NullPointerException();
 
 			_newEdges.add(new DefaultEdge(se.getRole(), s, o, se.getDepends()));
 		}
@@ -100,8 +95,7 @@ public class SimpleIncrementalChangeTracker implements IncrementalChangeTracker
 		for (final Individual si : src._newIndividuals)
 		{
 			final Individual ti = target.getIndividual(si.getName());
-			if (ti == null)
-				throw new NullPointerException();
+			if (ti == null) throw new NullPointerException();
 
 			_newIndividuals.add(ti);
 		}
@@ -111,8 +105,7 @@ public class SimpleIncrementalChangeTracker implements IncrementalChangeTracker
 		for (final Node sn : src._unprunedNodes)
 		{
 			final Node tn = target.getNode(sn.getName());
-			if (tn == null)
-				throw new NullPointerException();
+			if (tn == null) throw new NullPointerException();
 
 			_unprunedNodes.add(tn);
 		}
@@ -122,8 +115,7 @@ public class SimpleIncrementalChangeTracker implements IncrementalChangeTracker
 		for (final Individual si : src._updatedIndividuals)
 		{
 			final Individual ti = target.getIndividual(si.getName());
-			if (ti == null)
-				throw new NullPointerException();
+			if (ti == null) throw new NullPointerException();
 
 			_updatedIndividuals.add(ti);
 		}
@@ -137,8 +129,7 @@ public class SimpleIncrementalChangeTracker implements IncrementalChangeTracker
 	@Override
 	public boolean addDeletedEdge(final Edge e)
 	{
-		if (e == null)
-			throw new NullPointerException();
+		if (e == null) throw new NullPointerException();
 
 		return _deletedEdges.add(e);
 	}
@@ -152,10 +143,8 @@ public class SimpleIncrementalChangeTracker implements IncrementalChangeTracker
 	@Override
 	public boolean addDeletedType(final Node n, final ATermAppl type)
 	{
-		if (n == null)
-			throw new NullPointerException();
-		if (type == null)
-			throw new NullPointerException();
+		if (n == null) throw new NullPointerException();
+		if (type == null) throw new NullPointerException();
 
 		Set<ATermAppl> existing = _deletedTypes.get(n);
 		if (existing == null)
@@ -175,8 +164,7 @@ public class SimpleIncrementalChangeTracker implements IncrementalChangeTracker
 	@Override
 	public boolean addNewEdge(final Edge e)
 	{
-		if (e == null)
-			throw new NullPointerException();
+		if (e == null) throw new NullPointerException();
 
 		return _newEdges.add(e);
 	}
@@ -189,8 +177,7 @@ public class SimpleIncrementalChangeTracker implements IncrementalChangeTracker
 	@Override
 	public boolean addNewIndividual(final Individual i)
 	{
-		if (i == null)
-			throw new NullPointerException();
+		if (i == null) throw new NullPointerException();
 
 		return _newIndividuals.add(i);
 	}
@@ -203,8 +190,7 @@ public class SimpleIncrementalChangeTracker implements IncrementalChangeTracker
 	@Override
 	public boolean addUnprunedNode(final Node n)
 	{
-		if (n == null)
-			throw new NullPointerException();
+		if (n == null) throw new NullPointerException();
 
 		return _unprunedNodes.add(n);
 	}
@@ -217,8 +203,7 @@ public class SimpleIncrementalChangeTracker implements IncrementalChangeTracker
 	@Override
 	public boolean addUpdatedIndividual(final Individual i)
 	{
-		if (i == null)
-			throw new NullPointerException();
+		if (i == null) throw new NullPointerException();
 
 		return _updatedIndividuals.add(i);
 	}

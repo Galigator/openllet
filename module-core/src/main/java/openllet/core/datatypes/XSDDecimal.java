@@ -30,17 +30,17 @@ import openllet.shared.tools.Log;
 public class XSDDecimal implements Datatype<Number>
 {
 
-	private static final XSDDecimal instance = new XSDDecimal();
-	private static final Logger _logger = Log.getLogger(XSDDecimal.class);
+	private static final XSDDecimal	instance	= new XSDDecimal();
+	private static final Logger		_logger		= Log.getLogger(XSDDecimal.class);
 
 	public static XSDDecimal getInstance()
 	{
 		return instance;
 	}
 
-	private final RestrictedRealDatatype dataRange;
-	private final int hashCode;
-	private final ATermAppl name;
+	private final RestrictedRealDatatype	dataRange;
+	private final int						hashCode;
+	private final ATermAppl					name;
 
 	/**
 	 * Private constructor forces use of {@link #getInstance()}
@@ -62,20 +62,16 @@ public class XSDDecimal implements Datatype<Number>
 	@Override
 	public boolean equals(final Object obj)
 	{
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
+		if (this == obj) return true;
+		if (obj == null) return false;
 		return getClass() == obj.getClass();
 	}
 
 	@Override
 	public ATermAppl getCanonicalRepresentation(final ATermAppl input) throws InvalidLiteralException
 	{
-		if (!ATermUtils.isLiteral(input))
-			throw new IllegalArgumentException();
-		if (!input.getArgument(ATermUtils.LIT_URI_INDEX).equals(name))
-			throw new IllegalArgumentException();
+		if (!ATermUtils.isLiteral(input)) throw new IllegalArgumentException();
+		if (!input.getArgument(ATermUtils.LIT_URI_INDEX).equals(name)) throw new IllegalArgumentException();
 
 		final String lexicalForm = ATermUtils.getLiteralValue(input);
 		try
@@ -121,10 +117,8 @@ public class XSDDecimal implements Datatype<Number>
 	@Override
 	public Number getValue(final ATermAppl literal) throws InvalidLiteralException
 	{
-		if (!ATermUtils.isLiteral(literal))
-			throw new IllegalArgumentException();
-		if (!literal.getArgument(ATermUtils.LIT_URI_INDEX).equals(name))
-			throw new IllegalArgumentException();
+		if (!ATermUtils.isLiteral(literal)) throw new IllegalArgumentException();
+		if (!literal.getArgument(ATermUtils.LIT_URI_INDEX).equals(name)) throw new IllegalArgumentException();
 
 		final String lexicalForm = ATermUtils.getLiteralValue(literal);
 		try

@@ -17,9 +17,9 @@ import openllet.core.utils.ATermUtils;
  */
 public abstract class AlphaNode extends ReteNode
 {
-	protected boolean _doExplanation;
+	protected boolean		_doExplanation;
 
-	protected final ABox _abox;
+	protected final ABox	_abox;
 
 	public AlphaNode(final ABox abox)
 	{

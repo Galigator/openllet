@@ -8,7 +8,7 @@ package openllet.profiler.utils;
  */
 final class ObjectShellProfileNode extends AbstractShellProfileNode
 {
-	// public: ................................................................    
+	// public: ................................................................
 
 	@Override
 	public String name()
@@ -33,4 +33,4 @@ final class ObjectShellProfileNode extends AbstractShellProfileNode
 	private final int _primitiveFieldCount, _refFieldCount;
 
 } // _end of class
-// ----------------------------------------------------------------------------
+	// ----------------------------------------------------------------------------

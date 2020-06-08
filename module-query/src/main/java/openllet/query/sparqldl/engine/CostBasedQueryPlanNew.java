@@ -38,15 +38,15 @@ import openllet.shared.tools.Log;
  */
 public class CostBasedQueryPlanNew extends QueryPlan
 {
-	private static final Logger _logger = Log.getLogger(CostBasedQueryPlanNew.class);
+	private static final Logger	_logger	= Log.getLogger(CostBasedQueryPlanNew.class);
 
-	private List<QueryAtom> _sortedAtoms;
+	private List<QueryAtom>		_sortedAtoms;
 
-	private int _index;
+	private int					_index;
 
-	private int _size;
+	private int					_size;
 
-	private QueryCost _cost;
+	private QueryCost			_cost;
 
 	public CostBasedQueryPlanNew(final Query query)
 	{
@@ -61,19 +61,16 @@ public class CostBasedQueryPlanNew extends QueryPlan
 
 		if (_size == 0)
 			return;
+		else if (_size == 1)
+			_sortedAtoms = query.getAtoms();
 		else
-			if (_size == 1)
-				_sortedAtoms = query.getAtoms();
-			else
-			{
-				final double minCost = chooseOrdering(new ArrayList<>(query.getAtoms()), new ArrayList<QueryAtom>(_size), new HashSet<ATermAppl>(), false, Double.POSITIVE_INFINITY);
+		{
+			final double minCost = chooseOrdering(new ArrayList<>(query.getAtoms()), new ArrayList<QueryAtom>(_size), new HashSet<ATermAppl>(), false, Double.POSITIVE_INFINITY);
 
-				if (_sortedAtoms == null)
-					throw new UnsupportedQueryException("No safe ordering for query: " + query);
+			if (_sortedAtoms == null) throw new UnsupportedQueryException("No safe ordering for query: " + query);
 
-				if (_logger.isLoggable(Level.FINE))
-					_logger.log(Level.FINE, "WINNER : Cost=" + minCost + " ,atoms=" + _sortedAtoms);
-			}
+			if (_logger.isLoggable(Level.FINE)) _logger.log(Level.FINE, "WINNER : Cost=" + minCost + " ,atoms=" + _sortedAtoms);
+		}
 	}
 
 	/**
@@ -84,12 +81,12 @@ public class CostBasedQueryPlanNew extends QueryPlan
 	 * share at least one variable. This heuristics is defined to avoid even considering cartesian products, e.g. ClassAtom(?x, A), ClassAtom(?y,B),
 	 * PropertyValueAtom(?x, p, ?y). For some queries, all orderings may be non-optimal, e.g. ClassAtom(?x,A), ClassAtom(?y, B).
 	 *
-	 * @param atoms Atoms that have not yet been added to the ordered list
-	 * @param orderedAtoms Atoms that have been ordered so far
-	 * @param boundVars Variables that have referenced by the atoms in the ordered list
-	 * @param notOptimal Current ordered list is found to be non-optimal
-	 * @param minCost Minimum _cost found so far
-	 * @return Minimum _cost found from an ordering that has the given ordered list as the prefix
+	 * @param  atoms        Atoms that have not yet been added to the ordered list
+	 * @param  orderedAtoms Atoms that have been ordered so far
+	 * @param  boundVars    Variables that have referenced by the atoms in the ordered list
+	 * @param  notOptimal   Current ordered list is found to be non-optimal
+	 * @param  minCost      Minimum _cost found so far
+	 * @return              Minimum _cost found from an ordering that has the given ordered list as the prefix
 	 */
 	private double chooseOrdering(final List<QueryAtom> atoms, final List<QueryAtom> orderedAtoms, final Set<ATermAppl> boundVars, final boolean notOptimal, final double minCostParam)
 	{
@@ -98,8 +95,7 @@ public class CostBasedQueryPlanNew extends QueryPlan
 		{
 			if (notOptimal)
 			{
-				if (_sortedAtoms == null)
-					_sortedAtoms = new ArrayList<>(orderedAtoms);
+				if (_sortedAtoms == null) _sortedAtoms = new ArrayList<>(orderedAtoms);
 			}
 			else
 			{
@@ -130,61 +126,54 @@ public class CostBasedQueryPlanNew extends QueryPlan
 				int unboundCount = 0;
 
 				for (final ATermAppl a : atom.getArguments())
-					if (ATermUtils.isVar(a))
-						if (newBoundVars.add(a))
-						{
-							unboundCount++;
-
-							/*
-							 * It is not valid to have an ordering like
-							 * NotKnown(ClassAtom(?x, A)), ClassAtom(?x, B).
-							 * This is because variables in negation atom will
-							 * not be bound by the query evaluation. However, if
-							 * an atom in the query later binds the variable to
-							 * a value the result will be incorrect because
-							 * earlier evaluation of negation was not evaluated
-							 * with that binding.
-							 */
-							if (atom.getPredicate().equals(QueryPredicate.NotKnown))
-								for (int j = 0; j < atoms.size(); j++)
-								{
-									final QueryAtom nextAtom = atoms.get(j);
-
-									if (i == j || nextAtom.getPredicate().equals(QueryPredicate.NotKnown))
-										continue;
-
-									if (nextAtom.getArguments().contains(a))
-									{
-										if (_logger.isLoggable(Level.FINE))
-											_logger.fine("Unbound vars for not");
-										continue LOOP;
-									}
-								}
-						}
-						else
-							boundCount++;
-
-				if (boundCount == 0 && newBoundVars.size() > unboundCount)
-					if (_sortedAtoms != null)
+					if (ATermUtils.isVar(a)) if (newBoundVars.add(a))
 					{
-						if (_logger.isLoggable(Level.FINE))
-							_logger.fine("Stop at not optimal ordering");
-						continue;
+						unboundCount++;
+
+						/*
+						 * It is not valid to have an ordering like
+						 * NotKnown(ClassAtom(?x, A)), ClassAtom(?x, B).
+						 * This is because variables in negation atom will
+						 * not be bound by the query evaluation. However, if
+						 * an atom in the query later binds the variable to
+						 * a value the result will be incorrect because
+						 * earlier evaluation of negation was not evaluated
+						 * with that binding.
+						 */
+						if (atom.getPredicate().equals(QueryPredicate.NotKnown)) for (int j = 0; j < atoms.size(); j++)
+						{
+							final QueryAtom nextAtom = atoms.get(j);
+
+							if (i == j || nextAtom.getPredicate().equals(QueryPredicate.NotKnown)) continue;
+
+							if (nextAtom.getArguments().contains(a))
+							{
+								if (_logger.isLoggable(Level.FINE)) _logger.fine("Unbound vars for not");
+								continue LOOP;
+							}
+						}
 					}
 					else
-					{
-						if (_logger.isLoggable(Level.FINE))
+						boundCount++;
 
-							_logger.fine("Continue not optimal ordering, no solution yet.");
-						newNonOptimal = true;
-					}
+				if (boundCount == 0 && newBoundVars.size() > unboundCount) if (_sortedAtoms != null)
+				{
+					if (_logger.isLoggable(Level.FINE)) _logger.fine("Stop at not optimal ordering");
+					continue;
+				}
+				else
+				{
+					if (_logger.isLoggable(Level.FINE))
+
+						_logger.fine("Continue not optimal ordering, no solution yet.");
+					newNonOptimal = true;
+				}
 			}
 
 			atoms.remove(atom);
 			orderedAtoms.add(atom);
 
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("Atom[" + i + "/" + atoms.size() + "] " + atom + " from " + atoms + " to " + orderedAtoms);
+			if (_logger.isLoggable(Level.FINE)) _logger.fine("Atom[" + i + "/" + atoms.size() + "] " + atom + " from " + atoms + " to " + orderedAtoms);
 
 			minCost = chooseOrdering(atoms, orderedAtoms, newBoundVars, newNonOptimal, minCost);
 

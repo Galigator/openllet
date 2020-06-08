@@ -40,10 +40,10 @@ import uk.ac.manchester.cs.owlapi.modularity.ModuleType;
 public class ModularityExample
 {
 
-	private static final String file = "file:src/main/resources/data/simple-galen.owl";
-	private static final String NS = "http://www.co-ode.org/ontologies/galen#";
+	private static final String	file	= "file:src/main/resources/data/simple-galen.owl";
+	private static final String	NS		= "http://www.co-ode.org/ontologies/galen#";
 
-	private void run() throws Exception
+	private static void run() throws Exception
 	{
 		// Create an OWLAPI manager that allows to load an ontology
 		final OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
@@ -97,8 +97,7 @@ public class ModularityExample
 
 	public static void main(final String[] args) throws Exception
 	{
-		final ModularityExample app = new ModularityExample();
-		app.run();
+		ModularityExample.run();
 	}
 
 }

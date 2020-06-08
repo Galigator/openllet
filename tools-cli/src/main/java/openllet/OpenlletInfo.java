@@ -109,9 +109,7 @@ public class OpenlletInfo extends OpenlletCmdApp
 				manager.setOntologyLoaderConfiguration(manager.getOntologyLoaderConfiguration().setMissingImportHandlingStrategy(MissingImportHandlingStrategy.SILENT));
 			}
 			else
-			{
 				manager.setOntologyLoaderConfiguration(manager.getOntologyLoaderConfiguration().setMissingImportHandlingStrategy(MissingImportHandlingStrategy.SILENT));
-			}
 
 			if (inputFiles.size() > 1)
 				for (final String inputFile : inputFiles)
@@ -121,8 +119,7 @@ public class OpenlletInfo extends OpenlletCmdApp
 
 			manager.removeOntology(baseOntology);
 
-			if (_options.getOption("merge").getValueAsBoolean())
-				manager = mergeOntologiesInNewManager(manager);
+			if (_options.getOption("merge").getValueAsBoolean()) manager = mergeOntologiesInNewManager(manager);
 
 			printStats(manager);
 
@@ -146,8 +143,7 @@ public class OpenlletInfo extends OpenlletCmdApp
 		}
 		catch (final Exception e)
 		{
-			if (_verbose)
-				System.err.println(e.getLocalizedMessage());
+			if (_verbose) System.err.println(e.getLocalizedMessage());
 		}
 	}
 
@@ -161,8 +157,7 @@ public class OpenlletInfo extends OpenlletCmdApp
 		}
 		catch (final Exception e)
 		{
-			if (_verbose)
-				System.err.println(e.getLocalizedMessage());
+			if (_verbose) System.err.println(e.getLocalizedMessage());
 		}
 	}
 
@@ -184,8 +179,7 @@ public class OpenlletInfo extends OpenlletCmdApp
 			final String ontologyLocation = manager.getOntologyDocumentIRI(ontology) != null ? manager.getOntologyDocumentIRI(ontology).toString() : "ontology";
 			final String ontologyBaseURI = ontology.getOntologyID().getOntologyIRI().isPresent() ? ontology.getOntologyID().getOntologyIRI().get().toQuotedString() : "";
 			output("Information about " + ontologyLocation + " (" + ontologyBaseURI + ")");
-			if (_verbose)
-				printOntologyHeader(ontology);
+			if (_verbose) printOntologyHeader(ontology);
 			final DLExpressivityChecker expressivityChecker = new DLExpressivityChecker(Collections.singleton(ontology));
 			output("OWL Profile = " + getProfile(ontology));
 			output("DL Expressivity = " + expressivityChecker.getDescriptionLogicName());
@@ -206,8 +200,7 @@ public class OpenlletInfo extends OpenlletCmdApp
 	private String getProfile(final OWLOntology ontology)
 	{
 		for (final OWLProfile profile : _profiles)
-			if (profile.checkOntology(ontology).isInProfile())
-				return profile.getName();
+			if (profile.checkOntology(ontology).isInProfile()) return profile.getName();
 		return "Unknown Profile";
 	}
 
@@ -220,15 +213,11 @@ public class OpenlletInfo extends OpenlletCmdApp
 
 			if (property.equals(OWLRDFVocabulary.OWL_VERSION_INFO.getIRI()))
 				verbose("Version Info = " + getString(value));
-			else
-				if (property.equals(OWLRDFVocabulary.OWL_PRIOR_VERSION.getIRI()))
-					verbose("Prior Version Info = " + getString(value));
-				else
-					if (property.equals(OWLRDFVocabulary.OWL_BACKWARD_COMPATIBLE_WITH.getIRI()))
-						verbose("Backward Compatible With = " + getString(value));
-					else
-						if (property.equals(OWLRDFVocabulary.OWL_INCOMPATIBLE_WITH.getIRI()))
-							verbose("Incompatible With = " + getString(value));
+			else if (property.equals(OWLRDFVocabulary.OWL_PRIOR_VERSION.getIRI()))
+				verbose("Prior Version Info = " + getString(value));
+			else if (property.equals(OWLRDFVocabulary.OWL_BACKWARD_COMPATIBLE_WITH.getIRI()))
+				verbose("Backward Compatible With = " + getString(value));
+			else if (property.equals(OWLRDFVocabulary.OWL_INCOMPATIBLE_WITH.getIRI())) verbose("Incompatible With = " + getString(value));
 		});
 	}
 

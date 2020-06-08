@@ -64,8 +64,7 @@ public class OpenlletRealize extends OpenlletCmdApp
 		final boolean isConsistent = kb.isConsistent();
 		finishTask("consistency check");
 
-		if (!isConsistent)
-			throw new OpenlletCmdException("Ontology is inconsistent, run \"openllet explain\" to get the reason");
+		if (!isConsistent) throw new OpenlletCmdException("Ontology is inconsistent, run \"openllet explain\" to get the reason");
 
 		startTask("classification");
 		kb.classify();

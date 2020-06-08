@@ -38,9 +38,9 @@ import org.junit.Assert;
  */
 public abstract class AbstractQueryTest extends AbstractKBTests
 {
-	protected static final ATermAppl x = ATermUtils.makeVar("x");
-	protected static final ATermAppl y = ATermUtils.makeVar("y");
-	protected static final ATermAppl z = ATermUtils.makeVar("z");
+	protected static final ATermAppl	x	= ATermUtils.makeVar("x");
+	protected static final ATermAppl	y	= ATermUtils.makeVar("y");
+	protected static final ATermAppl	z	= ATermUtils.makeVar("z");
 
 	protected ATermAppl[] select(final ATermAppl... vars)
 	{
@@ -105,11 +105,10 @@ public abstract class AbstractQueryTest extends AbstractKBTests
 			final Integer count = answers.get(list);
 			if (count == null)
 				Assert.fail("Unexpected binding in the result: " + list);
+			else if (count == 1)
+				answers.remove(list);
 			else
-				if (count == 1)
-					answers.remove(list);
-				else
-					answers.put(list, count - 1);
+				answers.put(list, count - 1);
 		}
 
 		assertTrue("Unfound bindings: " + answers.keySet(), answers.isEmpty());

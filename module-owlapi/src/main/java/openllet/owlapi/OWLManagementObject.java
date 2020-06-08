@@ -26,41 +26,41 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	// Basics
 
 	/**
-	 * @param axiom to change
-	 * @return true changes list
-	 * @since 2.5.1
+	 * @param  axiom to change
+	 * @return       true changes list
+	 * @since        2.5.1
 	 */
-	default public ChangeApplied addAxiom(final OWLAxiom axiom)
+	default ChangeApplied addAxiom(final OWLAxiom axiom)
 	{
 		return getOntology().add(axiom);
 	}
 
 	/**
-	 * @param axioms to change
-	 * @return true changes list
-	 * @since 2.5.1
+	 * @param  axioms to change
+	 * @return        true changes list
+	 * @since         2.5.1
 	 */
-	default public ChangeApplied addAxioms(final Stream<OWLAxiom> axioms)
+	default ChangeApplied addAxioms(final Stream<OWLAxiom> axioms)
 	{
 		return getOntology().addAxioms(axioms);
 	}
 
 	/**
-	 * @param axiom to change
-	 * @return true changes list
-	 * @since 2.5.1
+	 * @param  axiom to change
+	 * @return       true changes list
+	 * @since        2.5.1
 	 */
-	default public ChangeApplied removeAxiom(final OWLAxiom axiom)
+	default ChangeApplied removeAxiom(final OWLAxiom axiom)
 	{
 		return getOntology().remove(axiom);
 	}
 
 	/**
-	 * @param axioms to change
-	 * @return true changes list
-	 * @since 2.5.1
+	 * @param  axioms to change
+	 * @return        true changes list
+	 * @since         2.5.1
 	 */
-	default public ChangeApplied removeAxioms(final Stream<OWLAxiom> axioms)
+	default ChangeApplied removeAxioms(final Stream<OWLAxiom> axioms)
 	{
 		return getOntology().removeAxioms(axioms);
 	}
@@ -69,11 +69,11 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	 * add axiom into the ontology.
 	 *
 	 * @param property that carry the data
-	 * @param subject is the root of the property
-	 * @param value is the target of the property
-	 * @since 2.5.1
+	 * @param subject  is the root of the property
+	 * @param value    is the target of the property
+	 * @since          2.5.1
 	 */
-	default public void addObjectPropertyAxiom(final OWLObjectPropertyExpression property, final OWLIndividual subject, final OWLIndividual value)
+	default void addObjectPropertyAxiom(final OWLObjectPropertyExpression property, final OWLIndividual subject, final OWLIndividual value)
 	{
 		addAxiom(getFactory().getOWLObjectPropertyAssertionAxiom(property, subject, value));
 	}
@@ -82,11 +82,11 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	 * add axiom into the ontology.
 	 *
 	 * @param property that carry the data
-	 * @param subject is the root of the property
-	 * @param literal is the target of the property
-	 * @since 2.5.1
+	 * @param subject  is the root of the property
+	 * @param literal  is the target of the property
+	 * @since          2.5.1
 	 */
-	default public void addDataPropertyAxiom(final OWLDataProperty property, final OWLIndividual subject, final OWLLiteral literal)
+	default void addDataPropertyAxiom(final OWLDataProperty property, final OWLIndividual subject, final OWLLiteral literal)
 	{
 		addAxiom(getFactory().getOWLDataPropertyAssertionAxiom(property, subject, literal));
 	}
@@ -95,11 +95,11 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	 * add axiom into the ontology.
 	 *
 	 * @param property that carry the data
-	 * @param subject is the root of the property
-	 * @param value is the target of the property
-	 * @since 2.5.1
+	 * @param subject  is the root of the property
+	 * @param value    is the target of the property
+	 * @since          2.5.1
 	 */
-	default public void addDataPropertyAxiom(final OWLDataProperty property, final OWLIndividual subject, final String value)
+	default void addDataPropertyAxiom(final OWLDataProperty property, final OWLIndividual subject, final String value)
 	{
 		addDataPropertyAxiom(property, subject, getFactory().getOWLLiteral(value));
 	}
@@ -108,11 +108,11 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	 * add axiom into the ontology.
 	 *
 	 * @param property that carry the data
-	 * @param subject is the root of the property
-	 * @param value is the target of the property
-	 * @since 2.5.1
+	 * @param subject  is the root of the property
+	 * @param value    is the target of the property
+	 * @since          2.5.1
 	 */
-	default public void addDataPropertyAxiom(final OWLDataProperty property, final OWLIndividual subject, final double value)
+	default void addDataPropertyAxiom(final OWLDataProperty property, final OWLIndividual subject, final double value)
 	{
 		addDataPropertyAxiom(property, subject, getFactory().getOWLLiteral(value));
 	}
@@ -121,11 +121,11 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	 * add axiom into the ontology.
 	 *
 	 * @param property that carry the data
-	 * @param subject is the root of the property
-	 * @param value is the target of the property
-	 * @since 2.5.1
+	 * @param subject  is the root of the property
+	 * @param value    is the target of the property
+	 * @since          2.5.1
 	 */
-	default public void addDataPropertyAxiom(final OWLDataProperty property, final OWLIndividual subject, final long value)
+	default void addDataPropertyAxiom(final OWLDataProperty property, final OWLIndividual subject, final long value)
 	{
 		addDataPropertyAxiom(property, subject, getFactory().getOWLLiteral((double) value)); // This is also the default java behavior but here I want to make it explicit.
 	}
@@ -134,11 +134,11 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	 * add axiom into the ontology.
 	 *
 	 * @param property that carry the data
-	 * @param subject is the root of the property
-	 * @param value is the target of the property
-	 * @since 2.5.1
+	 * @param subject  is the root of the property
+	 * @param value    is the target of the property
+	 * @since          2.5.1
 	 */
-	default public void addDataPropertyAxiom(final OWLDataProperty property, final OWLIndividual subject, final int value)
+	default void addDataPropertyAxiom(final OWLDataProperty property, final OWLIndividual subject, final int value)
 	{
 		addDataPropertyAxiom(property, subject, getFactory().getOWLLiteral(value));
 	}
@@ -146,11 +146,11 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	/**
 	 * add axiom into the ontology.
 	 *
-	 * @param clazz that will have the individual
+	 * @param clazz   that will have the individual
 	 * @param subject is the individual that will receive the assertion.
-	 * @since 2.5.1
+	 * @since         2.5.1
 	 */
-	default public void addClassPropertyAxiom(final OWLClassExpression clazz, final OWLIndividual subject)
+	default void addClassPropertyAxiom(final OWLClassExpression clazz, final OWLIndividual subject)
 	{
 		addAxiom(getFactory().getOWLClassAssertionAxiom(clazz, subject));
 	}
@@ -159,11 +159,11 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	 * remove axiom from the ontology
 	 *
 	 * @param property that carry the data
-	 * @param subject is the root of the property
-	 * @param value is the target of the property
-	 * @since 2.5.1
+	 * @param subject  is the root of the property
+	 * @param value    is the target of the property
+	 * @since          2.5.1
 	 */
-	default public void removeObjectPropertyAxiom(final OWLObjectPropertyExpression property, final OWLIndividual subject, final OWLIndividual value)
+	default void removeObjectPropertyAxiom(final OWLObjectPropertyExpression property, final OWLIndividual subject, final OWLIndividual value)
 	{
 		removeAxiom(getFactory().getOWLObjectPropertyAssertionAxiom(property, subject, value));
 	}
@@ -172,11 +172,11 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	 * remove axiom from the ontology
 	 *
 	 * @param property that carry the data
-	 * @param subject is the root of the property
-	 * @param literal is the target of the property
-	 * @since 2.5.1
+	 * @param subject  is the root of the property
+	 * @param literal  is the target of the property
+	 * @since          2.5.1
 	 */
-	default public void removeDataPropertyAxiom(final OWLDataProperty property, final OWLIndividual subject, final OWLLiteral literal)
+	default void removeDataPropertyAxiom(final OWLDataProperty property, final OWLIndividual subject, final OWLLiteral literal)
 	{
 		removeAxiom(getFactory().getOWLDataPropertyAssertionAxiom(property, subject, literal));
 	}
@@ -185,10 +185,10 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	 * Remove all the value of an data property that are related to an individual. This function is slow and should be optmized.
 	 *
 	 * @param property to remove
-	 * @param subject to consider.
-	 * @since 2.5.1
+	 * @param subject  to consider.
+	 * @since          2.5.1
 	 */
-	default public void removeDataPropertyAxiom(final OWLDataProperty property, final OWLNamedIndividual subject)
+	default void removeDataPropertyAxiom(final OWLDataProperty property, final OWLNamedIndividual subject)
 	{
 		removeAxioms(getValues(subject, property).stream().map(value -> getFactory().getOWLDataPropertyAssertionAxiom(property, subject, value)));
 	}
@@ -197,10 +197,10 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	 * Remove all the value of an data property that are related to an individual. This function is slow and should be optmized.
 	 *
 	 * @param property to remove
-	 * @param subject to consider.
-	 * @since 2.5.1
+	 * @param subject  to consider.
+	 * @since          2.5.1
 	 */
-	default public void removeDataPropertyAxiom(final IRI property, final OWLNamedIndividual subject)
+	default void removeDataPropertyAxiom(final IRI property, final OWLNamedIndividual subject)
 	{
 		removeDataPropertyAxiom(getFactory().getOWLDataProperty(property), subject);
 	}
@@ -209,10 +209,10 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	 * Remove all the target of an object property that are related to an individual. This function is slow and should be optimized.
 	 *
 	 * @param property to remove
-	 * @param subject to consider.
-	 * @since 2.5.1
+	 * @param subject  to consider.
+	 * @since          2.5.1
 	 */
-	default public void removeObjectPropertyAxiom(final OWLObjectProperty property, final OWLNamedIndividual subject)
+	default void removeObjectPropertyAxiom(final OWLObjectProperty property, final OWLNamedIndividual subject)
 	{
 		removeAxioms(getObjects(subject, property).map(object -> getFactory().getOWLObjectPropertyAssertionAxiom(property, subject, object)));
 	}
@@ -221,33 +221,33 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	 * Remove all the target of an object property that are related to an individual. This function is slow and should be optimized.
 	 *
 	 * @param property to remove
-	 * @param subject to consider.
-	 * @since 2.5.1
+	 * @param subject  to consider.
+	 * @since          2.5.1
 	 */
-	default public void removeObjectPropertyAxiom(final IRI property, final OWLNamedIndividual subject)
+	default void removeObjectPropertyAxiom(final IRI property, final OWLNamedIndividual subject)
 	{
 		removeObjectPropertyAxiom(getFactory().getOWLObjectProperty(property), subject);
 	}
 
 	/**
-	 * @param named is the individual with the given name that will be test against the facette.
-	 * @param facette is an class expression that represent an acceptable type for the individual.
-	 * @return true if the individual have the given facette
-	 * @since 2.5.1
+	 * @param  named   is the individual with the given name that will be test against the facette.
+	 * @param  facette is an class expression that represent an acceptable type for the individual.
+	 * @return         true if the individual have the given facette
+	 * @since          2.5.1
 	 */
-	default public boolean individualHaveFacet(final OWLNamedIndividual named, final OWLClassExpression facette)
+	default boolean individualHaveFacet(final OWLNamedIndividual named, final OWLClassExpression facette)
 	{
 		return getReasoner().isEntailed(getFactory().getOWLClassAssertionAxiom(facette, named));
 	}
 
 	/**
-	 * @param property is the property that support the given range. In fact can be all 'simple' DataProperty you may want.
-	 * @param range like [1..3] or more complex if you want.
-	 * @param literal to check, 2 is include [1..3], 4 isn't include in [1..3].
-	 * @return true if the literal is in the range.
-	 * @since 2.6.1
+	 * @param  property is the property that support the given range. In fact can be all 'simple' DataProperty you may want.
+	 * @param  range    like [1..3] or more complex if you want.
+	 * @param  literal  to check, 2 is include [1..3], 4 isn't include in [1..3].
+	 * @return          true if the literal is in the range.
+	 * @since           2.6.1
 	 */
-	default public boolean isLiteralIncludeInRange(final OWLDataProperty property, final OWLDataRange range, final OWLLiteral literal)
+	default boolean isLiteralIncludeInRange(final OWLDataProperty property, final OWLDataRange range, final OWLLiteral literal)
 	{
 		return getReasoner().isSatisfiable(//
 				OWL.and(// You must be of all the following class
@@ -260,12 +260,12 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	// Declarations
 
 	/**
-	 * @param clazz is a java class
-	 * @param individual that will be map to an owl class generated from the java class.
-	 * @return the owl class of the individual
-	 * @since 2.5.1
+	 * @param  clazz      is a java class
+	 * @param  individual that will be map to an owl class generated from the java class.
+	 * @return            the owl class of the individual
+	 * @since             2.5.1
 	 */
-	default public OWLClass declareClassOfIndividual(final Class<?> clazz, final OWLNamedIndividual individual)
+	default OWLClass declareClassOfIndividual(final Class<?> clazz, final OWLNamedIndividual individual)
 	{
 		final OWLClass owlClazz = toClass(IRIUtils.clazz(clazz));
 		addClass(individual, owlClazz);
@@ -273,11 +273,11 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	}
 
 	/**
-	 * @param iri to declare
-	 * @return the iri as an individual after inserting it as a declaration in the ontology.
-	 * @since 2.5.1
+	 * @param  iri to declare
+	 * @return     the iri as an individual after inserting it as a declaration in the ontology.
+	 * @since      2.5.1
 	 */
-	default public OWLNamedIndividual declareIndividual(final IRI iri)
+	default OWLNamedIndividual declareIndividual(final IRI iri)
 	{
 		final OWLNamedIndividual baby = toIndividual(iri);
 		addAxiom(getFactory().getOWLDeclarationAxiom(baby));
@@ -287,12 +287,12 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	/**
 	 * Declare the individual and add it a given class
 	 *
-	 * @param owlClazz already declare in this ontology.
-	 * @param individual to declare in this ontology.
-	 * @return the owl individual
-	 * @since 2.6.0
+	 * @param  owlClazz   already declare in this ontology.
+	 * @param  individual to declare in this ontology.
+	 * @return            the owl individual
+	 * @since             2.6.0
 	 */
-	default public OWLNamedIndividual declareIndividual(final OWLClass owlClazz, final OWLNamedIndividual individual)
+	default OWLNamedIndividual declareIndividual(final OWLClass owlClazz, final OWLNamedIndividual individual)
 	{
 		addAxiom(getFactory().getOWLDeclarationAxiom(individual));
 		addClass(individual, owlClazz);
@@ -302,12 +302,12 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	/**
 	 * Declare the individual and add it a given class
 	 *
-	 * @param owlClazz already declare in this ontology.
-	 * @param individual as full iri
-	 * @return the owl individual
-	 * @since 2.5.1
+	 * @param  owlClazz   already declare in this ontology.
+	 * @param  individual as full iri
+	 * @return            the owl individual
+	 * @since             2.5.1
 	 */
-	default public OWLNamedIndividual declareIndividual(final OWLClass owlClazz, final IRI individual)
+	default OWLNamedIndividual declareIndividual(final OWLClass owlClazz, final IRI individual)
 	{
 		final OWLNamedIndividual owlIndividual = declareIndividual(individual);
 		addClass(owlIndividual, owlClazz);
@@ -318,33 +318,33 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	 * To avoid problem on declaration of the individual, this method get template of individual : class + namespace + name. And add some random around the
 	 * name.
 	 *
-	 * @param owlClazz that must be bind to the individual
-	 * @param namespace of the individual to create.
-	 * @param name of the individual to create.
-	 * @return A new named individual.
-	 * @Deprecated 2.6.1 This method should take a fully qualified label that depend of the context. No more next int usage.
+	 * @param      owlClazz  that must be bind to the individual
+	 * @param      namespace of the individual to create.
+	 * @param      name      of the individual to create.
+	 * @return               A new named individual.
+	 * @Deprecated           2.6.1 This method should take a fully qualified label that depend of the context. No more next int usage.
 	 */
 	@Deprecated
-	default public OWLNamedIndividual declareIndividual(final OWLClass owlClazz, final String namespace, final String name)
+	default OWLNamedIndividual declareIndividual(final OWLClass owlClazz, final String namespace, final String name)
 	{
-		return declareIndividual(owlClazz, IRI.create((IRIUtils.isIRI(name)) ? name : namespace + IRIUtils.randId(name)));
+		return declareIndividual(owlClazz, IRI.create(IRIUtils.isIRI(name) ? name : namespace + IRIUtils.randId(name)));
 	}
 
 	/**
 	 * @return an annonymous individual (this is just a shortcut to the owlapi).
-	 * @since 2.5.1
+	 * @since  2.5.1
 	 */
-	default public OWLAnonymousIndividual declareIndividual()
+	default OWLAnonymousIndividual declareIndividual()
 	{
 		return getFactory().getOWLAnonymousIndividual();
 	}
 
 	/**
-	 * @param iri the desired property
-	 * @return the owl property
-	 * @since 2.5.1
+	 * @param  iri the desired property
+	 * @return     the owl property
+	 * @since      2.5.1
 	 */
-	default public OWLObjectProperty declareObjectProperty(final IRI iri)
+	default OWLObjectProperty declareObjectProperty(final IRI iri)
 	{
 		final OWLObjectProperty baby = toObjectProperty(iri);
 		addAxiom(getFactory().getOWLDeclarationAxiom(baby));
@@ -352,11 +352,11 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	}
 
 	/**
-	 * @param iri the desired property
-	 * @return the owl property
-	 * @since 2.5.1
+	 * @param  iri the desired property
+	 * @return     the owl property
+	 * @since      2.5.1
 	 */
-	default public OWLDataProperty declareDataProperty(final IRI iri)
+	default OWLDataProperty declareDataProperty(final IRI iri)
 	{
 		final OWLDataProperty baby = toDataProperty(iri);
 		addAxiom(getFactory().getOWLDeclarationAxiom(baby));
@@ -364,11 +364,11 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	}
 
 	/**
-	 * @param clazz is the iri of the desired classes
-	 * @return the owl class
-	 * @since 2.5.1
+	 * @param  clazz is the iri of the desired classes
+	 * @return       the owl class
+	 * @since        2.5.1
 	 */
-	default public OWLClass declareClass(final IRI clazz)
+	default OWLClass declareClass(final IRI clazz)
 	{
 		final OWLClass owlClazz = toClass(clazz);
 		addAxiom(getFactory().getOWLDeclarationAxiom(owlClazz));
@@ -378,9 +378,9 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	// Converters
 
 	/**
-	 * @param iri property
-	 * @return property
-	 * @since 2.5.1
+	 * @param  iri property
+	 * @return     property
+	 * @since      2.5.1
 	 */
 	default OWLObjectProperty toObjectProperty(final IRI iri)
 	{
@@ -388,9 +388,9 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	}
 
 	/**
-	 * @param iri property
-	 * @return property
-	 * @since 2.5.1
+	 * @param  iri property
+	 * @return     property
+	 * @since      2.5.1
 	 */
 	default OWLDataProperty toDataProperty(final IRI iri)
 	{
@@ -398,9 +398,9 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	}
 
 	/**
-	 * @param iri class
-	 * @return class
-	 * @since 2.5.1
+	 * @param  iri class
+	 * @return     class
+	 * @since      2.5.1
 	 */
 	default OWLClass toClass(final IRI iri)
 	{
@@ -408,9 +408,9 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	}
 
 	/**
-	 * @param iri individual
-	 * @return individual
-	 * @since 2.5.1
+	 * @param  iri individual
+	 * @return     individual
+	 * @since      2.5.1
 	 */
 	default OWLNamedIndividual toIndividual(final IRI iri)
 	{
@@ -420,10 +420,10 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	// Assoc
 
 	/**
-	 * @param subject subject
-	 * @param property property
-	 * @return all objects
-	 * @since 2.5.1
+	 * @param  subject  subject
+	 * @param  property property
+	 * @return          all objects
+	 * @since           2.5.1
 	 */
 	default Stream<OWLNamedIndividual> getObjects(final OWLNamedIndividual subject, final OWLObjectPropertyExpression property)
 	{
@@ -431,10 +431,10 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	}
 
 	/**
-	 * @param subject subject
-	 * @param property property
-	 * @return all objects
-	 * @since 2.5.1
+	 * @param  subject  subject
+	 * @param  property property
+	 * @return          all objects
+	 * @since           2.5.1
 	 */
 	default Stream<OWLNamedIndividual> getObjects(final OWLNamedIndividual subject, final IRI property)
 	{
@@ -442,10 +442,10 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	}
 
 	/**
-	 * @param subject subject
-	 * @param property property
-	 * @return all values
-	 * @since 2.5.1
+	 * @param  subject  subject
+	 * @param  property property
+	 * @return          all values
+	 * @since           2.5.1
 	 */
 	default Set<OWLLiteral> getValues(final OWLNamedIndividual subject, final OWLDataProperty property)
 	{
@@ -453,10 +453,10 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	}
 
 	/**
-	 * @param subject subject
-	 * @param property property
-	 * @return all values
-	 * @since 2.5.1
+	 * @param  subject  subject
+	 * @param  property property
+	 * @return          all values
+	 * @since           2.5.1
 	 */
 	default Set<OWLLiteral> getValues(final OWLNamedIndividual subject, final IRI property)
 	{
@@ -464,10 +464,10 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	}
 
 	/**
-	 * @param subject subject
-	 * @param property property
-	 * @return one object
-	 * @since 2.5.1
+	 * @param  subject  subject
+	 * @param  property property
+	 * @return          one object
+	 * @since           2.5.1
 	 */
 	default Optional<OWLNamedIndividual> getObject(final OWLNamedIndividual subject, final OWLObjectPropertyExpression property)
 	{
@@ -475,10 +475,10 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	}
 
 	/**
-	 * @param subject subject
-	 * @param property property
-	 * @return one object
-	 * @since 2.5.1
+	 * @param  subject  subject
+	 * @param  property property
+	 * @return          one object
+	 * @since           2.5.1
 	 */
 	default Optional<OWLNamedIndividual> getObject(final OWLNamedIndividual subject, final IRI property)
 	{
@@ -486,10 +486,10 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	}
 
 	/**
-	 * @param subject subject
-	 * @param property property
-	 * @return one value
-	 * @since 2.5.1
+	 * @param  subject  subject
+	 * @param  property property
+	 * @return          one value
+	 * @since           2.5.1
 	 */
 	default Optional<OWLLiteral> getValue(final OWLNamedIndividual subject, final OWLDataProperty property)
 	{
@@ -498,10 +498,10 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	}
 
 	/**
-	 * @param subject subject
-	 * @param property property
-	 * @return one value
-	 * @since 2.5.1
+	 * @param  subject  subject
+	 * @param  property property
+	 * @return          one value
+	 * @since           2.5.1
 	 */
 	default Optional<OWLLiteral> getValue(final OWLNamedIndividual subject, final IRI property)
 	{
@@ -511,10 +511,10 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	// Addings
 
 	/**
-	 * @param subject root of property
+	 * @param subject  root of property
 	 * @param property identifier of the property
-	 * @param object target
-	 * @since 2.5.1
+	 * @param object   target
+	 * @since          2.5.1
 	 */
 	default void addObject(final OWLNamedIndividual subject, final OWLObjectPropertyExpression property, final OWLNamedIndividual object)
 	{
@@ -522,10 +522,10 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	}
 
 	/**
-	 * @param subject root of property
+	 * @param subject  root of property
 	 * @param property identifier of the property
-	 * @param object target
-	 * @since 2.5.1
+	 * @param object   target
+	 * @since          2.5.1
 	 */
 	default void addObject(final OWLNamedIndividual subject, final IRI property, final OWLNamedIndividual object)
 	{
@@ -533,10 +533,10 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	}
 
 	/**
-	 * @param subject root of property
+	 * @param subject  root of property
 	 * @param property identifier of the property
-	 * @param literal target
-	 * @since 2.5.1
+	 * @param literal  target
+	 * @since          2.5.1
 	 */
 	default void addValue(final OWLNamedIndividual subject, final OWLDataProperty property, final OWLLiteral literal)
 	{
@@ -544,10 +544,10 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	}
 
 	/**
-	 * @param subject root of property
+	 * @param subject  root of property
 	 * @param property identifier of the property
-	 * @param literal target
-	 * @since 2.5.1
+	 * @param literal  target
+	 * @since          2.5.1
 	 */
 	default void addValue(final OWLNamedIndividual subject, final IRI property, final OWLLiteral literal)
 	{
@@ -555,10 +555,10 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	}
 
 	/**
-	 * @param subject root of property
+	 * @param subject  root of property
 	 * @param property identifier of the property
-	 * @param literal target
-	 * @since 2.5.1
+	 * @param literal  target
+	 * @since          2.5.1
 	 */
 	default void addValue(final OWLNamedIndividual subject, final OWLDataProperty property, final String literal)
 	{
@@ -566,10 +566,10 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	}
 
 	/**
-	 * @param subject root of property
+	 * @param subject  root of property
 	 * @param property identifier of the property
-	 * @param literal target
-	 * @since 2.5.1
+	 * @param literal  target
+	 * @since          2.5.1
 	 */
 	default void addValue(final OWLNamedIndividual subject, final IRI property, final String literal)
 	{
@@ -577,10 +577,10 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	}
 
 	/**
-	 * @param subject root of property
+	 * @param subject  root of property
 	 * @param property identifier of the property
-	 * @param literal target
-	 * @since 2.5.1
+	 * @param literal  target
+	 * @since          2.5.1
 	 */
 	default void addValue(final OWLNamedIndividual subject, final OWLDataProperty property, final int literal)
 	{
@@ -588,10 +588,10 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	}
 
 	/**
-	 * @param subject root of property
+	 * @param subject  root of property
 	 * @param property identifier of the property
-	 * @param literal target
-	 * @since 2.5.1
+	 * @param literal  target
+	 * @since          2.5.1
 	 */
 	default void addValue(final OWLNamedIndividual subject, final IRI property, final int literal)
 	{
@@ -599,10 +599,10 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	}
 
 	/**
-	 * @param subject root of property
+	 * @param subject  root of property
 	 * @param property identifier of the property
-	 * @param literal target
-	 * @since 2.5.1
+	 * @param literal  target
+	 * @since          2.5.1
 	 */
 	default void addValue(final OWLNamedIndividual subject, final OWLDataProperty property, final double literal)
 	{
@@ -610,10 +610,10 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	}
 
 	/**
-	 * @param subject root of property
+	 * @param subject  root of property
 	 * @param property identifier of the property
-	 * @param literal target
-	 * @since 2.5.1
+	 * @param literal  target
+	 * @since          2.5.1
 	 */
 	default void addValue(final OWLNamedIndividual subject, final IRI property, final double literal)
 	{
@@ -622,10 +622,10 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 
 	// Updating
 	/**
-	 * @param subject root of the property
+	 * @param subject  root of the property
 	 * @param property identifier of the property
-	 * @param object target of the property
-	 * @since 2.5.1
+	 * @param object   target of the property
+	 * @since          2.5.1
 	 */
 	default void updateObject(final OWLNamedIndividual subject, final OWLObjectProperty property, final OWLNamedIndividual object)
 	{
@@ -634,10 +634,10 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	}
 
 	/**
-	 * @param subject root of the property
+	 * @param subject  root of the property
 	 * @param property identifier of the property
-	 * @param object target of the property
-	 * @since 2.5.1
+	 * @param object   target of the property
+	 * @since          2.5.1
 	 */
 	default void updateObject(final OWLNamedIndividual subject, final IRI property, final OWLNamedIndividual object)
 	{
@@ -645,10 +645,10 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	}
 
 	/**
-	 * @param subject root of the property
+	 * @param subject  root of the property
 	 * @param property identifier of the property
-	 * @param literal target of the property
-	 * @since 2.5.1
+	 * @param literal  target of the property
+	 * @since          2.5.1
 	 */
 	default void updateValue(final OWLNamedIndividual subject, final OWLDataProperty property, final OWLLiteral literal)
 	{
@@ -657,10 +657,10 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	}
 
 	/**
-	 * @param subject root of the property
+	 * @param subject  root of the property
 	 * @param property identifier of the property
-	 * @param literal target of the property
-	 * @since 2.5.1
+	 * @param literal  target of the property
+	 * @since          2.5.1
 	 */
 	default void updateValue(final OWLNamedIndividual subject, final IRI property, final OWLLiteral literal)
 	{
@@ -668,10 +668,10 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	}
 
 	/**
-	 * @param subject root of the property
+	 * @param subject  root of the property
 	 * @param property identifier of the property
-	 * @param literal target of the property
-	 * @since 2.5.1
+	 * @param literal  target of the property
+	 * @since          2.5.1
 	 */
 	default void updateValue(final OWLNamedIndividual subject, final OWLDataProperty property, final String literal)
 	{
@@ -680,10 +680,10 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	}
 
 	/**
-	 * @param subject root of the property
+	 * @param subject  root of the property
 	 * @param property identifier of the property
-	 * @param literal target of the property
-	 * @since 2.5.1
+	 * @param literal  target of the property
+	 * @since          2.5.1
 	 */
 	default void updateValue(final OWLNamedIndividual subject, final IRI property, final String literal)
 	{
@@ -691,10 +691,10 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	}
 
 	/**
-	 * @param subject root of the property
+	 * @param subject  root of the property
 	 * @param property identifier of the property
-	 * @param literal target of the property
-	 * @since 2.5.1
+	 * @param literal  target of the property
+	 * @since          2.5.1
 	 */
 	default void updateValue(final OWLNamedIndividual subject, final OWLDataProperty property, final int literal)
 	{
@@ -703,10 +703,10 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	}
 
 	/**
-	 * @param subject root of the property
+	 * @param subject  root of the property
 	 * @param property identifier of the property
-	 * @param literal target of the property
-	 * @since 2.5.1
+	 * @param literal  target of the property
+	 * @since          2.5.1
 	 */
 	default void updateValue(final OWLNamedIndividual subject, final IRI property, final int literal)
 	{
@@ -714,10 +714,10 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	}
 
 	/**
-	 * @param subject root of the property
+	 * @param subject  root of the property
 	 * @param property identifier of the property
-	 * @param literal target of the property
-	 * @since 2.5.1
+	 * @param literal  target of the property
+	 * @since          2.5.1
 	 */
 	default void updateValue(final OWLNamedIndividual subject, final OWLDataProperty property, final double literal)
 	{
@@ -726,10 +726,10 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 	}
 
 	/**
-	 * @param subject root of the property
+	 * @param subject  root of the property
 	 * @param property identifier of the property
-	 * @param literal target of the property
-	 * @since 2.5.1
+	 * @param literal  target of the property
+	 * @since          2.5.1
 	 */
 	default void updateValue(final OWLNamedIndividual subject, final IRI property, final double literal)
 	{
@@ -740,20 +740,20 @@ public interface OWLManagementObject extends FacetFactoryOWL, FacetManagerOWL, F
 
 	/**
 	 * @param subject that will receive the class
-	 * @param clazz that will be add
-	 * @since 2.5.1
+	 * @param clazz   that will be add
+	 * @since         2.5.1
 	 */
-	default public void addClass(final OWLNamedIndividual subject, final OWLClassExpression clazz)
+	default void addClass(final OWLNamedIndividual subject, final OWLClassExpression clazz)
 	{
 		addAxiom(getFactory().getOWLClassAssertionAxiom(clazz, subject));
 	}
 
 	/**
 	 * @param subject that will receive the class
-	 * @param clazz that will be add
-	 * @since 2.5.1
+	 * @param clazz   that will be add
+	 * @since         2.5.1
 	 */
-	default public void addClass(final OWLNamedIndividual subject, final IRI clazz)
+	default void addClass(final OWLNamedIndividual subject, final IRI clazz)
 	{
 		addClass(subject, toClass(clazz));
 	}

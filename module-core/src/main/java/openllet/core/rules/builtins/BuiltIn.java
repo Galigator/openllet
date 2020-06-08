@@ -28,8 +28,8 @@ import openllet.core.rules.model.BuiltInAtom;
 public interface BuiltIn
 {
 
-	public BindingHelper createHelper(BuiltInAtom atom);
+	BindingHelper createHelper(BuiltInAtom atom);
 
-	public boolean apply(ABox abox, Literal[] args);
+	boolean apply(ABox abox, Literal[] args);
 
 }

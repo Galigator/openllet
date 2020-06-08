@@ -23,15 +23,15 @@ public abstract class Token
 	@SuppressWarnings("unused")
 	private static class ListToken extends Token
 	{
-		private final ListToken _next;
-		private final WME _wme;
-		private final int _index;
+		private final ListToken	_next;
+		private final WME		_wme;
+		private final int		_index;
 
 		public ListToken(final WME wme, final ListToken tok)
 		{
 			_wme = wme;
 			_next = tok;
-			_index = (tok == null) ? 0 : tok._index + 1;
+			_index = tok == null ? 0 : tok._index + 1;
 		}
 
 		/**
@@ -41,8 +41,7 @@ public abstract class Token
 		public WME get(final int index)
 		{
 			for (ListToken t = this; t != null; t = t._next)
-				if (t._index == index)
-					return t._wme;
+				if (t._index == index) return t._wme;
 
 			throw new IndexOutOfBoundsException(index + " > " + _index);
 		}
@@ -68,8 +67,7 @@ public abstract class Token
 		public boolean dependsOn(final int branch)
 		{
 			for (ListToken t = this; t != null; t = t._next)
-				if (t._wme.dependsOn(branch))
-					return true;
+				if (t._wme.dependsOn(branch)) return true;
 			return false;
 		}
 
@@ -105,8 +103,7 @@ public abstract class Token
 		@Override
 		public WME get(final int index)
 		{
-			if (index >= _wmes.length)
-				throw new ArrayIndexOutOfBoundsException();
+			if (index >= _wmes.length) throw new ArrayIndexOutOfBoundsException();
 			return _wmes[index];
 		}
 
@@ -131,8 +128,7 @@ public abstract class Token
 		public boolean dependsOn(final int branch)
 		{
 			for (final WME wme : _wmes)
-				if (wme.dependsOn(branch))
-					return true;
+				if (wme.dependsOn(branch)) return true;
 			return false;
 		}
 

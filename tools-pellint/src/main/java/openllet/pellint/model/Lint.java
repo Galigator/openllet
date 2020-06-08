@@ -35,12 +35,12 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
  */
 public class Lint
 {
-	private final LintPattern _lintPattern;
-	private LintFixer _lintFixer;
-	private Severity _severity;
-	private final Set<OWLClass> _participatingClasses;
-	private final Set<OWLClassAxiom> _participatingAxioms;
-	private final OWLOntology _participatingOntology;
+	private final LintPattern			_lintPattern;
+	private LintFixer					_lintFixer;
+	private Severity					_severity;
+	private final Set<OWLClass>			_participatingClasses;
+	private final Set<OWLClassAxiom>	_participatingAxioms;
+	private final OWLOntology			_participatingOntology;
 
 	public Lint(final LintPattern lintPattern, final OWLOntology participatingOntology)
 	{
@@ -51,7 +51,7 @@ public class Lint
 	}
 
 	/**
-	 * @return The {@link com.clarkparsia.pellint.lintpattern.LintPattern} which generated this {@link com.clarkparsia.pellint.model.Lint}.
+	 * @return The {@link openllet.pellint.lintpattern.LintPattern} which generated this {@link openllet.pellint.model.Lint}.
 	 */
 	public LintPattern getPattern()
 	{
@@ -74,8 +74,8 @@ public class Lint
 	}
 
 	/**
-	 * @return The {@link com.clarkparsia.pellint.model.Severity} of this {@link com.clarkparsia.pellint.model.Lint} relative to all the
-	 *         {@link com.clarkparsia.pellint.model.Lint} found for this {@link com.clarkparsia.pellint.lintpattern.LintPattern}.
+	 * @return The {@link openllet.pellint.model.Severity} of this {@link openllet.pellint.model.Lint} relative to all the
+	 *         {@link openllet.pellint.model.Lint} found for this {@link openllet.pellint.lintpattern.LintPattern}.
 	 */
 	public Severity getSeverity()
 	{
@@ -118,14 +118,15 @@ public class Lint
 	}
 
 	/**
-	 * Apply {@link com.clarkparsia.pellint.model.LintFixer} to the source OWLOntology where this {@link com.clarkparsia.pellint.model.Lint} was found, using
+	 * Apply {@link openllet.pellint.model.LintFixer} to the source OWLOntology where this {@link openllet.pellint.model.Lint} was found, using
 	 * the given OWLOntologyManager. The source OWLOntology must be part of the given OWLOntologyManager.
 	 *
-	 * @param manager the owl ontology manager to use
-	 * @return <code>true</code> if a {@link com.clarkparsia.pellint.model.LintFixer} was available and successfully applied, otherwise <code>false</code>.
-	 * @throws org.semanticweb.owlapi.model.OWLOntologyChangeException if a {@link com.clarkparsia.pellint.model.LintFixer} was available but
-	 *         org.semanticweb.owlapi.model.OWLOntologyChangeException was thrown when applying the change to the source OWLOntology.
-	 * @see com.clarkparsia.pellint.model.LintFixer#apply(OWLOntologyManager, OWLOntology)
+	 * @param  manager                                                 the owl ontology manager to use
+	 * @return                                                         <code>true</code> if a {@link openllet.pellint.model.LintFixer} was available and successfully applied, otherwise
+	 *                                                                 <code>false</code>.
+	 * @throws org.semanticweb.owlapi.model.OWLOntologyChangeException if a {@link openllet.pellint.model.LintFixer} was available but
+	 *                                                                 org.semanticweb.owlapi.model.OWLOntologyChangeException was thrown when applying the change to the source OWLOntology.
+	 * @see                                                            openllet.pellint.model.LintFixer#apply(OWLOntologyManager, OWLOntology)
 	 */
 	public boolean applyFix(final OWLOntologyManager manager) throws OWLOntologyChangeException
 	{

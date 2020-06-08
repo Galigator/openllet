@@ -5,14 +5,14 @@
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
- *     * Redistributions of source code must retain the above copyright
- *       notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the University of California, Berkeley nor the
- *       names of its contributors may be used to endorse or promote products
- *       derived from this software without specific prior written permission.
+ * * Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following disclaimer.
+ * * Redistributions in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in the
+ * documentation and/or other materials provided with the distribution.
+ * * Neither the name of the University of California, Berkeley nor the
+ * names of its contributors may be used to endorse or promote products
+ * derived from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -44,23 +44,22 @@ import openllet.shared.tools.Log;
  */
 public class BufferedOutputStreamWriter extends Writer
 {
-	public final static Logger _logger = Log.getLogger(BufferedOutputStreamWriter.class);
+	public final static Logger	_logger				= Log.getLogger(BufferedOutputStreamWriter.class);
 
-	private final static int DEFAULTBUFFERSIZE = 8192;
+	private final static int	DEFAULTBUFFERSIZE	= 8192;
 
-	private final OutputStream _stream;
+	private final OutputStream	_stream;
 
-	private byte[] _buffer = null;
-	private int _bufferPos = 0;
-	private int _limit = 0;
+	private byte[]				_buffer				= null;
+	private int					_bufferPos			= 0;
+	private int					_limit				= 0;
 
-	private boolean _failures = false;
+	private boolean				_failures			= false;
 
 	/**
 	 * Contructor.
 	 *
-	 * @param _stream
-	 *            The _stream to write too.
+	 * @param stream The stream to write too.
 	 */
 	public BufferedOutputStreamWriter(final OutputStream stream)
 	{
@@ -70,10 +69,8 @@ public class BufferedOutputStreamWriter extends Writer
 	/**
 	 * Constructor.
 	 *
-	 * @param _stream
-	 *            The _stream to write too.
-	 * @param bufferSize
-	 *            The size of the interal _buffer.
+	 * @param stream     The stream to write too.
+	 * @param bufferSize The size of the interal _buffer.
 	 */
 	public BufferedOutputStreamWriter(final OutputStream stream, final int bufferSize)
 	{
@@ -87,14 +84,13 @@ public class BufferedOutputStreamWriter extends Writer
 	 * Writes a single character.
 	 *
 	 * @param c
-	 *            The character to write.
+	 *          The character to write.
 	 */
 	public void write(final char c)
 	{
 		_buffer[_bufferPos++] = (byte) c;
 
-		if (_bufferPos == _limit)
-			flush();
+		if (_bufferPos == _limit) flush();
 	}
 
 	/**
@@ -124,14 +120,12 @@ public class BufferedOutputStreamWriter extends Writer
 		{
 			int bytesToWrite = bytesLeft;
 			final int freeSpace = _limit - _bufferPos;
-			if (freeSpace < bytesToWrite)
-				bytesToWrite = freeSpace;
+			if (freeSpace < bytesToWrite) bytesToWrite = freeSpace;
 
 			System.arraycopy(bytes, startPos, _buffer, _bufferPos, bytesToWrite);
 			_bufferPos += bytesToWrite;
 
-			if (_bufferPos == _limit)
-				flush();
+			if (_bufferPos == _limit) flush();
 
 			bytesLeft -= bytesToWrite;
 			startPos += bytesToWrite;

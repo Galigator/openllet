@@ -33,8 +33,7 @@ public class URIUtils
 			final int begin = path.lastIndexOf("/");
 			int end = path.lastIndexOf(".");
 
-			if (end == -1 || begin > end)
-				end = path.length();
+			if (end == -1 || begin > end) end = path.length();
 
 			return path.substring(begin + 1, end);
 		}
@@ -46,9 +45,9 @@ public class URIUtils
 	}
 
 	/**
-	 * @return the local name of a URI. This function is not equiavlent to URI.getFragment() because it tries to handle handle slashy URI's such as the ones
-	 *         found in Dublin Core. It is equiavalent to getLocalName(uri.toString()).
-	 * @param uri
+	 * @return     the local name of a URI. This function is not equiavlent to URI.getFragment() because it tries to handle handle slashy URI's such as the ones
+	 *             found in Dublin Core. It is equiavalent to getLocalName(uri.toString()).
+	 * @param  uri
 	 */
 	public static String getLocalName(final URI uri)
 	{
@@ -56,16 +55,15 @@ public class URIUtils
 	}
 
 	/**
-	 * @return the local name of a URI string. This naive implementation splits the URI from the position of a '#' character or the last occurunce of '/'
-	 *         character. If neither of these characters are found, the parameter itself is returned.
-	 * @param uri
+	 * @return     the local name of a URI string. This naive implementation splits the URI from the position of a '#' character or the last occurunce of '/'
+	 *             character. If neither of these characters are found, the parameter itself is returned.
+	 * @param  uri
 	 */
 	public static String getLocalName(final String uri)
 	{
 		final int index = splitPos(uri);
 
-		if (index == -1)
-			return uri;
+		if (index == -1) return uri;
 
 		return uri.substring(index + 1);
 	}
@@ -79,8 +77,7 @@ public class URIUtils
 	{
 		final int index = uri.indexOf("#");
 
-		if (index == -1)
-			return uri;
+		if (index == -1) return uri;
 
 		return uri.substring(0, index);
 	}
@@ -89,8 +86,7 @@ public class URIUtils
 	{
 		int pos = uri.indexOf("#");
 
-		if (pos == -1)
-			pos = uri.lastIndexOf("/");
+		if (pos == -1) pos = uri.lastIndexOf("/");
 
 		return pos;
 	}

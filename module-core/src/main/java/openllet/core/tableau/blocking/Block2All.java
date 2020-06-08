@@ -32,25 +32,21 @@ public class Block2All implements BlockingCondition
 			{
 				final ATermList chain = (ATermList) p;
 
-				if (!isBlockedByChain(cxt, chain, c))
-					return false;
+				if (!isBlockedByChain(cxt, chain, c)) return false;
 			}
+			else if (s.isDatatypeRole())
+				continue;
 			else
-				if (s.isDatatypeRole())
-					continue;
-				else
-				{
-					if (cxt.isRSuccessor(s.getInverse()) && !cxt._blocked.getParent().hasType(c))
-						return false;
+			{
+				if (cxt.isRSuccessor(s.getInverse()) && !cxt._blocked.getParent().hasType(c)) return false;
 
-					if (!s.isSimple())
-					{
-						final Set<ATermList> subRoleChains = s.getSubRoleChains();
-						for (final ATermList chain : subRoleChains)
-							if (!isBlockedByChain(cxt, chain, c))
-								return false;
-					}
+				if (!s.isSimple())
+				{
+					final Set<ATermList> subRoleChains = s.getSubRoleChains();
+					for (final ATermList chain : subRoleChains)
+						if (!isBlockedByChain(cxt, chain, c)) return false;
 				}
+			}
 		}
 
 		return true;

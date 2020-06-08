@@ -71,45 +71,46 @@ import org.semanticweb.owlapi.util.Version;
 public class PelletReasoner implements OpenlletReasoner
 {
 
-	public static final Logger _logger = Log.getLogger(PelletReasoner.class);
+	public static final Logger								_logger						= Log.getLogger(PelletReasoner.class);
 
-	private static final Set<InferenceType> PRECOMPUTABLE_INFERENCES = EnumSet.of(InferenceType.CLASS_HIERARCHY, InferenceType.CLASS_ASSERTIONS, InferenceType.OBJECT_PROPERTY_HIERARCHY, InferenceType.DATA_PROPERTY_HIERARCHY);
+	private static final Set<InferenceType>					PRECOMPUTABLE_INFERENCES	= EnumSet.of(InferenceType.CLASS_HIERARCHY, InferenceType.CLASS_ASSERTIONS,
+			InferenceType.OBJECT_PROPERTY_HIERARCHY, InferenceType.DATA_PROPERTY_HIERARCHY);
 
-	private static final Version VERSION = createVersion();
+	private static final Version							VERSION						= createVersion();
 
-	private final OWLOntologyManager _manager;
+	private final OWLOntologyManager						_manager;
 
-	private volatile OWLDataFactory _factory;
+	private volatile OWLDataFactory							_factory;
 
-	private volatile OWLOntology _ontology;
+	private volatile OWLOntology							_ontology;
 
-	private volatile KnowledgeBase _kb = new KnowledgeBaseImplFullSync();
+	private volatile KnowledgeBase							_kb							= new KnowledgeBaseImplFullSync();
 
-	private volatile ReasonerProgressMonitor _monitor;
+	private volatile ReasonerProgressMonitor				_monitor;
 
-	private volatile boolean _shouldRefresh;
+	private volatile boolean								_shouldRefresh;
 
-	private final PelletVisitor _visitor;
+	private final PelletVisitor								_visitor;
 
-	private final BufferingMode _bufferingMode;
+	private final BufferingMode								_bufferingMode;
 
-	private final List<OWLOntologyChange> _pendingChanges = new ArrayList<>();
+	private final List<OWLOntologyChange>					_pendingChanges				= new ArrayList<>();
 
-	private volatile IndividualNodeSetPolicy _individualNodeSetPolicy;
+	private volatile IndividualNodeSetPolicy				_individualNodeSetPolicy;
 
-	private final ChangeVisitor _changeVisitor = new ChangeVisitor();
+	private final ChangeVisitor								_changeVisitor				= new ChangeVisitor();
 
-	private final EntityMapper<OWLNamedIndividual> IND_MAPPER = new NamedIndividualMapper();
+	private final EntityMapper<OWLNamedIndividual>			IND_MAPPER					= new NamedIndividualMapper();
 
-	private final EntityMapper<OWLLiteral> LIT_MAPPER = new LiteralMapper();
+	private final EntityMapper<OWLLiteral>					LIT_MAPPER					= new LiteralMapper();
 
-	private final EntityMapper<OWLObjectPropertyExpression> OP_MAPPER = new ObjectPropertyMapper();
+	private final EntityMapper<OWLObjectPropertyExpression>	OP_MAPPER					= new ObjectPropertyMapper();
 
-	private final EntityMapper<OWLDataProperty> DP_MAPPER = new DataPropertyMapper();
+	private final EntityMapper<OWLDataProperty>				DP_MAPPER					= new DataPropertyMapper();
 
-	private final EntityMapper<OWLDatatype> DT_MAPPER = new DatatypeMapper();
+	private final EntityMapper<OWLDatatype>					DT_MAPPER					= new DatatypeMapper();
 
-	private final EntityMapper<OWLClass> CLASS_MAPPER = new ClassMapper();
+	private final EntityMapper<OWLClass>					CLASS_MAPPER				= new ClassMapper();
 
 	private static Version createVersion()
 	{
@@ -128,8 +129,7 @@ public class PelletReasoner implements OpenlletReasoner
 	{
 		try
 		{
-			if (0 <= index && index < numbers.length)
-				return Integer.parseInt(numbers[index]);
+			if (0 <= index && index < numbers.length) return Integer.parseInt(numbers[index]);
 		}
 		catch (final NumberFormatException e)
 		{
@@ -152,8 +152,8 @@ public class PelletReasoner implements OpenlletReasoner
 		/**
 		 * Process a change, providing a single call for common reset,accept,isReloadRequired pattern.
 		 *
-		 * @param change the {@link OWLOntologyChange} to process
-		 * @return <code>true</code> if change is handled, <code>false</code> if a reload is required
+		 * @param  change the {@link OWLOntologyChange} to process
+		 * @return        <code>true</code> if change is handled, <code>false</code> if a reload is required
 		 */
 		public boolean process(final OWLOntologyChange change)
 		{
@@ -210,11 +210,10 @@ public class PelletReasoner implements OpenlletReasoner
 		{
 			if (term.equals(ATermUtils.TOP))
 				return _factory.getOWLThing();
+			else if (term.equals(ATermUtils.BOTTOM))
+				return _factory.getOWLNothing();
 			else
-				if (term.equals(ATermUtils.BOTTOM))
-					return _factory.getOWLNothing();
-				else
-					return _factory.getOWLClass(iri(term));
+				return _factory.getOWLClass(iri(term));
 		}
 	}
 
@@ -223,10 +222,8 @@ public class PelletReasoner implements OpenlletReasoner
 		@Override
 		public OWLDataProperty map(final ATermAppl term)
 		{
-			if (ATermUtils.TOP_DATA_PROPERTY.equals(term))
-				return _factory.getOWLTopDataProperty();
-			if (ATermUtils.BOTTOM_DATA_PROPERTY.equals(term))
-				return _factory.getOWLBottomDataProperty();
+			if (ATermUtils.TOP_DATA_PROPERTY.equals(term)) return _factory.getOWLTopDataProperty();
+			if (ATermUtils.BOTTOM_DATA_PROPERTY.equals(term)) return _factory.getOWLBottomDataProperty();
 			return _factory.getOWLDataProperty(iri(term));
 		}
 	}
@@ -251,8 +248,7 @@ public class PelletReasoner implements OpenlletReasoner
 			for (final ATermAppl term : terms)
 			{
 				final T mapped = map(term);
-				if (mapped != null)
-					mappedSet.add(mapped);
+				if (mapped != null) mappedSet.add(mapped);
 			}
 			return mappedSet;
 		}
@@ -298,28 +294,24 @@ public class PelletReasoner implements OpenlletReasoner
 		@Override
 		public OWLObjectPropertyExpression map(final ATermAppl term)
 		{
-			if (ATermUtils.TOP_OBJECT_PROPERTY.equals(term))
-				return _factory.getOWLTopObjectProperty();
-			if (ATermUtils.BOTTOM_OBJECT_PROPERTY.equals(term))
-				return _factory.getOWLBottomObjectProperty();
-			if (ATermUtils.isInv(term))
-				try
-				{
-					final IRI iri = IRI.create(((ATermAppl) term.getArgument(0)).getAFun().getName());
-					return _factory.getOWLObjectProperty(iri).getInverseProperty();
-				}
-				catch (final Exception e)
-				{
-					e.printStackTrace();
-				}
+			if (ATermUtils.TOP_OBJECT_PROPERTY.equals(term)) return _factory.getOWLTopObjectProperty();
+			if (ATermUtils.BOTTOM_OBJECT_PROPERTY.equals(term)) return _factory.getOWLBottomObjectProperty();
+			if (ATermUtils.isInv(term)) try
+			{
+				final IRI iri = IRI.create(((ATermAppl) term.getArgument(0)).getAFun().getName());
+				return _factory.getOWLObjectProperty(iri).getInverseProperty();
+			}
+			catch (final Exception e)
+			{
+				e.printStackTrace();
+			}
 			return _factory.getOWLObjectProperty(iri(term));
 		}
 	}
 
 	private static IRI iri(final ATermAppl term)
 	{
-		if (term.getArity() != 0)
-			throw new OWLRuntimeException("Trying to convert an anonymous term " + term);
+		if (term.getArity() != 0) throw new OWLRuntimeException("Trying to convert an anonymous term " + term);
 
 		return IRI.create(term.getName());
 	}
@@ -361,13 +353,18 @@ public class PelletReasoner implements OpenlletReasoner
 
 	public PelletReasoner(final OWLOntology ontology, final BufferingMode bufferingMode)
 	{
-		this(ontology, new SimpleConfiguration(new NullReasonerProgressMonitor(), openllet.core.OpenlletOptions.SILENT_UNDEFINED_ENTITY_HANDLING ? FreshEntityPolicy.ALLOW : FreshEntityPolicy.DISALLOW, 0, IndividualNodeSetPolicy.BY_SAME_AS), bufferingMode);
+		this(ontology, new SimpleConfiguration(new NullReasonerProgressMonitor(), openllet.core.OpenlletOptions.SILENT_UNDEFINED_ENTITY_HANDLING ? FreshEntityPolicy.ALLOW : FreshEntityPolicy.DISALLOW,
+				0, IndividualNodeSetPolicy.BY_SAME_AS), bufferingMode);
 	}
 
 	/**
 	 * Create a reasoner for the given _ontology and configuration.
 	 *
-	 * @param _ontology
+	 * @param  ontology                      to reason on
+	 * @param  config                        that will change reasoning behaviour
+	 * @param  bufferingMode                 true if the change on the ontology are apply immediately or waits to the next reasonning/query to resolve.
+	 *
+	 * @throws IllegalConfigurationException
 	 */
 	public PelletReasoner(final OWLOntology ontology, final OWLReasonerConfiguration config, final BufferingMode bufferingMode) throws IllegalConfigurationException
 	{
@@ -381,8 +378,7 @@ public class PelletReasoner implements OpenlletReasoner
 		_monitor = config.getProgressMonitor();
 
 		_kb.setTaxonomyBuilderProgressMonitor(new ProgressAdapter(_monitor));
-		if (config.getTimeOut() > 0)
-			_kb.getTimers()._mainTimer.setTimeout(config.getTimeOut());
+		if (config.getTimeOut() > 0) _kb.getTimers()._mainTimer.setTimeout(config.getTimeOut());
 
 		_manager = ontology.getOWLOntologyManager();
 		_factory = _manager.getOWLDataFactory();
@@ -404,11 +400,9 @@ public class PelletReasoner implements OpenlletReasoner
 			//	throw e;
 			throw new TimeOutException();
 
-		if (e instanceof openllet.core.exceptions.TimerInterruptedException)
-			throw new ReasonerInterruptedException(e);
+		if (e instanceof openllet.core.exceptions.TimerInterruptedException) throw new ReasonerInterruptedException(e);
 
-		if (e instanceof openllet.core.exceptions.InconsistentOntologyException)
-			throw new InconsistentOntologyException(e);
+		if (e instanceof openllet.core.exceptions.InconsistentOntologyException) throw new InconsistentOntologyException(e);
 
 		if (e instanceof openllet.core.exceptions.UndefinedEntityException)
 		{
@@ -481,7 +475,8 @@ public class PelletReasoner implements OpenlletReasoner
 	}
 
 	@Override
-	public NodeSet<OWLClass> getDataPropertyDomains(final OWLDataProperty pe, final boolean direct) throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
+	public NodeSet<OWLClass> getDataPropertyDomains(final OWLDataProperty pe, final boolean direct)
+			throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
 	{
 		refreshCheck();
 
@@ -490,12 +485,10 @@ public class PelletReasoner implements OpenlletReasoner
 			final ATermAppl some = ATermUtils.makeSomeValues(term(pe), ATermUtils.TOP_LIT);
 
 			final Set<ATermAppl> equivalents = _kb.getEquivalentClasses(some);
-			if (direct && !equivalents.isEmpty())
-				return toClassNodeSet(Collections.singleton(equivalents));
+			if (direct && !equivalents.isEmpty()) return toClassNodeSet(Collections.singleton(equivalents));
 
 			final Set<Set<ATermAppl>> result = _kb.getSuperClasses(some, direct);
-			if (!equivalents.isEmpty())
-				result.add(equivalents);
+			if (!equivalents.isEmpty()) result.add(equivalents);
 
 			return toClassNodeSet(result);
 		}
@@ -506,7 +499,8 @@ public class PelletReasoner implements OpenlletReasoner
 	}
 
 	@Override
-	public Set<OWLLiteral> getDataPropertyValues(final OWLNamedIndividual ind, final OWLDataProperty pe) throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
+	public Set<OWLLiteral> getDataPropertyValues(final OWLNamedIndividual ind, final OWLDataProperty pe)
+			throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
 	{
 		refreshCheck();
 		try
@@ -520,7 +514,8 @@ public class PelletReasoner implements OpenlletReasoner
 	}
 
 	@Override
-	public Set<OWLLiteral> getAnnotationPropertyValues(final OWLNamedIndividual ind, final OWLAnnotationProperty pe) throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
+	public Set<OWLLiteral> getAnnotationPropertyValues(final OWLNamedIndividual ind, final OWLAnnotationProperty pe)
+			throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
 	{
 		refreshCheck();
 		try
@@ -534,7 +529,8 @@ public class PelletReasoner implements OpenlletReasoner
 	}
 
 	@Override
-	public NodeSet<OWLNamedIndividual> getDifferentIndividuals(final OWLNamedIndividual ind) throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
+	public NodeSet<OWLNamedIndividual> getDifferentIndividuals(final OWLNamedIndividual ind)
+			throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
 	{
 		refreshCheck();
 		try
@@ -548,7 +544,8 @@ public class PelletReasoner implements OpenlletReasoner
 	}
 
 	@Override
-	public NodeSet<OWLClass> getDisjointClasses(final OWLClassExpression ce) throws InconsistentOntologyException, ClassExpressionNotInProfileException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
+	public NodeSet<OWLClass> getDisjointClasses(final OWLClassExpression ce)
+			throws InconsistentOntologyException, ClassExpressionNotInProfileException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
 	{
 
 		refreshCheck();
@@ -564,7 +561,8 @@ public class PelletReasoner implements OpenlletReasoner
 	}
 
 	@Override
-	public NodeSet<OWLDataProperty> getDisjointDataProperties(final OWLDataPropertyExpression pe) throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
+	public NodeSet<OWLDataProperty> getDisjointDataProperties(final OWLDataPropertyExpression pe)
+			throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
 	{
 		refreshCheck();
 		try
@@ -582,7 +580,8 @@ public class PelletReasoner implements OpenlletReasoner
 	}
 
 	@Override
-	public NodeSet<OWLObjectPropertyExpression> getDisjointObjectProperties(final OWLObjectPropertyExpression pe) throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
+	public NodeSet<OWLObjectPropertyExpression> getDisjointObjectProperties(final OWLObjectPropertyExpression pe)
+			throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
 	{
 		refreshCheck();
 		try
@@ -600,7 +599,8 @@ public class PelletReasoner implements OpenlletReasoner
 	}
 
 	@Override
-	public Node<OWLClass> getEquivalentClasses(final OWLClassExpression ce) throws InconsistentOntologyException, ClassExpressionNotInProfileException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
+	public Node<OWLClass> getEquivalentClasses(final OWLClassExpression ce)
+			throws InconsistentOntologyException, ClassExpressionNotInProfileException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
 	{
 		refreshCheck();
 		try
@@ -628,7 +628,8 @@ public class PelletReasoner implements OpenlletReasoner
 	}
 
 	@Override
-	public Node<OWLObjectPropertyExpression> getEquivalentObjectProperties(final OWLObjectPropertyExpression pe) throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
+	public Node<OWLObjectPropertyExpression> getEquivalentObjectProperties(final OWLObjectPropertyExpression pe)
+			throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
 	{
 		refreshCheck();
 		try
@@ -677,7 +678,7 @@ public class PelletReasoner implements OpenlletReasoner
 	{
 		return individuals//
 				.map(_kb::getAllSames)//
-				.flatMap(set -> set.stream())//
+				.flatMap(Set::stream)//
 				.distinct()//
 				.map(IND_MAPPER::map);
 	}
@@ -696,7 +697,8 @@ public class PelletReasoner implements OpenlletReasoner
 	}
 
 	@Override
-	public NodeSet<OWLNamedIndividual> getInstances(final OWLClassExpression ce, final boolean direct) throws InconsistentOntologyException, ClassExpressionNotInProfileException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
+	public NodeSet<OWLNamedIndividual> getInstances(final OWLClassExpression ce, final boolean direct)
+			throws InconsistentOntologyException, ClassExpressionNotInProfileException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
 	{
 		refreshCheck();
 		try
@@ -710,7 +712,8 @@ public class PelletReasoner implements OpenlletReasoner
 	}
 
 	@Override
-	public Node<OWLObjectPropertyExpression> getInverseObjectProperties(final OWLObjectPropertyExpression pe) throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
+	public Node<OWLObjectPropertyExpression> getInverseObjectProperties(final OWLObjectPropertyExpression pe)
+			throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
 	{
 		refreshCheck();
 		try
@@ -724,7 +727,8 @@ public class PelletReasoner implements OpenlletReasoner
 	}
 
 	@Override
-	public NodeSet<OWLClass> getObjectPropertyDomains(final OWLObjectPropertyExpression pe, final boolean direct) throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
+	public NodeSet<OWLClass> getObjectPropertyDomains(final OWLObjectPropertyExpression pe, final boolean direct)
+			throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
 	{
 		refreshCheck();
 		try
@@ -732,12 +736,10 @@ public class PelletReasoner implements OpenlletReasoner
 			final ATermAppl some = ATermUtils.makeSomeValues(term(pe), ATermUtils.TOP);
 
 			final Set<ATermAppl> equivalents = _kb.getEquivalentClasses(some);
-			if (direct && !equivalents.isEmpty())
-				return toClassNodeSet(Collections.singleton(equivalents));
+			if (direct && !equivalents.isEmpty()) return toClassNodeSet(Collections.singleton(equivalents));
 
 			final Set<Set<ATermAppl>> result = _kb.getSuperClasses(some, direct);
-			if (!equivalents.isEmpty())
-				result.add(equivalents);
+			if (!equivalents.isEmpty()) result.add(equivalents);
 
 			return toClassNodeSet(result);
 		}
@@ -748,7 +750,8 @@ public class PelletReasoner implements OpenlletReasoner
 	}
 
 	@Override
-	public NodeSet<OWLClass> getObjectPropertyRanges(final OWLObjectPropertyExpression pe, final boolean direct) throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
+	public NodeSet<OWLClass> getObjectPropertyRanges(final OWLObjectPropertyExpression pe, final boolean direct)
+			throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
 	{
 		refreshCheck();
 		try
@@ -756,12 +759,10 @@ public class PelletReasoner implements OpenlletReasoner
 			final ATermAppl some = ATermUtils.makeSomeValues(ATermUtils.makeInv(term(pe)), ATermUtils.TOP);
 
 			final Set<ATermAppl> equivalents = _kb.getEquivalentClasses(some);
-			if (direct && !equivalents.isEmpty())
-				return toClassNodeSet(Collections.singleton(equivalents));
+			if (direct && !equivalents.isEmpty()) return toClassNodeSet(Collections.singleton(equivalents));
 
 			final Set<Set<ATermAppl>> result = _kb.getSuperClasses(some, direct);
-			if (!equivalents.isEmpty())
-				result.add(equivalents);
+			if (!equivalents.isEmpty()) result.add(equivalents);
 
 			return toClassNodeSet(result);
 		}
@@ -772,7 +773,8 @@ public class PelletReasoner implements OpenlletReasoner
 	}
 
 	@Override
-	public NodeSet<OWLNamedIndividual> getObjectPropertyValues(final OWLNamedIndividual ind, final OWLObjectPropertyExpression pe) throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
+	public NodeSet<OWLNamedIndividual> getObjectPropertyValues(final OWLNamedIndividual ind, final OWLObjectPropertyExpression pe)
+			throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
 	{
 		refreshCheck();
 		try
@@ -786,7 +788,8 @@ public class PelletReasoner implements OpenlletReasoner
 	}
 
 	@Override
-	public Stream<OWLNamedIndividual> objectPropertyValues(final OWLNamedIndividual ind, final OWLObjectPropertyExpression pe) throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
+	public Stream<OWLNamedIndividual> objectPropertyValues(final OWLNamedIndividual ind, final OWLObjectPropertyExpression pe)
+			throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
 	{
 		refreshCheck();
 		try
@@ -859,7 +862,8 @@ public class PelletReasoner implements OpenlletReasoner
 	}
 
 	@Override
-	public NodeSet<OWLClass> getSubClasses(final OWLClassExpression ce, final boolean direct) throws InconsistentOntologyException, ClassExpressionNotInProfileException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
+	public NodeSet<OWLClass> getSubClasses(final OWLClassExpression ce, final boolean direct)
+			throws InconsistentOntologyException, ClassExpressionNotInProfileException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
 	{
 		refreshCheck();
 		try
@@ -873,7 +877,8 @@ public class PelletReasoner implements OpenlletReasoner
 	}
 
 	@Override
-	public NodeSet<OWLDataProperty> getSubDataProperties(final OWLDataProperty pe, final boolean direct) throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
+	public NodeSet<OWLDataProperty> getSubDataProperties(final OWLDataProperty pe, final boolean direct)
+			throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
 	{
 		refreshCheck();
 		try
@@ -891,7 +896,8 @@ public class PelletReasoner implements OpenlletReasoner
 	}
 
 	@Override
-	public NodeSet<OWLObjectPropertyExpression> getSubObjectProperties(final OWLObjectPropertyExpression pe, final boolean direct) throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
+	public NodeSet<OWLObjectPropertyExpression> getSubObjectProperties(final OWLObjectPropertyExpression pe, final boolean direct)
+			throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
 	{
 		refreshCheck();
 		try
@@ -908,7 +914,8 @@ public class PelletReasoner implements OpenlletReasoner
 	}
 
 	@Override
-	public NodeSet<OWLClass> getSuperClasses(final OWLClassExpression ce, final boolean direct) throws InconsistentOntologyException, ClassExpressionNotInProfileException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
+	public NodeSet<OWLClass> getSuperClasses(final OWLClassExpression ce, final boolean direct)
+			throws InconsistentOntologyException, ClassExpressionNotInProfileException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
 	{
 		refreshCheck();
 		try
@@ -922,7 +929,8 @@ public class PelletReasoner implements OpenlletReasoner
 	}
 
 	@Override
-	public NodeSet<OWLDataProperty> getSuperDataProperties(final OWLDataProperty pe, final boolean direct) throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
+	public NodeSet<OWLDataProperty> getSuperDataProperties(final OWLDataProperty pe, final boolean direct)
+			throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
 	{
 		refreshCheck();
 		try
@@ -939,7 +947,8 @@ public class PelletReasoner implements OpenlletReasoner
 	}
 
 	@Override
-	public NodeSet<OWLObjectPropertyExpression> getSuperObjectProperties(final OWLObjectPropertyExpression pe, final boolean direct) throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
+	public NodeSet<OWLObjectPropertyExpression> getSuperObjectProperties(final OWLObjectPropertyExpression pe, final boolean direct)
+			throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException
 	{
 		refreshCheck();
 		try
@@ -1038,7 +1047,8 @@ public class PelletReasoner implements OpenlletReasoner
 	}
 
 	@Override
-	public boolean isEntailed(final OWLAxiom axiom) throws ReasonerInterruptedException, UnsupportedEntailmentTypeException, TimeOutException, AxiomNotInProfileException, FreshEntitiesException, InconsistentOntologyException
+	public boolean isEntailed(final OWLAxiom axiom)
+			throws ReasonerInterruptedException, UnsupportedEntailmentTypeException, TimeOutException, AxiomNotInProfileException, FreshEntitiesException, InconsistentOntologyException
 	{
 		refreshCheck();
 		try
@@ -1052,7 +1062,8 @@ public class PelletReasoner implements OpenlletReasoner
 	}
 
 	@Override
-	public boolean isEntailed(final Stream<? extends OWLAxiom> axioms) throws ReasonerInterruptedException, UnsupportedEntailmentTypeException, TimeOutException, AxiomNotInProfileException, FreshEntitiesException, InconsistentOntologyException
+	public boolean isEntailed(final Stream<? extends OWLAxiom> axioms)
+			throws ReasonerInterruptedException, UnsupportedEntailmentTypeException, TimeOutException, AxiomNotInProfileException, FreshEntitiesException, InconsistentOntologyException
 	{
 		refreshCheck();
 		try
@@ -1067,7 +1078,8 @@ public class PelletReasoner implements OpenlletReasoner
 	}
 
 	@Override
-	public boolean isEntailed(final Set<? extends OWLAxiom> axioms) throws ReasonerInterruptedException, UnsupportedEntailmentTypeException, TimeOutException, AxiomNotInProfileException, FreshEntitiesException, InconsistentOntologyException
+	public boolean isEntailed(final Set<? extends OWLAxiom> axioms)
+			throws ReasonerInterruptedException, UnsupportedEntailmentTypeException, TimeOutException, AxiomNotInProfileException, FreshEntitiesException, InconsistentOntologyException
 	{
 		return isEntailed(axioms.stream());
 	}
@@ -1079,7 +1091,8 @@ public class PelletReasoner implements OpenlletReasoner
 	}
 
 	@Override
-	public boolean isSatisfiable(final OWLClassExpression classExpression) throws ReasonerInterruptedException, TimeOutException, ClassExpressionNotInProfileException, FreshEntitiesException, InconsistentOntologyException
+	public boolean isSatisfiable(final OWLClassExpression classExpression)
+			throws ReasonerInterruptedException, TimeOutException, ClassExpressionNotInProfileException, FreshEntitiesException, InconsistentOntologyException
 	{
 		refreshCheck();
 		try
@@ -1115,15 +1128,14 @@ public class PelletReasoner implements OpenlletReasoner
 	 * Process all the given changes in an incremental fashion. Processing will stop if a change cannot be handled incrementally and requires a reload. The
 	 * reload will not be done as part of processing.
 	 *
-	 * @param changes the changes to be applied to the reasoner
-	 * @return <code>true</code> if all changes have been processed successfully, <code>false</code> otherwise (indicates reasoner will reload the whole
-	 *         ontology next time it needs to do reasoning)
+	 * @param  changes the changes to be applied to the reasoner
+	 * @return         <code>true</code> if all changes have been processed successfully, <code>false</code> otherwise (indicates reasoner will reload the whole
+	 *                 ontology next time it needs to do reasoning)
 	 */
 	@Override
 	public boolean processChanges(final List<? extends OWLOntologyChange> changes)
 	{
-		if (_shouldRefresh)
-			return false;
+		if (_shouldRefresh) return false;
 
 		final Set<OWLOntology> importsClosure = _ontology.importsClosure().collect(Collectors.toSet());
 
@@ -1131,8 +1143,7 @@ public class PelletReasoner implements OpenlletReasoner
 		{
 			_logger.fine(() -> "Changed: " + change + " in " + change.getOntology());
 
-			if (null == change || !importsClosure.contains(change.getOntology()))
-				continue;
+			if (null == change || !importsClosure.contains(change.getOntology())) continue;
 
 			synchronized (_visitor)
 			{
@@ -1155,8 +1166,7 @@ public class PelletReasoner implements OpenlletReasoner
 	public void prepareReasoner() throws ReasonerInterruptedException, TimeOutException
 	{
 		refreshCheck();
-		if (_kb.isConsistent())
-			_kb.realize();
+		if (_kb.isConsistent()) _kb.realize();
 	}
 
 	/**
@@ -1184,11 +1194,9 @@ public class PelletReasoner implements OpenlletReasoner
 	 */
 	private void refreshCheck()
 	{
-		if (null == _kb)
-			throw new OWLRuntimeException("Trying to use a disposed reasoner");
+		if (null == _kb) throw new OWLRuntimeException("Trying to use a disposed reasoner");
 
-		if (_shouldRefresh)
-			refresh();
+		if (_shouldRefresh) refresh();
 	}
 
 	@Override
@@ -1204,8 +1212,7 @@ public class PelletReasoner implements OpenlletReasoner
 
 			final ATermAppl a = _visitor.result();
 
-			if (null == a)
-				throw new InternalReasonerException("Cannot create ATerm from description " + d);
+			if (null == a) throw new InternalReasonerException("Cannot create ATerm from description " + d);
 
 			return a;
 		}

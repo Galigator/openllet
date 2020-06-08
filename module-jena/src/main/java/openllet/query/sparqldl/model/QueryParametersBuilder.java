@@ -9,19 +9,18 @@ import org.apache.jena.query.QuerySolutionMap;
 
 /**
  * Provide a way to jena to build its specific parameters.
- * 
+ *
  * @since 2.6.0
  */
 public interface QueryParametersBuilder
 {
-	static QueryParameters getQueryParameters(QuerySolution initialBindingParam)
+	static QueryParameters getQueryParameters(final QuerySolution initialBindingParam)
 	{
 		final QueryParameters parameters = new QueryParameters();
 
 		QuerySolution initialBinding = initialBindingParam;
 
-		if (initialBinding == null)
-			initialBinding = new QuerySolutionMap();
+		if (initialBinding == null) initialBinding = new QuerySolutionMap();
 
 		for (final Iterator<String> iter = initialBinding.varNames(); iter.hasNext();)
 		{

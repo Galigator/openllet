@@ -4,7 +4,7 @@ import java.util.logging.Logger;
 
 public interface Logging
 {
-	public Logger getLogger();
+	Logger getLogger();
 
 	default org.slf4j.Logger logger()
 	{

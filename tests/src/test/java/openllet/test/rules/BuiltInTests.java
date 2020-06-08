@@ -86,10 +86,11 @@ public class BuiltInTests
 		return new BigDecimal(String.valueOf(d));
 	}
 
-	private ABox _abox;
-	private KnowledgeBaseImpl _kb;
+	private ABox				_abox;
+	private KnowledgeBaseImpl	_kb;
 
-	private final ATermAppl li_1 = literal("-1", Datatypes.INTEGER), li0 = literal("0", Datatypes.NON_NEGATIVE_INTEGER), lf0 = literal("0.0", Datatypes.FLOAT), lf00 = literal("0.00", Datatypes.FLOAT), lp0 = literal("0"), ls0 = literal("0", Datatypes.STRING), len0 = literal("0", "en");
+	private final ATermAppl		li_1	= literal("-1", Datatypes.INTEGER), li0 = literal("0", Datatypes.NON_NEGATIVE_INTEGER), lf0 = literal("0.0", Datatypes.FLOAT),
+			lf00 = literal("0.00", Datatypes.FLOAT), lp0 = literal("0"), ls0 = literal("0", Datatypes.STRING), len0 = literal("0", "en");
 
 	@Before
 	public void setUp()
@@ -100,12 +101,9 @@ public class BuiltInTests
 
 	private static boolean equal(final Literal l1, final Literal l2)
 	{
-		if (l1 == null && l2 == null)
-			return true;
-		if (l1 == null)
-			return false;
-		if (l2 == null)
-			return false;
+		if (l1 == null && l2 == null) return true;
+		if (l1 == null) return false;
+		if (l2 == null) return false;
 		return ComparisonTesters.equal.test(new Literal[] { l1, l2 });
 	}
 
@@ -180,8 +178,7 @@ public class BuiltInTests
 			assertNotNull(result);
 			assertTrue(expected + " not equal to " + result, NumberUtils.compare(expected, result) == 0);
 		}
-		if (result != null && expected != null)
-			assertEquals("Wrong numeric type from function.", expected.getClass(), result.getClass());
+		if (result != null && expected != null) assertEquals("Wrong numeric type from function.", expected.getClass(), result.getClass());
 
 	}
 
@@ -339,11 +336,15 @@ public class BuiltInTests
 		//		stringFunc( DateTimeOperators.date, literal( "2008-01-28", Datatypes.DATE ),
 		//				"2008", "1", "28" );
 		generalFunc(DateTimeOperators.date, literal("2008-01-28", Datatypes.DATE), literal("2008", Datatypes.INTEGER), literal("1", Datatypes.INTEGER), literal("28", Datatypes.INTEGER));
-		generalFunc(DateTimeOperators.date, literal("2008-01-28Z", Datatypes.DATE), literal("2008", Datatypes.INTEGER), literal("1", Datatypes.INTEGER), literal("28", Datatypes.INTEGER), literal("Z"));
-		generalFunc(DateTimeOperators.dateTime, literal("2008-01-28T00:01:03.1", Datatypes.DATE_TIME), literal("2008", Datatypes.INTEGER), literal("1", Datatypes.INTEGER), literal("28", Datatypes.INTEGER), literal("00", Datatypes.INTEGER), literal("01", Datatypes.INTEGER), literal("03.1", Datatypes.DECIMAL));
-		generalFunc(DateTimeOperators.dateTime, literal("2008-01-28T00:01:03.1Z", Datatypes.DATE_TIME), literal("2008", Datatypes.INTEGER), literal("1", Datatypes.INTEGER), literal("28", Datatypes.INTEGER), literal("00", Datatypes.INTEGER), literal("01", Datatypes.INTEGER), literal("03.1", Datatypes.DECIMAL), literal("Z"));
+		generalFunc(DateTimeOperators.date, literal("2008-01-28Z", Datatypes.DATE), literal("2008", Datatypes.INTEGER), literal("1", Datatypes.INTEGER), literal("28", Datatypes.INTEGER),
+				literal("Z"));
+		generalFunc(DateTimeOperators.dateTime, literal("2008-01-28T00:01:03.1", Datatypes.DATE_TIME), literal("2008", Datatypes.INTEGER), literal("1", Datatypes.INTEGER),
+				literal("28", Datatypes.INTEGER), literal("00", Datatypes.INTEGER), literal("01", Datatypes.INTEGER), literal("03.1", Datatypes.DECIMAL));
+		generalFunc(DateTimeOperators.dateTime, literal("2008-01-28T00:01:03.1Z", Datatypes.DATE_TIME), literal("2008", Datatypes.INTEGER), literal("1", Datatypes.INTEGER),
+				literal("28", Datatypes.INTEGER), literal("00", Datatypes.INTEGER), literal("01", Datatypes.INTEGER), literal("03.1", Datatypes.DECIMAL), literal("Z"));
 		generalFunc(DateTimeOperators.time, literal("00:01:03.1", Datatypes.TIME), literal("00", Datatypes.INTEGER), literal("01", Datatypes.INTEGER), literal("03.1", Datatypes.DECIMAL));
-		generalFunc(DateTimeOperators.time, literal("00:01:03.1Z", Datatypes.TIME), literal("00", Datatypes.INTEGER), literal("01", Datatypes.INTEGER), literal("03.1", Datatypes.DECIMAL), literal("Z"));
+		generalFunc(DateTimeOperators.time, literal("00:01:03.1Z", Datatypes.TIME), literal("00", Datatypes.INTEGER), literal("01", Datatypes.INTEGER), literal("03.1", Datatypes.DECIMAL),
+				literal("Z"));
 
 		//		stringFunc( DateTimeOperators.dateTime, literal( "2008-01-28T10:01:01.4", Datatypes.DATE_TIME ),
 		//				"2008", "01", "28", "10", "01", "01.4");
@@ -542,16 +543,16 @@ public class BuiltInTests
 		stringFunc(StringOperators.stringLength, (Literal) null, "abcde", "fgh");
 
 		/*
-		
+
 		  fn:substring("motor car", 6) returns " car".
-		
+
 		  Characters starting at position 6 to the _end of $sourceString are selected.
 		 */
 		stringFunc(StringOperators.substring, " car", "motor car", "6");
 
 		/*
 		  fn:substring("metadata", 4, 3) returns "ada".
-		
+
 		  Characters at positions greater than or equal to 4 and less than 7 are selected.
 		 */
 
@@ -559,7 +560,7 @@ public class BuiltInTests
 
 		/*
 		  fn:substring("12345", 1.5, 2.6) returns "234".
-		
+
 		  Characters at positions greater than or equal to 2 and less than 5 are selected.
 		 */
 
@@ -567,7 +568,7 @@ public class BuiltInTests
 
 		/*
 		  fn:substring("12345", 0, 3) returns "12".
-		
+
 		  Characters at positions greater than or equal to 0 and less than 3 are selected. Since the first position is 1, these are the characters at positions 1 and 2.
 		 */
 
@@ -575,7 +576,7 @@ public class BuiltInTests
 
 		/*
 		  fn:substring("12345", 5, -3) returns "".
-		
+
 		  Characters at positions greater than or equal to 5 and less than 2 are selected.
 		 */
 
@@ -583,7 +584,7 @@ public class BuiltInTests
 
 		/*
 		  fn:substring("12345", -3, 5) returns "1".
-		
+
 		  Characters at positions greater than or equal to -3 and less than 2 are selected. Since the first position is 1, this is the character at position 1.
 		 */
 
@@ -591,7 +592,7 @@ public class BuiltInTests
 
 		/*
 		  fn:substring("12345", 0 div 0E0, 3) returns "".
-		
+
 		  Since 0 div 0E0 returns NaN, and NaN compared to any other number returns false, no characters are selected.
 		 */
 
@@ -599,7 +600,7 @@ public class BuiltInTests
 
 		/*
 		  fn:substring("12345", 1, 0 div 0E0) returns "".
-		
+
 		  As above.
 		 */
 
@@ -613,7 +614,7 @@ public class BuiltInTests
 
 		/*
 		  fn:substring("12345", -42, 1 div 0E0) returns "12345".
-		
+
 		  Characters at positions greater than or equal to -42 and less than INF are selected.
 		 */
 
@@ -621,7 +622,7 @@ public class BuiltInTests
 
 		/*
 		  fn:substring("12345", -1 div 0E0, 1 div 0E0) returns "".
-		
+
 		  Since -INF + INF returns NaN, no characters are selected.
 		 */
 
@@ -690,7 +691,7 @@ public class BuiltInTests
 		sharedVarHelper.rebind(emptyBinding);
 
 		final VariableBinding fillBinding = new VariableBinding(kb.getABox());
-		final List<String> expected = Arrays.asList(new String[] { "hi", "bye", "foo", "bar" });
+		final List<String> expected = Arrays.asList("hi", "bye", "foo", "bar");
 		final List<String> tokens = new ArrayList<>();
 		while (sharedVarHelper.selectNextBinding())
 		{

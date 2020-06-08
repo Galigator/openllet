@@ -48,23 +48,21 @@ public abstract class Unfolding
 
 	private static class Unconditional extends Unfolding
 	{
-		private final ATermAppl _result;
+		private final ATermAppl			_result;
 
-		private final Set<ATermAppl> _explanation;
+		private final Set<ATermAppl>	_explanation;
 
 		private Unconditional(final ATermAppl result, final Set<ATermAppl> explanation)
 		{
-			this._result = result;
-			this._explanation = explanation;
+			_result = result;
+			_explanation = explanation;
 		}
 
 		@Override
 		public boolean equals(final Object obj)
 		{
-			if (this == obj)
-				return true;
-			if (!(obj instanceof Unfolding))
-				return false;
+			if (this == obj) return true;
+			if (!(obj instanceof Unfolding)) return false;
 			final Unconditional other = (Unconditional) obj;
 
 			return getCondition().equals(other.getCondition()) && _explanation.equals(other._explanation) && _result.equals(other._result);
@@ -114,7 +112,7 @@ public abstract class Unfolding
 		{
 			super(result, explanation);
 
-			this._condition = condition;
+			_condition = condition;
 		}
 
 		@Override

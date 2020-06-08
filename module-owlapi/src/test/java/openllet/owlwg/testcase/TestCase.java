@@ -17,33 +17,34 @@ import org.semanticweb.owlapi.model.IRI;
  * <p>
  * Company: Clark & Parsia, LLC. <a href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
  * </p>
- * 
- * @author Mike Smith &lt;msmith@clarkparsia.com&gt;
+ *
+ * @author     Mike Smith &lt;msmith@clarkparsia.com&gt;
+ * @param  <O>
  */
 public interface TestCase<O>
 {
 
-	public void accept(final TestCaseVisitor<O> visitor);
+	void accept(final TestCaseVisitor<O> visitor);
 
-	public void dispose();
+	void dispose();
 
-	public Set<Semantics> getApplicableSemantics();
+	Set<Semantics> getApplicableSemantics();
 
-	public String getIdentifier();
+	String getIdentifier();
 
-	public Set<IRI> getImportedOntologies();
+	Set<IRI> getImportedOntologies();
 
-	public String getImportedOntology(final IRI iri, final SerializationFormat format);
+	String getImportedOntology(final IRI iri, final SerializationFormat format);
 
-	public Set<SerializationFormat> getImportedOntologyFormats(final IRI iri);
+	Set<SerializationFormat> getImportedOntologyFormats(final IRI iri);
 
-	public Set<Semantics> getNotApplicableSemantics();
+	Set<Semantics> getNotApplicableSemantics();
 
-	public Set<SyntaxConstraint> getSatisfiedConstraints();
+	Set<SyntaxConstraint> getSatisfiedConstraints();
 
-	public Status getStatus();
+	Status getStatus();
 
-	public Set<SyntaxConstraint> getUnsatisfiedConstraints();
+	Set<SyntaxConstraint> getUnsatisfiedConstraints();
 
-	public IRI getIRI();
+	IRI getIRI();
 }

@@ -37,9 +37,9 @@ import uk.ac.manchester.cs.owlapi.modularity.ModuleType;
 public class OpenlletModularity extends OpenlletCmdApp
 {
 
-	private OWLAPILoader loader;
-	private ModuleType moduleType;
-	private String[] entityNames;
+	private OWLAPILoader	loader;
+	private ModuleType		moduleType;
+	private String[]		entityNames;
 
 	public OpenlletModularity()
 	{
@@ -103,13 +103,11 @@ public class OpenlletModularity extends OpenlletCmdApp
 	{
 		final String signature = _options.getOption("signature").getValueAsString();
 
-		if (signature == null)
-			throw new OpenlletCmdException("No signature provided");
+		if (signature == null) throw new OpenlletCmdException("No signature provided");
 
 		entityNames = signature.split(" ");
 
-		if (entityNames.length == 0)
-			throw new OpenlletCmdException("No signature provided");
+		if (entityNames.length == 0) throw new OpenlletCmdException("No signature provided");
 	}
 
 	private void loadModuleType()
@@ -118,17 +116,14 @@ public class OpenlletModularity extends OpenlletCmdApp
 
 		if (type.equalsIgnoreCase("lower"))
 			moduleType = ModuleType.TOP;
+		else if (type.equalsIgnoreCase("upper"))
+			moduleType = ModuleType.BOT;
+		else if (type.equalsIgnoreCase("upper-of-lower"))
+			moduleType = ModuleType.STAR;
+		else if (type.equalsIgnoreCase("lower-of-upper"))
+			moduleType = ModuleType.STAR;
 		else
-			if (type.equalsIgnoreCase("upper"))
-				moduleType = ModuleType.BOT;
-			else
-				if (type.equalsIgnoreCase("upper-of-lower"))
-					moduleType = ModuleType.STAR;
-				else
-					if (type.equalsIgnoreCase("lower-of-upper"))
-						moduleType = ModuleType.STAR;
-					else
-						throw new OpenlletCmdException("Unknown module type: " + type);
+			throw new OpenlletCmdException("Unknown module type: " + type);
 	}
 
 	private void extractModule()
@@ -138,8 +133,7 @@ public class OpenlletModularity extends OpenlletCmdApp
 		{
 			final OWLEntity entity = OntologyUtils.findEntity(entityName, loader.allOntologies());
 
-			if (entity == null)
-				throw new OpenlletCmdException("Entity not found in ontology: " + entityName);
+			if (entity == null) throw new OpenlletCmdException("Entity not found in ontology: " + entityName);
 
 			entities.add(entity);
 		}

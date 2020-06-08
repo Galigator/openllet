@@ -56,13 +56,13 @@ import openllet.shared.tools.Log;
 public abstract class CompletionQueue extends IndividualIterator
 {
 
-	public final static Logger _logger = Log.getLogger(CompletionQueue.class);
+	public final static Logger	_logger			= Log.getLogger(CompletionQueue.class);
 
-	private boolean _allowLiterals = false;
+	private boolean				_allowLiterals	= false;
 
-	protected int _currentType; // Access fom OptimizedBasicCompletionQueue only
+	protected int				_currentType;											// Access fom OptimizedBasicCompletionQueue only
 
-	protected boolean _closed = false;
+	protected boolean			_closed			= false;
 
 	/**
 	 * Constructor - create queue

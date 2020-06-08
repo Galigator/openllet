@@ -24,7 +24,7 @@ import openllet.core.utils.Namespaces;
  */
 public interface Facet
 {
-	public abstract ATermAppl getName();
+	ATermAppl getName();
 
 	public static class Registry
 	{
@@ -39,8 +39,8 @@ public interface Facet
 		/**
 		 * Get a Facet for a URI
 		 *
-		 * @param name the name of the facet, generally a URI
-		 * @return A facet if the name is registered, <code>null</code> else
+		 * @param  name the name of the facet, generally a URI
+		 * @return      A facet if the name is registered, <code>null</code> else
 		 */
 		public static Facet get(final ATermAppl name)
 		{
@@ -52,7 +52,7 @@ public interface Facet
 	/**
 	 * Facets in the XSD name space (and documented in the XML Schema specifications)
 	 */
-	public static enum XSD implements Facet
+	public enum XSD implements Facet
 	{
 		MAX_EXCLUSIVE("maxExclusive"), //
 		MAX_INCLUSIVE("maxInclusive"), //

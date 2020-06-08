@@ -35,14 +35,14 @@ import org.semanticweb.owlapi.rdf.rdfxml.renderer.RDFXMLRenderer;
  */
 public class RDFXMLExplanationRenderer implements ExplanationRenderer
 {
-	private Set<OWLAxiom> _axioms;
+	private Set<OWLAxiom>	_axioms;
 
-	private Writer _writer;
+	private Writer			_writer;
 
 	@Override
 	public void startRendering(final Writer writer)
 	{
-		this._writer = writer;
+		_writer = writer;
 		_axioms = new HashSet<>();
 	}
 

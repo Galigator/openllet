@@ -56,14 +56,12 @@ public class JenaIOUtils
 	{
 		if (resultURI.endsWith("srx"))
 			return ResultSetFactory.fromXML(URI.create(resultURI).toURL().openStream());
+		else if (resultURI.endsWith("ttl"))
+			return ResultSetFactory.load(resultURI, ResultsFormat.FMT_RDF_TTL);
+		else if (resultURI.endsWith("rdf"))
+			return ResultSetFactory.load(resultURI, ResultsFormat.FMT_RDF_XML);
 		else
-			if (resultURI.endsWith("ttl"))
-				return ResultSetFactory.load(resultURI, ResultsFormat.FMT_RDF_TTL);
-			else
-				if (resultURI.endsWith("rdf"))
-					return ResultSetFactory.load(resultURI, ResultsFormat.FMT_RDF_XML);
-				else
-					throw new OpenError("Unknown format.");
+			throw new OpenError("Unknown format.");
 	}
 
 	// TODO meanwhile just for files
@@ -71,21 +69,19 @@ public class JenaIOUtils
 	{
 		if (resultURI.endsWith("srx"))
 			return ResultsStAX.read(new FileInputStream(resultURI.substring(5)), null, null).getBooleanResult();
+		else if (resultURI.endsWith("ttl") || resultURI.endsWith("rdf"))
+			return FileManager.get().loadModel(resultURI.substring(5)).getProperty(null, ResourceFactory.createProperty("http://www.w3.org/2001/sw/DataAccess/tests/result-set#boolean")).getBoolean();
 		else
-			if (resultURI.endsWith("ttl") || resultURI.endsWith("rdf"))
-				return FileManager.get().loadModel(resultURI.substring(5)).getProperty(null, ResourceFactory.createProperty("http://www.w3.org/2001/sw/DataAccess/tests/result-set#boolean")).getBoolean();
-			else
-				throw new OpenError("Unknown format.");
+			throw new OpenError("Unknown format.");
 	}
 
 	public static RDFFormatType fileType(final String fileURI)
 	{
 		if (fileURI.endsWith(".n3"))
 			return RDFFormatType.N3;
+		else if (fileURI.endsWith(".ttl"))
+			return RDFFormatType.TURTLE;
 		else
-			if (fileURI.endsWith(".ttl"))
-				return RDFFormatType.TURTLE;
-			else
-				return RDFFormatType.RDFXML;
+			return RDFFormatType.RDFXML;
 	}
 }

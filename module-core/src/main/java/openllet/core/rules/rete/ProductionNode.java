@@ -31,9 +31,9 @@ import openllet.core.utils.ATermUtils;
  */
 public abstract class ProductionNode extends BetaNode
 {
-	protected final ContinuousRulesStrategy _strategy;
-	protected Set<ATermAppl> _explain;
-	protected DependencySet _ds;
+	protected final ContinuousRulesStrategy	_strategy;
+	protected Set<ATermAppl>				_explain;
+	protected DependencySet					_ds;
 
 	public ProductionNode(final ContinuousRulesStrategy strategy, final Set<ATermAppl> explain)
 	{
@@ -51,8 +51,7 @@ public abstract class ProductionNode extends BetaNode
 	{
 		final boolean doExplanation = _strategy.getABox().doExplanation();
 		_ds = token.getDepends(doExplanation);
-		if (doExplanation)
-			_ds = _ds.union(_explain, doExplanation);
+		if (doExplanation) _ds = _ds.union(_explain, doExplanation);
 	}
 
 	protected Node getNode(final NodeProvider provider, final Token token)
@@ -98,8 +97,8 @@ public abstract class ProductionNode extends BetaNode
 
 	public static class Type extends ProductionNode
 	{
-		private final NodeProvider _subject;
-		private final ATermAppl _type;
+		private final NodeProvider	_subject;
+		private final ATermAppl		_type;
 
 		public Type(final ContinuousRulesStrategy strategy, final Set<ATermAppl> explain, final NodeProvider subject, final ATermAppl type)
 		{
@@ -114,8 +113,7 @@ public abstract class ProductionNode extends BetaNode
 		{
 			resetDependencySet(token);
 			final Node s = getNode(_subject, token);
-			if (!s.hasType(_type))
-				_strategy.addType(s, _type, _ds);
+			if (!s.hasType(_type)) _strategy.addType(s, _type, _ds);
 		}
 
 		@Override
@@ -127,8 +125,8 @@ public abstract class ProductionNode extends BetaNode
 
 	private static abstract class Binary extends ProductionNode
 	{
-		protected final NodeProvider _subject;
-		protected final NodeProvider _object;
+		protected final NodeProvider	_subject;
+		protected final NodeProvider	_object;
 
 		public Binary(final ContinuousRulesStrategy strategy, final Set<ATermAppl> explain, final NodeProvider subject, final NodeProvider object)
 		{
@@ -214,8 +212,8 @@ public abstract class ProductionNode extends BetaNode
 
 	public static class ProduceBinding extends ProductionNode
 	{
-		private final Rule _rule;
-		private final Map<AtomVariable, NodeProvider> _args;
+		private final Rule								_rule;
+		private final Map<AtomVariable, NodeProvider>	_args;
 
 		public ProduceBinding(final ContinuousRulesStrategy strategy, final Set<ATermAppl> explain, final Rule rule, final Map<AtomVariable, NodeProvider> args)
 		{

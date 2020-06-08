@@ -35,10 +35,10 @@ import openllet.shared.tools.Log;
  */
 public class PrimitiveTBox
 {
-	public static final Logger _logger = Log.getLogger(PrimitiveTBox.class);
+	public static final Logger						_logger			= Log.getLogger(PrimitiveTBox.class);
 
-	private final Map<ATermAppl, Unfolding> _definitions = CollectionUtils.makeIdentityMap();
-	private final Map<ATermAppl, Set<ATermAppl>> _dependencies = CollectionUtils.makeIdentityMap();
+	private final Map<ATermAppl, Unfolding>			_definitions	= CollectionUtils.makeIdentityMap();
+	private final Map<ATermAppl, Set<ATermAppl>>	_dependencies	= CollectionUtils.makeIdentityMap();
 
 	public boolean contains(final ATermAppl concept)
 	{
@@ -52,8 +52,7 @@ public class PrimitiveTBox
 
 	public boolean add(final ATermAppl concept, final ATermAppl definition, final Set<ATermAppl> explanation)
 	{
-		if (!ATermUtils.isPrimitive(concept) || contains(concept))
-			return false;
+		if (!ATermUtils.isPrimitive(concept) || contains(concept)) return false;
 
 		final Set<ATermAppl> deps = ATermUtils.findPrimitives(definition);
 		final Set<ATermAppl> seen = new HashSet<>();
@@ -61,8 +60,7 @@ public class PrimitiveTBox
 		for (final ATermAppl current : deps)
 		{
 			final boolean result = findTarget(current, concept, seen);
-			if (result)
-				return false;
+			if (result) return false;
 		}
 
 		addDefinition(concept, definition, explanation);
@@ -87,18 +85,15 @@ public class PrimitiveTBox
 		{
 			final ATermAppl current = queue.remove(queue.size() - 1);
 
-			if (!seen.add(current))
-				continue;
+			if (!seen.add(current)) continue;
 
-			if (current.equals(target))
-				return true;
+			if (current.equals(target)) return true;
 
 			final Set<ATermAppl> deps = _dependencies.get(current);
 			if (deps != null)
 			{
 				// Shortcut
-				if (deps.contains(target))
-					return true;
+				if (deps.contains(target)) return true;
 
 				queue.addAll(deps);
 			}
@@ -116,7 +111,7 @@ public class PrimitiveTBox
 	{
 		final Unfolding unfolding = _definitions.get(concept);
 
-		return unfolding == null ? IteratorUtils.<Unfolding> emptyIterator() : IteratorUtils.singletonIterator(unfolding);
+		return unfolding == null ? IteratorUtils.<Unfolding>emptyIterator() : IteratorUtils.singletonIterator(unfolding);
 	}
 
 	public void print(final Appendable out) throws IOException

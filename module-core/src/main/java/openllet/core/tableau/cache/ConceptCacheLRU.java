@@ -33,10 +33,10 @@ import openllet.core.utils.ATermUtils;
  */
 public class ConceptCacheLRU extends AbstractConceptCache
 {
-	private Map<ATermAppl, CachedNode> _primitive;
-	private Map<ATermAppl, CachedNode> _nonPrimitive;
+	private Map<ATermAppl, CachedNode>	_primitive;
+	private Map<ATermAppl, CachedNode>	_nonPrimitive;
 
-	private CacheSafety _cacheSafety;
+	private CacheSafety					_cacheSafety;
 
 	/**
 	 * Creates an empty ConceptCacheImpl with no size restrictions Using this constructor is equivalent to break the auto-flush LRU policy of this cache.
@@ -113,8 +113,7 @@ public class ConceptCacheLRU extends AbstractConceptCache
 	public CachedNode get(final Object key)
 	{
 		final CachedNode node = _primitive.get(key);
-		if (node != null)
-			return node;
+		if (node != null) return node;
 		return _nonPrimitive.get(key);
 	}
 
@@ -141,8 +140,7 @@ public class ConceptCacheLRU extends AbstractConceptCache
 		if (ATermUtils.isPrimitiveOrNegated(key))
 		{
 			final CachedNode prev = _primitive.put(key, value);
-			if (isFull())
-				_nonPrimitive.entrySet();
+			if (isFull()) _nonPrimitive.entrySet();
 			return prev;
 		}
 
@@ -159,8 +157,7 @@ public class ConceptCacheLRU extends AbstractConceptCache
 	@Override
 	public CachedNode remove(final Object key)
 	{
-		if (_primitive.containsKey(key))
-			return _primitive.remove(key);
+		if (_primitive.containsKey(key)) return _primitive.remove(key);
 		return _nonPrimitive.remove(key);
 	}
 

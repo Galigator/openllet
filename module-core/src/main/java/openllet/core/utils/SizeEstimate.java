@@ -42,129 +42,129 @@ import openllet.shared.tools.Log;
  */
 public class SizeEstimate
 {
-	protected static final Logger _logger = Log.getLogger(SizeEstimate.class);
+	protected static final Logger	_logger				= Log.getLogger(SizeEstimate.class);
 
-	public static double UNKNOWN_PROB = 0.5;
+	public static double			UNKNOWN_PROB		= 0.5;
 
-	public static boolean CHECK_CONCEPT_SAT = false;
+	public static boolean			CHECK_CONCEPT_SAT	= false;
 
-	private long noSatCost;
+	private long					noSatCost;
 
-	private long oneSatCost;
+	private long					oneSatCost;
 
-	private long classificationCost;
+	private long					classificationCost;
 
-	private long realizationCost;
+	private long					realizationCost;
 
-	private long instanceRetrievalCost;
+	private long					instanceRetrievalCost;
 
-	private long classRetrievalCost;
+	private long					classRetrievalCost;
 
-	private final KnowledgeBase _kb;
+	private final KnowledgeBase		_kb;
 
-	private boolean computed = false;
+	private boolean					computed			= false;
 
-	private int pCount;
+	private int						pCount;
 
-	private int opCount;
+	private int						opCount;
 
-	private int dpCount;
+	private int						dpCount;
 
-	private int fpCount;
+	private int						fpCount;
 
-	private int ifpCount;
+	private int						ifpCount;
 
-	private int tpCount;
+	private int						tpCount;
 
-	private int spCount;
+	private int						spCount;
 
-	private int cCount;
+	private int						cCount;
 
-	private int iCount;
+	private int						iCount;
 
-	private Map<ATermAppl, Integer> instancesPC;
+	private Map<ATermAppl, Integer>	instancesPC;
 
-	private Map<ATermAppl, Integer> directInstancesPC;
+	private Map<ATermAppl, Integer>	directInstancesPC;
 
-	private Map<ATermAppl, Integer> classesPI;
+	private Map<ATermAppl, Integer>	classesPI;
 
-	private Map<ATermAppl, Integer> directClassesPI;
+	private Map<ATermAppl, Integer>	directClassesPI;
 
-	private Map<ATermAppl, Integer> pairsPP;
+	private Map<ATermAppl, Integer>	pairsPP;
 
-	private Map<ATermAppl, Integer> sames;
+	private Map<ATermAppl, Integer>	sames;
 
-	private Map<ATermAppl, Integer> differents;
+	private Map<ATermAppl, Integer>	differents;
 
-	private Map<ATermAppl, Double> avgObjectsPP;
+	private Map<ATermAppl, Double>	avgObjectsPP;
 
-	private Map<ATermAppl, Integer> equivClasses;
+	private Map<ATermAppl, Integer>	equivClasses;
 
-	private Map<ATermAppl, Integer> subClasses;
+	private Map<ATermAppl, Integer>	subClasses;
 
-	private Map<ATermAppl, Integer> directSubClasses;
+	private Map<ATermAppl, Integer>	directSubClasses;
 
-	private Map<ATermAppl, Integer> superClasses;
+	private Map<ATermAppl, Integer>	superClasses;
 
-	private Map<ATermAppl, Integer> directSuperClasses;
+	private Map<ATermAppl, Integer>	directSuperClasses;
 
-	private Map<ATermAppl, Integer> disjoints;
+	private Map<ATermAppl, Integer>	disjoints;
 
-	private Map<ATermAppl, Integer> complements;
+	private Map<ATermAppl, Integer>	complements;
 
-	private Map<ATermAppl, Integer> equivProperties;
+	private Map<ATermAppl, Integer>	equivProperties;
 
-	private Map<ATermAppl, Integer> subProperties;
+	private Map<ATermAppl, Integer>	subProperties;
 
-	private Map<ATermAppl, Integer> directSubProperties;
+	private Map<ATermAppl, Integer>	directSubProperties;
 
-	private Map<ATermAppl, Integer> superProperties;
+	private Map<ATermAppl, Integer>	superProperties;
 
-	private Map<ATermAppl, Integer> directSuperProperties;
+	private Map<ATermAppl, Integer>	directSuperProperties;
 
-	private Map<ATermAppl, Integer> inverses;
+	private Map<ATermAppl, Integer>	inverses;
 
-	private double avgClassesPI;
+	private double					avgClassesPI;
 
-	private double avgDirectClassesPI;
+	private double					avgDirectClassesPI;
 
-	private double avgSamesPI;
+	private double					avgSamesPI;
 
-	private double avgDifferentsPI;
+	private double					avgDifferentsPI;
 
-	private double avgSubClasses;
+	private double					avgSubClasses;
 
-	private double avgDirectSubClasses;
+	private double					avgDirectSubClasses;
 
-	private double avgSuperClasses;
+	private double					avgSuperClasses;
 
-	private double avgDirectSuperClasses;
+	private double					avgDirectSuperClasses;
 
-	private double avgEquivClasses;
+	private double					avgEquivClasses;
 
-	private double avgDisjoints;
+	private double					avgDisjoints;
 
-	private double avgComplements;
+	private double					avgComplements;
 
-	private double avgSubProperties;
+	private double					avgSubProperties;
 
-	private double avgDirectSubProperties;
+	private double					avgDirectSubProperties;
 
-	private double avgSuperProperties;
+	private double					avgSuperProperties;
 
-	private double avgDirectSuperProperties;
+	private double					avgDirectSuperProperties;
 
-	private double avgEquivProperties;
+	private double					avgEquivProperties;
 
-	private double avgInversesPP;
+	private double					avgInversesPP;
 
-	private double avgPairsPP;
+	private double					avgPairsPP;
 
-	private double avgSubjectsPerProperty;
+	private double					avgSubjectsPerProperty;
 
-	private double avgInstancesPC;
+	private double					avgInstancesPC;
 
-	private double avgDirectInstances;
+	private double					avgDirectInstances;
 
 	public SizeEstimate(final KnowledgeBase kb)
 	{
@@ -349,8 +349,7 @@ public class SizeEstimate
 		{
 			final ATermAppl c = i.next();
 
-			if (!_kb.isClass(c))
-				continue;
+			if (!_kb.isClass(c)) continue;
 
 			if (taxonomy.contains(c))
 			{
@@ -394,8 +393,7 @@ public class SizeEstimate
 
 				if (CHECK_CONCEPT_SAT)
 				{
-					if (!_kb.isSatisfiable(c))
-						i.remove();
+					if (!_kb.isSatisfiable(c)) i.remove();
 
 					if (!_kb.isSatisfiable(ATermUtils.makeNot(c)))
 					{
@@ -405,8 +403,7 @@ public class SizeEstimate
 				}
 			}
 
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("Initialize " + c + " = " + size(c));
+			if (_logger.isLoggable(Level.FINE)) _logger.fine("Initialize " + c + " = " + size(c));
 		}
 
 		for (final ATermAppl p : properties)
@@ -425,15 +422,13 @@ public class SizeEstimate
 
 		for (final ATermAppl ind : _kb.getIndividuals())
 		{
-			if (!_kb.isIndividual(ind))
-				continue;
+			if (!_kb.isIndividual(ind)) continue;
 
 			sames.put(ind, 1); // TODO
 			differents.put(ind, iCount); // TODO
 
 			final float random = randomGen.nextFloat();
-			if (random > OpenlletOptions.SAMPLING_RATIO)
-				continue;
+			if (random > OpenlletOptions.SAMPLING_RATIO) continue;
 
 			if (_kb.isRealized())
 			{
@@ -483,8 +478,7 @@ public class SizeEstimate
 
 				if (knownSize > 0)
 				{
-					if (_logger.isLoggable(Level.FINER))
-						_logger.finer("Update " + p + " by " + knownSize);
+					if (_logger.isLoggable(Level.FINER)) _logger.finer("Update " + p + " by " + knownSize);
 					pairsPP.put(p, size(p) + knownSize);
 					pSubj.put(p, pSubj.get(p) + 1);
 				}
@@ -498,8 +492,7 @@ public class SizeEstimate
 
 					_kb.getABox().getObjectPropertyValues(ind, role, knowns, unknowns, true);
 
-					if (!knowns.isEmpty())
-						pObj.put(p, pObj.get(p) + 1);
+					if (!knowns.isEmpty()) pObj.put(p, pObj.get(p) + 1);
 				}
 			}
 		}
@@ -537,8 +530,7 @@ public class SizeEstimate
 			{
 				Integer size = classesPI.get(i);
 
-				if (size == null)
-					size = avgCPI;
+				if (size == null) size = avgCPI;
 
 				// postprocessing in case of sampling
 				if (size == 0)
@@ -548,8 +540,7 @@ public class SizeEstimate
 
 				size = directClassesPI.get(i);
 
-				if (size == null)
-					size = avgDCPI;
+				if (size == null) size = avgDCPI;
 
 				// postprocessing in case of sampling
 				if (size == 0)
@@ -570,20 +561,18 @@ public class SizeEstimate
 			final Role role = _kb.getRBox().getRole(p);
 			final ATermAppl invP = role.getInverse() != null ? role.getInverse().getName() : null;
 			int subjCount = pSubj.get(p);
-			if (subjCount == 0)
-				subjCount = 1;
+			if (subjCount == 0) subjCount = 1;
 			int objCount = pObj.get(p);
-			if (objCount == 0)
-				objCount = 1;
+			if (objCount == 0) objCount = 1;
 
-			double avg = Double.valueOf((double) size / subjCount);
+			double avg = (double) size / subjCount;
 			avgObjectsPP.put(p, avg);
 			// avgSubjectsPerProperty = Math
 			// .max(avgSubjectsPerProperty, subjCount);
 			avgSubjectsPerProperty += subjCount;
 			if (invP != null)
 			{
-				avg = Double.valueOf((double) size / objCount);
+				avg = (double) size / objCount;
 				avgObjectsPP.put(invP, avg);
 				// avgSubjectsPerProperty = Math.max(avgSubjectsPerProperty,
 				// objCount);
@@ -621,7 +610,7 @@ public class SizeEstimate
 		avgEquivProperties = average(equivProperties.values());
 		avgInversesPP = average(inverses.values());
 
-		timer.ifPresent(t -> t.stop());
+		timer.ifPresent(Timer::stop);
 
 		// printStatistics();
 
@@ -689,33 +678,30 @@ public class SizeEstimate
 	{
 		if (instancesPC.containsKey(c))
 			return instancesPC.get(c);
+		else if (pairsPP.containsKey(c))
+			return pairsPP.get(c);
 		else
-			if (pairsPP.containsKey(c))
-				return pairsPP.get(c);
+		{
+			if (_kb.isProperty(c))
+				compute(Collections.emptySet(), Collections.singleton(c));
 			else
-			{
-				if (_kb.isProperty(c))
-					compute(Collections.emptySet(), Collections.singleton(c));
-				else
-					compute(Collections.singleton(c), Collections.emptySet());
-				return size(c);
-			}
+				compute(Collections.singleton(c), Collections.emptySet());
+			return size(c);
+		}
 	}
 
 	public int classesPerInstance(final ATermAppl i, final boolean direct)
 	{
 		final Map<ATermAppl, Integer> map = direct ? directClassesPI : classesPI;
 
-		if (map.containsKey(i))
-			return map.get(i);
+		if (map.containsKey(i)) return map.get(i);
 
 		throw new InternalReasonerException("Instance number estimate : " + i + " is not found!");
 	}
 
 	public double avg(final ATermAppl pred)
 	{
-		if (!avgObjectsPP.containsKey(pred))
-			compute(Collections.emptySet(), Collections.singleton(pred));
+		if (!avgObjectsPP.containsKey(pred)) compute(Collections.emptySet(), Collections.singleton(pred));
 		return avgObjectsPP.get(pred);
 	}
 
@@ -917,16 +903,14 @@ public class SizeEstimate
 
 	public double sames(final ATermAppl sup)
 	{
-		if (sames.containsKey(sup))
-			return sames.get(sup);
+		if (sames.containsKey(sup)) return sames.get(sup);
 
 		throw new InternalReasonerException("Sames estimate for " + sup + " is not found!");
 	}
 
 	public double differents(final ATermAppl sup)
 	{
-		if (differents.containsKey(sup))
-			return differents.get(sup);
+		if (differents.containsKey(sup)) return differents.get(sup);
 
 		throw new InternalReasonerException("Sames estimate for " + sup + " is not found!");
 	}

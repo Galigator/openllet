@@ -57,8 +57,7 @@ public class AlphaEdgeNode extends AlphaNode
 		if (_doExplanation)
 		{
 			final DependencySet ds = dir == EdgeDirection.FORWARD ? _role.getExplainSub(edge.getRole().getName()) : _role.getInverse().getExplainSub(edge.getRole().getName());
-			if (!ds.getExplain().isEmpty())
-				return WME.createEdge(new DefaultEdge(edge.getRole(), edge.getFrom(), edge.getTo(), edge.getDepends().union(ds, _doExplanation)), dir);
+			if (!ds.getExplain().isEmpty()) return WME.createEdge(new DefaultEdge(edge.getRole(), edge.getFrom(), edge.getTo(), edge.getDepends().union(ds, _doExplanation)), dir);
 		}
 
 		return WME.createEdge(edge, dir);
@@ -83,7 +82,8 @@ public class AlphaEdgeNode extends AlphaNode
 	@SuppressWarnings("rawtypes")
 	public boolean matches(final RuleAtom atom)
 	{
-		return (atom instanceof IndividualPropertyAtom || atom instanceof DatavaluedPropertyAtom) && atom.getPredicate().equals(_role.getName()) && ((BinaryAtom) atom).getArgument1() instanceof AtomVariable && ((BinaryAtom) atom).getArgument2() instanceof AtomVariable;
+		return (atom instanceof IndividualPropertyAtom || atom instanceof DatavaluedPropertyAtom) && atom.getPredicate().equals(_role.getName())
+				&& ((BinaryAtom) atom).getArgument1() instanceof AtomVariable && ((BinaryAtom) atom).getArgument2() instanceof AtomVariable;
 	}
 
 	@Override
@@ -101,15 +101,13 @@ public class AlphaEdgeNode extends AlphaNode
 		if (s != null)
 		{
 			i1 = toWMEs(getEdges(s.getOutEdges(), _role, o), EdgeDirection.FORWARD);
-			if (invRole != null)
-				i2 = toWMEs(getEdges(s.getInEdges(), invRole, o), EdgeDirection.BACKWARD);
+			if (invRole != null) i2 = toWMEs(getEdges(s.getInEdges(), invRole, o), EdgeDirection.BACKWARD);
 		}
 		else
 		{
 			assert s == null;
 			i1 = toWMEs(getEdges(o.getInEdges(), _role, null), EdgeDirection.FORWARD);
-			if (invRole != null)
-				i2 = toWMEs(getEdges(((Individual) o).getOutEdges(), invRole, null), EdgeDirection.BACKWARD);
+			if (invRole != null) i2 = toWMEs(getEdges(((Individual) o).getOutEdges(), invRole, null), EdgeDirection.BACKWARD);
 		}
 
 		return !i1.hasNext() ? i2 : !i2.hasNext() ? i1 : IteratorUtils.concat(i1, i2);
@@ -137,19 +135,18 @@ public class AlphaEdgeNode extends AlphaNode
 	{
 		if (edges.isEmpty())
 			return IteratorUtils.emptyIterator();
+		else if (edges.size() == 1)
+		{
+			final Edge edge = edges.get(0);
+			return IteratorUtils.<WME>singletonIterator(createEdge(edge, dir));
+		}
 		else
-			if (edges.size() == 1)
-			{
-				final Edge edge = edges.get(0);
-				return IteratorUtils.<WME> singletonIterator(createEdge(edge, dir));
-			}
-			else
-			{
-				final List<WME> wmes = new ArrayList<>(edges.size());
-				for (final Edge edge : edges)
-					wmes.add(createEdge(edge, dir));
-				return wmes.iterator();
-			}
+		{
+			final List<WME> wmes = new ArrayList<>(edges.size());
+			for (final Edge edge : edges)
+				wmes.add(createEdge(edge, dir));
+			return wmes.iterator();
+		}
 	}
 
 	@Override
@@ -164,13 +161,10 @@ public class AlphaEdgeNode extends AlphaNode
 	@Override
 	public boolean equals(final Object obj)
 	{
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
+		if (this == obj) return true;
+		if (obj == null) return false;
 		final AlphaEdgeNode other = (AlphaEdgeNode) obj;
-		if (getClass() != other.getClass())
-			return false;
+		if (getClass() != other.getClass()) return false;
 		return _role.equals(other._role);
 	}
 

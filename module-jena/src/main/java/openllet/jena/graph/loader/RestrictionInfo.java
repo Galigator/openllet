@@ -27,15 +27,15 @@ import org.apache.jena.graph.Node;
  */
 public class RestrictionInfo
 {
-	private Node _type;
-	private Node _predicate;
-	private Node _filler;
-	private Node _detail;
-	private Bool _isObjectRestriction = Bool.UNKNOWN;
+	private Node	_type;
+	private Node	_predicate;
+	private Node	_filler;
+	private Node	_detail;
+	private Bool	_isObjectRestriction	= Bool.UNKNOWN;
 
 	public RestrictionInfo(final Node predicate)
 	{
-		this._predicate = predicate;
+		_predicate = predicate;
 	}
 
 	public Node getType()
@@ -45,7 +45,7 @@ public class RestrictionInfo
 
 	public void setType(final Node type)
 	{
-		this._type = type;
+		_type = type;
 	}
 
 	public Node getPredicate()
@@ -55,7 +55,7 @@ public class RestrictionInfo
 
 	public void setPredicate(final Node predicate)
 	{
-		this._predicate = predicate;
+		_predicate = predicate;
 	}
 
 	public Node getFiller()
@@ -65,7 +65,7 @@ public class RestrictionInfo
 
 	public void setFiller(final Node filler)
 	{
-		this._filler = filler;
+		_filler = filler;
 	}
 
 	public Node getDetail()
@@ -75,7 +75,7 @@ public class RestrictionInfo
 
 	public void setDetail(final Node detail)
 	{
-		this._detail = detail;
+		_detail = detail;
 	}
 
 	public Bool isObjectRestriction()
@@ -85,6 +85,6 @@ public class RestrictionInfo
 
 	public void setObjectRestriction(final boolean isObjectRestriction)
 	{
-		this._isObjectRestriction = Bool.create(isObjectRestriction);
+		_isObjectRestriction = Bool.create(isObjectRestriction);
 	}
 }

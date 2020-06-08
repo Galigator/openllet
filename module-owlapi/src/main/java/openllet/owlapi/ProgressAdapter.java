@@ -5,12 +5,12 @@ import org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor;
 
 public class ProgressAdapter implements ProgressMonitor
 {
-	private final ReasonerProgressMonitor _monitor;
-	private int _length;
-	private int _progress;
-	private String _title;
+	private final ReasonerProgressMonitor	_monitor;
+	private int								_length;
+	private int								_progress;
+	private String							_title;
 
-	private volatile int _echo = 0;
+	private volatile int					_echo	= 0;
 
 	@Override
 	public int getLastEcho()
@@ -36,7 +36,7 @@ public class ProgressAdapter implements ProgressMonitor
 	public int getProgressPercent()
 	{
 
-		return _length > 0 ? (_progress * 100) / _length : 0;
+		return _length > 0 ? _progress * 100 / _length : 0;
 	}
 
 	@Override

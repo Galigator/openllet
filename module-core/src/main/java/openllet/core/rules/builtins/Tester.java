@@ -26,5 +26,5 @@ import openllet.core.boxes.abox.Literal;
  */
 public interface Tester
 {
-	public boolean test(Literal[] args);
+	boolean test(Literal[] args);
 }

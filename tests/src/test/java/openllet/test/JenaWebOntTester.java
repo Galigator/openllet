@@ -26,8 +26,8 @@ import org.apache.jena.util.iterator.ExtendedIterator;
 
 public class JenaWebOntTester implements WebOntTester
 {
-	private OntModel _model;
-	private final LocationMapper _mapper;
+	private OntModel				_model;
+	private final LocationMapper	_mapper;
 
 	public JenaWebOntTester()
 	{

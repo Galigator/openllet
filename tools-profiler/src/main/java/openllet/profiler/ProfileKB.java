@@ -88,19 +88,19 @@ public class ProfileKB
 		return datasets;
 	}
 
-	private double memPercentageLimit = 0.05;
+	private double				memPercentageLimit	= 0.05;
 
-	private int iterations = 1;
+	private int					iterations			= 1;
 
-	private MemoryProfiling _memoryProfiling = MemoryProfiling.APPROX;
+	private MemoryProfiling		_memoryProfiling	= MemoryProfiling.APPROX;
 
-	private Task _task = Task.Consistency;
+	private Task				_task				= Task.Consistency;
 
-	private LoaderType _loaderType = LoaderType.JENA;
+	private LoaderType			_loaderType			= LoaderType.JENA;
 
-	private boolean _imports = true;
+	private boolean				_imports			= true;
 
-	private final PrintWriter out = new PrintWriter(System.out);
+	private final PrintWriter	out					= new PrintWriter(System.out);
 
 	public ProfileKB()
 	{
@@ -222,8 +222,7 @@ public class ProfileKB
 			error("Invalid number: " + e);
 		}
 
-		if (datasets == null)
-			error("No config file (-f) or input ontology (-o) provided!");
+		if (datasets == null) error("No config file (-f) or input ontology (-o) provided!");
 
 		return datasets;
 	}
@@ -245,8 +244,7 @@ public class ProfileKB
 		{
 			final double percent = (double) node.size() / root.size();
 
-			if (percent <= memPercentageLimit)
-				return;
+			if (percent <= memPercentageLimit) return;
 
 			sb.append(" (");
 			sb.append(String.format("%2.1f%%", 100 * percent));
@@ -257,41 +255,38 @@ public class ProfileKB
 
 		String name = node.name();
 		final int lastDot = name.lastIndexOf('.');
-		if (lastDot >= 0)
-			name = name.substring(lastDot + 1);
+		if (lastDot >= 0) name = name.substring(lastDot + 1);
 
 		sb.append(name);
 
-		if (node.object() != null)
-			if (node.name().endsWith("#table") || node.name().endsWith("#elementData"))
+		if (node.object() != null) if (node.name().endsWith("#table") || node.name().endsWith("#elementData"))
+		{
+			IObjectProfileNode shell = null;
+			final int n = children.length - 1;
+			for (int i = n; i >= 0; i--)
 			{
-				IObjectProfileNode shell = null;
-				final int n = children.length - 1;
-				for (int i = n; i >= 0; i--)
-				{
-					shell = children[i];
-					if (shell.object() == null)
-						break;
-				}
-				if (shell != null)
-				{
-					final int size = node.size() - shell.size();
-					final double avg = (double) size / n;
-
-					sb.append(" children: " + n + " avg: " + avg + " " + shell.name() + " " + ProfileUtils.mb(shell.size()));
-				}
+				shell = children[i];
+				if (shell.object() == null) break;
 			}
-			else
+			if (shell != null)
 			{
-				sb.append(" : ");
-				sb.append(ObjectProfiler.typeName(node.object().getClass(), true));
+				final int size = node.size() - shell.size();
+				final double avg = (double) size / n;
 
-				if (node.refcount() > 1) // show refcount only when it's > 1
-				{
-					sb.append(", refcount=");
-					sb.append(node.refcount());
-				}
+				sb.append(" children: " + n + " avg: " + avg + " " + shell.name() + " " + ProfileUtils.mb(shell.size()));
 			}
+		}
+		else
+		{
+			sb.append(" : ");
+			sb.append(ObjectProfiler.typeName(node.object().getClass(), true));
+
+			if (node.refcount() > 1) // show refcount only when it's > 1
+			{
+				sb.append(", refcount=");
+				sb.append(node.refcount());
+			}
+		}
 
 		out.println(sb);
 		out.flush();
@@ -341,6 +336,8 @@ public class ProfileKB
 				mem = MemUtils.usedMemory();
 				MemUtils.printMemory("Used : ", mem);
 				break;
+			default:
+				break;
 		}
 
 		System.out.println();
@@ -350,7 +347,7 @@ public class ProfileKB
 
 	public Collection<Result<Task>> profile(final String... files)
 	{
-		final KBLoader loader = (_loaderType == LoaderType.JENA) ? new JenaLoader() : new OWLAPILoader();
+		final KBLoader loader = _loaderType == LoaderType.JENA ? new JenaLoader() : new OWLAPILoader();
 
 		loader.setIgnoreImports(!_imports);
 

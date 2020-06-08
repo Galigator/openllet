@@ -52,17 +52,17 @@ import org.apache.jena.util.iterator.ExtendedIterator;
  */
 public class JenaBasedELClassifier extends RuleBasedELClassifier
 {
-	private static final String PREDICATE_PREFIX = "tag:clarkparsia.com,2008:pellet:el:predicate:";
-	private static final Node PRED_SUB = NodeFactory.createURI(PREDICATE_PREFIX + "subclassOf");
-	private static final Builtin NOT_EQUAL = new NotEqual();
+	private static final String		PREDICATE_PREFIX	= "tag:clarkparsia.com,2008:pellet:el:predicate:";
+	private static final Node		PRED_SUB			= NodeFactory.createURI(PREDICATE_PREFIX + "subclassOf");
+	private static final Builtin	NOT_EQUAL			= new NotEqual();
 
-	private final Node TOP;
-	private final Node BOTTOM;
+	private final Node				TOP;
+	private final Node				BOTTOM;
 
-	private final NameStore _names;
-	private final VariableStore _variables;
-	private final Set<Rule> _rules = SetUtils.create();
-	private final Graph _facts;
+	private final NameStore			_names;
+	private final VariableStore		_variables;
+	private final Set<Rule>			_rules				= SetUtils.create();
+	private final Graph				_facts;
 
 	public JenaBasedELClassifier(final KnowledgeBase kb)
 	{
@@ -112,8 +112,7 @@ public class JenaBasedELClassifier extends RuleBasedELClassifier
 			final Triple tri = (Triple) it.next();
 			final Node sub = tri.getSubject();
 			final Node sup = tri.getObject();
-			if (NameStore.isAnon(sub) || NameStore.isAnon(sup))
-				continue;
+			if (NameStore.isAnon(sub) || NameStore.isAnon(sup)) continue;
 
 			subsumers.add(toATermAppl(sub), toATermAppl(sup));
 		}
@@ -126,11 +125,10 @@ public class JenaBasedELClassifier extends RuleBasedELClassifier
 	{
 		if (TOP.hasURI(n.getURI()))
 			return ATermUtils.TOP;
+		else if (BOTTOM.hasURI(n.getURI()))
+			return ATermUtils.BOTTOM;
 		else
-			if (BOTTOM.hasURI(n.getURI()))
-				return ATermUtils.BOTTOM;
-			else
-				return ATermUtils.makeTermAppl(n.getURI());
+			return ATermUtils.makeTermAppl(n.getURI());
 	}
 
 	/**
@@ -185,8 +183,7 @@ public class JenaBasedELClassifier extends RuleBasedELClassifier
 	@Override
 	protected void addRoleChainRule(final ATerm[] chain, final ATermAppl sup)
 	{
-		if (chain.length < 1)
-			return;
+		if (chain.length < 1) return;
 
 		final List<ClauseEntry> body = new ArrayList<>();
 
@@ -249,29 +246,27 @@ public class JenaBasedELClassifier extends RuleBasedELClassifier
 		final AFun fun = sub.getAFun();
 		if (ATermUtils.isPrimitive(sub) || ATermUtils.isBottom(sub))
 			outBody.add(makeSubclassTriple(currentVar, _names.get(sub)));
-		else
-			if (fun.equals(ATermUtils.ANDFUN))
-			{
-				ATermList list = (ATermList) sub.getArgument(0);
+		else if (fun.equals(ATermUtils.ANDFUN))
+		{
+			ATermList list = (ATermList) sub.getArgument(0);
 
-				while (!list.isEmpty())
-				{
-					final ATermAppl conj = (ATermAppl) list.getFirst();
-					translateSub(outBody, conj, freeVar, currentVar);
-					list = list.getNext();
-				}
+			while (!list.isEmpty())
+			{
+				final ATermAppl conj = (ATermAppl) list.getFirst();
+				translateSub(outBody, conj, freeVar, currentVar);
+				list = list.getNext();
 			}
-			else
-				if (fun.equals(ATermUtils.SOMEFUN))
-				{
-					final ATermAppl prop = (ATermAppl) sub.getArgument(0);
-					final ATermAppl q = (ATermAppl) sub.getArgument(1);
-					final Node nextVar = freeVar.next();
-					outBody.add(makeSubOfSomeTriple(currentVar, prop, nextVar));
-					translateSub(outBody, q, freeVar, nextVar);
-				}
-				else
-					assert false;
+		}
+		else if (fun.equals(ATermUtils.SOMEFUN))
+		{
+			final ATermAppl prop = (ATermAppl) sub.getArgument(0);
+			final ATermAppl q = (ATermAppl) sub.getArgument(1);
+			final Node nextVar = freeVar.next();
+			outBody.add(makeSubOfSomeTriple(currentVar, prop, nextVar));
+			translateSub(outBody, q, freeVar, nextVar);
+		}
+		else
+			assert false;
 	}
 
 	private void translateSuper(final List<ClauseEntry> outHead, final ATermAppl sup, final FreeVariableStore freeVar, final Node currentVar)
@@ -279,37 +274,35 @@ public class JenaBasedELClassifier extends RuleBasedELClassifier
 		final AFun fun = sup.getAFun();
 		if (ATermUtils.isPrimitive(sup) || ATermUtils.isBottom(sup))
 			outHead.add(makeSubclassTriple(currentVar, _names.get(sup)));
-		else
-			if (fun.equals(ATermUtils.ANDFUN))
+		else if (fun.equals(ATermUtils.ANDFUN))
+		{
+			ATermList list = (ATermList) sup.getArgument(0);
+
+			while (!list.isEmpty())
 			{
-				ATermList list = (ATermList) sup.getArgument(0);
-
-				while (!list.isEmpty())
-				{
-					final ATermAppl conj = (ATermAppl) list.getFirst();
-					translateSuper(outHead, conj, freeVar, currentVar);
-					list = list.getNext();
-				}
+				final ATermAppl conj = (ATermAppl) list.getFirst();
+				translateSuper(outHead, conj, freeVar, currentVar);
+				list = list.getNext();
 			}
-			else
-				if (fun.equals(ATermUtils.SOMEFUN))
-				{
-					final ATermAppl prop = (ATermAppl) sup.getArgument(0);
-					ATermAppl q = (ATermAppl) sup.getArgument(1);
+		}
+		else if (fun.equals(ATermUtils.SOMEFUN))
+		{
+			final ATermAppl prop = (ATermAppl) sup.getArgument(0);
+			ATermAppl q = (ATermAppl) sup.getArgument(1);
 
-					if (!ATermUtils.isPrimitive(q) && !ATermUtils.isBottom(q))
-					{
-						//Normalization - breaking complex concepts within someValues
-						final ATermAppl anon = _names.getNextAnon();
-						//				addSubclassRule(anon, q);
-						translateSuperSome(anon, q);
-						q = anon;
-					}
+			if (!ATermUtils.isPrimitive(q) && !ATermUtils.isBottom(q))
+			{
+				//Normalization - breaking complex concepts within someValues
+				final ATermAppl anon = _names.getNextAnon();
+				//				addSubclassRule(anon, q);
+				translateSuperSome(anon, q);
+				q = anon;
+			}
 
-					outHead.add(makeSubOfSomeTriple(currentVar, prop, _names.get(q)));
-				}
-				else
-					assert false;
+			outHead.add(makeSubOfSomeTriple(currentVar, prop, _names.get(q)));
+		}
+		else
+			assert false;
 	}
 
 	private void translateSuperSome(final ATermAppl anon, final ATermAppl sup)
@@ -317,36 +310,34 @@ public class JenaBasedELClassifier extends RuleBasedELClassifier
 		final AFun fun = sup.getAFun();
 		if (ATermUtils.isPrimitive(sup) || ATermUtils.isBottom(sup))
 			_facts.add(makeSubclassFact(anon, sup));
-		else
-			if (fun.equals(ATermUtils.ANDFUN))
+		else if (fun.equals(ATermUtils.ANDFUN))
+		{
+			ATermList list = (ATermList) sup.getArgument(0);
+
+			while (!list.isEmpty())
 			{
-				ATermList list = (ATermList) sup.getArgument(0);
-
-				while (!list.isEmpty())
-				{
-					final ATermAppl conj = (ATermAppl) list.getFirst();
-					translateSuperSome(anon, conj);
-					list = list.getNext();
-				}
+				final ATermAppl conj = (ATermAppl) list.getFirst();
+				translateSuperSome(anon, conj);
+				list = list.getNext();
 			}
-			else
-				if (fun.equals(ATermUtils.SOMEFUN))
-				{
-					final ATermAppl prop = (ATermAppl) sup.getArgument(0);
-					ATermAppl q = (ATermAppl) sup.getArgument(1);
+		}
+		else if (fun.equals(ATermUtils.SOMEFUN))
+		{
+			final ATermAppl prop = (ATermAppl) sup.getArgument(0);
+			ATermAppl q = (ATermAppl) sup.getArgument(1);
 
-					if (!ATermUtils.isPrimitive(q) && !ATermUtils.isBottom(q))
-					{
-						// Normalization - breaking complex concepts within someValues
-						final ATermAppl nextAnon = _names.getNextAnon();
-						translateSuperSome(nextAnon, q);
-						q = nextAnon;
-					}
+			if (!ATermUtils.isPrimitive(q) && !ATermUtils.isBottom(q))
+			{
+				// Normalization - breaking complex concepts within someValues
+				final ATermAppl nextAnon = _names.getNextAnon();
+				translateSuperSome(nextAnon, q);
+				q = nextAnon;
+			}
 
-					_facts.add(makeSubOfSomeFact(anon, prop, q));
-				}
-				else
-					assert false;
+			_facts.add(makeSubOfSomeFact(anon, prop, q));
+		}
+		else
+			assert false;
 	}
 
 	private Triple makeSubclassFact(final ATermAppl t1, final ATermAppl t2)
@@ -388,11 +379,11 @@ public class JenaBasedELClassifier extends RuleBasedELClassifier
 
 	static class NameStore
 	{
-		private static final String ANON = "tag:clarkparsia.com,2008:pellet:el:anon:";
-		private static final int FIRST_ANON = 0;
+		private static final String			ANON		= "tag:clarkparsia.com,2008:pellet:el:anon:";
+		private static final int			FIRST_ANON	= 0;
 
-		private final Map<ATermAppl, Node> _constants = new HashMap<>();
-		private int _nextAnon = FIRST_ANON;
+		private final Map<ATermAppl, Node>	_constants	= new HashMap<>();
+		private int							_nextAnon	= FIRST_ANON;
 
 		public Node get(final ATermAppl term)
 		{
@@ -434,9 +425,9 @@ public class JenaBasedELClassifier extends RuleBasedELClassifier
 
 	static class VariableStore
 	{
-		private static final String PREFIX = "x";
+		private static final String	PREFIX			= "x";
 
-		private final List<Node> _variablesStore = new ArrayList<>();
+		private final List<Node>	_variablesStore	= new ArrayList<>();
 
 		public Node get(final int target)
 		{

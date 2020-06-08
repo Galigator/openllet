@@ -15,7 +15,7 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 /**
  * The main difference between OWLTools and OWLGenericTools is the usage of static resources by OWLTools from OWLUtils. Statics resources have many usage for
  * resources management.
- * 
+ *
  * @since 2.5.1
  */
 public class OWLTools extends OWLGenericTools
@@ -30,10 +30,10 @@ public class OWLTools extends OWLGenericTools
 
 	/**
 	 * Load the ontology ontologyId into the good manager or create it if it doesn't previously exist.
-	 * 
-	 * @param ontologyID is the reference to the ontology
+	 *
+	 * @param  ontologyID                   is the reference to the ontology
 	 * @throws OWLOntologyCreationException is raise when things goes baddly wrong.
-	 * @since 2.5.1
+	 * @since                               2.5.1
 	 */
 	public OWLTools(final OWLOntologyID ontologyID) throws OWLOntologyCreationException
 	{

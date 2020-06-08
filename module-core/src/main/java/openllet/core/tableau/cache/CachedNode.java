@@ -36,65 +36,65 @@ public interface CachedNode
 	 *
 	 * @return <code>true</code> if this cached _node is complete
 	 */
-	public boolean isComplete();
+	boolean isComplete();
 
 	/**
 	 * Returns if this is the cached _node for BOTTOM concept.
 	 *
 	 * @return <code>true</code> if this is the cached _node for BOTTOM concept
 	 */
-	public boolean isTop();
+	boolean isTop();
 
 	/**
 	 * Returns if this is the cached _node for TOP concept.
 	 *
 	 * @return <code>true</code> if this is the cached _node for TOP concept
 	 */
-	public boolean isBottom();
+	boolean isBottom();
 
 	/**
 	 * Returns the types and their dependencies for this _node.
 	 *
 	 * @return a map from concepts to dependency sets
 	 */
-	public Map<ATermAppl, DependencySet> getDepends();
+	Map<ATermAppl, DependencySet> getDepends();
 
 	/**
 	 * Returns the outgoing edges of this _node.
 	 *
 	 * @return Outgoing edges of this _node
 	 */
-	public EdgeList getOutEdges();
+	EdgeList getOutEdges();
 
 	/**
 	 * Returns the incoming edges of this _node.
 	 *
 	 * @return Incoming edges of this node
 	 */
-	public EdgeList getInEdges();
+	EdgeList getInEdges();
 
 	/**
 	 * Checks if this node is connected to another _node with the given role (or one of its subproperties). The _node may have an incoming edge with the inverse
 	 * of this role which would count as an r-neighbor.
 	 *
-	 * @param role
-	 * @return Outgoing edges of this node
+	 * @param  role
+	 * @return      Outgoing edges of this node
 	 */
-	public boolean hasRNeighbor(Role role);
+	boolean hasRNeighbor(Role role);
 
 	/**
 	 * Returns the name of this _node. For cached concept _nodes this is the name of the concept.
 	 *
 	 * @return Name of this _node
 	 */
-	public ATermAppl getName();
+	ATermAppl getName();
 
 	/**
 	 * Returns if this _node represent a named _individual (not an anonymous _individual or a concept _node)
 	 *
 	 * @return If this _node represent a named _individual
 	 */
-	public boolean isNamedIndividual();
+	boolean isNamedIndividual();
 
 	/**
 	 * Returns if this _node was cached without any dependency to a non-deterministic _branch. In the presence of nominals, when we are checking the
@@ -103,5 +103,5 @@ public interface CachedNode
 	 *
 	 * @return If this _node was cached without any dependency to a non-deterministic _branch
 	 */
-	public boolean isIndependent();
+	boolean isIndependent();
 }

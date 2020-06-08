@@ -42,8 +42,7 @@ public class XSDInt extends AbstractDerivedIntegerType
 		try
 		{
 			final long n = DatatypeConverter.parseLong(lexicalForm);
-			if (n < Integer.MIN_VALUE || n > Integer.MAX_VALUE)
-				throw new InvalidLiteralException(getName(), lexicalForm);
+			if (n < Integer.MIN_VALUE || n > Integer.MAX_VALUE) throw new InvalidLiteralException(getName(), lexicalForm);
 			return Integer.valueOf((int) n);
 		}
 		catch (final NumberFormatException e)

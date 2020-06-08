@@ -5,14 +5,14 @@
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
- *     * Redistributions of source code must retain the above copyright
- *       notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the University of California, Berkeley nor the
- *       names of its contributors may be used to endorse or promote products
- *       derived from this software without specific prior written permission.
+ * * Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following disclaimer.
+ * * Redistributions in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in the
+ * documentation and/or other materials provided with the distribution.
+ * * Neither the name of the University of California, Berkeley nor the
+ * names of its contributors may be used to endorse or promote products
+ * derived from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -31,23 +31,30 @@ package openllet.aterm;
 public interface Visitable
 {
 	/**
-	 * Returns the number of children of any visitable.
+	 * @return the number of children of any visitable.
 	 */
-	public int getChildCount();
+	int getChildCount();
 
 	/**
 	 * Returns the ith child of any visitable. Counting starts
 	 * at 0. Thus, to get the last child of a visitable with n
 	 * children, use getChild(n-1).
+	 *
+	 * @param  i is the child index
+	 * @return   the term
 	 */
-	public ATerm getChildAt(final int i);
+	ATerm getChildAt(final int i);
 
 	/**
 	 * Replaces the ith child of any visitable, and returns this
 	 * visitable. Counting starts at 0. Thus, to set the last child of
 	 * a visitable with n children, use setChild(n-1).
+	 *
+	 * @param  i     is the child index
+	 * @param  child to set at index
+	 * @return       the setted child / new child.
 	 */
-	public ATerm setChildAt(final int i, final ATerm child);
+	ATerm setChildAt(final int i, final ATerm child);
 
-	public ATerm accept(final Visitor<ATerm> visitor);
+	ATerm accept(final Visitor<ATerm> visitor);
 }

@@ -49,9 +49,9 @@ public class SetUtils
 	 * one element we create a new set with two elements, otherwise we simply add the element to the given set.This technique is most useful if the expected set
 	 * size is 0 or 1.
 	 *
-	 * @param o
-	 * @param set
-	 * @return merge of set
+	 * @param  o
+	 * @param  set
+	 * @return     merge of set
 	 */
 	public static <T> Set<T> add(final T o, final Set<T> set)
 	{
@@ -62,8 +62,7 @@ public class SetUtils
 			case 1:
 			{
 				final T existing = set.iterator().next();
-				if (existing.equals(o))
-					return set;
+				if (existing.equals(o)) return set;
 				return binary(existing, o);
 			}
 			default:
@@ -82,8 +81,7 @@ public class SetUtils
 				return set;
 			case 1:
 			{
-				if (set.contains(o))
-					return Collections.emptySet();
+				if (set.contains(o)) return Collections.emptySet();
 				return set;
 			}
 			default:
@@ -109,8 +107,8 @@ public class SetUtils
 	}
 
 	/**
-	 * @param coll A Collection of sets
-	 * @return the union of all the sets given in a collection.
+	 * @param  coll A Collection of sets
+	 * @return      the union of all the sets given in a collection.
 	 */
 	public static <T> Set<T> union(final Collection<? extends Collection<? extends T>> coll)
 	{
@@ -123,9 +121,9 @@ public class SetUtils
 	}
 
 	/**
-	 * @param c1 A Collection of sets
-	 * @param c2 A Collection of sets
-	 * @return the union of two collections
+	 * @param  c1 A Collection of sets
+	 * @param  c2 A Collection of sets
+	 * @return    the union of two collections
 	 */
 	public static <T> Set<T> union(final Collection<? extends T> c1, final Collection<? extends T> c2)
 	{
@@ -137,15 +135,14 @@ public class SetUtils
 	}
 
 	/**
-	 * @param coll A Collection of sets
-	 * @return the intersection of all the collections given in a collection.
+	 * @param  coll A Collection of sets
+	 * @return      the intersection of all the collections given in a collection.
 	 */
 	public static <T> Set<T> intersection(final Collection<? extends Collection<? extends T>> coll)
 	{
 		final Iterator<? extends Collection<? extends T>> i = coll.iterator();
 
-		if (!i.hasNext())
-			return create();
+		if (!i.hasNext()) return create();
 
 		final Set<T> set = create();
 		set.addAll(i.next());
@@ -159,9 +156,9 @@ public class SetUtils
 	}
 
 	/**
-	 * @return the intersection of two collections
-	 * @param c1 A Collection of sets
-	 * @param c2 A Collection of sets
+	 * @return    the intersection of two collections
+	 * @param  c1 A Collection of sets
+	 * @param  c2 A Collection of sets
 	 */
 	public static <T> Set<T> intersection(final Collection<? extends T> c1, final Collection<? extends T> c2)
 	{
@@ -173,23 +170,22 @@ public class SetUtils
 	}
 
 	/**
-	 * @param c1
-	 * @param c2
-	 * @return true if two collections have any elements in common
+	 * @param  c1
+	 * @param  c2
+	 * @return    true if two collections have any elements in common
 	 */
 	public static boolean intersects(final Collection<?> c1, final Collection<?> c2)
 	{
 		for (final Object name : c1)
-			if (c2.contains(name))
-				return true;
+			if (c2.contains(name)) return true;
 
 		return false;
 	}
 
 	/**
-	 * @param sub
-	 * @param sup
-	 * @return true if one set is subset of another one
+	 * @param  sub
+	 * @param  sup
+	 * @return     true if one set is subset of another one
 	 */
 	public static boolean subset(final Set<?> sub, final Set<?> sup)
 	{
@@ -197,9 +193,9 @@ public class SetUtils
 	}
 
 	/**
-	 * @param s1
-	 * @param s2
-	 * @return true if one set is equal of another one
+	 * @param  s1
+	 * @param  s2
+	 * @return    true if one set is equal of another one
 	 */
 	public static <T> boolean equals(final Set<T> s1, final Set<T> s2)
 	{
@@ -207,9 +203,9 @@ public class SetUtils
 	}
 
 	/**
-	 * @param c1
-	 * @param c2
-	 * @return the difference of two sets. All the elements of second set is removed from the first set
+	 * @param  c1
+	 * @param  c2
+	 * @return    the difference of two sets. All the elements of second set is removed from the first set
 	 */
 	public static <T> Set<T> difference(final Collection<T> c1, final Collection<? extends Object> c2)
 	{
@@ -225,8 +221,8 @@ public class SetUtils
 	}
 
 	/**
-	 * @param elems
-	 * @return a new set containing all the elements in the array
+	 * @param  elems
+	 * @return       a new set containing all the elements in the array
 	 */
 	@SafeVarargs
 	public static <T> Set<T> create(final T... elems)
@@ -241,9 +237,9 @@ public class SetUtils
 	/**
 	 * Creates a set with the given initial capacity.
 	 *
-	 * @param initialSize is the initial size of the set.
-	 * @return a fresh set resilient to concurrency.
-	 * @since 2.6.0
+	 * @param  initialSize is the initial size of the set.
+	 * @return             a fresh set resilient to concurrency.
+	 * @since              2.6.0
 	 */
 	public static <T> Set<T> create(final int initialSize)
 	{
@@ -254,7 +250,7 @@ public class SetUtils
 	 * Creates a default set.
 	 *
 	 * @return a fresh set resilient to concurrency.
-	 * @since 2.6.0
+	 * @since  2.6.0
 	 */
 	public static <T> Set<T> create()
 	{
@@ -262,8 +258,8 @@ public class SetUtils
 	}
 
 	/**
-	 * @param elements
-	 * @return a new set containing all the elements in the collection
+	 * @param  elements
+	 * @return          a new set containing all the elements in the collection
 	 */
 	public static <T> Set<T> create(final Collection<? extends T> elements)
 	{

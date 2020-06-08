@@ -1,7 +1,6 @@
 package openllet.profiler.statistical;
 
 import junit.framework.JUnit4TestAdapter;
-
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -11,17 +10,18 @@ import org.junit.runners.Suite.SuiteClasses;
  *
  */
 @RunWith(Suite.class)
-@SuiteClasses( {
-	ReleasePerformanceTest.class
-})
-public class ReleasePerformanceTestSuite {
+@SuiteClasses({ ReleasePerformanceTest.class })
+public class ReleasePerformanceTestSuite
+{
 
-	public static junit.framework.Test suite() {
-		return new JUnit4TestAdapter( ReleasePerformanceTestSuite.class );
+	public static junit.framework.Test suite()
+	{
+		return new JUnit4TestAdapter(ReleasePerformanceTestSuite.class);
 	}
-	
-	public static void main(String args[]) {
-		junit.textui.TestRunner.run( suite() );
+
+	public static void main(final String args[])
+	{
+		junit.textui.TestRunner.run(suite());
 	}
-	
+
 }

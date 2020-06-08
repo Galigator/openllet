@@ -20,10 +20,10 @@ import org.junit.Test;
 
 public class AddDelTripleInferenceTest extends SequentialTestsContraintInitializer
 {
-	private static final Logger LOG = Log.getLogger(AddDelTripleInferenceTest.class);
+	private static final Logger	LOG		= Log.getLogger(AddDelTripleInferenceTest.class);
 
-	private static final String fname = "/ontology-plus-data.ttl";
-	private static final String indiv = "http://ontology.tno.nl/2017/7/untitled-ontology-103/indiv";
+	private static final String	fname	= "/ontology-plus-data.ttl";
+	private static final String	indiv	= "http://ontology.tno.nl/2017/7/untitled-ontology-103/indiv";
 
 	@Test
 	public void testRemovalWithInference()

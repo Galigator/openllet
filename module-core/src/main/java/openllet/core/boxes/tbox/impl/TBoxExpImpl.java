@@ -48,33 +48,33 @@ import openllet.shared.tools.Log;
  */
 public class TBoxExpImpl implements TBox
 {
-	public static Logger _logger = Log.getLogger(TBox.class);
+	public static Logger								_logger				= Log.getLogger(TBox.class);
 
-	private static final Set<Set<ATermAppl>> SINGLE_EMPTY_SET = Collections.singleton(Collections.<ATermAppl> emptySet());
+	private static final Set<Set<ATermAppl>>			SINGLE_EMPTY_SET	= Collections.singleton(Collections.<ATermAppl>emptySet());
 
-	protected KnowledgeBase _kb;
+	protected KnowledgeBase								_kb;
 
-	protected Set<ATermAppl> _classes = CollectionUtils.makeIdentitySet();
-	private Set<ATermAppl> _allClasses;
+	protected Set<ATermAppl>							_classes			= CollectionUtils.makeIdentitySet();
+	private Set<ATermAppl>								_allClasses;
 
 	/**
 	 * MultiValueMap where key is an axiom and the values are the explanations of the key
 	 */
-	private final Map<ATermAppl, Set<Set<ATermAppl>>> _tboxAxioms = CollectionUtils.makeIdentityMap();
+	private final Map<ATermAppl, Set<Set<ATermAppl>>>	_tboxAxioms			= CollectionUtils.makeIdentityMap();
 	/**
 	 * MultiValueMap where key is an axiom and the values are axioms for which the key is a part of an clashExplanation
 	 */
-	private final Map<ATermAppl, Set<ATermAppl>> _reverseExplain = CollectionUtils.makeIdentityMap();
+	private final Map<ATermAppl, Set<ATermAppl>>		_reverseExplain		= CollectionUtils.makeIdentityMap();
 
-	private final Set<ATermAppl> _tboxAssertedAxioms = CollectionUtils.makeIdentitySet();
+	private final Set<ATermAppl>						_tboxAssertedAxioms	= CollectionUtils.makeIdentitySet();
 
 	/**
 	 * Set of axioms that have been absorbed into ABox or RBox
 	 */
-	private final Set<ATermAppl> _absorbedAxioms = CollectionUtils.makeIdentitySet();
+	private final Set<ATermAppl>						_absorbedAxioms		= CollectionUtils.makeIdentitySet();
 
-	public TuBox _Tu = null;
-	public TgBox _Tg = null;
+	public TuBox										_Tu					= null;
+	public TgBox										_Tg					= null;
 
 	/*
 	 * Constructors
@@ -136,14 +136,13 @@ public class TBoxExpImpl implements TBox
 	/**
 	 * Add a new clashExplanation for the given axiom. If a previous clashExplanation exists this will be stored as another clashExplanation.
 	 *
-	 * @param axiom
-	 * @param explain
+	 * @param  axiom
+	 * @param  explain
 	 * @return
 	 */
 	protected boolean addAxiomExplanation(final ATermAppl axiom, final Set<ATermAppl> explain)
 	{
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Axiom: " + ATermUtils.toString(axiom) + " Explanation: " + explain);
+		if (_logger.isLoggable(Level.FINE)) _logger.fine("Axiom: " + ATermUtils.toString(axiom) + " Explanation: " + explain);
 
 		boolean added = false;
 		if (!OpenlletOptions.USE_TRACING)
@@ -151,10 +150,8 @@ public class TBoxExpImpl implements TBox
 		else
 			added = MultiMapUtils.add(_tboxAxioms, axiom, explain);
 
-		if (added)
-			for (final ATermAppl explainAxiom : explain)
-				if (!axiom.equals(explainAxiom))
-					MultiMapUtils.add(_reverseExplain, explainAxiom, axiom);
+		if (added) for (final ATermAppl explainAxiom : explain)
+			if (!axiom.equals(explainAxiom)) MultiMapUtils.add(_reverseExplain, explainAxiom, axiom);
 
 		return added;
 	}
@@ -178,43 +175,40 @@ public class TBoxExpImpl implements TBox
 
 		List<ATermAppl> axioms = null;
 
-		final Set<ATermAppl> explain = OpenlletOptions.USE_TRACING ? Collections.singleton(axiom) : Collections.<ATermAppl> emptySet();
+		final Set<ATermAppl> explain = OpenlletOptions.USE_TRACING ? Collections.singleton(axiom) : Collections.<ATermAppl>emptySet();
 
 		if (axiom.getAFun().equals(ATermUtils.EQCLASSFUN))
 			axioms = Collections.singletonList(axiom);
-		else
-			if (axiom.getAFun().equals(ATermUtils.SUBFUN))
-				axioms = Collections.singletonList(axiom);
-			else
-				if (axiom.getAFun().equals(ATermUtils.DISJOINTFUN))
-				{
-					axioms = CollectionUtils.makeList();
+		else if (axiom.getAFun().equals(ATermUtils.SUBFUN))
+			axioms = Collections.singletonList(axiom);
+		else if (axiom.getAFun().equals(ATermUtils.DISJOINTFUN))
+		{
+			axioms = CollectionUtils.makeList();
 
-					final ATermAppl c1 = (ATermAppl) axiom.getArgument(0);
-					final ATermAppl c2 = (ATermAppl) axiom.getArgument(1);
+			final ATermAppl c1 = (ATermAppl) axiom.getArgument(0);
+			final ATermAppl c2 = (ATermAppl) axiom.getArgument(1);
+			addDisjointAxiom(c1, c2, axioms);
+		}
+		else if (axiom.getAFun().equals(ATermUtils.DISJOINTSFUN))
+		{
+			axioms = CollectionUtils.makeList();
+
+			final ATermList concepts = (ATermList) axiom.getArgument(0);
+			for (ATermList l1 = concepts; !l1.isEmpty(); l1 = l1.getNext())
+			{
+				final ATermAppl c1 = (ATermAppl) l1.getFirst();
+				for (ATermList l2 = l1.getNext(); !l2.isEmpty(); l2 = l2.getNext())
+				{
+					final ATermAppl c2 = (ATermAppl) l2.getFirst();
 					addDisjointAxiom(c1, c2, axioms);
 				}
-				else
-					if (axiom.getAFun().equals(ATermUtils.DISJOINTSFUN))
-					{
-						axioms = CollectionUtils.makeList();
-
-						final ATermList concepts = (ATermList) axiom.getArgument(0);
-						for (ATermList l1 = concepts; !l1.isEmpty(); l1 = l1.getNext())
-						{
-							final ATermAppl c1 = (ATermAppl) l1.getFirst();
-							for (ATermList l2 = l1.getNext(); !l2.isEmpty(); l2 = l2.getNext())
-							{
-								final ATermAppl c2 = (ATermAppl) l2.getFirst();
-								addDisjointAxiom(c1, c2, axioms);
-							}
-						}
-					}
-					else
-					{
-						_logger.warning("Not a valid TBox axiom: " + axiom);
-						return false;
-					}
+			}
+		}
+		else
+		{
+			_logger.warning("Not a valid TBox axiom: " + axiom);
+			return false;
+		}
 
 		boolean added = false;
 		for (final ATermAppl a : axioms)
@@ -231,47 +225,44 @@ public class TBoxExpImpl implements TBox
 		// absorb nominals on the fly because sometimes they might _end up in the
 		// _Tu directly without going into _Tg which is still less effective than
 		// absorbing
-		if (OpenlletOptions.USE_NOMINAL_ABSORPTION || OpenlletOptions.USE_PSEUDO_NOMINALS)
-			if (axiom.getAFun().equals(ATermUtils.EQCLASSFUN))
-			{
-				final ATermAppl c1 = (ATermAppl) axiom.getArgument(0);
-				final ATermAppl c2 = (ATermAppl) axiom.getArgument(1);
+		if (OpenlletOptions.USE_NOMINAL_ABSORPTION || OpenlletOptions.USE_PSEUDO_NOMINALS) if (axiom.getAFun().equals(ATermUtils.EQCLASSFUN))
+		{
+			final ATermAppl c1 = (ATermAppl) axiom.getArgument(0);
+			final ATermAppl c2 = (ATermAppl) axiom.getArgument(1);
 
-				// the first concept is oneOF
-				if (ATermUtils.isOneOf(c1))
+			// the first concept is oneOF
+			if (ATermUtils.isOneOf(c1))
+			{
+				// absorb SubClassOf(c1,c2)
+				_Tg.absorbOneOf(c1, c2, explain);
+				// the second concept is oneOf
+				if (ATermUtils.isOneOf(c2))
 				{
-					// absorb SubClassOf(c1,c2)
-					_Tg.absorbOneOf(c1, c2, explain);
-					// the second concept is oneOf
-					if (ATermUtils.isOneOf(c2))
-					{
-						// absorb SubClassOf(c2,c1)
-						_Tg.absorbOneOf(c2, c1, explain);
-						// axioms completely absorbed so return
-						return true;
-					}
-					else
-						// SubClassOf(c2,c1) is not absorbed so continue with
-						// addAxiom function
-						ATermUtils.makeSub(c2, c1); // FIXME this look like buggy because result is discarded.
+					// absorb SubClassOf(c2,c1)
+					_Tg.absorbOneOf(c2, c1, explain);
+					// axioms completely absorbed so return
+					return true;
 				}
 				else
-					if (ATermUtils.isOneOf(c2))
-						// absorb SubClassOf(c2,c1)
-						_Tg.absorbOneOf(c2, c1, explain);
+					// SubClassOf(c2,c1) is not absorbed so continue with
+					// addAxiom function
+					ATermUtils.makeSub(c2, c1); // FIXME this look like buggy because result is discarded.
 			}
-			else
-				if (axiom.getAFun().equals(ATermUtils.SUBFUN))
-				{
-					final ATermAppl sub = (ATermAppl) axiom.getArgument(0);
+			else if (ATermUtils.isOneOf(c2))
+				// absorb SubClassOf(c2,c1)
+				_Tg.absorbOneOf(c2, c1, explain);
+		}
+		else if (axiom.getAFun().equals(ATermUtils.SUBFUN))
+		{
+			final ATermAppl sub = (ATermAppl) axiom.getArgument(0);
 
-					if (ATermUtils.isOneOf(sub))
-					{
-						final ATermAppl sup = (ATermAppl) axiom.getArgument(1);
-						_Tg.absorbOneOf(sub, sup, explain);
-						return true;
-					}
-				}
+			if (ATermUtils.isOneOf(sub))
+			{
+				final ATermAppl sup = (ATermAppl) axiom.getArgument(1);
+				_Tg.absorbOneOf(sub, sup, explain);
+				return true;
+			}
+		}
 
 		return false;
 	}
@@ -280,22 +271,20 @@ public class TBoxExpImpl implements TBox
 	{
 		final boolean added = addAxiomExplanation(axiom, explain);
 
-		if (added || forceAddition)
-			if (!_Tu.addIfUnfoldable(axiom))
-				if (axiom.getAFun().equals(ATermUtils.EQCLASSFUN))
-				{
-					// Try reversing the term if it is a 'same' construct
-					final ATermAppl name = (ATermAppl) axiom.getArgument(0);
-					final ATermAppl desc = (ATermAppl) axiom.getArgument(1);
-					final ATermAppl reversedAxiom = ATermUtils.makeEqClasses(desc, name);
+		if (added || forceAddition) if (!_Tu.addIfUnfoldable(axiom)) if (axiom.getAFun().equals(ATermUtils.EQCLASSFUN))
+		{
+			// Try reversing the term if it is a 'same' construct
+			final ATermAppl name = (ATermAppl) axiom.getArgument(0);
+			final ATermAppl desc = (ATermAppl) axiom.getArgument(1);
+			final ATermAppl reversedAxiom = ATermUtils.makeEqClasses(desc, name);
 
-					if (!_Tu.addIfUnfoldable(reversedAxiom))
-						_Tg.addDef(axiom);
-					else
-						addAxiomExplanation(reversedAxiom, explain);
-				}
-				else
-					_Tg.addDef(axiom);
+			if (!_Tu.addIfUnfoldable(reversedAxiom))
+				_Tg.addDef(axiom);
+			else
+				addAxiomExplanation(reversedAxiom, explain);
+		}
+		else
+			_Tg.addDef(axiom);
 
 		return added;
 	}
@@ -312,15 +301,13 @@ public class TBoxExpImpl implements TBox
 
 		if (!OpenlletOptions.USE_TRACING)
 		{
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("Cannot remove axioms when PelletOptions.USE_TRACING is false");
+			if (_logger.isLoggable(Level.FINE)) _logger.fine("Cannot remove axioms when PelletOptions.USE_TRACING is false");
 			return false;
 		}
 
 		if (_absorbedAxioms.contains(dependantAxiom))
 		{
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("Cannot remove axioms that have been absorbed outside TBox");
+			if (_logger.isLoggable(Level.FINE)) _logger.fine("Cannot remove axioms that have been absorbed outside TBox");
 			return false;
 		}
 
@@ -366,15 +353,14 @@ public class TBoxExpImpl implements TBox
 		final Set<Set<ATermAppl>> explains = _tboxAxioms.get(dependantAxiom);
 		final Set<Set<ATermAppl>> newExplains = new HashSet<>();
 
-		if (explains != null)
-			for (final Set<ATermAppl> explain : explains)
-				if (!explain.contains(explanationAxiom))
-					newExplains.add(explain);
-				else
-				{
-					sideEffects.addAll(explain);
-					sideEffects.remove(explanationAxiom);
-				}
+		if (explains != null) for (final Set<ATermAppl> explain : explains)
+			if (!explain.contains(explanationAxiom))
+				newExplains.add(explain);
+			else
+			{
+				sideEffects.addAll(explain);
+				sideEffects.remove(explanationAxiom);
+			}
 
 		if (!newExplains.isEmpty())
 		{
@@ -407,16 +393,14 @@ public class TBoxExpImpl implements TBox
 		// note that it is possible dependantAxiom itself is not removed but an axiom that dependantAxiom supports
 		// will be removed. this situation occurs typically when there is redundancy in the TBox.
 		final Set<ATermAppl> otherDependants = _reverseExplain.remove(dependantAxiom);
-		if (otherDependants != null)
-			for (final ATermAppl otherDependant : otherDependants)
-			{
-				// remove this axiom from any clashExplanation it contributes to
+		if (otherDependants != null) for (final ATermAppl otherDependant : otherDependants)
+		{
+			// remove this axiom from any clashExplanation it contributes to
 
-				if (otherDependant.equals(dependantAxiom))
-					continue;
+			if (otherDependant.equals(dependantAxiom)) continue;
 
-				success |= removeExplanation(otherDependant, dependantAxiom, sideEffects);
-			}
+			success |= removeExplanation(otherDependant, dependantAxiom, sideEffects);
+		}
 
 		return success;
 	}
@@ -506,8 +490,7 @@ public class TBoxExpImpl implements TBox
 	{
 		final boolean added = _classes.add(term);
 
-		if (added)
-			_allClasses = null;
+		if (added) _allClasses = null;
 
 		return added;
 	}
@@ -550,8 +533,7 @@ public class TBoxExpImpl implements TBox
 	public Iterator<Unfolding> unfold(final ATermAppl c)
 	{
 		final MultiIterator<Unfolding> result = new MultiIterator<>(_Tu.unfold(c).iterator());
-		if (c.equals(TOP) && !_Tg.getUC().isEmpty())
-			result.append(_Tg.getUC().iterator());
+		if (c.equals(TOP) && !_Tg.getUC().isEmpty()) result.append(_Tg.getUC().iterator());
 		return result;
 	}
 

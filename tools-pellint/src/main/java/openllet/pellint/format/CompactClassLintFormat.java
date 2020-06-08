@@ -34,8 +34,7 @@ public class CompactClassLintFormat implements LintFormat
 	public String format(final Lint lint)
 	{
 		final Set<OWLClass> participatingClasses = lint.getParticipatingClasses();
-		if (participatingClasses == null || participatingClasses.isEmpty())
-			return "";
+		if (participatingClasses == null || participatingClasses.isEmpty()) return "";
 
 		final StringBuilder strBuilder = new StringBuilder();
 		strBuilder.append(participatingClasses.iterator().next());

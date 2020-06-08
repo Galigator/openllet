@@ -23,9 +23,9 @@ import openllet.core.utils.iterator.NestedIterator;
 
 public class AlphaTypeNode extends AlphaNode
 {
-	private final ATermAppl _predicate;
-	private final ATermAppl _name;
-	private Individual _node;
+	private final ATermAppl	_predicate;
+	private final ATermAppl	_name;
+	private Individual		_node;
 
 	public AlphaTypeNode(final ABox abox, final ATermAppl predicate)
 	{
@@ -41,8 +41,7 @@ public class AlphaTypeNode extends AlphaNode
 
 	protected Individual initNode()
 	{
-		if (_node == null)
-			_node = (Individual) initNode(_name);
+		if (_node == null) _node = (Individual) initNode(_name);
 		assert _node != null;
 		return _node;
 	}
@@ -53,8 +52,7 @@ public class AlphaTypeNode extends AlphaNode
 		if (_name != null)
 		{
 			final Individual node = initNode();
-			if (!ind.isSame(node))
-				return false;
+			if (!ind.isSame(node)) return false;
 		}
 
 		activate(WME.createType(ind, type, ds));
@@ -64,22 +62,20 @@ public class AlphaTypeNode extends AlphaNode
 	@Override
 	public Iterator<WME> getMatches(final int argIndex, final Node arg)
 	{
-		if (_name != null || argIndex != 0)
-			throw new IndexOutOfBoundsException();
+		if (_name != null || argIndex != 0) throw new IndexOutOfBoundsException();
 
-		if (!(arg instanceof Individual))
-			throw new IllegalArgumentException();
+		if (!(arg instanceof Individual)) throw new IllegalArgumentException();
 
 		final DependencySet depends = arg.getDepends(_predicate);
 
-		return (depends == null) ? IteratorUtils.<WME> emptyIterator() : IteratorUtils.<WME> singletonIterator(WME.createType((Individual) arg, _predicate, depends));
+		return depends == null ? IteratorUtils.<WME>emptyIterator() : IteratorUtils.<WME>singletonIterator(WME.createType((Individual) arg, _predicate, depends));
 
 	}
 
 	@Override
 	public Iterator<WME> getMatches()
 	{
-		final Iterator<Individual> inds = (_name == null) ? _abox.getIndIterator() : IteratorUtils.singletonIterator(initNode());
+		final Iterator<Individual> inds = _name == null ? _abox.getIndIterator() : IteratorUtils.singletonIterator(initNode());
 		return new NestedIterator<>(inds)
 		{
 			@Override
@@ -87,7 +83,7 @@ public class AlphaTypeNode extends AlphaNode
 			{
 				final DependencySet depends = ind.getDepends(_predicate);
 
-				return (depends == null) ? IteratorUtils.<WME> emptyIterator() : IteratorUtils.<WME> singletonIterator(WME.createType(ind, _predicate, depends));
+				return depends == null ? IteratorUtils.<WME>emptyIterator() : IteratorUtils.<WME>singletonIterator(WME.createType(ind, _predicate, depends));
 			}
 		};
 	}
@@ -95,13 +91,13 @@ public class AlphaTypeNode extends AlphaNode
 	@Override
 	public boolean matches(final RuleAtom atom)
 	{
-		return (atom instanceof ClassAtom) && atom.getPredicate().equals(_predicate) && argMatches((ClassAtom) atom);
+		return atom instanceof ClassAtom && atom.getPredicate().equals(_predicate) && argMatches((ClassAtom) atom);
 	}
 
 	private boolean argMatches(final ClassAtom atom)
 	{
 		final AtomObject arg = atom.getArgument();
-		return _name == null ? arg instanceof AtomVariable : (arg instanceof AtomIConstant && ((AtomIConstant) arg).getValue().equals(_name));
+		return _name == null ? arg instanceof AtomVariable : arg instanceof AtomIConstant && ((AtomIConstant) arg).getValue().equals(_name);
 	}
 
 	@Override
@@ -116,10 +112,8 @@ public class AlphaTypeNode extends AlphaNode
 	@Override
 	public boolean equals(final Object obj)
 	{
-		if (this == obj)
-			return true;
-		if (!(obj instanceof AlphaTypeNode))
-			return false;
+		if (this == obj) return true;
+		if (!(obj instanceof AlphaTypeNode)) return false;
 		final AlphaTypeNode other = (AlphaTypeNode) obj;
 		return _predicate.equals(other._predicate) && (_name == null ? other._name == null : _name.equals(other._name));
 	}

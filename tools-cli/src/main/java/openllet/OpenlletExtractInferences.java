@@ -31,9 +31,9 @@ import org.apache.jena.rdf.model.ModelFactory;
  */
 public class OpenlletExtractInferences extends OpenlletCmdApp
 {
-	private static final transient boolean _debug = false;
+	private static final transient boolean	_debug	= false;
 
-	private EnumSet<StatementType> selector;
+	private EnumSet<StatementType>			selector;
 
 	public OpenlletExtractInferences()
 	{
@@ -58,7 +58,8 @@ public class OpenlletExtractInferences extends OpenlletCmdApp
 
 		final OpenlletCmdOption option = new OpenlletCmdOption("statements");
 		option.setShortOption("s");
-		option.setDescription("Statements to extract. The option accepts all axioms of the OWL functional syntax plus some additional ones. Valid arguments are: " + validStatementArguments() + ". Example: \"DirectSubClassOf DirectSubPropertyOf\"");
+		option.setDescription("Statements to extract. The option accepts all axioms of the OWL functional syntax plus some additional ones. Valid arguments are: " + validStatementArguments()
+				+ ". Example: \"DirectSubClassOf DirectSubPropertyOf\"");
 		option.setType("Space separated list surrounded by quotes");
 		option.setDefaultValue("DefaultStatements");
 		option.setIsMandatory(false);
@@ -81,8 +82,7 @@ public class OpenlletExtractInferences extends OpenlletCmdApp
 
 	private void extractInferences()
 	{
-		if (selector.size() == 0)
-			throw new OpenlletCmdException("Selector is empty, provide types to extract");
+		if (selector.size() == 0) throw new OpenlletCmdException("Selector is empty, provide types to extract");
 
 		final ModelExtractor extractor = new ModelExtractor(getKB());
 		extractor.setSelector(selector);
@@ -110,8 +110,7 @@ public class OpenlletExtractInferences extends OpenlletCmdApp
 			finishTask("Extracting individual statements");
 		}
 
-		if (_debug)
-			output(extracted);
+		if (_debug) output(extracted);
 	}
 
 	private String validStatementArguments()
@@ -151,85 +150,59 @@ public class OpenlletExtractInferences extends OpenlletCmdApp
 
 		final String[] list = statements.split(" ");
 
-		if (list.length == 0)
-			throw new OpenlletCmdException("No values for statements argument given");
+		if (list.length == 0) throw new OpenlletCmdException("No values for statements argument given");
 
 		for (final String l : list)
-		{
 			if (l.equalsIgnoreCase("DefaultStatements"))
 				selectorAddAll(StatementType.DEFAULT_STATEMENTS);
+			else if (l.equalsIgnoreCase("AllStatements"))
+				selectorAddAll(StatementType.ALL_STATEMENTS);
+			else if (l.equalsIgnoreCase("AllStatementsIncludingJena"))
+				selectorAddAll(StatementType.ALL_STATEMENTS_INCLUDING_JENA);
+			else if (l.equalsIgnoreCase("AllClass"))
+				selectorAddAll(StatementType.ALL_CLASS_STATEMENTS);
+			else if (l.equalsIgnoreCase("AllIndividual"))
+				selectorAddAll(StatementType.ALL_INDIVIDUAL_STATEMENTS);
+			else if (l.equalsIgnoreCase("AllProperty"))
+				selectorAddAll(StatementType.ALL_PROPERTY_STATEMENTS);
+			else if (l.equalsIgnoreCase("ClassAssertion"))
+				selectorAdd(StatementType.ALL_INSTANCE);
+			else if (l.equalsIgnoreCase("ComplementOf"))
+				selectorAdd(StatementType.COMPLEMENT_CLASS);
+			else if (l.equalsIgnoreCase("DataPropertyAssertion"))
+				selectorAdd(StatementType.DATA_PROPERTY_VALUE);
+			else if (l.equalsIgnoreCase("DifferentIndividuals"))
+				selectorAdd(StatementType.DIFFERENT_FROM);
+			else if (l.equalsIgnoreCase("DirectClassAssertion"))
+				selectorAdd(StatementType.DIRECT_INSTANCE);
+			else if (l.equalsIgnoreCase("DirectSubClassOf"))
+				selectorAdd(StatementType.DIRECT_SUBCLASS);
+			else if (l.equalsIgnoreCase("DirectSubPropertyOf"))
+				selectorAdd(StatementType.DIRECT_SUBPROPERTY);
+			else if (l.equalsIgnoreCase("DisjointClasses"))
+				selectorAdd(StatementType.DISJOINT_CLASS);
+			else if (l.equalsIgnoreCase("DisjointProperties"))
+				selectorAdd(StatementType.DISJOINT_PROPERTY);
+			else if (l.equalsIgnoreCase("EquivalentClasses"))
+				selectorAdd(StatementType.EQUIVALENT_CLASS);
+			else if (l.equalsIgnoreCase("EquivalentProperties"))
+				selectorAdd(StatementType.EQUIVALENT_PROPERTY);
+			else if (l.equalsIgnoreCase("InverseProperties"))
+				selectorAdd(StatementType.INVERSE_PROPERTY);
+			else if (l.equalsIgnoreCase("ObjectPropertyAssertion"))
+				selectorAdd(StatementType.OBJECT_PROPERTY_VALUE);
+			else if (l.equalsIgnoreCase("PropertyAssertion"))
+				selectorAddAll(StatementType.PROPERTY_VALUE);
+			else if (l.equalsIgnoreCase("SameIndividual"))
+				selectorAdd(StatementType.SAME_AS);
+			else if (l.equalsIgnoreCase("SubClassOf"))
+				selectorAdd(StatementType.ALL_SUBCLASS);
+			else if (l.equalsIgnoreCase("SubPropertyOf"))
+				selectorAdd(StatementType.ALL_SUBPROPERTY);
 			else
-				if (l.equalsIgnoreCase("AllStatements"))
-					selectorAddAll(StatementType.ALL_STATEMENTS);
-				else
-					if (l.equalsIgnoreCase("AllStatementsIncludingJena"))
-						selectorAddAll(StatementType.ALL_STATEMENTS_INCLUDING_JENA);
-					else
-						if (l.equalsIgnoreCase("AllClass"))
-							selectorAddAll(StatementType.ALL_CLASS_STATEMENTS);
-						else
-							if (l.equalsIgnoreCase("AllIndividual"))
-								selectorAddAll(StatementType.ALL_INDIVIDUAL_STATEMENTS);
-							else
-								if (l.equalsIgnoreCase("AllProperty"))
-									selectorAddAll(StatementType.ALL_PROPERTY_STATEMENTS);
-								else
-									if (l.equalsIgnoreCase("ClassAssertion"))
-										selectorAdd(StatementType.ALL_INSTANCE);
-									else
-										if (l.equalsIgnoreCase("ComplementOf"))
-											selectorAdd(StatementType.COMPLEMENT_CLASS);
-										else
-											if (l.equalsIgnoreCase("DataPropertyAssertion"))
-												selectorAdd(StatementType.DATA_PROPERTY_VALUE);
-											else
-												if (l.equalsIgnoreCase("DifferentIndividuals"))
-													selectorAdd(StatementType.DIFFERENT_FROM);
-												else
-													if (l.equalsIgnoreCase("DirectClassAssertion"))
-														selectorAdd(StatementType.DIRECT_INSTANCE);
-													else
-														if (l.equalsIgnoreCase("DirectSubClassOf"))
-															selectorAdd(StatementType.DIRECT_SUBCLASS);
-														else
-															if (l.equalsIgnoreCase("DirectSubPropertyOf"))
-																selectorAdd(StatementType.DIRECT_SUBPROPERTY);
-															else
-																if (l.equalsIgnoreCase("DisjointClasses"))
-																	selectorAdd(StatementType.DISJOINT_CLASS);
-																else
-																	if (l.equalsIgnoreCase("DisjointProperties"))
-																		selectorAdd(StatementType.DISJOINT_PROPERTY);
-																	else
-																		if (l.equalsIgnoreCase("EquivalentClasses"))
-																			selectorAdd(StatementType.EQUIVALENT_CLASS);
-																		else
-																			if (l.equalsIgnoreCase("EquivalentProperties"))
-																				selectorAdd(StatementType.EQUIVALENT_PROPERTY);
-																			else
-																				if (l.equalsIgnoreCase("InverseProperties"))
-																					selectorAdd(StatementType.INVERSE_PROPERTY);
-																				else
-																					if (l.equalsIgnoreCase("ObjectPropertyAssertion"))
-																						selectorAdd(StatementType.OBJECT_PROPERTY_VALUE);
-																					else
-																						if (l.equalsIgnoreCase("PropertyAssertion"))
-																							selectorAddAll(StatementType.PROPERTY_VALUE);
-																						else
-																							if (l.equalsIgnoreCase("SameIndividual"))
-																								selectorAdd(StatementType.SAME_AS);
-																							else
-																								if (l.equalsIgnoreCase("SubClassOf"))
-																									selectorAdd(StatementType.ALL_SUBCLASS);
-																								else
-																									if (l.equalsIgnoreCase("SubPropertyOf"))
-																										selectorAdd(StatementType.ALL_SUBPROPERTY);
-																									else
-																										throw new OpenlletCmdException("Unknown statement type: " + l);
-		}
+				throw new OpenlletCmdException("Unknown statement type: " + l);
 
-		if (selector == null)
-			selector = StatementType.DEFAULT_STATEMENTS;
+		if (selector == null) selector = StatementType.DEFAULT_STATEMENTS;
 	}
 
 	private void selectorAddAll(final EnumSet<StatementType> types)

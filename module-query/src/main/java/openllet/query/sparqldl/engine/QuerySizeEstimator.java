@@ -41,11 +41,9 @@ public class QuerySizeEstimator
 			for (final ATermAppl argument : atom.getArguments())
 				if (!ATermUtils.isVar(argument))
 				{
-					if ((query.getKB().isClass(argument) || ATermUtils.isComplexClass(argument)) && !sizeEstimate.isComputed(argument))
-						concepts.add(argument);
+					if ((query.getKB().isClass(argument) || ATermUtils.isComplexClass(argument)) && !sizeEstimate.isComputed(argument)) concepts.add(argument);
 
-					if (query.getKB().isProperty(argument) && !sizeEstimate.isComputed(argument))
-						properties.add(argument);
+					if (query.getKB().isProperty(argument) && !sizeEstimate.isComputed(argument)) properties.add(argument);
 				}
 
 		sizeEstimate.compute(concepts, properties);

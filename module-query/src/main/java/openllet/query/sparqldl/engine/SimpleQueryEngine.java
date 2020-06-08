@@ -59,8 +59,7 @@ public class SimpleQueryEngine extends AbstractABoxEngineWrapper
 
 		if (q.getDistVars().isEmpty())
 		{
-			if (QueryEngine.execBooleanABoxQuery(q))
-				results.add(new ResultBindingImpl());
+			if (QueryEngine.execBooleanABoxQuery(q)) results.add(new ResultBindingImpl());
 		}
 		else
 		{
@@ -94,8 +93,7 @@ public class SimpleQueryEngine extends AbstractABoxEngineWrapper
 					{
 						final ResultBinding mappy = l.next();
 						final boolean queryTrue = QueryEngine.execBooleanABoxQuery(q.apply(mappy));
-						if (queryTrue)
-							results.add(mappy);
+						if (queryTrue) results.add(mappy);
 					}
 				}
 			else
@@ -103,8 +101,7 @@ public class SimpleQueryEngine extends AbstractABoxEngineWrapper
 				{
 					final ResultBinding b = i.next();
 					final boolean queryTrue = q.getDistVarsForType(VarType.INDIVIDUAL).size() == 1 || QueryEngine.execBooleanABoxQuery(q.apply(b));
-					if (queryTrue)
-						results.add(b);
+					if (queryTrue) results.add(b);
 				}
 		}
 

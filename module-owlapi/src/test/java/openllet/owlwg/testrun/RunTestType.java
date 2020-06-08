@@ -23,22 +23,24 @@ import org.semanticweb.owlapi.model.OWLClass;
  * Company: Clark & Parsia, LLC. <a
  * href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
  * </p>
- * 
+ *
  * @author Mike Smith &lt;msmith@clarkparsia.com&gt;
  */
-public enum RunTestType {
+public enum RunTestType
+{
 
-	CONSISTENCY(CONSISTENCY_RUN), INCONSISTENCY(INCONSISTENCY_RUN),
-	NEGATIVE_ENTAILMENT(NEGATIVE_ENTAILMENT_RUN), POSITIVE_ENTAILMENT(POSITIVE_ENTAILMENT_RUN),
+	CONSISTENCY(CONSISTENCY_RUN), INCONSISTENCY(INCONSISTENCY_RUN), NEGATIVE_ENTAILMENT(NEGATIVE_ENTAILMENT_RUN), POSITIVE_ENTAILMENT(POSITIVE_ENTAILMENT_RUN),
 	SYNTAX_CONSTRAINT(SYNTAX_CONSTRAINT_RUN), SYNTAX_TRANSLATION(SYNTAX_TRANSLATION_RUN);
 
-	private final OWLClass	_c;
+	private final OWLClass _c;
 
-	private RunTestType(ResultVocabulary.Class c) {
-		this._c = c.getOWLClass();
+	private RunTestType(final ResultVocabulary.Class c)
+	{
+		_c = c.getOWLClass();
 	}
 
-	public OWLClass getOWLClass() {
+	public OWLClass getOWLClass()
+	{
 		return _c;
 	}
 }

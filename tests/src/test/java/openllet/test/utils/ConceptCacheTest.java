@@ -17,19 +17,19 @@ import openllet.core.utils.ATermUtils;
 
 public class ConceptCacheTest extends TestCase
 {
-	private ConceptCache _cache;
+	private ConceptCache		_cache;
 
-	private final ATermAppl _p1 = ATermUtils.makeTermAppl("p1");
-	private final ATermAppl _p2 = ATermUtils.makeTermAppl("p2");
-	private final ATermAppl _p3 = ATermUtils.makeNot(_p1);
-	private final ATermAppl _p4 = ATermUtils.makeNot(_p2);
+	private final ATermAppl		_p1		= ATermUtils.makeTermAppl("p1");
+	private final ATermAppl		_p2		= ATermUtils.makeTermAppl("p2");
+	private final ATermAppl		_p3		= ATermUtils.makeNot(_p1);
+	private final ATermAppl		_p4		= ATermUtils.makeNot(_p2);
 
-	private final ATermAppl _np1 = ATermUtils.makeAnd(_p1, _p2);
-	private final ATermAppl _np2 = ATermUtils.makeOr(_p1, _p2);
-	private final ATermAppl _np3 = ATermUtils.makeAnd(_p3, _p4);
-	private final ATermAppl _np4 = ATermUtils.makeOr(_p3, _p4);
+	private final ATermAppl		_np1	= ATermUtils.makeAnd(_p1, _p2);
+	private final ATermAppl		_np2	= ATermUtils.makeOr(_p1, _p2);
+	private final ATermAppl		_np3	= ATermUtils.makeAnd(_p3, _p4);
+	private final ATermAppl		_np4	= ATermUtils.makeOr(_p3, _p4);
 
-	private final CachedNode _DUMMY = CachedNodeFactory.createSatisfiableNode();
+	private final CachedNode	_DUMMY	= CachedNodeFactory.createSatisfiableNode();
 
 	@Override
 	public void setUp()

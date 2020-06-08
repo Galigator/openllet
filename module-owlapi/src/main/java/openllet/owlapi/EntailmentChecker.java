@@ -84,16 +84,17 @@ import org.semanticweb.owlapi.model.SWRLRule;
  */
 public class EntailmentChecker implements OWLAxiomVisitor, FacetReasonerOWL
 {
-	public static Logger _logger = Log.getLogger(EntailmentChecker.class);
+	public static Logger					_logger					= Log.getLogger(EntailmentChecker.class);
 
-	public static final Set<AxiomType<?>> UNSUPPORTED_ENTAILMENT = Collections.unmodifiableSet(new HashSet<>(Arrays.<AxiomType<?>> asList(AxiomType.DISJOINT_UNION, AxiomType.DATATYPE_DEFINITION, AxiomType.HAS_KEY, AxiomType.SUB_PROPERTY_CHAIN_OF, AxiomType.SWRL_RULE)));
+	public static final Set<AxiomType<?>>	UNSUPPORTED_ENTAILMENT	= Collections.unmodifiableSet(
+			new HashSet<>(Arrays.<AxiomType<?>>asList(AxiomType.DISJOINT_UNION, AxiomType.DATATYPE_DEFINITION, AxiomType.HAS_KEY, AxiomType.SUB_PROPERTY_CHAIN_OF, AxiomType.SWRL_RULE)));
 
-	private final KnowledgeBase _kb;
-	private final EntailmentQueryVisitor _queryVisitor;
-	private final OpenlletReasoner _reasoner;
+	private final KnowledgeBase				_kb;
+	private final EntailmentQueryVisitor	_queryVisitor;
+	private final OpenlletReasoner			_reasoner;
 
-	private boolean _isDeferred = false;
-	private boolean _isEntailed = false;
+	private boolean							_isDeferred				= false;
+	private boolean							_isEntailed				= false;
 
 	@Override
 	public OpenlletReasoner getReasoner()
@@ -165,20 +166,15 @@ public class EntailmentChecker implements OWLAxiomVisitor, FacetReasonerOWL
 			for (final OWLAxiom axiom : axioms)
 				if (!isEntailed(axiom))
 				{
-					if (_logger.isLoggable(Level.FINE))
-						_logger.fine("Axiom not entailed: (" + axiom + ")");
+					if (_logger.isLoggable(Level.FINE)) _logger.fine("Axiom not entailed: (" + axiom + ")");
 
 					nonEntailments.add(axiom);
 
-					if (findAll)
-						break;
+					if (findAll) break;
 				}
-				else
-					if (_isDeferred)
-						deferredAxioms.add(axiom);
+				else if (_isDeferred) deferredAxioms.add(axiom);
 
-			if ((findAll || nonEntailments.isEmpty()) && !_queryVisitor.isEntailed())
-				nonEntailments.addAll(deferredAxioms);
+			if ((findAll || nonEntailments.isEmpty()) && !_queryVisitor.isEntailed()) nonEntailments.addAll(deferredAxioms);
 		}
 
 		return nonEntailments;
@@ -393,8 +389,7 @@ public class EntailmentChecker implements OWLAxiomVisitor, FacetReasonerOWL
 	public void visit(final OWLDeclarationAxiom axiom)
 	{
 		_isEntailed = true;
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Ignoring declaration " + axiom);
+		if (_logger.isLoggable(Level.FINE)) _logger.fine("Ignoring declaration " + axiom);
 	}
 
 	@Override
@@ -573,32 +568,28 @@ public class EntailmentChecker implements OWLAxiomVisitor, FacetReasonerOWL
 	public void visit(final OWLAnnotationAssertionAxiom axiom)
 	{
 		_isEntailed = true;
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Ignoring annotation assertion axiom " + axiom);
+		if (_logger.isLoggable(Level.FINE)) _logger.fine("Ignoring annotation assertion axiom " + axiom);
 	}
 
 	@Override
 	public void visit(final OWLAnnotationPropertyDomainAxiom axiom)
 	{
 		_isEntailed = true;
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Ignoring annotation property domain " + axiom);
+		if (_logger.isLoggable(Level.FINE)) _logger.fine("Ignoring annotation property domain " + axiom);
 	}
 
 	@Override
 	public void visit(final OWLAnnotationPropertyRangeAxiom axiom)
 	{
 		_isEntailed = true;
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Ignoring annotation property range " + axiom);
+		if (_logger.isLoggable(Level.FINE)) _logger.fine("Ignoring annotation property range " + axiom);
 	}
 
 	@Override
 	public void visit(final OWLSubAnnotationPropertyOfAxiom axiom)
 	{
 		_isEntailed = true;
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Ignoring sub annotation property axiom " + axiom);
+		if (_logger.isLoggable(Level.FINE)) _logger.fine("Ignoring sub annotation property axiom " + axiom);
 	}
 
 }
