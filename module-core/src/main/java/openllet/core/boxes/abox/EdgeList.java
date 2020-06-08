@@ -58,19 +58,7 @@ public class EdgeList extends ArrayList<Edge>
 	public EdgeList(final EdgeList edges)
 	{
 		this(edges.size());
-		addEdgeList(edges);
-	}
-
-	@Deprecated
-	public void addEdgeList(final EdgeList edges)
-	{
-		super.addAll(edges);
-	}
-
-	@Deprecated
-	public void addEdge(final Edge e)
-	{
-		super.add(e);
+		addAll(edges);
 	}
 
 	/**
@@ -108,7 +96,7 @@ public class EdgeList extends ArrayList<Edge>
 	public EdgeList sort()
 	{
 		final EdgeList sorted = new EdgeList(this);
-		sort((e1, e2) -> e1.getDepends().max() - e2.getDepends().max());
+		sorted.sort((e1, e2) -> e1.getDepends().max() - e2.getDepends().max());
 		return sorted;
 	}
 
@@ -118,7 +106,7 @@ public class EdgeList extends ArrayList<Edge>
 
 		for (final Edge e : this)
 			if ((from == null || from.equals(e.getFrom())) && (role == null || e.getRole().isSubRoleOf(role)) && (to == null || to.equals(e.getTo())))
-				result.addEdge(e);
+				result.add(e);
 
 		return result;
 	}
@@ -144,7 +132,7 @@ public class EdgeList extends ArrayList<Edge>
 
 		for (final Edge e : this)
 			if (e.getRole().isSubRoleOf(role))
-				result.addEdge(e);
+				result.add(e);
 
 		return result;
 	}
