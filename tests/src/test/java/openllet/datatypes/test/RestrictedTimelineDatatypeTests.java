@@ -34,7 +34,7 @@ public class RestrictedTimelineDatatypeTests
 
 	static
 	{
-		dt = new Datatype<XMLGregorianCalendar>()
+		dt = new Datatype<>()
 		{
 
 			@Override

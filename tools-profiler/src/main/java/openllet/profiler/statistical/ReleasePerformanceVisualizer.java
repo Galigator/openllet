@@ -22,6 +22,7 @@ import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.WindowConstants;
 import openllet.profiler.ProfileKB.Task;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -50,7 +51,7 @@ public class ReleasePerformanceVisualizer extends JFrame
 		_REPOSITORY = properties.getProperty("REPOSITORY", "profiler/releases");
 
 		final ReleasePerformanceVisualizer viz = new ReleasePerformanceVisualizer("Release Performance Visualizer");
-		viz.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		viz.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		viz.pack();
 		centerFrameOnScreen(viz);
 		viz.setVisible(true);

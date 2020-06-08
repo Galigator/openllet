@@ -117,7 +117,7 @@ public class NumericPromotionTests
 	{
 		final long l = 40000;
 		final BigInteger big = new BigInteger("99999999999999999999999999999999999");
-		final BigInteger bigl = new BigInteger((new Long(l)).toString());
+		final BigInteger bigl = new BigInteger(Long.valueOf(l).toString());
 
 		_promoter.promote(l, big);
 		promotionTester(_promoter, bigl, big);

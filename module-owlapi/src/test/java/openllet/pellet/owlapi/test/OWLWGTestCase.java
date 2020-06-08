@@ -86,6 +86,7 @@ public class OWLWGTestCase
 					"Inconsistent String Pattern with Disjoint Dataproperties")// Should not work...
 					.collect(Collectors.toList());
 
+	@SuppressWarnings("resource") // getResourceAsStream leak data, but we don't care in test, the only impact class loading.
 	@Parameters
 	public static List<Object[]> data() throws OWLOntologyCreationException, OWLOntologyChangeException
 	{

@@ -126,11 +126,8 @@ public class AlphaNetwork implements Iterable<AlphaNode>
 		if (!ind.isRootNominal() || ind.isPruned())
 			return false;
 
-		final List<ATermAppl> types = ind.getTypes(Node.ATOM);
-		for (final ATermAppl type : types)
-		{
+		for (final ATermAppl type : new ArrayList<>(ind.getTypes(Node.ATOM)))
 			activateType(ind, type, ind.getDepends(type));
-		}
 
 		activateDifferents(ind);
 

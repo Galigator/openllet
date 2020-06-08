@@ -287,8 +287,7 @@ public abstract class CompletionStrategy
 				_selfRule.apply(n);
 
 				// CHW-added for inc. _queue must see if this is bad
-				final EdgeList allEdges = n.getOutEdges();
-				for (final Edge edge : allEdges)
+				for (final Edge edge : new ArrayList<>(n.getOutEdges()))
 				{
 					if (edge.getTo().isPruned())
 						continue;
@@ -329,8 +328,7 @@ public abstract class CompletionStrategy
 			if (n.isMerged())
 				continue;
 
-			final EdgeList allEdges = n.getOutEdges();
-			for (final Edge edge : allEdges)
+			for (final Edge edge : new ArrayList<>(n.getOutEdges()))
 			{
 				if (edge.getTo().isPruned())
 					continue;
@@ -650,7 +648,6 @@ public abstract class CompletionStrategy
 			return;
 		final EdgeList edges = subj.getEdgesTo(obj);
 		for (final Edge otherEdge : edges)
-		{
 			if (disjoints.contains(otherEdge.getRole()))
 			{
 				ds = ds.union(otherEdge.getDepends(), _abox.doExplanation());
@@ -658,7 +655,6 @@ public abstract class CompletionStrategy
 				_abox.setClash(Clash.disjointProps(subj, ds, pred.getName(), otherEdge.getRole().getName()));
 				return;
 			}
-		}
 
 	}
 

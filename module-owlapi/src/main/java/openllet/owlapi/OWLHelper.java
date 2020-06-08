@@ -203,11 +203,13 @@ public interface OWLHelper extends Logging, OWLManagementObject
 		}
 	}
 
+	@SuppressWarnings("resource") // ressource is manage by the helper.
 	default public Optional<OWLHelper> look(final IRI ontology, final double version)
 	{
 		return getGroup().getOntology(ontology, version, isVolatile());
 	}
 
+	@SuppressWarnings("resource") // ressource is manage by the helper.
 	default public Optional<OWLHelper> look(final IRI ontology)
 	{
 		return getGroup().getOntology(new OWLOntologyID(ontology), isVolatile());

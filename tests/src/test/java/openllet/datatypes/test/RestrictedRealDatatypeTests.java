@@ -47,7 +47,7 @@ public class RestrictedRealDatatypeTests
 
 	static
 	{
-		dt = new Datatype<Number>()
+		dt = new Datatype<>()
 		{
 
 			@Override
@@ -494,7 +494,7 @@ public class RestrictedRealDatatypeTests
 		final Iterator<Number> it = dr.valueIterator();
 		for (int i = -250; i <= 350; i++)
 		{
-			if ((i >= -5) && (i <= -2))
+			if (i >= -5 && i <= -2)
 				continue;
 
 			assertEquals(0, OWLRealUtils.compare(i, it.next()));
@@ -522,7 +522,7 @@ public class RestrictedRealDatatypeTests
 		final Iterator<Number> it = dr.valueIterator();
 		for (int i = -250; i <= 350; i++)
 		{
-			if ((i >= -5) && (i <= -2))
+			if (i >= -5 && i <= -2)
 				continue;
 
 			assertEquals(0, OWLRealUtils.compare(i, it.next()));
@@ -837,7 +837,7 @@ public class RestrictedRealDatatypeTests
 		final Iterator<Number> it = dr.valueIterator();
 		for (int i = -10; i <= 13; i++)
 		{
-			if ((i > -2) && (i < 12))
+			if (i > -2 && i < 12)
 				continue;
 
 			assertEquals(0, OWLRealUtils.compare(i, it.next()));
