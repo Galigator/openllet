@@ -36,7 +36,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
 import openllet.core.DependencySet;
@@ -290,10 +289,8 @@ public class SROIQIncStrategy extends SROIQStrategy
 				_allValuesRule.apply(ind);
 
 				//get out edges and check domains, some values and min values
-				for (int j = 0; j < ind.getOutEdges().size(); j++)
+				for (final Edge e : ind.getOutEdges())
 				{
-					final Edge e = ind.getOutEdges().get(j);
-
 					if (e.getFrom().isPruned() || e.getTo().isPruned())
 						continue;
 
@@ -326,10 +323,8 @@ public class SROIQIncStrategy extends SROIQStrategy
 			}
 
 			//get out edges
-			for (int j = 0; j < node.getInEdges().size(); j++)
+			for (final Edge e : node.getInEdges())
 			{
-				final Edge e = node.getInEdges().get(j);
-
 				if (e.getFrom().isPruned() || e.getTo().isPruned())
 					continue;
 
@@ -381,10 +376,8 @@ public class SROIQIncStrategy extends SROIQStrategy
 				_allValuesRule.apply(ind);
 
 				//get out edges
-				for (int j = 0; j < ind.getOutEdges().size(); j++)
+				for (final Edge e : ind.getOutEdges())
 				{
-					final Edge e = ind.getOutEdges().get(j);
-
 					if (!e.getFrom().isPruned() && !e.getTo().isPruned())
 						applyPropertyRestrictions(e);
 
@@ -398,10 +391,8 @@ public class SROIQIncStrategy extends SROIQStrategy
 				}
 
 				//get out edges
-				for (int j = 0; j < ind.getInEdges().size(); j++)
+				for (final Edge e : ind.getInEdges())
 				{
-					final Edge e = ind.getInEdges().get(j);
-
 					if (!e.getFrom().isPruned() && !e.getTo().isPruned())
 						applyPropertyRestrictions(e);
 
@@ -459,9 +450,8 @@ public class SROIQIncStrategy extends SROIQStrategy
 			final EdgeList av = findAllValues(node, types);
 
 			//apply the all values rules
-			for (int i = 0; i < av.size(); i++)
+			for (final Edge e : av)
 			{
-				final Edge e = av.get(i);
 				_allValuesRule.applyAllValues(e.getFrom(), e.getRole(), e.getTo(), e.getDepends());
 			}
 		}
@@ -483,10 +473,8 @@ public class SROIQIncStrategy extends SROIQStrategy
 				_allValuesRule.apply(ind);
 
 				//get out edges
-				for (int j = 0; j < ind.getOutEdges().size(); j++)
+				for (final Edge e : ind.getOutEdges())
 				{
-					final Edge e = ind.getOutEdges().get(j);
-
 					final Node obj = e.getTo();
 					if (obj instanceof Individual)
 					{
@@ -498,9 +486,8 @@ public class SROIQIncStrategy extends SROIQStrategy
 			}
 
 			//get out edges
-			for (int j = 0; j < node.getInEdges().size(); j++)
+			for (final Edge e : node.getInEdges())
 			{
-				final Edge e = node.getInEdges().get(j);
 				final Individual subj = e.getFrom();
 				subj._applyNext[Node.ALL] = 0;
 				_allValuesRule.apply(subj);
@@ -588,10 +575,8 @@ public class SROIQIncStrategy extends SROIQStrategy
 
 		//two cases depending on input
 		if (edge == null)
-			//get all edges to this _node
-			for (int i = 0; i < applicableRoles.size(); i++)
+			for (final ATermAppl p : applicableRoles)
 			{
-				final ATerm p = applicableRoles.get(i);
 				final Role role = _abox.getRole(p);
 
 				edges.addAll(neighbor.getRNeighborEdges(role, node));

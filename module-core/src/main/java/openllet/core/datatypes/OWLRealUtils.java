@@ -99,7 +99,7 @@ public class OWLRealUtils
 	public static BigInteger bigInteger(final Number n)
 	{
 		final Type t = Type.get(n.getClass());
-		if (t == null)
+		if (null == t)
 		{
 			final String msg = format("Unexpected number type %s passed to bigInteger method.", n.getClass().getCanonicalName());
 			_logger.warning(msg);
@@ -109,8 +109,7 @@ public class OWLRealUtils
 		if (Type.BIG_INTEGER.equals(t))
 			return (BigInteger) n;
 
-		final BigInteger i = (BigInteger) convertFromTo(n, t, Type.BIG_INTEGER);
-		return i;
+		return (BigInteger) convertFromTo(n, t, Type.BIG_INTEGER);
 	}
 
 	@SuppressWarnings("unchecked")

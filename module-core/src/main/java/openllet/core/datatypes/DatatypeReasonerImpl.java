@@ -143,7 +143,7 @@ public class DatatypeReasonerImpl implements DatatypeReasoner
 
 	private static final DataRange<?> EMPTY_RANGE = new EmptyDataRange<>();
 
-	private static final DataRange<?> TRIVIALLY_SATISFIABLE = new DataRange<Object>()
+	private static final DataRange<?> TRIVIALLY_SATISFIABLE = new DataRange<>()
 	{
 
 		@Override

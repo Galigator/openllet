@@ -96,7 +96,7 @@ public class UnionDataRange<T> implements DataRange<T>
 		 * micro-optimization relative to using
 		 * openllet.core.utils.iterator.MultiIterator
 		 */
-		return new Iterator<T>()
+		return new Iterator<>()
 		{
 			final Iterator<? extends T> enumIt = _values.iterator();
 			final Iterator<RestrictedDatatype<? extends T>> rangeIt = _ranges.iterator();

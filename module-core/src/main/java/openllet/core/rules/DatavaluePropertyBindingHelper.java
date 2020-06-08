@@ -80,7 +80,7 @@ public class DatavaluePropertyBindingHelper implements BindingHelper
 
 	/**
 	 * Checks to see if an object is set (either bound, or a constant)
-	 * 
+	 *
 	 * @return
 	 */
 	private boolean isObjectSet()
@@ -151,7 +151,7 @@ public class DatavaluePropertyBindingHelper implements BindingHelper
 
 	/**
 	 * Set the variables this _pattern uses in the given map.
-	 * 
+	 *
 	 * @param currentBinding
 	 */
 	@Override

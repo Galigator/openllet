@@ -36,7 +36,8 @@ import openllet.shared.tools.Log;
  * </p>
  * <p>
  * Description: A base implementation for datatypes based on the XSD 7 property date time model. Calendar objects are converted to real numbers based on the XML
- * 1.1 datatype spec. This implementation uses two real number interval collections (one with time zone present, one with time zone absent).
+ * 1.1 datatype spec. This implementation uses two real number interval collections (one with time zone present, one with time zone absent). count and size have
+ * no sens on the continuous things.
  * </p>
  * <p>
  * Copyright: Copyright (c) 2009
@@ -412,6 +413,7 @@ public class RestrictedTimelineDatatype implements RestrictedDatatype<XMLGregori
 	}
 
 	@Override
+	@SuppressWarnings("unused") // because of wzInterval
 	public boolean containsAtLeast(final int n)
 	{
 		if (!_finite || n <= 0)
@@ -421,7 +423,7 @@ public class RestrictedTimelineDatatype implements RestrictedDatatype<XMLGregori
 		/*
 		 * TODO: This ignores excluded values, so may miscount
 		 */
-		for (int i = 0; i < _wzIntervals.size(); i++)
+		for (final ContinuousRealInterval wzInterval : _wzIntervals)
 		{
 			sum = OWLRealUtils.integerSum(sum, 28 * 60 + 1);
 			if (OWLRealUtils.compare(n, sum) <= 0)
@@ -601,13 +603,14 @@ public class RestrictedTimelineDatatype implements RestrictedDatatype<XMLGregori
 
 	@Deprecated
 	@Override
+	@SuppressWarnings("unused") // because of wzInterval
 	public int size()
 	{
 		if (!_finite)
 			throw new IllegalStateException();
 
 		Number sum = 0;
-		for (int i = 0; i < _wzIntervals.size(); i++)
+		for (final ContinuousRealInterval wzInterval : _wzIntervals)
 		{
 			sum = OWLRealUtils.integerSum(sum, 28 * 60 + 1);
 			if (OWLRealUtils.compare(Integer.MAX_VALUE, sum) <= 0)

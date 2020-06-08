@@ -1050,9 +1050,8 @@ public class ABoxImpl implements ABox
 		}
 
 		final EdgeList edges = subj.getRSuccessorEdges(role);
-		for (int i = 0; i < edges.size(); i++)
+		for (final Edge edge : edges)
 		{
-			final Edge edge = edges.get(i);
 			final DependencySet ds = edge.getDepends();
 			final Literal literal = (Literal) edge.getTo();
 			final ATermAppl literalValue = literal.getTerm();
@@ -1129,9 +1128,8 @@ public class ABoxImpl implements ABox
 	public void getSimpleObjectPropertyValues(final Individual subj, final Role role, final Set<ATermAppl> knowns, final Set<ATermAppl> unknowns, final boolean getSames)
 	{
 		final EdgeList edges = subj.getRNeighborEdges(role);
-		for (int i = 0; i < edges.size(); i++)
+		for (final Edge edge : edges)
 		{
-			final Edge edge = edges.get(i);
 			final DependencySet ds = edge.getDepends();
 			final Individual value = (Individual) edge.getNeighbor(subj);
 
@@ -1158,9 +1156,8 @@ public class ABoxImpl implements ABox
 			return;
 
 		final EdgeList edges = subj.getRNeighborEdges(prop);
-		for (int i = 0; i < edges.size(); i++)
+		for (final Edge edge : edges)
 		{
-			final Edge edge = edges.get(i);
 			final DependencySet ds = edge.getDepends();
 			final Individual value = (Individual) edge.getNeighbor(subj);
 			final Role edgeRole = edge.getFrom().equals(subj) ? edge.getRole() : edge.getRole().getInverse();
@@ -1218,9 +1215,8 @@ public class ABoxImpl implements ABox
 		{
 			final Role r = t.getName();
 			final EdgeList edges = subj.getRNeighborEdges(r);
-			for (int i = 0; i < edges.size(); i++)
+			for (final Edge edge : edges)
 			{
-				final Edge edge = edges.get(i);
 				final DependencySet ds = edge.getDepends();
 				final Individual value = (Individual) edge.getNeighbor(subj);
 
@@ -2221,9 +2217,8 @@ public class ABoxImpl implements ABox
 	@Override
 	public void validateTypes(final Individual node, final List<ATermAppl> negatedTypes)
 	{
-		for (int i = 0, n = negatedTypes.size(); i < n; i++)
+		for (final ATermAppl a : negatedTypes)
 		{
-			final ATermAppl a = negatedTypes.get(i);
 			if (a.getArity() == 0)
 				continue;
 			final ATermAppl notA = (ATermAppl) a.getArgument(0);
@@ -2276,9 +2271,8 @@ public class ABoxImpl implements ABox
 				throw new InternalReasonerException("Invalid difference: " + node + " != " + ind + " " + ds);
 		}
 		EdgeList edges = node.getOutEdges();
-		for (int e = 0; e < edges.size(); e++)
+		for (final Edge edge : edges)
 		{
-			final Edge edge = edges.get(e);
 			final Node succ = edge.getTo();
 			if (_nodes.get(succ.getName()) != succ)
 				throw new InternalReasonerException("Invalid edge to a non-existing node: " + edge + " " + _nodes.get(succ.getName()) + "(" + _nodes.get(succ.getName()).hashCode() + ")" + succ + "(" + succ.hashCode() + ")");
@@ -2294,9 +2288,8 @@ public class ABoxImpl implements ABox
 				throw new InternalReasonerException("Duplicate edges: " + allEdges);
 		}
 		edges = node.getInEdges();
-		for (int e = 0; e < edges.size(); e++)
+		for (final Edge edge : edges)
 		{
-			final Edge edge = edges.get(e);
 			final DependencySet ds = edge.getDepends();
 			if (ds.max() > _branchIndex || ds.getBranch() > _branchIndex)
 				throw new InternalReasonerException("Invalid ds: " + edge + " " + ds);

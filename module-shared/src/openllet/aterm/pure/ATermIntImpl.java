@@ -130,9 +130,9 @@ public class ATermIntImpl extends ATermImpl implements ATermInt
 			{
 				final ATermAppl appl = (ATermAppl) type;
 				final AFun afun = appl.getAFun();
-				if (afun.getName().equals("int") && afun.getArity() == 0 && !afun.isQuoted())
+				if ("int".equals(afun.getName()) && afun.getArity() == 0 && !afun.isQuoted())
 				{
-					list.add(new Integer(_value));
+					list.add(_value);
 					return true;
 				}
 			}

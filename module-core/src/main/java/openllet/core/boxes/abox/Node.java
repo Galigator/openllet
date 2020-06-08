@@ -582,10 +582,8 @@ public abstract class Node
 
 				Bool ot = Bool.FALSE;
 
-				for (int e = 0; e < edges.size(); e++)
+				for (final Edge edge : edges)
 				{
-					final Edge edge = edges.get(e);
-
 					if (!edge.getDepends().isIndependent())
 					{
 						ot = Bool.UNKNOWN;
@@ -679,9 +677,8 @@ public abstract class Node
 
 		boolean added = false;
 
-		for (int i = 0; i < _inEdges.size(); i++)
+		for (final Edge edge : _inEdges)
 		{
-			final Edge edge = _inEdges.get(i);
 			final DependencySet d = edge.getDepends();
 
 			if (d.getBranch() <= branch)

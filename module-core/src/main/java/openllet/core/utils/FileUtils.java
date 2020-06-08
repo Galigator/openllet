@@ -55,12 +55,15 @@ public class FileUtils
 
 	public static String readURL(final URL fileURL) throws IOException
 	{
-		return readAll(new InputStreamReader(fileURL.openStream()));
+		try (final var isr = new InputStreamReader(fileURL.openStream()))
+		{
+			return readAll(isr);
+		}
 	}
 
 	public static String readFile(final File file) throws FileNotFoundException, IOException
 	{
-		try (final FileReader reader = new FileReader(file))
+		try (final var reader = new FileReader(file))
 		{
 			return readAll(reader);
 		}
@@ -68,7 +71,7 @@ public class FileUtils
 
 	public static String readFile(final String fileName) throws FileNotFoundException, IOException
 	{
-		try (FileReader reader = new FileReader(fileName))
+		try (final var reader = new FileReader(fileName))
 		{
 			return readAll(reader);
 		}

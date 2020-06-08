@@ -14,7 +14,8 @@ import openllet.core.utils.Namespaces;
  * Description: Singleton implementation of <code>xsd:time</code> datatype. This implementation diverges from the XML Schema specification because
  * <ol>
  * <li>the value space is disjoint from the value space of other timeline based datatypes (e.g., xsd:dateTime)</li>
- * <li>values are treated as points on a line that represents a (time zone extended) single day, not as recurring intervals on the infinte datetime timeline</li>
+ * <li>values are treated as points on a line that represents a (time zone extended) single day, not as recurring intervals on the infinte datetime
+ * timeline</li>
  * </ol>
  * </p>
  * <p>

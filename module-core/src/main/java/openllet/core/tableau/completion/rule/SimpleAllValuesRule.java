@@ -53,9 +53,8 @@ public class SimpleAllValuesRule extends AllValuesRule
 		}
 
 		EdgeList edges = x.getRNeighborEdges(s);
-		for (int e = 0; e < edges.size(); e++)
+		for (final Edge edgeToY : edges)
 		{
-			final Edge edgeToY = edges.get(e);
 			final Node y = edgeToY.getNeighbor(x);
 			DependencySet finalDS = ds.union(edgeToY.getDepends(), _strategy.getABox().doExplanation());
 			if (_strategy.getABox().doExplanation())
@@ -77,9 +76,8 @@ public class SimpleAllValuesRule extends AllValuesRule
 				final ATermAppl allRC = ATermUtils.makeAllValues(r.getName(), c);
 
 				edges = x.getRNeighborEdges(r);
-				for (int e = 0; e < edges.size(); e++)
+				for (final Edge edgeToY : edges)
 				{
-					final Edge edgeToY = edges.get(e);
 					final Node y = edgeToY.getNeighbor(x);
 					DependencySet finalDS = ds.union(edgeToY.getDepends(), _strategy.getABox().doExplanation());
 					if (_strategy.getABox().doExplanation())

@@ -697,7 +697,7 @@ public class RestrictedRealDatatype implements RestrictedDatatype<Number>
 		if (!_enumerable)
 			throw new IllegalStateException();
 
-		return new Iterator<Number>()
+		return new Iterator<>()
 		{
 			final Iterator<IntegerInterval> intit = _intIntervals.iterator();
 			final Iterator<ContinuousRealInterval> decit = _decimalIntervals.iterator();

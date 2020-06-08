@@ -8,6 +8,7 @@ package openllet.core.utils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.List;
 import openllet.atom.OpenError;
@@ -145,10 +146,10 @@ public class NumberUtils
 			if ('0' <= ch && ch <= '9')
 			{
 				if (negate)
-					curr = (10 * curr) + ('0' - ch);
+					curr = 10 * curr + ('0' - ch);
 				else
-					curr = (10 * curr) + (ch - '0');
-				if ((curr < prev) != negate)
+					curr = 10 * curr + (ch - '0');
+				if (curr < prev != negate)
 				{ // overflow
 					final int fractionPoint = str.indexOf('.');
 					if (fractionPoint == -1)
@@ -234,9 +235,9 @@ public class NumberUtils
 			case DECIMAL:
 				return ((BigDecimal) n1).add(BigDecimal.valueOf(n2));
 			case FLOAT:
-				return Float.valueOf(((Float) n1).floatValue() + (n2 * Float.MIN_VALUE));
+				return Float.valueOf(((Float) n1).floatValue() + n2 * Float.MIN_VALUE);
 			case DOUBLE:
-				return Double.valueOf(((Double) n1).doubleValue() + (n2 * Double.MIN_VALUE));
+				return Double.valueOf(((Double) n1).doubleValue() + n2 * Double.MIN_VALUE);
 			default:
 				throw new IllegalArgumentException("Unknown number class " + n1.getClass());
 		}
@@ -373,7 +374,7 @@ public class NumberUtils
 			if (cmp != result)
 				throw new OpenError(val1 + " " + val2 + " " + cmp + " " + result);
 
-			final String op = (cmp < 0) ? "<" : ((cmp == 0) ? "=" : ">");
+			final String op = cmp < 0 ? "<" : cmp == 0 ? "=" : ">";
 			System.out.println(number1 + " (" + getTypeName(number1) + ") " + op + " " + number2 + " (" + getTypeName(number2) + ")");
 		}
 		catch (final RuntimeException e)
@@ -421,7 +422,7 @@ public class NumberUtils
 		test("+" + i.toString(), DECIMAL, i);
 
 		BigDecimal d = new BigDecimal(i);
-		d = d.divide(new BigDecimal("2346365"), 7, BigDecimal.ROUND_CEILING);
+		d = d.divide(new BigDecimal("2346365"), 7, RoundingMode.CEILING);
 		test(d.toString(), DECIMAL, d);
 
 		test("10", INTEGER, "10.1", DECIMAL, -1);

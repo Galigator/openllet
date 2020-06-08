@@ -416,7 +416,7 @@ public class RestrictedRealDatatype implements RestrictedDatatype<Number>
 		 * micro-optimization relative to using
 		 * openllet.core.utils.iterator.MultiIterator
 		 */
-		return new Iterator<Number>()
+		return new Iterator<>()
 		{
 			final Iterator<OWLRealInterval> iit = _intervals.iterator();
 			Iterator<Number> nit = null;

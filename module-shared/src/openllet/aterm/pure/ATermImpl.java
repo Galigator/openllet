@@ -152,6 +152,7 @@ public abstract class ATermImpl extends ATermVisitableImpl implements ATerm, Sha
 		return this;
 	}
 
+	@SuppressWarnings("resource") // the resource is manage by ATermWriter 
 	public void writeToTextFile(final ATermWriter writer) throws IOException
 	{
 		try

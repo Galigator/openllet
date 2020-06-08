@@ -76,9 +76,8 @@ public class GuessRule extends AbstractTableauRule
 		// (so y is an inv(r) predecessor of x)
 		boolean apply = false;
 		EdgeList edges = x.getRPredecessorEdges(r.getInverse());
-		for (int e = 0; e < edges.size(); e++)
+		for (final Edge edge : edges)
 		{
-			final Edge edge = edges.get(e);
 			final Individual pred = edge.getFrom();
 			if (pred.isBlockable())
 			{
@@ -108,9 +107,8 @@ public class GuessRule extends AbstractTableauRule
 		// TODO not clear what the correct ds is so be pessimistic and include everything
 		DependencySet ds = x.getDepends(mc);
 		edges = x.getRNeighborEdges(r);
-		for (int e = 0; e < edges.size(); e++)
+		for (final Edge edge : edges)
 		{
-			final Edge edge = edges.get(e);
 			ds = ds.union(edge.getDepends(), _strategy.getABox().doExplanation());
 		}
 

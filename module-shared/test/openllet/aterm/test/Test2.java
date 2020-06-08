@@ -58,8 +58,8 @@ public class Test2
 
 	public Test2(final ATermFactory factory, final String srcdir)
 	{
-		this._factory = factory;
-		this._srcdir = srcdir;
+		_factory = factory;
+		_srcdir = srcdir;
 	}
 
 	public void test_assert(final boolean condition)
@@ -103,7 +103,7 @@ public class Test2
 		test_assert(term[0] == term[1]);
 
 		final List<Object> result = term[0].match("<real>");
-		test_assert(result != null && result.size() == 1 && result.get(0).equals(new Double(Math.PI)));
+		test_assert(result != null && result.size() == 1 && Math.PI == (Double) result.get(0));
 
 		//		System.out.println("pass: testMakeReal");
 	}

@@ -288,9 +288,8 @@ public abstract class CompletionStrategy
 
 				// CHW-added for inc. _queue must see if this is bad
 				final EdgeList allEdges = n.getOutEdges();
-				for (int e = 0; e < allEdges.size(); e++)
+				for (final Edge edge : allEdges)
 				{
-					final Edge edge = allEdges.get(e);
 					if (edge.getTo().isPruned())
 						continue;
 
@@ -331,10 +330,8 @@ public abstract class CompletionStrategy
 				continue;
 
 			final EdgeList allEdges = n.getOutEdges();
-			for (int e = 0; e < allEdges.size(); e++)
+			for (final Edge edge : allEdges)
 			{
-				final Edge edge = allEdges.get(e);
-
 				if (edge.getTo().isPruned())
 					continue;
 
@@ -652,10 +649,8 @@ public abstract class CompletionStrategy
 		if (disjoints.isEmpty())
 			return;
 		final EdgeList edges = subj.getEdgesTo(obj);
-		for (int i = 0, n = edges.size(); i < n; i++)
+		for (final Edge otherEdge : edges)
 		{
-			final Edge otherEdge = edges.get(i);
-
 			if (disjoints.contains(otherEdge.getRole()))
 			{
 				ds = ds.union(otherEdge.getDepends(), _abox.doExplanation());
@@ -709,9 +704,8 @@ public abstract class CompletionStrategy
 		Individual head = null;
 		DependencySet headDS = null;
 		// find a nominal _node to use as the head
-		for (int edgeIndex = 0; edgeIndex < edges.size(); edgeIndex++)
+		for (final Edge edge : edges)
 		{
-			final Edge edge = edges.get(edgeIndex);
 			final Individual ind = edge.getFrom();
 
 			if (ind.isNominal() && (head == null || ind.getNominalLevel() < head.getNominalLevel()))
@@ -727,9 +721,8 @@ public abstract class CompletionStrategy
 		else
 			ds = ds.union(headDS, _abox.doExplanation());
 
-		for (int i = 0; i < edges.size(); i++)
+		for (final Edge edge : edges)
 		{
-			final Edge edge = edges.get(i);
 			final Individual next = edge.getFrom();
 
 			if (next.isPruned())
@@ -898,10 +891,8 @@ public abstract class CompletionStrategy
 
 		// for all edges (z, r, y) add an edge (z, r, x)
 		final EdgeList inEdges = y.getInEdges();
-		for (int e = 0; e < inEdges.size(); e++)
+		for (final Edge edge : inEdges)
 		{
-			final Edge edge = inEdges.get(e);
-
 			final Individual z = edge.getFrom();
 			final Role r = edge.getRole();
 			final DependencySet finalDS = ds.union(edge.getDepends(), _abox.doExplanation());
@@ -938,9 +929,8 @@ public abstract class CompletionStrategy
 
 		// for all edges (y, r, z) where z is a nominal add an edge (x, r, z)
 		final EdgeList outEdges = y.getOutEdges();
-		for (int e = 0; e < outEdges.size(); e++)
+		for (final Edge edge : outEdges)
 		{
-			final Edge edge = outEdges.get(e);
 			final Node z = edge.getTo();
 
 			if (z.isNominal() && !y.equals(z))
@@ -976,10 +966,8 @@ public abstract class CompletionStrategy
 
 		// for all edges (z, r, y) add an edge (z, r, x)
 		final EdgeList inEdges = y.getInEdges();
-		for (int e = 0; e < inEdges.size(); e++)
+		for (final Edge edge : inEdges)
 		{
-			final Edge edge = inEdges.get(e);
-
 			final Individual z = edge.getFrom();
 			final Role r = edge.getRole();
 			final DependencySet finalDS = ds.union(edge.getDepends(), _abox.doExplanation());

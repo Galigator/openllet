@@ -436,7 +436,7 @@ public class RestrictedFloatingPointDatatype<T extends Number & Comparable<T>> i
 		 * micro-optimization relative to using
 		 * openllet.core.utils.iterator.MultiIterator
 		 */
-		return new Iterator<T>()
+		return new Iterator<>()
 		{
 			final Iterator<FloatingPointInterval<T>> iit = _intervals.iterator();
 			Iterator<T> nit = null;

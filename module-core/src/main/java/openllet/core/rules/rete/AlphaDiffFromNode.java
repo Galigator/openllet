@@ -45,7 +45,7 @@ public class AlphaDiffFromNode extends AlphaNode
 
 	private static Iterator<WME> toWMEs(final Node arg)
 	{
-		return new MapIterator<Node, WME>(arg.getDifferents().iterator())
+		return new MapIterator<>(arg.getDifferents().iterator())
 		{
 			@Override
 			public WME map(final Node node)
@@ -58,7 +58,7 @@ public class AlphaDiffFromNode extends AlphaNode
 	@Override
 	public Iterator<WME> getMatches()
 	{
-		return new NestedIterator<Individual, WME>(_abox.getIndIterator())
+		return new NestedIterator<>(_abox.getIndIterator())
 		{
 			@Override
 			public Iterator<WME> getInnerIterator(final Individual ind)

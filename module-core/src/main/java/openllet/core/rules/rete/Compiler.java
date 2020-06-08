@@ -166,8 +166,7 @@ public class Compiler
 			bound.addAll(VariableUtils.getVars(atom));
 
 			// any _builtin that can be evaluated with current bindings should be handled here
-			for (BuiltInCall call : builtins)
-			{
+			for (final BuiltInCall call : builtins)
 				if (bound.containsAll(call.getPrerequisitesVars(bound)))
 				{
 					final Collection<? extends AtomVariable> bindableVars = call.getBindableVars(bound);
@@ -175,7 +174,6 @@ public class Compiler
 						conditions.add(call.createCondition(processed));
 					// i.remove();
 				}
-			}
 
 			BetaNode newBeta = null;
 

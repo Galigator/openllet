@@ -714,10 +714,8 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 			// need to update the _branch _node count as this is _node has been
 			// added otherwise during back jumping this _node can be removed
-			for (int j = 0; j < _abox.getBranches().size(); j++)
+			for (final Branch branch : _abox.getBranches())
 			{
-				// get next _branch
-				final Branch branch = _abox.getBranches().get(j);
 				branch.setNodeCount(branch.getNodeCount() + 1);
 			}
 

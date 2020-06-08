@@ -23,14 +23,13 @@ public class CacheSafetyFactory
 {
 	public static CacheSafety createCacheSafety(final Expressivity expr)
 	{
-		return expr.hasInverse()
-				? expr.hasNominal() ? //
-						CacheSafetyNeverSafe.getInstance() : // 
-						OpenlletOptions.USE_INVERSE_CACHING ? // 
-								new CacheSafetyDynamic(expr) : // 
-								CacheSafetyNeverSafe.getInstance()
-				: // 
-				expr.hasNominal() ? // 
+		return expr.hasInverse() ? expr.hasNominal() ? //
+				CacheSafetyNeverSafe.getInstance() : // 
+				OpenlletOptions.USE_INVERSE_CACHING ? // 
+						new CacheSafetyDynamic(expr) : // 
+						CacheSafetyNeverSafe.getInstance()
+				: //
+				expr.hasNominal() ? //
 						CacheSafetyNeverSafe.getInstance() : //
 						CacheSafetyAlwaysSafe.getInstance();
 	}

@@ -110,7 +110,7 @@ public class MultiValueMap<K, V> extends ConcurrentHashMap<K, Set<V>> implements
 
 	public Iterator<V> flattenedValues()
 	{
-		return new Iterator<V>()
+		return new Iterator<>()
 		{
 			private final Iterator<Set<V>> _setIterator = values().iterator();
 			private volatile Iterator<V> _valueIterator = null;

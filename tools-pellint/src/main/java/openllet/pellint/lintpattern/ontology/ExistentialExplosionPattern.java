@@ -27,10 +27,8 @@ import org.jgrapht.alg.CycleDetector;
 import org.jgrapht.alg.KosarajuStrongConnectivityInspector;
 import org.jgrapht.alg.TransitiveClosure;
 import org.jgrapht.alg.interfaces.StrongConnectivityAlgorithm;
-import org.jgrapht.ext.DOTExporter;
-import org.jgrapht.ext.StringComponentNameProvider;
+import org.jgrapht.graph.AsSubgraph;
 import org.jgrapht.graph.DefaultWeightedEdge;
-import org.jgrapht.graph.DirectedSubgraph;
 import org.jgrapht.graph.EdgeReversedGraph;
 import org.jgrapht.traverse.TopologicalOrderIterator;
 import org.semanticweb.owlapi.model.AxiomType;
@@ -130,7 +128,7 @@ public class ExistentialExplosionPattern implements OntologyLintPattern
 	@SuppressWarnings("unused")
 	private static <V, E> void printGraph(final Graph<V, E> graph)
 	{
-		final DOTExporter<V, E> exp = new DOTExporter<>(new StringComponentNameProvider<V>(), null, null);
+		final org.jgrapht.io.DOTExporter<V, E> exp = new org.jgrapht.io.DOTExporter<>(new org.jgrapht.io.StringComponentNameProvider<>(), null, null, null, null, null);
 		exp.exportGraph(graph, new BufferedWriter(new PrintWriter(System.out)));
 	}
 
@@ -138,8 +136,8 @@ public class ExistentialExplosionPattern implements OntologyLintPattern
 	{
 		final OptimizedDirectedMultigraph<OWLClass> graph = new OptimizedDirectedMultigraph<>();
 
-		ontology.axioms(AxiomType.SUBCLASS_OF).forEach(axiom -> // 
-				processSubsumption(graph, axiom.getSubClass(), axiom.getSuperClass(), visitor));
+		ontology.axioms(AxiomType.SUBCLASS_OF).forEach(axiom -> //
+		processSubsumption(graph, axiom.getSubClass(), axiom.getSuperClass(), visitor));
 
 		ontology.axioms(AxiomType.EQUIVALENT_CLASSES).forEach(axiom ->
 		{
@@ -231,7 +229,8 @@ public class ExistentialExplosionPattern implements OntologyLintPattern
 			if (connectedSet.size() <= maxSizeOfCompleteGraphToIgnore)
 				continue;
 
-			final DirectedSubgraph<OWLClass, DefaultWeightedEdge> subgraph = new DirectedSubgraph<>(existentialRestrictionGraph, connectedSet, null);
+			final AsSubgraph<OWLClass, DefaultWeightedEdge> subgraph = new AsSubgraph<>(existentialRestrictionGraph, connectedSet, null);
+			//final DirectedSubgraph<OWLClass, DefaultWeightedEdge> subgraph = new DirectedSubgraph<>(existentialRestrictionGraph, connectedSet, null);
 			double estimatedTreeSize = 1.0;
 			for (final OWLClass owlClass : connectedSet)
 				estimatedTreeSize *= subgraph.outDegreeOf(owlClass);
@@ -253,8 +252,8 @@ public class ExistentialExplosionPattern implements OntologyLintPattern
 		{
 			if (connectedSet.size() <= 1)
 				continue;
-
-			final DirectedSubgraph<OWLClass, DefaultWeightedEdge> subgraph = new DirectedSubgraph<>(existentialRestrictionGraph, connectedSet, null);
+			final AsSubgraph<OWLClass, DefaultWeightedEdge> subgraph = new AsSubgraph<>(existentialRestrictionGraph, connectedSet, null);
+			//final DirectedSubgraph<OWLClass, DefaultWeightedEdge> subgraph = new DirectedSubgraph<>(existentialRestrictionGraph, connectedSet, null);
 			double estimatedTreeSize = 1.0;
 			for (final OWLClass owlClass : connectedSet)
 				estimatedTreeSize *= subgraph.outDegreeOf(owlClass);
@@ -306,7 +305,7 @@ public class ExistentialExplosionPattern implements OntologyLintPattern
 				Double oldValue = accumulatedChildren.get(parent);
 				if (oldValue == null)
 					oldValue = (double) existentialRestrictionGraph.outDegreeOf(parent);
-				accumulatedChildren.put(parent, oldValue + (childValue * inEdgeCount));
+				accumulatedChildren.put(parent, oldValue + childValue * inEdgeCount);
 			}
 		}
 		existentialRestrictionGraph.removeAllVertices(nodesInACycle);

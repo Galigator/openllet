@@ -53,10 +53,8 @@ public class MaxCardinalityRule extends AbstractTableauRule
 			return;
 
 		final List<ATermAppl> maxCardinality = ind.getTypes(Node.MAX);
-		for (int i = 0; i < maxCardinality.size(); i++)
+		for (final ATermAppl mc : maxCardinality)
 		{
-			final ATermAppl mc = maxCardinality.get(i);
-
 			applyMaxRule(ind, mc);
 
 			if (_strategy.getABox().isClosed())
@@ -137,9 +135,8 @@ public class MaxCardinalityRule extends AbstractTableauRule
 		// dependency and return
 		if (k == 0 && n > 0)
 		{
-			for (int e = 0; e < edges.size(); e++)
+			for (final Edge edge : edges)
 			{
-				final Edge edge = edges.get(e);
 				final Node neighbor = edge.getNeighbor(x);
 				final DependencySet typeDS = neighbor.getDepends(c);
 				if (typeDS != null)

@@ -714,9 +714,8 @@ public class Individual extends Node implements CachedNode
 		final Set<Node> result = new HashSet<>();
 
 		final EdgeList edges = _outEdges.getEdges(r);
-		for (int i = 0, n = edges.size(); i < n; i++)
+		for (final Edge edge : edges)
 		{
-			final Edge edge = edges.get(i);
 			final Node other = edge.getNeighbor(this);
 			if (other.hasType(c))
 				result.add(other);
@@ -893,9 +892,9 @@ public class Individual extends Node implements CachedNode
 			return false;
 
 		final List<List<Node>> allDisjointSets = new ArrayList<>();
-		for (int i = 0; i < edges.size(); i++)
+		for (final Edge edge : edges)
 		{
-			final Node y = edges.get(i).getNeighbor(this);
+			final Node y = edge.getNeighbor(this);
 
 			if (!y.hasType(c))
 				continue;
@@ -908,13 +907,11 @@ public class Individual extends Node implements CachedNode
 						return true;
 
 			boolean added = false;
-			for (int j = 0; j < allDisjointSets.size(); j++)
+			for (final List<Node> disjointSet : allDisjointSets)
 			{
 				boolean addToThis = true;
-				final List<Node> disjointSet = allDisjointSets.get(j);
-				for (int k = 0; k < disjointSet.size(); k++)
+				for (final Node z : disjointSet)
 				{
-					final Node z = disjointSet.get(k);
 					if (!y.isDifferent(z))
 					{
 						addToThis = false;
@@ -987,9 +984,8 @@ public class Individual extends Node implements CachedNode
 		Bool hasValue = Bool.FALSE;
 
 		final EdgeList edges = _outEdges.getEdges(r);
-		for (int i = 0; i < edges.size(); i++)
+		for (final Edge edge : edges)
 		{
-			final Edge edge = edges.get(i);
 			final DependencySet ds = edge.getDepends();
 			final Literal literal = (Literal) edge.getTo();
 			final Object literalValue = literal.getValue();
@@ -1256,9 +1252,8 @@ public class Individual extends Node implements CachedNode
 
 		_pruned = ds;
 
-		for (int i = 0; i < _outEdges.size(); i++)
+		for (final Edge edge : _outEdges)
 		{
-			final Edge edge = _outEdges.get(i);
 			final Node succ = edge.getTo();
 
 			if (succ.isPruned())
@@ -1278,9 +1273,8 @@ public class Individual extends Node implements CachedNode
 
 		boolean added = false;
 
-		for (int i = 0; i < _outEdges.size(); i++)
+		for (final Edge edge : _outEdges)
 		{
-			final Edge edge = _outEdges.get(i);
 			final DependencySet d = edge.getDepends();
 
 			if (d.getBranch() <= branch)

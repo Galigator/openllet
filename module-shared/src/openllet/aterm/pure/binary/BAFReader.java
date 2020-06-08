@@ -167,7 +167,7 @@ public class BAFReader
 				_reader.flushBitsFromReader();
 				final String s = _reader.readString();
 				_level--;
-				return _factory.makeReal(new Double(s).doubleValue());
+				return _factory.makeReal(Double.parseDouble(s));
 			}
 			case "[_,_]":
 			{

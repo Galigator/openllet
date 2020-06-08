@@ -80,7 +80,7 @@ public class AlphaTypeNode extends AlphaNode
 	public Iterator<WME> getMatches()
 	{
 		final Iterator<Individual> inds = (_name == null) ? _abox.getIndIterator() : IteratorUtils.singletonIterator(initNode());
-		return new NestedIterator<Individual, WME>(inds)
+		return new NestedIterator<>(inds)
 		{
 			@Override
 			public Iterator<WME> getInnerIterator(final Individual ind)

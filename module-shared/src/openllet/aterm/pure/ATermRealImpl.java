@@ -49,7 +49,7 @@ public class ATermRealImpl extends ATermImpl implements ATermReal
 
 		_value = value;
 
-		setHashCode(HashFunctions.doobs(new Object[] { new Double(value) })); // XXX comment or remove or clone but definitly : do something.
+		setHashCode(HashFunctions.doobs(new Double[] { value })); // XXX comment or remove or clone but definitly : do something.
 	}
 
 	@Override
@@ -108,7 +108,7 @@ public class ATermRealImpl extends ATermImpl implements ATermReal
 				final AFun afun = appl.getAFun();
 				if (afun.getName().equals("real") && afun.getArity() == 0 && !afun.isQuoted())
 				{
-					list.add(new Double(_value));
+					list.add(_value);
 					return true;
 				}
 			}

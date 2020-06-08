@@ -36,6 +36,7 @@ package openllet.core;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Properties;
@@ -492,13 +493,9 @@ public class OpenlletOptions
 		{
 			try
 			{
-				return _c.newInstance();
+				return _c.getDeclaredConstructor().newInstance();
 			}
-			catch (final InstantiationException e)
-			{
-				throw new InternalReasonerException(e);
-			}
-			catch (final IllegalAccessException e)
+			catch (final InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | SecurityException e)
 			{
 				throw new InternalReasonerException(e);
 			}
@@ -636,9 +633,12 @@ public class OpenlletOptions
 	{
 		_logger.fine("Reading Pellet configuration file " + configFile);
 
-		final Properties properties = new Properties();
-		properties.load(configFile.openStream());
-		setOptions(properties);
+		final var properties = new Properties();
+		try (final var os = configFile.openStream())
+		{
+			properties.load(os);
+			setOptions(properties);
+		}
 	}
 
 	private static boolean getBooleanProperty(final Properties properties, final String property, final boolean defaultValue, final Properties defaultValues)

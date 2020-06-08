@@ -9,6 +9,7 @@ package openllet.core.rules.builtins;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import openllet.shared.tools.Log;
@@ -136,7 +137,7 @@ public class NumericOperators
 			if (args.length != 1)
 				return null;
 
-			return args[0].setScale(0, BigDecimal.ROUND_CEILING).stripTrailingZeros();
+			return args[0].setScale(0, RoundingMode.CEILING).stripTrailingZeros();
 		}
 
 		@Override
@@ -269,7 +270,7 @@ public class NumericOperators
 			if (args.length != 1)
 				return null;
 
-			return args[0].setScale(0, BigDecimal.ROUND_FLOOR).stripTrailingZeros();
+			return args[0].setScale(0, RoundingMode.FLOOR).stripTrailingZeros();
 		}
 
 		@Override
@@ -525,7 +526,7 @@ public class NumericOperators
 			// unfortunately none of the RoundingMode's in BigDecimal are compatible with XQuery
 			// definition (or Math.round(double)). BigDecimal.ROUND_UP rounds -2.5 to -3 (rounds
 			// in scales without considering sign)
-			return args[0].add(HALF).setScale(0, BigDecimal.ROUND_FLOOR).stripTrailingZeros();
+			return args[0].add(HALF).setScale(0, RoundingMode.FLOOR).stripTrailingZeros();
 		}
 
 		@Override
@@ -581,7 +582,7 @@ public class NumericOperators
 				scale = bigScale.intValue();
 			}
 
-			return args[0].setScale(scale, BigDecimal.ROUND_HALF_EVEN).stripTrailingZeros();
+			return args[0].setScale(scale, RoundingMode.HALF_EVEN).stripTrailingZeros();
 		}
 
 		@Override

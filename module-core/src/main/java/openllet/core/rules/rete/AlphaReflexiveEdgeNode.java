@@ -54,7 +54,7 @@ public class AlphaReflexiveEdgeNode extends AlphaEdgeNode
 	@Override
 	public Iterator<WME> getMatches()
 	{
-		return new NestedIterator<Individual, WME>(_abox.getIndIterator())
+		return new NestedIterator<>(_abox.getIndIterator())
 		{
 			@Override
 			public Iterator<WME> getInnerIterator(final Individual ind)

@@ -376,9 +376,8 @@ public class TrivialSatisfactionHelpers
 		public DependencySet check(final Individual node1, final Node node2)
 		{
 			final EdgeList list = node1.getRNeighborEdges(_role);
-			for (int i = 0, n = list.size(); i < n; i++)
+			for (final Edge edge : list)
 			{
-				final Edge edge = list.get(i);
 				if (edge.getNeighbor(node1).equals(node2))
 					return edge.getDepends();
 			}

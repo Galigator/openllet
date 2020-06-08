@@ -72,8 +72,8 @@ public class IncrementalRestore
 				// updated, so we do not process the same bitset multiple
 				// times
 				boolean exit = false;
-				for (int i = 0; i < updatedList.size(); i++)
-					if (updatedList.get(i) == tDS.getDepends())
+				for (final IntSet element : updatedList)
+					if (element == tDS.getDepends())
 						exit = true;
 
 				if (exit)
@@ -102,8 +102,8 @@ public class IncrementalRestore
 				// so we need to track which bitsets have been updated,
 				// so we do not process the same bitset multiple times
 				boolean exit = false;
-				for (int i = 0; i < updatedList.size(); i++)
-					if (updatedList.get(i) == tDS.getDepends())
+				for (final IntSet element : updatedList)
+					if (element == tDS.getDepends())
 						exit = true;
 
 				if (exit)
@@ -295,9 +295,8 @@ public class IncrementalRestore
 
 		// loop over all edges for the subject
 		final EdgeList edges = subj.getEdgesTo(obj, role);
-		for (int i = 0; i < edges.size(); i++)
+		for (final Edge edge : edges)
 		{
-			final Edge edge = edges.get(i);
 			if (edge.getRole().equals(role))
 			{
 

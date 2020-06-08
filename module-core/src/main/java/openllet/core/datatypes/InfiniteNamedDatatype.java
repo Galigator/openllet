@@ -61,7 +61,7 @@ public class InfiniteNamedDatatype implements Datatype<ATermAppl>
 			throw new IllegalArgumentException();
 
 		_name = name;
-		_range = new RestrictedDatatype<ATermAppl>()
+		_range = new RestrictedDatatype<>()
 		{
 
 			@Override

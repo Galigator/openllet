@@ -108,9 +108,8 @@ public class AllValuesRule extends AbstractTableauRule
 		}
 
 		final EdgeList edges = x.getRNeighborEdges(s);
-		for (int e = 0; e < edges.size(); e++)
+		for (final Edge edgeToY : edges)
 		{
-			final Edge edgeToY = edges.get(e);
 			final Node y = edgeToY.getNeighbor(x);
 			final DependencySet finalDS = ds.union(edgeToY.getDepends(), _strategy.getABox().doExplanation());
 
@@ -152,9 +151,8 @@ public class AllValuesRule extends AbstractTableauRule
 		{
 			final ATermAppl allRC = ATermUtils.makeAllValues(chain.getNext(), c);
 
-			for (int e = 0; e < edges.size(); e++)
+			for (final Edge edgeToY : edges)
 			{
-				final Edge edgeToY = edges.get(e);
 				final Node y = edgeToY.getNeighbor(x);
 				final DependencySet finalDS = ds.union(edgeToY.getDepends(), _strategy.getABox().doExplanation());
 

@@ -99,7 +99,7 @@ public class MaxBranch extends IndividualBranch
 				b.setTryNext(_tryNext);
 				b._prevDS = new DependencySet[_prevDS.length];
 				System.arraycopy(_prevDS, 0, b._prevDS, 0, getTryNext());
-		
+
 				return b;
 		*/
 	}

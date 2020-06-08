@@ -120,10 +120,7 @@ class ATermWriter extends ATermFwdVoid
 		{
 			final int length = position - start;
 			if (length > PureFactory.abbrevSize(next_abbrev))
-			{
-				final Integer key = new Integer(next_abbrev++);
-				table.put(child, key);
-			}
+				table.put(child, next_abbrev++);
 		}
 	}
 

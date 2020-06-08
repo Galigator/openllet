@@ -234,7 +234,7 @@ public interface SList<Atom> extends Iterable<Atom>
 	@Override
 	default Iterator<Atom> iterator()
 	{
-		return new Iterator<Atom>()
+		return new Iterator<>()
 		{
 			private SList<Atom> _current = SList.this;
 

@@ -51,8 +51,8 @@ public class IteratorUtils
 		}
 	}
 
-	private static final Iterator<Object> EMPTY_ITERATOR = new Iterator<Object>()
-			{
+	private static final Iterator<Object> EMPTY_ITERATOR = new Iterator<>()
+	{
 		@Override
 		public boolean hasNext()
 		{
@@ -70,88 +70,88 @@ public class IteratorUtils
 		{
 			throw new UnsupportedOperationException();
 		}
-			};
+	};
 
-			public static <T> Iterator<T> concat(final Iterator<? extends T> i1, final Iterator<? extends T> i2)
-			{
-				return new MultiIterator<>(i1, i2);
-			}
+	public static <T> Iterator<T> concat(final Iterator<? extends T> i1, final Iterator<? extends T> i2)
+	{
+		return new MultiIterator<>(i1, i2);
+	}
 
-			@SuppressWarnings("unchecked")
-			public static final <T> Iterator<T> emptyIterator()
-			{
-				return (Iterator<T>) EMPTY_ITERATOR;
-			}
+	@SuppressWarnings("unchecked")
+	public static final <T> Iterator<T> emptyIterator()
+	{
+		return (Iterator<T>) EMPTY_ITERATOR;
+	}
 
-			public static final <T> Iterator<T> singletonIterator(final T element)
-			{
-				return new SingletonIterator<>(element);
-			}
+	public static final <T> Iterator<T> singletonIterator(final T element)
+	{
+		return new SingletonIterator<>(element);
+	}
 
-			public static <T> Set<T> toSet(final Iterator<T> i)
-			{
-				final Set<T> set = new HashSet<>();
-				while (i.hasNext())
-					set.add(i.next());
-				return set;
-			}
+	public static <T> Set<T> toSet(final Iterator<T> i)
+	{
+		final Set<T> set = new HashSet<>();
+		while (i.hasNext())
+			set.add(i.next());
+		return set;
+	}
 
-			public static <T> List<T> toList(final Iterator<T> i)
-			{
-				final List<T> set = new ArrayList<>();
-				while (i.hasNext())
-					set.add(i.next());
-				return set;
-			}
+	public static <T> List<T> toList(final Iterator<T> i)
+	{
+		final List<T> set = new ArrayList<>();
+		while (i.hasNext())
+			set.add(i.next());
+		return set;
+	}
 
-			public static <T> Iterator<T> flatten(final Iterator<? extends Iterable<T>> iterator)
-			{
-				return new FlattenningIterator<>(iterator);
-			}
+	public static <T> Iterator<T> flatten(final Iterator<? extends Iterable<T>> iterator)
+	{
+		return new FlattenningIterator<>(iterator);
+	}
 
-			@SafeVarargs
-			public static <T> Iterator<T> iterator(final T... elements)
-			{
-				return new ArrayIterator<>(elements, elements.length);
-			}
+	@SafeVarargs
+	public static <T> Iterator<T> iterator(final T... elements)
+	{
+		return new ArrayIterator<>(elements, elements.length);
+	}
 
-			@SafeVarargs
-			public static <T> Iterator<T> iterator(final int size, final T... elements)
-			{
-				return new ArrayIterator<>(elements, size);
-			}
+	@SafeVarargs
+	public static <T> Iterator<T> iterator(final int size, final T... elements)
+	{
+		return new ArrayIterator<>(elements, size);
+	}
 
-			private static class ArrayIterator<E> implements Iterator<E>
-			{
-				private final E[] _array;
-				private final int _size;
-				private int _curr = 0;
+	private static class ArrayIterator<E> implements Iterator<E>
+	{
+		private final E[] _array;
+		private final int _size;
+		private int _curr = 0;
 
-				public ArrayIterator(final E[] array, final int size)
-				{
-					this._array = array;
-					this._size = size;
-				}
+		public ArrayIterator(final E[] array, final int size)
+		{
+			this._array = array;
+			this._size = size;
+		}
 
-				@Override
-				public boolean hasNext()
-				{
-					return _curr != _size;
-				}
+		@Override
+		public boolean hasNext()
+		{
+			return _curr != _size;
+		}
 
-				@Override
-				public E next()
-				{
-					if (!hasNext())
-						throw new NoSuchElementException();
+		@Override
+		public E next()
+		{
+			if (!hasNext())
+				throw new NoSuchElementException();
 
-					return _array[_curr++];
-				}
+			return _array[_curr++];
+		}
 
-				@Override
-				public void remove()
-				{
-					throw new UnsupportedOperationException();
-				}
-			}
+		@Override
+		public void remove()
+		{
+			throw new UnsupportedOperationException();
+		}
+	}
 }

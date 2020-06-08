@@ -31,7 +31,8 @@ public interface FloatingPointType<T extends Number & Comparable<T>>
 
 	/**
 	 * @param n The value to decrement Return the next floating point value in the direction of <code>-Inf<code>.
-	 * @return If <code>n > -Inf</code>, the next floating point value in the direction of <code>-Inf<code>.  If <code>n == -Inf</code>, <code>-Inf</code>.
+	 * &#64;return If <code>n > -Inf</code>, the next floating point value in the direction of <code>-Inf<code>.  If <code>n == -Inf</code>, <code>-Inf</code>.
+	 * @return the kind of elements
 	 * @throws IllegalArgumentException if <code>n.isNaN()</code>
 	 */
 	public T decrement(T n);
@@ -59,7 +60,8 @@ public interface FloatingPointType<T extends Number & Comparable<T>>
 
 	/**
 	 * @param n The value to increment Return the next floating point value in the direction of <code>+Inf<code>.
-	 * @return If <code>n < +Inf</code>, the next floating point value in the direction of <code>+Inf<code>.  If <code>n == +Inf</code>, <code>+Inf</code>.
+	 * &#64;return If <code>n < +Inf</code>, the next floating point value in the direction of <code>+Inf<code>.  If <code>n == +Inf</code>, <code>+Inf</code>.
+	 * @return the kind of elements
 	 * @throws IllegalArgumentException if <code>n.isNaN()</code>
 	 */
 	public T increment(T n);

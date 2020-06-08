@@ -53,7 +53,7 @@ public class BinarySet<T> extends AbstractSet<T>
 	@Override
 	public Iterator<T> iterator()
 	{
-		return new Iterator<T>()
+		return new Iterator<>()
 		{
 			private int i = 0;
 

@@ -56,6 +56,7 @@ import openllet.core.utils.iterator.PairIterator;
  * This class provides the functions ATerm related functions. Creating terms for URI's and complex class descriptions is done here. There are also functions for
  * normalization, simplification and conversion to NNF (Normal Negation Form).
  *
+ * @TODO move into aterm package.
  * @author Evren Sirin
  */
 public class ATermUtils

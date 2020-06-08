@@ -152,7 +152,7 @@ public class BinaryWriter extends ATermFwdVoid
 
 				// Don't add the term to the openllet.shared.hash list until we are completely done with it.
 				if (_indexInTerm == 0)
-					_sharedTerms.put(_currentTerm, new Integer(_currentKey++));
+					_sharedTerms.put(_currentTerm, _currentKey++);
 				else
 					break;
 			}
@@ -280,7 +280,7 @@ public class BinaryWriter extends ATermFwdVoid
 					_tempNameWriteBuffer = nameBytes;
 				}
 
-				_applSignatures.put(fun, new Integer(_sigKey++));
+				_applSignatures.put(fun, _sigKey++);
 			}
 			else
 			{

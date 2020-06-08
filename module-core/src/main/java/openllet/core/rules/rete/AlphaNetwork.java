@@ -127,9 +127,8 @@ public class AlphaNetwork implements Iterable<AlphaNode>
 			return false;
 
 		final List<ATermAppl> types = ind.getTypes(Node.ATOM);
-		for (int i = 0; i < types.size(); i++)
+		for (final ATermAppl type : types)
 		{
-			final ATermAppl type = types.get(i);
 			activateType(ind, type, ind.getDepends(type));
 		}
 

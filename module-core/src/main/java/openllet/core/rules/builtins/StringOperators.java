@@ -239,12 +239,12 @@ public class StringOperators
 			long endIndex = args[0].length();
 			try
 			{
-				final Double beginDouble = new Double(args[1]);
-				final long begin = beginDouble.isNaN() || beginDouble > Integer.MAX_VALUE ? Integer.MAX_VALUE : Math.round(beginDouble);
+				final double beginDouble = Double.parseDouble(args[1]);
+				final long begin = Double.isNaN(beginDouble) || beginDouble > Integer.MAX_VALUE ? Integer.MAX_VALUE : Math.round(beginDouble);
 				long count = Integer.MAX_VALUE;
 				if (args.length == 3)
 				{
-					final Double countDouble = new Double(args[2]);
+					final Double countDouble = Double.valueOf(args[2]);
 					count = countDouble.isNaN() || countDouble < 0 ? 0 : Math.round(countDouble);
 				}
 				beginIndex = Math.min(args[0].length(), Math.max(0, begin - 1));

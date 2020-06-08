@@ -35,6 +35,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
+
 import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
@@ -46,8 +50,6 @@ import openllet.aterm.ATermReal;
 import openllet.aterm.ParseError;
 import openllet.aterm.pure.PureFactory;
 import openllet.atom.OpenError;
-import org.junit.Before;
-import org.junit.Test;
 
 public class Test1
 {
@@ -104,7 +106,7 @@ public class Test1
 		assertTrue(result != null && result.size() == 0);
 
 		result = term[0].match("<int>");
-		assertTrue(result != null && result.size() == 1 && result.get(0).equals(new Integer(3)));
+		assertTrue(result != null && result.size() == 1 && 3 == (Integer) result.get(0));
 
 		//		System.out.println("pass: testMakeInt");
 	}
@@ -127,7 +129,7 @@ public class Test1
 		assertTrue(result != null && result.size() == 0);
 
 		result = term[0].match("<long>");
-		assertTrue(result != null && result.size() == 1 && result.get(0).equals(new Long(3)));
+		assertTrue(result != null && result.size() == 1 && (Long) result.get(0) == 3L);
 
 		//		System.out.println("pass: testMakeLong");
 	}
@@ -145,7 +147,7 @@ public class Test1
 		assertTrue(term[0] == term[1]);
 
 		final List<Object> result = term[0].match("<real>");
-		assertTrue(result != null && result.size() == 1 && result.get(0).equals(new Double(Math.PI)));
+		assertTrue(result != null && result.size() == 1 && Math.PI == (Double) result.get(0));
 
 		//		System.out.println("pass: testMakeReal");
 	}
@@ -350,7 +352,7 @@ public class Test1
 
 		result = T[1].match("[<int>,<list>]");
 		//System.out.println("result = " + result);
-		test(result != null && result.get(0).equals(new Integer(1)) && result.get(1).equals(_factory.parse("[2,3]")), "match-1d");
+		test(result != null && 1 == (Integer) result.get(0) && result.get(1).equals(_factory.parse("[2,3]")), "match-1d");
 
 		//result = T[1].match("[<list>,2,<int>]");
 		//System.out.println("result = " + result);
@@ -377,7 +379,7 @@ public class Test1
 		// result.get(0).equals(_factory.parse("<abc>")), "match-2e");
 
 		result = T[0].match("f(1,<int>,3)");
-		test(result != null && result.size() == 1 && result.get(0).equals(new Integer(2)), "match-3");
+		test(result != null && result.size() == 1 && 2 == (Integer) result.get(0), "match-3");
 
 		//		result = T[2].match("f(<term>,<term>,<real>,<placeholder>)");
 		//System.out.println("result = " + result);
@@ -392,7 +394,7 @@ public class Test1
 		test(result != null && result.size() == 1 && result.get(0).equals(T[1]), "match-6a");
 
 		result = T[1].match("[<int>,<list>]");
-		test(result != null && result.size() == 2 && result.get(0).equals(new Integer(1)), "match-6b");
+		test(result != null && result.size() == 2 && 1 == (Integer) result.get(0), "match-6b");
 		test(result != null && result.get(1).equals(_factory.parse("[2,3]")), "match-6c");
 
 		final ATerm empty = _factory.makeList();
@@ -407,7 +409,7 @@ public class Test1
 		result = T[0].match("<fun(<int>,<list>)>");
 		test(result != null && result.size() == 3, "match-7a");
 		test(result != null && result.get(0).equals("f"), "match-7b");
-		test(result != null && result.get(1).equals(new Integer(1)), "match-7c");
+		test(result != null && 1 == (Integer) result.get(1), "match-7c");
 		test(result != null && result.get(2).equals(_factory.parse("[2,3]")), "match-7d");
 
 		result = T[3].match("f(<term>,[<list>])");
@@ -458,12 +460,12 @@ public class Test1
 		//		System.out.println("\tresult = " + result);
 
 		list.clear();
-		list.add(new Integer(1));
+		list.add(1);
 		result = _factory.make("<int>", list);
 		//		System.out.println("\tresult = " + result);
 
 		list.clear();
-		list.add(new Double(3.14));
+		list.add(3.14d);
 		result = _factory.make("<real>", list);
 		//		System.out.println("\tresult = " + result);
 
@@ -474,7 +476,7 @@ public class Test1
 
 		list.clear();
 		list.add(_factory.parse("f(a,b,c)"));
-		list.add(new Integer(3));
+		list.add(3);
 		list.add(_factory.parse("<abc>"));
 		result = _factory.make("[<term>,2,<int>,3.14,<placeholder>]", list);
 		//		System.out.println("\tresult = " + result);
@@ -487,7 +489,7 @@ public class Test1
 
 		list.clear();
 		list.add(_factory.parse("b"));
-		list.add(new Integer(4));
+		list.add(4);
 		//		result = factory.make("f(1,g(<term>),c,h(<int>))", list);
 		//		System.out.println("\tresult = " + result);
 

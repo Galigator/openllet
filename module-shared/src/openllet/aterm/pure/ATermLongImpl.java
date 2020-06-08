@@ -119,9 +119,9 @@ public class ATermLongImpl extends ATermImpl implements ATermLong
 			{
 				final ATermAppl appl = (ATermAppl) type;
 				final AFun afun = appl.getAFun();
-				if (afun.getName().equals("long") && afun.getArity() == 0 && !afun.isQuoted())
+				if ("long".equals(afun.getName()) && afun.getArity() == 0 && !afun.isQuoted())
 				{
-					list.add(new Long(_value));
+					list.add(_value);
 					return true;
 				}
 			}
