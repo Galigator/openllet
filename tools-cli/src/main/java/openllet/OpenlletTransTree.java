@@ -175,7 +175,7 @@ public class OpenlletTransTree extends OpenlletCmdApp
 	/** Unit testing access only */
 	public Taxonomy<ATermAppl> _publicTaxonomy;
 
-	private Set<ATermAppl> getDistinctSubclasses(final KnowledgeBase kb, final ATermAppl c)
+	private static Set<ATermAppl> getDistinctSubclasses(final KnowledgeBase kb, final ATermAppl c)
 	{
 		final Set<ATermAppl> filteredClasses = new HashSet<>();
 		final Set<Set<ATermAppl>> subclasses = kb.getSubClasses(c);

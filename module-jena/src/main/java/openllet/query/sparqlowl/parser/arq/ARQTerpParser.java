@@ -74,7 +74,7 @@ public class ARQTerpParser extends SPARQLParser
 	}
 
 	/**
-	 * Register a {@link ParserFactory} for the {@link TerpSyntax}
+	 * Register a {@link SPARQLParserFactory} for the {@link TerpSyntax}
 	 */
 	public static void registerFactory()
 	{
@@ -82,7 +82,7 @@ public class ARQTerpParser extends SPARQLParser
 	}
 
 	/**
-	 * Unregister a {@link ParserFactory} for the {@link TerpSyntax}
+	 * Unregister a {@link SPARQLParserFactory} for the {@link TerpSyntax}
 	 */
 	public static void unregisterFactory()
 	{

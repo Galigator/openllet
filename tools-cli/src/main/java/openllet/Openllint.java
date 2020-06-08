@@ -291,12 +291,15 @@ public class Openllint extends OpenlletCmdApp
 			rootModel.addAllStatementsWithExistingBNodesOnly(missingStmts);
 
 			final RDFModelWriter writer = new RDFModelWriter();
-			writer.write(new FileOutputStream(new File(_outputOntologyPath)), rootModel);
-			output("Saved to " + _outputOntologyPath);
+			try (var output = new FileOutputStream(new File(_outputOntologyPath)))
+			{
+				writer.write(output, rootModel);
+				output("Saved to " + _outputOntologyPath);
+			}
 		}
 	}
 
-	private void runLintForOWL() throws OWLOntologyCreationException, OWLOntologyChangeException, UnknownOWLOntologyException, OWLOntologyStorageException, FileNotFoundException
+	private void runLintForOWL() throws OWLOntologyCreationException, OWLOntologyChangeException, UnknownOWLOntologyException, OWLOntologyStorageException, IOException
 	{
 		final LintPatternLoader patternLoader = new LintPatternLoader(loadProperties());
 		final List<AxiomLintPattern> axiomLintPatterns = patternLoader.getAxiomLintPatterns();
@@ -354,13 +357,15 @@ public class Openllint extends OpenlletCmdApp
 				for (final Lint lint : unreparableLints)
 					output(lint.toString());
 			}
-			manager.saveOntology(rootOntologyLints.getOntology(), new StreamDocumentTarget(new FileOutputStream(_outputOntologyPath)));
-			output("Saved to " + _outputOntologyPath);
-
+			try (final var output = new FileOutputStream(_outputOntologyPath))
+			{
+				manager.saveOntology(rootOntologyLints.getOntology(), new StreamDocumentTarget(output));
+				output("Saved to " + _outputOntologyPath);
+			}
 		}
 	}
 
-	private String getOWL2DLProfileViolations(final OWLOntology ontology)
+	private static String getOWL2DLProfileViolations(final OWLOntology ontology)
 	{
 		final OWL2DLProfile owl2Profile = new OWL2DLProfile();
 		final OWLProfileReport profileReport = owl2Profile.checkOntology(ontology);
@@ -443,9 +448,9 @@ public class Openllint extends OpenlletCmdApp
 			if (configURL == null) _logger.severe("Cannot find Openllint configuration file " + configFile);
 		}
 
-		if (configURL != null) try
+		if (configURL != null) try (var input = configURL.openStream())
 		{
-			properties.load(configURL.openStream());
+			properties.load(input);
 		}
 		catch (final FileNotFoundException e)
 		{

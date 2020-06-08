@@ -12,7 +12,6 @@ import openllet.query.sparqldl.jena.SparqlDLExecutionFactory;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryExecution;
-import org.apache.jena.query.QueryExecutionFactory;
 import org.apache.jena.query.QueryFactory;
 import org.apache.jena.query.ResultSet;
 import org.apache.jena.query.ResultSetFormatter;
@@ -72,7 +71,10 @@ public class BnodeQueryExample
 		//        restriction(hasDrink allValuesFrom(restriction(hasColor value (Red)))))
 		//
 		// PelletQueryEngine will successfully find the answer for the first query
-		printQueryResults("Running first query with PelletQueryEngine...", SparqlDLExecutionFactory.create(query1, model), query1);
+		try (var qe = SparqlDLExecutionFactory.create(query1, model))
+		{
+			printQueryResults("Running first query with PelletQueryEngine...", qe, query1);
+		}
 
 		// The same query (with variables instead of bnodes) will not return same answers!
 		// The reason is this: In the second query we are using a variable that needs to be
@@ -83,14 +85,19 @@ public class BnodeQueryExample
 		// Note that this behavior is similar to what you get with "must-bind", "don't-bind"
 		// variables in OWL-QL. In this case, variables in the query are "must-bind" variables
 		// and bnodes are "don't-bind" variables.
-		printQueryResults("Running second query with PelletQueryEngine...", SparqlDLExecutionFactory.create(query2, model), query2);
-
+		try (var qe = SparqlDLExecutionFactory.create(query2, model))
+		{
+			printQueryResults("Running second query with PelletQueryEngine...", qe, query2);
+		}
 		// When the standard QueryEngine of Jena is used we don't get the results even
 		// for the first query. The reason is Jena QueryEngine evaluates the query one triple
 		// at a time and thus fails when the wine _individual is not found. PelletQueryEngine
 		// evaluates the query as a whole and succeeds. (If the above feature, creating bnodes
 		// automatically, is added to Pellet then you would get the same results here)
-		printQueryResults("Running first query with standard Jena QueryEngine...", QueryExecutionFactory.create(query1, model), query1);
+		try (var qe = SparqlDLExecutionFactory.create(query1, model))
+		{
+			printQueryResults("Running first query with standard Jena QueryEngine...", qe, query1);
+		}
 	}
 
 	public static void printQueryResults(final String header, final QueryExecution qe, final Query query)

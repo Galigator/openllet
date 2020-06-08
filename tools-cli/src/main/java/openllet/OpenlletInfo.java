@@ -161,6 +161,7 @@ public class OpenlletInfo extends OpenlletCmdApp
 		}
 	}
 
+	@SuppressWarnings("static-method")
 	private OWLOntologyManager mergeOntologiesInNewManager(final OWLOntologyManager manager) throws OWLOntologyCreationException
 	{
 		final OWLOntologyManager newManager = OWLManager.createOWLOntologyManager();
@@ -221,7 +222,7 @@ public class OpenlletInfo extends OpenlletCmdApp
 		});
 	}
 
-	private String getString(final OWLAnnotationValue value)
+	private static String getString(final OWLAnnotationValue value)
 	{
 		if (value instanceof OWLLiteral)
 			return ((OWLLiteral) value).getLiteral();

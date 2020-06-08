@@ -301,7 +301,10 @@ public class OpenlletQuery extends OpenlletCmdApp
 	private void execQuery()
 	{
 		final Dataset dataset = DatasetFactory.create(loader.getModel());
-		try (QueryExecution qe = queryEngine == null ? SparqlDLExecutionFactory.create(query, dataset) : SparqlDLExecutionFactory.create(query, dataset, null, queryEngine))
+		try (@SuppressWarnings("resource")
+		QueryExecution qe = queryEngine == null ? //
+				SparqlDLExecutionFactory.create(query, dataset) : //
+				SparqlDLExecutionFactory.create(query, dataset, null, queryEngine))
 		{
 			verbose("Created query engine: " + qe.getClass().getName());
 

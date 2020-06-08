@@ -107,7 +107,7 @@ public class GlassBoxExplanation extends SingleExplanationGeneratorImpl
 		_altReasonerEnabled = enabled;
 	}
 
-	private OWLClass getNegation(final OWLClassExpression desc)
+	private static OWLClass getNegation(final OWLClassExpression desc)
 	{
 		if (!(desc instanceof OWLObjectComplementOf)) return null;
 
@@ -117,7 +117,7 @@ public class GlassBoxExplanation extends SingleExplanationGeneratorImpl
 		return (OWLClass) not;
 	}
 
-	private Pair<OWLClass, OWLClass> getSubClassAxiom(final OWLClassExpression desc)
+	private static Pair<OWLClass, OWLClass> getSubClassAxiom(final OWLClassExpression desc)
 	{
 		if (!(desc instanceof OWLObjectIntersectionOf)) return null;
 
@@ -245,7 +245,7 @@ public class GlassBoxExplanation extends SingleExplanationGeneratorImpl
 		}
 	}
 
-	private boolean isSatisfiable(final OpenlletReasoner pellet, final OWLClassExpression unsatClass, final boolean doExplanation)
+	private static boolean isSatisfiable(final OpenlletReasoner pellet, final OWLClassExpression unsatClass, final boolean doExplanation)
 	{
 		pellet.getKB().setDoExplanation(doExplanation);
 		final boolean sat = unsatClass.isOWLThing() ? pellet.isConsistent() : pellet.isSatisfiable(unsatClass);

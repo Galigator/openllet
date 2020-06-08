@@ -36,9 +36,6 @@ public abstract class BlockWriter extends PrintWriter
 	protected String	_pad		= null;
 	protected boolean	_newLine	= true;
 
-	/**
-	 * @param out
-	 */
 	public BlockWriter(final Writer outWriter, final String pad)
 	{
 		super(outWriter);

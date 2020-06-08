@@ -16,7 +16,8 @@ public class OpenlletExceptionFormatter
 	/**
 	 * Format a user-friendly exception
 	 *
-	 * @param e
+	 * @param  e
+	 * @return   user-friendly format... if exception can be friendly.
 	 */
 	public String formatException(final Throwable e)
 	{
@@ -40,12 +41,12 @@ public class OpenlletExceptionFormatter
 
 	}
 
-	private String format(final FileNotFoundException e)
+	private static String format(final FileNotFoundException e)
 	{
 		return "ERROR: Cannot open " + e.getMessage();
 	}
 
-	private String format(final OpenlletCmdException e)
+	private static String format(final OpenlletCmdException e)
 	{
 		return "ERROR: " + e.getMessage();
 	}
@@ -55,7 +56,7 @@ public class OpenlletExceptionFormatter
 	 *
 	 * @param e
 	 */
-	private String formatGeneric(final Throwable e)
+	private static String formatGeneric(final Throwable e)
 	{
 		String msg = e.getMessage();
 		if (msg != null)

@@ -41,19 +41,12 @@ import org.apache.jena.sparql.engine.binding.BindingMap;
 public class SparqlDLResultSet implements ResultSetRewindable
 {
 	private final Model				_model;
-
 	private final List<ATermAppl>	_resultVars;
-
 	private final List<String>		_resultVarsString;
-
 	private final QueryResult		_queryResult;
-
 	private int						_index;
-
 	private Iterator<ResultBinding>	_bindings;
-
 	private final Binding			_parent;
-
 	private QueryParameters			_parameters;
 
 	public SparqlDLResultSet(final QueryResult answers, final Model model)
@@ -93,15 +86,13 @@ public class SparqlDLResultSet implements ResultSetRewindable
 		if (parameters == null) _parameters = new QueryParameters();
 	}
 
-	protected String getVarName(final ATermAppl term)
+	protected static String getVarName(final ATermAppl term)
 	{
 		return ((ATermAppl) term.getArgument(0)).getName();
 	}
 
 	/**
-	 * Return the underlying QueryResults object
-	 *
-	 * @return
+	 * @return the underlying QueryResults object
 	 */
 	public QueryResult getQueryResult()
 	{
@@ -173,18 +164,12 @@ public class SparqlDLResultSet implements ResultSetRewindable
 		return nextSolution();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public boolean isDistinct()
 	{
 		return _queryResult.isDistinct();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public boolean isOrdered()
+	public static boolean isOrdered()
 	{
 		return false;
 	}

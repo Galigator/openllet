@@ -88,7 +88,7 @@ public class JenaLoader extends KBLoader
 	/**
 	 * Used for the Jena loader
 	 *
-	 * @param _inputFormat
+	 * @param inputFormat
 	 */
 	public void setInputFormat(final String inputFormat)
 	{

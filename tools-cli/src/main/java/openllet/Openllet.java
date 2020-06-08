@@ -54,10 +54,9 @@ public class Openllet
 
 	public static void main(final String[] args)
 	{
-		final Openllet app = new Openllet();
 		try
 		{
-			app.run(args);
+			Openllet.run(args);
 		}
 		catch (final OpenlletCmdException e)
 		{
@@ -83,7 +82,7 @@ public class Openllet
 		return cmd;
 	}
 
-	private void run(final String[] args)
+	private static void run(final String[] args)
 	{
 		if (args.length == 0) throw new OpenlletCmdException("Type 'openllet help' for usage.");
 
@@ -110,7 +109,7 @@ public class Openllet
 		}
 	}
 
-	private void mainhelp()
+	private static void mainhelp()
 	{
 		final StringBuffer buf = new StringBuffer();
 		final String version = getVersionInfo().getVersionString();
@@ -136,12 +135,12 @@ public class Openllet
 		System.exit(0);
 	}
 
-	private VersionInfo getVersionInfo()
+	private static VersionInfo getVersionInfo()
 	{
 		return VersionInfo.getInstance();
 	}
 
-	private void version()
+	private static void version()
 	{
 		System.out.println(getVersionInfo());
 	}

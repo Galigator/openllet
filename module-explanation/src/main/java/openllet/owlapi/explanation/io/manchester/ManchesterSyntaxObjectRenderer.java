@@ -115,7 +115,7 @@ public class ManchesterSyntaxObjectRenderer implements OWLObjectVisitor
 	protected BlockWriter	_writer;
 
 	/**
-	 * @param _writer
+	 * @param writer
 	 */
 	public ManchesterSyntaxObjectRenderer(final BlockWriter writer)
 	{
@@ -148,7 +148,7 @@ public class ManchesterSyntaxObjectRenderer implements OWLObjectVisitor
 	 * @param  theIRI the URI
 	 * @return        the local name part of the URI identifier
 	 */
-	protected String shortForm(final IRI theIRI)
+	protected static String shortForm(final IRI theIRI)
 	{
 		final String fragment = XMLUtils.getNCNameSuffix(theIRI);
 		if (fragment != null) return fragment;
@@ -707,9 +707,6 @@ public class ManchesterSyntaxObjectRenderer implements OWLObjectVisitor
 		write(")");
 	}
 
-	/**
-	 * @inheritDoc
-	 */
 	@Override
 	public void visit(final SWRLRule rule)
 	{

@@ -205,7 +205,7 @@ public class OpenlletCmdOption
 		return "[ " + _longOption + ", " + _shortOption + ", " + _type + ", " + _description + ", " + _isMandatory + ", " + _value + ", " + _defaultValue + " ]";
 	}
 
-	private String removeHyphen(final String option)
+	private static String removeHyphen(final String option)
 	{
 		int start = 0;
 		while (option.charAt(start) == '-')

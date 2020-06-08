@@ -268,10 +268,10 @@ public class InterruptReasoningExample
 		// we need to restart the timer as above
 		timers._mainTimer.restart();
 
-		try
+		try (var qe = SparqlDLExecutionFactory.create(query, model))
 		{
 			// run the SPARQL query
-			final ResultSet results = SparqlDLExecutionFactory.create(query, model).execSelect();
+			final ResultSet results = qe.execSelect();
 
 			final int size = ResultSetFormatter.consume(results);
 			System.out.print("completed in " + timers._mainTimer.getElapsed() + "ms");

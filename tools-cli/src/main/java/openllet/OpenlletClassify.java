@@ -191,7 +191,7 @@ public class OpenlletClassify extends OpenlletCmdApp
 	}
 
 	/**
-	 * Stores the _current state of the incremental classifier to a file (the file name is determined automatically based on ontology's IRI).
+	 * Stores the current state of the incremental classifier to a file (the file name is determined automatically based on ontology's IRI).
 	 *
 	 * @param incrementalClassifier the incremental classifier to be stored
 	 * @param ontology              the ontology
@@ -199,11 +199,9 @@ public class OpenlletClassify extends OpenlletCmdApp
 	private void persistIncrementalClassifier(final IncrementalClassifier incrementalClassifier, final OWLOntology ontology)
 	{
 		final File saveFile = determineSaveFile(ontology);
-
-		try
+		verbose("Saving the state of the classifier to " + saveFile);
+		try (final FileOutputStream outputStream = new FileOutputStream(saveFile))
 		{
-			verbose("Saving the state of the classifier to " + saveFile);
-			final FileOutputStream outputStream = new FileOutputStream(saveFile);
 			IncrementalClassifierPersistence.save(incrementalClassifier, outputStream);
 		}
 		catch (final IOException e)
@@ -222,10 +220,8 @@ public class OpenlletClassify extends OpenlletCmdApp
 	 */
 	private IncrementalClassifier loadIncrementalClassifier(final OWLOntology ontology, final File file)
 	{
-		try
+		try (final FileInputStream inputStream = new FileInputStream(file))
 		{
-			final FileInputStream inputStream = new FileInputStream(file);
-
 			verbose("Reading persisted classifier state from " + file);
 			final IncrementalClassifier result = IncrementalClassifierPersistence.load(inputStream, ontology);
 
@@ -270,7 +266,7 @@ public class OpenlletClassify extends OpenlletCmdApp
 	 *
 	 * @return the string representation of the hash code of the ontology IRI
 	 */
-	private String hashOntologyIRI(final OWLOntology ontology)
+	private static String hashOntologyIRI(final OWLOntology ontology)
 	{
 		final byte[] uriBytes = ontology.getOntologyID().getOntologyIRI().toString().getBytes();
 

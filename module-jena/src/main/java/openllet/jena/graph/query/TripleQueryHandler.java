@@ -34,6 +34,7 @@ public abstract class TripleQueryHandler
 		return objectFiller(s, p, objects.iterator());
 	}
 
+	@SuppressWarnings("static-method")
 	protected ExtendedIterator<Triple> objectFiller(final Node s, final Node p, final Iterator<ATermAppl> objects)
 	{
 		return WrappedIterator.create(objects)//
@@ -53,6 +54,7 @@ public abstract class TripleQueryHandler
 		return propertyFiller(s, properties.iterator(), o);
 	}
 
+	@SuppressWarnings("static-method")
 	protected ExtendedIterator<Triple> propertyFiller(final Node s, final Iterator<ATermAppl> properties, final Node o)
 	{
 		return WrappedIterator.create(properties)//
@@ -67,6 +69,7 @@ public abstract class TripleQueryHandler
 		return subjectFiller(subjects.iterator(), p, o);
 	}
 
+	@SuppressWarnings("static-method")
 	protected ExtendedIterator<Triple> subjectFiller(final Iterator<ATermAppl> subjects, final Node p, final Node o)
 	{
 		return WrappedIterator.create(subjects)//

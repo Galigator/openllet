@@ -49,7 +49,7 @@ public class PersistenceExample
 	// Don't modify this
 	private static final String	NS				= "http://www.co-ode.org/ontologies/galen#";
 
-	public void run() throws OWLOntologyCreationException
+	public static void run() throws OWLOntologyCreationException
 	{
 		// Load the ontology file into an OWL ontology object
 		final OWLOntology ontology = OWL._manager.loadOntology(IRI.create(file));
@@ -140,7 +140,6 @@ public class PersistenceExample
 
 	public static void main(final String[] args) throws OWLOntologyCreationException
 	{
-		final PersistenceExample app = new PersistenceExample();
-		app.run();
+		PersistenceExample.run();
 	}
 }

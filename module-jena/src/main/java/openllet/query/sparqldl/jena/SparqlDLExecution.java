@@ -71,13 +71,9 @@ class SparqlDLExecution implements QueryExecution
 	}
 
 	private final Query		_query;
-
 	private final Dataset	_source;
-
 	private QuerySolution	_initialBinding;
-
 	private boolean			_purePelletQueryExec	= false;
-
 	private boolean			_handleVariableSPO		= true;
 
 	public SparqlDLExecution(final String query, final Model source)
@@ -132,9 +128,7 @@ class SparqlDLExecution implements QueryExecution
 	public Model execConstruct()
 	{
 		final Model model = ModelFactory.createDefaultModel();
-
 		execConstruct(model);
-
 		return model;
 	}
 
@@ -193,7 +187,9 @@ class SparqlDLExecution implements QueryExecution
 
 	/**
 	 * {@inheritDoc}
+	 * YOU HAVE TO CLOSE THE ResultSet AFTER USING IT
 	 */
+	@SuppressWarnings("resource")
 	@Override
 	public ResultSet execSelect()
 	{

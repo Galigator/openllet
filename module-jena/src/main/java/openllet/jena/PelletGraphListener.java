@@ -35,15 +35,10 @@ import org.apache.jena.vocabulary.RDF;
 public class PelletGraphListener implements GraphListener
 {
 	private final Set<Graph>	_changedGraphs		= SetUtils.create();
-
 	private final Graph			_rootGraph;
-
 	private final KnowledgeBase	_kb;									// KB object - used for incremental ABox changes
-
 	private volatile Set<Graph>	_leafGraphs			= SetUtils.create();
-
 	private boolean				_statementDeleted	= false;
-
 	private boolean				_enabled;
 
 	public PelletGraphListener(final Graph rootGraph, final KnowledgeBase kb, final boolean enabled)
@@ -168,9 +163,6 @@ public class PelletGraphListener implements GraphListener
 		return _changedGraphs;
 	}
 
-	/**
-	 * @return
-	 */
 	public Set<Graph> getLeafGraphs()
 	{
 		return _leafGraphs;

@@ -21,15 +21,10 @@ import org.semanticweb.owlapi.model.OWLException;
 public class ManchesterSyntaxExplanationRenderer implements ExplanationRenderer
 {
 	protected ManchesterSyntaxObjectRenderer	_renderer;
-
 	protected BlockWriter						_writer;
-
 	protected OWLAxiom							_currentAxiom;
-
 	private boolean								_wrapLines		= true;
-
 	private boolean								_smartIndent	= true;
-
 	private int									_index;
 
 	public ManchesterSyntaxExplanationRenderer()
@@ -147,8 +142,8 @@ public class ManchesterSyntaxExplanationRenderer implements ExplanationRenderer
 	/**
 	 * Sets the smart indent option which will align the elements of intersections and unions in columns when line wrapping is turned on.
 	 *
-	 * @param _smartIndent the smart indent value
-	 * @see                #setWrapLines(boolean)
+	 * @param smartIndent the smart indent value
+	 * @see               #setWrapLines(boolean)
 	 */
 	public void setSmartIndent(final boolean smartIndent)
 	{
@@ -158,7 +153,7 @@ public class ManchesterSyntaxExplanationRenderer implements ExplanationRenderer
 	/**
 	 * Sets the line wrapping option which will print the elements of intersections and unions into multiple lines.
 	 *
-	 * @param _wrapLines the line wrapping value
+	 * @param wrapLines the line wrapping value
 	 */
 	public void setWrapLines(final boolean wrapLines)
 	{

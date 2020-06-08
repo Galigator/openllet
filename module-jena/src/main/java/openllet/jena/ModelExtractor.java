@@ -222,6 +222,8 @@ public class ModelExtractor
 	/**
 	 * Initialize the extractor with a Jena model that is backed by PelletInfGraph.
 	 *
+	 * @param  model              is a Jena model that is backed by PelletInfGraph.
+	 *
 	 * @throws ClassCastException if the model.getGraph() does not return an instance of PelletInfGraph
 	 */
 	public ModelExtractor(final Model model) throws ClassCastException
@@ -231,6 +233,8 @@ public class ModelExtractor
 
 	/**
 	 * Initialize the extractor with a PelletInfGraph
+	 *
+	 * @param graph is a PelletInfGraph
 	 */
 	public ModelExtractor(final PelletInfGraph graph)
 	{
@@ -239,6 +243,8 @@ public class ModelExtractor
 
 	/**
 	 * Initialize the extractor with a reasoner
+	 *
+	 * @param kb is a reasoner
 	 */
 	public ModelExtractor(final KnowledgeBase kb)
 	{
@@ -360,6 +366,8 @@ public class ModelExtractor
 
 	/**
 	 * Extract statements about individuals
+	 *
+	 * @return a statements container
 	 */
 	public Model extractIndividualModel()
 	{
@@ -368,6 +376,9 @@ public class ModelExtractor
 
 	/**
 	 * Extract statements about individuals
+	 *
+	 * @param  model
+	 * @return       a statements container
 	 */
 	public Model extractIndividualModel(final Model model)
 	{
@@ -612,7 +623,7 @@ public class ModelExtractor
 	}
 
 	/**
-	 * Get the _selector
+	 * @return the selector
 	 */
 	public EnumSet<StatementType> getSelector()
 	{
@@ -620,7 +631,7 @@ public class ModelExtractor
 	}
 
 	/**
-	 * Sets the _selector
+	 * @param selector to set
 	 */
 	public void setSelector(final EnumSet<StatementType> selector)
 	{
@@ -636,7 +647,7 @@ public class ModelExtractor
 	}
 
 	/**
-	 * @param reasoner The reasoner to set.
+	 * @param kb as reasoner to set.
 	 */
 	public void setKB(final KnowledgeBase kb)
 	{
@@ -644,9 +655,7 @@ public class ModelExtractor
 	}
 
 	/**
-	 * Get the _filter used to _filter out any unwanted inferences from the result.
-	 *
-	 * @return
+	 * @return the filter used to filter out any unwanted inferences from the result.
 	 */
 	public Predicate<Triple> getFilter()
 	{
@@ -654,10 +663,10 @@ public class ModelExtractor
 	}
 
 	/**
-	 * Sets the _filter that will _filter out any unwanted inferences from the result. The _filter should process {@link Triple} objects and return
+	 * Sets the filter that will filter out any unwanted inferences from the result. The filter should process {@link Triple} objects and return
 	 * <code>true</code> for any triple that should not be included in the result. Use {@link #FILTER_NONE} to disable filtering.
 	 *
-	 * @param _filter
+	 * @param filter see bellow
 	 */
 	public void setFilter(final Predicate<Triple> filter)
 	{

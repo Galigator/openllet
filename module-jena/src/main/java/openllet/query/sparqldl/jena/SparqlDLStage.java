@@ -123,10 +123,6 @@ class SparqlDLStage
 		private final PelletInfGraph	_pellet;
 		private final Query				_query;
 
-		/**
-		 * @param input
-		 * @param context
-		 */
 		public PelletQueryIterator(final PelletInfGraph pellet, final Query query, final QueryIterator input, final ExecutionContext execCxt)
 		{
 			super(input, execCxt);

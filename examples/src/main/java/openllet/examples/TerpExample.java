@@ -43,7 +43,7 @@ public class TerpExample
 	private static final String		ontology	= "file:examples/data/university0-0.owl";
 	private static final String[]	queries		= new String[] { "file:examples/data/lubm-query.terp", "file:examples/data/lubm-query3.terp", "file:examples/data/lubm-query5.terp" };
 
-	public void run()
+	public static void run()
 	{
 		// register the Terp _parser
 		ARQTerpParser.registerFactory();
@@ -61,17 +61,18 @@ public class TerpExample
 			// Important: specifying that the query is in Terp syntax
 			final Query q = QueryFactory.read(query, TerpSyntax.getInstance());
 
-			// Create a SPARQL-DL query execution for the given query and
-			// ontology model
-			final QueryExecution qe = SparqlDLExecutionFactory.create(q, m);
+			// Create a SPARQL-DL query execution for the given query and ontology model
+			try (final QueryExecution qe = SparqlDLExecutionFactory.create(q, m))
+			{
 
-			// We want to execute a SELECT query, do it, and return the result set
-			final ResultSet rs = qe.execSelect();
+				// We want to execute a SELECT query, do it, and return the result set
+				final ResultSet rs = qe.execSelect();
 
-			// There are different things we can do with the result set, for
-			// instance iterate over it and process the query solutions or, what we
-			// do here, just print out the results
-			ResultSetFormatter.out(rs);
+				// There are different things we can do with the result set, for
+				// instance iterate over it and process the query solutions or, what we
+				// do here, just print out the results
+				ResultSetFormatter.out(rs);
+			}
 
 			// And an empty line to make it pretty
 			System.out.println();
@@ -80,8 +81,7 @@ public class TerpExample
 
 	public static void main(final String[] args)
 	{
-		final TerpExample app = new TerpExample();
-		app.run();
+		TerpExample.run();
 	}
 
 }

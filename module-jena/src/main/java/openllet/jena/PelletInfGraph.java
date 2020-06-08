@@ -494,7 +494,7 @@ public class PelletInfGraph extends BaseInfGraph
 	}
 
 	/**
-	 * Returns the underlying Pellet KnowledgeBase. Before calling this function make sure the graph {@link #isPrepared()} or use {@link #getPreparedKB()}.
+	 * @return the underlying Pellet KnowledgeBase. Before calling this function make sure the graph {@link #isPrepared()} or use {@link #getPreparedKB()}.
 	 */
 	public KnowledgeBase getKB()
 	{
@@ -502,7 +502,7 @@ public class PelletInfGraph extends BaseInfGraph
 	}
 
 	/**
-	 * Returns the underlying Pellet KnowledgeBase after calling {@link #prepare()}.
+	 * @return the underlying Pellet KnowledgeBase after calling {@link #prepare()}.
 	 */
 	public KnowledgeBase getPreparedKB()
 	{
@@ -621,6 +621,8 @@ public class PelletInfGraph extends BaseInfGraph
 	 * Sets auto detection of changes in the subgraphs associated with this model. If a graph or subgraph associated with this inference graph is updated out of
 	 * band there is no way to know for the reasoner that the underlying _data has changed and reasoning results will be stale. When this option is turned
 	 * Pellet will attach listeners to all the subgraphs and will be notified of all changes. It will also detect addition and removal of new subgraphs.
+	 *
+	 * @param autoDetectChanges is the mode
 	 */
 	public void setAutoDetectChanges(final boolean autoDetectChanges)
 	{

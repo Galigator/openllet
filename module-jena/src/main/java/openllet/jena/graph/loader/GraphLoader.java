@@ -32,31 +32,29 @@ public interface GraphLoader
 	void clear();
 
 	/**
-	 * Get the Jena graph used in the loader.
-	 *
-	 * @return
+	 * @return the Jena graph used in the loader.
 	 */
 	Graph getGraph();
 
 	/**
-	 * Returns the unsupported axioms ignored by the loader.
-	 *
-	 * @return
+	 * @return the unsupported axioms ignored by the loader.
 	 */
 	Set<String> getUnpportedFeatures();
 
 	/**
 	 * Load the axioms from the Jena graphs to the given KB.
+	 * 
+	 * @param  graphs                      with jena axioms
 	 *
 	 * @throws UnsupportedFeatureException
 	 */
 	void load(final Iterable<Graph> graphs) throws UnsupportedFeatureException;
 
 	/**
-	 * Translate the given graph _node into an ATerm object.
+	 * Translate the given graph node into an ATerm object.
 	 *
-	 * @param  _node
-	 * @return
+	 * @param  node
+	 * @return      an ATerm object that represent the graph.
 	 */
 	ATermAppl node2term(final Node node);
 
@@ -106,6 +104,8 @@ public interface GraphLoader
 	 * is an _individual and p is a datatype property) whereas (s rdf:type owl:Class) and (p rdf:type owl:AnnotiationProperty) triples have not yet been
 	 * processed. These problems depend on the _order triples are processed and highly unpredictable. Loading the schema first with preprocessing and loading
 	 * the instance _data without preprocessing would be a viable option if schema and instance _data are in separate files.
+	 *
+	 * @param preprocessTypeTriples is the mode/option
 	 */
 	void setPreprocessTypeTriples(final boolean preprocessTypeTriples);
 

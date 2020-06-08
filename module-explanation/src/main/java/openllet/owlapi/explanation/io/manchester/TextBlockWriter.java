@@ -34,13 +34,10 @@ public class TextBlockWriter extends BlockWriter
 	private final ArrayList<Integer>	_blockColumns	= new ArrayList<>();
 
 	/**
-	 * The _current _column (number of the characters printed) for the _current line
+	 * The current column (number of the characters printed) for the current line
 	 */
 	private int							_column			= 0;
 
-	/**
-	 * @param out
-	 */
 	public TextBlockWriter(final Writer outWriter)
 	{
 		super(outWriter, " ");

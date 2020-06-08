@@ -467,12 +467,12 @@ public abstract class OpenlletCmdApp implements Logging
 			return ret.toString();
 		}
 
-		private String fill(final int n)
+		private static String fill(final int n)
 		{
 			return draw(" ", n);
 		}
 
-		private String draw(final String c, final int n)
+		private static String draw(final String c, final int n)
 		{
 			final StringBuffer ret = new StringBuffer();
 
@@ -482,7 +482,7 @@ public abstract class OpenlletCmdApp implements Logging
 			return ret.toString();
 		}
 
-		private String firstLine(final String shortOption, final String longOption, final String type, final OpenlletCmdOptionArg arg)
+		private static String firstLine(final String shortOption, final String longOption, final String type, final OpenlletCmdOptionArg arg)
 		{
 			final StringBuffer ret = new StringBuffer();
 

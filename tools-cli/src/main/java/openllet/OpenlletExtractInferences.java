@@ -113,7 +113,7 @@ public class OpenlletExtractInferences extends OpenlletCmdApp
 		if (_debug) output(extracted);
 	}
 
-	private String validStatementArguments()
+	private static String validStatementArguments()
 	{
 		final List<String> sa = new ArrayList<>();
 
