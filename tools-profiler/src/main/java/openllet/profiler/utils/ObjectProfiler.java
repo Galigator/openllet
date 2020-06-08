@@ -551,6 +551,8 @@ public abstract class ObjectProfiler
 			else
 			{
 				// prepare for graph traversal later:
+				final boolean x = field.canAccess(caAction);
+				final boolean y = field.isAccessible();
 				if (!field.isAccessible())
 				{
 					try
