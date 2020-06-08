@@ -25,11 +25,13 @@ public class ModularityUtils
 {
 	/**
 	 * Extract the module from the imports closure of the given ontology for the given signature. Modules contain axioms related to the signature elements that
-	 * describe how they relate to each other. There are four module types supported with the following very rough explanations: <ul <li>lower (top) module
-	 * contains subclasses of the signature elements</li> <li>upper (bot) module contains superclasses of the signature elements</li> <li>upper-of-lower
-	 * (bot_of_top) module extract the upper module from the lower module</li> <li>lower-of-upper (top_of_bot) module - extract the lower module from the upper
-	 * module</li> </ul> The module types are closely related to the locality class used. Lower module is extracted with top locality and thus also called top
-	 * module.
+	 * describe how they relate to each other. There are four module types supported with the following very rough explanations: <ul
+	 * <li>lower (top) module contains subclasses of the signature elements</li>
+	 * <li>upper (bot) module contains superclasses of the signature elements</li>
+	 * <li>upper-of-lower (bot_of_top) module extract the upper module from the lower module</li>
+	 * <li>lower-of-upper (top_of_bot) module - extract the lower module from the upper module</li>
+	 * </ul>
+	 * The module types are closely related to the locality class used. Lower module is extracted with top locality and thus also called top module.
 	 *
 	 * @param ontology ontolgoy from which the module is extracted
 	 * @param signature set of entities used to extract the module
@@ -73,7 +75,7 @@ public class ModularityUtils
 
 	private static Iterator<OWLAxiom> axiomIterator(final Set<OWLOntology> ontologies)
 	{
-		return new NestedIterator<OWLOntology, OWLAxiom>(ontologies)
+		return new NestedIterator<>(ontologies)
 		{
 			@Override
 			public Iterator<? extends OWLAxiom> getInnerIterator(final OWLOntology ont)

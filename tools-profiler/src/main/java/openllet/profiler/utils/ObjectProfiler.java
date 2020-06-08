@@ -74,7 +74,8 @@ public abstract class ObjectProfiler
 	 */
 	public static int sizeof(final Object obj)
 	{
-		if (obj == null) { return 0; }
+		if (obj == null)
+		{ return 0; }
 
 		final IdentityHashMap<Object, Object> visited = new IdentityHashMap<>();
 
@@ -83,7 +84,8 @@ public abstract class ObjectProfiler
 
 	public static int sizeof(final Object obj, final Object... avoid)
 	{
-		if (obj == null) { return 0; }
+		if (obj == null)
+		{ return 0; }
 
 		final IdentityHashMap<Object, Object> visited = new IdentityHashMap<>();
 
@@ -105,8 +107,10 @@ public abstract class ObjectProfiler
 	 */
 	public static int sizedelta(final Object base, final Object obj)
 	{
-		if (obj == null) { return 0; }
-		if (base == null) { throw new IllegalArgumentException("null input: base"); }
+		if (obj == null)
+		{ return 0; }
+		if (base == null)
+		{ throw new IllegalArgumentException("null input: base"); }
 
 		final IdentityHashMap<Object, Object> visited = new IdentityHashMap<>();
 
@@ -124,7 +128,8 @@ public abstract class ObjectProfiler
 	 */
 	public static IObjectProfileNode profile(final Object obj)
 	{
-		if (obj == null) { throw new IllegalArgumentException("null input: obj"); }
+		if (obj == null)
+		{ throw new IllegalArgumentException("null input: obj"); }
 
 		final IdentityHashMap<Object, ObjectProfileNode> visited = new IdentityHashMap<>();
 
@@ -269,7 +274,8 @@ public abstract class ObjectProfiler
 		// graph path/width of traversal front correspondingly, so I expect
 		// dfs to use fewer resources than bfs for most Java objects;
 
-		if (obj == null) { return 0; }
+		if (obj == null)
+		{ return 0; }
 
 		final LinkedList<Object> queue = new LinkedList<>();
 
@@ -501,14 +507,16 @@ public abstract class ObjectProfiler
 	 */
 	private static ClassMetadata getClassMetadata(final Class<?> cls, final Map /* Class->ClassMetadata */<Class<?>, ClassMetadata> metadataMap, final ClassAccessPrivilegedAction caAction, final FieldAccessPrivilegedAction faAction)
 	{
-		if (cls == null) { return null; }
+		if (cls == null)
+		{ return null; }
 
 		ClassMetadata result;
 		synchronized (metadataMap)
 		{
 			result = metadataMap.get(cls);
 		}
-		if (result != null) { return result; }
+		if (result != null)
+		{ return result; }
 
 		int primitiveFieldCount = 0;
 		int shellSize = OBJECT_SHELL_SIZE; // java.lang.Object shell

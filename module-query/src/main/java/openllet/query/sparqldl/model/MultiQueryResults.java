@@ -40,8 +40,8 @@ public class MultiQueryResults implements QueryResult
 
 	public MultiQueryResults(final List<ATermAppl> resultVars, final List<QueryResult> queryResults)
 	{
-		this._resultVars = resultVars;
-		this._queryResults = queryResults;
+		_resultVars = resultVars;
+		_queryResults = queryResults;
 
 		_size = 1;
 		for (final QueryResult result : queryResults)
@@ -94,7 +94,7 @@ public class MultiQueryResults implements QueryResult
 	@Override
 	public Iterator<ResultBinding> iterator()
 	{
-		return new Iterator<ResultBinding>()
+		return new Iterator<>()
 		{
 			private final List<Iterator<ResultBinding>> iterators = new ArrayList<>();
 
