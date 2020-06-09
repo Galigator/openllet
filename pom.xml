@@ -219,7 +219,7 @@
 						<configuration>
 							<rules>
 								<requireJavaVersion><!-- Check Java version -->
-                                    <version>[10,14)</version>
+                                    <version>[10,15)</version>
 								</requireJavaVersion>
 
 								<requireReleaseDeps><!-- Ensure that release module does not depend on any snapshot module -->
