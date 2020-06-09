@@ -1,5 +1,5 @@
 dist: trusty
-sudo: required
+os: linux
 language: java
 jdk: openjdk14
 
