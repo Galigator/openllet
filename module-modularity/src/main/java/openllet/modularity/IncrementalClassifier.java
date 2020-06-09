@@ -94,7 +94,6 @@ import org.semanticweb.owlapi.util.Version;
 public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeListener
 {
 	public static final String								_namedClassesSupportOnly	= "This reasoner only supports named classes";
-
 	public static final Logger								_logger						= Log.getLogger(IncrementalClassifier.class);
 
 	/**
@@ -111,7 +110,6 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 	 * Module _extractor
 	 */
 	private volatile ModuleExtractor						_extractor					= ModuleExtractorFactory.createModuleExtractor();
-
 	private volatile Taxonomy<OWLClass>						_taxonomyImpl				= null;
 
 	/**
@@ -119,11 +117,8 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 	 * memory requirements because both processes need additional memory during running which will be freed at the _end of the process.
 	 */
 	private volatile boolean								_multiThreaded				= true;
-
 	public volatile Timers									_timers						= _extractor.getTimers();
-
 	private final Random									RND							= new Random();
-
 	private volatile boolean								_realized					= false;
 
 	public IncrementalClassifier(final OWLOntology ontology)
@@ -212,6 +207,9 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 
 	/**
 	 * Build the class hierarchy based on the results from the _reasoner
+	 *
+	 * @param  reasoner to reason on
+	 * @return          the Taxonomy hierarchy
 	 */
 	static public Taxonomy<OWLClass> buildClassHierarchy(final OpenlletReasoner reasoner)
 	{
@@ -291,7 +289,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 	}
 
 	/**
-	 * Get the _modules
+	 * @return the modules
 	 */
 	public MultiValueMap<OWLEntity, OWLEntity> getModules()
 	{
@@ -299,7 +297,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 	}
 
 	/**
-	 * Get the underlying reasoner
+	 * @return the underlying reasoner
 	 */
 	public OpenlletReasoner getReasoner()
 	{
@@ -675,7 +673,7 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 	 * separate threads concurrently. Doing so might reduce overall processing time but it also increases the memory requirements because both processes need
 	 * additional memory during running which will be freed at the _end of the process.
 	 *
-	 * @param _multiThreaded value to set the multi-threaded option
+	 * @param multiThreaded value to set the multi-threaded option
 	 */
 	public void setMultiThreaded(final boolean multiThreaded)
 	{
@@ -1276,9 +1274,6 @@ public class IncrementalClassifier implements OWLReasoner, OWLOntologyChangeList
 		return getReasoner().isEntailmentCheckingSupported(axiomType);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public void prepareReasoner() throws ReasonerInterruptedException, TimeOutException
 	{
 		classify();

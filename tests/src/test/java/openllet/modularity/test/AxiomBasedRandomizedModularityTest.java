@@ -14,9 +14,6 @@ import openllet.modularity.ModuleExtractor;
  */
 public class AxiomBasedRandomizedModularityTest extends RandomizedModularityTest
 {
-	/**
-	 * @param path
-	 */
 	public AxiomBasedRandomizedModularityTest()
 	{
 		super("test/data/modularity/");

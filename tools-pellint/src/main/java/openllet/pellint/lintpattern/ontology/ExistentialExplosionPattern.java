@@ -23,13 +23,14 @@ import openllet.pellint.model.LintFactory;
 import openllet.pellint.model.Severity;
 import openllet.pellint.util.OptimizedDirectedMultigraph;
 import org.jgrapht.Graph;
-import org.jgrapht.alg.CycleDetector;
-import org.jgrapht.alg.KosarajuStrongConnectivityInspector;
 import org.jgrapht.alg.TransitiveClosure;
+import org.jgrapht.alg.connectivity.KosarajuStrongConnectivityInspector;
+import org.jgrapht.alg.cycle.CycleDetector;
 import org.jgrapht.alg.interfaces.StrongConnectivityAlgorithm;
 import org.jgrapht.graph.AsSubgraph;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.EdgeReversedGraph;
+import org.jgrapht.nio.dot.DOTExporter;
 import org.jgrapht.traverse.TopologicalOrderIterator;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLClass;
@@ -125,7 +126,7 @@ public class ExistentialExplosionPattern implements OntologyLintPattern
 	@SuppressWarnings("unused")
 	private static <V, E> void printGraph(final Graph<V, E> graph)
 	{
-		final org.jgrapht.io.DOTExporter<V, E> exp = new org.jgrapht.io.DOTExporter<>(new org.jgrapht.io.StringComponentNameProvider<>(), null, null, null, null, null);
+		final DOTExporter<V, E> exp = new DOTExporter<>(component -> component.toString());
 		exp.exportGraph(graph, new BufferedWriter(new PrintWriter(System.out)));
 	}
 

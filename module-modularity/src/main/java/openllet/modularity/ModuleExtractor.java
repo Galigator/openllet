@@ -22,12 +22,6 @@ import org.semanticweb.owlapi.model.OWLOntology;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2008
  * </p>
  * <p>
@@ -40,11 +34,15 @@ public interface ModuleExtractor
 {
 	/**
 	 * Adds an axiom to the extractor.
+	 *
+	 * @param axiom
 	 */
 	void addAxiom(final OWLAxiom axiom);
 
 	/**
 	 * Adds all the axioms to the extractor.
+	 *
+	 * @param axioms
 	 */
 	void addAxioms(final Stream<OWLAxiom> axioms);
 
@@ -52,9 +50,7 @@ public interface ModuleExtractor
 	void addAxioms(final Iterable<OWLAxiom> axioms);
 
 	/**
-	 * Returns if the extracted modules can be updated. Returns false if the initial module extraction has not been performed yet.
-	 *
-	 * @return
+	 * @return true if the extracted modules can be updated. Returns false if the initial module extraction has not been performed yet.
 	 */
 	boolean canUpdate();
 
@@ -68,7 +64,7 @@ public interface ModuleExtractor
 	/**
 	 * Extract modules for all classes from scratch
 	 *
-	 * @return
+	 * @return the modules for all classes from scratch
 	 */
 	MultiValueMap<OWLEntity, OWLEntity> extractModules();
 
@@ -85,10 +81,8 @@ public interface ModuleExtractor
 	Set<OWLAxiom> getAxioms();
 
 	/**
-	 * Return the axioms which references this entity
-	 *
 	 * @param  entity
-	 * @return
+	 * @return        the axioms which references this entity
 	 */
 	Stream<OWLAxiom> axioms(final OWLEntity entity);
 
@@ -105,18 +99,13 @@ public interface ModuleExtractor
 	OWLOntology getModule(final OWLEntity entity);
 
 	/**
-	 * Returns a new ontology that contains the axioms that are in the module for given set of entities
-	 *
 	 * @param  signature
-	 * @return
-	 * @throws OWLException
+	 * @return           a new ontology that contains the axioms that are in the module for given set of entities
 	 */
 	OWLOntology getModuleFromSignature(final Set<OWLEntity> signature);
 
 	/**
-	 * Returns the _timers used by this extractor to collect statistics about performance.
-	 *
-	 * @return
+	 * @return the timers used by this extractor to collect statistics about performance.
 	 */
 	Timers getTimers();
 
@@ -130,12 +119,16 @@ public interface ModuleExtractor
 	/**
 	 * Checks if the changes that has not yet been updated require re-classification
 	 *
-	 * @return true if classification is needed, false otherwise
+	 * @param  expressivity to check
+	 *
+	 * @return              true if classification is needed, false otherwise
 	 */
 	boolean isClassificationNeeded(final Expressivity expressivity);
 
 	/**
 	 * Update the modules with the changes that have been put into the _queue so far.
+	 *
+	 * @param  taxonomy
 	 *
 	 * @return                               The set of entities whose modules are affected by the changes
 	 * @throws UnsupportedOperationException if modules cannot be updated as reported by {@link #canUpdate()} function

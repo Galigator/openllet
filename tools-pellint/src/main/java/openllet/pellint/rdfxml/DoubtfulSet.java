@@ -11,19 +11,14 @@ import java.util.Set;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2008
  * </p>
  * <p>
  * Company: Clark & Parsia, LLC. <http://www.clarkparsia.com>
  * </p>
  *
- * @author Harris Lin
+ * @author     Harris Lin
+ * @param  <E>
  */
 public class DoubtfulSet<E> extends HashSet<E>
 {

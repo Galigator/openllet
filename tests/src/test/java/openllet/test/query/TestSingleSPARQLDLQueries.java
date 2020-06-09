@@ -64,12 +64,12 @@ public class TestSingleSPARQLDLQueries
 		model.add(s, p, o);
 
 		final Query query = QueryFactory.create(q);
-		final QueryExecution qe = SparqlDLExecutionFactory.create(query, model);
-
-		final ResultSet rs = qe.execSelect();
-		ResultSetFormatter.consume(rs);
-
-		assertEquals(model.listStatements().toList().size(), rs.getRowNumber());
+		try (final QueryExecution qe = SparqlDLExecutionFactory.create(query, model))
+		{
+			final ResultSet rs = qe.execSelect();
+			ResultSetFormatter.consume(rs);
+			assertEquals(model.listStatements().toList().size(), rs.getRowNumber());
+		}
 	}
 
 	@Test
@@ -88,12 +88,12 @@ public class TestSingleSPARQLDLQueries
 		model.add(s, p, o);
 
 		final Query query = QueryFactory.create(q);
-		final QueryExecution qe = SparqlDLExecutionFactory.create(query, model);
-
-		final ResultSet rs = qe.execSelect();
-		ResultSetFormatter.consume(rs);
-
-		assertEquals(model.listStatements().toList().size(), rs.getRowNumber());
+		try (final QueryExecution qe = SparqlDLExecutionFactory.create(query, model))
+		{
+			final ResultSet rs = qe.execSelect();
+			ResultSetFormatter.consume(rs);
+			assertEquals(model.listStatements().toList().size(), rs.getRowNumber());
+		}
 	}
 
 	@Test
@@ -113,12 +113,12 @@ public class TestSingleSPARQLDLQueries
 		model.add(p, RDF.type, OWL.ObjectProperty);
 
 		final Query query = QueryFactory.create(q);
-		final QueryExecution qe = SparqlDLExecutionFactory.create(query, model);
-
-		final ResultSet rs = qe.execSelect();
-		ResultSetFormatter.consume(rs);
-
-		assertEquals(1, rs.getRowNumber());
+		try (final QueryExecution qe = SparqlDLExecutionFactory.create(query, model))
+		{
+			final ResultSet rs = qe.execSelect();
+			ResultSetFormatter.consume(rs);
+			assertEquals(1, rs.getRowNumber());
+		}
 	}
 
 	@Test
@@ -137,12 +137,12 @@ public class TestSingleSPARQLDLQueries
 		model.add(s, p, o);
 
 		final Query query = QueryFactory.create(q);
-		final QueryExecution qe = SparqlDLExecutionFactory.create(query, DatasetFactory.create(model), null, QueryEngineType.PELLET, false);
-
-		final ResultSet rs = qe.execSelect();
-		ResultSetFormatter.consume(rs);
-
-		assertEquals(1, rs.getRowNumber());
+		try (final QueryExecution qe = SparqlDLExecutionFactory.create(query, DatasetFactory.create(model), null, QueryEngineType.PELLET, false))
+		{
+			final ResultSet rs = qe.execSelect();
+			ResultSetFormatter.consume(rs);
+			assertEquals(1, rs.getRowNumber());
+		}
 	}
 
 	@Test
@@ -153,14 +153,14 @@ public class TestSingleSPARQLDLQueries
 
 		final Query query = QueryFactory.read("file:test/data/sparql-dawg-tests/data-r2/basic/base-prefix-1.rq");
 
-		final QueryExecution qe = SparqlDLExecutionFactory.create(query, model);
-
-		final ResultSet rs = qe.execSelect();
-		//ResultSetFormatter.out( rs );
-		ResultSetFormatter.consume(rs);
-
-		// Type, sameAs, one entry for each property assertion
-		assertEquals(1 + 1 + 2, rs.getRowNumber());
+		try (final QueryExecution qe = SparqlDLExecutionFactory.create(query, model))
+		{
+			final ResultSet rs = qe.execSelect();
+			//ResultSetFormatter.out( rs );
+			ResultSetFormatter.consume(rs);
+			// Type, sameAs, one entry for each property assertion
+			assertEquals(1 + 1 + 2, rs.getRowNumber());
+		}
 	}
 
 	@Test
@@ -177,12 +177,12 @@ public class TestSingleSPARQLDLQueries
 
 		final Query query = QueryFactory.read("file:test/data/sparql-dawg-tests/data-r2/graph/graph-01.rq");
 
-		final QueryExecution qe = SparqlDLExecutionFactory.create(query, model);
-
-		final ResultSet rs = qe.execSelect();
-		ResultSetFormatter.consume(rs);
-
-		assertEquals(model.listStatements().toList().size(), rs.getRowNumber());
+		try (final QueryExecution qe = SparqlDLExecutionFactory.create(query, model))
+		{
+			final ResultSet rs = qe.execSelect();
+			ResultSetFormatter.consume(rs);
+			assertEquals(model.listStatements().toList().size(), rs.getRowNumber());
+		}
 	}
 
 	@Test
@@ -197,12 +197,12 @@ public class TestSingleSPARQLDLQueries
 
 		final Query query = QueryFactory.read("file:test/data/sparql-dawg-tests/data-r2/graph/graph-01.rq");
 
-		final QueryExecution qe = SparqlDLExecutionFactory.create(query, DatasetFactory.create(model), null, QueryEngineType.MIXED, false);
-
-		final ResultSet rs = qe.execSelect();
-		ResultSetFormatter.consume(rs);
-
-		assertEquals(2, rs.getRowNumber());
+		try (final QueryExecution qe = SparqlDLExecutionFactory.create(query, DatasetFactory.create(model), null, QueryEngineType.MIXED, false))
+		{
+			final ResultSet rs = qe.execSelect();
+			ResultSetFormatter.consume(rs);
+			assertEquals(2, rs.getRowNumber());
+		}
 	}
 
 	@Test
@@ -213,12 +213,12 @@ public class TestSingleSPARQLDLQueries
 
 		final Query query = QueryFactory.read("file:test/data/sparql-dawg-tests/data-r2/optional-filter/expr-5.rq");
 
-		final QueryExecution qe = SparqlDLExecutionFactory.create(query, model);
-
-		final ResultSet rs = qe.execSelect();
-		ResultSetFormatter.consume(rs);
-
-		assertEquals(3, rs.getRowNumber());
+		try (final QueryExecution qe = SparqlDLExecutionFactory.create(query, model))
+		{
+			final ResultSet rs = qe.execSelect();
+			ResultSetFormatter.consume(rs);
+			assertEquals(3, rs.getRowNumber());
+		}
 	}
 
 	@Test
@@ -237,12 +237,12 @@ public class TestSingleSPARQLDLQueries
 		ontmodel.add(class1, RDFS.subClassOf, ontmodel.createEnumeratedClass(null, ontmodel.createList(inds)));
 
 		final Query query = QueryFactory.create("PREFIX rdf:<" + RDF.getURI() + ">\n" + "SELECT * WHERE {\n" + "  ?x rdf:first ?y .\n" + "}");
-		final QueryExecution qe = SparqlDLExecutionFactory.create(query, ontmodel);
-
-		final ResultSet rs = qe.execSelect();
-		ResultSetFormatter.consume(rs);
-
-		assertEquals(6, rs.getRowNumber());
+		try (final QueryExecution qe = SparqlDLExecutionFactory.create(query, ontmodel))
+		{
+			final ResultSet rs = qe.execSelect();
+			ResultSetFormatter.consume(rs);
+			assertEquals(6, rs.getRowNumber());
+		}
 
 	}
 
@@ -261,28 +261,33 @@ public class TestSingleSPARQLDLQueries
 		model.add(property1, RDF.type, RDF.Property);
 		model.add(property1, RDFS.label, literal1);
 
-		String q;
-		Query query;
-		QueryExecution qe;
-		ResultSet rs;
-
-		q = "PREFIX rdfs:<" + RDFS.getURI() + ">\n" + "SELECT * WHERE { ?x rdfs:label ?y }";
-		query = QueryFactory.create(q);
-		qe = SparqlDLExecutionFactory.createPelletExecution(query, model);
-		rs = qe.execSelect();
-		assertEquals(2, ResultSetFormatter.consume(rs));
-
-		q = "PREFIX rdfs:<" + RDFS.getURI() + ">\n" + "PREFIX ex:<" + NS + ">\n" + "SELECT * WHERE { ex:property1 rdfs:label ?y }";
-		query = QueryFactory.create(q);
-		qe = SparqlDLExecutionFactory.createPelletExecution(query, model);
-		rs = qe.execSelect();
-		assertEquals(1, ResultSetFormatter.consume(rs));
-
-		q = "PREFIX rdfs:<" + RDFS.getURI() + ">\n" + "PREFIX ex:<" + NS + ">\n" + "SELECT * WHERE { ?x rdfs:label \"Annotation 1\" }";
-		query = QueryFactory.create(q);
-		qe = SparqlDLExecutionFactory.createPelletExecution(query, model);
-		rs = qe.execSelect();
-		assertEquals(2, ResultSetFormatter.consume(rs));
+		{
+			final String q = "PREFIX rdfs:<" + RDFS.getURI() + ">\n" + "SELECT * WHERE { ?x rdfs:label ?y }";
+			final Query query = QueryFactory.create(q);
+			try (final QueryExecution qe = SparqlDLExecutionFactory.createPelletExecution(query, model))
+			{
+				final ResultSet rs = qe.execSelect();
+				assertEquals(2, ResultSetFormatter.consume(rs));
+			}
+		}
+		{
+			final String q = "PREFIX rdfs:<" + RDFS.getURI() + ">\n" + "PREFIX ex:<" + NS + ">\n" + "SELECT * WHERE { ex:property1 rdfs:label ?y }";
+			final Query query = QueryFactory.create(q);
+			try (final QueryExecution qe = SparqlDLExecutionFactory.createPelletExecution(query, model))
+			{
+				final ResultSet rs = qe.execSelect();
+				assertEquals(1, ResultSetFormatter.consume(rs));
+			}
+		}
+		{
+			final String q = "PREFIX rdfs:<" + RDFS.getURI() + ">\n" + "PREFIX ex:<" + NS + ">\n" + "SELECT * WHERE { ?x rdfs:label \"Annotation 1\" }";
+			final Query query = QueryFactory.create(q);
+			try (final QueryExecution qe = SparqlDLExecutionFactory.createPelletExecution(query, model))
+			{
+				final ResultSet rs = qe.execSelect();
+				assertEquals(2, ResultSetFormatter.consume(rs));
+			}
+		}
 	}
 
 	@Test
@@ -297,41 +302,51 @@ public class TestSingleSPARQLDLQueries
 		model.add(class1, RDF.type, OWL.Class);
 		model.add(class1, RDFS.label, literal1);
 
-		String q;
-		Query query;
-		QueryExecution qe;
-		ResultSet rs;
-
-		q = "PREFIX rdfs:<" + RDFS.getURI() + ">\n" + "SELECT * WHERE { ?x rdfs:label ?y }";
-		query = QueryFactory.create(q);
-		qe = SparqlDLExecutionFactory.createPelletExecution(query, model);
-		rs = qe.execSelect();
-		assertEquals(1, ResultSetFormatter.consume(rs));
-
-		q = "PREFIX rdfs:<" + RDFS.getURI() + ">\n" + "SELECT * WHERE { <" + NS + "class1> rdfs:label \"Annotation 1\" }";
-		query = QueryFactory.create(q);
-		qe = SparqlDLExecutionFactory.createPelletExecution(query, model);
-		rs = qe.execSelect();
-		assertEquals(1, ResultSetFormatter.consume(rs));
-
-		q = "PREFIX rdfs:<" + RDFS.getURI() + ">\n" + "SELECT * WHERE { <" + NS + "class1> rdfs:label \"Random Annotation\" }";
-		query = QueryFactory.create(q);
-		qe = SparqlDLExecutionFactory.createPelletExecution(query, model);
-		rs = qe.execSelect();
-		assertEquals(0, ResultSetFormatter.consume(rs));
-
-		q = "PREFIX rdfs:<" + RDFS.getURI() + ">\n" + "SELECT * WHERE { ?x rdfs:label \"Annotation 1\" }";
-		query = QueryFactory.create(q);
-		qe = SparqlDLExecutionFactory.createPelletExecution(query, model);
-		rs = qe.execSelect();
-		assertEquals(1, ResultSetFormatter.consume(rs));
-
-		q = "PREFIX rdfs:<" + RDFS.getURI() + ">\n" + "SELECT * WHERE { ?x rdfs:label \"Random Annotation \" }";
-		query = QueryFactory.create(q);
-		qe = SparqlDLExecutionFactory.createPelletExecution(query, model);
-		rs = qe.execSelect();
-		assertEquals(0, ResultSetFormatter.consume(rs));
-
+		{
+			final String q = "PREFIX rdfs:<" + RDFS.getURI() + ">\n" + "SELECT * WHERE { ?x rdfs:label ?y }";
+			final Query query = QueryFactory.create(q);
+			try (final QueryExecution qe = SparqlDLExecutionFactory.createPelletExecution(query, model))
+			{
+				final ResultSet rs = qe.execSelect();
+				assertEquals(1, ResultSetFormatter.consume(rs));
+			}
+		}
+		{
+			final String q = "PREFIX rdfs:<" + RDFS.getURI() + ">\n" + "SELECT * WHERE { <" + NS + "class1> rdfs:label \"Annotation 1\" }";
+			final Query query = QueryFactory.create(q);
+			try (final QueryExecution qe = SparqlDLExecutionFactory.createPelletExecution(query, model))
+			{
+				final ResultSet rs = qe.execSelect();
+				assertEquals(1, ResultSetFormatter.consume(rs));
+			}
+		}
+		{
+			final String q = "PREFIX rdfs:<" + RDFS.getURI() + ">\n" + "SELECT * WHERE { <" + NS + "class1> rdfs:label \"Random Annotation\" }";
+			final Query query = QueryFactory.create(q);
+			try (final QueryExecution qe = SparqlDLExecutionFactory.createPelletExecution(query, model))
+			{
+				final ResultSet rs = qe.execSelect();
+				assertEquals(0, ResultSetFormatter.consume(rs));
+			}
+		}
+		{
+			final String q = "PREFIX rdfs:<" + RDFS.getURI() + ">\n" + "SELECT * WHERE { ?x rdfs:label \"Annotation 1\" }";
+			final Query query = QueryFactory.create(q);
+			try (final QueryExecution qe = SparqlDLExecutionFactory.createPelletExecution(query, model))
+			{
+				final ResultSet rs = qe.execSelect();
+				assertEquals(1, ResultSetFormatter.consume(rs));
+			}
+		}
+		{
+			final String q = "PREFIX rdfs:<" + RDFS.getURI() + ">\n" + "SELECT * WHERE { ?x rdfs:label \"Random Annotation \" }";
+			final Query query = QueryFactory.create(q);
+			try (final QueryExecution qe = SparqlDLExecutionFactory.createPelletExecution(query, model))
+			{
+				final ResultSet rs = qe.execSelect();
+				assertEquals(0, ResultSetFormatter.consume(rs));
+			}
+		}
 	}
 
 }

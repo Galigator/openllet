@@ -81,7 +81,7 @@ public class OWLSyntaxChecker
 	}
 
 	/**
-	 * Returns if valid punninga will be excluded from lint report.
+	 * @return true if valid punninga will be excluded from lint report.
 	 */
 	public boolean isExcludeValidPunnings()
 	{
@@ -806,7 +806,7 @@ public class OWLSyntaxChecker
 	 *
 	 * @param theNode not used.
 	 */
-	private void processWithRestrictionNode(@SuppressWarnings("unused") final RDFNode theNode)
+	private void processWithRestrictionNode(final RDFNode theNode)
 	{
 		// TODO: implement me
 		/*

@@ -3,6 +3,7 @@
  */
 package openllet.jena;
 
+import java.io.IOException;
 import java.util.Properties;
 import java.util.logging.Logger;
 import openllet.core.OpenlletOptions;
@@ -50,11 +51,18 @@ public class MiscTests extends SequentialTestsContraintInitializer
 	@Test
 	public void dataAssertionTest()
 	{
-		_model.read(MiscTests.class.getResourceAsStream("/decimal-int.owl"), null);
-		final Individual entity = _model.getIndividual(NAMESPACE + "/dataAssertion.owl#ENTITY");
-		final DatatypeProperty value = _model.getDatatypeProperty(NAMESPACE + "/dataAssertion.owl#dataAssertionValue");
-		Assert.assertTrue(value.isFunctionalProperty());
-		Assert.assertEquals(1, entity.listPropertyValues(value).toSet().size());
+		try (var ress = MiscTests.class.getResourceAsStream("/decimal-int.owl"))
+		{
+			_model.read(ress, null);
+			final Individual entity = _model.getIndividual(NAMESPACE + "/dataAssertion.owl#ENTITY");
+			final DatatypeProperty value = _model.getDatatypeProperty(NAMESPACE + "/dataAssertion.owl#dataAssertionValue");
+			Assert.assertTrue(value.isFunctionalProperty());
+			Assert.assertEquals(1, entity.listPropertyValues(value).toSet().size());
+		}
+		catch (final IOException exception)
+		{
+			throw new RuntimeException(exception);
+		}
 	}
 
 	@Test
@@ -93,9 +101,6 @@ public class MiscTests extends SequentialTestsContraintInitializer
 		configurePelletOptions();
 	}
 
-	/**
-	 * @throws java.lang.Exception
-	 */
 	@Override
 	@After
 	public void tearDown()
@@ -108,12 +113,19 @@ public class MiscTests extends SequentialTestsContraintInitializer
 	@Test
 	public void universalTest()
 	{
-		_model.read(MiscTests.class.getResourceAsStream("/universal-property.owl"), null);
-		final ObjectProperty universal = _model.getObjectProperty(NAMESPACE + "/universal.owl#universalProperty");
-		final ObjectProperty abstracT = _model.getObjectProperty(NAMESPACE + "/universal.owl#abstractProperty");
-		final ObjectProperty concrete = _model.getObjectProperty(NAMESPACE + "/universal.owl#concreteProperty");
-		Assert.assertTrue(universal.getEquivalentProperty().equals(OWL2.topObjectProperty));
-		Assert.assertTrue(universal.listSubProperties().toSet().contains(abstracT));
-		Assert.assertTrue(universal.listSubProperties().toSet().contains(concrete));
+		try (var ress = MiscTests.class.getResourceAsStream("/universal-property.owl"))
+		{
+			_model.read(ress, null);
+			final ObjectProperty universal = _model.getObjectProperty(NAMESPACE + "/universal.owl#universalProperty");
+			final ObjectProperty abstracT = _model.getObjectProperty(NAMESPACE + "/universal.owl#abstractProperty");
+			final ObjectProperty concrete = _model.getObjectProperty(NAMESPACE + "/universal.owl#concreteProperty");
+			Assert.assertTrue(universal.getEquivalentProperty().equals(OWL2.topObjectProperty));
+			Assert.assertTrue(universal.listSubProperties().toSet().contains(abstracT));
+			Assert.assertTrue(universal.listSubProperties().toSet().contains(concrete));
+		}
+		catch (final IOException exception)
+		{
+			throw new RuntimeException(exception);
+		}
 	}
 }

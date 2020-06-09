@@ -70,11 +70,11 @@ class SparqlDLExecution implements QueryExecution
 		ASK, CONSTRUCT, DESCRIBE, SELECT
 	}
 
-	private final Query		_query;
-	private final Dataset	_source;
-	private QuerySolution	_initialBinding;
-	private boolean			_purePelletQueryExec	= false;
-	private boolean			_handleVariableSPO		= true;
+	private final Query				_query;
+	private final Dataset			_source;
+	private volatile QuerySolution	_initialBinding;
+	private boolean					_purePelletQueryExec	= false;
+	private boolean					_handleVariableSPO		= true;
 
 	public SparqlDLExecution(final String query, final Model source)
 	{
@@ -143,7 +143,10 @@ class SparqlDLExecution implements QueryExecution
 		final ResultSet results = exec();
 
 		if (results == null)
-			QueryExecutionFactory.create(_query, _source, _initialBinding).execConstruct(model);
+			try (final var query = QueryExecutionFactory.create(_query, _source, _initialBinding))
+			{
+				query.execConstruct(model);
+			}
 		else
 		{
 			model.setNsPrefixes(_source.getDefaultModel());
@@ -179,10 +182,15 @@ class SparqlDLExecution implements QueryExecution
 	public boolean execAsk()
 	{
 		ensureQueryType(QueryType.ASK);
-
 		final ResultSet results = exec();
 
-		return results != null ? results.hasNext() : QueryExecutionFactory.create(_query, _source, _initialBinding).execAsk();
+		if (null != results)
+			return results.hasNext();
+		else
+			try (final var query = QueryExecutionFactory.create(_query, _source, _initialBinding))
+			{
+				return query.execAsk();
+			}
 	}
 
 	/**
@@ -194,11 +202,9 @@ class SparqlDLExecution implements QueryExecution
 	public ResultSet execSelect()
 	{
 		ensureQueryType(QueryType.SELECT);
-
 		final ResultSet results = exec();
 
-		return results != null ? results : QueryExecutionFactory.create(_query, _source, _initialBinding).execSelect();
-
+		return results != null ? results : QueryExecutionFactory.create(_query, _source, _initialBinding).execSelect(); // How the user close the query ?
 	}
 
 	/**
@@ -439,5 +445,11 @@ class SparqlDLExecution implements QueryExecution
 	public Iterator<JsonObject> execJsonItems()
 	{
 		throw new NotImplemented();
+	}
+
+	@Override
+	public void setInitialBinding(final Binding binding)
+	{
+		// _initialBinding = binding;
 	}
 }

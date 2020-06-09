@@ -814,6 +814,8 @@ public class RestrictedRealDatatypeTests
 
 	/**
 	 * Test union of two non-overlapping integer _data ranges
+	 * 
+	 * @throws InvalidConstrainingFacetException
 	 */
 	@Test
 	public void unionIntInt1() throws InvalidConstrainingFacetException

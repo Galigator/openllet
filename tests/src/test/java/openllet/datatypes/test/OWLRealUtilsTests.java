@@ -17,7 +17,7 @@ import org.junit.Test;
  * Title: owl:real Utilities Tests
  * </p>
  * <p>
- * Description: Unit tests for {@link OWLRealUtils
+ * Description: Unit tests for {@link OWLRealUtils}
  * </p>
  * <p>
  * Copyright: Copyright (c) 2009

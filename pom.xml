@@ -68,7 +68,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <asmVersion>6.2</asmVersion>
+    <asmVersion>8.0.1</asmVersion>
   </properties>
 
   <prerequisites>
@@ -80,22 +80,27 @@
       <dependency>
         <groupId>org.apache.jena</groupId>
         <artifactId>jena-core</artifactId>
-        <version>[3.10.0,3.10.99]</version>
+        <version>[3.15.0,3.15.99]</version>
       </dependency>
       <dependency>
         <groupId>org.apache.jena</groupId>
         <artifactId>jena-arq</artifactId>
-        <version>[3.10.0,3.10.99]</version>
+        <version>[3.15.0,3.15.99]</version>
       </dependency>
       <dependency>
         <groupId>net.sourceforge.owlapi</groupId>
         <artifactId>owlapi-distribution</artifactId>
-        <version>[5.1.9,)</version>
+        <version>[5.1.14,)</version>
       </dependency>
       <dependency>
         <groupId>org.jgrapht</groupId>
         <artifactId>jgrapht-ext</artifactId>
-        <version>1.1.0</version>
+        <version>1.4.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jgrapht</groupId>
+        <artifactId>jgrapht-io</artifactId>
+        <version>1.4.0</version>
       </dependency>
       <dependency>
         <groupId>org.antlr</groupId>
@@ -105,22 +110,22 @@
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
-        <version>4.12</version>
+        <version>4.13</version>
       </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
-        <version>[1.7.25,1.7.99]</version>
+        <version>[1.7.30,1.7.99]</version>
       </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-log4j12</artifactId>
-        <version>[1.7.25,1.7.99]</version>
+        <version>[1.7.30,1.7.99]</version>
       </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>jcl-over-slf4j</artifactId>
-        <version>[1.7.25,1.7.99]</version>
+        <version>[1.7.30,1.7.99]</version>
       </dependency>
       <dependency>
         <groupId>log4j</groupId>
@@ -130,7 +135,7 @@
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-simple</artifactId>
-        <version>[1.7.25,1.7.99]</version>
+        <version>[1.7.30,1.7.99]</version>
       </dependency>
       <dependency>
         <groupId>org.jfree</groupId>
@@ -150,54 +155,54 @@
       <dependency>
         <groupId>org.eclipse.jetty</groupId> <!-- Used for the examples. -->
         <artifactId>jetty-server</artifactId>
-        <version>9.4.18.v20190429</version>
+        <version>9.4.29.v20200521</version>
       </dependency>
 
       <!-- Dependencies of dependencies -->
       <dependency>
          <groupId>org.apache.thrift</groupId>
          <artifactId>libthrift</artifactId>
-         <version>[0.12.0,)</version>
+         <version>[0.13.0,)</version>
       </dependency>
       <dependency>
          <groupId>com.fasterxml.jackson.core</groupId>
          <artifactId>jackson-core</artifactId>
-         <version>2.10.3</version>
+         <version>2.11.0</version>
       </dependency>
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-annotations</artifactId>
-        <version>2.10.3</version>
+        <version>2.11.0</version>
       </dependency>
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-databind</artifactId>
-        <version>2.10.3</version>
+        <version>2.11.0</version>
       </dependency>
       <dependency>
          <groupId>com.github.jsonld-java</groupId>
          <artifactId>jsonld-java</artifactId>
-         <version>0.12.3</version>
+         <version>0.13.0</version>
       </dependency>
       <dependency>
          <groupId>com.google.inject</groupId>
          <artifactId>guice</artifactId>
-         <version>4.2.2</version>
+         <version>4.2.3</version>
       </dependency>
       <dependency>
          <groupId>com.google.guava</groupId>
          <artifactId>guava</artifactId>
-         <version>27.1-jre</version>
+         <version>29.0-jre</version>
       </dependency>
       <dependency>
         <groupId>commons-io</groupId> 
          <artifactId>commons-io</artifactId>
-         <version>2.6</version>
+         <version>2.7</version>
       </dependency>
       <dependency>
          <groupId>javax.xml.bind</groupId>
          <artifactId>jaxb-api</artifactId>
-         <version>2.3.0</version>
+         <version>2.3.1</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -285,7 +290,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.7.0</version>
+          <version>3.8.1</version>
           <configuration>
             <source>13</source>
             <target>13</target>
@@ -314,7 +319,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jar-plugin</artifactId>
-          <version>3.1.0</version>
+          <version>3.2.0</version>
           <configuration>
             <archive>
               <manifest>
@@ -339,7 +344,7 @@
         <plugin> <!-- Deployement on the maven central (sonatype : source) -->
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-source-plugin</artifactId>
-          <version>3.0.1</version>
+          <version>3.2.1</version>
           <executions>
             <execution>
               <id>attach-source</id>
@@ -359,7 +364,7 @@
         <plugin> <!-- Deployement on the maven central (sonatype : javadoc) -->
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>3.0.0</version>
+          <version>3.2.0</version>
           <executions>
             <execution>
               <id>attach-javadocs</id>
@@ -388,18 +393,18 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-dependency-plugin</artifactId>
-          <version>3.1.0</version>
+          <version>3.1.2</version>
         </plugin>
 
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.21.0</version>
+          <version>2.22.2</version>
           <dependencies>
             <dependency>
               <groupId>org.apache.maven.surefire</groupId>
               <artifactId>surefire-junit4</artifactId>
-              <version>2.21.0</version>
+              <version>2.22.2</version>
             </dependency>
           </dependencies>
           <configuration>
@@ -412,12 +417,12 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-failsafe-plugin</artifactId>
-          <version>2.21.0</version>
+          <version>2.22.2</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-assembly-plugin</artifactId>
-          <version>3.1.0</version>
+          <version>3.3.0</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -432,7 +437,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-resources-plugin</artifactId>
-          <version>3.0.2</version>
+          <version>3.1.0</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -447,7 +452,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-site-plugin</artifactId>
-          <version>3.7</version>
+          <version>3.9</version>
         </plugin>
 
         <plugin>
@@ -510,7 +515,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-source-plugin</artifactId>
-            <version>3.0.1</version>
+            <version>3.2.1</version>
             <executions>
               <execution>
                 <id>attach-sources</id>
@@ -525,7 +530,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.0.0-M1</version>
+            <version>3.2.0</version>
             <configuration>
               <show>public</show>
             </configuration>

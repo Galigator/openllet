@@ -17,7 +17,8 @@ import openllet.shared.tools.Log;
 /**
  * Computes reachability in a directed _graph with and/or _nodes.
  *
- * @author Evren Sirin
+ * @author     Evren Sirin
+ * @param  <E>
  */
 public class Reachability<E>
 {

@@ -360,7 +360,6 @@ public class MiscRuleTests extends AbstractKBTests
 		assertTrue(_kb.hasPropertyValue(k, p, d));
 	}
 
-	@SuppressWarnings("unused")
 	@Test
 	public void inferredProperties() throws Exception
 	{

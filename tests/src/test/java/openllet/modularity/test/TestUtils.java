@@ -60,10 +60,14 @@ public class TestUtils
 	 * Checks if there is a difference between two array of elements and prints a sorted, easy to read message showing the differences between two arrays. The
 	 * elements of the array are compared with toString() values so this function is suitable only if the array elements have a unique string representation.
 	 * For example, if the array element is a set then this function cannot be used reliabily.
+	 * <code>true</code> if there is a difference between the modules
 	 *
-	 * @param  _expected _expected values
-	 * @param  computed  computed values
-	 * @return           <code>true</code> if there is a difference between the modules
+	 * @param msg
+	 * @param <T>
+	 *
+	 * @param expected values
+	 * @param computed computed values
+	 *
 	 */
 	public static <T> void assertToStringEquals(final String msg, final T[] expected, final T[] computed)
 	{
@@ -189,9 +193,8 @@ public class TestUtils
 	}
 
 	/**
-	 * Selects a random axiom from an ontology
-	 *
-	 * @param args
+	 * @param  ontology from where to choose the axiom.
+	 * @return          a random axiom from an ontology
 	 */
 	public static OWLAxiom selectRandomAxiom(final OWLOntology ontology)
 	{

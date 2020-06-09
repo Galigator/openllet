@@ -25,7 +25,7 @@ public class TestQuerySubsumption
 {
 	private final String	_ont	= "file:test/data/misc/family.owl";
 	private final String	_family	= "http://www.example.org/family#";
-	private final String	_prefix	= "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"	//
+	private final String	_prefix	= "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"		//
 			+ "PREFIX family: <" + _family + ">\r\n" + "SELECT * { ";
 	private final String	suffix	= " }";
 	private KnowledgeBase	_kb;
@@ -105,6 +105,8 @@ public class TestQuerySubsumption
 	/**
 	 * Another example of subsumption. First query asks for all people married to Male individuals which is subsumed by the second query which asks for all
 	 * Females.
+	 *
+	 * @return examples queries
 	 */
 	public Query[] example2()
 	{
@@ -119,6 +121,8 @@ public class TestQuerySubsumption
 	/**
 	 * Example showing query equivalence. The subproperty relation between hasFather and hasParent properties would normally establish subsumption in one way
 	 * but due to cardinality restrictions defined in the ontology two queries _end up being equivalent,
+	 *
+	 * @return examples queries
 	 */
 	public Query[] example3()
 	{
@@ -132,6 +136,8 @@ public class TestQuerySubsumption
 
 	/**
 	 * The subsumption in this example holds because of the subproperty relation between hasBrother and hasSibling.
+	 * 
+	 * @return examples queries
 	 */
 	public Query[] example4()
 	{

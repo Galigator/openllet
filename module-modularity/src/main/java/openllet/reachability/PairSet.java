@@ -15,7 +15,8 @@ import java.util.Set;
  * An unmodifiable Set implementation that is a wrapper around a pair of sets without additional storage for set elements. There may be common elements in two
  * sets which will be not be visible to the outside, i.e. iterator will discard duplicates on-the-fly.
  *
- * @author Evren Sirin
+ * @author     Evren Sirin
+ * @param  <T>
  */
 public class PairSet<T> extends AbstractSet<T>
 {

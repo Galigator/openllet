@@ -34,12 +34,6 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 /**
  * <p>
- * Title:
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
  * Copyright: Copyright (c) 2009
  * </p>
  * <p>
@@ -135,9 +129,8 @@ public class ModuleExtractorPersistence
 	 * Saves the information about modules from ModuleExtractor to an output stream as an ontology of modules annotated with URIs of the OWL entities that
 	 * belong to the respective modules.
 	 *
-	 * @param  modules      the modules to be saved
-	 * @param  outputStream the output stream where the _data should be saved
-	 * @throws IOException  if an error should occur during the save process
+	 * @param modules      the modules to be saved
+	 * @param outputStream the output stream where the _data should be saved
 	 */
 	public static void saveModules(final MultiValueMap<OWLEntity, OWLEntity> modules, final OutputStream outputStream)
 	{
@@ -279,7 +272,7 @@ public class ModuleExtractorPersistence
 	/**
 	 * Reads information about the modules from the input stream that has the information stored in a form of ontology.
 	 *
-	 * @param  inputStream the input stream from which the ontology should be read
+	 * @param  is          the input stream from which the ontology should be read
 	 * @return             the read information about the modules
 	 * @throws IOException if an error occurs during the read process.
 	 */

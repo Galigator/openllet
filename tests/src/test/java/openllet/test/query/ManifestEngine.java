@@ -169,9 +169,9 @@ public class ManifestEngine
 			model.add(assertion, EARL.test, model.createResource(result.getUri().toString()));
 		}
 
-		try
+		try (final var writer = new FileWriter("dawg" + "-pellet-" + VersionInfo.getInstance().getVersionString() + ".rdf"))
 		{
-			model.write(new FileWriter("dawg" + "-pellet-" + VersionInfo.getInstance().getVersionString() + ".rdf"), "RDF/XML-ABBREV");
+			model.write(writer, "RDF/XML-ABBREV");
 		}
 		catch (final IOException e)
 		{

@@ -55,10 +55,10 @@ public class TestMiscSPARQL
 			final String aQuery = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
 					+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" + "SELECT ?x WHERE { ?y rdfs:comment ?x . }";
 
-			final QueryExecution qe = SparqlDLExecutionFactory.create(QueryFactory.create(aQuery), aModel);
-
-			// this should not produce an NPE
-			qe.execSelect();
+			try (final QueryExecution qe = SparqlDLExecutionFactory.create(QueryFactory.create(aQuery), aModel))
+			{
+				qe.execSelect(); // this should not produce an NPE
+			}
 		}
 		finally
 		{
@@ -81,37 +81,39 @@ public class TestMiscSPARQL
 		String aQuery = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" + "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
 				+ "SELECT ?y ?foo WHERE { ?y rdf:type ?x . }";
 
-		QueryExecution qe = SparqlDLExecutionFactory.create(QueryFactory.create(aQuery), aModel);
-
-		ResultSet aResults = qe.execSelect();
-
-		// you should be able to iterate over the results w/o an NPE
-		while (aResults.hasNext())
+		try (final QueryExecution qe = SparqlDLExecutionFactory.create(QueryFactory.create(aQuery), aModel))
 		{
-			final Binding aBinding = aResults.nextBinding();
-			final Iterator<?> aVarIter = aBinding.vars();
+			final ResultSet aResults = qe.execSelect();
 
-			while (aVarIter.hasNext())
+			// you should be able to iterate over the results w/o an NPE
+			while (aResults.hasNext())
 			{
-				final Var aVar = (Var) aVarIter.next();
-				aBinding.get(aVar);
+				final Binding aBinding = aResults.nextBinding();
+				final Iterator<?> aVarIter = aBinding.vars();
+
+				while (aVarIter.hasNext())
+				{
+					final Var aVar = (Var) aVarIter.next();
+					aBinding.get(aVar);
+				}
 			}
 		}
 
 		aQuery = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" + "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
 				+ "SELECT ?foo WHERE { ?y rdf:type ?x . }";
 
-		qe = SparqlDLExecutionFactory.create(QueryFactory.create(aQuery), aModel);
-
-		aResults = qe.execSelect();
-
-		// in this case, since the query var that was undefined was the only thing in the projection,
-		// you shouldn't get results with any bindings
-		while (aResults.hasNext())
+		try (final QueryExecution qe = SparqlDLExecutionFactory.create(QueryFactory.create(aQuery), aModel))
 		{
-			final Binding aBinding = aResults.nextBinding();
+			final ResultSet aResults = qe.execSelect();
 
-			assertFalse(aBinding.vars().hasNext());
+			// in this case, since the query var that was undefined was the only thing in the projection,
+			// you shouldn't get results with any bindings
+			while (aResults.hasNext())
+			{
+				final Binding aBinding = aResults.nextBinding();
+
+				assertFalse(aBinding.vars().hasNext());
+			}
 		}
 	}
 
@@ -136,14 +138,11 @@ public class TestMiscSPARQL
 			final String aQuery = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
 					+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" + "SELECT ?x WHERE { ?y rdf:type owl:Thing . ?y rdfs:comment ?x . }";
 
-			final QueryExecution qe = SparqlDLExecutionFactory.create(QueryFactory.create(aQuery), aModel);
-
-			// this will throw a NPE, but should not
-			final ResultSet aResults = qe.execSelect();
-
-			// there should be some results
-			assertTrue(aResults.hasNext());
-
+			try (final QueryExecution qe = SparqlDLExecutionFactory.create(QueryFactory.create(aQuery), aModel))
+			{
+				final ResultSet aResults = qe.execSelect(); // this will throw a NPE, but should not
+				assertTrue(aResults.hasNext()); // there should be some results
+			}
 		}
 
 		OpenlletOptions.USE_ANNOTATION_SUPPORT = savedValue;
@@ -168,9 +167,10 @@ public class TestMiscSPARQL
 		// this should not thrown an InternalReasonerException, we want the unsupported query to be detected, and
 		// the execution to fallback to using the mixed evaluator
 
-		final QueryExecution qe = SparqlDLExecutionFactory.create(QueryFactory.create(aQuery), aModel);
-
-		qe.execSelect();
+		try (final QueryExecution qe = SparqlDLExecutionFactory.create(QueryFactory.create(aQuery), aModel))
+		{
+			qe.execSelect();
+		}
 	}
 
 	@Test
@@ -192,9 +192,10 @@ public class TestMiscSPARQL
 		// this should not thrown an InternalReasonerException, we want the unsupported query to be detected, and
 		// the execution to fallback to using the mixed evaluator
 
-		final QueryExecution qe = SparqlDLExecutionFactory.create(QueryFactory.create(aQuery), aModel);
-
-		qe.execSelect();
+		try (final QueryExecution qe = SparqlDLExecutionFactory.create(QueryFactory.create(aQuery), aModel))
+		{
+			qe.execSelect();
+		}
 	}
 
 	@Ignore("According to latest OWL 2 spec onDatatype property can only point to named datatypes so the input " + "ontology for this test is not valid anymore")
@@ -211,13 +212,14 @@ public class TestMiscSPARQL
 				+ "PREFIX mon: <http://www.semwebtech.org/mondial/10/meta#>\n" + "PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>\n" + "PREFIX : <foo://bla/>\n" + "SELECT ?v0 WHERE\n"
 				+ "{ ?v0 rdf:type :EasternHemispherePlace. }\n";
 
-		final QueryExecution qe = SparqlDLExecutionFactory.create(QueryFactory.create(aQuery), aModel);
-
-		final Resource berlin = aModel.getResource("foo://bla/Berlin");
-		final ResultSet results = qe.execSelect();
-		assertTrue(results.hasNext());
-		assertTrue(berlin.equals(results.next().getResource("v0")));
-		assertFalse(results.hasNext());
+		try (final QueryExecution qe = SparqlDLExecutionFactory.create(QueryFactory.create(aQuery), aModel))
+		{
+			final Resource berlin = aModel.getResource("foo://bla/Berlin");
+			final ResultSet results = qe.execSelect();
+			assertTrue(results.hasNext());
+			assertTrue(berlin.equals(results.next().getResource("v0")));
+			assertFalse(results.hasNext());
+		}
 	}
 
 	@Test
@@ -233,13 +235,14 @@ public class TestMiscSPARQL
 				+ "PREFIX mon: <http://www.semwebtech.org/mondial/10/meta#>\n" + "PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>\n" + "PREFIX : <foo://bla/>\n" + "SELECT ?v0 WHERE\n"
 				+ "{ ?v0 rdf:type :EasternHemispherePlace. }\n";
 
-		final QueryExecution qe = SparqlDLExecutionFactory.create(QueryFactory.create(aQuery), aModel);
-
-		final Resource berlin = aModel.getResource("foo://bla/Berlin");
-		final ResultSet results = qe.execSelect();
-		assertTrue(results.hasNext());
-		assertTrue(berlin.equals(results.next().getResource("v0")));
-		assertFalse(results.hasNext());
+		try (final QueryExecution qe = SparqlDLExecutionFactory.create(QueryFactory.create(aQuery), aModel))
+		{
+			final Resource berlin = aModel.getResource("foo://bla/Berlin");
+			final ResultSet results = qe.execSelect();
+			assertTrue(results.hasNext());
+			assertTrue(berlin.equals(results.next().getResource("v0")));
+			assertFalse(results.hasNext());
+		}
 	}
 
 	@Test
@@ -260,14 +263,13 @@ public class TestMiscSPARQL
 					+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" + "SELECT ?x\n" + "WHERE {\n" + "?x rdfs:subClassOf [\n" + "owl:onProperty :R ;\n" + "owl:someValuesFrom :C\n" + "]\n"
 					+ "FILTER( ?x != owl:Nothing )\n" + "}";
 
-			final QueryExecution qe = SparqlDLExecutionFactory.create(QueryFactory.create(aQuery), aModel);
-
-			final ResultSet results = qe.execSelect();
-
-			while (results.hasNext())
-				results.next();
-
-			assertEquals(2, results.getRowNumber());
+			try (final QueryExecution qe = SparqlDLExecutionFactory.create(QueryFactory.create(aQuery), aModel))
+			{
+				final ResultSet results = qe.execSelect();
+				while (results.hasNext())
+					results.next();
+				assertEquals(2, results.getRowNumber());
+			}
 		}
 		finally
 		{
@@ -287,16 +289,14 @@ public class TestMiscSPARQL
 		final String aQuery = "PREFIX : <http://www.semanticweb.org/ontologies/2010/5/ticket-421-test-case.owl#>\n" + "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
 				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" + "SELECT ?x\n" + "WHERE {\n" + "?x rdf:type :D\n" + "}";
 
-		final QueryExecution qe = SparqlDLExecutionFactory.create(QueryFactory.create(aQuery), aModel);
-
-		final ResultSet results = qe.execSelect();
-
-		//		ResultSetFormatter.out(results);
-
-		while (results.hasNext())
-			results.next();
-
-		assertTrue(results.getRowNumber() == 1);
+		try (final QueryExecution qe = SparqlDLExecutionFactory.create(QueryFactory.create(aQuery), aModel))
+		{
+			final ResultSet results = qe.execSelect();
+			//		ResultSetFormatter.out(results);
+			while (results.hasNext())
+				results.next();
+			assertTrue(results.getRowNumber() == 1);
+		}
 	}
 
 	@Test
@@ -311,16 +311,15 @@ public class TestMiscSPARQL
 		final String aQuery = "PREFIX : <http://www.semanticweb.org/ontologies/2010/5/ticket-444-test-case.owl#>\n" + "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
 				+ "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" + "SELECT *\n" + "WHERE {\n" + ":c ?p ?o . OPTIONAL { ?o :hasName ?n }\n" + "}";
 
-		final QueryExecution qe = QueryExecutionFactory.create(QueryFactory.create(aQuery), aModel);
+		try (final QueryExecution qe = QueryExecutionFactory.create(QueryFactory.create(aQuery), aModel))
+		{
+			//		QueryExecution qe = SparqlDLExecutionFactory.create( QueryFactory.create(aQuery), aModel );
+			final ResultSet results = qe.execSelect();
+			//		ResultSetFormatter.out(results);
+			while (results.hasNext())
+				results.next();
 
-		//		QueryExecution qe = SparqlDLExecutionFactory.create( QueryFactory.create(aQuery), aModel );
-
-		final ResultSet results = qe.execSelect();
-		//		ResultSetFormatter.out(results);
-
-		while (results.hasNext())
-			results.next();
-
-		assertTrue(results.getRowNumber() == 4);
+			assertTrue(results.getRowNumber() == 4);
+		}
 	}
 }

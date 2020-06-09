@@ -98,7 +98,9 @@ public class TestGroundBooleanQueryComponents
 		final Query query = QueryFactory.read(_queryURL);
 		final Dataset dataset = DatasetFactory.create(_model);
 
-		final QueryExecution qe = SparqlDLExecutionFactory.create(query, dataset, null, _queryEngineType);
-		assertEquals("Failed query engine: " + _queryEngineType + " query: " + _queryURL, _expectedResult, qe.execAsk());
+		try (final QueryExecution qe = SparqlDLExecutionFactory.create(query, dataset, null, _queryEngineType))
+		{
+			assertEquals("Failed query engine: " + _queryEngineType + " query: " + _queryURL, _expectedResult, qe.execAsk());
+		}
 	}
 }

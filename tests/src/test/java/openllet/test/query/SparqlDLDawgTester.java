@@ -7,7 +7,6 @@
 package openllet.test.query;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -57,25 +56,15 @@ import org.apache.jena.sparql.engine.binding.BindingBase;
  */
 public class SparqlDLDawgTester implements SparqlDawgTester
 {
-
 	private static final Logger	_logger			= Log.getLogger(SparqlDLDawgTester.class);
-
 	private String				_queryURI		= "";
-
 	private Set<String>			_graphURIs		= new HashSet<>();
-
 	private Set<String>			_namedGraphURIs	= new HashSet<>();
-
 	private OntModel			_model			= null;
-
 	private Query				_query			= null;
-
 	private String				_resultURI		= null;
-
 	private final boolean		_allOrderings;
-
 	private final boolean		_writeResults	= true;
-
 	private boolean				_noCheck;
 
 	public SparqlDLDawgTester(final boolean allOrderings, final boolean noCheck)
@@ -136,10 +125,9 @@ public class SparqlDLDawgTester implements SparqlDawgTester
 	@Override
 	public boolean isParsable()
 	{
-		try
+		try (var in = new FileInputStream(_queryURI.substring(5)))
 		{
-			QueryEngineBuilder.getParser().parse(new FileInputStream(_queryURI.substring(5)), new KnowledgeBaseImpl());
-
+			QueryEngineBuilder.getParser().parse(in, new KnowledgeBaseImpl());
 			return true;
 		}
 		catch (final Exception e)
@@ -275,35 +263,50 @@ public class SparqlDLDawgTester implements SparqlDawgTester
 				// final Model expectedModel = ResultSetFormatter
 				// .toModel(_expected);
 
-				try
+				real.reset();
+				try (var out = new FileOutputStream("real"))
 				{
-					real.reset();
-					ResultSetFormatter.out(new FileOutputStream("real"), real);
-
-					ResultSetFormatter.out(new FileOutputStream("real-_expected"), new DifferenceResultSet(real, expected));
-					ResultSetFormatter.out(new FileOutputStream("_expected-real"), new DifferenceResultSet(expected, real));
-
-					// final Set<ResultBinding> rMinusE = SetUtils.difference(
-					// new HashSet<ResultBinding>(realList),
-					// new HashSet<ResultBinding>(expectedList));
-					//
-					// final FileWriter fwre = new FileWriter("real-_expected");
-					// _writeResults(resultVars,
-					// (Collection<ResultBinding>) rMinusE, fwre);
-					//
-					// final FileWriter fwer = new FileWriter("_expected-real");
-					// final Set<ResultBinding> eMinusR = SetUtils.difference(
-					// new HashSet<ResultBinding>(expectedList),
-					// new HashSet<ResultBinding>(realList));
-					//
-					// _writeResults(resultVars,
-					// (Collection<ResultBinding>) eMinusR, fwer);
-
+					ResultSetFormatter.out(out, real);
 				}
-				catch (final FileNotFoundException e)
+				catch (final IOException e)
 				{
 					_logger.log(Level.SEVERE, e.getMessage(), e);
+					throw new RuntimeException(e);
 				}
+				try (var out = new FileOutputStream("real-expected"))
+				{
+					ResultSetFormatter.out(out, new DifferenceResultSet(real, expected));
+				}
+				catch (final IOException e)
+				{
+					_logger.log(Level.SEVERE, e.getMessage(), e);
+					throw new RuntimeException(e);
+				}
+				try (var out = new FileOutputStream("expected-real"))
+				{
+					ResultSetFormatter.out(out, new DifferenceResultSet(expected, real));
+				}
+				catch (final IOException e)
+				{
+					_logger.log(Level.SEVERE, e.getMessage(), e);
+					throw new RuntimeException(e);
+				}
+
+				// final Set<ResultBinding> rMinusE = SetUtils.difference(
+				// new HashSet<ResultBinding>(realList),
+				// new HashSet<ResultBinding>(expectedList));
+				//
+				// final FileWriter fwre = new FileWriter("real-_expected");
+				// _writeResults(resultVars,
+				// (Collection<ResultBinding>) rMinusE, fwre);
+				//
+				// final FileWriter fwer = new FileWriter("_expected-real");
+				// final Set<ResultBinding> eMinusR = SetUtils.difference(
+				// new HashSet<ResultBinding>(expectedList),
+				// new HashSet<ResultBinding>(realList));
+				//
+				// _writeResults(resultVars,
+				// (Collection<ResultBinding>) eMinusR, fwer);
 			}
 		}
 

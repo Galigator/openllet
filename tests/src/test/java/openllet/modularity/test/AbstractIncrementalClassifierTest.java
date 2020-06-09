@@ -131,8 +131,6 @@ public abstract class AbstractIncrementalClassifierTest extends AbstractModulari
 
 	/**
 	 * Test that changes to make an unsatisfiable class satisfiable cause it to be reparented in the taxonomy. (Failed in r94 and earlier).
-	 *
-	 * @throws OWLException
 	 */
 	@Test
 	public void makeSatisfiable()
@@ -191,8 +189,6 @@ public abstract class AbstractIncrementalClassifierTest extends AbstractModulari
 	/**
 	 * Test that adding and removing axioms together cancels out. This matches behavior from Protege of creating a new class, Class_1, then renaming with a
 	 * useful name. Known to fail in r136.
-	 *
-	 * @throws OWLException
 	 */
 	@Test
 	public void addAndRename()
@@ -225,8 +221,6 @@ public abstract class AbstractIncrementalClassifierTest extends AbstractModulari
 	 * Test that removal of all non-local axioms, but not *all* axioms referencing a class do not cause it to be removed from the class hierarchy. In this test
 	 * A [= B & A [= all(p,C) , A [= B is non-local w.r.t. A and is removed. A [= all(p,C) remains, but is local w.r.t. A and contains additional entities not
 	 * in the module signature, so the module for A becomes empty. (Failed in r93 and earlier)
-	 *
-	 * @throws OWLException
 	 */
 	@Test
 	public void deleteAllAxiomsInModuleTest()
@@ -239,8 +233,6 @@ public abstract class AbstractIncrementalClassifierTest extends AbstractModulari
 
 	/**
 	 * Test that changes to remove an unsatisfiable cause it to be removed. (Failed in r94 and earlier).
-	 *
-	 * @throws OWLException
 	 */
 	@Test
 	public void deleteUnsatisfiable()
@@ -253,8 +245,6 @@ public abstract class AbstractIncrementalClassifierTest extends AbstractModulari
 
 	/**
 	 * Test that adding a non-local axiom is handled correctly.
-	 *
-	 * @throws OWLException
 	 */
 	@Test
 	public void addNonLocal()

@@ -3,6 +3,7 @@ package openllet.jena;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Logger;
 import openllet.shared.tools.Log;
@@ -29,12 +30,16 @@ public class AddDelTripleInferenceTest extends SequentialTestsContraintInitializ
 	public void testRemovalWithInference()
 	{
 		final Model model = ModelFactory.createDefaultModel();
-		final InputStream is = AddDelTripleInferenceTest.class.getResourceAsStream(fname);
-		assert is != null;
-
-		assert model.size() == 0;
-
-		model.read(is, null, "TURTLE");
+		try (final InputStream is = AddDelTripleInferenceTest.class.getResourceAsStream(fname))
+		{
+			assert is != null;
+			assert model.size() == 0;
+			model.read(is, null, "TURTLE");
+		}
+		catch (final IOException exception)
+		{
+			throw new RuntimeException(exception);
+		}
 
 		final PelletReasoner reasoner = PelletReasonerFactory.theInstance().create(null);
 		final InfModel inf = ModelFactory.createInfModel(reasoner, model);
@@ -121,27 +126,32 @@ public class AddDelTripleInferenceTest extends SequentialTestsContraintInitializ
 	@Test
 	public void testSWRLConsistencyWithBuiltIn()
 	{
-		final InputStream stream = AddDelTripleInferenceTest.class.getResourceAsStream("/bigtu-wapa-model.instances.ttl");
-		final OntModel ontoModelInferred = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
-		ontoModelInferred.read(stream, null, "TURTLE");
-		ontoModelInferred.prepare();
-
-		final Resource s = ontoModelInferred.createResource("http://wapa#Moved-Jun-17-1");
-		final Property p = ontoModelInferred.createProperty("http://bwapa#hasQuantityValue");
+		try (final InputStream stream = AddDelTripleInferenceTest.class.getResourceAsStream("/bigtu-wapa-model.instances.ttl"))
 		{
+			final OntModel ontoModelInferred = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
+			ontoModelInferred.read(stream, null, "TURTLE");
+			ontoModelInferred.prepare();
 
-			final Literal o = ontoModelInferred.createTypedLiteral(40.0);
-			final Statement stmt = ResourceFactory.createStatement(s, p, o);
-			assertTrue(ontoModelInferred.contains(stmt));
+			final Resource s = ontoModelInferred.createResource("http://wapa#Moved-Jun-17-1");
+			final Property p = ontoModelInferred.createProperty("http://bwapa#hasQuantityValue");
+			{
+
+				final Literal o = ontoModelInferred.createTypedLiteral(40.0);
+				final Statement stmt = ResourceFactory.createStatement(s, p, o);
+				assertTrue(ontoModelInferred.contains(stmt));
+			}
+
+			{
+				final Literal o = ontoModelInferred.createTypedLiteral(41.0);
+				final Statement stmt = ResourceFactory.createStatement(s, p, o);
+				assertFalse(ontoModelInferred.contains(stmt));
+			}
+
+			ontoModelInferred.listObjectsOfProperty(s, p).forEachRemaining(System.out::println);
 		}
-
+		catch (final IOException exception)
 		{
-			final Literal o = ontoModelInferred.createTypedLiteral(41.0);
-			final Statement stmt = ResourceFactory.createStatement(s, p, o);
-			assertFalse(ontoModelInferred.contains(stmt));
+			throw new RuntimeException(exception);
 		}
-
-		ontoModelInferred.listObjectsOfProperty(s, p).forEachRemaining(System.out::println);
-
 	}
 }

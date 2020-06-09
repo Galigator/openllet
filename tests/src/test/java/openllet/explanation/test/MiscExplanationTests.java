@@ -110,7 +110,6 @@ public class MiscExplanationTests
 		assertEquals(expected, actual);
 	}
 
-	@SuppressWarnings("unused")
 	@Test
 	public void testPunning1() throws Exception
 	{
@@ -130,7 +129,6 @@ public class MiscExplanationTests
 		assertFalse(explain.getInconsistencyExplanations().isEmpty());
 	}
 
-	@SuppressWarnings("unused")
 	@Test
 	public void testPunning2() throws Exception
 	{
@@ -150,7 +148,6 @@ public class MiscExplanationTests
 		assertFalse(explain.getInconsistencyExplanations().isEmpty());
 	}
 
-	@SuppressWarnings("unused")
 	@Test
 	public void testPunning3() throws Exception
 	{
@@ -245,7 +242,7 @@ public class MiscExplanationTests
 		final OWLClass UplandArea = OWL.Class("http://test#a_UPLANDAREA");
 
 		final OWLAxiom[] axioms = { //
-				OWL.subClassOf(VolcanicMountain, Mountain), // 
+				OWL.subClassOf(VolcanicMountain, Mountain), //
 				OWL.subClassOf(VolcanicMountain, Volcano), //
 				OWL.subClassOf(Mountain, UplandArea), //
 				OWL.subClassOf(UplandArea, OWL.not(Volcano)), //

@@ -29,11 +29,8 @@ import org.apache.jena.rdf.model.Resource;
 public class SparqlDawgTestCase
 {
 	private final Properties		_pelletOptions;
-
 	private final Resource			_resource;
-
 	private final ManifestEngine	_test;
-
 	private final SparqlDawgTester	_tester;
 
 	public SparqlDawgTestCase(final SparqlDawgTester tester, final ManifestEngine test, final Resource resource, final Properties pelletOptions)
@@ -44,9 +41,6 @@ public class SparqlDawgTestCase
 		_pelletOptions = pelletOptions;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public void runTest()
 	{
 		final Properties oldOptions = OpenlletOptions.setOptions(_pelletOptions);

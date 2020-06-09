@@ -139,11 +139,10 @@ public class ARQSparqlDawgTester implements SparqlDawgTester
 	@Override
 	public boolean isCorrectlyEvaluated()
 	{
-		try
-		{
-			beforeExecution();
-			final QueryExecution exec = createQueryExecution();
+		beforeExecution();
 
+		try (final QueryExecution exec = createQueryExecution())
+		{
 			if (_resultURI == null)
 			{
 				_logger.log(Level.WARNING, "No result set associated with this test, assumuing success!");

@@ -118,7 +118,7 @@ public class SearchMinimalBug
 		}
 	}
 
-	private void renameObjects(final OWLOntology o)
+	private static void renameObjects(final OWLOntology o)
 	{
 		final OWLOntologyManager m = o.getOWLOntologyManager();
 		final OWLEntityRenamer renamer = new OWLEntityRenamer(m, Collections.singleton(o));

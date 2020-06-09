@@ -55,9 +55,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
 public abstract class AbstractModuleExtractor implements ModuleExtractor
 {
 	public static final Logger						_logger				= Log.getLogger(AbstractModuleExtractor.class);
-
 	private final Set<OWLAxiom>						_additions			= SetUtils.create();
-
 	private final Set<OWLClass>						_newClasses			= SetUtils.create();
 
 	/**
@@ -79,16 +77,13 @@ public abstract class AbstractModuleExtractor implements ModuleExtractor
 	 * Map to find _axioms that references an axiom
 	 */
 	protected MultiValueMap<OWLEntity, OWLAxiom>	_entityAxioms		= new MultiValueMap<>();
-
 	private LocalityEvaluator						_localityEvaluator	= null;
-
 	protected MultiValueMap<OWLEntity, OWLEntity>	_modules			= null;
 
 	/**
 	 * Flag to check if a non-local axiom has been updated
 	 */
 	private boolean									_nonLocalAxioms		= false;
-
 	private final Timers							_timers				= new Timers();
 
 	public AbstractModuleExtractor()
@@ -116,9 +111,7 @@ public abstract class AbstractModuleExtractor implements ModuleExtractor
 	}
 
 	/**
-	 * Returns if the extracted modules can be updated. We can update the modules if we have computed modules and no non-local axiom has been added or deleted.
-	 *
-	 * @return
+	 * @return true if the extracted modules can be updated. We can update the modules if we have computed modules and no non-local axiom has been added or deleted.
 	 */
 	@Override
 	public boolean canUpdate()
@@ -172,7 +165,7 @@ public abstract class AbstractModuleExtractor implements ModuleExtractor
 	/**
 	 * Extract modules from scratch
 	 *
-	 * @return
+	 * @return the modules from scratch
 	 */
 	@Override
 	public MultiValueMap<OWLEntity, OWLEntity> extractModules()
@@ -300,10 +293,8 @@ public abstract class AbstractModuleExtractor implements ModuleExtractor
 	}
 
 	/**
-	 * Return the _axioms which references this entity
-	 *
 	 * @param  entity
-	 * @return
+	 * @return        the axioms which references this entity
 	 */
 	@Override
 	public Stream<OWLAxiom> axioms(final OWLEntity entity)
@@ -380,11 +371,8 @@ public abstract class AbstractModuleExtractor implements ModuleExtractor
 	}
 
 	/**
-	 * Returns a new ontology that contains the _axioms that are in the module for given set of entities
-	 *
 	 * @param  signature
-	 * @return
-	 * @throws OWLException
+	 * @return           a new ontology that contains the _axioms that are in the module for given set of entities
 	 */
 	@Override
 	public OWLOntology getModuleFromSignature(final Set<OWLEntity> signature)
@@ -610,9 +598,6 @@ public abstract class AbstractModuleExtractor implements ModuleExtractor
 		_modules = new MultiValueMap<>();
 	}
 
-	/**
-	 * @inheritDoc
-	 */
 	@Override
 	public boolean isClassificationNeeded(final Expressivity expressivity)
 	{
@@ -696,9 +681,7 @@ public abstract class AbstractModuleExtractor implements ModuleExtractor
 	 */
 	private static final String	MODULE_EXTRACTOR_MODULES_FILE_NAME	= "ModuleExtractorModules";
 
-	/**
-	 * @inheritDoc
-	 */
+	@SuppressWarnings("resource") // for the UncloseableOutputStream
 	@Override
 	public void save(final ZipOutputStream outputStream) throws IOException, IllegalStateException
 	{
@@ -719,9 +702,6 @@ public abstract class AbstractModuleExtractor implements ModuleExtractor
 		outputStream.flush();
 	}
 
-	/**
-	 * @inheritDoc
-	 */
 	@Override
 	public void load(final ZipInputStream inputStream) throws IOException, IllegalArgumentException
 	{

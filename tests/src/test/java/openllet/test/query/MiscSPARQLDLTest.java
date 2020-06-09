@@ -53,14 +53,15 @@ public class MiscSPARQLDLTest
 
 			// Create a SPARQL-DL query execution for the given query and
 			// ontology model
-			final QueryExecution qe = SparqlDLExecutionFactory.create(q, DatasetFactory.create(m), null, QueryEngineType.PELLET, false);
+			try (final QueryExecution qe = SparqlDLExecutionFactory.create(q, DatasetFactory.create(m), null, QueryEngineType.PELLET, false))
+			{
+				// We want to execute a SELECT query, do it, and return the result set
+				final ResultSet rs = qe.execSelect();
 
-			// We want to execute a SELECT query, do it, and return the result set
-			final ResultSet rs = qe.execSelect();
+				//ResultSetFormatter.out( rs );
 
-			//ResultSetFormatter.out( rs );
-
-			assertNumberOfResults(2, rs);
+				assertNumberOfResults(2, rs);
+			}
 		}
 	}
 

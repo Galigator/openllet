@@ -51,8 +51,8 @@ public interface SparqlDawgTester
 	/**
 	 * Determines whether the given test name is applicable for the given tester. Allows for using avoid lists.
 	 *
-	 * @param  name name of the test
-	 * @return      true, if the tester can be run on the test.
+	 * @param  testURI name of the test
+	 * @return         true, if the tester can be run on the test.
 	 */
 	boolean isApplicable(final String testURI);
 

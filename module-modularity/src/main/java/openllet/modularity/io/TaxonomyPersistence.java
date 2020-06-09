@@ -71,10 +71,9 @@ public class TaxonomyPersistence
 	/**
 	 * Saves a taxonomy into a stream.
 	 *
-	 * @param  ontologyManager the ontology manager
-	 * @param  taxonomy        the taxonomy to be saved
-	 * @param  outputStream    the output stream where the ontology should be saved
-	 * @throws IOException     if an I/O error should occur
+	 * @param  taxonomy     the taxonomy to be saved
+	 * @param  outputStream the output stream where the ontology should be saved
+	 * @throws IOException  if an I/O error should occur
 	 */
 	public static void save(final Taxonomy<OWLClass> taxonomy, final OutputStream outputStream) throws IOException
 	{
@@ -263,10 +262,9 @@ public class TaxonomyPersistence
 	/**
 	 * Loads the taxonomy from a stream
 	 *
-	 * @param  ontologyManager the ontology manager
-	 * @param  is              the stream containing the taxonomy in the form of an ontology
-	 * @return                 the read taxonomy
-	 * @throws IOException     if an I/O error should occur while reading the taxonomy
+	 * @param  is          the stream containing the taxonomy in the form of an ontology
+	 * @return             the read taxonomy
+	 * @throws IOException if an I/O error should occur while reading the taxonomy
 	 */
 	public static TaxonomyImpl<OWLClass> load(final InputStream is) throws IOException
 	{

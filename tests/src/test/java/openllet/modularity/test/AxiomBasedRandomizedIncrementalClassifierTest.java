@@ -23,9 +23,6 @@ import openllet.modularity.ModuleExtractor;
  */
 public class AxiomBasedRandomizedIncrementalClassifierTest extends RandomizedIncrementalClassifierTest
 {
-	/**
-	 * @param path
-	 */
 	public AxiomBasedRandomizedIncrementalClassifierTest()
 	{
 		super("test/data/modularity/");

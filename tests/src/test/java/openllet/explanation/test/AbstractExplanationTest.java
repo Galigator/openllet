@@ -138,6 +138,8 @@ public abstract class AbstractExplanationTest
 
 	/**
 	 * Test that entities appearing in annotations only can still be used in clashExplanation requests.
+	 *
+	 * @throws Exception if something goes wrong
 	 */
 	@Ignore("This test is not valid anymore since annotation subjects do not carry type information")
 	@Test
@@ -151,6 +153,8 @@ public abstract class AbstractExplanationTest
 
 	/**
 	 * Test that entities appearing in annotations only can still be used in clashExplanation requests.
+	 *
+	 * @throws Exception if something goes wrong
 	 */
 	@Test
 	public void annotationOnlyDuringMUPSEntity() throws Exception
@@ -163,6 +167,8 @@ public abstract class AbstractExplanationTest
 
 	/**
 	 * Test that anonymous individuals as the object of property assertions are translated correctly
+	 *
+	 * @throws Exception if something goes wrong
 	 */
 	@Test
 	public void anonymousIndividualPropertyAssertion() throws Exception
@@ -175,11 +181,13 @@ public abstract class AbstractExplanationTest
 		testExplanations(OWL.classAssertion(_a, _B), 0, axioms);
 	}
 
-	/**
+	/*
 	 * Test for built-in datatype
 	 */
 	/**
 	 * Test that entities appearing in declarations only can still be used in clashExplanation requests.
+	 *
+	 * @throws Exception if something goes wrong
 	 */
 	@Test
 	public void declarationOnlyEntity() throws Exception
@@ -192,6 +200,8 @@ public abstract class AbstractExplanationTest
 
 	/**
 	 * Test that entities appearing in declarations only can still be used in clashExplanation requests (in uninteresting ways).
+	 *
+	 * @throws Exception if something goes wrong
 	 */
 	@Test
 	public void declarationOnlyIrrelevantEntity() throws Exception
@@ -243,12 +253,15 @@ public abstract class AbstractExplanationTest
 	public void koalaHardWorkingDomain() throws Exception
 	{
 		final String ns = "http://protege.stanford.edu/plugins/owl/owl-library/koala.owl#";
-		final OWLOntology ontology = _manager.loadOntologyFromOntologyDocument(ClassLoader.getSystemResourceAsStream("test/data/modularity/koala.owl"));
-		final OWLClass animal = OWL.Class(ns + "Animal");
-		final OWLClass person = OWL.Class(ns + "Person");
-		final OWLDataProperty hardWorking = OWL.DataProperty(ns + "isHardWorking");
-		setupGenerators(ontology.axioms());
-		testExplanations(OWL.domain(hardWorking, animal), 0, OWL.subClassOf(person, animal), OWL.domain(hardWorking, person));
+		try (final var stream = ClassLoader.getSystemResourceAsStream("test/data/modularity/koala.owl"))
+		{
+			final OWLOntology ontology = _manager.loadOntologyFromOntologyDocument(stream);
+			final OWLClass animal = OWL.Class(ns + "Animal");
+			final OWLClass person = OWL.Class(ns + "Person");
+			final OWLDataProperty hardWorking = OWL.DataProperty(ns + "isHardWorking");
+			setupGenerators(ontology.axioms());
+			testExplanations(OWL.domain(hardWorking, animal), 0, OWL.subClassOf(person, animal), OWL.domain(hardWorking, person));
+		}
 	}
 
 	@Test

@@ -126,19 +126,21 @@ public class TestParameterizedQuery
 	@Test
 	public void test()
 	{
-		final QueryExecution qe = SparqlDLExecutionFactory.create(_query, dataset, _initialBinding, _queryEngine);
-		final ResultSet rs = qe.execSelect();
-
-		if (!rs.hasNext()) assertTrue("No results found", rs.hasNext());
-
-		final QuerySolution computed = rs.nextSolution();
-
-		for (final Object name : rs.getResultVars())
+		try (final QueryExecution qe = SparqlDLExecutionFactory.create(_query, dataset, _initialBinding, _queryEngine))
 		{
-			final String var = name.toString();
-			assertEquals("Different result for " + var, _expected.get(var), computed.get(var));
-		}
+			final ResultSet rs = qe.execSelect();
 
-		assertFalse("Extra results found", rs.hasNext());
+			if (!rs.hasNext()) assertTrue("No results found", rs.hasNext());
+
+			final QuerySolution computed = rs.nextSolution();
+
+			for (final Object name : rs.getResultVars())
+			{
+				final String var = name.toString();
+				assertEquals("Different result for " + var, _expected.get(var), computed.get(var));
+			}
+
+			assertFalse("Extra results found", rs.hasNext());
+		}
 	}
 }

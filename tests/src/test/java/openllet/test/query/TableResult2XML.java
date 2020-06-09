@@ -124,60 +124,63 @@ public class TableResult2XML
 					}
 				}
 
-				ResultSetFormatter.outputAsXML(new FileOutputStream(arg + ".srx"), new ResultSet()
+				try (final var out = new FileOutputStream(arg + ".srx"))
 				{
-
-					private int index = 0;
-
-					@Override
-					public List<String> getResultVars()
+					ResultSetFormatter.outputAsXML(out, new ResultSet()
 					{
-						return vars;
-					}
 
-					@Override
-					public int getRowNumber()
-					{
-						return index;
-					}
+						private int index = 0;
 
-					@Override
-					public boolean hasNext()
-					{
-						return index < solutions.size();
-					}
+						@Override
+						public List<String> getResultVars()
+						{
+							return vars;
+						}
 
-					@Override
-					public QuerySolution next()
-					{
-						return nextSolution();
-					}
+						@Override
+						public int getRowNumber()
+						{
+							return index;
+						}
 
-					@Override
-					public Binding nextBinding()
-					{
-						return BindingUtils.asBinding(nextSolution());
-					}
+						@Override
+						public boolean hasNext()
+						{
+							return index < solutions.size();
+						}
 
-					@Override
-					public QuerySolution nextSolution()
-					{
-						return solutions.get(index++);
-					}
+						@Override
+						public QuerySolution next()
+						{
+							return nextSolution();
+						}
 
-					@Override
-					public void remove()
-					{
-						throw new IllegalArgumentException("Removing is not supported.");
-					}
+						@Override
+						public Binding nextBinding()
+						{
+							return BindingUtils.asBinding(nextSolution());
+						}
 
-					@Override
-					public Model getResourceModel()
-					{
-						return null;
-					}
+						@Override
+						public QuerySolution nextSolution()
+						{
+							return solutions.get(index++);
+						}
 
-				});
+						@Override
+						public void remove()
+						{
+							throw new IllegalArgumentException("Removing is not supported.");
+						}
+
+						@Override
+						public Model getResourceModel()
+						{
+							return null;
+						}
+
+					});
+				}
 			}
 			catch (final FileNotFoundException e)
 			{

@@ -19,7 +19,8 @@ import openllet.shared.tools.Log;
 /**
  * Graph with and/or _nodes designed to compute reachability
  *
- * @author Evren Sirin
+ * @author     Evren Sirin
+ * @param  <E>
  */
 public class ReachabilityGraph<E>
 {

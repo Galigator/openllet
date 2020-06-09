@@ -95,9 +95,8 @@ public class PelletGraphListener implements GraphListener
 		else if (graph instanceof Dyadic)
 		{
 			final Dyadic dyadic = (Dyadic) graph;
-			if (dyadic.getL() instanceof Graph) collectLeafGraphs((Graph) dyadic.getL(), prevLeaves);
-
-			if (dyadic.getR() instanceof Graph) collectLeafGraphs((Graph) dyadic.getR(), prevLeaves);
+			if (null != dyadic.getL()) collectLeafGraphs(dyadic.getL(), prevLeaves);
+			if (null != dyadic.getR()) collectLeafGraphs(dyadic.getR(), prevLeaves);
 		}
 		else if (graph instanceof InfGraph)
 			collectLeafGraphs(((InfGraph) graph).getRawGraph(), prevLeaves);

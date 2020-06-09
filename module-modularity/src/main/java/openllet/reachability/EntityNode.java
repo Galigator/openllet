@@ -11,7 +11,8 @@ import java.util.Set;
 import openllet.core.utils.SetUtils;
 
 /**
- * @author Evren Sirin
+ * @author     Evren Sirin
+ * @param  <E>
  */
 public class EntityNode<E> extends Node
 {

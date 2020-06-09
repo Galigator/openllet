@@ -47,7 +47,10 @@ public class ReleasePerformanceVisualizer extends JFrame
 	public static void main(final String[] args) throws IOException
 	{
 		final Properties properties = new Properties();
-		properties.load(new FileInputStream("src/main/resources/releasevisualizer.properties"));
+		try (var in = new FileInputStream("src/main/resources/releasevisualizer.properties"))
+		{
+			properties.load(in);
+		}
 		_REPOSITORY = properties.getProperty("REPOSITORY", "profiler/releases");
 
 		final ReleasePerformanceVisualizer viz = new ReleasePerformanceVisualizer("Release Performance Visualizer");

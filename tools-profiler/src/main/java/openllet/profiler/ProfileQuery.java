@@ -188,26 +188,28 @@ public class ProfileQuery
 
 				final Optional<Timer> timer = _timers.startTimer("query");
 
-				final QueryExecution queryExec = SparqlDLExecutionFactory.create(query, _model);
+				try (final QueryExecution queryExec = SparqlDLExecutionFactory.create(query, _model))
+				{
 
-				final ResultSet queryResults = queryExec.execSelect();
+					final ResultSet queryResults = queryExec.execSelect();
 
-				// we need to consume the results to completely answer the query
-				final ResultSetMem resultMem = new ResultSetMem(queryResults);
+					// we need to consume the results to completely answer the query
+					final ResultSetMem resultMem = new ResultSetMem(queryResults);
 
-				final int count = resultMem.size();
+					final int count = resultMem.size();
 
-				timer.ifPresent(Timer::stop);
+					timer.ifPresent(Timer::stop);
 
-				final double queryTime = timer.map(t -> t.getLast() / 1000.0).orElse(0.);
+					final double queryTime = timer.map(t -> t.getLast() / 1000.0).orElse(0.);
 
-				if (_printQueryResults) ResultSetFormatter.out(resultMem, _model);
+					if (_printQueryResults) ResultSetFormatter.out(resultMem, _model);
 
-				System.out.println("Query time: " + queryTime);
-				System.out.println("Number of results: " + count);
-				System.out.println();
+					System.out.println("Query time: " + queryTime);
+					System.out.println("Number of results: " + count);
+					System.out.println();
 
-				currResult.add(new Result<>(queryName, queryTime));
+					currResult.add(new Result<>(queryName, queryTime));
+				}
 			}
 
 			_results.addResult(dataName, currResult);
