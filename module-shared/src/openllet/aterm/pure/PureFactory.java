@@ -709,7 +709,7 @@ public class PureFactory extends SharedObjectFactory implements ATermFactory
 		return parse(pattern);
 	}
 
-	protected boolean isDeepEqual(final ATerm t1, final ATerm t2)
+	protected static boolean isDeepEqual(final ATerm t1, final ATerm t2)
 	{
 		if (t1.getType() != t2.getType()) return false;
 

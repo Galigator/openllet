@@ -61,7 +61,7 @@ public class Test2
 		_srcdir = srcdir;
 	}
 
-	public void test_assert(final boolean condition)
+	public static void test_assert(final boolean condition)
 	{
 		if (!condition) throw new OpenError("assertion failed.");
 	}

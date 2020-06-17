@@ -114,7 +114,7 @@ public abstract class ATermImpl extends ATermVisitableImpl implements ATerm, Sha
 	{
 		if (term instanceof ATermImpl) return this == term;
 
-		return _factory.isDeepEqual(this, term);
+		return PureFactory.isDeepEqual(this, term);
 	}
 
 	@Override

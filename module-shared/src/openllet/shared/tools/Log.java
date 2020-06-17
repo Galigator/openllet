@@ -61,7 +61,7 @@ public class Log implements Logging
 	/**
 	 * Clear any reference on logger and on referring classes.
 	 */
-	public void reset()
+	public static void reset()
 	{
 		_loggers.clear();
 	}

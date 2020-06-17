@@ -39,7 +39,7 @@ public class TestPrimes
 {
 	private ATermFactory _factory;
 
-	public void assertTrue(final boolean condition)
+	public static void assertTrue(final boolean condition)
 	{
 		if (!condition) throw new AssertionError("assertion failed.");
 	}

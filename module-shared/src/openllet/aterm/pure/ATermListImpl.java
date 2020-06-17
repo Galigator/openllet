@@ -541,20 +541,6 @@ public class ATermListImpl extends ATermImpl implements ATermList
 		return replace(t, index);
 	}
 
-	protected int findEmptyHashCode()
-	{
-		int magic = 0;
-		for (int x = Integer.MIN_VALUE; x < Integer.MAX_VALUE; x++)
-		{
-			final int a = GOLDEN_RATIO + (x << 16);
-			final int c = HashFunctions.mix(a, GOLDEN_RATIO, 3);
-
-			if (c == x) magic = x;
-		}
-
-		return magic;
-	}
-
 	private int hashFunction()
 	{
 		int a = GOLDEN_RATIO;

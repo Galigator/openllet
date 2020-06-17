@@ -89,7 +89,7 @@ public class TestBinaryFormat
 		write(input, expectedResult);
 	}
 
-	public void write(final ATerm input, final byte[] expectedResult) throws Exception
+	public static void write(final ATerm input, final byte[] expectedResult) throws Exception
 	{
 		final ByteBuffer buffer = ByteBuffer.allocate(expectedResult.length + 10);
 		final BinaryWriter bw = new BinaryWriter(input);
