@@ -215,7 +215,7 @@ public abstract class ObjectProfiler
 		@Override
 		public Object run() throws Exception
 		{
-			_field.setAccessible(true);
+			if (!Modifier.isFinal(_field.getModifiers())) _field.setAccessible(true);
 
 			return null;
 		}
@@ -286,7 +286,7 @@ public abstract class ObjectProfiler
 			else
 			// the object is of a non-array type
 			{
-				final ClassMetadata metadata = getClassMetadata(objClass, metadataMap, caAction, faAction);
+				final ClassMetadata metadata = getClassMetadata(obj, objClass, metadataMap, caAction, faAction);
 				final Field[] fields = metadata._refFields;
 
 				result += metadata._shellSize;
@@ -294,24 +294,25 @@ public abstract class ObjectProfiler
 				// traverse all non-null ref fields:
 
 				for (final Field field : fields)
-				{
-					final Object ref;
-					try
-					// to get the field value:
+					if (field.canAccess(obj))
 					{
-						ref = field.get(obj);
-					}
-					catch (final Exception e)
-					{
-						throw new OpenError("cannot get field [" + field.getName() + "] of class [" + field.getDeclaringClass().getName() + "]: " + e.toString());
-					}
+						final Object ref;
+						try
+						// to get the field value:
+						{
+							ref = field.get(obj);
+						}
+						catch (final Exception e)
+						{
+							throw new OpenError("cannot get field [" + field.getName() + "] of class [" + field.getDeclaringClass().getName() + "]: " + e.toString());
+						}
 
-					if (ref != null && !visited.containsKey(ref))
-					{
-						visited.put(ref, ref);
-						queue.addFirst(ref);
+						if (ref != null && !visited.containsKey(ref))
+						{
+							visited.put(ref, ref);
+							queue.addFirst(ref);
+						}
 					}
-				}
 			}
 		}
 
@@ -379,7 +380,7 @@ public abstract class ObjectProfiler
 			else
 			// the object is of a non-array type
 			{
-				final ClassMetadata metadata = getClassMetadata(objClass, metadataMap, caAction, faAction);
+				final ClassMetadata metadata = getClassMetadata(obj, objClass, metadataMap, caAction, faAction);
 				final Field[] fields = metadata._refFields;
 
 				// add shell pseudo-_node:
@@ -464,8 +465,8 @@ public abstract class ObjectProfiler
 	/**
 	 * A helper method for manipulating a class metadata cache.
 	 */
-	private static ClassMetadata getClassMetadata(final Class<?> cls, final Map /* Class->ClassMetadata */<Class<?>, ClassMetadata> metadataMap, final ClassAccessPrivilegedAction caAction,
-			final FieldAccessPrivilegedAction faAction)
+	private static ClassMetadata getClassMetadata(final Object obj, final Class<?> cls, final Map<Class<?>, ClassMetadata> metadataMap, //
+			final ClassAccessPrivilegedAction caAction, final FieldAccessPrivilegedAction faAction)
 	{
 		if (cls == null) return null;
 
@@ -506,7 +507,8 @@ public abstract class ObjectProfiler
 			else
 			{
 				// prepare for graph traversal later:
-				if (!field.canAccess(caAction)) try
+
+				if (!field.canAccess(obj)) try
 				{
 					faAction.setContext(field);
 					AccessController.doPrivileged(faAction);
@@ -523,7 +525,7 @@ public abstract class ObjectProfiler
 		}
 
 		// recurse into superclass:
-		final ClassMetadata superMetadata = getClassMetadata(cls.getSuperclass(), metadataMap, caAction, faAction);
+		final ClassMetadata superMetadata = getClassMetadata(obj, cls.getSuperclass(), metadataMap, caAction, faAction);
 		if (superMetadata != null)
 		{
 			primitiveFieldCount += superMetadata._primitiveFieldCount;
@@ -546,6 +548,7 @@ public abstract class ObjectProfiler
 	/**
 	 * Computes the "shallow" size of an array instance.
 	 */
+
 	private static int sizeofArrayShell(final int length, final Class<?> componentType)
 	{
 		// this ignores memory alignment issues by design:

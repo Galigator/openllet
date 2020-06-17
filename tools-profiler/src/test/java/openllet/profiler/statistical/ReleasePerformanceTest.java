@@ -19,7 +19,6 @@ import openllet.profiler.ProfileKB.LoaderType;
 import openllet.profiler.ProfileKB.MemoryProfiling;
 import openllet.profiler.ProfileKB.Task;
 import openllet.profiler.Result;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -34,7 +33,7 @@ import org.junit.runners.Parameterized.Parameters;
  */
 @RunWith(Parameterized.class)
 @Category(ReleaseTests.class)
-@Ignore("Enable to test release performance (maybe not compatible with Travis) ")
+//@Ignore("Enable to test release performance (maybe not compatible with Travis) ")
 public class ReleasePerformanceTest
 {
 
