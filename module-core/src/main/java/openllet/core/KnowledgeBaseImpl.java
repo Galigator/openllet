@@ -2209,26 +2209,6 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		new ClassTreePrinter().print(getTaxonomyBuilder().getTaxonomy(), out);
 	}
 
-	/**
-	 * @param      doDepAxioms
-	 * @deprecated             Use setDoExplanation instead
-	 */
-	@Deprecated
-	public void setDoDependencyAxioms(final boolean doDepAxioms)
-	{
-		_logger.finer(() -> "Setting DoDependencyAxioms = " + doDepAxioms);
-	}
-
-	/**
-	 * @return     DO NOT USE
-	 * @deprecated Use getExplanation instead
-	 */
-	@Deprecated
-	public boolean getDoDependencyAxioms()
-	{
-		return false;
-	}
-
 	@Override
 	public CompletionStrategy chooseStrategy(final ABox abox)
 	{

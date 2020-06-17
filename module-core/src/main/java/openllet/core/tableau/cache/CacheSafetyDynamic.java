@@ -80,7 +80,7 @@ public class CacheSafetyDynamic implements CacheSafety
 		return true;
 	}
 
-	protected Edge getParentEdge(final Individual ind)
+	private static Edge getParentEdge(final Individual ind)
 	{
 		Edge result = null;
 		Role role = null;
@@ -102,7 +102,7 @@ public class CacheSafetyDynamic implements CacheSafety
 		return result;
 	}
 
-	protected Iterator<CachedNode> getCachedNodes(final ABox abox, final ATermAppl c)
+	private static Iterator<CachedNode> getCachedNodes(final ABox abox, final ATermAppl c)
 	{
 		CachedNode node = abox.getCached(c);
 		if (node != null) return IteratorUtils.singletonIterator(node);

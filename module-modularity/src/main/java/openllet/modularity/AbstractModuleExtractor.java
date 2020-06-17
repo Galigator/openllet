@@ -393,7 +393,7 @@ public abstract class AbstractModuleExtractor implements ModuleExtractor
 		return axiom.getSignature();
 	}
 
-	protected Stream<OWLEntity> signature(final OWLAxiom axiom)
+	protected static Stream<OWLEntity> signature(final OWLAxiom axiom)
 	{
 		return axiom.signature();
 	}

@@ -67,6 +67,7 @@ public abstract class Blocking
 		//
 	}
 
+	@SuppressWarnings("static-method")
 	public boolean isDynamic()
 	{
 		return true;
