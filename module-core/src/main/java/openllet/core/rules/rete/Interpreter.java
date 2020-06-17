@@ -6,10 +6,6 @@
 
 package openllet.core.rules.rete;
 
-import java.util.Collection;
-import java.util.Collections;
-import openllet.core.rules.PartialBinding;
-
 /**
  * <p>
  * Title: Interpreter
@@ -27,8 +23,6 @@ public class Interpreter
 
 	public Interpreter(final AlphaNetwork alphaNet)
 	{
-		super();
-
 		_alphaNet = alphaNet;
 	}
 
@@ -42,7 +36,7 @@ public class Interpreter
 	}
 
 	/**
-	 * Restore _abox to the given _branch
+	 * Restore abox to the given branch
 	 *
 	 * @param branch
 	 */
@@ -58,10 +52,5 @@ public class Interpreter
 	public void run()
 	{
 		_alphaNet.activateAll();
-	}
-
-	public Collection<PartialBinding> getBindings()
-	{
-		return Collections.emptyList();
 	}
 }

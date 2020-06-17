@@ -29,47 +29,30 @@
 
 package openllet.shared.hash;
 
+/**
+ * https://en.wikipedia.org/wiki/Tiny_Encryption_Algorithm
+ * TODO : replace by https://en.wikipedia.org/wiki/XXTEA
+ */
 public class HashFunctions
 {
-	/** The golden ratio; an arbitrary value */
-	public static final int GOLDEN_RATIO = 0x9e3779b9;
+	/**
+	 * The golden ratio; an arbitrary value
+	 *
+	 * <pre>
+	 * -1_640_531_527 java int
+	 * 2_654_435_769 unsigned int.
+	 * </pre>
+	 *
+	 * <pre>
+	 * phi = (1 + sqrt(5)) / 2
+	 *  2^32 / phi = 0x9e3779b9
+	 * </pre>
+	 */
+	public static final int GOLDEN_RATIO = 0x9e3779b9; //
 
-	static public int oneAtATime(final Object[] o)
+	public static int doobs(final Object o)
 	{
-		int hash = 0;
-		for (final Object element : o)
-		{
-			hash += element.hashCode();
-			hash += hash << 10;
-			hash ^= hash >> 6;
-		}
-		hash += hash << 3;
-		hash ^= hash >> 11;
-		hash += hash << 15;
-		return hash;
-	}
-
-	static public int simple(final Object[] o)
-	{
-		int hash = o[o.length - 1].hashCode();
-		for (int i = 0; i < o.length - 1; i++)
-			hash = 16 * hash + o[i].hashCode();
-		return hash;
-	}
-
-	static public int cwi(final Object[] o)
-	{
-		int hash = 0;
-		for (final Object element : o)
-			hash = hash << 1 ^ hash >> 1 ^ element.hashCode();
-		return hash;
-	}
-
-	static public int doobs(final Object[] o)
-	{
-		int alpha = GOLDEN_RATIO;
-		alpha += /*(o[1].hashCode() << 8) +  was annonations part */ o[0].hashCode();
-		return mix(alpha, GOLDEN_RATIO, o.length/* the previous hash value */);
+		return mix(GOLDEN_RATIO + o.hashCode(), GOLDEN_RATIO, 1);
 	}
 
 	public static int mix(final int aBit, final int bBit, final int cBit)
@@ -230,5 +213,4 @@ public class HashFunctions
 				return HashFunctions.mix(a, b, c);
 		}
 	}
-
 }

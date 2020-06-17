@@ -56,10 +56,8 @@ public class ATermBlobImpl extends ATermImpl implements ATermBlob
 	protected ATermBlobImpl(final PureFactory factory, final byte[] data)
 	{
 		super(factory);
-
 		_data = data;
-
-		setHashCode(HashFunctions.doobs(new Object[] { data })); // XXX strange -> comment or remove.
+		setHashCode(HashFunctions.doobs(data));
 	}
 
 	@Override

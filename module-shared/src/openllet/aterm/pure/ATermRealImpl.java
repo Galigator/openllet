@@ -45,10 +45,8 @@ public class ATermRealImpl extends ATermImpl implements ATermReal
 	protected ATermRealImpl(final PureFactory factory, final double value)
 	{
 		super(factory);
-
 		_value = value;
-
-		setHashCode(HashFunctions.doobs(new Double[] { value })); // XXX comment or remove or clone but definitly : do something.
+		setHashCode(HashFunctions.doobs(value));
 	}
 
 	@Override

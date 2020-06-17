@@ -68,11 +68,6 @@ public class ProfileKB
 		}
 	}
 
-	public static void main(final String[] args)
-	{
-		new ProfileKB().run(args);
-	}
-
 	public static List<String> readConfigFile(final String configFile) throws IOException
 	{
 		final List<String> datasets = new ArrayList<>();
@@ -89,15 +84,10 @@ public class ProfileKB
 	}
 
 	private double				memPercentageLimit	= 0.05;
-
 	private int					iterations			= 1;
-
 	private MemoryProfiling		_memoryProfiling	= MemoryProfiling.APPROX;
-
 	private Task				_task				= Task.Consistency;
-
 	private LoaderType			_loaderType			= LoaderType.JENA;
-
 	private boolean				_imports			= true;
 
 	private final PrintWriter	out					= new PrintWriter(System.out);
@@ -439,5 +429,10 @@ public class ProfileKB
 		{
 			t.printStackTrace();
 		}
+	}
+
+	public static void main(final String[] args)
+	{
+		new ProfileKB().run(args);
 	}
 }

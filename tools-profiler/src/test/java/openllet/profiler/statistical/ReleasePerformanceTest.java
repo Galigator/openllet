@@ -101,7 +101,10 @@ public class ReleasePerformanceTest
 		try
 		{
 			final Properties properties = new Properties();
-			properties.load(new FileInputStream(filename));
+			try (var in = new FileInputStream(filename))
+			{
+				properties.load(in);
+			}
 
 			RELEASE_REPOSITORY = properties.getProperty("REPOSITORY", "profiler/releases");
 			ITERATIONS = Integer.parseInt(properties.getProperty("ITERATIONS", "30"));

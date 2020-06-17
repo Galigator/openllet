@@ -7,7 +7,6 @@
 package openllet.core.rules;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -125,7 +124,7 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 		return false;
 	}
 
-	public Collection<PartialBinding> applyRete()
+	public void applyRete()
 	{
 		Optional<Timer> timer;
 		if (OpenlletOptions.ALWAYS_REBUILD_RETE)
@@ -141,8 +140,6 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 		timer = _timers.startTimer("rule-reteRun");
 		_interpreter.run();
 		timer.ifPresent(Timer::stop);
-
-		return _interpreter.getBindings();
 	}
 
 	public void applyRuleBindings()

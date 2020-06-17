@@ -88,7 +88,7 @@ public abstract class Blocking
 	public boolean isIndirectlyBlocked(final Individual blocked)
 	{
 		final Individual parent = blocked.getParent();
-		if (parent == null) return false;
+		if (null == parent) return false;
 		blocked.setBlocked(isBlocked(parent));
 		return blocked.isBlocked();
 	}

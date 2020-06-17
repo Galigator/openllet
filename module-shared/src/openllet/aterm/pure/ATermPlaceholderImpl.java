@@ -46,10 +46,8 @@ public class ATermPlaceholderImpl extends ATermImpl implements ATermPlaceholder
 	protected ATermPlaceholderImpl(final PureFactory factory, final ATerm type)
 	{
 		super(factory);
-
 		_type = type;
-
-		setHashCode(HashFunctions.doobs(new Object[] { type })); // XXX : comment or remove : there is the same pattern somewhere else.
+		setHashCode(HashFunctions.doobs(type));
 	}
 
 	@Override
