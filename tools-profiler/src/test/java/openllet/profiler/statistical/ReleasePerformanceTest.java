@@ -19,6 +19,7 @@ import openllet.profiler.ProfileKB.LoaderType;
 import openllet.profiler.ProfileKB.MemoryProfiling;
 import openllet.profiler.ProfileKB.Task;
 import openllet.profiler.Result;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
