@@ -97,6 +97,7 @@ import org.semanticweb.owlapi.model.OWLSubObjectPropertyOfAxiom;
 import org.semanticweb.owlapi.model.OWLSubPropertyChainOfAxiom;
 import org.semanticweb.owlapi.model.OWLSymmetricObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLTransitiveObjectPropertyAxiom;
+import org.semanticweb.owlapi.vocab.OWL2Datatype;
 import org.semanticweb.owlapi.vocab.OWLFacet;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
@@ -365,6 +366,11 @@ public class OWL implements FacetManagerOWL, FacetFactoryOWL, Logging
 	public static OWLLiteral constant(final float value)
 	{
 		return _factory.getOWLLiteral(value);
+	}
+
+	public static OWLLiteral constant(final long value)
+	{
+		return _factory.getOWLLiteral(Long.toString(value), OWL2Datatype.XSD_LONG);
 	}
 
 	/**
