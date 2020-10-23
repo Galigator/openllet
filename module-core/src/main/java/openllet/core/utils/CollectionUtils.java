@@ -8,11 +8,11 @@ package openllet.core.utils;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * <p>
@@ -77,17 +77,17 @@ public class CollectionUtils
 
 	public static <K, V> Map<K, V> makeMap()
 	{
-		return new ConcurrentHashMap<>();
+		return new HashMap<>();
 	}
 
 	public static <K, V> Map<K, V> makeMap(final int size)
 	{
-		return new ConcurrentHashMap<>(size);
+		return new HashMap<>(size);
 	}
 
 	public static <K, V> Map<K, V> makeMap(final Map<? extends K, ? extends V> map)
 	{
-		return new ConcurrentHashMap<>(map);
+		return new HashMap<>(map);
 	}
 
 	@Deprecated
