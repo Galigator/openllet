@@ -53,7 +53,6 @@ import org.semanticweb.owlapi.model.OWLOntologyLoaderConfiguration;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLPropertyExpression;
-import org.semanticweb.owlapi.model.OWLRuntimeException;
 import org.semanticweb.owlapi.model.OWLSubAnnotationPropertyOfAxiom;
 import org.semanticweb.owlapi.model.PrefixManager;
 import org.semanticweb.owlapi.model.SWRLAtom;
@@ -130,9 +129,9 @@ public class OWLFunctionalSyntaxParser implements OWLFunctionalSyntaxParserConst
 				final int colonIndex = s.indexOf(':');
 				final String prefixName = s.substring(0, colonIndex + 1);
 				final String prefix = prefixMap.get(prefixName);
-				if (prefix == null) throw new OWLRuntimeException("Undefined prefix name: " + prefixName);
-				final String fullIRIString = prefix + s.substring(colonIndex + 1);
-				iri = IRI.create(fullIRIString);
+				iri = null == prefix ? //
+						IRI.create(s) : // raw
+						IRI.create(prefix + s.substring(colonIndex + 1)); // fullIRIString
 			}
 			string2IRI.put(s, iri);
 		}
