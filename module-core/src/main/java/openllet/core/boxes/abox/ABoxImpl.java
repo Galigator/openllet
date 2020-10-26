@@ -641,10 +641,7 @@ public class ABoxImpl implements ABox
 
 		final CandidateSet<ATermAppl> cs = new CandidateSet<>();
 		for (final ATermAppl x : individuals)
-		{
-			final Bool isType = isKnownType(x, c, subs);
-			cs.add(x, isType);
-		}
+			cs.add(x, isKnownType(x, c, subs));
 
 		return cs;
 	}

@@ -251,7 +251,7 @@ public class OWL implements FacetManagerOWL, FacetFactoryOWL, Logging
 
 	public static OWLObjectIntersectionOf and(final OWLClassExpression... descriptions)
 	{
-		return _factory.getOWLObjectIntersectionOf(set(descriptions));
+		return _factory.getOWLObjectIntersectionOf(Set.of(descriptions));
 	}
 
 	public static OWLObjectIntersectionOf and(final Set<? extends OWLClassExpression> descriptions)
@@ -266,7 +266,7 @@ public class OWL implements FacetManagerOWL, FacetFactoryOWL, Logging
 
 	public static OWLDataIntersectionOf dataAnd(final OWLDataRange... descriptions)
 	{
-		return _factory.getOWLDataIntersectionOf(set(descriptions));
+		return _factory.getOWLDataIntersectionOf(Set.of(descriptions));
 	}
 
 	public static OWLDataIntersectionOf dataAnd(final Set<? extends OWLDataRange> descriptions)
@@ -428,7 +428,7 @@ public class OWL implements FacetManagerOWL, FacetFactoryOWL, Logging
 
 	public static OWLDifferentIndividualsAxiom differentFrom(final OWLIndividual i1, final OWLIndividual i2)
 	{
-		return _factory.getOWLDifferentIndividualsAxiom(set(i1, i2));
+		return _factory.getOWLDifferentIndividualsAxiom(Set.of(i1, i2));
 	}
 
 	public static OWLDifferentIndividualsAxiom differentFrom(final Set<OWLIndividual> inds)
@@ -438,7 +438,7 @@ public class OWL implements FacetManagerOWL, FacetFactoryOWL, Logging
 
 	public static OWLDisjointClassesAxiom disjointClasses(final OWLClassExpression d1, final OWLClassExpression d2)
 	{
-		return _factory.getOWLDisjointClassesAxiom(set(d1, d2));
+		return _factory.getOWLDisjointClassesAxiom(Set.of(d1, d2));
 	}
 
 	public static OWLDisjointClassesAxiom disjointClasses(final Set<? extends OWLClassExpression> descriptions)
@@ -448,12 +448,12 @@ public class OWL implements FacetManagerOWL, FacetFactoryOWL, Logging
 
 	public static OWLDisjointDataPropertiesAxiom disjointProperties(final OWLDataPropertyExpression d1, final OWLDataPropertyExpression d2)
 	{
-		return _factory.getOWLDisjointDataPropertiesAxiom(set(d1, d2));
+		return _factory.getOWLDisjointDataPropertiesAxiom(Set.of(d1, d2));
 	}
 
 	public static OWLDisjointObjectPropertiesAxiom disjointProperties(final OWLObjectPropertyExpression d1, final OWLObjectPropertyExpression d2)
 	{
-		return _factory.getOWLDisjointObjectPropertiesAxiom(set(d1, d2));
+		return _factory.getOWLDisjointObjectPropertiesAxiom(Set.of(d1, d2));
 	}
 
 	public static OWLDataPropertyDomainAxiom domain(final OWLDataPropertyExpression p, final OWLClassExpression d)
@@ -473,7 +473,7 @@ public class OWL implements FacetManagerOWL, FacetFactoryOWL, Logging
 
 	public static OWLEquivalentClassesAxiom equivalentClasses(final OWLClassExpression d1, final OWLClassExpression d2)
 	{
-		return _factory.getOWLEquivalentClassesAxiom(set(d1, d2));
+		return _factory.getOWLEquivalentClassesAxiom(Set.of(d1, d2));
 	}
 
 	public static OWLEquivalentClassesAxiom equivalentClasses(final Set<? extends OWLClassExpression> descriptions)
@@ -488,7 +488,7 @@ public class OWL implements FacetManagerOWL, FacetFactoryOWL, Logging
 
 	public static OWLEquivalentDataPropertiesAxiom equivalentDataProperties(final OWLDataPropertyExpression p1, final OWLDataPropertyExpression p2)
 	{
-		return _factory.getOWLEquivalentDataPropertiesAxiom(set(p1, p2));
+		return _factory.getOWLEquivalentDataPropertiesAxiom(Set.of(p1, p2));
 	}
 
 	public static OWLEquivalentDataPropertiesAxiom equivalentDataProperties(final Set<? extends OWLDataPropertyExpression> properties)
@@ -498,7 +498,7 @@ public class OWL implements FacetManagerOWL, FacetFactoryOWL, Logging
 
 	public static OWLEquivalentObjectPropertiesAxiom equivalentProperties(final OWLObjectPropertyExpression p1, final OWLObjectPropertyExpression p2)
 	{
-		return _factory.getOWLEquivalentObjectPropertiesAxiom(set(p1, p2));
+		return _factory.getOWLEquivalentObjectPropertiesAxiom(Set.of(p1, p2));
 	}
 
 	public static OWLEquivalentObjectPropertiesAxiom equivalentProperties(final Set<? extends OWLObjectPropertyExpression> properties)
@@ -743,12 +743,12 @@ public class OWL implements FacetManagerOWL, FacetFactoryOWL, Logging
 
 	public static OWLDataOneOf oneOf(final OWLLiteral... constants)
 	{
-		return _factory.getOWLDataOneOf(set(constants));
+		return _factory.getOWLDataOneOf(Set.of(constants));
 	}
 
 	public static OWLObjectOneOf oneOf(final OWLIndividual... individuals)
 	{
-		return _factory.getOWLObjectOneOf(set(individuals));
+		return _factory.getOWLObjectOneOf(Set.of(individuals));
 	}
 
 	public static OWLDataOneOf dataOneOf(final Set<? extends OWLLiteral> constants)
@@ -778,7 +778,7 @@ public class OWL implements FacetManagerOWL, FacetFactoryOWL, Logging
 
 	public static OWLObjectUnionOf or(final OWLClassExpression... descriptions)
 	{
-		return _factory.getOWLObjectUnionOf(set(descriptions));
+		return _factory.getOWLObjectUnionOf(Set.of(descriptions));
 	}
 
 	public static OWLObjectUnionOf or(final Set<? extends OWLClassExpression> descriptions)
@@ -793,7 +793,7 @@ public class OWL implements FacetManagerOWL, FacetFactoryOWL, Logging
 
 	public static OWLDataUnionOf dataOr(final OWLDataRange... descriptions)
 	{
-		return _factory.getOWLDataUnionOf(set(descriptions));
+		return _factory.getOWLDataUnionOf(Set.of(descriptions));
 	}
 
 	public static OWLDataUnionOf dataOr(final Set<? extends OWLDataRange> descriptions)
@@ -848,7 +848,7 @@ public class OWL implements FacetManagerOWL, FacetFactoryOWL, Logging
 
 	public static OWLSameIndividualAxiom sameAs(final OWLIndividual i1, final OWLIndividual i2)
 	{
-		return _factory.getOWLSameIndividualAxiom(set(i1, i2));
+		return _factory.getOWLSameIndividualAxiom(Set.of(i1, i2));
 	}
 
 	public static OWLSameIndividualAxiom sameAs(final Set<OWLIndividual> inds)
@@ -859,25 +859,6 @@ public class OWL implements FacetManagerOWL, FacetFactoryOWL, Logging
 	public static OWLObjectHasSelf self(final OWLObjectPropertyExpression p)
 	{
 		return _factory.getOWLObjectHasSelf(p);
-	}
-
-	@SafeVarargs
-	private static <T> Set<T> set(final T... elements)
-	{
-		final Set<T> set = new LinkedHashSet<>();
-		for (final T e : elements)
-			set.add(e);
-
-		return set;
-	}
-
-	private static <T> Set<T> set(final T e1, final T e2)
-	{
-		final Set<T> set = new LinkedHashSet<>();
-		set.add(e1);
-		set.add(e2);
-
-		return set;
 	}
 
 	public static OWLDataSomeValuesFrom some(final OWLDataPropertyExpression property, final OWLDataRange datatype)

@@ -11,7 +11,6 @@ import static openllet.core.utils.TermFactory.TOP;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import openllet.aterm.ATerm;
@@ -51,7 +50,7 @@ public abstract class AbstractConceptCache implements ConceptCache
 	private int _maxSize;
 
 	/**
-	 * Creates an empty _cache with at most <code>_maxSize</code> elements which are neither named or negations of names.
+	 * Creates an empty _cache with at most <code>maxSize</code> elements which are neither named or negations of names.
 	 *
 	 * @param maxSize
 	 */
@@ -257,9 +256,7 @@ public abstract class AbstractConceptCache implements ConceptCache
 		{
 			if (otherRoot.hasRNeighbor(role))
 			{
-				if (_logger.isLoggable(Level.FINE))
-					_logger.fine(root + " has " + av + " " + otherRoot + " has " + role + " _neighbor");
-
+				_logger.fine(() -> root + " has " + av + " " + otherRoot + " has " + role + " _neighbor");
 				return Bool.UNKNOWN;
 			}
 		}
@@ -269,9 +266,7 @@ public abstract class AbstractConceptCache implements ConceptCache
 			for (final Transition<Role> t : tg.getInitialState().getTransitions())
 				if (otherRoot.hasRNeighbor(t.getName()))
 				{
-					if (_logger.isLoggable(Level.FINE))
-						_logger.fine(root + " has " + av + " " + otherRoot + " has " + t.getName() + " _neighbor");
-
+					_logger.fine(() -> root + " has " + av + " " + otherRoot + " has " + t.getName() + " _neighbor");
 					return Bool.UNKNOWN;
 				}
 		}
@@ -291,8 +286,7 @@ public abstract class AbstractConceptCache implements ConceptCache
 
 		if (n1 + n2 > max)
 		{
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine(root + " has " + mc + " " + otherRoot + " has R-_neighbor");
+			_logger.fine(() -> root + " has " + mc + " " + otherRoot + " has R-_neighbor");
 			return Bool.UNKNOWN;
 		}
 
@@ -306,8 +300,7 @@ public abstract class AbstractConceptCache implements ConceptCache
 		for (final Edge e : otherRoot.getOutEdges())
 			if (e.getRole().isSubRoleOf(r) && e.getToName().equals(otherRoot.getName()))
 			{
-				if (_logger.isLoggable(Level.FINE))
-					_logger.fine(root + " has not(" + self + ") " + otherRoot + " has self edge");
+				_logger.fine(() -> root + " has not(" + self + ") " + otherRoot + " has self edge");
 				final boolean allIndependent = root.isIndependent() && otherRoot.isIndependent() && e.getDepends().isIndependent();
 				return allIndependent ? Bool.FALSE : Bool.UNKNOWN;
 			}
@@ -335,8 +328,7 @@ public abstract class AbstractConceptCache implements ConceptCache
 
 				if (otherRoot.hasRNeighbor(supRole))
 				{
-					if (_logger.isLoggable(Level.FINE))
-						_logger.fine(root + " and " + otherRoot + " has " + supRole);
+					_logger.fine(() -> root + " and " + otherRoot + " has " + supRole);
 					return Bool.UNKNOWN;
 				}
 			}
@@ -359,8 +351,7 @@ public abstract class AbstractConceptCache implements ConceptCache
 
 				if (otherRoot.hasRNeighbor(supRole))
 				{
-					if (_logger.isLoggable(Level.FINE))
-						_logger.fine(root + " and " + otherRoot + " has " + supRole);
+					_logger.fine(() -> root + " and " + otherRoot + " has " + supRole);
 					return Bool.UNKNOWN;
 				}
 			}
@@ -386,8 +377,7 @@ public abstract class AbstractConceptCache implements ConceptCache
 				for (final Edge otherEdge : otherEdges)
 				{
 					final DependencySet ds = edge.getTo().getDifferenceDependency(otherEdge.getNeighbor(otherRoot));
-					if (_logger.isLoggable(Level.FINE))
-						_logger.fine(root + " and " + otherRoot + " has " + supRole + " " + edge + " " + otherEdge);
+					_logger.fine(() -> root + " and " + otherRoot + " has " + supRole + " " + edge + " " + otherEdge);
 					if (ds != null && ds.isIndependent())
 						return Bool.FALSE;
 					result = Bool.UNKNOWN;
@@ -409,8 +399,7 @@ public abstract class AbstractConceptCache implements ConceptCache
 				for (final Edge otherEdge : otherEdges)
 				{
 					final DependencySet ds = edge.getTo().getDifferenceDependency(otherEdge.getNeighbor(otherRoot));
-					if (_logger.isLoggable(Level.FINE))
-						_logger.fine(root + " and " + otherRoot + " has " + supRole + " " + edge + " " + otherEdge);
+					_logger.fine(() -> root + " and " + otherRoot + " has " + supRole + " " + edge + " " + otherEdge);
 					if (ds != null && ds.isIndependent())
 						return Bool.FALSE;
 					result = Bool.UNKNOWN;
