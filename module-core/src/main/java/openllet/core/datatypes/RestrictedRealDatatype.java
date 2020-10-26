@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.logging.Logger;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.datatypes.Facet.XSD;
 import openllet.shared.tools.Log;
@@ -36,18 +37,18 @@ import openllet.shared.tools.Log;
 public class RestrictedRealDatatype implements RestrictedDatatype<Number>
 {
 
-	private final static Logger					_logger	= Log.getLogger(RestrictedRealDatatype.class);
+	private final static Logger _logger = Log.getLogger(RestrictedRealDatatype.class);
 
 	/*
 	 * TODO: Evaluate storing _intervals in a tree to improve the efficiency of
 	 * #contains calls
 	 */
 
-	private final Datatype<? extends Number>	_datatype;
-	private final RestrictedDatatype<Number>	_empty;
-	private final boolean						_enumerable;
-	private final boolean						_finite;
-	private final List<OWLRealInterval>			_intervals;
+	private final Datatype<? extends Number> _datatype;
+	private final RestrictedDatatype<Number> _empty;
+	private final boolean _enumerable;
+	private final boolean _finite;
+	private final List<OWLRealInterval> _intervals;
 
 	public RestrictedRealDatatype(final Datatype<? extends Number> datatype, final OWLRealInterval interval)
 	{
@@ -117,7 +118,8 @@ public class RestrictedRealDatatype implements RestrictedDatatype<Number>
 		if (value instanceof Number)
 		{
 			n = (Number) value;
-			if (!OWLRealUtils.acceptable(n.getClass())) n = null;
+			if (!OWLRealUtils.acceptable(n.getClass()))
+				n = null;
 		}
 		if (n == null)
 		{
@@ -135,29 +137,32 @@ public class RestrictedRealDatatype implements RestrictedDatatype<Number>
 			upper = n;
 			inclusiveUpper = false;
 		}
-		else if (XSD.MAX_INCLUSIVE.equals(f))
-		{
-			lower = null;
-			inclusiveLower = false;
-			upper = n;
-			inclusiveUpper = true;
-		}
-		else if (XSD.MIN_EXCLUSIVE.equals(f))
-		{
-			lower = n;
-			inclusiveLower = false;
-			upper = null;
-			inclusiveUpper = false;
-		}
-		else if (XSD.MIN_INCLUSIVE.equals(f))
-		{
-			lower = n;
-			inclusiveLower = true;
-			upper = null;
-			inclusiveUpper = false;
-		}
 		else
-			throw new IllegalStateException();
+			if (XSD.MAX_INCLUSIVE.equals(f))
+			{
+				lower = null;
+				inclusiveLower = false;
+				upper = n;
+				inclusiveUpper = true;
+			}
+			else
+				if (XSD.MIN_EXCLUSIVE.equals(f))
+				{
+					lower = n;
+					inclusiveLower = false;
+					upper = null;
+					inclusiveUpper = false;
+				}
+				else
+					if (XSD.MIN_INCLUSIVE.equals(f))
+					{
+						lower = n;
+						inclusiveLower = true;
+						upper = null;
+						inclusiveUpper = false;
+					}
+					else
+						throw new IllegalStateException();
 
 		final OWLRealInterval restriction = new OWLRealInterval(lower, upper, inclusiveLower, inclusiveUpper, OWLRealInterval.LineType.CONTINUOUS);
 
@@ -170,7 +175,8 @@ public class RestrictedRealDatatype implements RestrictedDatatype<Number>
 			if (j != null)
 			{
 				revisedIntervals.add(j);
-				if (i != j) changes = true;
+				if (i != j)
+					changes = true;
 			}
 			else
 				changes = true;
@@ -202,7 +208,8 @@ public class RestrictedRealDatatype implements RestrictedDatatype<Number>
 				 * is no need to look further).
 				 */
 				for (final OWLRealInterval i : _intervals)
-					if (i.contains(n)) return true;
+					if (i.contains(n))
+						return true;
 				return false;
 			}
 			else
@@ -215,13 +222,15 @@ public class RestrictedRealDatatype implements RestrictedDatatype<Number>
 	@Override
 	public boolean containsAtLeast(final int n)
 	{
-		if (!_finite || n <= 0) return true;
+		if (!_finite || n <= 0)
+			return true;
 
 		Number sum = 0;
 		for (final OWLRealInterval i : _intervals)
 		{
 			sum = OWLRealUtils.integerSum(sum, i.size());
-			if (OWLRealUtils.compare(n, sum) <= 0) return true;
+			if (OWLRealUtils.compare(n, sum) <= 0)
+				return true;
 		}
 
 		return false;
@@ -247,10 +256,12 @@ public class RestrictedRealDatatype implements RestrictedDatatype<Number>
 						it.remove();
 
 						final OWLRealInterval less = i.less(n);
-						if (less != null) revisedIntervals.add(less);
+						if (less != null)
+							revisedIntervals.add(less);
 
 						final OWLRealInterval greater = i.greater(n);
-						if (greater != null) revisedIntervals.add(greater);
+						if (greater != null)
+							revisedIntervals.add(greater);
 
 						break;
 					}
@@ -303,15 +314,17 @@ public class RestrictedRealDatatype implements RestrictedDatatype<Number>
 				for (final OWLRealInterval j : intersectWith)
 				{
 					final OWLRealInterval k = i.intersection(j);
-					if (k != null) revisedIntervals.add(k);
+					if (k != null)
+						revisedIntervals.add(k);
 				}
 
 			if (revisedIntervals.equals(_intervals))
 				return this;
-			else if (revisedIntervals.isEmpty())
-				return _empty;
 			else
-				return new RestrictedRealDatatype(this, revisedIntervals);
+				if (revisedIntervals.isEmpty())
+					return _empty;
+				else
+					return new RestrictedRealDatatype(this, revisedIntervals);
 
 		}
 		else
@@ -340,13 +353,15 @@ public class RestrictedRealDatatype implements RestrictedDatatype<Number>
 	@Override
 	public int size()
 	{
-		if (!_finite) throw new IllegalStateException();
+		if (!_finite)
+			throw new IllegalStateException();
 
 		Number sum = 0;
 		for (final OWLRealInterval i : _intervals)
 		{
 			sum = OWLRealUtils.integerSum(sum, i.size());
-			if (OWLRealUtils.compare(Integer.MAX_VALUE, sum) <= 0) return Integer.MAX_VALUE;
+			if (OWLRealUtils.compare(Integer.MAX_VALUE, sum) <= 0)
+				return Integer.MAX_VALUE;
 		}
 		return sum.intValue();
 	}
@@ -393,7 +408,8 @@ public class RestrictedRealDatatype implements RestrictedDatatype<Number>
 	@Override
 	public Iterator<Number> valueIterator()
 	{
-		if (!_enumerable) throw new IllegalStateException();
+		if (!_enumerable)
+			throw new IllegalStateException();
 
 		/*
 		 * This implementation avoids allocating the value iterators for the
@@ -403,8 +419,8 @@ public class RestrictedRealDatatype implements RestrictedDatatype<Number>
 		 */
 		return new Iterator<>()
 		{
-			final Iterator<OWLRealInterval>	iit	= _intervals.iterator();
-			Iterator<Number>				nit	= null;
+			final Iterator<OWLRealInterval> iit = _intervals.iterator();
+			Iterator<Number> nit = null;
 
 			@Override
 			public boolean hasNext()
@@ -422,7 +438,8 @@ public class RestrictedRealDatatype implements RestrictedDatatype<Number>
 			@Override
 			public Number next()
 			{
-				if (!hasNext()) throw new NoSuchElementException();
+				if (!hasNext())
+					throw new NoSuchElementException();
 
 				return nit.next();
 			}

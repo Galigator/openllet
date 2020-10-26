@@ -21,22 +21,23 @@ import java.util.Set;
  * Company: Clark & Parsia, LLC. <http://www.clarkparsia.com>
  * </p>
  *
- * @author     Mike Smith
- * @param  <T> kind of element
+ * @author Mike Smith
+ * @param <T> kind of element
  */
 public class DataValueEnumeration<T> implements DataRange<T>
 {
-
-	private final Set<T>	_values;
-	private final int		_size;
+	private final Set<T> _values;
+	private final int _size;
 
 	public DataValueEnumeration(final Collection<? extends T> values)
 	{
-		if (values == null) throw new NullPointerException();
-		if (values.isEmpty()) throw new IllegalArgumentException();
+		if (values == null)
+			throw new NullPointerException();
+		if (values.isEmpty())
+			throw new IllegalArgumentException();
 
-		this._values = Collections.unmodifiableSet(new LinkedHashSet<T>(values));
-		this._size = this._values.size();
+		_values = Collections.unmodifiableSet(new LinkedHashSet<T>(values));
+		_size = _values.size();
 	}
 
 	@Override
@@ -58,7 +59,8 @@ public class DataValueEnumeration<T> implements DataRange<T>
 		/*
 		 * Inefficient, but no one should be using this method!
 		 */
-		if (i >= _size) throw new NoSuchElementException();
+		if (i >= _size)
+			throw new NoSuchElementException();
 
 		final Iterator<T> it = _values.iterator();
 		for (int j = 0; j < i; j++)

@@ -1,11 +1,13 @@
 package openllet.query.sparqldl.model;
 
 import java.util.Iterator;
+
+import org.apache.jena.query.QuerySolution;
+import org.apache.jena.query.QuerySolutionMap;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.utils.ATermUtils;
 import openllet.jena.JenaUtils;
-import org.apache.jena.query.QuerySolution;
-import org.apache.jena.query.QuerySolutionMap;
 
 /**
  * Provide a way to jena to build its specific parameters.
@@ -20,7 +22,8 @@ public interface QueryParametersBuilder
 
 		QuerySolution initialBinding = initialBindingParam;
 
-		if (initialBinding == null) initialBinding = new QuerySolutionMap();
+		if (initialBinding == null)
+			initialBinding = new QuerySolutionMap();
 
 		for (final Iterator<String> iter = initialBinding.varNames(); iter.hasNext();)
 		{

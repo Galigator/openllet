@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
 import openllet.core.KnowledgeBase;
@@ -73,9 +74,11 @@ public class IncrementalRestore
 				// times
 				boolean exit = false;
 				for (final IntSet element : updatedList)
-					if (element == tDS.getDepends()) exit = true;
+					if (element == tDS.getDepends())
+						exit = true;
 
-				if (exit) continue;
+				if (exit)
+					continue;
 
 				updatedList.add(tDS.getDepends());
 
@@ -101,9 +104,11 @@ public class IncrementalRestore
 				// so we do not process the same bitset multiple times
 				boolean exit = false;
 				for (final IntSet element : updatedList)
-					if (element == tDS.getDepends()) exit = true;
+					if (element == tDS.getDepends())
+						exit = true;
 
-				if (exit) continue;
+				if (exit)
+					continue;
 
 				updatedList.add(tDS.getDepends());
 
@@ -135,7 +140,8 @@ public class IncrementalRestore
 			DependencySet termDepends = br.getTermDepends();
 
 			// update the term depends in the branch
-			if (termDepends.getBranch() > branch.getBranch().getBranchIndexInABox()) termDepends = termDepends.copy(termDepends.getBranch() - 1);
+			if (termDepends.getBranch() > branch.getBranch().getBranchIndexInABox())
+				termDepends = termDepends.copy(termDepends.getBranch() - 1);
 
 			for (int j = branch.getBranch().getBranchIndexInABox(); j < _kb.getABox().getBranches().size(); j++)
 				if (termDepends.contains(j))
@@ -171,7 +177,8 @@ public class IncrementalRestore
 
 			phase1(branch, abox); // TODO rename this function when you find the its semantic.
 
-			if (OpenlletOptions.TRACK_BRANCH_EFFECTS) abox.getBranchEffectTracker().remove(branch.getBranch().getBranchIndexInABox() + 1);
+			if (OpenlletOptions.TRACK_BRANCH_EFFECTS)
+				abox.getBranchEffectTracker().remove(branch.getBranch().getBranchIndexInABox() + 1);
 
 			updateBranchesOfABox(branch, abox); // Next update abox branches
 
@@ -279,7 +286,8 @@ public class IncrementalRestore
 		DependencyIndex._logger.fine(() -> "    Removing edge? " + theEdge);
 
 		// the edge could have previously been removed so return
-		if (theEdge == null) return;
+		if (theEdge == null)
+			return;
 
 		// get the object
 		final Individual subj = _kb.getABox().getIndividual(theEdge.getFrom().getName());
@@ -341,7 +349,8 @@ public class IncrementalRestore
 			if (!ind.isSame(mergedToInd)) // check that they are actually the same - else throw error
 				throw new InternalReasonerException(" Restore merge error: " + ind + " not same as " + mergedToInd);
 
-			if (!ind.isPruned()) throw new InternalReasonerException(" Restore merge error: " + ind + " not pruned");
+			if (!ind.isPruned())
+				throw new InternalReasonerException(" Restore merge error: " + ind + " not pruned");
 
 			ind.unprune(ind.getPruned().getBranch()); // unprune to prune _branch
 
@@ -356,9 +365,11 @@ public class IncrementalRestore
 			// because this _node was pruned, we must guarantee that all of its labels have been fired
 			tracker.addUnprunedNode(ind);
 
-			if (ind instanceof Individual) tracker.addUpdatedIndividual((Individual) ind);
+			if (ind instanceof Individual)
+				tracker.addUpdatedIndividual((Individual) ind);
 
-			if (mergedToInd instanceof Individual) tracker.addUpdatedIndividual((Individual) mergedToInd);
+			if (mergedToInd instanceof Individual)
+				tracker.addUpdatedIndividual((Individual) mergedToInd);
 		}
 	}
 
@@ -381,7 +392,8 @@ public class IncrementalRestore
 
 		// return if null - this can happen as currently I have dupilicates in
 		// the _index
-		if (ds == null || desc == ATermUtils.TOP) return;
+		if (ds == null || desc == ATermUtils.TOP)
+			return;
 
 		// clean it
 		ds.removeExplain(assertion);
@@ -407,7 +419,8 @@ public class IncrementalRestore
 				for (final Edge e : ind.getInEdges())
 					tracker.addUpdatedIndividual(e.getFrom());
 				for (final Edge e : ind.getOutEdges())
-					if (e.getTo() instanceof Individual) tracker.addUpdatedIndividual((Individual) e.getTo());
+					if (e.getTo() instanceof Individual)
+						tracker.addUpdatedIndividual((Individual) e.getTo());
 			}
 
 			DependencyIndex._logger.fine("           Actually removed type!");

@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.taxonomy.Taxonomy;
 import openllet.core.taxonomy.TaxonomyImpl;
@@ -40,14 +41,16 @@ class ELTaxonomyBuilder
 		for (final ConceptInfo ci : concepts.get(ATermUtils.TOP).getSuperClasses())
 		{
 			final ATermAppl eq = ci.getConcept();
-			if (ATermUtils.isPrimitive(eq)) _taxonomyImpl.addEquivalentNode(eq, _taxonomyImpl.getTop());
+			if (ATermUtils.isPrimitive(eq))
+				_taxonomyImpl.addEquivalentNode(eq, _taxonomyImpl.getTop());
 		}
 
 		final ConceptInfo BOTTOM = concepts.get(ATermUtils.BOTTOM);
 		for (final ConceptInfo ci : concepts.values())
 		{
 			final ATermAppl c = ci.getConcept();
-			if (!ATermUtils.isPrimitive(c)) continue;
+			if (!ATermUtils.isPrimitive(c))
+				continue;
 
 			if (ci.getSuperClasses().contains(BOTTOM))
 				_taxonomyImpl.addEquivalentNode(c, _taxonomyImpl.getBottomNode());
@@ -70,17 +73,20 @@ class ELTaxonomyBuilder
 
 			for (final ConceptInfo subsumer : ci.getSuperClasses())
 			{
-				if (!ATermUtils.isPrimitive(subsumer.getConcept())) continue;
+				if (!ATermUtils.isPrimitive(subsumer.getConcept()))
+					continue;
 
 				if (ci.equals(subsumer))
 					continue;
-				else if (subsumer.hasSuperClass(ci))
-					equivalents.add(subsumer);
 				else
-				{
-					final TaxonomyNode<ATermAppl> supNode = classify(subsumer);
-					if (supNode != null) subsumers.add(supNode);
-				}
+					if (subsumer.hasSuperClass(ci))
+						equivalents.add(subsumer);
+					else
+					{
+						final TaxonomyNode<ATermAppl> supNode = classify(subsumer);
+						if (supNode != null)
+							subsumers.add(supNode);
+					}
 			}
 
 			node = add(ci, subsumers);

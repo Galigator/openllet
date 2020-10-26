@@ -29,6 +29,7 @@
 package openllet.aterm.pure;
 
 import java.util.List;
+
 import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
@@ -72,8 +73,8 @@ public class ATermIntImpl extends ATermImpl implements ATermInt
 	 * depricated Use the new constructor instead.
 	 *
 	 * @param hashCode x
-	 * @param annos    x
-	 * @param _value   x
+	 * @param annos x
+	 * @param _value x
 	 */
 	@Deprecated
 	protected void init(final int hashCode, final int value)
@@ -85,7 +86,7 @@ public class ATermIntImpl extends ATermImpl implements ATermInt
 	/**
 	 * depricated Use the new constructor instead.
 	 *
-	 * @param annos  x
+	 * @param annos x
 	 * @param _value x
 	 */
 	protected void initHashCode(final int value)
@@ -107,7 +108,8 @@ public class ATermIntImpl extends ATermImpl implements ATermInt
 		if (obj instanceof ATermInt)
 		{
 			final ATermInt peer = (ATermInt) obj;
-			if (peer.getType() != getType()) return false;
+			if (peer.getType() != getType())
+				return false;
 
 			return peer.getInt() == _value;
 		}
@@ -118,7 +120,8 @@ public class ATermIntImpl extends ATermImpl implements ATermInt
 	@Override
 	protected boolean match(final ATerm pattern, final List<Object> list)
 	{
-		if (equals(pattern)) return true;
+		if (equals(pattern))
+			return true;
 
 		if (pattern.getType() == ATerm.PLACEHOLDER)
 		{

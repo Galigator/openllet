@@ -1,9 +1,10 @@
 package openllet.protege.plugin.pellet;
 
-import openllet.core.OpenlletOptions;
 import org.protege.editor.owl.model.inference.AbstractProtegeOWLReasonerInfo;
 import org.semanticweb.owlapi.reasoner.BufferingMode;
 import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
+
+import openllet.core.OpenlletOptions;
 
 /**
  * @author Evren Sirin

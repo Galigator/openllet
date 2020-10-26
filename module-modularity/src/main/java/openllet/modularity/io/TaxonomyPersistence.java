@@ -20,12 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import openllet.core.taxonomy.Taxonomy;
-import openllet.core.taxonomy.TaxonomyImpl;
-import openllet.core.taxonomy.TaxonomyNode;
-import openllet.core.taxonomy.TaxonomyUtils;
-import openllet.owlapi.OWL;
-import openllet.shared.tools.Log;
+
 import org.semanticweb.owlapi.formats.OWLXMLDocumentFormat;
 import org.semanticweb.owlapi.io.StreamDocumentTarget;
 import org.semanticweb.owlapi.model.AddAxiom;
@@ -40,6 +35,13 @@ import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeException;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
+
+import openllet.core.taxonomy.Taxonomy;
+import openllet.core.taxonomy.TaxonomyImpl;
+import openllet.core.taxonomy.TaxonomyNode;
+import openllet.core.taxonomy.TaxonomyUtils;
+import openllet.owlapi.OWL;
+import openllet.shared.tools.Log;
 
 /**
  * <p>
@@ -61,19 +63,19 @@ import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 public class TaxonomyPersistence
 {
 
-	public static final Logger	_logger					= Log.getLogger(TaxonomyPersistence.class);
+	public static final Logger _logger = Log.getLogger(TaxonomyPersistence.class);
 
 	/**
 	 * The URI of the ontology created to represent the Taxonomy
 	 */
-	private static IRI			TAXONOMY_ONTOLOGY_IRI	= IRI.create("http://clarkparsia.com/pellet/modularity/taxonomy");
+	private static IRI TAXONOMY_ONTOLOGY_IRI = IRI.create("http://clarkparsia.com/pellet/modularity/taxonomy");
 
 	/**
 	 * Saves a taxonomy into a stream.
 	 *
-	 * @param  taxonomy     the taxonomy to be saved
-	 * @param  outputStream the output stream where the ontology should be saved
-	 * @throws IOException  if an I/O error should occur
+	 * @param taxonomy the taxonomy to be saved
+	 * @param outputStream the output stream where the ontology should be saved
+	 * @throws IOException if an I/O error should occur
 	 */
 	public static void save(final Taxonomy<OWLClass> taxonomy, final OutputStream outputStream) throws IOException
 	{
@@ -97,15 +99,15 @@ public class TaxonomyPersistence
 	/**
 	 * Converts a taxonomy into an ontology.
 	 *
-	 * @param  ontologyManager              the ontology manager
-	 * @param  taxonomy                     the taxonomy to be converted
-	 * @return                              the ontology based on the taxonomy
+	 * @param ontologyManager the ontology manager
+	 * @param taxonomy the taxonomy to be converted
+	 * @return the ontology based on the taxonomy
 	 * @throws OWLOntologyCreationException if OWLAPI reports an exception during the creation of the ontology
-	 * @throws OWLOntologyChangeException   if OWLAPI report an exception during the population of the ontology
+	 * @throws OWLOntologyChangeException if OWLAPI report an exception during the population of the ontology
 	 */
 	private static OWLOntology createTaxonomyOntology(final Taxonomy<OWLClass> taxonomy) throws OWLOntologyChangeException
 	{
-		final OWLOntology ontology = OWL.Ontology(Collections.<OWLAxiom>emptyList(), TAXONOMY_ONTOLOGY_IRI);
+		final OWLOntology ontology = OWL.Ontology(Collections.<OWLAxiom> emptyList(), TAXONOMY_ONTOLOGY_IRI);
 
 		// populate the ontology
 		final LinkedList<OWLOntologyChange> changes = new LinkedList<>();
@@ -113,7 +115,8 @@ public class TaxonomyPersistence
 
 		for (final TaxonomyNode<OWLClass> taxonomyNode : taxonomy.getNodes().values())
 		{
-			if (processedEquivalentClasses.contains(taxonomyNode.getName())) continue;
+			if (processedEquivalentClasses.contains(taxonomyNode.getName()))
+				continue;
 
 			processedEquivalentClasses.addAll(taxonomyNode.getEquivalents());
 
@@ -143,11 +146,12 @@ public class TaxonomyPersistence
 			// save the individuals
 			final Collection<OWLNamedIndividual> individuals = getDatumInstanceAsCollectorOfOWLNamedIndividual(taxonomyNode);
 
-			if (individuals != null && !individuals.isEmpty()) for (final OWLNamedIndividual ind : individuals)
-			{
-				final AddAxiom classAssertionAxiom = new AddAxiom(ontology, OWL.classAssertion(ind, taxonomyNode.getName()));
-				changes.add(classAssertionAxiom);
-			}
+			if (individuals != null && !individuals.isEmpty())
+				for (final OWLNamedIndividual ind : individuals)
+				{
+					final AddAxiom classAssertionAxiom = new AddAxiom(ontology, OWL.classAssertion(ind, taxonomyNode.getName()));
+					changes.add(classAssertionAxiom);
+				}
 		}
 
 		OWL._manager.applyChanges(changes);
@@ -164,9 +168,9 @@ public class TaxonomyPersistence
 	/**
 	 * Gets all the super classes of the given class in the ontology
 	 *
-	 * @param  ontology ontology to be queried
-	 * @param  owlClass the class whose super classes are to be retrieved
-	 * @return          a set of super classes
+	 * @param ontology ontology to be queried
+	 * @param owlClass the class whose super classes are to be retrieved
+	 * @return a set of super classes
 	 */
 	private static Stream<OWLClass> superClasses(final OWLOntology ontology, final OWLClass owlClass)
 	{
@@ -184,8 +188,8 @@ public class TaxonomyPersistence
 	/**
 	 * Creates a taxonomy from the ontology.
 	 *
-	 * @param  ontology the ontology containing the _data which is the source for the taxonomy
-	 * @return          the created taxonomy
+	 * @param ontology the ontology containing the _data which is the source for the taxonomy
+	 * @return the created taxonomy
 	 */
 	private static TaxonomyImpl<OWLClass> createTaxonomy(final OWLOntology ontology)
 	{
@@ -206,24 +210,28 @@ public class TaxonomyPersistence
 			{
 				equivalentAxiom.namedClasses().forEach(equivalentClasses::add);
 
-				if (equivalentAxiom.containsOWLNothing()) thing_Nothing[1] = true; //equivalentToNothing
+				if (equivalentAxiom.containsOWLNothing())
+					thing_Nothing[1] = true; //equivalentToNothing
 
-				if (equivalentAxiom.containsOWLThing()) thing_Nothing[0] = true; //equivalentToThing
+				if (equivalentAxiom.containsOWLThing())
+					thing_Nothing[0] = true; //equivalentToThing
 			});
 
 			equivalentClasses.removeAll(processedEquivalentClasses);
 
 			if (thing_Nothing[0])
 				taxonomy.addEquivalents(OWL.Thing, equivalentClasses);
-			else if (thing_Nothing[1])
-				taxonomy.addEquivalents(OWL.Nothing, equivalentClasses);
 			else
-			{
-				if (equivalentClasses.contains(owlClass)) equivalentClasses.remove(owlClass);
+				if (thing_Nothing[1])
+					taxonomy.addEquivalents(OWL.Nothing, equivalentClasses);
+				else
+				{
+					if (equivalentClasses.contains(owlClass))
+						equivalentClasses.remove(owlClass);
 
-				taxonomy.addNode(owlClass, false);
-				taxonomy.addEquivalents(owlClass, equivalentClasses);
-			}
+					taxonomy.addNode(owlClass, false);
+					taxonomy.addEquivalents(owlClass, equivalentClasses);
+				}
 
 			processedEquivalentClasses.add(owlClass);
 			processedEquivalentClasses.addAll(equivalentClasses);
@@ -231,14 +239,16 @@ public class TaxonomyPersistence
 
 		// post process the top and bottom _nodes
 		for (final TaxonomyNode<OWLClass> taxonomyNode : taxonomy.getNodes().values())
-			if (OWL.Nothing.equals(taxonomyNode.getName()) && taxonomyNode.getSupers().size() > 1 && taxonomyNode.getSupers().contains(taxonomy.getTop())) taxonomy.getTop().removeSub(taxonomyNode);
+			if (OWL.Nothing.equals(taxonomyNode.getName()) && taxonomyNode.getSupers().size() > 1 && taxonomyNode.getSupers().contains(taxonomy.getTop()))
+				taxonomy.getTop().removeSub(taxonomyNode);
 
 		// after all the _nodes are in the taxonomy, create subclass and superclass relationships among them
 		for (final TaxonomyNode<OWLClass> taxonomyNode : taxonomy.getNodes().values())
 		{
 			final OWLClass owlClass = taxonomyNode.getName();
 
-			if (owlClass == null || owlClass.equals(OWL.Nothing)) continue;
+			if (owlClass == null || owlClass.equals(OWL.Nothing))
+				continue;
 
 			taxonomy.addSupers(owlClass, getSuperClasses(ontology, owlClass));
 		}
@@ -253,7 +263,8 @@ public class TaxonomyPersistence
 							.map(x -> (OWLNamedIndividual) x)//
 							.collect(Collectors.toSet());//
 
-			if (!individuals.isEmpty()) taxonomyNode.putDatum(TaxonomyUtils.TaxonomyKey.INSTANCES_KEY, individuals);
+			if (!individuals.isEmpty())
+				taxonomyNode.putDatum(TaxonomyUtils.TaxonomyKey.INSTANCES_KEY, individuals);
 		}
 
 		return taxonomy;
@@ -262,8 +273,8 @@ public class TaxonomyPersistence
 	/**
 	 * Loads the taxonomy from a stream
 	 *
-	 * @param  is          the stream containing the taxonomy in the form of an ontology
-	 * @return             the read taxonomy
+	 * @param is the stream containing the taxonomy in the form of an ontology
+	 * @return the read taxonomy
 	 * @throws IOException if an I/O error should occur while reading the taxonomy
 	 */
 	public static TaxonomyImpl<OWLClass> load(final InputStream is) throws IOException

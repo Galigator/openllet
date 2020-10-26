@@ -10,6 +10,7 @@ package openllet.core.tableau.completion.rule;
 
 import java.util.List;
 import java.util.logging.Level;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
 import openllet.core.OpenlletOptions;
@@ -49,11 +50,13 @@ public class NominalRule extends AbstractTableauRule
 			final ATermAppl nc = types.get(j);
 			final DependencySet ds = y.getDepends(nc);
 
-			if (!OpenlletOptions.MAINTAIN_COMPLETION_QUEUE && ds == null) continue;
+			if (!OpenlletOptions.MAINTAIN_COMPLETION_QUEUE && ds == null)
+				continue;
 
 			applyNominalRule(y, nc, ds);
 
-			if (_strategy.getABox().isClosed()) return;
+			if (_strategy.getABox().isClosed())
+				return;
 
 			if (y.isMerged())
 			{
@@ -70,10 +73,11 @@ public class NominalRule extends AbstractTableauRule
 
 		final ATermAppl nominal = (ATermAppl) nc.getArgument(0);
 		Individual z = _strategy.getABox().getIndividual(nominal); // first find the _individual for the given nominal
-		if (z == null) if (ATermUtils.isAnonNominal(nominal))
-			z = _strategy.getABox().addIndividual(nominal, ds);
-		else
-			throw new InternalReasonerException("Nominal " + nominal + " not found in KB!");
+		if (z == null)
+			if (ATermUtils.isAnonNominal(nominal))
+				z = _strategy.getABox().addIndividual(nominal, ds);
+			else
+				throw new InternalReasonerException("Nominal " + nominal + " not found in KB!");
 
 		// Get the value of mergedTo because of the following possibility:
 		// Suppose there are three individuals like this
@@ -89,7 +93,8 @@ public class NominalRule extends AbstractTableauRule
 			z = z.getSame();
 		}
 
-		if (y.isSame(z)) return;
+		if (y.isSame(z))
+			return;
 
 		if (y.isDifferent(z))
 		{
@@ -101,7 +106,8 @@ public class NominalRule extends AbstractTableauRule
 			return;
 		}
 
-		if (_logger.isLoggable(Level.FINE)) _logger.fine("NOM:  " + y + " -> " + z);
+		if (_logger.isLoggable(Level.FINE))
+			_logger.fine("NOM:  " + y + " -> " + z);
 
 		_strategy.mergeTo(y, z, ds);
 	}

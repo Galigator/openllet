@@ -16,8 +16,8 @@ import java.util.Iterator;
  * Company: Clark & Parsia, LLC. <http://www.clarkparsia.com>
  * </p>
  *
- * @author     Mike Smith
- * @param  <T> kind of element
+ * @author Mike Smith
+ * @param <T> kind of element
  */
 public class NegatedDataRange<T> implements DataRange<T>
 {

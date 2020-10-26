@@ -23,11 +23,13 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+
+import org.junit.Test;
+
 import junit.framework.JUnit4TestAdapter;
 import openllet.aterm.ATermAppl;
 import openllet.core.output.ATermManchesterSyntaxRenderer;
 import openllet.core.output.ATermRenderer;
-import org.junit.Test;
 
 /**
  * <p>

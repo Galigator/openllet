@@ -10,15 +10,15 @@ import openllet.aterm.ATermList;
  */
 class ATermMapping
 {
-	public ATerm		term;
-	public int			subTermIndex	= -1;
-	public boolean		annosDone		= false;
+	public ATerm term;
+	public int subTermIndex = -1;
+	public boolean annosDone = false;
 
 	/** This is for a ATermList 'nextTerm' optimalization only. */
-	public ATermList	nextPartOfList	= null;
+	public ATermList nextPartOfList = null;
 
-	ATermMapping(final ATerm term)
+	ATermMapping(final ATerm term_)
 	{
-		this.term = term;
+		term = term_;
 	}
 }

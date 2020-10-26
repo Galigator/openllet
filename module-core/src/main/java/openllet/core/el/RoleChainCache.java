@@ -9,6 +9,7 @@ package openllet.core.el;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
+
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
 import openllet.core.KnowledgeBase;
@@ -29,10 +30,10 @@ import openllet.core.utils.MultiValueMap;
  */
 public class RoleChainCache
 {
-	private static final String											ANON_ROLE	= "anonRole";
+	private static final String ANON_ROLE = "anonRole";
 
-	private int															_anonRoleCount;
-	private final Map<ATermAppl, MultiValueMap<ATermAppl, ATermAppl>>	_binaryRoleInclusions;
+	private int _anonRoleCount;
+	private final Map<ATermAppl, MultiValueMap<ATermAppl, ATermAppl>> _binaryRoleInclusions;
 
 	public RoleChainCache(final KnowledgeBase kb)
 	{
@@ -41,12 +42,14 @@ public class RoleChainCache
 
 		for (final Role supRole : kb.getRBox().getRoles().values())
 		{
-			if (supRole.isAnon()) continue;
+			if (supRole.isAnon())
+				continue;
 
 			for (ATermList chain : supRole.getSubRoleChains())
 			{
 				final int chainLength = chain.getLength();
-				if (chainLength <= 1) continue;
+				if (chainLength <= 1)
+					continue;
 
 				ATermAppl r1 = (ATermAppl) chain.getFirst();
 				chain = chain.getNext();
@@ -75,10 +78,12 @@ public class RoleChainCache
 	public Set<ATermAppl> getAllSuperRoles(final ATermAppl r1, final ATermAppl r2)
 	{
 		final MultiValueMap<ATermAppl, ATermAppl> innerMap = _binaryRoleInclusions.get(r1);
-		if (innerMap == null) return Collections.emptySet();
+		if (innerMap == null)
+			return Collections.emptySet();
 
 		final Set<ATermAppl> superRoles = innerMap.get(r2);
-		if (superRoles == null) return Collections.emptySet();
+		if (superRoles == null)
+			return Collections.emptySet();
 
 		return superRoles;
 	}
@@ -105,13 +110,14 @@ public class RoleChainCache
 				for (final Role sub2 : role2.getSubRoles())
 					add(r1, sub2.getName(), superRole);
 		}
-		else if (role2 == null)
-			for (final Role sub1 : role1.getSubRoles())
-				add(sub1.getName(), r2, superRole);
 		else
-			for (final Role sub1 : role1.getSubRoles())
-				for (final Role sub2 : role2.getSubRoles())
-					add(sub1.getName(), sub2.getName(), superRole);
+			if (role2 == null)
+				for (final Role sub1 : role1.getSubRoles())
+					add(sub1.getName(), r2, superRole);
+			else
+				for (final Role sub1 : role1.getSubRoles())
+					for (final Role sub2 : role2.getSubRoles())
+						add(sub1.getName(), sub2.getName(), superRole);
 	}
 
 	private boolean add(final ATermAppl r1, final ATermAppl r2, final ATermAppl superRole)

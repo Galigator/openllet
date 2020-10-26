@@ -11,10 +11,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.stream.Collectors;
-import openllet.atom.OpenError;
-import openllet.modularity.ModularityUtils;
-import openllet.owlapi.OWL;
-import openllet.owlapi.OntologyUtils;
+
 import org.junit.Test;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLAxiom;
@@ -22,6 +19,11 @@ import org.semanticweb.owlapi.model.OWLDeclarationAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.modularity.OntologySegmenter;
+
+import openllet.atom.OpenError;
+import openllet.modularity.ModularityUtils;
+import openllet.owlapi.OWL;
+import openllet.owlapi.OntologyUtils;
 import uk.ac.manchester.cs.owlapi.modularity.ModuleType;
 import uk.ac.manchester.cs.owlapi.modularity.SyntacticLocalityModuleExtractor;
 
@@ -83,7 +85,8 @@ public abstract class RandomizedModularityTest extends AbstractModularityTest
 		for (final Iterator<OWLAxiom> i = expected.iterator(); i.hasNext();)
 		{
 			final OWLAxiom axiom = i.next();
-			if (axiom.getAxiomType() == AxiomType.SAME_INDIVIDUAL || axiom.getAxiomType() == AxiomType.DIFFERENT_INDIVIDUALS) i.remove();
+			if (axiom.getAxiomType() == AxiomType.SAME_INDIVIDUAL || axiom.getAxiomType() == AxiomType.DIFFERENT_INDIVIDUALS)
+				i.remove();
 		}
 
 		TestUtils.assertToStringEquals("Modules diff for " + signature, expected.toArray(new OWLAxiom[0]), computed.toArray(new OWLAxiom[0]));

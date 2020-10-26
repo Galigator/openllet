@@ -10,6 +10,7 @@ import static openllet.core.OpenlletOptions.OrderedClassification.DISABLED;
 import static openllet.core.OpenlletOptions.OrderedClassification.ENABLED_LEGACY_ORDERING;
 
 import java.util.Comparator;
+
 import openllet.aterm.ATerm;
 import openllet.core.KnowledgeBase;
 import openllet.core.OpenlletOptions;

@@ -1,10 +1,12 @@
 package openllet.pellint.test.lintpattern.ontology;
 
 import java.util.List;
+
+import org.semanticweb.owlapi.model.OWLOntology;
+
 import openllet.pellint.format.LintFormat;
 import openllet.pellint.lintpattern.ontology.OntologyLintPattern;
 import openllet.pellint.model.Lint;
-import org.semanticweb.owlapi.model.OWLOntology;
 
 /**
  * <p>
@@ -18,8 +20,8 @@ import org.semanticweb.owlapi.model.OWLOntology;
  */
 public class MockOntologyLintPattern implements OntologyLintPattern
 {
-	private int		_intParam;
-	private String	_stringParam;
+	private int _intParam;
+	private String _stringParam;
 
 	@Override
 	public String getName()

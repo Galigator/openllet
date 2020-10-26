@@ -32,6 +32,7 @@ package openllet.core.output;
 
 import java.io.PrintWriter;
 import java.io.Writer;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.utils.URIUtils;
 

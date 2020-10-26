@@ -37,8 +37,10 @@ public abstract class NodeProvider
 		@Override
 		public boolean equals(final Object obj)
 		{
-			if (this == obj) return true;
-			if (!(obj instanceof ConstantNodeProvider)) return false;
+			if (this == obj)
+				return true;
+			if (!(obj instanceof ConstantNodeProvider))
+				return false;
 			final ConstantNodeProvider other = (ConstantNodeProvider) obj;
 			return _node.getName().equals(other._node.getName());
 		}
@@ -52,8 +54,8 @@ public abstract class NodeProvider
 
 	public static class TokenNodeProvider extends NodeProvider
 	{
-		private final int	_indexWME;
-		private final int	_indexArg;
+		private final int _indexWME;
+		private final int _indexArg;
 
 		public TokenNodeProvider(final int indexWME, final int indexArg)
 		{
@@ -80,8 +82,10 @@ public abstract class NodeProvider
 		@Override
 		public boolean equals(final Object obj)
 		{
-			if (this == obj) return true;
-			if (!(obj instanceof TokenNodeProvider)) return false;
+			if (this == obj)
+				return true;
+			if (!(obj instanceof TokenNodeProvider))
+				return false;
 			final TokenNodeProvider other = (TokenNodeProvider) obj;
 			return _indexArg != other._indexArg && _indexWME != other._indexWME;
 		}
@@ -122,8 +126,10 @@ public abstract class NodeProvider
 		@Override
 		public boolean equals(final Object obj)
 		{
-			if (this == obj) return true;
-			if (!(obj instanceof WMENodeProvider)) return false;
+			if (this == obj)
+				return true;
+			if (!(obj instanceof WMENodeProvider))
+				return false;
 			final WMENodeProvider other = (WMENodeProvider) obj;
 			return _indexArg == other._indexArg;
 		}

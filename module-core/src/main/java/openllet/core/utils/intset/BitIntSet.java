@@ -36,7 +36,8 @@ public class BitIntSet implements IntSet
 	@Override
 	public void add(final int value)
 	{
-		if (value < 0) throw new UnsupportedOperationException("Negative integers cannot be added to this set");
+		if (value < 0)
+			throw new UnsupportedOperationException("Negative integers cannot be added to this set");
 
 		bits.set(value);
 	}
@@ -89,7 +90,8 @@ public class BitIntSet implements IntSet
 			public int next()
 			{
 				final int curr = next;
-				if (curr == -1) throw new NoSuchElementException();
+				if (curr == -1)
+					throw new NoSuchElementException();
 				next = bits.nextSetBit(0);
 				return curr;
 			}
@@ -111,7 +113,8 @@ public class BitIntSet implements IntSet
 	@Override
 	public void remove(final int value)
 	{
-		if (value >= 0) bits.clear(value);
+		if (value >= 0)
+			bits.clear(value);
 	}
 
 	@Override

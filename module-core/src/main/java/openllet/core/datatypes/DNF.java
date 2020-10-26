@@ -11,6 +11,7 @@ import static openllet.core.utils.ATermUtils.toSet;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import openllet.aterm.AFun;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
@@ -38,8 +39,8 @@ public class DNF
 	/**
 	 * Get disjunctive normal form for an expression
 	 *
-	 * @param  term The expression
-	 * @return      <code>term</code> in DNF
+	 * @param term The expression
+	 * @return <code>term</code> in DNF
 	 */
 	public static ATermAppl dnf(final ATermAppl term)
 	{
@@ -49,8 +50,8 @@ public class DNF
 	/**
 	 * Internal method that assumes input is NNF
 	 *
-	 * @param  term A NNF expression
-	 * @return      <code>term</code> in DNF
+	 * @param term A NNF expression
+	 * @return <code>term</code> in DNF
 	 */
 	private static ATermAppl dnfFromNnf(final ATermAppl term)
 	{
@@ -120,27 +121,28 @@ public class DNF
 		/*
 		 * If the term is a _disjunction merge each element into DNF
 		 */
-		else if (ORFUN.equals(fun))
-		{
-			final ATermList disjuncts = (ATermList) term.getArgument(0);
-			final MultiListIterator i = new MultiListIterator(disjuncts);
-			final List<ATermAppl> args = new ArrayList<>();
-			while (i.hasNext())
-			{
-				final ATermAppl a = i.next();
-				if (isOr(a))
-					i.append((ATermList) a.getArgument(0));
-				else
-					args.add(dnfFromNnf(a));
-			}
-			dnf = makeOr(toSet(args));
-		}
-		/*
-		 * If the term is not a conjunction or _disjunction (and its in NNF), it
-		 * is already in DNF
-		 */
 		else
-			dnf = term;
+			if (ORFUN.equals(fun))
+			{
+				final ATermList disjuncts = (ATermList) term.getArgument(0);
+				final MultiListIterator i = new MultiListIterator(disjuncts);
+				final List<ATermAppl> args = new ArrayList<>();
+				while (i.hasNext())
+				{
+					final ATermAppl a = i.next();
+					if (isOr(a))
+						i.append((ATermList) a.getArgument(0));
+					else
+						args.add(dnfFromNnf(a));
+				}
+				dnf = makeOr(toSet(args));
+			}
+			/*
+			 * If the term is not a conjunction or _disjunction (and its in NNF), it
+			 * is already in DNF
+			 */
+			else
+				dnf = term;
 
 		return dnf;
 	}

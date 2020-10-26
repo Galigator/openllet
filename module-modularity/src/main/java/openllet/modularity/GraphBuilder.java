@@ -12,11 +12,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import openllet.core.utils.SetUtils;
-import openllet.owlapi.OWL;
-import openllet.reachability.Node;
-import openllet.reachability.ReachabilityGraph;
-import openllet.shared.tools.Log;
+
 import org.semanticweb.owlapi.model.AsOWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLAxiomVisitor;
@@ -66,6 +62,12 @@ import org.semanticweb.owlapi.model.OWLSymmetricObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLTransitiveObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.SWRLRule;
 
+import openllet.core.utils.SetUtils;
+import openllet.owlapi.OWL;
+import openllet.reachability.Node;
+import openllet.reachability.ReachabilityGraph;
+import openllet.shared.tools.Log;
+
 /**
  * @author Evren Sirin
  */
@@ -84,7 +86,8 @@ public class GraphBuilder
 		@Override
 		public void visit(final OWLClassAssertionAxiom axiom)
 		{
-			if (axiom.getIndividual().isAnonymous()) return;
+			if (axiom.getIndividual().isAnonymous())
+				return;
 			final Node node = _bottomEvaluator.evaluate(axiom.getClassExpression());
 			addOutputs(node, axiom);
 			addOutputs(_graph.createEntityNode(axiom.getIndividual()), axiom);
@@ -135,10 +138,11 @@ public class GraphBuilder
 					or.add(_graph.createAndNode(SetUtils.create(n1, n2)));
 				}
 
-			if (!or.isEmpty()) if (or.size() == 1)
-				addOutputs(or.iterator().next(), axiom);
-			else
-				addOutputs(_graph.createOrNode(or), axiom);
+			if (!or.isEmpty())
+				if (or.size() == 1)
+					addOutputs(or.iterator().next(), axiom);
+				else
+					addOutputs(_graph.createOrNode(or), axiom);
 		}
 
 		@Override
@@ -156,11 +160,13 @@ public class GraphBuilder
 
 			// if the axiom is a singleton we can ignore it. a concept
 			// being equivalent to itself has no effect.
-			if (!eqs.hasNext()) return;
+			if (!eqs.hasNext())
+				return;
 
 			final OWLClassExpression c2 = eqs.next();
 
-			if (eqs.hasNext()) throw new UnsupportedOperationException("OWLEquivalentClassesAxiom with more than 2 elements");
+			if (eqs.hasNext())
+				throw new UnsupportedOperationException("OWLEquivalentClassesAxiom with more than 2 elements");
 
 			processEquivalent(axiom, c1, c2);
 		}
@@ -281,7 +287,8 @@ public class GraphBuilder
 			nodes.add(_topEvaluator.evaluate(axiom.getSuperClass()));
 			nodes.add(_bottomEvaluator.evaluate(axiom.getSubClass()));
 
-			if (!nodes.isEmpty()) addOutputs(_graph.createAndNode(nodes), axiom);
+			if (!nodes.isEmpty())
+				addOutputs(_graph.createAndNode(nodes), axiom);
 		}
 
 		@Override
@@ -320,7 +327,8 @@ public class GraphBuilder
 			desc.accept(this);
 
 			// a null value indicates error
-			if (_node == null) throw new IllegalStateException("Evaluation returned null");
+			if (_node == null)
+				throw new IllegalStateException("Evaluation returned null");
 
 			return _node;
 		}
@@ -391,7 +399,8 @@ public class GraphBuilder
 		{
 			final Set<Node> inputNodes = desc.operands().map(this::evaluate).collect(Collectors.toSet());
 
-			if (!inputNodes.isEmpty()) _node = _graph.createAndNode(inputNodes);
+			if (!inputNodes.isEmpty())
+				_node = _graph.createAndNode(inputNodes);
 		}
 
 		@Override
@@ -461,7 +470,8 @@ public class GraphBuilder
 			desc.accept(this);
 
 			// a null value indicates error
-			if (_node == null) throw new IllegalStateException("Evaluation returned null");
+			if (_node == null)
+				throw new IllegalStateException("Evaluation returned null");
 
 			return _node;
 		}
@@ -574,7 +584,8 @@ public class GraphBuilder
 		public void visit(final OWLObjectUnionOf desc)
 		{
 			final Set<Node> inputNodes = desc.operands().map(this::evaluate).collect(Collectors.toSet());
-			if (!inputNodes.isEmpty()) _node = _graph.createAndNode(inputNodes);
+			if (!inputNodes.isEmpty())
+				_node = _graph.createAndNode(inputNodes);
 		}
 
 		@Override
@@ -584,17 +595,17 @@ public class GraphBuilder
 		}
 	}
 
-	private final ReachabilityGraph<AsOWLNamedIndividual>	_graph				= new ReachabilityGraph<>();
+	private final ReachabilityGraph<AsOWLNamedIndividual> _graph = new ReachabilityGraph<>();
 
-	private final AxiomVisitor								_axiomVisitor		= new AxiomVisitor();
+	private final AxiomVisitor _axiomVisitor = new AxiomVisitor();
 
-	private final BottomEvaluator							_bottomEvaluator	= new BottomEvaluator();
+	private final BottomEvaluator _bottomEvaluator = new BottomEvaluator();
 
-	private final TopEvaluator								_topEvaluator		= new TopEvaluator();
+	private final TopEvaluator _topEvaluator = new TopEvaluator();
 
-	private final Node										NULL_NODE			= _graph.getNullNode();
+	private final Node NULL_NODE = _graph.getNullNode();
 
-	private final Node										START_NODE			= _graph.getStartNode();
+	private final Node START_NODE = _graph.getStartNode();
 
 	public void addAxiom(final OWLAxiom axiom)
 	{
@@ -617,7 +628,8 @@ public class GraphBuilder
 		//			return;
 		//		}
 
-		if (node.equals(NULL_NODE)) return;
+		if (node.equals(NULL_NODE))
+			return;
 
 		axiom.signature().map(_graph::createEntityNode).forEach(node::addOutput);
 	}

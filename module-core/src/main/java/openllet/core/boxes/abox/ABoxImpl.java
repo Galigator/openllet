@@ -46,6 +46,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
@@ -103,93 +104,93 @@ import openllet.shared.tools.Log;
  */
 public class ABoxImpl implements ABox
 {
-	private final static Logger				_logger				= Log.getLogger(ABoxImpl.class);
+	private final static Logger _logger = Log.getLogger(ABoxImpl.class);
 
-	private final ABoxStats					_stats				= new ABoxStats();
+	private final ABoxStats _stats = new ABoxStats();
 
 	/**
 	 * datatype reasoner used for checking the satisfiability of datatypes
 	 */
-	private final DatatypeReasoner			_dtReasoner;
+	private final DatatypeReasoner _dtReasoner;
 
 	/** The KB to which this ABox belongs */
-	private final KnowledgeBase				_kb;
-	private final BranchEffectTracker		_branchEffects;
-	private final CompletionQueue			_completionQueue;
-	private final IncrementalChangeTracker	_incChangeTracker;
+	private final KnowledgeBase _kb;
+	private final BranchEffectTracker _branchEffects;
+	private final CompletionQueue _completionQueue;
+	private final IncrementalChangeTracker _incChangeTracker;
 
-	private final List<Branch>				_branches;
+	private final List<Branch> _branches;
 
 	/**
 	 * This is a list of node names. This list stores the individuals in the order they are created
 	 */
-	private final List<ATermAppl>			_nodeList;
+	private final List<ATermAppl> _nodeList;
 
 	// pseudo model for this Abox. This is the ABox that results from
 	// completing to the original Abox
 	// private ABox pseudoModel;
 
-	private final Set<Clash>				_assertedClashes;
+	private final Set<Clash> _assertedClashes;
 
-	private final List<NodeMerge>			_toBeMerged;
+	private final List<NodeMerge> _toBeMerged;
 
-	private final Map<ATermAppl, int[]>		_disjBranchStats;
+	private final Map<ATermAppl, int[]> _disjBranchStats;
 
 	/**
 	 * This is a list of _nodes. Each _node has a name expressed as an ATerm which is used as the key in the Hashtable. The value is the actual _node object
 	 */
-	private final Map<ATermAppl, Node>		_nodes;
+	private final Map<ATermAppl, Node> _nodes;
 
 	/** the current branch number */
-	private volatile int					_branchIndex;
+	private volatile int _branchIndex;
 
 	/** the last clash recorded */
-	private volatile Clash					_clash;
+	private volatile Clash _clash;
 
 	/** if we are using copy on write, this is where to copy from */
-	private volatile ABox					_sourceABox;										// FIXME : sourceBox actively use null.
+	private volatile ABox _sourceABox; // FIXME : sourceBox actively use null.
 
 	/**
 	 * cache of the last completion. it may be different from the pseudo model, e.g. type checking for individual adds one extra assertion last completion is
 	 * stored for caching the root nodes that was the result of
 	 */
-	private volatile ABox					_lastCompletion;
+	private volatile ABox _lastCompletion;
 
-	private volatile Clash					_lastClash;
+	private volatile Clash _lastClash;
 
 	/**
 	 * following two variables are used to generate names for newly generated individuals. so during rules are applied anon1, anon2, etc. will be generated.
 	 * This prefix will also make sure that any node whose name starts with this prefix is not a root node
 	 */
-	private volatile int					_anonCount			= 0;
+	private volatile int _anonCount = 0;
 
-	private volatile boolean				_keepLastCompletion;
+	private volatile boolean _keepLastCompletion;
 
 	// complete ABox means no more tableau rules are applicable
-	private volatile boolean				_isComplete			= false;
+	private volatile boolean _isComplete = false;
 
 	/**
 	 * Indicates if any of the completion rules has been applied to modify ABox
 	 */
-	private volatile boolean				_changed			= false;
+	private volatile boolean _changed = false;
 
-	private volatile boolean				_doExplanation		= false;
+	private volatile boolean _doExplanation = false;
 
 	/**
 	 * return true if init() function is called. This indicates parsing is completed and ABox is ready for completion
 	 */
-	private volatile boolean				_initialized		= false;
+	private volatile boolean _initialized = false;
 
-	private volatile boolean				_rulesNotApplied	= false;
+	private volatile boolean _rulesNotApplied = false;
 
 	/** flag set when incrementally updating the abox with explicit assertions */
-	private volatile boolean				_syntacticUpdate	= false;
+	private volatile boolean _syntacticUpdate = false;
 
 	/**
 	 * cached satisfiability results the table maps every atomic concept A (and also its negation not(A)) to the root node of its completed tree. If a concept
 	 * is mapped to null value it means it is not satisfiable
 	 */
-	private volatile ConceptCache			_cache;
+	private volatile ConceptCache _cache;
 
 	@Override
 	public Logger getLogger()
@@ -275,7 +276,8 @@ public class ABoxImpl implements ABox
 	public ABoxImpl(final KnowledgeBase kb, final boolean copyCache)
 	{
 		this(kb);
-		if (copyCache) _cache = kb.getABox().getCache();
+		if (copyCache)
+			_cache = kb.getABox().getCache();
 	}
 
 	public ABoxImpl(final KnowledgeBase kb, final ABoxImpl abox, final ATermAppl extraIndividual, final boolean copyIndividuals)
@@ -318,10 +320,11 @@ public class ABoxImpl implements ABox
 				_completionQueue = abox._completionQueue.copy();
 				_completionQueue.setABox(this);
 			}
-			else if (OpenlletOptions.USE_OPTIMIZED_BASIC_COMPLETION_QUEUE)
-				_completionQueue = new OptimizedBasicCompletionQueue(this);
 			else
-				_completionQueue = new BasicCompletionQueue(this);
+				if (OpenlletOptions.USE_OPTIMIZED_BASIC_COMPLETION_QUEUE)
+					_completionQueue = new OptimizedBasicCompletionQueue(this);
+				else
+					_completionQueue = new BasicCompletionQueue(this);
 		}
 		else
 			_completionQueue = null;
@@ -335,7 +338,8 @@ public class ABoxImpl implements ABox
 			_nodes.put(extraIndividual, n);
 			_nodeList.add(extraIndividual);
 
-			if (OpenlletOptions.COPY_ON_WRITE) _sourceABox = abox;
+			if (OpenlletOptions.COPY_ON_WRITE)
+				_sourceABox = abox;
 		}
 
 		if (copyIndividuals)
@@ -429,7 +433,8 @@ public class ABoxImpl implements ABox
 	@Override
 	public void copyOnWrite()
 	{
-		if (_sourceABox == null) return;
+		if (_sourceABox == null)
+			return;
 
 		final Optional<Timer> timer = _kb.getTimers().startTimer("copyOnWrite");
 
@@ -449,10 +454,12 @@ public class ABoxImpl implements ABox
 			_nodeList.add(x);
 		}
 
-		if (currentSize > 1) _nodeList.addAll(currentNodeList.subList(1, currentSize));
+		if (currentSize > 1)
+			_nodeList.addAll(currentNodeList.subList(1, currentSize));
 
 		for (final Node node : _nodes.values())
-			if (getSourceABox().getNodes().containsKey(node.getName())) node.updateNodeReferences();
+			if (getSourceABox().getNodes().containsKey(node.getName()))
+				node.updateNodeReferences();
 
 		for (int i = 0, n = _branches.size(); i < n; i++)
 		{
@@ -481,7 +488,8 @@ public class ABoxImpl implements ABox
 	{
 		_lastCompletion = null;
 
-		if (clearSatCache) _cache = new ConceptCacheLRU(_kb);
+		if (clearSatCache)
+			_cache = new ConceptCacheLRU(_kb);
 	}
 
 	@Override
@@ -531,7 +539,8 @@ public class ABoxImpl implements ABox
 	{
 		Bool isSubClassOf = Bool.UNKNOWN;
 		final CachedNode cached = getCached(c1);
-		if (cached != null) isSubClassOf = isType(cached, c2);
+		if (cached != null)
+			isSubClassOf = isType(cached, c2);
 
 		return isSubClassOf;
 	}
@@ -542,7 +551,8 @@ public class ABoxImpl implements ABox
 		if (!_doExplanation)
 		{
 			final Bool isKnownSubClass = isKnownSubClassOf(c1, c2);
-			if (isKnownSubClass.isKnown()) return isKnownSubClass.isTrue();
+			if (isKnownSubClass.isKnown())
+				return isKnownSubClass.isTrue();
 		}
 
 		if (_logger.isLoggable(Level.FINE))
@@ -583,7 +593,8 @@ public class ABoxImpl implements ABox
 			return false;
 		}
 
-		if (_logger.isLoggable(Level.FINE)) _logger.fine("Satisfiability for " + ATermUtils.toString(c));
+		if (_logger.isLoggable(Level.FINE))
+			_logger.fine("Satisfiability for " + ATermUtils.toString(c));
 
 		if (cacheModel)
 		{
@@ -592,14 +603,16 @@ public class ABoxImpl implements ABox
 			{
 				final boolean satisfiable = !cached.isBottom();
 				final boolean needToCacheModel = cacheModel && !cached.isComplete();
-				if (_logger.isLoggable(Level.FINE)) _logger.fine("Cached sat for " + ATermUtils.toString(c) + " is " + satisfiable);
+				if (_logger.isLoggable(Level.FINE))
+					_logger.fine("Cached sat for " + ATermUtils.toString(c) + " is " + satisfiable);
 				// if clashExplanation is enabled we should actually build the
 				// tableau again to generate the _clash. we don't _cache the
 				// clashExplanation up front because generating clashExplanation is costly
 				// and we only want to do it when explicitly asked note that
 				// when the concepts is satisfiable there is no clashExplanation to
 				// be generated so we return the result immediately
-				if (!needToCacheModel && (satisfiable || !_doExplanation)) return satisfiable;
+				if (!needToCacheModel && (satisfiable || !_doExplanation))
+					return satisfiable;
 			}
 		}
 
@@ -623,7 +636,7 @@ public class ABoxImpl implements ABox
 	{
 		ATermAppl c = cParam;
 		c = ATermUtils.normalize(c);
-		final Set<ATermAppl> subs = _kb.isClassified() && _kb.getTaxonomy().contains(c) ? _kb.getTaxonomy().getFlattenedSubs(c, false) : Collections.<ATermAppl>emptySet();
+		final Set<ATermAppl> subs = _kb.isClassified() && _kb.getTaxonomy().contains(c) ? _kb.getTaxonomy().getFlattenedSubs(c, false) : Collections.<ATermAppl> emptySet();
 		subs.remove(ATermUtils.BOTTOM);
 
 		final CandidateSet<ATermAppl> cs = new CandidateSet<>();
@@ -727,10 +740,11 @@ public class ABoxImpl implements ABox
 
 		if (isIndependent)
 			return isType;
-		else if (isType.isTrue())
-			return Bool.UNKNOWN;
 		else
-			return isType;
+			if (isType.isTrue())
+				return Bool.UNKNOWN;
+			else
+				return isType;
 	}
 
 	@Override
@@ -746,7 +760,8 @@ public class ABoxImpl implements ABox
 			{
 				Bool type = pNode.hasObviousType(c);
 
-				if (type.isUnknown() && pNode.hasObviousType(subs)) type = Bool.TRUE;
+				if (type.isUnknown() && pNode.hasObviousType(subs))
+					type = Bool.TRUE;
 
 				if (type.isKnown())
 					isType = isType.and(type);
@@ -785,7 +800,8 @@ public class ABoxImpl implements ABox
 					// Node.hasObviousType returns unknown and changing it to
 					// false here is wrong.
 
-					if (isType.isUnknown()) return Bool.UNKNOWN;
+					if (isType.isUnknown())
+						return Bool.UNKNOWN;
 				}
 			}
 		}
@@ -804,17 +820,21 @@ public class ABoxImpl implements ABox
 			final DependencySet ds = pNode.getDepends().get(c);
 			if (ds == null)
 				return Bool.FALSE;
-			else if (ds.isIndependent() && pNode.isIndependent()) return Bool.TRUE;
+			else
+				if (ds.isIndependent() && pNode.isIndependent())
+					return Bool.TRUE;
 		}
 
 		final ATermAppl notC = ATermUtils.negate(c);
 		final CachedNode cached = getCached(notC);
-		if (cached != null && cached.isComplete()) isType = _cache.isMergable(_kb, pNode, cached).not();
+		if (cached != null && cached.isComplete())
+			isType = _cache.isMergable(_kb, pNode, cached).not();
 
 		if (OpenlletOptions.CHECK_NOMINAL_EDGES && isType.isUnknown())
 		{
 			final CachedNode cNode = getCached(c);
-			if (cNode != null) isType = _cache.checkNominalEdges(_kb, pNode, cNode);
+			if (cNode != null)
+				isType = _cache.checkNominalEdges(_kb, pNode, cNode);
 		}
 
 		return isType;
@@ -829,10 +849,10 @@ public class ABoxImpl implements ABox
 	}
 
 	/**
-	 * @param  x      is an individual
-	 * @param  cParam is a class
-	 * @return        true if individual x belongs to type c. This is a logical consequence of the KB if in all possible models x belongs to C. This is checked by
-	 *                trying to construct a model where x belongs to not(c).
+	 * @param x is an individual
+	 * @param cParam is a class
+	 * @return true if individual x belongs to type c. This is a logical consequence of the KB if in all possible models x belongs to C. This is checked by
+	 *         trying to construct a model where x belongs to not(c).
 	 */
 	@Override
 	public boolean isType(final ATermAppl x, final ATermAppl cParam)
@@ -852,13 +872,15 @@ public class ABoxImpl implements ABox
 				subs = Collections.emptySet();
 
 			final Bool type = isKnownType(x, c, subs);
-			if (type.isKnown()) return type.isTrue();
+			if (type.isKnown())
+				return type.isTrue();
 		}
 		// List list = (List) _kb.instances.get( c );
 		// if( list != null )
 		// return list.contains( x );
 
-		if (_logger.isLoggable(Level.FINE)) _logger.fine("Checking type " + ATermUtils.toString(c) + " for individual " + ATermUtils.toString(x));
+		if (_logger.isLoggable(Level.FINE))
+			_logger.fine("Checking type " + ATermUtils.toString(c) + " for individual " + ATermUtils.toString(x));
 
 		final ATermAppl notC = ATermUtils.negate(c);
 
@@ -866,7 +888,8 @@ public class ABoxImpl implements ABox
 		final boolean isType = !isConsistent(SetUtils.singleton(x), notC, false);
 		timer.ifPresent(Timer::stop);
 
-		if (_logger.isLoggable(Level.FINE)) _logger.fine("Type " + isType + " " + ATermUtils.toString(c) + " for individual " + ATermUtils.toString(x));
+		if (_logger.isLoggable(Level.FINE))
+			_logger.fine("Type " + isType + " " + ATermUtils.toString(c) + " for individual " + ATermUtils.toString(x));
 
 		return isType;
 	}
@@ -922,7 +945,9 @@ public class ABoxImpl implements ABox
 
 		if (prop.isTop())
 			return Bool.TRUE;
-		else if (prop.isBottom()) return Bool.FALSE;
+		else
+			if (prop.isBottom())
+				return Bool.FALSE;
 
 		// if onlyPositive is set then the answer returned is sound but not
 		// complete so we cannot return negative answers
@@ -937,7 +962,8 @@ public class ABoxImpl implements ABox
 			subj = subj.getSame();
 
 		final Bool hasValue = subj.hasDataPropertyValue(prop, value);
-		if (onlyPositive && hasValue.isFalse()) return Bool.UNKNOWN;
+		if (onlyPositive && hasValue.isFalse())
+			return Bool.UNKNOWN;
 
 		return hasValue;
 	}
@@ -949,7 +975,9 @@ public class ABoxImpl implements ABox
 
 		if (prop.isTop())
 			return Bool.TRUE;
-		else if (prop.isBottom()) return Bool.FALSE;
+		else
+			if (prop.isBottom())
+				return Bool.FALSE;
 
 		final Set<ATermAppl> knowns = new HashSet<>();
 		final Set<ATermAppl> unknowns = new HashSet<>();
@@ -960,24 +988,29 @@ public class ABoxImpl implements ABox
 		{
 			if (!knowns.isEmpty())
 				return Bool.TRUE;
-			else if (!unknowns.isEmpty())
-				return Bool.UNKNOWN;
 			else
-				return Bool.FALSE;
+				if (!unknowns.isEmpty())
+					return Bool.UNKNOWN;
+				else
+					return Bool.FALSE;
 		}
-		else if (knowns.contains(o))
-			return Bool.TRUE;
-		else if (unknowns.contains(o))
-			return Bool.UNKNOWN;
 		else
-			return Bool.FALSE;
+			if (knowns.contains(o))
+				return Bool.TRUE;
+			else
+				if (unknowns.contains(o))
+					return Bool.UNKNOWN;
+				else
+					return Bool.FALSE;
 	}
 
 	@Override
 	public boolean hasPropertyValue(final ATermAppl s, final ATermAppl p, final ATermAppl o)
 	{
 		final Bool hasObviousValue = hasObviousPropertyValue(s, p, o);
-		if (hasObviousValue.isKnown()) if (hasObviousValue.isFalse() || !doExplanation()) return hasObviousValue.isTrue();
+		if (hasObviousValue.isKnown())
+			if (hasObviousValue.isFalse() || !doExplanation())
+				return hasObviousValue.isTrue();
 
 		ATermAppl c = null;
 		if (o == null)
@@ -1025,24 +1058,29 @@ public class ABoxImpl implements ABox
 			final ATermAppl literalValue = literal.getTerm();
 			if (literalValue != null)
 			{
-				if (datatype != null) if (!literal.hasType(datatype)) try
-				{
-					if (!_dtReasoner.isSatisfiable(Collections.singleton(datatype), literal.getValue())) continue;
-				}
-				catch (final DatatypeReasonerException e)
-				{
-					final String msg = format("Unexpected datatype reasoner exception while fetching property values (%s,%s,%s): %s", s, role, datatype, e.getMessage());
-					_logger.severe(msg);
-					throw new InternalReasonerException(msg);
-				}
+				if (datatype != null)
+					if (!literal.hasType(datatype))
+						try
+						{
+							if (!_dtReasoner.isSatisfiable(Collections.singleton(datatype), literal.getValue()))
+								continue;
+						}
+						catch (final DatatypeReasonerException e)
+						{
+							final String msg = format("Unexpected datatype reasoner exception while fetching property values (%s,%s,%s): %s", s, role, datatype, e.getMessage());
+							_logger.severe(msg);
+							throw new InternalReasonerException(msg);
+						}
 
 				if (isIndependent && ds.isIndependent())
 					values.add(literalValue);
-				else if (!onlyObvious)
-				{
-					final ATermAppl hasValue = ATermUtils.makeHasValue(role.getName(), literalValue);
-					if (isType(s, hasValue)) values.add(literalValue);
-				}
+				else
+					if (!onlyObvious)
+					{
+						final ATermAppl hasValue = ATermUtils.makeHasValue(role.getName(), literalValue);
+						if (isType(s, hasValue))
+							values.add(literalValue);
+					}
 			}
 		}
 
@@ -1071,13 +1109,14 @@ public class ABoxImpl implements ABox
 
 		if (role.isSimple())
 			getSimpleObjectPropertyValues(subj, role, knowns, unknowns, getSames);
-		else if (!role.hasComplexSubRole())
-			getTransitivePropertyValues(subj, role, knowns, unknowns, getSames, new HashMap<Individual, Set<Role>>(), true);
 		else
-		{
-			final TransitionGraph<Role> tg = role.getFSM();
-			getComplexObjectPropertyValues(subj, tg.getInitialState(), tg, knowns, unknowns, getSames, new HashMap<Individual, Set<State<Role>>>(), true);
-		}
+			if (!role.hasComplexSubRole())
+				getTransitivePropertyValues(subj, role, knowns, unknowns, getSames, new HashMap<Individual, Set<Role>>(), true);
+			else
+			{
+				final TransitionGraph<Role> tg = role.getFSM();
+				getComplexObjectPropertyValues(subj, tg.getInitialState(), tg, knowns, unknowns, getSames, new HashMap<Individual, Set<State<Role>>>(), true);
+			}
 
 		if (!isIndependent)
 		{
@@ -1095,25 +1134,27 @@ public class ABoxImpl implements ABox
 			final DependencySet ds = edge.getDepends();
 			final Individual value = (Individual) edge.getNeighbor(subj);
 
-			if (value.isRootNominal()) if (ds.isIndependent())
-			{
-				if (getSames)
-					getSames(value, knowns, unknowns);
+			if (value.isRootNominal())
+				if (ds.isIndependent())
+				{
+					if (getSames)
+						getSames(value, knowns, unknowns);
+					else
+						knowns.add(value.getName());
+				}
 				else
-					knowns.add(value.getName());
-			}
-			else if (getSames)
-				getSames(value, unknowns, unknowns);
-			else
-				unknowns.add(value.getName());
+					if (getSames)
+						getSames(value, unknowns, unknowns);
+					else
+						unknowns.add(value.getName());
 		}
 	}
 
 	@Override
-	public void getTransitivePropertyValues(final Individual subj, final Role prop, final Set<ATermAppl> knowns, final Set<ATermAppl> unknowns, final boolean getSames,
-			final Map<Individual, Set<Role>> visited, final boolean isIndependent)
+	public void getTransitivePropertyValues(final Individual subj, final Role prop, final Set<ATermAppl> knowns, final Set<ATermAppl> unknowns, final boolean getSames, final Map<Individual, Set<Role>> visited, final boolean isIndependent)
 	{
-		if (!MultiMapUtils.addAll(visited, subj, prop.getSubRoles())) return;
+		if (!MultiMapUtils.addAll(visited, subj, prop.getSubRoles()))
+			return;
 
 		final EdgeList edges = subj.getRNeighborEdges(prop);
 		for (final Edge edge : edges)
@@ -1121,17 +1162,19 @@ public class ABoxImpl implements ABox
 			final DependencySet ds = edge.getDepends();
 			final Individual value = (Individual) edge.getNeighbor(subj);
 			final Role edgeRole = edge.getFrom().equals(subj) ? edge.getRole() : edge.getRole().getInverse();
-			if (value.isRootNominal()) if (isIndependent && ds.isIndependent())
-			{
-				if (getSames)
-					getSames(value, knowns, unknowns);
+			if (value.isRootNominal())
+				if (isIndependent && ds.isIndependent())
+				{
+					if (getSames)
+						getSames(value, knowns, unknowns);
+					else
+						knowns.add(value.getName());
+				}
 				else
-					knowns.add(value.getName());
-			}
-			else if (getSames)
-				getSames(value, unknowns, unknowns);
-			else
-				unknowns.add(value.getName());
+					if (getSames)
+						getSames(value, unknowns, unknowns);
+					else
+						unknowns.add(value.getName());
 
 			if (!prop.isSimple())
 			{
@@ -1145,10 +1188,10 @@ public class ABoxImpl implements ABox
 	}
 
 	@Override
-	public void getComplexObjectPropertyValues(final Individual subj, final State<Role> st, final TransitionGraph<Role> tg, final Set<ATermAppl> knowns, final Set<ATermAppl> unknowns,
-			final boolean getSames, final HashMap<Individual, Set<State<Role>>> visited, final boolean isIndependent)
+	public void getComplexObjectPropertyValues(final Individual subj, final State<Role> st, final TransitionGraph<Role> tg, final Set<ATermAppl> knowns, final Set<ATermAppl> unknowns, final boolean getSames, final HashMap<Individual, Set<State<Role>>> visited, final boolean isIndependent)
 	{
-		if (!MultiMapUtils.add(visited, subj, st)) return;
+		if (!MultiMapUtils.add(visited, subj, st))
+			return;
 
 		if (tg.isFinal(st) && subj.isRootNominal())
 		{
@@ -1160,10 +1203,11 @@ public class ABoxImpl implements ABox
 				else
 					knowns.add(subj.getName());
 			}
-			else if (getSames)
-				getSames(subj, unknowns, unknowns);
 			else
-				unknowns.add(subj.getName());
+				if (getSames)
+					getSames(subj, unknowns, unknowns);
+				else
+					unknowns.add(subj.getName());
 		}
 
 		_logger.fine(subj.toString());
@@ -1191,7 +1235,8 @@ public class ABoxImpl implements ABox
 
 		for (final Node other : ind.getMerged())
 		{
-			if (!other.isRootNominal()) continue;
+			if (!other.isRootNominal())
+				continue;
 
 			final boolean otherMerged = other.isMerged() && !other.getMergeDependency(true).isIndependent();
 			if (thisMerged || otherMerged)
@@ -1288,9 +1333,9 @@ public class ABoxImpl implements ABox
 	 * The consistency checks will be done either on a copy of the ABox or its pseudo model depending on the situation. In either case this ABox will not be
 	 * modified at all. After the consistency check lastCompletion points to the modified ABox.
 	 *
-	 * @param  individuals
-	 * @param  c_
-	 * @return             true if consistent.
+	 * @param individuals
+	 * @param c_
+	 * @return true if consistent.
 	 */
 	private boolean isConsistent(final Collection<ATermAppl> individualsParam, final ATermAppl c_, final boolean cacheModel)
 	{
@@ -1299,22 +1344,25 @@ public class ABoxImpl implements ABox
 
 		final Optional<Timer> timer = _kb.getTimers().startTimer("isConsistent");
 
-		if (_logger.isLoggable(Level.FINE)) if (c == null)
-			_logger.fine("ABox consistency for " + individuals.size() + " individuals");
-		else
-		{
-			final StringBuilder sb = new StringBuilder();
-			sb.append("[");
-			final Iterator<ATermAppl> it = individuals.iterator();
-			for (int i = 0; i < 100 && it.hasNext(); i++)
+		if (_logger.isLoggable(Level.FINE))
+			if (c == null)
+				_logger.fine("ABox consistency for " + individuals.size() + " individuals");
+			else
 			{
-				if (i > 0) sb.append(", ");
-				sb.append(ATermUtils.toString(it.next()));
+				final StringBuilder sb = new StringBuilder();
+				sb.append("[");
+				final Iterator<ATermAppl> it = individuals.iterator();
+				for (int i = 0; i < 100 && it.hasNext(); i++)
+				{
+					if (i > 0)
+						sb.append(", ");
+					sb.append(ATermUtils.toString(it.next()));
+				}
+				if (it.hasNext())
+					sb.append(", ...");
+				sb.append("]");
+				_logger.fine("Consistency " + ATermUtils.toString(c) + " for " + individuals.size() + " individuals " + sb);
 			}
-			if (it.hasNext()) sb.append(", ...");
-			sb.append("]");
-			_logger.fine("Consistency " + ATermUtils.toString(c) + " for " + individuals.size() + " individuals " + sb);
-		}
 
 		final Expressivity expr = _kb.getExpressivityChecker().getExpressivityWith(c);
 
@@ -1343,7 +1391,8 @@ public class ABoxImpl implements ABox
 			individuals = SetUtils.singleton(x);
 		}
 
-		if (emptyConsistencyCheck) c = ATermUtils.TOP;
+		if (emptyConsistencyCheck)
+			c = ATermUtils.TOP;
 
 		final ABox abox = canUseEmptyABox ? this.copy(x, false) : initialConsistencyCheck ? this : this.copy(x, true);
 
@@ -1367,22 +1416,25 @@ public class ABoxImpl implements ABox
 
 		final boolean consistent = !abox.isClosed();
 
-		if (x != null && c != null && cacheModel) cache(abox.getIndividual(x), c, consistent);
+		if (x != null && c != null && cacheModel)
+			cache(abox.getIndividual(x), c, consistent);
 
-		if (_logger.isLoggable(Level.FINE)) _logger.fine("Consistent: " + consistent //
-				+ " Time: " + timer.map(Timer::getElapsed).orElse(0L)//
-				+ " Branches " + abox.getBranches().size()//
-				+ " Tree depth: " + abox.getStats()._treeDepth//
-				+ " Tree size: " + abox.getNodes().size()//
-				+ " Restores " + abox.getStats()._globalRestores//
-				+ " global " + abox.getStats()._localRestores//
-				+ " local"// FIXME something missing here ?
-				+ " Backtracks " + abox.getStats()._backtracks//
-				+ " avg backjump " + abox.getStats()._backjumps / (double) abox.getStats()._backtracks);
+		if (_logger.isLoggable(Level.FINE))
+			_logger.fine("Consistent: " + consistent //
+					+ " Time: " + timer.map(Timer::getElapsed).orElse(0L)//
+					+ " Branches " + abox.getBranches().size()//
+					+ " Tree depth: " + abox.getStats()._treeDepth//
+					+ " Tree size: " + abox.getNodes().size()//
+					+ " Restores " + abox.getStats()._globalRestores//
+					+ " global " + abox.getStats()._localRestores//
+					+ " local"// FIXME something missing here ?
+					+ " Backtracks " + abox.getStats()._backtracks//
+					+ " avg backjump " + abox.getStats()._backjumps / (double) abox.getStats()._backtracks);
 
 		if (consistent)
 		{
-			if (initialConsistencyCheck && isEmpty()) setComplete(true);
+			if (initialConsistencyCheck && isEmpty())
+				setComplete(true);
 		}
 		else
 		{
@@ -1397,7 +1449,9 @@ public class ABoxImpl implements ABox
 					final ATermAppl tempAxiom = ATermUtils.makeTypeAtom(ind, c);
 					final Set<ATermAppl> explanationSet = getExplanationSet();
 					final boolean removed = explanationSet.remove(tempAxiom);
-					if (!removed) if (_logger.isLoggable(Level.FINE)) _logger.fine("Explanation set is missing an axiom.\n\tAxiom: " + tempAxiom + "\n\tExplantionSet: " + explanationSet);
+					if (!removed)
+						if (_logger.isLoggable(Level.FINE))
+							_logger.fine("Explanation set is missing an axiom.\n\tAxiom: " + tempAxiom + "\n\tExplantionSet: " + explanationSet);
 				}
 				if (_logger.isLoggable(Level.FINE))
 				{
@@ -1452,12 +1506,14 @@ public class ABoxImpl implements ABox
 
 		final boolean consistent = !isClosed();
 
-		if (_logger.isLoggable(Level.FINE)) _logger.fine("Consistent: " + consistent + " Tree depth: " + _stats._treeDepth + " Tree size: " + getNodes().size());
+		if (_logger.isLoggable(Level.FINE))
+			_logger.fine("Consistent: " + consistent + " Tree depth: " + _stats._treeDepth + " Tree size: " + getNodes().size());
 
 		if (!consistent)
 		{
 			_lastClash = getClash();
-			if (_logger.isLoggable(Level.FINE)) _logger.fine(getClash().detailedString());
+			if (_logger.isLoggable(Level.FINE))
+				_logger.fine(getClash().detailedString());
 		}
 
 		_stats._consistencyCount++;
@@ -1482,7 +1538,8 @@ public class ABoxImpl implements ABox
 	public EdgeList getOutEdges(final ATerm x)
 	{
 		final Node node = getNode(x);
-		if (node instanceof Literal) return new EdgeList();
+		if (node instanceof Literal)
+			return new EdgeList();
 		return ((Individual) node).getOutEdges();
 	}
 
@@ -1490,7 +1547,8 @@ public class ABoxImpl implements ABox
 	public Individual getIndividual(final ATerm x)
 	{
 		final Node o = _nodes.get(x);
-		if (o instanceof Individual) return (Individual) o;
+		if (o instanceof Individual)
+			return (Individual) o;
 		return null;
 	}
 
@@ -1498,7 +1556,8 @@ public class ABoxImpl implements ABox
 	public Literal getLiteral(final ATerm x)
 	{
 		final Node o = _nodes.get(x);
-		if (o instanceof Literal) return (Literal) o;
+		if (o instanceof Literal)
+			return (Literal) o;
 		return null;
 	}
 
@@ -1555,7 +1614,8 @@ public class ABoxImpl implements ABox
 		Individual subj = getIndividual(s);
 		Node obj = getNode(o);
 
-		if (subj.isMerged() && obj.isMerged()) return null;
+		if (subj.isMerged() && obj.isMerged())
+			return null;
 
 		if (obj.isMerged())
 		{
@@ -1569,11 +1629,12 @@ public class ABoxImpl implements ABox
 		final Edge existingEdge = subj.getOutEdges().getExactEdge(subj, role, obj);
 		if (existingEdge == null)
 			subj.addOutEdge(edge);
-		else if (!existingEdge.getDepends().isIndependent())
-		{
-			subj.removeEdge(existingEdge);
-			subj.addOutEdge(edge);
-		}
+		else
+			if (!existingEdge.getDepends().isIndependent())
+			{
+				subj.removeEdge(existingEdge);
+				subj.addOutEdge(edge);
+			}
 
 		if (subj.isMerged())
 		{
@@ -1582,18 +1643,21 @@ public class ABoxImpl implements ABox
 			subj = subj.getSame();
 			edge = new DefaultEdge(role, subj, obj, ds);
 
-			if (subj.getOutEdges().hasEdge(edge)) return null;
+			if (subj.getOutEdges().hasEdge(edge))
+				return null;
 
 			subj.addOutEdge(edge);
 			obj.addInEdge(edge);
 		}
-		else if (existingEdge == null)
-			obj.addInEdge(edge);
-		else if (!existingEdge.getDepends().isIndependent())
-		{
-			obj.removeInEdge(existingEdge);
-			obj.addInEdge(edge);
-		}
+		else
+			if (existingEdge == null)
+				obj.addInEdge(edge);
+			else
+				if (!existingEdge.getDepends().isIndependent())
+				{
+					obj.removeInEdge(existingEdge);
+					obj.addInEdge(edge);
+				}
 
 		return edge;
 	}
@@ -1601,8 +1665,8 @@ public class ABoxImpl implements ABox
 	/**
 	 * Remove the given node from the node map which maps names to nodes. Does not remove the node from the node list or other nodes' edge lists.
 	 *
-	 * @param  x is a node.
-	 * @return   true if something have been remove. false if there was nothing to remove.
+	 * @param x is a node.
+	 * @return true if something have been remove. false if there was nothing to remove.
 	 */
 	@Override
 	public boolean removeNode(final ATermAppl x)
@@ -1625,8 +1689,8 @@ public class ABoxImpl implements ABox
 	/**
 	 * Add a new literal to the ABox. Literal will be assigned a fresh unique name.
 	 *
-	 * @param  dataValue A literal ATerm which should be constructed with one of ATermUtils.makeXXXLiteral functions
-	 * @return           Literal object that has been created
+	 * @param dataValue A literal ATerm which should be constructed with one of ATermUtils.makeXXXLiteral functions
+	 * @return Literal object that has been created
 	 */
 	@Override
 	public Literal addLiteral(final ATermAppl dataValue)
@@ -1644,7 +1708,8 @@ public class ABoxImpl implements ABox
 	@Override
 	public Literal addLiteral(final ATermAppl dataValue, final DependencySet ds)
 	{
-		if (dataValue == null || !ATermUtils.isLiteral(dataValue)) throw new InternalReasonerException("Invalid value to create a literal. Value: " + dataValue);
+		if (dataValue == null || !ATermUtils.isLiteral(dataValue))
+			throw new InternalReasonerException("Invalid value to create a literal. Value: " + dataValue);
 
 		return createLiteral(dataValue, ds);
 	}
@@ -1652,7 +1717,7 @@ public class ABoxImpl implements ABox
 	/**
 	 * Helper function to add a literal.
 	 *
-	 * @param  value The java object that represents the value of this literal
+	 * @param value The java object that represents the value of this literal
 	 * @return
 	 */
 	private Literal createLiteral(final ATermAppl dataValue, final DependencySet ds)
@@ -1691,22 +1756,24 @@ public class ABoxImpl implements ABox
 			}
 
 		final Node node = getNode(name);
-		if (node != null) if (node instanceof Literal)
-		{
-
-			if (((Literal) node).getValue() == null && OpenlletOptions.USE_COMPLETION_QUEUE)
+		if (node != null)
+			if (node instanceof Literal)
 			{
-				// added for completion _queue
-				final QueueElement newElement = new QueueElement(node);
-				_completionQueue.add(newElement, NodeSelector.LITERAL);
+
+				if (((Literal) node).getValue() == null && OpenlletOptions.USE_COMPLETION_QUEUE)
+				{
+					// added for completion _queue
+					final QueueElement newElement = new QueueElement(node);
+					_completionQueue.add(newElement, NodeSelector.LITERAL);
+				}
+
+				if (getBranchIndex() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
+					_branchEffects.add(getBranchIndex(), node.getName());
+
+				return (Literal) node;
 			}
-
-			if (getBranchIndex() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS) _branchEffects.add(getBranchIndex(), node.getName());
-
-			return (Literal) node;
-		}
-		else
-			throw new InternalReasonerException("Same term refers to both a literal and an _individual: " + name);
+			else
+				throw new InternalReasonerException("Same term refers to both a literal and an _individual: " + name);
 
 		final int remember = _branchIndex;
 		setBranchIndex(DependencySet.NO_BRANCH);
@@ -1733,7 +1800,8 @@ public class ABoxImpl implements ABox
 			_completionQueue.add(newElement, NodeSelector.LITERAL);
 		}
 
-		if (getBranchIndex() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS) _branchEffects.add(getBranchIndex(), lit.getName());
+		if (getBranchIndex() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
+			_branchEffects.add(getBranchIndex(), lit.getName());
 
 		return lit;
 	}
@@ -1744,7 +1812,8 @@ public class ABoxImpl implements ABox
 		final Individual ind = addIndividual(x, null, ds);
 
 		// update affected inds for this _branch
-		if (getBranchIndex() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS) _branchEffects.add(getBranchIndex(), ind.getName());
+		if (getBranchIndex() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
+			_branchEffects.add(getBranchIndex(), ind.getName());
 
 		return ind;
 	}
@@ -1756,14 +1825,16 @@ public class ABoxImpl implements ABox
 		final ATermAppl name = createUniqueName(isNominal);
 		final Individual ind = addIndividual(name, parent, ds);
 
-		if (isNominal) ind.setNominalLevel(1);
+		if (isNominal)
+			ind.setNominalLevel(1);
 
 		return ind;
 	}
 
 	private Individual addIndividual(final ATermAppl x, final Individual parent, final DependencySet ds)
 	{
-		if (_nodes.containsKey(x)) throw new InternalReasonerException("adding a _node twice " + x);
+		if (_nodes.containsKey(x))
+			throw new InternalReasonerException("adding a _node twice " + x);
 
 		setChanged(true);
 
@@ -1775,13 +1846,15 @@ public class ABoxImpl implements ABox
 		if (n.getDepth() > _stats._treeDepth)
 		{
 			_stats._treeDepth = n.getDepth();
-			if (_logger.isLoggable(Level.FINER)) _logger.finer("Depth: " + _stats._treeDepth + " Size: " + size());
+			if (_logger.isLoggable(Level.FINER))
+				_logger.finer("Depth: " + _stats._treeDepth + " Size: " + size());
 		}
 
 		//this must be performed after the _nodeList is updated as this call will update the completion queues
 		n.addType(ATermUtils.TOP, ds);
 
-		if (getBranchIndex() > 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS) _branchEffects.add(getBranchIndex(), n.getName());
+		if (getBranchIndex() > 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
+			_branchEffects.add(getBranchIndex(), n.getName());
 
 		return n;
 	}
@@ -1801,7 +1874,8 @@ public class ABoxImpl implements ABox
 		// dependency _index
 		// now, as it will be added during the actual merge when the completion
 		// is performed
-		if (OpenlletOptions.USE_INCREMENTAL_DELETION) _kb.getSyntacticAssertions().add(sameAxiom);
+		if (OpenlletOptions.USE_INCREMENTAL_DELETION)
+			_kb.getSyntacticAssertions().add(sameAxiom);
 
 		final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(sameAxiom) : DependencySet.INDEPENDENT;
 		getToBeMerged().add(new NodeMerge(ind1, ind2, ds));
@@ -1818,7 +1892,8 @@ public class ABoxImpl implements ABox
 		// update syntactic assertions - currently i do not add this to the
 		// dependency _index
 		// now, as it will simply be used during the completion _strategy
-		if (OpenlletOptions.USE_INCREMENTAL_DELETION) _kb.getSyntacticAssertions().add(diffAxiom);
+		if (OpenlletOptions.USE_INCREMENTAL_DELETION)
+			_kb.getSyntacticAssertions().add(diffAxiom);
 
 		// ind1.setDifferent(ind2, new
 		// DependencySet(explanationTable.getCurrent()));
@@ -1848,7 +1923,8 @@ public class ABoxImpl implements ABox
 
 				// update syntactic assertions - currently i do not add this to the dependency index
 				// now, as it will be added during the actual merge when the completion is performed
-				if (OpenlletOptions.USE_INCREMENTAL_DELETION) _kb.getSyntacticAssertions().add(allDifferent);
+				if (OpenlletOptions.USE_INCREMENTAL_DELETION)
+					_kb.getSyntacticAssertions().add(allDifferent);
 
 				final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(allDifferent) : DependencySet.INDEPENDENT;
 
@@ -1943,22 +2019,26 @@ public class ABoxImpl implements ABox
 			if (_logger.isLoggable(Level.FINER))
 			{
 				_logger.finer("CLSH: " + clash);
-				if (clash.getDepends().max() > _branchIndex && _branchIndex != -1) _logger.severe("Invalid _clash dependency " + clash + " > " + _branchIndex);
+				if (clash.getDepends().max() > _branchIndex && _branchIndex != -1)
+					_logger.severe("Invalid _clash dependency " + clash + " > " + _branchIndex);
 			}
 
-			if (_branchIndex == DependencySet.NO_BRANCH && clash.getDepends().getBranch() == DependencySet.NO_BRANCH) _assertedClashes.add(clash);
+			if (_branchIndex == DependencySet.NO_BRANCH && clash.getDepends().getBranch() == DependencySet.NO_BRANCH)
+				_assertedClashes.add(clash);
 
 			if (_clash != null)
 			{
 				_logger.finer(() -> "Clash was already set \nExisting: " + _clash + "\nNew     : " + clash);
 
-				if (_clash.getDepends().max() < clash.getDepends().max()) return;
+				if (_clash.getDepends().max() < clash.getDepends().max())
+					return;
 			}
 		}
 
 		_clash = clash;
 		// CHW - added for incremental deletions
-		if (OpenlletOptions.USE_INCREMENTAL_DELETION) _kb.getDependencyIndex().setClashDependencies(_clash);
+		if (OpenlletOptions.USE_INCREMENTAL_DELETION)
+			_kb.getDependencyIndex().setClashDependencies(_clash);
 
 	}
 
@@ -2019,7 +2099,8 @@ public class ABoxImpl implements ABox
 	public void incrementBranch()
 	{
 
-		if (OpenlletOptions.USE_COMPLETION_QUEUE) _completionQueue.incrementBranch(_branchIndex);
+		if (OpenlletOptions.USE_COMPLETION_QUEUE)
+			_completionQueue.incrementBranch(_branchIndex);
 
 		_branchIndex++;
 	}
@@ -2076,7 +2157,8 @@ public class ABoxImpl implements ABox
 	@Override
 	public Set<ATermAppl> getExplanationSet()
 	{
-		if (_lastClash == null) throw new OpenError("No clashExplanation was generated!");
+		if (_lastClash == null)
+			throw new OpenError("No clashExplanation was generated!");
 
 		return _lastClash.getDepends().getExplain();
 	}
@@ -2084,7 +2166,8 @@ public class ABoxImpl implements ABox
 	@Override
 	public BranchEffectTracker getBranchEffectTracker()
 	{
-		if (_branchEffects == null) throw new NullPointerException();
+		if (_branchEffects == null)
+			throw new NullPointerException();
 
 		return _branchEffects;
 	}
@@ -2101,7 +2184,8 @@ public class ABoxImpl implements ABox
 	@Override
 	public IncrementalChangeTracker getIncrementalChangeTracker()
 	{
-		if (_incChangeTracker == null) throw new NullPointerException();
+		if (_incChangeTracker == null)
+			throw new NullPointerException();
 
 		return _incChangeTracker;
 	}
@@ -2118,13 +2202,15 @@ public class ABoxImpl implements ABox
 	@Override
 	public void validate()
 	{
-		if (!OpenlletOptions.VALIDATE_ABOX) return;
+		if (!OpenlletOptions.VALIDATE_ABOX)
+			return;
 		System.out.print("VALIDATING...");
 		final Iterator<Individual> n = getIndIterator();
 		while (n.hasNext())
 		{
 			final Individual node = n.next();
-			if (node.isPruned()) continue;
+			if (node.isPruned())
+				continue;
 			validate(node);
 		}
 	}
@@ -2134,12 +2220,14 @@ public class ABoxImpl implements ABox
 	{
 		for (final ATermAppl a : negatedTypes)
 		{
-			if (a.getArity() == 0) continue;
+			if (a.getArity() == 0)
+				continue;
 			final ATermAppl notA = (ATermAppl) a.getArgument(0);
 
 			if (node.hasType(notA))
 			{
-				if (!node.hasType(a)) throw new InternalReasonerException("Invalid type found: " + node + " " + " " + a + " " + node.debugString() + " " + node._depends);
+				if (!node.hasType(a))
+					throw new InternalReasonerException("Invalid type found: " + node + " " + " " + a + " " + node.debugString() + " " + node._depends);
 				throw new InternalReasonerException("Clash found: " + node + " " + a + " " + node.debugString() + " " + node._depends);
 			}
 		}
@@ -2157,14 +2245,17 @@ public class ABoxImpl implements ABox
 		{
 			final EdgeList preds = node.getInEdges();
 			final boolean validPred = preds.size() == 1 || preds.size() == 2 && preds.hasEdgeFrom(node);
-			if (!validPred) throw new InternalReasonerException("Invalid blockable node: " + node + " " + node.getInEdges());
+			if (!validPred)
+				throw new InternalReasonerException("Invalid blockable node: " + node + " " + node.getInEdges());
 
 		}
-		else if (node.isNominal())
-		{
-			final ATermAppl nominal = ATermUtils.makeValue(node.getName());
-			if (!ATermUtils.isAnonNominal(node.getName()) && !node.hasType(nominal)) throw new InternalReasonerException("Invalid nominal node: " + node + " " + node.getTypes());
-		}
+		else
+			if (node.isNominal())
+			{
+				final ATermAppl nominal = ATermUtils.makeValue(node.getName());
+				if (!ATermUtils.isAnonNominal(node.getName()) && !node.hasType(nominal))
+					throw new InternalReasonerException("Invalid nominal node: " + node + " " + node.getTypes());
+			}
 
 		for (final ATermAppl c : node.getDepends().keySet())
 		{
@@ -2175,27 +2266,34 @@ public class ABoxImpl implements ABox
 		for (final Node ind : node.getDifferents())
 		{
 			final DependencySet ds = node.getDifferenceDependency(ind);
-			if (ds.max() > _branchIndex || ds.getBranch() > _branchIndex) throw new InternalReasonerException("Invalid ds: " + node + " != " + ind + " " + ds);
-			if (ind.getDifferenceDependency(node) == null) throw new InternalReasonerException("Invalid difference: " + node + " != " + ind + " " + ds);
+			if (ds.max() > _branchIndex || ds.getBranch() > _branchIndex)
+				throw new InternalReasonerException("Invalid ds: " + node + " != " + ind + " " + ds);
+			if (ind.getDifferenceDependency(node) == null)
+				throw new InternalReasonerException("Invalid difference: " + node + " != " + ind + " " + ds);
 		}
 		EdgeList edges = node.getOutEdges();
 		for (final Edge edge : edges)
 		{
 			final Node succ = edge.getTo();
-			if (_nodes.get(succ.getName()) != succ) throw new InternalReasonerException(
-					"Invalid edge to a non-existing node: " + edge + " " + _nodes.get(succ.getName()) + "(" + _nodes.get(succ.getName()).hashCode() + ")" + succ + "(" + succ.hashCode() + ")");
-			if (!succ.getInEdges().hasEdge(edge)) throw new InternalReasonerException("Invalid edge: " + edge);
-			if (succ.isMerged()) throw new InternalReasonerException("Invalid edge to a removed node: " + edge + " " + succ.isMerged());
+			if (_nodes.get(succ.getName()) != succ)
+				throw new InternalReasonerException("Invalid edge to a non-existing node: " + edge + " " + _nodes.get(succ.getName()) + "(" + _nodes.get(succ.getName()).hashCode() + ")" + succ + "(" + succ.hashCode() + ")");
+			if (!succ.getInEdges().hasEdge(edge))
+				throw new InternalReasonerException("Invalid edge: " + edge);
+			if (succ.isMerged())
+				throw new InternalReasonerException("Invalid edge to a removed node: " + edge + " " + succ.isMerged());
 			final DependencySet ds = edge.getDepends();
-			if (ds.max() > _branchIndex || ds.getBranch() > _branchIndex) throw new InternalReasonerException("Invalid ds: " + edge + " " + ds);
+			if (ds.max() > _branchIndex || ds.getBranch() > _branchIndex)
+				throw new InternalReasonerException("Invalid ds: " + edge + " " + ds);
 			final EdgeList allEdges = node.getEdgesTo(succ);
-			if (allEdges.getRoles().size() != allEdges.size()) throw new InternalReasonerException("Duplicate edges: " + allEdges);
+			if (allEdges.getRoles().size() != allEdges.size())
+				throw new InternalReasonerException("Duplicate edges: " + allEdges);
 		}
 		edges = node.getInEdges();
 		for (final Edge edge : edges)
 		{
 			final DependencySet ds = edge.getDepends();
-			if (ds.max() > _branchIndex || ds.getBranch() > _branchIndex) throw new InternalReasonerException("Invalid ds: " + edge + " " + ds);
+			if (ds.max() > _branchIndex || ds.getBranch() > _branchIndex)
+				throw new InternalReasonerException("Invalid ds: " + edge + " " + ds);
 		}
 	}
 
@@ -2207,13 +2305,15 @@ public class ABoxImpl implements ABox
 	@Override
 	public void printTree(final PrintStream stream)
 	{
-		if (!OpenlletOptions.PRINT_ABOX) return;
+		if (!OpenlletOptions.PRINT_ABOX)
+			return;
 		stream.println("PRINTING... " + DependencySet.INDEPENDENT);
 		final Iterator<Node> n = _nodes.values().iterator();
 		while (n.hasNext())
 		{
 			final Node node = n.next();
-			if (!node.isRoot() || node instanceof Literal) continue;
+			if (!node.isRoot() || node instanceof Literal)
+				continue;
 			printNode(stream, (Individual) node, new HashSet<Individual>(), "   ");
 		}
 	}
@@ -2241,7 +2341,9 @@ public class ABoxImpl implements ABox
 			stream.println(" -> " + node.getMergedTo() + " " + node.getMergeDependency(false));
 			return;
 		}
-		else if (node.isPruned()) throw new InternalReasonerException("Pruned node: " + node);
+		else
+			if (node.isPruned())
+				throw new InternalReasonerException("Pruned node: " + node);
 
 		stream.print(" = ");
 		for (int i = 0; i < Node.TYPES; i++)
@@ -2252,7 +2354,8 @@ public class ABoxImpl implements ABox
 			}
 		stream.println(node.getDifferents());
 
-		if (printOnlyName) return;
+		if (printOnlyName)
+			return;
 
 		final String indent = indentLvl + "  ";
 		final Iterator<Edge> i = node.getOutEdges().iterator();
@@ -2265,7 +2368,8 @@ public class ABoxImpl implements ABox
 			stream.print(indent + "[");
 			for (int e = 0; e < edges.size(); e++)
 			{
-				if (e > 0) stream.print(", ");
+				if (e > 0)
+					stream.print(", ");
 				stream.print(edges.get(e).getRole());
 			}
 			stream.print("] ");
@@ -2342,7 +2446,8 @@ public class ABoxImpl implements ABox
 	@Override
 	public void reset()
 	{
-		if (!isComplete()) return;
+		if (!isComplete())
+			return;
 
 		setComplete(false);
 

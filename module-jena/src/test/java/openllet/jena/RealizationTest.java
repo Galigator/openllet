@@ -5,11 +5,13 @@ package openllet.jena;
 
 import java.io.IOException;
 import java.io.InputStream;
-import openllet.core.OpenlletOptions;
+
 import org.apache.jena.ontology.Individual;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.junit.Test;
+
+import openllet.core.OpenlletOptions;
 
 /**
  * A simple check to see when classification and realization are triggered by ABox changes.
@@ -19,9 +21,9 @@ import org.junit.Test;
 public class RealizationTest extends SequentialTestsContraintInitializer
 {
 
-	private static final String	ONTOLOGY_PATH	= "/jena-datatypes.owl";
+	private static final String ONTOLOGY_PATH = "/jena-datatypes.owl";
 
-	private static final String	PREFIX			= "http://example.org/";
+	private static final String PREFIX = "http://example.org/";
 
 	@Test
 	public void testDoNotReclassify() throws Exception

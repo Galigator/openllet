@@ -7,6 +7,7 @@
 package openllet.core.tableau.blocking;
 
 import java.util.Set;
+
 import openllet.core.boxes.abox.Edge;
 import openllet.core.boxes.abox.Individual;
 import openllet.core.boxes.abox.Node;
@@ -21,9 +22,9 @@ import openllet.core.utils.SetUtils;
  */
 public final class BlockingContext
 {
-	public final Individual		_blocked;
-	public volatile Individual	_blocker;
-	private volatile Set<Role>	_rolesToBlocked	= null;
+	public final Individual _blocked;
+	public volatile Individual _blocker;
+	private volatile Set<Role> _rolesToBlocked = null;
 
 	public BlockingContext(final Individual blocked)
 	{
@@ -49,12 +50,13 @@ public final class BlockingContext
 	 * Sets the _blocker to the specified child of the _current _blocker and returns if the new _blocker candidate is allowed to block. The child is not allowed
 	 * to block if it is a literal, or a root, or pruned/merged, or is _blocked itself.
 	 *
-	 * @param  child child of the _current _blocker
-	 * @return       <code>true</code> if the new _blocker candidate is allowed to block
+	 * @param child child of the _current _blocker
+	 * @return <code>true</code> if the new _blocker candidate is allowed to block
 	 */
 	public boolean moveBlockerDown(final Node child)
 	{
-		if (child.isLiteral() || child.isRoot() || child.isPruned() || child.isMerged() || ((Individual) child).isBlocked() || child.equals(_blocker)) return false;
+		if (child.isLiteral() || child.isRoot() || child.isPruned() || child.isMerged() || ((Individual) child).isBlocked() || child.equals(_blocker))
+			return false;
 
 		_blocker = (Individual) child;
 		_rolesToBlocked = null;
@@ -65,8 +67,8 @@ public final class BlockingContext
 	/**
 	 * Returns if the _blocked _node is an r-successor of its parent.
 	 *
-	 * @param  r the property to check for r-successor relation
-	 * @return   <true> if the _blocked _node is an r-successor of its parent.
+	 * @param r the property to check for r-successor relation
+	 * @return <true> if the _blocked _node is an r-successor of its parent.
 	 */
 	public boolean isRSuccessor(final Role r)
 	{
@@ -81,7 +83,8 @@ public final class BlockingContext
 	public boolean isInvSuccessor()
 	{
 		for (final Role role : getIncomingRoles())
-			if (role.isAnon()) return true;
+			if (role.isAnon())
+				return true;
 
 		return false;
 	}
@@ -106,20 +109,22 @@ public final class BlockingContext
 	/**
 	 * Returns the roles that points to the given _individual from its parent.
 	 *
-	 * @param  ind _individual to check
-	 * @return     the roles that points to the given _individual from its parent
+	 * @param ind _individual to check
+	 * @return the roles that points to the given _individual from its parent
 	 */
 	public static Set<Role> getIncomingRoles(final Individual ind)
 	{
 		Set<Role> rolesToBlocked = null;
 		for (final Edge e : ind.getInEdges())
-			if (e.getFrom().equals(ind.getParent())) if (rolesToBlocked == null)
-				rolesToBlocked = e.getRole().getSuperRoles();
-			else if (!rolesToBlocked.contains(e.getRole()))
-			{
-				rolesToBlocked = SetUtils.create(rolesToBlocked);
-				rolesToBlocked.addAll(e.getRole().getSuperRoles());
-			}
+			if (e.getFrom().equals(ind.getParent()))
+				if (rolesToBlocked == null)
+					rolesToBlocked = e.getRole().getSuperRoles();
+				else
+					if (!rolesToBlocked.contains(e.getRole()))
+					{
+						rolesToBlocked = SetUtils.create(rolesToBlocked);
+						rolesToBlocked.addAll(e.getRole().getSuperRoles());
+					}
 		return rolesToBlocked;
 	}
 

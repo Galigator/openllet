@@ -13,6 +13,19 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.apache.jena.graph.Graph;
+import org.apache.jena.graph.Node;
+import org.apache.jena.graph.Triple;
+import org.apache.jena.sparql.core.BasicPattern;
+import org.apache.jena.sparql.core.Var;
+import org.apache.jena.sparql.engine.ExecutionContext;
+import org.apache.jena.sparql.engine.QueryIterator;
+import org.apache.jena.sparql.engine.binding.Binding;
+import org.apache.jena.sparql.engine.iterator.QueryIterRepeatApply;
+import org.apache.jena.sparql.engine.iterator.QueryIteratorResultSet;
+import org.apache.jena.sparql.engine.main.StageGeneratorGenericStar;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.exceptions.UnsupportedQueryException;
 import openllet.core.utils.ATermUtils;
@@ -25,17 +38,6 @@ import openllet.query.sparqldl.model.ResultBinding;
 import openllet.query.sparqldl.model.ResultBindingImpl;
 import openllet.query.sparqldl.parser.ARQParser;
 import openllet.shared.tools.Log;
-import org.apache.jena.graph.Graph;
-import org.apache.jena.graph.Node;
-import org.apache.jena.graph.Triple;
-import org.apache.jena.sparql.core.BasicPattern;
-import org.apache.jena.sparql.core.Var;
-import org.apache.jena.sparql.engine.ExecutionContext;
-import org.apache.jena.sparql.engine.QueryIterator;
-import org.apache.jena.sparql.engine.binding.Binding;
-import org.apache.jena.sparql.engine.iterator.QueryIterRepeatApply;
-import org.apache.jena.sparql.engine.iterator.QueryIteratorResultSet;
-import org.apache.jena.sparql.engine.main.StageGeneratorGenericStar;
 
 /**
  * <p>
@@ -54,12 +56,12 @@ import org.apache.jena.sparql.engine.main.StageGeneratorGenericStar;
  */
 class SparqlDLStage
 {
-	public final static Logger	_logger	= Log.getLogger(SparqlDLStage.class);
+	public final static Logger _logger = Log.getLogger(SparqlDLStage.class);
 
-	private final ARQParser		_parser;
+	private final ARQParser _parser;
 
-	private final BasicPattern	_pattern;
-	private Collection<String>	_vars;
+	private final BasicPattern _pattern;
+	private Collection<String> _vars;
 
 	public SparqlDLStage(final BasicPattern pattern)
 	{
@@ -81,16 +83,20 @@ class SparqlDLStage
 		{
 			final Triple t = _pattern.get(i);
 
-			if (ARQParser.isDistinguishedVariable(t.getSubject())) _vars.add(t.getSubject().getName());
-			if (t.getPredicate().isVariable()) _vars.add(t.getPredicate().getName());
-			if (ARQParser.isDistinguishedVariable(t.getObject())) _vars.add(t.getObject().getName());
+			if (ARQParser.isDistinguishedVariable(t.getSubject()))
+				_vars.add(t.getSubject().getName());
+			if (t.getPredicate().isVariable())
+				_vars.add(t.getPredicate().getName());
+			if (ARQParser.isDistinguishedVariable(t.getObject()))
+				_vars.add(t.getObject().getName());
 		}
 	}
 
 	public QueryIterator build(final QueryIterator input, final ExecutionContext execCxt)
 	{
 		final Graph graph = execCxt.getActiveGraph();
-		if (!(graph instanceof PelletInfGraph)) throw new UnsupportedOperationException("A Pellet-backed model is required");
+		if (!(graph instanceof PelletInfGraph))
+			throw new UnsupportedOperationException("A Pellet-backed model is required");
 
 		final PelletInfGraph pellet = (PelletInfGraph) graph;
 
@@ -112,7 +118,8 @@ class SparqlDLStage
 		}
 		catch (final UnsupportedQueryException e)
 		{
-			if (_logger.isLoggable(Level.FINE)) _logger.log(Level.FINE, "Falling back to Jena stage", e);
+			if (_logger.isLoggable(Level.FINE))
+				_logger.log(Level.FINE, "Falling back to Jena stage", e);
 
 			return null;
 		}
@@ -120,8 +127,8 @@ class SparqlDLStage
 
 	private static class PelletQueryIterator extends QueryIterRepeatApply
 	{
-		private final PelletInfGraph	_pellet;
-		private final Query				_query;
+		private final PelletInfGraph _pellet;
+		private final Query _query;
 
 		public PelletQueryIterator(final PelletInfGraph pellet, final Query query, final QueryIterator input, final ExecutionContext execCxt)
 		{

@@ -8,6 +8,7 @@ package openllet.core.rules.builtins;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+
 import openllet.core.exceptions.InternalReasonerException;
 
 /**
@@ -34,7 +35,8 @@ public class NumericComparisonVisitor implements NumericVisitor
 
 	private static void argCheck(final Number[] args)
 	{
-		if (args.length != 2) throw new InternalReasonerException("Wrong number of arguments to comparison visitor.");
+		if (args.length != 2)
+			throw new InternalReasonerException("Wrong number of arguments to comparison visitor.");
 	}
 
 	public int getComparison()

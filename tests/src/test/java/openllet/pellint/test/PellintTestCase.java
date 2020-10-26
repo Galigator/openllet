@@ -1,6 +1,5 @@
 package openllet.pellint.test;
 
-import openllet.owlapi.OWL;
 import org.junit.Before;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
@@ -13,6 +12,8 @@ import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+
+import openllet.owlapi.OWL;
 
 /**
  * <p>
@@ -32,16 +33,16 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
  */
 public class PellintTestCase
 {
-	protected static final double	DOUBLE_DELTA	= 0.000001;
+	protected static final double DOUBLE_DELTA = 0.000001;
 
-	protected OWLOntologyManager	_manager;
-	protected OWLOntology			_ontology;
-	protected OWLClass[]			_cls;
-	protected OWLObjectProperty[]	_pro;
-	protected OWLIndividual[]		_ind;
+	protected OWLOntologyManager _manager;
+	protected OWLOntology _ontology;
+	protected OWLClass[] _cls;
+	protected OWLObjectProperty[] _pro;
+	protected OWLIndividual[] _ind;
 
-	protected OWLClassExpression	_P0AllC0;
-	protected OWLClassExpression	_P0SomeC1;
+	protected OWLClassExpression _P0AllC0;
+	protected OWLClassExpression _P0SomeC1;
 
 	@Before
 	public void setUp() throws OWLOntologyCreationException

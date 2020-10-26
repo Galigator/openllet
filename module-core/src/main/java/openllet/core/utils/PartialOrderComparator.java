@@ -17,8 +17,8 @@ package openllet.core.utils;
  * Company: Clark & Parsia, LLC. <http://www.clarkparsia.com>
  * </p>
  *
- * @author     Mike Smith
- * @param  <T> kind of element
+ * @author Mike Smith
+ * @param <T> kind of element
  */
 public interface PartialOrderComparator<T>
 {

@@ -30,8 +30,7 @@
 package openllet.shared.hash;
 
 /**
- * https://en.wikipedia.org/wiki/Tiny_Encryption_Algorithm
- * TODO : replace by https://en.wikipedia.org/wiki/XXTEA
+ * https://en.wikipedia.org/wiki/Tiny_Encryption_Algorithm TODO : replace by https://en.wikipedia.org/wiki/XXTEA
  */
 public class HashFunctions
 {
@@ -96,7 +95,8 @@ public class HashFunctions
 		int a = GOLDEN_RATIO;
 		int b = GOLDEN_RATIO;
 		final int len = name.length();
-		if (len >= 12) return hashLongNames(name, isQuoted, arity);
+		if (len >= 12)
+			return hashLongNames(name, isQuoted, arity);
 
 		int c = isQuoted ? 7 * arity + 1 : arity + 1; // Check if the quoted case exist.
 		c += len;

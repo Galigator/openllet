@@ -7,12 +7,14 @@
 package openllet.jena.graph.loader;
 
 import java.util.Set;
+
+import org.apache.jena.graph.Graph;
+import org.apache.jena.graph.Node;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
 import openllet.core.exceptions.UnsupportedFeatureException;
 import openllet.core.utils.progress.ProgressMonitor;
-import org.apache.jena.graph.Graph;
-import org.apache.jena.graph.Node;
 
 /**
  * <p>
@@ -44,8 +46,7 @@ public interface GraphLoader
 	/**
 	 * Load the axioms from the Jena graphs to the given KB.
 	 * 
-	 * @param  graphs                      with jena axioms
-	 *
+	 * @param graphs with jena axioms
 	 * @throws UnsupportedFeatureException
 	 */
 	void load(final Iterable<Graph> graphs) throws UnsupportedFeatureException;
@@ -53,8 +54,8 @@ public interface GraphLoader
 	/**
 	 * Translate the given graph node into an ATerm object.
 	 *
-	 * @param  node
-	 * @return      an ATerm object that represent the graph.
+	 * @param node
+	 * @return an ATerm object that represent the graph.
 	 */
 	ATermAppl node2term(final Node node);
 
@@ -74,7 +75,7 @@ public interface GraphLoader
 	 * Returns if the loader will load the Abox triples.
 	 *
 	 * @return boolean value indicating if ABox triples will be loaded
-	 * @see    #setLoadABox(boolean)
+	 * @see #setLoadABox(boolean)
 	 */
 	boolean isLoadABox();
 
@@ -94,7 +95,7 @@ public interface GraphLoader
 	 * Returns if the loader will preprocess rdf:type triples.
 	 *
 	 * @return boolean value indicating if rdf:type triples will be preprocessed
-	 * @see    #setPreprocessTypeTriples(boolean)
+	 * @see #setPreprocessTypeTriples(boolean)
 	 */
 	boolean isPreprocessTypeTriples();
 

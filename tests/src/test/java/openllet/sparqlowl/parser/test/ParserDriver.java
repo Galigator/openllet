@@ -2,12 +2,14 @@ package openllet.sparqlowl.parser.test;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import openllet.query.sparqlowl.parser.antlr.SparqlOwlLexer;
-import openllet.query.sparqlowl.parser.antlr.SparqlOwlParser;
+
 import org.antlr.runtime.ANTLRReaderStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.tree.Tree;
+
+import openllet.query.sparqlowl.parser.antlr.SparqlOwlLexer;
+import openllet.query.sparqlowl.parser.antlr.SparqlOwlParser;
 
 /**
  * <p>

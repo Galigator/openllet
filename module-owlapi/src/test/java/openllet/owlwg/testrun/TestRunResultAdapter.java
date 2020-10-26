@@ -7,13 +7,15 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import openllet.owlwg.testcase.TestVocabulary;
-import openllet.owlwg.testrun.ResultVocabulary.AnnotationProperty;
-import openllet.owlwg.testrun.ResultVocabulary.ObjectProperty;
+
 import org.semanticweb.owlapi.model.OWLAnonymousIndividual;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLIndividual;
+
+import openllet.owlwg.testcase.TestVocabulary;
+import openllet.owlwg.testrun.ResultVocabulary.AnnotationProperty;
+import openllet.owlwg.testrun.ResultVocabulary.ObjectProperty;
 
 /**
  * <p>
@@ -80,13 +82,14 @@ public class TestRunResultAdapter
 		return URI.create(String.format("testrunadapter_%d", bnodeid));
 	}
 
-	private OWLAnonymousIndividual	_currentIndividual;
-	private final OWLDataFactory	_dataFactory;
-	private final RunTypeAdapter	_runTypeAdapter;
+	private OWLAnonymousIndividual _currentIndividual;
+	private final OWLDataFactory _dataFactory;
+	private final RunTypeAdapter _runTypeAdapter;
 
 	public TestRunResultAdapter(final OWLDataFactory dataFactory)
 	{
-		if (dataFactory == null) throw new NullPointerException();
+		if (dataFactory == null)
+			throw new NullPointerException();
 
 		_dataFactory = dataFactory;
 		_runTypeAdapter = new RunTypeAdapter();
@@ -94,7 +97,8 @@ public class TestRunResultAdapter
 
 	public Collection<OWLAxiom> asOWLAxioms(final TestRunResult r, final OWLAnonymousIndividual i)
 	{
-		if (r == null) throw new NullPointerException();
+		if (r == null)
+			throw new NullPointerException();
 
 		final List<OWLAxiom> axioms = new ArrayList<>();
 
@@ -106,11 +110,10 @@ public class TestRunResultAdapter
 		final OWLIndividual testAnonIndividual = _dataFactory.getOWLAnonymousIndividual(mintBNode().toString());
 
 		axioms.add(_dataFactory.getOWLObjectPropertyAssertionAxiom(ObjectProperty.TEST.getOWLObjectProperty(), _currentIndividual, testAnonIndividual));
-		axioms.add(_dataFactory.getOWLDataPropertyAssertionAxiom(TestVocabulary.DatatypeProperty.IDENTIFIER.getOWLDataProperty(), testAnonIndividual,
-				_dataFactory.getOWLLiteral(r.getTestCase().getIdentifier())));
+		axioms.add(_dataFactory.getOWLDataPropertyAssertionAxiom(TestVocabulary.DatatypeProperty.IDENTIFIER.getOWLDataProperty(), testAnonIndividual, _dataFactory.getOWLLiteral(r.getTestCase().getIdentifier())));
 		final String details = r.getDetails();
-		if (details != null && details.length() > 0) axioms
-				.add(_dataFactory.getOWLAnnotationAssertionAxiom(_dataFactory.getOWLAnnotationProperty(AnnotationProperty.DETAILS.getAnnotationPropertyIRI()), i, _dataFactory.getOWLLiteral(details)));
+		if (details != null && details.length() > 0)
+			axioms.add(_dataFactory.getOWLAnnotationAssertionAxiom(_dataFactory.getOWLAnnotationProperty(AnnotationProperty.DETAILS.getAnnotationPropertyIRI()), i, _dataFactory.getOWLLiteral(details)));
 
 		axioms.addAll(_runTypeAdapter.process(r));
 

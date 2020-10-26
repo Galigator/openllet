@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
+
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
@@ -51,7 +52,8 @@ public interface Base extends Boxes
 
 	static void handleUndefinedEntity(final String s)
 	{
-		if (!OpenlletOptions.SILENT_UNDEFINED_ENTITY_HANDLING) throw new UndefinedEntityException(s);
+		if (!OpenlletOptions.SILENT_UNDEFINED_ENTITY_HANDLING)
+			throw new UndefinedEntityException(s);
 	}
 
 	Optional<TaxonomyBuilder> getOptTaxonomyBuilder();
@@ -98,7 +100,8 @@ public interface Base extends Boxes
 				builder = new CDOptimizedTaxonomyBuilder(getKnowledgeBase());
 			//builder = new CDOptimizedTaxonomyBuilderProb(this, Optional.ofNullable(_builderProgressMonitor));
 
-			if (getBuilderProgressMonitor() != null) builder.setProgressMonitor(getBuilderProgressMonitor());
+			if (getBuilderProgressMonitor() != null)
+				builder.setProgressMonitor(getBuilderProgressMonitor());
 
 			setOptTaxonomyBuilder(Optional.of(builder));
 		}
@@ -120,16 +123,16 @@ public interface Base extends Boxes
 	 * *** This function will first classify the whole ontology ***
 	 * </p>
 	 *
-	 * @param  cParam class whose superclasses are returned
-	 * @param  direct
-	 * @return        A set of sets, where each set in the collection represents an equivalence class. The elements of the inner class are ATermAppl objects.
+	 * @param cParam class whose superclasses are returned
+	 * @param direct
+	 * @return A set of sets, where each set in the collection represents an equivalence class. The elements of the inner class are ATermAppl objects.
 	 */
 	Set<Set<ATermAppl>> getSuperClasses(final ATermAppl cParam, final boolean direct);
 
 	/**
-	 * @param  subCls
-	 * @param  supCls
-	 * @return        true if class subCls is subclass of class supCls.
+	 * @param subCls
+	 * @param supCls
+	 * @return true if class subCls is subclass of class supCls.
 	 */
 	boolean isSubClassOf(final ATermAppl subCls, final ATermAppl supCls);
 
@@ -142,7 +145,8 @@ public interface Base extends Boxes
 		for (final Role role : getRBox().getRoles().values())
 		{
 			final ATermAppl p = role.getName();
-			if (ATermUtils.isPrimitive(p) && (role.isObjectRole() || role.isDatatypeRole() || role.isAnnotationRole())) set.add(p);
+			if (ATermUtils.isPrimitive(p) && (role.isObjectRole() || role.isDatatypeRole() || role.isAnnotationRole()))
+				set.add(p);
 		}
 		return set;
 	}
@@ -166,10 +170,11 @@ public interface Base extends Boxes
 
 		if (getTBox().getClasses().contains(c) || c.equals(ATermUtils.TOP))
 			return true;
-		else if (ATermUtils.isComplexClass(c))
-			return getFullyDefinedVisitor().isFullyDefined((ATermAppl) c);
 		else
-			return false;
+			if (ATermUtils.isComplexClass(c))
+				return getFullyDefinedVisitor().isFullyDefined((ATermAppl) c);
+			else
+				return false;
 	}
 
 	default boolean isDatatypeProperty(final ATerm p)
@@ -179,7 +184,8 @@ public interface Base extends Boxes
 
 	default boolean isDatatype(final ATermAppl c)
 	{
-		if (null == c) return false;
+		if (null == c)
+			return false;
 
 		return getDatatypeVisitor().isDatatype(c);
 	}
@@ -191,7 +197,8 @@ public interface Base extends Boxes
 
 	default boolean isABoxProperty(final ATerm p)
 	{
-		if (null == p) return false;
+		if (null == p)
+			return false;
 
 		final PropertyType type = getPropertyType(p);
 		return type == PropertyType.OBJECT || type == PropertyType.DATATYPE;
@@ -225,7 +232,7 @@ public interface Base extends Boxes
 
 	/**
 	 * @return same as getAllClasses but can be lazy.
-	 * @since  2.6.2
+	 * @since 2.6.2
 	 */
 	default Stream<ATermAppl> allClasses()
 	{
@@ -233,8 +240,8 @@ public interface Base extends Boxes
 	}
 
 	/**
-	 * @param  term
-	 * @return      a role
+	 * @param term
+	 * @return a role
 	 */
 	default Role getRole(final ATerm term)
 	{

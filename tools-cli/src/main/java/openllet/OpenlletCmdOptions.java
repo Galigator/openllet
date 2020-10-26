@@ -31,9 +31,9 @@ import java.util.Set;
 public class OpenlletCmdOptions
 {
 
-	private final Map<String, OpenlletCmdOption>	options;
-	private final Map<String, OpenlletCmdOption>	shortOptions;
-	private final Set<OpenlletCmdOption>			mandatory;
+	private final Map<String, OpenlletCmdOption> options;
+	private final Map<String, OpenlletCmdOption> shortOptions;
+	private final Set<OpenlletCmdOption> mandatory;
 
 	public OpenlletCmdOptions()
 	{
@@ -49,12 +49,15 @@ public class OpenlletCmdOptions
 
 		if (options.containsKey(longOption))
 			throw new OpenlletCmdException("Duplicate long option for command: " + longOption);
-		else if (shortOption != null && shortOptions.containsKey(shortOption)) throw new OpenlletCmdException("Duplicate short option for command: " + shortOption);
+		else
+			if (shortOption != null && shortOptions.containsKey(shortOption))
+				throw new OpenlletCmdException("Duplicate short option for command: " + shortOption);
 
 		shortOptions.put(shortOption, option);
 		options.put(longOption, option);
 
-		if (option.isMandatory()) mandatory.add(option);
+		if (option.isMandatory())
+			mandatory.add(option);
 	}
 
 	public OpenlletCmdOption getOption(final String key)
@@ -63,7 +66,8 @@ public class OpenlletCmdOptions
 		OpenlletCmdOption option = shortOptions.get(key);
 
 		// Else, key is long option, retrieve its short option
-		if (option == null) option = options.get(key);
+		if (option == null)
+			option = options.get(key);
 
 		return option;
 	}

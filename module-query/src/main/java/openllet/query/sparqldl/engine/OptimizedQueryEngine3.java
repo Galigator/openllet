@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
 import openllet.query.sparqldl.model.Query;
@@ -62,7 +63,8 @@ public class OptimizedQueryEngine3 extends AbstractABoxEngineWrapper
 
 		if (q.getDistVars().isEmpty())
 		{
-			if (QueryEngine.execBooleanABoxQuery(q)) results.add(new ResultBindingImpl());
+			if (QueryEngine.execBooleanABoxQuery(q))
+				results.add(new ResultBindingImpl());
 		}
 		else
 		{
@@ -72,11 +74,13 @@ public class OptimizedQueryEngine3 extends AbstractABoxEngineWrapper
 			{
 				final ATermAppl rolledUpClass = q.rollUpTo(currVar, Collections.emptySet(), false);
 
-				if (_logger.isLoggable(Level.FINER)) _logger.finer("Rolled up class " + rolledUpClass);
+				if (_logger.isLoggable(Level.FINER))
+					_logger.finer("Rolled up class " + rolledUpClass);
 				varBindings.put(currVar, kb.getInstances(rolledUpClass));
 			}
 
-			if (_logger.isLoggable(Level.FINER)) _logger.finer("Var bindings: " + varBindings);
+			if (_logger.isLoggable(Level.FINER))
+				_logger.finer("Var bindings: " + varBindings);
 
 			final List<ATermAppl> varList = new ArrayList<>(varBindings.keySet()); // TODO
 
@@ -112,9 +116,12 @@ public class OptimizedQueryEngine3 extends AbstractABoxEngineWrapper
 						if (queryTrue)
 						{
 							newBindings.add(bindingCandidate);
-							if (_logger.isLoggable(Level.FINER)) _logger.finer("Accepted binding: " + bindingCandidate);
+							if (_logger.isLoggable(Level.FINER))
+								_logger.finer("Accepted binding: " + bindingCandidate);
 						}
-						else if (_logger.isLoggable(Level.FINER)) _logger.finer("Rejected binding: " + bindingCandidate);
+						else
+							if (_logger.isLoggable(Level.FINER))
+								_logger.finer("Rejected binding: " + bindingCandidate);
 					}
 
 				previous = newBindings;

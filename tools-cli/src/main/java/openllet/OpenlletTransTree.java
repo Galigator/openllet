@@ -13,6 +13,12 @@ import static openllet.OpenlletCmdOptionArg.REQUIRED;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.search.EntitySearcher;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
 import openllet.core.taxonomy.PartialOrderTaxonomyBuilder;
@@ -23,10 +29,6 @@ import openllet.core.taxonomy.printer.ClassTreePrinter;
 import openllet.core.utils.ATermUtils;
 import openllet.owlapi.OWLAPILoader;
 import openllet.owlapi.OntologyUtils;
-import org.semanticweb.owlapi.model.OWLClass;
-import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.model.OWLObjectProperty;
-import org.semanticweb.owlapi.search.EntitySearcher;
 
 /**
  * <p>
@@ -44,9 +46,9 @@ import org.semanticweb.owlapi.search.EntitySearcher;
 public class OpenlletTransTree extends OpenlletCmdApp
 {
 
-	private String	_propertyName;
-	private boolean	_showClasses;
-	private boolean	_showIndividuals;
+	private String _propertyName;
+	private boolean _showClasses;
+	private boolean _showIndividuals;
 
 	public OpenlletTransTree()
 	{
@@ -118,11 +120,14 @@ public class OpenlletTransTree extends OpenlletCmdApp
 
 		final OWLEntity entity = OntologyUtils.findEntity(_propertyName, loader.allOntologies());
 
-		if (entity == null) throw new OpenlletCmdException("Property not found: " + _propertyName);
+		if (entity == null)
+			throw new OpenlletCmdException("Property not found: " + _propertyName);
 
-		if (!(entity instanceof OWLObjectProperty)) throw new OpenlletCmdException("Not an object property: " + _propertyName);
+		if (!(entity instanceof OWLObjectProperty))
+			throw new OpenlletCmdException("Not an object property: " + _propertyName);
 
-		if (!EntitySearcher.isTransitive((OWLObjectProperty) entity, loader.allOntologies())) throw new OpenlletCmdException("Not a transitive property: " + _propertyName);
+		if (!EntitySearcher.isTransitive((OWLObjectProperty) entity, loader.allOntologies()))
+			throw new OpenlletCmdException("Not a transitive property: " + _propertyName);
 
 		final ATermAppl p = ATermUtils.makeTermAppl(entity.getIRI().toString());
 
@@ -133,8 +138,10 @@ public class OpenlletTransTree extends OpenlletCmdApp
 		{
 			final String filterName = _options.getOption("filter").getValueAsString();
 			final OWLEntity filterClass = OntologyUtils.findEntity(filterName, loader.allOntologies());
-			if (filterClass == null) throw new OpenlletCmdException("Filter class not found: " + filterName);
-			if (!(filterClass instanceof OWLClass)) throw new OpenlletCmdException("Not a class: " + filterName);
+			if (filterClass == null)
+				throw new OpenlletCmdException("Filter class not found: " + filterName);
+			if (!(filterClass instanceof OWLClass))
+				throw new OpenlletCmdException("Not a class: " + filterName);
 
 			c = ATermUtils.makeTermAppl(filterClass.getIRI().toString());
 
@@ -156,13 +163,15 @@ public class OpenlletTransTree extends OpenlletCmdApp
 				individuals = kb.getIndividuals(); // Note: this is not an optimal solution
 
 			for (final ATermAppl individual : individuals)
-				if (!ATermUtils.isBnode(individual)) builder.classify(individual);
+				if (!ATermUtils.isBnode(individual))
+					builder.classify(individual);
 		}
-		else if (filter)
-			for (final ATermAppl cl : getDistinctSubclasses(kb, c))
-				builder.classify(cl);
 		else
-			builder.classify();
+			if (filter)
+				for (final ATermAppl cl : getDistinctSubclasses(kb, c))
+					builder.classify(cl);
+			else
+				builder.classify();
 
 		final Taxonomy<ATermAppl> taxonomy = builder.getTaxonomy();
 

@@ -18,16 +18,16 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * DisjointSet _data structure. Uses path compression and union by rank.
  *
- * @author     Evren Sirin
- * @param  <T> kind of element
+ * @author Evren Sirin
+ * @param <T> kind of element
  */
 public class DisjointSet<T>
 {
 	private class Node<U>
 	{
-		private final U	_object;
-		private Node<U>	_parent	= this;
-		private int		_rank	= 0;
+		private final U _object;
+		private Node<U> _parent = this;
+		private int _rank = 0;
 
 		public Node(final U o)
 		{
@@ -39,7 +39,8 @@ public class DisjointSet<T>
 
 	public void add(final T o)
 	{
-		if (_elements.containsKey(o)) return;
+		if (_elements.containsKey(o))
+			return;
 
 		_elements.put(o, new Node<>(o));
 	}
@@ -109,7 +110,8 @@ public class DisjointSet<T>
 			buffer.append(node._object);
 			buffer.append(" -> ");
 			buffer.append(node._parent._object);
-			if (i.hasNext()) buffer.append(", ");
+			if (i.hasNext())
+				buffer.append(", ");
 		}
 		buffer.append("}");
 
@@ -127,7 +129,9 @@ public class DisjointSet<T>
 			rootX = rootY;
 			rootY = node;
 		}
-		else if (rootX._rank == rootY._rank) ++rootY._rank;
+		else
+			if (rootX._rank == rootY._rank)
+				++rootY._rank;
 
 		rootX._parent = rootY;
 

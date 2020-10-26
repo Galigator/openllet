@@ -7,6 +7,7 @@
 package openllet.query.sparqldl.model;
 
 import java.util.Set;
+
 import openllet.aterm.ATermAppl;
 
 /**
@@ -27,8 +28,8 @@ public interface ResultBinding
 	/**
 	 * Gets value for given variable.
 	 *
-	 * @param  var variable for which return the value
-	 * @return     binding for the variable
+	 * @param var variable for which return the value
+	 * @return binding for the variable
 	 */
 	ATermAppl getValue(final ATermAppl var);
 
@@ -43,15 +44,15 @@ public interface ResultBinding
 	 * Sets one variable binding.
 	 *
 	 * @param binding to be set.
-	 * @param var     variable to set.
+	 * @param var variable to set.
 	 */
 	void setValue(final ATermAppl var, final ATermAppl binding);
 
 	/**
 	 * Checks whether given variable is bound.
 	 *
-	 * @param  var variable to determine.
-	 * @return     true if the given variable is bound.
+	 * @param var variable to determine.
+	 * @return true if the given variable is bound.
 	 */
 	boolean isBound(final ATermAppl var);
 

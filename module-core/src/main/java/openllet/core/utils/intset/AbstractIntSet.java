@@ -20,8 +20,8 @@ import java.util.NoSuchElementException;
  */
 public abstract class AbstractIntSet implements IntSet
 {
-	private int	min	= Integer.MAX_VALUE;
-	private int	max	= Integer.MIN_VALUE;
+	private int min = Integer.MAX_VALUE;
+	private int max = Integer.MIN_VALUE;
 
 	@Override
 	public void addAll(final IntSet values)
@@ -33,14 +33,17 @@ public abstract class AbstractIntSet implements IntSet
 
 	protected void added(final int low, final int high)
 	{
-		if (low < min) min = low;
-		if (high > max) max = high;
+		if (low < min)
+			min = low;
+		if (high > max)
+			max = high;
 	}
 
 	@Override
 	public int max()
 	{
-		if (isEmpty()) throw new NoSuchElementException();
+		if (isEmpty())
+			throw new NoSuchElementException();
 
 		return max;
 	}
@@ -48,7 +51,8 @@ public abstract class AbstractIntSet implements IntSet
 	@Override
 	public int min()
 	{
-		if (isEmpty()) throw new NoSuchElementException();
+		if (isEmpty())
+			throw new NoSuchElementException();
 
 		return min;
 	}
@@ -64,8 +68,10 @@ public abstract class AbstractIntSet implements IntSet
 			while (i.hasNext())
 			{
 				final int value = i.next();
-				if (value < min) min = value;
-				if (value > max) max = value;
+				if (value < min)
+					min = value;
+				if (value > max)
+					max = value;
 			}
 		}
 	}
@@ -87,7 +93,8 @@ public abstract class AbstractIntSet implements IntSet
 		final IntIterator i = iterator();
 		while (i.hasNext())
 		{
-			if (s.length() > 1) s.append(',');
+			if (s.length() > 1)
+				s.append(',');
 			s.append(String.valueOf(i.next()));
 		}
 		s.append(']');

@@ -12,14 +12,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import junit.framework.JUnit4TestAdapter;
-import openllet.core.KnowledgeBase;
-import openllet.core.utils.FileUtils;
-import openllet.jena.JenaLoader;
-import openllet.query.sparqldl.parser.ARQParser;
-import openllet.query.sparqlowl.parser.arq.ARQTerpParser;
-import openllet.query.sparqlowl.parser.arq.TerpSyntax;
-import openllet.test.PelletTestSuite;
+
 import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryFactory;
 import org.apache.jena.query.Syntax;
@@ -29,6 +22,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
+
+import junit.framework.JUnit4TestAdapter;
+import openllet.core.KnowledgeBase;
+import openllet.core.utils.FileUtils;
+import openllet.jena.JenaLoader;
+import openllet.query.sparqldl.parser.ARQParser;
+import openllet.query.sparqlowl.parser.arq.ARQTerpParser;
+import openllet.query.sparqlowl.parser.arq.TerpSyntax;
+import openllet.test.PelletTestSuite;
 
 /**
  * <p>
@@ -67,11 +69,11 @@ public class ParserTestParentQueries
 		return parameters;
 	}
 
-	private static KnowledgeBase	_kb;
-	private static ARQParser		_parser;
+	private static KnowledgeBase _kb;
+	private static ARQParser _parser;
 
-	private final String			_sparqlFile;
-	private final String			_sparqlOWLFile;
+	private final String _sparqlFile;
+	private final String _sparqlOWLFile;
 
 	public ParserTestParentQueries(final String sparqlFile, final String sparqlOWLFile)
 	{

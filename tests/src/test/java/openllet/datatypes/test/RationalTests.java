@@ -4,9 +4,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
+import org.junit.Test;
+
 import openllet.core.datatypes.OWLRealUtils;
 import openllet.core.datatypes.types.real.Rational;
-import org.junit.Test;
 
 public class RationalTests
 {

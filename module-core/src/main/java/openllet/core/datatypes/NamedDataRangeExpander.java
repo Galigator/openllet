@@ -3,6 +3,7 @@ package openllet.core.datatypes;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
 import openllet.core.output.ATermBaseVisitor;
@@ -26,16 +27,17 @@ import openllet.core.utils.ATermUtils;
  */
 public class NamedDataRangeExpander extends ATermBaseVisitor
 {
-	private Map<ATermAppl, ATermAppl>	_map;
-	private ATermAppl					_ret;
-	private boolean						_change;
+	private Map<ATermAppl, ATermAppl> _map;
+	private ATermAppl _ret;
+	private boolean _change;
 
 	/*
 	 * TODO: Handle nesting and cycles in definitions
 	 */
 	public ATermAppl expand(final ATermAppl input, final Map<ATermAppl, ATermAppl> map)
 	{
-		if (map.isEmpty()) return input;
+		if (map.isEmpty())
+			return input;
 
 		_map = map;
 		try
@@ -65,7 +67,8 @@ public class NamedDataRangeExpander extends ATermBaseVisitor
 			final ATermAppl a = (ATermAppl) l.getFirst();
 			visit(a);
 			args.add(_ret);
-			if (_change) listChange = true;
+			if (_change)
+				listChange = true;
 		}
 		if (listChange)
 		{
@@ -143,7 +146,8 @@ public class NamedDataRangeExpander extends ATermBaseVisitor
 			final ATermAppl a = (ATermAppl) l.getFirst();
 			visit(a);
 			args.add(_ret);
-			if (_change) listChange = true;
+			if (_change)
+				listChange = true;
 		}
 		if (listChange)
 		{

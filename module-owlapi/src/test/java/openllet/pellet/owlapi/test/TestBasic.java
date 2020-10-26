@@ -1,5 +1,7 @@
 package openllet.pellet.owlapi.test;
 
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -14,18 +16,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
-import openllet.core.rules.builtins.BuiltInRegistry;
-import openllet.core.rules.builtins.FunctionBuiltIn;
-import openllet.core.rules.builtins.NumericAdapter;
-import openllet.core.rules.builtins.NumericFunction;
-import openllet.core.utils.SetUtils;
-import openllet.owlapi.OWL;
-import openllet.owlapi.OWLGenericTools;
-import openllet.owlapi.OWLHelper;
-import openllet.owlapi.OWLManagerGroup;
-import openllet.owlapi.SWRL;
-import openllet.owlapi.XSD;
-import openllet.shared.tools.Log;
+
 import org.junit.Test;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;
@@ -44,6 +35,19 @@ import org.semanticweb.owlapi.model.SWRLVariable;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.vocab.OWLFacet;
 
+import openllet.core.rules.builtins.BuiltInRegistry;
+import openllet.core.rules.builtins.FunctionBuiltIn;
+import openllet.core.rules.builtins.NumericAdapter;
+import openllet.core.rules.builtins.NumericFunction;
+import openllet.core.utils.SetUtils;
+import openllet.owlapi.OWL;
+import openllet.owlapi.OWLGenericTools;
+import openllet.owlapi.OWLHelper;
+import openllet.owlapi.OWLManagerGroup;
+import openllet.owlapi.SWRL;
+import openllet.owlapi.XSD;
+import openllet.shared.tools.Log;
+
 /**
  * Test basic of openllet-owlapi
  *
@@ -57,23 +61,23 @@ public class TestBasic
 		Log.setLevel(Level.WARNING, OWLGenericTools.class);
 		Log._defaultLevel = Level.INFO;
 	}
-	private static final String									NS		= "http://test.org#";
-	private static final Function<String, OWLNamedIndividual>	i		= s -> OWL.Individual(NS + s);
-	private static final Function<String, OWLObjectProperty>	o		= s -> OWL.ObjectProperty(NS + s);
-	private static final Function<String, OWLDataProperty>		d		= s -> OWL.DataProperty(NS + s);
-	private static final Function<String, OWLClass>				c		= s -> OWL.Class(NS + s);
+	private static final String NS = "http://test.org#";
+	private static final Function<String, OWLNamedIndividual> i = s -> OWL.Individual(NS + s);
+	private static final Function<String, OWLObjectProperty> o = s -> OWL.ObjectProperty(NS + s);
+	private static final Function<String, OWLDataProperty> d = s -> OWL.DataProperty(NS + s);
+	private static final Function<String, OWLClass> c = s -> OWL.Class(NS + s);
 
-	private final OWLClass										ClsA	= c.apply("ClsA");
-	private final OWLClass										ClsB	= c.apply("ClsB");
-	private final OWLClass										ClsC	= c.apply("ClsC");
-	private final OWLClass										ClsD	= c.apply("ClsD");
-	private final OWLClass										ClsE	= c.apply("ClsE");
-	private final OWLClass										ClsF	= c.apply("ClsF");
-	private final OWLClass										ClsG	= c.apply("ClsG");
-	private final OWLNamedIndividual							Ind1	= i.apply("Ind1");
-	private final OWLObjectProperty								propA	= o.apply("mimiroux");
-	private final OWLDataProperty								propB	= d.apply("propB");
-	private final SWRLVariable									varA	= SWRL.variable(IRI.create(NS + "a"));
+	private final OWLClass ClsA = c.apply("ClsA");
+	private final OWLClass ClsB = c.apply("ClsB");
+	private final OWLClass ClsC = c.apply("ClsC");
+	private final OWLClass ClsD = c.apply("ClsD");
+	private final OWLClass ClsE = c.apply("ClsE");
+	private final OWLClass ClsF = c.apply("ClsF");
+	private final OWLClass ClsG = c.apply("ClsG");
+	private final OWLNamedIndividual Ind1 = i.apply("Ind1");
+	private final OWLObjectProperty propA = o.apply("mimiroux");
+	private final OWLDataProperty propB = d.apply("propB");
+	private final SWRLVariable varA = SWRL.variable(IRI.create(NS + "a"));
 
 	@Test
 	public void rule() throws OWLOntologyCreationException
@@ -87,7 +91,7 @@ public class TestBasic
 			owl.declareIndividual(ClsA, Ind1);
 
 			{
-				final List<OWLClass> entities = owl.getReasoner().getTypes(Ind1).entities().collect(Collectors.toList());
+				final List<OWLClass> entities = owl.getReasoner().types(Ind1).collect(toList());
 				assertTrue(entities.size() == 2);
 				assertTrue(entities.contains(ClsA));
 				assertTrue(entities.contains(OWL.Thing));
@@ -99,7 +103,7 @@ public class TestBasic
 			));
 
 			{
-				final List<OWLClass> entities = owl.getReasoner().getTypes(Ind1).entities().collect(Collectors.toList());
+				final List<OWLClass> entities = owl.getReasoner().types(Ind1).collect(toList());
 				assertTrue(entities.size() == 3);
 				assertTrue(entities.contains(ClsA));
 				assertTrue(entities.contains(ClsB));
@@ -112,7 +116,7 @@ public class TestBasic
 			));
 
 			{
-				final List<OWLClass> entities = owl.getReasoner().getTypes(Ind1).entities().collect(Collectors.toList());
+				final List<OWLClass> entities = owl.getReasoner().types(Ind1).collect(toList());
 				assertTrue(entities.size() == 4);
 				assertTrue(entities.contains(ClsA));
 				assertTrue(entities.contains(ClsB));
@@ -128,7 +132,7 @@ public class TestBasic
 			));
 
 			{
-				final List<OWLClass> entities = owl.getReasoner().getTypes(Ind1).entities().collect(Collectors.toList());
+				final List<OWLClass> entities = owl.getReasoner().types(Ind1).collect(toList());
 				assertTrue(entities.size() == 6);
 				assertTrue(entities.contains(ClsA));
 				assertTrue(entities.contains(ClsB));
@@ -147,7 +151,7 @@ public class TestBasic
 
 			{
 				owl.addAxiom(D_and_NotF);
-				final List<OWLClass> entities = owl.getReasoner().getTypes(Ind1).entities().collect(Collectors.toList());
+				final List<OWLClass> entities = owl.getReasoner().types(Ind1).collect(toList());
 				assertTrue(entities.contains(ClsG));
 				owl.removeAxiom(D_and_NotF);
 			}
@@ -159,7 +163,7 @@ public class TestBasic
 
 			{
 				owl.addAxiom(D_and_F);
-				final List<OWLClass> entities = owl.getReasoner().getTypes(Ind1).entities().collect(Collectors.toList());
+				final List<OWLClass> entities = owl.getReasoner().types(Ind1).collect(toList());
 				assertFalse(entities.contains(ClsG));
 				owl.removeAxiom(D_and_F);
 			}
@@ -257,7 +261,8 @@ public class TestBasic
 					final byte[] bE = es.getBytes();
 					final byte[] bF = fs.getBytes();
 					for (int k = 0, kl = bE.length; k < kl; k++)
-						if (bE[k] != bF[k]) System.out.println("Byte[" + k + "] -> " + bE[k] + " != " + bF[k]);
+						if (bE[k] != bF[k])
+							System.out.println("Byte[" + k + "] -> " + bE[k] + " != " + bF[k]);
 				}
 
 				assertTrue(es + "!=" + fs, es.equals(fs));
@@ -302,14 +307,14 @@ public class TestBasic
 			{
 				final OWLOntologyID ontId = OWLHelper.getVersion(IRI.create(NS + "owlapi.inc.regex.restriction"), 1.0);
 				final OWLHelper owl = new OWLGenericTools(group, ontId, true);
-
+	
 				final OWLNamedIndividual x1 = i.apply("I1");
 				final OWLNamedIndividual x2 = i.apply("I2");
-
+	
 				final javax.xml.datatype.Duration duration = DatatypeFactory.newInstance().newDuration(1000);// Duration of 1000ms
-
+	
 				System.out.println(duration.getXMLSchemaType());
-
+	
 				//final OWL2Datatype durationDataType = OWL2Datatype.getDatatype(IRI.create(Namespaces.XSD + "duration"));
 				final OWL2Datatype durationDataType = OWL2Datatype.XSD_DATE_TIME;
 				assertTrue(owl.getReasoner().isConsistent());
@@ -326,19 +331,19 @@ public class TestBasic
 						)//
 				);
 				assertTrue(owl.getReasoner().isConsistent());
-
+	
 				owl.addAxiom(OWL.propertyAssertion(x1, propB, OWL._factory.getOWLLiteral("500", durationDataType)));
 				owl.getReasoner().isConsistent();
 				final KnowledgeBase kb = ((PelletReasoner) owl.getReasoner()).getKB();
 				System.out.println(kb.getExplanation());
-
+	
 				assertTrue(owl.getReasoner().isConsistent());
 				owl.addAxiom(OWL.propertyAssertion(x2, propB, OWL._factory.getOWLLiteral("1500", durationDataType)));
 				assertTrue(owl.getReasoner().isConsistent());
-
+	
 				owl.addAxiom(OWL.differentFrom(x1, x2));
 				assertTrue(owl.getReasoner().isConsistent());
-
+	
 				final OWLReasoner r = owl.getReasoner();
 				assertTrue(r.isEntailed(OWL.classAssertion(x1, ClsA)));
 				assertFalse(r.isEntailed(OWL.classAssertion(x2, ClsA)));
@@ -612,16 +617,14 @@ public class TestBasic
 
 			{
 				owl.addAxiom(OWL.subPropertyOf(p1, p2)); // p2 extends [P1]
-				final OWLObjectProperty[] chain = { p2, p1 };
-				owl.addAxiom(OWL.subPropertyOf(chain, p2)); // p2 extends [P2, P1]
+				owl.addAxiom(OWL.subPropertyOf(List.of(p2, p1), p2)); // p2 extends [P2, P1]
 			}
 			{
 				owl.addAxiom(OWL.inverseProperties(p1, p3)); // p3 inverse of p1
 			}
 			{
 				owl.addAxiom(OWL.subPropertyOf(p3, p4)); // p4 extends [P3]
-				final OWLObjectProperty[] chain = { p4, p3 };
-				owl.addAxiom(OWL.subPropertyOf(chain, p4)); // p4 extends [P4, P3]
+				owl.addAxiom(OWL.subPropertyOf(List.of(p4, p3), p4)); // p4 extends [P4, P3]
 			}
 
 			final OWLNamedIndividual i1 = i.apply("I1");
@@ -646,10 +649,10 @@ public class TestBasic
 			owl.addAxiom(OWL.propertyAssertion(i8, p1, ia));
 			owl.addAxiom(OWL.propertyAssertion(ia, p1, ib));
 
-			assertTrue("direct", owl.getObjects(i5, p1).map(OWLNamedIndividual::toString).sorted().collect(Collectors.joining("")).equals("" + i6));
-			assertTrue("transitive", owl.getObjects(i5, p2).map(OWLNamedIndividual::toString).sorted().collect(Collectors.joining("")).equals("" + i6 + i7 + i8 + ia + ib));
-			assertTrue("inverse", owl.getObjects(i5, p3).map(OWLNamedIndividual::toString).sorted().collect(Collectors.joining("")).equals("" + i4));
-			assertTrue("inverse transitive", owl.getObjects(i5, p4).map(OWLNamedIndividual::toString).sorted((a, b) -> -a.compareTo(b)).collect(Collectors.joining("")).equals("" + i4 + i3 + i2 + i1));
+			assertTrue("direct", owl.getObjects(i5, p1).map(OWLNamedIndividual::toString).sorted().collect(joining("")).equals("" + i6));
+			assertTrue("transitive", owl.getObjects(i5, p2).map(OWLNamedIndividual::toString).sorted().collect(joining("")).equals("" + i6 + i7 + i8 + ia + ib));
+			assertTrue("inverse", owl.getObjects(i5, p3).map(OWLNamedIndividual::toString).sorted().collect(joining("")).equals("" + i4));
+			assertTrue("inverse transitive", owl.getObjects(i5, p4).map(OWLNamedIndividual::toString).sorted((a, b) -> -a.compareTo(b)).collect(joining("")).equals("" + i4 + i3 + i2 + i1));
 		}
 	}
 
@@ -737,12 +740,12 @@ public class TestBasic
 
 	class RandomBuildIn implements NumericFunction
 	{
-		public volatile int		_callCountBigDecimal	= 0;
-		public volatile int		_callCountBigInteger	= 0;
-		public volatile int		_callCountDouble		= 0;
-		public volatile int		_callCountFloat			= 0;
-		public volatile Object	_object					= null;
-		private final Random	_rand					= new Random();
+		public volatile int _callCountBigDecimal = 0;
+		public volatile int _callCountBigInteger = 0;
+		public volatile int _callCountDouble = 0;
+		public volatile int _callCountFloat = 0;
+		public volatile Object _object = null;
+		private final Random _rand = new Random();
 
 		@Override
 		public BigDecimal apply(final BigDecimal... args)

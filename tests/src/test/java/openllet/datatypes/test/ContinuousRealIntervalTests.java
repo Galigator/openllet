@@ -6,9 +6,11 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
+
+import org.junit.Test;
+
 import openllet.core.datatypes.IntervalRelations;
 import openllet.core.datatypes.types.real.ContinuousRealInterval;
-import org.junit.Test;
 
 /**
  * <p>

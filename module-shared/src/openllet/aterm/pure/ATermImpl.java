@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.LinkedList;
 import java.util.List;
+
 import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
@@ -44,11 +45,11 @@ import openllet.shared.hash.SharedObjectWithID;
 
 public abstract class ATermImpl extends ATermVisitableImpl implements ATerm, SharedObjectWithID
 {
-	protected PureFactory	_factory;
+	protected PureFactory _factory;
 
-	private int				_hashCode;
+	private int _hashCode;
 
-	private int				_uniqueId;
+	private int _uniqueId;
 
 	/**
 	 * depricated Use the new constructor instead.
@@ -75,9 +76,8 @@ public abstract class ATermImpl extends ATermVisitableImpl implements ATerm, Sha
 	/**
 	 * Deprecated Just here for backwards compatibility : use new ATermImpl instead (or super)
 	 *
-	 *
 	 * @param hashCode x
-	 * @param annos    x
+	 * @param annos x
 	 */
 	protected void init(final int hashCode)
 	{
@@ -105,14 +105,16 @@ public abstract class ATermImpl extends ATermVisitableImpl implements ATerm, Sha
 	public List<Object> match(final ATerm pattern)
 	{
 		final List<Object> list = new LinkedList<>();
-		if (match(pattern, list)) return list;
+		if (match(pattern, list))
+			return list;
 		return null;
 	}
 
 	@Override
 	public boolean isEqual(final ATerm term)
 	{
-		if (term instanceof ATermImpl) return this == term;
+		if (term instanceof ATermImpl)
+			return this == term;
 
 		return PureFactory.isDeepEqual(this, term);
 	}

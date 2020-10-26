@@ -19,6 +19,10 @@ import static org.junit.Assert.fail;
 
 import java.util.Properties;
 import java.util.logging.Logger;
+
+import org.junit.BeforeClass;
+import org.junit.Test;
+
 import junit.framework.JUnit4TestAdapter;
 import openllet.aterm.ATermAppl;
 import openllet.atom.OpenError;
@@ -38,8 +42,6 @@ import openllet.jena.JenaLoader;
 import openllet.shared.tools.Log;
 import openllet.test.AbstractKBTests;
 import openllet.test.PelletTestSuite;
-import org.junit.BeforeClass;
-import org.junit.Test;
 
 /**
  * <p>
@@ -53,9 +55,9 @@ import org.junit.Test;
  */
 public class ELTests extends AbstractKBTests
 {
-	private static final Logger			_logger	= Log.getLogger(AbstractKBTests.class);
+	private static final Logger _logger = Log.getLogger(AbstractKBTests.class);
 
-	private static final ATermAppl[]	X		= new ATermAppl[5];
+	private static final ATermAppl[] X = new ATermAppl[5];
 
 	@BeforeClass
 	public static void initTerms()

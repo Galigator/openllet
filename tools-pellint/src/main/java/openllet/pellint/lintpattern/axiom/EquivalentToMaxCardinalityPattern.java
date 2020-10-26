@@ -8,17 +8,19 @@ package openllet.pellint.lintpattern.axiom;
 
 import java.util.Set;
 import java.util.stream.Collectors;
-import openllet.owlapi.OWL;
-import openllet.pellint.format.CompactClassLintFormat;
-import openllet.pellint.format.LintFormat;
-import openllet.pellint.model.Lint;
-import openllet.pellint.model.LintFixer;
+
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLDataMaxCardinality;
 import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
 import org.semanticweb.owlapi.model.OWLObjectMaxCardinality;
+
+import openllet.owlapi.OWL;
+import openllet.pellint.format.CompactClassLintFormat;
+import openllet.pellint.format.LintFormat;
+import openllet.pellint.model.Lint;
+import openllet.pellint.model.LintFixer;
 
 /**
  * <p>
@@ -62,14 +64,17 @@ public class EquivalentToMaxCardinalityPattern extends AxiomLintPattern
 	public void visit(final OWLEquivalentClassesAxiom axiom)
 	{
 		final Set<OWLClassExpression> owlDescs = axiom.classExpressions().collect(Collectors.toSet());
-		if (owlDescs.size() != 2) return;
+		if (owlDescs.size() != 2)
+			return;
 
 		OWLClass namedClass = null;
 		OWLClassExpression cardinalityRestriction = null;
 		for (final OWLClassExpression owlDesc : owlDescs)
 			if (!owlDesc.isAnonymous())
 				namedClass = owlDesc.asOWLClass();
-			else if (owlDesc instanceof OWLObjectMaxCardinality || owlDesc instanceof OWLDataMaxCardinality) cardinalityRestriction = owlDesc;
+			else
+				if (owlDesc instanceof OWLObjectMaxCardinality || owlDesc instanceof OWLDataMaxCardinality)
+					cardinalityRestriction = owlDesc;
 
 		if (namedClass != null && cardinalityRestriction != null)
 		{

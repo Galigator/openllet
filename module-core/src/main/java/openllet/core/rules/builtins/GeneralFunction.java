@@ -30,9 +30,9 @@ public interface GeneralFunction
 	/**
 	 * Apply the function against a set of arguments. Set null values of argument array. Return true if function succeeded, false if it cannot.
 	 *
-	 * @param  abox
-	 * @param  args
-	 * @return      the literal that result of the application of the function again the Abox
+	 * @param abox
+	 * @param args
+	 * @return the literal that result of the application of the function again the Abox
 	 */
 	boolean apply(final ABox abox, final Literal[] args);
 

@@ -11,6 +11,7 @@ package openllet.query.sparqldl.model;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.utils.ATermUtils;
 
@@ -30,12 +31,12 @@ import openllet.core.utils.ATermUtils;
 public class CoreImpl extends QueryAtomImpl implements Core
 {
 
-	private List<ATermAppl>				_distVars	= null;
-	private List<ATermAppl>				_consts		= null;
+	private List<ATermAppl> _distVars = null;
+	private List<ATermAppl> _consts = null;
 
-	private Collection<ATermAppl>		_undistVars	= null;
+	private Collection<ATermAppl> _undistVars = null;
 
-	private final Collection<QueryAtom>	_atoms;
+	private final Collection<QueryAtom> _atoms;
 
 	public CoreImpl(final List<ATermAppl> arguments, final Collection<ATermAppl> uv, final Collection<QueryAtom> atoms)
 	{
@@ -63,7 +64,8 @@ public class CoreImpl extends QueryAtomImpl implements Core
 	@Override
 	public Collection<ATermAppl> getConstants()
 	{
-		if (_consts == null) setup();
+		if (_consts == null)
+			setup();
 
 		return _consts;
 	}
@@ -75,7 +77,8 @@ public class CoreImpl extends QueryAtomImpl implements Core
 	@Override
 	public Collection<ATermAppl> getDistVars()
 	{
-		if (_distVars == null) setup();
+		if (_distVars == null)
+			setup();
 
 		return _distVars;
 	}
@@ -87,7 +90,8 @@ public class CoreImpl extends QueryAtomImpl implements Core
 	@Override
 	public Collection<ATermAppl> getUndistVars()
 	{
-		if (_undistVars == null) setup();
+		if (_undistVars == null)
+			setup();
 
 		return _undistVars;
 	}
@@ -101,7 +105,8 @@ public class CoreImpl extends QueryAtomImpl implements Core
 	@Override
 	public QueryAtom apply(final ResultBinding binding)
 	{
-		if (isGround()) return this;
+		if (isGround())
+			return this;
 
 		final List<ATermAppl> newArguments = new ArrayList<>();
 
@@ -128,9 +133,12 @@ public class CoreImpl extends QueryAtomImpl implements Core
 	@Override
 	public boolean equals(final Object obj)
 	{
-		if (this == obj) return true;
-		if (obj == null) return false;
-		if (getClass() != obj.getClass()) return false;
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
 		final CoreImpl other = (CoreImpl) obj;
 
 		return _arguments.equals(other._arguments);

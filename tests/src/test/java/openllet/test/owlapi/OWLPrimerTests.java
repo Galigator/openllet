@@ -12,13 +12,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Set;
 import java.util.stream.Collectors;
-import junit.framework.JUnit4TestAdapter;
-import openllet.core.OpenlletOptions;
-import openllet.core.utils.SetUtils;
-import openllet.owlapi.OWL;
-import openllet.owlapi.OntologyUtils;
-import openllet.owlapi.OpenlletReasonerFactory;
-import openllet.test.PelletTestSuite;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
@@ -29,26 +23,34 @@ import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 import org.semanticweb.owlapi.reasoner.Node;
 import org.semanticweb.owlapi.reasoner.NodeSet;
 
+import junit.framework.JUnit4TestAdapter;
+import openllet.core.OpenlletOptions;
+import openllet.core.utils.SetUtils;
+import openllet.owlapi.OWL;
+import openllet.owlapi.OntologyUtils;
+import openllet.owlapi.OpenlletReasonerFactory;
+import openllet.test.PelletTestSuite;
+
 /**
  * @author Evren Sirin
  */
 public class OWLPrimerTests extends AbstractOWLAPITests
 {
-	protected static final String				NS			= "http://example.com/owl/families/";
-	protected static final String				NS2			= "http://example.org/otherOntologies/families/";
+	protected static final String NS = "http://example.com/owl/families/";
+	protected static final String NS2 = "http://example.org/otherOntologies/families/";
 
-	protected static final OWLNamedIndividual	John		= OWL.Individual(NS + "John");
-	protected static final OWLNamedIndividual	Jack		= OWL.Individual(NS + "Jack");
-	protected static final OWLNamedIndividual	Bill		= OWL.Individual(NS + "Bill");
-	protected static final OWLNamedIndividual	Mary		= OWL.Individual(NS + "Mary");
-	protected static final OWLNamedIndividual	MaryBrown	= OWL.Individual(NS2 + "MaryBrown");
+	protected static final OWLNamedIndividual John = OWL.Individual(NS + "John");
+	protected static final OWLNamedIndividual Jack = OWL.Individual(NS + "Jack");
+	protected static final OWLNamedIndividual Bill = OWL.Individual(NS + "Bill");
+	protected static final OWLNamedIndividual Mary = OWL.Individual(NS + "Mary");
+	protected static final OWLNamedIndividual MaryBrown = OWL.Individual(NS2 + "MaryBrown");
 
-	protected static final OWLObjectProperty	hasParent	= OWL.ObjectProperty(NS + "hasParent");
-	protected static final OWLObjectProperty	hasSpouse	= OWL.ObjectProperty(NS + "hasSpouse");
-	protected static final OWLObjectProperty	hasWife		= OWL.ObjectProperty(NS + "hasWife");
-	protected static final OWLObjectProperty	hasChild	= OWL.ObjectProperty(NS + "hasChild");
-	protected static final OWLObjectProperty	child		= OWL.ObjectProperty(NS2 + "child");
-	protected static final OWLObjectProperty	parentOf	= OWL.ObjectProperty(NS2 + "parentOf");
+	protected static final OWLObjectProperty hasParent = OWL.ObjectProperty(NS + "hasParent");
+	protected static final OWLObjectProperty hasSpouse = OWL.ObjectProperty(NS + "hasSpouse");
+	protected static final OWLObjectProperty hasWife = OWL.ObjectProperty(NS + "hasWife");
+	protected static final OWLObjectProperty hasChild = OWL.ObjectProperty(NS + "hasChild");
+	protected static final OWLObjectProperty child = OWL.ObjectProperty(NS2 + "child");
+	protected static final OWLObjectProperty parentOf = OWL.ObjectProperty(NS2 + "parentOf");
 
 	public static junit.framework.Test suite()
 	{

@@ -15,10 +15,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Stream;
-import openllet.core.utils.SetUtils;
-import openllet.owlapi.OWL;
-import openllet.owlapi.SWRL;
-import openllet.owlapi.XSD;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -34,6 +31,11 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.SWRLVariable;
 import org.semanticweb.owlapi.vocab.SWRLBuiltInsVocabulary;
 
+import openllet.core.utils.SetUtils;
+import openllet.owlapi.OWL;
+import openllet.owlapi.SWRL;
+import openllet.owlapi.XSD;
+
 /**
  * <p>
  * Copyright: Copyright (_c) 2008
@@ -46,19 +48,19 @@ import org.semanticweb.owlapi.vocab.SWRLBuiltInsVocabulary;
  */
 public abstract class AbstractExplanationTest
 {
-	public static final String				BASEPATH	= "file:data/";
-	public static final OWLOntologyManager	_manager	= OWL._manager;
-	public static final URI					ontologyURI	= URI.create("http://www.example.org/test#");
+	public static final String BASEPATH = "file:data/";
+	public static final OWLOntologyManager _manager = OWL._manager;
+	public static final URI ontologyURI = URI.create("http://www.example.org/test#");
 
-	protected boolean						_classify;
+	protected boolean _classify;
 
-	private OWLClass						_A, _B, _C, _D, _E, _F;
-	private OWLObjectProperty				_p, _q, _r;
-	private OWLDataProperty					dp, dq, dr;
-	private OWLIndividual					_a, _b, _c, _d, _anon1;
-	private OWLDatatype						_dt;
-	private SWRLVariable					_x, _y;
-	private SWRLVariable					_dx;
+	private OWLClass _A, _B, _C, _D, _E, _F;
+	private OWLObjectProperty _p, _q, _r;
+	private OWLDataProperty dp, dq, dr;
+	private OWLIndividual _a, _b, _c, _d, _anon1;
+	private OWLDatatype _dt;
+	private SWRLVariable _x, _y;
+	private SWRLVariable _dx;
 
 	public AbstractExplanationTest(final boolean classify)
 	{
@@ -283,9 +285,7 @@ public abstract class AbstractExplanationTest
 	@Test
 	public void ruleTest1() throws Exception
 	{
-		final OWLAxiom[] axioms = { OWL.classAssertion(_a, _A), OWL.classAssertion(_b, _B), OWL.propertyAssertion(_a, _p, _b),
-				SWRL.rule(SWRL.antecedent(SWRL.classAtom(_A, _x)), SWRL.consequent(SWRL.classAtom(_B, _x))),
-				SWRL.rule(SWRL.antecedent(SWRL.classAtom(_B, _x), SWRL.propertyAtom(_p, _x, _y), SWRL.classAtom(_B, _y)), SWRL.consequent(SWRL.classAtom(_C, _x))) };
+		final OWLAxiom[] axioms = { OWL.classAssertion(_a, _A), OWL.classAssertion(_b, _B), OWL.propertyAssertion(_a, _p, _b), SWRL.rule(SWRL.antecedent(SWRL.classAtom(_A, _x)), SWRL.consequent(SWRL.classAtom(_B, _x))), SWRL.rule(SWRL.antecedent(SWRL.classAtom(_B, _x), SWRL.propertyAtom(_p, _x, _y), SWRL.classAtom(_B, _y)), SWRL.consequent(SWRL.classAtom(_C, _x))) };
 
 		setupGenerators(Stream.of(axioms));
 
@@ -297,9 +297,7 @@ public abstract class AbstractExplanationTest
 	@Test
 	public void ruleTest1b() throws Exception
 	{
-		final OWLAxiom[] axioms = { OWL.classAssertion(_a, _A), OWL.classAssertion(_b, _B), OWL.propertyAssertion(_a, _p, _b),
-				SWRL.rule(SWRL.antecedent(SWRL.classAtom(_A, _x)), SWRL.consequent(SWRL.classAtom(_B, _x))),
-				SWRL.rule(SWRL.antecedent(SWRL.classAtom(_B, _x), SWRL.propertyAtom(_p, _x, _y), SWRL.classAtom(_B, _y)), SWRL.consequent(SWRL.classAtom(_C, _x))) };
+		final OWLAxiom[] axioms = { OWL.classAssertion(_a, _A), OWL.classAssertion(_b, _B), OWL.propertyAssertion(_a, _p, _b), SWRL.rule(SWRL.antecedent(SWRL.classAtom(_A, _x)), SWRL.consequent(SWRL.classAtom(_B, _x))), SWRL.rule(SWRL.antecedent(SWRL.classAtom(_B, _x), SWRL.propertyAtom(_p, _x, _y), SWRL.classAtom(_B, _y)), SWRL.consequent(SWRL.classAtom(_C, _x))) };
 
 		setupGenerators(Stream.of(axioms));
 
@@ -311,8 +309,7 @@ public abstract class AbstractExplanationTest
 	@Test
 	public void ruleTest2() throws Exception
 	{
-		final OWLAxiom[] axioms = { OWL.subPropertyOf(_q, _p), OWL.propertyAssertion(_a, _q, _b), OWL.classAssertion(_b, _B),
-				SWRL.rule(SWRL.antecedent(SWRL.propertyAtom(_p, _x, _y), SWRL.classAtom(_B, _y)), SWRL.consequent(SWRL.classAtom(_A, _x))) };
+		final OWLAxiom[] axioms = { OWL.subPropertyOf(_q, _p), OWL.propertyAssertion(_a, _q, _b), OWL.classAssertion(_b, _B), SWRL.rule(SWRL.antecedent(SWRL.propertyAtom(_p, _x, _y), SWRL.classAtom(_B, _y)), SWRL.consequent(SWRL.classAtom(_A, _x))) };
 
 		setupGenerators(Stream.of(axioms));
 
@@ -322,8 +319,7 @@ public abstract class AbstractExplanationTest
 	@Test
 	public void ruleTest3() throws Exception
 	{
-		final OWLAxiom[] axioms = { OWL.inverseProperties(_q, _p), OWL.propertyAssertion(_b, _q, _a), OWL.classAssertion(_b, _B),
-				SWRL.rule(SWRL.antecedent(SWRL.propertyAtom(_p, _x, _y), SWRL.classAtom(_B, _y)), SWRL.consequent(SWRL.classAtom(_A, _x))) };
+		final OWLAxiom[] axioms = { OWL.inverseProperties(_q, _p), OWL.propertyAssertion(_b, _q, _a), OWL.classAssertion(_b, _B), SWRL.rule(SWRL.antecedent(SWRL.propertyAtom(_p, _x, _y), SWRL.classAtom(_B, _y)), SWRL.consequent(SWRL.classAtom(_A, _x))) };
 
 		setupGenerators(Stream.of(axioms));
 
@@ -355,8 +351,7 @@ public abstract class AbstractExplanationTest
 	@Test
 	public void ruleTest6() throws Exception
 	{
-		final OWLAxiom[] axioms = { OWL.propertyAssertion(_a, _p, _b), OWL.classAssertion(_b, _B),
-				SWRL.rule(SWRL.antecedent(SWRL.classAtom(OWL.some(_p, _B), _x)), SWRL.consequent(SWRL.classAtom(_C, _x))) };
+		final OWLAxiom[] axioms = { OWL.propertyAssertion(_a, _p, _b), OWL.classAssertion(_b, _B), SWRL.rule(SWRL.antecedent(SWRL.classAtom(OWL.some(_p, _B), _x)), SWRL.consequent(SWRL.classAtom(_C, _x))) };
 
 		setupGenerators(Stream.of(axioms));
 
@@ -366,8 +361,7 @@ public abstract class AbstractExplanationTest
 	@Test
 	public void ruleBuiltinTest1() throws Exception
 	{
-		final OWLAxiom[] axioms = { OWL.classAssertion(_a, _A), OWL.propertyAssertion(_a, dp, OWL.constant(9)),
-				SWRL.rule(SWRL.antecedent(SWRL.classAtom(_A, _x), SWRL.propertyAtom(dp, _x, _dx), SWRL.lessThan(_dx, SWRL.constant(10))), SWRL.consequent(SWRL.classAtom(_B, _x))) };
+		final OWLAxiom[] axioms = { OWL.classAssertion(_a, _A), OWL.propertyAssertion(_a, dp, OWL.constant(9)), SWRL.rule(SWRL.antecedent(SWRL.classAtom(_A, _x), SWRL.propertyAtom(dp, _x, _dx), SWRL.lessThan(_dx, SWRL.constant(10))), SWRL.consequent(SWRL.classAtom(_B, _x))) };
 
 		setupGenerators(Stream.of(axioms));
 
@@ -377,9 +371,7 @@ public abstract class AbstractExplanationTest
 	@Test
 	public void ruleBuiltinTest2() throws Exception
 	{
-		final OWLAxiom[] axioms = { OWL.classAssertion(_a, _A), OWL.propertyAssertion(_a, dp, OWL.constant(9)),
-				SWRL.rule(SWRL.antecedent(SWRL.classAtom(_A, _x), SWRL.propertyAtom(dp, _x, _dx), SWRL.greaterThan(_dx, SWRL.constant(5)), SWRL.lessThan(_dx, SWRL.constant(10))),
-						SWRL.consequent(SWRL.classAtom(_B, _x))) };
+		final OWLAxiom[] axioms = { OWL.classAssertion(_a, _A), OWL.propertyAssertion(_a, dp, OWL.constant(9)), SWRL.rule(SWRL.antecedent(SWRL.classAtom(_A, _x), SWRL.propertyAtom(dp, _x, _dx), SWRL.greaterThan(_dx, SWRL.constant(5)), SWRL.lessThan(_dx, SWRL.constant(10))), SWRL.consequent(SWRL.classAtom(_B, _x))) };
 
 		setupGenerators(Stream.of(axioms));
 
@@ -419,8 +411,7 @@ public abstract class AbstractExplanationTest
 	@Test
 	public void userDefinedDatatype1() throws Exception
 	{
-		final OWLAxiom[] axioms = { OWL.classAssertion(_a, _A), OWL.propertyAssertion(_a, dp, OWL.constant(9)),
-				OWL.equivalentClasses(_B, OWL.and(_A, OWL.some(dp, OWL.restrict(XSD.INTEGER, OWL.maxExclusive(10))))) };
+		final OWLAxiom[] axioms = { OWL.classAssertion(_a, _A), OWL.propertyAssertion(_a, dp, OWL.constant(9)), OWL.equivalentClasses(_B, OWL.and(_A, OWL.some(dp, OWL.restrict(XSD.INTEGER, OWL.maxExclusive(10))))) };
 
 		setupGenerators(Stream.of(axioms));
 
@@ -430,8 +421,7 @@ public abstract class AbstractExplanationTest
 	@Test
 	public void userDefinedDatatype2() throws Exception
 	{
-		final OWLAxiom[] axioms = { OWL.classAssertion(_a, _A), OWL.subClassOf(_A, OWL.and(OWL.max(dp, 1), OWL.some(dp, OWL.restrict(XSD.INTEGER, OWL.minExclusive(10))))),
-				OWL.equivalentClasses(_B, OWL.and(OWL.min(dp, 1), OWL.all(dp, OWL.restrict(XSD.INTEGER, OWL.minExclusive(5))))) };
+		final OWLAxiom[] axioms = { OWL.classAssertion(_a, _A), OWL.subClassOf(_A, OWL.and(OWL.max(dp, 1), OWL.some(dp, OWL.restrict(XSD.INTEGER, OWL.minExclusive(10))))), OWL.equivalentClasses(_B, OWL.and(OWL.min(dp, 1), OWL.all(dp, OWL.restrict(XSD.INTEGER, OWL.minExclusive(5))))) };
 
 		setupGenerators(Stream.of(axioms));
 
@@ -441,8 +431,7 @@ public abstract class AbstractExplanationTest
 	@Test
 	public void userDefinedDatatype3() throws Exception
 	{
-		final OWLAxiom[] axioms = { OWL.classAssertion(_a, _A), OWL.propertyAssertion(_a, dp, OWL.constant(9)), OWL.equivalentClasses(_B, OWL.and(_A, OWL.some(dp, _dt))),
-				OWL.datatypeDefinition(_dt, OWL.restrict(XSD.INTEGER, OWL.maxExclusive(10))) };
+		final OWLAxiom[] axioms = { OWL.classAssertion(_a, _A), OWL.propertyAssertion(_a, dp, OWL.constant(9)), OWL.equivalentClasses(_B, OWL.and(_A, OWL.some(dp, _dt))), OWL.datatypeDefinition(_dt, OWL.restrict(XSD.INTEGER, OWL.maxExclusive(10))) };
 
 		setupGenerators(Stream.of(axioms));
 
@@ -452,8 +441,7 @@ public abstract class AbstractExplanationTest
 	@Test
 	public void datatypeEnumeration() throws Exception
 	{
-		final OWLAxiom[] axioms = { OWL.propertyAssertion(_a, dp, OWL.constant(1)), OWL.propertyAssertion(_a, dp, OWL.constant(2)), OWL.equivalentClasses(_A, OWL.some(dp, _dt)),
-				OWL.datatypeDefinition(_dt, OWL.oneOf(OWL.constant(1), OWL.constant(2), OWL.constant(3))) };
+		final OWLAxiom[] axioms = { OWL.propertyAssertion(_a, dp, OWL.constant(1)), OWL.propertyAssertion(_a, dp, OWL.constant(2)), OWL.equivalentClasses(_A, OWL.some(dp, _dt)), OWL.datatypeDefinition(_dt, OWL.oneOf(OWL.constant(1), OWL.constant(2), OWL.constant(3))) };
 
 		setupGenerators(Stream.of(axioms));
 
@@ -485,8 +473,7 @@ public abstract class AbstractExplanationTest
 	@Test
 	public void propertyChain2() throws Exception
 	{
-		final OWLAxiom[] axioms = { OWL.subPropertyOf(new OWLObjectProperty[] { _p, _q }, _r), OWL.propertyAssertion(_a, _p, _b), OWL.propertyAssertion(_b, _q, _c),
-				OWL.equivalentClasses(_A, OWL.some(_r, OWL.Thing)) };
+		final OWLAxiom[] axioms = { OWL.subPropertyOf(new OWLObjectProperty[] { _p, _q }, _r), OWL.propertyAssertion(_a, _p, _b), OWL.propertyAssertion(_b, _q, _c), OWL.equivalentClasses(_A, OWL.some(_r, OWL.Thing)) };
 
 		setupGenerators(Stream.of(axioms));
 
@@ -507,8 +494,7 @@ public abstract class AbstractExplanationTest
 	@Test
 	public void multipleDatatypeRange() throws Exception
 	{
-		final OWLAxiom[] axioms = { OWL.range(dp, XSD.BYTE), OWL.range(dp, XSD.NON_POSITIVE_INTEGER), OWL.range(dp, XSD.NON_NEGATIVE_INTEGER), OWL.subClassOf(_A, OWL.min(dp, 1)),
-				OWL.classAssertion(_a, _A) };
+		final OWLAxiom[] axioms = { OWL.range(dp, XSD.BYTE), OWL.range(dp, XSD.NON_POSITIVE_INTEGER), OWL.range(dp, XSD.NON_NEGATIVE_INTEGER), OWL.subClassOf(_A, OWL.min(dp, 1)), OWL.classAssertion(_a, _A) };
 
 		setupGenerators(Stream.of(axioms));
 
@@ -518,8 +504,7 @@ public abstract class AbstractExplanationTest
 	@Test
 	public void subPropertiesOfFunctionalDataProperty() throws Exception
 	{
-		final OWLAxiom[] axioms = { OWL.functional(dp), OWL.subPropertyOf(dq, dp), OWL.subPropertyOf(dr, dp), OWL.propertyAssertion(_a, dq, OWL.constant(1)),
-				OWL.classAssertion(_a, OWL.some(dr, XSD.INTEGER)) };
+		final OWLAxiom[] axioms = { OWL.functional(dp), OWL.subPropertyOf(dq, dp), OWL.subPropertyOf(dr, dp), OWL.propertyAssertion(_a, dq, OWL.constant(1)), OWL.classAssertion(_a, OWL.some(dr, XSD.INTEGER)) };
 
 		setupGenerators(Stream.of(axioms));
 
@@ -608,8 +593,7 @@ public abstract class AbstractExplanationTest
 	{
 		assumeTrue(!_classify);
 
-		final OWLAxiom[] axioms = { OWL.functional(_p), OWL.propertyAssertion(_a, _p, _b), OWL.propertyAssertion(_a, _p, _c), OWL.propertyAssertion(_a, _p, _d), OWL.differentFrom(_b, _c),
-				OWL.differentFrom(_c, _d) };
+		final OWLAxiom[] axioms = { OWL.functional(_p), OWL.propertyAssertion(_a, _p, _b), OWL.propertyAssertion(_a, _p, _c), OWL.propertyAssertion(_a, _p, _d), OWL.differentFrom(_b, _c), OWL.differentFrom(_c, _d) };
 
 		setupGenerators(Stream.of(axioms));
 

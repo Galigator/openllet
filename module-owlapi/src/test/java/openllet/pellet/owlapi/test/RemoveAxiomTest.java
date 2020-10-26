@@ -1,7 +1,5 @@
 package openllet.pellet.owlapi.test;
 
-import openllet.owlapi.OWL;
-import openllet.owlapi.OpenlletReasonerFactory;
 import org.junit.Assert;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
@@ -11,6 +9,9 @@ import org.semanticweb.owlapi.model.OWLObjectInverseOf;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
+
+import openllet.owlapi.OWL;
+import openllet.owlapi.OpenlletReasonerFactory;
 
 public class RemoveAxiomTest
 {

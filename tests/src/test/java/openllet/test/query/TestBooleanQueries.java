@@ -19,6 +19,9 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.junit.Test;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.utils.ATermUtils;
 import openllet.query.sparqldl.engine.QueryEngine;
@@ -29,7 +32,6 @@ import openllet.query.sparqldl.model.QueryImpl;
 import openllet.query.sparqldl.model.QueryResult;
 import openllet.query.sparqldl.model.ResultBinding;
 import openllet.test.AbstractKBTests;
-import org.junit.Test;
 
 /**
  * <p>
@@ -43,8 +45,8 @@ import org.junit.Test;
  */
 public class TestBooleanQueries extends AbstractKBTests
 {
-	private static final ATermAppl	x	= ATermUtils.makeVar("x");
-	private static final ATermAppl	y	= ATermUtils.makeVar("y");
+	private static final ATermAppl x = ATermUtils.makeVar("x");
+	private static final ATermAppl y = ATermUtils.makeVar("y");
 
 	private Query query(final QueryAtom... atoms)
 	{

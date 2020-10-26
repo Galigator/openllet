@@ -11,14 +11,16 @@ import java.util.Set;
 import java.util.stream.Stream;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
-import openllet.core.expressivity.Expressivity;
-import openllet.core.taxonomy.Taxonomy;
-import openllet.core.utils.MultiValueMap;
-import openllet.core.utils.Timers;
+
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
+
+import openllet.core.expressivity.Expressivity;
+import openllet.core.taxonomy.Taxonomy;
+import openllet.core.utils.MultiValueMap;
+import openllet.core.utils.Timers;
 
 /**
  * <p>
@@ -81,8 +83,8 @@ public interface ModuleExtractor
 	Set<OWLAxiom> getAxioms();
 
 	/**
-	 * @param  entity
-	 * @return        the axioms which references this entity
+	 * @param entity
+	 * @return the axioms which references this entity
 	 */
 	Stream<OWLAxiom> axioms(final OWLEntity entity);
 
@@ -99,8 +101,8 @@ public interface ModuleExtractor
 	OWLOntology getModule(final OWLEntity entity);
 
 	/**
-	 * @param  signature
-	 * @return           a new ontology that contains the axioms that are in the module for given set of entities
+	 * @param signature
+	 * @return a new ontology that contains the axioms that are in the module for given set of entities
 	 */
 	OWLOntology getModuleFromSignature(final Set<OWLEntity> signature);
 
@@ -119,18 +121,16 @@ public interface ModuleExtractor
 	/**
 	 * Checks if the changes that has not yet been updated require re-classification
 	 *
-	 * @param  expressivity to check
-	 *
-	 * @return              true if classification is needed, false otherwise
+	 * @param expressivity to check
+	 * @return true if classification is needed, false otherwise
 	 */
 	boolean isClassificationNeeded(final Expressivity expressivity);
 
 	/**
 	 * Update the modules with the changes that have been put into the _queue so far.
 	 *
-	 * @param  taxonomy
-	 *
-	 * @return                               The set of entities whose modules are affected by the changes
+	 * @param taxonomy
+	 * @return The set of entities whose modules are affected by the changes
 	 * @throws UnsupportedOperationException if modules cannot be updated as reported by {@link #canUpdate()} function
 	 */
 	Set<OWLEntity> applyChanges(final Taxonomy<OWLClass> taxonomy) throws UnsupportedOperationException;
@@ -138,16 +138,16 @@ public interface ModuleExtractor
 	/**
 	 * Extract the module for a given set of entities.
 	 *
-	 * @param  signature set of entities
-	 * @return           module for the given signature
+	 * @param signature set of entities
+	 * @return module for the given signature
 	 */
 	Set<OWLAxiom> extractModule(final Set<? extends OWLEntity> signature);
 
 	/**
 	 * Save the _current state of the ModuleExtractor. The output is saved to a ZipOutputStream to allow storage in multiple files in one stream.
 	 *
-	 * @param  outputStream          the zip output stream where the _data should be stored
-	 * @throws IOException           if an I/O error occurs during the saving
+	 * @param outputStream the zip output stream where the _data should be stored
+	 * @throws IOException if an I/O error occurs during the saving
 	 * @throws IllegalStateException if there are outstanding changes that have not yet been applied to the modules (e.g., via updateModules())
 	 */
 	void save(final ZipOutputStream outputStream) throws IOException, IllegalStateException;
@@ -156,8 +156,8 @@ public interface ModuleExtractor
 	 * Restores the previously saved state of the ModuleExtractor from a stream. The input is read from a ZipInputStream because the _data may potentially span
 	 * multiple files. The method assumes that the zip file entries saved by the save() method are the immediately next ones in the stream.
 	 *
-	 * @param  inputStream              the zip input stream from which the _data should be read
-	 * @throws IOException              if an I/O error occurs during the read
+	 * @param inputStream the zip input stream from which the _data should be read
+	 * @throws IOException if an I/O error occurs during the read
 	 * @throws IllegalArgumentException if the next zip file entry in the stream was not saved by a compatible ModuleExtractor
 	 */
 	void load(final ZipInputStream inputStream) throws IOException, IllegalArgumentException;

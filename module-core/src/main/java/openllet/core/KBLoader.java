@@ -9,6 +9,7 @@
 package openllet.core;
 
 import java.util.logging.Logger;
+
 import openllet.core.utils.FileUtils;
 import openllet.shared.tools.Log;
 import openllet.shared.tools.Logging;
@@ -50,9 +51,9 @@ public abstract class KBLoader implements Logging
 	 * Convenience function to {@link #clear() clear}, {@link #parse(String...) parse}, {@link #load() load}, and {@link #getKB()}. Note: this method previously
 	 * accepted a list of regular expressions instead of file URIs. This behavior has been changed as of 2.0.0-rc7.
 	 *
-	 * @param  fileNameList list of file URIs
-	 * @return              KnowledgeBase instance with the given ontologies loaded
-	 * @see                 FileUtils#getFileURIs(String...)
+	 * @param fileNameList list of file URIs
+	 * @return KnowledgeBase instance with the given ontologies loaded
+	 * @see FileUtils#getFileURIs(String...)
 	 */
 	public KnowledgeBase createKB(final String... fileNameList)
 	{
@@ -79,7 +80,7 @@ public abstract class KBLoader implements Logging
 	 * instead of file URIs. This behavior has been changed as of 2.0.0-rc7.
 	 *
 	 * @param fileNames list of file URIs
-	 * @see             FileUtils#getFileURIs(String...)
+	 * @see FileUtils#getFileURIs(String...)
 	 */
 	public void parse(final String... fileNames)
 	{

@@ -7,6 +7,7 @@
 package openllet.core.taxonomy.printer;
 
 import java.io.PrintWriter;
+
 import openllet.core.taxonomy.Taxonomy;
 
 /**
@@ -23,8 +24,8 @@ import openllet.core.taxonomy.Taxonomy;
  * Company: Clark & Parsia, LLC. <http://www.clarkparsia.com>
  * </p>
  *
- * @author     Mike Smith
- * @param  <T> kind of taxon
+ * @author Mike Smith
+ * @param <T> kind of taxon
  */
 public interface TaxonomyPrinter<T>
 {

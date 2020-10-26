@@ -40,7 +40,6 @@ public interface ATermLong extends ATerm
 	 * Gets the long value from this term.
 	 *
 	 * @return the long value from this term.
-	 *
 	 */
 	long getLong();
 }

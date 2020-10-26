@@ -32,6 +32,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.List;
+
 import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
@@ -44,8 +45,8 @@ import openllet.atom.OpenError;
 
 public class Test2
 {
-	private final ATermFactory	_factory;
-	private final String		_srcdir;
+	private final ATermFactory _factory;
+	private final String _srcdir;
 
 	public final static void main(final String[] args) throws IOException
 	{
@@ -63,7 +64,8 @@ public class Test2
 
 	public static void test_assert(final boolean condition)
 	{
-		if (!condition) throw new OpenError("assertion failed.");
+		if (!condition)
+			throw new OpenError("assertion failed.");
 	}
 
 	public void testMakeInt()

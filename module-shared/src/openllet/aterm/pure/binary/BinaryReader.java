@@ -35,6 +35,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
+
 import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermList;
@@ -42,10 +43,8 @@ import openllet.aterm.pure.PureFactory;
 import openllet.atom.OpenError;
 
 /**
- * Reconstructs an ATerm from the given (series of) buffer(s). It can be retrieved when the
- * construction of the term is done / when _isDone() returns true.
- *
- * For example (yes I know this code is crappy, but it's simple):<blockquote>
+ * Reconstructs an ATerm from the given (series of) buffer(s). It can be retrieved when the construction of the term is done / when _isDone() returns true. For
+ * example (yes I know this code is crappy, but it's simple):<blockquote>
  *
  * <pre>
  * ByteBuffer buffer = ByteBuffer.allocate(8192);
@@ -67,34 +66,34 @@ import openllet.atom.OpenError;
  */
 public class BinaryReader
 {
-	private final static int	ISSHAREDFLAG				= 0x00000080;
-	private final static int	TYPEMASK					= 0x0000000f;
+	private final static int ISSHAREDFLAG = 0x00000080;
+	private final static int TYPEMASK = 0x0000000f;
 
-	private final static int	ISFUNSHARED					= 0x00000040;
-	private final static int	APPLQUOTED					= 0x00000020;
+	private final static int ISFUNSHARED = 0x00000040;
+	private final static int APPLQUOTED = 0x00000020;
 
-	private final static int	INITIALSHAREDTERMSARRAYSIZE	= 1024;
+	private final static int INITIALSHAREDTERMSARRAYSIZE = 1024;
 
-	private final static int	STACKSIZE					= 256;
+	private final static int STACKSIZE = 256;
 
-	private final PureFactory	_factory;
+	private final PureFactory _factory;
 
-	private int					_sharedTermIndex;
-	private ATerm[]				_sharedTerms;
-	private final List<AFun>	_applSignatures;
+	private int _sharedTermIndex;
+	private ATerm[] _sharedTerms;
+	private final List<AFun> _applSignatures;
 
-	private ATermConstruct[]	_stack;
-	private int					_stackPosition;
+	private ATermConstruct[] _stack;
+	private int _stackPosition;
 
-	private int					_tempType					= -1;
-	private byte[]				_tempBytes					= null;
-	private int					_tempBytesIndex				= 0;
-	private int					_tempArity					= -1;
-	private boolean				_tempIsQuoted				= false;
+	private int _tempType = -1;
+	private byte[] _tempBytes = null;
+	private int _tempBytesIndex = 0;
+	private int _tempArity = -1;
+	private boolean _tempIsQuoted = false;
 
-	private ByteBuffer			_currentBuffer;
+	private ByteBuffer _currentBuffer;
 
-	private boolean				_isDone						= false;
+	private boolean _isDone = false;
 
 	/**
 	 * Constructor.
@@ -116,8 +115,7 @@ public class BinaryReader
 	}
 
 	/**
-	 * Resizes the openllet.shared.hash terms array when needed. When we're running low on space the capacity
-	 * will be doubled.
+	 * Resizes the openllet.shared.hash terms array when needed. When we're running low on space the capacity will be doubled.
 	 */
 	private void ensureSharedTermsCapacity()
 	{
@@ -131,17 +129,16 @@ public class BinaryReader
 	}
 
 	/**
-	 * Constructs (a part of) the ATerm from the binary representation present in the given buffer.
-	 * This method will 'remember' where it was left.
+	 * Constructs (a part of) the ATerm from the binary representation present in the given buffer. This method will 'remember' where it was left.
 	 *
-	 * @param buffer
-	 *               The buffer that contains (a part of) the binary representation of the ATerm.
+	 * @param buffer The buffer that contains (a part of) the binary representation of the ATerm.
 	 */
 	public void deserialize(final ByteBuffer buffer)
 	{
 		_currentBuffer = buffer;
 
-		if (_tempType != -1) readData();
+		if (_tempType != -1)
+			readData();
 
 		while (buffer.hasRemaining())
 		{
@@ -199,8 +196,7 @@ public class BinaryReader
 	}
 
 	/**
-	 * Resizes the _stack when needed. When we're running low on _stack space the capacity will be
-	 * doubled.
+	 * Resizes the _stack when needed. When we're running low on _stack space the capacity will be doubled.
 	 */
 	private void ensureStackCapacity()
 	{
@@ -224,14 +220,14 @@ public class BinaryReader
 	}
 
 	/**
-	 * Returns the reconstructed ATerm. A RuntimeException will be thrown when we are not yet done
-	 * with the reconstruction of the ATerm.
+	 * Returns the reconstructed ATerm. A RuntimeException will be thrown when we are not yet done with the reconstruction of the ATerm.
 	 *
 	 * @return The reconstructed ATerm.
 	 */
 	public ATerm getRoot()
 	{
-		if (!_isDone) throw new OpenError("Can't retrieve the root of the tree while it's still being constructed.");
+		if (!_isDone)
+			throw new OpenError("Can't retrieve the root of the tree while it's still being constructed.");
 
 		return _sharedTerms[0];
 	}
@@ -247,15 +243,16 @@ public class BinaryReader
 	}
 
 	/**
-	 * Reads a series of bytes from the buffer. When the nessecary amount of bytes is read a term
-	 * of the corresponding type will be constructed and (if possible) linked with it's parent.
+	 * Reads a series of bytes from the buffer. When the nessecary amount of bytes is read a term of the corresponding type will be constructed and (if
+	 * possible) linked with it's parent.
 	 */
 	private void readData()
 	{
 		final int length = _tempBytes.length;
 		int bytesToRead = length - _tempBytesIndex;
 		final int remaining = _currentBuffer.remaining();
-		if (remaining < bytesToRead) bytesToRead = remaining;
+		if (remaining < bytesToRead)
+			bytesToRead = remaining;
 
 		_currentBuffer.get(_tempBytes, _tempBytesIndex, bytesToRead);
 		_tempBytesIndex += bytesToRead;
@@ -280,16 +277,17 @@ public class BinaryReader
 					ac.subTerms = new ATerm[_tempArity];
 				}
 			}
-			else if (_tempType == ATerm.BLOB)
-			{
-				final ATermConstruct ac = _stack[_stackPosition];
-				final ATerm term = _factory.makeBlob(_tempBytes);
-
-				_sharedTerms[ac.termIndex] = term;
-				linkTerm(term);
-			}
 			else
-				throw new OpenError("Unsupported chunkified type: " + _tempType);
+				if (_tempType == ATerm.BLOB)
+				{
+					final ATermConstruct ac = _stack[_stackPosition];
+					final ATerm term = _factory.makeBlob(_tempBytes);
+
+					_sharedTerms[ac.termIndex] = term;
+					linkTerm(term);
+				}
+				else
+					throw new OpenError("Unsupported chunkified type: " + _tempType);
 
 			resetTemp();
 		}
@@ -298,8 +296,7 @@ public class BinaryReader
 	/**
 	 * Starts the deserialization process of a appl.
 	 *
-	 * @param header
-	 *               The header of the appl.
+	 * @param header The header of the appl.
 	 */
 	private void touchAppl(final byte header)
 	{
@@ -426,9 +423,8 @@ public class BinaryReader
 	/**
 	 * Constructs a term from the given structure.
 	 *
-	 * @param  ac
-	 *            A structure that contains all the nessecary data to contruct the associated term.
-	 * @return    The constructed openllet.aterm.
+	 * @param ac A structure that contains all the nessecary data to contruct the associated term.
+	 * @return The constructed openllet.aterm.
 	 */
 	private ATerm buildTerm(final ATermConstruct ac)
 	{
@@ -441,22 +437,24 @@ public class BinaryReader
 			final AFun fun = (AFun) ac.tempTerm;
 			constructedTerm = _factory.makeAppl(fun, subTerms);
 		}
-		else if (type == ATerm.LIST)
-		{
-			ATermList list = _factory.makeList();
-			for (int i = subTerms.length - 1; i >= 0; i--)
-				list = _factory.makeList(subTerms[i], list);
-
-			constructedTerm = list;
-		}
-		else if (type == ATerm.PLACEHOLDER)
-		{
-			final ATerm placeholder = _factory.makePlaceholder(subTerms[0]);
-
-			constructedTerm = placeholder;
-		}
 		else
-			throw new OpenError("Unable to construct term.\n");
+			if (type == ATerm.LIST)
+			{
+				ATermList list = _factory.makeList();
+				for (int i = subTerms.length - 1; i >= 0; i--)
+					list = _factory.makeList(subTerms[i], list);
+
+				constructedTerm = list;
+			}
+			else
+				if (type == ATerm.PLACEHOLDER)
+				{
+					final ATerm placeholder = _factory.makePlaceholder(subTerms[0]);
+
+					constructedTerm = placeholder;
+				}
+				else
+					throw new OpenError("Unable to construct term.\n");
 
 		return constructedTerm;
 	}
@@ -464,8 +462,7 @@ public class BinaryReader
 	/**
 	 * Links the given term with it's parent.
 	 *
-	 * @param aTerm
-	 *              The term that needs to be linked.
+	 * @param aTerm The term that needs to be linked.
 	 */
 	private void linkTerm(final ATerm aTerm)
 	{
@@ -480,7 +477,8 @@ public class BinaryReader
 			{
 				subTerms[parent.subTermIndex++] = term;
 
-				if (parent.subTerms.length != parent.subTermIndex) return;
+				if (parent.subTerms.length != parent.subTermIndex)
+					return;
 			}
 			else
 				throw new OpenError("Encountered a term that didn't fit anywhere. Type: " + term.getType());
@@ -490,18 +488,18 @@ public class BinaryReader
 			_sharedTerms[parent.termIndex] = term;
 		}
 
-		if (_stackPosition == 0) _isDone = true;
+		if (_stackPosition == 0)
+			_isDone = true;
 	}
 
-	private final static int	SEVENBITS	= 0x0000007f;
-	private final static int	SIGNBIT		= 0x00000080;
-	private final static int	BYTEMASK	= 0x000000ff;
-	private final static int	BYTEBITS	= 8;
-	private final static int	LONGBITS	= 8;
+	private final static int SEVENBITS = 0x0000007f;
+	private final static int SIGNBIT = 0x00000080;
+	private final static int BYTEMASK = 0x000000ff;
+	private final static int BYTEBITS = 8;
+	private final static int LONGBITS = 8;
 
 	/**
-	 * Reconstructs an integer from the following 1 to 5 bytes in the buffer (depending on how many
-	 * we used to represent the value). See the documentation of
+	 * Reconstructs an integer from the following 1 to 5 bytes in the buffer (depending on how many we used to represent the value). See the documentation of
 	 * openllet.aterm.binary.BinaryWriter#writeInt(int) for more information.
 	 *
 	 * @return The reconstructed integer.
@@ -511,19 +509,23 @@ public class BinaryReader
 		byte part = _currentBuffer.get();
 		int result = part & SEVENBITS;
 
-		if ((part & SIGNBIT) == 0) return result;
+		if ((part & SIGNBIT) == 0)
+			return result;
 
 		part = _currentBuffer.get();
 		result |= (part & SEVENBITS) << 7;
-		if ((part & SIGNBIT) == 0) return result;
+		if ((part & SIGNBIT) == 0)
+			return result;
 
 		part = _currentBuffer.get();
 		result |= (part & SEVENBITS) << 14;
-		if ((part & SIGNBIT) == 0) return result;
+		if ((part & SIGNBIT) == 0)
+			return result;
 
 		part = _currentBuffer.get();
 		result |= (part & SEVENBITS) << 21;
-		if ((part & SIGNBIT) == 0) return result;
+		if ((part & SIGNBIT) == 0)
+			return result;
 
 		part = _currentBuffer.get();
 		result |= (part & SEVENBITS) << 28;
@@ -557,11 +559,9 @@ public class BinaryReader
 	/**
 	 * Reads the ATerm from the given SAF encoded file.
 	 *
-	 * @param  pureFactory
-	 *                     The factory to use.
-	 * @param  file
-	 *                     The file that contains the SAF encoded term.
-	 * @return             The constructed ATerm.
+	 * @param pureFactory The factory to use.
+	 * @param file The file that contains the SAF encoded term.
+	 * @return The constructed ATerm.
 	 * @throws IOException Thrown when an error occurs while reading the given file.
 	 */
 	public static ATerm readTermFromSAFFile(final PureFactory pureFactory, final File file) throws IOException
@@ -578,7 +578,8 @@ public class BinaryReader
 				// Consume the SAF identification token.
 				byteBuffer.limit(1);
 				int bytesRead = fc.read(byteBuffer);
-				if (bytesRead != 1) throw new IOException("Unable to read SAF identification token.\n");
+				if (bytesRead != 1)
+					throw new IOException("Unable to read SAF identification token.\n");
 
 				do
 				{
@@ -586,22 +587,27 @@ public class BinaryReader
 					bytesRead = fc.read(sizeBuffer);
 					if (bytesRead <= 0)
 						break;
-					else if (bytesRead != 2) throw new IOException("Unable to read block size bytes from file: " + bytesRead + ".\n");
+					else
+						if (bytesRead != 2)
+							throw new IOException("Unable to read block size bytes from file: " + bytesRead + ".\n");
 					sizeBuffer.flip();
 
 					int blockSize = (sizeBuffer.get() & 0x000000ff) + ((sizeBuffer.get() & 0x000000ff) << 8);
-					if (blockSize == 0) blockSize = 65536;
+					if (blockSize == 0)
+						blockSize = 65536;
 
 					byteBuffer.clear();
 					byteBuffer.limit(blockSize);
 					bytesRead = fc.read(byteBuffer);
 					byteBuffer.flip();
-					if (bytesRead != blockSize) throw new IOException("Unable to read bytes from file " + bytesRead + " vs " + blockSize + ".");
+					if (bytesRead != blockSize)
+						throw new IOException("Unable to read bytes from file " + bytesRead + " vs " + blockSize + ".");
 
 					binaryReader.deserialize(byteBuffer);
 				} while (bytesRead > 0);
 
-				if (!binaryReader.isDone()) throw new OpenError("Term incomplete, missing data.\n");
+				if (!binaryReader.isDone())
+					throw new OpenError("Term incomplete, missing data.\n");
 			}
 		}
 
@@ -611,11 +617,9 @@ public class BinaryReader
 	/**
 	 * Reads the ATerm from the given SAF encoded data.
 	 *
-	 * @param  pureFactory
-	 *                     The factory to use.
-	 * @param  data
-	 *                     The SAF encoded data.
-	 * @return             The constructed ATerm.
+	 * @param pureFactory The factory to use.
+	 * @param data The SAF encoded data.
+	 * @return The constructed ATerm.
 	 */
 	public static ATerm readTermFromSAFString(final PureFactory pureFactory, final byte[] data)
 	{
@@ -628,7 +632,8 @@ public class BinaryReader
 
 			int blockSize = data[position++] & 0x000000ff;
 			blockSize += (data[position++] & 0x000000ff) << 8;
-			if (blockSize == 0) blockSize = 65536;
+			if (blockSize == 0)
+				blockSize = 65536;
 
 			final ByteBuffer byteBuffer = ByteBuffer.allocate(blockSize);
 
@@ -639,7 +644,8 @@ public class BinaryReader
 			binaryReader.deserialize(byteBuffer);
 		} while (position < length);
 
-		if (!binaryReader.isDone()) throw new OpenError("Term incomplete, missing data.\n");
+		if (!binaryReader.isDone())
+			throw new OpenError("Term incomplete, missing data.\n");
 
 		return binaryReader.getRoot();
 	}

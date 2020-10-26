@@ -5,8 +5,10 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.math.BigInteger;
-import openllet.core.datatypes.types.real.IntegerInterval;
+
 import org.junit.Test;
+
+import openllet.core.datatypes.types.real.IntegerInterval;
 
 /**
  * <p>

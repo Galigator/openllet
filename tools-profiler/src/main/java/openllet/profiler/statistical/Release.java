@@ -3,6 +3,7 @@ package openllet.profiler.statistical;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
 import openllet.core.utils.VersionInfo;
 
 /**
@@ -13,10 +14,10 @@ import openllet.core.utils.VersionInfo;
 public class Release
 {
 
-	private final String								_version;
-	private final Long									_releaseDate;
+	private final String _version;
+	private final Long _releaseDate;
 
-	private final Map<String, List<ReleaseStatistics>>	_statistics	= new LinkedHashMap<>();
+	private final Map<String, List<ReleaseStatistics>> _statistics = new LinkedHashMap<>();
 
 	public Release(final String version, final Long releaseDate)
 	{

@@ -20,15 +20,15 @@ import java.util.Set;
  * Company: Clark & Parsia, LLC. <http://www.clarkparsia.com>
  * </p>
  *
- * @author     Evren Sirin
- * @param  <T> kind of elements
+ * @author Evren Sirin
+ * @param <T> kind of elements
  */
 @SuppressWarnings("unused")
 public class IdentityHashSet<T> extends AbstractSet<T> implements Set<T>, Cloneable
 {
-	private static final Object						VALUE	= new Object();
+	private static final Object VALUE = new Object();
 
-	private transient IdentityHashMap<T, Object>	_map;
+	private transient IdentityHashMap<T, Object> _map;
 
 	public IdentityHashSet()
 	{

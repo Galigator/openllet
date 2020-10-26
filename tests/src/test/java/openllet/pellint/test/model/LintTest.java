@@ -4,14 +4,15 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
-import openllet.pellint.lintpattern.LintPattern;
-import openllet.pellint.model.Lint;
-import openllet.pellint.test.PellintTestCase;
-import openllet.pellint.test.lintpattern.MockLintPattern;
 import org.junit.Before;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.OWLOntologyChangeException;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+
+import openllet.pellint.lintpattern.LintPattern;
+import openllet.pellint.model.Lint;
+import openllet.pellint.test.PellintTestCase;
+import openllet.pellint.test.lintpattern.MockLintPattern;
 
 /**
  * <p>

@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
-import openllet.core.OpenlletComparisonsChecker;
+
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSet;
 import org.apache.jena.rdf.model.Model;
@@ -29,12 +29,13 @@ import org.apache.jena.rdf.model.ResourceFactory;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
 
+import openllet.core.OpenlletComparisonsChecker;
+
 public final class JenaStatementsChecker extends OpenlletComparisonsChecker
 {
 	protected static boolean isAnonValue(final Object n)
 	{
-		return n instanceof Resource && ((Resource) n).isAnon() || n instanceof Statement && ((Statement) n).getSubject().isAnon()
-				|| n instanceof Statement && isAnonValue(((Statement) n).getObject());
+		return n instanceof Resource && ((Resource) n).isAnon() || n instanceof Statement && ((Statement) n).getSubject().isAnon() || n instanceof Statement && isAnonValue(((Statement) n).getObject());
 	}
 
 	@SuppressWarnings("unused")

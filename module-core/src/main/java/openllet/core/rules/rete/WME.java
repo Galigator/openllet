@@ -7,6 +7,7 @@
 package openllet.core.rules.rete;
 
 import java.util.Arrays;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
 import openllet.core.boxes.abox.Edge;
@@ -38,8 +39,8 @@ public abstract class WME
 
 	private abstract static class AbstractWME extends WME
 	{
-		protected final Individual	_subject;
-		private final DependencySet	_depends;
+		protected final Individual _subject;
+		private final DependencySet _depends;
 
 		public AbstractWME(final Individual subject, final DependencySet depends)
 		{
@@ -126,12 +127,13 @@ public abstract class WME
 
 	public static class EdgeWME extends WME
 	{
-		private final Edge			_edge;
-		private final EdgeDirection	_dir;
+		private final Edge _edge;
+		private final EdgeDirection _dir;
 
 		public EdgeWME(final Edge edge, final EdgeDirection dir)
 		{
-			if (dir == null || dir == EdgeDirection.BOTH) throw new IllegalArgumentException();
+			if (dir == null || dir == EdgeDirection.BOTH)
+				throw new IllegalArgumentException();
 			_edge = edge;
 			_dir = dir;
 		}
@@ -165,8 +167,8 @@ public abstract class WME
 
 	public static class BuiltinWME extends WME
 	{
-		private final Literal[]		_literals;
-		private final DependencySet	_depends;
+		private final Literal[] _literals;
+		private final DependencySet _depends;
 
 		public BuiltinWME(final Literal[] literals, final DependencySet depends)
 		{

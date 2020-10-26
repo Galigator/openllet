@@ -1,6 +1,7 @@
 package openllet.core.datatypes.types.floating;
 
 import javax.xml.bind.DatatypeConverter;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.datatypes.AbstractBaseDatatype;
 import openllet.core.datatypes.Datatype;

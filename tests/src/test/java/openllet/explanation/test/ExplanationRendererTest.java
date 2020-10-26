@@ -11,16 +11,18 @@ package openllet.explanation.test;
 import static org.junit.Assert.assertEquals;
 
 import java.io.StringWriter;
-import openllet.owlapi.OWL;
-import openllet.owlapi.XSD;
-import openllet.owlapi.explanation.io.manchester.ManchesterSyntaxObjectRenderer;
-import openllet.owlapi.explanation.io.manchester.TextBlockWriter;
+
 import org.junit.Test;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
+
+import openllet.owlapi.OWL;
+import openllet.owlapi.XSD;
+import openllet.owlapi.explanation.io.manchester.ManchesterSyntaxObjectRenderer;
+import openllet.owlapi.explanation.io.manchester.TextBlockWriter;
 
 /**
  * <p>
@@ -40,11 +42,11 @@ import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
  */
 public class ExplanationRendererTest
 {
-	private static final OWLClass			_A	= OWL.Class("A");
-	private static final OWLClass			_B	= OWL.Class("B");
-	private static final OWLObjectProperty	_p	= OWL.ObjectProperty("p");
-	private static final OWLObjectProperty	_q	= OWL.ObjectProperty("q");
-	private static final OWLIndividual		_a	= OWL.Individual("a");
+	private static final OWLClass _A = OWL.Class("A");
+	private static final OWLClass _B = OWL.Class("B");
+	private static final OWLObjectProperty _p = OWL.ObjectProperty("p");
+	private static final OWLObjectProperty _q = OWL.ObjectProperty("q");
+	private static final OWLIndividual _a = OWL.Individual("a");
 
 	protected void assertRendering(final String expected, final OWLObject obj)
 	{

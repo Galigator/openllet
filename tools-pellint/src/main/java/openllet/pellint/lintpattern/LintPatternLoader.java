@@ -20,6 +20,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import openllet.pellint.lintpattern.axiom.AxiomLintPattern;
 import openllet.pellint.lintpattern.axiom.EquivalentToAllValuePattern;
 import openllet.pellint.lintpattern.axiom.EquivalentToComplementPattern;
@@ -47,16 +48,14 @@ import openllet.shared.tools.Log;
  */
 public class LintPatternLoader
 {
-	private static final Logger						_logger							= Log.getLogger(LintPatternLoader.class);
+	private static final Logger _logger = Log.getLogger(LintPatternLoader.class);
 
-	public static final List<AxiomLintPattern>		DEFAULT_AXIOM_LINT_PATTERNS		= Arrays.asList(new EquivalentToAllValuePattern(), new EquivalentToMaxCardinalityPattern(),
-			new EquivalentToComplementPattern(), new EquivalentToTopPattern(), new GCIPattern(), new LargeCardinalityPattern(), new LargeDisjunctionPattern());
+	public static final List<AxiomLintPattern> DEFAULT_AXIOM_LINT_PATTERNS = Arrays.asList(new EquivalentToAllValuePattern(), new EquivalentToMaxCardinalityPattern(), new EquivalentToComplementPattern(), new EquivalentToTopPattern(), new GCIPattern(), new LargeCardinalityPattern(), new LargeDisjunctionPattern());
 
-	public static final List<OntologyLintPattern>	DEFAULT_ONTOLOGY_LINT_PATTERNS	= Arrays.asList(new EquivalentAndSubclassAxiomPattern(), new ExistentialExplosionPattern(),
-			new TooManyDifferentIndividualsPattern());
+	public static final List<OntologyLintPattern> DEFAULT_ONTOLOGY_LINT_PATTERNS = Arrays.asList(new EquivalentAndSubclassAxiomPattern(), new ExistentialExplosionPattern(), new TooManyDifferentIndividualsPattern());
 
-	private List<AxiomLintPattern>					_axiomLintPatterns;
-	private List<OntologyLintPattern>				_ontologyLintPatterns;
+	private List<AxiomLintPattern> _axiomLintPatterns;
+	private List<OntologyLintPattern> _ontologyLintPatterns;
 
 	public LintPatternLoader()
 	{
@@ -79,7 +78,9 @@ public class LintPatternLoader
 			for (final LintPattern pattern : patterns)
 				if (pattern instanceof AxiomLintPattern)
 					_axiomLintPatterns.add((AxiomLintPattern) pattern);
-				else if (pattern instanceof OntologyLintPattern) _ontologyLintPatterns.add((OntologyLintPattern) pattern);
+				else
+					if (pattern instanceof OntologyLintPattern)
+						_ontologyLintPatterns.add((OntologyLintPattern) pattern);
 		}
 	}
 
@@ -122,13 +123,15 @@ public class LintPatternLoader
 			if (pattern != null)
 			{
 				patternNames.add(key);
-				if ("on".equalsIgnoreCase(value)) patterns.put(key, pattern);
+				if ("on".equalsIgnoreCase(value))
+					patterns.put(key, pattern);
 			}
-			else if ("on".equalsIgnoreCase(value) || "off".equalsIgnoreCase(value))
-			{
-				patternNames.add(key);
-				_logger.severe("Cannot find and construct pattern " + key);
-			}
+			else
+				if ("on".equalsIgnoreCase(value) || "off".equalsIgnoreCase(value))
+				{
+					patternNames.add(key);
+					_logger.severe("Cannot find and construct pattern " + key);
+				}
 		}
 
 		for (final String patternName : patternNames)
@@ -155,7 +158,8 @@ public class LintPatternLoader
 			}
 
 			final LintPattern pattern = patterns.get(className);
-			if (pattern != null) setParameter(pattern, className, fieldName, value);
+			if (pattern != null)
+				setParameter(pattern, className, fieldName, value);
 		}
 
 		return patterns.values();

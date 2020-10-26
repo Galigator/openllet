@@ -37,6 +37,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
+
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
@@ -72,16 +73,16 @@ public class RBoxImpl implements RBox
 		return _logger;
 	}
 
-	private final Map<ATermAppl, Role>								_roles				= new ConcurrentHashMap<>();
+	private final Map<ATermAppl, Role> _roles = new ConcurrentHashMap<>();
 
-	private final Set<Role>											_reflexiveRoles		= SetUtils.create();
-	private final Map<Role, Map<ATermAppl, Set<Set<ATermAppl>>>>	_domainAssertions	= new ConcurrentHashMap<>();
-	private final Map<Role, Map<ATermAppl, Set<Set<ATermAppl>>>>	_rangeAssertions	= new ConcurrentHashMap<>();
-	private final FSMBuilder										_fsmBuilder;
+	private final Set<Role> _reflexiveRoles = SetUtils.create();
+	private final Map<Role, Map<ATermAppl, Set<Set<ATermAppl>>>> _domainAssertions = new ConcurrentHashMap<>();
+	private final Map<Role, Map<ATermAppl, Set<Set<ATermAppl>>>> _rangeAssertions = new ConcurrentHashMap<>();
+	private final FSMBuilder _fsmBuilder;
 
-	private volatile Taxonomy<ATermAppl>							_objectTaxonomy;
-	private volatile Taxonomy<ATermAppl>							_dataTaxonomy;
-	private volatile Taxonomy<ATermAppl>							_annotationTaxonomy;
+	private volatile Taxonomy<ATermAppl> _objectTaxonomy;
+	private volatile Taxonomy<ATermAppl> _dataTaxonomy;
+	private volatile Taxonomy<ATermAppl> _annotationTaxonomy;
 
 	@Override
 	public Taxonomy<ATermAppl> getObjectTaxonomy()
@@ -123,7 +124,8 @@ public class RBoxImpl implements RBox
 		if (_annotationTaxonomy == null)
 		{
 			final RoleTaxonomyBuilder builder = new RoleTaxonomyBuilder(this, PropertyType.ANNOTATION);
-			if (OpenlletOptions.USE_ANNOTATION_SUPPORT) _annotationTaxonomy = builder.classify();
+			if (OpenlletOptions.USE_ANNOTATION_SUPPORT)
+				_annotationTaxonomy = builder.classify();
 		}
 		return _annotationTaxonomy;
 	}
@@ -201,13 +203,13 @@ public class RBoxImpl implements RBox
 	public Iterator<ATermAppl> getAssertedDomains(final Role r)
 	{
 		final Map<ATermAppl, Set<Set<ATermAppl>>> domains = getDomainAssertions().get(r);
-		return domains == null ? IteratorUtils.<ATermAppl>emptyIterator() : new ValueIterator(new DomainRangeIterator(domains, r, true));
+		return domains == null ? IteratorUtils.<ATermAppl> emptyIterator() : new ValueIterator(new DomainRangeIterator(domains, r, true));
 	}
 
 	private static class DomainRangeIterator extends FilterIterator<Map.Entry<ATermAppl, Set<Set<ATermAppl>>>>
 	{
-		private final ATermAppl	_p;
-		private final boolean	_isDomain;
+		private final ATermAppl _p;
+		private final boolean _isDomain;
 
 		public DomainRangeIterator(final Map<ATermAppl, Set<Set<ATermAppl>>> map, final Role role, final boolean isDomain)
 		{
@@ -230,7 +232,7 @@ public class RBoxImpl implements RBox
 	public Iterator<ATermAppl> getAssertedRanges(final Role r)
 	{
 		final Map<ATermAppl, Set<Set<ATermAppl>>> ranges = getRangeAssertions().get(r);
-		return ranges == null ? IteratorUtils.<ATermAppl>emptyIterator() : new ValueIterator(new DomainRangeIterator(ranges, r, false));
+		return ranges == null ? IteratorUtils.<ATermAppl> emptyIterator() : new ValueIterator(new DomainRangeIterator(ranges, r, false));
 	}
 
 	public RBoxImpl()
@@ -256,7 +258,8 @@ public class RBoxImpl implements RBox
 	@Override
 	public void propogateDomain(final Role role, final Map<ATermAppl, Set<Set<ATermAppl>>> domains)
 	{
-		if (domains == null || domains.isEmpty()) return;
+		if (domains == null || domains.isEmpty())
+			return;
 		for (final Map.Entry<ATermAppl, Set<Set<ATermAppl>>> e : domains.entrySet())
 		{
 			final Set<ATermAppl> explanation = e.getValue().iterator().next();
@@ -276,7 +279,8 @@ public class RBoxImpl implements RBox
 	@Override
 	public void propogateRange(final Role role, final Map<ATermAppl, Set<Set<ATermAppl>>> ranges)
 	{
-		if (ranges == null || ranges.isEmpty()) return;
+		if (ranges == null || ranges.isEmpty())
+			return;
 		for (final Map.Entry<ATermAppl, Set<Set<ATermAppl>>> e : ranges.entrySet())
 		{
 			final Set<ATermAppl> explanation = e.getValue().iterator().next();
@@ -305,7 +309,9 @@ public class RBoxImpl implements RBox
 				final Role subR = invSubR.getInverse();
 				if (subR == null)
 					_logger.fine(() -> "Property " + invSubR + " was supposed to be an ObjectProperty but it is not!");
-				else if (subR != r) subs.put(subR.getName(), invR.getExplainSub(invSubR.getName()));
+				else
+					if (subR != r)
+						subs.put(subR.getName(), invR.getExplainSub(invSubR.getName()));
 			}
 			for (final ATermList roleChain : invR.getSubRoleChains())
 				subs.put(inverse(roleChain), invR.getExplainSub(roleChain));
@@ -322,7 +328,8 @@ public class RBoxImpl implements RBox
 	public void computeSubRoles(final Role r, final Set<Role> subRoles, final Set<ATermList> subRoleChains, final Map<ATerm, DependencySet> dependencies, final DependencySet ds)
 	{
 		// check for loops
-		if (subRoles.contains(r)) return;
+		if (subRoles.contains(r))
+			return;
 
 		// reflexive
 		subRoles.add(r);

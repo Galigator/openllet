@@ -49,15 +49,15 @@ import java.util.List;
  */
 public class TableData
 {
-	private final Collection<Object>	_data			= new ArrayList<>();
+	private final Collection<Object> _data = new ArrayList<>();
 
-	private final List<?>				_colNames;
+	private final List<?> _colNames;
 
-	private boolean[]					_rightAligned;
+	private boolean[] _rightAligned;
 
-	private int							_colWidths[]	= null;
+	private int _colWidths[] = null;
 
-	static private final String			_colSep			= " | ";
+	static private final String _colSep = " | ";
 
 	public TableData(final Collection<Object> data, final List<?> colNames)
 	{
@@ -87,7 +87,8 @@ public class TableData
 
 	public void setAlignment(final boolean[] rightAligned)
 	{
-		if (rightAligned.length != _colNames.size()) throw new IllegalArgumentException("Alignment has " + rightAligned.length + " elements but table has " + _colNames.size() + " columns");
+		if (rightAligned.length != _colNames.size())
+			throw new IllegalArgumentException("Alignment has " + rightAligned.length + " elements but table has " + _colNames.size() + " columns");
 
 		_rightAligned = rightAligned;
 	}
@@ -98,8 +99,8 @@ public class TableData
 	}
 
 	/**
-	 * @param      row
-	 * @deprecated     Use {@link #add(List)} instead
+	 * @param row
+	 * @deprecated Use {@link #add(List)} instead
 	 */
 	@Deprecated
 	public void addRow(final List<?> row)
@@ -109,7 +110,8 @@ public class TableData
 
 	public void add(final List<?> row)
 	{
-		if (row.size() != _colNames.size()) throw new IllegalArgumentException("Row has " + row.size() + " elements but table has " + _colNames.size() + " columns");
+		if (row.size() != _colNames.size())
+			throw new IllegalArgumentException("Row has " + row.size() + " elements but table has " + _colNames.size() + " columns");
 
 		_data.add(row);
 	}
@@ -172,14 +174,17 @@ public class TableData
 			final int pad = _colWidths[col];
 			final StringBuffer sbuff = new StringBuffer(120);
 
-			if (col > 0) sbuff.append(_colSep);
+			if (col > 0)
+				sbuff.append(_colSep);
 
-			if (!_rightAligned[col]) sbuff.append(s);
+			if (!_rightAligned[col])
+				sbuff.append(s);
 
 			for (int j = 0; j < pad - s.length(); j++)
 				sbuff.append(' ');
 
-			if (_rightAligned[col]) sbuff.append(s);
+			if (_rightAligned[col])
+				sbuff.append(s);
 
 			pw.print(sbuff);
 		}
@@ -221,7 +226,8 @@ public class TableData
 				final Object value = j.next();
 				final String str = value == null ? "<null>" : value.toString();
 
-				if (_colWidths[col] < str.length()) _colWidths[col] = str.length();
+				if (_colWidths[col] < str.length())
+					_colWidths[col] = str.length();
 			}
 		}
 	}

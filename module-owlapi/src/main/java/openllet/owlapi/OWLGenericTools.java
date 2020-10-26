@@ -8,8 +8,7 @@ import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import openllet.atom.OpenError;
-import openllet.shared.tools.Log;
+
 import org.semanticweb.owlapi.io.StringDocumentSource;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;
@@ -20,6 +19,9 @@ import org.semanticweb.owlapi.model.OWLOntologyID;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
+import openllet.atom.OpenError;
+import openllet.shared.tools.Log;
+
 /**
  * The main difference between OWLTools and OWLGenericTools is the usage of static resources by OWLTools.
  *
@@ -27,23 +29,23 @@ import org.semanticweb.owlapi.reasoner.OWLReasoner;
  */
 public class OWLGenericTools implements OWLHelper
 {
-	private static final Logger							_logger				= Log.getLogger(OWLGenericTools.class);
+	private static final Logger _logger = Log.getLogger(OWLGenericTools.class);
 
 	/**
 	 * Ontology denote the current ontology. So it can change in version of environment.
 	 *
 	 * @since 2.5.1
 	 */
-	protected volatile OWLOntology						_ontology;
+	protected volatile OWLOntology _ontology;
 
 	//	protected final OWLOntologyManager _manager;
 
-	protected final OWLGroup							_group;
-	private volatile Function<OWLOntology, OWLReasoner>	_reasonerFactory	= OpenlletReasonerFactory.getInstance()::createReasoner;
+	protected final OWLGroup _group;
+	private volatile Function<OWLOntology, OWLReasoner> _reasonerFactory = OpenlletReasonerFactory.getInstance()::createReasoner;
 
-	protected boolean									_isVolatile			= true;
+	protected boolean _isVolatile = true;
 
-	private Optional<OWLReasoner>						_reasoner			= Optional.empty();
+	private Optional<OWLReasoner> _reasoner = Optional.empty();
 
 	@Override
 	public Logger getLogger()
@@ -84,18 +86,19 @@ public class OWLGenericTools implements OWLHelper
 	@Override
 	public OWLReasoner getReasoner()
 	{
-		if (!_reasoner.isPresent()) try
-		{
+		if (!_reasoner.isPresent())
+			try
+			{
 
-			final OWLReasoner reasoner = _reasonerFactory.apply(getOntology());
-			reasoner.isConsistent();
-			_reasoner = Optional.of(reasoner);
-		}
-		catch (final Exception e)
-		{
-			Log.error(_logger, e);
-			throw new OpenError(e);
-		}
+				final OWLReasoner reasoner = _reasonerFactory.apply(getOntology());
+				reasoner.isConsistent();
+				_reasoner = Optional.of(reasoner);
+			}
+			catch (final Exception e)
+			{
+				Log.error(_logger, e);
+				throw new OpenError(e);
+			}
 
 		_reasoner.get().flush();
 		return _reasoner.get();
@@ -110,21 +113,24 @@ public class OWLGenericTools implements OWLHelper
 	/**
 	 * Load the ontology ontologyId into the good manager or create it if it doesn't previously exist.
 	 *
-	 * @param  group                        of managers.
-	 * @param  ontologyID                   is the reference to the ontology
+	 * @param group of managers.
+	 * @param ontologyID is the reference to the ontology
 	 * @throws OWLOntologyCreationException is raise when things goes baddly wrong.
-	 * @since                               2.5.1
+	 * @since 2.5.1
 	 */
 	public OWLGenericTools(final OWLGroup group, final OWLOntologyID ontologyID) throws OWLOntologyCreationException
 	{
 		if (ontologyID.getOntologyIRI().toString().indexOf(' ') != -1)
 			throw new OWLOntologyCreationException("Illegal character ' ' in name on [" + ontologyID.getOntologyIRI() + "]");
-		else if (ontologyID.getVersionIRI() != null && ontologyID.getVersionIRI().toString().indexOf(' ') != -1)
-			throw new OWLOntologyCreationException("Illegal character ' ' in version on [" + ontologyID.getVersionIRI() + "]");
+		else
+			if (ontologyID.getVersionIRI() != null && ontologyID.getVersionIRI().toString().indexOf(' ') != -1)
+				throw new OWLOntologyCreationException("Illegal character ' ' in version on [" + ontologyID.getVersionIRI() + "]");
 		_group = group;
 
 		// Maybe already in a manager.
-		if (group.getOntologiesDirectory().isPresent()) if (group.havePersistentManager()) _ontology = OWLGroup.getOntology(group.getPersistentManager(), ontologyID).orElse(null);
+		if (group.getOntologiesDirectory().isPresent())
+			if (group.havePersistentManager())
+				_ontology = OWLGroup.getOntology(group.getPersistentManager(), ontologyID).orElse(null);
 
 		OWLOntologyManager manager;
 		if (_ontology != null)
@@ -139,14 +145,15 @@ public class OWLGenericTools implements OWLHelper
 				// Maybe we should load it.
 				manager = group.getOntologiesDirectory().isPresent() ? group.getPersistentManager() : group.getVolatileManager();
 				final File file = new File(group.ontology2filename(ontologyID));
-				if (file.exists()) try
-				{
-					_ontology = manager.loadOntologyFromOntologyDocument(file);
-				}
-				catch (final Exception e)
-				{
-					_logger.log(Level.INFO, "Ontology " + ontologyID + " couldn't be load", e);
-				}
+				if (file.exists())
+					try
+					{
+						_ontology = manager.loadOntologyFromOntologyDocument(file);
+					}
+					catch (final Exception e)
+					{
+						_logger.log(Level.INFO, "Ontology " + ontologyID + " couldn't be load", e);
+					}
 				if (_ontology == null) // Maybe we should create it.
 				{
 					_logger.log(Level.FINE, "Ontology " + ontologyID + " will be create now");
@@ -157,10 +164,11 @@ public class OWLGenericTools implements OWLHelper
 
 		if (group.haveVolatileManager() && !group.havePersistentManager())
 			_isVolatile = true;
-		else if (!group.haveVolatileManager() && group.havePersistentManager())
-			_isVolatile = false;
 		else
-			_isVolatile = manager == group.getVolatileManager();
+			if (!group.haveVolatileManager() && group.havePersistentManager())
+				_isVolatile = false;
+			else
+				_isVolatile = manager == group.getVolatileManager();
 		OWLHelper.setFormat(_ontology);
 	}
 
@@ -168,8 +176,9 @@ public class OWLGenericTools implements OWLHelper
 	{
 		if (ontologyID.getOntologyIRI().toString().indexOf(' ') != -1)
 			throw new OWLOntologyCreationException("Illegal character ' ' in name on [" + ontologyID.getOntologyIRI() + "]");
-		else if (ontologyID.getVersionIRI() != null && ontologyID.getVersionIRI().toString().indexOf(' ') != -1)
-			throw new OWLOntologyCreationException("Illegal character ' ' in version on [" + ontologyID.getVersionIRI() + "]");
+		else
+			if (ontologyID.getVersionIRI() != null && ontologyID.getVersionIRI().toString().indexOf(' ') != -1)
+				throw new OWLOntologyCreationException("Illegal character ' ' in version on [" + ontologyID.getVersionIRI() + "]");
 
 		_group = group;
 		_isVolatile = isVolatile;
@@ -180,14 +189,15 @@ public class OWLGenericTools implements OWLHelper
 		if (_ontology == null && !_isVolatile)
 		{
 			final File file = new File(group.ontology2filename(ontologyID));
-			if (file.exists()) try
-			{
-				_ontology = manager.loadOntologyFromOntologyDocument(file);
-			}
-			catch (final Exception e)
-			{
-				_logger.log(Level.INFO, "Ontology " + ontologyID + " couldn't be load", e);
-			}
+			if (file.exists())
+				try
+				{
+					_ontology = manager.loadOntologyFromOntologyDocument(file);
+				}
+				catch (final Exception e)
+				{
+					_logger.log(Level.INFO, "Ontology " + ontologyID + " couldn't be load", e);
+				}
 		}
 
 		if (_ontology == null)
@@ -254,7 +264,8 @@ public class OWLGenericTools implements OWLHelper
 	{
 		_group = group;
 		_ontology = ontology;
-		if (!namespaces.isEmpty()) getNamespaces().ifPresent(space -> namespaces.forEach(space::setPrefix));
+		if (!namespaces.isEmpty())
+			getNamespaces().ifPresent(space -> namespaces.forEach(space::setPrefix));
 		_isVolatile = manager == group.getVolatileManager();
 		OWLHelper.setFormat(_ontology);
 		group.check(getManager());

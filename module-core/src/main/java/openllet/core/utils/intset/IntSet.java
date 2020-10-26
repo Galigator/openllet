@@ -26,7 +26,7 @@ public interface IntSet
 	/**
 	 * Adds a new integer to this set.
 	 *
-	 * @param  value                    integer value to be added
+	 * @param value integer value to be added
 	 * @throws IllegalArgumentException if the value is not supported by this set implementation
 	 */
 	void add(int value) throws IllegalArgumentException;
@@ -34,7 +34,7 @@ public interface IntSet
 	/**
 	 * Adds all the integers from another set to this set.
 	 *
-	 * @param  other                    the set whose elements will be added
+	 * @param other the set whose elements will be added
 	 * @throws IllegalArgumentException if any of the values in the other set is not supported by this set implementation
 	 */
 	void addAll(IntSet other);
@@ -42,8 +42,8 @@ public interface IntSet
 	/**
 	 * Checks if the given integer value is in this set.
 	 *
-	 * @param  value the integer value being checked
-	 * @return       <code>true</code> if the value is in this set
+	 * @param value the integer value being checked
+	 * @return <code>true</code> if the value is in this set
 	 */
 	boolean contains(int value);
 
@@ -71,7 +71,7 @@ public interface IntSet
 	/**
 	 * Returns the maximum integer in this set.
 	 *
-	 * @return                        the maximum integer in this set
+	 * @return the maximum integer in this set
 	 * @throws NoSuchElementException if the set is empty
 	 */
 	int max() throws NoSuchElementException;
@@ -79,7 +79,7 @@ public interface IntSet
 	/**
 	 * Returns the minimum integer in this set.
 	 *
-	 * @return                        the minimum integer in this set
+	 * @return the minimum integer in this set
 	 * @throws NoSuchElementException if the set is empty
 	 */
 	int min();
@@ -94,8 +94,8 @@ public interface IntSet
 	/**
 	 * Creates a new IntSet that is the union of this set and the given set. Neither of the sets are changed by this operation.
 	 *
-	 * @param  set the other set that will be included in the union result
-	 * @return     a new IntSet instance that is the union of two sets
+	 * @param set the other set that will be included in the union result
+	 * @return a new IntSet instance that is the union of two sets
 	 */
 	IntSet union(IntSet set);
 

@@ -14,81 +14,82 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import openllet.shared.tools.Log;
 
 /**
  * Graph with and/or _nodes designed to compute reachability
  *
- * @author     Evren Sirin
- * @param  <E>
+ * @author Evren Sirin
+ * @param <E>
  */
 public class ReachabilityGraph<E>
 {
-	public static final Logger			_logger			= Log.getLogger(ReachabilityGraph.class);
+	public static final Logger _logger = Log.getLogger(ReachabilityGraph.class);
 
-	private final Map<E, EntityNode<E>>	_entityNodes	= new ConcurrentHashMap<>();
+	private final Map<E, EntityNode<E>> _entityNodes = new ConcurrentHashMap<>();
 
-	private int							_id				= 0;
+	private int _id = 0;
 
-	private final Node					_startNode		= new Node()																		// FIXME TODO : We need to add a strong type system for the class Node
-														{
-															@Override
-															public boolean inputActivated()
-															{
-																return false;
-															}
+	private final Node _startNode = new Node() // FIXME TODO : We need to add a strong type system for the class Node
+	{
+		@Override
+		public boolean inputActivated()
+		{
+			return false;
+		}
 
-															@Override
-															public boolean isActive()
-															{
-																return true;
-															}
+		@Override
+		public boolean isActive()
+		{
+			return true;
+		}
 
-															@Override
-															public void reset()
-															{
-																// Nothing to do.
-															}
+		@Override
+		public void reset()
+		{
+			// Nothing to do.
+		}
 
-															@Override
-															public String toString()
-															{
-																return "START";
-															}
-														};
+		@Override
+		public String toString()
+		{
+			return "START";
+		}
+	};
 
-	private final Node					nullNode		= new Node()
-														{
-															@Override
-															public boolean inputActivated()
-															{
-																throw new IllegalStateException("NULL node cannot have inputs");
-															}
+	private final Node nullNode = new Node()
+	{
+		@Override
+		public boolean inputActivated()
+		{
+			throw new IllegalStateException("NULL node cannot have inputs");
+		}
 
-															@Override
-															public void addOutput(final Node output)
-															{
-																// do not add the output because null node can never be activated
-															}
+		@Override
+		public void addOutput(final Node output)
+		{
+			// do not add the output because null node can never be activated
+		}
 
-															@Override
-															public boolean isActive()
-															{
-																return false;
-															}
+		@Override
+		public boolean isActive()
+		{
+			return false;
+		}
 
-															@Override
-															public void reset()
-															{
-																// Nothing to do.
-															}
+		@Override
+		public void reset()
+		{
+			// Nothing to do.
+		}
 
-															@Override
-															public String toString()
-															{
-																return "NULL";
-															}
-														};
+		@Override
+		public String toString()
+		{
+			return "NULL";
+		}
+	};
 
 	public ReachabilityGraph()
 	{
@@ -96,9 +97,11 @@ public class ReachabilityGraph<E>
 
 	public Node createAndNode(final Set<Node> inputs)
 	{
-		if (inputs.isEmpty()) throw new IllegalArgumentException();
+		if (inputs.isEmpty())
+			throw new IllegalArgumentException();
 
-		if (inputs.contains(getNullNode())) return getNullNode();
+		if (inputs.contains(getNullNode()))
+			return getNullNode();
 
 		inputs.remove(getStartNode());
 
@@ -106,7 +109,9 @@ public class ReachabilityGraph<E>
 
 		if (size == 0)
 			return getStartNode();
-		else if (size == 1) return inputs.iterator().next();
+		else
+			if (size == 1)
+				return inputs.iterator().next();
 
 		final AndNode andNode = new AndNode(_id++);
 		for (final Node input : inputs)
@@ -130,9 +135,11 @@ public class ReachabilityGraph<E>
 
 	public Node createOrNode(final Set<Node> inputs)
 	{
-		if (inputs.isEmpty()) throw new IllegalArgumentException();
+		if (inputs.isEmpty())
+			throw new IllegalArgumentException();
 
-		if (inputs.contains(getStartNode())) return getStartNode();
+		if (inputs.contains(getStartNode()))
+			return getStartNode();
 
 		inputs.remove(getNullNode());
 
@@ -140,7 +147,9 @@ public class ReachabilityGraph<E>
 
 		if (size == 0)
 			return getNullNode();
-		else if (size == 1) return inputs.iterator().next();
+		else
+			if (size == 1)
+				return inputs.iterator().next();
 
 		final OrNode orNode = new OrNode(_id++);
 		for (final Node input : inputs)
@@ -187,9 +196,11 @@ public class ReachabilityGraph<E>
 		final List<Set<EntityNode<E>>> components = SCC.computeSCC(this);
 		for (final Set<EntityNode<E>> component : components)
 		{
-			if (component.size() == 1) continue;
+			if (component.size() == 1)
+				continue;
 
-			if (_logger.isLoggable(Level.FINER)) _logger.finer("Merging " + component);
+			if (_logger.isLoggable(Level.FINER))
+				_logger.finer("Merging " + component);
 
 			final Iterator<EntityNode<E>> i = component.iterator();
 			final EntityNode<E> rep = i.next();
@@ -214,7 +225,8 @@ public class ReachabilityGraph<E>
 			}
 		}
 
-		if (_logger.isLoggable(Level.FINE)) _logger.fine("Merged " + count + " nodes");
+		if (_logger.isLoggable(Level.FINE))
+			_logger.fine("Merged " + count + " nodes");
 	}
 
 	private void removeRedundancies()
@@ -233,13 +245,15 @@ public class ReachabilityGraph<E>
 						out.remove();
 						removedNode++;
 					}
-					else if (out instanceof AndNode && out.hasOutput(node))
-					{
-						out.removeOutput(node);
-						removedEdge++;
-					}
+					else
+						if (out instanceof AndNode && out.hasOutput(node))
+						{
+							out.removeOutput(node);
+							removedEdge++;
+						}
 
-			if (_logger.isLoggable(Level.FINE)) _logger.fine("Removed " + removedNode + " nodes and " + removedEdge + " edges");
+			if (_logger.isLoggable(Level.FINE))
+				_logger.fine("Removed " + removedNode + " nodes and " + removedEdge + " edges");
 		}
 	}
 }

@@ -41,7 +41,6 @@ public interface ATermReal extends ATerm
 	 * Gets the real value from this term as a double.
 	 *
 	 * @return the real value from this term.
-	 *
 	 */
 	double getReal();
 }

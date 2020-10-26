@@ -27,8 +27,8 @@ import openllet.core.utils.Namespaces;
 public class XSDString extends AbstractBaseDatatype<ATermAppl>
 {
 
-	private static final XSDString			instance			= new XSDString();
-	private static final RDFPlainLiteral	RDF_PLAIN_LITERAL	= RDFPlainLiteral.getInstance();
+	private static final XSDString instance = new XSDString();
+	private static final RDFPlainLiteral RDF_PLAIN_LITERAL = RDFPlainLiteral.getInstance();
 
 	static
 	{

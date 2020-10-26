@@ -2,11 +2,7 @@ package openllet.test.query;
 
 import java.io.IOException;
 import java.io.InputStream;
-import openllet.core.OpenlletOptions;
-import openllet.jena.PelletReasonerFactory;
-import openllet.jena.test.ResourceImportLoader;
-import openllet.query.sparqldl.jena.SparqlDLExecutionFactory;
-import openllet.query.sparqldl.jena.SparqlDLExecutionFactory.QueryEngineType;
+
 import org.apache.jena.ontology.OntDocumentManager;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.query.DatasetFactory;
@@ -18,6 +14,12 @@ import org.apache.jena.rdf.model.ModelFactory;
 import org.junit.Assert;
 import org.junit.Test;
 
+import openllet.core.OpenlletOptions;
+import openllet.jena.PelletReasonerFactory;
+import openllet.jena.test.ResourceImportLoader;
+import openllet.query.sparqldl.jena.SparqlDLExecutionFactory;
+import openllet.query.sparqldl.jena.SparqlDLExecutionFactory.QueryEngineType;
+
 /**
  * @author Pavel Klinov
  */
@@ -27,8 +29,7 @@ public class MiscSPARQLDLTest
 	@Test
 	public void testWineNonDistinguished() throws IOException
 	{
-		final String query = "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n" + "PREFIX food: <http://www.w3.org/2001/sw/WebOnt/guide-src/food#> \n"
-				+ "PREFIX wine: <http://www.w3.org/2001/sw/WebOnt/guide-src/wine#> \n" +
+		final String query = "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n" + "PREFIX food: <http://www.w3.org/2001/sw/WebOnt/guide-src/food#> \n" + "PREFIX wine: <http://www.w3.org/2001/sw/WebOnt/guide-src/wine#> \n" +
 
 				"SELECT ?Meal ?WineColor \n" + "WHERE {\n " + "?Meal rdf:type food:MealCourse . \n" + "?Meal food:hasDrink _:Wine . \n" + "_:Wine wine:hasColor ?WineColor }";
 		//String ontologyFile = "/test/data/misc/food2.owl";

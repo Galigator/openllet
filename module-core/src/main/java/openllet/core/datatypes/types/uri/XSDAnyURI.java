@@ -2,6 +2,7 @@ package openllet.core.datatypes.types.uri;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.datatypes.AbstractBaseDatatype;
 import openllet.core.datatypes.Datatype;
@@ -29,8 +30,8 @@ import openllet.core.utils.Namespaces;
 public class XSDAnyURI extends AbstractBaseDatatype<ATermAppl>
 {
 
-	private static final XSDAnyURI	instance;
-	public static final ATermAppl	NAME;
+	private static final XSDAnyURI instance;
+	public static final ATermAppl NAME;
 
 	static
 	{

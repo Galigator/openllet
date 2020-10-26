@@ -45,8 +45,8 @@ import openllet.core.utils.Namespaces;
  */
 public abstract class ATermBaseVisitor implements ATermVisitor
 {
-	public static final ATermAppl	OWL_THING	= ATermUtils.makeTermAppl(Namespaces.OWL + "Thing");
-	public static final ATermAppl	OWL_NOTHING	= ATermUtils.makeTermAppl(Namespaces.OWL + "Nothing");
+	public static final ATermAppl OWL_THING = ATermUtils.makeTermAppl(Namespaces.OWL + "Thing");
+	public static final ATermAppl OWL_NOTHING = ATermUtils.makeTermAppl(Namespaces.OWL + "Nothing");
 
 	@Override
 	public void visit(final ATermAppl term)
@@ -55,50 +55,66 @@ public abstract class ATermBaseVisitor implements ATermVisitor
 
 		if (term.equals(ATermUtils.TOP))
 			visitTerm(OWL_THING);
-		else if (term.equals(ATermUtils.BOTTOM))
-			visitTerm(OWL_NOTHING);
-		else if (af.getArity() == 0)
-			visitTerm(term);
-		else if (af.equals(ATermUtils.BNODE_FUN))
-			visitTerm(term);
-		else if (af.equals(ATermUtils.ANDFUN))
-			visitAnd(term);
-		else if (af.equals(ATermUtils.ORFUN))
-		{
-			if (ATermUtils.isOneOf(term))
-				visitOneOf(term);
-			else
-				visitOr(term);
-		}
-		else if (af.equals(ATermUtils.NOTFUN))
-			visitNot(term);
-		else if (af.equals(ATermUtils.ALLFUN))
-			visitAll(term);
-		else if (af.equals(ATermUtils.SOMEFUN))
-		{
-			if (ATermUtils.isHasValue(term))
-				visitHasValue(term);
-			else
-				visitSome(term);
-		}
-		else if (af.equals(ATermUtils.MINFUN))
-			visitMin(term);
-		else if (af.equals(ATermUtils.MAXFUN))
-			visitMax(term);
-		else if (af.equals(ATermUtils.CARDFUN))
-			visitCard(term);
-		else if (af.equals(ATermUtils.VALUEFUN))
-			visitValue(term);
-		else if (af.equals(ATermUtils.LITFUN))
-			visitLiteral(term);
-		else if (af.equals(ATermUtils.SELFFUN))
-			visitSelf(term);
-		else if (af.equals(ATermUtils.INVFUN))
-			visitInverse(term);
-		else if (af.equals(ATermUtils.RESTRDATATYPEFUN))
-			visitRestrictedDatatype(term);
 		else
-			throw new InternalReasonerException("Invalid term " + term);
+			if (term.equals(ATermUtils.BOTTOM))
+				visitTerm(OWL_NOTHING);
+			else
+				if (af.getArity() == 0)
+					visitTerm(term);
+				else
+					if (af.equals(ATermUtils.BNODE_FUN))
+						visitTerm(term);
+					else
+						if (af.equals(ATermUtils.ANDFUN))
+							visitAnd(term);
+						else
+							if (af.equals(ATermUtils.ORFUN))
+							{
+								if (ATermUtils.isOneOf(term))
+									visitOneOf(term);
+								else
+									visitOr(term);
+							}
+							else
+								if (af.equals(ATermUtils.NOTFUN))
+									visitNot(term);
+								else
+									if (af.equals(ATermUtils.ALLFUN))
+										visitAll(term);
+									else
+										if (af.equals(ATermUtils.SOMEFUN))
+										{
+											if (ATermUtils.isHasValue(term))
+												visitHasValue(term);
+											else
+												visitSome(term);
+										}
+										else
+											if (af.equals(ATermUtils.MINFUN))
+												visitMin(term);
+											else
+												if (af.equals(ATermUtils.MAXFUN))
+													visitMax(term);
+												else
+													if (af.equals(ATermUtils.CARDFUN))
+														visitCard(term);
+													else
+														if (af.equals(ATermUtils.VALUEFUN))
+															visitValue(term);
+														else
+															if (af.equals(ATermUtils.LITFUN))
+																visitLiteral(term);
+															else
+																if (af.equals(ATermUtils.SELFFUN))
+																	visitSelf(term);
+																else
+																	if (af.equals(ATermUtils.INVFUN))
+																		visitInverse(term);
+																	else
+																		if (af.equals(ATermUtils.RESTRDATATYPEFUN))
+																			visitRestrictedDatatype(term);
+																		else
+																			throw new InternalReasonerException("Invalid term " + term);
 	}
 
 	/* (non-Javadoc)

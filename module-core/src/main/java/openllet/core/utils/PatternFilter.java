@@ -17,8 +17,8 @@ import java.io.FileFilter;
  */
 public class PatternFilter implements FileFilter
 {
-	private final String	_match;
-	private final String	_noMatch;
+	private final String _match;
+	private final String _noMatch;
 
 	public PatternFilter(final String match)
 	{

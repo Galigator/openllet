@@ -24,8 +24,8 @@ import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 public class OwlApiReasonerTestRunner extends OwlApiAbstractRunner
 {
 
-	private final OWLReasonerFactory	_reasonerFactory;
-	private final IRI					_iri;
+	private final OWLReasonerFactory _reasonerFactory;
+	private final IRI _iri;
 
 	public OwlApiReasonerTestRunner(final OWLReasonerFactory reasonerFactory, final IRI runnerUri)
 	{

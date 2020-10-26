@@ -6,12 +6,14 @@
 
 package openllet.owlapi.explanation.io.manchester;
 
-import com.clarkparsia.owlapi.explanation.io.ExplanationRenderer;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Set;
+
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLException;
+
+import com.clarkparsia.owlapi.explanation.io.ExplanationRenderer;
 
 /**
  * An explanation renderer implementation that prints the axioms in the explanation using Manchester syntax.
@@ -20,12 +22,12 @@ import org.semanticweb.owlapi.model.OWLException;
  */
 public class ManchesterSyntaxExplanationRenderer implements ExplanationRenderer
 {
-	protected ManchesterSyntaxObjectRenderer	_renderer;
-	protected BlockWriter						_writer;
-	protected OWLAxiom							_currentAxiom;
-	private boolean								_wrapLines		= true;
-	private boolean								_smartIndent	= true;
-	private int									_index;
+	protected ManchesterSyntaxObjectRenderer _renderer;
+	protected BlockWriter _writer;
+	protected OWLAxiom _currentAxiom;
+	private boolean _wrapLines = true;
+	private boolean _smartIndent = true;
+	private int _index;
 
 	public ManchesterSyntaxExplanationRenderer()
 	{
@@ -75,7 +77,7 @@ public class ManchesterSyntaxExplanationRenderer implements ExplanationRenderer
 	 * Render an explanation without the axiom header. This function is not guaranteed to be supported by the subclasses since an explanation renderer may rely
 	 * on the axiom being explained to reorder the axioms or find irrelevant bits.
 	 *
-	 * @param  explanations                  Set of explanations we are rendering
+	 * @param explanations Set of explanations we are rendering
 	 * @throws OWLException
 	 * @throws IOException
 	 * @throws UnsupportedOperationException
@@ -143,7 +145,7 @@ public class ManchesterSyntaxExplanationRenderer implements ExplanationRenderer
 	 * Sets the smart indent option which will align the elements of intersections and unions in columns when line wrapping is turned on.
 	 *
 	 * @param smartIndent the smart indent value
-	 * @see               #setWrapLines(boolean)
+	 * @see #setWrapLines(boolean)
 	 */
 	public void setSmartIndent(final boolean smartIndent)
 	{

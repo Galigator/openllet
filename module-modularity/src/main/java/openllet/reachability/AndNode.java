@@ -13,9 +13,9 @@ public class AndNode extends Node
 {
 
 	//	private final int	activationLimit;
-	private int			_activatedInputs;
+	private int _activatedInputs;
 
-	private final int	_id;
+	private final int _id;
 
 	public AndNode(final int id)
 	{

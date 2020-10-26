@@ -51,6 +51,17 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.apache.jena.graph.Factory;
+import org.apache.jena.graph.Graph;
+import org.apache.jena.graph.Node;
+import org.apache.jena.graph.Triple;
+import org.apache.jena.rdf.model.Property;
+import org.apache.jena.util.iterator.ClosableIterator;
+import org.apache.jena.vocabulary.OWL;
+import org.apache.jena.vocabulary.RDF;
+import org.apache.jena.vocabulary.RDFS;
+
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
@@ -90,15 +101,6 @@ import openllet.jena.JenaUtils;
 import openllet.jena.vocabulary.OWL2;
 import openllet.jena.vocabulary.SWRL;
 import openllet.shared.tools.Log;
-import org.apache.jena.graph.Factory;
-import org.apache.jena.graph.Graph;
-import org.apache.jena.graph.Node;
-import org.apache.jena.graph.Triple;
-import org.apache.jena.rdf.model.Property;
-import org.apache.jena.util.iterator.ClosableIterator;
-import org.apache.jena.vocabulary.OWL;
-import org.apache.jena.vocabulary.RDF;
-import org.apache.jena.vocabulary.RDFS;
 
 /**
  * <p>
@@ -113,10 +115,10 @@ import org.apache.jena.vocabulary.RDFS;
 public class DefaultGraphLoader implements GraphLoader
 {
 
-	public static final Logger		_logger	= Log.getLogger(DefaultGraphLoader.class);
+	public static final Logger _logger = Log.getLogger(DefaultGraphLoader.class);
 
-	protected static final Node[]	TBOX_TYPES;
-	protected static final Node[]	TBOX_PREDICATES;
+	protected static final Node[] TBOX_TYPES;
+	protected static final Node[] TBOX_PREDICATES;
 
 	static
 	{
@@ -125,7 +127,8 @@ public class DefaultGraphLoader implements GraphLoader
 
 		for (final BuiltinTerm builtinTerm : BuiltinTerm.values())
 		{
-			if (builtinTerm.isABox() || builtinTerm.isSyntax()) continue;
+			if (builtinTerm.isABox() || builtinTerm.isSyntax())
+				continue;
 
 			if (builtinTerm.isPredicate())
 				predicates.add(builtinTerm.getNode());
@@ -137,35 +140,35 @@ public class DefaultGraphLoader implements GraphLoader
 		TBOX_TYPES = types.toArray(new Node[types.size()]);
 	}
 
-	private static final EnumSet<BuiltinTerm>	OWL_MEMBERS_TYPES		= EnumSet.of(BuiltinTerm.OWL_AllDifferent, BuiltinTerm.OWL2_AllDisjointClasses, BuiltinTerm.OWL2_AllDisjointProperties);
+	private static final EnumSet<BuiltinTerm> OWL_MEMBERS_TYPES = EnumSet.of(BuiltinTerm.OWL_AllDifferent, BuiltinTerm.OWL2_AllDisjointClasses, BuiltinTerm.OWL2_AllDisjointProperties);
 
-	private static final Graph					EMPTY_GRAPH				= Factory.createGraphMem();
+	private static final Graph EMPTY_GRAPH = Factory.createGraphMem();
 
-	public static QNameProvider					_qnames					= new QNameProvider();
+	public static QNameProvider _qnames = new QNameProvider();
 
-	protected KnowledgeBase						_kb;
+	protected KnowledgeBase _kb;
 
-	protected Graph								_graph;
+	protected Graph _graph;
 
-	protected Map<Node, ATermAppl>				_terms;
+	protected Map<Node, ATermAppl> _terms;
 
-	protected Map<Node, ATermList>				_lists;
+	protected Map<Node, ATermList> _lists;
 
-	protected Set<Node>							_anonDatatypes;
+	protected Set<Node> _anonDatatypes;
 
-	protected Map<Node, BuiltinTerm>			_naryDisjoints;
+	protected Map<Node, BuiltinTerm> _naryDisjoints;
 
-	private Map<ATermAppl, SimpleProperty>		_simpleProperties;
+	private Map<ATermAppl, SimpleProperty> _simpleProperties;
 
-	private Set<String>							_unsupportedFeatures;
+	private Set<String> _unsupportedFeatures;
 
-	private boolean								_loadABox				= true;
+	private boolean _loadABox = true;
 
-	private boolean								_loadTBox				= true;
+	private boolean _loadTBox = true;
 
-	private boolean								_preprocessTypeTriples	= true;
+	private boolean _preprocessTypeTriples = true;
 
-	protected ProgressMonitor					_monitor				= new SilentProgressMonitor();
+	protected ProgressMonitor _monitor = new SilentProgressMonitor();
 
 	public DefaultGraphLoader()
 	{
@@ -220,9 +223,11 @@ public class DefaultGraphLoader implements GraphLoader
 
 	protected void addUnsupportedFeature(final String msg)
 	{
-		if (!OpenlletOptions.IGNORE_UNSUPPORTED_AXIOMS) throw new UnsupportedFeatureException(msg);
+		if (!OpenlletOptions.IGNORE_UNSUPPORTED_AXIOMS)
+			throw new UnsupportedFeatureException(msg);
 
-		if (_unsupportedFeatures.add(msg)) _logger.warning("Unsupported axiom: " + msg);
+		if (_unsupportedFeatures.add(msg))
+			_logger.warning("Unsupported axiom: " + msg);
 	}
 
 	/**
@@ -323,7 +328,8 @@ public class DefaultGraphLoader implements GraphLoader
 
 	protected ATermList createList(final Node node)
 	{
-		if (_lists.containsKey(node)) return _lists.get(node);
+		if (_lists.containsKey(node))
+			return _lists.get(node);
 
 		final ATermList list = createList(new RDFListIterator(node));
 
@@ -334,10 +340,12 @@ public class DefaultGraphLoader implements GraphLoader
 
 	protected ATermList createList(final RDFListIterator i)
 	{
-		if (!i.hasNext()) return ATermUtils.EMPTY_LIST;
+		if (!i.hasNext())
+			return ATermUtils.EMPTY_LIST;
 
 		final Node node = i.next();
-		if (node == null) return ATermUtils.EMPTY_LIST;
+		if (node == null)
+			return ATermUtils.EMPTY_LIST;
 
 		final ATermAppl first = node2term(node);
 		final ATermList rest = createList(i);
@@ -369,7 +377,8 @@ public class DefaultGraphLoader implements GraphLoader
 			final Triple t = i.next();
 			final Node pred = t.getPredicate();
 			final BuiltinTerm builtinTerm = BuiltinTerm.find(pred);
-			if (builtinTerm == null) continue;
+			if (builtinTerm == null)
+				continue;
 
 			switch (builtinTerm)
 			{
@@ -452,88 +461,97 @@ public class DefaultGraphLoader implements GraphLoader
 			else
 				addUnsupportedFeature("Invalid value for " + OWL2.hasSelf.getLocalName() + " restriction. Expecting \"true\"^^xsd:boolean but found: " + filler);
 		}
-		else if (restrictionType.equals(OWL.hasValue.asNode()))
-		{
-			final ATermAppl ot = node2term(filler);
-
-			if (filler.isLiteral())
-				defineDatatypeProperty(pt);
-			else
-			{
-				defineObjectProperty(pt);
-				defineIndividual(ot);
-			}
-
-			aTerm = ATermUtils.makeHasValue(pt, ot);
-		}
-		else if (restrictionType.equals(OWL.allValuesFrom.asNode()))
-		{
-			final ATermAppl ot = node2term(filler);
-
-			if (_kb.isClass(ot))
-				defineObjectProperty(pt);
-			else if (_kb.isDatatype(ot)) defineDatatypeProperty(pt);
-
-			aTerm = ATermUtils.makeAllValues(pt, ot);
-		}
-		else if (restrictionType.equals(OWL.someValuesFrom.asNode()))
-		{
-			final ATermAppl ot = node2term(filler);
-
-			if (_kb.isClass(ot))
-				defineObjectProperty(pt);
-			else if (_kb.isDatatype(ot)) defineDatatypeProperty(pt);
-
-			aTerm = ATermUtils.makeSomeValues(pt, ot);
-		}
-		else if (restrictionType.equals(OWL.minCardinality.asNode()) || restrictionType.equals(OWL.maxCardinality.asNode()) || restrictionType.equals(OWL.cardinality.asNode())
-				|| restrictionType.equals(OWL2.minQualifiedCardinality.asNode()) || restrictionType.equals(OWL2.maxQualifiedCardinality.asNode())
-				|| restrictionType.equals(OWL2.qualifiedCardinality.asNode()))
-			try
-			{
-				ATermAppl c = null;
-				if (isObjectRestriction.isTrue())
-				{
-					c = node2term(qualification);
-					defineObjectProperty(pt);
-				}
-				else if (isObjectRestriction.isFalse())
-				{
-					c = node2term(qualification);
-					defineDatatypeProperty(pt);
-				}
-				else
-				{
-					final PropertyType propType = _kb.getPropertyType(pt);
-					if (propType == PropertyType.OBJECT)
-						c = ATermUtils.TOP;
-					else if (propType == PropertyType.DATATYPE)
-						c = ATermUtils.TOP_LIT;
-					else
-					{
-						defineObjectProperty(pt);
-						c = ATermUtils.TOP;
-					}
-				}
-
-				final int cardinality = Integer.parseInt(filler.getLiteral().getLexicalForm().trim());
-
-				if (restrictionType.equals(OWL.minCardinality.asNode()) || restrictionType.equals(OWL2.minQualifiedCardinality.asNode()))
-					aTerm = ATermUtils.makeMin(pt, cardinality, c);
-				else if (restrictionType.equals(OWL.maxCardinality.asNode()) || restrictionType.equals(OWL2.maxQualifiedCardinality.asNode()))
-					aTerm = ATermUtils.makeMax(pt, cardinality, c);
-				else
-					aTerm = ATermUtils.makeCard(pt, cardinality, c);
-
-				addSimpleProperty(pt, CARDINALITY);
-			}
-			catch (final Exception ex)
-			{
-				addUnsupportedFeature("Invalid value for the owl:" + restrictionType.getLocalName() + " restriction: " + filler);
-				_logger.log(Level.WARNING, "Invalid cardinality", ex);
-			}
 		else
-			addUnsupportedFeature("Ignoring invalid restriction on " + p);
+			if (restrictionType.equals(OWL.hasValue.asNode()))
+			{
+				final ATermAppl ot = node2term(filler);
+
+				if (filler.isLiteral())
+					defineDatatypeProperty(pt);
+				else
+				{
+					defineObjectProperty(pt);
+					defineIndividual(ot);
+				}
+
+				aTerm = ATermUtils.makeHasValue(pt, ot);
+			}
+			else
+				if (restrictionType.equals(OWL.allValuesFrom.asNode()))
+				{
+					final ATermAppl ot = node2term(filler);
+
+					if (_kb.isClass(ot))
+						defineObjectProperty(pt);
+					else
+						if (_kb.isDatatype(ot))
+							defineDatatypeProperty(pt);
+
+					aTerm = ATermUtils.makeAllValues(pt, ot);
+				}
+				else
+					if (restrictionType.equals(OWL.someValuesFrom.asNode()))
+					{
+						final ATermAppl ot = node2term(filler);
+
+						if (_kb.isClass(ot))
+							defineObjectProperty(pt);
+						else
+							if (_kb.isDatatype(ot))
+								defineDatatypeProperty(pt);
+
+						aTerm = ATermUtils.makeSomeValues(pt, ot);
+					}
+					else
+						if (restrictionType.equals(OWL.minCardinality.asNode()) || restrictionType.equals(OWL.maxCardinality.asNode()) || restrictionType.equals(OWL.cardinality.asNode()) || restrictionType.equals(OWL2.minQualifiedCardinality.asNode()) || restrictionType.equals(OWL2.maxQualifiedCardinality.asNode()) || restrictionType.equals(OWL2.qualifiedCardinality.asNode()))
+							try
+							{
+								ATermAppl c = null;
+								if (isObjectRestriction.isTrue())
+								{
+									c = node2term(qualification);
+									defineObjectProperty(pt);
+								}
+								else
+									if (isObjectRestriction.isFalse())
+									{
+										c = node2term(qualification);
+										defineDatatypeProperty(pt);
+									}
+									else
+									{
+										final PropertyType propType = _kb.getPropertyType(pt);
+										if (propType == PropertyType.OBJECT)
+											c = ATermUtils.TOP;
+										else
+											if (propType == PropertyType.DATATYPE)
+												c = ATermUtils.TOP_LIT;
+											else
+											{
+												defineObjectProperty(pt);
+												c = ATermUtils.TOP;
+											}
+									}
+
+								final int cardinality = Integer.parseInt(filler.getLiteral().getLexicalForm().trim());
+
+								if (restrictionType.equals(OWL.minCardinality.asNode()) || restrictionType.equals(OWL2.minQualifiedCardinality.asNode()))
+									aTerm = ATermUtils.makeMin(pt, cardinality, c);
+								else
+									if (restrictionType.equals(OWL.maxCardinality.asNode()) || restrictionType.equals(OWL2.maxQualifiedCardinality.asNode()))
+										aTerm = ATermUtils.makeMax(pt, cardinality, c);
+									else
+										aTerm = ATermUtils.makeCard(pt, cardinality, c);
+
+								addSimpleProperty(pt, CARDINALITY);
+							}
+							catch (final Exception ex)
+							{
+								addUnsupportedFeature("Invalid value for the owl:" + restrictionType.getLocalName() + " restriction: " + filler);
+								_logger.log(Level.WARNING, "Invalid cardinality", ex);
+							}
+						else
+							addUnsupportedFeature("Ignoring invalid restriction on " + p);
 
 		return aTerm;
 	}
@@ -553,72 +571,81 @@ public class DefaultGraphLoader implements GraphLoader
 			boolean canCache = true;
 			if (isRestriction(node))
 				aTerm = createRestriction(node);
-			else if (node.isBlank())
-			{
-				final Triple expr = getExpression(node);
-				if (expr != null)
+			else
+				if (node.isBlank())
 				{
-					final Node exprType = expr.getPredicate();
-					final Node exprValue = expr.getObject();
+					final Triple expr = getExpression(node);
+					if (expr != null)
+					{
+						final Node exprType = expr.getPredicate();
+						final Node exprValue = expr.getObject();
 
-					if (exprType.equals(OWL.intersectionOf.asNode()))
-					{
-						final ATermList list = createList(exprValue);
-						aTerm = ATermUtils.makeAnd(list);
-					}
-					else if (exprType.equals(OWL.unionOf.asNode()))
-					{
-						final ATermList list = createList(exprValue);
-						aTerm = ATermUtils.makeOr(list);
-					}
-					else if (exprType.equals(OWL.complementOf.asNode()) || exprType.equals(OWL2.datatypeComplementOf.asNode()))
-					{
-						final ATermAppl complement = node2term(exprValue);
-						aTerm = ATermUtils.makeNot(complement);
-					}
-					else if (exprType.equals(OWL.inverseOf.asNode()))
-					{
-						final ATermAppl inverse = node2term(exprValue);
-						aTerm = ATermUtils.makeInv(inverse);
-					}
-					else if (exprType.equals(OWL.oneOf.asNode()))
-					{
-						final ATermList list = createList(exprValue);
-						ATermList result = ATermUtils.EMPTY_LIST;
-						if (list.isEmpty())
-							aTerm = ATermUtils.BOTTOM;
-						else
+						if (exprType.equals(OWL.intersectionOf.asNode()))
 						{
-							for (ATermList l = list; !l.isEmpty(); l = l.getNext())
-							{
-								final ATermAppl c = (ATermAppl) l.getFirst();
-								final ATermAppl nominal = ATermUtils.makeValue(c);
-								result = result.insert(nominal);
-							}
-
-							aTerm = ATermUtils.makeOr(result);
+							final ATermList list = createList(exprValue);
+							aTerm = ATermUtils.makeAnd(list);
 						}
-					}
-					else if (exprType.equals(OWL2.onDatatype.asNode()))
-						aTerm = parseDataRange(node, exprValue);
-					else if (exprType.equals(OWL2.onDataRange.asNode()))
-						aTerm = parseDataRangeLegacy(node, exprValue);
-					else if (exprType.equals(OWL2.propertyChain.asNode()))
-					{
-						// do nothing because we cannot return an ATermList here
+						else
+							if (exprType.equals(OWL.unionOf.asNode()))
+							{
+								final ATermList list = createList(exprValue);
+								aTerm = ATermUtils.makeOr(list);
+							}
+							else
+								if (exprType.equals(OWL.complementOf.asNode()) || exprType.equals(OWL2.datatypeComplementOf.asNode()))
+								{
+									final ATermAppl complement = node2term(exprValue);
+									aTerm = ATermUtils.makeNot(complement);
+								}
+								else
+									if (exprType.equals(OWL.inverseOf.asNode()))
+									{
+										final ATermAppl inverse = node2term(exprValue);
+										aTerm = ATermUtils.makeInv(inverse);
+									}
+									else
+										if (exprType.equals(OWL.oneOf.asNode()))
+										{
+											final ATermList list = createList(exprValue);
+											ATermList result = ATermUtils.EMPTY_LIST;
+											if (list.isEmpty())
+												aTerm = ATermUtils.BOTTOM;
+											else
+											{
+												for (ATermList l = list; !l.isEmpty(); l = l.getNext())
+												{
+													final ATermAppl c = (ATermAppl) l.getFirst();
+													final ATermAppl nominal = ATermUtils.makeValue(c);
+													result = result.insert(nominal);
+												}
+
+												aTerm = ATermUtils.makeOr(result);
+											}
+										}
+										else
+											if (exprType.equals(OWL2.onDatatype.asNode()))
+												aTerm = parseDataRange(node, exprValue);
+											else
+												if (exprType.equals(OWL2.onDataRange.asNode()))
+													aTerm = parseDataRangeLegacy(node, exprValue);
+												else
+													if (exprType.equals(OWL2.propertyChain.asNode()))
+													{
+														// do nothing because we cannot return an ATermList here
+													}
+													else
+														addUnsupportedFeature("Unexpected bnode " + node + " " + expr);
 					}
 					else
-						addUnsupportedFeature("Unexpected bnode " + node + " " + expr);
+					{
+						canCache = false;
+						aTerm = JenaUtils.makeATerm(node);
+					}
 				}
 				else
-				{
-					canCache = false;
 					aTerm = JenaUtils.makeATerm(node);
-				}
-			}
-			else
-				aTerm = JenaUtils.makeATerm(node);
-			if (canCache) _terms.put(node, aTerm);
+			if (canCache)
+				_terms.put(node, aTerm);
 		}
 
 		return aTerm;
@@ -692,15 +719,16 @@ public class DefaultGraphLoader implements GraphLoader
 		while (i.hasNext())
 		{
 			final Node restrictionNode = i.next();
-			if (restrictionNode != null) for (final Property datatypeFacet : datatypeFacets)
-			{
-				final Node facetValue = getObject(restrictionNode, datatypeFacet.asNode());
-				if (facetValue != null)
+			if (restrictionNode != null)
+				for (final Property datatypeFacet : datatypeFacets)
 				{
-					final ATermAppl restriction = ATermUtils.makeFacetRestriction(ATermUtils.makeTermAppl(datatypeFacet.getURI()), JenaUtils.makeATerm(facetValue));
-					restrictions.add(restriction);
+					final Node facetValue = getObject(restrictionNode, datatypeFacet.asNode());
+					if (facetValue != null)
+					{
+						final ATermAppl restriction = ATermUtils.makeFacetRestriction(ATermUtils.makeTermAppl(datatypeFacet.getURI()), JenaUtils.makeATerm(facetValue));
+						restrictions.add(restriction);
+					}
 				}
-			}
 		}
 
 		if (restrictions.isEmpty())
@@ -722,7 +750,9 @@ public class DefaultGraphLoader implements GraphLoader
 			String whichPart = "head and body";
 			if (head != null)
 				whichPart = "body";
-			else if (body != null) whichPart = "head";
+			else
+				if (body != null)
+					whichPart = "head";
 			addUnsupportedFeature("Ignoring SWRL rule (unsupported " + whichPart + "): " + node);
 
 			return;
@@ -786,126 +816,157 @@ public class DefaultGraphLoader implements GraphLoader
 				AtomIObject argument = null;
 				atomType = "ClassAtom";
 
-				if ((obj = getObject(atomNode, SWRL.classPredicate.asNode())) != null) description = node2term(obj);
+				if ((obj = getObject(atomNode, SWRL.classPredicate.asNode())) != null)
+					description = node2term(obj);
 
-				if ((obj = getObject(atomNode, SWRL.argument1.asNode())) != null) argument = createRuleIObject(obj);
+				if ((obj = getObject(atomNode, SWRL.argument1.asNode())) != null)
+					argument = createRuleIObject(obj);
 
 				if (description == null)
 					addUnsupportedFeature("Error on " + SWRL.classPredicate);
-				else if (argument == null)
-					addUnsupportedFeature("Error on" + SWRL.argument1);
 				else
-					atom = new ClassAtom(description, argument);
+					if (argument == null)
+						addUnsupportedFeature("Error on" + SWRL.argument1);
+					else
+						atom = new ClassAtom(description, argument);
 			}
-			else if (hasObject(atomNode, RDF.type.asNode(), SWRL.IndividualPropertyAtom.asNode()))
-			{
-				ATermAppl pred = null;
-				AtomIObject argument1 = null;
-				AtomIObject argument2 = null;
-				atomType = "IndividualPropertyAtom";
+			else
+				if (hasObject(atomNode, RDF.type.asNode(), SWRL.IndividualPropertyAtom.asNode()))
+				{
+					ATermAppl pred = null;
+					AtomIObject argument1 = null;
+					AtomIObject argument2 = null;
+					atomType = "IndividualPropertyAtom";
 
-				if ((obj = getObject(atomNode, SWRL.propertyPredicate.asNode())) != null) pred = node2term(obj);
+					if ((obj = getObject(atomNode, SWRL.propertyPredicate.asNode())) != null)
+						pred = node2term(obj);
 
-				if ((obj = getObject(atomNode, SWRL.argument1.asNode())) != null) argument1 = createRuleIObject(obj);
+					if ((obj = getObject(atomNode, SWRL.argument1.asNode())) != null)
+						argument1 = createRuleIObject(obj);
 
-				if ((obj = getObject(atomNode, SWRL.argument2.asNode())) != null) argument2 = createRuleIObject(obj);
+					if ((obj = getObject(atomNode, SWRL.argument2.asNode())) != null)
+						argument2 = createRuleIObject(obj);
 
-				if (pred == null || !defineObjectProperty(pred))
-					addUnsupportedFeature("Cannot define datatype property " + pred);
-				else if (argument1 == null)
-					addUnsupportedFeature("Term not found: " + SWRL.argument1);
-				else if (argument2 == null)
-					addUnsupportedFeature("Term not found " + SWRL.argument2);
+					if (pred == null || !defineObjectProperty(pred))
+						addUnsupportedFeature("Cannot define datatype property " + pred);
+					else
+						if (argument1 == null)
+							addUnsupportedFeature("Term not found: " + SWRL.argument1);
+						else
+							if (argument2 == null)
+								addUnsupportedFeature("Term not found " + SWRL.argument2);
+							else
+								atom = new IndividualPropertyAtom(pred, argument1, argument2);
+				}
 				else
-					atom = new IndividualPropertyAtom(pred, argument1, argument2);
-			}
-			else if (hasObject(atomNode, RDF.type.asNode(), SWRL.DifferentIndividualsAtom.asNode()))
-			{
-				AtomIObject argument1 = null;
-				AtomIObject argument2 = null;
-				atomType = "DifferentIndividualsAtom";
+					if (hasObject(atomNode, RDF.type.asNode(), SWRL.DifferentIndividualsAtom.asNode()))
+					{
+						AtomIObject argument1 = null;
+						AtomIObject argument2 = null;
+						atomType = "DifferentIndividualsAtom";
 
-				if ((obj = getObject(atomNode, SWRL.argument1.asNode())) != null) argument1 = createRuleIObject(obj);
+						if ((obj = getObject(atomNode, SWRL.argument1.asNode())) != null)
+							argument1 = createRuleIObject(obj);
 
-				if ((obj = getObject(atomNode, SWRL.argument2.asNode())) != null) argument2 = createRuleIObject(obj);
+						if ((obj = getObject(atomNode, SWRL.argument2.asNode())) != null)
+							argument2 = createRuleIObject(obj);
 
-				if (argument1 == null)
-					addUnsupportedFeature("Term not found " + SWRL.argument1);
-				else if (argument2 == null)
-					addUnsupportedFeature("Term not found " + SWRL.argument2);
-				else
-					atom = new DifferentIndividualsAtom(argument1, argument2);
-			}
-			else if (hasObject(atomNode, RDF.type.asNode(), SWRL.SameIndividualAtom.asNode()))
-			{
-				AtomIObject argument1 = null;
-				AtomIObject argument2 = null;
-				atomType = "SameIndividualAtom";
+						if (argument1 == null)
+							addUnsupportedFeature("Term not found " + SWRL.argument1);
+						else
+							if (argument2 == null)
+								addUnsupportedFeature("Term not found " + SWRL.argument2);
+							else
+								atom = new DifferentIndividualsAtom(argument1, argument2);
+					}
+					else
+						if (hasObject(atomNode, RDF.type.asNode(), SWRL.SameIndividualAtom.asNode()))
+						{
+							AtomIObject argument1 = null;
+							AtomIObject argument2 = null;
+							atomType = "SameIndividualAtom";
 
-				if ((obj = getObject(atomNode, SWRL.argument1.asNode())) != null) argument1 = createRuleIObject(obj);
+							if ((obj = getObject(atomNode, SWRL.argument1.asNode())) != null)
+								argument1 = createRuleIObject(obj);
 
-				if ((obj = getObject(atomNode, SWRL.argument2.asNode())) != null) argument2 = createRuleIObject(obj);
+							if ((obj = getObject(atomNode, SWRL.argument2.asNode())) != null)
+								argument2 = createRuleIObject(obj);
 
-				if (argument1 == null)
-					addUnsupportedFeature("Term not found " + SWRL.argument1);
-				else if (argument2 == null)
-					addUnsupportedFeature("Term not found " + SWRL.argument2);
-				else
-					atom = new SameIndividualAtom(argument1, argument2);
-			}
-			else if (hasObject(atomNode, RDF.type.asNode(), SWRL.DatavaluedPropertyAtom.asNode()))
-			{
-				ATermAppl pred = null;
-				AtomIObject argument1 = null;
-				AtomDObject argument2 = null;
-				atomType = "DatavaluedPropertyAtom";
+							if (argument1 == null)
+								addUnsupportedFeature("Term not found " + SWRL.argument1);
+							else
+								if (argument2 == null)
+									addUnsupportedFeature("Term not found " + SWRL.argument2);
+								else
+									atom = new SameIndividualAtom(argument1, argument2);
+						}
+						else
+							if (hasObject(atomNode, RDF.type.asNode(), SWRL.DatavaluedPropertyAtom.asNode()))
+							{
+								ATermAppl pred = null;
+								AtomIObject argument1 = null;
+								AtomDObject argument2 = null;
+								atomType = "DatavaluedPropertyAtom";
 
-				if ((obj = getObject(atomNode, SWRL.propertyPredicate.asNode())) != null) pred = node2term(obj);
+								if ((obj = getObject(atomNode, SWRL.propertyPredicate.asNode())) != null)
+									pred = node2term(obj);
 
-				if ((obj = getObject(atomNode, SWRL.argument1.asNode())) != null) argument1 = createRuleIObject(obj);
+								if ((obj = getObject(atomNode, SWRL.argument1.asNode())) != null)
+									argument1 = createRuleIObject(obj);
 
-				if ((obj = getObject(atomNode, SWRL.argument2.asNode())) != null) argument2 = createRuleDObject(obj);
+								if ((obj = getObject(atomNode, SWRL.argument2.asNode())) != null)
+									argument2 = createRuleDObject(obj);
 
-				if (pred == null || !defineDatatypeProperty(pred))
-					addUnsupportedFeature("Cannot define datatype property " + pred);
-				else if (argument1 == null)
-					addUnsupportedFeature("Term not found " + SWRL.argument1);
-				else if (argument2 == null)
-					addUnsupportedFeature("Term not found " + SWRL.argument2);
-				else
-					atom = new DatavaluedPropertyAtom(pred, argument1, argument2);
-			}
-			else if (hasObject(atomNode, RDF.type.asNode(), SWRL.BuiltinAtom.asNode()))
-			{
-				atomType = "BuiltinAtom";
-				Node builtInNode = null;
-				List<AtomDObject> arguments = null;
+								if (pred == null || !defineDatatypeProperty(pred))
+									addUnsupportedFeature("Cannot define datatype property " + pred);
+								else
+									if (argument1 == null)
+										addUnsupportedFeature("Term not found " + SWRL.argument1);
+									else
+										if (argument2 == null)
+											addUnsupportedFeature("Term not found " + SWRL.argument2);
+										else
+											atom = new DatavaluedPropertyAtom(pred, argument1, argument2);
+							}
+							else
+								if (hasObject(atomNode, RDF.type.asNode(), SWRL.BuiltinAtom.asNode()))
+								{
+									atomType = "BuiltinAtom";
+									Node builtInNode = null;
+									List<AtomDObject> arguments = null;
 
-				if ((obj = getObject(atomNode, SWRL.arguments.asNode())) != null) arguments = parseArgumentList(obj);
+									if ((obj = getObject(atomNode, SWRL.arguments.asNode())) != null)
+										arguments = parseArgumentList(obj);
 
-				builtInNode = getObject(atomNode, SWRL.builtin.asNode());
+									builtInNode = getObject(atomNode, SWRL.builtin.asNode());
 
-				if (arguments == null)
-					addUnsupportedFeature("Term not found " + SWRL.arguments);
-				else if (builtInNode != null && builtInNode.isURI()) atom = new BuiltInAtom(builtInNode.getURI(), arguments);
-			}
-			else if (hasObject(atomNode, RDF.type.asNode(), SWRL.DataRangeAtom.asNode()))
-			{
-				atomType = "DataRangeAtom";
-				ATermAppl datatype = null;
-				AtomDObject argument = null;
+									if (arguments == null)
+										addUnsupportedFeature("Term not found " + SWRL.arguments);
+									else
+										if (builtInNode != null && builtInNode.isURI())
+											atom = new BuiltInAtom(builtInNode.getURI(), arguments);
+								}
+								else
+									if (hasObject(atomNode, RDF.type.asNode(), SWRL.DataRangeAtom.asNode()))
+									{
+										atomType = "DataRangeAtom";
+										ATermAppl datatype = null;
+										AtomDObject argument = null;
 
-				if ((obj = getObject(atomNode, SWRL.dataRange.asNode())) != null) datatype = node2term(obj);
+										if ((obj = getObject(atomNode, SWRL.dataRange.asNode())) != null)
+											datatype = node2term(obj);
 
-				if ((obj = getObject(atomNode, SWRL.argument1.asNode())) != null) argument = createRuleDObject(obj);
+										if ((obj = getObject(atomNode, SWRL.argument1.asNode())) != null)
+											argument = createRuleDObject(obj);
 
-				if (datatype == null)
-					addUnsupportedFeature("Term not found " + SWRL.dataRange);
-				else if (argument == null)
-					addUnsupportedFeature("Term not found " + SWRL.argument1);
-				else
-					atom = new DataRangeAtom(datatype, argument);
-			}
+										if (datatype == null)
+											addUnsupportedFeature("Term not found " + SWRL.dataRange);
+										else
+											if (argument == null)
+												addUnsupportedFeature("Term not found " + SWRL.argument1);
+											else
+												atom = new DataRangeAtom(datatype, argument);
+									}
 
 			if (atom == null)
 			{
@@ -1045,8 +1106,8 @@ public class DefaultGraphLoader implements GraphLoader
 	 * There are two properties that are used in a subPropertyOf or equivalentProperty axiom. If one of them is defined as an Object (or Data) Property the
 	 * other should also be defined as an Object (or Data) Property
 	 *
-	 * @param  p1
-	 * @param  p2
+	 * @param p1
+	 * @param p2
 	 * @return
 	 */
 	private boolean defineProperties(final ATermAppl p1, final ATermAppl p2)
@@ -1059,46 +1120,55 @@ public class DefaultGraphLoader implements GraphLoader
 			{
 				if (type2 == PropertyType.OBJECT)
 					defineObjectProperty(p1);
-				else if (type2 == PropertyType.DATATYPE) defineDatatypeProperty(p1);
-			}
-			else if (type2 == PropertyType.UNTYPED)
-			{
-				if (type1 == PropertyType.OBJECT)
-					defineObjectProperty(p2);
-				else if (type1 == PropertyType.DATATYPE) defineDatatypeProperty(p2);
+				else
+					if (type2 == PropertyType.DATATYPE)
+						defineDatatypeProperty(p1);
 			}
 			else
-				// addWarning("Properties " + p1 + ", " + p2
-				// + " are related but first is " + PropertyType.TYPES[type1]
-				// + "Property and second is " + PropertyType.TYPES[type2]);
-				return false;
+				if (type2 == PropertyType.UNTYPED)
+				{
+					if (type1 == PropertyType.OBJECT)
+						defineObjectProperty(p2);
+					else
+						if (type1 == PropertyType.DATATYPE)
+							defineDatatypeProperty(p2);
+				}
+				else
+					// addWarning("Properties " + p1 + ", " + p2
+					// + " are related but first is " + PropertyType.TYPES[type1]
+					// + "Property and second is " + PropertyType.TYPES[type2]);
+					return false;
 		}
-		else if (type1 == PropertyType.UNTYPED)
-		{
-			defineProperty(p1);
-			defineProperty(p2);
-		}
+		else
+			if (type1 == PropertyType.UNTYPED)
+			{
+				defineProperty(p1);
+				defineProperty(p2);
+			}
 
 		return true;
 	}
 
 	protected boolean defineObjectProperty(final ATermAppl c)
 	{
-		if (!ATermUtils.isPrimitive(c) && !ATermUtils.isInv(c)) return false;
+		if (!ATermUtils.isPrimitive(c) && !ATermUtils.isInv(c))
+			return false;
 
 		return _kb.addObjectProperty(c);
 	}
 
 	protected boolean defineDatatypeProperty(final ATermAppl c)
 	{
-		if (!ATermUtils.isPrimitive(c)) return false;
+		if (!ATermUtils.isPrimitive(c))
+			return false;
 
 		return _kb.addDatatypeProperty(c);
 	}
 
 	private boolean defineAnnotationProperty(final ATermAppl c)
 	{
-		if (!ATermUtils.isPrimitive(c)) return false;
+		if (!ATermUtils.isPrimitive(c))
+			return false;
 
 		return _kb.addAnnotationProperty(c);
 	}
@@ -1110,7 +1180,9 @@ public class DefaultGraphLoader implements GraphLoader
 			_kb.addObjectProperty(c.getArgument(0));
 			return true;
 		}
-		else if (!ATermUtils.isPrimitive(c)) return false;
+		else
+			if (!ATermUtils.isPrimitive(c))
+				return false;
 
 		_kb.addProperty(c);
 		return true;
@@ -1126,7 +1198,8 @@ public class DefaultGraphLoader implements GraphLoader
 	private PropertyType guessPropertyType(final ATermAppl p, final Node prop)
 	{
 		final PropertyType roleType = _kb.getPropertyType(p);
-		if (roleType != PropertyType.UNTYPED) return roleType;
+		if (roleType != PropertyType.UNTYPED)
+			return roleType;
 
 		defineProperty(p);
 
@@ -1138,11 +1211,15 @@ public class DefaultGraphLoader implements GraphLoader
 
 			if (o.equals(OWL.ObjectProperty.asNode()))
 				return PropertyType.OBJECT;
-			else if (o.equals(OWL.DatatypeProperty.asNode()))
-				return PropertyType.DATATYPE;
-			else if (o.equals(OWL.AnnotationProperty.asNode()))
-				return PropertyType.ANNOTATION;
-			else if (o.equals(OWL.OntologyProperty.asNode())) return PropertyType.ANNOTATION;
+			else
+				if (o.equals(OWL.DatatypeProperty.asNode()))
+					return PropertyType.DATATYPE;
+				else
+					if (o.equals(OWL.AnnotationProperty.asNode()))
+						return PropertyType.ANNOTATION;
+					else
+						if (o.equals(OWL.OntologyProperty.asNode()))
+							return PropertyType.ANNOTATION;
 		}
 
 		return PropertyType.UNTYPED;
@@ -1196,7 +1273,8 @@ public class DefaultGraphLoader implements GraphLoader
 
 		if (builtinTerm != null)
 		{
-			if (builtinTerm.isSyntax()) return;
+			if (builtinTerm.isSyntax())
+				return;
 
 			// If we have a triple _:x rdf:type owl:Class then this is a noop
 			// that would only _cache class expression for _:x. However, since
@@ -1204,7 +1282,8 @@ public class DefaultGraphLoader implements GraphLoader
 			// restrictions would cause issues here since they require property
 			// to be either _data or object property. Therefore, we _stop processing
 			// this triple immediately before calling node2term function.
-			if (s.isBlank() && builtinTerm.equals(BuiltinTerm.OWL_Class)) return;
+			if (s.isBlank() && builtinTerm.equals(BuiltinTerm.OWL_Class))
+				return;
 		}
 
 		_monitor.incrementProgress();
@@ -1265,11 +1344,13 @@ public class DefaultGraphLoader implements GraphLoader
 				break;
 
 			case OWL_ObjectProperty:
-				if (s.isURI() && !defineObjectProperty(st)) addUnsupportedFeature("Property " + st + " is defined both as an ObjectProperty and a " + _kb.getPropertyType(st) + "Property");
+				if (s.isURI() && !defineObjectProperty(st))
+					addUnsupportedFeature("Property " + st + " is defined both as an ObjectProperty and a " + _kb.getPropertyType(st) + "Property");
 				break;
 
 			case OWL_DatatypeProperty:
-				if (!defineDatatypeProperty(st)) addUnsupportedFeature("Property " + st + " is defined both as a DatatypeProperty and a " + _kb.getPropertyType(st) + "Property");
+				if (!defineDatatypeProperty(st))
+					addUnsupportedFeature("Property " + st + " is defined both as a DatatypeProperty and a " + _kb.getPropertyType(st) + "Property");
 				break;
 
 			case OWL_FunctionalProperty:
@@ -1304,7 +1385,8 @@ public class DefaultGraphLoader implements GraphLoader
 				break;
 
 			case OWL_AnnotationProperty:
-				if (!defineAnnotationProperty(st)) addUnsupportedFeature("Property " + st + " is defined both as an AnnotationProperty and a " + _kb.getPropertyType(st) + "Property");
+				if (!defineAnnotationProperty(st))
+					addUnsupportedFeature("Property " + st + " is defined both as an AnnotationProperty and a " + _kb.getPropertyType(st) + "Property");
 				break;
 
 			case OWL2_ReflexiveProperty:
@@ -1339,7 +1421,8 @@ public class DefaultGraphLoader implements GraphLoader
 				break;
 
 			case SWRL_Imp:
-				if (OpenlletOptions.DL_SAFE_RULES) defineRule(s);
+				if (OpenlletOptions.DL_SAFE_RULES)
+					defineRule(s);
 				break;
 
 			case OWL_AllDifferent:
@@ -1402,7 +1485,8 @@ public class DefaultGraphLoader implements GraphLoader
 
 		if (builtinTerm != null)
 		{
-			if (builtinTerm.isSyntax()) return;
+			if (builtinTerm.isSyntax())
+				return;
 
 			if (builtinTerm.equals(BuiltinTerm.RDF_type))
 			{
@@ -1422,7 +1506,9 @@ public class DefaultGraphLoader implements GraphLoader
 						}
 					}
 				}
-				else if (!_preprocessTypeTriples) processType(triple);
+				else
+					if (!_preprocessTypeTriples)
+						processType(triple);
 
 				return;
 			}
@@ -1442,9 +1528,11 @@ public class DefaultGraphLoader implements GraphLoader
 			if (type == PropertyType.ANNOTATION)
 			{
 				// Skip ontology annotations
-				if (_graph.contains(s, RDF.type.asNode(), OWL.Ontology.asNode())) return;
+				if (_graph.contains(s, RDF.type.asNode(), OWL.Ontology.asNode()))
+					return;
 
-				if (defineAnnotationProperty(pt)) _kb.addAnnotation(st, pt, ot);
+				if (defineAnnotationProperty(pt))
+					_kb.addAnnotation(st, pt, ot);
 
 				return;
 			}
@@ -1472,26 +1560,31 @@ public class DefaultGraphLoader implements GraphLoader
 					if (defineIndividual(st))
 					{
 						defineDatatypeProperty(pt);
-						if (!"".equals(datatypeURI)) defineDatatype(ATermUtils.makeTermAppl(datatypeURI));
+						if (!"".equals(datatypeURI))
+							defineDatatype(ATermUtils.makeTermAppl(datatypeURI));
 
 						_kb.addPropertyValue(pt, st, ot);
 					}
-					else if (type == PropertyType.UNTYPED)
-						defineAnnotationProperty(pt);
 					else
-						addUnsupportedFeature("Ignoring ObjectProperty used with a class expression: " + triple);
+						if (type == PropertyType.UNTYPED)
+							defineAnnotationProperty(pt);
+						else
+							addUnsupportedFeature("Ignoring ObjectProperty used with a class expression: " + triple);
 				}
 				else
 					addUnsupportedFeature("Ignoring literal value used with ObjectProperty : " + triple);
 			}
-			else if (!defineObjectProperty(pt))
-				addUnsupportedFeature("Ignoring object value used with DatatypeProperty: " + triple);
-			else if (!defineIndividual(st))
-				addUnsupportedFeature("Ignoring class expression used in subject position: " + triple);
-			else if (!defineIndividual(ot))
-				addUnsupportedFeature("Ignoring class expression used in object position: " + triple);
 			else
-				_kb.addPropertyValue(pt, st, ot);
+				if (!defineObjectProperty(pt))
+					addUnsupportedFeature("Ignoring object value used with DatatypeProperty: " + triple);
+				else
+					if (!defineIndividual(st))
+						addUnsupportedFeature("Ignoring class expression used in subject position: " + triple);
+					else
+						if (!defineIndividual(ot))
+							addUnsupportedFeature("Ignoring class expression used in object position: " + triple);
+						else
+							_kb.addPropertyValue(pt, st, ot);
 			return;
 		}
 
@@ -1501,10 +1594,11 @@ public class DefaultGraphLoader implements GraphLoader
 			case RDFS_subClassOf:
 				if (!defineClass(st))
 					addUnsupportedFeature("Ignoring subClassOf axiom because the subject is not a class " + st + " rdfs:subClassOf " + ot);
-				else if (!defineClass(ot))
-					addUnsupportedFeature("Ignoring subClassOf axiom because the object is not a class " + st + " rdfs:subClassOf " + ot);
 				else
-					_kb.addSubClass(st, ot);
+					if (!defineClass(ot))
+						addUnsupportedFeature("Ignoring subClassOf axiom because the object is not a class " + st + " rdfs:subClassOf " + ot);
+					else
+						_kb.addSubClass(st, ot);
 				break;
 
 			case RDFS_subPropertyOf:
@@ -1514,25 +1608,32 @@ public class DefaultGraphLoader implements GraphLoader
 					final Triple expr = getExpression(s);
 					if (expr == null)
 						addUnsupportedFeature("Bnode in rdfs:subProperty axioms is not a valid property expression");
-					else if (expr.getPredicate().equals(OWL.inverseOf.asNode()))
-					{
-						if (defineObjectProperty((ATermAppl) st.getArgument(0)) && defineObjectProperty(ot)) subProp = st;
-					}
-					else if (expr.getPredicate().equals(OWL2.propertyChain.asNode()))
-					{
-						subProp = createList(expr.getObject());
-						ATermList list = (ATermList) subProp;
-						while (!list.isEmpty())
-						{
-							if (!defineObjectProperty((ATermAppl) list.getFirst())) break;
-							list = list.getNext();
-						}
-						if (!list.isEmpty() || !defineObjectProperty(ot)) subProp = null;
-					}
 					else
-						addUnsupportedFeature("Bnode in rdfs:subProperty axioms is not a valid property expression");
+						if (expr.getPredicate().equals(OWL.inverseOf.asNode()))
+						{
+							if (defineObjectProperty((ATermAppl) st.getArgument(0)) && defineObjectProperty(ot))
+								subProp = st;
+						}
+						else
+							if (expr.getPredicate().equals(OWL2.propertyChain.asNode()))
+							{
+								subProp = createList(expr.getObject());
+								ATermList list = (ATermList) subProp;
+								while (!list.isEmpty())
+								{
+									if (!defineObjectProperty((ATermAppl) list.getFirst()))
+										break;
+									list = list.getNext();
+								}
+								if (!list.isEmpty() || !defineObjectProperty(ot))
+									subProp = null;
+							}
+							else
+								addUnsupportedFeature("Bnode in rdfs:subProperty axioms is not a valid property expression");
 				}
-				else if (defineProperties(st, ot)) subProp = st;
+				else
+					if (defineProperties(st, ot))
+						subProp = st;
 
 				if (subProp != null)
 					_kb.addSubProperty(subProp, ot);
@@ -1561,14 +1662,17 @@ public class DefaultGraphLoader implements GraphLoader
 
 				if (_kb.isDatatype(ot))
 					defineDatatypeProperty(st);
-				else if (_kb.isClass(ot))
-					defineObjectProperty(st);
 				else
-					defineProperty(st);
+					if (_kb.isClass(ot))
+						defineObjectProperty(st);
+					else
+						defineProperty(st);
 
 				if (_kb.isDatatypeProperty(st))
 					defineDatatype(ot);
-				else if (_kb.isObjectProperty(st)) defineClass(ot);
+				else
+					if (_kb.isObjectProperty(st))
+						defineClass(ot);
 
 				_kb.addRange(st, ot);
 
@@ -1606,10 +1710,11 @@ public class DefaultGraphLoader implements GraphLoader
 			case OWL_complementOf:
 				if (!defineClass(st))
 					addUnsupportedFeature("Ignoring complementOf axiom because the subject is not a class " + st + " owl:complementOf " + ot);
-				else if (!defineClass(ot))
-					addUnsupportedFeature("Ignoring complementOf axiom because the object is not a class " + st + " owl:complementOf " + ot);
 				else
-					_kb.addComplementClass(st, ot);
+					if (!defineClass(ot))
+						addUnsupportedFeature("Ignoring complementOf axiom because the object is not a class " + st + " owl:complementOf " + ot);
+					else
+						_kb.addComplementClass(st, ot);
 				break;
 
 			case OWL_equivalentClass:
@@ -1620,22 +1725,25 @@ public class DefaultGraphLoader implements GraphLoader
 					else
 						_kb.addDatatypeDefinition(st, ot);
 				}
-				else if (!defineClass(st))
-					addUnsupportedFeature("Ignoring equivalentClass axiom because the subject is not a class " + st + " owl:equivalentClass " + ot);
-				else if (!defineClass(ot))
-					addUnsupportedFeature("Ignoring equivalentClass axiom because the object is not a class " + st + " owl:equivalentClass " + ot);
 				else
-					_kb.addEquivalentClass(st, ot);
+					if (!defineClass(st))
+						addUnsupportedFeature("Ignoring equivalentClass axiom because the subject is not a class " + st + " owl:equivalentClass " + ot);
+					else
+						if (!defineClass(ot))
+							addUnsupportedFeature("Ignoring equivalentClass axiom because the object is not a class " + st + " owl:equivalentClass " + ot);
+						else
+							_kb.addEquivalentClass(st, ot);
 
 				break;
 
 			case OWL_disjointWith:
 				if (!defineClass(st))
 					addUnsupportedFeature("Ignoring disjointWith axiom because the subject is not a class " + st + " owl:disjointWith " + ot);
-				else if (!defineClass(ot))
-					addUnsupportedFeature("Ignoring disjointWith axiom because the object is not a class " + st + " owl:disjointWith " + ot);
 				else
-					_kb.addDisjointClass(st, ot);
+					if (!defineClass(ot))
+						addUnsupportedFeature("Ignoring disjointWith axiom because the object is not a class " + st + " owl:disjointWith " + ot);
+					else
+						_kb.addDisjointClass(st, ot);
 				break;
 
 			case OWL2_propertyDisjointWith:
@@ -1657,23 +1765,29 @@ public class DefaultGraphLoader implements GraphLoader
 					final Triple expr = getExpression(s);
 					if (expr == null)
 						addUnsupportedFeature("Bnode in owl:propertyChainAxiom axiom is not a valid property expression");
-					else if (expr.getPredicate().equals(OWL.inverseOf.asNode()))
-					{
-						if (defineObjectProperty((ATermAppl) st.getArgument(0))) superProp = st;
-					}
 					else
-						addUnsupportedFeature("Bnode in owl:propertyChainAxiom axiom is not a valid property expression");
+						if (expr.getPredicate().equals(OWL.inverseOf.asNode()))
+						{
+							if (defineObjectProperty((ATermAppl) st.getArgument(0)))
+								superProp = st;
+						}
+						else
+							addUnsupportedFeature("Bnode in owl:propertyChainAxiom axiom is not a valid property expression");
 				}
-				else if (defineObjectProperty(st)) superProp = st;
+				else
+					if (defineObjectProperty(st))
+						superProp = st;
 
 				subProp = createList(o);
 				list = (ATermList) subProp;
 				while (!list.isEmpty())
 				{
-					if (!defineObjectProperty((ATermAppl) list.getFirst())) break;
+					if (!defineObjectProperty((ATermAppl) list.getFirst()))
+						break;
 					list = list.getNext();
 				}
-				if (!list.isEmpty()) subProp = null;
+				if (!list.isEmpty())
+					subProp = null;
 
 				if (subProp != null && superProp != null)
 					_kb.addSubProperty(subProp, superProp);
@@ -1729,56 +1843,59 @@ public class DefaultGraphLoader implements GraphLoader
 				else
 				{
 					final Node type = getObject(s, RDF.type.asNode());
-					if (type != null) entityType = BuiltinTerm.find(type);
+					if (type != null)
+						entityType = BuiltinTerm.find(type);
 				}
 
 				if (entityType == null)
 					addUnsupportedFeature("There is no valid rdf:type for an owl:members assertion: " + s);
-				else if (!OWL_MEMBERS_TYPES.contains(entityType))
-					addUnsupportedFeature("The rdf:type for an owl:members assertion is not recognized: " + entityType);
 				else
-				{
-					list = createList(o);
-					for (ATermList l = list; !l.isEmpty(); l = l.getNext())
+					if (!OWL_MEMBERS_TYPES.contains(entityType))
+						addUnsupportedFeature("The rdf:type for an owl:members assertion is not recognized: " + entityType);
+					else
 					{
-						final ATermAppl c = (ATermAppl) l.getFirst();
+						list = createList(o);
+						for (ATermList l = list; !l.isEmpty(); l = l.getNext())
+						{
+							final ATermAppl c = (ATermAppl) l.getFirst();
+							switch (entityType)
+							{
+								case OWL_AllDifferent:
+									defineIndividual(c);
+									break;
+								case OWL2_AllDisjointClasses:
+									defineClass(c);
+									break;
+								case OWL2_AllDisjointProperties:
+									defineProperty(c);
+									break;
+								default:
+									_logger.severe("Unsupported entity type " + entityType);
+							}
+						}
+
 						switch (entityType)
 						{
 							case OWL_AllDifferent:
-								defineIndividual(c);
+								_kb.addAllDifferent(list);
 								break;
 							case OWL2_AllDisjointClasses:
-								defineClass(c);
+								_kb.addDisjointClasses(list);
 								break;
 							case OWL2_AllDisjointProperties:
-								defineProperty(c);
+								_kb.addDisjointProperties(list);
 								break;
 							default:
 								_logger.severe("Unsupported entity type " + entityType);
 						}
 					}
-
-					switch (entityType)
-					{
-						case OWL_AllDifferent:
-							_kb.addAllDifferent(list);
-							break;
-						case OWL2_AllDisjointClasses:
-							_kb.addDisjointClasses(list);
-							break;
-						case OWL2_AllDisjointProperties:
-							_kb.addDisjointProperties(list);
-							break;
-						default:
-							_logger.severe("Unsupported entity type " + entityType);
-					}
-				}
 				break;
 
 			case OWL_oneOf:
 				ATermList resultList = ATermUtils.EMPTY_LIST;
 
-				if (_kb.isDatatype(st)) return;
+				if (_kb.isDatatype(st))
+					return;
 
 				// assert the subject is a class
 				defineClass(st);
@@ -1815,7 +1932,8 @@ public class DefaultGraphLoader implements GraphLoader
 				break;
 
 			case OWL2_hasKey:
-				if (o.equals(RDF.nil.asNode())) return;
+				if (o.equals(RDF.nil.asNode()))
+					return;
 
 				final Set<ATermAppl> properties = new HashSet<>();
 				// assert the subject is a class
@@ -1859,7 +1977,9 @@ public class DefaultGraphLoader implements GraphLoader
 				String msg = null;
 				if (r.isTransitive())
 					msg = "transitivity axiom";
-				else if (r.hasComplexSubRole()) msg = "complex sub property axiom";
+				else
+					if (r.hasComplexSubRole())
+						msg = "complex sub property axiom";
 
 				if (msg != null)
 				{
@@ -1891,21 +2011,25 @@ public class DefaultGraphLoader implements GraphLoader
 							continue;
 					}
 
-				if (!rangeToDatatype) defineObjectProperty(r.getName());
+				if (!rangeToDatatype)
+					defineObjectProperty(r.getName());
 
 				/*
 				 * If a typing assumption has been made, carry over to any
 				 * untyped range entity
 				 */
 				final Set<ATermAppl> ranges = r.getRanges();
-				if (ranges != null) if (rangeToDatatype)
-				{
-					for (final ATermAppl range : ranges)
-						if (range.getAFun().getArity() == 0 && !_kb.isDatatype(range)) defineDatatype(range);
-				}
-				else
-					for (final ATermAppl range : ranges)
-						if (range.getAFun().getArity() == 0 && !_kb.isClass(range)) defineClass(range);
+				if (ranges != null)
+					if (rangeToDatatype)
+					{
+						for (final ATermAppl range : ranges)
+							if (range.getAFun().getArity() == 0 && !_kb.isDatatype(range))
+								defineDatatype(range);
+					}
+					else
+						for (final ATermAppl range : ranges)
+							if (range.getAFun().getArity() == 0 && !_kb.isClass(range))
+								defineClass(range);
 			}
 		}
 	}

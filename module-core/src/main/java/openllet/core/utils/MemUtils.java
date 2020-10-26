@@ -16,11 +16,11 @@ import java.text.NumberFormat;
  */
 public class MemUtils
 {
-	private static final Runtime		runtime			= Runtime.getRuntime();
+	private static final Runtime runtime = Runtime.getRuntime();
 
-	public static final double			BYTES_PER_MB	= 1048576.0;
+	public static final double BYTES_PER_MB = 1048576.0;
 
-	private static final DecimalFormat	MB_FORMAT		= (DecimalFormat) NumberFormat.getNumberInstance();
+	private static final DecimalFormat MB_FORMAT = (DecimalFormat) NumberFormat.getNumberInstance();
 
 	static
 	{

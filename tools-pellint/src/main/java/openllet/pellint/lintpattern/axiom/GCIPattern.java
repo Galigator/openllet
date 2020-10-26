@@ -6,12 +6,13 @@
 
 package openllet.pellint.lintpattern.axiom;
 
+import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
+import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
+
 import openllet.pellint.format.LintFormat;
 import openllet.pellint.format.SimpleLintFormat;
 import openllet.pellint.model.Lint;
 import openllet.pellint.util.OWLUtil;
-import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
-import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 
 /**
  * <p>

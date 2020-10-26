@@ -4,14 +4,7 @@ import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
 
 import java.util.ArrayList;
 import java.util.List;
-import openllet.aterm.ATermAppl;
-import openllet.core.utils.ATermUtils;
-import openllet.owlapi.facet.FacetReasonerOWL;
-import openllet.query.sparqldl.engine.QueryEngine;
-import openllet.query.sparqldl.model.Query;
-import openllet.query.sparqldl.model.QueryAtomFactory;
-import openllet.query.sparqldl.model.QueryImpl;
-import openllet.query.sparqldl.model.QueryResult;
+
 import org.semanticweb.owlapi.model.OWLAnonymousIndividual;
 import org.semanticweb.owlapi.model.OWLAxiomVisitor;
 import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
@@ -25,13 +18,22 @@ import org.semanticweb.owlapi.model.OWLNegativeObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLSameIndividualAxiom;
 
+import openllet.aterm.ATermAppl;
+import openllet.core.utils.ATermUtils;
+import openllet.owlapi.facet.FacetReasonerOWL;
+import openllet.query.sparqldl.engine.QueryEngine;
+import openllet.query.sparqldl.model.Query;
+import openllet.query.sparqldl.model.QueryAtomFactory;
+import openllet.query.sparqldl.model.QueryImpl;
+import openllet.query.sparqldl.model.QueryResult;
+
 public class EntailmentQueryVisitor implements OWLAxiomVisitor, FacetReasonerOWL
 {
-	private final IndividualTermConverter	_indConv;
+	private final IndividualTermConverter _indConv;
 
-	private final OpenlletReasoner			_reasoner;
+	private final OpenlletReasoner _reasoner;
 
-	private Query							_query;
+	private Query _query;
 
 	@Override
 	public OpenlletReasoner getReasoner()

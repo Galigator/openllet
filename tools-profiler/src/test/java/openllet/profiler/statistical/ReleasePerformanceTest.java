@@ -14,17 +14,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
-import openllet.profiler.ProfileKB;
-import openllet.profiler.ProfileKB.LoaderType;
-import openllet.profiler.ProfileKB.MemoryProfiling;
-import openllet.profiler.ProfileKB.Task;
-import openllet.profiler.Result;
+
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
+
+import openllet.profiler.ProfileKB;
+import openllet.profiler.ProfileKB.LoaderType;
+import openllet.profiler.ProfileKB.MemoryProfiling;
+import openllet.profiler.ProfileKB.Task;
+import openllet.profiler.Result;
 
 /**
  * Executes several performance tests on the current release, and compares the results with previous releases to see if there are statistically significant
@@ -38,25 +40,25 @@ import org.junit.runners.Parameterized.Parameters;
 public class ReleasePerformanceTest
 {
 
-	private static final int			PARSE						= Task.Parse.ordinal();
-	private static final int			LOAD						= Task.Load.ordinal();
-	private static final int			CONSISTENCY					= Task.Consistency.ordinal();
-	private static final int			CLASSIFY					= Task.Classify.ordinal();
-	private static final int			REALIZE						= Task.Realize.ordinal();
-	private static final MathStatUtils	math						= new MathStatUtils();
+	private static final int PARSE = Task.Parse.ordinal();
+	private static final int LOAD = Task.Load.ordinal();
+	private static final int CONSISTENCY = Task.Consistency.ordinal();
+	private static final int CLASSIFY = Task.Classify.ordinal();
+	private static final int REALIZE = Task.Realize.ordinal();
+	private static final MathStatUtils math = new MathStatUtils();
 
 	/**
 	 * PARAMETERS
 	 */
-	private static String				ONTOLOGIES					= "";							//File with the location of the ontologies on which we want to perform the tests and compare with previous releases
-	private static int[]				RELEASES_TO_COMPARE			= { 0, 1, 2 };					//Previous releases that we want to compare with. 0 means the latest one, etc...
-	private static int					ITERATIONS					= 30;							//Number of iterations (at least >2, so statistical significance tests can work)
-	private static double				ALPHA						= 0.001;						//Confidence Interval = 1-alpha. Bigger the alpha, bigger is the probability of statistical significant changes
-	private static double				MAX_PERFORMANCE_DECREASE	= 0.05;							//Maximum % of performance decrease
-	private static String				RELEASE_REPOSITORY			= "profiler/releases";			//Directory with the previous releases
-	private static Task					TASK						= Task.Realize;					//Task to execute
-	private static LoaderType			LOADER						= LoaderType.JENA;				//Loader
-	private static boolean				WARMUP						= true;							//Should we perform JVM warmup?
+	private static String ONTOLOGIES = ""; //File with the location of the ontologies on which we want to perform the tests and compare with previous releases
+	private static int[] RELEASES_TO_COMPARE = { 0, 1, 2 }; //Previous releases that we want to compare with. 0 means the latest one, etc...
+	private static int ITERATIONS = 30; //Number of iterations (at least >2, so statistical significance tests can work)
+	private static double ALPHA = 0.001; //Confidence Interval = 1-alpha. Bigger the alpha, bigger is the probability of statistical significant changes
+	private static double MAX_PERFORMANCE_DECREASE = 0.05; //Maximum % of performance decrease
+	private static String RELEASE_REPOSITORY = "profiler/releases"; //Directory with the previous releases
+	private static Task TASK = Task.Realize; //Task to execute
+	private static LoaderType LOADER = LoaderType.JENA; //Loader
+	private static boolean WARMUP = true; //Should we perform JVM warmup?
 
 	@Parameters
 	public static List<Object[]> params() throws IOException
@@ -71,19 +73,21 @@ public class ReleasePerformanceTest
 		final Release current = getCurrentRelease();
 		final List<Release> previousReleases = manager.getReleases();
 
-		if (!previousReleases.isEmpty()) for (final int revNumber : RELEASES_TO_COMPARE)
-			if (revNumber >= 0 && revNumber < previousReleases.size()) //If they are available, try to compare
-			{
-				final Release previous = previousReleases.get(revNumber);
-				for (final Entry<String, List<ReleaseStatistics>> currStats : current.getAllStatistics().entrySet()) //For all the ontologies in the _current test set
+		if (!previousReleases.isEmpty())
+			for (final int revNumber : RELEASES_TO_COMPARE)
+				if (revNumber >= 0 && revNumber < previousReleases.size()) //If they are available, try to compare
 				{
-					final List<ReleaseStatistics> previousStats = previous.getStatistics(currStats.getKey()); //If the previous release contains results about this ontology, compare. otherwise, ignore and continue
-					if (previousStats == null) continue;
+					final Release previous = previousReleases.get(revNumber);
+					for (final Entry<String, List<ReleaseStatistics>> currStats : current.getAllStatistics().entrySet()) //For all the ontologies in the _current test set
+					{
+						final List<ReleaseStatistics> previousStats = previous.getStatistics(currStats.getKey()); //If the previous release contains results about this ontology, compare. otherwise, ignore and continue
+						if (previousStats == null)
+							continue;
 
-					System.out.println("Comparing with [" + revNumber + "]: " + previous.getVersion());
-					params.add(new Object[] { currStats.getValue(), previousStats, previous.getVersion(), currStats.getKey() });
+						System.out.println("Comparing with [" + revNumber + "]: " + previous.getVersion());
+						params.add(new Object[] { currStats.getValue(), previousStats, previous.getVersion(), currStats.getKey() });
+					}
 				}
-			}
 
 		try
 		{
@@ -131,24 +135,29 @@ public class ReleasePerformanceTest
 			final String tsk = properties.getProperty("TASK", "Realize");
 			if (tsk.equalsIgnoreCase("Realize"))
 				TASK = Task.Realize;
-			else if (tsk.equalsIgnoreCase("Classify"))
-				TASK = Task.Classify;
-			else if (tsk.equalsIgnoreCase("Consistency"))
-				TASK = Task.Consistency;
-			else if (tsk.equalsIgnoreCase("Load"))
-				TASK = Task.Load;
-			else if (tsk.equalsIgnoreCase("Parse"))
-				TASK = Task.Parse;
 			else
-				System.err.println("Invalid task: " + tsk);
+				if (tsk.equalsIgnoreCase("Classify"))
+					TASK = Task.Classify;
+				else
+					if (tsk.equalsIgnoreCase("Consistency"))
+						TASK = Task.Consistency;
+					else
+						if (tsk.equalsIgnoreCase("Load"))
+							TASK = Task.Load;
+						else
+							if (tsk.equalsIgnoreCase("Parse"))
+								TASK = Task.Parse;
+							else
+								System.err.println("Invalid task: " + tsk);
 
 			final String _loader = properties.getProperty("LOADER", "Jena");
 			if (_loader.equalsIgnoreCase("Jena"))
 				LOADER = LoaderType.JENA;
-			else if (_loader.equalsIgnoreCase("OWLAPI"))
-				LOADER = LoaderType.OWLAPI;
 			else
-				System.err.println("Invalid loader: " + _loader);
+				if (_loader.equalsIgnoreCase("OWLAPI"))
+					LOADER = LoaderType.OWLAPI;
+				else
+					System.err.println("Invalid loader: " + _loader);
 
 			WARMUP = Boolean.parseBoolean(properties.getProperty("WARMUP", "True"));
 
@@ -176,7 +185,8 @@ public class ReleasePerformanceTest
 
 			while ((line = reader.readLine()) != null)
 			{
-				if (line.trim().length() == 0) continue;
+				if (line.trim().length() == 0)
+					continue;
 
 				final String[] files = line.split(" ");
 				final String name = new File(files[0]).getName();
@@ -225,7 +235,7 @@ public class ReleasePerformanceTest
 	 * This logarithmic function behaves relatively well on estimating the number of warmup iterations. Goes from 85 iterations when estimatedTime=0.01s, to 1
 	 * iteration when estimatedTime ~>= 25s The function can be tuned using Wolfram Alpha: fit {{0.01,100},{0.1,50},{1,30},{10,10},{20,5},{30,1}}
 	 *
-	 * @param  estimatedTime
+	 * @param estimatedTime
 	 * @return
 	 */
 	private static int getNumberOfWarmupIterations(final double estimatedTime)
@@ -234,9 +244,9 @@ public class ReleasePerformanceTest
 		return n > 0 ? n : 1;
 	}
 
-	private final List<ReleaseStatistics>	_current;
-	private final List<ReleaseStatistics>	_previous;
-	private final String					_message;
+	private final List<ReleaseStatistics> _current;
+	private final List<ReleaseStatistics> _previous;
+	private final String _message;
 
 	public ReleasePerformanceTest(final List<ReleaseStatistics> current, final List<ReleaseStatistics> previous, final String previousReleaseVersion, final String ontology)
 	{
@@ -311,8 +321,7 @@ public class ReleasePerformanceTest
 
 		final ReleaseStatistics curr = _current.get(task);
 		final ReleaseStatistics prev = _previous.get(task);
-		final boolean isSignificant = changeIsStatisticallySignificant(curr.getTimeStat("avg"), prev.getTimeStat("avg"), curr.getTimeStat("var"), prev.getTimeStat("var"), curr.getTimeStat("n"),
-				prev.getTimeStat("n"));
+		final boolean isSignificant = changeIsStatisticallySignificant(curr.getTimeStat("avg"), prev.getTimeStat("avg"), curr.getTimeStat("var"), prev.getTimeStat("var"), curr.getTimeStat("n"), prev.getTimeStat("n"));
 
 		if (isSignificant) //fail();
 			System.err.println(Task.values()[task] + " Time regression (from " + prev.getTimeStat("avg") + " to " + curr.getTimeStat("avg") + "). " + _message);
@@ -324,28 +333,29 @@ public class ReleasePerformanceTest
 
 		final ReleaseStatistics curr = _current.get(task);
 		final ReleaseStatistics prev = _previous.get(task);
-		final boolean isSignificant = changeIsStatisticallySignificant(curr.getMemStat("avg"), prev.getMemStat("avg"), curr.getMemStat("var"), prev.getMemStat("var"), curr.getMemStat("n"),
-				prev.getMemStat("n"));
+		final boolean isSignificant = changeIsStatisticallySignificant(curr.getMemStat("avg"), prev.getMemStat("avg"), curr.getMemStat("var"), prev.getMemStat("var"), curr.getMemStat("n"), prev.getMemStat("n"));
 
-		if (isSignificant) fail(Task.values()[task] + " Memory regression (from " + prev.getMemStat("avg") + " to " + curr.getMemStat("avg") + "). " + _message);
+		if (isSignificant)
+			fail(Task.values()[task] + " Memory regression (from " + prev.getMemStat("avg") + " to " + curr.getMemStat("avg") + "). " + _message);
 	}
 
-	private static boolean changeIsStatisticallySignificant(final double m1, final double m2, @SuppressWarnings("unused") final double v1, final double v2, @SuppressWarnings("unused") final double n1,
-			final double n2)
+	private static boolean changeIsStatisticallySignificant(final double m1, final double m2, @SuppressWarnings("unused") final double v1, final double v2, @SuppressWarnings("unused") final double n1, final double n2)
 	{
-		if (m1 > m2 && m1 > 0.01) try
-		{
-			//return math.tTest(m1, m2, v1, v2, n1, n2, ALPHA);	//2-sided, 2-sample t-test. returns true if they're different, i.e., it rejected the null hyphoteses that there is no difference between the means
-			//return math.tTest(m1, m2, v1, n1, alpha);	//2-sided, 1-sample t-test. returns true if they're different, i.e., it rejected the null hyphoteses that there is no difference between the means
-			//double val = 1 - (m2/m1);
-			//return val > MAX_PERFORMANCE_DECREASE? true: false;
+		if (m1 > m2 && m1 > 0.01)
+			try
+			{
+				//return math.tTest(m1, m2, v1, v2, n1, n2, ALPHA);	//2-sided, 2-sample t-test. returns true if they're different, i.e., it rejected the null hyphoteses that there is no difference between the means
+				//return math.tTest(m1, m2, v1, n1, alpha);	//2-sided, 1-sample t-test. returns true if they're different, i.e., it rejected the null hyphoteses that there is no difference between the means
+				//double val = 1 - (m2/m1);
+				//return val > MAX_PERFORMANCE_DECREASE? true: false;
 
-			if (m1 > math.confidenceInterval(m2, v2, n2, ALPHA)[1] * (1 + MAX_PERFORMANCE_DECREASE)) return true;
-		}
-		catch (final Exception e)
-		{
-			e.printStackTrace();
-		}
+				if (m1 > math.confidenceInterval(m2, v2, n2, ALPHA)[1] * (1 + MAX_PERFORMANCE_DECREASE))
+					return true;
+			}
+			catch (final Exception e)
+			{
+				e.printStackTrace();
+			}
 		return false;
 	}
 }

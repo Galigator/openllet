@@ -18,6 +18,10 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import org.junit.Before;
+import org.junit.Test;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBaseImpl;
 import openllet.core.boxes.abox.Individual;
@@ -42,8 +46,6 @@ import openllet.core.rules.model.IndividualPropertyAtom;
 import openllet.core.rules.model.RuleAtom;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.Namespaces;
-import org.junit.Before;
-import org.junit.Test;
 
 /**
  * <p>
@@ -98,14 +100,12 @@ public class BindingGeneratorsTest
 
 	}
 
-	private KnowledgeBaseImpl		_kb;
+	private KnowledgeBaseImpl _kb;
 
-	private static final ATermAppl	data1	= ATermUtils.makePlainLiteral("data1"), data2 = ATermUtils.makePlainLiteral("data2"), data3 = ATermUtils.makePlainLiteral("data3"),
-			data4 = ATermUtils.makeTypedLiteral("4", Namespaces.XSD + "decimal"), dp1 = ATermUtils.makeTermAppl("dataProp1"), dp2 = ATermUtils.makeTermAppl("dataProp2"),
-			mary = ATermUtils.makeTermAppl("Mary"), p = ATermUtils.makeTermAppl("p"), robert = ATermUtils.makeTermAppl("Robert"), victor = ATermUtils.makeTermAppl("Victor");
+	private static final ATermAppl data1 = ATermUtils.makePlainLiteral("data1"), data2 = ATermUtils.makePlainLiteral("data2"), data3 = ATermUtils.makePlainLiteral("data3"), data4 = ATermUtils.makeTypedLiteral("4", Namespaces.XSD + "decimal"), dp1 = ATermUtils.makeTermAppl("dataProp1"), dp2 = ATermUtils.makeTermAppl("dataProp2"), mary = ATermUtils.makeTermAppl("Mary"), p = ATermUtils.makeTermAppl("p"), robert = ATermUtils.makeTermAppl("Robert"), victor = ATermUtils.makeTermAppl("Victor");
 
-	private AtomIVariable			_x, _y;
-	private AtomDVariable			_z;
+	private AtomIVariable _x, _y;
+	private AtomDVariable _z;
 
 	@Before
 	public void setUp()

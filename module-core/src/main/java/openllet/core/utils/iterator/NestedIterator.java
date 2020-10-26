@@ -10,14 +10,14 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * @author         Evren Sirin
- * @param  <Outer>
- * @param  <Inner>
+ * @author Evren Sirin
+ * @param <Outer>
+ * @param <Inner>
  */
 public abstract class NestedIterator<Outer, Inner> implements Iterator<Inner>
 {
-	private volatile Iterator<? extends Outer>	_outerIterator;
-	private volatile Iterator<? extends Inner>	_innerIterator;
+	private volatile Iterator<? extends Outer> _outerIterator;
+	private volatile Iterator<? extends Inner> _innerIterator;
 
 	public NestedIterator(final Iterable<? extends Outer> outerIterable)
 	{
@@ -37,7 +37,8 @@ public abstract class NestedIterator<Outer, Inner> implements Iterator<Inner>
 			final Outer subj = _outerIterator.next();
 			_innerIterator = getInnerIterator(subj);
 
-			if (_innerIterator.hasNext()) return;
+			if (_innerIterator.hasNext())
+				return;
 		}
 
 		_innerIterator = IteratorUtils.emptyIterator();
@@ -54,11 +55,13 @@ public abstract class NestedIterator<Outer, Inner> implements Iterator<Inner>
 	@Override
 	public Inner next()
 	{
-		if (!hasNext()) throw new NoSuchElementException();
+		if (!hasNext())
+			throw new NoSuchElementException();
 
 		final Inner value = _innerIterator.next();
 
-		if (!_innerIterator.hasNext()) findIterator();
+		if (!_innerIterator.hasNext())
+			findIterator();
 
 		return value;
 	}

@@ -17,13 +17,7 @@ import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
-import openllet.core.OpenlletOptions;
-import openllet.core.utils.SetUtils;
-import openllet.jena.PelletInfGraph;
-import openllet.owlapi.OWL;
-import openllet.owlapi.OpenlletReasoner;
-import openllet.owlapi.OpenlletReasonerFactory;
-import openllet.owlapi.explanation.PelletExplanation;
+
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
@@ -39,6 +33,14 @@ import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
+
+import openllet.core.OpenlletOptions;
+import openllet.core.utils.SetUtils;
+import openllet.jena.PelletInfGraph;
+import openllet.owlapi.OWL;
+import openllet.owlapi.OpenlletReasoner;
+import openllet.owlapi.OpenlletReasonerFactory;
+import openllet.owlapi.explanation.PelletExplanation;
 
 /**
  * <p>

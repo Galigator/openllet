@@ -43,6 +43,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Random;
 import java.util.Set;
+
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
 import openllet.core.KnowledgeBaseImpl;
@@ -55,9 +60,6 @@ import openllet.core.datatypes.exceptions.InvalidConstrainingFacetException;
 import openllet.core.datatypes.exceptions.InvalidLiteralException;
 import openllet.core.datatypes.exceptions.UnrecognizedDatatypeException;
 import openllet.core.utils.TermFactory;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
 
 public class DatatypeReasonerTests
 {
@@ -69,8 +71,7 @@ public class DatatypeReasonerTests
 
 	private static Collection<ATermAppl> getSatisfiableDecimalEnumerations()
 	{
-		final Collection<ATermAppl> dataranges = Arrays.asList(oneOf(literal("1.0", DECIMAL), literal("2.0", DECIMAL), literal("3.0", DECIMAL)),
-				oneOf(literal("2.0", DECIMAL), literal("4.0", DECIMAL), literal("6.0", DECIMAL)));
+		final Collection<ATermAppl> dataranges = Arrays.asList(oneOf(literal("1.0", DECIMAL), literal("2.0", DECIMAL), literal("3.0", DECIMAL)), oneOf(literal("2.0", DECIMAL), literal("4.0", DECIMAL), literal("6.0", DECIMAL)));
 		return dataranges;
 	}
 
@@ -84,8 +85,7 @@ public class DatatypeReasonerTests
 
 	private static Collection<ATermAppl> getUnsatisfiableDecimalEnumerations()
 	{
-		final Collection<ATermAppl> dataranges = Arrays.asList(oneOf(literal("1.0", DECIMAL), literal("2.0", DECIMAL), literal("3.0", DECIMAL)),
-				oneOf(literal("4.0", DECIMAL), literal("5.0", DECIMAL), literal("6.0", DECIMAL)));
+		final Collection<ATermAppl> dataranges = Arrays.asList(oneOf(literal("1.0", DECIMAL), literal("2.0", DECIMAL), literal("3.0", DECIMAL)), oneOf(literal("4.0", DECIMAL), literal("5.0", DECIMAL), literal("6.0", DECIMAL)));
 		return dataranges;
 	}
 
@@ -97,9 +97,9 @@ public class DatatypeReasonerTests
 		return dataranges;
 	}
 
-	private ABoxImpl			abox;
+	private ABoxImpl abox;
 
-	private DatatypeReasoner	reasoner;
+	private DatatypeReasoner reasoner;
 
 	/**
 	 * Verify that overlapping decimal ranges for a single variable are satisfiable.
@@ -115,7 +115,7 @@ public class DatatypeReasonerTests
 		for (final ATermAppl a : getSatisfiableDecimalRanges())
 			x.addType(a, DependencySet.INDEPENDENT);
 
-		assertTrue(reasoner.isSatisfiable(singleton(x), Collections.<Literal, Set<Literal>>emptyMap()));
+		assertTrue(reasoner.isSatisfiable(singleton(x), Collections.<Literal, Set<Literal>> emptyMap()));
 	}
 
 	/**
@@ -132,7 +132,7 @@ public class DatatypeReasonerTests
 		for (final ATermAppl a : getSatisfiableDecimalEnumerations())
 			x.addType(a, DependencySet.INDEPENDENT);
 
-		assertTrue(reasoner.isSatisfiable(singleton(x), Collections.<Literal, Set<Literal>>emptyMap()));
+		assertTrue(reasoner.isSatisfiable(singleton(x), Collections.<Literal, Set<Literal>> emptyMap()));
 	}
 
 	/**
@@ -149,7 +149,7 @@ public class DatatypeReasonerTests
 		for (final ATermAppl a : getUnsatisfiableDecimalRanges())
 			x.addType(a, DependencySet.INDEPENDENT);
 
-		assertFalse(reasoner.isSatisfiable(singleton(x), Collections.<Literal, Set<Literal>>emptyMap()));
+		assertFalse(reasoner.isSatisfiable(singleton(x), Collections.<Literal, Set<Literal>> emptyMap()));
 	}
 
 	/**
@@ -166,7 +166,7 @@ public class DatatypeReasonerTests
 		for (final ATermAppl a : getUnsatisfiableDecimalEnumerations())
 			x.addType(a, DependencySet.INDEPENDENT);
 
-		assertFalse(reasoner.isSatisfiable(singleton(x), Collections.<Literal, Set<Literal>>emptyMap()));
+		assertFalse(reasoner.isSatisfiable(singleton(x), Collections.<Literal, Set<Literal>> emptyMap()));
 	}
 
 	@Before

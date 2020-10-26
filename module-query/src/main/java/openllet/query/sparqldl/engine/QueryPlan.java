@@ -38,8 +38,8 @@ public abstract class QueryPlan
 	}
 
 	/**
-	 * @param  binding
-	 * @return         next atom to be executed w.r. to the current binding.
+	 * @param binding
+	 * @return next atom to be executed w.r. to the current binding.
 	 */
 	public abstract QueryAtom next(final ResultBinding binding);
 

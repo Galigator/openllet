@@ -4,7 +4,9 @@ import static java.lang.String.format;
 
 import java.math.BigDecimal;
 import java.util.logging.Logger;
+
 import javax.xml.bind.DatatypeConverter;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.datatypes.AbstractBaseDatatype;
 import openllet.core.datatypes.Datatype;
@@ -34,8 +36,8 @@ import openllet.shared.tools.Log;
 public class XSDDecimal extends AbstractBaseDatatype<Number>
 {
 
-	private static final XSDDecimal	_instance	= new XSDDecimal();
-	private static final Logger		_logger		= Log.getLogger(XSDDecimal.class);
+	private static final XSDDecimal _instance = new XSDDecimal();
+	private static final Logger _logger = Log.getLogger(XSDDecimal.class);
 
 	public static XSDDecimal getInstance()
 	{

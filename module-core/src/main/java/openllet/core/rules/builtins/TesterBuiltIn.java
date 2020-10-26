@@ -8,6 +8,7 @@ package openllet.core.rules.builtins;
 
 import java.util.Collection;
 import java.util.Collections;
+
 import openllet.core.boxes.abox.ABox;
 import openllet.core.boxes.abox.Literal;
 import openllet.core.rules.BindingHelper;
@@ -39,8 +40,8 @@ public class TesterBuiltIn implements BuiltIn
 	private class TestHelper implements BindingHelper
 	{
 
-		private final BuiltInAtom	_atom;
-		private boolean				_result;
+		private final BuiltInAtom _atom;
+		private boolean _result;
 
 		public TestHelper(final BuiltInAtom atom)
 		{

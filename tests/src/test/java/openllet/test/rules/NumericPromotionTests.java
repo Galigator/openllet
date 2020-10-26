@@ -10,11 +10,13 @@ import static org.junit.Assert.assertEquals;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+
+import org.junit.Before;
+import org.junit.Test;
+
 import junit.framework.JUnit4TestAdapter;
 import openllet.core.rules.builtins.NumericPromotion;
 import openllet.core.rules.builtins.NumericVisitor;
-import org.junit.Before;
-import org.junit.Test;
 
 /**
  * <p>

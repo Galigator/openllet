@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
 import openllet.aterm.ATermAppl;
 
 /**
@@ -32,9 +33,9 @@ import openllet.aterm.ATermAppl;
  */
 public class UnionQueryAtom implements QueryAtom
 {
-	private final List<List<QueryAtom>>	_union;
-	private boolean						_isGround;
-	private final List<ATermAppl>		_args;
+	private final List<List<QueryAtom>> _union;
+	private boolean _isGround;
+	private final List<ATermAppl> _args;
 
 	public UnionQueryAtom(final List<QueryAtom> atoms1, final List<QueryAtom> atoms2)
 	{
@@ -43,7 +44,8 @@ public class UnionQueryAtom implements QueryAtom
 
 	public UnionQueryAtom(final List<List<QueryAtom>> union)
 	{
-		if (union.isEmpty()) throw new IllegalArgumentException("Empty collection of atoms not allowed in NotKnown atom");
+		if (union.isEmpty())
+			throw new IllegalArgumentException("Empty collection of atoms not allowed in NotKnown atom");
 
 		_union = Collections.unmodifiableList(union);
 
@@ -53,7 +55,8 @@ public class UnionQueryAtom implements QueryAtom
 			for (final QueryAtom atom : atoms)
 			{
 				_args.addAll(atom.getArguments());
-				if (_isGround && !atom.isGround()) _isGround = false;
+				if (_isGround && !atom.isGround())
+					_isGround = false;
 			}
 	}
 
@@ -75,7 +78,8 @@ public class UnionQueryAtom implements QueryAtom
 	@Override
 	public boolean equals(final Object obj)
 	{
-		if (!(obj instanceof UnionQueryAtom)) return false;
+		if (!(obj instanceof UnionQueryAtom))
+			return false;
 
 		return _union.equals(((UnionQueryAtom) obj)._union);
 	}

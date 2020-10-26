@@ -35,12 +35,13 @@ public class SatisfiedSyntaxConstraintFilter implements FilterCondition
 	final private SyntaxConstraint _constraint;
 
 	/**
-	 * @param  constraint           to check.
+	 * @param constraint to check.
 	 * @throws NullPointerException if <code>_constraint == null</code>
 	 */
 	public SatisfiedSyntaxConstraintFilter(final SyntaxConstraint constraint)
 	{
-		if (constraint == null) throw new NullPointerException();
+		if (constraint == null)
+			throw new NullPointerException();
 
 		_constraint = constraint;
 	}

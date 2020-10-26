@@ -28,8 +28,8 @@ public interface Edge
 	/**
 	 * Given a node upon which this edge is incident, the opposite incident _node is returned.
 	 *
-	 * @param  node a node upon which this edge is incident
-	 * @return      the other node this edge is incident upon
+	 * @param node a node upon which this edge is incident
+	 * @return the other node this edge is incident upon
 	 */
 	Node getNeighbor(Node node);
 

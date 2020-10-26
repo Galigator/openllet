@@ -29,6 +29,7 @@
 package openllet.aterm;
 
 import java.io.IOException;
+
 import openllet.aterm.stream.BufferedOutputStreamWriter;
 
 /**
@@ -47,17 +48,14 @@ public interface AFun extends ATerm
 	String getName();
 
 	/**
-	 * Gets the arity of this application. Arity is the number
-	 * of arguments of a function application.
+	 * Gets the arity of this application. Arity is the number of arguments of a function application.
 	 *
-	 * @return the number of arguments that applications of this
-	 *         function symbol have.
+	 * @return the number of arguments that applications of this function symbol have.
 	 */
 	int getArity();
 
 	/**
-	 * Checks if this application is quoted. A quoted application looks
-	 * like this: "foo", whereas an unquoted looks like this: foo.
+	 * Checks if this application is quoted. A quoted application looks like this: "foo", whereas an unquoted looks like this: foo.
 	 *
 	 * @return true if this application is quoted, false otherwise.
 	 */

@@ -1,6 +1,7 @@
 package openllet.query.sparqldl.engine;
 
 import java.util.List;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
 import openllet.core.exceptions.UnsupportedQueryException;
@@ -17,9 +18,9 @@ import openllet.query.sparqldl.model.QueryResult;
 public class QuerySubsumption
 {
 	/**
-	 * @param  q1 sub
-	 * @param  q2 sup
-	 * @return    Checks whether sub is equivalent to sup
+	 * @param q1 sub
+	 * @param q2 sup
+	 * @return Checks whether sub is equivalent to sup
 	 */
 	public static boolean isEquivalentTo(final Query q1, final Query q2)
 	{
@@ -27,9 +28,9 @@ public class QuerySubsumption
 	}
 
 	/**
-	 * @param  sub
-	 * @param  sup
-	 * @return     Checks whether sub is subsumed by sup
+	 * @param sub
+	 * @param sup
+	 * @return Checks whether sub is subsumed by sup
 	 */
 	public static boolean isSubsumedBy(final Query sub, final Query sup)
 	{
@@ -37,9 +38,9 @@ public class QuerySubsumption
 	}
 
 	/**
-	 * @param  sub
-	 * @param  sup
-	 * @return     Computes the subsumption mappings between sub and sup
+	 * @param sub
+	 * @param sup
+	 * @return Computes the subsumption mappings between sub and sup
 	 */
 	public static QueryResult getSubsumptionMappings(final Query sub, final Query sup)
 	{

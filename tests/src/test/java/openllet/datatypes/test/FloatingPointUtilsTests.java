@@ -5,8 +5,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
-import openllet.core.datatypes.types.floating.FloatingPointUtils;
 import org.junit.Test;
+
+import openllet.core.datatypes.types.floating.FloatingPointUtils;
 
 /**
  * <p>

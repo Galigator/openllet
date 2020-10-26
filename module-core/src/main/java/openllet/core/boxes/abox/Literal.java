@@ -41,6 +41,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
@@ -58,15 +59,15 @@ import openllet.core.utils.ATermUtils;
  */
 public class Literal extends Node
 {
-	private final ATermAppl		_atermValue;
+	private final ATermAppl _atermValue;
 
-	private final Object		_value;
+	private final Object _value;
 
-	private final boolean		_hasValue;
+	private final boolean _hasValue;
 
-	private volatile NodeMerge	_merge;
+	private volatile NodeMerge _merge;
 
-	private volatile boolean	_clashed	= false;
+	private volatile boolean _clashed = false;
 
 	public Literal(final ATermAppl name, final ATermAppl term, final ABox abox, final DependencySet ds)
 	{
@@ -102,7 +103,8 @@ public class Literal extends Node
 
 				_value = value;
 
-				if (_value == null) _depends.put(name, ds);
+				if (_value == null)
+					_depends.put(name, ds);
 			}
 			else
 				_value = null;
@@ -177,7 +179,8 @@ public class Literal extends Node
 	@Override
 	public boolean isDifferent(final Node node)
 	{
-		if (super.isDifferent(node)) return true;
+		if (super.isDifferent(node))
+			return true;
 
 		final Literal literal = (Literal) node;
 		if (_hasValue && literal._hasValue)
@@ -209,27 +212,32 @@ public class Literal extends Node
 		if (type instanceof ATermAppl)
 		{
 			final ATermAppl a = (ATermAppl) type;
-			if (ATermUtils.isNominal(a)) try
-			{
-				final ATermAppl input = (ATermAppl) a.getArgument(0);
-				final ATermAppl canonical = _abox.getDatatypeReasoner().getCanonicalRepresentation(input);
-				if (!canonical.equals(input)) type = ATermUtils.makeValue(canonical);
-			}
-			catch (final InvalidLiteralException e)
-			{
-				_logger.warning(format("hasType called with nominal using invalid literal ('%s'), returning false", e.getMessage()));
-				return false;
-			}
-			catch (final UnrecognizedDatatypeException e)
-			{
-				_logger.warning(format("hasType called with nominal using literal with unrecognized datatype ('%s'), returning false", e.getMessage()));
-				return false;
-			}
+			if (ATermUtils.isNominal(a))
+				try
+				{
+					final ATermAppl input = (ATermAppl) a.getArgument(0);
+					final ATermAppl canonical = _abox.getDatatypeReasoner().getCanonicalRepresentation(input);
+					if (!canonical.equals(input))
+						type = ATermUtils.makeValue(canonical);
+				}
+				catch (final InvalidLiteralException e)
+				{
+					_logger.warning(format("hasType called with nominal using invalid literal ('%s'), returning false", e.getMessage()));
+					return false;
+				}
+				catch (final UnrecognizedDatatypeException e)
+				{
+					_logger.warning(format("hasType called with nominal using literal with unrecognized datatype ('%s'), returning false", e.getMessage()));
+					return false;
+				}
 		}
 
 		if (super.hasType(type))
 			return true;
-		else if (_hasValue) if (_atermValue.equals(type)) return true;
+		else
+			if (_hasValue)
+				if (_atermValue.equals(type))
+					return true;
 
 		return false;
 	}
@@ -241,7 +249,8 @@ public class Literal extends Node
 		if (isDifferent(node))
 		{
 			ds = _differents.get(node);
-			if (ds == null) ds = DependencySet.INDEPENDENT;
+			if (ds == null)
+				ds = DependencySet.INDEPENDENT;
 		}
 
 		return ds;
@@ -250,7 +259,8 @@ public class Literal extends Node
 	@Override
 	public void addType(final ATermAppl c, final DependencySet d)
 	{
-		if (hasType(c)) return;
+		if (hasType(c))
+			return;
 
 		/*
 		 * A negated nominal is turned into a different
@@ -262,7 +272,8 @@ public class Literal extends Node
 			{
 				final ATermAppl v = (ATermAppl) arg.getArgument(0);
 				Literal other = _abox.getLiteral(v);
-				if (other == null) other = _abox.addLiteral(v, d);
+				if (other == null)
+					other = _abox.addLiteral(v, d);
 				super.setDifferent(other, d);
 				return;
 			}
@@ -280,7 +291,8 @@ public class Literal extends Node
 		{
 			final ATermAppl c = entry.getKey();
 
-			if (hasType(c)) continue;
+			if (hasType(c))
+				continue;
 
 			final DependencySet depends = entry.getValue();
 
@@ -315,7 +327,8 @@ public class Literal extends Node
 
 	public String getLexicalValue()
 	{
-		if (_hasValue) return _value.toString();
+		if (_hasValue)
+			return _value.toString();
 
 		return null;
 	}
@@ -339,7 +352,8 @@ public class Literal extends Node
 		if (hasType(ATermUtils.BOTTOM_LIT))
 		{
 			reportClash(Clash.emptyDatatype(this, getDepends(ATermUtils.BOTTOM_LIT)));
-			if (_abox.doExplanation()) System.out.println("1) Literal clash dependency = " + _abox.getClash());
+			if (_abox.doExplanation())
+				System.out.println("1) Literal clash dependency = " + _abox.getClash());
 			return;
 		}
 
@@ -370,60 +384,63 @@ public class Literal extends Node
 						{
 							final ATermAppl dtName = ATermUtils.isNot(element) ? (ATermAppl) element.getArgument(0) : element;
 							final ATermAppl definition = dtReasoner.getDefinition(dtName);
-							if (definition != null) ds = ds.union(Collections.singleton(ATermUtils.makeDatatypeDefinition(dtName, definition)), true);
+							if (definition != null)
+								ds = ds.union(Collections.singleton(ATermUtils.makeDatatypeDefinition(dtName, definition)), true);
 						}
 					}
 
 					reportClash(Clash.valueDatatype(this, ds, (ATermAppl) _atermValue.getArgument(0), dt[0]));
 				}
 			}
-			else if (dtReasoner.isSatisfiable(types))
-			{
-				if (!dtReasoner.containsAtLeast(2, types))
-				{
-					/*
-					 * This literal is a variable, but given _current ranges can only
-					 * take on a single _value.  Merge with that _value.
-					 */
-					final Object value = dtReasoner.valueIterator(types).next();
-					final ATermAppl valueTerm = dtReasoner.getLiteral(value);
-					Literal valueLiteral = _abox.getLiteral(valueTerm);
-					if (valueLiteral == null)
-						/*
-						 * No dependency set is used here because omitting it prevents the
-						 * constant literal from being removed during backtrack
-						 */
-						valueLiteral = _abox.addLiteral(valueTerm);
-					DependencySet mergeDs = DependencySet.INDEPENDENT;
-					for (final DependencySet ds : _depends.values())
-						mergeDs = mergeDs.union(ds, _abox.doExplanation());
-					_merge = new NodeMerge(this, valueLiteral, mergeDs);
-				}
-			}
 			else
-			{
-				final ArrayList<ATermAppl> primitives = new ArrayList<>();
-				for (final ATermAppl t : types)
-					if (ATermUtils.TOP_LIT.equals(t))
-						continue;
-					else
-						primitives.add(t);
-
-				final ATermAppl dt[] = primitives.toArray(new ATermAppl[primitives.size() - 1]);
-
-				DependencySet ds = DependencySet.EMPTY;
-				for (final ATermAppl element : dt)
+				if (dtReasoner.isSatisfiable(types))
 				{
-					ds = ds.union(getDepends(element), _abox.doExplanation());
-					if (_abox.doExplanation())
+					if (!dtReasoner.containsAtLeast(2, types))
 					{
-						final ATermAppl definition = dtReasoner.getDefinition(element);
-						if (definition != null) ds = ds.union(Collections.singleton(ATermUtils.makeDatatypeDefinition(element, definition)), true);
+						/*
+						 * This literal is a variable, but given _current ranges can only
+						 * take on a single _value.  Merge with that _value.
+						 */
+						final Object value = dtReasoner.valueIterator(types).next();
+						final ATermAppl valueTerm = dtReasoner.getLiteral(value);
+						Literal valueLiteral = _abox.getLiteral(valueTerm);
+						if (valueLiteral == null)
+							/*
+							 * No dependency set is used here because omitting it prevents the
+							 * constant literal from being removed during backtrack
+							 */
+							valueLiteral = _abox.addLiteral(valueTerm);
+						DependencySet mergeDs = DependencySet.INDEPENDENT;
+						for (final DependencySet ds : _depends.values())
+							mergeDs = mergeDs.union(ds, _abox.doExplanation());
+						_merge = new NodeMerge(this, valueLiteral, mergeDs);
 					}
 				}
+				else
+				{
+					final ArrayList<ATermAppl> primitives = new ArrayList<>();
+					for (final ATermAppl t : types)
+						if (ATermUtils.TOP_LIT.equals(t))
+							continue;
+						else
+							primitives.add(t);
 
-				reportClash(Clash.emptyDatatype(this, ds, dt));
-			}
+					final ATermAppl dt[] = primitives.toArray(new ATermAppl[primitives.size() - 1]);
+
+					DependencySet ds = DependencySet.EMPTY;
+					for (final ATermAppl element : dt)
+					{
+						ds = ds.union(getDepends(element), _abox.doExplanation());
+						if (_abox.doExplanation())
+						{
+							final ATermAppl definition = dtReasoner.getDefinition(element);
+							if (definition != null)
+								ds = ds.union(Collections.singleton(ATermUtils.makeDatatypeDefinition(element, definition)), true);
+						}
+					}
+
+					reportClash(Clash.emptyDatatype(this, ds, dt));
+				}
 		}
 		catch (final DatatypeReasonerException e)
 		{
@@ -442,13 +459,15 @@ public class Literal extends Node
 	public boolean restore(final int branch)
 	{
 		final Boolean restorePruned = restorePruned(branch);
-		if (Boolean.FALSE.equals(restorePruned)) return restorePruned;
+		if (Boolean.FALSE.equals(restorePruned))
+			return restorePruned;
 
 		boolean restored = Boolean.TRUE.equals(restorePruned);
 
 		restored |= super.restore(branch);
 
-		if (_clashed) checkClash();
+		if (_clashed)
+			checkClash();
 
 		return restored;
 	}

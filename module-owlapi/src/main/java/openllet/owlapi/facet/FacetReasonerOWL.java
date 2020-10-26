@@ -11,7 +11,7 @@ public interface FacetReasonerOWL
 {
 	/**
 	 * @return a PelletReasoner that reason over a previously registered ontology.
-	 * @since  2.5.1
+	 * @since 2.5.1
 	 */
 	OWLReasoner getReasoner();
 }

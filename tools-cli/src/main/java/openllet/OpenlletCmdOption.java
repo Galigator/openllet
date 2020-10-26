@@ -24,19 +24,20 @@ package openllet;
 public class OpenlletCmdOption
 {
 
-	private final String			_longOption;
-	private String					_shortOption;
-	private String					_type;
-	private String					_description;
-	private boolean					_isMandatory;
-	private Object					_value;
-	private Object					_defaultValue;
-	private boolean					_exists;
-	private OpenlletCmdOptionArg	_arg	= OpenlletCmdOptionArg.NONE;
+	private final String _longOption;
+	private String _shortOption;
+	private String _type;
+	private String _description;
+	private boolean _isMandatory;
+	private Object _value;
+	private Object _defaultValue;
+	private boolean _exists;
+	private OpenlletCmdOptionArg _arg = OpenlletCmdOptionArg.NONE;
 
 	protected OpenlletCmdOption(final String longOption)
 	{
-		if (longOption == null) throw new OpenlletCmdException("A long option must be defined for a command line option");
+		if (longOption == null)
+			throw new OpenlletCmdException("A long option must be defined for a command line option");
 
 		_longOption = removeHyphen(longOption);
 		_defaultValue = null;
@@ -94,9 +95,11 @@ public class OpenlletCmdOption
 
 	protected String getValueAsString()
 	{
-		if (_value != null) return _value.toString();
+		if (_value != null)
+			return _value.toString();
 
-		if (_defaultValue != null) return _defaultValue.toString();
+		if (_defaultValue != null)
+			return _defaultValue.toString();
 
 		return null;
 	}
@@ -104,7 +107,7 @@ public class OpenlletCmdOption
 	/**
 	 * Returns the option _value as an integer and verifies that the _value is a non-negative integer (>= 0).
 	 *
-	 * @return                      an integer _value
+	 * @return an integer _value
 	 * @throws OpenlletCmdException If the option _value does not exist or is a not a valid non-negative integer _value (>= 0)
 	 */
 	protected int getValueAsNonNegativeInteger() throws OpenlletCmdException
@@ -115,16 +118,17 @@ public class OpenlletCmdOption
 	/**
 	 * Returns the option _value as an integer and verifies that it is in the given range.
 	 *
-	 * @param  minAllowed           Minimum allowed _value for the integer (inclusive)
-	 * @param  maxAllowed           Maximum allowed _value for the integer (inclusive)
-	 * @return                      an integer _value in the specified range
+	 * @param minAllowed Minimum allowed _value for the integer (inclusive)
+	 * @param maxAllowed Maximum allowed _value for the integer (inclusive)
+	 * @return an integer _value in the specified range
 	 * @throws OpenlletCmdException If the option _value does not exist, is a not a valid integer _value, or not in the specified range
 	 */
 	private int getValueAsInteger(final int minAllowed, final int maxAllowed) throws OpenlletCmdException
 	{
 		final String value = getValueAsString();
 
-		if (value == null) throw new OpenlletCmdException(String.format("The _value for option <%s> does not exist%n", _longOption));
+		if (value == null)
+			throw new OpenlletCmdException(String.format("The _value for option <%s> does not exist%n", _longOption));
 
 		try
 		{
@@ -132,7 +136,8 @@ public class OpenlletCmdOption
 			if (intValue < minAllowed)
 				throw new OpenlletCmdException(String.format("The _value for option <%s> should be greater than or equal to %d but was: %d%n", _longOption, minAllowed, intValue));
 
-			if (intValue > maxAllowed) throw new OpenlletCmdException(String.format("The _value for option <%s> should be less than or equal to %d but was: %d%n", _longOption, maxAllowed, intValue));
+			if (intValue > maxAllowed)
+				throw new OpenlletCmdException(String.format("The _value for option <%s> should be less than or equal to %d but was: %d%n", _longOption, maxAllowed, intValue));
 			return intValue;
 		}
 		catch (final NumberFormatException e)
@@ -176,7 +181,8 @@ public class OpenlletCmdOption
 	@Override
 	public boolean equals(final Object o)
 	{
-		if (!(o instanceof OpenlletCmdOption)) return false;
+		if (!(o instanceof OpenlletCmdOption))
+			return false;
 
 		final OpenlletCmdOption other = (OpenlletCmdOption) o;
 
@@ -194,8 +200,10 @@ public class OpenlletCmdOption
 	public int hashCode()
 	{
 		int code = 0;
-		if (_shortOption != null) code += _shortOption.hashCode();
-		if (_longOption != null) code += _longOption.hashCode();
+		if (_shortOption != null)
+			code += _shortOption.hashCode();
+		if (_longOption != null)
+			code += _longOption.hashCode();
 		return code;
 	}
 

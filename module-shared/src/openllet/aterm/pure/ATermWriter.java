@@ -33,6 +33,7 @@ import java.io.OutputStream;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
+
 import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
@@ -49,20 +50,19 @@ import openllet.aterm.stream.BufferedOutputStreamWriter;
 class ATermWriter extends ATermFwdVoid
 {
 
-	private static char[]						TOBASE64	= { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a',
-			'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '/' };
+	private static char[] TOBASE64 = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '/' };
 
-	private final BufferedOutputStreamWriter	stream;
+	private final BufferedOutputStreamWriter stream;
 
-	private int									position;
+	private int position;
 
-	private Map<ATerm, Integer>					table;
+	private Map<ATerm, Integer> table;
 
-	private int									next_abbrev;
+	private int next_abbrev;
 
-	ATermWriter(final OutputStream stream)
+	ATermWriter(final OutputStream stream_)
 	{
-		this.stream = new BufferedOutputStreamWriter(stream);
+		stream = new BufferedOutputStreamWriter(stream_);
 	}
 
 	public Writer getStream()
@@ -78,7 +78,8 @@ class ATermWriter extends ATermFwdVoid
 
 		final StringBuilder buf = new StringBuilder();
 
-		if (abbrev == 0) buf.append(TOBASE64[0]);
+		if (abbrev == 0)
+			buf.append(TOBASE64[0]);
 
 		while (abbrev > 0)
 		{
@@ -118,7 +119,8 @@ class ATermWriter extends ATermFwdVoid
 		if (table != null)
 		{
 			final int length = position - start;
-			if (length > PureFactory.abbrevSize(next_abbrev)) table.put(child, next_abbrev++);
+			if (length > PureFactory.abbrevSize(next_abbrev))
+				table.put(child, next_abbrev++);
 		}
 	}
 

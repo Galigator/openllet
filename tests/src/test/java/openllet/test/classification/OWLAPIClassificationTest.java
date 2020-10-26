@@ -13,9 +13,7 @@ import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.List;
-import openllet.owlapi.OWL;
-import openllet.owlapi.OpenlletReasoner;
-import openllet.owlapi.OpenlletReasonerFactory;
+
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;
@@ -26,6 +24,10 @@ import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
+
+import openllet.owlapi.OWL;
+import openllet.owlapi.OpenlletReasoner;
+import openllet.owlapi.OpenlletReasonerFactory;
 
 /**
  * @author Evren Sirin
@@ -51,10 +53,11 @@ public class OWLAPIClassificationTest extends AbstractClassificationTest
 				{
 					final boolean entailed = reasoner.getSubClasses(axiom.getSuperClass(), true).containsEntity((OWLClass) axiom.getSubClass());
 
-					if (!entailed) if (AbstractClassificationTest.FAIL_AT_FIRST_ERROR)
-						fail("Not entailed: " + axiom);
-					else
-						nonEntailments.add(axiom);
+					if (!entailed)
+						if (AbstractClassificationTest.FAIL_AT_FIRST_ERROR)
+							fail("Not entailed: " + axiom);
+						else
+							nonEntailments.add(axiom);
 				}
 			}
 
@@ -64,10 +67,11 @@ public class OWLAPIClassificationTest extends AbstractClassificationTest
 				{
 					final boolean entailed = reasoner.isEntailed(axiom);
 
-					if (!entailed) if (AbstractClassificationTest.FAIL_AT_FIRST_ERROR)
-						fail("Not entailed: " + axiom);
-					else
-						nonEntailments.add(axiom);
+					if (!entailed)
+						if (AbstractClassificationTest.FAIL_AT_FIRST_ERROR)
+							fail("Not entailed: " + axiom);
+						else
+							nonEntailments.add(axiom);
 				}
 			}
 
@@ -77,10 +81,11 @@ public class OWLAPIClassificationTest extends AbstractClassificationTest
 				{
 					final boolean entailed = reasoner.getInstances(axiom.getClassExpression(), true).containsEntity((OWLNamedIndividual) axiom.getIndividual());
 
-					if (!entailed) if (AbstractClassificationTest.FAIL_AT_FIRST_ERROR)
-						fail("Not entailed: " + axiom);
-					else
-						nonEntailments.add(axiom);
+					if (!entailed)
+						if (AbstractClassificationTest.FAIL_AT_FIRST_ERROR)
+							fail("Not entailed: " + axiom);
+						else
+							nonEntailments.add(axiom);
 				}
 			}
 

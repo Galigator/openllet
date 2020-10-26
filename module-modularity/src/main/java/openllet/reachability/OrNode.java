@@ -12,9 +12,9 @@ package openllet.reachability;
 public class OrNode extends Node
 {
 
-	private final int	_id;
+	private final int _id;
 
-	private boolean		_active	= false;
+	private boolean _active = false;
 
 	public OrNode(final int id)
 	{
@@ -36,10 +36,12 @@ public class OrNode extends Node
 	@Override
 	public boolean isRedundant()
 	{
-		if (_inputs.size() <= 1) return true;
+		if (_inputs.size() <= 1)
+			return true;
 
 		for (final Node output : _outputs)
-			if (output instanceof AndNode) return false;
+			if (output instanceof AndNode)
+				return false;
 
 		return true;
 	}

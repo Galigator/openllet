@@ -6,9 +6,7 @@ package openllet.jena;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.logging.Logger;
-import openllet.core.OpenlletOptions;
-import openllet.core.exceptions.InconsistentOntologyException;
-import openllet.shared.tools.Log;
+
 import org.apache.jena.ontology.DatatypeProperty;
 import org.apache.jena.ontology.Individual;
 import org.apache.jena.ontology.ObjectProperty;
@@ -21,14 +19,18 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import openllet.core.OpenlletOptions;
+import openllet.core.exceptions.InconsistentOntologyException;
+import openllet.shared.tools.Log;
+
 /**
  * @author Pavel Klinov
  */
 public class MiscTests extends SequentialTestsContraintInitializer
 {
-	private static final Logger	_logger				= Log.getLogger(MiscTests.class);
+	private static final Logger _logger = Log.getLogger(MiscTests.class);
 
-	private static Properties	_savedProperties	= OpenlletOptions.setOptions(null);
+	private static Properties _savedProperties = OpenlletOptions.setOptions(null);
 
 	private static void configurePelletOptions()
 	{
@@ -45,8 +47,8 @@ public class MiscTests extends SequentialTestsContraintInitializer
 		OpenlletOptions.setOptions(_savedProperties);
 	}
 
-	private static final String	NAMESPACE	= "http://www.inmindcomputing.com/example";
-	private OntModel			_model;
+	private static final String NAMESPACE = "http://www.inmindcomputing.com/example";
+	private OntModel _model;
 
 	@Test
 	public void dataAssertionTest()

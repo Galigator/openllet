@@ -29,25 +29,27 @@
 package openllet.aterm.test;
 
 import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
+
 import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermFactory;
 import openllet.aterm.pure.PureFactory;
-import org.junit.Before;
-import org.junit.Test;
 
 public class TestFibInterpreted
 {
 
-	private ATermFactory	_factory;
+	private ATermFactory _factory;
 
-	private AFun			zero, suc, plus, fib;
-	private ATermAppl		tzero;
-	private ATerm			fail;
+	private AFun zero, suc, plus, fib;
+	private ATermAppl tzero;
+	private ATerm fail;
 
-	private ATerm			lhs[];
-	private ATerm			rhs[];
+	private ATerm lhs[];
+	private ATerm rhs[];
 
 	@Before
 	public void setUp()
@@ -143,12 +145,14 @@ public class TestFibInterpreted
 
 		// fib(zero) -> suc(zero)
 		list = subject.match(lhs[ruleNumber]);
-		if (list != null) return rhs[ruleNumber];
+		if (list != null)
+			return rhs[ruleNumber];
 		ruleNumber++;
 
 		// fib(suc(zero)) -> suc(zero)
 		list = subject.match(lhs[ruleNumber]);
-		if (list != null) return rhs[ruleNumber];
+		if (list != null)
+			return rhs[ruleNumber];
 		ruleNumber++;
 
 		// fib(suc(suc(X))) -> plus(fib(X),fib(suc(X)))
@@ -163,12 +167,14 @@ public class TestFibInterpreted
 
 		// plus(zero,X) -> X
 		list = subject.match(lhs[ruleNumber]);
-		if (list != null) return _factory.make(rhs[ruleNumber], list);
+		if (list != null)
+			return _factory.make(rhs[ruleNumber], list);
 		ruleNumber++;
 
 		// plus(suc(X),Y) -> plus(X,suc(Y))
 		list = subject.match(lhs[ruleNumber]);
-		if (list != null) return _factory.make(rhs[ruleNumber], list);
+		if (list != null)
+			return _factory.make(rhs[ruleNumber], list);
 		ruleNumber++;
 
 		// congruence (suc)
@@ -178,7 +184,8 @@ public class TestFibInterpreted
 			//System.out.println("congsuc"); // applied 1184122 times fir fib(14)
 			final ATerm X = (ATerm) list.get(0);
 			final ATerm Xp = oneStep(X);
-			if (Xp.equals(fail)) return fail;
+			if (Xp.equals(fail))
+				return fail;
 			list.clear();
 			list.add(Xp);
 			return _factory.make(rhs[ruleNumber], list);
@@ -196,7 +203,8 @@ public class TestFibInterpreted
 			{
 				final ATerm Y = (ATerm) list.get(1);
 				final ATerm Yp = oneStep(Y);
-				if (Yp.equals(fail)) return fail;
+				if (Yp.equals(fail))
+					return fail;
 				list.clear();
 				list.add(X);
 				list.add(Yp);
@@ -219,11 +227,13 @@ public class TestFibInterpreted
 
 		// fib(zero) -> suc(zero)
 		list = subject.match(lhs[0]);
-		if (list != null) return rhs[0];
+		if (list != null)
+			return rhs[0];
 
 		// fib(suc(zero)) -> suc(zero)
 		list = subject.match(lhs[1]);
-		if (list != null) return rhs[1];
+		if (list != null)
+			return rhs[1];
 
 		// fib(suc(suc(X))) -> plus(fib(X),fib(suc(X)))
 		list = subject.match(lhs[2]);
@@ -237,11 +247,13 @@ public class TestFibInterpreted
 
 		// plus(zero,X) -> X
 		list = subject.match(lhs[3]);
-		if (list != null) return (ATerm) list.get(0);
+		if (list != null)
+			return (ATerm) list.get(0);
 
 		// plus(suc(X),Y) -> plus(X,suc(Y)))
 		list = subject.match(lhs[4]);
-		if (list != null) return _factory.make(rhs[4], list);
+		if (list != null)
+			return _factory.make(rhs[4], list);
 
 		return fail;
 	}

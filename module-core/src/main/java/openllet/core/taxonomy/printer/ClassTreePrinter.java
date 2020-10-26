@@ -33,6 +33,7 @@ package openllet.core.taxonomy.printer;
 import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.Set;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.taxonomy.TaxonomyUtils;
 import openllet.core.utils.ATermUtils;
@@ -91,9 +92,11 @@ public class ClassTreePrinter extends TreeTaxonomyPrinter<ATermAppl>
 			}
 			if (anonCount > 0)
 			{
-				if (printed) _out.print(", ");
+				if (printed)
+					_out.print(", ");
 				_out.print(anonCount + " Anonymous Individual");
-				if (anonCount > 1) _out.print("s");
+				if (anonCount > 1)
+					_out.print("s");
 			}
 			_out.print(")");
 		}
@@ -106,12 +109,14 @@ public class ClassTreePrinter extends TreeTaxonomyPrinter<ATermAppl>
 
 		if (c.equals(ATermUtils.TOP))
 			str = "owl:Thing";
-		else if (c.equals(ATermUtils.BOTTOM))
-			str = "owl:Nothing";
-		else if (ATermUtils.isPrimitive(c))
-			str = _qnames.shortForm(c.getName());
 		else
-			str = c.toString();
+			if (c.equals(ATermUtils.BOTTOM))
+				str = "owl:Nothing";
+			else
+				if (ATermUtils.isPrimitive(c))
+					str = _qnames.shortForm(c.getName());
+				else
+					str = c.toString();
 
 		out.print(str);
 	}

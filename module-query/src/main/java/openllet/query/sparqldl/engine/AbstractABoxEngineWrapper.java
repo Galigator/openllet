@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
 import openllet.core.utils.ATermUtils;
@@ -46,13 +47,13 @@ import openllet.shared.tools.Log;
  */
 public abstract class AbstractABoxEngineWrapper implements QueryExec
 {
-	public static final Logger		_logger					= Log.getLogger(QueryEngine.class);
+	public static final Logger _logger = Log.getLogger(QueryEngine.class);
 
-	public static final QueryExec	distCombinedQueryExec	= new CombinedQueryEngine();
+	public static final QueryExec distCombinedQueryExec = new CombinedQueryEngine();
 
-	protected Query					schemaQuery;
+	protected Query schemaQuery;
 
-	protected Query					aboxQuery;
+	protected Query aboxQuery;
 
 	/**
 	 * {@inheritDoc}
@@ -80,10 +81,10 @@ public abstract class AbstractABoxEngineWrapper implements QueryExec
 			_logger.fine(() -> "Executing TBox query: " + schemaQuery);
 			result = distCombinedQueryExec.exec(schemaQuery);
 
-			shouldHaveBinding = openllet.core.utils.SetUtils.intersects(query.getDistVarsForType(VarType.CLASS), query.getResultVars())
-					|| openllet.core.utils.SetUtils.intersects(query.getDistVarsForType(VarType.PROPERTY), query.getResultVars());
+			shouldHaveBinding = openllet.core.utils.SetUtils.intersects(query.getDistVarsForType(VarType.CLASS), query.getResultVars()) || openllet.core.utils.SetUtils.intersects(query.getDistVarsForType(VarType.PROPERTY), query.getResultVars());
 		}
-		if (shouldHaveBinding && result.isEmpty()) return result;
+		if (shouldHaveBinding && result.isEmpty())
+			return result;
 
 		_logger.fine(() -> "Partial _binding after schema query : " + result);
 
@@ -94,7 +95,8 @@ public abstract class AbstractABoxEngineWrapper implements QueryExec
 			{
 				final Query query2 = aboxQuery.apply(binding);
 
-				if (_logger.isLoggable(Level.FINE)) _logger.fine("Executing ABox query: " + query2);
+				if (_logger.isLoggable(Level.FINE))
+					_logger.fine("Executing ABox query: " + query2);
 				final QueryResult aboxResult = execABoxQuery(query2);
 
 				for (final ResultBinding newBinding : aboxResult)
@@ -141,21 +143,27 @@ public abstract class AbstractABoxEngineWrapper implements QueryExec
 		for (final VarType t : VarType.values())
 			for (final ATermAppl a : query.getDistVarsForType(t))
 			{
-				if (aboxQuery.getVars().contains(a)) aboxQuery.addDistVar(a, t);
-				if (schemaQuery.getVars().contains(a)) schemaQuery.addDistVar(a, t);
+				if (aboxQuery.getVars().contains(a))
+					aboxQuery.addDistVar(a, t);
+				if (schemaQuery.getVars().contains(a))
+					schemaQuery.addDistVar(a, t);
 			}
 
 		for (final ATermAppl a : query.getResultVars())
 		{
-			if (aboxQuery.getVars().contains(a)) aboxQuery.addResultVar(a);
-			if (schemaQuery.getVars().contains(a)) schemaQuery.addResultVar(a);
+			if (aboxQuery.getVars().contains(a))
+				aboxQuery.addResultVar(a);
+			if (schemaQuery.getVars().contains(a))
+				schemaQuery.addResultVar(a);
 		}
 
 		for (final ATermAppl v : aboxQuery.getDistVarsForType(VarType.CLASS))
-			if (!schemaQuery.getVars().contains(v)) schemaQuery.add(QueryAtomFactory.SubClassOfAtom(v, ATermUtils.TOP));
+			if (!schemaQuery.getVars().contains(v))
+				schemaQuery.add(QueryAtomFactory.SubClassOfAtom(v, ATermUtils.TOP));
 
 		for (final ATermAppl v : aboxQuery.getDistVarsForType(VarType.PROPERTY))
-			if (!schemaQuery.getVars().contains(v)) schemaQuery.add(QueryAtomFactory.SubPropertyOfAtom(v, v));
+			if (!schemaQuery.getVars().contains(v))
+				schemaQuery.add(QueryAtomFactory.SubPropertyOfAtom(v, v));
 
 	}
 
@@ -164,13 +172,13 @@ public abstract class AbstractABoxEngineWrapper implements QueryExec
 
 class BindingIterator implements Iterator<ResultBinding>
 {
-	private final List<List<ATermAppl>>	varB	= new ArrayList<>();
+	private final List<List<ATermAppl>> varB = new ArrayList<>();
 
-	private final List<ATermAppl>		vars	= new ArrayList<>();
+	private final List<ATermAppl> vars = new ArrayList<>();
 
-	private final int[]					indices;
+	private final int[] indices;
 
-	private boolean						more	= true;
+	private boolean more = true;
 
 	public BindingIterator(final Map<ATermAppl, Set<ATermAppl>> bindings)
 	{
@@ -195,13 +203,14 @@ class BindingIterator implements Iterator<ResultBinding>
 	{
 		if (indices[index] + 1 < varB.get(index).size())
 			indices[index]++;
-		else if (index == indices.length - 1)
-			return false;
 		else
-		{
-			indices[index] = 0;
-			return incIndex(index + 1);
-		}
+			if (index == indices.length - 1)
+				return false;
+			else
+			{
+				indices[index] = 0;
+				return incIndex(index + 1);
+			}
 
 		return true;
 	}
@@ -221,7 +230,8 @@ class BindingIterator implements Iterator<ResultBinding>
 	@Override
 	public ResultBinding next()
 	{
-		if (!more) return null;
+		if (!more)
+			return null;
 
 		final ResultBinding next = new ResultBindingImpl();
 
@@ -245,15 +255,15 @@ class BindingIterator implements Iterator<ResultBinding>
 
 class LiteralIterator implements Iterator<ResultBinding>
 {
-	private final int[]					_indices;
+	private final int[] _indices;
 
-	private final ResultBinding			_binding;
+	private final ResultBinding _binding;
 
-	private final Set<ATermAppl>		_litVars;
+	private final Set<ATermAppl> _litVars;
 
-	private final List<List<ATermAppl>>	_litVarBindings	= new ArrayList<>();
+	private final List<List<ATermAppl>> _litVarBindings = new ArrayList<>();
 
-	private boolean						_more			= true;
+	private boolean _more = true;
 
 	public LiteralIterator(final Query q, final ResultBinding binding)
 	{
@@ -278,7 +288,8 @@ class LiteralIterator implements Iterator<ResultBinding>
 				ATermAppl subject = atom.getArguments().get(0);
 				final ATermAppl predicate = atom.getArguments().get(1);
 
-				if (ATermUtils.isVar(subject)) subject = binding.getValue(subject);
+				if (ATermUtils.isVar(subject))
+					subject = binding.getValue(subject);
 
 				_litVarBindings.add(index, new ArrayList<ATermAppl>());
 
@@ -304,13 +315,14 @@ class LiteralIterator implements Iterator<ResultBinding>
 	{
 		if (_indices[index] + 1 < _litVarBindings.get(index).size())
 			_indices[index]++;
-		else if (index == _indices.length - 1)
-			return false;
 		else
-		{
-			_indices[index] = 0;
-			return incIndex(index + 1);
-		}
+			if (index == _indices.length - 1)
+				return false;
+			else
+			{
+				_indices[index] = 0;
+				return incIndex(index + 1);
+			}
 
 		return true;
 	}
@@ -339,7 +351,8 @@ class LiteralIterator implements Iterator<ResultBinding>
 	@Override
 	public ResultBinding next()
 	{
-		if (!_more) return null;
+		if (!_more)
+			return null;
 
 		final ResultBinding next = _binding.duplicate();
 

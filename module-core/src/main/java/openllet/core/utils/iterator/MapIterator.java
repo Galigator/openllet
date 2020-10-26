@@ -10,9 +10,9 @@ import java.util.Iterator;
  * Company: Clark & Parsia, LLC. <http://www.clarkparsia.com>
  * </p>
  *
- * @author     Evren Sirin
- * @param  <F> kind of function
- * @param  <T> kind of elements
+ * @author Evren Sirin
+ * @param <F> kind of function
+ * @param <T> kind of elements
  */
 public abstract class MapIterator<F, T> implements Iterator<T>
 {

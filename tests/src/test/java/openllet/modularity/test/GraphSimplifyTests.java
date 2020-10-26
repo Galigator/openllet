@@ -4,21 +4,23 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import org.junit.Test;
+import org.semanticweb.owlapi.model.OWLEntity;
+
 import openllet.owlapi.OWL;
 import openllet.reachability.EntityNode;
 import openllet.reachability.Node;
 import openllet.reachability.ReachabilityGraph;
-import org.junit.Test;
-import org.semanticweb.owlapi.model.OWLEntity;
 
 /**
  * @author Evren Sirin
  */
 public class GraphSimplifyTests
 {
-	private ReachabilityGraph<OWLEntity>	_graph;
-	private OWLEntity[]						_entities;
-	private EntityNode<OWLEntity>[]			_nodes;
+	private ReachabilityGraph<OWLEntity> _graph;
+	private OWLEntity[] _entities;
+	private EntityNode<OWLEntity>[] _nodes;
 
 	private void addEdge(final int in, final int out)
 	{

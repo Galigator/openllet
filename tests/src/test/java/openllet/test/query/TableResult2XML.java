@@ -17,9 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
-import openllet.atom.OpenError;
-import openllet.core.utils.ATermUtils;
-import openllet.jena.JenaUtils;
+
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.QuerySolutionMap;
 import org.apache.jena.query.ResultSet;
@@ -28,6 +26,10 @@ import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.sparql.engine.binding.Binding;
 import org.apache.jena.sparql.engine.binding.BindingUtils;
+
+import openllet.atom.OpenError;
+import openllet.core.utils.ATermUtils;
+import openllet.jena.JenaUtils;
 
 /**
  * <p>
@@ -61,16 +63,18 @@ public class TableResult2XML
 		if (new File(args[0]).isDirectory())
 		{
 			for (final File f : new File(args[0]).listFiles())
-				if (!f.isDirectory() && !f.getAbsolutePath().endsWith(".srx")) files.add(f.getAbsolutePath());
+				if (!f.isDirectory() && !f.getAbsolutePath().endsWith(".srx"))
+					files.add(f.getAbsolutePath());
 		}
 		else
 			files.add(args[0]);
 
 		List<String> varNames = null;
-		if (args.length > 1) if (!args[1].equals("-vars"))
-			System.out.println("Unknown parameter " + args[1] + " - ignoring.");
-		else
-			varNames = Arrays.asList(args).subList(2, args.length);
+		if (args.length > 1)
+			if (!args[1].equals("-vars"))
+				System.out.println("Unknown parameter " + args[1] + " - ignoring.");
+			else
+				varNames = Arrays.asList(args).subList(2, args.length);
 
 		for (final String arg : files)
 		{

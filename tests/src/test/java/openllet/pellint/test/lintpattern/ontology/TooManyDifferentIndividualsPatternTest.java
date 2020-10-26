@@ -6,15 +6,17 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
 import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.semanticweb.owlapi.model.OWLException;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+
 import openllet.owlapi.OWL;
 import openllet.pellint.lintpattern.ontology.TooManyDifferentIndividualsPattern;
 import openllet.pellint.model.Lint;
 import openllet.pellint.test.PellintTestCase;
 import openllet.pellint.util.CollectionUtil;
-import org.junit.Before;
-import org.junit.Test;
-import org.semanticweb.owlapi.model.OWLException;
-import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 /**
  * <p>

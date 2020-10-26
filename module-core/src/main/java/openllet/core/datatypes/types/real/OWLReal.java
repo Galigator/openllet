@@ -61,17 +61,18 @@ public class OWLReal extends AbstractBaseDatatype<Number>
 	{
 		if (value instanceof Rational)
 			return OWLRational.getInstance().getLiteral(value);
-		else if (value instanceof Number)
-			try
-			{
-				return XSDDecimal.getInstance().getLiteral(value);
-			}
-			catch (final IllegalArgumentException e)
-			{
-				throw new IllegalArgumentException(e);
-			}
 		else
-			throw new IllegalArgumentException();
+			if (value instanceof Number)
+				try
+				{
+					return XSDDecimal.getInstance().getLiteral(value);
+				}
+				catch (final IllegalArgumentException e)
+				{
+					throw new IllegalArgumentException(e);
+				}
+			else
+				throw new IllegalArgumentException();
 	}
 
 	@Override

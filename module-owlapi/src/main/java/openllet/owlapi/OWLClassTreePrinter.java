@@ -3,13 +3,15 @@ package openllet.owlapi;
 import java.io.PrintWriter;
 import java.util.Collections;
 import java.util.Set;
+
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+
 import openllet.core.taxonomy.Taxonomy;
 import openllet.core.taxonomy.TaxonomyUtils;
 import openllet.core.taxonomy.printer.TreeTaxonomyPrinter;
 import openllet.core.utils.QNameProvider;
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLClass;
-import org.semanticweb.owlapi.model.OWLNamedIndividual;
 
 /**
  * TaxonomyPrinter for Taxonomies of OWLClasses (Taxonomy<OWLClass>)
@@ -61,9 +63,9 @@ public class OWLClassTreePrinter extends TreeTaxonomyPrinter<OWLClass>
 	/**
 	 * Retrieves direct instances of a class from Taxonomy
 	 *
-	 * @param  t the taxonomy
-	 * @param  c the class
-	 * @return   a set of direct instances
+	 * @param t the taxonomy
+	 * @param c the class
+	 * @return a set of direct instances
 	 */
 	@SuppressWarnings("unchecked")
 	public static Set<OWLNamedIndividual> getDirectInstances(final Taxonomy<OWLClass> t, final OWLClass c)
@@ -72,7 +74,8 @@ public class OWLClassTreePrinter extends TreeTaxonomyPrinter<OWLClass>
 		final Set<OWLNamedIndividual> instances = (Set<OWLNamedIndividual>) t.getDatum(c, TaxonomyUtils.TaxonomyKey.INSTANCES_KEY);
 		if (instances == null)
 		{
-			if (t.contains(c)) return Collections.emptySet();
+			if (t.contains(c))
+				return Collections.emptySet();
 
 			throw new OWLException(c + " is an unknown class!");
 		}

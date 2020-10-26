@@ -6,9 +6,6 @@
 
 package openllet.modularity;
 
-import com.clarkparsia.owlapi.modularity.locality.LocalityClass;
-import com.clarkparsia.owlapi.modularity.locality.LocalityEvaluator;
-import com.clarkparsia.owlapi.modularity.locality.SyntacticLocalityEvaluator;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.EnumSet;
@@ -22,6 +19,16 @@ import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
+
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLOntology;
+
+import com.clarkparsia.owlapi.modularity.locality.LocalityClass;
+import com.clarkparsia.owlapi.modularity.locality.LocalityEvaluator;
+import com.clarkparsia.owlapi.modularity.locality.SyntacticLocalityEvaluator;
+
 import openllet.core.KnowledgeBase.ChangeType;
 import openllet.core.OpenlletOptions;
 import openllet.core.expressivity.Expressivity;
@@ -37,10 +44,6 @@ import openllet.modularity.io.ModuleExtractorPersistence;
 import openllet.modularity.io.UncloseableOutputStream;
 import openllet.owlapi.OWL;
 import openllet.shared.tools.Log;
-import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.model.OWLClass;
-import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.model.OWLOntology;
 
 /**
  * <p>
@@ -54,37 +57,37 @@ import org.semanticweb.owlapi.model.OWLOntology;
  */
 public abstract class AbstractModuleExtractor implements ModuleExtractor
 {
-	public static final Logger						_logger				= Log.getLogger(AbstractModuleExtractor.class);
-	private final Set<OWLAxiom>						_additions			= SetUtils.create();
-	private final Set<OWLClass>						_newClasses			= SetUtils.create();
+	public static final Logger _logger = Log.getLogger(AbstractModuleExtractor.class);
+	private final Set<OWLAxiom> _additions = SetUtils.create();
+	private final Set<OWLClass> _newClasses = SetUtils.create();
 
 	/**
 	 * Map to find entities referenced in an axiom
 	 */
-	private final Set<OWLAxiom>						_axioms				= SetUtils.create();
+	private final Set<OWLAxiom> _axioms = SetUtils.create();
 
 	/**
 	 * Set of _axioms that will be deleted
 	 */
-	private final Set<OWLAxiom>						_deletions			= SetUtils.create();
+	private final Set<OWLAxiom> _deletions = SetUtils.create();
 
 	/**
 	 * The types of changes that are pending in additions and deletions
 	 */
-	protected EnumSet<ChangeType>					_changes			= EnumSet.noneOf(ChangeType.class);
+	protected EnumSet<ChangeType> _changes = EnumSet.noneOf(ChangeType.class);
 
 	/**
 	 * Map to find _axioms that references an axiom
 	 */
-	protected MultiValueMap<OWLEntity, OWLAxiom>	_entityAxioms		= new MultiValueMap<>();
-	private LocalityEvaluator						_localityEvaluator	= null;
-	protected MultiValueMap<OWLEntity, OWLEntity>	_modules			= null;
+	protected MultiValueMap<OWLEntity, OWLAxiom> _entityAxioms = new MultiValueMap<>();
+	private LocalityEvaluator _localityEvaluator = null;
+	protected MultiValueMap<OWLEntity, OWLEntity> _modules = null;
 
 	/**
 	 * Flag to check if a non-local axiom has been updated
 	 */
-	private boolean									_nonLocalAxioms		= false;
-	private final Timers							_timers				= new Timers();
+	private boolean _nonLocalAxioms = false;
+	private final Timers _timers = new Timers();
 
 	public AbstractModuleExtractor()
 	{
@@ -101,7 +104,8 @@ public abstract class AbstractModuleExtractor implements ModuleExtractor
 	{
 		checkNonLocalAxiom(axiom);
 
-		if (_axioms.contains(axiom)) return;
+		if (_axioms.contains(axiom))
+			return;
 
 		_logger.fine(() -> "Adding " + axiom);
 
@@ -111,7 +115,8 @@ public abstract class AbstractModuleExtractor implements ModuleExtractor
 	}
 
 	/**
-	 * @return true if the extracted modules can be updated. We can update the modules if we have computed modules and no non-local axiom has been added or deleted.
+	 * @return true if the extracted modules can be updated. We can update the modules if we have computed modules and no non-local axiom has been added or
+	 *         deleted.
 	 */
 	@Override
 	public boolean canUpdate()
@@ -127,15 +132,17 @@ public abstract class AbstractModuleExtractor implements ModuleExtractor
 	private void checkNonLocalAxiom(final OWLAxiom axiom)
 	{
 
-		if (!axiom.isLogicalAxiom()) return;
+		if (!axiom.isLogicalAxiom())
+			return;
 
 		// no need to check for non-locals if we already know that we cannot
 		// update modules
-		if (canUpdate()) if (!isLocal(axiom, Collections.<OWLEntity>emptySet()))
-		{
-			_logger.warning("*** Non-local axiom: " + axiom);
-			_nonLocalAxioms = true;
-		}
+		if (canUpdate())
+			if (!isLocal(axiom, Collections.<OWLEntity> emptySet()))
+			{
+				_logger.warning("*** Non-local axiom: " + axiom);
+				_nonLocalAxioms = true;
+			}
 	}
 
 	@Override
@@ -145,7 +152,8 @@ public abstract class AbstractModuleExtractor implements ModuleExtractor
 
 		if (!_axioms.contains(axiom))
 		{
-			if (_additions.remove(axiom)) _logger.fine(() -> "Deleted axiom from add _queue before processing " + axiom);
+			if (_additions.remove(axiom))
+				_logger.fine(() -> "Deleted axiom from add _queue before processing " + axiom);
 			return;
 		}
 
@@ -201,7 +209,8 @@ public abstract class AbstractModuleExtractor implements ModuleExtractor
 	{
 		_logger.fine(() -> "Extracting module for each of " + entities);
 
-		if (entities.isEmpty()) return;
+		if (entities.isEmpty())
+			return;
 
 		final ProgressMonitor monitor = new ConsoleProgressMonitor();
 		monitor.setProgressTitle("Extracting");
@@ -222,7 +231,7 @@ public abstract class AbstractModuleExtractor implements ModuleExtractor
 	 * Given an axiom, this function locates all root _nodes in the partial _order that are affected by the update
 	 *
 	 * @param axiom - the update
-	 * @param add   - Flag for _additions/_deletions
+	 * @param add - Flag for _additions/_deletions
 	 */
 	private Set<OWLEntity> getAffectedRoots(final OWLAxiom axiom, final Taxonomy<OWLClass> taxonomy, final boolean add)
 	{
@@ -235,12 +244,14 @@ public abstract class AbstractModuleExtractor implements ModuleExtractor
 		 * Special case when the only _node affected by a deletion is
 		 * unsatisfiable
 		 */
-		if (!add && roots.isEmpty()) for (final OWLClass unsat : taxonomy.getEquivalents(OWL.Nothing))
-		{
-			final Set<OWLEntity> signature = _modules.get(unsat);
+		if (!add && roots.isEmpty())
+			for (final OWLClass unsat : taxonomy.getEquivalents(OWL.Nothing))
+			{
+				final Set<OWLEntity> signature = _modules.get(unsat);
 
-			if (signature != null && signature.containsAll(getSignature(axiom))) roots.add(unsat);
-		}
+				if (signature != null && signature.containsAll(getSignature(axiom)))
+					roots.add(unsat);
+			}
 
 		return roots;
 	}
@@ -248,10 +259,10 @@ public abstract class AbstractModuleExtractor implements ModuleExtractor
 	/**
 	 * Given an axiom, this function locates all root _nodes in the partial _order that are affected by the update
 	 *
-	 * @param axiom   - the update
-	 * @param _node   - the next _node
+	 * @param axiom - the update
+	 * @param _node - the next _node
 	 * @param effects - the actual set of affected _nodes collected
-	 * @param add     - Flag for _additions/_deletions
+	 * @param add - Flag for _additions/_deletions
 	 * @param visited - _nodes visited so far
 	 */
 	private void getAffectedRoots(final OWLAxiom axiom, final TaxonomyNode<OWLClass> node, final Set<OWLEntity> effects, final boolean add, final Set<TaxonomyNode<OWLClass>> visited)
@@ -273,15 +284,17 @@ public abstract class AbstractModuleExtractor implements ModuleExtractor
 		// check if the entity has been removed due to a deletion
 		if (signature == null)
 		{
-			if (_logger.isLoggable(Level.FINE)) _logger.fine("Removed entity " + entity);
+			if (_logger.isLoggable(Level.FINE))
+				_logger.fine("Removed entity " + entity);
 		}
-		else if (add)
-			// only affected if axiom is non-local w.r.t. the sig of the
-			// module
-			outdated = !isLocal(axiom, signature);
 		else
-			// only affected if sig of axiom is contained in sig of module
-			outdated = signature.containsAll(getSignature(axiom));
+			if (add)
+				// only affected if axiom is non-local w.r.t. the sig of the
+				// module
+				outdated = !isLocal(axiom, signature);
+			else
+				// only affected if sig of axiom is contained in sig of module
+				outdated = signature.containsAll(getSignature(axiom));
 
 		// if outdated add to effected set
 		if (outdated)
@@ -293,15 +306,16 @@ public abstract class AbstractModuleExtractor implements ModuleExtractor
 	}
 
 	/**
-	 * @param  entity
-	 * @return        the axioms which references this entity
+	 * @param entity
+	 * @return the axioms which references this entity
 	 */
 	@Override
 	public Stream<OWLAxiom> axioms(final OWLEntity entity)
 	{
 		final Set<OWLAxiom> axioms = _entityAxioms.get(entity);
 
-		if (axioms == null) return Stream.empty();
+		if (axioms == null)
+			return Stream.empty();
 
 		return axioms.stream();
 	}
@@ -312,7 +326,8 @@ public abstract class AbstractModuleExtractor implements ModuleExtractor
 	{
 		Set<OWLAxiom> axioms = _entityAxioms.get(entity);
 
-		if (axioms == null) axioms = Collections.emptySet();
+		if (axioms == null)
+			axioms = Collections.emptySet();
 
 		return axioms;
 	}
@@ -365,14 +380,15 @@ public abstract class AbstractModuleExtractor implements ModuleExtractor
 		final Set<OWLEntity> notReferenced = new HashSet<>(signature);
 		notReferenced.removeAll(referenced);
 		for (final OWLEntity e : notReferenced)
-			if (_entityAxioms.get(e) != null) axioms.add(OWL.declaration(e));
+			if (_entityAxioms.get(e) != null)
+				axioms.add(OWL.declaration(e));
 
 		return axioms;
 	}
 
 	/**
-	 * @param  signature
-	 * @return           a new ontology that contains the _axioms that are in the module for given set of entities
+	 * @param signature
+	 * @return a new ontology that contains the _axioms that are in the module for given set of entities
 	 */
 	@Override
 	public OWLOntology getModuleFromSignature(final Set<OWLEntity> signature)
@@ -384,7 +400,7 @@ public abstract class AbstractModuleExtractor implements ModuleExtractor
 	/**
 	 * Get the entities referenced in this axiom
 	 *
-	 * @param  axiom
+	 * @param axiom
 	 * @return
 	 */
 	@Deprecated
@@ -440,7 +456,8 @@ public abstract class AbstractModuleExtractor implements ModuleExtractor
 				if (entity instanceof OWLClass)
 				{
 					final OWLClass cls = (OWLClass) entity;
-					if (_modules != null && !_modules.containsKey(cls)) _newClasses.add(cls);
+					if (_modules != null && !_modules.containsKey(cls))
+						_newClasses.add(cls);
 				}
 			});
 		}
@@ -467,9 +484,9 @@ public abstract class AbstractModuleExtractor implements ModuleExtractor
 	/**
 	 * Method to 1) find affected modules and 2) update them - that is extract their new signatures
 	 *
-	 * @param effects  affected entities
+	 * @param effects affected entities
 	 * @param taxonomy classification hierarchy
-	 * @param add      Flag for _additions/_deletions
+	 * @param add Flag for _additions/_deletions
 	 */
 	private void updateEffectedModules(final Set<OWLEntity> effects, final Taxonomy<OWLClass> taxonomy, final boolean add)
 	{
@@ -500,7 +517,8 @@ public abstract class AbstractModuleExtractor implements ModuleExtractor
 
 			if (nextRoot instanceof OWLClass)
 				// collect all the descendants of this class
-				if (taxonomy.contains((OWLClass) nextRoot)) affected.addAll(taxonomy.getFlattenedSubs((OWLClass) nextRoot, false));
+				if (taxonomy.contains((OWLClass) nextRoot))
+					affected.addAll(taxonomy.getFlattenedSubs((OWLClass) nextRoot, false));
 		}
 
 		_logger.fine(() -> "Affected entities " + affected);
@@ -529,7 +547,8 @@ public abstract class AbstractModuleExtractor implements ModuleExtractor
 	{
 		final Optional<Timer> timer = _timers.startTimer("updateModules");
 
-		if (!canUpdate()) throw new UnsupportedOperationException("Modules cannot be updated!");
+		if (!canUpdate())
+			throw new UnsupportedOperationException("Modules cannot be updated!");
 
 		// Set of all entities in the module of affected entities
 		final Set<OWLEntity> effects = new HashSet<>();
@@ -649,9 +668,12 @@ public abstract class AbstractModuleExtractor implements ModuleExtractor
 	{
 		if (ChangeTypeDetector.isTBoxAxiom(axiom))
 			_changes.add(ChangeType.TBOX_ADD);
-		else if (ChangeTypeDetector.isRBoxAxiom(axiom))
-			_changes.add(ChangeType.RBOX_ADD);
-		else if (ChangeTypeDetector.isABoxAxiom(axiom)) _changes.add(ChangeType.ABOX_ADD);
+		else
+			if (ChangeTypeDetector.isRBoxAxiom(axiom))
+				_changes.add(ChangeType.RBOX_ADD);
+			else
+				if (ChangeTypeDetector.isABoxAxiom(axiom))
+					_changes.add(ChangeType.ABOX_ADD);
 	}
 
 	/**
@@ -664,9 +686,12 @@ public abstract class AbstractModuleExtractor implements ModuleExtractor
 	{
 		if (ChangeTypeDetector.isTBoxAxiom(axiom))
 			_changes.add(ChangeType.TBOX_DEL);
-		else if (ChangeTypeDetector.isRBoxAxiom(axiom))
-			_changes.add(ChangeType.RBOX_DEL);
-		else if (ChangeTypeDetector.isABoxAxiom(axiom)) _changes.add(ChangeType.ABOX_DEL);
+		else
+			if (ChangeTypeDetector.isRBoxAxiom(axiom))
+				_changes.add(ChangeType.RBOX_DEL);
+			else
+				if (ChangeTypeDetector.isABoxAxiom(axiom))
+					_changes.add(ChangeType.ABOX_DEL);
 	}
 
 	// I/O code to persist the state of the AbstractModuleExtractor
@@ -674,18 +699,19 @@ public abstract class AbstractModuleExtractor implements ModuleExtractor
 	/**
 	 * The name of the entry in the zip file that stores _axioms
 	 */
-	private static final String	MODULE_EXTRACTOR_AXIOMS_FILE_NAME	= "ModuleExtractorAxioms";
+	private static final String MODULE_EXTRACTOR_AXIOMS_FILE_NAME = "ModuleExtractorAxioms";
 
 	/**
 	 * The name of the entry in the zip file that stores the module information
 	 */
-	private static final String	MODULE_EXTRACTOR_MODULES_FILE_NAME	= "ModuleExtractorModules";
+	private static final String MODULE_EXTRACTOR_MODULES_FILE_NAME = "ModuleExtractorModules";
 
 	@SuppressWarnings("resource") // for the UncloseableOutputStream
 	@Override
 	public void save(final ZipOutputStream outputStream) throws IOException, IllegalStateException
 	{
-		if (!_additions.isEmpty() || !_deletions.isEmpty()) throw new IllegalStateException("The module extractor contains unapplied changes to the modules, and therefore cannot be saved.");
+		if (!_additions.isEmpty() || !_deletions.isEmpty())
+			throw new IllegalStateException("The module extractor contains unapplied changes to the modules, and therefore cannot be saved.");
 
 		// first save the _axioms
 		final ZipEntry axiomsEntry = new ZipEntry(MODULE_EXTRACTOR_AXIOMS_FILE_NAME);

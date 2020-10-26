@@ -20,36 +20,30 @@
 package openllet.shared.hash;
 
 import java.lang.ref.WeakReference;
+
 import openllet.atom.OpenError;
 
 /**
- * The SharedObjectsFactory is a 'weak' constant pool for uniquely represented objects.
- *
- * This class is fully thread-safe, but tries to avoid (contended) locking as much as is
- * reasonably achievable. As a result this implementation should scale fairly well on
- * multi-core / processor systems; while also limiting synchronization overhead.
- *
- * WARNING: Do not edit this class unless you fully understand both Java's memory and threading model
- * and how the garbage collector(s) work. (You'll almost certainly 'break' something otherwise).
- * The JMM spec (previously known as JSR-133) can be found here: http://java.sun.com/docs/books/jls/third_edition/html memory.html
- * Even experts should be cautious. Every line of code is in a certain place for a reason. Modifying
- * anything may break thread-safety and / or can have a serious impact on performance.
+ * The SharedObjectsFactory is a 'weak' constant pool for uniquely represented objects. This class is fully thread-safe, but tries to avoid (contended) locking
+ * as much as is reasonably achievable. As a result this implementation should scale fairly well on multi-core / processor systems; while also limiting
+ * synchronization overhead. WARNING: Do not edit this class unless you fully understand both Java's memory and threading model and how the garbage collector(s)
+ * work. (You'll almost certainly 'break' something otherwise). The JMM spec (previously known as JSR-133) can be found here:
+ * http://java.sun.com/docs/books/jls/third_edition/html memory.html Even experts should be cautious. Every line of code is in a certain place for a reason.
+ * Modifying anything may break thread-safety and / or can have a serious impact on performance.
  *
  * @author Arnold Lankamp
  */
 public class SharedObjectFactory
 {
-	private final static int	DEFAULT_NR_OF_SEGMENTS_BITSIZE	= 5;
+	private final static int DEFAULT_NR_OF_SEGMENTS_BITSIZE = 5;
 
-	private final Segment[]		_segments;
+	private final Segment[] _segments;
 
 	/**
 	 * Default constructor.
 	 */
 	public SharedObjectFactory()
 	{
-		super();
-
 		_segments = new Segment[1 << DEFAULT_NR_OF_SEGMENTS_BITSIZE];
 		for (int i = _segments.length - 1; i >= 0; i--)
 			_segments[i] = new Segment(i);
@@ -99,8 +93,8 @@ public class SharedObjectFactory
 	/**
 	 * Finds or creates the unique version of the given openllet.shared.hash object prototype.
 	 *
-	 * @param  prototype of the openllet.shared.hash object we want the unique reference too.
-	 * @return           The reference to the unique openllet.shared.hash object associated with the argument.
+	 * @param prototype of the openllet.shared.hash object we want the unique reference too.
+	 * @return The reference to the unique openllet.shared.hash object associated with the argument.
 	 */
 	@SuppressWarnings("unchecked")
 	public <T extends SharedObject> T build(final T prototype)
@@ -114,8 +108,8 @@ public class SharedObjectFactory
 	/**
 	 * Checks if the given openllet.shared.hash object is present in this factory.
 	 *
-	 * @param  object is the openllet.shared.hash object.
-	 * @return        True if this factory contains the given openllet.shared.hash object; false otherwise.
+	 * @param object is the openllet.shared.hash object.
+	 * @return True if this factory contains the given openllet.shared.hash object; false otherwise.
 	 */
 	public boolean contains(final SharedObject object)
 	{
@@ -130,29 +124,29 @@ public class SharedObjectFactory
 	 */
 	private final static class Segment
 	{
-		private final static int									MAX_SEGMENT_BITSIZE		= 32 - DEFAULT_NR_OF_SEGMENTS_BITSIZE;
-		private final static int									DEFAULT_SEGMENT_BITSIZE	= 5;
-		private final static float									DEFAULT_LOAD_FACTOR		= 2f;
+		private final static int MAX_SEGMENT_BITSIZE = 32 - DEFAULT_NR_OF_SEGMENTS_BITSIZE;
+		private final static int DEFAULT_SEGMENT_BITSIZE = 5;
+		private final static float DEFAULT_LOAD_FACTOR = 2f;
 
-		private volatile Entry[]									_entries;
+		private volatile Entry[] _entries;
 
-		private int													_bitSize;
+		private int _bitSize;
 
-		private int													_threshold;
-		private int													_load;
+		private int _threshold;
+		private int _load;
 
-		public volatile boolean										_flaggedForCleanup;
-		public volatile WeakReference<GarbageCollectionDetector>	_garbageCollectionDetector;
-		private int													_cleanupScaler;
-		private int													_cleanupThreshold;
+		public volatile boolean _flaggedForCleanup;
+		public volatile WeakReference<GarbageCollectionDetector> _garbageCollectionDetector;
+		private int _cleanupScaler;
+		private int _cleanupThreshold;
 
-		private final int											_segmentID;
+		private final int _segmentID;
 
-		private int													_numberOfFreeIDs;
-		private int[]												_freeIDs;
-		private int													_freeIDsIndex;
-		private int													_nextFreeID;
-		private final int											_maxFreeIDPlusOne;
+		private int _numberOfFreeIDs;
+		private int[] _freeIDs;
+		private int _freeIDsIndex;
+		private int _nextFreeID;
+		private final int _maxFreeIDPlusOne;
 
 		/**
 		 * Constructor.
@@ -161,8 +155,6 @@ public class SharedObjectFactory
 		 */
 		public Segment(final int segmentID)
 		{
-			super();
-
 			_segmentID = segmentID;
 
 			_bitSize = DEFAULT_SEGMENT_BITSIZE;
@@ -232,9 +224,8 @@ public class SharedObjectFactory
 		}
 
 		/**
-		 * Rehashes the segment. The entries in the bucket will remain in the same order, so there are
-		 * only 'young -> old' references and not the other way around. This will reduce 'minor'
-		 * garbage collection times.
+		 * Rehashes the segment. The entries in the bucket will remain in the same order, so there are only 'young -> old' references and not the other way
+		 * around. This will reduce 'minor' garbage collection times.
 		 */
 		private void rehash()
 		{
@@ -311,55 +302,55 @@ public class SharedObjectFactory
 		{
 			// Rehash if the load exceeds the threshold,
 			// unless the segment is already stretched to it's maximum (since that would be a useless thing to do).
-			if (_load > _threshold && _bitSize < MAX_SEGMENT_BITSIZE) rehash();
+			if (_load > _threshold && _bitSize < MAX_SEGMENT_BITSIZE)
+				rehash();
 		}
 
 		/**
-		 * Attempts to run a cleanup if the garbage collector ran before the invocation of this function.
-		 * This ensures that, in most cases, the buckets will contain no cleared entries. By doing this we
-		 * speed up lookups significantly. Note that we will automatically throttle the frequency of the cleanups;
-		 * in case we hardly every collect anything (either because there is no garbage or collections occur
-		 * very frequently) it will be slowed down to as little as once per four garbage collections. When a lot
-		 * of entries are being cleared the cleanup will run after every collection. Using this strategy
+		 * Attempts to run a cleanup if the garbage collector ran before the invocation of this function. This ensures that, in most cases, the buckets will
+		 * contain no cleared entries. By doing this we speed up lookups significantly. Note that we will automatically throttle the frequency of the cleanups;
+		 * in case we hardly every collect anything (either because there is no garbage or collections occur very frequently) it will be slowed down to as
+		 * little as once per four garbage collections. When a lot of entries are being cleared the cleanup will run after every collection. Using this strategy
 		 * ensures us that we clean the segment exactly when it is needed and possible.
 		 */
 		private void tryCleanup()
 		{
-			if (_flaggedForCleanup) synchronized (this)
-			{
-				if (_garbageCollectionDetector == null)
-				{ // Yes, in Java DCL works on volatiles.
-					_flaggedForCleanup = false;
-					if (_cleanupThreshold > 8)
-					{ // The 'magic' number 8 is chosen, so the cleanup will be done at least once after every four garbage collections.
-						final int oldLoad = _load;
+			if (_flaggedForCleanup)
+				synchronized (this)
+				{
+					if (_garbageCollectionDetector == null)
+					{ // Yes, in Java DCL works on volatiles.
+						_flaggedForCleanup = false;
+						if (_cleanupThreshold > 8)
+						{ // The 'magic' number 8 is chosen, so the cleanup will be done at least once after every four garbage collections.
+							final int oldLoad = _load;
 
-						cleanup();
+							cleanup();
 
-						int cleanupPercentate;
-						if (oldLoad == 0)
-							cleanupPercentate = 50; // This prevents division by zero errors in case the table is still empty (keep the cleanup percentage that 50% in this case).
+							int cleanupPercentate;
+							if (oldLoad == 0)
+								cleanupPercentate = 50; // This prevents division by zero errors in case the table is still empty (keep the cleanup percentage that 50% in this case).
+							else
+								cleanupPercentate = 100 - _load * 100 / oldLoad; // Calculate the percentage of entries that has been cleaned.
+							_cleanupScaler = _cleanupScaler * 25 + cleanupPercentate * 7 >> 5; // Modify the scaler, depending on the history (weight = 25) and how much we cleaned up this time (weight = 7).
+							if (_cleanupScaler > 0)
+								_cleanupThreshold = _cleanupScaler;
+							else
+								_cleanupThreshold = 1; // If the scaler value became 0 (when we hardly every collect something), set the threshold to 1, so we only skip the next three garbage collections.
+						}
 						else
-							cleanupPercentate = 100 - _load * 100 / oldLoad; // Calculate the percentage of entries that has been cleaned.
-						_cleanupScaler = _cleanupScaler * 25 + cleanupPercentate * 7 >> 5; // Modify the scaler, depending on the history (weight = 25) and how much we cleaned up this time (weight = 7).
-						if (_cleanupScaler > 0)
-							_cleanupThreshold = _cleanupScaler;
-						else
-							_cleanupThreshold = 1; // If the scaler value became 0 (when we hardly every collect something), set the threshold to 1, so we only skip the next three garbage collections.
+							_cleanupThreshold <<= 1;
+
+						_garbageCollectionDetector = new WeakReference<>(new GarbageCollectionDetector(this)); // Allocate a new (unreachable) GC detector.
 					}
-					else
-						_cleanupThreshold <<= 1;
-
-					_garbageCollectionDetector = new WeakReference<>(new GarbageCollectionDetector(this)); // Allocate a new (unreachable) GC detector.
 				}
-			}
 		}
 
 		/**
 		 * Inserts the given openllet.shared.hash object into the set.
 		 *
 		 * @param object The openllet.shared.hash object to insert.
-		 * @param hash   The hash the corresponds to the given openllet.shared.hash object.
+		 * @param hash The hash the corresponds to the given openllet.shared.hash object.
 		 */
 		private void put(final SharedObject object, final int hash)
 		{
@@ -386,12 +377,11 @@ public class SharedObjectFactory
 		}
 
 		/**
-		 * Check if the given openllet.shared.hash object is present in this segment.
-		 * NOTE: This method contains some duplicate code for efficiency reasons.
+		 * Check if the given openllet.shared.hash object is present in this segment. NOTE: This method contains some duplicate code for efficiency reasons.
 		 *
-		 * @param  prototype The openllet.shared.hash object.
-		 * @param  hash      The hash associated with the given openllet.shared.hash object.
-		 * @return           True if this segment contains the given openllet.shared.hash object; false otherwise.
+		 * @param prototype The openllet.shared.hash object.
+		 * @param hash The hash associated with the given openllet.shared.hash object.
+		 * @return True if this segment contains the given openllet.shared.hash object; false otherwise.
 		 */
 		public boolean contains(final SharedObject prototype, final int hash)
 		{
@@ -401,11 +391,13 @@ public class SharedObjectFactory
 			// Find the object (lock free).
 			int position = hash & hashMask;
 			Entry e = currentEntries[position];
-			if (e != null) do
-			{
-				if (e.get() == prototype) return true;
-				e = e._next;
-			} while (e != null);
+			if (e != null)
+				do
+				{
+					if (e.get() == prototype)
+						return true;
+					e = e._next;
+				} while (e != null);
 
 			synchronized (this)
 			{
@@ -415,22 +407,24 @@ public class SharedObjectFactory
 				// Try again while holding the global lock for this segment.
 				position = hash & hashMask;
 				e = currentEntries[position];
-				if (e != null) do
-				{
-					if (e.get() == prototype) return true;
-					e = e._next;
-				} while (e != null);
+				if (e != null)
+					do
+					{
+						if (e.get() == prototype)
+							return true;
+						e = e._next;
+					} while (e != null);
 			}
 			return false;
 		}
 
 		/**
-		 * Returns a reference to the unique version of the given openllet.shared.hash object prototype.
-		 * NOTE: This method contains some duplicate code for efficiency reasons.
+		 * Returns a reference to the unique version of the given openllet.shared.hash object prototype. NOTE: This method contains some duplicate code for
+		 * efficiency reasons.
 		 *
-		 * @param  prototype A prototype matching the openllet.shared.hash object we want a reference to.
-		 * @param  hash      The hash associated with the given openllet.shared.hash object prototype.
-		 * @return           The reference to the unique version of the openllet.shared.hash object.
+		 * @param prototype A prototype matching the openllet.shared.hash object we want a reference to.
+		 * @param hash The hash associated with the given openllet.shared.hash object prototype.
+		 * @return The reference to the unique version of the openllet.shared.hash object.
 		 */
 		public SharedObject get(final SharedObject prototype, final int hash)
 		{
@@ -443,15 +437,18 @@ public class SharedObjectFactory
 			// Find the object (lock free).
 			int position = hash & hashMask;
 			Entry e = currentEntries[position];
-			if (e != null) do
-			{
-				if (hash == e._hash)
+			if (e != null)
+				do
 				{
-					final SharedObject object = e.get();
-					if (object != null) if (prototype.equivalent(object)) return object;
-				}
-				e = e._next;
-			} while (e != null);
+					if (hash == e._hash)
+					{
+						final SharedObject object = e.get();
+						if (object != null)
+							if (prototype.equivalent(object))
+								return object;
+					}
+					e = e._next;
+				} while (e != null);
 
 			synchronized (this)
 			{
@@ -460,15 +457,17 @@ public class SharedObjectFactory
 				hashMask = currentEntries.length - 1;
 				position = hash & hashMask;
 				e = currentEntries[position];
-				if (e != null) do
-				{
-					if (hash == e._hash)
+				if (e != null)
+					do
 					{
-						final SharedObject object = e.get();
-						if (object != null && prototype.equivalent(object)) return object;
-					}
-					e = e._next;
-				} while (e != null);
+						if (hash == e._hash)
+						{
+							final SharedObject object = e.get();
+							if (object != null && prototype.equivalent(object))
+								return object;
+						}
+						e = e._next;
+					} while (e != null);
 
 				// If we still can't find it, add it.
 				ensureCapacity();
@@ -498,11 +497,13 @@ public class SharedObjectFactory
 				return _freeIDs[--_freeIDsIndex];
 			}
 
-			if (_nextFreeID != _maxFreeIDPlusOne) return _nextFreeID++;
+			if (_nextFreeID != _maxFreeIDPlusOne)
+				return _nextFreeID++;
 
 			// We ran out of id's.
 			cleanup(); // In a last desperate attempt, try to do a cleanup to free up ids.
-			if (_freeIDsIndex > 0) return _freeIDs[--_freeIDsIndex];
+			if (_freeIDsIndex > 0)
+				return _freeIDs[--_freeIDsIndex];
 
 			// If we still can't get a free id throw an exception.
 			throw new OpenError("No more unique identifiers available for segment(" + _segmentID + ").");
@@ -511,8 +512,7 @@ public class SharedObjectFactory
 		/**
 		 * Releases the given unique identifier, so it can be reused.
 		 *
-		 * @param id
-		 *           The identifier to release.
+		 * @param id The identifier to release.
 		 */
 		private void releaseID(final int id)
 		{
@@ -568,7 +568,8 @@ public class SharedObjectFactory
 						int bucketLength = 1;
 						while ((e = e._next) != null)
 							bucketLength++;
-						if (bucketLength > maxBucketLength) maxBucketLength = bucketLength;
+						if (bucketLength > maxBucketLength)
+							maxBucketLength = bucketLength;
 						totalNrOfCollisions += bucketLength - 1;
 					}
 				}
@@ -614,8 +615,8 @@ public class SharedObjectFactory
 		}
 
 		/**
-		 * An object that can be used to detect when a garbage collection has been executed.
-		 * Instances of this object must be made weakly reachable for this to work.
+		 * An object that can be used to detect when a garbage collection has been executed. Instances of this object must be made weakly reachable for this to
+		 * work.
 		 *
 		 * @author Arnold Lankamp
 		 */
@@ -626,8 +627,7 @@ public class SharedObjectFactory
 			/**
 			 * Constructor.
 			 *
-			 * @param segment
-			 *                The segment that we need to flag for cleanup after a garbage collection occurred.
+			 * @param segment The segment that we need to flag for cleanup after a garbage collection occurred.
 			 */
 			public GarbageCollectionDetector(final Segment segment)
 			{
@@ -635,8 +635,8 @@ public class SharedObjectFactory
 			}
 
 			/**
-			 * Executed after the garbage collector detects that this object is eligible for reclamation.
-			 * When this happens it will flag the associated segment for cleanup.
+			 * Executed after the garbage collector detects that this object is eligible for reclamation. When this happens it will flag the associated segment
+			 * for cleanup.
 			 *
 			 * @see java.lang.Object#finalize
 			 */
@@ -655,15 +655,15 @@ public class SharedObjectFactory
 		 */
 		private static class Entry extends WeakReference<SharedObject>
 		{
-			public final int		_hash;
-			public volatile Entry	_next;	// This field is not final because we need to change it during cleanup and while rehashing.
+			public final int _hash;
+			public volatile Entry _next; // This field is not final because we need to change it during cleanup and while rehashing.
 
 			/**
 			 * Constructor.
 			 *
-			 * @param next         The next entry in the bucket.
+			 * @param next The next entry in the bucket.
 			 * @param sharedObject The openllet.shared.hash object.
-			 * @param hash         The hash that is associated with the given openllet.shared.hash object.
+			 * @param hash The hash that is associated with the given openllet.shared.hash object.
 			 */
 			public Entry(final Entry next, final SharedObject sharedObject, final int hash)
 			{
@@ -686,10 +686,10 @@ public class SharedObjectFactory
 			/**
 			 * Constructor.
 			 *
-			 * @param next               The next entry in the bucket.
+			 * @param next The next entry in the bucket.
 			 * @param sharedObjectWithID The openllet.shared.hash object.
-			 * @param hash               The hash that is associated with the given openllet.shared.hash object.
-			 * @param id                 The unique identifier.
+			 * @param hash The hash that is associated with the given openllet.shared.hash object.
+			 * @param id The unique identifier.
 			 */
 			public EntryWithID(final Entry next, final SharedObjectWithID sharedObjectWithID, final int hash, final int id)
 			{

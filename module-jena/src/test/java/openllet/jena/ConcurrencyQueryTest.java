@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.Vector;
+
 import org.apache.jena.ontology.Individual;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.ModelFactory;
@@ -25,9 +26,9 @@ import org.junit.Test;
  */
 public class ConcurrencyQueryTest extends SequentialTestsContraintInitializer
 {
-	private static final String	ONTOLOGY_PATH	= "/vicodi.ttl";
-	private static final Random	_random			= new Random();
-	private static final float	RATIO			= 0.9f;			// 0.9% of the total number of tests samples. You can go far over 1 for performances test.
+	private static final String ONTOLOGY_PATH = "/vicodi.ttl";
+	private static final Random _random = new Random();
+	private static final float RATIO = 0.9f; // 0.9% of the total number of tests samples. You can go far over 1 for performances test.
 
 	@Test
 	public void concurrentDLQueries() throws Exception

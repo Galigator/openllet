@@ -6,15 +6,16 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
-import openllet.owlapi.OWL;
-import openllet.pellint.lintpattern.axiom.LargeCardinalityPattern;
-import openllet.pellint.model.Lint;
-import openllet.pellint.test.PellintTestCase;
 import org.junit.Before;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+
+import openllet.owlapi.OWL;
+import openllet.pellint.lintpattern.axiom.LargeCardinalityPattern;
+import openllet.pellint.model.Lint;
+import openllet.pellint.test.PellintTestCase;
 
 /**
  * <p>

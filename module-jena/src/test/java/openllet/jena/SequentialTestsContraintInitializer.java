@@ -3,6 +3,7 @@ package openllet.jena;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -16,11 +17,11 @@ import org.junit.rules.TestName;
  */
 public abstract class SequentialTestsContraintInitializer
 {
-	protected static final Lock	_sequential			= new ReentrantLock();
-	public static long			_timing				= 0;
+	protected static final Lock _sequential = new ReentrantLock();
+	public static long _timing = 0;
 
 	@Rule
-	public TestName				_currentMethodName	= new TestName();
+	public TestName _currentMethodName = new TestName();
 
 	@Before
 	public void setUp()

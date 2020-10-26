@@ -7,6 +7,7 @@
 package openllet.core.utils.progress;
 
 import java.io.PrintStream;
+
 import openllet.core.utils.DurationFormat;
 
 /**
@@ -21,9 +22,9 @@ import openllet.core.utils.DurationFormat;
  */
 public class ConsoleProgressMonitor extends AbstractProgressMonitor
 {
-	private final PrintStream	_out;
+	private final PrintStream _out;
 
-	private volatile int		_echo	= 0;
+	private volatile int _echo = 0;
 
 	@Override
 	public int getLastEcho()
@@ -73,11 +74,13 @@ public class ConsoleProgressMonitor extends AbstractProgressMonitor
 	{
 		final int pc = (int) (100.0 * _progress / _progressLength);
 
-		if (pc == _progressPercent) return;
+		if (pc == _progressPercent)
+			return;
 
 		_progressPercent = pc;
 
-		if (pc < _echo) return;
+		if (pc < _echo)
+			return;
 
 		_echo += getEchoInterval();
 

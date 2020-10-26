@@ -29,8 +29,7 @@
 package openllet.aterm;
 
 /**
- * This interface describes the functionality of an ATermBlob
- * (Binary Large OBject).
+ * This interface describes the functionality of an ATermBlob (Binary Large OBject).
  *
  * @author Hayco de Jong (jong@cwi.nl)
  * @author Pieter Olivier (olivierp@cwi.nl)
@@ -49,7 +48,6 @@ public interface ATermBlob extends ATerm
 	 * Gets the data in this blob.
 	 *
 	 * @return the data in this blob.
-	 *
 	 */
 	byte[] getBlobData();
 }

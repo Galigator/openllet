@@ -24,9 +24,11 @@ public class Block6MinSome implements BlockingCondition
 			final Role u = cxt._blocked.getABox().getRole(min.getArgument(0));
 			final ATermAppl c = (ATermAppl) min.getArgument(2);
 
-			if (u.isDatatypeRole()) continue;
+			if (u.isDatatypeRole())
+				continue;
 
-			if (cxt.isRSuccessor(u) && !cxt._blocked.hasType(ATermUtils.negate(c))) return false;
+			if (cxt.isRSuccessor(u) && !cxt._blocked.hasType(ATermUtils.negate(c)))
+				return false;
 		}
 
 		for (final ATermAppl normSome : cxt._blocked.getParent().getTypes(Node.SOME))
@@ -35,9 +37,11 @@ public class Block6MinSome implements BlockingCondition
 			final Role u = cxt._blocked.getABox().getRole(some.getArgument(0));
 			final ATermAppl notC = (ATermAppl) some.getArgument(1);
 
-			if (u.isDatatypeRole()) continue;
+			if (u.isDatatypeRole())
+				continue;
 
-			if (cxt.isRSuccessor(u) && !cxt._blocked.hasType(notC)) return false;
+			if (cxt.isRSuccessor(u) && !cxt._blocked.hasType(notC))
+				return false;
 		}
 
 		return true;

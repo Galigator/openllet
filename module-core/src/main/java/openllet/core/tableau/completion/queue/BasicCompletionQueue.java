@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import openllet.aterm.ATermAppl;
 import openllet.atom.OpenError;
 import openllet.core.boxes.abox.ABox;
@@ -41,12 +42,12 @@ public final class BasicCompletionQueue extends CompletionQueue // Class is set 
 	/**
 	 * The _queue - array - each entry is an arraylist for a particular rule type
 	 */
-	private final List<ATermAppl>	_queue			= new ArrayList<>();
+	private final List<ATermAppl> _queue = new ArrayList<>();
 
 	/**
 	 * Set to track duplicates for new elements list for queue
 	 */
-	private final Set<ATermAppl>	_newQueue		= new HashSet<>();
+	private final Set<ATermAppl> _newQueue = new HashSet<>();
 
 	//TODO: This will be refactored; however currently there are some unit tests which will not
 	//terminate due to the order in which the completion rules are applied to individuals
@@ -57,27 +58,27 @@ public final class BasicCompletionQueue extends CompletionQueue // Class is set 
 	/**
 	 * List to hold new elements for the queue
 	 */
-	private final List<ATermAppl>	_newQueueList	= new ArrayList<>();
+	private final List<ATermAppl> _newQueueList = new ArrayList<>();
 
 	/**
 	 * List of _current index pointer for each queue
 	 */
-	private int						_current		= 0;
+	private int _current = 0;
 
 	/**
 	 * List of _current index pointer for each queue
 	 */
-	private int						_end			= 0;
+	private int _end = 0;
 
 	/**
 	 * List of _current index pointer for the stopping point at each queue
 	 */
-	private int						_cutOff			= 0;
+	private int _cutOff = 0;
 
 	/**
 	 * Flag set for when the kb is restored - in this case we do not want to flush the queue immediatly
 	 */
-	private boolean					_backtracked	= false;
+	private boolean _backtracked = false;
 
 	/**
 	 * Constructor - create queue
@@ -116,11 +117,13 @@ public final class BasicCompletionQueue extends CompletionQueue // Class is set 
 			Node node = _abox.getNode(_queue.get(_current));
 
 			//because we do not maitain the _queue during restore this _node could be non-existent
-			if (node == null) continue;
+			if (node == null)
+				continue;
 
 			node = node.getSame();
 
-			if ((node.isLiteral() && isAllowLiterals() || node.isIndividual() && !isAllowLiterals()) && !node.isPruned()) break;
+			if ((node.isLiteral() && isAllowLiterals() || node.isIndividual() && !isAllowLiterals()) && !node.isPruned())
+				break;
 		}
 	}
 
@@ -273,7 +276,10 @@ public final class BasicCompletionQueue extends CompletionQueue // Class is set 
 	{
 		if (!_backtracked && !_closed)
 			_queue.clear();
-		else if (_closed) if (!_abox.isClosed()) _closed = false;
+		else
+			if (_closed)
+				if (!_abox.isClosed())
+					_closed = false;
 
 		_queue.addAll(_newQueueList);
 

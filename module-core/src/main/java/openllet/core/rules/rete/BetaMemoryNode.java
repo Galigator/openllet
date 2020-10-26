@@ -11,15 +11,16 @@ import java.util.List;
 
 public class BetaMemoryNode extends BetaNode
 {
-	private final BetaMemoryIndex		_memory;
+	private final BetaMemoryIndex _memory;
 
-	private final AlphaNode				_alpha;
+	private final AlphaNode _alpha;
 
-	private final List<FilterCondition>	_conditions;
+	private final List<FilterCondition> _conditions;
 
 	public BetaMemoryNode(final AlphaNode alpha, final List<FilterCondition> conditions)
 	{
-		if (conditions == null) throw new NullPointerException();
+		if (conditions == null)
+			throw new NullPointerException();
 		_alpha = alpha;
 		_conditions = conditions;
 		_memory = createIndex(conditions);
@@ -27,7 +28,8 @@ public class BetaMemoryNode extends BetaNode
 
 	private static BetaMemoryIndex createIndex(final List<FilterCondition> conditions)
 	{
-		if (!conditions.isEmpty() && conditions.get(0) instanceof JoinCondition) return BetaMemoryIndex.withJoin((JoinCondition) conditions.get(0));
+		if (!conditions.isEmpty() && conditions.get(0) instanceof JoinCondition)
+			return BetaMemoryIndex.withJoin((JoinCondition) conditions.get(0));
 
 		return BetaMemoryIndex.withoutJoin();
 	}
@@ -52,7 +54,8 @@ public class BetaMemoryNode extends BetaNode
 		while (wmeTokens.hasNext())
 		{
 			final Token token = wmeTokens.next();
-			if (testConditions(wme, token, 0)) activateChildren(wme, token);
+			if (testConditions(wme, token, 0))
+				activateChildren(wme, token);
 		}
 	}
 
@@ -67,7 +70,8 @@ public class BetaMemoryNode extends BetaNode
 		while (matches.hasNext())
 		{
 			final WME wme = matches.next();
-			if (testConditions(wme, token, _memory.isJoined() ? 1 : 0)) activateChildren(wme, token);
+			if (testConditions(wme, token, _memory.isJoined() ? 1 : 0))
+				activateChildren(wme, token);
 		}
 	}
 
@@ -76,7 +80,8 @@ public class BetaMemoryNode extends BetaNode
 		for (int i = start, n = _conditions.size(); i < n; i++)
 		{
 			final FilterCondition condition = _conditions.get(i);
-			if (!condition.test(wme, token)) return false;
+			if (!condition.test(wme, token))
+				return false;
 		}
 		return true;
 	}

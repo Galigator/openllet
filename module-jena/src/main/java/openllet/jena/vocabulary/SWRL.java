@@ -43,31 +43,31 @@ public class SWRL
 		return URI;
 	}
 
-	public static final Resource	Imp							= ResourceFactory.createResource(URI + "Imp");
+	public static final Resource Imp = ResourceFactory.createResource(URI + "Imp");
 	/**
 	 * @deprecated Correct term is {@link #Imp}
 	 */
 	@Deprecated
-	public static final Resource	Impl						= ResourceFactory.createResource(URI + "Impl");
+	public static final Resource Impl = ResourceFactory.createResource(URI + "Impl");
 
-	public static final Resource	AtomList					= ResourceFactory.createResource(URI + "AtomList");
-	public static final Resource	Variable					= ResourceFactory.createResource(URI + "Variable");
-	public static final Resource	IndividualPropertyAtom		= ResourceFactory.createResource(URI + "IndividualPropertyAtom");
-	public static final Resource	BuiltinAtom					= ResourceFactory.createResource(URI + "BuiltinAtom");
-	public static final Resource	DatavaluedPropertyAtom		= ResourceFactory.createResource(URI + "DatavaluedPropertyAtom");
-	public static final Resource	DataRangeAtom				= ResourceFactory.createResource(URI + "DataRangeAtom");
-	public static final Resource	ClassAtom					= ResourceFactory.createResource(URI + "ClassAtom");
-	public static final Resource	SameIndividualAtom			= ResourceFactory.createResource(URI + "SameIndividualAtom");
-	public static final Resource	DifferentIndividualsAtom	= ResourceFactory.createResource(URI + "DifferentIndividualsAtom");
-	public static final Resource	Builtin						= ResourceFactory.createResource(URI + "builtin");
+	public static final Resource AtomList = ResourceFactory.createResource(URI + "AtomList");
+	public static final Resource Variable = ResourceFactory.createResource(URI + "Variable");
+	public static final Resource IndividualPropertyAtom = ResourceFactory.createResource(URI + "IndividualPropertyAtom");
+	public static final Resource BuiltinAtom = ResourceFactory.createResource(URI + "BuiltinAtom");
+	public static final Resource DatavaluedPropertyAtom = ResourceFactory.createResource(URI + "DatavaluedPropertyAtom");
+	public static final Resource DataRangeAtom = ResourceFactory.createResource(URI + "DataRangeAtom");
+	public static final Resource ClassAtom = ResourceFactory.createResource(URI + "ClassAtom");
+	public static final Resource SameIndividualAtom = ResourceFactory.createResource(URI + "SameIndividualAtom");
+	public static final Resource DifferentIndividualsAtom = ResourceFactory.createResource(URI + "DifferentIndividualsAtom");
+	public static final Resource Builtin = ResourceFactory.createResource(URI + "builtin");
 
-	public static final Property	head						= ResourceFactory.createProperty(URI + "head");
-	public static final Property	body						= ResourceFactory.createProperty(URI + "body");
-	public static final Property	dataRange					= ResourceFactory.createProperty(URI + "dataRange");
-	public static final Property	propertyPredicate			= ResourceFactory.createProperty(URI + "propertyPredicate");
-	public static final Property	arguments					= ResourceFactory.createProperty(URI + "arguments");
-	public static final Property	argument1					= ResourceFactory.createProperty(URI + "argument1");
-	public static final Property	argument2					= ResourceFactory.createProperty(URI + "argument2");
-	public static final Property	classPredicate				= ResourceFactory.createProperty(URI + "classPredicate");
-	public static final Property	builtin						= ResourceFactory.createProperty(URI + "builtin");
+	public static final Property head = ResourceFactory.createProperty(URI + "head");
+	public static final Property body = ResourceFactory.createProperty(URI + "body");
+	public static final Property dataRange = ResourceFactory.createProperty(URI + "dataRange");
+	public static final Property propertyPredicate = ResourceFactory.createProperty(URI + "propertyPredicate");
+	public static final Property arguments = ResourceFactory.createProperty(URI + "arguments");
+	public static final Property argument1 = ResourceFactory.createProperty(URI + "argument1");
+	public static final Property argument2 = ResourceFactory.createProperty(URI + "argument2");
+	public static final Property classPredicate = ResourceFactory.createProperty(URI + "classPredicate");
+	public static final Property builtin = ResourceFactory.createProperty(URI + "builtin");
 }

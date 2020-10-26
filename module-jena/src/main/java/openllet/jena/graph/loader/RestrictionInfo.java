@@ -6,8 +6,9 @@
 
 package openllet.jena.graph.loader;
 
-import openllet.core.utils.Bool;
 import org.apache.jena.graph.Node;
+
+import openllet.core.utils.Bool;
 
 /**
  * <p>
@@ -27,11 +28,11 @@ import org.apache.jena.graph.Node;
  */
 public class RestrictionInfo
 {
-	private Node	_type;
-	private Node	_predicate;
-	private Node	_filler;
-	private Node	_detail;
-	private Bool	_isObjectRestriction	= Bool.UNKNOWN;
+	private Node _type;
+	private Node _predicate;
+	private Node _filler;
+	private Node _detail;
+	private Bool _isObjectRestriction = Bool.UNKNOWN;
 
 	public RestrictionInfo(final Node predicate)
 	{

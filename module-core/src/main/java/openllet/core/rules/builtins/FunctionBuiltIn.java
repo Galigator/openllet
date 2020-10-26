@@ -9,6 +9,7 @@ package openllet.core.rules.builtins;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+
 import openllet.core.boxes.abox.ABox;
 import openllet.core.boxes.abox.Literal;
 import openllet.core.rules.BindingHelper;
@@ -40,10 +41,10 @@ public class FunctionBuiltIn implements BuiltIn
 	private class FunctionHelper implements BindingHelper
 	{
 
-		private final BuiltInAtom	_atom;
-		private AtomDObject			_head;
-		private Literal				_value;
-		private boolean				_used;
+		private final BuiltInAtom _atom;
+		private AtomDObject _head;
+		private Literal _value;
+		private boolean _used;
 
 		public FunctionHelper(final BuiltInAtom atom)
 		{
@@ -59,12 +60,15 @@ public class FunctionBuiltIn implements BuiltIn
 				{
 					head = obj;
 					// Can only bind first argument to a _function
-					if (!VariableUtils.isVariable(head)) return Collections.emptySet();
+					if (!VariableUtils.isVariable(head))
+						return Collections.emptySet();
 				}
 				else
-				// Cannot bind a variable that occurs in multiple places.
-				if (head.equals(obj)) return Collections.emptySet();
-			if (head == null) return Collections.emptySet();
+					// Cannot bind a variable that occurs in multiple places.
+					if (head.equals(obj))
+						return Collections.emptySet();
+			if (head == null)
+				return Collections.emptySet();
 			return Collections.singleton((AtomVariable) head);
 		}
 
@@ -85,7 +89,8 @@ public class FunctionBuiltIn implements BuiltIn
 			Literal resultLit = null;
 
 			// Can't bind the first _arg if it doesn't exist!
-			if (_atom.getAllArguments().size() == 0) return;
+			if (_atom.getAllArguments().size() == 0)
+				return;
 
 			// The arguments to a numeric _function number one less than the arguments
 			// to the SWRL _atom.  The first argument to the _atom is either set
@@ -99,7 +104,8 @@ public class FunctionBuiltIn implements BuiltIn
 
 				if (i == 0)
 				{
-					if (lit != null) resultLit = lit;
+					if (lit != null)
+						resultLit = lit;
 
 					_head = obj;
 					i++;

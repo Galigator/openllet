@@ -17,6 +17,7 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import openllet.aterm.AFun;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
@@ -49,8 +50,8 @@ public class SimplifiedELClassifier extends CDOptimizedTaxonomyBuilder
 
 	private static class QueueElement
 	{
-		public final ConceptInfo	_sub;
-		public final ConceptInfo	_sup;
+		public final ConceptInfo _sub;
+		public final ConceptInfo _sup;
 
 		public QueueElement(final ConceptInfo sub, final ConceptInfo sup)
 		{
@@ -59,22 +60,22 @@ public class SimplifiedELClassifier extends CDOptimizedTaxonomyBuilder
 		}
 	}
 
-	public final Timers										timers							= new Timers();
+	public final Timers timers = new Timers();
 
-	private static final boolean							PREPROCESS_DOMAINS				= false;
+	private static final boolean PREPROCESS_DOMAINS = false;
 
-	private static final boolean							MATERIALIZE_SUPER_PROPERTIES	= false;
+	private static final boolean MATERIALIZE_SUPER_PROPERTIES = false;
 
-	private final Queue<QueueElement>						_primaryQueue					= new LinkedList<>();
-	private final Map<ATermAppl, ConceptInfo>				_concepts						= CollectionUtils.makeMap();
-	private final MultiValueMap<ATermAppl, ConceptInfo>		_existentials					= new MultiValueMap<>();
-	private final MultiValueMap<ConceptInfo, ConceptInfo>	_conjunctions					= new MultiValueMap<>();
+	private final Queue<QueueElement> _primaryQueue = new LinkedList<>();
+	private final Map<ATermAppl, ConceptInfo> _concepts = CollectionUtils.makeMap();
+	private final MultiValueMap<ATermAppl, ConceptInfo> _existentials = new MultiValueMap<>();
+	private final MultiValueMap<ConceptInfo, ConceptInfo> _conjunctions = new MultiValueMap<>();
 
-	private ConceptInfo										TOP;
-	private ConceptInfo										BOTTOM;
-	private boolean											_hasComplexRoles;
-	private RoleChainCache									_roleChains;
-	private RoleRestrictionCache							_roleRestrictions;
+	private ConceptInfo TOP;
+	private ConceptInfo BOTTOM;
+	private boolean _hasComplexRoles;
+	private RoleChainCache _roleChains;
+	private RoleRestrictionCache _roleRestrictions;
 
 	public SimplifiedELClassifier(final KnowledgeBase kb)
 	{
@@ -115,7 +116,8 @@ public class SimplifiedELClassifier extends CDOptimizedTaxonomyBuilder
 
 		timers.execute("processQueue", t -> processQueue());
 
-		if (_logger.isLoggable(Level.FINER)) print();
+		if (_logger.isLoggable(Level.FINER))
+			print();
 
 		_monitor.setProgress(queueSize);
 
@@ -128,7 +130,8 @@ public class SimplifiedELClassifier extends CDOptimizedTaxonomyBuilder
 
 	private void addSuccessor(final ConceptInfo pred, final ATermAppl p, final ConceptInfo succ)
 	{
-		if (!pred.addSuccessor(p, succ)) return;
+		if (!pred.addSuccessor(p, succ))
+			return;
 
 		_logger.finer(() -> "Adding " + pred + " -> " + ATermUtils.toString(p) + " -> " + succ);
 
@@ -141,37 +144,39 @@ public class SimplifiedELClassifier extends CDOptimizedTaxonomyBuilder
 		for (final ConceptInfo supOfSucc : succ.getSuperClasses())
 			addSuccessor(pred, p, supOfSucc);
 
-		if (!RoleChainCache.isAnon(p)) if (MATERIALIZE_SUPER_PROPERTIES)
-		{
-			if (_existentials.contains(p, succ))
+		if (!RoleChainCache.isAnon(p))
+			if (MATERIALIZE_SUPER_PROPERTIES)
 			{
-				final ATermAppl some = ATermUtils.makeSomeValues(p, succ.getConcept());
-				addToQueue(pred, _concepts.get(some));
-			}
+				if (_existentials.contains(p, succ))
+				{
+					final ATermAppl some = ATermUtils.makeSomeValues(p, succ.getConcept());
+					addToQueue(pred, _concepts.get(some));
+				}
 
-			final Set<Role> superRoles = _kb.getRole(p).getSuperRoles();
-			for (final Role superRole : superRoles)
-				addSuccessor(pred, superRole.getName(), succ);
-		}
-		else
-		{
-			final Role pRole = _kb.getRole(p);
-			if (null != pRole)
-			{
-				final Set<Role> superRoles = pRole.getSuperRoles();
+				final Set<Role> superRoles = _kb.getRole(p).getSuperRoles();
 				for (final Role superRole : superRoles)
-					if (_existentials.contains(superRole.getName(), succ))
-					{
-						final ATermAppl some = ATermUtils.makeSomeValues(superRole.getName(), succ.getConcept());
-						addToQueue(pred, _concepts.get(some));
-					}
+					addSuccessor(pred, superRole.getName(), succ);
 			}
-		}
+			else
+			{
+				final Role pRole = _kb.getRole(p);
+				if (null != pRole)
+				{
+					final Set<Role> superRoles = pRole.getSuperRoles();
+					for (final Role superRole : superRoles)
+						if (_existentials.contains(superRole.getName(), succ))
+						{
+							final ATermAppl some = ATermUtils.makeSomeValues(superRole.getName(), succ.getConcept());
+							addToQueue(pred, _concepts.get(some));
+						}
+				}
+			}
 
 		if (!PREPROCESS_DOMAINS)
 		{
 			final ATermAppl propDomain = _roleRestrictions.getDomain(p);
-			if (propDomain != null) addToQueue(pred, _concepts.get(propDomain));
+			if (propDomain != null)
+				addToQueue(pred, _concepts.get(propDomain));
 		}
 
 		if (_hasComplexRoles)
@@ -216,7 +221,8 @@ public class SimplifiedELClassifier extends CDOptimizedTaxonomyBuilder
 		}
 
 		for (final ConceptInfo supOfSup : sup.getSuperClasses())
-			if (!supOfSup.equals(sup)) addToQueue(sub, supOfSup);
+			if (!supOfSup.equals(sup))
+				addToQueue(sub, supOfSup);
 
 		final ATermAppl c = sup.getConcept();
 		if (ATermUtils.isAnd(c))
@@ -231,31 +237,35 @@ public class SimplifiedELClassifier extends CDOptimizedTaxonomyBuilder
 				list = list.getNext();
 			}
 		}
-		else if (ATermUtils.isSomeValues(c))
-		{
-			final ATermAppl p = (ATermAppl) c.getArgument(0);
-			final ATermAppl qualification = (ATermAppl) c.getArgument(1);
-
-			addSuccessor(sub, p, _concepts.get(qualification));
-		}
 		else
-			assert ATermUtils.isPrimitive(c);
+			if (ATermUtils.isSomeValues(c))
+			{
+				final ATermAppl p = (ATermAppl) c.getArgument(0);
+				final ATermAppl qualification = (ATermAppl) c.getArgument(1);
+
+				addSuccessor(sub, p, _concepts.get(qualification));
+			}
+			else
+				assert ATermUtils.isPrimitive(c);
 
 		final Set<ConceptInfo> referredConjunctions = _conjunctions.get(sup);
-		if (referredConjunctions != null) for (final ConceptInfo conjunction : referredConjunctions)
-		{
-			ATermList list = (ATermList) conjunction.getConcept().getArgument(0);
-			while (!list.isEmpty())
+		if (referredConjunctions != null)
+			for (final ConceptInfo conjunction : referredConjunctions)
 			{
-				final ATermAppl conj = (ATermAppl) list.getFirst();
+				ATermList list = (ATermList) conjunction.getConcept().getArgument(0);
+				while (!list.isEmpty())
+				{
+					final ATermAppl conj = (ATermAppl) list.getFirst();
 
-				if (!sub.hasSuperClass(_concepts.get(conj))) break;
+					if (!sub.hasSuperClass(_concepts.get(conj)))
+						break;
 
-				list = list.getNext();
+					list = list.getNext();
+				}
+
+				if (list.isEmpty())
+					addToQueue(sub, conjunction);
 			}
-
-			if (list.isEmpty()) addToQueue(sub, conjunction);
-		}
 
 		for (final Entry<ATermAppl, Set<ConceptInfo>> e : sub.getPredecessors().entrySet())
 		{
@@ -308,42 +318,45 @@ public class SimplifiedELClassifier extends CDOptimizedTaxonomyBuilder
 					_conjunctions.add(conjConcept, concept);
 				}
 			}
-			else if (ATermUtils.isSomeValues(c))
-			{
-				final ATermAppl p = (ATermAppl) c.getArgument(0);
-				final ATermAppl q = (ATermAppl) c.getArgument(1);
-
-				if (ATermUtils.isInv(p)) throw new UnsupportedOperationException("Anonmyous inverse found in restriction: " + ATermUtils.toString(c));
-
-				final ATermAppl range = _roleRestrictions.getRange(p);
-				if (range != null)
+			else
+				if (ATermUtils.isSomeValues(c))
 				{
-					final ATermAppl newQ = ATermUtils.makeSimplifiedAnd(Arrays.asList(range, q));
-					if (!newQ.equals(q))
+					final ATermAppl p = (ATermAppl) c.getArgument(0);
+					final ATermAppl q = (ATermAppl) c.getArgument(1);
+
+					if (ATermUtils.isInv(p))
+						throw new UnsupportedOperationException("Anonmyous inverse found in restriction: " + ATermUtils.toString(c));
+
+					final ATermAppl range = _roleRestrictions.getRange(p);
+					if (range != null)
 					{
-						final ATermAppl newC = ATermUtils.makeSomeValues(p, newQ);
-						concept = createConcept(newC);
-						_concepts.put(c, concept);
-						c = newC;
+						final ATermAppl newQ = ATermUtils.makeSimplifiedAnd(Arrays.asList(range, q));
+						if (!newQ.equals(q))
+						{
+							final ATermAppl newC = ATermUtils.makeSomeValues(p, newQ);
+							concept = createConcept(newC);
+							_concepts.put(c, concept);
+							c = newC;
+						}
 					}
+
+					final ConceptInfo succ = createConcept(q);
+
+					_existentials.add(p, succ);
+
+					// Add this to the _queue so that successor relation some(p,q) -> p -> q will be established. Due to
+					// _sub property interactions adding successor relation here directly causes missing inferences.
+					// Note that, we are taking advantage of the fact that concept.addSuperClass(concept) call has not
+					// been executed yet which would have caused the add _queue call to have no effect.
+					addToQueue(concept, concept);
 				}
-
-				final ConceptInfo succ = createConcept(q);
-
-				_existentials.add(p, succ);
-
-				// Add this to the _queue so that successor relation some(p,q) -> p -> q will be established. Due to
-				// _sub property interactions adding successor relation here directly causes missing inferences.
-				// Note that, we are taking advantage of the fact that concept.addSuperClass(concept) call has not
-				// been executed yet which would have caused the add _queue call to have no effect.
-				addToQueue(concept, concept);
-			}
 
 			_concepts.put(c, concept);
 
 			concept.addSuperClass(concept);
 
-			if (TOP != null) addToQueue(concept, TOP);
+			if (TOP != null)
+				addToQueue(concept, TOP);
 		}
 
 		return concept;
@@ -388,15 +401,17 @@ public class SimplifiedELClassifier extends CDOptimizedTaxonomyBuilder
 
 			if (fun.equals(ATermUtils.SUBFUN))
 				createConceptsFromAxiom(sub, sup);
-			else if (fun.equals(ATermUtils.EQCLASSFUN))
-			{
-				createConceptsFromAxiom(sub, sup);
-				createConceptsFromAxiom(sup, sub);
-			}
-			else if (fun.equals(ATermUtils.DISJOINTFUN))
-				createDisjointAxiom(sub, sup);
 			else
-				throw new IllegalArgumentException("Axiom " + axiom + " is not EL.");
+				if (fun.equals(ATermUtils.EQCLASSFUN))
+				{
+					createConceptsFromAxiom(sub, sup);
+					createConceptsFromAxiom(sup, sub);
+				}
+				else
+					if (fun.equals(ATermUtils.DISJOINTFUN))
+						createDisjointAxiom(sub, sup);
+					else
+						throw new IllegalArgumentException("Axiom " + axiom + " is not EL.");
 		}
 	}
 
@@ -412,18 +427,19 @@ public class SimplifiedELClassifier extends CDOptimizedTaxonomyBuilder
 		if (PREPROCESS_DOMAINS)
 			//Convert ATermAppl Domains to axioms
 			for (final Entry<ATermAppl, ATermAppl> entry : _roleRestrictions.getDomains().entrySet())
-		{
-			final ATermAppl roleName = entry.getKey();
-			final ATermAppl domain = entry.getValue();
-			createConceptsFromAxiom(ATermUtils.makeSomeValues(roleName, ATermUtils.TOP), domain);
-		}
+			{
+				final ATermAppl roleName = entry.getKey();
+				final ATermAppl domain = entry.getValue();
+				createConceptsFromAxiom(ATermUtils.makeSomeValues(roleName, ATermUtils.TOP), domain);
+			}
 
 		//Convert Reflexive Roles to axioms
 		for (final Role role : _kb.getRBox().getRoles().values())
 			if (role.isReflexive())
 			{
 				final ATermAppl range = _roleRestrictions.getRange(role.getName());
-				if (range == null) continue;
+				if (range == null)
+					continue;
 
 				createConceptsFromAxiom(ATermUtils.TOP, range);
 			}
@@ -461,7 +477,8 @@ public class SimplifiedELClassifier extends CDOptimizedTaxonomyBuilder
 		while (!_primaryQueue.isEmpty())
 		{
 			final int processed = startingSize - _primaryQueue.size();
-			if (_monitor.getProgress() < processed) _monitor.setProgress(processed);
+			if (_monitor.getProgress() < processed)
+				_monitor.setProgress(processed);
 
 			final QueueElement qe = _primaryQueue.remove();
 			addSuperClass(qe._sub, qe._sup);

@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
+
 import openllet.atom.OpenError;
 
 // ----------------------------------------------------------------------------
@@ -28,53 +29,54 @@ import openllet.atom.OpenError;
  *      permission java.lang.reflect.ReflectPermission "suppressAccessChecks";
  * </pre>
  *
- * @see    IObjectProfileNode
+ * @see IObjectProfileNode
  * @author (C) <a href="http://www.javaworld.com/columns/jw-qna-_index.shtml">Vlad Roubtsov</a>, 2003
  */
 public abstract class ObjectProfiler
 {
-	public static final String							INPUT_OBJECT_NAME		= "<INPUT>";				// root _node name
+	public static final String INPUT_OBJECT_NAME = "<INPUT>"; // root _node name
 
 	// the following constants are physical sizes (in bytes) and are JVM-dependent:
 	// [the _current values are Ok for most 32-bit JVMs]
 
-	public static final int								OBJECT_SHELL_SIZE		= 8;						// java.lang.Object shell size in bytes
-	public static final int								OBJREF_SIZE				= 4;
+	public static final int OBJECT_SHELL_SIZE = 8; // java.lang.Object shell size in bytes
+	public static final int OBJREF_SIZE = 4;
 
-	public static final int								LONG_FIELD_SIZE			= 8;
-	public static final int								INT_FIELD_SIZE			= 4;
-	public static final int								SHORT_FIELD_SIZE		= 2;
-	public static final int								CHAR_FIELD_SIZE			= 2;
-	public static final int								BYTE_FIELD_SIZE			= 1;
-	public static final int								BOOLEAN_FIELD_SIZE		= 1;
-	public static final int								DOUBLE_FIELD_SIZE		= 8;
-	public static final int								FLOAT_FIELD_SIZE		= 4;
+	public static final int LONG_FIELD_SIZE = 8;
+	public static final int INT_FIELD_SIZE = 4;
+	public static final int SHORT_FIELD_SIZE = 2;
+	public static final int CHAR_FIELD_SIZE = 2;
+	public static final int BYTE_FIELD_SIZE = 1;
+	public static final int BOOLEAN_FIELD_SIZE = 1;
+	public static final int DOUBLE_FIELD_SIZE = 8;
+	public static final int FLOAT_FIELD_SIZE = 4;
 
 	// class metadata _cache:
-	private static final Map<Class<?>, ClassMetadata>	CLASS_METADATA_CACHE	= new WeakHashMap<>(101);
+	private static final Map<Class<?>, ClassMetadata> CLASS_METADATA_CACHE = new WeakHashMap<>(101);
 
 	/**
 	 * Set this to 'true' to make the _node names default to using class names without package prefixing for more compact dumps
 	 */
-	public static final boolean							SHORT_TYPE_NAMES		= false;
+	public static final boolean SHORT_TYPE_NAMES = false;
 
 	/**
 	 * If this is 'true', node names will use short class names for common classes in java.lang.* and java.util.*, regardless of {@link #SHORT_TYPE_NAMES}
 	 * setting.
 	 */
-	public static final boolean							SHORT_COMMON_TYPE_NAMES	= true;
+	public static final boolean SHORT_COMMON_TYPE_NAMES = true;
 
 	/**
 	 * Estimates the full size of the object graph rooted at 'obj'. Duplicate _data instances are correctly accounted for. The implementation is not recursive.
 	 * <P>
 	 * Invariant: sizeof(obj) == profile(obj).size() if 'obj' is not null
 	 *
-	 * @param  obj input object instance to be measured
-	 * @return     'obj' size [0 if 'obj' is null']
+	 * @param obj input object instance to be measured
+	 * @return 'obj' size [0 if 'obj' is null']
 	 */
 	public static int sizeof(final Object obj)
 	{
-		if (obj == null) return 0;
+		if (obj == null)
+			return 0;
 
 		final IdentityHashMap<Object, Object> visited = new IdentityHashMap<>();
 
@@ -83,7 +85,8 @@ public abstract class ObjectProfiler
 
 	public static int sizeof(final Object obj, final Object... avoid)
 	{
-		if (obj == null) return 0;
+		if (obj == null)
+			return 0;
 
 		final IdentityHashMap<Object, Object> visited = new IdentityHashMap<>();
 
@@ -97,14 +100,16 @@ public abstract class ObjectProfiler
 	 * Estimates the full size of the object graph rooted at 'obj' by pre-populating the "visited" set with the object graph rooted at 'base'. The net effect is
 	 * to compute the size of 'obj' by summing over all instance _data contained in 'obj' but not in 'base'.
 	 *
-	 * @param  base graph boundary [may not be null]
-	 * @param  obj  input object instance to be measured
-	 * @return      'obj' size [0 if 'obj' is null']
+	 * @param base graph boundary [may not be null]
+	 * @param obj input object instance to be measured
+	 * @return 'obj' size [0 if 'obj' is null']
 	 */
 	public static int sizedelta(final Object base, final Object obj)
 	{
-		if (obj == null) return 0;
-		if (base == null) throw new IllegalArgumentException("null input: base");
+		if (obj == null)
+			return 0;
+		if (base == null)
+			throw new IllegalArgumentException("null input: base");
 
 		final IdentityHashMap<Object, Object> visited = new IdentityHashMap<>();
 
@@ -116,13 +121,14 @@ public abstract class ObjectProfiler
 	 * Creates a spanning tree representation for instance _data contained in 'obj'. The tree is produced using bread-first traversal over the full object graph
 	 * implied by non-null instance and array references originating in 'obj'.
 	 *
-	 * @see        IObjectProfileNode
-	 * @param  obj input object instance to be profiled [may not be null]
-	 * @return     the profile tree root _node [never null]
+	 * @see IObjectProfileNode
+	 * @param obj input object instance to be profiled [may not be null]
+	 * @return the profile tree root _node [never null]
 	 */
 	public static IObjectProfileNode profile(final Object obj)
 	{
-		if (obj == null) throw new IllegalArgumentException("null input: obj");
+		if (obj == null)
+			throw new IllegalArgumentException("null input: obj");
 
 		final IdentityHashMap<Object, ObjectProfileNode> visited = new IdentityHashMap<>();
 
@@ -140,7 +146,8 @@ public abstract class ObjectProfiler
 
 		for (int i = 0; i < path.length; ++i)
 		{
-			if (i != 0) s.append('/');
+			if (i != 0)
+				s.append('/');
 			s.append(path[i].name());
 		}
 
@@ -164,11 +171,16 @@ public abstract class ObjectProfiler
 		if (shortClassNames)
 		{
 			final int lastDot = clsName.lastIndexOf('.');
-			if (lastDot >= 0) clsName = clsName.substring(lastDot + 1);
+			if (lastDot >= 0)
+				clsName = clsName.substring(lastDot + 1);
 		}
-		else if (SHORT_COMMON_TYPE_NAMES) if (clsName.startsWith("java.lang."))
-			clsName = clsName.substring(10);
-		else if (clsName.startsWith("java.util.")) clsName = clsName.substring(10);
+		else
+			if (SHORT_COMMON_TYPE_NAMES)
+				if (clsName.startsWith("java.lang."))
+					clsName = clsName.substring(10);
+				else
+					if (clsName.startsWith("java.util."))
+						clsName = clsName.substring(10);
 
 		for (int i = 0; i < dims; ++i)
 			clsName = clsName.concat("[]");
@@ -181,9 +193,9 @@ public abstract class ObjectProfiler
 	 */
 	private static final class ClassMetadata
 	{
-		public final int		_primitiveFieldCount;
-		public final int		_shellSize;				// class shell size
-		public final Field[]	_refFields;				// cached non-static fields (made accessible)
+		public final int _primitiveFieldCount;
+		public final int _shellSize; // class shell size
+		public final Field[] _refFields; // cached non-static fields (made accessible)
 
 		public ClassMetadata(final int primitiveFieldCount, final int shellSize, final Field[] refFields)
 		{
@@ -215,7 +227,8 @@ public abstract class ObjectProfiler
 		@Override
 		public Object run() throws Exception
 		{
-			if (!Modifier.isFinal(_field.getModifiers())) _field.setAccessible(true);
+			if (!Modifier.isFinal(_field.getModifiers()))
+				_field.setAccessible(true);
 
 			return null;
 		}
@@ -247,7 +260,8 @@ public abstract class ObjectProfiler
 		// graph path/width of traversal front correspondingly, so I expect
 		// dfs to use fewer resources than bfs for most Java objects;
 
-		if (obj == null) return 0;
+		if (obj == null)
+			return 0;
 
 		final LinkedList<Object> queue = new LinkedList<>();
 
@@ -273,15 +287,15 @@ public abstract class ObjectProfiler
 
 				if (!componentType.isPrimitive()) // traverse each array slot:
 					for (int i = 0; i < arrayLength; ++i)
-				{
-					final Object ref = Array.get(obj, i);
-
-					if (ref != null && !visited.containsKey(ref))
 					{
-						visited.put(ref, ref);
-						queue.addFirst(ref);
+						final Object ref = Array.get(obj, i);
+
+						if (ref != null && !visited.containsKey(ref))
+						{
+							visited.put(ref, ref);
+							queue.addFirst(ref);
+						}
 					}
-				}
 			}
 			else
 			// the object is of a non-array type
@@ -322,8 +336,7 @@ public abstract class ObjectProfiler
 	/**
 	 * Performs phase 1 of profile creation: bread-first traversal and node creation.
 	 */
-	private static ObjectProfileNode createProfileTree(final Object objParam, final IdentityHashMap<Object, ObjectProfileNode> visited,
-			final Map /* Class->ClassMetadata */<Class<?>, ClassMetadata> metadataMap)
+	private static ObjectProfileNode createProfileTree(final Object objParam, final IdentityHashMap<Object, ObjectProfileNode> visited, final Map /* Class->ClassMetadata */<Class<?>, ClassMetadata> metadataMap)
 	{
 		Object obj = objParam;
 
@@ -358,24 +371,24 @@ public abstract class ObjectProfiler
 
 				if (!componentType.isPrimitive()) // traverse each array slot:
 					for (int i = 0; i < arrayLength; ++i)
-				{
-					final Object ref = Array.get(obj, i);
-
-					if (ref != null)
 					{
-						ObjectProfileNode child = visited.get(ref);
-						if (child != null)
-							++child._refcount;
-						else
-						{
-							child = new ObjectProfileNode(node, ref, new ArrayIndexLink(node._link, i));
-							node.addFieldRef(child);
+						final Object ref = Array.get(obj, i);
 
-							queue.addLast(child);
-							visited.put(ref, child);
+						if (ref != null)
+						{
+							ObjectProfileNode child = visited.get(ref);
+							if (child != null)
+								++child._refcount;
+							else
+							{
+								child = new ObjectProfileNode(node, ref, new ArrayIndexLink(node._link, i));
+								node.addFieldRef(child);
+
+								queue.addLast(child);
+								visited.put(ref, child);
+							}
 						}
 					}
-				}
 			}
 			else
 			// the object is of a non-array type
@@ -468,14 +481,16 @@ public abstract class ObjectProfiler
 	private static ClassMetadata getClassMetadata(final Object obj, final Class<?> cls, final Map<Class<?>, ClassMetadata> metadataMap, //
 			final ClassAccessPrivilegedAction caAction, final FieldAccessPrivilegedAction faAction)
 	{
-		if (cls == null) return null;
+		if (cls == null)
+			return null;
 
 		ClassMetadata result;
 		synchronized (metadataMap)
 		{
 			result = metadataMap.get(cls);
 		}
-		if (result != null) return result;
+		if (result != null)
+			return result;
 
 		int primitiveFieldCount = 0;
 		int shellSize = OBJECT_SHELL_SIZE; // java.lang.Object shell
@@ -495,7 +510,8 @@ public abstract class ObjectProfiler
 		for (final Field declaredField : declaredFields)
 		{
 			final Field field = declaredField;
-			if ((Modifier.STATIC & field.getModifiers()) != 0) continue;
+			if ((Modifier.STATIC & field.getModifiers()) != 0)
+				continue;
 
 			final Class<?> fieldType = field.getType();
 			if (fieldType.isPrimitive())
@@ -508,15 +524,16 @@ public abstract class ObjectProfiler
 			{
 				// prepare for graph traversal later:
 
-				if (!field.canAccess(obj)) try
-				{
-					faAction.setContext(field);
-					AccessController.doPrivileged(faAction);
-				}
-				catch (final PrivilegedActionException pae)
-				{
-					throw new OpenError("could not make field " + field + " accessible: " + pae.getException());
-				}
+				if (!field.canAccess(obj))
+					try
+					{
+						faAction.setContext(field);
+						AccessController.doPrivileged(faAction);
+					}
+					catch (final PrivilegedActionException pae)
+					{
+						throw new OpenError("could not make field " + field + " accessible: " + pae.getException());
+					}
 
 				// memory alignment ignored:
 				shellSize += OBJREF_SIZE;
@@ -565,22 +582,29 @@ public abstract class ObjectProfiler
 	{
 		if (type == int.class)
 			return INT_FIELD_SIZE;
-		else if (type == long.class)
-			return LONG_FIELD_SIZE;
-		else if (type == short.class)
-			return SHORT_FIELD_SIZE;
-		else if (type == byte.class)
-			return BYTE_FIELD_SIZE;
-		else if (type == boolean.class)
-			return BOOLEAN_FIELD_SIZE;
-		else if (type == char.class)
-			return CHAR_FIELD_SIZE;
-		else if (type == double.class)
-			return DOUBLE_FIELD_SIZE;
-		else if (type == float.class)
-			return FLOAT_FIELD_SIZE;
 		else
-			throw new IllegalArgumentException("not primitive: " + type);
+			if (type == long.class)
+				return LONG_FIELD_SIZE;
+			else
+				if (type == short.class)
+					return SHORT_FIELD_SIZE;
+				else
+					if (type == byte.class)
+						return BYTE_FIELD_SIZE;
+					else
+						if (type == boolean.class)
+							return BOOLEAN_FIELD_SIZE;
+						else
+							if (type == char.class)
+								return CHAR_FIELD_SIZE;
+							else
+								if (type == double.class)
+									return DOUBLE_FIELD_SIZE;
+								else
+									if (type == float.class)
+										return FLOAT_FIELD_SIZE;
+									else
+										throw new IllegalArgumentException("not primitive: " + type);
 	}
 
 }

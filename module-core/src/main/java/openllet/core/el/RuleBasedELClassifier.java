@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Logger;
+
 import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
@@ -37,9 +38,9 @@ import openllet.shared.tools.Log;
 public abstract class RuleBasedELClassifier extends CDOptimizedTaxonomyBuilder
 {
 	@SuppressWarnings("hiding")
-	public static final Logger	_logger	= Log.getLogger(RuleBasedELClassifier.class);
+	public static final Logger _logger = Log.getLogger(RuleBasedELClassifier.class);
 
-	protected Timers			_timers	= new Timers();
+	protected Timers _timers = new Timers();
 
 	public RuleBasedELClassifier(final KnowledgeBase kb)
 	{
@@ -121,14 +122,15 @@ public abstract class RuleBasedELClassifier extends CDOptimizedTaxonomyBuilder
 			final ATermAppl supEL = ELSyntaxUtils.simplify(sup);
 			addSubclassRule(subEL, supEL);
 		}
-		else if (fun.equals(ATermUtils.EQCLASSFUN))
-		{
-			final ATermAppl supEL = ELSyntaxUtils.simplify(sup);
-			addSubclassRule(subEL, supEL);
-			addSubclassRule(supEL, subEL);
-		}
 		else
-			throw new IllegalArgumentException("Axiom " + axiom + " is not EL.");
+			if (fun.equals(ATermUtils.EQCLASSFUN))
+			{
+				final ATermAppl supEL = ELSyntaxUtils.simplify(sup);
+				addSubclassRule(subEL, supEL);
+				addSubclassRule(supEL, subEL);
+			}
+			else
+				throw new IllegalArgumentException("Axiom " + axiom + " is not EL.");
 	}
 
 	private void processAxioms()
@@ -171,7 +173,8 @@ public abstract class RuleBasedELClassifier extends CDOptimizedTaxonomyBuilder
 			if (role.isReflexive())
 			{
 				final ATermAppl range = roleRestrictions.getRange(role.getName());
-				if (range == null) continue;
+				if (range == null)
+					continue;
 
 				addSubclassRule(ATermUtils.TOP, range);
 			}

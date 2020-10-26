@@ -39,7 +39,7 @@ public class OpenError extends RuntimeException
 	 * Instantiates a new exception using the given message and cause.
 	 *
 	 * @param message Details about the exception.
-	 * @param cause   Cause of the exception.
+	 * @param cause Cause of the exception.
 	 */
 	public OpenError(final String message, final Throwable cause)
 	{

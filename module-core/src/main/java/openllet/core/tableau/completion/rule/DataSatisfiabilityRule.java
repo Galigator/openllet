@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
+
 import openllet.core.DependencySet;
 import openllet.core.OpenlletOptions;
 import openllet.core.boxes.abox.Clash;
@@ -54,7 +55,8 @@ public class DataSatisfiabilityRule extends AbstractTableauRule
 		for (final Edge e : ind.getOutEdges())
 		{
 			final Role r = e.getRole();
-			if (!r.isDatatypeRole()) continue;
+			if (!r.isDatatypeRole())
+				continue;
 
 			ds = ds.union(e.getDepends(), _strategy.getABox().doExplanation());
 
@@ -80,7 +82,8 @@ public class DataSatisfiabilityRule extends AbstractTableauRule
 		while (!pending.isEmpty())
 		{
 			final Literal l = pending.removeFirst();
-			if (!nodes.add(l)) continue;
+			if (!nodes.add(l))
+				continue;
 
 			Set<Literal> disj = ne.get(l);
 
@@ -108,41 +111,42 @@ public class DataSatisfiabilityRule extends AbstractTableauRule
 		 * the satisfiability check performed during Literal.addType
 		 * (checkClash)
 		 */
-		if (nePresent) try
-		{
-			if (!_strategy.getABox().getDatatypeReasoner().isSatisfiable(nodes, ne))
+		if (nePresent)
+			try
 			{
-				for (final Node n : nodes)
-					for (final DependencySet typeDep : n.getDepends().values())
-						ds = ds.union(typeDep, _strategy.getABox().doExplanation());
-				/*
-				 * TODO: More descriptive clash
-				 */
-				_strategy.getABox().setClash(Clash.unexplained(ind, ds));
+				if (!_strategy.getABox().getDatatypeReasoner().isSatisfiable(nodes, ne))
+				{
+					for (final Node n : nodes)
+						for (final DependencySet typeDep : n.getDepends().values())
+							ds = ds.union(typeDep, _strategy.getABox().doExplanation());
+					/*
+					 * TODO: More descriptive clash
+					 */
+					_strategy.getABox().setClash(Clash.unexplained(ind, ds));
+				}
 			}
-		}
-		catch (final InvalidLiteralException e)
-		{
-			final String msg = "Invalid literal encountered during satisfiability check: " + e.getMessage();
-			if (OpenlletOptions.INVALID_LITERAL_AS_INCONSISTENCY)
+			catch (final InvalidLiteralException e)
 			{
-				_logger.fine(msg);
-				for (final Node n : nodes)
-					for (final DependencySet typeDep : n.getDepends().values())
-						ds = ds.union(typeDep, _strategy.getABox().doExplanation());
-				_strategy.getABox().setClash(Clash.invalidLiteral(ind, ds));
+				final String msg = "Invalid literal encountered during satisfiability check: " + e.getMessage();
+				if (OpenlletOptions.INVALID_LITERAL_AS_INCONSISTENCY)
+				{
+					_logger.fine(msg);
+					for (final Node n : nodes)
+						for (final DependencySet typeDep : n.getDepends().values())
+							ds = ds.union(typeDep, _strategy.getABox().doExplanation());
+					_strategy.getABox().setClash(Clash.invalidLiteral(ind, ds));
+				}
+				else
+				{
+					_logger.severe(msg);
+					throw new InternalReasonerException(msg, e);
+				}
 			}
-			else
+			catch (final DatatypeReasonerException e)
 			{
+				final String msg = "Unexpected datatype reasoner exception: " + e.getMessage();
 				_logger.severe(msg);
 				throw new InternalReasonerException(msg, e);
 			}
-		}
-		catch (final DatatypeReasonerException e)
-		{
-			final String msg = "Unexpected datatype reasoner exception: " + e.getMessage();
-			_logger.severe(msg);
-			throw new InternalReasonerException(msg, e);
-		}
 	}
 }

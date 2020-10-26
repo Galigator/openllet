@@ -26,9 +26,9 @@ import openllet.query.sparqldl.model.ResultBinding;
 public class NoReorderingQueryPlan extends QueryPlan
 {
 
-	private int			_index;
+	private int _index;
 
-	private final int	_size;
+	private final int _size;
 
 	public NoReorderingQueryPlan(final Query query)
 	{

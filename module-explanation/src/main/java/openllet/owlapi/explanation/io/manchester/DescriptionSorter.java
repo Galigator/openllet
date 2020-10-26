@@ -9,6 +9,7 @@ package openllet.owlapi.explanation.io.manchester;
 import java.util.Collection;
 import java.util.Set;
 import java.util.TreeSet;
+
 import org.semanticweb.owlapi.model.OWLNamedObject;
 import org.semanticweb.owlapi.model.OWLObject;
 
@@ -28,8 +29,8 @@ public class DescriptionSorter
 	/**
 	 * Sorts a set of OWLObjects alphabetically based on toString values. Named objects always come before unnamed objects.
 	 *
-	 * @param  set the set to sort
-	 * @return     the sorted version of the set
+	 * @param set the set to sort
+	 * @return the sorted version of the set
 	 */
 	public static <N extends OWLObject> Set<N> toSortedSet(final Collection<N> set)
 	{
@@ -40,12 +41,14 @@ public class DescriptionSorter
 			int cmp;
 			if (named1 && !named2)
 				cmp = -1;
-			else if (!named1 && named2)
-				cmp = 1;
 			else
-				cmp = o1.toString().compareTo(o2.toString());
+				if (!named1 && named2)
+					cmp = 1;
+				else
+					cmp = o1.toString().compareTo(o2.toString());
 
-			if (cmp == 0) cmp = ((OWLNamedObject) o1).getIRI().compareTo(((OWLNamedObject) o2).getIRI());
+			if (cmp == 0)
+				cmp = ((OWLNamedObject) o1).getIRI().compareTo(((OWLNamedObject) o2).getIRI());
 
 			return cmp;
 		});

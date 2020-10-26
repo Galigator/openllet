@@ -14,18 +14,19 @@ package openllet.core.utils;
  * Company: Clark & Parsia, LLC. <http://www.clarkparsia.com>
  * </p>
  *
- * @author     Evren sirin
- * @param  <F> kind of first element
- * @param  <S> kind of second element
+ * @author Evren sirin
+ * @param <F> kind of first element
+ * @param <S> kind of second element
  */
 public class Pair<F, S>
 {
-	public F	first;
-	public S	second;
+	public F first;
+	public S second;
 
 	public Pair(final F first_, final S second_)
 	{
-		if (first_ == null || second_ == null) throw new IllegalArgumentException();
+		if (first_ == null || second_ == null)
+			throw new IllegalArgumentException();
 
 		this.first = first_;
 		this.second = second_;
@@ -45,9 +46,11 @@ public class Pair<F, S>
 	@Override
 	public boolean equals(final Object o)
 	{
-		if (o == this) return true;
+		if (o == this)
+			return true;
 
-		if (!(o instanceof Pair)) return false;
+		if (!(o instanceof Pair))
+			return false;
 
 		final Pair<?, ?> p = (Pair<?, ?>) o;
 

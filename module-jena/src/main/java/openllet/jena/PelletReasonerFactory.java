@@ -31,6 +31,7 @@
 package openllet.jena;
 
 import java.util.Optional;
+
 import org.apache.jena.ontology.OntModelSpec;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
@@ -45,11 +46,11 @@ import org.apache.jena.vocabulary.ReasonerVocabulary;
  */
 public class PelletReasonerFactory implements ReasonerFactory
 {
-	private static final String				URI				= "http://pellet.owldl.com";
+	private static final String URI = "http://pellet.owldl.com";
 
-	private static PelletReasonerFactory	_theInstance	= new PelletReasonerFactory();
+	private static PelletReasonerFactory _theInstance = new PelletReasonerFactory();
 
-	public static OntModelSpec				THE_SPEC		= new OntModelSpec(OntModelSpec.OWL_MEM);
+	public static OntModelSpec THE_SPEC = new OntModelSpec(OntModelSpec.OWL_MEM);
 
 	static
 	{

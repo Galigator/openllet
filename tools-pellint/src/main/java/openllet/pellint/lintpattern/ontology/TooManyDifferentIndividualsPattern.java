@@ -8,12 +8,14 @@ package openllet.pellint.lintpattern.ontology;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.semanticweb.owlapi.model.AxiomType;
+import org.semanticweb.owlapi.model.OWLOntology;
+
 import openllet.pellint.format.CompactClassLintFormat;
 import openllet.pellint.format.LintFormat;
 import openllet.pellint.model.Lint;
 import openllet.pellint.model.Severity;
-import org.semanticweb.owlapi.model.AxiomType;
-import org.semanticweb.owlapi.model.OWLOntology;
 
 /**
  * <p>
@@ -33,9 +35,9 @@ import org.semanticweb.owlapi.model.OWLOntology;
  */
 public class TooManyDifferentIndividualsPattern implements OntologyLintPattern
 {
-	private static final LintFormat	DEFAULT_LINT_FORMAT	= new CompactClassLintFormat();
+	private static final LintFormat DEFAULT_LINT_FORMAT = new CompactClassLintFormat();
 
-	private int						_maxAllowed			= 50;
+	private int _maxAllowed = 50;
 
 	@Override
 	public String getName()

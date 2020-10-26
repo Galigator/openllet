@@ -8,7 +8,9 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
+
 import javax.xml.bind.DatatypeConverter;
+
 import openllet.core.datatypes.types.real.Rational;
 import openllet.shared.tools.Log;
 
@@ -58,10 +60,10 @@ public class OWLRealUtils
 			return _map.get(cls);
 		}
 
-		private final Class<? extends Number>	_cls;
-		private final int						_index;
+		private final Class<? extends Number> _cls;
+		private final int _index;
 
-		private final boolean					_integerOnly;
+		private final boolean _integerOnly;
 
 		private Type(final int index, final Class<? extends Number> cls, final boolean integerOnly)
 		{
@@ -106,7 +108,8 @@ public class OWLRealUtils
 			throw new IllegalArgumentException(msg);
 		}
 
-		if (Type.BIG_INTEGER.equals(t)) return (BigInteger) n;
+		if (Type.BIG_INTEGER.equals(t))
+			return (BigInteger) n;
 
 		return (BigInteger) convertFromTo(n, t, Type.BIG_INTEGER);
 	}
@@ -115,12 +118,15 @@ public class OWLRealUtils
 	public static int compare(final Number a, final Number b)
 	{
 		final Type ta = Type.get(a.getClass());
-		if (ta == null) throw new IllegalArgumentException();
+		if (ta == null)
+			throw new IllegalArgumentException();
 
 		final Type tb = Type.get(b.getClass());
-		if (tb == null) throw new IllegalArgumentException();
+		if (tb == null)
+			throw new IllegalArgumentException();
 
-		if (ta == tb) return ((Comparable<Number>) a).compareTo(b);
+		if (ta == tb)
+			return ((Comparable<Number>) a).compareTo(b);
 
 		final int sa = signum(a);
 		final int sb = signum(b);
@@ -161,7 +167,8 @@ public class OWLRealUtils
 		switch (out)
 		{
 			case BYTE:
-				if (!in.equals(Type.BYTE)) throw new IllegalArgumentException();
+				if (!in.equals(Type.BYTE))
+					throw new IllegalArgumentException();
 				return n;
 			case SHORT:
 				switch (in)
@@ -220,7 +227,8 @@ public class OWLRealUtils
 						if (compare(1, r.getDenominator()) != 0)
 						{
 							r = Rational.simplify(r);
-							if (compare(1, r.getDenominator()) != 0) throw new IllegalArgumentException();
+							if (compare(1, r.getDenominator()) != 0)
+								throw new IllegalArgumentException();
 						}
 						return bigInteger(r.getNumerator());
 					default:
@@ -279,30 +287,32 @@ public class OWLRealUtils
 		// TODO: re-implement shrink to avoid always going to BigInteger
 		if (isInteger(n))
 			return shrinkBigInteger(bigInteger(n));
-		else if (Type.RATIONAL.equals(t))
-		{
-			final Rational r = (Rational) n;
-			if (r.isQuotientExact())
-				return getCanonicalObject(r.getQuotient());
-			else
-				return Rational.simplify(r);
-		}
-		else if (Type.BIG_DECIMAL.equals(t))
-		{
-			final BigDecimal d = (BigDecimal) n;
-			int shift = 0;
-			BigInteger unscaled = d.unscaledValue();
-			BigInteger[] dandr = unscaled.divideAndRemainder(BigInteger.TEN);
-			while (BigInteger.ZERO.equals(dandr[1]))
-			{
-				unscaled = dandr[0];
-				shift--;
-				dandr = unscaled.divideAndRemainder(BigInteger.TEN);
-			}
-			return shift == 0 ? d : d.setScale(d.scale() + shift);
-		}
 		else
-			throw new IllegalStateException();
+			if (Type.RATIONAL.equals(t))
+			{
+				final Rational r = (Rational) n;
+				if (r.isQuotientExact())
+					return getCanonicalObject(r.getQuotient());
+				else
+					return Rational.simplify(r);
+			}
+			else
+				if (Type.BIG_DECIMAL.equals(t))
+				{
+					final BigDecimal d = (BigDecimal) n;
+					int shift = 0;
+					BigInteger unscaled = d.unscaledValue();
+					BigInteger[] dandr = unscaled.divideAndRemainder(BigInteger.TEN);
+					while (BigInteger.ZERO.equals(dandr[1]))
+					{
+						unscaled = dandr[0];
+						shift--;
+						dandr = unscaled.divideAndRemainder(BigInteger.TEN);
+					}
+					return shift == 0 ? d : d.setScale(d.scale() + shift);
+				}
+				else
+					throw new IllegalStateException();
 	}
 
 	public static Number integerDecrement(final Number n)
@@ -427,9 +437,11 @@ public class OWLRealUtils
 			throw new IllegalArgumentException(msg);
 		}
 
-		if (t.isIntegerOnly()) return true;
+		if (t.isIntegerOnly())
+			return true;
 
-		if (t.equals(Type.BIG_DECIMAL)) return true;
+		if (t.equals(Type.BIG_DECIMAL))
+			return true;
 
 		if (t.equals(Type.RATIONAL))
 		{
@@ -450,21 +462,23 @@ public class OWLRealUtils
 			throw new IllegalArgumentException(msg);
 		}
 
-		if (t.isIntegerOnly()) return true;
+		if (t.isIntegerOnly())
+			return true;
 
 		if (t.equals(Type.BIG_DECIMAL))
 		{
 			final BigDecimal decVal = (BigDecimal) n;
 			return BigInteger.ZERO.equals(decVal.unscaledValue()) || decVal.stripTrailingZeros().scale() <= 0;
 		}
-		else if (t.equals(Type.RATIONAL))
-		{
-			final Rational ratVal = (Rational) n;
-			if (compare(1, ratVal.getDenominator()) == 0)
-				return true;
-			else
-				return compare(1, Rational.simplify(ratVal).getDenominator()) == 0;
-		}
+		else
+			if (t.equals(Type.RATIONAL))
+			{
+				final Rational ratVal = (Rational) n;
+				if (compare(1, ratVal.getDenominator()) == 0)
+					return true;
+				else
+					return compare(1, Rational.simplify(ratVal).getDenominator()) == 0;
+			}
 
 		return false;
 	}
@@ -479,11 +493,14 @@ public class OWLRealUtils
 			throw new IllegalArgumentException(msg);
 		}
 
-		if (t.isIntegerOnly()) return true;
+		if (t.isIntegerOnly())
+			return true;
 
-		if (t.equals(Type.BIG_DECIMAL)) return true;
+		if (t.equals(Type.BIG_DECIMAL))
+			return true;
 
-		if (t.equals(Type.RATIONAL)) return true;
+		if (t.equals(Type.RATIONAL))
+			return true;
 
 		throw new IllegalStateException();
 	}
@@ -529,7 +546,8 @@ public class OWLRealUtils
 			throw new IllegalArgumentException(msg);
 		}
 
-		if (t.isIntegerOnly()) return n;
+		if (t.isIntegerOnly())
+			return n;
 
 		if (Type.BIG_DECIMAL.equals(t))
 		{
@@ -540,13 +558,14 @@ public class OWLRealUtils
 			else
 				return shrinkBigInteger(dandr[0].toBigIntegerExact().add(BigInteger.ONE));
 		}
-		else if (Type.RATIONAL.equals(t))
-		{
-			final Rational r = (Rational) n;
-			return roundCeiling(r.getQuotient());
-		}
 		else
-			throw new IllegalStateException();
+			if (Type.RATIONAL.equals(t))
+			{
+				final Rational r = (Rational) n;
+				return roundCeiling(r.getQuotient());
+			}
+			else
+				throw new IllegalStateException();
 	}
 
 	public static Number roundDown(final Number n)
@@ -559,20 +578,22 @@ public class OWLRealUtils
 			throw new IllegalArgumentException(msg);
 		}
 
-		if (t.isIntegerOnly()) return n;
+		if (t.isIntegerOnly())
+			return n;
 
 		if (Type.BIG_DECIMAL.equals(t))
 		{
 			final BigDecimal d = (BigDecimal) n;
 			return shrinkBigInteger(d.divideToIntegralValue(BigDecimal.ONE).toBigIntegerExact());
 		}
-		else if (Type.RATIONAL.equals(t))
-		{
-			final Rational r = (Rational) n;
-			return roundDown(r.getQuotient());
-		}
 		else
-			throw new IllegalStateException();
+			if (Type.RATIONAL.equals(t))
+			{
+				final Rational r = (Rational) n;
+				return roundDown(r.getQuotient());
+			}
+			else
+				throw new IllegalStateException();
 	}
 
 	public static Number roundFloor(final Number n)
@@ -585,7 +606,8 @@ public class OWLRealUtils
 			throw new IllegalArgumentException(msg);
 		}
 
-		if (t.isIntegerOnly()) return n;
+		if (t.isIntegerOnly())
+			return n;
 
 		if (Type.BIG_DECIMAL.equals(t))
 		{
@@ -596,49 +618,58 @@ public class OWLRealUtils
 			else
 				return shrinkBigInteger(dandr[0].toBigIntegerExact().subtract(BigInteger.ONE));
 		}
-		else if (Type.RATIONAL.equals(t))
-		{
-			final Rational r = (Rational) n;
-			return roundFloor(r.getQuotient());
-		}
 		else
-			throw new IllegalStateException();
+			if (Type.RATIONAL.equals(t))
+			{
+				final Rational r = (Rational) n;
+				return roundFloor(r.getQuotient());
+			}
+			else
+				throw new IllegalStateException();
 	}
 
 	/**
 	 * Shrink an integer to the smallest supporting typef
 	 *
-	 * @param  i the number to shrink
-	 * @return   the number is the smallest supporting type
+	 * @param i the number to shrink
+	 * @return the number is the smallest supporting type
 	 */
 	private static Number shrinkBigInteger(final BigInteger i)
 	{
 		final int sign = i.signum();
 		if (sign == 0)
 			return Byte.valueOf((byte) 0);
-		else if (sign < 0)
-		{
-			if (i.compareTo(BigInteger.valueOf(Byte.MIN_VALUE)) > 0)
-				return i.byteValue();
-			else if (i.compareTo(BigInteger.valueOf(Short.MIN_VALUE)) > 0)
-				return i.shortValue();
-			else if (i.compareTo(BigInteger.valueOf(Integer.MIN_VALUE)) > 0)
-				return i.intValue();
-			else if (i.compareTo(BigInteger.valueOf(Long.MIN_VALUE)) > 0)
-				return i.longValue();
-			else
-				return i;
-		}
-		else if (i.compareTo(BigInteger.valueOf(Byte.MAX_VALUE)) < 0)
-			return i.byteValue();
-		else if (i.compareTo(BigInteger.valueOf(Short.MAX_VALUE)) < 0)
-			return i.shortValue();
-		else if (i.compareTo(BigInteger.valueOf(Integer.MAX_VALUE)) < 0)
-			return i.intValue();
-		else if (i.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) < 0)
-			return i.longValue();
 		else
-			return i;
+			if (sign < 0)
+			{
+				if (i.compareTo(BigInteger.valueOf(Byte.MIN_VALUE)) > 0)
+					return i.byteValue();
+				else
+					if (i.compareTo(BigInteger.valueOf(Short.MIN_VALUE)) > 0)
+						return i.shortValue();
+					else
+						if (i.compareTo(BigInteger.valueOf(Integer.MIN_VALUE)) > 0)
+							return i.intValue();
+						else
+							if (i.compareTo(BigInteger.valueOf(Long.MIN_VALUE)) > 0)
+								return i.longValue();
+							else
+								return i;
+			}
+			else
+				if (i.compareTo(BigInteger.valueOf(Byte.MAX_VALUE)) < 0)
+					return i.byteValue();
+				else
+					if (i.compareTo(BigInteger.valueOf(Short.MAX_VALUE)) < 0)
+						return i.shortValue();
+					else
+						if (i.compareTo(BigInteger.valueOf(Integer.MAX_VALUE)) < 0)
+							return i.intValue();
+						else
+							if (i.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) < 0)
+								return i.longValue();
+							else
+								return i;
 	}
 
 	public static int signum(final Number n)
@@ -672,7 +703,8 @@ public class OWLRealUtils
 
 	public static Number sum(final Number a, final Number b)
 	{
-		if (isInteger(a) && isInteger(b)) return integerSum(a, b);
+		if (isInteger(a) && isInteger(b))
+			return integerSum(a, b);
 
 		final Type ta = Type.get(a.getClass());
 		final Type tb = Type.get(b.getClass());

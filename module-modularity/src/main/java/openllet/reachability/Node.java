@@ -9,6 +9,7 @@ package openllet.reachability;
 import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Stream;
+
 import openllet.core.utils.SetUtils;
 
 /**
@@ -16,16 +17,18 @@ import openllet.core.utils.SetUtils;
  */
 public abstract class Node
 {
-	protected volatile Set<Node>	_outputs	= SetUtils.create();
+	protected volatile Set<Node> _outputs = SetUtils.create();
 
-	protected volatile Set<Node>	_inputs		= SetUtils.create();
+	protected volatile Set<Node> _inputs = SetUtils.create();
 
 	public void addOutput(final Node output)
 	{
-		if (output.equals(this)) return;
+		if (output.equals(this))
+			return;
 
 		//		outputs.add( output );
-		if (_outputs.add(output)) output._inputs.add(this);
+		if (_outputs.add(output))
+			output._inputs.add(this);
 	}
 
 	public boolean hasOutput(final Node node)
@@ -64,7 +67,8 @@ public abstract class Node
 
 	public void removeOutput(final Node output)
 	{
-		if (_outputs.remove(output)) output._inputs.remove(output);
+		if (_outputs.remove(output))
+			output._inputs.remove(output);
 	}
 
 	public void removeInOuts()

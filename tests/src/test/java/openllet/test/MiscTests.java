@@ -53,6 +53,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+
+import org.junit.Ignore;
+import org.junit.Test;
+
 import junit.framework.JUnit4TestAdapter;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
@@ -81,8 +85,6 @@ import openllet.core.utils.TermFactory;
 import openllet.core.utils.iterator.FlattenningIterator;
 import openllet.core.utils.iterator.IteratorUtils;
 import openllet.jena.JenaLoader;
-import org.junit.Ignore;
-import org.junit.Test;
 
 public class MiscTests extends AbstractKBTests
 {
@@ -471,10 +473,7 @@ public class MiscTests extends AbstractKBTests
 		kb.addClass(E);
 
 		kb.addDatatypeProperty(p);
-		kb.addRange(p,
-				ATermUtils.makeRestrictedDatatype(XSDInteger.getInstance().getName(),
-						new ATermAppl[] { ATermUtils.makeFacetRestriction(Facet.XSD.MIN_INCLUSIVE.getName(), ATermUtils.makeTypedLiteral(Byte.toString(MIN), XSDByte.getInstance().getName())),
-								ATermUtils.makeFacetRestriction(Facet.XSD.MAX_INCLUSIVE.getName(), ATermUtils.makeTypedLiteral(Byte.toString(MAX), XSDByte.getInstance().getName())) }));
+		kb.addRange(p, ATermUtils.makeRestrictedDatatype(XSDInteger.getInstance().getName(), new ATermAppl[] { ATermUtils.makeFacetRestriction(Facet.XSD.MIN_INCLUSIVE.getName(), ATermUtils.makeTypedLiteral(Byte.toString(MIN), XSDByte.getInstance().getName())), ATermUtils.makeFacetRestriction(Facet.XSD.MAX_INCLUSIVE.getName(), ATermUtils.makeTypedLiteral(Byte.toString(MAX), XSDByte.getInstance().getName())) }));
 
 		kb.addSubClass(C, card(p, COUNT + 1, ATermUtils.TOP_LIT));
 		kb.addSubClass(D, card(p, COUNT, ATermUtils.TOP_LIT));
@@ -1423,7 +1422,8 @@ public class MiscTests extends AbstractKBTests
 				}
 
 			for (final ATermAppl p : kb.getObjectProperties())
-				if (!ATermUtils.isBuiltinProperty(p)) assertFalse(p.toString(), kb.isTransitiveProperty(p));
+				if (!ATermUtils.isBuiltinProperty(p))
+					assertFalse(p.toString(), kb.isTransitiveProperty(p));
 		}
 	}
 
@@ -1633,8 +1633,10 @@ public class MiscTests extends AbstractKBTests
 				kb.addDatatypeProperty(p);
 				kb.addDatatypeProperty(q);
 
-				if (rangeP != null) kb.addRange(p, rangeP);
-				if (rangeQ != null) kb.addRange(q, rangeQ);
+				if (rangeP != null)
+					kb.addRange(p, rangeP);
+				if (rangeQ != null)
+					kb.addRange(q, rangeQ);
 
 				assertTrue(kb.isConsistent());
 

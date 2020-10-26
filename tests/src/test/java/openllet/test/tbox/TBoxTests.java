@@ -21,6 +21,10 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collections;
+
+import org.junit.Before;
+import org.junit.Test;
+
 import junit.framework.JUnit4TestAdapter;
 import openllet.aterm.ATermAppl;
 import openllet.core.OpenlletOptions;
@@ -28,8 +32,6 @@ import openllet.core.boxes.tbox.TBox;
 import openllet.core.boxes.tbox.impl.Unfolding;
 import openllet.core.utils.iterator.IteratorUtils;
 import openllet.test.AbstractKBTests;
-import org.junit.Before;
-import org.junit.Test;
 
 /**
  * <p>

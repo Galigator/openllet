@@ -8,6 +8,7 @@ package openllet.core.tableau.completion.rule;
 
 import java.util.Iterator;
 import java.util.List;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.OpenlletOptions;
 import openllet.core.boxes.abox.Edge;
@@ -41,7 +42,8 @@ public class ChooseRule extends AbstractTableauRule
 	@Override
 	public void apply(final Individual x)
 	{
-		if (!x.canApply(Node.MAX)) return;
+		if (!x.canApply(Node.MAX))
+			return;
 
 		final List<ATermAppl> maxCardinality = x.getTypes(Node.MAX);
 		final Iterator<ATermAppl> j = maxCardinality.iterator();
@@ -60,9 +62,11 @@ public class ChooseRule extends AbstractTableauRule
 		final Role r = _strategy.getABox().getRole(max.getArgument(0));
 		final ATermAppl c = (ATermAppl) max.getArgument(2);
 
-		if (ATermUtils.isTop(c)) return;
+		if (ATermUtils.isTop(c))
+			return;
 
-		if (!OpenlletOptions.MAINTAIN_COMPLETION_QUEUE && x.getDepends(maxCard) == null) return;
+		if (!OpenlletOptions.MAINTAIN_COMPLETION_QUEUE && x.getDepends(maxCard) == null)
+			return;
 
 		final EdgeList edges = x.getRNeighborEdges(r);
 		for (final Edge edge : edges)
@@ -76,7 +80,8 @@ public class ChooseRule extends AbstractTableauRule
 
 				newBranch.tryNext();
 
-				if (_strategy.getABox().isClosed()) return;
+				if (_strategy.getABox().isClosed())
+					return;
 			}
 		}
 	}

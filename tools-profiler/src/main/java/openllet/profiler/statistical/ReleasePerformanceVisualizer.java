@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
+
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -23,7 +24,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
-import openllet.profiler.ProfileKB.Task;
+
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryAxis;
@@ -34,15 +35,17 @@ import org.jfree.chart.renderer.category.StatisticalLineAndShapeRenderer;
 import org.jfree.data.statistics.DefaultStatisticalCategoryDataset;
 // import org.jfree.ui.RefineryUtilities;
 
+import openllet.profiler.ProfileKB.Task;
+
 public class ReleasePerformanceVisualizer extends JFrame
 {
-	private static final long		serialVersionUID	= 3529811414164984003L;
-	private static String			_REPOSITORY;
+	private static final long serialVersionUID = 3529811414164984003L;
+	private static String _REPOSITORY;
 
-	private final JPanel			_mainPanel;
-	private JPanel					_chart;
-	private final MenuPanel			_menu;
-	private final ReleaseManager	_manager;
+	private final JPanel _mainPanel;
+	private JPanel _chart;
+	private final MenuPanel _menu;
+	private final ReleaseManager _manager;
 
 	public static void main(final String[] args) throws IOException
 	{
@@ -73,9 +76,9 @@ public class ReleasePerformanceVisualizer extends JFrame
 	/**
 	 * Positions the specified frame at a relative position in the screen, where 50% is considered to be the center of the screen.
 	 *
-	 * @param frame             the frame.
+	 * @param frame the frame.
 	 * @param horizontalPercent the relative horizontal position of the frame (0.0 to 1.0, where 0.5 is the center of the screen).
-	 * @param verticalPercent   the relative vertical position of the frame (0.0 to 1.0, where 0.5 is the center of the screen).
+	 * @param verticalPercent the relative vertical position of the frame (0.0 to 1.0, where 0.5 is the center of the screen).
 	 */
 	private static void positionFrameOnScreen(final Window frame, final double horizontalPercent, final double verticalPercent)
 	{
@@ -119,23 +122,24 @@ public class ReleasePerformanceVisualizer extends JFrame
 			if (_menu._releases.isSelectedIndex(count))
 			{
 				final List<ReleaseStatistics> stats = release.getStatistics((String) _menu._ontology.getSelectedItem());
-				if (stats != null) for (final ReleaseStatistics stat : stats)
-					if (_menu._tasks.isSelectedIndex(stat.getTask().ordinal()))
-					{
-						double mean, variance;
+				if (stats != null)
+					for (final ReleaseStatistics stat : stats)
+						if (_menu._tasks.isSelectedIndex(stat.getTask().ordinal()))
+						{
+							double mean, variance;
 
-						if (_menu._time.getSelectedIndex() == 0)
-						{
-							mean = stat.getTimeStat("avg");
-							variance = stat.getTimeStat("var");
+							if (_menu._time.getSelectedIndex() == 0)
+							{
+								mean = stat.getTimeStat("avg");
+								variance = stat.getTimeStat("var");
+							}
+							else
+							{
+								mean = stat.getMemStat("avg");
+								variance = stat.getMemStat("var");
+							}
+							dataset.add(mean, Math.sqrt(variance), stat.getTask().toString(), release.getVersion());
 						}
-						else
-						{
-							mean = stat.getMemStat("avg");
-							variance = stat.getMemStat("var");
-						}
-						dataset.add(mean, Math.sqrt(variance), stat.getTask().toString(), release.getVersion());
-					}
 			}
 			count++;
 		}
@@ -175,12 +179,12 @@ public class ReleasePerformanceVisualizer extends JFrame
 	 */
 	private class MenuPanel extends JPanel
 	{
-		private static final long	serialVersionUID	= 8213647324959034612L;
-		private final JComboBox<?>	_time;
-		private final JList<?>		_tasks;
-		private final JComboBox<?>	_ontology;
-		private final JList<?>		_releases;
-		private final JButton		_ok;
+		private static final long serialVersionUID = 8213647324959034612L;
+		private final JComboBox<?> _time;
+		private final JList<?> _tasks;
+		private final JComboBox<?> _ontology;
+		private final JList<?> _releases;
+		private final JButton _ok;
 
 		public MenuPanel(final ReleaseManager manager)
 		{

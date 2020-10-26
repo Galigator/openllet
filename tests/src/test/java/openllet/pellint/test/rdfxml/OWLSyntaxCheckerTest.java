@@ -9,9 +9,6 @@ package openllet.pellint.test.rdfxml;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import openllet.pellint.rdfxml.OWLSyntaxChecker;
-import openllet.pellint.rdfxml.RDFLints;
-import openllet.pellint.rdfxml.RDFModel;
 import org.apache.jena.rdf.model.Literal;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.RDFNode;
@@ -22,6 +19,10 @@ import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
 import org.junit.Before;
 import org.junit.Test;
+
+import openllet.pellint.rdfxml.OWLSyntaxChecker;
+import openllet.pellint.rdfxml.RDFLints;
+import openllet.pellint.rdfxml.RDFModel;
 
 /**
  * <p>
@@ -36,21 +37,21 @@ import org.junit.Test;
  */
 public class OWLSyntaxCheckerTest
 {
-	private static final String		NS		= "tag:clarkparsia.com,2010:pellint:test#";
+	private static final String NS = "tag:clarkparsia.com,2010:pellint:test#";
 
-	private static final Resource	_C		= ResourceFactory.createResource(NS + "C");
+	private static final Resource _C = ResourceFactory.createResource(NS + "C");
 
-	private static final Property	_p		= ResourceFactory.createProperty(NS + "P");
+	private static final Property _p = ResourceFactory.createProperty(NS + "P");
 
-	private static final Resource	_a		= ResourceFactory.createResource(NS + "a");
-	private static final Resource	_b		= ResourceFactory.createResource(NS + "b");
+	private static final Resource _a = ResourceFactory.createResource(NS + "a");
+	private static final Resource _b = ResourceFactory.createResource(NS + "b");
 
-	private static final Resource	_anon	= ResourceFactory.createResource();
+	private static final Resource _anon = ResourceFactory.createResource();
 
-	private static final Literal	_lit	= ResourceFactory.createPlainLiteral("lit");
+	private static final Literal _lit = ResourceFactory.createPlainLiteral("lit");
 
-	private RDFModel				_rdfModel;
-	private OWLSyntaxChecker		_checker;
+	private RDFModel _rdfModel;
+	private OWLSyntaxChecker _checker;
 
 	@Before
 	public void before()

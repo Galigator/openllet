@@ -36,23 +36,20 @@ public interface Visitable
 	int getChildCount();
 
 	/**
-	 * Returns the ith child of any visitable. Counting starts
-	 * at 0. Thus, to get the last child of a visitable with n
-	 * children, use getChild(n-1).
+	 * Returns the ith child of any visitable. Counting starts at 0. Thus, to get the last child of a visitable with n children, use getChild(n-1).
 	 *
-	 * @param  i is the child index
-	 * @return   the term
+	 * @param i is the child index
+	 * @return the term
 	 */
 	ATerm getChildAt(final int i);
 
 	/**
-	 * Replaces the ith child of any visitable, and returns this
-	 * visitable. Counting starts at 0. Thus, to set the last child of
-	 * a visitable with n children, use setChild(n-1).
+	 * Replaces the ith child of any visitable, and returns this visitable. Counting starts at 0. Thus, to set the last child of a visitable with n children,
+	 * use setChild(n-1).
 	 *
-	 * @param  i     is the child index
-	 * @param  child to set at index
-	 * @return       the setted child / new child.
+	 * @param i is the child index
+	 * @param child to set at index
+	 * @return the setted child / new child.
 	 */
 	ATerm setChildAt(final int i, final ATerm child);
 

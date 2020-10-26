@@ -15,15 +15,17 @@ import static org.junit.Assert.assertFalse;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
 import junit.framework.JUnit4TestAdapter;
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBaseImpl;
 import openllet.core.OpenlletOptions;
 import openllet.core.utils.TermFactory;
 import openllet.core.utils.progress.AbstractProgressMonitor;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
 
 /**
  * <p>
@@ -383,9 +385,9 @@ public class TestKnowledgeBase
 
 	private static class TestProgressMonitor extends AbstractProgressMonitor
 	{
-		private boolean			_progressLengthExceeded;
+		private boolean _progressLengthExceeded;
 
-		private volatile int	_echo	= 0;
+		private volatile int _echo = 0;
 
 		@Override
 		public int getLastEcho()
@@ -401,7 +403,8 @@ public class TestKnowledgeBase
 		@Override
 		protected void updateProgress()
 		{
-			if (getProgress() > getProgressLength()) _progressLengthExceeded = true;
+			if (getProgress() > getProgressLength())
+				_progressLengthExceeded = true;
 		}
 
 		public boolean isProgressLengthExceeded()

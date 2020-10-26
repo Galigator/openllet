@@ -11,6 +11,7 @@ package openllet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
 import openllet.core.OpenlletOptions;
@@ -69,7 +70,8 @@ public class OpenlletUnsatisfiable extends OpenlletCmdApp
 		final boolean isConsistent = kb.isConsistent();
 		finishTask("consistency check");
 
-		if (!isConsistent) throw new OpenlletCmdException("Ontology is inconsistent, run \"openllet explain\" to get the reason");
+		if (!isConsistent)
+			throw new OpenlletCmdException("Ontology is inconsistent, run \"openllet explain\" to get the reason");
 
 		final QNameProvider qnames = new QNameProvider();
 		final Set<String> unsatisfiableClasses = new TreeSet<>(Comparators.stringComparator);
@@ -86,7 +88,8 @@ public class OpenlletUnsatisfiable extends OpenlletCmdApp
 		{
 			monitor.incrementProgress();
 			final ATermAppl c = i.next();
-			if (!kb.isSatisfiable(c)) unsatisfiableClasses.add(qnames.shortForm(c.getName()));
+			if (!kb.isSatisfiable(c))
+				unsatisfiableClasses.add(qnames.shortForm(c.getName()));
 		}
 
 		monitor.taskFinished();

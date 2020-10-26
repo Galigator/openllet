@@ -10,7 +10,7 @@ public class TokenMgrError extends Error
 	/**
 	 * The version identifier for this Serializable class. Increment only if the <i>serialized</i> form of the class changes.
 	 */
-	private static final long	serialVersionUID		= 1L;
+	private static final long serialVersionUID = 1L;
 
 	/*
 	 * Ordinals for various reasons why an Error of this type can be thrown.
@@ -19,27 +19,27 @@ public class TokenMgrError extends Error
 	/**
 	 * Lexical error occurred.
 	 */
-	public static final int		LEXICAL_ERROR			= 0;
+	public static final int LEXICAL_ERROR = 0;
 
 	/**
 	 * An attempt was made to create a second instance of a static token manager.
 	 */
-	public static final int		STATIC_LEXER_ERROR		= 1;
+	public static final int STATIC_LEXER_ERROR = 1;
 
 	/**
 	 * Tried to change to an invalid lexical state.
 	 */
-	public static final int		INVALID_LEXICAL_STATE	= 2;
+	public static final int INVALID_LEXICAL_STATE = 2;
 
 	/**
 	 * Detected (and bailed out of) an infinite loop in the token manager.
 	 */
-	public static final int		LOOP_DETECTED			= 3;
+	public static final int LOOP_DETECTED = 3;
 
 	/**
 	 * Indicates the reason why the exception is thrown. It will have one of the above 4 values.
 	 */
-	int							errorCode;
+	int errorCode;
 
 	/**
 	 * Replaces unprintable characters by their escaped (or unicode escaped) equivalents in the given string
@@ -97,8 +97,7 @@ public class TokenMgrError extends Error
 	protected static String LexicalErr(final boolean EOFSeen, final int lexState, final int errorLine, final int errorColumn, final String errorAfter, final int curChar)
 	{
 		final char curChar1 = (char) curChar;
-		return "Lexical error at line " + errorLine + ", column " + errorColumn + ".  Encountered: "
-				+ (EOFSeen ? "<EOF> " : "\"" + addEscapes(String.valueOf(curChar1)) + "\"" + " (" + curChar + "), ") + "after : \"" + addEscapes(errorAfter) + "\"";
+		return "Lexical error at line " + errorLine + ", column " + errorColumn + ".  Encountered: " + (EOFSeen ? "<EOF> " : "\"" + addEscapes(String.valueOf(curChar1)) + "\"" + " (" + curChar + "), ") + "after : \"" + addEscapes(errorAfter) + "\"";
 	}
 
 	/**

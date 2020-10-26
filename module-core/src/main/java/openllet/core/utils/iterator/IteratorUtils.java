@@ -20,8 +20,8 @@ public class IteratorUtils
 {
 	private static class SingletonIterator<T> implements Iterator<T>
 	{
-		private final T	_element;
-		private boolean	_consumed;
+		private final T _element;
+		private boolean _consumed;
 
 		private SingletonIterator(final T element)
 		{
@@ -38,7 +38,8 @@ public class IteratorUtils
 		@Override
 		public T next()
 		{
-			if (!hasNext()) throw new NoSuchElementException();
+			if (!hasNext())
+				throw new NoSuchElementException();
 			_consumed = true;
 			return _element;
 		}
@@ -122,9 +123,9 @@ public class IteratorUtils
 
 	private static class ArrayIterator<E> implements Iterator<E>
 	{
-		private final E[]	_array;
-		private final int	_size;
-		private int			_curr	= 0;
+		private final E[] _array;
+		private final int _size;
+		private int _curr = 0;
 
 		public ArrayIterator(final E[] array, final int size)
 		{
@@ -141,7 +142,8 @@ public class IteratorUtils
 		@Override
 		public E next()
 		{
-			if (!hasNext()) throw new NoSuchElementException();
+			if (!hasNext())
+				throw new NoSuchElementException();
 
 			return _array[_curr++];
 		}

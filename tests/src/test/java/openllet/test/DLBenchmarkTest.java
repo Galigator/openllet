@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import openllet.core.KRSSLoader;
 import openllet.core.KnowledgeBase;
 import openllet.core.KnowledgeBaseImpl;
@@ -56,21 +57,21 @@ import openllet.shared.tools.Log;
  */
 public class DLBenchmarkTest
 {
-	public static Logger		_logger			= Log.getLogger(DLBenchmarkTest.class);
+	public static Logger _logger = Log.getLogger(DLBenchmarkTest.class);
 
-	public static boolean		PRINT_TIME		= false;
-	public static boolean		PRINT_TREE		= false;
+	public static boolean PRINT_TIME = false;
+	public static boolean PRINT_TREE = false;
 
 	// time limits for different kind of tests
-	public static int			SAT_LIMIT		= 10;
-	public static int			TBOX_LIMIT		= 20;
-	public static int			ABOX_LIMIT		= 50;
+	public static int SAT_LIMIT = 10;
+	public static int TBOX_LIMIT = 20;
+	public static int ABOX_LIMIT = 50;
 
-	public static boolean		FAST			= false;
-	public static boolean		FORCE_UPPERCASE	= true;
+	public static boolean FAST = false;
+	public static boolean FORCE_UPPERCASE = true;
 
-	private final KRSSLoader	_loader;
-	private KnowledgeBase		_kb;
+	private final KRSSLoader _loader;
+	private KnowledgeBase _kb;
 
 	public DLBenchmarkTest()
 	{
@@ -141,7 +142,8 @@ public class DLBenchmarkTest
 		index = file.lastIndexOf(File.separator);
 		final String displayName = index == -1 ? file : file.substring(index + 1);
 
-		if (_logger.isLoggable(Level.INFO)) System.out.print(displayName + " ");
+		if (_logger.isLoggable(Level.INFO))
+			System.out.print(displayName + " ");
 
 		_loader.clear();
 		_loader.getKB().getTimers().resetAll();
@@ -150,23 +152,28 @@ public class DLBenchmarkTest
 
 		final Optional<Timer> timer = _kb.getTimers().startTimer("test");
 
-		if (_logger.isLoggable(Level.INFO)) System.out.print("preparing...");
+		if (_logger.isLoggable(Level.INFO))
+			System.out.print("preparing...");
 
 		_kb.prepare();
 
-		if (_logger.isLoggable(Level.INFO)) System.out.print("classifying...");
+		if (_logger.isLoggable(Level.INFO))
+			System.out.print("classifying...");
 
 		_kb.classify();
 
 		timer.ifPresent(Timer::stop);
 
-		if (PRINT_TREE) _kb.printClassTree();
+		if (PRINT_TREE)
+			_kb.printClassTree();
 
-		if (_logger.isLoggable(Level.INFO)) System.out.print("verifying...");
+		if (_logger.isLoggable(Level.INFO))
+			System.out.print("verifying...");
 
 		_loader.verifyTBox(file + ".tree", _kb);
 
-		if (_logger.isLoggable(Level.INFO)) System.out.print("done");
+		if (_logger.isLoggable(Level.INFO))
+			System.out.print("done");
 
 		if (_logger.isLoggable(Level.INFO))
 		{
@@ -175,7 +182,8 @@ public class DLBenchmarkTest
 			timer.ifPresent(t -> System.out.println(" " + t.getTotal()));
 		}
 
-		if (PRINT_TIME) _kb.getTimers().print();
+		if (PRINT_TIME)
+			_kb.getTimers().print();
 
 		return true;
 	}
@@ -290,7 +298,8 @@ public class DLBenchmarkTest
 
 		timer.ifPresent(t -> System.out.println(" " + t.getTotal()));
 
-		if (PRINT_TIME) _kb.getTimers().print();
+		if (PRINT_TIME)
+			_kb.getTimers().print();
 
 		return true;
 	}
@@ -361,19 +370,21 @@ public class DLBenchmarkTest
 			DLBenchmarkTest.PRINT_TIME = true;
 			base = 1;
 		}
-		else if (args.length != 2)
-		{
-			System.out.println("Invalid arguments");
-			usage();
-			return;
-		}
+		else
+			if (args.length != 2)
+			{
+				System.out.println("Invalid arguments");
+				usage();
+				return;
+			}
 
 		final String in = args[base + 0];
 		final String type = args[base + 1];
 
 		final File file = new File(in);
 
-		if (!file.exists()) throw new FileNotFoundException(file + " does not exist!");
+		if (!file.exists())
+			throw new FileNotFoundException(file + " does not exist!");
 
 		final boolean singleTest = file.isFile();
 
@@ -385,21 +396,23 @@ public class DLBenchmarkTest
 			else
 				test.doAllSatTests(in);
 		}
-		else if ("tbox".equals(type))
-		{
-			if (singleTest)
-				test.doTBoxTest(in);
-			else
-				test.doAllTBoxTests(in);
-		}
-		else if ("abox".equals(type))
-		{
-			if (singleTest)
-				test.doABoxTest(in);
-			else
-				test.doAllABoxTests(in);
-		}
 		else
-			usage();
+			if ("tbox".equals(type))
+			{
+				if (singleTest)
+					test.doTBoxTest(in);
+				else
+					test.doAllTBoxTests(in);
+			}
+			else
+				if ("abox".equals(type))
+				{
+					if (singleTest)
+						test.doABoxTest(in);
+					else
+						test.doAllABoxTests(in);
+				}
+				else
+					usage();
 	}
 }

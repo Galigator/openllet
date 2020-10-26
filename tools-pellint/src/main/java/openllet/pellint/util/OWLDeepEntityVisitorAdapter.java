@@ -9,6 +9,7 @@ package openllet.pellint.util;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLDatatype;

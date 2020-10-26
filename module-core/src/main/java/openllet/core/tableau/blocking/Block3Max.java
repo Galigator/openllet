@@ -7,6 +7,7 @@
 package openllet.core.tableau.blocking;
 
 import java.util.function.BiPredicate;
+
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermInt;
 import openllet.core.boxes.abox.Node;

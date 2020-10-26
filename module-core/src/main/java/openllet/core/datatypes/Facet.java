@@ -2,6 +2,7 @@ package openllet.core.datatypes;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.Namespaces;
@@ -39,8 +40,8 @@ public interface Facet
 		/**
 		 * Get a Facet for a URI
 		 *
-		 * @param  name the name of the facet, generally a URI
-		 * @return      A facet if the name is registered, <code>null</code> else
+		 * @param name the name of the facet, generally a URI
+		 * @return A facet if the name is registered, <code>null</code> else
 		 */
 		public static Facet get(final ATermAppl name)
 		{

@@ -8,9 +8,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
+
+import org.junit.Test;
+
 import openllet.core.datatypes.OWLRealUtils;
 import openllet.core.datatypes.types.real.Rational;
-import org.junit.Test;
 
 /**
  * <p>

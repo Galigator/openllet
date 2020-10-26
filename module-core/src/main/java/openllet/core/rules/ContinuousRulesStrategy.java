@@ -19,6 +19,7 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
+
 import openllet.aterm.ATermAppl;
 import openllet.atom.OpenError;
 import openllet.core.DependencySet;
@@ -45,15 +46,15 @@ import openllet.core.utils.Timer;
 
 public class ContinuousRulesStrategy extends SROIQStrategy
 {
-	private final BindingGeneratorStrategy					_bindingStrategy;
-	private Interpreter										_interpreter;
-	private boolean											_merging;
-	private final Set<PartialBinding>						_unsafeRules;
-	private final Queue<PartialBinding>						_partialBindings;
-	private final Map<Pair<Rule, VariableBinding>, Integer>	_rulesApplied;
-	private final RulesToATermTranslator					_atermTranslator;
-	private final RuleAtomAsserter							_ruleAtomAsserter;
-	private final TrivialSatisfactionHelpers				_atomTester;
+	private final BindingGeneratorStrategy _bindingStrategy;
+	private Interpreter _interpreter;
+	private boolean _merging;
+	private final Set<PartialBinding> _unsafeRules;
+	private final Queue<PartialBinding> _partialBindings;
+	private final Map<Pair<Rule, VariableBinding>, Integer> _rulesApplied;
+	private final RulesToATermTranslator _atermTranslator;
+	private final RuleAtomAsserter _ruleAtomAsserter;
+	private final TrivialSatisfactionHelpers _atomTester;
 
 	public ContinuousRulesStrategy(final ABox abox)
 	{
@@ -82,7 +83,9 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 	{
 		final Edge edge = super.addEdge(subj, pred, obj, ds);
 
-		if (edge != null && !_abox.isClosed() && subj.isRootNominal() && obj.isRootNominal()) if (_interpreter != null) _interpreter._alphaNet.activateEdge(edge);
+		if (edge != null && !_abox.isClosed() && subj.isRootNominal() && obj.isRootNominal())
+			if (_interpreter != null)
+				_interpreter._alphaNet.activateEdge(edge);
 
 		return edge;
 	}
@@ -104,7 +107,8 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 	{
 		if (super.mergeIndividuals(y, x, ds))
 		{
-			if (_interpreter != null) _interpreter._alphaNet.activateDifferents(y);
+			if (_interpreter != null)
+				_interpreter._alphaNet.activateDifferents(y);
 			return true;
 		}
 		return false;
@@ -159,13 +163,16 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 				{
 					total++;
 
-					if (_logger.isLoggable(Level.FINE)) _logger.fine("Rule: " + rule + "\nBinding: " + binding + "\ntotal:" + total);
+					if (_logger.isLoggable(Level.FINE))
+						_logger.fine("Rule: " + rule + "\nBinding: " + binding + "\ntotal:" + total);
 
 					final int branch = createDisjunctionsFromBinding(binding, rule, ruleBinding.getDependencySet());
 
-					if (branch >= 0) _rulesApplied.put(ruleKey, branch);
+					if (branch >= 0)
+						_rulesApplied.put(ruleKey, branch);
 
-					if (_abox.isClosed()) return;
+					if (_abox.isClosed())
+						return;
 				}
 			}
 
@@ -185,9 +192,10 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 			final Rule rule = e.getKey();
 			final Rule normalizedRule = e.getValue();
 
-			if (normalizedRule == null) continue;
+			if (normalizedRule == null)
+				continue;
 
-			final Set<ATermAppl> explain = _abox.doExplanation() ? rule.getExplanation(_atermTranslator) : Collections.<ATermAppl>emptySet();
+			final Set<ATermAppl> explain = _abox.doExplanation() ? rule.getExplanation(_atermTranslator) : Collections.<ATermAppl> emptySet();
 
 			try
 			{
@@ -201,7 +209,8 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 		timer.ifPresent(Timer::stop);
 
 		final AlphaNetwork alphaNet = compiler.getAlphaNet();
-		if (_abox.doExplanation()) alphaNet.setDoExplanation(true);
+		if (_abox.doExplanation())
+			alphaNet.setDoExplanation(true);
 		_interpreter = new Interpreter(alphaNet);
 		_partialBindings.clear();
 		_partialBindings.addAll(_unsafeRules);
@@ -238,56 +247,61 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 				for (final TableauRule tableauRule : _tableauRules)
 				{
 					final boolean closed = tableauRule.apply(i);
-					if (closed) break;
+					if (closed)
+						break;
 				}
 
-				if (_abox.isClosed()) break;
+				if (_abox.isClosed())
+					break;
 
 				if (!_abox.isChanged() && !_partialBindings.isEmpty())
 				{
 					//					t = _timers.startTimer( "rule-bindings" );
 					applyRuleBindings();
 					//					t.stop();
-					if (_abox.isClosed()) break;
+					if (_abox.isClosed())
+						break;
 				}
 
 			}
 
 			if (_abox.isClosed())
 			{
-				if (_logger.isLoggable(Level.FINE)) _logger.fine("Clash at Branch (" + _abox.getBranchIndex() + ") " + _abox.getClash());
+				if (_logger.isLoggable(Level.FINE))
+					_logger.fine("Clash at Branch (" + _abox.getBranchIndex() + ") " + _abox.getClash());
 
 				if (backtrack())
 					_abox.setClash(null);
 				else
 					_abox.setComplete(true);
 			}
-			else if (OpenlletOptions.SATURATE_TABLEAU)
-			{
-				Branch unexploredBranch = null;
-				for (int i = _abox.getBranches().size() - 1; i >= 0; i--)
-				{
-					unexploredBranch = _abox.getBranches().get(i);
-					unexploredBranch.setTryNext(unexploredBranch.getTryNext() + 1);
-					if (unexploredBranch.getTryNext() < unexploredBranch.getTryCount())
-					{
-						restore(unexploredBranch);
-						System.out.println(
-								"restoring _branch " + unexploredBranch.getBranchIndexInABox() + " _tryNext = " + unexploredBranch.getTryNext() + " _tryCount = " + unexploredBranch.getTryCount());
-						unexploredBranch.tryNext();
-						break;
-					}
-					else
-					{
-						System.out.println("removing _branch " + unexploredBranch.getBranchIndexInABox());
-						_abox.getBranches().remove(i);
-						unexploredBranch = null;
-					}
-				}
-				if (unexploredBranch == null) _abox.setComplete(true);
-			}
 			else
-				_abox.setComplete(true);
+				if (OpenlletOptions.SATURATE_TABLEAU)
+				{
+					Branch unexploredBranch = null;
+					for (int i = _abox.getBranches().size() - 1; i >= 0; i--)
+					{
+						unexploredBranch = _abox.getBranches().get(i);
+						unexploredBranch.setTryNext(unexploredBranch.getTryNext() + 1);
+						if (unexploredBranch.getTryNext() < unexploredBranch.getTryCount())
+						{
+							restore(unexploredBranch);
+							System.out.println("restoring _branch " + unexploredBranch.getBranchIndexInABox() + " _tryNext = " + unexploredBranch.getTryNext() + " _tryCount = " + unexploredBranch.getTryCount());
+							unexploredBranch.tryNext();
+							break;
+						}
+						else
+						{
+							System.out.println("removing _branch " + unexploredBranch.getBranchIndexInABox());
+							_abox.getBranches().remove(i);
+							unexploredBranch = null;
+						}
+					}
+					if (unexploredBranch == null)
+						_abox.setComplete(true);
+				}
+				else
+					_abox.setComplete(true);
 		}
 	}
 
@@ -310,7 +324,8 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 		{
 			if (rule.getHead().isEmpty())
 			{
-				if (_logger.isLoggable(Level.FINE)) _logger.fine("Empty head for rule " + rule);
+				if (_logger.isLoggable(Level.FINE))
+					_logger.fine("Empty head for rule " + rule);
 				_abox.setClash(Clash.unexplained(null, ds));
 			}
 			else
@@ -324,7 +339,8 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 		for (final RuleAtom atom : rule.getHead())
 		{
 			final DependencySet atomDS = _atomTester.isAtomTrue(atom, binding);
-			if (atomDS == null) atoms.add(atom);
+			if (atomDS == null)
+				atoms.add(atom);
 		}
 
 		// all no head atoms are added to the list they are all true (unless
@@ -332,18 +348,19 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 		// to be done
 		if (atoms.size() == bodyAtomCount && !rule.getHead().isEmpty())
 			return -1;
-		else if (atoms.size() == 1)
-		{
-			_ruleAtomAsserter.assertAtom(atoms.get(0), binding, ds, true, _abox, this);
-			return -1;
-		}
 		else
-		{
-			final RuleBranch r = new RuleBranch(_abox, this, _ruleAtomAsserter, atoms, binding, bodyAtomCount, ds);
-			addBranch(r);
-			r.tryNext();
-			return r.getBranchIndexInABox();
-		}
+			if (atoms.size() == 1)
+			{
+				_ruleAtomAsserter.assertAtom(atoms.get(0), binding, ds, true, _abox, this);
+				return -1;
+			}
+			else
+			{
+				final RuleBranch r = new RuleBranch(_abox, this, _ruleAtomAsserter, atoms, binding, bodyAtomCount, ds);
+				addBranch(r);
+				r.tryNext();
+				return r.getBranchIndexInABox();
+			}
 	}
 
 	@Override
@@ -393,7 +410,8 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 		for (final Iterator<PartialBinding> iter = _partialBindings.iterator(); iter.hasNext();)
 		{
 			final PartialBinding binding = iter.next();
-			if (binding.getBranch() > branch.getBranchIndexInABox()) iter.remove();
+			if (binding.getBranch() > branch.getBranchIndexInABox())
+				iter.remove();
 		}
 
 		_interpreter.restore(branch.getBranchIndexInABox());

@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
 import openllet.core.exceptions.UnsupportedFeatureException;
@@ -42,10 +43,10 @@ import openllet.query.sparqldl.model.UnionQueryAtom;
  */
 public class QueryCost
 {
-	private double				_staticCost;
-	private double				_branchCount;
-	private final KnowledgeBase	_kb;
-	private final SizeEstimate	_estimate;
+	private double _staticCost;
+	private double _branchCount;
+	private final KnowledgeBase _kb;
+	private final SizeEstimate _estimate;
 
 	public QueryCost(final KnowledgeBase kb)
 	{
@@ -108,7 +109,8 @@ public class QueryCost
 
 		final List<ATermAppl> arguments = atom.getArguments();
 		for (final ATermAppl a : arguments)
-			if (isConstant(a)) bound.add(a);
+			if (isConstant(a))
+				bound.add(a);
 
 		switch (atom.getPredicate())
 		{
@@ -124,21 +126,23 @@ public class QueryCost
 					_staticCost = direct ? _estimate.getCost(KBOperation.IS_DIRECT_TYPE) : _estimate.getCost(KBOperation.IS_TYPE);
 					_branchCount = 1;
 				}
-				else if (bound.contains(clazz))
-				{
-					_staticCost = direct ? _estimate.getCost(KBOperation.GET_DIRECT_INSTANCES) : _estimate.getCost(KBOperation.GET_INSTANCES);
-					_branchCount = isConstant(clazz) ? _estimate.size(clazz) : _estimate.avgInstancesPerClass(direct);
-				}
-				else if (bound.contains(instance))
-				{
-					_staticCost = _estimate.getCost(KBOperation.GET_TYPES);
-					_branchCount = isConstant(instance) ? _estimate.classesPerInstance(instance, direct) : _estimate.avgClassesPerInstance(direct);
-				}
 				else
-				{
-					_staticCost = _estimate.getClassCount() * (direct ? _estimate.getCost(KBOperation.GET_DIRECT_INSTANCES) : _estimate.getCost(KBOperation.GET_INSTANCES));
-					_branchCount = _estimate.getClassCount() * _estimate.avgInstancesPerClass(direct);
-				}
+					if (bound.contains(clazz))
+					{
+						_staticCost = direct ? _estimate.getCost(KBOperation.GET_DIRECT_INSTANCES) : _estimate.getCost(KBOperation.GET_INSTANCES);
+						_branchCount = isConstant(clazz) ? _estimate.size(clazz) : _estimate.avgInstancesPerClass(direct);
+					}
+					else
+						if (bound.contains(instance))
+						{
+							_staticCost = _estimate.getCost(KBOperation.GET_TYPES);
+							_branchCount = isConstant(instance) ? _estimate.classesPerInstance(instance, direct) : _estimate.avgClassesPerInstance(direct);
+						}
+						else
+						{
+							_staticCost = _estimate.getClassCount() * (direct ? _estimate.getCost(KBOperation.GET_DIRECT_INSTANCES) : _estimate.getCost(KBOperation.GET_INSTANCES));
+							_branchCount = _estimate.getClassCount() * _estimate.avgInstancesPerClass(direct);
+						}
 				break;
 
 			case Annotation: // TODO
@@ -161,46 +165,47 @@ public class QueryCost
 							_staticCost = _estimate.getCost(KBOperation.GET_PROPERTY_VALUE);
 							_branchCount = isConstant(predicate) ? _estimate.avg(predicate) : _estimate.avgSubjectsPerProperty();
 						}
-						else if (bound.contains(object))
-						{
-							_staticCost = _estimate.getCost(KBOperation.GET_PROPERTY_VALUE);
-							if (isConstant(predicate))
+						else
+							if (bound.contains(object))
 							{
-								if (_kb.isObjectProperty(predicate))
-									_branchCount = _estimate.avg(inv(predicate));
+								_staticCost = _estimate.getCost(KBOperation.GET_PROPERTY_VALUE);
+								if (isConstant(predicate))
+								{
+									if (_kb.isObjectProperty(predicate))
+										_branchCount = _estimate.avg(inv(predicate));
+									else
+										_branchCount = _estimate.avgSubjectsPerProperty();
+								}
 								else
 									_branchCount = _estimate.avgSubjectsPerProperty();
 							}
 							else
-								_branchCount = _estimate.avgSubjectsPerProperty();
+							{
+								_staticCost = _estimate.getCost(KBOperation.GET_PROPERTY_VALUE)
+										/*
+										 * TODO should be st. like
+										 * GET_INSTANCES_OF_ROLLED_CONCEPT that reflects the
+										 * complexity of the concept.
+										 */
+										+ (isConstant(predicate) ? _estimate.avg(predicate) : _estimate.avgSubjectsPerProperty()) * _estimate.getCost(KBOperation.GET_PROPERTY_VALUE);
+								_branchCount = isConstant(predicate) ? _estimate.size(predicate) : _estimate.avgPairsPerProperty();
+							}
+					}
+					else
+						if (bound.contains(subject) || bound.contains(object))
+						{
+							_staticCost = _estimate.getPropertyCount() * _estimate.getCost(KBOperation.GET_PROPERTY_VALUE);
+							_branchCount = _estimate.getPropertyCount() * _estimate.avgSubjectsPerProperty();
 						}
 						else
 						{
-							_staticCost = _estimate.getCost(KBOperation.GET_PROPERTY_VALUE)
-									/*
-									 * TODO should be st. like
-									 * GET_INSTANCES_OF_ROLLED_CONCEPT that reflects the
-									 * complexity of the concept.
-									 */
-									+ (isConstant(predicate) ? _estimate.avg(predicate) : _estimate.avgSubjectsPerProperty()) * _estimate.getCost(KBOperation.GET_PROPERTY_VALUE);
-							_branchCount = isConstant(predicate) ? _estimate.size(predicate) : _estimate.avgPairsPerProperty();
+							_staticCost = _estimate.getPropertyCount() * (_estimate.getCost(KBOperation.GET_PROPERTY_VALUE)/*
+																															 * TODO should be st. like
+																															 * GET_INSTANCES_OF_ROLLED_CONCEPT that reflects the
+																															 * complexity of the concept.
+																															 */ + _estimate.avgSubjectsPerProperty() * _estimate.getCost(KBOperation.GET_PROPERTY_VALUE));
+							_branchCount = _estimate.avgPairsPerProperty() * _estimate.getPropertyCount();
 						}
-					}
-					else if (bound.contains(subject) || bound.contains(object))
-					{
-						_staticCost = _estimate.getPropertyCount() * _estimate.getCost(KBOperation.GET_PROPERTY_VALUE);
-						_branchCount = _estimate.getPropertyCount() * _estimate.avgSubjectsPerProperty();
-					}
-					else
-					{
-						_staticCost = _estimate.getPropertyCount()
-								* (_estimate.getCost(KBOperation.GET_PROPERTY_VALUE)/*
-																					 * TODO should be st. like
-																					 * GET_INSTANCES_OF_ROLLED_CONCEPT that reflects the
-																					 * complexity of the concept.
-																					 */ + _estimate.avgSubjectsPerProperty() * _estimate.getCost(KBOperation.GET_PROPERTY_VALUE));
-						_branchCount = _estimate.avgPairsPerProperty() * _estimate.getPropertyCount();
-					}
 				}
 				break;
 
@@ -213,20 +218,21 @@ public class QueryCost
 					_staticCost = _estimate.getCost(KBOperation.IS_SAME_AS);
 					_branchCount = 1;
 				}
-				else if (bound.contains(saLHS) || bound.contains(saRHS))
-				{
-					_staticCost = _estimate.getCost(KBOperation.GET_SAMES);
-
-					if (bound.contains(saLHS))
-						_branchCount = isConstant(saLHS) ? _estimate.sames(saLHS) : _estimate.avgSamesPerInstance();
-					else
-						_branchCount = isConstant(saRHS) ? _estimate.sames(saRHS) : _estimate.avgSamesPerInstance();
-				}
 				else
-				{
-					_staticCost = _estimate.getInstanceCount() * _estimate.getCost(KBOperation.GET_SAMES);
-					_branchCount = _estimate.getInstanceCount() * _estimate.avgSamesPerInstance();
-				}
+					if (bound.contains(saLHS) || bound.contains(saRHS))
+					{
+						_staticCost = _estimate.getCost(KBOperation.GET_SAMES);
+
+						if (bound.contains(saLHS))
+							_branchCount = isConstant(saLHS) ? _estimate.sames(saLHS) : _estimate.avgSamesPerInstance();
+						else
+							_branchCount = isConstant(saRHS) ? _estimate.sames(saRHS) : _estimate.avgSamesPerInstance();
+					}
+					else
+					{
+						_staticCost = _estimate.getInstanceCount() * _estimate.getCost(KBOperation.GET_SAMES);
+						_branchCount = _estimate.getInstanceCount() * _estimate.avgSamesPerInstance();
+					}
 				break;
 			case DifferentFrom:
 				final ATermAppl dfLHS = arguments.get(0);
@@ -237,20 +243,21 @@ public class QueryCost
 					_staticCost = _estimate.getCost(KBOperation.IS_DIFFERENT_FROM);
 					_branchCount = 1;
 				}
-				else if (bound.contains(dfLHS) || bound.contains(dfRHS))
-				{
-					_staticCost = _estimate.getCost(KBOperation.GET_DIFFERENTS);
-
-					if (bound.contains(dfLHS))
-						_branchCount = isConstant(dfLHS) ? _estimate.differents(dfLHS) : _estimate.avgDifferentsPerInstance();
-					else
-						_branchCount = isConstant(dfRHS) ? _estimate.differents(dfRHS) : _estimate.avgDifferentsPerInstance();
-				}
 				else
-				{
-					_staticCost = _estimate.getInstanceCount() * _estimate.getCost(KBOperation.GET_DIFFERENTS);
-					_branchCount = _estimate.getInstanceCount() * _estimate.avgDifferentsPerInstance();
-				}
+					if (bound.contains(dfLHS) || bound.contains(dfRHS))
+					{
+						_staticCost = _estimate.getCost(KBOperation.GET_DIFFERENTS);
+
+						if (bound.contains(dfLHS))
+							_branchCount = isConstant(dfLHS) ? _estimate.differents(dfLHS) : _estimate.avgDifferentsPerInstance();
+						else
+							_branchCount = isConstant(dfRHS) ? _estimate.differents(dfRHS) : _estimate.avgDifferentsPerInstance();
+					}
+					else
+					{
+						_staticCost = _estimate.getInstanceCount() * _estimate.getCost(KBOperation.GET_DIFFERENTS);
+						_branchCount = _estimate.getInstanceCount() * _estimate.avgDifferentsPerInstance();
+					}
 				break;
 
 			case DirectSubClassOf:
@@ -277,50 +284,51 @@ public class QueryCost
 
 					_branchCount = 1;
 				}
-				else if (bound.contains(clazzLHS) || bound.contains(clazzRHS))
-				{
-					if (strict && !direct)
-						_staticCost = _estimate.getCost(KBOperation.GET_SUB_OR_SUPERCLASSES) + _estimate.getCost(KBOperation.GET_EQUIVALENT_CLASSES);
-					else
-						_staticCost = direct ? _estimate.getCost(KBOperation.GET_DIRECT_SUB_OR_SUPERCLASSES) : _estimate.getCost(KBOperation.GET_SUB_OR_SUPERCLASSES);
-					if (bound.contains(clazzLHS))
-					{
-						_branchCount = isConstant(clazzLHS) ? _estimate.superClasses(clazzLHS, direct) : _estimate.avgSuperClasses(direct);
-
-						if (strict)
-						{
-							_branchCount -= isConstant(clazzLHS) ? _estimate.equivClasses(clazzLHS) : _estimate.avgEquivClasses();
-							_branchCount = Math.max(_branchCount, 0);
-						}
-					}
-					else
-					{
-						_branchCount = isConstant(clazzRHS) ? _estimate.superClasses(clazzRHS, direct) : _estimate.avgSuperClasses(direct);
-
-						if (strict)
-						{
-							_branchCount -= isConstant(clazzRHS) ? _estimate.equivClasses(clazzRHS) : _estimate.avgEquivClasses();
-							_branchCount = Math.max(_branchCount, 0);
-						}
-					}
-				}
 				else
-				{
-					if (strict && !direct)
-						_staticCost = _estimate.getCost(KBOperation.GET_SUB_OR_SUPERCLASSES) + _estimate.getCost(KBOperation.GET_EQUIVALENT_CLASSES);
-					else
-						_staticCost = direct ? _estimate.getCost(KBOperation.GET_DIRECT_SUB_OR_SUPERCLASSES) : _estimate.getCost(KBOperation.GET_SUB_OR_SUPERCLASSES);
-
-					_staticCost *= _estimate.getClassCount();
-
-					_branchCount = _estimate.getClassCount() * _estimate.avgSubClasses(direct);
-
-					if (strict)
+					if (bound.contains(clazzLHS) || bound.contains(clazzRHS))
 					{
-						_branchCount -= _estimate.avgEquivClasses();
-						_branchCount = Math.max(_branchCount, 0);
+						if (strict && !direct)
+							_staticCost = _estimate.getCost(KBOperation.GET_SUB_OR_SUPERCLASSES) + _estimate.getCost(KBOperation.GET_EQUIVALENT_CLASSES);
+						else
+							_staticCost = direct ? _estimate.getCost(KBOperation.GET_DIRECT_SUB_OR_SUPERCLASSES) : _estimate.getCost(KBOperation.GET_SUB_OR_SUPERCLASSES);
+						if (bound.contains(clazzLHS))
+						{
+							_branchCount = isConstant(clazzLHS) ? _estimate.superClasses(clazzLHS, direct) : _estimate.avgSuperClasses(direct);
+
+							if (strict)
+							{
+								_branchCount -= isConstant(clazzLHS) ? _estimate.equivClasses(clazzLHS) : _estimate.avgEquivClasses();
+								_branchCount = Math.max(_branchCount, 0);
+							}
+						}
+						else
+						{
+							_branchCount = isConstant(clazzRHS) ? _estimate.superClasses(clazzRHS, direct) : _estimate.avgSuperClasses(direct);
+
+							if (strict)
+							{
+								_branchCount -= isConstant(clazzRHS) ? _estimate.equivClasses(clazzRHS) : _estimate.avgEquivClasses();
+								_branchCount = Math.max(_branchCount, 0);
+							}
+						}
 					}
-				}
+					else
+					{
+						if (strict && !direct)
+							_staticCost = _estimate.getCost(KBOperation.GET_SUB_OR_SUPERCLASSES) + _estimate.getCost(KBOperation.GET_EQUIVALENT_CLASSES);
+						else
+							_staticCost = direct ? _estimate.getCost(KBOperation.GET_DIRECT_SUB_OR_SUPERCLASSES) : _estimate.getCost(KBOperation.GET_SUB_OR_SUPERCLASSES);
+
+						_staticCost *= _estimate.getClassCount();
+
+						_branchCount = _estimate.getClassCount() * _estimate.avgSubClasses(direct);
+
+						if (strict)
+						{
+							_branchCount -= _estimate.avgEquivClasses();
+							_branchCount = Math.max(_branchCount, 0);
+						}
+					}
 				break;
 			case EquivalentClass:
 				final ATermAppl eqcLHS = arguments.get(0);
@@ -331,20 +339,21 @@ public class QueryCost
 					_staticCost = _estimate.getCost(KBOperation.IS_EQUIVALENT_CLASS);
 					_branchCount = 1;
 				}
-				else if (bound.contains(eqcLHS) || bound.contains(eqcRHS))
-				{
-					_staticCost = _estimate.getCost(KBOperation.GET_EQUIVALENT_CLASSES);
-
-					if (bound.contains(eqcLHS))
-						_branchCount = isConstant(eqcLHS) ? _estimate.equivClasses(eqcLHS) : _estimate.avgEquivClasses();
-					else
-						_branchCount = isConstant(eqcRHS) ? _estimate.equivClasses(eqcRHS) : _estimate.avgEquivClasses();
-				}
 				else
-				{
-					_staticCost = _estimate.getClassCount() * _estimate.getCost(KBOperation.GET_EQUIVALENT_CLASSES);
-					_branchCount = _estimate.getClassCount() * _estimate.avgEquivClasses();
-				}
+					if (bound.contains(eqcLHS) || bound.contains(eqcRHS))
+					{
+						_staticCost = _estimate.getCost(KBOperation.GET_EQUIVALENT_CLASSES);
+
+						if (bound.contains(eqcLHS))
+							_branchCount = isConstant(eqcLHS) ? _estimate.equivClasses(eqcLHS) : _estimate.avgEquivClasses();
+						else
+							_branchCount = isConstant(eqcRHS) ? _estimate.equivClasses(eqcRHS) : _estimate.avgEquivClasses();
+					}
+					else
+					{
+						_staticCost = _estimate.getClassCount() * _estimate.getCost(KBOperation.GET_EQUIVALENT_CLASSES);
+						_branchCount = _estimate.getClassCount() * _estimate.avgEquivClasses();
+					}
 				break;
 			case DisjointWith:
 				final ATermAppl dwLHS = arguments.get(0);
@@ -355,20 +364,21 @@ public class QueryCost
 					_staticCost = _estimate.getCost(KBOperation.IS_DISJOINT_WITH);
 					_branchCount = 1;
 				}
-				else if (bound.contains(dwLHS) || bound.contains(dwRHS))
-				{
-					_staticCost = _estimate.getCost(KBOperation.GET_DISJOINT_CLASSES);
-
-					if (bound.contains(dwLHS))
-						_branchCount = isConstant(dwLHS) ? _estimate.disjoints(dwLHS) : _estimate.avgDisjointClasses();
-					else
-						_branchCount = isConstant(dwRHS) ? _estimate.disjoints(dwRHS) : _estimate.avgDisjointClasses();
-				}
 				else
-				{
-					_staticCost = _estimate.getClassCount() * _estimate.getCost(KBOperation.GET_DISJOINT_CLASSES);
-					_branchCount = _estimate.getClassCount() * _estimate.avgDisjointClasses();
-				}
+					if (bound.contains(dwLHS) || bound.contains(dwRHS))
+					{
+						_staticCost = _estimate.getCost(KBOperation.GET_DISJOINT_CLASSES);
+
+						if (bound.contains(dwLHS))
+							_branchCount = isConstant(dwLHS) ? _estimate.disjoints(dwLHS) : _estimate.avgDisjointClasses();
+						else
+							_branchCount = isConstant(dwRHS) ? _estimate.disjoints(dwRHS) : _estimate.avgDisjointClasses();
+					}
+					else
+					{
+						_staticCost = _estimate.getClassCount() * _estimate.getCost(KBOperation.GET_DISJOINT_CLASSES);
+						_branchCount = _estimate.getClassCount() * _estimate.avgDisjointClasses();
+					}
 				break;
 			case ComplementOf:
 				final ATermAppl coLHS = arguments.get(0);
@@ -379,20 +389,21 @@ public class QueryCost
 					_staticCost = _estimate.getCost(KBOperation.IS_COMPLEMENT_OF);
 					_branchCount = 1;
 				}
-				else if (bound.contains(coLHS) || bound.contains(coRHS))
-				{
-					_staticCost = _estimate.getCost(KBOperation.GET_COMPLEMENT_CLASSES);
-
-					if (bound.contains(coLHS))
-						_branchCount = isConstant(coLHS) ? _estimate.complements(coLHS) : _estimate.avgComplementClasses();
-					else
-						_branchCount = isConstant(coRHS) ? _estimate.complements(coRHS) : _estimate.avgComplementClasses();
-				}
 				else
-				{
-					_staticCost = _estimate.getClassCount() * _estimate.getCost(KBOperation.GET_COMPLEMENT_CLASSES);
-					_branchCount = _estimate.getClassCount() * _estimate.avgComplementClasses();
-				}
+					if (bound.contains(coLHS) || bound.contains(coRHS))
+					{
+						_staticCost = _estimate.getCost(KBOperation.GET_COMPLEMENT_CLASSES);
+
+						if (bound.contains(coLHS))
+							_branchCount = isConstant(coLHS) ? _estimate.complements(coLHS) : _estimate.avgComplementClasses();
+						else
+							_branchCount = isConstant(coRHS) ? _estimate.complements(coRHS) : _estimate.avgComplementClasses();
+					}
+					else
+					{
+						_staticCost = _estimate.getClassCount() * _estimate.getCost(KBOperation.GET_COMPLEMENT_CLASSES);
+						_branchCount = _estimate.getClassCount() * _estimate.avgComplementClasses();
+					}
 				break;
 
 			case DirectSubPropertyOf:
@@ -419,53 +430,54 @@ public class QueryCost
 
 					_branchCount = 1;
 				}
-				else if (bound.contains(spLHS) || bound.contains(spRHS))
-				{
-					if (strict && !direct)
-						_staticCost = _estimate.getCost(KBOperation.GET_SUB_OR_SUPERPROPERTIES) + _estimate.getCost(KBOperation.GET_EQUIVALENT_PROPERTIES);
-					else
-						_staticCost = direct ? _estimate.getCost(KBOperation.GET_DIRECT_SUB_OR_SUPERPROPERTIES) : _estimate.getCost(KBOperation.GET_SUB_OR_SUPERPROPERTIES);
-					if (bound.contains(spLHS))
-					{
-						_branchCount = isConstant(spLHS) ? _estimate.superProperties(spLHS, direct) : _estimate.avgSuperProperties(direct);
-
-						if (strict)
-						{
-							_branchCount -= isConstant(spLHS) ? _estimate.equivProperties(spLHS) : _estimate.avgEquivProperties();
-							_branchCount = Math.max(_branchCount, 0);
-
-						}
-					}
-					else
-					{
-						_branchCount = isConstant(spRHS) ? _estimate.superProperties(spRHS, direct) : _estimate.avgSuperProperties(direct);
-
-						if (strict)
-						{
-							_branchCount -= isConstant(spRHS) ? _estimate.equivProperties(spRHS) : _estimate.avgEquivProperties();
-							_branchCount = Math.max(_branchCount, 0);
-
-						}
-					}
-				}
 				else
-				{
-					if (strict && !direct)
-						_staticCost = _estimate.getCost(KBOperation.GET_SUB_OR_SUPERPROPERTIES) + _estimate.getCost(KBOperation.GET_EQUIVALENT_PROPERTIES);
-					else
-						_staticCost = direct ? _estimate.getCost(KBOperation.GET_DIRECT_SUB_OR_SUPERPROPERTIES) : _estimate.getCost(KBOperation.GET_SUB_OR_SUPERPROPERTIES);
-
-					_staticCost *= _estimate.getPropertyCount();
-
-					_branchCount = _estimate.getPropertyCount() * _estimate.avgSubProperties(direct);
-
-					if (strict)
+					if (bound.contains(spLHS) || bound.contains(spRHS))
 					{
-						_branchCount -= _estimate.avgEquivProperties();
-						_branchCount = Math.max(_branchCount, 0);
+						if (strict && !direct)
+							_staticCost = _estimate.getCost(KBOperation.GET_SUB_OR_SUPERPROPERTIES) + _estimate.getCost(KBOperation.GET_EQUIVALENT_PROPERTIES);
+						else
+							_staticCost = direct ? _estimate.getCost(KBOperation.GET_DIRECT_SUB_OR_SUPERPROPERTIES) : _estimate.getCost(KBOperation.GET_SUB_OR_SUPERPROPERTIES);
+						if (bound.contains(spLHS))
+						{
+							_branchCount = isConstant(spLHS) ? _estimate.superProperties(spLHS, direct) : _estimate.avgSuperProperties(direct);
 
+							if (strict)
+							{
+								_branchCount -= isConstant(spLHS) ? _estimate.equivProperties(spLHS) : _estimate.avgEquivProperties();
+								_branchCount = Math.max(_branchCount, 0);
+
+							}
+						}
+						else
+						{
+							_branchCount = isConstant(spRHS) ? _estimate.superProperties(spRHS, direct) : _estimate.avgSuperProperties(direct);
+
+							if (strict)
+							{
+								_branchCount -= isConstant(spRHS) ? _estimate.equivProperties(spRHS) : _estimate.avgEquivProperties();
+								_branchCount = Math.max(_branchCount, 0);
+
+							}
+						}
 					}
-				}
+					else
+					{
+						if (strict && !direct)
+							_staticCost = _estimate.getCost(KBOperation.GET_SUB_OR_SUPERPROPERTIES) + _estimate.getCost(KBOperation.GET_EQUIVALENT_PROPERTIES);
+						else
+							_staticCost = direct ? _estimate.getCost(KBOperation.GET_DIRECT_SUB_OR_SUPERPROPERTIES) : _estimate.getCost(KBOperation.GET_SUB_OR_SUPERPROPERTIES);
+
+						_staticCost *= _estimate.getPropertyCount();
+
+						_branchCount = _estimate.getPropertyCount() * _estimate.avgSubProperties(direct);
+
+						if (strict)
+						{
+							_branchCount -= _estimate.avgEquivProperties();
+							_branchCount = Math.max(_branchCount, 0);
+
+						}
+					}
 				break;
 
 			case EquivalentProperty:
@@ -477,20 +489,21 @@ public class QueryCost
 					_staticCost = _estimate.getCost(KBOperation.IS_EQUIVALENT_PROPERTY);
 					_branchCount = 1;
 				}
-				else if (bound.contains(eqpLHS) || bound.contains(eqpRHS))
-				{
-					_staticCost = _estimate.getCost(KBOperation.GET_EQUIVALENT_PROPERTIES);
-
-					if (bound.contains(eqpLHS))
-						_branchCount = isConstant(eqpLHS) ? _estimate.equivProperties(eqpLHS) : _estimate.avgEquivProperties();
-					else
-						_branchCount = isConstant(eqpRHS) ? _estimate.equivProperties(eqpRHS) : _estimate.avgEquivProperties();
-				}
 				else
-				{
-					_staticCost = _estimate.getPropertyCount() * _estimate.getCost(KBOperation.GET_EQUIVALENT_PROPERTIES);
-					_branchCount = _estimate.getPropertyCount() * _estimate.avgEquivProperties();
-				}
+					if (bound.contains(eqpLHS) || bound.contains(eqpRHS))
+					{
+						_staticCost = _estimate.getCost(KBOperation.GET_EQUIVALENT_PROPERTIES);
+
+						if (bound.contains(eqpLHS))
+							_branchCount = isConstant(eqpLHS) ? _estimate.equivProperties(eqpLHS) : _estimate.avgEquivProperties();
+						else
+							_branchCount = isConstant(eqpRHS) ? _estimate.equivProperties(eqpRHS) : _estimate.avgEquivProperties();
+					}
+					else
+					{
+						_staticCost = _estimate.getPropertyCount() * _estimate.getCost(KBOperation.GET_EQUIVALENT_PROPERTIES);
+						_branchCount = _estimate.getPropertyCount() * _estimate.avgEquivProperties();
+					}
 				break;
 			case Domain:
 				final ATermAppl domLHS = arguments.get(0);
@@ -501,20 +514,21 @@ public class QueryCost
 					_staticCost = _estimate.getCost(KBOperation.IS_DOMAIN);
 					_branchCount = 1;
 				}
-				else if (bound.contains(domLHS) || bound.contains(domRHS))
-				{
-					_staticCost = _estimate.getCost(KBOperation.GET_DOMAINS);
-
-					if (bound.contains(domLHS))
-						_branchCount = isConstant(domLHS) ? _estimate.equivProperties(domLHS) : _estimate.avgEquivProperties();
-					else
-						_branchCount = isConstant(domRHS) ? _estimate.equivClasses(domRHS) : _estimate.avgEquivClasses();
-				}
 				else
-				{
-					_staticCost = _estimate.getPropertyCount() * _estimate.getCost(KBOperation.GET_DOMAINS);
-					_branchCount = _estimate.getPropertyCount() * _estimate.avgEquivProperties();
-				}
+					if (bound.contains(domLHS) || bound.contains(domRHS))
+					{
+						_staticCost = _estimate.getCost(KBOperation.GET_DOMAINS);
+
+						if (bound.contains(domLHS))
+							_branchCount = isConstant(domLHS) ? _estimate.equivProperties(domLHS) : _estimate.avgEquivProperties();
+						else
+							_branchCount = isConstant(domRHS) ? _estimate.equivClasses(domRHS) : _estimate.avgEquivClasses();
+					}
+					else
+					{
+						_staticCost = _estimate.getPropertyCount() * _estimate.getCost(KBOperation.GET_DOMAINS);
+						_branchCount = _estimate.getPropertyCount() * _estimate.avgEquivProperties();
+					}
 				break;
 			case Range:
 				final ATermAppl rangeLHS = arguments.get(0);
@@ -525,20 +539,21 @@ public class QueryCost
 					_staticCost = _estimate.getCost(KBOperation.IS_RANGE);
 					_branchCount = 1;
 				}
-				else if (bound.contains(rangeLHS) || bound.contains(rangeRHS))
-				{
-					_staticCost = _estimate.getCost(KBOperation.GET_RANGES);
-
-					if (bound.contains(rangeLHS))
-						_branchCount = isConstant(rangeLHS) ? _estimate.equivProperties(rangeLHS) : _estimate.avgEquivProperties();
-					else
-						_branchCount = isConstant(rangeRHS) ? _estimate.equivClasses(rangeRHS) : _estimate.avgEquivClasses();
-				}
 				else
-				{
-					_staticCost = _estimate.getPropertyCount() * _estimate.getCost(KBOperation.GET_RANGES);
-					_branchCount = _estimate.getPropertyCount() * _estimate.avgEquivProperties();
-				}
+					if (bound.contains(rangeLHS) || bound.contains(rangeRHS))
+					{
+						_staticCost = _estimate.getCost(KBOperation.GET_RANGES);
+
+						if (bound.contains(rangeLHS))
+							_branchCount = isConstant(rangeLHS) ? _estimate.equivProperties(rangeLHS) : _estimate.avgEquivProperties();
+						else
+							_branchCount = isConstant(rangeRHS) ? _estimate.equivClasses(rangeRHS) : _estimate.avgEquivClasses();
+					}
+					else
+					{
+						_staticCost = _estimate.getPropertyCount() * _estimate.getCost(KBOperation.GET_RANGES);
+						_branchCount = _estimate.getPropertyCount() * _estimate.avgEquivProperties();
+					}
 
 				break;
 			case InverseOf:
@@ -550,20 +565,21 @@ public class QueryCost
 					_staticCost = _estimate.getCost(KBOperation.IS_INVERSE_OF);
 					_branchCount = 1;
 				}
-				else if (bound.contains(ioLHS) || bound.contains(ioRHS))
-				{
-					_staticCost = _estimate.getCost(KBOperation.GET_INVERSES);
-
-					if (bound.contains(ioLHS))
-						_branchCount = isConstant(ioLHS) ? _estimate.inverses(ioLHS) : _estimate.avgInverseProperties();
-					else
-						_branchCount = isConstant(ioRHS) ? _estimate.inverses(ioRHS) : _estimate.avgInverseProperties();
-				}
 				else
-				{
-					_staticCost = _estimate.getPropertyCount() * _estimate.getCost(KBOperation.GET_INVERSES);
-					_branchCount = _estimate.getPropertyCount() * _estimate.avgInverseProperties();
-				}
+					if (bound.contains(ioLHS) || bound.contains(ioRHS))
+					{
+						_staticCost = _estimate.getCost(KBOperation.GET_INVERSES);
+
+						if (bound.contains(ioLHS))
+							_branchCount = isConstant(ioLHS) ? _estimate.inverses(ioLHS) : _estimate.avgInverseProperties();
+						else
+							_branchCount = isConstant(ioRHS) ? _estimate.inverses(ioRHS) : _estimate.avgInverseProperties();
+					}
+					else
+					{
+						_staticCost = _estimate.getPropertyCount() * _estimate.getCost(KBOperation.GET_INVERSES);
+						_branchCount = _estimate.getPropertyCount() * _estimate.avgInverseProperties();
+					}
 				break;
 			case ObjectProperty:
 				if (bound.containsAll(arguments))

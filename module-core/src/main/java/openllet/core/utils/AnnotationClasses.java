@@ -11,6 +11,7 @@ import static openllet.core.utils.TermFactory.term;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.OpenlletOptions;
 
@@ -28,8 +29,8 @@ import openllet.core.OpenlletOptions;
  */
 public class AnnotationClasses
 {
-	private static final Set<ATermAppl>	INSTANCE				= new HashSet<>();
-	private static final String			_geneontologyBaseIriObo	= "http://www.geneontology.org/formats/oboInOwl#";
+	private static final Set<ATermAppl> INSTANCE = new HashSet<>();
+	private static final String _geneontologyBaseIriObo = "http://www.geneontology.org/formats/oboInOwl#";
 
 	static
 	{
@@ -51,9 +52,9 @@ public class AnnotationClasses
 	}
 
 	/**
-	 * @return     <code>true</code> if the specified class is defined to be an annotation class AND {@link OpenlletOptions#IGNORE_ANNOTATION_CLASSES} option is set
-	 *             to true. If the configuration option is <code>false</code> this function will return <code>false</code> for every class.
-	 * @param  cls class to check
+	 * @return <code>true</code> if the specified class is defined to be an annotation class AND {@link OpenlletOptions#IGNORE_ANNOTATION_CLASSES} option is set
+	 *         to true. If the configuration option is <code>false</code> this function will return <code>false</code> for every class.
+	 * @param cls class to check
 	 */
 	public static boolean contains(final ATermAppl cls)
 	{

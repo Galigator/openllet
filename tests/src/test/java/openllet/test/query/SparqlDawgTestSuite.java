@@ -14,13 +14,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import openllet.query.sparqldl.jena.SparqlDLExecutionFactory.QueryEngineType;
-import openllet.test.PelletTestSuite;
+
 import org.apache.jena.rdf.model.Resource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
+
+import openllet.query.sparqldl.jena.SparqlDLExecutionFactory.QueryEngineType;
+import openllet.test.PelletTestSuite;
 
 /**
  * <p>

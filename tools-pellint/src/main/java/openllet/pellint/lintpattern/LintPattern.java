@@ -39,17 +39,17 @@ public interface LintPattern
 	String getDescription();
 
 	/**
-	 * Returns <code>true</code> if this pattern provides an automatic fix for every {@link openllet.pellint.model.Lint} it matches. An automatic fix for
-	 * every {@link openllet.pellint.model.Lint} can be made available by calling {@link openllet.pellint.model.Lint#setLintFixer(LintFixer)}.
+	 * Returns <code>true</code> if this pattern provides an automatic fix for every {@link openllet.pellint.model.Lint} it matches. An automatic fix for every
+	 * {@link openllet.pellint.model.Lint} can be made available by calling {@link openllet.pellint.model.Lint#setLintFixer(LintFixer)}.
 	 *
 	 * @return <code>true</code> if this pattern provides an automatic fix for every {@link openllet.pellint.model.Lint} it matches.
-	 * @see    openllet.pellint.model.Lint#setLintFixer(LintFixer)
+	 * @see openllet.pellint.model.Lint#setLintFixer(LintFixer)
 	 */
 	boolean isFixable();
 
 	/**
 	 * @return The default {@link LintFormat} for this pattern.
-	 * @see    LintFormat
+	 * @see LintFormat
 	 */
 	LintFormat getDefaultLintFormat();
 }

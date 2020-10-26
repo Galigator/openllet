@@ -1,8 +1,9 @@
 package openllet.pellint.test.model;
 
-import openllet.pellint.model.Lint;
 import org.semanticweb.owlapi.model.OWLOntologyChangeException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+
+import openllet.pellint.model.Lint;
 
 /**
  * <p>

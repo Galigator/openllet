@@ -6,21 +6,23 @@ import static org.junit.Assert.assertTrue;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.junit.Test;
+import org.semanticweb.owlapi.model.OWLClass;
+
 import openllet.owlapi.OWL;
 import openllet.reachability.EntityNode;
 import openllet.reachability.ReachabilityGraph;
 import openllet.reachability.SCC;
-import org.junit.Test;
-import org.semanticweb.owlapi.model.OWLClass;
 
 /**
  * @author Evren Sirin
  */
 public class SCCTests
 {
-	private ReachabilityGraph<OWLClass>	_graph;
+	private ReachabilityGraph<OWLClass> _graph;
 
-	private EntityNode<OWLClass>[]		_nodes;
+	private EntityNode<OWLClass>[] _nodes;
 
 	private void addEdge(final int in, final int out)
 	{

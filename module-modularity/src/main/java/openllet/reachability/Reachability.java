@@ -12,26 +12,27 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import openllet.shared.tools.Log;
 
 /**
  * Computes reachability in a directed _graph with and/or _nodes.
  *
- * @author     Evren Sirin
- * @param  <E>
+ * @author Evren Sirin
+ * @param <E>
  */
 public class Reachability<E>
 {
 
-	public static final Logger			_logger	= Log.getLogger(Reachability.class);
+	public static final Logger _logger = Log.getLogger(Reachability.class);
 
-	private final ReachabilityGraph<E>	_graph;
+	private final ReachabilityGraph<E> _graph;
 
-	private Set<E>						_activatedEntities;
+	private Set<E> _activatedEntities;
 
-	private Set<Node>					_affectedNodes;
+	private Set<Node> _affectedNodes;
 
-	private Queue<Node>					_waitingQueue;
+	private Queue<Node> _waitingQueue;
 
 	public Reachability(final ReachabilityGraph<E> graph)
 	{
@@ -53,7 +54,8 @@ public class Reachability<E>
 
 	private void activateNode(final EntityNode<E> node)
 	{
-		if (node.isActive()) throw new IllegalStateException();
+		if (node.isActive())
+			throw new IllegalStateException();
 
 		_affectedNodes.add(node);
 		_activatedEntities.addAll(node.getEntities());
@@ -61,7 +63,8 @@ public class Reachability<E>
 
 		node.inputActivated();
 
-		if (_logger.isLoggable(Level.FINE)) _logger.fine("Activated: " + node);
+		if (_logger.isLoggable(Level.FINE))
+			_logger.fine("Activated: " + node);
 	}
 
 	public boolean contains(final E entity)
@@ -76,8 +79,10 @@ public class Reachability<E>
 		for (final E initialEntity : initialEntities)
 		{
 			final EntityNode<E> initialNode = _graph.getNode(initialEntity);
-			if (initialNode == null) throw new IllegalArgumentException("Unknown entity: " + initialEntity);
-			if (!initialNode.isActive()) activateNode(initialNode);
+			if (initialNode == null)
+				throw new IllegalArgumentException("Unknown entity: " + initialEntity);
+			if (!initialNode.isActive())
+				activateNode(initialNode);
 		}
 
 		while (!_waitingQueue.isEmpty())
@@ -90,7 +95,8 @@ public class Reachability<E>
 			{
 				if (outputNode.isActive())
 				{
-					if (_logger.isLoggable(Level.FINE)) _logger.fine("Already activated: " + outputNode);
+					if (_logger.isLoggable(Level.FINE))
+						_logger.fine("Already activated: " + outputNode);
 					continue;
 				}
 
@@ -98,10 +104,12 @@ public class Reachability<E>
 
 				if (outputNode.inputActivated())
 				{
-					if (_logger.isLoggable(Level.FINE)) _logger.fine("Activated: " + outputNode);
+					if (_logger.isLoggable(Level.FINE))
+						_logger.fine("Activated: " + outputNode);
 
 					_waitingQueue.add(outputNode);
-					if (outputNode instanceof EntityNode) _activatedEntities.addAll(entityNode(outputNode).getEntities());
+					if (outputNode instanceof EntityNode)
+						_activatedEntities.addAll(entityNode(outputNode).getEntities());
 				}
 			}
 		}

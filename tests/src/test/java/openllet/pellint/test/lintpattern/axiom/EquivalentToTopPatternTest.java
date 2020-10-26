@@ -5,17 +5,18 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Before;
+import org.junit.Test;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+
 import openllet.owlapi.OWL;
 import openllet.pellint.lintpattern.axiom.EquivalentToTopPattern;
 import openllet.pellint.model.Lint;
 import openllet.pellint.model.LintFixer;
 import openllet.pellint.test.PellintTestCase;
 import openllet.pellint.util.CollectionUtil;
-import org.junit.Before;
-import org.junit.Test;
-import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.model.OWLClassExpression;
-import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 /**
  * <p>
@@ -45,7 +46,7 @@ public class EquivalentToTopPatternTest extends PellintTestCase
 	{
 		assertTrue(_pattern.isFixable());
 
-		OWLAxiom axiom = OWL.equivalentClasses(CollectionUtil.<OWLClassExpression>asSet(OWL.Nothing, _cls[2], _cls[3]));
+		OWLAxiom axiom = OWL.equivalentClasses(CollectionUtil.<OWLClassExpression> asSet(OWL.Nothing, _cls[2], _cls[3]));
 		assertNull(_pattern.match(_ontology, axiom));
 
 		axiom = OWL.subClassOf(OWL.Thing, _cls[1]);
@@ -55,7 +56,7 @@ public class EquivalentToTopPatternTest extends PellintTestCase
 	@Test
 	public void testSimple()
 	{
-		final OWLAxiom axiom = OWL.equivalentClasses(CollectionUtil.<OWLClassExpression>asSet(OWL.Thing, _cls[0], _cls[1]));
+		final OWLAxiom axiom = OWL.equivalentClasses(CollectionUtil.<OWLClassExpression> asSet(OWL.Thing, _cls[0], _cls[1]));
 		final Lint lint = _pattern.match(_ontology, axiom);
 		assertNotNull(lint);
 

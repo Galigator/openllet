@@ -44,12 +44,12 @@ public class QueueElement
 	/**
 	 * Label for this element
 	 */
-	private volatile ATermAppl	_label;
+	private volatile ATermAppl _label;
 
 	/**
 	 * Node for this element
 	 */
-	private volatile ATermAppl	_node;
+	private volatile ATermAppl _node;
 
 	/**
 	 * Constructor

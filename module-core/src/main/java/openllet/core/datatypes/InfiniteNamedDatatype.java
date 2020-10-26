@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.WeakHashMap;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.datatypes.exceptions.InvalidConstrainingFacetException;
 import openllet.core.datatypes.exceptions.InvalidLiteralException;
@@ -34,8 +35,8 @@ public class InfiniteNamedDatatype implements Datatype<ATermAppl>
 	/**
 	 * Get an instance with a specific _name.
 	 *
-	 * @param  dtName the _name of the datatype
-	 * @return        an instance
+	 * @param dtName the _name of the datatype
+	 * @return an instance
 	 */
 	public static InfiniteNamedDatatype get(final ATermAppl dtName)
 	{
@@ -50,13 +51,15 @@ public class InfiniteNamedDatatype implements Datatype<ATermAppl>
 		return dt;
 	}
 
-	private final ATermAppl						_name;
-	private final RestrictedDatatype<ATermAppl>	_range;
+	private final ATermAppl _name;
+	private final RestrictedDatatype<ATermAppl> _range;
 
 	private InfiniteNamedDatatype(final ATermAppl name)
 	{
-		if (name == null) throw new NullPointerException();
-		if (name.getArity() != 0) throw new IllegalArgumentException();
+		if (name == null)
+			throw new NullPointerException();
+		if (name.getArity() != 0)
+			throw new IllegalArgumentException();
 
 		_name = name;
 		_range = new RestrictedDatatype<>()
@@ -108,7 +111,8 @@ public class InfiniteNamedDatatype implements Datatype<ATermAppl>
 			@Override
 			public RestrictedDatatype<ATermAppl> intersect(final RestrictedDatatype<?> other, final boolean negated)
 			{
-				if (other == this) return this;
+				if (other == this)
+					return this;
 				throw new IllegalArgumentException();
 			}
 
@@ -133,7 +137,8 @@ public class InfiniteNamedDatatype implements Datatype<ATermAppl>
 			@Override
 			public RestrictedDatatype<ATermAppl> union(final RestrictedDatatype<?> other)
 			{
-				if (other == this) return this;
+				if (other == this)
+					return this;
 				throw new IllegalArgumentException();
 			}
 
@@ -154,23 +159,31 @@ public class InfiniteNamedDatatype implements Datatype<ATermAppl>
 	@Override
 	public boolean equals(final Object obj)
 	{
-		if (this == obj) return true;
-		if (obj == null) return false;
-		if (getClass() != obj.getClass()) return false;
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
 		final InfiniteNamedDatatype other = (InfiniteNamedDatatype) obj;
 		if (_name == null)
 		{
-			if (other._name != null) return false;
+			if (other._name != null)
+				return false;
 		}
-		else if (!_name.equals(other._name)) return false;
+		else
+			if (!_name.equals(other._name))
+				return false;
 		return true;
 	}
 
 	@Override
 	public ATermAppl getCanonicalRepresentation(final ATermAppl input) throws InvalidLiteralException
 	{
-		if (!ATermUtils.isLiteral(input)) throw new IllegalArgumentException();
-		if (!_name.equals(input.getArgument(ATermUtils.LIT_URI_INDEX))) throw new IllegalArgumentException();
+		if (!ATermUtils.isLiteral(input))
+			throw new IllegalArgumentException();
+		if (!_name.equals(input.getArgument(ATermUtils.LIT_URI_INDEX)))
+			throw new IllegalArgumentException();
 
 		return input;
 	}
@@ -181,7 +194,9 @@ public class InfiniteNamedDatatype implements Datatype<ATermAppl>
 		if (value instanceof ATermAppl)
 		{
 			final ATermAppl a = (ATermAppl) value;
-			if (ATermUtils.isLiteral(a)) if (_name.equals(a.getArgument(ATermUtils.LIT_URI_INDEX))) return a;
+			if (ATermUtils.isLiteral(a))
+				if (_name.equals(a.getArgument(ATermUtils.LIT_URI_INDEX)))
+					return a;
 		}
 		throw new IllegalArgumentException();
 	}
@@ -201,8 +216,10 @@ public class InfiniteNamedDatatype implements Datatype<ATermAppl>
 	@Override
 	public ATermAppl getValue(final ATermAppl literal) throws InvalidLiteralException
 	{
-		if (!ATermUtils.isLiteral(literal)) throw new IllegalArgumentException();
-		if (!_name.equals(literal.getArgument(ATermUtils.LIT_URI_INDEX))) throw new IllegalArgumentException();
+		if (!ATermUtils.isLiteral(literal))
+			throw new IllegalArgumentException();
+		if (!_name.equals(literal.getArgument(ATermUtils.LIT_URI_INDEX)))
+			throw new IllegalArgumentException();
 
 		return literal;
 	}

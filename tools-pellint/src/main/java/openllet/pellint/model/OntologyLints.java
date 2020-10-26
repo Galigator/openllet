@@ -14,12 +14,14 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
-import openllet.pellint.format.LintFormat;
-import openllet.pellint.lintpattern.LintPattern;
-import openllet.pellint.util.CollectionUtil;
+
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChangeException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+
+import openllet.pellint.format.LintFormat;
+import openllet.pellint.lintpattern.LintPattern;
+import openllet.pellint.util.CollectionUtil;
 
 /**
  * <p>
@@ -39,9 +41,9 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
  */
 public class OntologyLints
 {
-	private final OWLOntology					_ontology;
-	private OWLOntology							_rootOntology;
-	private final Map<LintPattern, List<Lint>>	_lints;
+	private final OWLOntology _ontology;
+	private OWLOntology _rootOntology;
+	private final Map<LintPattern, List<Lint>> _lints;
 
 	public OntologyLints(final OWLOntology ontology)
 	{
@@ -108,8 +110,8 @@ public class OntologyLints
 	/**
 	 * Fix all reparable lints.
 	 *
-	 * @param  manager
-	 * @return                            Returns the set of unfixable lints.
+	 * @param manager
+	 * @return Returns the set of unfixable lints.
 	 * @throws OWLOntologyChangeException
 	 */
 	public Set<Lint> applyFix(final OWLOntologyManager manager) throws OWLOntologyChangeException
@@ -119,7 +121,8 @@ public class OntologyLints
 			if (entry.getKey().isFixable())
 			{
 				for (final Lint lint : entry.getValue())
-					if (!lint.applyFix(manager)) unfixable.add(lint);
+					if (!lint.applyFix(manager))
+						unfixable.add(lint);
 			}
 			else
 				unfixable.addAll(entry.getValue());
@@ -135,7 +138,8 @@ public class OntologyLints
 		else
 			ONTOLOGY_NAME = _rootOntology.getOntologyID().toString() + " and its import closure";
 
-		if (_lints.isEmpty()) return "\nNo OWL lints found for ontology " + ONTOLOGY_NAME + ".";
+		if (_lints.isEmpty())
+			return "\nNo OWL lints found for ontology " + ONTOLOGY_NAME + ".";
 
 		final StringBuilder strBuilder = new StringBuilder();
 		strBuilder.append("\n==================================================================\n");

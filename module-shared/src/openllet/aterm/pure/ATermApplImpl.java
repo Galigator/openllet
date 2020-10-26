@@ -30,6 +30,7 @@ package openllet.aterm.pure;
 
 import java.io.IOException;
 import java.util.List;
+
 import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
@@ -42,9 +43,9 @@ import openllet.shared.hash.SharedObject;
 
 public class ATermApplImpl extends ATermImpl implements ATermAppl
 {
-	private final AFun		_fun;
+	private final AFun _fun;
 
-	private final ATerm[]	_args;
+	private final ATerm[] _args;
 
 	protected ATermApplImpl(final PureFactory factory, final AFun fun, final ATerm[] i_args)
 	{
@@ -79,12 +80,14 @@ public class ATermApplImpl extends ATermImpl implements ATermAppl
 		if (obj instanceof ATermAppl)
 		{
 			final ATermAppl peer = (ATermAppl) obj;
-			if (peer.getType() != getType()) return false;
+			if (peer.getType() != getType())
+				return false;
 
 			if (peer.getAFun().equals(_fun))
 			{
 				for (int i = 0; i < _args.length; i++)
-					if (!peer.getArgument(i).equals(_args[i])) return false;
+					if (!peer.getArgument(i).equals(_args[i]))
+						return false;
 				return true;//peer.getAnnotations().equals(getAnnotations());
 			}
 		}
@@ -97,7 +100,8 @@ public class ATermApplImpl extends ATermImpl implements ATermAppl
 		if (pattern.getType() == APPL)
 		{
 			final ATermAppl appl = (ATermAppl) pattern;
-			if (_fun.equals(appl.getAFun())) return matchArguments(appl.getArgumentArray(), list);
+			if (_fun.equals(appl.getAFun()))
+				return matchArguments(appl.getArgumentArray(), list);
 			return false;
 		}
 
@@ -113,27 +117,31 @@ public class ATermApplImpl extends ATermImpl implements ATermAppl
 					list.add(_fun.getName());
 					return matchArguments(appl.getArgumentArray(), list);
 				}
-				else if (afun.getName().equals("str") && !afun.isQuoted())
-				{
-					if (_fun.isQuoted())
+				else
+					if (afun.getName().equals("str") && !afun.isQuoted())
 					{
-						list.add(_fun.getName());
-						return matchArguments(appl.getArgumentArray(), list);
+						if (_fun.isQuoted())
+						{
+							list.add(_fun.getName());
+							return matchArguments(appl.getArgumentArray(), list);
+						}
 					}
-				}
-				else if (afun.getName().equals("fun") && !afun.isQuoted())
-				{
-					if (!_fun.isQuoted())
-					{
-						list.add(_fun.getName());
-						return matchArguments(appl.getArgumentArray(), list);
-					}
-				}
-				else if (afun.getName().equals("id") && !afun.isQuoted()) if (!_fun.isQuoted())
-				{
-					list.add(_fun.getName());
-					return matchArguments(appl.getArgumentArray(), list);
-				}
+					else
+						if (afun.getName().equals("fun") && !afun.isQuoted())
+						{
+							if (!_fun.isQuoted())
+							{
+								list.add(_fun.getName());
+								return matchArguments(appl.getArgumentArray(), list);
+							}
+						}
+						else
+							if (afun.getName().equals("id") && !afun.isQuoted())
+								if (!_fun.isQuoted())
+								{
+									list.add(_fun.getName());
+									return matchArguments(appl.getArgumentArray(), list);
+								}
 			}
 		}
 
@@ -144,7 +152,8 @@ public class ATermApplImpl extends ATermImpl implements ATermAppl
 	{
 		for (int i = 0; i < _args.length; i++)
 		{
-			if (i >= pattern_args.length) return false;
+			if (i >= pattern_args.length)
+				return false;
 
 			final ATerm arg = _args[i];
 			final ATerm pattern_arg = pattern_args[i];
@@ -167,7 +176,8 @@ public class ATermApplImpl extends ATermImpl implements ATermAppl
 			}
 
 			final List<Object> submatches = arg.match(pattern_arg);
-			if (submatches == null) return false;
+			if (submatches == null)
+				return false;
 			list.addAll(submatches);
 		}
 

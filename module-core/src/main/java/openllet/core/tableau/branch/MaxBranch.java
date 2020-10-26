@@ -32,6 +32,7 @@ package openllet.core.tableau.branch;
 
 import java.util.List;
 import java.util.logging.Level;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
 import openllet.core.OpenlletOptions;
@@ -51,11 +52,11 @@ import openllet.core.utils.ATermUtils;
 
 public class MaxBranch extends IndividualBranch
 {
-	private final List<NodeMerge>	_mergePairs;
-	private final Role				_r;
-	private final int				_n;
-	private final ATermAppl			_qualification;
-	private final DependencySet[]	_prevDS;
+	private final List<NodeMerge> _mergePairs;
+	private final Role _r;
+	private final int _n;
+	private final ATermAppl _qualification;
+	private final DependencySet[] _prevDS;
 
 	public MaxBranch(final ABox abox, final CompletionStrategy strategy, //
 			final Individual x, final Role r, final int n, //
@@ -127,21 +128,22 @@ public class MaxBranch extends IndividualBranch
 		for (; getTryNext() < getTryCount(); _tryNext++)
 		{
 			_abox.getKB().getTimers()._mainTimer.check();
-			if (OpenlletOptions.USE_SEMANTIC_BRANCHING) for (int m = 0; m < getTryNext(); m++)
-			{
-				final NodeMerge nm = _mergePairs.get(m);
-				final Node y = _abox.getNode(nm.getSource()).getSame();
-				final Node z = _abox.getNode(nm.getTarget()).getSame();
-				_strategy.setDifferent(y, z, _prevDS[m]);
-				//_strategy.addType( y, ATermUtils.makeNot( ATermUtils.makeValue( z.getName() ) ), _prevDS[m] );
-			}
+			if (OpenlletOptions.USE_SEMANTIC_BRANCHING)
+				for (int m = 0; m < getTryNext(); m++)
+				{
+					final NodeMerge nm = _mergePairs.get(m);
+					final Node y = _abox.getNode(nm.getSource()).getSame();
+					final Node z = _abox.getNode(nm.getTarget()).getSame();
+					_strategy.setDifferent(y, z, _prevDS[m]);
+					//_strategy.addType( y, ATermUtils.makeNot( ATermUtils.makeValue( z.getName() ) ), _prevDS[m] );
+				}
 
 			final NodeMerge nm = _mergePairs.get(getTryNext());
 			final Node y = _abox.getNode(nm.getSource()).getSame();
 			final Node z = _abox.getNode(nm.getTarget()).getSame();
 
-			if (_logger.isLoggable(Level.FINE)) _logger.fine("MAX : (" + (getTryNext() + 1) + "/" + _mergePairs.size() + ") at _branch (" + getBranchIndexInABox() + ") to  " + _ind + " for prop " + _r
-					+ " _qualification " + _qualification + " merge " + y + " -> " + z + " " + ds);
+			if (_logger.isLoggable(Level.FINE))
+				_logger.fine("MAX : (" + (getTryNext() + 1) + "/" + _mergePairs.size() + ") at _branch (" + getBranchIndexInABox() + ") to  " + _ind + " for prop " + _r + " _qualification " + _qualification + " merge " + y + " -> " + z + " " + ds);
 
 			ds = ds.union(new DependencySet(getBranchIndexInABox()), _abox.doExplanation());
 
@@ -159,18 +161,20 @@ public class MaxBranch extends IndividualBranch
 					ds = ds.union(edge.getDepends(), _abox.doExplanation());
 					yEdge = true;
 				}
-				else if (neighbor.equals(z))
-				{
-					ds = ds.union(edge.getDepends(), _abox.doExplanation());
-					zEdge = true;
-				}
+				else
+					if (neighbor.equals(z))
+					{
+						ds = ds.union(edge.getDepends(), _abox.doExplanation());
+						zEdge = true;
+					}
 			}
 
 			// if there is no edge coming into the _node that is
 			// going to be merged then it is not possible that
 			// they are affected by the cardinality restriction
 			// just die instead of possibly unsound results
-			if (!yEdge || !zEdge) throw new InternalReasonerException("An error occurred related to the max cardinality restriction about " + _r);
+			if (!yEdge || !zEdge)
+				throw new InternalReasonerException("An error occurred related to the max cardinality restriction about " + _r);
 
 			// if the _neighbor _nodes did not have the _qualification
 			// in their type list they would have not been affected
@@ -205,7 +209,8 @@ public class MaxBranch extends IndividualBranch
 			final boolean earlyClash = _abox.isClosed();
 			if (earlyClash)
 			{
-				if (_logger.isLoggable(Level.FINE)) _logger.fine("CLASH: Branch " + getBranchIndexInABox() + " " + _abox.getClash() + "!");
+				if (_logger.isLoggable(Level.FINE))
+					_logger.fine("CLASH: Branch " + getBranchIndexInABox() + " " + _abox.getClash() + "!");
 
 				final DependencySet clashDepends = _abox.getClash().getDepends();
 
@@ -231,7 +236,8 @@ public class MaxBranch extends IndividualBranch
 		ds = getCombinedClash();
 
 		//CHW - removed for rollback through deletions
-		if (!OpenlletOptions.USE_INCREMENTAL_DELETION) ds.remove(getBranchIndexInABox());
+		if (!OpenlletOptions.USE_INCREMENTAL_DELETION)
+			ds.remove(getBranchIndexInABox());
 
 		if (_abox.doExplanation())
 			_abox.setClash(Clash.maxCardinality(_ind, ds, _r.getName(), _n));
@@ -245,13 +251,15 @@ public class MaxBranch extends IndividualBranch
 	public void setLastClash(final DependencySet ds)
 	{
 		super.setLastClash(ds);
-		if (getTryNext() >= 0) _prevDS[getTryNext()] = ds;
+		if (getTryNext() >= 0)
+			_prevDS[getTryNext()] = ds;
 	}
 
 	@Override
 	public String toString()
 	{
-		if (getTryNext() < _mergePairs.size()) return "Branch " + getBranchIndexInABox() + " max rule on " + _ind + " merged  " + _mergePairs.get(getTryNext());
+		if (getTryNext() < _mergePairs.size())
+			return "Branch " + getBranchIndexInABox() + " max rule on " + _ind + " merged  " + _mergePairs.get(getTryNext());
 
 		return "Branch " + getBranchIndexInABox() + " max rule on " + _ind + " exhausted merge possibilities";
 	}

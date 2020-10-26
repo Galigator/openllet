@@ -7,6 +7,7 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
+
 import org.slf4j.Marker;
 
 /**
@@ -14,39 +15,40 @@ import org.slf4j.Marker;
  */
 public class Log implements Logging
 {
-	public static final Logger		_parent				= Logger.getLogger(Log.class.getName());
-	public static volatile Level	_defaultLevel		= Level.INFO;
-	public static volatile boolean	_setDefaultParent	= false;
-	public static final Handler		_systemOutHandler	= new Handler()
-														{
-															@Override
-															public void publish(final LogRecord record)
-															{
-																final StringBuffer buff = new StringBuffer();
-																buff.append(record.getLevel()).append(' ');
-																buff.append(record.getThreadID()).append(' ');
-																buff.append(record.getLoggerName()).append(' ');
-																buff.append(record.getMessage()).append(' ');
-																System.out.println(buff.toString());
-															}
+	public static final Logger _parent = Logger.getLogger(Log.class.getName());
+	public static volatile Level _defaultLevel = Level.INFO;
+	public static volatile boolean _setDefaultParent = false;
+	public static final Handler _systemOutHandler = new Handler()
+	{
+		@Override
+		public void publish(final LogRecord record)
+		{
+			final StringBuffer buff = new StringBuffer();
+			buff.append(record.getLevel()).append(' ');
+			buff.append(record.getThreadID()).append(' ');
+			buff.append(record.getLoggerName()).append(' ');
+			buff.append(record.getMessage()).append(' ');
+			System.out.println(buff.toString());
+		}
 
-															@Override
-															public void flush()
-															{
-																//
-															}
+		@Override
+		public void flush()
+		{
+			//
+		}
 
-															@Override
-															public void close() throws SecurityException
-															{
-																//
-															}
-														};
+		@Override
+		public void close() throws SecurityException
+		{
+			//
+		}
+	};
 
 	static
 	{
 		final String property = System.getProperty("java.util.logging.SimpleFormatter.format");
-		if (null == property) System.setProperty("java.util.logging.SimpleFormatter.format", "%1$tF %1$tT %4$s %2$s %5$s%6$s%n");
+		if (null == property)
+			System.setProperty("java.util.logging.SimpleFormatter.format", "%1$tF %1$tT %4$s %2$s %5$s%6$s%n");
 		_parent.setLevel(_defaultLevel);
 	}
 
@@ -68,7 +70,8 @@ public class Log implements Logging
 
 	private static Logger config(final Logger logger, final Level level)
 	{
-		if (_setDefaultParent) logger.setParent(_parent);
+		if (_setDefaultParent)
+			logger.setParent(_parent);
 		_loggers.put(logger.getName(), logger);
 		logger.setLevel(level);
 		return logger;
@@ -122,7 +125,7 @@ public class Log implements Logging
 	/**
 	 * Change the level of logging only on the logger that match the giver filter (contains)
 	 *
-	 * @param level  of logging that will be set.
+	 * @param level of logging that will be set.
 	 * @param filter that must be contains in the logger name.
 	 */
 	public static void setLevel(final Level level, final String filter)

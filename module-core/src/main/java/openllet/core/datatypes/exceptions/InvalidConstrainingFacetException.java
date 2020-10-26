@@ -20,10 +20,10 @@ import openllet.aterm.ATermAppl;
 public class InvalidConstrainingFacetException extends DatatypeReasonerException
 {
 
-	private static final long	serialVersionUID	= 2L;
+	private static final long serialVersionUID = 2L;
 
-	private final ATermAppl		_facet;
-	private final Object		_value;
+	private final ATermAppl _facet;
+	private final Object _value;
 
 	public InvalidConstrainingFacetException(final ATermAppl facet, final Object value)
 	{

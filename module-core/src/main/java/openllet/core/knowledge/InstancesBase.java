@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
@@ -33,16 +34,19 @@ public interface InstancesBase extends MessageBase, Logging, Base
 
 	default void linearInstanceRetrieval(final ATermAppl c, final List<ATermAppl> candidates, final Collection<ATermAppl> results)
 	{
-		if (null == c || null == candidates || null == results) return;
+		if (null == c || null == candidates || null == results)
+			return;
 
 		for (final ATermAppl ind : candidates)
-			if (getABox().isType(ind, c)) results.add(ind);
+			if (getABox().isType(ind, c))
+				results.add(ind);
 	}
 
 	@Override
 	default void binaryInstanceRetrieval(final ATermAppl c, final List<ATermAppl> candidates, final Collection<ATermAppl> results)
 	{
-		if (null == c || null == candidates || null == results) return;
+		if (null == c || null == candidates || null == results)
+			return;
 
 		if (candidates.isEmpty())
 			return;
@@ -57,17 +61,20 @@ public interface InstancesBase extends MessageBase, Logging, Base
 			final ATermAppl i = partitions[0].get(0);
 			binaryInstanceRetrieval(c, partitions[1], results);
 
-			if (getABox().isType(i, c)) results.add(i);
+			if (getABox().isType(i, c))
+				results.add(i);
 		}
-		else if (!getABox().existType(partitions[0], c))
-			binaryInstanceRetrieval(c, partitions[1], results);
-		else if (!getABox().existType(partitions[1], c))
-			binaryInstanceRetrieval(c, partitions[0], results);
 		else
-		{
-			binaryInstanceRetrieval(c, partitions[0], results);
-			binaryInstanceRetrieval(c, partitions[1], results);
-		}
+			if (!getABox().existType(partitions[0], c))
+				binaryInstanceRetrieval(c, partitions[1], results);
+			else
+				if (!getABox().existType(partitions[1], c))
+					binaryInstanceRetrieval(c, partitions[0], results);
+				else
+				{
+					binaryInstanceRetrieval(c, partitions[0], results);
+					binaryInstanceRetrieval(c, partitions[1], results);
+				}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -92,12 +99,13 @@ public interface InstancesBase extends MessageBase, Logging, Base
 	/**
 	 * Returns all the instances of concept c. If TOP concept is used every individual in the knowledge base will be returned
 	 *
-	 * @param  c class whose instances are returned
-	 * @return   A set of ATerm objects
+	 * @param c class whose instances are returned
+	 * @return A set of ATerm objects
 	 */
 	default Set<ATermAppl> getInstances(final ATermAppl c)
 	{
-		if (null == c) return Collections.emptySet();
+		if (null == c)
+			return Collections.emptySet();
 
 		if (!isClass(c))
 		{
@@ -107,14 +115,17 @@ public interface InstancesBase extends MessageBase, Logging, Base
 
 		if (getInstances().containsKey(c))
 			return getInstances().get(c);
-		else if (isRealized())
-		{
-			final Taxonomy<ATermAppl> taxonomy = getTaxonomyBuilder().getTaxonomy();
+		else
+			if (isRealized())
+			{
+				final Taxonomy<ATermAppl> taxonomy = getTaxonomyBuilder().getTaxonomy();
 
-			if (taxonomy == null) throw new OpenError("Taxonomy is null");
+				if (taxonomy == null)
+					throw new OpenError("Taxonomy is null");
 
-			if (taxonomy.contains(c) && ATermUtils.isPrimitive(c)) return TaxonomyUtils.getAllInstances(taxonomy, c);
-		}
+				if (taxonomy.contains(c) && ATermUtils.isPrimitive(c))
+					return TaxonomyUtils.getAllInstances(taxonomy, c);
+			}
 
 		return new HashSet<>(retrieve(c, getIndividuals()));
 	}
@@ -126,13 +137,14 @@ public interface InstancesBase extends MessageBase, Logging, Base
 	 * *** This function will first realize the whole ontology ***
 	 * </p>
 	 *
-	 * @param  c      class whose getInstances() are returned
-	 * @param  direct if true return only the direct getInstances(), otherwise return all the getInstances()
-	 * @return        A set of ATerm objects
+	 * @param c class whose getInstances() are returned
+	 * @param direct if true return only the direct getInstances(), otherwise return all the getInstances()
+	 * @return A set of ATerm objects
 	 */
 	default Set<ATermAppl> getInstances(final ATermAppl c, final boolean direct)
 	{
-		if (null == c) return Collections.emptySet();
+		if (null == c)
+			return Collections.emptySet();
 
 		if (!isClass(c))
 		{
@@ -141,18 +153,22 @@ public interface InstancesBase extends MessageBase, Logging, Base
 		}
 
 		// All getInstances() for anonymous concepts
-		if (!direct) return getInstances(c);
+		if (!direct)
+			return getInstances(c);
 
 		realize();
 
 		final Taxonomy<ATermAppl> taxonomy = getTaxonomyBuilder().getTaxonomy();
 
-		if (taxonomy == null) throw new OpenError("Taxonomy is null");
+		if (taxonomy == null)
+			throw new OpenError("Taxonomy is null");
 
 		// Named concepts
-		if (ATermUtils.isPrimitive(c)) return TaxonomyUtils.getDirectInstances(taxonomy, c);
+		if (ATermUtils.isPrimitive(c))
+			return TaxonomyUtils.getDirectInstances(taxonomy, c);
 
-		if (!taxonomy.contains(c)) getTaxonomyBuilder().classify(c);
+		if (!taxonomy.contains(c))
+			getTaxonomyBuilder().classify(c);
 
 		// Direct getInstances() for anonymous concepts
 		final Set<ATermAppl> ret = new HashSet<>();
@@ -169,20 +185,22 @@ public interface InstancesBase extends MessageBase, Logging, Base
 			else
 				ret.retainAll(cand);
 
-			if (ret.isEmpty()) return ret;
+			if (ret.isEmpty())
+				return ret;
 		}
 
 		return retrieve(c, ret);
 	}
 
 	/**
-	 * @param  d
-	 * @param  individuals
-	 * @return             all the individuals that belong to the given class which is not necessarily a named class.
+	 * @param d
+	 * @param individuals
+	 * @return all the individuals that belong to the given class which is not necessarily a named class.
 	 */
 	default Set<ATermAppl> retrieve(final ATermAppl d, final Collection<ATermAppl> individuals)
 	{
-		if (null == d || null == individuals) return Collections.emptySet();
+		if (null == d || null == individuals)
+			return Collections.emptySet();
 
 		ensureConsistency();
 
@@ -192,13 +210,15 @@ public interface InstancesBase extends MessageBase, Logging, Base
 		{
 			Set<ATermAppl> terms = new HashSet<>(individuals);
 
-			if (1 != c.getArity()) throw new OpenError("arity isn't 1.");
+			if (1 != c.getArity())
+				throw new OpenError("arity isn't 1.");
 
 			if (1 == c.getArity())
 			{
 				final ATerm arg = c.getArgument(0);
-				if (arg instanceof ATermList) for (final ATerm term : (ATermList) arg)
-					terms = retrieve((ATermAppl) term, terms);
+				if (arg instanceof ATermList)
+					for (final ATerm term : (ATermList) arg)
+						terms = retrieve((ATermAppl) term, terms);
 			}
 			else
 				for (final ATerm term : c.getArgumentArray())
@@ -216,41 +236,50 @@ public interface InstancesBase extends MessageBase, Logging, Base
 			// this is mostly to ensure that a model for notC is cached
 			if (!getABox().isSatisfiable(notC))
 				knowns.addAll(getIndividuals()); // if negation is unsat c itself is TOP
-			else if (getABox().isSatisfiable(c))
-			{
-				Set<ATermAppl> subs = Collections.emptySet();
-				if (isClassified())
+			else
+				if (getABox().isSatisfiable(c))
 				{
-					final Taxonomy<ATermAppl> taxonomy = getTaxonomyBuilder().getTaxonomy();
+					Set<ATermAppl> subs = Collections.emptySet();
+					if (isClassified())
+					{
+						final Taxonomy<ATermAppl> taxonomy = getTaxonomyBuilder().getTaxonomy();
 
-					if (taxonomy == null) throw new NullPointerException("Taxonomy");
+						if (taxonomy == null)
+							throw new NullPointerException("Taxonomy");
 
-					if (taxonomy.contains(c)) subs = taxonomy.getFlattenedSubs(c, false);
+						if (taxonomy.contains(c))
+							subs = taxonomy.getFlattenedSubs(c, false);
+					}
+
+					final List<ATermAppl> unknowns = new ArrayList<>();
+					for (final ATermAppl x : individuals)
+					{
+						final Bool isType = getABox().isKnownType(x, c, subs);
+						if (isType.isTrue())
+							knowns.add(x);
+						else
+							if (isType.isUnknown())
+								unknowns.add(x);
+					}
+
+					if (!unknowns.isEmpty())
+						if (OpenlletOptions.INSTANCE_RETRIEVAL == InstanceRetrievalMethod.TRACING_BASED && OpenlletOptions.USE_TRACING)
+							tracingBasedInstanceRetrieval(c, unknowns, knowns);
+						else
+							if (getABox().existType(unknowns, c))
+								if (OpenlletOptions.INSTANCE_RETRIEVAL == InstanceRetrievalMethod.BINARY)
+									binaryInstanceRetrieval(c, unknowns, knowns);
+								else
+									linearInstanceRetrieval(c, unknowns, knowns);
+
 				}
-
-				final List<ATermAppl> unknowns = new ArrayList<>();
-				for (final ATermAppl x : individuals)
-				{
-					final Bool isType = getABox().isKnownType(x, c, subs);
-					if (isType.isTrue())
-						knowns.add(x);
-					else if (isType.isUnknown()) unknowns.add(x);
-				}
-
-				if (!unknowns.isEmpty()) if (OpenlletOptions.INSTANCE_RETRIEVAL == InstanceRetrievalMethod.TRACING_BASED && OpenlletOptions.USE_TRACING)
-					tracingBasedInstanceRetrieval(c, unknowns, knowns);
-				else if (getABox().existType(unknowns, c)) if (OpenlletOptions.INSTANCE_RETRIEVAL == InstanceRetrievalMethod.BINARY)
-					binaryInstanceRetrieval(c, unknowns, knowns);
-				else
-					linearInstanceRetrieval(c, unknowns, knowns);
-
-			}
 
 			timer.ifPresent(Timer::stop);
 
 			final Set<ATermAppl> result = Collections.unmodifiableSet(new HashSet<>(knowns));
 
-			if (OpenlletOptions.CACHE_RETRIEVAL) getInstances().put(c, result);
+			if (OpenlletOptions.CACHE_RETRIEVAL)
+				getInstances().put(c, result);
 
 			return result;
 		}
@@ -258,7 +287,8 @@ public interface InstancesBase extends MessageBase, Logging, Base
 
 	default void tracingBasedInstanceRetrieval(final ATermAppl c, final List<ATermAppl> candidates, final Collection<ATermAppl> results)
 	{
-		if (null == c || null == candidates || null == results) return;
+		if (null == c || null == candidates || null == results)
+			return;
 
 		List<ATermAppl> individuals = candidates;
 		final boolean doExplanation = doExplanation();
@@ -290,12 +320,13 @@ public interface InstancesBase extends MessageBase, Logging, Base
 	}
 
 	/**
-	 * @param  r
-	 * @return   individuals which possibly have a property value for the given property.
+	 * @param r
+	 * @return individuals which possibly have a property value for the given property.
 	 */
 	default List<ATermAppl> retrieveIndividualsWithProperty(final ATermAppl r)
 	{
-		if (null == r) return Collections.emptyList();
+		if (null == r)
+			return Collections.emptyList();
 
 		ensureConsistency();
 
@@ -308,7 +339,8 @@ public interface InstancesBase extends MessageBase, Logging, Base
 
 		final List<ATermAppl> result = new ArrayList<>();
 		for (final ATermAppl ind : getIndividuals())
-			if (!getABox().hasObviousPropertyValue(ind, r, null).isFalse()) result.add(ind);
+			if (!getABox().hasObviousPropertyValue(ind, r, null).isFalse())
+				result.add(ind);
 
 		return result;
 	}
@@ -316,13 +348,14 @@ public interface InstancesBase extends MessageBase, Logging, Base
 	/**
 	 * Returns the (named) classes individual belongs to. Depending on the second parameter the result will include either all types or only the direct types.
 	 *
-	 * @param  ind    An _individual name
-	 * @param  direct If true return only the direct types, otherwise return all types
-	 * @return        A set of sets, where each set in the collection represents an equivalence class. The elements of the inner class are ATermAppl objects.
+	 * @param ind An _individual name
+	 * @param direct If true return only the direct types, otherwise return all types
+	 * @return A set of sets, where each set in the collection represents an equivalence class. The elements of the inner class are ATermAppl objects.
 	 */
 	default Set<Set<ATermAppl>> getTypes(final ATermAppl ind, final boolean direct)
 	{
-		if (null == ind) return Collections.emptySet();
+		if (null == ind)
+			return Collections.emptySet();
 
 		if (!isIndividual(ind))
 		{
@@ -330,9 +363,10 @@ public interface InstancesBase extends MessageBase, Logging, Base
 			return Collections.emptySet();
 		}
 
-		if (OpenlletOptions.AUTO_REALIZE) realize();
+		if (OpenlletOptions.AUTO_REALIZE)
+			realize();
 
-		Set<Set<ATermAppl>> types = isClassified() ? getPrimitiveTypes(ind, direct) : Collections.<Set<ATermAppl>>emptySet();
+		Set<Set<ATermAppl>> types = isClassified() ? getPrimitiveTypes(ind, direct) : Collections.<Set<ATermAppl>> emptySet();
 
 		if (types.isEmpty() && !OpenlletOptions.AUTO_REALIZE)
 		{
@@ -350,18 +384,20 @@ public interface InstancesBase extends MessageBase, Logging, Base
 		for (final Set<ATermAppl> t : TaxonomyUtils.getTypes(getTaxonomyBuilder().getTaxonomy(), ind, direct))
 		{
 			final Set<ATermAppl> eqSet = ATermUtils.primitiveOrBottom(t);
-			if (!eqSet.isEmpty()) types.add(eqSet);
+			if (!eqSet.isEmpty())
+				types.add(eqSet);
 		}
 		return types;
 	}
 
 	/**
-	 * @param  name
-	 * @return      all the indviduals asserted to be equal to the given individual inluding the individual itself.
+	 * @param name
+	 * @return all the indviduals asserted to be equal to the given individual inluding the individual itself.
 	 */
 	default Set<ATermAppl> getAllSames(final ATermAppl name)
 	{
-		if (null == name) return Collections.emptySet();
+		if (null == name)
+			return Collections.emptySet();
 
 		ensureConsistency();
 
@@ -385,7 +421,8 @@ public interface InstancesBase extends MessageBase, Logging, Base
 			getABox().getSames(ind.getSame(), knowns, unknowns);
 
 		for (final ATermAppl other : unknowns)
-			if (getABox().isSameAs(name, other)) knowns.add(other);
+			if (getABox().isSameAs(name, other))
+				knowns.add(other);
 
 		return knowns;
 	}

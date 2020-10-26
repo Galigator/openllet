@@ -24,13 +24,13 @@ import org.jgrapht.graph.SimpleDirectedWeightedGraph;
  * Company: Clark & Parsia, LLC. <http://www.clarkparsia.com>
  * </p>
  *
- * @author     Harris Lin
- * @param  <V>
+ * @author Harris Lin
+ * @param <V>
  */
 public class OptimizedDirectedMultigraph<V> extends SimpleDirectedWeightedGraph<V, DefaultWeightedEdge>
 {
-	private static final long	serialVersionUID			= 1L;
-	private static final String	NON_POSITIVE_MULTIPLICITY	= "Non-positive multiplicity is not allowed";
+	private static final long serialVersionUID = 1L;
+	private static final String NON_POSITIVE_MULTIPLICITY = "Non-positive multiplicity is not allowed";
 
 	public OptimizedDirectedMultigraph()
 	{
@@ -45,7 +45,8 @@ public class OptimizedDirectedMultigraph<V> extends SimpleDirectedWeightedGraph<
 
 	public DefaultWeightedEdge addEdge(final V sourceVertex, final V targetVertex, final int multiplicity)
 	{
-		if (multiplicity <= 0) throw new IllegalArgumentException(NON_POSITIVE_MULTIPLICITY);
+		if (multiplicity <= 0)
+			throw new IllegalArgumentException(NON_POSITIVE_MULTIPLICITY);
 
 		DefaultWeightedEdge edge = getEdge(sourceVertex, targetVertex);
 		if (edge == null)

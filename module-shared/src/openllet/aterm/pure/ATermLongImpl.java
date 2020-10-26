@@ -29,6 +29,7 @@
 package openllet.aterm.pure;
 
 import java.util.List;
+
 import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
@@ -61,8 +62,8 @@ public class ATermLongImpl extends ATermImpl implements ATermLong
 	 * depricated Use the new constructor instead.
 	 *
 	 * @param hashCode x
-	 * @param annos    x
-	 * @param value    x
+	 * @param annos x
+	 * @param value x
 	 */
 	@Deprecated
 	protected void init(final int hashCode, final long value)
@@ -96,7 +97,8 @@ public class ATermLongImpl extends ATermImpl implements ATermLong
 		if (obj instanceof ATermLong)
 		{
 			final ATermLong peer = (ATermLong) obj;
-			if (peer.getType() != getType()) return false;
+			if (peer.getType() != getType())
+				return false;
 
 			return peer.getLong() == _value;
 		}
@@ -107,7 +109,8 @@ public class ATermLongImpl extends ATermImpl implements ATermLong
 	@Override
 	protected boolean match(final ATerm pattern, final List<Object> list)
 	{
-		if (equals(pattern)) return true;
+		if (equals(pattern))
+			return true;
 
 		if (pattern.getType() == ATerm.PLACEHOLDER)
 		{

@@ -31,6 +31,7 @@
 package openllet.core.utils;
 
 import java.util.logging.Logger;
+
 import openllet.core.exceptions.TimeoutException;
 import openllet.core.exceptions.TimerInterruptedException;
 import openllet.shared.tools.Log;
@@ -63,28 +64,28 @@ import openllet.shared.tools.Log;
  * {@link Timers Timers} class stores a set of timers and provides functions to start, stop and check timers.
  * </p>
  *
- * @see    Timers
+ * @see Timers
  * @author Evren Sirin
  */
 public class Timer
 {
-	private final static Logger	_logger		= Log.getLogger(Timer.class);
+	private final static Logger _logger = Log.getLogger(Timer.class);
 
-	public final static long	NOT_STARTED	= -1;
-	public final static long	NO_TIMEOUT	= 0;
+	public final static long NOT_STARTED = -1;
+	public final static long NO_TIMEOUT = 0;
 
-	private final String		_name;										// _name to identify what we are timing
-	private long				_totalTime;									// total time that has elapsed when the timer was running
-	private long				_startTime;									// last time timer was started
-	private long				_count;										// number of times the timer was started and stopped
-	private long				_startCount;								// if we are timing recursive functions timer may be started
+	private final String _name; // _name to identify what we are timing
+	private long _totalTime; // total time that has elapsed when the timer was running
+	private long _startTime; // last time timer was started
+	private long _count; // number of times the timer was started and stopped
+	private long _startCount; // if we are timing recursive functions timer may be started
 	// multiple times. we only want to measure time spent in the
 	// upper most function call so we need to discard other starts
-	private long				_timeout;									// Point at which a call to check throws an exception
-	private long				_lastTime;									// time that has elapsed between last start()-_stop() period
-	private boolean				interrupted;								// Tells whether this timer has been interrupted
+	private long _timeout; // Point at which a call to check throws an exception
+	private long _lastTime; // time that has elapsed between last start()-_stop() period
+	private boolean interrupted; // Tells whether this timer has been interrupted
 
-	private final Timer			_parent;									// the _parent timer
+	private final Timer _parent; // the _parent timer
 
 	/**
 	 * Create a timer with no name and no parent.
@@ -136,7 +137,8 @@ public class Timer
 	 */
 	public void start()
 	{
-		if (_startCount == 0) _startTime = System.currentTimeMillis();
+		if (_startCount == 0)
+			_startTime = System.currentTimeMillis();
 
 		_startCount++;
 	}
@@ -187,7 +189,8 @@ public class Timer
 	 */
 	public void restart()
 	{
-		if (isStarted()) stop();
+		if (isStarted())
+			stop();
 		start();
 	}
 
@@ -208,9 +211,11 @@ public class Timer
 
 		final long elapsed = getElapsed();
 
-		if (_timeout != NO_TIMEOUT && elapsed > _timeout) throw new TimeoutException("Running time of " + _name + " exceeded timeout of " + _timeout);
+		if (_timeout != NO_TIMEOUT && elapsed > _timeout)
+			throw new TimeoutException("Running time of " + _name + " exceeded timeout of " + _timeout);
 
-		if (_parent != null) _parent.check();
+		if (_parent != null)
+			_parent.check();
 	}
 
 	/**
@@ -295,7 +300,8 @@ public class Timer
 	 */
 	public void setTimeout(final long timeout)
 	{
-		if (timeout < 0) throw new IllegalArgumentException("Cannot set the timeout to a negative value!");
+		if (timeout < 0)
+			throw new IllegalArgumentException("Cannot set the timeout to a negative value!");
 
 		_timeout = timeout;
 	}
@@ -303,7 +309,8 @@ public class Timer
 	@Override
 	public String toString()
 	{
-		if (_startCount > 0) return "Timer " + _name + " Avg: " + getAverage() + " Count: " + _count + " Total: " + getTotal() + " Still running: " + _startCount;
+		if (_startCount > 0)
+			return "Timer " + _name + " Avg: " + getAverage() + " Count: " + _count + " Total: " + getTotal() + " Still running: " + _startCount;
 
 		return "Timer " + _name + " Avg: " + getAverage() + " Count: " + _count + " Total: " + getTotal();
 	}

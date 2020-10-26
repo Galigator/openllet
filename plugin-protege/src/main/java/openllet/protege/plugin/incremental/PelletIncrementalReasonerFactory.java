@@ -8,10 +8,11 @@
 
 package openllet.protege.plugin.incremental;
 
-import openllet.modularity.PelletIncremantalReasonerFactory;
 import org.protege.editor.owl.model.inference.AbstractProtegeOWLReasonerInfo;
 import org.semanticweb.owlapi.reasoner.BufferingMode;
 import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
+
+import openllet.modularity.PelletIncremantalReasonerFactory;
 
 /**
  * @author Evren Sirin

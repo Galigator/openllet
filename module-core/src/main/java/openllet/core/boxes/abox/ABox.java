@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
@@ -34,8 +35,8 @@ import openllet.shared.tools.Logging;
  */
 public interface ABox extends Logging
 {
-	String	IS_INC_CONSISTENT	= "isIncConsistent";
-	String	IS_CONSISTENT		= "isConsistent";
+	String IS_INC_CONSISTENT = "isIncConsistent";
+	String IS_CONSISTENT = "isConsistent";
 
 	/**
 	 * @return a copy of this ABox with all the nodes and edges.
@@ -43,8 +44,8 @@ public interface ABox extends Logging
 	ABox copy();
 
 	/**
-	 * @param  kb from witch the ABox is extracted
-	 * @return    a copy of this ABox with all the nodes and edges and the given KB.
+	 * @param kb from witch the ABox is extracted
+	 * @return a copy of this ABox with all the nodes and edges and the given KB.
 	 */
 	ABox copy(final KnowledgeBase kb);
 
@@ -54,9 +55,9 @@ public interface ABox extends Logging
 	 * This function creates a new ABox such that the individual is supposed to exist in the original ontology. This is very important when satisfiability of a
 	 * concept starts with a pesudo model rather than the initial ABox.
 	 *
-	 * @param  extraIndividual Extra _individual to be added to the copy ABox
-	 * @param  copyIndividuals are the new individual that are supposed to exist in the original ontology.
-	 * @return                 a copy of this ABox
+	 * @param extraIndividual Extra _individual to be added to the copy ABox
+	 * @param copyIndividuals are the new individual that are supposed to exist in the original ontology.
+	 * @return a copy of this ABox
 	 */
 	ABox copy(final ATermAppl extraIndividual, final boolean copyIndividuals);
 
@@ -106,17 +107,17 @@ public interface ABox extends Logging
 	boolean isSameAs(final ATermAppl ind1, final ATermAppl ind2);
 
 	/**
-	 * @param  x
-	 * @param  c
-	 * @return   true if individual x belongs to type c. This is a logical consequence of the KB if in all possible models x belongs to C. This is checked by
-	 *           trying to construct a model where x belongs to not(c).
+	 * @param x
+	 * @param c
+	 * @return true if individual x belongs to type c. This is a logical consequence of the KB if in all possible models x belongs to C. This is checked by
+	 *         trying to construct a model where x belongs to not(c).
 	 */
 	boolean isType(final ATermAppl x, ATermAppl c);
 
 	/**
-	 * @param  c
-	 * @param  inds
-	 * @return      true if any of the individuals in the given list belongs to type c.
+	 * @param c
+	 * @param inds
+	 * @return true if any of the individuals in the given list belongs to type c.
 	 */
 	boolean existType(final List<ATermAppl> inds, ATermAppl c);
 
@@ -138,11 +139,9 @@ public interface ABox extends Logging
 
 	void getSimpleObjectPropertyValues(final Individual subj, final Role role, final Set<ATermAppl> knowns, final Set<ATermAppl> unknowns, final boolean getSames);
 
-	void getTransitivePropertyValues(final Individual subj, final Role prop, final Set<ATermAppl> knowns, final Set<ATermAppl> unknowns, final boolean getSames,
-			final Map<Individual, Set<Role>> visited, final boolean isIndependent);
+	void getTransitivePropertyValues(final Individual subj, final Role prop, final Set<ATermAppl> knowns, final Set<ATermAppl> unknowns, final boolean getSames, final Map<Individual, Set<Role>> visited, final boolean isIndependent);
 
-	void getComplexObjectPropertyValues(final Individual subj, final State<Role> st, final TransitionGraph<Role> tg, final Set<ATermAppl> knowns, final Set<ATermAppl> unknowns, final boolean getSames,
-			final HashMap<Individual, Set<State<Role>>> visited, final boolean isIndependent);
+	void getComplexObjectPropertyValues(final Individual subj, final State<Role> st, final TransitionGraph<Role> tg, final Set<ATermAppl> knowns, final Set<ATermAppl> unknowns, final boolean getSames, final HashMap<Individual, Set<State<Role>>> visited, final boolean isIndependent);
 
 	void getSames(final Individual ind, final Set<ATermAppl> knowns, final Set<ATermAppl> unknowns);
 
@@ -176,8 +175,8 @@ public interface ABox extends Logging
 	/**
 	 * Remove the given node from the node map which maps names to nodes. Does not remove the node from the node list or other nodes' edge lists.
 	 *
-	 * @param  x
-	 * @return   true if the removal occur
+	 * @param x
+	 * @return true if the removal occur
 	 */
 	boolean removeNode(final ATermAppl x);
 
@@ -187,16 +186,16 @@ public interface ABox extends Logging
 	 * Add a new literal to the ABox. This function is used only when the literal value does not have a known value, e.g. applyMinRule would create such a
 	 * literal.
 	 *
-	 * @param  ds
-	 * @return    the literal added.
+	 * @param ds
+	 * @return the literal added.
 	 */
 	Literal addLiteral(final DependencySet ds);
 
 	/**
 	 * Add a new literal to the ABox. Literal will be assigned a fresh unique name.
 	 *
-	 * @param  dataValue A literal ATerm which should be constructed with one of ATermUtils.makeXXXLiteral functions
-	 * @return           Literal object that has been created
+	 * @param dataValue A literal ATerm which should be constructed with one of ATermUtils.makeXXXLiteral functions
+	 * @return Literal object that has been created
 	 */
 	Literal addLiteral(final ATermAppl dataValue);
 
@@ -214,7 +213,7 @@ public interface ABox extends Logging
 	 * Say that all the term of the list are different from each-other.
 	 *
 	 * @param list of different element.
-	 * @since      ever
+	 * @since ever
 	 */
 	void addAllDifferent(final ATermList list);
 
@@ -258,8 +257,8 @@ public interface ABox extends Logging
 	/**
 	 * Convenience function to get the named role.
 	 *
-	 * @param  r is the name of the role
-	 * @return   the named role.
+	 * @param r is the name of the role
+	 * @return the named role.
 	 */
 	Role getRole(final ATerm r);
 
@@ -412,8 +411,8 @@ public interface ABox extends Logging
 	void resetQueue();
 
 	/**
-	 * @param  anonCount the anonCount to set
-	 * @return           the count set.
+	 * @param anonCount the anonCount to set
+	 * @return the count set.
 	 */
 	int setAnonCount(final int anonCount);
 

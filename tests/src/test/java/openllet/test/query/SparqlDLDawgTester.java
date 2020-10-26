@@ -17,6 +17,20 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.apache.jena.ontology.OntModel;
+import org.apache.jena.query.QueryFactory;
+import org.apache.jena.query.QuerySolution;
+import org.apache.jena.query.ResultSet;
+import org.apache.jena.query.ResultSetFactory;
+import org.apache.jena.query.ResultSetFormatter;
+import org.apache.jena.query.ResultSetRewindable;
+import org.apache.jena.query.Syntax;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.sparql.engine.binding.Binding;
+import org.apache.jena.sparql.engine.binding.BindingBase;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBaseImpl;
 import openllet.core.utils.PermutationGenerator;
@@ -31,18 +45,6 @@ import openllet.query.sparqldl.model.QueryResult;
 import openllet.query.sparqldl.model.ResultBinding;
 import openllet.query.sparqldl.parser.QueryEngineBuilder;
 import openllet.shared.tools.Log;
-import org.apache.jena.ontology.OntModel;
-import org.apache.jena.query.QueryFactory;
-import org.apache.jena.query.QuerySolution;
-import org.apache.jena.query.ResultSet;
-import org.apache.jena.query.ResultSetFactory;
-import org.apache.jena.query.ResultSetFormatter;
-import org.apache.jena.query.ResultSetRewindable;
-import org.apache.jena.query.Syntax;
-import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.ModelFactory;
-import org.apache.jena.sparql.engine.binding.Binding;
-import org.apache.jena.sparql.engine.binding.BindingBase;
 
 /**
  * <p>
@@ -56,16 +58,16 @@ import org.apache.jena.sparql.engine.binding.BindingBase;
  */
 public class SparqlDLDawgTester implements SparqlDawgTester
 {
-	private static final Logger	_logger			= Log.getLogger(SparqlDLDawgTester.class);
-	private String				_queryURI		= "";
-	private Set<String>			_graphURIs		= new HashSet<>();
-	private Set<String>			_namedGraphURIs	= new HashSet<>();
-	private OntModel			_model			= null;
-	private Query				_query			= null;
-	private String				_resultURI		= null;
-	private final boolean		_allOrderings;
-	private final boolean		_writeResults	= true;
-	private boolean				_noCheck;
+	private static final Logger _logger = Log.getLogger(SparqlDLDawgTester.class);
+	private String _queryURI = "";
+	private Set<String> _graphURIs = new HashSet<>();
+	private Set<String> _namedGraphURIs = new HashSet<>();
+	private OntModel _model = null;
+	private Query _query = null;
+	private String _resultURI = null;
+	private final boolean _allOrderings;
+	private final boolean _writeResults = true;
+	private boolean _noCheck;
 
 	public SparqlDLDawgTester(final boolean allOrderings, final boolean noCheck)
 	{
@@ -79,7 +81,8 @@ public class SparqlDLDawgTester implements SparqlDawgTester
 	@Override
 	public void setDatasetURIs(final Set<String> graphURIs, final Set<String> namedGraphURIs)
 	{
-		if (_graphURIs.equals(graphURIs) && _namedGraphURIs.equals(namedGraphURIs)) return;
+		if (_graphURIs.equals(graphURIs) && _namedGraphURIs.equals(namedGraphURIs))
+			return;
 
 		_graphURIs = graphURIs;
 		_namedGraphURIs = namedGraphURIs;
@@ -100,7 +103,8 @@ public class SparqlDLDawgTester implements SparqlDawgTester
 	@Override
 	public void setQueryURI(final String queryURI)
 	{
-		if (_queryURI.equals(queryURI)) return;
+		if (_queryURI.equals(queryURI))
+			return;
 
 		_queryURI = queryURI;
 		final org.apache.jena.query.Query query = QueryFactory.read(queryURI);
@@ -116,7 +120,8 @@ public class SparqlDLDawgTester implements SparqlDawgTester
 	public void setResult(final String resultURI)
 	{
 		_resultURI = resultURI;
-		if (resultURI == null) _noCheck = true;
+		if (resultURI == null)
+			_noCheck = true;
 	}
 
 	/**
@@ -154,7 +159,8 @@ public class SparqlDLDawgTester implements SparqlDawgTester
 				{
 					expected = JenaIOUtils.parseAskResult(_resultURI);
 
-					if (_logger.isLoggable(Level.INFO)) _logger.info("Expected=" + expected);
+					if (_logger.isLoggable(Level.INFO))
+						_logger.info("Expected=" + expected);
 				}
 
 				if (_allOrderings)
@@ -179,9 +185,12 @@ public class SparqlDLDawgTester implements SparqlDawgTester
 					final List<?> expectedList = ResultSetFormatter.toList(expected);
 					if (expected.size() > 10)
 					{
-						if (_logger.isLoggable(Level.INFO)) _logger.log(Level.INFO, "Expected=" + expectedList.subList(0, 9) + " ... " + expectedList.size());
+						if (_logger.isLoggable(Level.INFO))
+							_logger.log(Level.INFO, "Expected=" + expectedList.subList(0, 9) + " ... " + expectedList.size());
 					}
-					else if (_logger.isLoggable(Level.INFO)) _logger.info("Expected=" + expectedList);
+					else
+						if (_logger.isLoggable(Level.INFO))
+							_logger.info("Expected=" + expectedList);
 				}
 
 				if (_allOrderings)
@@ -333,9 +342,12 @@ public class SparqlDLDawgTester implements SparqlDawgTester
 		final List<?> realList = ResultSetFormatter.toList(real);
 		if (realList.size() > 10)
 		{
-			if (_logger.isLoggable(Level.INFO)) _logger.log(Level.INFO, "Real=" + realList.subList(0, 9) + " ... " + realList.size());
+			if (_logger.isLoggable(Level.INFO))
+				_logger.log(Level.INFO, "Real=" + realList.subList(0, 9) + " ... " + realList.size());
 		}
-		else if (_logger.isLoggable(Level.INFO)) _logger.info("Real=" + realList);
+		else
+			if (_logger.isLoggable(Level.INFO))
+				_logger.info("Real=" + realList);
 		real.reset();
 
 		return real;
@@ -347,20 +359,17 @@ public class SparqlDLDawgTester implements SparqlDawgTester
 	@Override
 	public boolean isApplicable(final String uri)
 	{
-		return !uri.startsWith("http://www.w3.org/2001/sw/DataAccess/tests/data-r2/syntax-sparql1/manifest#")
-				&& !uri.startsWith("http://www.w3.org/2001/sw/DataAccess/tests/data-r2/syntax-sparql2/manifest#")
-				&& !uri.startsWith("http://www.w3.org/2001/sw/DataAccess/tests/data-r2/syntax-sparql3/manifest#")
-				&& !uri.startsWith("http://www.w3.org/2001/sw/DataAccess/tests/data-r2/syntax-sparql4/manifest#");
+		return !uri.startsWith("http://www.w3.org/2001/sw/DataAccess/tests/data-r2/syntax-sparql1/manifest#") && !uri.startsWith("http://www.w3.org/2001/sw/DataAccess/tests/data-r2/syntax-sparql2/manifest#") && !uri.startsWith("http://www.w3.org/2001/sw/DataAccess/tests/data-r2/syntax-sparql3/manifest#") && !uri.startsWith("http://www.w3.org/2001/sw/DataAccess/tests/data-r2/syntax-sparql4/manifest#");
 	}
 
 	private static class DifferenceResultSet implements ResultSet
 	{
 
-		private final List<Binding>	solutions	= new ArrayList<>();
+		private final List<Binding> solutions = new ArrayList<>();
 
-		private final List<String>	vars;
+		private final List<String> vars;
 
-		private int					index;
+		private int index;
 
 		public DifferenceResultSet(final ResultSet rs1, final ResultSet rs2)
 		{
@@ -387,7 +396,8 @@ public class SparqlDLDawgTester implements SparqlDawgTester
 					}
 				}
 
-				if (toAdd) solutions.add(b1);
+				if (toAdd)
+					solutions.add(b1);
 			}
 		}
 

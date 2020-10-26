@@ -8,6 +8,7 @@ package openllet.core.tableau.completion.rule;
 
 import java.util.Iterator;
 import java.util.List;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
 import openllet.core.boxes.abox.Edge;
@@ -66,29 +67,32 @@ public class SimpleAllValuesRule extends AllValuesRule
 
 			applyAllValues(x, s, y, c, finalDS);
 
-			if (x.isMerged()) return;
+			if (x.isMerged())
+				return;
 		}
 
-		if (!s.isSimple()) for (final Role r : s.getTransitiveSubRoles())
-		{
-			final ATermAppl allRC = ATermUtils.makeAllValues(r.getName(), c);
-
-			edges = x.getRNeighborEdges(r);
-			for (final Edge edgeToY : edges)
+		if (!s.isSimple())
+			for (final Role r : s.getTransitiveSubRoles())
 			{
-				final Node y = edgeToY.getNeighbor(x);
-				DependencySet finalDS = ds.union(edgeToY.getDepends(), _strategy.getABox().doExplanation());
-				if (_strategy.getABox().doExplanation())
+				final ATermAppl allRC = ATermUtils.makeAllValues(r.getName(), c);
+
+				edges = x.getRNeighborEdges(r);
+				for (final Edge edgeToY : edges)
 				{
-					finalDS = finalDS.union(r.getExplainTransitive().getExplain(), true);
-					finalDS = finalDS.union(s.getExplainSubOrInv(edgeToY.getRole()), true);
+					final Node y = edgeToY.getNeighbor(x);
+					DependencySet finalDS = ds.union(edgeToY.getDepends(), _strategy.getABox().doExplanation());
+					if (_strategy.getABox().doExplanation())
+					{
+						finalDS = finalDS.union(r.getExplainTransitive().getExplain(), true);
+						finalDS = finalDS.union(s.getExplainSubOrInv(edgeToY.getRole()), true);
+					}
+
+					applyAllValues(x, r, y, allRC, finalDS);
+
+					if (x.isMerged())
+						return;
 				}
-
-				applyAllValues(x, r, y, allRC, finalDS);
-
-				if (x.isMerged()) return;
 			}
-		}
 	}
 
 	@Override
@@ -106,7 +110,8 @@ public class SimpleAllValuesRule extends AllValuesRule
 
 			final Role s = _strategy.getABox().getRole(p);
 
-			if (null == s) continue; // FIXME : this should not occur but it does in ME.owl ME2.owl
+			if (null == s)
+				continue; // FIXME : this should not occur but it does in ME.owl ME2.owl
 
 			if (s.isTop() && s.isObjectRole())
 			{
@@ -117,7 +122,8 @@ public class SimpleAllValuesRule extends AllValuesRule
 			if (pred.isSubRoleOf(s))
 			{
 				DependencySet finalDS = ds.union(subj.getDepends(av), _strategy.getABox().doExplanation());
-				if (_strategy.getABox().doExplanation()) finalDS = finalDS.union(s.getExplainSubOrInv(pred).getExplain(), true);
+				if (_strategy.getABox().doExplanation())
+					finalDS = finalDS.union(s.getExplainSubOrInv(pred).getExplain(), true);
 
 				applyAllValues(subj, s, obj, c, finalDS);
 
@@ -125,7 +131,8 @@ public class SimpleAllValuesRule extends AllValuesRule
 				{
 					final ATermAppl allRC = ATermUtils.makeAllValues(s.getName(), c);
 					finalDS = ds.union(subj.getDepends(av), _strategy.getABox().doExplanation());
-					if (_strategy.getABox().doExplanation()) finalDS = finalDS.union(s.getExplainTransitive().getExplain(), true);
+					if (_strategy.getABox().doExplanation())
+						finalDS = finalDS.union(s.getExplainTransitive().getExplain(), true);
 
 					applyAllValues(subj, s, obj, allRC, finalDS);
 				}

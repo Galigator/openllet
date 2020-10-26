@@ -9,6 +9,7 @@ package openllet.core.tracker;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.boxes.abox.ABoxImpl;
 import openllet.core.boxes.abox.Edge;
@@ -37,49 +38,49 @@ public interface IncrementalChangeTracker
 	/**
 	 * Record that a new edge has been deleted from the ABox
 	 *
-	 * @param  e the Edge
-	 * @return   boolean {@code true} if delete is not already noted for edge, {@code false} else
+	 * @param e the Edge
+	 * @return boolean {@code true} if delete is not already noted for edge, {@code false} else
 	 */
 	boolean addDeletedEdge(Edge e);
 
 	/**
 	 * Record that a type was deleted from an _individual
 	 *
-	 * @param  n    the Node
-	 * @param  type the type
-	 * @return      boolean {@code true} if delete is not already noted for _node, type pair {@code false} else
+	 * @param n the Node
+	 * @param type the type
+	 * @return boolean {@code true} if delete is not already noted for _node, type pair {@code false} else
 	 */
 	boolean addDeletedType(Node n, ATermAppl type);
 
 	/**
 	 * Record that a new edge has been added to the ABox
 	 *
-	 * @param  e the Edge
-	 * @return   boolean {@code true} if addition is not already noted for edge, {@code false} else
+	 * @param e the Edge
+	 * @return boolean {@code true} if addition is not already noted for edge, {@code false} else
 	 */
 	boolean addNewEdge(Edge e);
 
 	/**
 	 * Record that a new _individual has been added to the ABox
 	 *
-	 * @param  i the Individual
-	 * @return   boolean {@code true} if addition is not already noted for _individual, {@code false} else
+	 * @param i the Individual
+	 * @return boolean {@code true} if addition is not already noted for _individual, {@code false} else
 	 */
 	boolean addNewIndividual(Individual i);
 
 	/**
 	 * Record that a _node has been "unpruned" because a merge was reverted during restore
 	 *
-	 * @param  n the Node
-	 * @return   boolean {@code true} if unpruning is not already noted for _node, {@code false} else
+	 * @param n the Node
+	 * @return boolean {@code true} if unpruning is not already noted for _node, {@code false} else
 	 */
 	boolean addUnprunedNode(Node n);
 
 	/**
 	 * Record that an _individual has been updated
 	 *
-	 * @param  i the Individual
-	 * @return   boolean {@code true} if addition is not already noted for _individual, {@code false} else
+	 * @param i the Individual
+	 * @return boolean {@code true} if addition is not already noted for _individual, {@code false} else
 	 */
 	boolean addUpdatedIndividual(Individual i);
 
@@ -91,8 +92,8 @@ public interface IncrementalChangeTracker
 	/**
 	 * Copy change tracker for use with a new ABox (presumably as part of {@code ABox.copy()})
 	 *
-	 * @param  target The ABox for the copy
-	 * @return        a copy, with individuals in the target ABox
+	 * @param target The ABox for the copy
+	 * @return a copy, with individuals in the target ABox
 	 */
 	IncrementalChangeTracker copy(ABoxImpl target);
 

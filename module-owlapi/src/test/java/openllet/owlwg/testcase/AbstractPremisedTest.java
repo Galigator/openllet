@@ -9,12 +9,14 @@ import java.util.EnumSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
-import openllet.shared.tools.Log;
+
 import org.semanticweb.owlapi.model.OWLDataPropertyExpression;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.search.EntitySearcher;
+
+import openllet.shared.tools.Log;
 
 /**
  * <p>
@@ -30,16 +32,16 @@ import org.semanticweb.owlapi.search.EntitySearcher;
  * Company: Clark & Parsia, LLC. <a href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
  * </p>
  *
- * @author     Mike Smith &lt;msmith@clarkparsia.com&gt;
- * @param  <O>
+ * @author Mike Smith &lt;msmith@clarkparsia.com&gt;
+ * @param <O>
  */
 public abstract class AbstractPremisedTest<O> extends AbstractBaseTestCase<O> implements PremisedTest<O>
 {
 
-	private static final Logger							_logger	= Log.getLogger(AbstractPremisedTest.class);
+	private static final Logger _logger = Log.getLogger(AbstractPremisedTest.class);
 
-	private final EnumSet<SerializationFormat>			premiseFormats;
-	private final EnumMap<SerializationFormat, String>	premiseOntologyLiteral;
+	private final EnumSet<SerializationFormat> premiseFormats;
+	private final EnumMap<SerializationFormat, String> premiseOntologyLiteral;
 
 	public AbstractPremisedTest(final OWLOntology ontology, final OWLNamedIndividual i)
 	{
@@ -55,7 +57,8 @@ public abstract class AbstractPremisedTest<O> extends AbstractBaseTestCase<O> im
 			final Collection<OWLLiteral> premises = values.get(f.getPremiseOWLDataProperty());
 			if (premises != null)
 			{
-				if (premises.size() > 1) _logger.warning(format("Multiple premise ontologies found for testcase (%s) with serialization format (%s).  Choosing arbitrarily.", getIdentifier(), f));
+				if (premises.size() > 1)
+					_logger.warning(format("Multiple premise ontologies found for testcase (%s) with serialization format (%s).  Choosing arbitrarily.", getIdentifier(), f));
 				premiseOntologyLiteral.put(f, premises.iterator().next().getLiteral());
 				premiseFormats.add(f);
 			}

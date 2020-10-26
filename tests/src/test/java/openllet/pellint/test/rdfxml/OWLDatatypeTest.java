@@ -2,12 +2,13 @@ package openllet.pellint.test.rdfxml;
 
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Test;
+
 import openllet.pellint.rdfxml.OWLSyntaxChecker;
 import openllet.pellint.rdfxml.RDFLints;
 import openllet.pellint.rdfxml.RDFModel;
 import openllet.pellint.rdfxml.RDFModelReader;
 import openllet.test.PelletTestSuite;
-import org.junit.Test;
 
 /**
  * Tests for datatypes in lint

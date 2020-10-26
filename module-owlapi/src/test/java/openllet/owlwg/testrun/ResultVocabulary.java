@@ -11,16 +11,13 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
  * Title: Result Vocabulary
  * </p>
  * <p>
- * Description: Entities declared in the <a
- * href="http://www.w3.org/2007/OWL/wiki/Test_Result_Format">OWL 2 Test Result
- * Ontology</a>.
+ * Description: Entities declared in the <a href="http://www.w3.org/2007/OWL/wiki/Test_Result_Format">OWL 2 Test Result Ontology</a>.
  * </p>
  * <p>
  * Copyright: Copyright &copy; 2009
  * </p>
  * <p>
- * Company: Clark & Parsia, LLC. <a
- * href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
+ * Company: Clark & Parsia, LLC. <a href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
  * </p>
  *
  * @author Mike Smith &lt;msmith@clarkparsia.com&gt;
@@ -47,8 +44,7 @@ public class ResultVocabulary
 
 	public enum Class
 	{
-		CONSISTENCY_RUN("ConsistencyRun"), FAILING_RUN("FailingRun"), INCOMPLETE_RUN("IncompleteRun"), INCONSISTENCY_RUN("InconsistencyRun"), NEGATIVE_ENTAILMENT_RUN("NegativeEntailmentRun"),
-		PASSING_RUN("PassingRun"), POSITIVE_ENTAILMENT_RUN("PositiveEntailmentRun"), SYNTAX_CONSTRAINT_RUN("SyntaxConstraintRun"), SYNTAX_TRANSLATION_RUN("SyntaxTranslationRun"), TEST_RUN("TestRun");
+		CONSISTENCY_RUN("ConsistencyRun"), FAILING_RUN("FailingRun"), INCOMPLETE_RUN("IncompleteRun"), INCONSISTENCY_RUN("InconsistencyRun"), NEGATIVE_ENTAILMENT_RUN("NegativeEntailmentRun"), PASSING_RUN("PassingRun"), POSITIVE_ENTAILMENT_RUN("PositiveEntailmentRun"), SYNTAX_CONSTRAINT_RUN("SyntaxConstraintRun"), SYNTAX_TRANSLATION_RUN("SyntaxTranslationRun"), TEST_RUN("TestRun");
 
 		private final OWLClass cls;
 
@@ -80,10 +76,10 @@ public class ResultVocabulary
 		}
 	}
 
-	private static final OWLOntologyManager	manager;
-	public static final IRI					ONTOLOGY_IRI;
+	private static final OWLOntologyManager manager;
+	public static final IRI ONTOLOGY_IRI;
 
-	private static final String				IRI_BASE;
+	private static final String IRI_BASE;
 
 	static
 	{

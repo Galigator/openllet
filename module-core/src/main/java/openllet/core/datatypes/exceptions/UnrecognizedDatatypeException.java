@@ -18,9 +18,9 @@ import openllet.aterm.ATermAppl;
 public class UnrecognizedDatatypeException extends DatatypeReasonerException
 {
 
-	private static final long	serialVersionUID	= 1L;
+	private static final long serialVersionUID = 1L;
 
-	private final ATermAppl		_dt;
+	private final ATermAppl _dt;
 
 	public UnrecognizedDatatypeException(final ATermAppl dt)
 	{

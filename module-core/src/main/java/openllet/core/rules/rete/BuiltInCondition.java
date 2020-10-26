@@ -7,6 +7,7 @@
 package openllet.core.rules.rete;
 
 import java.util.Arrays;
+
 import openllet.core.boxes.abox.ABox;
 import openllet.core.boxes.abox.Literal;
 import openllet.core.rules.builtins.BuiltIn;
@@ -14,10 +15,10 @@ import openllet.core.utils.ATermUtils;
 
 public class BuiltInCondition implements FilterCondition
 {
-	private final ABox				_abox;
-	private final String			_name;
-	private final BuiltIn			_builtin;
-	private final NodeProvider[]	_args;
+	private final ABox _abox;
+	private final String _name;
+	private final BuiltIn _builtin;
+	private final NodeProvider[] _args;
 
 	public BuiltInCondition(final ABox abox, final String name, final BuiltIn builtin, final NodeProvider[] args)
 	{
@@ -26,7 +27,8 @@ public class BuiltInCondition implements FilterCondition
 		_builtin = builtin;
 		_args = args;
 		for (final NodeProvider arg : args)
-			if (arg == null) throw new NullPointerException();
+			if (arg == null)
+				throw new NullPointerException();
 	}
 
 	@Override
@@ -51,8 +53,10 @@ public class BuiltInCondition implements FilterCondition
 	@Override
 	public boolean equals(final Object obj)
 	{
-		if (this == obj) return true;
-		if (!(obj instanceof BuiltInCondition)) return false;
+		if (this == obj)
+			return true;
+		if (!(obj instanceof BuiltInCondition))
+			return false;
 		final BuiltInCondition other = (BuiltInCondition) obj;
 		return _builtin.equals(other._builtin) && Arrays.equals(_args, other._args);
 	}

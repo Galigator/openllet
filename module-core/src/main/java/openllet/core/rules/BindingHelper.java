@@ -7,6 +7,7 @@
 package openllet.core.rules;
 
 import java.util.Collection;
+
 import openllet.core.rules.model.AtomVariable;
 
 /**
@@ -30,14 +31,14 @@ public interface BindingHelper
 {
 
 	/**
-	 * @param  bound
-	 * @return       a set of variables which this binding helper can bind.
+	 * @param bound
+	 * @return a set of variables which this binding helper can bind.
 	 */
 	Collection<? extends AtomVariable> getBindableVars(Collection<AtomVariable> bound);
 
 	/**
-	 * @param  bound
-	 * @return       a set of variables which must be bound before this helper can generate bindings.
+	 * @param bound
+	 * @return a set of variables which must be bound before this helper can generate bindings.
 	 */
 	Collection<? extends AtomVariable> getPrerequisiteVars(Collection<AtomVariable> bound);
 

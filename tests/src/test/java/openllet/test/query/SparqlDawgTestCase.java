@@ -10,8 +10,10 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.EnumSet;
 import java.util.Properties;
-import openllet.core.OpenlletOptions;
+
 import org.apache.jena.rdf.model.Resource;
+
+import openllet.core.OpenlletOptions;
 
 /**
  * <p>
@@ -28,10 +30,10 @@ import org.apache.jena.rdf.model.Resource;
  */
 public class SparqlDawgTestCase
 {
-	private final Properties		_pelletOptions;
-	private final Resource			_resource;
-	private final ManifestEngine	_test;
-	private final SparqlDawgTester	_tester;
+	private final Properties _pelletOptions;
+	private final Resource _resource;
+	private final ManifestEngine _test;
+	private final SparqlDawgTester _tester;
 
 	public SparqlDawgTestCase(final SparqlDawgTester tester, final ManifestEngine test, final Resource resource, final Properties pelletOptions)
 	{

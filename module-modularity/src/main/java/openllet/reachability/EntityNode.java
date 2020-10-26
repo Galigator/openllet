@@ -8,18 +8,19 @@ package openllet.reachability;
 
 import java.util.Collections;
 import java.util.Set;
+
 import openllet.core.utils.SetUtils;
 
 /**
- * @author     Evren Sirin
- * @param  <E>
+ * @author Evren Sirin
+ * @param <E>
  */
 public class EntityNode<E> extends Node
 {
 
-	private boolean	_active	= false;
+	private boolean _active = false;
 
-	private Set<E>	_entities;
+	private Set<E> _entities;
 
 	public EntityNode(final E entity)
 	{
@@ -28,14 +29,16 @@ public class EntityNode<E> extends Node
 
 	public void addEntities(final Set<E> entity)
 	{
-		if (_entities.size() == 1) _entities = SetUtils.create(_entities);
+		if (_entities.size() == 1)
+			_entities = SetUtils.create(_entities);
 
 		_entities.addAll(entity);
 	}
 
 	public void addEntity(final E entity)
 	{
-		if (_entities.size() == 1) _entities = SetUtils.create(_entities);
+		if (_entities.size() == 1)
+			_entities = SetUtils.create(_entities);
 
 		_entities.add(entity);
 	}

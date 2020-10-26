@@ -44,6 +44,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
+
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
@@ -65,48 +66,48 @@ import openllet.shared.tools.Log;
  */
 public abstract class Node
 {
-	public final static Logger						_logger			= Log.getLogger(Node.class);
+	public final static Logger _logger = Log.getLogger(Node.class);
 
-	public final static int							BLOCKABLE		= Integer.MAX_VALUE;
-	public final static int							NOMINAL			= 0;
+	public final static int BLOCKABLE = Integer.MAX_VALUE;
+	public final static int NOMINAL = 0;
 
-	public final static int							ATOM			= 0;
-	public final static int							OR				= 1;
-	public final static int							SOME			= 2;
-	public final static int							ALL				= 3;
-	public final static int							MIN				= 4;
-	public final static int							MAX				= 5;
-	public final static int							NOM				= 6;
-	public final static int							TYPES			= 7;
+	public final static int ATOM = 0;
+	public final static int OR = 1;
+	public final static int SOME = 2;
+	public final static int ALL = 3;
+	public final static int MIN = 4;
+	public final static int MAX = 5;
+	public final static int NOM = 6;
+	public final static int TYPES = 7;
 
-	protected final ABox							_abox;
-	protected final ATermAppl						_name;
-	protected final Map<ATermAppl, DependencySet>	_depends;
-	private final boolean							_isRoot;
-	private volatile boolean						_isConceptRoot;
+	protected final ABox _abox;
+	protected final ATermAppl _name;
+	protected final Map<ATermAppl, DependencySet> _depends;
+	private final boolean _isRoot;
+	private volatile boolean _isConceptRoot;
 
 	/**
 	 * If this _node is merged to another one, points to that _node otherwise points to itself. This is a linked list implementation of disjoint-union _data
 	 * structure.
 	 */
-	protected volatile Node							_mergedTo		= this;
+	protected volatile Node _mergedTo = this;
 
-	protected volatile EdgeList						_inEdges;
+	protected volatile EdgeList _inEdges;
 
 	/**
 	 * Dependency information about why merged happened (if at all)
 	 */
-	protected volatile DependencySet				_mergeDepends	= null;
+	protected volatile DependencySet _mergeDepends = null;
 
-	protected volatile DependencySet				_pruned			= null;
+	protected volatile DependencySet _pruned = null;
 
 	/**
 	 * Set of other _nodes that have been merged to this _node. Note that this is only the set of _nodes directly merged to this one. A recursive traversal is
 	 * required to get all the merged _nodes.
 	 */
-	protected volatile Set<Node>					_merged;
+	protected volatile Set<Node> _merged;
 
-	protected volatile Map<Node, DependencySet>		_differents;
+	protected volatile Map<Node, DependencySet> _differents;
 
 	protected Node(final ATermAppl name, final ABox abox)
 	{
@@ -194,7 +195,8 @@ public abstract class Node
 			final Edge newEdge = new DefaultEdge(edge.getRole(), from, this, edge.getDepends());
 
 			_inEdges.add(newEdge);
-			if (!isPruned()) from.getOutEdges().add(newEdge);
+			if (!isPruned())
+				from.getOutEdges().add(newEdge);
 		}
 	}
 
@@ -210,10 +212,12 @@ public abstract class Node
 		final QueueElement newElement = new QueueElement(this);
 
 		//update the datatype _queue
-		if ((type == Node.ALL || type == Node.MIN) && OpenlletOptions.USE_COMPLETION_QUEUE) _abox.getCompletionQueue().add(newElement, NodeSelector.DATATYPE);
+		if ((type == Node.ALL || type == Node.MIN) && OpenlletOptions.USE_COMPLETION_QUEUE)
+			_abox.getCompletionQueue().add(newElement, NodeSelector.DATATYPE);
 
 		// add _node to effected list
-		if (_abox.getBranchIndex() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS) _abox.getBranchEffectTracker().add(_abox.getBranchIndex(), getName());
+		if (_abox.getBranchIndex() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
+			_abox.getBranchEffectTracker().add(_abox.getBranchIndex(), getName());
 	}
 
 	/**
@@ -267,7 +271,8 @@ public abstract class Node
 	{
 		final boolean removed = _inEdges.removeEdge(edge);
 
-		if (!removed) throw new InternalReasonerException("Trying to remove a non-existing edge " + edge);
+		if (!removed)
+			throw new InternalReasonerException("Trying to remove a non-existing edge " + edge);
 
 		return true;
 	}
@@ -281,11 +286,14 @@ public abstract class Node
 	{
 		assert onlyApplyTypes || isRootNominal() : "Only asserted individuals can be reset: " + this;
 
-		if (OpenlletOptions.USE_COMPLETION_QUEUE) _abox.getCompletionQueue().add(new QueueElement(this));
+		if (OpenlletOptions.USE_COMPLETION_QUEUE)
+			_abox.getCompletionQueue().add(new QueueElement(this));
 
-		if (onlyApplyTypes) return;
+		if (onlyApplyTypes)
+			return;
 
-		if (_pruned != null) unprune(DependencySet.NO_BRANCH);
+		if (_pruned != null)
+			unprune(DependencySet.NO_BRANCH);
 
 		_mergedTo = this;
 		_mergeDepends = DependencySet.INDEPENDENT;
@@ -295,7 +303,8 @@ public abstract class Node
 		while (i.hasNext())
 		{
 			final DependencySet d = i.next();
-			if (d.getBranch() != DependencySet.NO_BRANCH) i.remove();
+			if (d.getBranch() != DependencySet.NO_BRANCH)
+				i.remove();
 		}
 
 		resetTypes();
@@ -309,46 +318,53 @@ public abstract class Node
 		while (i.hasNext())
 		{
 			final DependencySet d = i.next();
-			if (d.getBranch() != DependencySet.NO_BRANCH) i.remove();
+			if (d.getBranch() != DependencySet.NO_BRANCH)
+				i.remove();
 		}
 	}
 
 	public Boolean restorePruned(final int branch)
 	{
 
-		if (OpenlletOptions.TRACK_BRANCH_EFFECTS) _abox.getBranchEffectTracker().add(_abox.getBranchIndex(), _name);
+		if (OpenlletOptions.TRACK_BRANCH_EFFECTS)
+			_abox.getBranchEffectTracker().add(_abox.getBranchIndex(), _name);
 
-		if (_pruned != null) if (_pruned.getBranch() > branch)
-		{
-			if (_logger.isLoggable(Level.FINE)) _logger.fine("RESTORE: " + this + " merged _node " + _mergedTo + " " + _mergeDepends);
-
-			if (_mergeDepends.getBranch() > branch) undoSetSame();
-
-			unprune(branch);
-
-			if (OpenlletOptions.USE_INCREMENTAL_CONSISTENCY) _abox.getIncrementalChangeTracker().addUnprunedNode(this);
-
-			// we may need to remerge this _node
-			if (this instanceof Individual)
+		if (_pruned != null)
+			if (_pruned.getBranch() > branch)
 			{
-				final Individual ind = (Individual) this;
+				if (_logger.isLoggable(Level.FINE))
+					_logger.fine("RESTORE: " + this + " merged _node " + _mergedTo + " " + _mergeDepends);
 
-				if (OpenlletOptions.USE_COMPLETION_QUEUE)
+				if (_mergeDepends.getBranch() > branch)
+					undoSetSame();
+
+				unprune(branch);
+
+				if (OpenlletOptions.USE_INCREMENTAL_CONSISTENCY)
+					_abox.getIncrementalChangeTracker().addUnprunedNode(this);
+
+				// we may need to remerge this _node
+				if (this instanceof Individual)
 				{
-					ind._applyNext[Node.NOM] = 0;
-					_abox.getCompletionQueue().add(new QueueElement(this), NodeSelector.NOMINAL);
+					final Individual ind = (Individual) this;
+
+					if (OpenlletOptions.USE_COMPLETION_QUEUE)
+					{
+						ind._applyNext[Node.NOM] = 0;
+						_abox.getCompletionQueue().add(new QueueElement(this), NodeSelector.NOMINAL);
+					}
+
 				}
 
+				return Boolean.TRUE;
 			}
+			else
+			{
+				if (_logger.isLoggable(Level.FINE))
+					_logger.fine("DO NOT RESTORE: pruned _node " + this + " = " + _mergedTo + " " + _mergeDepends);
 
-			return Boolean.TRUE;
-		}
-		else
-		{
-			if (_logger.isLoggable(Level.FINE)) _logger.fine("DO NOT RESTORE: pruned _node " + this + " = " + _mergedTo + " " + _mergeDepends);
-
-			return Boolean.FALSE;
-		}
+				return Boolean.FALSE;
+			}
 
 		return null;
 	}
@@ -356,7 +372,8 @@ public abstract class Node
 	public boolean restore(final int branch)
 	{
 
-		if (OpenlletOptions.TRACK_BRANCH_EFFECTS) _abox.getBranchEffectTracker().add(_abox.getBranchIndex(), _name);
+		if (OpenlletOptions.TRACK_BRANCH_EFFECTS)
+			_abox.getBranchEffectTracker().add(_abox.getBranchIndex(), _name);
 
 		boolean restored = false;
 
@@ -381,13 +398,16 @@ public abstract class Node
 				_logger.fine(() -> "RESTORE: " + this + " remove type " + c + " " + d + " " + branch);
 
 				//track that this _node is affected
-				if (OpenlletOptions.USE_INCREMENTAL_CONSISTENCY && this instanceof Individual) _abox.getIncrementalChangeTracker().addDeletedType(this, c);
+				if (OpenlletOptions.USE_INCREMENTAL_CONSISTENCY && this instanceof Individual)
+					_abox.getIncrementalChangeTracker().addDeletedType(this, c);
 
 				i.remove();
 				removeType(c);
 				restored = true;
 			}
-			else if (OpenlletOptions.USE_SMART_RESTORE && ATermUtils.isAnd(c)) conjunctions.add(c);
+			else
+				if (OpenlletOptions.USE_SMART_RESTORE && ATermUtils.isAnd(c))
+					conjunctions.add(c);
 		}
 
 		//update the _queue with things that could readd this type
@@ -406,16 +426,17 @@ public abstract class Node
 		// but not the conjunction. this is the case if conjunct was added before
 		// the conjunction but depended on an earlier _branch. so we need to make
 		// sure all conjunctions are actually applied
-		if (OpenlletOptions.USE_SMART_RESTORE) for (final ATermAppl c : conjunctions)
-		{
-			final DependencySet d = getDepends(c);
-			for (ATermList cs = (ATermList) c.getArgument(0); !cs.isEmpty(); cs = cs.getNext())
+		if (OpenlletOptions.USE_SMART_RESTORE)
+			for (final ATermAppl c : conjunctions)
 			{
-				final ATermAppl conj = (ATermAppl) cs.getFirst();
+				final DependencySet d = getDepends(c);
+				for (ATermList cs = (ATermList) c.getArgument(0); !cs.isEmpty(); cs = cs.getNext())
+				{
+					final ATermAppl conj = (ATermAppl) cs.getFirst();
 
-				addType(conj, d);
+					addType(conj, d);
+				}
 			}
-		}
 
 		for (final Iterator<Entry<Node, DependencySet>> i = _differents.entrySet().iterator(); i.hasNext();)
 		{
@@ -441,7 +462,8 @@ public abstract class Node
 			{
 				_logger.fine(() -> "RESTORE: " + _name + " delete reverse edge " + e);
 
-				if (OpenlletOptions.USE_INCREMENTAL_CONSISTENCY) _abox.getIncrementalChangeTracker().addDeletedEdge(e);
+				if (OpenlletOptions.USE_INCREMENTAL_CONSISTENCY)
+					_abox.getIncrementalChangeTracker().addDeletedEdge(e);
 
 				i.remove();
 				restored = true;
@@ -462,7 +484,8 @@ public abstract class Node
 	protected DependencySet forceAddType(final ATermAppl c, final DependencySet ds)
 	{
 		// add to effected list
-		if (OpenlletOptions.TRACK_BRANCH_EFFECTS && _abox.getBranchIndex() >= 0) _abox.getBranchEffectTracker().add(_abox.getBranchIndex(), getName());
+		if (OpenlletOptions.TRACK_BRANCH_EFFECTS && _abox.getBranchIndex() >= 0)
+			_abox.getBranchEffectTracker().add(_abox.getBranchIndex(), getName());
 
 		// if we are checking entailment using a precompleted ABox, _abox.branch
 		// is set to -1. however, since applyAllValues is done automatically
@@ -471,7 +494,8 @@ public abstract class Node
 		// to a position before the max dependency of this type
 		int b = _abox.getBranchIndex();
 		final int max = ds.max();
-		if (b == -1 && max != 0) b = max + 1;
+		if (b == -1 && max != 0)
+			b = max + 1;
 
 		final DependencySet out = ds.copy(b);
 		_depends.put(c, out);
@@ -485,7 +509,9 @@ public abstract class Node
 	{
 		if (isPruned())
 			throw new InternalReasonerException("Adding type to a pruned node " + this + " " + c + "\t" + getPruned());
-		else if (isMerged()) return;
+		else
+			if (isMerged())
+				return;
 
 		forceAddType(c, ds);
 	}
@@ -506,18 +532,22 @@ public abstract class Node
 
 		if (ds != null)
 		{
-			if (ds.isIndependent()) return Bool.TRUE;
+			if (ds.isIndependent())
+				return Bool.TRUE;
 		}
-		else if ((ds = getDepends(ATermUtils.negate(c))) != null)
-		{
-			if (ds.isIndependent()) return Bool.FALSE;
-		}
-		else if (isIndividual() && ATermUtils.isNominal(c))
-			// TODO probably redundant if : Bool.FALSE
-			if (!c.getArgument(0).equals(getName()))
-			return Bool.FALSE;
+		else
+			if ((ds = getDepends(ATermUtils.negate(c))) != null)
+			{
+				if (ds.isIndependent())
+					return Bool.FALSE;
+			}
 			else
-			return Bool.TRUE;
+				if (isIndividual() && ATermUtils.isNominal(c))
+					// TODO probably redundant if : Bool.FALSE
+					if (!c.getArgument(0).equals(getName()))
+						return Bool.FALSE;
+					else
+						return Bool.TRUE;
 
 		if (isIndividual())
 		{
@@ -533,11 +563,12 @@ public abstract class Node
 					d = ATermUtils.negate((ATermAppl) notC.getArgument(1));
 				}
 			}
-			else if (ATermUtils.isSomeValues(c))
-			{
-				r = (ATermAppl) c.getArgument(0);
-				d = (ATermAppl) c.getArgument(1);
-			}
+			else
+				if (ATermUtils.isSomeValues(c))
+				{
+					r = (ATermAppl) c.getArgument(0);
+					d = (ATermAppl) c.getArgument(1);
+				}
 
 			if (r != null)
 			{
@@ -545,7 +576,8 @@ public abstract class Node
 
 				final Role role = _abox.getRole(r);
 
-				if (!role.isObjectRole() || !role.isSimple()) return Bool.UNKNOWN;
+				if (!role.isObjectRole() || !role.isSimple())
+					return Bool.UNKNOWN;
 
 				final EdgeList edges = ind.getRNeighborEdges(role);
 
@@ -566,7 +598,8 @@ public abstract class Node
 					// clauses - they are implemented in _abox.isKnownType
 					ot = ot.or(_abox.isKnownType(y, d, Collections.emptySet()));// y.hasObviousType(d));
 
-					if (ot.isTrue()) return ot;
+					if (ot.isTrue())
+						return ot;
 				}
 				return ot;
 			}
@@ -581,7 +614,8 @@ public abstract class Node
 		{
 			final DependencySet ds = getDepends(c);
 
-			if (ds != null && ds.isIndependent()) return true;
+			if (ds != null && ds.isIndependent())
+				return true;
 		}
 
 		return false;
@@ -679,21 +713,23 @@ public abstract class Node
 						_abox.getCompletionQueue().add(qe, NodeSelector.UNIVERSAL);
 					}
 
-					if (_logger.isLoggable(Level.FINE)) _logger.fine("RESTORE: " + _name + " ADD reverse edge " + edge);
+					if (_logger.isLoggable(Level.FINE))
+						_logger.fine("RESTORE: " + _name + " ADD reverse edge " + edge);
 				}
 			}
 		}
 
-		if (added) if (this instanceof Individual)
-		{
-			final Individual ind = (Individual) this;
-			ind._applyNext[Node.MAX] = 0;
-			final QueueElement qe = new QueueElement(ind);
-			_abox.getCompletionQueue().add(qe, NodeSelector.MAX_NUMBER);
-			_abox.getCompletionQueue().add(qe, NodeSelector.GUESS);
-			_abox.getCompletionQueue().add(qe, NodeSelector.CHOOSE);
-			_abox.getCompletionQueue().add(qe, NodeSelector.UNIVERSAL);
-		}
+		if (added)
+			if (this instanceof Individual)
+			{
+				final Individual ind = (Individual) this;
+				ind._applyNext[Node.MAX] = 0;
+				final QueueElement qe = new QueueElement(ind);
+				_abox.getCompletionQueue().add(qe, NodeSelector.MAX_NUMBER);
+				_abox.getCompletionQueue().add(qe, NodeSelector.GUESS);
+				_abox.getCompletionQueue().add(qe, NodeSelector.CHOOSE);
+				_abox.getCompletionQueue().add(qe, NodeSelector.UNIVERSAL);
+			}
 	}
 
 	public abstract int getNominalLevel();
@@ -725,12 +761,13 @@ public abstract class Node
 	 * Get the dependency if this node is merged to another node. This node may be merged to another node which is later merged to another node and so on. This
 	 * function may return the dependency for the first step or the union of all steps.
 	 *
-	 * @param  all
-	 * @return     the dependency set resulting of the merge
+	 * @param all
+	 * @return the dependency set resulting of the merge
 	 */
 	public DependencySet getMergeDependency(final boolean all)
 	{
-		if (!isMerged() || !all) return _mergeDepends;
+		if (!isMerged() || !all)
+			return _mergeDepends;
 
 		DependencySet ds = _mergeDepends;
 		Node node = _mergedTo;
@@ -745,7 +782,8 @@ public abstract class Node
 
 	public Node getSame()
 	{
-		if (_mergedTo == this) return this;
+		if (_mergedTo == this)
+			return this;
 
 		return _mergedTo.getSame();
 	}
@@ -759,13 +797,15 @@ public abstract class Node
 
 	private void addMerged(final Node node)
 	{
-		if (_merged == null) _merged = new HashSet<>(3);
+		if (_merged == null)
+			_merged = new HashSet<>(3);
 		_merged.add(node);
 	}
 
 	public Set<Node> getMerged()
 	{
-		if (_merged == null) return Collections.emptySet();
+		if (_merged == null)
+			return Collections.emptySet();
 		return _merged;
 	}
 
@@ -778,7 +818,8 @@ public abstract class Node
 
 	private void getAllMerged(final DependencySet ds, final Map<Node, DependencySet> result)
 	{
-		if (_merged == null) return;
+		if (_merged == null)
+			return;
 
 		for (final Node mergedNode : _merged)
 		{
@@ -791,12 +832,14 @@ public abstract class Node
 	private void removeMerged(final Node node)
 	{
 		_merged.remove(node);
-		if (_merged.isEmpty()) _merged = null; // free space
+		if (_merged.isEmpty())
+			_merged = null; // free space
 	}
 
 	public boolean setSame(final Node node, final DependencySet ds)
 	{
-		if (isSame(node)) return false;
+		if (isSame(node))
+			return false;
 		if (isDifferent(node))
 		{
 			//CHW - added for incremental reasoning support - this is needed as we will need to backjump if possible
@@ -839,9 +882,11 @@ public abstract class Node
 		DependencySet ds = dsParam;
 
 		// add to effected list
-		if (_abox.getBranchIndex() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS) _abox.getBranchEffectTracker().add(_abox.getBranchIndex(), node.getName());
+		if (_abox.getBranchIndex() >= 0 && OpenlletOptions.TRACK_BRANCH_EFFECTS)
+			_abox.getBranchEffectTracker().add(_abox.getBranchIndex(), node.getName());
 
-		if (isDifferent(node)) return false;
+		if (isDifferent(node))
+			return false;
 
 		if (isSame(node))
 		{
@@ -849,7 +894,8 @@ public abstract class Node
 			ds = ds.union(node.getMergeDependency(true), _abox.doExplanation());
 			_abox.setClash(Clash.nominal(this, ds, node.getName()));
 
-			if (!ds.isIndependent()) return false;
+			if (!ds.isIndependent())
+				return false;
 		}
 
 		ds = ds.copy(_abox.getBranchIndex());

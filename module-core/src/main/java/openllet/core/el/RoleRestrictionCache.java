@@ -9,6 +9,7 @@ package openllet.core.el;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.boxes.rbox.RBox;
 import openllet.core.boxes.rbox.Role;
@@ -28,8 +29,8 @@ import openllet.core.utils.iterator.IteratorUtils;
  */
 public class RoleRestrictionCache
 {
-	private final Map<ATermAppl, ATermAppl>	_domains;
-	private final Map<ATermAppl, ATermAppl>	_ranges;
+	private final Map<ATermAppl, ATermAppl> _domains;
+	private final Map<ATermAppl, ATermAppl> _ranges;
 
 	public RoleRestrictionCache(final RBox rbox)
 	{
@@ -44,16 +45,19 @@ public class RoleRestrictionCache
 		for (final Role role : rbox.getRoles().values())
 		{
 			final Iterator<ATermAppl> assertedDomains = rbox.getAssertedDomains(role);
-			if (assertedDomains.hasNext()) addTo(_domains, role.getName(), IteratorUtils.toSet(assertedDomains));
+			if (assertedDomains.hasNext())
+				addTo(_domains, role.getName(), IteratorUtils.toSet(assertedDomains));
 
 			final Iterator<ATermAppl> assertedRanges = rbox.getAssertedRanges(role);
-			if (assertedRanges.hasNext()) addTo(_ranges, role.getName(), IteratorUtils.toSet(assertedRanges));
+			if (assertedRanges.hasNext())
+				addTo(_ranges, role.getName(), IteratorUtils.toSet(assertedRanges));
 		}
 	}
 
 	private static void addTo(final Map<ATermAppl, ATermAppl> map, final ATermAppl roleName, final Set<ATermAppl> asserted)
 	{
-		if (asserted.isEmpty()) return;
+		if (asserted.isEmpty())
+			return;
 
 		ATermAppl range = null;
 		if (asserted.size() == 1)

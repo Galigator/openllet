@@ -34,6 +34,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.stream.Stream;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.boxes.tbox.impl.Unfolding;
 
@@ -42,8 +43,8 @@ public interface TBox
 	/**
 	 * Add a named class declaration
 	 *
-	 * @param  term
-	 * @return      <code>true</code> if TBox changed as a result of this call
+	 * @param term
+	 * @return <code>true</code> if TBox changed as a result of this call
 	 */
 	boolean addClass(ATermAppl term);
 
@@ -84,16 +85,16 @@ public interface TBox
 	Collection<ATermAppl> getAssertedAxioms();
 
 	/**
-	 * @param  concept
-	 * @return         all the sub and equivalent class axioms that have the given concept on the left hand side
+	 * @param concept
+	 * @return all the sub and equivalent class axioms that have the given concept on the left hand side
 	 */
 	Collection<ATermAppl> getAxioms(ATermAppl concept);
 
 	/**
 	 * Lazy unfold the given concept
 	 *
-	 * @param  c
-	 * @return   the concept the lazy way
+	 * @param c
+	 * @return the concept the lazy way
 	 */
 	Iterator<Unfolding> unfold(ATermAppl c);
 
@@ -101,16 +102,16 @@ public interface TBox
 	 * Returns if a concept has only primitive definitions in this TBox. Only primitive definitions mean the concept did not have any equivalents defined or all
 	 * equivalence axioms has been absorbed into primitive definitions. This function returns <code>false</code> for complex class expressions.
 	 *
-	 * @param  c a concept (named concept or a concept expression)
-	 * @return   <code>true</code> if the concept is not complex and has only primitive definitions
+	 * @param c a concept (named concept or a concept expression)
+	 * @return <code>true</code> if the concept is not complex and has only primitive definitions
 	 */
 	boolean isPrimitive(ATermAppl c);
 
 	/**
 	 * Add a TBox axiom.
 	 *
-	 * @param  axiom
-	 * @return       true if operation success
+	 * @param axiom
+	 * @return true if operation success
 	 */
 	boolean addAxiom(ATermAppl axiom);
 
@@ -119,8 +120,8 @@ public interface TBox
 	 * disjoint axiom is transformed into subclass) or it is obtained via absorption (as equivalent class axioms are absorbed into subclass axioms). This method
 	 * is syntactic sugar for {@link #removeAxiom(ATermAppl, ATermAppl)} where both parameters are {@code axiom}.
 	 *
-	 * @param  axiom
-	 * @return       true if operation success
+	 * @param axiom
+	 * @return true if operation success
 	 */
 	boolean removeAxiom(ATermAppl axiom);
 
@@ -128,21 +129,21 @@ public interface TBox
 	 * Remove all explanations for {@code dependantAxiom} that contain {@code explanationAxiom}. If no explanations remain, {@code dependantAxiom} is removed
 	 * and all axioms which depend on it are updated (and will be removed if they have no additional explanations).
 	 *
-	 * @param  dependantAxiom
-	 * @param  explanationAxiom
-	 * @return                  true if operation success
+	 * @param dependantAxiom
+	 * @param explanationAxiom
+	 * @return true if operation success
 	 */
 	boolean removeAxiom(ATermAppl dependantAxiom, ATermAppl explanationAxiom);
 
 	/**
-	 * @param  axiom
-	 * @return       a single clashExplanation for the given TBox axiom.
+	 * @param axiom
+	 * @return a single clashExplanation for the given TBox axiom.
 	 */
 	Set<ATermAppl> getAxiomExplanation(ATermAppl axiom);
 
 	/**
-	 * @param  axiom
-	 * @return       multiple explanations for the given TBox axiom.
+	 * @param axiom
+	 * @return multiple explanations for the given TBox axiom.
 	 */
 	Set<Set<ATermAppl>> getAxiomExplanations(ATermAppl axiom);
 

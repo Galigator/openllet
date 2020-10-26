@@ -12,12 +12,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import openllet.pellint.util.CollectionUtil;
+
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
+
+import openllet.pellint.util.CollectionUtil;
 
 /**
  * <p>
@@ -37,13 +39,13 @@ import org.apache.jena.rdf.model.Statement;
  */
 public class RDFModel
 {
-	private final List<String>									_comments;
-	private final Map<String, String>							_namespaces;
-	private final List<Statement>								_allStatements;
-	private final Map<Resource, Map<Property, Set<RDFNode>>>	_statements;
-	private final Map<Property, List<Statement>>				_statementsByPredicate;
-	private final Map<RDFNode, List<Statement>>					_statementsByObject;
-	private final Set<RDFNode>									_BNodes;
+	private final List<String> _comments;
+	private final Map<String, String> _namespaces;
+	private final List<Statement> _allStatements;
+	private final Map<Resource, Map<Property, Set<RDFNode>>> _statements;
+	private final Map<Property, List<Statement>> _statementsByPredicate;
+	private final Map<RDFNode, List<Statement>> _statementsByObject;
+	private final Set<RDFNode> _BNodes;
 
 	public RDFModel()
 	{
@@ -105,10 +107,12 @@ public class RDFModel
 		for (final Statement stmt : stmts)
 		{
 			final Resource s = stmt.getSubject();
-			if (s.isAnon() && !_BNodes.contains(s)) continue;
+			if (s.isAnon() && !_BNodes.contains(s))
+				continue;
 
 			final RDFNode o = stmt.getObject();
-			if (o.isAnon() && !_BNodes.contains(o)) continue;
+			if (o.isAnon() && !_BNodes.contains(o))
+				continue;
 
 			addStatement(stmt);
 		}
@@ -126,7 +130,8 @@ public class RDFModel
 
 	private void addToBNodes(final RDFNode v)
 	{
-		if (v.isAnon()) _BNodes.add(v);
+		if (v.isAnon())
+			_BNodes.add(v);
 	}
 
 	public List<Statement> getStatements()
@@ -155,7 +160,8 @@ public class RDFModel
 	public Collection<RDFNode> getValues(final Resource subject, final Property predicate)
 	{
 		final Map<Property, Set<RDFNode>> pMap = _statements.get(subject);
-		if (pMap == null) return Collections.emptyList();
+		if (pMap == null)
+			return Collections.emptyList();
 
 		final Set<RDFNode> list = pMap.get(predicate);
 		if (list == null)

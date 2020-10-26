@@ -7,6 +7,7 @@
 package openllet.core.tableau.completion.rule;
 
 import java.util.List;
+
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermInt;
 import openllet.core.DependencySet;
@@ -38,7 +39,8 @@ public class MinCardinalityRule extends AbstractTableauRule
 	@Override
 	public void apply(final Individual ind)
 	{
-		if (!ind.canApply(Node.MIN)) return;
+		if (!ind.canApply(Node.MIN))
+			return;
 
 		// We get all the minCard restrictions in the _node and store them in the list ''types''
 		final List<ATermAppl> types = ind.getTypes(Node.MIN);
@@ -49,7 +51,8 @@ public class MinCardinalityRule extends AbstractTableauRule
 
 			apply(ind, mc);
 
-			if (_strategy.getABox().isClosed()) return;
+			if (_strategy.getABox().isClosed())
+				return;
 		}
 		ind._applyNext[Node.MIN] = size;
 	}
@@ -63,14 +66,15 @@ public class MinCardinalityRule extends AbstractTableauRule
 		final ATermAppl c = (ATermAppl) mc.getArgument(2);
 
 		// FIXME make sure all neighbors are safe
-		if (x.hasDistinctRNeighborsForMin(r, n, c)) return;
+		if (x.hasDistinctRNeighborsForMin(r, n, c))
+			return;
 
 		final DependencySet ds = x.getDepends(mc);
 
-		if (!OpenlletOptions.MAINTAIN_COMPLETION_QUEUE && ds == null) return;
+		if (!OpenlletOptions.MAINTAIN_COMPLETION_QUEUE && ds == null)
+			return;
 
-		_logger.fine(() -> "MIN : " + x + " -> " + r + " -> anon" + (n == 1 ? "" : _strategy.getABox().getAnonCount() + 1 + " - anon") + (_strategy.getABox().getAnonCount() + n) + " "
-				+ ATermUtils.toString(c) + " " + ds);
+		_logger.fine(() -> "MIN : " + x + " -> " + r + " -> anon" + (n == 1 ? "" : _strategy.getABox().getAnonCount() + 1 + " - anon") + (_strategy.getABox().getAnonCount() + n) + " " + ATermUtils.toString(c) + " " + ds);
 
 		final Node[] y = new Node[n];
 		for (int c1 = 0; c1 < n; c1++)

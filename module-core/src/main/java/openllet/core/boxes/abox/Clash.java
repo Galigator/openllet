@@ -9,6 +9,7 @@ package openllet.core.boxes.abox;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
@@ -26,11 +27,11 @@ import openllet.core.utils.ATermUtils;
  */
 public class Clash
 {
-	public final ATerm[]			_args;
-	private volatile DependencySet	_depends;			// Warn, some functions get the _depends then change its value behind us.
-	private final Node				_node;
-	private final ClashType			_type;
-	private final String			_clashExplanation;
+	public final ATerm[] _args;
+	private volatile DependencySet _depends; // Warn, some functions get the _depends then change its value behind us.
+	private final Node _node;
+	private final ClashType _type;
+	private final String _clashExplanation;
 
 	public enum ClashType
 	{
@@ -214,30 +215,41 @@ public class Clash
 
 		if (_clashExplanation != null)
 			str = _clashExplanation;
-		else if (getType() == ClashType.UNEXPLAINED)
-			str = "No _explanation was generated.";
-		else if (_args == null)
-			str = "No specific _explanation was generated. Generic _explanation: " + getType().getExplanation();
-		else if (getType() == ClashType.ATOMIC)
-			str = atomicExplanation();
-		else if (getType() == ClashType.BOTTOM_PROP)
-			str = bottomExplanation();
-		else if (getType() == ClashType.MAX_CARD)
-			str = maxCardinalityExplanation();
-		else if (getType() == ClashType.FUNC_MAX_CARD)
-			str = functionalCardinalityExplanation();
-		else if (getType() == ClashType.NOMINAL)
-			str = nominalExplanation();
-		else if (getType() == ClashType.MISSING_DATATYPE)
-			str = missingDatatypeExplanation();
-		else if (getType() == ClashType.VALUE_DATATYPE)
-			str = valueDatatypeExplanation();
-		else if (getType() == ClashType.INVALID_LITERAL)
-			str = invalidLiteralExplanation();
-		else if (getType() == ClashType.EMPTY_DATATYPE)
-			str = emptyDatatypeExplanation();
 		else
-			str = _clashExplanation;
+			if (getType() == ClashType.UNEXPLAINED)
+				str = "No _explanation was generated.";
+			else
+				if (_args == null)
+					str = "No specific _explanation was generated. Generic _explanation: " + getType().getExplanation();
+				else
+					if (getType() == ClashType.ATOMIC)
+						str = atomicExplanation();
+					else
+						if (getType() == ClashType.BOTTOM_PROP)
+							str = bottomExplanation();
+						else
+							if (getType() == ClashType.MAX_CARD)
+								str = maxCardinalityExplanation();
+							else
+								if (getType() == ClashType.FUNC_MAX_CARD)
+									str = functionalCardinalityExplanation();
+								else
+									if (getType() == ClashType.NOMINAL)
+										str = nominalExplanation();
+									else
+										if (getType() == ClashType.MISSING_DATATYPE)
+											str = missingDatatypeExplanation();
+										else
+											if (getType() == ClashType.VALUE_DATATYPE)
+												str = valueDatatypeExplanation();
+											else
+												if (getType() == ClashType.INVALID_LITERAL)
+													str = invalidLiteralExplanation();
+												else
+													if (getType() == ClashType.EMPTY_DATATYPE)
+														str = emptyDatatypeExplanation();
+													else
+														str = _clashExplanation;
 
 		return str;
 	}
@@ -247,42 +259,44 @@ public class Clash
 		final StringBuffer str = new StringBuffer();
 		if (node.getNameStr().startsWith("Any member of"))
 			str.append(node.getNameStr());
-		else if (node.isNamedIndividual())
-			str.append("Individual " + node.getNameStr());
 		else
-		{
-			final List<ATermAppl> path = node.getPath();
-			if (path.isEmpty())
-				str.append("There is an anonymous _individual which");
+			if (node.isNamedIndividual())
+				str.append("Individual " + node.getNameStr());
 			else
 			{
-				final ATermAppl first = path.get(0);
-				final Iterator<ATermAppl> i = path.iterator();
-				String nodeID = "";
-				if (first.getName().startsWith("Any member of"))
-				{
-					nodeID = "Y";
-					str.append(first.getName() + ", X, is related to some " + nodeID + ", identified by this path (X ");
-					i.next();
-				}
+				final List<ATermAppl> path = node.getPath();
+				if (path.isEmpty())
+					str.append("There is an anonymous _individual which");
 				else
 				{
-					nodeID = "X";
-					str.append("There is an anonymous _individual X, identified by this path (" + i.next() + " ");
-				}
+					final ATermAppl first = path.get(0);
+					final Iterator<ATermAppl> i = path.iterator();
+					String nodeID = "";
+					if (first.getName().startsWith("Any member of"))
+					{
+						nodeID = "Y";
+						str.append(first.getName() + ", X, is related to some " + nodeID + ", identified by this path (X ");
+						i.next();
+					}
+					else
+					{
+						nodeID = "X";
+						str.append("There is an anonymous _individual X, identified by this path (" + i.next() + " ");
+					}
 
-				while (i.hasNext())
-				{
-					str.append(i.next() + " ");
-					if (i.hasNext()) str.append("[ ");
-				}
+					while (i.hasNext())
+					{
+						str.append(i.next() + " ");
+						if (i.hasNext())
+							str.append("[ ");
+					}
 
-				str.append(nodeID);
-				for (int count = 0; count < path.size() - 2; count++)
-					str.append(" ]");
-				str.append("), which");
+					str.append(nodeID);
+					for (int count = 0; count < path.size() - 2; count++)
+						str.append(" ]");
+					str.append("), which");
+				}
 			}
-		}
 
 		return str.toString();
 	}
@@ -331,7 +345,8 @@ public class Clash
 			final StringBuffer buffer = new StringBuffer("Intersection of datatypes [");
 			for (int i = 0; i < _args.length; i++)
 			{
-				if (i > 0) buffer.append(", ");
+				if (i > 0)
+					buffer.append(", ");
 				buffer.append(ATermUtils.toString((ATermAppl) _args[i]));
 			}
 			buffer.append("] is inconsistent");

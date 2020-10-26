@@ -13,6 +13,7 @@ import static openllet.core.el.ELSyntaxUtils.simplify;
 
 import java.util.Collection;
 import java.util.Iterator;
+
 import openllet.aterm.AFun;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
@@ -49,8 +50,10 @@ public class ELExpressivityChecker extends ProfileBasedExpressivityChecker
 	{
 		_expressivity = expressivity;
 
-		if (!processIndividuals()) return false;
-		if (!processClasses()) return false;
+		if (!processIndividuals())
+			return false;
+		if (!processClasses())
+			return false;
 		return processRoles();
 	}
 
@@ -63,9 +66,11 @@ public class ELExpressivityChecker extends ProfileBasedExpressivityChecker
 			final ATermAppl nominal = ATermUtils.makeValue(ind.getName());
 			for (final ATermAppl term : ind.getTypes())
 			{
-				if (term.equals(nominal)) continue;
+				if (term.equals(nominal))
+					continue;
 
-				if (!isEL(term)) return false;
+				if (!isEL(term))
+					return false;
 			}
 		}
 
@@ -84,27 +89,33 @@ public class ELExpressivityChecker extends ProfileBasedExpressivityChecker
 
 				ATermList args = (ATermList) axiom.getArgument(0);
 				for (; !args.isEmpty(); args = args.getNext())
-					if (!isEL((ATermAppl) args.getFirst())) return false;
+					if (!isEL((ATermAppl) args.getFirst()))
+						return false;
 			}
 			else
 			{
 				final ATermAppl sub = (ATermAppl) axiom.getArgument(0);
 				final ATermAppl sup = (ATermAppl) axiom.getArgument(1);
 
-				if (!isEL(sub) || !isEL(sup)) return false;
+				if (!isEL(sub) || !isEL(sup))
+					return false;
 
 				if (fun.equals(ATermUtils.SUBFUN))
 				{
-					if (ATermUtils.isBottom(simplify(sup))) _expressivity.setHasDisjointClasses(true);
+					if (ATermUtils.isBottom(simplify(sup)))
+						_expressivity.setHasDisjointClasses(true);
 				}
-				else if (fun.equals(ATermUtils.EQCLASSFUN))
-				{
-					if (ATermUtils.isBottom(simplify(sub)) || ATermUtils.isBottom(simplify(sup))) _expressivity.setHasDisjointClasses(true);
-				}
-				else if (fun.equals(ATermUtils.DISJOINTFUN))
-					_expressivity.setHasDisjointClasses(true);
 				else
-					return false;
+					if (fun.equals(ATermUtils.EQCLASSFUN))
+					{
+						if (ATermUtils.isBottom(simplify(sub)) || ATermUtils.isBottom(simplify(sup)))
+							_expressivity.setHasDisjointClasses(true);
+					}
+					else
+						if (fun.equals(ATermUtils.DISJOINTFUN))
+							_expressivity.setHasDisjointClasses(true);
+						else
+							return false;
 			}
 		}
 
@@ -117,23 +128,34 @@ public class ELExpressivityChecker extends ProfileBasedExpressivityChecker
 
 		for (final Role r : roles)
 		{
-			if (r.isBuiltin()) continue;
+			if (r.isBuiltin())
+				continue;
 
-			if (r.isDatatypeRole()) return false;
+			if (r.isDatatypeRole())
+				return false;
 
-			if (r.isAnon()) for (final Role subRole : r.getSubRoles())
-				if (!subRole.isAnon() && !subRole.isBottom()) return false;
+			if (r.isAnon())
+				for (final Role subRole : r.getSubRoles())
+					if (!subRole.isAnon() && !subRole.isBottom())
+						return false;
 
 			// InverseFunctionalProperty declaration may mean that a named
 			// property has an anonymous inverse property which is functional
 			// The following _condition checks this case
-			if (r.isAnon() && r.isFunctional()) return false;
-			if (r.isFunctional()) return false;
-			if (r.isTransitive()) _expressivity.setHasTransitivity(true);
-			if (r.isReflexive()) _expressivity.setHasReflexivity(true);
-			if (r.isIrreflexive()) return false;
-			if (r.isAsymmetric()) return false;
-			if (!r.getDisjointRoles().isEmpty()) return false;
+			if (r.isAnon() && r.isFunctional())
+				return false;
+			if (r.isFunctional())
+				return false;
+			if (r.isTransitive())
+				_expressivity.setHasTransitivity(true);
+			if (r.isReflexive())
+				_expressivity.setHasReflexivity(true);
+			if (r.isIrreflexive())
+				return false;
+			if (r.isAsymmetric())
+				return false;
+			if (!r.getDisjointRoles().isEmpty())
+				return false;
 			if (r.hasComplexSubRole())
 			{
 				_expressivity.setHasComplexSubRoles(true);
@@ -144,13 +166,15 @@ public class ELExpressivityChecker extends ProfileBasedExpressivityChecker
 				final boolean isInv = r.isAnon();
 				for (ATermList chain : r.getSubRoleChains())
 					for (; !chain.isEmpty(); chain = chain.getNext())
-						if (ATermUtils.isInv((ATermAppl) chain.getFirst()) != isInv) return false;
+						if (ATermUtils.isInv((ATermAppl) chain.getFirst()) != isInv)
+							return false;
 			}
 
 			// Each property has itself included in the subroles set. We need
 			// at least two properties in the set to conclude there is a role
 			// hierarchy defined in the ontology
-			if (r.getSubRoles().size() > 1) _expressivity.setHasRoleHierarchy(true);
+			if (r.getSubRoles().size() > 1)
+				_expressivity.setHasRoleHierarchy(true);
 		}
 
 		for (final Role r : roles)
@@ -159,7 +183,8 @@ public class ELExpressivityChecker extends ProfileBasedExpressivityChecker
 			while (assertedDomains.hasNext())
 			{
 				final ATermAppl domain = assertedDomains.next();
-				if (!isEL(domain)) return false;
+				if (!isEL(domain))
+					return false;
 
 				_expressivity.setHasDomain(true);
 			}
@@ -168,7 +193,8 @@ public class ELExpressivityChecker extends ProfileBasedExpressivityChecker
 			while (assertedRanges.hasNext())
 			{
 				final ATermAppl range = assertedRanges.next();
-				if (!isEL(range)) return false;
+				if (!isEL(range))
+					return false;
 
 				_expressivity.setHasDomain(true);
 			}

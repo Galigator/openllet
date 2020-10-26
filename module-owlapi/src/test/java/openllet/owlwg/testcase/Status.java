@@ -1,22 +1,21 @@
 package openllet.owlwg.testcase;
 
-import openllet.owlwg.testcase.TestVocabulary.Individual;
 import org.semanticweb.owlapi.model.OWLIndividual;
+
+import openllet.owlwg.testcase.TestVocabulary.Individual;
 
 /**
  * <p>
  * Title: Status
  * </p>
  * <p>
- * Description: See <a href="http://www.w3.org/TR/owl2-test/#Status">OWL 2
- * Conformance: Status</a>.
+ * Description: See <a href="http://www.w3.org/TR/owl2-test/#Status">OWL 2 Conformance: Status</a>.
  * </p>
  * <p>
  * Copyright: Copyright &copy; 2009
  * </p>
  * <p>
- * Company: Clark & Parsia, LLC. <a
- * href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
+ * Company: Clark & Parsia, LLC. <a href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
  * </p>
  *
  * @author Mike Smith &lt;msmith@clarkparsia.com&gt;
@@ -29,7 +28,8 @@ public enum Status
 	public static Status get(final OWLIndividual i)
 	{
 		for (final Status s : Status.values())
-			if (s.getOWLIndividual().equals(i)) return s;
+			if (s.getOWLIndividual().equals(i))
+				return s;
 
 		return null;
 	}

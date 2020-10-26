@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.iterator.IteratorUtils;
@@ -71,7 +72,8 @@ public class OpenlletComparisonsChecker
 		// check that all _expected values were found
 		final List<T> unfound = new ArrayList<>();
 		for (int i = 0; i < expected.length; i++)
-			if (!found[i]) unfound.add(expected[i]);
+			if (!found[i])
+				unfound.add(expected[i]);
 
 		assertTrue("Failed to find expected iterator values: " + unfound, unfound.isEmpty());
 	}

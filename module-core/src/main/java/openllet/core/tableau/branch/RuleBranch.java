@@ -11,6 +11,7 @@ package openllet.core.tableau.branch;
 
 import java.util.List;
 import java.util.logging.Level;
+
 import openllet.core.DependencySet;
 import openllet.core.OpenlletOptions;
 import openllet.core.boxes.abox.ABox;
@@ -28,12 +29,12 @@ import openllet.core.tableau.completion.CompletionStrategy;
 
 public class RuleBranch extends Branch
 {
-	private final RuleAtomAsserter	_ruleAtomAsserter;
-	private final VariableBinding	_binding;
-	private final List<RuleAtom>	_atoms;
-	private final int				_bodyAtomCount;
-	private final int[]				_order;
-	private final DependencySet[]	_prevDS;
+	private final RuleAtomAsserter _ruleAtomAsserter;
+	private final VariableBinding _binding;
+	private final List<RuleAtom> _atoms;
+	private final int _bodyAtomCount;
+	private final int[] _order;
+	private final DependencySet[] _prevDS;
 
 	public RuleBranch(final ABox abox, final CompletionStrategy completion, final RuleAtomAsserter ruleAtomAsserter, //
 			final List<RuleAtom> atoms, final VariableBinding binding, final int bodyAtomCount, //
@@ -99,7 +100,8 @@ public class RuleBranch extends Branch
 	public void setLastClash(final DependencySet ds)
 	{
 		super.setLastClash(ds);
-		if (_tryNext >= 0) _prevDS[_tryNext] = ds;
+		if (_tryNext >= 0)
+			_prevDS[_tryNext] = ds;
 	}
 
 	@Override
@@ -126,11 +128,11 @@ public class RuleBranch extends Branch
 					ds.remove(getBranchIndexInABox());
 			}
 			else
-			// CHW - Changed for tracing purposes
-			if (OpenlletOptions.USE_INCREMENTAL_DELETION)
-				ds = getTermDepends().union(new DependencySet(getBranchIndexInABox()), _abox.doExplanation());
-			else
-				ds = new DependencySet(getBranchIndexInABox());
+				// CHW - Changed for tracing purposes
+				if (OpenlletOptions.USE_INCREMENTAL_DELETION)
+					ds = getTermDepends().union(new DependencySet(getBranchIndexInABox()), _abox.doExplanation());
+				else
+					ds = new DependencySet(getBranchIndexInABox());
 
 			if (_logger.isLoggable(Level.FINE))
 				_logger.fine("RULE: Branch (" + getBranchIndexInABox() + ") try (" + (_tryNext + 1) + "/" + _tryCount + ") " + atom + " " + _binding + " " + _atoms + " " + ds);
@@ -142,7 +144,8 @@ public class RuleBranch extends Branch
 			{
 				final DependencySet clashDepends = _abox.getClash().getDepends();
 
-				if (_logger.isLoggable(Level.FINE)) _logger.fine("CLASH: Branch " + getBranchIndexInABox() + " " + Clash.unexplained(null, clashDepends) + "!");
+				if (_logger.isLoggable(Level.FINE))
+					_logger.fine("CLASH: Branch " + getBranchIndexInABox() + " " + Clash.unexplained(null, clashDepends) + "!");
 
 				// do not restore if we do not have any more branches to try.
 				// after backtrack the correct _branch will restore it anyway. more
@@ -167,7 +170,8 @@ public class RuleBranch extends Branch
 					_abox.setClash(Clash.unexplained(null, clashDepends.union(ds, _abox.doExplanation())));
 
 					// CHW - added for inc reasoning
-					if (OpenlletOptions.USE_INCREMENTAL_DELETION) _abox.getKB().getDependencyIndex().addCloseBranchDependency(this, _abox.getClash().getDepends());
+					if (OpenlletOptions.USE_INCREMENTAL_DELETION)
+						_abox.getKB().getDependencyIndex().addCloseBranchDependency(this, _abox.getClash().getDepends());
 
 					return;
 				}

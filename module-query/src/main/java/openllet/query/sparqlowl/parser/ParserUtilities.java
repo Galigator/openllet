@@ -34,13 +34,14 @@ public class ParserUtilities
 	/**
 	 * Trim first and last character from <code>s</code>. Used when the parser matches STRING_LITERAL1 or STRING_LITERAL2 (SPARQL A.8[87]-[88])
 	 *
-	 * @param  s The string to be trimmed
-	 * @return   The string without its first and last character
-	 * @throw    IllegalArgumentException if string has fewer than 2 characters
+	 * @param s The string to be trimmed
+	 * @return The string without its first and last character
+	 * @throw IllegalArgumentException if string has fewer than 2 characters
 	 */
 	public static String dropFirstAndLast(final String s)
 	{
-		if (s == null) throw new NullPointerException();
+		if (s == null)
+			throw new NullPointerException();
 
 		final int n = s.length();
 		if (n < 3)
@@ -57,13 +58,14 @@ public class ParserUtilities
 	/**
 	 * Trim first and last character from <code>s</code>. Used when the parser matches STRING_LITERAL_LONG1 or STRING_LITERAL_LONG2 (SPARQL A.8[89]-[90])
 	 *
-	 * @param  s The string to be trimmed
-	 * @return   The string without its first and last character
-	 * @throw    IllegalArgumentException if string has fewer than 6 characters
+	 * @param s The string to be trimmed
+	 * @return The string without its first and last character
+	 * @throw IllegalArgumentException if string has fewer than 6 characters
 	 */
 	public static String dropFirstAndLast3(final String s)
 	{
-		if (s == null) throw new NullPointerException();
+		if (s == null)
+			throw new NullPointerException();
 
 		final int n = s.length();
 		if (n < 7)
@@ -80,8 +82,8 @@ public class ParserUtilities
 	/**
 	 * Reverse character escaping in a string literal consistent with SPARQL A.7, A.8[91]
 	 *
-	 * @param  s sparql escaped String.
-	 * @return   un-escaped version of the param as sparql interpretation
+	 * @param s sparql escaped String.
+	 * @return un-escaped version of the param as sparql interpretation
 	 */
 	public static String sparqlUnescape(final String s)
 	{

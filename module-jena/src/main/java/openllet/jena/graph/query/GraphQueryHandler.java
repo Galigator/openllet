@@ -16,20 +16,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import openllet.aterm.ATermAppl;
-import openllet.core.KnowledgeBase;
-import openllet.core.boxes.rbox.Role;
-import openllet.core.utils.CollectionUtils;
-import openllet.core.utils.iterator.FlattenningIterator;
-import openllet.core.utils.iterator.IteratorUtils;
-import openllet.core.utils.iterator.NestedIterator;
-import openllet.jena.JenaUtils;
-import openllet.jena.ModelExtractor;
-import openllet.jena.ModelExtractor.StatementType;
-import openllet.jena.PelletInfGraph;
-import openllet.jena.graph.loader.GraphLoader;
-import openllet.jena.vocabulary.OWL2;
-import openllet.shared.tools.Log;
+
 import org.apache.jena.graph.Graph;
 import org.apache.jena.graph.Node;
 import org.apache.jena.graph.NodeFactory;
@@ -44,40 +31,55 @@ import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
 import org.apache.jena.vocabulary.ReasonerVocabulary;
 
+import openllet.aterm.ATermAppl;
+import openllet.core.KnowledgeBase;
+import openllet.core.boxes.rbox.Role;
+import openllet.core.utils.CollectionUtils;
+import openllet.core.utils.iterator.FlattenningIterator;
+import openllet.core.utils.iterator.IteratorUtils;
+import openllet.core.utils.iterator.NestedIterator;
+import openllet.jena.JenaUtils;
+import openllet.jena.ModelExtractor;
+import openllet.jena.ModelExtractor.StatementType;
+import openllet.jena.PelletInfGraph;
+import openllet.jena.graph.loader.GraphLoader;
+import openllet.jena.vocabulary.OWL2;
+import openllet.shared.tools.Log;
+
 public class GraphQueryHandler
 {
-	public final static Logger		_logger						= Log.getLogger(GraphQueryHandler.class);
+	public final static Logger _logger = Log.getLogger(GraphQueryHandler.class);
 
-	protected static final Node		VAR							= Node.ANY;
-	protected static final Node		CONST						= NodeFactory.createURI("CONST");
+	protected static final Node VAR = Node.ANY;
+	protected static final Node CONST = NodeFactory.createURI("CONST");
 
 	@SuppressWarnings("unused")
-	private static final Node[]		EMPTY						= new Node[0];
+	private static final Node[] EMPTY = new Node[0];
 
-	private static final Node[]		BUILTIN_PREDICATES			= new Node[] {															//
-			RDF.type.asNode(), OWL.sameAs.asNode(), OWL.differentFrom.asNode(),															//
-			RDFS.subClassOf.asNode(), OWL.equivalentClass.asNode(), OWL.complementOf.asNode(), OWL.disjointWith.asNode(),				//
-			RDFS.subPropertyOf.asNode(), OWL.equivalentProperty.asNode(), OWL.inverseOf.asNode(), OWL2.propertyDisjointWith.asNode(),	//
-			RDFS.domain.asNode(), RDFS.range.asNode()																					//
+	private static final Node[] BUILTIN_PREDICATES = new Node[] { //
+			RDF.type.asNode(), OWL.sameAs.asNode(), OWL.differentFrom.asNode(), //
+			RDFS.subClassOf.asNode(), OWL.equivalentClass.asNode(), OWL.complementOf.asNode(), OWL.disjointWith.asNode(), //
+			RDFS.subPropertyOf.asNode(), OWL.equivalentProperty.asNode(), OWL.inverseOf.asNode(), OWL2.propertyDisjointWith.asNode(), //
+			RDFS.domain.asNode(), RDFS.range.asNode() //
 	};
 
-	private static final Node[]		BUILTIN_QUERY_PREDICATES	= new Node[] {															//
-			ReasonerVocabulary.directRDFType.asNode(),																					//
-			ReasonerVocabulary.directSubClassOf.asNode(),																				//
-			ReasonerVocabulary.directSubPropertyOf.asNode()																				//
+	private static final Node[] BUILTIN_QUERY_PREDICATES = new Node[] { //
+			ReasonerVocabulary.directRDFType.asNode(), //
+			ReasonerVocabulary.directSubClassOf.asNode(), //
+			ReasonerVocabulary.directSubPropertyOf.asNode() //
 	};
 
-	private static final Node[]		BUILTIN_TYPES				= new Node[] { OWL.Class.asNode(),										//
-			OWL.AnnotationProperty.asNode(), OWL.ObjectProperty.asNode(),																//
-			OWL.DatatypeProperty.asNode(), OWL.FunctionalProperty.asNode(),																//
-			OWL.InverseFunctionalProperty.asNode(), OWL.TransitiveProperty.asNode(),													//
-			OWL.SymmetricProperty.asNode(), OWL2.AsymmetricProperty.asNode(),															//
-			OWL2.ReflexiveProperty.asNode(), OWL2.IrreflexiveProperty.asNode()															//
+	private static final Node[] BUILTIN_TYPES = new Node[] { OWL.Class.asNode(), //
+			OWL.AnnotationProperty.asNode(), OWL.ObjectProperty.asNode(), //
+			OWL.DatatypeProperty.asNode(), OWL.FunctionalProperty.asNode(), //
+			OWL.InverseFunctionalProperty.asNode(), OWL.TransitiveProperty.asNode(), //
+			OWL.SymmetricProperty.asNode(), OWL2.AsymmetricProperty.asNode(), //
+			OWL2.ReflexiveProperty.asNode(), OWL2.IrreflexiveProperty.asNode() //
 	};
 
-	private static final Node[]		BUILTIN_QUERY_TYPES			= new Node[] { RDFS.Class.asNode(), RDF.Property.asNode() };
+	private static final Node[] BUILTIN_QUERY_TYPES = new Node[] { RDFS.Class.asNode(), RDF.Property.asNode() };
 
-	private static final Set<Node>	BUILTIN_KEYWORDS			= new HashSet<>();
+	private static final Set<Node> BUILTIN_KEYWORDS = new HashSet<>();
 
 	static
 	{
@@ -118,7 +120,8 @@ public class GraphQueryHandler
 		_logger.fine(() -> "Registering handler for pattern: " + pattern);
 
 		final Object prev = QUERY_HANDLERS.put(pattern, handler);
-		if (prev != null) _logger.severe(() -> "Existing handler found for pattern: " + pattern);
+		if (prev != null)
+			_logger.severe(() -> "Existing handler found for pattern: " + pattern);
 	}
 
 	private static void registerQueryHandlers()
@@ -155,8 +158,9 @@ public class GraphQueryHandler
 			public ExtendedIterator<Triple> find(final KnowledgeBase kb, final PelletInfGraph openllet, final Node s, final Node p, final Node o)
 			{
 				ExtendedIterator<Triple> builtinPredicates = NullIterator.instance();
-				if (!o.isLiteral() && !openllet.isSkipBuiltinPredicates()) for (final Node pred : BUILTIN_PREDICATES)
-					builtinPredicates = builtinPredicates.andThen(findTriple(kb, openllet, s, pred, o));
+				if (!o.isLiteral() && !openllet.isSkipBuiltinPredicates())
+					for (final Node pred : BUILTIN_PREDICATES)
+						builtinPredicates = builtinPredicates.andThen(findTriple(kb, openllet, s, pred, o));
 
 				final ExtendedIterator<Triple> propertyAssertions = WrappedIterator.create(new NestedIterator<ATermAppl, Triple>(kb.getProperties())
 				{
@@ -186,8 +190,9 @@ public class GraphQueryHandler
 			public ExtendedIterator<Triple> find(final KnowledgeBase kb, final PelletInfGraph openllet, final Node s, final Node p, final Node o)
 			{
 				ExtendedIterator<Triple> builtinPredicates = NullIterator.instance();
-				if (!openllet.isSkipBuiltinPredicates()) for (final Node pred : BUILTIN_PREDICATES)
-					builtinPredicates = builtinPredicates.andThen(findTriple(kb, openllet, s, pred, o));
+				if (!openllet.isSkipBuiltinPredicates())
+					for (final Node pred : BUILTIN_PREDICATES)
+						builtinPredicates = builtinPredicates.andThen(findTriple(kb, openllet, s, pred, o));
 
 				final ExtendedIterator<Triple> propertyAssertions = WrappedIterator.create(new NestedIterator<ATermAppl, Triple>(kb.getProperties())
 				{
@@ -229,13 +234,17 @@ public class GraphQueryHandler
 
 						if (kb.isIndividual(obj))
 						{
-							if (kb.isSameAs(subj, obj)) result = result.andThen(new SingletonIterator<>(Triple.create(s, OWL.sameAs.asNode(), o)));
-							if (kb.isDifferentFrom(subj, obj)) result = result.andThen(new SingletonIterator<>(Triple.create(s, OWL.differentFrom.asNode(), o)));
+							if (kb.isSameAs(subj, obj))
+								result = result.andThen(new SingletonIterator<>(Triple.create(s, OWL.sameAs.asNode(), o)));
+							if (kb.isDifferentFrom(subj, obj))
+								result = result.andThen(new SingletonIterator<>(Triple.create(s, OWL.differentFrom.asNode(), o)));
 						}
 					}
 				}
-				else if (!openllet.isSkipBuiltinPredicates()) for (final Node pred : BUILTIN_PREDICATES)
-					result = result.andThen(findTriple(kb, openllet, s, pred, o));
+				else
+					if (!openllet.isSkipBuiltinPredicates())
+						for (final Node pred : BUILTIN_PREDICATES)
+							result = result.andThen(findTriple(kb, openllet, s, pred, o));
 				return result;
 			}
 		});
@@ -246,10 +255,12 @@ public class GraphQueryHandler
 			public boolean contains(final KnowledgeBase kb, final GraphLoader loader, final Node s, final Node p, final Node o)
 			{
 				final ATermAppl prop = loader.node2term(p);
-				if (!kb.isProperty(prop)) return false;
+				if (!kb.isProperty(prop))
+					return false;
 
 				for (final ATermAppl ind : kb.getIndividuals())
-					if (kb.hasKnownPropertyValue(ind, prop, null).isTrue()) return true;
+					if (kb.hasKnownPropertyValue(ind, prop, null).isTrue())
+						return true;
 
 				return false;
 			}
@@ -384,34 +395,49 @@ public class GraphQueryHandler
 			{
 				final ATermAppl term = openllet.getLoader().node2term(s);
 
-				if (kb.isIndividual(term)) return objectSetFiller(s, p, kb.getTypes(term));
+				if (kb.isIndividual(term))
+					return objectSetFiller(s, p, kb.getTypes(term));
 
 				final List<Node> types = new ArrayList<>();
 
 				if (kb.isClass(term))
 					types.add(OWL.Class.asNode());
-				else if (kb.isDatatype(term))
-					types.add(RDFS.Datatype.asNode());
-				else if (kb.isObjectProperty(term))
-				{
-					final Role role = kb.getRole(term);
-					types.add(OWL.ObjectProperty.asNode());
-					if (role.isFunctional()) types.add(OWL.FunctionalProperty.asNode());
-					if (role.isInverseFunctional()) types.add(OWL.InverseFunctionalProperty.asNode());
-					if (role.isTransitive()) types.add(OWL.TransitiveProperty.asNode());
-					if (role.isSymmetric()) types.add(OWL.SymmetricProperty.asNode());
-					if (role.isAsymmetric()) types.add(OWL2.AsymmetricProperty.asNode());
-					if (role.isReflexive()) types.add(OWL2.ReflexiveProperty.asNode());
-					if (role.isIrreflexive()) types.add(OWL2.IrreflexiveProperty.asNode());
-				}
-				else if (kb.isDatatypeProperty(term))
-				{
-					final Role role = kb.getRole(term);
-					types.add(OWL.DatatypeProperty.asNode());
-					if (role.isFunctional()) types.add(OWL.FunctionalProperty.asNode());
-					if (role.isInverseFunctional()) types.add(OWL.InverseFunctionalProperty.asNode());
-				}
-				else if (kb.isAnnotationProperty(term)) types.add(OWL.AnnotationProperty.asNode());
+				else
+					if (kb.isDatatype(term))
+						types.add(RDFS.Datatype.asNode());
+					else
+						if (kb.isObjectProperty(term))
+						{
+							final Role role = kb.getRole(term);
+							types.add(OWL.ObjectProperty.asNode());
+							if (role.isFunctional())
+								types.add(OWL.FunctionalProperty.asNode());
+							if (role.isInverseFunctional())
+								types.add(OWL.InverseFunctionalProperty.asNode());
+							if (role.isTransitive())
+								types.add(OWL.TransitiveProperty.asNode());
+							if (role.isSymmetric())
+								types.add(OWL.SymmetricProperty.asNode());
+							if (role.isAsymmetric())
+								types.add(OWL2.AsymmetricProperty.asNode());
+							if (role.isReflexive())
+								types.add(OWL2.ReflexiveProperty.asNode());
+							if (role.isIrreflexive())
+								types.add(OWL2.IrreflexiveProperty.asNode());
+						}
+						else
+							if (kb.isDatatypeProperty(term))
+							{
+								final Role role = kb.getRole(term);
+								types.add(OWL.DatatypeProperty.asNode());
+								if (role.isFunctional())
+									types.add(OWL.FunctionalProperty.asNode());
+								if (role.isInverseFunctional())
+									types.add(OWL.InverseFunctionalProperty.asNode());
+							}
+							else
+								if (kb.isAnnotationProperty(term))
+									types.add(OWL.AnnotationProperty.asNode());
 
 				return WrappedIterator.create(types.iterator()).mapWith(node -> Triple.create(s, p, node));
 			}
@@ -1158,7 +1184,8 @@ public class GraphQueryHandler
 				final List<ATermAppl> props = new ArrayList<>();
 				final ATermAppl domain = openllet.getLoader().node2term(o);
 				for (final ATermAppl prop : kb.getProperties())
-					if (kb.getDomains(prop).contains(domain)) props.add(prop);
+					if (kb.getDomains(prop).contains(domain))
+						props.add(prop);
 				return subjectFiller(props, p, o);
 			}
 		});
@@ -1216,7 +1243,8 @@ public class GraphQueryHandler
 				final List<ATermAppl> props = new ArrayList<>();
 				final ATermAppl range = openllet.getLoader().node2term(o);
 				for (final ATermAppl prop : kb.getProperties())
-					if (kb.getRanges(prop).contains(range)) props.add(prop);
+					if (kb.getRanges(prop).contains(range))
+						props.add(prop);
 				return subjectFiller(props, p, o);
 			}
 		});
@@ -1523,13 +1551,16 @@ public class GraphQueryHandler
 		Node p = normalize(pred);
 		final Node o = normalize(obj);
 
-		if (p == VAR && o != VAR && o != CONST) pred = p = RDF.type.asNode();
+		if (p == VAR && o != VAR && o != CONST)
+			pred = p = RDF.type.asNode();
 
 		final TripleQueryHandler qh = QUERY_HANDLERS.get(Triple.create(s, p, o));
 
-		if (qh == null) if (_logger.isLoggable(Level.WARNING)) _logger.warning("No query handler found for " + subj + " " + pred + " " + obj);
+		if (qh == null)
+			if (_logger.isLoggable(Level.WARNING))
+				_logger.warning("No query handler found for " + subj + " " + pred + " " + obj);
 
-		return qh == null ? NullIterator.<Triple>instance() : qh.find(kb, openllet, subj, pred, obj);
+		return qh == null ? NullIterator.<Triple> instance() : qh.find(kb, openllet, subj, pred, obj);
 	}
 
 	public static boolean containsTriple(final KnowledgeBase kb, final GraphLoader loader, final Node subj, final Node predParam, final Node obj)
@@ -1540,11 +1571,14 @@ public class GraphQueryHandler
 		Node p = normalize(pred);
 		final Node o = normalize(obj);
 
-		if (p == VAR && o != VAR && o != CONST) pred = p = RDF.type.asNode();
+		if (p == VAR && o != VAR && o != CONST)
+			pred = p = RDF.type.asNode();
 
 		final TripleQueryHandler qh = QUERY_HANDLERS.get(Triple.create(s, p, o));
 
-		if (qh == null) if (_logger.isLoggable(Level.WARNING)) _logger.warning("No query handler found for " + subj + " " + pred + " " + obj);
+		if (qh == null)
+			if (_logger.isLoggable(Level.WARNING))
+				_logger.warning("No query handler found for " + subj + " " + pred + " " + obj);
 
 		return qh != null && qh.contains(kb, loader, subj, pred, obj);
 	}

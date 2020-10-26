@@ -14,16 +14,16 @@ package openllet.core.utils.fsm;
  * Company: Clark & Parsia, LLC. <http://www.clarkparsia.com>
  * </p>
  *
- * @author     Evren Sirin
- * @param  <T> kind of transition
+ * @author Evren Sirin
+ * @param <T> kind of transition
  */
 public class Transition<T>
 {
-	private static final Object	EPSILON	= null;
+	private static final Object EPSILON = null;
 
-	private final T				_name;
+	private final T _name;
 
-	private volatile State<T>	_to;
+	private volatile State<T> _to;
 
 	/**
 	 * /* add edge with epsilon edge
@@ -62,20 +62,29 @@ public class Transition<T>
 	@Override
 	public boolean equals(final Object obj)
 	{
-		if (this == obj) return true;
-		if (obj == null) return false;
-		if (getClass() != obj.getClass()) return false;
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
 		final Transition<?> other = (Transition<?>) obj;
 		if (_name == null)
 		{
-			if (other._name != null) return false;
+			if (other._name != null)
+				return false;
 		}
-		else if (!_name.equals(other._name)) return false;
+		else
+			if (!_name.equals(other._name))
+				return false;
 		if (_to == null)
 		{
-			if (other._to != null) return false;
+			if (other._to != null)
+				return false;
 		}
-		else if (!_to.equals(other._to)) return false;
+		else
+			if (!_to.equals(other._to))
+				return false;
 		return true;
 	}
 

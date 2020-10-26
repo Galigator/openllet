@@ -10,6 +10,7 @@ package openllet.core.rules.builtins;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+
 import openllet.core.exceptions.InternalReasonerException;
 
 /**
@@ -35,7 +36,8 @@ public class URIOperators
 		@Override
 		public String apply(final String... args)
 		{
-			if (args.length != 2) throw new InternalReasonerException("ResolveURI takes two and only two arguments");
+			if (args.length != 2)
+				throw new InternalReasonerException("ResolveURI takes two and only two arguments");
 
 			URI relativeURI, baseURI;
 			final String relative = args[0];
@@ -44,14 +46,16 @@ public class URIOperators
 			// According to
 			// http://www.w3.org/TR/xpath-functions/#func-resolve-uri, if
 			// relative is an empty sequence, the empty sequence is returned
-			if (relative.length() == 0) return relative;
+			if (relative.length() == 0)
+				return relative;
 
 			try
 			{
 				relativeURI = new URI(relative);
 
 				// If relative is absolute it is returned unchanged
-				if (relativeURI.isAbsolute()) return relative;
+				if (relativeURI.isAbsolute())
+					return relative;
 			}
 			catch (final URISyntaxException e)
 			{
@@ -86,7 +90,8 @@ public class URIOperators
 		@Override
 		public String apply(final String... args)
 		{
-			if (args.length != 6) throw new InternalReasonerException("AnyURI wrong number of arguments");
+			if (args.length != 6)
+				throw new InternalReasonerException("AnyURI wrong number of arguments");
 
 			String schema = args[0];
 			String host = args[1];
@@ -95,17 +100,23 @@ public class URIOperators
 			String query = args[4];
 			String fragment = args[5];
 
-			if (!schema.endsWith(":")) schema += ":";
+			if (!schema.endsWith(":"))
+				schema += ":";
 
-			if (!host.startsWith("//")) host = "//" + host;
+			if (!host.startsWith("//"))
+				host = "//" + host;
 
-			if (port.length() > 0 && !port.startsWith(":")) port = ":" + port;
+			if (port.length() > 0 && !port.startsWith(":"))
+				port = ":" + port;
 
-			if (path.length() > 0 && !path.startsWith("/")) path = "/" + path;
+			if (path.length() > 0 && !path.startsWith("/"))
+				path = "/" + path;
 
-			if (query.length() > 0 && !query.startsWith("?")) query = "?" + query;
+			if (query.length() > 0 && !query.startsWith("?"))
+				query = "?" + query;
 
-			if (fragment.length() > 0 && !fragment.startsWith("#")) fragment = "#" + fragment;
+			if (fragment.length() > 0 && !fragment.startsWith("#"))
+				fragment = "#" + fragment;
 
 			try
 			{
@@ -118,7 +129,7 @@ public class URIOperators
 		}
 	}
 
-	public final static Function	resolveURI	= new StringFunctionAdapter(new ResolveURI());
-	public final static Function	anyURI		= new StringFunctionAdapter(new AnyURI());
+	public final static Function resolveURI = new StringFunctionAdapter(new ResolveURI());
+	public final static Function anyURI = new StringFunctionAdapter(new AnyURI());
 
 }

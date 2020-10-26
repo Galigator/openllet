@@ -14,6 +14,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.junit.Assert;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.utils.ATermUtils;
 import openllet.query.sparqldl.engine.QueryEngine;
@@ -24,7 +27,6 @@ import openllet.query.sparqldl.model.QueryImpl;
 import openllet.query.sparqldl.model.QueryResult;
 import openllet.query.sparqldl.model.ResultBinding;
 import openllet.test.AbstractKBTests;
-import org.junit.Assert;
 
 /**
  * <p>
@@ -38,9 +40,9 @@ import org.junit.Assert;
  */
 public abstract class AbstractQueryTest extends AbstractKBTests
 {
-	protected static final ATermAppl	x	= ATermUtils.makeVar("x");
-	protected static final ATermAppl	y	= ATermUtils.makeVar("y");
-	protected static final ATermAppl	z	= ATermUtils.makeVar("z");
+	protected static final ATermAppl x = ATermUtils.makeVar("x");
+	protected static final ATermAppl y = ATermUtils.makeVar("y");
+	protected static final ATermAppl z = ATermUtils.makeVar("z");
 
 	protected ATermAppl[] select(final ATermAppl... vars)
 	{
@@ -105,10 +107,11 @@ public abstract class AbstractQueryTest extends AbstractKBTests
 			final Integer count = answers.get(list);
 			if (count == null)
 				Assert.fail("Unexpected binding in the result: " + list);
-			else if (count == 1)
-				answers.remove(list);
 			else
-				answers.put(list, count - 1);
+				if (count == 1)
+					answers.remove(list);
+				else
+					answers.put(list, count - 1);
 		}
 
 		assertTrue("Unfound bindings: " + answers.keySet(), answers.isEmpty());

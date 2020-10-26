@@ -3,7 +3,9 @@ package openllet.core.datatypes;
 import static java.lang.String.format;
 
 import java.util.logging.Logger;
+
 import javax.xml.bind.DatatypeConverter;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.datatypes.exceptions.InvalidLiteralException;
 import openllet.core.utils.ATermUtils;
@@ -29,17 +31,17 @@ import openllet.shared.tools.Log;
 public class XSDFloat implements Datatype<Float>
 {
 
-	private static final XSDFloat	instance	= new XSDFloat();
-	private static final Logger		_logger		= Log.getLogger(XSDFloat.class);
+	private static final XSDFloat instance = new XSDFloat();
+	private static final Logger _logger = Log.getLogger(XSDFloat.class);
 
 	public static XSDFloat getInstance()
 	{
 		return instance;
 	}
 
-	private final RestrictedFloatingPointDatatype<Float>	dataRange;
-	private final int										hashCode;
-	private final ATermAppl									name;
+	private final RestrictedFloatingPointDatatype<Float> dataRange;
+	private final int hashCode;
+	private final ATermAppl name;
 
 	/**
 	 * Private constructor forces use of {@link #getInstance()}
@@ -61,16 +63,20 @@ public class XSDFloat implements Datatype<Float>
 	@Override
 	public boolean equals(final Object obj)
 	{
-		if (this == obj) return true;
-		if (obj == null) return false;
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
 		return getClass() == obj.getClass();
 	}
 
 	@Override
 	public ATermAppl getCanonicalRepresentation(final ATermAppl input) throws InvalidLiteralException
 	{
-		if (!ATermUtils.isLiteral(input)) throw new IllegalArgumentException();
-		if (!input.getArgument(ATermUtils.LIT_URI_INDEX).equals(name)) throw new IllegalArgumentException();
+		if (!ATermUtils.isLiteral(input))
+			throw new IllegalArgumentException();
+		if (!input.getArgument(ATermUtils.LIT_URI_INDEX).equals(name))
+			throw new IllegalArgumentException();
 
 		final String lexicalForm = ATermUtils.getLiteralValue(input);
 		try
@@ -116,8 +122,10 @@ public class XSDFloat implements Datatype<Float>
 	@Override
 	public Float getValue(final ATermAppl literal) throws InvalidLiteralException
 	{
-		if (!ATermUtils.isLiteral(literal)) throw new IllegalArgumentException();
-		if (!literal.getArgument(ATermUtils.LIT_URI_INDEX).equals(name)) throw new IllegalArgumentException();
+		if (!ATermUtils.isLiteral(literal))
+			throw new IllegalArgumentException();
+		if (!literal.getArgument(ATermUtils.LIT_URI_INDEX).equals(name))
+			throw new IllegalArgumentException();
 
 		final String lexicalForm = ATermUtils.getLiteralValue(literal);
 		try

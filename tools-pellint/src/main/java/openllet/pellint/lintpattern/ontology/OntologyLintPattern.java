@@ -7,9 +7,11 @@
 package openllet.pellint.lintpattern.ontology;
 
 import java.util.List;
+
+import org.semanticweb.owlapi.model.OWLOntology;
+
 import openllet.pellint.lintpattern.LintPattern;
 import openllet.pellint.model.Lint;
-import org.semanticweb.owlapi.model.OWLOntology;
 
 /**
  * <p>
@@ -29,10 +31,9 @@ public interface OntologyLintPattern extends LintPattern
 	/**
 	 * Match an OWLOntology and returns a list of {@link openllet.pellint.model.Lint} for the OWLOntology.
 	 *
-	 * @param  ontology to match.
-	 *
-	 * @return          A possibly empty list of {@link openllet.pellint.model.Lint} for the OWLOntology. Never returns <code>null</code>.
-	 * @see             openllet.pellint.model.Lint
+	 * @param ontology to match.
+	 * @return A possibly empty list of {@link openllet.pellint.model.Lint} for the OWLOntology. Never returns <code>null</code>.
+	 * @see openllet.pellint.model.Lint
 	 */
 	List<Lint> match(final OWLOntology ontology);
 }

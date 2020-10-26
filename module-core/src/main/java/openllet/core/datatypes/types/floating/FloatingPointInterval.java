@@ -16,8 +16,8 @@ import openllet.core.datatypes.DiscreteInterval;
  * Company: Clark & Parsia, LLC. <http://www.clarkparsia.com>
  * </p>
  *
- * @author     Mike Smith
- * @param  <T> specific type of number
+ * @author Mike Smith
+ * @param <T> specific type of number
  */
 public class FloatingPointInterval<T extends Number & Comparable<T>> extends DiscreteInterval<T, FloatingPointInterval<T>>
 {
@@ -33,28 +33,36 @@ public class FloatingPointInterval<T extends Number & Comparable<T>> extends Dis
 	{
 		super(point);
 
-		if (type == null) throw new NullPointerException();
+		if (type == null)
+			throw new NullPointerException();
 
-		if (type.isNaN(point)) throw new IllegalArgumentException();
+		if (type.isNaN(point))
+			throw new IllegalArgumentException();
 
 		this._type = type;
 
-		if (!valid(point)) throw new IllegalArgumentException();
+		if (!valid(point))
+			throw new IllegalArgumentException();
 	}
 
 	public FloatingPointInterval(final FloatingPointType<T> type, final T lower, final T upper)
 	{
 		super(lower, upper);
 
-		if (type == null) throw new NullPointerException();
+		if (type == null)
+			throw new NullPointerException();
 
-		if (type.isNaN(lower)) throw new IllegalArgumentException();
-		if (type.isNaN(upper)) throw new IllegalArgumentException();
+		if (type.isNaN(lower))
+			throw new IllegalArgumentException();
+		if (type.isNaN(upper))
+			throw new IllegalArgumentException();
 
 		this._type = type;
 
-		if (!valid(lower)) throw new IllegalArgumentException();
-		if (!valid(upper)) throw new IllegalArgumentException();
+		if (!valid(lower))
+			throw new IllegalArgumentException();
+		if (!valid(upper))
+			throw new IllegalArgumentException();
 	}
 
 	@Override
@@ -69,8 +77,10 @@ public class FloatingPointInterval<T extends Number & Comparable<T>> extends Dis
 	@Override
 	protected int compare(final T a, final NullSemantics na, final T b, final NullSemantics nb)
 	{
-		if (a == null) throw new NullPointerException();
-		if (b == null) throw new NullPointerException();
+		if (a == null)
+			throw new NullPointerException();
+		if (b == null)
+			throw new NullPointerException();
 
 		return a.compareTo(b);
 	}
@@ -78,7 +88,8 @@ public class FloatingPointInterval<T extends Number & Comparable<T>> extends Dis
 	@Override
 	public boolean contains(final T n)
 	{
-		if (_type.isNaN(n)) return false;
+		if (_type.isNaN(n))
+			return false;
 
 		return super.contains(n);
 	}
@@ -104,18 +115,23 @@ public class FloatingPointInterval<T extends Number & Comparable<T>> extends Dis
 	@Override
 	public boolean equals(final Object obj)
 	{
-		if (this == obj) return true;
-		if (obj == null) return false;
-		if (getClass() != obj.getClass()) return false;
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
 		final FloatingPointInterval<?> other = (FloatingPointInterval<?>) obj;
-		if (!getLower().equals(other.getLower())) return false;
+		if (!getLower().equals(other.getLower()))
+			return false;
 		return getUpper().equals(other.getUpper());
 	}
 
 	@Override
 	public FloatingPointInterval<T> greater(final T n)
 	{
-		if (_type.isNaN(n)) throw new IllegalArgumentException();
+		if (_type.isNaN(n))
+			throw new IllegalArgumentException();
 		return super.greater(n);
 	}
 
@@ -128,7 +144,8 @@ public class FloatingPointInterval<T extends Number & Comparable<T>> extends Dis
 	@Override
 	public FloatingPointInterval<T> less(final T n)
 	{
-		if (_type.isNaN(n)) throw new IllegalArgumentException();
+		if (_type.isNaN(n))
+			throw new IllegalArgumentException();
 		return super.less(n);
 	}
 

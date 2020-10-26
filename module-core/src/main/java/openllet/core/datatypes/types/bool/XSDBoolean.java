@@ -27,10 +27,10 @@ import openllet.core.utils.TermFactory;
 public class XSDBoolean extends AbstractBaseDatatype<Boolean>
 {
 
-	private static final ATermAppl	CANONICAL_FALSE_TERM;
-	private static final ATermAppl	CANONICAL_TRUE_TERM;
-	private static final XSDBoolean	instance;
-	private static final ATermAppl	NAME;
+	private static final ATermAppl CANONICAL_FALSE_TERM;
+	private static final ATermAppl CANONICAL_TRUE_TERM;
+	private static final XSDBoolean instance;
+	private static final ATermAppl NAME;
 
 	static
 	{
@@ -63,7 +63,8 @@ public class XSDBoolean extends AbstractBaseDatatype<Boolean>
 	@Override
 	public ATermAppl getCanonicalRepresentation(final ATermAppl input) throws InvalidLiteralException
 	{
-		if (input == CANONICAL_FALSE_TERM || input == CANONICAL_TRUE_TERM) return input;
+		if (input == CANONICAL_FALSE_TERM || input == CANONICAL_TRUE_TERM)
+			return input;
 
 		return getLiteral(getValue(input));
 	}
@@ -89,10 +90,11 @@ public class XSDBoolean extends AbstractBaseDatatype<Boolean>
 		final String lexicalForm = getLexicalForm(literal).trim();
 		if ("true".equals(lexicalForm) || "1".equals(lexicalForm))
 			return Boolean.TRUE;
-		else if ("false".equals(lexicalForm) || "0".equals(lexicalForm))
-			return Boolean.FALSE;
 		else
-			throw new InvalidLiteralException(getName(), lexicalForm);
+			if ("false".equals(lexicalForm) || "0".equals(lexicalForm))
+				return Boolean.FALSE;
+			else
+				throw new InvalidLiteralException(getName(), lexicalForm);
 	}
 
 	@Override

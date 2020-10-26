@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import openllet.shared.tools.Log;
+
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSet;
 import org.apache.jena.query.ResultSetFactory;
@@ -26,14 +26,16 @@ import org.apache.jena.rdf.model.ResourceFactory;
 import org.apache.jena.sparql.resultset.ResultsFormat;
 import org.junit.Assert;
 
+import openllet.shared.tools.Log;
+
 /**
  * @author Evren Sirin
  */
 public class ResultSetUtils
 {
-	private static final Logger		_logger			= Log.getLogger(ResultSetUtils.class);
+	private static final Logger _logger = Log.getLogger(ResultSetUtils.class);
 
-	private static final RDFNode	DUMMY_FOR_BNODE	= ResourceFactory.createPlainLiteral("dummy node for bnode");
+	private static final RDFNode DUMMY_FOR_BNODE = ResourceFactory.createPlainLiteral("dummy node for bnode");
 
 	public static boolean assertEquals(final ResultSet expectedResults, final ResultSet computedResults)
 	{
@@ -73,7 +75,8 @@ public class ResultSetUtils
 		for (final String var : vars)
 		{
 			final RDFNode val = qs.get(var);
-			if (null != val) result.put(var, val.isAnon() ? DUMMY_FOR_BNODE : val);
+			if (null != val)
+				result.put(var, val.isAnon() ? DUMMY_FOR_BNODE : val);
 		}
 		return result;
 	}

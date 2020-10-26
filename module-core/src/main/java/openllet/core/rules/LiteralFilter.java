@@ -8,6 +8,7 @@ package openllet.core.rules;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+
 import openllet.core.boxes.abox.Literal;
 import openllet.core.boxes.abox.Node;
 
@@ -29,8 +30,8 @@ import openllet.core.boxes.abox.Node;
  */
 public class LiteralFilter implements Iterator<Literal>
 {
-	private final Iterator<Node>	_iterator;
-	private volatile Literal		_next;
+	private final Iterator<Node> _iterator;
+	private volatile Literal _next;
 
 	public LiteralFilter(final Iterator<Node> iterator)
 	{
@@ -43,7 +44,8 @@ public class LiteralFilter implements Iterator<Literal>
 		while (_next == null && _iterator.hasNext())
 		{
 			final Node node = _iterator.next();
-			if (node.isLiteral() && node.isRootNominal()) _next = (Literal) node;
+			if (node.isLiteral() && node.isRootNominal())
+				_next = (Literal) node;
 		}
 		return _next != null;
 	}
@@ -51,7 +53,8 @@ public class LiteralFilter implements Iterator<Literal>
 	@Override
 	public Literal next()
 	{
-		if (!hasNext()) throw new NoSuchElementException();
+		if (!hasNext())
+			throw new NoSuchElementException();
 
 		final Literal result = _next;
 		_next = null;

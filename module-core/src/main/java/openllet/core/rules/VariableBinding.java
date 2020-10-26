@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.OpenlletOptions;
 import openllet.core.boxes.abox.ABox;
@@ -93,7 +94,8 @@ public class VariableBinding
 
 			_abox.copyOnWrite();
 			_value = _abox.getLiteral(canonical);
-			if (_value == null) _value = _abox.addLiteral(canonical);
+			if (_value == null)
+				_value = _abox.addLiteral(canonical);
 		}
 
 		@Override
@@ -138,8 +140,8 @@ public class VariableBinding
 	private class ValueSettingVisitor implements AtomObjectVisitor
 	{
 
-		private Literal		_data;
-		private Individual	_individual;
+		private Literal _data;
+		private Individual _individual;
 
 		public ValueSettingVisitor(final Individual individual, final Literal data)
 		{
@@ -166,7 +168,8 @@ public class VariableBinding
 		@Override
 		public void visit(final AtomDVariable var)
 		{
-			if (_data != null) _data = _dataVars.put(var, _data);
+			if (_data != null)
+				_data = _dataVars.put(var, _data);
 		}
 
 		@Override
@@ -178,16 +181,17 @@ public class VariableBinding
 		@Override
 		public void visit(final AtomIVariable var)
 		{
-			if (_individual != null) _individual = _instanceVars.put(var, _individual);
+			if (_individual != null)
+				_individual = _instanceVars.put(var, _individual);
 		}
 
 	}
 
-	private final ABox								_abox;
+	private final ABox _abox;
 
-	private final Map<AtomDVariable, Literal>		_dataVars		= new HashMap<>();
+	private final Map<AtomDVariable, Literal> _dataVars = new HashMap<>();
 
-	private final Map<AtomIVariable, Individual>	_instanceVars	= new HashMap<>();
+	private final Map<AtomIVariable, Individual> _instanceVars = new HashMap<>();
 
 	public VariableBinding(final ABox abox)
 	{
@@ -235,7 +239,8 @@ public class VariableBinding
 		if (other instanceof VariableBinding)
 		{
 			final VariableBinding otherBinding = (VariableBinding) other;
-			if (_dataVars.equals(otherBinding._dataVars) && _instanceVars.equals(otherBinding._instanceVars)) return true;
+			if (_dataVars.equals(otherBinding._dataVars) && _instanceVars.equals(otherBinding._instanceVars))
+				return true;
 		}
 		return false;
 	}
@@ -243,8 +248,8 @@ public class VariableBinding
 	/**
 	 * If the key is a variable, return the _node associated with it in the map. If the key is a constant, return the corresponding _node from the _abox.
 	 *
-	 * @param  key
-	 * @return     a node
+	 * @param key
+	 * @return a node
 	 */
 	public Literal get(final AtomDObject key)
 	{
@@ -257,8 +262,8 @@ public class VariableBinding
 	 * If the key is a variable, return the _individual associated with it in the map. If the key is a constant, return the corresponding _individual from the
 	 * _abox.
 	 *
-	 * @param  key
-	 * @return     an individual link to the key of the abox
+	 * @param key
+	 * @return an individual link to the key of the abox
 	 */
 	public Individual get(final AtomIObject key)
 	{
@@ -281,9 +286,9 @@ public class VariableBinding
 	/**
 	 * If the key is a _data variable, set the value. Otherwise, ignore it.
 	 *
-	 * @param  key
-	 * @param  value
-	 * @return       the visited value after acceptation
+	 * @param key
+	 * @param value
+	 * @return the visited value after acceptation
 	 */
 	public Literal set(final AtomDObject key, final Literal value)
 	{
@@ -303,9 +308,9 @@ public class VariableBinding
 	/**
 	 * If the key is an instance variable, set the value. Otherwise, ignore it.
 	 *
-	 * @param  key
-	 * @param  value
-	 * @return       the visited individual after acceptation
+	 * @param key
+	 * @param value
+	 * @return the visited individual after acceptation
 	 */
 	public Individual set(final AtomIObject key, final Individual value)
 	{

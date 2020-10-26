@@ -6,10 +6,11 @@
 
 package openllet.test.rules;
 
-import junit.framework.JUnit4TestAdapter;
-import openllet.test.PelletTestSuite;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import junit.framework.JUnit4TestAdapter;
+import openllet.test.PelletTestSuite;
 
 /**
  * <p>

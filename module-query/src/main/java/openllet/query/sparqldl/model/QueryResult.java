@@ -7,6 +7,7 @@
 package openllet.query.sparqldl.model;
 
 import java.util.List;
+
 import openllet.aterm.ATermAppl;
 
 /**

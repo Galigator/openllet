@@ -46,13 +46,13 @@ public class AlphaNumericComparator implements Comparator<Object>
 	/**
 	 * A static instantiation of a case sensitive AlphaNumericComparator
 	 */
-	public static final AlphaNumericComparator	CASE_SENSITIVE		= new AlphaNumericComparator(true);
+	public static final AlphaNumericComparator CASE_SENSITIVE = new AlphaNumericComparator(true);
 	/**
 	 * A static instantiation of a case insensitive AlphaNumericComparator
 	 */
-	public static final AlphaNumericComparator	CASE_INSENSITIVE	= new AlphaNumericComparator(false);
+	public static final AlphaNumericComparator CASE_INSENSITIVE = new AlphaNumericComparator(false);
 
-	private final boolean						_caseSensitive;
+	private final boolean _caseSensitive;
 
 	/**
 	 * Create a case sensitive AlphaNumericComparator
@@ -83,35 +83,40 @@ public class AlphaNumericComparator implements Comparator<Object>
 		{
 			char c1 = s1.charAt(i1);
 			char c2 = s2.charAt(i2);
-			if (c1 != c2) if (Character.isDigit(c1))
-			{
-				if (Character.isDigit(c2))
+			if (c1 != c2)
+				if (Character.isDigit(c1))
 				{
-					int value1 = 0, value2 = 0;
-					while (i1 < n1 && Character.isDigit(c1 = s1.charAt(i1++)))
-						value1 = 10 * value1 + c1 - '0';
-					while (i2 < n2 && Character.isDigit(c2 = s2.charAt(i2++)))
-						value2 = 10 * value2 + c2 - '0';
-					if (value1 != value2) return value1 - value2;
+					if (Character.isDigit(c2))
+					{
+						int value1 = 0, value2 = 0;
+						while (i1 < n1 && Character.isDigit(c1 = s1.charAt(i1++)))
+							value1 = 10 * value1 + c1 - '0';
+						while (i2 < n2 && Character.isDigit(c2 = s2.charAt(i2++)))
+							value2 = 10 * value2 + c2 - '0';
+						if (value1 != value2)
+							return value1 - value2;
+					}
+					else
+						return 1;
 				}
 				else
-					return 1;
-			}
-			else if (Character.isDigit(c2))
-				return -1;
-			else if (!_caseSensitive)
-			{
-				c1 = Character.toUpperCase(c1);
-				c2 = Character.toUpperCase(c2);
-				if (c1 != c2)
-				{
-					c1 = Character.toLowerCase(c1);
-					c2 = Character.toLowerCase(c2);
-					if (c1 != c2) return c1 - c2;
-				}
-			}
-			else
-				return c1 - c2;
+					if (Character.isDigit(c2))
+						return -1;
+					else
+						if (!_caseSensitive)
+						{
+							c1 = Character.toUpperCase(c1);
+							c2 = Character.toUpperCase(c2);
+							if (c1 != c2)
+							{
+								c1 = Character.toLowerCase(c1);
+								c2 = Character.toLowerCase(c2);
+								if (c1 != c2)
+									return c1 - c2;
+							}
+						}
+						else
+							return c1 - c2;
 		}
 
 		return n1 - n2;

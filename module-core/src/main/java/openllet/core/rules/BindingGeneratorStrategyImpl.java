@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
+
 import openllet.core.boxes.abox.ABox;
 import openllet.core.rules.builtins.BuiltIn;
 import openllet.core.rules.builtins.BuiltInRegistry;
@@ -119,7 +120,8 @@ public class BindingGeneratorStrategyImpl implements BindingGeneratorStrategy
 		//		}
 
 		for (final AtomIVariable var : instanceVariables)
-			if (!selectiveVariables.contains(var)) helpers.add(new ObjectVariableBindingHelper(_abox, var));
+			if (!selectiveVariables.contains(var))
+				helpers.add(new ObjectVariableBindingHelper(_abox, var));
 
 		helpers.addAll(new TrivialSatisfactionHelpers(_abox).getHelpers(rule));
 
@@ -200,7 +202,8 @@ public class BindingGeneratorStrategyImpl implements BindingGeneratorStrategy
 			}
 
 			// May have moved off the list.
-			if (i < helpers.size()) bound.addAll(helpers.get(i).getBindableVars(bound));
+			if (i < helpers.size())
+				bound.addAll(helpers.get(i).getBindableVars(bound));
 
 		}
 

@@ -20,6 +20,10 @@ import java.security.NoSuchAlgorithmException;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
+
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLOntology;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
 import openllet.core.OpenlletOptions;
@@ -30,8 +34,6 @@ import openllet.modularity.OntologyDiff;
 import openllet.modularity.io.IncrementalClassifierPersistence;
 import openllet.owlapi.OWLAPILoader;
 import openllet.owlapi.OWLClassTreePrinter;
-import org.semanticweb.owlapi.model.OWLClass;
-import org.semanticweb.owlapi.model.OWLOntology;
 
 /**
  * <p>
@@ -49,23 +51,23 @@ public class OpenlletClassify extends OpenlletCmdApp
 	/**
 	 * Maximum radix for encoding of the MD5 of the root ontology URI
 	 */
-	private static final int	ENCODING_RADIX		= 36;
+	private static final int ENCODING_RADIX = 36;
 
 	/**
 	 * The pattern for the names of the files containing the persisted _data of the incremental classifier. The parameter in the pattern should be replaced with
 	 * the MD5 of the root ontology IRI (to prevent mixing up files that belong to different ontologies).
 	 */
-	private static final String	FILE_NAME_PATTERN	= "persisted-state-%s.zip";
+	private static final String FILE_NAME_PATTERN = "persisted-state-%s.zip";
 
 	/**
 	 * The directory where persisted state is saved (for now, this is the _current directory).
 	 */
-	private final File			saveDirectory		= new File(".");
+	private final File saveDirectory = new File(".");
 
 	/**
 	 * Boolean flag whether the state of the classifier saved on disk is up-to-date
 	 */
-	private boolean				_currentStateSaved	= false;
+	private boolean _currentStateSaved = false;
 
 	public OpenlletClassify()
 	{
@@ -90,8 +92,7 @@ public class OpenlletClassify extends OpenlletCmdApp
 
 		final OpenlletCmdOption option = new OpenlletCmdOption("persist");
 		option.setShortOption("p");
-		option.setDescription(
-				"Enable persistence of classification results. The classifier will save its internal state in a file, and will reuse it the next time this ontology is loaded, therefore saving classification time. This option can only be used with OWLAPI _loader.");
+		option.setDescription("Enable persistence of classification results. The classifier will save its internal state in a file, and will reuse it the next time this ontology is loaded, therefore saving classification time. This option can only be used with OWLAPI _loader.");
 		option.setIsMandatory(false);
 		option.setArg(NONE);
 		options.add(option);
@@ -123,7 +124,8 @@ public class OpenlletClassify extends OpenlletCmdApp
 		final boolean isConsistent = kb.isConsistent();
 		finishTask("consistency check");
 
-		if (!isConsistent) throw new OpenlletCmdException("Ontology is inconsistent, run \"openllet explain\" to get the reason");
+		if (!isConsistent)
+			throw new OpenlletCmdException("Ontology is inconsistent, run \"openllet explain\" to get the reason");
 
 		startTask("classification");
 		kb.classify();
@@ -140,7 +142,8 @@ public class OpenlletClassify extends OpenlletCmdApp
 	{
 		final String loaderName = _options.getOption("loader").getValueAsString();
 
-		if (!"OWLAPI".equals(loaderName)) _logger.log(Level.WARNING, "Ignoring -l " + loaderName + " option. When using --persist the only allowed loader is OWLAPI");
+		if (!"OWLAPI".equals(loaderName))
+			_logger.log(Level.WARNING, "Ignoring -l " + loaderName + " option. When using --persist the only allowed loader is OWLAPI");
 
 		final OWLAPILoader loader = (OWLAPILoader) getLoader("OWLAPI");
 
@@ -155,7 +158,8 @@ public class OpenlletClassify extends OpenlletCmdApp
 			final boolean isConsistent = incrementalClassifier.isConsistent();
 			finishTask("consistency check");
 
-			if (!isConsistent) throw new OpenlletCmdException("Ontology is inconsistent, run \"openllet explain\" to get the reason");
+			if (!isConsistent)
+				throw new OpenlletCmdException("Ontology is inconsistent, run \"openllet explain\" to get the reason");
 
 			startTask("classification");
 			incrementalClassifier.classify();
@@ -165,14 +169,15 @@ public class OpenlletClassify extends OpenlletCmdApp
 		final TaxonomyPrinter<OWLClass> printer = new OWLClassTreePrinter();
 		printer.print(incrementalClassifier.getTaxonomy());
 
-		if (!_currentStateSaved) persistIncrementalClassifier(incrementalClassifier, ontology);
+		if (!_currentStateSaved)
+			persistIncrementalClassifier(incrementalClassifier, ontology);
 	}
 
 	/**
 	 * Creates incremental classifier by either creating it from scratch or by reading its state from file (if there exists such a state)
 	 *
-	 * @param  ontology the ontology (the _current state of it)
-	 * @return          the incremental classifier
+	 * @param ontology the ontology (the _current state of it)
+	 * @return the incremental classifier
 	 */
 	private IncrementalClassifier createIncrementalClassifier(final OWLOntology ontology)
 	{
@@ -180,10 +185,12 @@ public class OpenlletClassify extends OpenlletCmdApp
 		IncrementalClassifier result = null;
 
 		// first try to restore the classifier from the file (if one exists)
-		if (saveFile.exists()) result = loadIncrementalClassifier(ontology, saveFile);
+		if (saveFile.exists())
+			result = loadIncrementalClassifier(ontology, saveFile);
 
 		// if it was not possible to restore the classifier, create one from scratch
-		if (result == null) result = new IncrementalClassifier(ontology);
+		if (result == null)
+			result = new IncrementalClassifier(ontology);
 
 		result.getReasoner().getKB().setTaxonomyBuilderProgressMonitor(OpenlletOptions.USE_CLASSIFICATION_MONITOR.create());
 
@@ -194,7 +201,7 @@ public class OpenlletClassify extends OpenlletCmdApp
 	 * Stores the current state of the incremental classifier to a file (the file name is determined automatically based on ontology's IRI).
 	 *
 	 * @param incrementalClassifier the incremental classifier to be stored
-	 * @param ontology              the ontology
+	 * @param ontology the ontology
 	 */
 	private void persistIncrementalClassifier(final IncrementalClassifier incrementalClassifier, final OWLOntology ontology)
 	{
@@ -214,9 +221,9 @@ public class OpenlletClassify extends OpenlletCmdApp
 	 * Loads the incremental classifier from a file. If the ontology changed since the state of the classifier was persisted, the classifier will be
 	 * incrementally updated with the changes.
 	 *
-	 * @param  ontology the ontology (its _current state, since class
-	 * @param  file     the file from which the persisted state will be read
-	 * @return          the read classifier or null, if it was not possible to read the classifier
+	 * @param ontology the ontology (its _current state, since class
+	 * @param file the file from which the persisted state will be read
+	 * @return the read classifier or null, if it was not possible to read the classifier
 	 */
 	private IncrementalClassifier loadIncrementalClassifier(final OWLOntology ontology, final File file)
 	{

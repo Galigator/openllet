@@ -39,11 +39,11 @@ import openllet.core.boxes.rbox.Role;
  */
 public class DefaultEdge implements Edge
 {
-	private final Individual		_from;
-	private final Node				_to;
-	private final Role				_role;
+	private final Individual _from;
+	private final Node _to;
+	private final Role _role;
 
-	private volatile DependencySet	_depends;	// Volatile require for backtrack on incremental classification
+	private volatile DependencySet _depends; // Volatile require for backtrack on incremental classification
 
 	public DefaultEdge(final Role name, final Individual from, final Node to, final DependencySet d)
 	{
@@ -61,10 +61,11 @@ public class DefaultEdge implements Edge
 	{
 		if (_from.equals(node))
 			return _to;
-		else if (_to.equals(node))
-			return _from;
 		else
-			return null;
+			if (_to.equals(node))
+				return _from;
+			else
+				return null;
 	}
 
 	@Override
@@ -112,8 +113,10 @@ public class DefaultEdge implements Edge
 	@Override
 	public boolean equals(final Object other)
 	{
-		if (this == other) return true;
-		if (!(other instanceof DefaultEdge)) return false;
+		if (this == other)
+			return true;
+		if (!(other instanceof DefaultEdge))
+			return false;
 		final DefaultEdge that = (DefaultEdge) other;
 		return _from.equals(that._from) && _role.equals(that._role) && _to.equals(that._to);
 	}

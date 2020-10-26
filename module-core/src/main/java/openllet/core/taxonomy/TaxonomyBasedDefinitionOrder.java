@@ -9,6 +9,7 @@ package openllet.core.taxonomy;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
@@ -37,19 +38,21 @@ public class TaxonomyBasedDefinitionOrder extends AbstractDefinitionOrder
 	@Override
 	protected void addUses(final ATermAppl c, final ATermAppl d)
 	{
-		if (_definitionOrderTaxonomy.isEquivalent(c, d).isTrue()) return;
+		if (_definitionOrderTaxonomy.isEquivalent(c, d).isTrue())
+			return;
 
 		final TaxonomyNode<ATermAppl> cNode = _definitionOrderTaxonomy.getNode(c);
 		final TaxonomyNode<ATermAppl> dNode = _definitionOrderTaxonomy.getNode(d);
 		if (cNode == null)
 			throw new InternalReasonerException(c + " is not in the definition _order");
-		else if (cNode.equals(_definitionOrderTaxonomy.getTop()))
-			_definitionOrderTaxonomy.merge(cNode, dNode);
 		else
-		{
-			_definitionOrderTaxonomy.addSuper(c, d);
-			_definitionOrderTaxonomy.removeCycles(cNode);
-		}
+			if (cNode.equals(_definitionOrderTaxonomy.getTop()))
+				_definitionOrderTaxonomy.merge(cNode, dNode);
+			else
+			{
+				_definitionOrderTaxonomy.addSuper(c, d);
+				_definitionOrderTaxonomy.removeCycles(cNode);
+			}
 	}
 
 	@Override
@@ -59,7 +62,8 @@ public class TaxonomyBasedDefinitionOrder extends AbstractDefinitionOrder
 		for (final TaxonomyNode<ATermAppl> node : _definitionOrderTaxonomy.getNodes().values())
 		{
 			final Set<ATermAppl> names = node.getEquivalents();
-			if (names.size() > 1) cyclicConcepts.addAll(names);
+			if (names.size() > 1)
+				cyclicConcepts.addAll(names);
 		}
 
 		return cyclicConcepts;

@@ -38,8 +38,8 @@ public interface Visitor<T extends ATerm>
 	/**
 	 * Pay a visit to any visitable object.
 	 *
-	 * @param  any
-	 * @return     the visited in it's new state.
+	 * @param any
+	 * @return the visited in it's new state.
 	 */
 	T visit(final T any);
 

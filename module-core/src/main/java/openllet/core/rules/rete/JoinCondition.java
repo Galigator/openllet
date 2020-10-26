@@ -11,8 +11,8 @@ import openllet.core.rules.rete.NodeProvider.WMENodeProvider;
 
 public class JoinCondition implements FilterCondition
 {
-	private final WMENodeProvider	_wmeProvider;
-	private final TokenNodeProvider	_tokenProvider;
+	private final WMENodeProvider _wmeProvider;
+	private final TokenNodeProvider _tokenProvider;
 
 	public JoinCondition(final WMENodeProvider wme, final TokenNodeProvider token)
 	{
@@ -49,8 +49,10 @@ public class JoinCondition implements FilterCondition
 	@Override
 	public boolean equals(final Object obj)
 	{
-		if (this == obj) return true;
-		if (!(obj instanceof JoinCondition)) return false;
+		if (this == obj)
+			return true;
+		if (!(obj instanceof JoinCondition))
+			return false;
 		final JoinCondition other = (JoinCondition) obj;
 		return _wmeProvider.equals(other._wmeProvider) && _tokenProvider.equals(other._tokenProvider);
 	}

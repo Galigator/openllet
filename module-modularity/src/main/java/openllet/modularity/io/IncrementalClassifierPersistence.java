@@ -13,12 +13,14 @@ import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
+
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLOntology;
+
 import openllet.core.taxonomy.TaxonomyImpl;
 import openllet.modularity.IncrementalClassifier;
 import openllet.modularity.ModuleExtractor;
 import openllet.modularity.ModuleExtractorFactory;
-import org.semanticweb.owlapi.model.OWLClass;
-import org.semanticweb.owlapi.model.OWLOntology;
 
 /**
  * Provides persistence for IncrementalClassifier objects.
@@ -36,17 +38,17 @@ public class IncrementalClassifierPersistence
 	/**
 	 * The name for the zip entry that stores the taxonomy.
 	 */
-	private static final String	TAXONOMY_FILE_NAME		= "Taxonomy";
-	private static final String	PROPERTIES_FILE_NAME	= "Properties";
-	private static final String	PROPERTIES_FILE_COMMENT	= "Properties of the IncrementalClassifier";
-	private static final String	REALIZED_PROPERTY		= "realized";
+	private static final String TAXONOMY_FILE_NAME = "Taxonomy";
+	private static final String PROPERTIES_FILE_NAME = "Properties";
+	private static final String PROPERTIES_FILE_COMMENT = "Properties of the IncrementalClassifier";
+	private static final String REALIZED_PROPERTY = "realized";
 
 	/**
 	 * Saves the internal state of an incremental classifier to an output stream.
 	 *
-	 * @param  classifier   the classifier to be saved
-	 * @param  outputStream the output stream where the classifier should be saved
-	 * @throws IOException  if an error should occur during the save operation
+	 * @param classifier the classifier to be saved
+	 * @param outputStream the output stream where the classifier should be saved
+	 * @throws IOException if an error should occur during the save operation
 	 */
 	@SuppressWarnings("resource") // for the UncloseableOutputStream
 	public static void save(final IncrementalClassifier classifier, final OutputStream outputStream) throws IOException
@@ -78,8 +80,8 @@ public class IncrementalClassifierPersistence
 	/**
 	 * Loads the previously saved internal state of an incremental classifier from an output stream.
 	 *
-	 * @param  inputStream the input stream containing the previously saved internal state of an incremental classifier
-	 * @return             the newly created incremental classifier
+	 * @param inputStream the input stream containing the previously saved internal state of an incremental classifier
+	 * @return the newly created incremental classifier
 	 * @throws IOException if an error should occur during the reading
 	 */
 	public static IncrementalClassifier load(final InputStream inputStream) throws IOException
@@ -90,10 +92,10 @@ public class IncrementalClassifierPersistence
 	/**
 	 * Loads the previously saved internal state of an incremental classifier from an output stream.
 	 *
-	 * @param  inputStream    the input stream containing the previously saved internal state of an incremental classifier
-	 * @param  loadedOntology previous state.
-	 * @return                the newly created incremental classifier
-	 * @throws IOException    if an error should occur during the reading
+	 * @param inputStream the input stream containing the previously saved internal state of an incremental classifier
+	 * @param loadedOntology previous state.
+	 * @return the newly created incremental classifier
+	 * @throws IOException if an error should occur during the reading
 	 */
 	public static IncrementalClassifier load(final InputStream inputStream, final OWLOntology loadedOntology) throws IOException
 	{
@@ -114,7 +116,8 @@ public class IncrementalClassifierPersistence
 
 		final Properties properties = new Properties();
 		currentEntry = zipInputStream.getNextEntry();
-		if (currentEntry != null && PROPERTIES_FILE_NAME.equals(currentEntry.getName())) properties.load(zipInputStream);
+		if (currentEntry != null && PROPERTIES_FILE_NAME.equals(currentEntry.getName()))
+			properties.load(zipInputStream);
 
 		final boolean realized = Boolean.valueOf(properties.getProperty(REALIZED_PROPERTY, "false"));
 

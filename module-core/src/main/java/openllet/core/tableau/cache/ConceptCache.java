@@ -7,6 +7,7 @@
 package openllet.core.tableau.cache;
 
 import java.util.Map;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
 import openllet.core.utils.Bool;
@@ -39,33 +40,33 @@ public interface ConceptCache extends Map<ATermAppl, CachedNode>
 	void setMaxSize(int maxSize);
 
 	/**
-	 * @param  c is the concept
-	 * @return   the satisfiability status of a concept as a three-value boolean.
+	 * @param c is the concept
+	 * @return the satisfiability status of a concept as a three-value boolean.
 	 */
 	Bool getSat(ATermAppl c);
 
 	/**
 	 * Put an incomplete
 	 *
-	 * @param  c
-	 * @param  isSatisfiable
-	 * @return               true if put is success
+	 * @param c
+	 * @param isSatisfiable
+	 * @return true if put is success
 	 */
 	boolean putSat(ATermAppl c, boolean isSatisfiable);
 
 	/**
-	 * @param  kb
-	 * @param  node1
-	 * @param  node2
-	 * @return       true if mergable
+	 * @param kb
+	 * @param node1
+	 * @param node2
+	 * @return true if mergable
 	 */
 	Bool isMergable(KnowledgeBase kb, CachedNode node1, CachedNode node2);
 
 	/**
-	 * @param  kb
-	 * @param  node1
-	 * @param  node2
-	 * @return       true if nominal
+	 * @param kb
+	 * @param node1
+	 * @param node2
+	 * @return true if nominal
 	 */
 	Bool checkNominalEdges(KnowledgeBase kb, CachedNode node1, CachedNode node2);
 

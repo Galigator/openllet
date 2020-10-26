@@ -7,6 +7,7 @@
 package openllet.query.sparqldl.model;
 
 import java.util.List;
+
 import openllet.aterm.ATermAppl;
 
 /**
@@ -50,8 +51,8 @@ public interface QueryAtom
 	/**
 	 * Applies variable binding to the _current atom and returns the result which might be same as the _current atom. Current atom is not affected.
 	 *
-	 * @param  binding QueryBinding to apply
-	 * @return         a query atom with applied query binding
+	 * @param binding QueryBinding to apply
+	 * @return a query atom with applied query binding
 	 */
 	QueryAtom apply(final ResultBinding binding);
 }

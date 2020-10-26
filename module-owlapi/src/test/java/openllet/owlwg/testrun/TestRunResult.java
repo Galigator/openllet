@@ -8,8 +8,8 @@ import openllet.owlwg.testcase.TestCase;
  * Title: Test Run Result
  * </p>
  * <p>
- * Description: Interface based on result ontology described at <a href="http://www.w3.org/2007/OWL/wiki/Test_Result_Format"
- * >http://www.w3.org/2007/OWL/wiki/Test_Result_Format</a>.
+ * Description: Interface based on result ontology described at
+ * <a href="http://www.w3.org/2007/OWL/wiki/Test_Result_Format" >http://www.w3.org/2007/OWL/wiki/Test_Result_Format</a>.
  * </p>
  * <p>
  * Copyright: Copyright &copy; 2009

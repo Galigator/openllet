@@ -7,6 +7,7 @@
 package openllet.core.rules.rete;
 
 import java.util.Iterator;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.boxes.abox.ABox;
 import openllet.core.boxes.abox.Edge;
@@ -47,7 +48,8 @@ public class AlphaFixedSubjectEdgeNode extends AlphaFixedEdgeNode
 	@Override
 	public Iterator<WME> getMatches(final int argIndex, final Node arg)
 	{
-		if (argIndex != 1) throw new UnsupportedOperationException();
+		if (argIndex != 1)
+			throw new UnsupportedOperationException();
 
 		final Individual subject = initNode();
 		return getMatches(subject, _role, arg);
@@ -64,9 +66,7 @@ public class AlphaFixedSubjectEdgeNode extends AlphaFixedEdgeNode
 	@SuppressWarnings("rawtypes")
 	public boolean matches(final RuleAtom atom)
 	{
-		return (atom instanceof IndividualPropertyAtom || atom instanceof DatavaluedPropertyAtom) && atom.getPredicate().equals(_role.getName())
-				&& ((BinaryAtom) atom).getArgument1() instanceof AtomIConstant && ((AtomIConstant) ((BinaryAtom) atom).getArgument1()).getValue().equals(_name)
-				&& ((BinaryAtom) atom).getArgument2() instanceof AtomVariable;
+		return (atom instanceof IndividualPropertyAtom || atom instanceof DatavaluedPropertyAtom) && atom.getPredicate().equals(_role.getName()) && ((BinaryAtom) atom).getArgument1() instanceof AtomIConstant && ((AtomIConstant) ((BinaryAtom) atom).getArgument1()).getValue().equals(_name) && ((BinaryAtom) atom).getArgument2() instanceof AtomVariable;
 	}
 
 	@Override

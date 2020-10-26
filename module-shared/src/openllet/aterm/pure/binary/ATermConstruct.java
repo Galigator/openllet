@@ -9,17 +9,17 @@ import openllet.aterm.ATerm;
  */
 class ATermConstruct
 {
-	public int		type;
+	public int type;
 
-	public int		termIndex		= 0;
-	public ATerm	tempTerm		= null;
+	public int termIndex = 0;
+	public ATerm tempTerm = null;
 
-	public int		subTermIndex	= 0;
-	public ATerm[]	subTerms		= null;
+	public int subTermIndex = 0;
+	public ATerm[] subTerms = null;
 
-	ATermConstruct(final int type, final int termIndex)
+	ATermConstruct(final int type_, final int termIndex_)
 	{
-		this.type = type;
-		this.termIndex = termIndex;
+		type = type_;
+		termIndex = termIndex_;
 	}
 }

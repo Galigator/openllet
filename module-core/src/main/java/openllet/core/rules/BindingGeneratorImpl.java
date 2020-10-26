@@ -31,8 +31,8 @@ import java.util.NoSuchElementException;
 public class BindingGeneratorImpl implements BindingGenerator
 {
 
-	private final Collection<BindingHelper>	_helpers;
-	private VariableBinding					_initialBinding;
+	private final Collection<BindingHelper> _helpers;
+	private VariableBinding _initialBinding;
 
 	/**
 	 * Constructs a _binding generator with the given list of _helpers. The _helpers must be in such an _order that prerequisite variables of any helper are
@@ -50,22 +50,23 @@ public class BindingGeneratorImpl implements BindingGenerator
 	private class BindingIterator implements Iterator<VariableBinding>
 	{
 
-		private VariableBinding	_binding;
-		private BindingHelper[]	_helperChain;
+		private VariableBinding _binding;
+		private BindingHelper[] _helperChain;
 
 		public BindingIterator()
 		{
 			_helperChain = new BindingHelper[_helpers.size()];
 			_helperChain = _helpers.toArray(_helperChain);
 
-			if (_helperChain.length > 0) _helperChain[0].rebind(_initialBinding);
+			if (_helperChain.length > 0)
+				_helperChain[0].rebind(_initialBinding);
 
 		}
 
 		/**
 		 * Return the _current _binding up through and including the <code>max</code> element of the pattern chain.
 		 *
-		 * @param  max
+		 * @param max
 		 * @return
 		 */
 		private VariableBinding getBinding(final int max)
@@ -79,7 +80,8 @@ public class BindingGeneratorImpl implements BindingGenerator
 		@Override
 		public boolean hasNext()
 		{
-			if (_binding != null) return true;
+			if (_binding != null)
+				return true;
 
 			// Search loop to find new _binding.
 			VariableBinding newBinding = null;
@@ -118,7 +120,8 @@ public class BindingGeneratorImpl implements BindingGenerator
 		@Override
 		public VariableBinding next()
 		{
-			if (!hasNext()) throw new NoSuchElementException();
+			if (!hasNext())
+				throw new NoSuchElementException();
 			final VariableBinding result = _binding;
 			_binding = null;
 			return result;

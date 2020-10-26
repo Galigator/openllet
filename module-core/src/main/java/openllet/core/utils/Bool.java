@@ -11,9 +11,9 @@ package openllet.core.utils;
  */
 public class Bool
 {
-	public final static Bool	FALSE	= new Bool();
-	public final static Bool	TRUE	= new Bool();
-	public final static Bool	UNKNOWN	= new Bool();
+	public final static Bool FALSE = new Bool();
+	public final static Bool TRUE = new Bool();
+	public final static Bool UNKNOWN = new Bool();
 
 	private Bool()
 	{
@@ -26,27 +26,33 @@ public class Bool
 
 	public Bool not()
 	{
-		if (this == TRUE) return FALSE;
+		if (this == TRUE)
+			return FALSE;
 
-		if (this == FALSE) return TRUE;
+		if (this == FALSE)
+			return TRUE;
 
 		return UNKNOWN;
 	}
 
 	public Bool or(final Bool other)
 	{
-		if (this == TRUE || other == TRUE) return TRUE;
+		if (this == TRUE || other == TRUE)
+			return TRUE;
 
-		if (this == FALSE && other == FALSE) return FALSE;
+		if (this == FALSE && other == FALSE)
+			return FALSE;
 
 		return UNKNOWN;
 	}
 
 	public Bool and(final Bool other)
 	{
-		if (this == TRUE && other == TRUE) return TRUE;
+		if (this == TRUE && other == TRUE)
+			return TRUE;
 
-		if (this == FALSE || other == FALSE) return FALSE;
+		if (this == FALSE || other == FALSE)
+			return FALSE;
 
 		return UNKNOWN;
 	}

@@ -13,16 +13,13 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
  * Title: Test Vocabulary
  * </p>
  * <p>
- * Description: Entities declared in the <a
- * href="http://www.w3.org/TR/owl2-test/#Complete_Test_Ontology">OWL 2 Test
- * Ontology</a>.
+ * Description: Entities declared in the <a href="http://www.w3.org/TR/owl2-test/#Complete_Test_Ontology">OWL 2 Test Ontology</a>.
  * </p>
  * <p>
  * Copyright: Copyright &copy; 2009
  * </p>
  * <p>
- * Company: Clark & Parsia, LLC. <a
- * href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
+ * Company: Clark & Parsia, LLC. <a href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
  * </p>
  *
  * @author Mike Smith &lt;msmith@clarkparsia.com&gt;
@@ -32,8 +29,7 @@ public class TestVocabulary
 
 	public enum Class
 	{
-		CONSISTENCY_TEST("ConsistencyTest"), INCONSISTENCY_TEST("InconsistencyTest"), NEGATIVE_ENTAILMENT_TEST("NegativeEntailmentTest"), POSITIVE_ENTAILMENT_TEST("PositiveEntailmentTest"),
-		TEST_CASE("TestCase");
+		CONSISTENCY_TEST("ConsistencyTest"), INCONSISTENCY_TEST("InconsistencyTest"), NEGATIVE_ENTAILMENT_TEST("NegativeEntailmentTest"), POSITIVE_ENTAILMENT_TEST("PositiveEntailmentTest"), TEST_CASE("TestCase");
 
 		private final OWLClass cls;
 
@@ -50,10 +46,7 @@ public class TestVocabulary
 
 	public enum DatatypeProperty
 	{
-		FUNCTIONAL_CONCLUSION_ONTOLOGY("fsConclusionOntology"), FUNCTIONAL_INPUT_ONTOLOGY("fsInputOntology"), FUNCTIONAL_NONCONCLUSION_ONTOLOGY("fsNonConclusionOntology"),
-		FUNCTIONAL_PREMISE_ONTOLOGY("fsPremiseOntology"), IDENTIFIER("identifier"), OWLXML_CONCLUSION_ONTOLOGY("owlXmlConclusionOntology"), OWLXML_INPUT_ONTOLOGY("owlXmlInputOntology"),
-		OWLXML_NONCONCLUSION_ONTOLOGY("owlXmlNonConclusionOntology"), OWLXML_PREMISE_ONTOLOGY("owlXmlPremiseOntology"), RDFXML_CONCLUSION_ONTOLOGY("rdfXmlConclusionOntology"),
-		RDFXML_INPUT_ONTOLOGY("rdfXmlInputOntology"), RDFXML_NONCONCLUSION_ONTOLOGY("rdfXmlNonConclusionOntology"), RDFXML_PREMISE_ONTOLOGY("rdfXmlPremiseOntology");
+		FUNCTIONAL_CONCLUSION_ONTOLOGY("fsConclusionOntology"), FUNCTIONAL_INPUT_ONTOLOGY("fsInputOntology"), FUNCTIONAL_NONCONCLUSION_ONTOLOGY("fsNonConclusionOntology"), FUNCTIONAL_PREMISE_ONTOLOGY("fsPremiseOntology"), IDENTIFIER("identifier"), OWLXML_CONCLUSION_ONTOLOGY("owlXmlConclusionOntology"), OWLXML_INPUT_ONTOLOGY("owlXmlInputOntology"), OWLXML_NONCONCLUSION_ONTOLOGY("owlXmlNonConclusionOntology"), OWLXML_PREMISE_ONTOLOGY("owlXmlPremiseOntology"), RDFXML_CONCLUSION_ONTOLOGY("rdfXmlConclusionOntology"), RDFXML_INPUT_ONTOLOGY("rdfXmlInputOntology"), RDFXML_NONCONCLUSION_ONTOLOGY("rdfXmlNonConclusionOntology"), RDFXML_PREMISE_ONTOLOGY("rdfXmlPremiseOntology");
 
 		private final OWLDataProperty dp;
 
@@ -70,8 +63,7 @@ public class TestVocabulary
 
 	public enum Individual
 	{
-		APPROVED("Approved"), DIRECT("DIRECT"), DL("DL"), EL("EL"), EXTRACREDIT("Extracredit"), FULL("FULL"), FUNCTIONAL("FUNCTIONAL"), OWLXML("OWLXML"), PROPOSED("Proposed"), QL("QL"),
-		RDF_BASED("RDF-BASED"), RDFXML("RDFXML"), REJECTED("Rejected"), RL("RL");
+		APPROVED("Approved"), DIRECT("DIRECT"), DL("DL"), EL("EL"), EXTRACREDIT("Extracredit"), FULL("FULL"), FUNCTIONAL("FUNCTIONAL"), OWLXML("OWLXML"), PROPOSED("Proposed"), QL("QL"), RDF_BASED("RDF-BASED"), RDFXML("RDFXML"), REJECTED("Rejected"), RL("RL");
 
 		private final OWLIndividual i;
 
@@ -103,9 +95,9 @@ public class TestVocabulary
 		}
 	}
 
-	private static final OWLOntologyManager	manager;
+	private static final OWLOntologyManager manager;
 
-	private static final String				URI_BASE;
+	private static final String URI_BASE;
 
 	static
 	{

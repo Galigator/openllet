@@ -33,12 +33,13 @@ public class SemanticsFilter implements FilterCondition
 	final private Semantics _semantics;
 
 	/**
-	 * @param  semantics            to check
+	 * @param semantics to check
 	 * @throws NullPointerException if <code>_semantics == null</code>
 	 */
 	public SemanticsFilter(final Semantics semantics)
 	{
-		if (semantics == null) throw new NullPointerException();
+		if (semantics == null)
+			throw new NullPointerException();
 
 		_semantics = semantics;
 	}

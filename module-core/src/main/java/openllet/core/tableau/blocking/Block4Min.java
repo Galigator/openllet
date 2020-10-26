@@ -21,12 +21,14 @@ public class Block4Min implements BlockingCondition
 	public boolean isBlocked(final BlockingContext cxt)
 	{
 		for (final ATermAppl min : cxt._blocker.getTypes(Node.MIN))
-			if (!block4(cxt, min)) return false;
+			if (!block4(cxt, min))
+				return false;
 
 		for (final ATermAppl normSome : cxt._blocker.getTypes(Node.SOME))
 		{
 			final ATermAppl some = (ATermAppl) normSome.getArgument(0);
-			if (!block4(cxt, some)) return false;
+			if (!block4(cxt, some))
+				return false;
 		}
 
 		return true;
@@ -49,9 +51,11 @@ public class Block4Min implements BlockingCondition
 			m = 1;
 		}
 
-		if (t.isDatatypeRole()) return true;
+		if (t.isDatatypeRole())
+			return true;
 
-		if (cxt.isRSuccessor(t.getInverse()) && cxt._blocked.getParent().hasType(c)) return true;
+		if (cxt.isRSuccessor(t.getInverse()) && cxt._blocked.getParent().hasType(c))
+			return true;
 
 		return cxt._blocker.getRSuccessors(t, c).size() >= m;
 	}

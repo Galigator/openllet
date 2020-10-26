@@ -12,10 +12,7 @@ import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asSet;
 
 import java.util.Set;
 import java.util.stream.Stream;
-import openllet.atom.OpenError;
-import openllet.core.KBLoader;
-import openllet.core.KnowledgeBase;
-import openllet.core.OpenlletOptions;
+
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.AddImport;
 import org.semanticweb.owlapi.model.IRI;
@@ -29,6 +26,11 @@ import org.semanticweb.owlapi.model.OWLOntologyChangeException;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
+import openllet.atom.OpenError;
+import openllet.core.KBLoader;
+import openllet.core.KnowledgeBase;
+import openllet.core.OpenlletOptions;
+
 /**
  * <p>
  * Copyright: Copyright (c) 2007
@@ -41,21 +43,21 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
  */
 public class OWLAPILoader extends KBLoader implements OWLHelper
 {
-	private final OWLOntologyManager	_manager	= OWLManager.createOWLOntologyManager();
+	private final OWLOntologyManager _manager = OWLManager.createOWLOntologyManager();
 
-	private final LimitedMapIRIMapper	_iriMapper	= new LimitedMapIRIMapper();
+	private final LimitedMapIRIMapper _iriMapper = new LimitedMapIRIMapper();
 
-	private volatile OpenlletReasoner	_reasoner;
+	private volatile OpenlletReasoner _reasoner;
 
-	private volatile OWLOntology		_ontology;
+	private volatile OWLOntology _ontology;
 
-	private boolean						_ignoreImports;
+	private boolean _ignoreImports;
 
 	/**
 	 * A workaround for OWLAPI bug that does not let us import a loaded ontology so that we can minimize the warnings printed when
 	 * OWLOntologyManager.makeLoadImportRequest is called
 	 */
-	private boolean						_loadSingleFile;
+	private boolean _loadSingleFile;
 
 	@Override
 	public OWLOntologyManager getManager()
@@ -218,7 +220,8 @@ public class OWLAPILoader extends KBLoader implements OWLHelper
 	{
 		_ignoreImports = ignoreImports;
 		_manager.getIRIMappers().clear();
-		if (ignoreImports) _manager.getIRIMappers().add(_iriMapper);
+		if (ignoreImports)
+			_manager.getIRIMappers().add(_iriMapper);
 	}
 
 	/**

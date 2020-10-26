@@ -49,10 +49,11 @@ public class SubsumptionComparator implements PartialOrderComparator<ATermAppl>
 			else
 				return PartialOrderRelation.LESS;
 		}
-		else if (isSubsumedBy(b, a))
-			return PartialOrderRelation.GREATER;
 		else
-			return PartialOrderRelation.INCOMPARABLE;
+			if (isSubsumedBy(b, a))
+				return PartialOrderRelation.GREATER;
+			else
+				return PartialOrderRelation.INCOMPARABLE;
 	}
 
 	public void setKB(final KnowledgeBase kb)

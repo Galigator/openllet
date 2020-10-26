@@ -8,8 +8,6 @@ package openllet.profiler;
 
 import static openllet.profiler.ProfileUtils.error;
 
-import gnu.getopt.Getopt;
-import gnu.getopt.LongOpt;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -18,6 +16,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import gnu.getopt.Getopt;
+import gnu.getopt.LongOpt;
 import openllet.core.KBLoader;
 import openllet.core.KnowledgeBase;
 import openllet.core.utils.ATermUtils;
@@ -83,14 +84,14 @@ public class ProfileKB
 		return datasets;
 	}
 
-	private double				memPercentageLimit	= 0.05;
-	private int					iterations			= 1;
-	private MemoryProfiling		_memoryProfiling	= MemoryProfiling.APPROX;
-	private Task				_task				= Task.Consistency;
-	private LoaderType			_loaderType			= LoaderType.JENA;
-	private boolean				_imports			= true;
+	private double memPercentageLimit = 0.05;
+	private int iterations = 1;
+	private MemoryProfiling _memoryProfiling = MemoryProfiling.APPROX;
+	private Task _task = Task.Consistency;
+	private LoaderType _loaderType = LoaderType.JENA;
+	private boolean _imports = true;
 
-	private final PrintWriter	out					= new PrintWriter(System.out);
+	private final PrintWriter out = new PrintWriter(System.out);
 
 	public ProfileKB()
 	{
@@ -212,7 +213,8 @@ public class ProfileKB
 			error("Invalid number: " + e);
 		}
 
-		if (datasets == null) error("No config file (-f) or input ontology (-o) provided!");
+		if (datasets == null)
+			error("No config file (-f) or input ontology (-o) provided!");
 
 		return datasets;
 	}
@@ -234,7 +236,8 @@ public class ProfileKB
 		{
 			final double percent = (double) node.size() / root.size();
 
-			if (percent <= memPercentageLimit) return;
+			if (percent <= memPercentageLimit)
+				return;
 
 			sb.append(" (");
 			sb.append(String.format("%2.1f%%", 100 * percent));
@@ -245,38 +248,41 @@ public class ProfileKB
 
 		String name = node.name();
 		final int lastDot = name.lastIndexOf('.');
-		if (lastDot >= 0) name = name.substring(lastDot + 1);
+		if (lastDot >= 0)
+			name = name.substring(lastDot + 1);
 
 		sb.append(name);
 
-		if (node.object() != null) if (node.name().endsWith("#table") || node.name().endsWith("#elementData"))
-		{
-			IObjectProfileNode shell = null;
-			final int n = children.length - 1;
-			for (int i = n; i >= 0; i--)
+		if (node.object() != null)
+			if (node.name().endsWith("#table") || node.name().endsWith("#elementData"))
 			{
-				shell = children[i];
-				if (shell.object() == null) break;
-			}
-			if (shell != null)
-			{
-				final int size = node.size() - shell.size();
-				final double avg = (double) size / n;
+				IObjectProfileNode shell = null;
+				final int n = children.length - 1;
+				for (int i = n; i >= 0; i--)
+				{
+					shell = children[i];
+					if (shell.object() == null)
+						break;
+				}
+				if (shell != null)
+				{
+					final int size = node.size() - shell.size();
+					final double avg = (double) size / n;
 
-				sb.append(" children: " + n + " avg: " + avg + " " + shell.name() + " " + ProfileUtils.mb(shell.size()));
+					sb.append(" children: " + n + " avg: " + avg + " " + shell.name() + " " + ProfileUtils.mb(shell.size()));
+				}
 			}
-		}
-		else
-		{
-			sb.append(" : ");
-			sb.append(ObjectProfiler.typeName(node.object().getClass(), true));
-
-			if (node.refcount() > 1) // show refcount only when it's > 1
+			else
 			{
-				sb.append(", refcount=");
-				sb.append(node.refcount());
+				sb.append(" : ");
+				sb.append(ObjectProfiler.typeName(node.object().getClass(), true));
+
+				if (node.refcount() > 1) // show refcount only when it's > 1
+				{
+					sb.append(", refcount=");
+					sb.append(node.refcount());
+				}
 			}
-		}
 
 		out.println(sb);
 		out.flush();

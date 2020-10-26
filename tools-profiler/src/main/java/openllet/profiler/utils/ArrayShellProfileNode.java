@@ -8,8 +8,8 @@ package openllet.profiler.utils;
  */
 final class ArrayShellProfileNode extends AbstractShellProfileNode
 {
-	private final Class<?>	_type;
-	private final int		_length;
+	private final Class<?> _type;
+	private final int _length;
 
 	@Override
 	public String name()

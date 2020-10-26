@@ -7,6 +7,7 @@
 package openllet.core.tracker;
 
 import java.util.Set;
+
 import openllet.aterm.ATermAppl;
 
 /**
@@ -31,9 +32,9 @@ public interface BranchEffectTracker
 	/**
 	 * Record that a _node is affected by a _branch
 	 *
-	 * @param  branch Branch integer identifier
-	 * @param  a      Node name
-	 * @return        boolean {@code true} if effect not already noted for _branch+_node pair, {@code false} else
+	 * @param branch Branch integer identifier
+	 * @param a Node name
+	 * @return boolean {@code true} if effect not already noted for _branch+_node pair, {@code false} else
 	 */
 	boolean add(int branch, ATermAppl a);
 
@@ -45,8 +46,8 @@ public interface BranchEffectTracker
 	/**
 	 * Retrieve _nodes affected by a _branch and all subsequent branches
 	 *
-	 * @param  branch Branch integer identifier
-	 * @return        Names of all _nodes affected by _branch and subsequent branches
+	 * @param branch Branch integer identifier
+	 * @return Names of all _nodes affected by _branch and subsequent branches
 	 */
 	Set<ATermAppl> getAll(int branch);
 
@@ -54,16 +55,16 @@ public interface BranchEffectTracker
 	 * Remove a _branch from the tracker. Note that this causes the _branch to effects association to change for all subsequent branches and should only be used
 	 * if the _branch indices are changed in ABox and all other structures.
 	 *
-	 * @param  branch Branch integer identifier
-	 * @return        Names of all _nodes affected by _branch
+	 * @param branch Branch integer identifier
+	 * @return Names of all _nodes affected by _branch
 	 */
 	Set<ATermAppl> remove(int branch);
 
 	/**
 	 * Remove a branch and all subsequent branches from the tracker.
 	 *
-	 * @param  branch Branch integer identifier
-	 * @return        Names of all _nodes affected by _branch and subsequent branches
+	 * @param branch Branch integer identifier
+	 * @return Names of all _nodes affected by _branch and subsequent branches
 	 */
 	Set<ATermAppl> removeAll(int branch);
 }

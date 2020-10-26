@@ -16,8 +16,8 @@ public class OpenlletExceptionFormatter
 	/**
 	 * Format a user-friendly exception
 	 *
-	 * @param  e
-	 * @return   user-friendly format... if exception can be friendly.
+	 * @param e
+	 * @return user-friendly format... if exception can be friendly.
 	 */
 	public String formatException(final Throwable e)
 	{
@@ -27,8 +27,10 @@ public class OpenlletExceptionFormatter
 
 		if (!_verbose)
 		{
-			if (cause instanceof FileNotFoundException) return format((FileNotFoundException) cause);
-			if (cause instanceof OpenlletCmdException) return format((OpenlletCmdException) cause);
+			if (cause instanceof FileNotFoundException)
+				return format((FileNotFoundException) cause);
+			if (cause instanceof OpenlletCmdException)
+				return format((OpenlletCmdException) cause);
 			return formatGeneric(cause);
 		}
 
@@ -62,7 +64,8 @@ public class OpenlletExceptionFormatter
 		if (msg != null)
 		{
 			final int index = msg.indexOf('\n', 0);
-			if (index != -1) msg = msg.substring(0, index);
+			if (index != -1)
+				msg = msg.substring(0, index);
 		}
 
 		return msg + "\nUse -v for detail.";

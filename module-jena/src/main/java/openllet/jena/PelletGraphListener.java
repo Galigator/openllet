@@ -10,12 +10,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import openllet.aterm.ATermAppl;
-import openllet.core.KnowledgeBase;
-import openllet.core.OpenlletOptions;
-import openllet.core.utils.ATermUtils;
-import openllet.core.utils.SetUtils;
-import openllet.core.utils.iterator.IteratorUtils;
+
 import org.apache.jena.graph.Graph;
 import org.apache.jena.graph.GraphListener;
 import org.apache.jena.graph.Node;
@@ -24,6 +19,13 @@ import org.apache.jena.graph.compose.Dyadic;
 import org.apache.jena.graph.compose.Polyadic;
 import org.apache.jena.reasoner.InfGraph;
 import org.apache.jena.vocabulary.RDF;
+
+import openllet.aterm.ATermAppl;
+import openllet.core.KnowledgeBase;
+import openllet.core.OpenlletOptions;
+import openllet.core.utils.ATermUtils;
+import openllet.core.utils.SetUtils;
+import openllet.core.utils.iterator.IteratorUtils;
 
 /**
  * A graph listener that listens to graph change events and if possible processes the change event. The listener is passed a possibly union graph but the
@@ -34,12 +36,12 @@ import org.apache.jena.vocabulary.RDF;
  */
 public class PelletGraphListener implements GraphListener
 {
-	private final Set<Graph>	_changedGraphs		= SetUtils.create();
-	private final Graph			_rootGraph;
-	private final KnowledgeBase	_kb;									// KB object - used for incremental ABox changes
-	private volatile Set<Graph>	_leafGraphs			= SetUtils.create();
-	private boolean				_statementDeleted	= false;
-	private boolean				_enabled;
+	private final Set<Graph> _changedGraphs = SetUtils.create();
+	private final Graph _rootGraph;
+	private final KnowledgeBase _kb; // KB object - used for incremental ABox changes
+	private volatile Set<Graph> _leafGraphs = SetUtils.create();
+	private boolean _statementDeleted = false;
+	private boolean _enabled;
 
 	public PelletGraphListener(final Graph rootGraph, final KnowledgeBase kb, final boolean enabled)
 	{
@@ -47,7 +49,8 @@ public class PelletGraphListener implements GraphListener
 		_kb = kb;
 		_enabled = enabled;
 
-		if (enabled) collectLeafGraphs(rootGraph, Collections.<Graph>emptySet());
+		if (enabled)
+			collectLeafGraphs(rootGraph, Collections.<Graph> emptySet());
 	}
 
 	private void addABoxTriple(final Triple t)
@@ -87,25 +90,31 @@ public class PelletGraphListener implements GraphListener
 		if (graph instanceof Polyadic)
 		{
 			final Polyadic union = (Polyadic) graph;
-			if (union.getBaseGraph() != null) collectLeafGraphs(union.getBaseGraph(), prevLeaves);
+			if (union.getBaseGraph() != null)
+				collectLeafGraphs(union.getBaseGraph(), prevLeaves);
 
 			for (final Graph graph2 : union.getSubGraphs())
 				collectLeafGraphs(graph2, prevLeaves);
 		}
-		else if (graph instanceof Dyadic)
-		{
-			final Dyadic dyadic = (Dyadic) graph;
-			if (null != dyadic.getL()) collectLeafGraphs(dyadic.getL(), prevLeaves);
-			if (null != dyadic.getR()) collectLeafGraphs(dyadic.getR(), prevLeaves);
-		}
-		else if (graph instanceof InfGraph)
-			collectLeafGraphs(((InfGraph) graph).getRawGraph(), prevLeaves);
-		else if (_leafGraphs.add(graph) && !prevLeaves.contains(graph))
-		{
-			_changedGraphs.add(graph);
+		else
+			if (graph instanceof Dyadic)
+			{
+				final Dyadic dyadic = (Dyadic) graph;
+				if (null != dyadic.getL())
+					collectLeafGraphs(dyadic.getL(), prevLeaves);
+				if (null != dyadic.getR())
+					collectLeafGraphs(dyadic.getR(), prevLeaves);
+			}
+			else
+				if (graph instanceof InfGraph)
+					collectLeafGraphs(((InfGraph) graph).getRawGraph(), prevLeaves);
+				else
+					if (_leafGraphs.add(graph) && !prevLeaves.contains(graph))
+					{
+						_changedGraphs.add(graph);
 
-			graph.getEventManager().register(this);
-		}
+						graph.getEventManager().register(this);
+					}
 	}
 
 	private void deleteABoxTriple(final Triple t)
@@ -116,16 +125,17 @@ public class PelletGraphListener implements GraphListener
 		// check if this is a type assertion
 		if (t.getPredicate().equals(RDF.type.asNode()))
 		{
-			if (_kb.isIndividual(s)) _kb.removeType(s, o);
+			if (_kb.isIndividual(s))
+				_kb.removeType(s, o);
 		}
 		else
-		// check if the subject is a new _individual
-		if (_kb.isIndividual(s) && (_kb.isIndividual(o) || ATermUtils.isLiteral(o)))
-		{
-			final ATermAppl p = JenaUtils.makeATerm(t.getPredicate());
-			// add the property value
-			_kb.removePropertyValue(p, s, o);
-		}
+			// check if the subject is a new _individual
+			if (_kb.isIndividual(s) && (_kb.isIndividual(o) || ATermUtils.isLiteral(o)))
+			{
+				final ATermAppl p = JenaUtils.makeATerm(t.getPredicate());
+				// add the property value
+				_kb.removePropertyValue(p, s, o);
+			}
 	}
 
 	public void dispose()
@@ -157,7 +167,8 @@ public class PelletGraphListener implements GraphListener
 				prevLeaf.getEventManager().unregister(this);
 			}
 
-		if (_statementDeleted) return null;
+		if (_statementDeleted)
+			return null;
 
 		return _changedGraphs;
 	}
@@ -170,7 +181,7 @@ public class PelletGraphListener implements GraphListener
 	/**
 	 * Checks if the given triple is an ABox assertion. Currently, only type assertions with atomic concepts are detected and property assertions
 	 *
-	 * @param  t
+	 * @param t
 	 * @return
 	 */
 	private boolean isABoxChange(final Triple t)
@@ -182,11 +193,13 @@ public class PelletGraphListener implements GraphListener
 		if (p.equals(RDF.type.asNode()))
 		{
 			// check if the object is a bnode to detect complex concepts
-			if (o.isBlank()) return false;
+			if (o.isBlank())
+				return false;
 
 			// check that the object is an atomic concept that exists in the KB
 			final ATermAppl object = JenaUtils.makeATerm(o);
-			if (!_kb.isClass(object)) return false;
+			if (!_kb.isClass(object))
+				return false;
 
 			// Note: we do not check if the subject already exists,
 			// as it could be a newly added _individual
@@ -198,7 +211,8 @@ public class PelletGraphListener implements GraphListener
 			final ATermAppl prop = JenaUtils.makeATerm(p);
 
 			// check if the role is this is a defined role
-			if (!_kb.isProperty(prop)) return false;
+			if (!_kb.isProperty(prop))
+				return false;
 
 			// Note: we do not check if the subject and object already exists,
 			// as they
@@ -210,7 +224,8 @@ public class PelletGraphListener implements GraphListener
 
 	public boolean isChanged()
 	{
-		if (_statementDeleted || !_changedGraphs.isEmpty()) return true;
+		if (_statementDeleted || !_changedGraphs.isEmpty())
+			return true;
 
 		getChangedGraphs();
 
@@ -234,18 +249,20 @@ public class PelletGraphListener implements GraphListener
 	{
 		boolean canUpdateIncrementally = canUpdateIncrementally(g);
 
-		if (canUpdateIncrementally) while (it.hasNext())
-		{
-			final Triple t = it.next();
-			if (!isABoxChange(t))
+		if (canUpdateIncrementally)
+			while (it.hasNext())
 			{
-				canUpdateIncrementally = false;
-				break;
+				final Triple t = it.next();
+				if (!isABoxChange(t))
+				{
+					canUpdateIncrementally = false;
+					break;
+				}
+				addABoxTriple(t);
 			}
-			addABoxTriple(t);
-		}
 
-		if (!canUpdateIncrementally) _changedGraphs.add(g);
+		if (!canUpdateIncrementally)
+			_changedGraphs.add(g);
 	}
 
 	@Override
@@ -280,16 +297,17 @@ public class PelletGraphListener implements GraphListener
 	{
 		boolean canUpdateIncrementally = canUpdateIncrementally(g);
 
-		if (canUpdateIncrementally) while (it.hasNext())
-		{
-			final Triple t = it.next();
-			if (!isABoxChange(t))
+		if (canUpdateIncrementally)
+			while (it.hasNext())
 			{
-				canUpdateIncrementally = false;
-				break;
+				final Triple t = it.next();
+				if (!isABoxChange(t))
+				{
+					canUpdateIncrementally = false;
+					break;
+				}
+				deleteABoxTriple(t);
 			}
-			deleteABoxTriple(t);
-		}
 
 		if (!canUpdateIncrementally)
 		{
@@ -329,7 +347,8 @@ public class PelletGraphListener implements GraphListener
 
 	public void setEnabled(final boolean enabled)
 	{
-		if (_enabled == enabled) return;
+		if (_enabled == enabled)
+			return;
 
 		_enabled = enabled;
 
@@ -339,7 +358,7 @@ public class PelletGraphListener implements GraphListener
 		_statementDeleted = false;
 
 		if (enabled)
-			collectLeafGraphs(_rootGraph, Collections.<Graph>emptySet());
+			collectLeafGraphs(_rootGraph, Collections.<Graph> emptySet());
 		else
 			for (final Graph graph : _leafGraphs)
 				graph.getEventManager().unregister(this);

@@ -9,12 +9,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import openllet.core.utils.AlphaNumericComparator;
-import openllet.core.utils.Comparators;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
+
+import openllet.core.utils.AlphaNumericComparator;
+import openllet.core.utils.Comparators;
 
 @RunWith(Parameterized.class)
 public class WebOntTestSuite
@@ -38,7 +40,8 @@ public class WebOntTestSuite
 
 		for (final File dir : dirs)
 		{
-			if (dir.isFile()) continue;
+			if (dir.isFile())
+				continue;
 
 			final File[] files = dir.listFiles((FileFilter) file -> file.getName().indexOf("Manifest") != -1);
 

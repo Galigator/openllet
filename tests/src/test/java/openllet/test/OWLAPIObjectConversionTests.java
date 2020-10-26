@@ -11,13 +11,6 @@ package openllet.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-import junit.framework.JUnit4TestAdapter;
-import openllet.aterm.ATermAppl;
-import openllet.core.KnowledgeBase;
-import openllet.core.KnowledgeBaseImpl;
-import openllet.core.utils.SetUtils;
-import openllet.owlapi.ConceptConverter;
-import openllet.owlapi.PelletVisitor;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
@@ -34,6 +27,14 @@ import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
+
+import junit.framework.JUnit4TestAdapter;
+import openllet.aterm.ATermAppl;
+import openllet.core.KnowledgeBase;
+import openllet.core.KnowledgeBaseImpl;
+import openllet.core.utils.SetUtils;
+import openllet.owlapi.ConceptConverter;
+import openllet.owlapi.PelletVisitor;
 
 /**
  * <p>
@@ -53,26 +54,26 @@ import org.semanticweb.owlapi.vocab.OWL2Datatype;
  */
 public class OWLAPIObjectConversionTests
 {
-	public static String				_base				= "file:" + PelletTestSuite.base + "misc/";
-	private static String				_ns					= "urn:test:";
-	private static OWLOntologyManager	_manager			= OWLManager.createOWLOntologyManager();
-	private static OWLDataFactory		_factory			= _manager.getOWLDataFactory();
-	private static OWLClass				_c1					= _factory.getOWLClass(IRI.create(_ns + "c1"));
-	private static OWLClass				_c2					= _factory.getOWLClass(IRI.create(_ns + "c2"));
-	private static OWLObjectProperty	_op1				= _factory.getOWLObjectProperty(IRI.create(_ns + "op1"));
-	private static OWLDataProperty		_dp1				= _factory.getOWLDataProperty(IRI.create(_ns + "dp1"));
-	private static OWLIndividual		_ind1				= _factory.getOWLNamedIndividual(IRI.create(_ns + "ind1"));
-	private static OWLIndividual		_ind2				= _factory.getOWLNamedIndividual(IRI.create(_ns + "ind2"));
-	private static OWLIndividual		_ind3				= _factory.getOWLAnonymousIndividual(_ns + "ind3");
-	private static OWLLiteral			_uc1				= _factory.getOWLLiteral("lit1");
-	private static OWLLiteral			_uc2				= _factory.getOWLLiteral("lit2", "en");
-	private static OWLLiteral			_tc1				= _factory.getOWLLiteral("lit3", OWL2Datatype.XSD_STRING);
-	private static OWLLiteral			_tc2				= _factory.getOWLLiteral("1", OWL2Datatype.XSD_INTEGER);
-	private static OWLDatatype			_d1					= _factory.getOWLDatatype(IRI.create(_ns + "d1"));
+	public static String _base = "file:" + PelletTestSuite.base + "misc/";
+	private static String _ns = "urn:test:";
+	private static OWLOntologyManager _manager = OWLManager.createOWLOntologyManager();
+	private static OWLDataFactory _factory = _manager.getOWLDataFactory();
+	private static OWLClass _c1 = _factory.getOWLClass(IRI.create(_ns + "c1"));
+	private static OWLClass _c2 = _factory.getOWLClass(IRI.create(_ns + "c2"));
+	private static OWLObjectProperty _op1 = _factory.getOWLObjectProperty(IRI.create(_ns + "op1"));
+	private static OWLDataProperty _dp1 = _factory.getOWLDataProperty(IRI.create(_ns + "dp1"));
+	private static OWLIndividual _ind1 = _factory.getOWLNamedIndividual(IRI.create(_ns + "ind1"));
+	private static OWLIndividual _ind2 = _factory.getOWLNamedIndividual(IRI.create(_ns + "ind2"));
+	private static OWLIndividual _ind3 = _factory.getOWLAnonymousIndividual(_ns + "ind3");
+	private static OWLLiteral _uc1 = _factory.getOWLLiteral("lit1");
+	private static OWLLiteral _uc2 = _factory.getOWLLiteral("lit2", "en");
+	private static OWLLiteral _tc1 = _factory.getOWLLiteral("lit3", OWL2Datatype.XSD_STRING);
+	private static OWLLiteral _tc2 = _factory.getOWLLiteral("1", OWL2Datatype.XSD_INTEGER);
+	private static OWLDatatype _d1 = _factory.getOWLDatatype(IRI.create(_ns + "d1"));
 
-	private final KnowledgeBase			_kb					= new KnowledgeBaseImpl();
-	private final PelletVisitor			_atermConverter		= new PelletVisitor(_kb);
-	private final ConceptConverter		_owlapiConverter	= new ConceptConverter(_kb, _factory);
+	private final KnowledgeBase _kb = new KnowledgeBaseImpl();
+	private final PelletVisitor _atermConverter = new PelletVisitor(_kb);
+	private final ConceptConverter _owlapiConverter = new ConceptConverter(_kb, _factory);
 
 	public static junit.framework.Test suite()
 	{
@@ -101,22 +102,26 @@ public class OWLAPIObjectConversionTests
 				final OWLClassExpression c = (OWLClassExpression) object;
 				axiom = _factory.getOWLSubClassOfAxiom(c, c);
 			}
-			else if (object instanceof OWLObjectProperty)
-			{
-				final OWLObjectProperty p = (OWLObjectProperty) object;
-				axiom = _factory.getOWLSubObjectPropertyOfAxiom(p, p);
-			}
-			else if (object instanceof OWLDataProperty)
-			{
-				final OWLDataProperty p = (OWLDataProperty) object;
-				axiom = _factory.getOWLSubDataPropertyOfAxiom(p, p);
-			}
-			else if (object instanceof OWLIndividual)
-			{
-				final OWLIndividual ind = (OWLIndividual) object;
-				axiom = _factory.getOWLClassAssertionAxiom(_factory.getOWLThing(), ind);
-			}
-			if (axiom != null) axiom.accept(_atermConverter);
+			else
+				if (object instanceof OWLObjectProperty)
+				{
+					final OWLObjectProperty p = (OWLObjectProperty) object;
+					axiom = _factory.getOWLSubObjectPropertyOfAxiom(p, p);
+				}
+				else
+					if (object instanceof OWLDataProperty)
+					{
+						final OWLDataProperty p = (OWLDataProperty) object;
+						axiom = _factory.getOWLSubDataPropertyOfAxiom(p, p);
+					}
+					else
+						if (object instanceof OWLIndividual)
+						{
+							final OWLIndividual ind = (OWLIndividual) object;
+							axiom = _factory.getOWLClassAssertionAxiom(_factory.getOWLThing(), ind);
+						}
+			if (axiom != null)
+				axiom.accept(_atermConverter);
 
 			final OWLObject converted = _owlapiConverter.convert(aterm);
 

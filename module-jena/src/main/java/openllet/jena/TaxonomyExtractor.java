@@ -8,11 +8,7 @@ package openllet.jena;
 
 import java.util.Collection;
 import java.util.HashSet;
-import openllet.aterm.ATermAppl;
-import openllet.atom.OpenError;
-import openllet.core.taxonomy.Taxonomy;
-import openllet.core.taxonomy.TaxonomyNode;
-import openllet.core.taxonomy.TaxonomyUtils;
+
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
@@ -22,6 +18,12 @@ import org.apache.jena.vocabulary.OWL;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
 
+import openllet.aterm.ATermAppl;
+import openllet.atom.OpenError;
+import openllet.core.taxonomy.Taxonomy;
+import openllet.core.taxonomy.TaxonomyNode;
+import openllet.core.taxonomy.TaxonomyUtils;
+
 /**
  * Extracts a Jena Model from a Taxonomy (i.e., creates a Model that contains only the classes in the _taxonomy and the subclass relationships among them).
  *
@@ -29,9 +31,9 @@ import org.apache.jena.vocabulary.RDFS;
  */
 public class TaxonomyExtractor
 {
-	private final Taxonomy<ATermAppl>	_taxonomyImpl;
-	private volatile Model				_model;
-	private boolean						_includeIndividuals;
+	private final Taxonomy<ATermAppl> _taxonomyImpl;
+	private volatile Model _model;
+	private boolean _includeIndividuals;
 
 	public TaxonomyExtractor(final Taxonomy<ATermAppl> taxonomy)
 	{
@@ -46,7 +48,8 @@ public class TaxonomyExtractor
 
 	public Model extractModel()
 	{
-		if (_model == null) _model = createExtractedModel();
+		if (_model == null)
+			_model = createExtractedModel();
 
 		return _model;
 	}
@@ -59,7 +62,8 @@ public class TaxonomyExtractor
 
 		for (final TaxonomyNode<ATermAppl> taxonomyNode : _taxonomyImpl.getNodes().values())
 		{
-			if (processedEquivalentClasses.contains(taxonomyNode.getName())) continue;
+			if (processedEquivalentClasses.contains(taxonomyNode.getName()))
+				continue;
 
 			processedEquivalentClasses.addAll(taxonomyNode.getEquivalents());
 
@@ -70,15 +74,18 @@ public class TaxonomyExtractor
 				for (final TaxonomyNode<ATermAppl> superNode : taxonomyNode.getSupers())
 					model.add(subClassOfAssertion(model, aClass, superNode.getName()));
 
-				if (taxonomyNode.getEquivalents().size() > 1) for (final ATermAppl equivalentClass : taxonomyNode.getEquivalents())
-					if (!equivalentClass.equals(aClass)) model.add(equivalentClassAssertion(model, aClass, equivalentClass));
+				if (taxonomyNode.getEquivalents().size() > 1)
+					for (final ATermAppl equivalentClass : taxonomyNode.getEquivalents())
+						if (!equivalentClass.equals(aClass))
+							model.add(equivalentClassAssertion(model, aClass, equivalentClass));
 
 				if (_includeIndividuals)
 				{
 					final Collection<ATermAppl> individuals = getDatumInstanceAsCollectorOfATermAppl(taxonomyNode);
 
-					if (individuals != null && !individuals.isEmpty()) for (final ATermAppl individual : individuals)
-						model.add(typeAssertion(model, individual, aClass));
+					if (individuals != null && !individuals.isEmpty())
+						for (final ATermAppl individual : individuals)
+							model.add(typeAssertion(model, individual, aClass));
 				}
 			}
 		}

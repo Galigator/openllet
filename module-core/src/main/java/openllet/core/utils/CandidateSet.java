@@ -8,16 +8,17 @@ package openllet.core.utils;
 
 import java.util.Iterator;
 import java.util.Set;
+
 import openllet.core.utils.iterator.PairIterator;
 
 /**
- * @author     Evren Sirin
- * @param  <T> kind of element
+ * @author Evren Sirin
+ * @param <T> kind of element
  */
 public class CandidateSet<T>
 {
-	private final Set<T>	_knowns		= SetUtils.create();
-	private final Set<T>	_unknowns	= SetUtils.create();
+	private final Set<T> _knowns = SetUtils.create();
+	private final Set<T> _unknowns = SetUtils.create();
 
 	public CandidateSet()
 	{
@@ -49,7 +50,9 @@ public class CandidateSet<T>
 	{
 		if (isKnown.isTrue())
 			_knowns.add(obj);
-		else if (isKnown.isUnknown()) _unknowns.add(obj);
+		else
+			if (isKnown.isUnknown())
+				_unknowns.add(obj);
 	}
 
 	public void update(final T obj, final Bool isCandidate)
@@ -58,13 +61,15 @@ public class CandidateSet<T>
 		{
 			// do nothing
 		}
-		else if (isCandidate.isFalse())
-			remove(obj);
-		else if (_knowns.contains(obj))
-		{
-			_knowns.remove(obj);
-			_unknowns.add(obj);
-		}
+		else
+			if (isCandidate.isFalse())
+				remove(obj);
+			else
+				if (_knowns.contains(obj))
+				{
+					_knowns.remove(obj);
+					_unknowns.add(obj);
+				}
 	}
 
 	public boolean remove(final Object obj)

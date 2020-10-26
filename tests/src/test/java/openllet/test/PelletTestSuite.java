@@ -7,6 +7,14 @@
 package openllet.test;
 
 import java.io.File;
+
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.rules.TestName;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
+
 import openllet.datatypes.test.DatatypesSuite;
 import openllet.explanation.test.ExplanationTestSuite;
 import openllet.modularity.test.ModularityTestSuite;
@@ -23,12 +31,6 @@ import openllet.test.rbox.RBoxTestSuite;
 import openllet.test.rules.RulesTestSuite;
 import openllet.test.tbox.TBoxTests;
 import openllet.test.transtree.TransTreeTestSuite;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.rules.TestName;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({ PellintTestSuite.class, //

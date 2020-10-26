@@ -8,7 +8,7 @@ import java.util.Set;
  *
  * @param <K> key
  * @param <V> values inside the buckets
- * @since     2.6.0
+ * @since 2.6.0
  */
 public interface MultiMap<K, V> extends Map<K, Set<V>>
 {

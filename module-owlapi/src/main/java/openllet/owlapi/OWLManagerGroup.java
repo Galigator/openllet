@@ -7,11 +7,13 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import openllet.shared.tools.Log;
+
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+
+import openllet.shared.tools.Log;
 
 /**
  * Group of Owl Manager, volatile and persistent.
@@ -20,12 +22,12 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
  */
 public class OWLManagerGroup implements OWLGroup
 {
-	private static final Logger										_logger					= Log.getLogger(OWLManagerGroup.class);
+	private static final Logger _logger = Log.getLogger(OWLManagerGroup.class);
 
-	public volatile Optional<File>									_ontologiesDirectory	= Optional.empty();
-	public volatile OWLOntologyManager								_volatileManager		= null;
-	public volatile OWLOntologyManager								_persistentManager		= null;
-	private volatile OWLIncrementalFlatFileStorageManagerListener	_storageListener;
+	public volatile Optional<File> _ontologiesDirectory = Optional.empty();
+	public volatile OWLOntologyManager _volatileManager = null;
+	public volatile OWLOntologyManager _persistentManager = null;
+	private volatile OWLIncrementalFlatFileStorageManagerListener _storageListener;
 
 	public OWLManagerGroup()
 	{
@@ -70,14 +72,15 @@ public class OWLManagerGroup implements OWLGroup
 	@Override
 	public OWLOntologyManager getVolatileManager()
 	{
-		if (null == _volatileManager) _volatileManager = OWLManager.createConcurrentOWLOntologyManager();
+		if (null == _volatileManager)
+			_volatileManager = OWLManager.createConcurrentOWLOntologyManager();
 
 		return _volatileManager;
 	}
 
 	/**
 	 * @return The storage manager if you have call setOntologiesDirectory() before; else it throw a RuntimeException.
-	 * @since  2.5.1
+	 * @since 2.5.1
 	 */
 	@Override
 	public synchronized OWLOntologyManager getPersistentManager()
@@ -96,8 +99,7 @@ public class OWLManagerGroup implements OWLGroup
 
 			try
 			{
-				_storageListener = new OWLIncrementalFlatFileStorageManagerListener(getOntologiesDirectory().get(),
-						new File(getOntologiesDirectory().get().getPath() + File.separator + OWLHelper._delta), this);
+				_storageListener = new OWLIncrementalFlatFileStorageManagerListener(getOntologiesDirectory().get(), new File(getOntologiesDirectory().get().getPath() + File.separator + OWLHelper._delta), this);
 				getPersistentManager().addOntologyChangeListener(_storageListener);
 			}
 			catch (final Exception e)
@@ -129,9 +131,12 @@ public class OWLManagerGroup implements OWLGroup
 	@Override
 	public void loadDirectory(final File directory, final OWLOntologyManager manager, final BiFunction<OWLOntologyManager, File, Optional<OWLOntology>> loader)
 	{
-		if (!directory.exists()) if (!directory.mkdir()) throw new OWLException("Can't create the directory " + directory + " .");
+		if (!directory.exists())
+			if (!directory.mkdir())
+				throw new OWLException("Can't create the directory " + directory + " .");
 
-		if (!directory.isDirectory()) throw new OWLException("The directory parameter must be a true existing directory. " + directory + " isn't.");
+		if (!directory.isDirectory())
+			throw new OWLException("The directory parameter must be a true existing directory. " + directory + " isn't.");
 
 		final List<File> loaded = new ArrayList<>();
 		for (final File file : directory.listFiles()) // Load files main sequences.
@@ -202,7 +207,8 @@ public class OWLManagerGroup implements OWLGroup
 	@Override
 	public String ontology2filename(final OWLOntologyID ontId)
 	{
-		if (_ontologiesDirectory.isPresent()) return OWLHelper.ontology2filename(_ontologiesDirectory.get(), ontId);
+		if (_ontologiesDirectory.isPresent())
+			return OWLHelper.ontology2filename(_ontologiesDirectory.get(), ontId);
 		throw new OWLException("Storage directory should be define to enable loading of ontology by iri.");
 	}
 
@@ -215,7 +221,8 @@ public class OWLManagerGroup implements OWLGroup
 	@Override
 	public void check(final OWLOntologyManager manager)
 	{
-		if (manager == _volatileManager || manager == _persistentManager) return;
+		if (manager == _volatileManager || manager == _persistentManager)
+			return;
 		throw new OWLException("The given manager isn't know from in the OWLManagerGroup. Check your manager usage.");
 	}
 

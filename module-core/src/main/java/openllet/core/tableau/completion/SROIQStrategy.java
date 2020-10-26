@@ -10,6 +10,7 @@ package openllet.core.tableau.completion;
 
 import java.util.List;
 import java.util.logging.Level;
+
 import openllet.core.OpenlletOptions;
 import openllet.core.boxes.abox.ABox;
 import openllet.core.boxes.abox.IndividualIterator;
@@ -60,10 +61,11 @@ public class SROIQStrategy extends CompletionStrategy
 				lastBranch = candidatLastBranch;
 			}
 
-			if (lastBranch > branchCount) throw new InternalReasonerException(//
-					"Backtrack: Trying to backtrack to _branch " + lastBranch//
-							+ " but has only " + branchCount + "branches."//
-							+ " Clash found: " + _abox.getClash());
+			if (lastBranch > branchCount)
+				throw new InternalReasonerException(//
+						"Backtrack: Trying to backtrack to _branch " + lastBranch//
+								+ " but has only " + branchCount + "branches."//
+								+ " Clash found: " + _abox.getClash());
 
 			if (OpenlletOptions.USE_INCREMENTAL_DELETION)
 			{
@@ -111,7 +113,8 @@ public class SROIQStrategy extends CompletionStrategy
 
 			branchFound = newBranch.tryNext(); // try the next possibility
 
-			if (!branchFound) _logger.fine(() -> "FAIL: Branch " + lastBranch);
+			if (!branchFound)
+				_logger.fine(() -> "FAIL: Branch " + lastBranch);
 		}
 
 		return branchFound;
@@ -132,8 +135,7 @@ public class SROIQStrategy extends CompletionStrategy
 
 				if (_logger.isLoggable(Level.FINE))
 				{
-					_logger.fine("Branch: " + _abox.getBranchIndex() + ", Depth: " + _abox.getStats()._treeDepth + ", Size: " + _abox.getNodes().size() + ", Mem: "
-							+ Runtime.getRuntime().freeMemory() / 1000 + "kb");
+					_logger.fine("Branch: " + _abox.getBranchIndex() + ", Depth: " + _abox.getStats()._treeDepth + ", Size: " + _abox.getNodes().size() + ", Mem: " + Runtime.getRuntime().freeMemory() / 1000 + "kb");
 					_abox.validate();
 					printBlocked();
 					_abox.printTree();
@@ -142,12 +144,14 @@ public class SROIQStrategy extends CompletionStrategy
 				final IndividualIterator i = OpenlletOptions.USE_COMPLETION_QUEUE ? _abox.getCompletionQueue() : _abox.getIndIterator();
 
 				// flush the _queue
-				if (OpenlletOptions.USE_COMPLETION_QUEUE) _abox.getCompletionQueue().flushQueue();
+				if (OpenlletOptions.USE_COMPLETION_QUEUE)
+					_abox.getCompletionQueue().flushQueue();
 
 				for (final TableauRule tableauRule : _tableauRules)
 				{
 					final boolean closed = tableauRule.apply(i);
-					if (closed) break;
+					if (closed)
+						break;
 				}
 
 				// it could be the case that there was a clash and we had a
@@ -156,18 +160,21 @@ public class SROIQStrategy extends CompletionStrategy
 				// still needed to be refired from backtracking
 				// so onle set that the _abox is clash free after we have applied
 				// all the rules once
-				if (OpenlletOptions.USE_COMPLETION_QUEUE) _abox.getCompletionQueue().setClosed(_abox.isClosed());
+				if (OpenlletOptions.USE_COMPLETION_QUEUE)
+					_abox.getCompletionQueue().setClosed(_abox.isClosed());
 			}
 
 			if (_abox.isClosed())
 			{
-				if (_logger.isLoggable(Level.FINE)) _logger.fine("Clash at Branch (" + _abox.getBranchIndex() + ") " + _abox.getClash());
+				if (_logger.isLoggable(Level.FINE))
+					_logger.fine("Clash at Branch (" + _abox.getBranchIndex() + ") " + _abox.getClash());
 
 				if (backtrack())
 				{
 					_abox.setClash(null);
 
-					if (OpenlletOptions.USE_COMPLETION_QUEUE) _abox.getCompletionQueue().setClosed(false);
+					if (OpenlletOptions.USE_COMPLETION_QUEUE)
+						_abox.getCompletionQueue().setClosed(false);
 				}
 				else
 				{
@@ -177,32 +184,33 @@ public class SROIQStrategy extends CompletionStrategy
 						_abox.getCompletionQueue().flushQueue();
 				}
 			}
-			else if (OpenlletOptions.SATURATE_TABLEAU)
-			{
-				Branch unexploredBranch = null;
-				for (int i = _abox.getBranches().size() - 1; i >= 0; i--)
-				{
-					unexploredBranch = _abox.getBranches().get(i);
-					unexploredBranch.setTryNext(unexploredBranch.getTryNext() + 1);
-					if (unexploredBranch.getTryNext() < unexploredBranch.getTryCount())
-					{
-						restore(unexploredBranch);
-						System.out.println(
-								"restoring _branch " + unexploredBranch.getBranchIndexInABox() + " _tryNext = " + unexploredBranch.getTryNext() + " _tryCount = " + unexploredBranch.getTryCount());
-						unexploredBranch.tryNext();
-						break;
-					}
-					else
-					{
-						System.out.println("removing _branch " + unexploredBranch.getBranchIndexInABox());
-						_abox.getBranches().remove(i);
-						unexploredBranch = null;
-					}
-				}
-				if (unexploredBranch == null) _abox.setComplete(true);
-			}
 			else
-				_abox.setComplete(true);
+				if (OpenlletOptions.SATURATE_TABLEAU)
+				{
+					Branch unexploredBranch = null;
+					for (int i = _abox.getBranches().size() - 1; i >= 0; i--)
+					{
+						unexploredBranch = _abox.getBranches().get(i);
+						unexploredBranch.setTryNext(unexploredBranch.getTryNext() + 1);
+						if (unexploredBranch.getTryNext() < unexploredBranch.getTryCount())
+						{
+							restore(unexploredBranch);
+							System.out.println("restoring _branch " + unexploredBranch.getBranchIndexInABox() + " _tryNext = " + unexploredBranch.getTryNext() + " _tryCount = " + unexploredBranch.getTryCount());
+							unexploredBranch.tryNext();
+							break;
+						}
+						else
+						{
+							System.out.println("removing _branch " + unexploredBranch.getBranchIndexInABox());
+							_abox.getBranches().remove(i);
+							unexploredBranch = null;
+						}
+					}
+					if (unexploredBranch == null)
+						_abox.setComplete(true);
+				}
+				else
+					_abox.setComplete(true);
 		}
 
 	}

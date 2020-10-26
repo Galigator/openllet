@@ -22,11 +22,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import openllet.core.KnowledgeBase;
-import openllet.core.utils.Namespaces;
-import openllet.jena.PelletInfGraph;
-import openllet.jena.PelletReasonerFactory;
-import openllet.shared.tools.Log;
+
 import org.apache.jena.graph.Graph;
 import org.apache.jena.graph.Triple;
 import org.apache.jena.rdf.model.Model;
@@ -45,6 +41,12 @@ import org.semanticweb.owlapi.io.StringDocumentTarget;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
 
+import openllet.core.KnowledgeBase;
+import openllet.core.utils.Namespaces;
+import openllet.jena.PelletInfGraph;
+import openllet.jena.PelletReasonerFactory;
+import openllet.shared.tools.Log;
+
 /**
  * <p>
  * Copyright: Copyright (c) 2008
@@ -58,9 +60,9 @@ import org.semanticweb.owlapi.model.OWLOntology;
 @RunWith(Parameterized.class)
 public class JenaExplanationTest extends AbstractExplanationTest
 {
-	private static final Logger		_logger	= Log.getLogger(JenaExplanationTest.class);
+	private static final Logger _logger = Log.getLogger(JenaExplanationTest.class);
 
-	private static final boolean	_debug	= false;
+	private static final boolean _debug = false;
 
 	@Parameters
 	public static Collection<Object[]> getParameters()
@@ -211,7 +213,8 @@ public class JenaExplanationTest extends AbstractExplanationTest
 
 		final Set<OWLAxiom> expectedExplanation = expectedExplanations.iterator().next();
 		final StringWriter sw = new StringWriter();
-		if (_debug) ModelFactory.createModelForGraph(actual).write(System.out, "TTL");
+		if (_debug)
+			ModelFactory.createModelForGraph(actual).write(System.out, "TTL");
 		ModelFactory.createModelForGraph(actual).write(sw, "RDF/XML");
 		final OWLOntology ont = _manager.loadOntologyFromOntologyDocument(new StringDocumentSource(sw.toString()));
 		final Set<? extends OWLAxiom> actualExplanation = ont.logicalAxioms().collect(Collectors.toSet());
@@ -235,7 +238,8 @@ public class JenaExplanationTest extends AbstractExplanationTest
 			sb.append(expectedAxiom);
 		}
 
-		if (!success) _logger.severe("Error in explanation: " + sb);
+		if (!success)
+			_logger.severe("Error in explanation: " + sb);
 
 		return success;
 	}

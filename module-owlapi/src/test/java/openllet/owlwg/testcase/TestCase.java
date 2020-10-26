@@ -1,6 +1,7 @@
 package openllet.owlwg.testcase;
 
 import java.util.Set;
+
 import org.semanticweb.owlapi.model.IRI;
 
 /**
@@ -18,8 +19,8 @@ import org.semanticweb.owlapi.model.IRI;
  * Company: Clark & Parsia, LLC. <a href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
  * </p>
  *
- * @author     Mike Smith &lt;msmith@clarkparsia.com&gt;
- * @param  <O>
+ * @author Mike Smith &lt;msmith@clarkparsia.com&gt;
+ * @param <O>
  */
 public interface TestCase<O>
 {

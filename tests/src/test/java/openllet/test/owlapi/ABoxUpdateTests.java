@@ -12,9 +12,10 @@ import static openllet.owlapi.OWL.classAssertion;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Test;
+
 import junit.framework.JUnit4TestAdapter;
 import openllet.owlapi.OWL;
-import org.junit.Test;
 
 /**
  * <p>

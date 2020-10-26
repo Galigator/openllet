@@ -8,13 +8,15 @@ package openllet.pellint.lintpattern.axiom;
 
 import java.util.Collections;
 import java.util.HashSet;
+
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
+
 import openllet.owlapi.OWL;
 import openllet.pellint.format.CompactClassLintFormat;
 import openllet.pellint.format.LintFormat;
 import openllet.pellint.model.Lint;
 import openllet.pellint.model.LintFixer;
-import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
 
 /**
  * <p>

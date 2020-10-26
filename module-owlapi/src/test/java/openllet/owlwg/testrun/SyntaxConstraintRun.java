@@ -38,7 +38,8 @@ public class SyntaxConstraintRun extends AbstractRun
 	public SyntaxConstraintRun(final TestCase<?> testcase, final RunResultType type, final SyntaxConstraint constraint, final TestRunner<?> runner, final String details, final Throwable cause)
 	{
 		super(testcase, type, RunTestType.SYNTAX_CONSTRAINT, runner, details, cause);
-		if (constraint == null) throw new NullPointerException();
+		if (constraint == null)
+			throw new NullPointerException();
 		_constraint = constraint;
 	}
 

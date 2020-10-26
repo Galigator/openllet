@@ -9,6 +9,7 @@ package openllet.query.sparqldl.model;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
 
@@ -49,8 +50,8 @@ public interface Query
 	boolean isDistinct();
 
 	/**
-	 * @param  queryType #VarType
-	 * @return           variables that occur in the subquery specified by the given type.
+	 * @param queryType #VarType
+	 * @return variables that occur in the subquery specified by the given type.
 	 */
 	Set<ATermAppl> getDistVarsForType(final VarType queryType);
 
@@ -132,24 +133,24 @@ public interface Query
 	/**
 	 * Replace the variables in the query with the values specified in the binding and return a new query instance (without modifying this query).
 	 *
-	 * @param  binding
-	 * @return         the query changed
+	 * @param binding
+	 * @return the query changed
 	 */
 	Query apply(ResultBinding binding);
 
 	/**
-	 * @param  distVar
-	 * @param  avoidList
-	 * @param  stopOnConstants
-	 * @return                 Rolls up the query to the given variable.
+	 * @param distVar
+	 * @param avoidList
+	 * @param stopOnConstants
+	 * @return Rolls up the query to the given variable.
 	 */
 	ATermAppl rollUpTo(final ATermAppl distVar, final Collection<ATermAppl> avoidList, final boolean stopOnConstants);
 
 	/**
 	 * Creates a subquery from the given query. Atoms are listed according to the 'atoms' parameter.
 	 *
-	 * @param  atoms selected atom indices
-	 * @return       subquery
+	 * @param atoms selected atom indices
+	 * @return subquery
 	 */
 	Query reorder(int[] atoms);
 
@@ -158,10 +159,9 @@ public interface Query
 	/**
 	 * Searches for given atom pattern. This also might be used for different types of rolling-up, involving various sets of allowed atom types.
 	 *
-	 * @param  predicate
-	 * @param  arguments
-	 *
-	 * @return           query atoms in the order as they appear in the query
+	 * @param predicate
+	 * @param arguments
+	 * @return query atoms in the order as they appear in the query
 	 */
 	List<QueryAtom> findAtoms(final QueryPredicate predicate, final ATermAppl... arguments);
 

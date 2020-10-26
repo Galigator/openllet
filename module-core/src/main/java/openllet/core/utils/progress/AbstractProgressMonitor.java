@@ -20,19 +20,19 @@ import openllet.core.utils.Timer;
  */
 public abstract class AbstractProgressMonitor implements ProgressMonitor
 {
-	protected String	_progressTitle		= "";
+	protected String _progressTitle = "";
 
-	protected String	_progressMessage	= "";
+	protected String _progressMessage = "";
 
-	protected int		_progress			= 0;
+	protected int _progress = 0;
 
-	protected int		_progressLength		= 0;
+	protected int _progressLength = 0;
 
-	protected int		_progressPercent	= -1;
+	protected int _progressPercent = -1;
 
-	protected Timer		_timer				= new Timer();
+	protected Timer _timer = new Timer();
 
-	protected boolean	_cancelled			= false;
+	protected boolean _cancelled = false;
 
 	public AbstractProgressMonitor()
 	{

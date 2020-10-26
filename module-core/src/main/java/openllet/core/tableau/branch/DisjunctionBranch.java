@@ -33,6 +33,7 @@ package openllet.core.tableau.branch;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
 import openllet.core.OpenlletOptions;
@@ -46,11 +47,11 @@ import openllet.core.utils.ATermUtils;
 
 public class DisjunctionBranch extends Branch
 {
-	protected final Node				_node;
-	protected final ATermAppl			_disjunction;
-	private volatile ATermAppl[]		_allDisjonctions;
-	protected volatile DependencySet[]	_prevDS;
-	protected volatile int[]			_order;
+	protected final Node _node;
+	protected final ATermAppl _disjunction;
+	private volatile ATermAppl[] _allDisjonctions;
+	protected volatile DependencySet[] _prevDS;
+	protected volatile int[] _order;
 
 	public DisjunctionBranch(final ABox abox, final CompletionStrategy completion, final Node node, //
 			final ATermAppl disjunction, final DependencySet ds, final ATermAppl[] disj)
@@ -89,8 +90,7 @@ public class DisjunctionBranch extends Branch
 
 	protected String getDebugMsg()
 	{
-		return "DISJ: Branch (" + getBranchIndexInABox() + ") try (" + (getTryNext() + 1) + "/" + getTryCount() + ") " + _node + " " + ATermUtils.toString(_allDisjonctions[getTryNext()]) + " "
-				+ ATermUtils.toString(_disjunction);
+		return "DISJ: Branch (" + getBranchIndexInABox() + ") try (" + (getTryNext() + 1) + "/" + getTryCount() + ") " + _node + " " + ATermUtils.toString(_allDisjonctions[getTryNext()]) + " " + ATermUtils.toString(_disjunction);
 	}
 
 	@Override
@@ -108,11 +108,14 @@ public class DisjunctionBranch extends Branch
 	 */
 	private int preferredDisjunct()
 	{
-		if (_allDisjonctions.length != 2) return -1;
+		if (_allDisjonctions.length != 2)
+			return -1;
 
-		if (ATermUtils.isPrimitive(_allDisjonctions[0]) && ATermUtils.isAllValues(_allDisjonctions[1]) && ATermUtils.isNot((ATermAppl) _allDisjonctions[1].getArgument(1))) return 1;
+		if (ATermUtils.isPrimitive(_allDisjonctions[0]) && ATermUtils.isAllValues(_allDisjonctions[1]) && ATermUtils.isNot((ATermAppl) _allDisjonctions[1].getArgument(1)))
+			return 1;
 
-		if (ATermUtils.isPrimitive(_allDisjonctions[1]) && ATermUtils.isAllValues(_allDisjonctions[0]) && ATermUtils.isNot((ATermAppl) _allDisjonctions[0].getArgument(1))) return 0;
+		if (ATermUtils.isPrimitive(_allDisjonctions[1]) && ATermUtils.isAllValues(_allDisjonctions[0]) && ATermUtils.isNot((ATermAppl) _allDisjonctions[0].getArgument(1)))
+			return 0;
 
 		return -1;
 	}
@@ -121,7 +124,8 @@ public class DisjunctionBranch extends Branch
 	public void setLastClash(final DependencySet ds)
 	{
 		super.setLastClash(ds);
-		if (getTryNext() >= 0) _prevDS[getTryNext()] = ds;
+		if (getTryNext() >= 0)
+			_prevDS[getTryNext()] = ds;
 	}
 
 	@Override
@@ -141,7 +145,8 @@ public class DisjunctionBranch extends Branch
 					stats[i] = i != preference ? 0 : Integer.MIN_VALUE;
 				_abox.getDisjBranchStats().put(_disjunction, stats);
 			}
-			if (getTryNext() > 0) stats[_order[getTryNext() - 1]]++;
+			if (getTryNext() > 0)
+				stats[_order[getTryNext() - 1]]++;
 
 			int minIndex = getTryNext();
 			int minValue = stats[getTryNext()];
@@ -171,8 +176,9 @@ public class DisjunctionBranch extends Branch
 		{
 			final ATermAppl d = _allDisjonctions[getTryNext()];
 
-			if (OpenlletOptions.USE_SEMANTIC_BRANCHING) for (int m = 0; m < getTryNext(); m++)
-				_strategy.addType(node, ATermUtils.negate(_allDisjonctions[m]), _prevDS[m]);
+			if (OpenlletOptions.USE_SEMANTIC_BRANCHING)
+				for (int m = 0; m < getTryNext(); m++)
+					_strategy.addType(node, ATermUtils.negate(_allDisjonctions[m]), _prevDS[m]);
 
 			DependencySet ds = null;
 			if (getTryNext() == getTryCount() - 1 && !OpenlletOptions.SATURATE_TABLEAU)
@@ -188,19 +194,20 @@ public class DisjunctionBranch extends Branch
 					ds.remove(getBranchIndexInABox());
 			}
 			else
-			//CHW - Changed for tracing purposes
-			if (OpenlletOptions.USE_INCREMENTAL_DELETION)
-				ds = getTermDepends().union(new DependencySet(getBranchIndexInABox()), _abox.doExplanation());
-			else
-			{
-				ds = new DependencySet(getBranchIndexInABox());
-				//added for tracing
-				final Set<ATermAppl> explain = new HashSet<>();
-				explain.addAll(getTermDepends().getExplain());
-				ds.setExplain(explain);
-			}
+				//CHW - Changed for tracing purposes
+				if (OpenlletOptions.USE_INCREMENTAL_DELETION)
+					ds = getTermDepends().union(new DependencySet(getBranchIndexInABox()), _abox.doExplanation());
+				else
+				{
+					ds = new DependencySet(getBranchIndexInABox());
+					//added for tracing
+					final Set<ATermAppl> explain = new HashSet<>();
+					explain.addAll(getTermDepends().getExplain());
+					ds.setExplain(explain);
+				}
 
-			if (_logger.isLoggable(Level.FINE)) _logger.fine(getDebugMsg());
+			if (_logger.isLoggable(Level.FINE))
+				_logger.fine(getDebugMsg());
 
 			final ATermAppl notD = ATermUtils.negate(d);
 			DependencySet clashDepends = OpenlletOptions.SATURATE_TABLEAU ? null : node.getDepends(notD);
@@ -209,7 +216,8 @@ public class DisjunctionBranch extends Branch
 				_strategy.addType(node, d, ds);
 				// we may still find a clash if concept is allValuesFrom
 				// and there are some conflicting edges
-				if (_abox.isClosed()) clashDepends = _abox.getClash().getDepends();
+				if (_abox.isClosed())
+					clashDepends = _abox.getClash().getDepends();
 			}
 			else
 				clashDepends = clashDepends.union(ds, _abox.doExplanation());
@@ -241,22 +249,23 @@ public class DisjunctionBranch extends Branch
 				if (getTryNext() < getTryCount() - 1 && clashDepends.contains(getBranchIndexInABox()))
 				{
 					// do not restore if we find the problem without adding the concepts
-					if (_abox.isClosed()) if (node.isLiteral())
-					{
-						_abox.setClash(null);
+					if (_abox.isClosed())
+						if (node.isLiteral())
+						{
+							_abox.setClash(null);
 
-						node.restore(getBranchIndexInABox());
-					}
-					else
-					{
-						// restoring a single _node is not enough here because one of the disjuncts could be an
-						// all(r,C) that changed the r-neighbors
-						_strategy.restoreLocal((Individual) node, this);
+							node.restore(getBranchIndexInABox());
+						}
+						else
+						{
+							// restoring a single _node is not enough here because one of the disjuncts could be an
+							// all(r,C) that changed the r-neighbors
+							_strategy.restoreLocal((Individual) node, this);
 
-						// global restore sets the _branch number to previous value so we need to
-						// increment it again
-						_abox.incrementBranch();
-					}
+							// global restore sets the _branch number to previous value so we need to
+							// increment it again
+							_abox.incrementBranch();
+						}
 
 					setLastClash(clashDepends);
 				}
@@ -272,7 +281,8 @@ public class DisjunctionBranch extends Branch
 						_abox.setClash(Clash.atomic(node, clashDepends.union(ds, _abox.doExplanation())));
 
 					//CHW - added for inc reasoning
-					if (OpenlletOptions.USE_INCREMENTAL_DELETION) _abox.getKB().getDependencyIndex().addCloseBranchDependency(this, _abox.getClash().getDepends());
+					if (OpenlletOptions.USE_INCREMENTAL_DELETION)
+						_abox.getKB().getDependencyIndex().addCloseBranchDependency(this, _abox.getClash().getDepends());
 
 					return;
 				}
@@ -348,8 +358,8 @@ public class DisjunctionBranch extends Branch
 	}
 
 	/**
-	 * @param  i
-	 * @return   the disj
+	 * @param i
+	 * @return the disj
 	 */
 	public ATermAppl getDisjunct(final int i)
 	{

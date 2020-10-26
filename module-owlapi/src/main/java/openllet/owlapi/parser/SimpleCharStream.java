@@ -9,28 +9,28 @@ package openllet.owlapi.parser;
 public class SimpleCharStream
 {
 	/** Whether parser is static. */
-	public static final boolean	staticFlag		= false;
-	int							bufsize;
-	int							available;
-	int							tokenBegin;
+	public static final boolean staticFlag = false;
+	int bufsize;
+	int available;
+	int tokenBegin;
 	/** Position in buffer. */
-	public int					bufpos			= -1;
-	protected int				bufline[];
-	protected int				bufcolumn[];
+	public int bufpos = -1;
+	protected int bufline[];
+	protected int bufcolumn[];
 
-	protected int				column			= 0;
-	protected int				line			= 1;
+	protected int column = 0;
+	protected int line = 1;
 
-	protected boolean			prevCharIsCR	= false;
-	protected boolean			prevCharIsLF	= false;
+	protected boolean prevCharIsCR = false;
+	protected boolean prevCharIsLF = false;
 
-	protected java.io.Reader	inputStream;
+	protected java.io.Reader inputStream;
 
-	protected char[]			buffer;
-	protected int				maxNextCharInd	= 0;
-	protected int				inBuf			= 0;
-	protected int				tabSize			= 1;
-	protected boolean			trackLineColumn	= true;
+	protected char[] buffer;
+	protected int maxNextCharInd = 0;
+	protected int inBuf = 0;
+	protected int tabSize = 1;
+	protected boolean trackLineColumn = true;
 
 	public void setTabSize(final int i)
 	{
@@ -92,24 +92,28 @@ public class SimpleCharStream
 
 	protected void FillBuff() throws java.io.IOException
 	{
-		if (maxNextCharInd == available) if (available == bufsize)
-		{
-			if (tokenBegin > 2048)
+		if (maxNextCharInd == available)
+			if (available == bufsize)
 			{
-				bufpos = maxNextCharInd = 0;
-				available = tokenBegin;
+				if (tokenBegin > 2048)
+				{
+					bufpos = maxNextCharInd = 0;
+					available = tokenBegin;
+				}
+				else
+					if (tokenBegin < 0)
+						bufpos = maxNextCharInd = 0;
+					else
+						ExpandBuff(false);
 			}
-			else if (tokenBegin < 0)
-				bufpos = maxNextCharInd = 0;
 			else
-				ExpandBuff(false);
-		}
-		else if (available > tokenBegin)
-			available = bufsize;
-		else if (tokenBegin - available < 2048)
-			ExpandBuff(true);
-		else
-			available = tokenBegin;
+				if (available > tokenBegin)
+					available = bufsize;
+				else
+					if (tokenBegin - available < 2048)
+						ExpandBuff(true);
+					else
+						available = tokenBegin;
 
 		int i;
 		try
@@ -127,7 +131,8 @@ public class SimpleCharStream
 		{
 			--bufpos;
 			backup(0);
-			if (tokenBegin == -1) tokenBegin = bufpos;
+			if (tokenBegin == -1)
+				tokenBegin = bufpos;
 			throw e;
 		}
 	}
@@ -151,14 +156,15 @@ public class SimpleCharStream
 			prevCharIsLF = false;
 			line += column = 1;
 		}
-		else if (prevCharIsCR)
-		{
-			prevCharIsCR = false;
-			if (c == '\n')
-				prevCharIsLF = true;
-			else
-				line += column = 1;
-		}
+		else
+			if (prevCharIsCR)
+			{
+				prevCharIsCR = false;
+				if (c == '\n')
+					prevCharIsLF = true;
+				else
+					line += column = 1;
+			}
 
 		switch (c)
 		{
@@ -187,12 +193,14 @@ public class SimpleCharStream
 		{
 			--inBuf;
 
-			if (++bufpos == bufsize) bufpos = 0;
+			if (++bufpos == bufsize)
+				bufpos = 0;
 
 			return buffer[bufpos];
 		}
 
-		if (++bufpos >= maxNextCharInd) FillBuff();
+		if (++bufpos >= maxNextCharInd)
+			FillBuff();
 
 		final char c = buffer[bufpos];
 
@@ -203,7 +211,7 @@ public class SimpleCharStream
 	@Deprecated
 	/**
 	 * @deprecated
-	 * @see        #getEndColumn
+	 * @see #getEndColumn
 	 */
 	public int getColumn()
 	{
@@ -213,7 +221,7 @@ public class SimpleCharStream
 	@Deprecated
 	/**
 	 * @deprecated
-	 * @see        #getEndLine
+	 * @see #getEndLine
 	 */
 	public int getLine()
 	{
@@ -249,7 +257,8 @@ public class SimpleCharStream
 	{
 
 		inBuf += amount;
-		if ((bufpos -= amount) < 0) bufpos += bufsize;
+		if ((bufpos -= amount) < 0)
+			bufpos += bufsize;
 	}
 
 	/** Constructor. */

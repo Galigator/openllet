@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+
 import openllet.core.utils.SetUtils;
 
 /**
@@ -22,9 +23,9 @@ public class SCC
 	/**
 	 * Computes the strongly connected components of a graph. This implementation is based on Tarjan's algorithm
 	 *
-	 * @param  graph to compute on
-	 * @param  <E>   type of node
-	 * @return       the strongly connected components of a graph
+	 * @param graph to compute on
+	 * @param <E> type of node
+	 * @return the strongly connected components of a graph
 	 */
 	public static <E> List<Set<EntityNode<E>>> computeSCC(final ReachabilityGraph<E> graph)
 	{
@@ -36,13 +37,13 @@ public class SCC
 	 */
 	private static class NodeInfo
 	{
-		private final Node	_node;
+		private final Node _node;
 
-		private int			_index;
+		private int _index;
 
-		private int			_lowlink;
+		private int _lowlink;
 
-		private boolean		_onStack;
+		private boolean _onStack;
 
 		private NodeInfo(final Node n)
 		{
@@ -73,20 +74,21 @@ public class SCC
 	private static class SCCComputer<E>
 	{
 
-		private final List<Set<EntityNode<E>>>	_stronglyConnectedComponents	= new ArrayList<>();
+		private final List<Set<EntityNode<E>>> _stronglyConnectedComponents = new ArrayList<>();
 
-		private int								_index;
+		private int _index;
 
-		private ArrayList<NodeInfo>				_stack;
+		private ArrayList<NodeInfo> _stack;
 
-		private final Map<Node, NodeInfo>		_nodeInfos						= new ConcurrentHashMap<>();
+		private final Map<Node, NodeInfo> _nodeInfos = new ConcurrentHashMap<>();
 
 		public List<Set<EntityNode<E>>> computeSCC(final ReachabilityGraph<E> graph)
 		{
 			final Collection<EntityNode<E>> nodes = graph.getEntityNodes();
 			for (final Node node : nodes)
 			{
-				if (_nodeInfos.containsKey(node)) continue;
+				if (_nodeInfos.containsKey(node))
+					continue;
 
 				computeSCC(node);
 			}
@@ -115,7 +117,8 @@ public class SCC
 			{
 				// ignore AndNodes because connectivity through AndNode does not
 				// necessarily mean equivalent modules
-				if (out instanceof AndNode) continue;
+				if (out instanceof AndNode)
+					continue;
 
 				NodeInfo outInfo = _nodeInfos.get(out);
 				if (outInfo == null)
@@ -124,7 +127,9 @@ public class SCC
 					visit(outInfo);
 					nodeInfo._lowlink = Math.min(nodeInfo._lowlink, outInfo._lowlink);
 				}
-				else if (outInfo._onStack) nodeInfo._lowlink = Math.min(nodeInfo._lowlink, outInfo._index);
+				else
+					if (outInfo._onStack)
+						nodeInfo._lowlink = Math.min(nodeInfo._lowlink, outInfo._index);
 			}
 
 			if (nodeInfo._lowlink == nodeInfo._index)
@@ -138,12 +143,14 @@ public class SCC
 					info = _stack.get(i);
 					info._onStack = false;
 					// do not include OrNodes in the component
-					if (info.isEntityNode()) connectedComponent.add(info.asEntityNode());
+					if (info.isEntityNode())
+						connectedComponent.add(info.asEntityNode());
 					i--;
 				}
 
 				// ignore if the component was a singleton OrNode
-				if (connectedComponent.size() > 0) _stronglyConnectedComponents.add(connectedComponent);
+				if (connectedComponent.size() > 0)
+					_stronglyConnectedComponents.add(connectedComponent);
 				_stack.subList(i + 1, _stack.size()).clear();
 			}
 		}

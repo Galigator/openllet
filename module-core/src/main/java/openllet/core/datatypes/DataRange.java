@@ -16,24 +16,24 @@ import java.util.Iterator;
  * Company: Clark & Parsia, LLC. <http://www.clarkparsia.com>
  * </p>
  *
- * @author     Mike Smith
- * @param  <T> type of literals
+ * @author Mike Smith
+ * @param <T> type of literals
  */
 public interface DataRange<T>
 {
 	/**
 	 * Check if a data range contains a particular value
 	 *
-	 * @param  value the value to check
-	 * @return       <code>true</code> if the _data range contains <code>value</code>, <code>false</code> else
+	 * @param value the value to check
+	 * @return <code>true</code> if the _data range contains <code>value</code>, <code>false</code> else
 	 */
 	boolean contains(Object value);
 
 	/**
 	 * Check that a data range contains a minimum number of elements
 	 *
-	 * @param  n the number of elements
-	 * @return   <code>true</code> if the _data range contains <code>n</code> or more elements, <code>false</code> otherwise
+	 * @param n the number of elements
+	 * @return <code>true</code> if the _data range contains <code>n</code> or more elements, <code>false</code> otherwise
 	 */
 	boolean containsAtLeast(int n);
 
@@ -61,9 +61,9 @@ public interface DataRange<T>
 	/**
 	 * Return the size of the _data range. <i>Necessary to support LiteralValueBranch constructor</i>
 	 *
-	 * @return                           the size of the _data range
-	 * @throws     IllegalStateException if {@link #isFinite()} returns <code>false</code>
-	 * @deprecated                       Use {@link #containsAtLeast(int)}
+	 * @return the size of the _data range
+	 * @throws IllegalStateException if {@link #isFinite()} returns <code>false</code>
+	 * @deprecated Use {@link #containsAtLeast(int)}
 	 */
 	@Deprecated
 	default int size()
@@ -74,10 +74,10 @@ public interface DataRange<T>
 	/**
 	 * Return a value from an enumerable _data range. <i>Necessary to support LiteralValueBranch shiftTryNext</i>
 	 *
-	 * @param      i                     the _index of the value in the _data range
-	 * @return                           the value
-	 * @throws     IllegalStateException if {@link #isEnumerable()} returns <code>false</code>
-	 * @deprecated                       Use {@link #valueIterator()}
+	 * @param i the _index of the value in the _data range
+	 * @return the value
+	 * @throws IllegalStateException if {@link #isEnumerable()} returns <code>false</code>
+	 * @deprecated Use {@link #valueIterator()}
 	 */
 	@Deprecated
 	default T getValue(final int i)
@@ -88,7 +88,7 @@ public interface DataRange<T>
 	/**
 	 * Get a (possibly infinite) iterator over values in the _data range.
 	 *
-	 * @return                       an {@link Iterator}
+	 * @return an {@link Iterator}
 	 * @throws IllegalStateException if {@link #isEnumerable()} returns <code>false</code>
 	 */
 	Iterator<T> valueIterator();

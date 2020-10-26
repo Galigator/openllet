@@ -17,11 +17,11 @@ public abstract class ObjectProfileVisitors
 	/**
 	 * Factory method
 	 *
-	 * @param  out             writer to dump the _nodes into [may not be null]
-	 * @param  indent          indent increment string [null is equivalent to " "]
-	 * @param  format          percentage formatter to use [null is equivalent to NumberFormat.getPercentInstance (), with a single fraction digit]
-	 * @param  shortClassNames 'true' causes all class names to be dumped in compact [no package prefix] form
-	 * @return                 the default plain text _node _node print visitor. It is up to the caller to buffer 'out'.
+	 * @param out writer to dump the _nodes into [may not be null]
+	 * @param indent indent increment string [null is equivalent to " "]
+	 * @param format percentage formatter to use [null is equivalent to NumberFormat.getPercentInstance (), with a single fraction digit]
+	 * @param shortClassNames 'true' causes all class names to be dumped in compact [no package prefix] form
+	 * @return the default plain text _node _node print visitor. It is up to the caller to buffer 'out'.
 	 */
 	public static ObjectProfileNode.INodeVisitor newDefaultNodePrinter(final PrintWriter out, final String indent, final DecimalFormat format, final boolean shortClassNames)
 	{
@@ -31,11 +31,11 @@ public abstract class ObjectProfileVisitors
 	/**
 	 * Factory method
 	 *
-	 * @param  out             stream to dump the _nodes into [may not be null]
-	 * @param  indent          indent increment string [null is equivalent to " "]
-	 * @param  format          percentage formatter to use [null is equivalent to NumberFormat.getPercentInstance (), with a single fraction digit]
-	 * @param  shortClassNames 'true' causes all class names to be dumped in compact [no package prefix] form
-	 * @return                 the XML output visitor. To create a valid XML document, start the traversal on the profile root _node. It is up to the caller to buffer 'out'.
+	 * @param out stream to dump the _nodes into [may not be null]
+	 * @param indent indent increment string [null is equivalent to " "]
+	 * @param format percentage formatter to use [null is equivalent to NumberFormat.getPercentInstance (), with a single fraction digit]
+	 * @param shortClassNames 'true' causes all class names to be dumped in compact [no package prefix] form
+	 * @return the XML output visitor. To create a valid XML document, start the traversal on the profile root _node. It is up to the caller to buffer 'out'.
 	 */
 	public static ObjectProfileNode.INodeVisitor newXMLNodePrinter(final OutputStream out, final String indent, final DecimalFormat format, final boolean shortClassNames)
 	{
@@ -120,10 +120,10 @@ public abstract class ObjectProfileVisitors
 			_shortClassNames = shortClassNames;
 		}
 
-		private final PrintWriter	_out;
-		private final String		_indent;
-		private final DecimalFormat	_format;
-		private final boolean		_shortClassNames;
+		private final PrintWriter _out;
+		private final String _indent;
+		private final DecimalFormat _format;
+		private final boolean _shortClassNames;
 
 	}
 
@@ -261,12 +261,12 @@ public abstract class ObjectProfileVisitors
 			}
 		}
 
-		private final PrintWriter	_out;
-		private final String		_indent;
-		private final DecimalFormat	_format;
-		private final boolean		_shortClassNames;
+		private final PrintWriter _out;
+		private final String _indent;
+		private final DecimalFormat _format;
+		private final boolean _shortClassNames;
 
-		private static final String	ENCODING	= "UTF-8";
+		private static final String ENCODING = "UTF-8";
 
 	}
 }

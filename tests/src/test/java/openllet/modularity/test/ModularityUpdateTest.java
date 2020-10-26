@@ -17,12 +17,14 @@ import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.stream.Collectors;
+
+import org.junit.Test;
+import org.semanticweb.owlapi.model.OWLAxiom;
+
 import openllet.core.utils.SetUtils;
 import openllet.modularity.IncrementalClassifier;
 import openllet.modularity.PelletIncremantalReasonerFactory;
 import openllet.owlapi.OWL;
-import org.junit.Test;
-import org.semanticweb.owlapi.model.OWLAxiom;
 
 /**
  * <p>

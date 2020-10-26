@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import openllet.core.boxes.abox.Node;
 import openllet.core.utils.iterator.IteratorUtils;
 
@@ -44,8 +45,8 @@ public abstract class BetaMemoryIndex
 
 	private static class Unindexed extends BetaMemoryIndex
 	{
-		private Token[]	index	= new Token[10];
-		private int		size	= 0;
+		private Token[] index = new Token[10];
+		private int size = 0;
 
 		@Override
 		public boolean isJoined()
@@ -87,12 +88,13 @@ public abstract class BetaMemoryIndex
 				final Token token = index[i];
 				if (token.dependsOn(branch))
 					removed++;
-				else if (removed > 0)
-				{
-					System.arraycopy(index, i, index, i - removed, size - i);
-					size -= removed;
-					removed = 0;
-				}
+				else
+					if (removed > 0)
+					{
+						System.arraycopy(index, i, index, i - removed, size - i);
+						size -= removed;
+						removed = 0;
+					}
 			}
 
 			if (removed > 0)
@@ -111,7 +113,8 @@ public abstract class BetaMemoryIndex
 		@Override
 		public String toString()
 		{
-			if (size == 0) return "[]";
+			if (size == 0)
+				return "[]";
 			final StringBuilder sb = new StringBuilder("[");
 			for (int i = 0; i < size; i++)
 			{
@@ -129,9 +132,9 @@ public abstract class BetaMemoryIndex
 	@SuppressWarnings("unused")
 	private static class JoinUnindexed extends BetaMemoryIndex
 	{
-		private final List<Token>	_memory	= new ArrayList<>();
+		private final List<Token> _memory = new ArrayList<>();
 
-		private final JoinCondition	_joinCondition;
+		private final JoinCondition _joinCondition;
 
 		private JoinUnindexed(final JoinCondition joinCondition)
 		{
@@ -169,7 +172,8 @@ public abstract class BetaMemoryIndex
 			for (final Iterator<Token> i = _memory.iterator(); i.hasNext();)
 			{
 				final Token token = i.next();
-				if (token.dependsOn(branch)) i.remove();
+				if (token.dependsOn(branch))
+					i.remove();
 			}
 		}
 
@@ -189,9 +193,9 @@ public abstract class BetaMemoryIndex
 
 	private static class JoinIndexed extends BetaMemoryIndex
 	{
-		private final Map<Node, List<Token>>	_index	= new HashMap<>();
+		private final Map<Node, List<Token>> _index = new HashMap<>();
 
-		private final JoinCondition				_joinCondition;
+		private final JoinCondition _joinCondition;
 
 		private JoinIndexed(final JoinCondition joinCondition)
 		{
@@ -225,7 +229,7 @@ public abstract class BetaMemoryIndex
 
 			final List<Token> tokens = _index.get(wmeArg);
 
-			return tokens == null ? IteratorUtils.<Token>emptyIterator() : new ListIterator<>(tokens);
+			return tokens == null ? IteratorUtils.<Token> emptyIterator() : new ListIterator<>(tokens);
 		}
 
 		@Override
@@ -244,9 +248,11 @@ public abstract class BetaMemoryIndex
 				for (final Iterator<Token> j = tokens.iterator(); j.hasNext();)
 				{
 					final Token token = j.next();
-					if (token.dependsOn(branch)) j.remove();
+					if (token.dependsOn(branch))
+						j.remove();
 				}
-				if (tokens.isEmpty()) i.remove();
+				if (tokens.isEmpty())
+					i.remove();
 			}
 		}
 
@@ -265,9 +271,9 @@ public abstract class BetaMemoryIndex
 
 	private static class ListIterator<T> implements Iterator<T>
 	{
-		private final List<T>	_list;
-		private final int		_size;
-		private int				_index	= 0;
+		private final List<T> _list;
+		private final int _size;
+		private int _index = 0;
 
 		private ListIterator(final List<T> list)
 		{

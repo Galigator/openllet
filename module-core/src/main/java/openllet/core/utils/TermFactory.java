@@ -9,6 +9,7 @@
 package openllet.core.utils;
 
 import java.net.URI;
+
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
 import openllet.core.datatypes.Datatypes;
@@ -19,20 +20,20 @@ import openllet.core.datatypes.Facet;
  */
 public class TermFactory
 {
-	public static final ATermAppl	TOP						= ATermUtils.TOP;
-	public static final ATermAppl	BOTTOM					= ATermUtils.BOTTOM;
-	public static final ATermAppl	TOP_LIT					= ATermUtils.TOP_LIT;
-	public static final ATermAppl	BOTTOM_LIT				= ATermUtils.BOTTOM_LIT;
-	public static final ATermAppl	TOP_DATA_PROPERTY		= ATermUtils.TOP_DATA_PROPERTY;
-	public static final ATermAppl	BOTTOM_DATA_PROPERTY	= ATermUtils.BOTTOM_DATA_PROPERTY;
-	public static final ATermAppl	TOP_OBJECT_PROPERTY		= ATermUtils.TOP_OBJECT_PROPERTY;
-	public static final ATermAppl	BOTTOM_OBJECT_PROPERTY	= ATermUtils.BOTTOM_OBJECT_PROPERTY;
+	public static final ATermAppl TOP = ATermUtils.TOP;
+	public static final ATermAppl BOTTOM = ATermUtils.BOTTOM;
+	public static final ATermAppl TOP_LIT = ATermUtils.TOP_LIT;
+	public static final ATermAppl BOTTOM_LIT = ATermUtils.BOTTOM_LIT;
+	public static final ATermAppl TOP_DATA_PROPERTY = ATermUtils.TOP_DATA_PROPERTY;
+	public static final ATermAppl BOTTOM_DATA_PROPERTY = ATermUtils.BOTTOM_DATA_PROPERTY;
+	public static final ATermAppl TOP_OBJECT_PROPERTY = ATermUtils.TOP_OBJECT_PROPERTY;
+	public static final ATermAppl BOTTOM_OBJECT_PROPERTY = ATermUtils.BOTTOM_OBJECT_PROPERTY;
 
 	/**
 	 * Create a named term.
 	 *
-	 * @param  name name of the term
-	 * @return      an ATermAppl with the given name and no arguments
+	 * @param name name of the term
+	 * @return an ATermAppl with the given name and no arguments
 	 */
 	public static ATermAppl term(final String name)
 	{
@@ -42,8 +43,8 @@ public class TermFactory
 	/**
 	 * Create a term that corresponds to a bnode (anonymous term).
 	 *
-	 * @param  anonID is of the anonymous terms
-	 * @return        an ATermAppl with a single argument for anonID
+	 * @param anonID is of the anonymous terms
+	 * @return an ATermAppl with a single argument for anonID
 	 */
 	public static ATermAppl bnode(final String anonID)
 	{
@@ -53,8 +54,8 @@ public class TermFactory
 	/**
 	 * Create a variable term with the given name.
 	 *
-	 * @param  name name of the variable
-	 * @return      an ATermAppl with a single argument for variable name
+	 * @param name name of the variable
+	 * @return an ATermAppl with a single argument for variable name
 	 */
 	public static ATermAppl var(final String name)
 	{
@@ -64,8 +65,8 @@ public class TermFactory
 	/**
 	 * Create a list of terms.
 	 *
-	 * @param  args elements of thre list
-	 * @return      an ATermList with given elements in the given _order
+	 * @param args elements of thre list
+	 * @return an ATermList with given elements in the given _order
 	 */
 	public static ATermList list(final ATermAppl... args)
 	{
@@ -75,8 +76,8 @@ public class TermFactory
 	/**
 	 * Create a negated term.
 	 *
-	 * @param  c Term to be negated
-	 * @return   an ATermAppl in the form not(c)
+	 * @param c Term to be negated
+	 * @return an ATermAppl in the form not(c)
 	 */
 	public static ATermAppl not(final ATermAppl c)
 	{
@@ -86,9 +87,9 @@ public class TermFactory
 	/**
 	 * Create an all values restriction.
 	 *
-	 * @param  r property term
-	 * @param  c class or datatype term
-	 * @return   an ATermAppl in the form all(r,c)
+	 * @param r property term
+	 * @param c class or datatype term
+	 * @return an ATermAppl in the form all(r,c)
 	 */
 	public static ATermAppl all(final ATermAppl r, final ATermAppl c)
 	{
@@ -123,8 +124,8 @@ public class TermFactory
 	/**
 	 * Create a typed literal with xsd:boolean datatype.
 	 *
-	 * @param  value boolean value
-	 * @return       an ATermAppl representing the boolean literal
+	 * @param value boolean value
+	 * @return an ATermAppl representing the boolean literal
 	 */
 	public static ATermAppl literal(final boolean value)
 	{
@@ -134,8 +135,8 @@ public class TermFactory
 	/**
 	 * Create a typed literal with xsd:byte datatype.
 	 *
-	 * @param  value byte value
-	 * @return       an ATermAppl representing the byte literal
+	 * @param value byte value
+	 * @return an ATermAppl representing the byte literal
 	 */
 	public static ATermAppl literal(final byte value)
 	{
@@ -145,8 +146,8 @@ public class TermFactory
 	/**
 	 * Create a typed literal with xsd:short datatype.
 	 *
-	 * @param  value short value
-	 * @return       an ATermAppl representing the short literal
+	 * @param value short value
+	 * @return an ATermAppl representing the short literal
 	 */
 	public static ATermAppl literal(final short value)
 	{
@@ -156,8 +157,8 @@ public class TermFactory
 	/**
 	 * Create a typed literal with xsd:long datatype.
 	 *
-	 * @param  value long value
-	 * @return       an ATermAppl representing the long literal
+	 * @param value long value
+	 * @return an ATermAppl representing the long literal
 	 */
 	public static ATermAppl literal(final long value)
 	{
@@ -167,8 +168,8 @@ public class TermFactory
 	/**
 	 * Create a typed literal with xsd:integer datatype.
 	 *
-	 * @param  value integer value
-	 * @return       an ATermAppl representing the integer literal
+	 * @param value integer value
+	 * @return an ATermAppl representing the integer literal
 	 */
 	public static ATermAppl literal(final int value)
 	{
@@ -178,8 +179,8 @@ public class TermFactory
 	/**
 	 * Create a typed literal with xsd:float datatype.
 	 *
-	 * @param  value float value
-	 * @return       an ATermAppl representing the float literal
+	 * @param value float value
+	 * @return an ATermAppl representing the float literal
 	 */
 	public static ATermAppl literal(final float value)
 	{
@@ -189,8 +190,8 @@ public class TermFactory
 	/**
 	 * Create a typed literal with xsd:double datatype.
 	 *
-	 * @param  value double value
-	 * @return       an ATermAppl representing the double literal
+	 * @param value double value
+	 * @return an ATermAppl representing the double literal
 	 */
 	public static ATermAppl literal(final double value)
 	{
@@ -200,8 +201,8 @@ public class TermFactory
 	/**
 	 * Create a typed literal with xsd:anyURI datatype.
 	 *
-	 * @param  value URI value
-	 * @return       an ATermAppl representing the URI literal
+	 * @param value URI value
+	 * @return an ATermAppl representing the URI literal
 	 */
 	public static ATermAppl literal(final URI value)
 	{
@@ -211,8 +212,8 @@ public class TermFactory
 	/**
 	 * Create an untyped plain literal with no language tag.
 	 *
-	 * @param  value string value
-	 * @return       an ATermAppl representing the plain literal
+	 * @param value string value
+	 * @return an ATermAppl representing the plain literal
 	 */
 	public static ATermAppl literal(final String value)
 	{
@@ -222,9 +223,9 @@ public class TermFactory
 	/**
 	 * Create an untyped plain literal with the given language tag.
 	 *
-	 * @param  value byte value
-	 * @param  lang  language identifier
-	 * @return       an ATermAppl representing the plain literal with language tag
+	 * @param value byte value
+	 * @param lang language identifier
+	 * @return an ATermAppl representing the plain literal with language tag
 	 */
 	public static ATermAppl literal(final String value, final String lang)
 	{
@@ -234,9 +235,9 @@ public class TermFactory
 	/**
 	 * Create a typed literal with given lexical form and datatypes.
 	 *
-	 * @param  value    lexical value of the literal
-	 * @param  datatype type of the literal
-	 * @return          an ATermAppl representing the typed literal
+	 * @param value lexical value of the literal
+	 * @param datatype type of the literal
+	 * @return an ATermAppl representing the typed literal
 	 */
 	public static ATermAppl literal(final String value, final ATermAppl datatype)
 	{
@@ -244,10 +245,10 @@ public class TermFactory
 	}
 
 	/**
-	 * @param      value
-	 * @param      lang
-	 * @return           do not use
-	 * @deprecated       Use {@link #literal(String, String)} instead
+	 * @param value
+	 * @param lang
+	 * @return do not use
+	 * @deprecated Use {@link #literal(String, String)} instead
 	 */
 	@Deprecated
 	public static ATermAppl plainLiteral(final String value, final String lang)
@@ -256,10 +257,10 @@ public class TermFactory
 	}
 
 	/**
-	 * @param      value
-	 * @param      dt
-	 * @return           do not use
-	 * @deprecated       Use {@link #literal(String, ATermAppl)} instead
+	 * @param value
+	 * @param dt
+	 * @return do not use
+	 * @deprecated Use {@link #literal(String, ATermAppl)} instead
 	 */
 	@Deprecated
 	public static ATermAppl typedLiteral(final String value, final ATermAppl dt)
@@ -268,10 +269,10 @@ public class TermFactory
 	}
 
 	/**
-	 * @param      value
-	 * @param      dt
-	 * @return           do not use
-	 * @deprecated       Use {@link #literal(String, ATermAppl)} instead
+	 * @param value
+	 * @param dt
+	 * @return do not use
+	 * @deprecated Use {@link #literal(String, ATermAppl)} instead
 	 */
 	@Deprecated
 	public static ATermAppl typedLiteral(final String value, final String dt)
@@ -291,7 +292,8 @@ public class TermFactory
 
 	public static ATermAppl and(final ATermAppl... c)
 	{
-		if (c.length == 1) return c[0];
+		if (c.length == 1)
+			return c[0];
 
 		return ATermUtils.makeAnd(ATermUtils.makeList(c));
 	}
@@ -303,7 +305,8 @@ public class TermFactory
 
 	public static ATermAppl or(final ATermAppl... c)
 	{
-		if (c.length == 1) return c[0];
+		if (c.length == 1)
+			return c[0];
 
 		return ATermUtils.makeOr(ATermUtils.makeList(c));
 	}

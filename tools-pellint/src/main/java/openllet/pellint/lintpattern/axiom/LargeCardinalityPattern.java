@@ -7,11 +7,7 @@
 package openllet.pellint.lintpattern.axiom;
 
 import java.util.Collection;
-import openllet.pellint.format.LintFormat;
-import openllet.pellint.format.SimpleLintFormat;
-import openllet.pellint.model.Lint;
-import openllet.pellint.model.Severity;
-import openllet.pellint.util.OWLDeepEntityVisitorAdapter;
+
 import org.semanticweb.owlapi.model.OWLClassAxiom;
 import org.semanticweb.owlapi.model.OWLDisjointClassesAxiom;
 import org.semanticweb.owlapi.model.OWLDisjointUnionAxiom;
@@ -22,6 +18,12 @@ import org.semanticweb.owlapi.model.OWLObjectExactCardinality;
 import org.semanticweb.owlapi.model.OWLObjectMaxCardinality;
 import org.semanticweb.owlapi.model.OWLObjectMinCardinality;
 import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
+
+import openllet.pellint.format.LintFormat;
+import openllet.pellint.format.SimpleLintFormat;
+import openllet.pellint.model.Lint;
+import openllet.pellint.model.Severity;
+import openllet.pellint.util.OWLDeepEntityVisitorAdapter;
 
 /**
  * <p>
@@ -41,10 +43,10 @@ import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
  */
 public class LargeCardinalityPattern extends AxiomLintPattern
 {
-	private static final LintFormat			DEFAULT_LINT_FORMAT	= new SimpleLintFormat();
+	private static final LintFormat DEFAULT_LINT_FORMAT = new SimpleLintFormat();
 
-	private int								_maxRecommended		= 10;
-	private final CardinalitySizeCollector	_Visitor;
+	private int _maxRecommended = 10;
+	private final CardinalitySizeCollector _Visitor;
 
 	public LargeCardinalityPattern()
 	{
@@ -157,6 +159,7 @@ class CardinalitySizeCollector extends OWLDeepEntityVisitorAdapter
 	protected void process(final OWLObjectCardinalityRestriction card)
 	{
 		final int size = card.getCardinality();
-		if (size > _size) _size = size;
+		if (size > _size)
+			_size = size;
 	}
 }

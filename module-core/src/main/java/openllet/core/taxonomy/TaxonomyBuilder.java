@@ -32,6 +32,7 @@ package openllet.core.taxonomy;
 
 import java.util.Map;
 import java.util.Set;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.utils.progress.ProgressMonitor;
 

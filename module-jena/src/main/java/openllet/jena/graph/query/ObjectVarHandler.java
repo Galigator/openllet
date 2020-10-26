@@ -7,13 +7,15 @@
 package openllet.jena.graph.query;
 
 import java.util.Set;
+
+import org.apache.jena.graph.Node;
+import org.apache.jena.graph.Triple;
+import org.apache.jena.util.iterator.ExtendedIterator;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
 import openllet.jena.PelletInfGraph;
 import openllet.jena.graph.loader.GraphLoader;
-import org.apache.jena.graph.Node;
-import org.apache.jena.graph.Triple;
-import org.apache.jena.util.iterator.ExtendedIterator;
 
 abstract class ObjectVarHandler extends TripleQueryHandler
 {

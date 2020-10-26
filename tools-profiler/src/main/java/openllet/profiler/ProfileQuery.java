@@ -6,8 +6,6 @@
 
 package openllet.profiler;
 
-import gnu.getopt.Getopt;
-import gnu.getopt.LongOpt;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.net.URL;
@@ -16,14 +14,7 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
-import openllet.core.KnowledgeBase;
-import openllet.core.utils.FileUtils;
-import openllet.core.utils.MemUtils;
-import openllet.core.utils.Timer;
-import openllet.core.utils.Timers;
-import openllet.core.utils.VersionInfo;
-import openllet.jena.JenaLoader;
-import openllet.query.sparqldl.jena.SparqlDLExecutionFactory;
+
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryExecution;
@@ -32,23 +23,34 @@ import org.apache.jena.query.ResultSet;
 import org.apache.jena.query.ResultSetFormatter;
 import org.apache.jena.sparql.resultset.ResultSetMem;
 
+import gnu.getopt.Getopt;
+import gnu.getopt.LongOpt;
+import openllet.core.KnowledgeBase;
+import openllet.core.utils.FileUtils;
+import openllet.core.utils.MemUtils;
+import openllet.core.utils.Timer;
+import openllet.core.utils.Timers;
+import openllet.core.utils.VersionInfo;
+import openllet.jena.JenaLoader;
+import openllet.query.sparqldl.jena.SparqlDLExecutionFactory;
+
 /**
  * @author Evren Sirin
  */
 public class ProfileQuery
 {
-	private boolean						_detailedTime		= false;
-	private boolean						_printQueryResults	= false;
-	private boolean						_classify			= false;
-	private boolean						_realize			= false;
-	private boolean						_printQuery			= false;
-	private boolean						_sizeEstimateAll	= false;
-	private int							_maxIteration		= 1;
-	private final Timers				_timers				= new Timers();
-	private final JenaLoader			_loader				= new JenaLoader();
-	private OntModel					_model				= null;
+	private boolean _detailedTime = false;
+	private boolean _printQueryResults = false;
+	private boolean _classify = false;
+	private boolean _realize = false;
+	private boolean _printQuery = false;
+	private boolean _sizeEstimateAll = false;
+	private int _maxIteration = 1;
+	private final Timers _timers = new Timers();
+	private final JenaLoader _loader = new JenaLoader();
+	private OntModel _model = null;
 
-	private final ResultList<String>	_results			= new ResultList<>(1, 8);
+	private final ResultList<String> _results = new ResultList<>(1, 8);
 
 	public ProfileQuery()
 	{
@@ -139,7 +141,8 @@ public class ProfileQuery
 		double realizeTime = 0;
 		double sizeEstimateTime = 0;
 
-		if (isSizeEstimateAll()) _timers.execute("sizeEstimateAll", x -> kb.getSizeEstimate().computeAll());
+		if (isSizeEstimateAll())
+			_timers.execute("sizeEstimateAll", x -> kb.getSizeEstimate().computeAll());
 
 		System.out.println("Parsing/Loading  : " + parseTime);
 		System.out.println("Consistency      : " + consTime);
@@ -172,9 +175,12 @@ public class ProfileQuery
 			final Collection<Result<String>> currResult = new ArrayList<>();
 
 			currResult.add(new Result<>("consistency", consTime));
-			if (isClassify()) currResult.add(new Result<>("classify", classifyTime));
-			if (isRealize()) currResult.add(new Result<>("realize", realizeTime));
-			if (isSizeEstimateAll()) currResult.add(new Result<>("estimate", sizeEstimateTime));
+			if (isClassify())
+				currResult.add(new Result<>("classify", classifyTime));
+			if (isRealize())
+				currResult.add(new Result<>("realize", realizeTime));
+			if (isSizeEstimateAll())
+				currResult.add(new Result<>("estimate", sizeEstimateTime));
 			// currResult.add( new Result<String>( "setup", totalSetupTime ) );
 
 			for (final Map.Entry<String, Query> entry : queries.entrySet())
@@ -182,9 +188,11 @@ public class ProfileQuery
 				final String queryName = entry.getKey();
 				final Query query = entry.getValue();
 
-				if (queries.size() > 1) System.out.println("Query: " + queryName);
+				if (queries.size() > 1)
+					System.out.println("Query: " + queryName);
 
-				if (_printQuery) System.out.println(query);
+				if (_printQuery)
+					System.out.println(query);
 
 				final Optional<Timer> timer = _timers.startTimer("query");
 
@@ -202,7 +210,8 @@ public class ProfileQuery
 
 					final double queryTime = timer.map(t -> t.getLast() / 1000.0).orElse(0.);
 
-					if (_printQueryResults) ResultSetFormatter.out(resultMem, _model);
+					if (_printQueryResults)
+						ResultSetFormatter.out(resultMem, _model);
 
 					System.out.println("Query time: " + queryTime);
 					System.out.println("Number of results: " + count);
@@ -251,9 +260,11 @@ public class ProfileQuery
 
 		ProfileUtils.printCounts(kb.getABox());
 
-		if (_classify) _timers.execute("classify", x -> kb.classify());
+		if (_classify)
+			_timers.execute("classify", x -> kb.classify());
 
-		if (_realize) _timers.execute("realize", x -> kb.realize());
+		if (_realize)
+			_timers.execute("realize", x -> kb.realize());
 
 		return kb;
 	}

@@ -21,8 +21,8 @@ import openllet.core.utils.Namespaces;
 public class XSDNMToken extends AbstractBaseDatatype<ATermAppl>
 {
 
-	private static final XSDNMToken			instance			= new XSDNMToken();
-	private static final RDFPlainLiteral	RDF_PLAIN_LITERAL	= RDFPlainLiteral.getInstance();
+	private static final XSDNMToken instance = new XSDNMToken();
+	private static final RDFPlainLiteral RDF_PLAIN_LITERAL = RDFPlainLiteral.getInstance();
 
 	static
 	{

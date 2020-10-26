@@ -57,6 +57,7 @@ public class MathStatUtils extends TTest
 
 	private static void checkSignificanceLevel(final double alpha) throws IllegalArgumentException
 	{
-		if (alpha <= 0 || alpha > 0.5) throw new MathRuntimeException(new DummyLocalizable("out of bounds significance level {0}, must be between {1} and {2}"), alpha, 0.0, 0.5);
+		if (alpha <= 0 || alpha > 0.5)
+			throw new MathRuntimeException(new DummyLocalizable("out of bounds significance level {0}, must be between {1} and {2}"), alpha, 0.0, 0.5);
 	}
 }

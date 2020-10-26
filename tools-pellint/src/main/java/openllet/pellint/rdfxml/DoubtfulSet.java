@@ -17,14 +17,14 @@ import java.util.Set;
  * Company: Clark & Parsia, LLC. <http://www.clarkparsia.com>
  * </p>
  *
- * @author     Harris Lin
- * @param  <E>
+ * @author Harris Lin
+ * @param <E>
  */
 public class DoubtfulSet<E> extends HashSet<E>
 {
-	private static final long	serialVersionUID	= 1L;
+	private static final long serialVersionUID = 1L;
 
-	private final HashSet<E>	_definite;
+	private final HashSet<E> _definite;
 
 	public DoubtfulSet()
 	{

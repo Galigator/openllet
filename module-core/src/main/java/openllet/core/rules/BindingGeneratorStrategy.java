@@ -30,8 +30,8 @@ public interface BindingGeneratorStrategy
 {
 
 	/**
-	 * @param  rule
-	 * @return      a new <code>BindingGenerator</code> for a single rule.
+	 * @param rule
+	 * @return a new <code>BindingGenerator</code> for a single rule.
 	 */
 	BindingGenerator createGenerator(Rule rule);
 

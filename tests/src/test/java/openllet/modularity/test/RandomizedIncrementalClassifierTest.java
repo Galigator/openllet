@@ -9,12 +9,14 @@ package openllet.modularity.test;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import openllet.atom.OpenError;
-import openllet.owlapi.OWL;
-import openllet.owlapi.OntologyUtils;
+
 import org.junit.Test;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
+
+import openllet.atom.OpenError;
+import openllet.owlapi.OWL;
+import openllet.owlapi.OntologyUtils;
 
 /**
  * <p>

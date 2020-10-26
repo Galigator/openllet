@@ -2,6 +2,7 @@ package openllet.core.datatypes.types.datetime;
 
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.XMLGregorianCalendar;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.datatypes.Datatype;
 import openllet.core.datatypes.RestrictedDatatype;
@@ -71,7 +72,8 @@ public class XSDDateTimeStamp extends AbstractTimelineDatatype
 	public XMLGregorianCalendar getValue(final ATermAppl literal) throws InvalidLiteralException
 	{
 		final XMLGregorianCalendar c = super.getValue(literal);
-		if (c.getTimezone() == DatatypeConstants.FIELD_UNDEFINED) throw new InvalidLiteralException(getName(), ATermUtils.getLiteralValue(literal));
+		if (c.getTimezone() == DatatypeConstants.FIELD_UNDEFINED)
+			throw new InvalidLiteralException(getName(), ATermUtils.getLiteralValue(literal));
 		return c;
 	}
 

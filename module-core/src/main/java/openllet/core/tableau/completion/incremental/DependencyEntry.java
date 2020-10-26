@@ -9,6 +9,7 @@ package openllet.core.tableau.completion.incremental;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.boxes.abox.DefaultEdge;
 import openllet.core.boxes.abox.Edge;
@@ -25,32 +26,32 @@ public class DependencyEntry
 	/**
 	 * The set of _node lables which are dependent
 	 */
-	private final Set<TypeDependency>			_types			= new HashSet<>();
+	private final Set<TypeDependency> _types = new HashSet<>();
 
 	/**
 	 * The set of merges which are dependent
 	 */
-	private final Set<MergeDependency>			_merges			= new HashSet<>();
+	private final Set<MergeDependency> _merges = new HashSet<>();
 
 	/**
 	 * The set of edge which are dependent
 	 */
-	private final Set<Edge>						_edges			= new HashSet<>();
+	private final Set<Edge> _edges = new HashSet<>();
 
 	/**
 	 * The set of branches which are dependent
 	 */
-	private final Set<AddBranchDependency>		_branchAdds		= new HashSet<>();
+	private final Set<AddBranchDependency> _branchAdds = new HashSet<>();
 
 	/**
 	 * The set of _branch remove ds' which are dependent
 	 */
-	private final Set<CloseBranchDependency>	_branchCloses	= new HashSet<>();
+	private final Set<CloseBranchDependency> _branchCloses = new HashSet<>();
 
 	/**
 	 * Clash dependency
 	 */
-	private volatile Optional<ClashDependency>	_clash			= Optional.empty();
+	private volatile Optional<ClashDependency> _clash = Optional.empty();
 
 	/**
 	 * Default constructor
@@ -134,7 +135,8 @@ public class DependencyEntry
 	{
 		final CloseBranchDependency b = new CloseBranchDependency(assertion, theBranch.getTryNext(), theBranch);
 
-		if (_branchCloses.contains(b)) _branchCloses.remove(b);
+		if (_branchCloses.contains(b))
+			_branchCloses.remove(b);
 
 		_branchCloses.add(b);
 		return b;

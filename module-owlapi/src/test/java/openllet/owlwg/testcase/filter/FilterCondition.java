@@ -24,8 +24,8 @@ public interface FilterCondition
 	/**
 	 * Test a {@link TestCase} against a _condition
 	 *
-	 * @param  testcase The {@link TestCase} to evaluate
-	 * @return          <code>true</code> if the filter _condition accepts the test case, <code>false</code> otherwise
+	 * @param testcase The {@link TestCase} to evaluate
+	 * @return <code>true</code> if the filter _condition accepts the test case, <code>false</code> otherwise
 	 */
 	boolean accepts(TestCase<?> testcase);
 

@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.logging.Logger;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.CollectionUtils;
@@ -32,9 +33,9 @@ import openllet.shared.tools.Log;
  */
 public class UnaryTBox
 {
-	public static final Logger						_logger		= Log.getLogger(UnaryTBox.class);
+	public static final Logger _logger = Log.getLogger(UnaryTBox.class);
 
-	private final Map<ATermAppl, List<Unfolding>>	_unfoldings	= CollectionUtils.makeIdentityMap();
+	private final Map<ATermAppl, List<Unfolding>> _unfoldings = CollectionUtils.makeIdentityMap();
 
 	public void add(final ATermAppl sub, final ATermAppl sup, final Set<ATermAppl> explanation)
 	{
@@ -52,7 +53,7 @@ public class UnaryTBox
 	public Iterator<Unfolding> unfold(final ATermAppl concept)
 	{
 		final List<Unfolding> unfoldingList = _unfoldings.get(concept);
-		return unfoldingList == null ? IteratorUtils.<Unfolding>emptyIterator() : unfoldingList.iterator();
+		return unfoldingList == null ? IteratorUtils.<Unfolding> emptyIterator() : unfoldingList.iterator();
 	}
 
 	public void print(final Appendable out) throws IOException

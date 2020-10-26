@@ -1,6 +1,7 @@
 package openllet.core.datatypes.types.real;
 
 import javax.xml.bind.DatatypeConverter;
+
 import openllet.core.datatypes.exceptions.InvalidLiteralException;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.Namespaces;
@@ -42,7 +43,8 @@ public class XSDByte extends AbstractDerivedIntegerType
 		try
 		{
 			final int n = DatatypeConverter.parseInt(lexicalForm);
-			if (n < Byte.MIN_VALUE || n > Byte.MAX_VALUE) throw new InvalidLiteralException(getName(), lexicalForm);
+			if (n < Byte.MIN_VALUE || n > Byte.MAX_VALUE)
+				throw new InvalidLiteralException(getName(), lexicalForm);
 			return Byte.valueOf((byte) n);
 		}
 		catch (final NumberFormatException e)

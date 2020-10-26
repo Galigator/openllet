@@ -14,10 +14,11 @@ import static openllet.query.sparqldl.model.QueryAtomFactory.NotKnownAtom;
 import static openllet.query.sparqldl.model.QueryAtomFactory.PropertyValueAtom;
 import static openllet.query.sparqldl.model.QueryAtomFactory.TypeAtom;
 
+import org.junit.Test;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.utils.TermFactory;
 import openllet.query.sparqldl.model.Query;
-import org.junit.Test;
 
 /**
  * <p>

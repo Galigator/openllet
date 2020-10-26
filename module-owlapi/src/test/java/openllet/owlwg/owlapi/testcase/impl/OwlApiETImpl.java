@@ -1,9 +1,7 @@
 package openllet.owlwg.owlapi.testcase.impl;
 
 import java.util.EnumMap;
-import openllet.owlwg.testcase.AbstractEntailmentTest;
-import openllet.owlwg.testcase.OntologyParseException;
-import openllet.owlwg.testcase.SerializationFormat;
+
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.StringDocumentSource;
 import org.semanticweb.owlapi.model.MissingImportHandlingStrategy;
@@ -11,6 +9,10 @@ import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+
+import openllet.owlwg.testcase.AbstractEntailmentTest;
+import openllet.owlwg.testcase.OntologyParseException;
+import openllet.owlwg.testcase.SerializationFormat;
 
 /**
  * <p>
@@ -31,8 +33,8 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 public abstract class OwlApiETImpl extends AbstractEntailmentTest<OWLOntology> implements OwlApiCase
 {
 
-	private final EnumMap<SerializationFormat, OWLOntology>	parsedConclusion;
-	private final EnumMap<SerializationFormat, OWLOntology>	parsedPremise;
+	private final EnumMap<SerializationFormat, OWLOntology> parsedConclusion;
+	private final EnumMap<SerializationFormat, OWLOntology> parsedPremise;
 
 	public OwlApiETImpl(final OWLOntology ontology, final OWLNamedIndividual i, final boolean positive)
 	{
@@ -56,7 +58,8 @@ public abstract class OwlApiETImpl extends AbstractEntailmentTest<OWLOntology> i
 			if (o == null)
 			{
 				final String l = getConclusionOntology(format);
-				if (l == null) return null;
+				if (l == null)
+					return null;
 
 				final StringDocumentSource source = new StringDocumentSource(l);
 				o = OWLManager.createOWLOntologyManager().loadOntologyFromOntologyDocument(source);
@@ -84,7 +87,8 @@ public abstract class OwlApiETImpl extends AbstractEntailmentTest<OWLOntology> i
 			if (o == null)
 			{
 				final String l = getPremiseOntology(format);
-				if (l == null) return null;
+				if (l == null)
+					return null;
 
 				final StringDocumentSource source = new StringDocumentSource(l);
 				o = manager.loadOntologyFromOntologyDocument(source);

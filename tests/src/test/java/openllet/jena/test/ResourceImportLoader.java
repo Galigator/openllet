@@ -5,9 +5,11 @@ package openllet.jena.test;
 
 import java.io.IOException;
 import java.io.InputStream;
-import openllet.test.query.MiscSPARQLDLTest;
+
 import org.apache.jena.ontology.OntDocumentManager.ReadFailureHandler;
 import org.apache.jena.rdf.model.Model;
+
+import openllet.test.query.MiscSPARQLDLTest;
 
 /**
  * @author Pavel Klinov

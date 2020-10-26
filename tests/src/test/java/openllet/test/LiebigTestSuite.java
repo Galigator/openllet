@@ -12,18 +12,20 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import openllet.core.utils.AlphaNumericComparator;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
+import openllet.core.utils.AlphaNumericComparator;
+
 @RunWith(Parameterized.class)
 public class LiebigTestSuite
 {
-	public static String		_base		= PelletTestSuite.base + "liebig-tests/";
+	public static String _base = PelletTestSuite.base + "liebig-tests/";
 
-	private static List<String>	TIMEOUTS	= Arrays.asList("Manifest1b.rdf", "Manifest2b.rdf", "Manifest10a.rdf");
+	private static List<String> TIMEOUTS = Arrays.asList("Manifest1b.rdf", "Manifest2b.rdf", "Manifest10a.rdf");
 
 	@Parameters
 	public static List<Object[]> getParameters()
@@ -42,7 +44,8 @@ public class LiebigTestSuite
 		Arrays.sort(files, AlphaNumericComparator.CASE_INSENSITIVE);
 
 		for (final File file : files)
-			if (!TIMEOUTS.contains(file.getName())) parameters.add(new Object[] { new WebOntTestCase(test, file, "liebig-" + file.getName()) });
+			if (!TIMEOUTS.contains(file.getName()))
+				parameters.add(new Object[] { new WebOntTestCase(test, file, "liebig-" + file.getName()) });
 
 		return parameters;
 	}

@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.utils.SetUtils;
 import openllet.query.sparqldl.model.Query;
@@ -38,11 +39,11 @@ import openllet.shared.tools.Log;
  */
 public class IncrementalQueryPlan extends QueryPlan
 {
-	private static final Logger		_logger	= Log.getLogger(IncrementalQueryPlan.class);
-	public final Stack<Integer>		_explored;
-	private final List<QueryAtom>	_atoms;
-	private final int				_size;
-	private final QueryCost			_cost;
+	private static final Logger _logger = Log.getLogger(IncrementalQueryPlan.class);
+	public final Stack<Integer> _explored;
+	private final List<QueryAtom> _atoms;
+	private final int _size;
+	private final QueryCost _cost;
 
 	public IncrementalQueryPlan(final Query query)
 	{
@@ -74,21 +75,25 @@ public class IncrementalQueryPlan extends QueryPlan
 				final QueryAtom atom = _atoms.get(i);
 				final QueryAtom atom2 = atom.apply(binding);
 
-				if (atom2.getPredicate().equals(QueryPredicate.NotKnown) && !atom2.isGround()) for (int j = 0; j < _atoms.size(); j++)
-				{
-					if (i == j || _explored.contains(j)) continue;
-
-					final QueryAtom nextAtom = _atoms.get(j);
-					if (SetUtils.intersects(nextAtom.getArguments(), atom2.getArguments()))
+				if (atom2.getPredicate().equals(QueryPredicate.NotKnown) && !atom2.isGround())
+					for (int j = 0; j < _atoms.size(); j++)
 					{
-						if (_logger.isLoggable(Level.FINE)) _logger.fine("Unbound vars for not");
-						continue LOOP;
+						if (i == j || _explored.contains(j))
+							continue;
+
+						final QueryAtom nextAtom = _atoms.get(j);
+						if (SetUtils.intersects(nextAtom.getArguments(), atom2.getArguments()))
+						{
+							if (_logger.isLoggable(Level.FINE))
+								_logger.fine("Unbound vars for not");
+							continue LOOP;
+						}
 					}
-				}
 
 				final double atomCost = _cost.estimate(atom2);
 
-				if (_logger.isLoggable(Level.FINER)) _logger.finer("Atom=" + atom + ", _cost=" + _cost + ", best _cost=" + bestCost);
+				if (_logger.isLoggable(Level.FINER))
+					_logger.finer("Atom=" + atom + ", _cost=" + _cost + ", best _cost=" + bestCost);
 				if (atomCost <= bestCost)
 				{
 					bestCost = atomCost;
@@ -97,7 +102,8 @@ public class IncrementalQueryPlan extends QueryPlan
 				}
 			}
 
-		if (best == -1) throw new InternalReasonerException("Cannot find a valid atom in " + _atoms + " where _explored=" + _explored);
+		if (best == -1)
+			throw new InternalReasonerException("Cannot find a valid atom in " + _atoms + " where _explored=" + _explored);
 
 		_explored.add(best);
 

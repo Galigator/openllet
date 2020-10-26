@@ -16,17 +16,17 @@ import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
  * Company: Clark & Parsia, LLC. <http://www.clarkparsia.com>
  * </p>
  *
- * @author        Evren Sirin
- * @param  <Task>
+ * @author Evren Sirin
+ * @param <Task>
  */
 public class Result<Task>
 {
 	// task that has been performed
-	private Task					_task;
+	private Task _task;
 	// size of KB in memory after task
-	private DescriptiveStatistics	_memory;
+	private DescriptiveStatistics _memory;
 	// time taken to complete the task
-	private DescriptiveStatistics	_time;
+	private DescriptiveStatistics _time;
 
 	public Result(final Task task, final double time)
 	{
@@ -50,7 +50,8 @@ public class Result<Task>
 
 	public void addIteration(final Result<Task> other)
 	{
-		if (!_task.equals(other._task)) throw new IllegalArgumentException(_task + " != " + other._task);
+		if (!_task.equals(other._task))
+			throw new IllegalArgumentException(_task + " != " + other._task);
 
 		for (final double mem : other.getMemory().getValues())
 			_memory.addValue(mem);

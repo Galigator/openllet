@@ -31,8 +31,8 @@ import openllet.core.utils.ATermUtils;
  */
 public class StringFunctionAdapter implements Function
 {
-	public final String					_datatypeURI;
-	public final StringToStringFunction	_function;
+	public final String _datatypeURI;
+	public final StringToStringFunction _function;
 
 	public StringFunctionAdapter(final StringToStringFunction function)
 	{
@@ -53,7 +53,8 @@ public class StringFunctionAdapter implements Function
 			args[i] = ATermUtils.getLiteralValue(litArgs[i].getTerm());
 
 		final String result = _function.apply(args);
-		if (result == null) return null;
+		if (result == null)
+			return null;
 
 		ATermAppl resultTerm;
 		if (_datatypeURI == null)

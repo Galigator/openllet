@@ -3,6 +3,7 @@ package openllet.core.datatypes.types.duration;
 import static openllet.core.datatypes.types.datetime.RestrictedTimelineDatatype.getDatatypeFactory;
 
 import javax.xml.datatype.Duration;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.datatypes.AbstractBaseDatatype;
 import openllet.core.datatypes.Datatype;
@@ -30,8 +31,8 @@ import openllet.core.utils.Namespaces;
 public class XSDDuration extends AbstractBaseDatatype<Duration>
 {
 
-	private static final XSDDuration	instance;
-	private static final ATermAppl		NAME;
+	private static final XSDDuration instance;
+	private static final ATermAppl NAME;
 
 	static
 	{

@@ -1,5 +1,8 @@
 package openllet.pellint.test;
 
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+
 import junit.framework.JUnit4TestAdapter;
 import junit.framework.Test;
 import openllet.pellint.test.lintpattern.LintPatternLoaderTest;
@@ -21,8 +24,6 @@ import openllet.pellint.test.rdfxml.OWLSyntaxCheckerTest;
 import openllet.pellint.test.rdfxml.RDFModelTest;
 import openllet.pellint.test.util.OWL2DLProfileViolationsTest;
 import openllet.pellint.test.util.OptimizedDirectedMultigraphTest;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
 
 /**
  * <p>

@@ -29,6 +29,7 @@
 package openllet.aterm.pure;
 
 import java.util.List;
+
 import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
@@ -70,8 +71,8 @@ public class ATermBlobImpl extends ATermImpl implements ATermBlob
 	 * depricated Use the new constructor instead.
 	 *
 	 * @param hashCode x
-	 * @param annos    x
-	 * @param data     x
+	 * @param annos x
+	 * @param data x
 	 */
 	@Deprecated
 	protected void init(final int hashCode, final byte[] data)
@@ -92,7 +93,8 @@ public class ATermBlobImpl extends ATermImpl implements ATermBlob
 		if (obj instanceof ATermBlob)
 		{
 			final ATermBlob peer = (ATermBlob) obj;
-			if (peer.getType() != getType()) return false;
+			if (peer.getType() != getType())
+				return false;
 
 			return peer.getBlobData() == _data;
 		}
@@ -103,7 +105,8 @@ public class ATermBlobImpl extends ATermImpl implements ATermBlob
 	@Override
 	protected boolean match(final ATerm pattern, final List<Object> list)
 	{
-		if (equals(pattern)) return true;
+		if (equals(pattern))
+			return true;
 
 		if (pattern.getType() == ATerm.PLACEHOLDER)
 		{

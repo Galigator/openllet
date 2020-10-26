@@ -1,16 +1,17 @@
 package openllet.owlapi;
 
-import openllet.core.utils.progress.ProgressMonitor;
 import org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor;
+
+import openllet.core.utils.progress.ProgressMonitor;
 
 public class ProgressAdapter implements ProgressMonitor
 {
-	private final ReasonerProgressMonitor	_monitor;
-	private int								_length;
-	private int								_progress;
-	private String							_title;
+	private final ReasonerProgressMonitor _monitor;
+	private int _length;
+	private int _progress;
+	private String _title;
 
-	private volatile int					_echo	= 0;
+	private volatile int _echo = 0;
 
 	@Override
 	public int getLastEcho()

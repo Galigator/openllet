@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
+
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
@@ -47,7 +48,7 @@ public interface KnowledgeBase extends InstancesBase, PropertiesBase, ClassesBas
 
 	/**
 	 * @return the total number of individuals in kb.
-	 * @since  2.6.2
+	 * @since 2.6.2
 	 */
 	int getIndividualsCount();
 
@@ -89,9 +90,9 @@ public interface KnowledgeBase extends InstancesBase, PropertiesBase, ClassesBas
 	 * Choose a completion strategy based on the expressivity of the KB. The abox given is not necessarily the ABox that belongs to this KB but can be a
 	 * derivative.
 	 *
-	 * @param  abox
-	 * @param  expressivity
-	 * @return              a Completion strategy choose.
+	 * @param abox
+	 * @param expressivity
+	 * @return a Completion strategy choose.
 	 */
 	CompletionStrategy chooseStrategy(final ABox abox, final Expressivity expressivity);
 
@@ -135,10 +136,10 @@ public interface KnowledgeBase extends InstancesBase, PropertiesBase, ClassesBas
 	 * Answers the hasPropertyValue question without doing any satisfiability check. It might return <code>Boolean.TRUE</code>, <code>Boolean.FALSE</code>, or
 	 * <code>null</code> (unknown). If the null value is returned <code>hasPropertyValue</code> function needs to be called to get the answer.
 	 *
-	 * @param  s Subject
-	 * @param  p Predicate
-	 * @param  o Object (<code>null</code> can be used as wildcard)
-	 * @return   true if the hasPropertyValue question without doing any satisfiability check.
+	 * @param s Subject
+	 * @param p Predicate
+	 * @param o Object (<code>null</code> can be used as wildcard)
+	 * @return true if the hasPropertyValue question without doing any satisfiability check.
 	 */
 	Bool hasKnownPropertyValue(final ATermAppl s, final ATermAppl p, final ATermAppl o);
 
@@ -158,8 +159,8 @@ public interface KnowledgeBase extends InstancesBase, PropertiesBase, ClassesBas
 	 * *** This function will first realize the whole ontology ***
 	 * </p>
 	 *
-	 * @param  ind An individual name
-	 * @return     A set of sets, where each set in the collection represents an equivalence class. The elements of the inner class are ATermAppl objects.
+	 * @param ind An individual name
+	 * @return A set of sets, where each set in the collection represents an equivalence class. The elements of the inner class are ATermAppl objects.
 	 */
 	default Set<Set<ATermAppl>> getTypes(final ATermAppl ind)
 	{
@@ -178,8 +179,8 @@ public interface KnowledgeBase extends InstancesBase, PropertiesBase, ClassesBas
 	 * *** This function will first classify the whole ontology ***
 	 * </p>
 	 *
-	 * @param  c class whose subclasses are returned
-	 * @return   A set of sets, where each set in the collection represents an equivalence class. The elements of the inner class are ATermAppl objects.
+	 * @param c class whose subclasses are returned
+	 * @return A set of sets, where each set in the collection represents an equivalence class. The elements of the inner class are ATermAppl objects.
 	 */
 	default Set<Set<ATermAppl>> getSubClasses(final ATermAppl c)
 	{
@@ -187,8 +188,8 @@ public interface KnowledgeBase extends InstancesBase, PropertiesBase, ClassesBas
 	}
 
 	/**
-	 * @param  c is a classes
-	 * @return   true if there is at least one named individual that belongs to the given class
+	 * @param c is a classes
+	 * @return true if there is at least one named individual that belongs to the given class
 	 */
 	boolean hasInstance(final ATerm c);
 
@@ -197,16 +198,16 @@ public interface KnowledgeBase extends InstancesBase, PropertiesBase, ClassesBas
 	/**
 	 * Add a new object property. If property was earlier defined to be a datatype property then this function will simply return without changing the KB.
 	 *
-	 * @param  p Name of the property
-	 * @return   True if property is added, false if not
+	 * @param p Name of the property
+	 * @return True if property is added, false if not
 	 */
 	boolean addObjectProperty(final ATerm p);
 
 	/**
 	 * Add a new object property. If property was earlier defined to be a datatype property then this function will simply return without changing the KB.
 	 *
-	 * @param  p
-	 * @return   True if property is added, false if not
+	 * @param p
+	 * @return True if property is added, false if not
 	 */
 	boolean addDatatypeProperty(final ATerm p);
 
@@ -255,17 +256,17 @@ public interface KnowledgeBase extends InstancesBase, PropertiesBase, ClassesBas
 	/**
 	 * Adds a new datatype defined to be equivalent to the given data range expression.
 	 *
-	 * @param  name      name of the datatype
-	 * @param  datarange a data range expression
-	 * @return           true if the add success
+	 * @param name name of the datatype
+	 * @param datarange a data range expression
+	 * @return true if the add success
 	 */
 	boolean addDatatypeDefinition(final ATermAppl name, final ATermAppl datarange);
 
 	/**
 	 * Add a rule to the KB.
 	 *
-	 * @param  rule
-	 * @return      true if the add success
+	 * @param rule
+	 * @return true if the add success
 	 */
 	boolean addRule(final Rule rule);
 
@@ -277,9 +278,9 @@ public interface KnowledgeBase extends InstancesBase, PropertiesBase, ClassesBas
 	 * Removes (if possible) the given property domain axiom from the KB and return <code>true</code> if removal was successful. See also
 	 * {@link #addDomain(ATerm, ATermAppl)}.
 	 *
-	 * @param  p Property in domain axiom
-	 * @param  c Class in domain axiom
-	 * @return   <code>true</code> if axiom is removed, <code>false</code> if removal failed
+	 * @param p Property in domain axiom
+	 * @param c Class in domain axiom
+	 * @return <code>true</code> if axiom is removed, <code>false</code> if removal failed
 	 */
 	boolean removeDomain(final ATerm p, final ATermAppl c);
 
@@ -287,9 +288,9 @@ public interface KnowledgeBase extends InstancesBase, PropertiesBase, ClassesBas
 	 * Removes (if possible) the given property range axiom from the KB and return <code>true</code> if removal was successful. See also
 	 * {@link #addRange(ATerm, ATermAppl)}.
 	 *
-	 * @param  p Property in range axiom
-	 * @param  c Class or datatype in range axiom
-	 * @return   <code>true</code> if axiom is removed, <code>false</code> if removal failed
+	 * @param p Property in range axiom
+	 * @param c Class or datatype in range axiom
+	 * @return <code>true</code> if axiom is removed, <code>false</code> if removal failed
 	 */
 	boolean removeRange(final ATerm p, final ATermAppl c);
 
@@ -298,8 +299,8 @@ public interface KnowledgeBase extends InstancesBase, PropertiesBase, ClassesBas
 	/**
 	 * Removes (if possible) the given TBox axiom from the KB and return <code>true</code> if removal was successful.
 	 *
-	 * @param  axiom TBox axiom to remove
-	 * @return       <code>true</code> if axiom is removed, <code>false</code> if removal failed
+	 * @param axiom TBox axiom to remove
+	 * @return <code>true</code> if axiom is removed, <code>false</code> if removal failed
 	 */
 	boolean removeAxiom(final ATermAppl axiom);
 
@@ -317,8 +318,8 @@ public interface KnowledgeBase extends InstancesBase, PropertiesBase, ClassesBas
 	 * *** This function will first classify the whole ontology ***
 	 * </p>
 	 *
-	 * @param  c class whose superclasses are returned
-	 * @return   A set of sets, where each set in the collection represents an equivalence class. The elements of the inner class are ATermAppl objects.
+	 * @param c class whose superclasses are returned
+	 * @return A set of sets, where each set in the collection represents an equivalence class. The elements of the inner class are ATermAppl objects.
 	 */
 	default Set<Set<ATermAppl>> getSuperClasses(final ATermAppl c)
 	{
@@ -333,8 +334,8 @@ public interface KnowledgeBase extends InstancesBase, PropertiesBase, ClassesBas
 	Set<ATermAppl> getComplements(final ATermAppl c);
 
 	/**
-	 * @param  name
-	 * @return      all the individuals asserted to be equal to the given individual but not the the individual itself.
+	 * @param name
+	 * @return all the individuals asserted to be equal to the given individual but not the the individual itself.
 	 */
 	Set<ATermAppl> getSames(final ATermAppl name);
 
@@ -363,8 +364,8 @@ public interface KnowledgeBase extends InstancesBase, PropertiesBase, ClassesBas
 	 * an empty ABox. If <code>emptyABox</code> parameter is true but the original KB contains nominals in its RBox or TBox the new KB will have the definition
 	 * of those _individuals (but not ) In either case, the new KB will point to the same RBox and TBox so changing one KB's RBox or TBox will affect other.
 	 *
-	 * @param  emptyABox If <code>true</code> ABox is not copied to the new KB
-	 * @return           A copy of this KB
+	 * @param emptyABox If <code>true</code> ABox is not copied to the new KB
+	 * @return A copy of this KB
 	 */
 	KnowledgeBase copy(final boolean emptyABox);
 

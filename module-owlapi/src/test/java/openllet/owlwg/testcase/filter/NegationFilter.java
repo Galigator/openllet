@@ -30,7 +30,8 @@ public class NegationFilter implements FilterCondition
 
 	public NegationFilter(final FilterCondition condition)
 	{
-		if (condition == null) throw new NullPointerException();
+		if (condition == null)
+			throw new NullPointerException();
 
 		_condition = condition;
 	}

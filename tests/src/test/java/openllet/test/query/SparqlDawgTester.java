@@ -41,18 +41,18 @@ public interface SparqlDawgTester
 	/**
 	 * Checks whether the query is correctly evaluated with respect to given graph (dataURI), named graphs (namedDataURIs) and _expected results (result URI)
 	 *
-	 * @param  dataURI       URI of the graph to be the query executed against
-	 * @param  namedDataURIs URIs of the named graphs
-	 * @param  resultURI     URI of the results
-	 * @return               true if the _expected and actual results match
+	 * @param dataURI URI of the graph to be the query executed against
+	 * @param namedDataURIs URIs of the named graphs
+	 * @param resultURI URI of the results
+	 * @return true if the _expected and actual results match
 	 */
 	boolean isCorrectlyEvaluated();
 
 	/**
 	 * Determines whether the given test name is applicable for the given tester. Allows for using avoid lists.
 	 *
-	 * @param  testURI name of the test
-	 * @return         true, if the tester can be run on the test.
+	 * @param testURI name of the test
+	 * @return true, if the tester can be run on the test.
 	 */
 	boolean isApplicable(final String testURI);
 

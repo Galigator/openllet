@@ -10,13 +10,6 @@ import static openllet.core.utils.TermFactory.term;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import junit.framework.JUnit4TestAdapter;
-import openllet.aterm.ATermAppl;
-import openllet.core.KnowledgeBase;
-import openllet.core.KnowledgeBaseImpl;
-import openllet.core.utils.ATermUtils;
-import openllet.owlapi.OpenlletReasoner;
-import openllet.owlapi.OpenlletReasonerFactory;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
@@ -33,6 +26,14 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 import org.semanticweb.owlapi.vocab.OWLFacet;
+
+import junit.framework.JUnit4TestAdapter;
+import openllet.aterm.ATermAppl;
+import openllet.core.KnowledgeBase;
+import openllet.core.KnowledgeBaseImpl;
+import openllet.core.utils.ATermUtils;
+import openllet.owlapi.OpenlletReasoner;
+import openllet.owlapi.OpenlletReasonerFactory;
 
 /**
  * <p>

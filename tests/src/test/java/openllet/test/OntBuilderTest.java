@@ -8,6 +8,10 @@ import static openllet.core.utils.TermFactory.term;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.junit.Assert;
+import org.junit.Test;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
 import openllet.core.KnowledgeBaseImpl;
@@ -17,8 +21,6 @@ import openllet.core.rules.model.ClassAtom;
 import openllet.core.rules.model.Rule;
 import openllet.core.utils.ATermUtils;
 import openllet.core.utils.OntBuilder;
-import org.junit.Assert;
-import org.junit.Test;
 
 /**
  * @author Pavel Klinov

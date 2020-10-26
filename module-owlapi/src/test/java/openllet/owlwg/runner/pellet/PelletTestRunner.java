@@ -1,11 +1,12 @@
 package openllet.owlwg.runner.pellet;
 
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLOntology;
+
 import openllet.owlapi.OpenlletReasoner;
 import openllet.owlapi.OpenlletReasonerFactory;
 import openllet.owlwg.owlapi.runner.impl.OwlApiAbstractRunner;
 import openllet.owlwg.testrun.TestRunResult;
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLOntology;
 
 /**
  * <p>
@@ -26,9 +27,9 @@ import org.semanticweb.owlapi.model.OWLOntology;
 public class PelletTestRunner extends OwlApiAbstractRunner
 {
 
-	private static final OpenlletReasonerFactory	_reasonerFactory	= new OpenlletReasonerFactory();
+	private static final OpenlletReasonerFactory _reasonerFactory = new OpenlletReasonerFactory();
 
-	private static final IRI						_iri				= IRI.create("http://clarkparsia.com/pellet");
+	private static final IRI _iri = IRI.create("http://clarkparsia.com/pellet");
 
 	@Override
 	public String getName()

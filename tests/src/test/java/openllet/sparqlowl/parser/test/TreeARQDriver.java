@@ -12,9 +12,7 @@ import static java.lang.String.format;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import openllet.query.sparqlowl.parser.antlr.SparqlOwlLexer;
-import openllet.query.sparqlowl.parser.antlr.SparqlOwlParser;
-import openllet.query.sparqlowl.parser.antlr.SparqlOwlTreeARQ;
+
 import org.antlr.runtime.ANTLRReaderStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
@@ -26,6 +24,10 @@ import org.apache.jena.vocabulary.OWL;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
 import org.apache.jena.vocabulary.XSD;
+
+import openllet.query.sparqlowl.parser.antlr.SparqlOwlLexer;
+import openllet.query.sparqlowl.parser.antlr.SparqlOwlParser;
+import openllet.query.sparqlowl.parser.antlr.SparqlOwlTreeARQ;
 
 /**
  * <p>
@@ -68,10 +70,14 @@ public class TreeARQDriver
 		final SparqlOwlTreeARQ treeWalker = new SparqlOwlTreeARQ(nodes);
 		final Query q = treeWalker.query(null);
 
-		if (q.getPrefix("rdf") == null) q.setPrefix("rdf", RDF.getURI());
-		if (q.getPrefix("rdfs") == null) q.setPrefix("rdfs", RDFS.getURI());
-		if (q.getPrefix("owl") == null) q.setPrefix("owl", OWL.getURI());
-		if (q.getPrefix("xsd") == null) q.setPrefix("xsd", XSD.getURI());
+		if (q.getPrefix("rdf") == null)
+			q.setPrefix("rdf", RDF.getURI());
+		if (q.getPrefix("rdfs") == null)
+			q.setPrefix("rdfs", RDFS.getURI());
+		if (q.getPrefix("owl") == null)
+			q.setPrefix("owl", OWL.getURI());
+		if (q.getPrefix("xsd") == null)
+			q.setPrefix("xsd", XSD.getURI());
 
 		System.out.print("\nARQ Query\n---------\n");
 		q.serialize(System.out);

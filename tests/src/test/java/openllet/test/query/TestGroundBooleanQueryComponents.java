@@ -12,9 +12,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
-import openllet.jena.PelletReasonerFactory;
-import openllet.query.sparqldl.jena.SparqlDLExecutionFactory;
-import openllet.query.sparqldl.jena.SparqlDLExecutionFactory.QueryEngineType;
+
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.query.Dataset;
 import org.apache.jena.query.DatasetFactory;
@@ -27,6 +25,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
+
+import openllet.jena.PelletReasonerFactory;
+import openllet.query.sparqldl.jena.SparqlDLExecutionFactory;
+import openllet.query.sparqldl.jena.SparqlDLExecutionFactory.QueryEngineType;
 
 /**
  * <p>
@@ -49,9 +51,9 @@ import org.junit.runners.Parameterized.Parameters;
 public class TestGroundBooleanQueryComponents
 {
 
-	private static String	_sourceDir		= "test/data/";
-	private static String	_sourceURL		= _sourceDir + "misc/food.owl";
-	private static String	_queryPrefix	= _sourceDir + "/query/ground-boolean-query-components-";
+	private static String _sourceDir = "test/data/";
+	private static String _sourceURL = _sourceDir + "misc/food.owl";
+	private static String _queryPrefix = _sourceDir + "/query/ground-boolean-query-components-";
 
 	@Parameters
 	public static List<Object[]> getParameters()
@@ -69,11 +71,11 @@ public class TestGroundBooleanQueryComponents
 		return params;
 	}
 
-	private final QueryEngineType	_queryEngineType;
-	private final String			_queryURL;
-	private final boolean			_expectedResult;
+	private final QueryEngineType _queryEngineType;
+	private final String _queryURL;
+	private final boolean _expectedResult;
 
-	private static OntModel			_model;
+	private static OntModel _model;
 
 	@BeforeClass
 	public static void setUp()

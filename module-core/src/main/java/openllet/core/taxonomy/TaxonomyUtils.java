@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+
 import openllet.aterm.ATermAppl;
 import openllet.atom.OpenError;
 
@@ -75,19 +76,21 @@ public class TaxonomyUtils
 	}
 
 	/**
-	 * @param  t   is a taxonomy
-	 * @param  sub classe
-	 * @param  sup classe
-	 * @return     if only I know.
+	 * @param t is a taxonomy
+	 * @param sub classe
+	 * @param sup classe
+	 * @return if only I know.
 	 */
 	public static Set<Set<ATermAppl>> getSuperExplanations(final Taxonomy<ATermAppl> t, final ATermAppl sub, final ATermAppl sup)
 	{
 		@SuppressWarnings("unchecked")
 		final Map<ATermAppl, Set<Set<ATermAppl>>> map = (Map<ATermAppl, Set<Set<ATermAppl>>>) t.getDatum(sub, TaxonomyKey.SUPER_EXPLANATION_KEY);
-		if (map == null) return null;
+		if (map == null)
+			return null;
 
 		final Set<Set<ATermAppl>> explanations = map.get(sup);
-		if (explanations == null) return null;
+		if (explanations == null)
+			return null;
 
 		return Collections.unmodifiableSet(explanations);
 	}
@@ -95,21 +98,23 @@ public class TaxonomyUtils
 	/**
 	 * Retrieve all instances of a class (based on the _current state of the taxonomy)
 	 *
-	 * @param  t the taxonomy
-	 * @param  c the class
-	 * @return   a set of all individuals that are instances of the class
+	 * @param t the taxonomy
+	 * @param c the class
+	 * @return a set of all individuals that are instances of the class
 	 */
 	public static <T, I> Set<I> getAllInstances(final Taxonomy<T> t, final T c)
 	{
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		final Iterator<Set<I>> i = (Iterator) t.depthFirstDatumOnly(c, TaxonomyKey.INSTANCES_KEY);
-		if (!i.hasNext()) throw new OpenError(c + " is an unknown class!");
+		if (!i.hasNext())
+			throw new OpenError(c + " is an unknown class!");
 
 		final Set<I> instances = new HashSet<>();
 		do
 		{
 			final Set<I> current = i.next();
-			if (current != null) instances.addAll(current);
+			if (current != null)
+				instances.addAll(current);
 
 		} while (i.hasNext());
 
@@ -121,9 +126,9 @@ public class TaxonomyUtils
 	/**
 	 * Retrieve direct instances of a class (based on _current state of the taxonomy)
 	 *
-	 * @param  t the taxonomy
-	 * @param  c the class
-	 * @return   a set of individuals that are instances of {@code c} and not instances of any class {@code d} where {@code subClassOf(d,c)}
+	 * @param t the taxonomy
+	 * @param c the class
+	 * @return a set of individuals that are instances of {@code c} and not instances of any class {@code d} where {@code subClassOf(d,c)}
 	 */
 	public static <T, I> Set<I> getDirectInstances(final Taxonomy<T> t, final T c)
 	{
@@ -131,7 +136,8 @@ public class TaxonomyUtils
 		final Set<I> instances = (Set<I>) t.getDatum(c, TaxonomyKey.INSTANCES_KEY);
 		if (instances == null)
 		{
-			if (t.contains(c)) return Collections.emptySet();
+			if (t.contains(c))
+				return Collections.emptySet();
 
 			throw new OpenError(c + " is an unknown class!");
 		}
@@ -142,10 +148,10 @@ public class TaxonomyUtils
 	/**
 	 * Get classes of which the _individual is an instance (based on the _current state of the taxonomy)
 	 *
-	 * @param  t          the taxonomy
-	 * @param  ind        the _individual
-	 * @param  directOnly {@code true} if only most specific classes are desired, {@code false} if all classes are desired
-	 * @return            a set of sets of classes where each inner set is a collection of equivalent classes
+	 * @param t the taxonomy
+	 * @param ind the _individual
+	 * @param directOnly {@code true} if only most specific classes are desired, {@code false} if all classes are desired
+	 * @return a set of sets of classes where each inner set is a collection of equivalent classes
 	 */
 	public static <TClass, TInd> Set<Set<TClass>> getTypes(final Taxonomy<TClass> t, final TInd ind, final boolean directOnly)
 	{
@@ -172,21 +178,23 @@ public class TaxonomyUtils
 	/**
 	 * Determine if an _individual is an instance of a class (based on the _current state of the taxonomy)
 	 *
-	 * @param  t   the taxonomy
-	 * @param  ind the _individual
-	 * @param  c   the class
-	 * @return     a boolean {@code true} if {@code instanceOf(ind,c)}, {@code false} else
+	 * @param t the taxonomy
+	 * @param ind the _individual
+	 * @param c the class
+	 * @return a boolean {@code true} if {@code instanceOf(ind,c)}, {@code false} else
 	 */
 	public static boolean isType(final Taxonomy<ATermAppl> t, final ATermAppl ind, final ATermAppl c)
 	{
 		final Iterator<Object> i = t.depthFirstDatumOnly(c, TaxonomyKey.INSTANCES_KEY);
-		if (!i.hasNext()) throw new OpenError(c + " is an unknown class!");
+		if (!i.hasNext())
+			throw new OpenError(c + " is an unknown class!");
 
 		do
 		{
 			@SuppressWarnings("unchecked")
 			final Set<ATermAppl> instances = (Set<ATermAppl>) i.next();
-			if (instances != null && instances.contains(ind)) return true;
+			if (instances != null && instances.contains(ind))
+				return true;
 
 		} while (i.hasNext());
 

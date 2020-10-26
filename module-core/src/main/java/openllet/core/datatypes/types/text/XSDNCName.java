@@ -21,8 +21,8 @@ import openllet.core.utils.Namespaces;
 public class XSDNCName extends AbstractBaseDatatype<ATermAppl>
 {
 
-	private static final XSDNCName			instance			= new XSDNCName();
-	private static final RDFPlainLiteral	RDF_PLAIN_LITERAL	= RDFPlainLiteral.getInstance();
+	private static final XSDNCName instance = new XSDNCName();
+	private static final RDFPlainLiteral RDF_PLAIN_LITERAL = RDFPlainLiteral.getInstance();
 
 	static
 	{

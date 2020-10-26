@@ -12,15 +12,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
+
 import openllet.core.utils.AlphaNumericComparator;
 import openllet.core.utils.Comparators;
 import openllet.test.PelletTestSuite;
 import openllet.test.WebOntTest;
 import openllet.test.WebOntTestCase;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
 
 /**
  * <p>
@@ -41,9 +43,9 @@ import org.junit.runners.Parameterized.Parameters;
 @RunWith(Parameterized.class)
 public class SWRLTestSuite
 {
-	public static final String	base	= PelletTestSuite.base + "swrl-test/";
+	public static final String base = PelletTestSuite.base + "swrl-test/";
 
-	private static List<File>	IGNORE	= Arrays.asList(new File(base + "equalities/Manifest002.rdf"));
+	private static List<File> IGNORE = Arrays.asList(new File(base + "equalities/Manifest002.rdf"));
 
 	@Parameters(name = "{0}")
 	public static List<Object[]> getParameters()
@@ -64,13 +66,15 @@ public class SWRLTestSuite
 		for (final File dir : dirs)
 		{
 			System.out.println(dir.getAbsolutePath());
-			if (dir.isFile()) continue;
+			if (dir.isFile())
+				continue;
 
 			final File[] files = dir.listFiles((FileFilter) file -> file.getName().indexOf("Manifest") != -1);
 			Arrays.sort(files, AlphaNumericComparator.CASE_INSENSITIVE);
 
 			for (final File file : files)
-				if (!IGNORE.contains(file)) parameters.add(new Object[] { new WebOntTestCase(test, file, "swrl-" + dir.getName() + "-" + file.getName()) });
+				if (!IGNORE.contains(file))
+					parameters.add(new Object[] { new WebOntTestCase(test, file, "swrl-" + dir.getName() + "-" + file.getName()) });
 		}
 
 		return parameters;

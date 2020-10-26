@@ -6,7 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Logger;
-import openllet.shared.tools.Log;
+
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.InfModel;
 import org.apache.jena.rdf.model.Literal;
@@ -19,12 +19,14 @@ import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
 import org.junit.Test;
 
+import openllet.shared.tools.Log;
+
 public class AddDelTripleInferenceTest extends SequentialTestsContraintInitializer
 {
-	private static final Logger	LOG		= Log.getLogger(AddDelTripleInferenceTest.class);
+	private static final Logger LOG = Log.getLogger(AddDelTripleInferenceTest.class);
 
-	private static final String	fname	= "/ontology-plus-data.ttl";
-	private static final String	indiv	= "http://ontology.tno.nl/2017/7/untitled-ontology-103/indiv";
+	private static final String fname = "/ontology-plus-data.ttl";
+	private static final String indiv = "http://ontology.tno.nl/2017/7/untitled-ontology-103/indiv";
 
 	@Test
 	public void testRemovalWithInference()

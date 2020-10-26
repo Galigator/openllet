@@ -5,11 +5,13 @@ import static org.junit.Assert.assertTrue;
 
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.XMLGregorianCalendar;
+
+import org.junit.Test;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.datatypes.Datatype;
 import openllet.core.datatypes.RestrictedDatatype;
 import openllet.core.datatypes.types.datetime.RestrictedTimelineDatatype;
-import org.junit.Test;
 
 /**
  * <p>

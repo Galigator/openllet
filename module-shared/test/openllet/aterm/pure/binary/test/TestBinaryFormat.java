@@ -29,13 +29,15 @@
 package openllet.aterm.pure.binary.test;
 
 import java.nio.ByteBuffer;
+
+import org.junit.Before;
+import org.junit.Test;
+
 import openllet.aterm.ATerm;
 import openllet.aterm.VisitFailure;
 import openllet.aterm.pure.PureFactory;
 import openllet.aterm.pure.binary.BinaryReader;
 import openllet.aterm.pure.binary.BinaryWriter;
-import org.junit.Before;
-import org.junit.Test;
 
 public class TestBinaryFormat
 {
@@ -59,8 +61,7 @@ public class TestBinaryFormat
 	{
 		// A term
 		ATerm input = _pureFactory.parse("line(box(rect(2), square(4, 3)), circle(6))");
-		byte[] expectedResult = new byte[] { 1, 2, 4, 108, 105, 110, 101, 1, 2, 3, 98, 111, 120, 1, 1, 4, 114, 101, 99, 116, 2, 2, 1, 2, 6, 115, 113, 117, 97, 114, 101, 2, 4, 2, 3, 1, 1, 6, 99, 105,
-				114, 99, 108, 101, 2, 6 };
+		byte[] expectedResult = new byte[] { 1, 2, 4, 108, 105, 110, 101, 1, 2, 3, 98, 111, 120, 1, 1, 4, 114, 101, 99, 116, 2, 2, 1, 2, 6, 115, 113, 117, 97, 114, 101, 2, 4, 2, 3, 1, 1, 6, 99, 105, 114, 99, 108, 101, 2, 6 };
 		write(input, expectedResult);
 
 		// A openllet.shared.hash term
@@ -118,8 +119,7 @@ public class TestBinaryFormat
 	public void testReading()
 	{
 		// A term
-		byte[] input = new byte[] { 1, 2, 4, 108, 105, 110, 101, 1, 2, 3, 98, 111, 120, 1, 1, 4, 114, 101, 99, 116, 2, 2, 1, 2, 6, 115, 113, 117, 97, 114, 101, 2, 4, 2, 3, 1, 1, 6, 99, 105, 114, 99,
-				108, 101, 2, 6 };
+		byte[] input = new byte[] { 1, 2, 4, 108, 105, 110, 101, 1, 2, 3, 98, 111, 120, 1, 1, 4, 114, 101, 99, 116, 2, 2, 1, 2, 6, 115, 113, 117, 97, 114, 101, 2, 4, 2, 3, 1, 1, 6, 99, 105, 114, 99, 108, 101, 2, 6 };
 		ATerm expectedResult = _pureFactory.parse("line(box(rect(2), square(4, 3)), circle(6))");
 		read(input, expectedResult);
 

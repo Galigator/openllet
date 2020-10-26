@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.tableau.completion.queue.NodeSelector;
 
@@ -24,22 +25,22 @@ public class IndividualIterator implements Iterator<Individual>
 	/**
 	 * ABox where the individuals are stored
 	 */
-	protected volatile ABox			_abox;		// Can change in tableau.completion.queue.CompletionQueue
+	protected volatile ABox _abox; // Can change in tableau.completion.queue.CompletionQueue
 
 	/**
 	 * List of node names
 	 */
-	private final List<ATermAppl>	_nodeList;
+	private final List<ATermAppl> _nodeList;
 
 	/**
 	 * Last returned _index
 	 */
-	private int						_index	= 0;
+	private int _index = 0;
 
 	/**
 	 * Index where iterator stops (size of list by default)
 	 */
-	private final int				_stop;
+	private final int _stop;
 
 	/**
 	 * Create an iterator over all the individuals in the ABox
@@ -60,7 +61,8 @@ public class IndividualIterator implements Iterator<Individual>
 		for (; _index < _stop; _index++)
 		{
 			final Node node = _abox.getNode(_nodeList.get(_index));
-			if (!node.isPruned() && node.isIndividual()) break;
+			if (!node.isPruned() && node.isIndividual())
+				break;
 		}
 	}
 

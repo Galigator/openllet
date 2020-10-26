@@ -11,7 +11,7 @@ public interface FacetOntologyOWL
 {
 	/**
 	 * @return the ontology map to this helper
-	 * @since  2.5.1
+	 * @since 2.5.1
 	 */
 	OWLOntology getOntology();
 }

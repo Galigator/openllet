@@ -31,12 +31,12 @@ public class TextBlockWriter extends BlockWriter
 	/**
 	 * Number of spaces that need to be printed for each block
 	 */
-	private final ArrayList<Integer>	_blockColumns	= new ArrayList<>();
+	private final ArrayList<Integer> _blockColumns = new ArrayList<>();
 
 	/**
 	 * The current column (number of the characters printed) for the current line
 	 */
-	private int							_column			= 0;
+	private int _column = 0;
 
 	public TextBlockWriter(final Writer outWriter)
 	{
@@ -114,7 +114,8 @@ public class TextBlockWriter extends BlockWriter
 	@Override
 	public void endBlock()
 	{
-		if (_blockColumns.isEmpty()) throw new IllegalStateException("No block to _end!");
+		if (_blockColumns.isEmpty())
+			throw new IllegalStateException("No block to _end!");
 
 		// remove the lastly _column
 		_blockColumns.remove(_blockColumns.size() - 1);

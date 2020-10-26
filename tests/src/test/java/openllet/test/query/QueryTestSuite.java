@@ -6,11 +6,12 @@
 
 package openllet.test.query;
 
-import junit.framework.JUnit4TestAdapter;
-import openllet.sparqlowl.parser.test.ParserTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
+
+import junit.framework.JUnit4TestAdapter;
+import openllet.sparqlowl.parser.test.ParserTest;
 
 /**
  * <p>

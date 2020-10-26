@@ -13,6 +13,9 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Iterator;
+
+import org.junit.Test;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.datatypes.Datatype;
 import openllet.core.datatypes.OWLRealUtils;
@@ -22,7 +25,6 @@ import openllet.core.datatypes.types.real.ContinuousRealInterval;
 import openllet.core.datatypes.types.real.IntegerInterval;
 import openllet.core.datatypes.types.real.Rational;
 import openllet.core.datatypes.types.real.RestrictedRealDatatype;
-import org.junit.Test;
 
 /**
  * <p>
@@ -494,7 +496,8 @@ public class RestrictedRealDatatypeTests
 		final Iterator<Number> it = dr.valueIterator();
 		for (int i = -250; i <= 350; i++)
 		{
-			if (i >= -5 && i <= -2) continue;
+			if (i >= -5 && i <= -2)
+				continue;
 
 			assertEquals(0, OWLRealUtils.compare(i, it.next()));
 		}
@@ -521,7 +524,8 @@ public class RestrictedRealDatatypeTests
 		final Iterator<Number> it = dr.valueIterator();
 		for (int i = -250; i <= 350; i++)
 		{
-			if (i >= -5 && i <= -2) continue;
+			if (i >= -5 && i <= -2)
+				continue;
 
 			assertEquals(0, OWLRealUtils.compare(i, it.next()));
 		}
@@ -837,7 +841,8 @@ public class RestrictedRealDatatypeTests
 		final Iterator<Number> it = dr.valueIterator();
 		for (int i = -10; i <= 13; i++)
 		{
-			if (i > -2 && i < 12) continue;
+			if (i > -2 && i < 12)
+				continue;
 
 			assertEquals(0, OWLRealUtils.compare(i, it.next()));
 		}

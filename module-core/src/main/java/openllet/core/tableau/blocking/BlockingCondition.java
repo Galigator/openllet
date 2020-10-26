@@ -18,8 +18,8 @@ public interface BlockingCondition
 	/**
 	 * Check if the _blocker candidate in this context actually blocks the other _individual.
 	 *
-	 * @param  cxt the _current blocking context
-	 * @return     <code>true</code> if the _individual is _blocked
+	 * @param cxt the _current blocking context
+	 * @return <code>true</code> if the _individual is _blocked
 	 */
 	boolean isBlocked(BlockingContext cxt);
 }

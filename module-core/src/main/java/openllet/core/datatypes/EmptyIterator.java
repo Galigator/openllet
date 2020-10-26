@@ -17,8 +17,8 @@ import java.util.NoSuchElementException;
  * Company: Clark & Parsia, LLC. <http://www.clarkparsia.com>
  * </p>
  *
- * @author     Mike Smith
- * @param  <E> kind of non elements
+ * @author Mike Smith
+ * @param <E> kind of non elements
  */
 public class EmptyIterator<E> implements Iterator<E>
 {

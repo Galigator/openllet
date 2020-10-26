@@ -15,6 +15,8 @@ import static openllet.query.sparqldl.model.QueryAtomFactory.ObjectPropertyAtom;
 import static openllet.query.sparqldl.model.QueryAtomFactory.PropertyValueAtom;
 import static openllet.query.sparqldl.model.QueryAtomFactory.RangeAtom;
 
+import org.junit.Test;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.OpenlletOptions;
 import openllet.core.datatypes.Datatypes;
@@ -22,7 +24,6 @@ import openllet.core.utils.ATermUtils;
 import openllet.core.utils.Namespaces;
 import openllet.query.sparqldl.model.Query;
 import openllet.query.sparqldl.parser.ARQParser;
-import org.junit.Test;
 
 public class TestMiscQueries extends AbstractQueryTest
 {
@@ -42,10 +43,7 @@ public class TestMiscQueries extends AbstractQueryTest
 
 		final Query query = query(select(pv, cv), where(DomainAtom(pv, cv)));
 
-		testQuery(query,
-				new ATermAppl[][] { { _p, TOP }, { _q, TOP }, { _r, TOP }, { TOP_OBJECT_PROPERTY, TOP }, { TOP_DATA_PROPERTY, TOP }, { BOTTOM_OBJECT_PROPERTY, TOP }, { BOTTOM_DATA_PROPERTY, TOP },
-						{ BOTTOM_DATA_PROPERTY, BOTTOM }, { BOTTOM_OBJECT_PROPERTY, BOTTOM }, { _p, _C }, { _q, _C }, { BOTTOM_DATA_PROPERTY, _C }, { BOTTOM_OBJECT_PROPERTY, _C },
-						{ BOTTOM_DATA_PROPERTY, _D }, { BOTTOM_OBJECT_PROPERTY, _D } });
+		testQuery(query, new ATermAppl[][] { { _p, TOP }, { _q, TOP }, { _r, TOP }, { TOP_OBJECT_PROPERTY, TOP }, { TOP_DATA_PROPERTY, TOP }, { BOTTOM_OBJECT_PROPERTY, TOP }, { BOTTOM_DATA_PROPERTY, TOP }, { BOTTOM_DATA_PROPERTY, BOTTOM }, { BOTTOM_OBJECT_PROPERTY, BOTTOM }, { _p, _C }, { _q, _C }, { BOTTOM_DATA_PROPERTY, _C }, { BOTTOM_OBJECT_PROPERTY, _C }, { BOTTOM_DATA_PROPERTY, _D }, { BOTTOM_OBJECT_PROPERTY, _D } });
 
 	}
 
@@ -100,8 +98,7 @@ public class TestMiscQueries extends AbstractQueryTest
 
 		final Query query = query(select(pv, cv), where(RangeAtom(pv, cv), ObjectPropertyAtom(pv)));
 
-		testQuery(query, new ATermAppl[][] { { _p, TOP }, { _q, TOP }, { TOP_OBJECT_PROPERTY, TOP }, { BOTTOM_OBJECT_PROPERTY, TOP }, { BOTTOM_OBJECT_PROPERTY, BOTTOM }, { _p, _C }, { _q, _C },
-				{ BOTTOM_OBJECT_PROPERTY, _C }, { BOTTOM_OBJECT_PROPERTY, _D } });
+		testQuery(query, new ATermAppl[][] { { _p, TOP }, { _q, TOP }, { TOP_OBJECT_PROPERTY, TOP }, { BOTTOM_OBJECT_PROPERTY, TOP }, { BOTTOM_OBJECT_PROPERTY, BOTTOM }, { _p, _C }, { _q, _C }, { BOTTOM_OBJECT_PROPERTY, _C }, { BOTTOM_OBJECT_PROPERTY, _D } });
 
 	}
 

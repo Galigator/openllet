@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
+
 import openllet.aterm.ATermAppl;
 
 /**
@@ -31,11 +32,11 @@ import openllet.aterm.ATermAppl;
  */
 public class QueryResultImpl implements QueryResult
 {
-	private Collection<ResultBinding>	_bindings;
+	private Collection<ResultBinding> _bindings;
 
-	private final List<ATermAppl>		_resultVars;
-	private final Query					_query;
-	private final QueryParameters		_parameters;
+	private final List<ATermAppl> _resultVars;
+	private final Query _query;
+	private final QueryParameters _parameters;
 
 	public QueryResultImpl(final Query query)
 	{
@@ -61,20 +62,29 @@ public class QueryResultImpl implements QueryResult
 	@Override
 	public boolean equals(final Object obj)
 	{
-		if (this == obj) return true;
-		if (obj == null) return false;
-		if (getClass() != obj.getClass()) return false;
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
 		final QueryResultImpl other = (QueryResultImpl) obj;
 		if (_bindings == null)
 		{
-			if (other._bindings != null) return false;
+			if (other._bindings != null)
+				return false;
 		}
-		else if (!_bindings.equals(other._bindings)) return false;
+		else
+			if (!_bindings.equals(other._bindings))
+				return false;
 		if (_resultVars == null)
 		{
-			if (other._resultVars != null) return false;
+			if (other._resultVars != null)
+				return false;
 		}
-		else if (!_resultVars.equals(other._resultVars)) return false;
+		else
+			if (!_resultVars.equals(other._resultVars))
+				return false;
 		return true;
 	}
 
@@ -138,7 +148,8 @@ public class QueryResultImpl implements QueryResult
 
 	private ResultBinding process(final ResultBinding binding)
 	{
-		if (_parameters == null) return binding;
+		if (_parameters == null)
+			return binding;
 
 		final int numOfVars = _query.getResultVars().size();
 
@@ -149,7 +160,8 @@ public class QueryResultImpl implements QueryResult
 			final ATermAppl var = entry.getKey();
 			final ATermAppl value = entry.getValue();
 
-			if (numOfVars == 0 || _query.getResultVars().contains(var)) binding.setValue(var, value);
+			if (numOfVars == 0 || _query.getResultVars().contains(var))
+				binding.setValue(var, value);
 		}
 
 		return binding;

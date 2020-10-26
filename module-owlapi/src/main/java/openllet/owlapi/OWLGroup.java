@@ -5,11 +5,13 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.logging.Level;
 import java.util.stream.Stream;
-import openllet.shared.tools.Logging;
+
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+
+import openllet.shared.tools.Logging;
 
 /**
  * @since 2.6.1
@@ -34,7 +36,7 @@ public interface OWLGroup extends AutoCloseable, Logging
 
 	/**
 	 * @return The storage manager if you have call setOntologiesDirectory() before; else it throw a RuntimeException.
-	 * @since  2.5.1
+	 * @since 2.5.1
 	 */
 	OWLOntologyManager getPersistentManager();
 
@@ -49,11 +51,11 @@ public interface OWLGroup extends AutoCloseable, Logging
 	/**
 	 * Seek the asked ontology. First in the volatile ontologies, then in the stored ontologies that are already stored.
 	 *
-	 * @param  ontology   the iri of the ontology you are looking for.
-	 * @param  version    of the ontology
-	 * @param  isVolatile
-	 * @return            an ontology if found.
-	 * @since             2.6.0
+	 * @param ontology the iri of the ontology you are looking for.
+	 * @param version of the ontology
+	 * @param isVolatile
+	 * @return an ontology if found.
+	 * @since 2.6.0
 	 */
 	default Optional<OWLHelper> getOntology(final IRI ontology, final double version, final boolean isVolatile)
 	{
@@ -63,10 +65,10 @@ public interface OWLGroup extends AutoCloseable, Logging
 	/**
 	 * Seek the asked ontology. First in the volatile ontologies, then in the stored ontologies that are already stored.
 	 *
-	 * @param  ontologyID the id of the ontology you are looking for.
-	 * @param  isVolatile
-	 * @return            an ontology if found.
-	 * @since             2.6.0
+	 * @param ontologyID the id of the ontology you are looking for.
+	 * @param isVolatile
+	 * @return an ontology if found.
+	 * @since 2.6.0
 	 */
 	default Optional<OWLHelper> getOntology(final OWLOntologyID ontologyID, final boolean isVolatile)
 	{
@@ -84,9 +86,9 @@ public interface OWLGroup extends AutoCloseable, Logging
 	/**
 	 * Seek the asked ontology. First in the volatile ontologies, then in the stored ontologies that are already stored.
 	 *
-	 * @param  ontologyID the id of the ontology you are looking for.
-	 * @return            an ontology if found.
-	 * @since             2.5.1
+	 * @param ontologyID the id of the ontology you are looking for.
+	 * @return an ontology if found.
+	 * @since 2.5.1
 	 */
 	default Optional<OWLOntology> getOntology(final OWLOntologyID ontologyID)
 	{
@@ -97,17 +99,20 @@ public interface OWLGroup extends AutoCloseable, Logging
 	default Optional<OWLHelper> getHelper(final OWLOntologyID ontologyID)
 	{
 		Optional<OWLOntology> ontology = getVolatileOntology(ontologyID);
-		if (ontology.isPresent()) return Optional.of(new OWLGenericTools(this, getVolatileManager(), ontology.get()));
+		if (ontology.isPresent())
+			return Optional.of(new OWLGenericTools(this, getVolatileManager(), ontology.get()));
 
 		ontology = getPersistentOntology(ontologyID);
-		if (ontology.isPresent()) return Optional.of(new OWLGenericTools(this, getPersistentManager(), ontology.get()));
+		if (ontology.isPresent())
+			return Optional.of(new OWLGenericTools(this, getPersistentManager(), ontology.get()));
 
 		return Optional.empty();
 	}
 
 	default Stream<OWLHelper> getVolatilesHelper()
 	{
-		if (!haveVolatileManager()) return Stream.empty();
+		if (!haveVolatileManager())
+			return Stream.empty();
 
 		final OWLOntologyManager vm = getVolatileManager();
 		return vm.ontologies().map(ontology -> new OWLGenericTools(this, vm, ontology));
@@ -115,7 +120,8 @@ public interface OWLGroup extends AutoCloseable, Logging
 
 	default Stream<OWLHelper> getPersistentsHelper()
 	{
-		if (!havePersistentManager()) return Stream.empty();
+		if (!havePersistentManager())
+			return Stream.empty();
 
 		final OWLOntologyManager vm = getPersistentManager();
 		return vm.ontologies().map(ontology -> new OWLGenericTools(this, vm, ontology));
@@ -124,15 +130,16 @@ public interface OWLGroup extends AutoCloseable, Logging
 	/**
 	 * The standard 'getOntology' from the OWLManager don't really take care of versionning. This function is here to enforce the notion of version
 	 *
-	 * @param  manager    to look into (mainly storage or volatile)
-	 * @param  ontologyID with version information
-	 * @return            the ontology if already load into the given manager.
-	 * @since             2.5.1
+	 * @param manager to look into (mainly storage or volatile)
+	 * @param ontologyID with version information
+	 * @return the ontology if already load into the given manager.
+	 * @since 2.5.1
 	 */
 	static Optional<OWLOntology> getOntology(final OWLOntologyManager manager, final OWLOntologyID ontologyID)
 	{
 		final Optional<IRI> ontIri = ontologyID.getOntologyIRI();
-		if (!ontIri.isPresent()) return Optional.empty();
+		if (!ontIri.isPresent())
+			return Optional.empty();
 
 		Stream<OWLOntology> ontologies = manager.versions(ontIri.get());
 

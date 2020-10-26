@@ -8,6 +8,7 @@ package openllet.core.rules.builtins;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+
 import openllet.core.boxes.abox.ABox;
 import openllet.core.boxes.abox.Literal;
 import openllet.core.exceptions.InternalReasonerException;
@@ -33,8 +34,8 @@ import openllet.core.utils.Namespaces;
 public class NumberToLiteralVisitor implements NumericVisitor
 {
 
-	private final ABox	_abox;
-	private Literal		_result;
+	private final ABox _abox;
+	private Literal _result;
 
 	public NumberToLiteralVisitor(final ABox abox)
 	{
@@ -43,7 +44,8 @@ public class NumberToLiteralVisitor implements NumericVisitor
 
 	private static void argCheck(final Number[] args)
 	{
-		if (args.length != 1) throw new InternalReasonerException("Wrong number of arguments to visitor.");
+		if (args.length != 1)
+			throw new InternalReasonerException("Wrong number of arguments to visitor.");
 	}
 
 	public Literal getLiteral()

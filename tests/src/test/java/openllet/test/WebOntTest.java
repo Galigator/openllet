@@ -63,6 +63,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
+
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
@@ -71,11 +72,7 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.WindowConstants;
-import openllet.atom.OpenError;
-import openllet.core.OpenlletOptions;
-import openllet.core.exceptions.TimeoutException;
-import openllet.core.exceptions.UnsupportedFeatureException;
-import openllet.shared.tools.Log;
+
 import org.apache.jena.rdf.model.Literal;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
@@ -88,74 +85,57 @@ import org.apache.jena.rdf.model.StmtIterator;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
 
+import openllet.atom.OpenError;
+import openllet.core.OpenlletOptions;
+import openllet.core.exceptions.TimeoutException;
+import openllet.core.exceptions.UnsupportedFeatureException;
+import openllet.shared.tools.Log;
+
 public class WebOntTest
 {
-	public static Logger					_logger						= Log.getLogger(WebOntTest.class);
+	public static Logger _logger = Log.getLogger(WebOntTest.class);
 
 	// each test case should be handled in timeout seconds
 	// or otherwise is assumed to fail that test case
 	// if timeout is set to 0 then test case will not be stopped
 	// default value is 10 seconds
-	public int								_timeout					= 10;
+	public int _timeout = 10;
 
 	// At the end of tests stats about the results are displayed
 	// There are couple of options here; short means only total
 	// number of passes are shown, long means individual results
 	// for each test is also displayed, all means a GUI window is
 	// popped up to show these stats
-	public final static int					NO_STATS					= 0;
-	public final static int					SHORT_STATS					= 1;
-	public final static int					LONG_STATS					= 2;
-	public final static int					ALL_STATS					= 3;
-	public int								_showStats					= ALL_STATS;
+	public final static int NO_STATS = 0;
+	public final static int SHORT_STATS = 1;
+	public final static int LONG_STATS = 2;
+	public final static int ALL_STATS = 3;
+	public int _showStats = ALL_STATS;
 
-	private static String					_base						= "http://www.w3.org/2002/03owlt/";
-	private final String					_localBase					= PelletTestSuite.base;
-	private String							_newBase;
+	private static String _base = "http://www.w3.org/2002/03owlt/";
+	private final String _localBase = PelletTestSuite.base;
+	private String _newBase;
 
-	public static boolean					DOUBLE_CHECK_ENTAILMENTS	= false;
+	public static boolean DOUBLE_CHECK_ENTAILMENTS = false;
 
-	public final static List<Resource>		TYPES						= Arrays.asList(NotOwlFeatureTest, PositiveEntailmentTest, NegativeEntailmentTest, TrueTest, OWLforOWLTest, ConsistencyTest,
-			InconsistencyTest, ImportEntailmentTest, ImportLevelTest, ClassificationTest);
+	public final static List<Resource> TYPES = Arrays.asList(NotOwlFeatureTest, PositiveEntailmentTest, NegativeEntailmentTest, TrueTest, OWLforOWLTest, ConsistencyTest, InconsistencyTest, ImportEntailmentTest, ImportLevelTest, ClassificationTest);
 
-	public final static List<Resource>		LEVELS						= Arrays.asList(Lite, DL, Full);
-	public final static List<RDFNode>		STATUS						= Arrays.asList(Approved, Proposed, ExtraCredit, Obsoleted);
+	public final static List<Resource> LEVELS = Arrays.asList(Lite, DL, Full);
+	public final static List<RDFNode> STATUS = Arrays.asList(Approved, Proposed, ExtraCredit, Obsoleted);
 
-	public boolean							_avoidFailTests				= false;
+	public boolean _avoidFailTests = false;
 
 	/**
 	 * Pellet is known to fail the following test cases either because they are not in OWL DL or they are extremely hard, e.g. more than 100 GCI's, or a very
 	 * large number restriction. Such cases are not very realistic and it is not considered to be a problem to fail those test cases. But if Pellet fails on one
 	 * of the other test cases then it indicates a problem.
 	 */
-	private static final List<Resource>		AVOID						= Arrays.asList(ResourceFactory.createResource(_base + "/AnnotationProperty/Manifest001#test"),
-			ResourceFactory.createResource(_base + "/AnnotationProperty/Manifest002#test"), ResourceFactory.createResource(_base + "/Class/Manifest005#test"),
-			ResourceFactory.createResource(_base + "/DatatypeProperty/Manifest001#test"), ResourceFactory.createResource(_base + "/description-logic/Manifest661#test"),
-			ResourceFactory.createResource(_base + "/description-logic/Manifest662#test"), ResourceFactory.createResource(_base + "/description-logic/Manifest663#test"),
-			ResourceFactory.createResource(_base + "/description-logic/Manifest664#test"), ResourceFactory.createResource(_base + "/description-logic/Manifest903#test"),
-			ResourceFactory.createResource(_base + "/description-logic/Manifest905#test"), ResourceFactory.createResource(_base + "/description-logic/Manifest906#test"),
-			ResourceFactory.createResource(_base + "/description-logic/Manifest907#test"), ResourceFactory.createResource(_base + "/description-logic/Manifest908#test"),
-			ResourceFactory.createResource(_base + "/description-logic/Manifest909#test"), ResourceFactory.createResource(_base + "/description-logic/Manifest910#test"),
-			ResourceFactory.createResource(_base + "/disjointWith/Manifest010#test"), ResourceFactory.createResource(_base + "/equivalentClass/Manifest008#test"),
-			ResourceFactory.createResource(_base + "/equivalentProperty/Manifest005#test"), ResourceFactory.createResource(_base + "/extra-credit/Manifest002#test"),
-			ResourceFactory.createResource(_base + "/extra-credit/Manifest003#test"), ResourceFactory.createResource(_base + "/extra-credit/Manifest004#test"),
-			ResourceFactory.createResource(_base + "/I4.6/Manifest003#test"), ResourceFactory.createResource(_base + "/I4.6/Manifest005#test"),
-			ResourceFactory.createResource(_base + "/I5.1/Manifest001#test"), ResourceFactory.createResource(_base + "/I5.24/Manifest002#test"),
-			ResourceFactory.createResource(_base + "/I5.26/Manifest006#test"), ResourceFactory.createResource(_base + "/I5.26/Manifest007#test"),
-			ResourceFactory.createResource(_base + "/I5.3/Manifest014#test"), ResourceFactory.createResource(_base + "/I5.3/Manifest015#test"),
-			ResourceFactory.createResource(_base + "/I5.5/Manifest003#test"), ResourceFactory.createResource(_base + "/I5.5/Manifest004#test"),
-			ResourceFactory.createResource(_base + "/I5.5/Manifest006#test"), ResourceFactory.createResource(_base + "/I5.5/Manifest007#test"),
-			ResourceFactory.createResource(_base + "/I5.8/Manifest012#test"), ResourceFactory.createResource(_base + "/I5.8/Manifest017#test"),
-			ResourceFactory.createResource(_base + "/miscellaneous/Manifest202#test"), ResourceFactory.createResource(_base + "/miscellaneous/Manifest205#test"),
-			ResourceFactory.createResource(_base + "/miscellaneous/Manifest302#test"), ResourceFactory.createResource(_base + "/Ontology/Manifest003#test"),
-			ResourceFactory.createResource(_base + "/Restriction/Manifest005#test"), ResourceFactory.createResource(_base + "/Restriction/Manifest006#test"),
-			ResourceFactory.createResource(_base + "/sameAs/Manifest001#test"), ResourceFactory.createResource(_base + "/someValuesFrom/Manifest001#test"),
-			ResourceFactory.createResource(_base + "/someValuesFrom/Manifest003#test"), ResourceFactory.createResource(_base + "/Thing/Manifest005#test"));
+	private static final List<Resource> AVOID = Arrays.asList(ResourceFactory.createResource(_base + "/AnnotationProperty/Manifest001#test"), ResourceFactory.createResource(_base + "/AnnotationProperty/Manifest002#test"), ResourceFactory.createResource(_base + "/Class/Manifest005#test"), ResourceFactory.createResource(_base + "/DatatypeProperty/Manifest001#test"), ResourceFactory.createResource(_base + "/description-logic/Manifest661#test"), ResourceFactory.createResource(_base + "/description-logic/Manifest662#test"), ResourceFactory.createResource(_base + "/description-logic/Manifest663#test"), ResourceFactory.createResource(_base + "/description-logic/Manifest664#test"), ResourceFactory.createResource(_base + "/description-logic/Manifest903#test"), ResourceFactory.createResource(_base + "/description-logic/Manifest905#test"), ResourceFactory.createResource(_base + "/description-logic/Manifest906#test"), ResourceFactory.createResource(_base + "/description-logic/Manifest907#test"), ResourceFactory.createResource(_base + "/description-logic/Manifest908#test"), ResourceFactory.createResource(_base + "/description-logic/Manifest909#test"), ResourceFactory.createResource(_base + "/description-logic/Manifest910#test"), ResourceFactory.createResource(_base + "/disjointWith/Manifest010#test"), ResourceFactory.createResource(_base + "/equivalentClass/Manifest008#test"), ResourceFactory.createResource(_base + "/equivalentProperty/Manifest005#test"), ResourceFactory.createResource(_base + "/extra-credit/Manifest002#test"), ResourceFactory.createResource(_base + "/extra-credit/Manifest003#test"), ResourceFactory.createResource(_base + "/extra-credit/Manifest004#test"), ResourceFactory.createResource(_base + "/I4.6/Manifest003#test"), ResourceFactory.createResource(_base + "/I4.6/Manifest005#test"), ResourceFactory.createResource(_base + "/I5.1/Manifest001#test"), ResourceFactory.createResource(_base + "/I5.24/Manifest002#test"), ResourceFactory.createResource(_base + "/I5.26/Manifest006#test"), ResourceFactory.createResource(_base + "/I5.26/Manifest007#test"), ResourceFactory.createResource(_base + "/I5.3/Manifest014#test"), ResourceFactory.createResource(_base + "/I5.3/Manifest015#test"), ResourceFactory.createResource(_base + "/I5.5/Manifest003#test"), ResourceFactory.createResource(_base + "/I5.5/Manifest004#test"), ResourceFactory.createResource(_base + "/I5.5/Manifest006#test"), ResourceFactory.createResource(_base + "/I5.5/Manifest007#test"), ResourceFactory.createResource(_base + "/I5.8/Manifest012#test"), ResourceFactory.createResource(_base + "/I5.8/Manifest017#test"), ResourceFactory.createResource(_base + "/miscellaneous/Manifest202#test"), ResourceFactory.createResource(_base + "/miscellaneous/Manifest205#test"), ResourceFactory.createResource(_base + "/miscellaneous/Manifest302#test"), ResourceFactory.createResource(_base + "/Ontology/Manifest003#test"), ResourceFactory.createResource(_base + "/Restriction/Manifest005#test"), ResourceFactory.createResource(_base + "/Restriction/Manifest006#test"), ResourceFactory.createResource(_base + "/sameAs/Manifest001#test"), ResourceFactory.createResource(_base + "/someValuesFrom/Manifest001#test"), ResourceFactory.createResource(_base + "/someValuesFrom/Manifest003#test"), ResourceFactory.createResource(_base + "/Thing/Manifest005#test"));
 
-	final public static int					TEST_PASS					= 0;
-	final public static int					TEST_FAIL					= 1;
-	final public static int					TEST_SKIP					= 2;
-	final public static List<String>		RESULTS						= Arrays.asList("PASS", "FAIL", "SKIP");
+	final public static int TEST_PASS = 0;
+	final public static int TEST_FAIL = 1;
+	final public static int TEST_SKIP = 2;
+	final public static List<String> RESULTS = Arrays.asList("PASS", "FAIL", "SKIP");
 
 	// There are three test levels Lite, DL, Full. There are three test
 	// status: Approved, Proposed, Obsolete. There are three different
@@ -166,15 +146,15 @@ public class WebOntTest
 	// first column of these is count of passed tests, second column is
 	// count of failed tests, third column is for skipped tests
 
-	private final int[][][][]				_stats						= new int[LEVELS.size()][STATUS.size()][TYPES.size()][RESULTS.size()];
+	private final int[][][][] _stats = new int[LEVELS.size()][STATUS.size()][TYPES.size()][RESULTS.size()];
 
 	// a table showing the test results for each individual test case
-	private final Vector<Vector<Object>>	results						= new Vector<>();
+	private final Vector<Vector<Object>> results = new Vector<>();
 
 	// maximum number of test cases to process
-	private static int						MAX_TEST_COUNT				= Integer.MAX_VALUE;
+	private static int MAX_TEST_COUNT = Integer.MAX_VALUE;
 
-	private static WebOntTester[]			_testers					= {
+	private static WebOntTester[] _testers = {
 			/** new JenaWebOntTester(), new OWLAPIWebOntTester() */
 	};
 
@@ -241,7 +221,8 @@ public class WebOntTest
 				case "-manifest":
 				{
 					manifestFile = args[++i];
-					if (!manifestFile.startsWith("http://")) manifestFile = _base + "/" + manifestFile;
+					if (!manifestFile.startsWith("http://"))
+						manifestFile = _base + "/" + manifestFile;
 					break;
 				}
 				case "-validate":
@@ -321,11 +302,13 @@ public class WebOntTest
 			while (i.hasNext() && testCount <= MAX_TEST_COUNT)
 			{
 				final Statement stmt = i.nextStatement();
-				if (!TYPES.contains(stmt.getObject())) continue;
+				if (!TYPES.contains(stmt.getObject()))
+					continue;
 
 				final Resource testCase = stmt.getSubject();
 
-				if (_avoidFailTests && AVOID.contains(testCase)) continue;
+				if (_avoidFailTests && AVOID.contains(testCase))
+					continue;
 
 				// Output statements
 				Statement levelStmt = testCase.getProperty(level);
@@ -356,9 +339,12 @@ public class WebOntTest
 				// don't do or report anything about obsolete test cases
 				if (testStatus.equals(Obsoleted))
 					continue;
-				else if (testStatus.toString().startsWith("OBSOLETE"))
-					continue;
-				else if (testType.equals(OWLforOWLTest)) continue;
+				else
+					if (testStatus.toString().startsWith("OBSOLETE"))
+						continue;
+					else
+						if (testType.equals(OWLforOWLTest))
+							continue;
 
 				testCount++;
 
@@ -428,17 +414,20 @@ public class WebOntTest
 					else
 						resultType = ResourceFactory.createResource(_base + "/resultsOntology#FailingRun");
 				}
-				else if (testResult == TEST_PASS)
-					resultType = ResourceFactory.createResource(_base + "/resultsOntology#PassingRun");
-				else if (testResult == TEST_SKIP)
-				{
-					/* empty because skip ! */
-				}
+				else
+					if (testResult == TEST_PASS)
+						resultType = ResourceFactory.createResource(_base + "/resultsOntology#PassingRun");
+					else
+						if (testResult == TEST_SKIP)
+						{
+							/* empty because skip ! */
+						}
 
 				outputModel.add(ResourceFactory.createStatement(testRun, type, runtype));
 				outputModel.add(ResourceFactory.createStatement(testRun, tcProp, testCase));
 				outputModel.add(ResourceFactory.createStatement(testRun, systemProp, system));
-				if (resultType != null) outputModel.add(ResourceFactory.createStatement(testRun, type, resultType));
+				if (resultType != null)
+					outputModel.add(ResourceFactory.createStatement(testRun, type, resultType));
 				// Insert test time;
 				final Property timeProp = ResourceFactory.createProperty("http://owl.mindswap.org/2003/ont/owlweb.rdf#testTime");
 				final Literal timeLiteral = model.createLiteral("" + time);
@@ -470,7 +459,8 @@ public class WebOntTest
 			e.printStackTrace();
 			allPassed = false;
 
-			if (testCount == 2) throw new OpenError(e);
+			if (testCount == 2)
+				throw new OpenError(e);
 		}
 
 		return allPassed;
@@ -496,11 +486,15 @@ public class WebOntTest
 
 		if (_avoidFailTests && AVOID.contains(testCase))
 			return TEST_SKIP;
-		else if (testStatus.equals(Obsoleted))
-			return TEST_SKIP;
-		else if (testStatus.toString().startsWith("OBSOLETE"))
-			return TEST_SKIP;
-		else if (testType.equals(OWLforOWLTest)) return TEST_SKIP;
+		else
+			if (testStatus.equals(Obsoleted))
+				return TEST_SKIP;
+			else
+				if (testStatus.toString().startsWith("OBSOLETE"))
+					return TEST_SKIP;
+				else
+					if (testType.equals(OWLforOWLTest))
+						return TEST_SKIP;
 
 		_logger.fine("Name  : " + testCase);
 
@@ -548,8 +542,8 @@ public class WebOntTest
 				final boolean fail = result.get(result.size() - 1).equals("FAIL");
 				if (fail)
 				{
-					for (int j = 0; j < result.size(); j++)
-						System.out.print(result.get(j) + " ");
+					for (final Object element : result)
+						System.out.print(element + " ");
 					System.out.println();
 				}
 			}
@@ -569,7 +563,8 @@ public class WebOntTest
 			}
 		}
 
-		if (_showStats >= ALL_STATS) showStatistics(dataArray);
+		if (_showStats >= ALL_STATS)
+			showStatistics(dataArray);
 	}
 
 	private void showStatistics(final ArrayList<Object[][]> dataArray)
@@ -659,7 +654,8 @@ public class WebOntTest
 	private String getFileName(final String fileNameParam)
 	{
 		String fileName = fileNameParam;
-		if (_newBase != null) fileName = fileName.replaceFirst(_base, _newBase);
+		if (_newBase != null)
+			fileName = fileName.replaceFirst(_base, _newBase);
 
 		if (!fileName.endsWith(".rdf") && //
 				!fileName.endsWith(".owl") && //
@@ -726,7 +722,8 @@ public class WebOntTest
 			}
 
 			// This is for the ClassificationTest used for galen, koala, SUMO, SWEET, wine
-			if (classifyFirst) tester.classify();
+			if (classifyFirst)
+				tester.classify();
 
 			tester.testEntailment(conclusionsFile, isEntailed);
 
@@ -748,21 +745,30 @@ public class WebOntTest
 	{
 		if (testType.equals(PositiveEntailmentTest))
 			return doEntailmentTest(testCase, true, false);
-		else if (testType.equals(NegativeEntailmentTest))
-			return doEntailmentTest(testCase, false, false);
-		else if (testType.equals(ConsistencyTest))
-			return doConsistencyTest(testCase, true);
-		else if (testType.equals(InconsistencyTest))
-			return doConsistencyTest(testCase, false);
-		else if (testType.equals(ImportEntailmentTest))
-			return doEntailmentTest(testCase, true, false);
-		else if (testType.equals(NotOwlFeatureTest))
-			return TEST_SKIP;
-		else if (testType.equals(ImportLevelTest))
-			return TEST_SKIP;
-		else if (testType.equals(OWLforOWLTest))
-			return TEST_SKIP;
-		else if (testType.equals(ClassificationTest)) return doEntailmentTest(testCase, true, true);
+		else
+			if (testType.equals(NegativeEntailmentTest))
+				return doEntailmentTest(testCase, false, false);
+			else
+				if (testType.equals(ConsistencyTest))
+					return doConsistencyTest(testCase, true);
+				else
+					if (testType.equals(InconsistencyTest))
+						return doConsistencyTest(testCase, false);
+					else
+						if (testType.equals(ImportEntailmentTest))
+							return doEntailmentTest(testCase, true, false);
+						else
+							if (testType.equals(NotOwlFeatureTest))
+								return TEST_SKIP;
+							else
+								if (testType.equals(ImportLevelTest))
+									return TEST_SKIP;
+								else
+									if (testType.equals(OWLforOWLTest))
+										return TEST_SKIP;
+									else
+										if (testType.equals(ClassificationTest))
+											return doEntailmentTest(testCase, true, true);
 
 		throw new OpenError("Unknown test type " + testType.getLocalName() + " for " + testCase);
 	}

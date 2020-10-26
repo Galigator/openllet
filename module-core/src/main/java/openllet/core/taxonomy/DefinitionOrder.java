@@ -11,6 +11,7 @@ package openllet.core.taxonomy;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import openllet.aterm.ATermAppl;
 
 /**
@@ -31,8 +32,8 @@ public interface DefinitionOrder extends Iterable<ATermAppl>
 	/**
 	 * Returns if a concept is used in cyclic definitions.
 	 *
-	 * @param  concept concept to check
-	 * @return         <code>true</code> if concept is used in a cyclic definition
+	 * @param concept concept to check
+	 * @return <code>true</code> if concept is used in a cyclic definition
 	 */
 	boolean isCyclic(ATermAppl concept);
 

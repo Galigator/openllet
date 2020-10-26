@@ -28,19 +28,20 @@
 
 package openllet.aterm.test;
 
+import org.junit.Before;
+import org.junit.Test;
+
 import openllet.aterm.AFun;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermFactory;
 import openllet.aterm.pure.PureFactory;
-import org.junit.Before;
-import org.junit.Test;
 
 public class TestFib
 {
-	private ATermFactory	_factory;
+	private ATermFactory _factory;
 
-	private AFun			zero, suc, plus, fib;
-	private ATermAppl		tzero;
+	private AFun zero, suc, plus, fib;
+	private ATermAppl tzero;
 
 	public final static void main(final String[] args)
 	{
@@ -130,8 +131,7 @@ public class TestFib
 							final ATermAppl v4 = (ATermAppl) v3.getArgument(0);
 							if (v4.getAFun() == suc)
 							{
-								res = _factory.makeAppl(plus, v4.getArgument(0),
-										_factory.makeAppl(suc, _factory.makeAppl(suc, _factory.makeAppl(suc, _factory.makeAppl(suc, _factory.makeAppl(suc, res.getArgument(1)))))));
+								res = _factory.makeAppl(plus, v4.getArgument(0), _factory.makeAppl(suc, _factory.makeAppl(suc, _factory.makeAppl(suc, _factory.makeAppl(suc, _factory.makeAppl(suc, res.getArgument(1)))))));
 								continue;
 							}
 						}

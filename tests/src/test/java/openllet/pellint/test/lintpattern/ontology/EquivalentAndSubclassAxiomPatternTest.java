@@ -7,12 +7,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 import java.util.Set;
-import openllet.owlapi.OWL;
-import openllet.pellint.lintpattern.ontology.EquivalentAndSubclassAxiomPattern;
-import openllet.pellint.model.Lint;
-import openllet.pellint.model.LintFixer;
-import openllet.pellint.test.PellintTestCase;
-import openllet.pellint.util.CollectionUtil;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.OWLAxiom;
@@ -20,6 +15,13 @@ import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+
+import openllet.owlapi.OWL;
+import openllet.pellint.lintpattern.ontology.EquivalentAndSubclassAxiomPattern;
+import openllet.pellint.model.Lint;
+import openllet.pellint.model.LintFixer;
+import openllet.pellint.test.PellintTestCase;
+import openllet.pellint.util.CollectionUtil;
 
 /**
  * <p>
@@ -87,7 +89,7 @@ public class EquivalentAndSubclassAxiomPatternTest extends PellintTestCase
 
 		addAxiom(OWL.subClassOf(_cls[0], _P0AllC0));
 		addAxiom(OWL.equivalentClasses(_cls[0], OWL.Thing));
-		addAxiom(OWL.equivalentClasses(CollectionUtil.<OWLClassExpression>asSet(_cls[0], _cls[3], _cls[4])));
+		addAxiom(OWL.equivalentClasses(CollectionUtil.<OWLClassExpression> asSet(_cls[0], _cls[3], _cls[4])));
 
 		final List<Lint> lints = _pattern.match(_ontology);
 		assertEquals(1, lints.size());

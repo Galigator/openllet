@@ -17,19 +17,21 @@ import openllet.core.utils.ATermUtils;
  * Company: Clark & Parsia, LLC. <http://www.clarkparsia.com>
  * </p>
  *
- * @author     Mike Smith
- * @param  <T> type of literal
+ * @author Mike Smith
+ * @param <T> type of literal
  */
 public abstract class AbstractBaseDatatype<T> implements Datatype<T>
 {
 
-	private final int		_hashCode;
-	private final ATermAppl	_name;
+	private final int _hashCode;
+	private final ATermAppl _name;
 
 	protected AbstractBaseDatatype(final ATermAppl name)
 	{
-		if (name == null) throw new NullPointerException();
-		if (name.getArity() != 0) throw new IllegalArgumentException();
+		if (name == null)
+			throw new NullPointerException();
+		if (name.getArity() != 0)
+			throw new IllegalArgumentException();
 
 		this._name = name;
 		this._hashCode = name.hashCode();
@@ -42,8 +44,10 @@ public abstract class AbstractBaseDatatype<T> implements Datatype<T>
 		 * Note that this implementation assumes singleton classes for each
 		 * datatype
 		 */
-		if (this == obj) return true;
-		if (obj == null) return false;
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
 		return getClass() == obj.getClass();
 	}
 
@@ -51,13 +55,14 @@ public abstract class AbstractBaseDatatype<T> implements Datatype<T>
 	 * Gets the lexical form for a properly typed literal. Useful because it also validates that the input value is valid (i.e., has the correct ATerm structure
 	 * and datatype).
 	 *
-	 * @param  input                    Input <code>ATermAppl</code>, should be a literal
-	 * @return                          <code>ATermUtils.getLiteralValue( input )</code>
+	 * @param input Input <code>ATermAppl</code>, should be a literal
+	 * @return <code>ATermUtils.getLiteralValue( input )</code>
 	 * @throws IllegalArgumentException if <code>!ATermUtils.isLiteral( input )</code> or if the datatype URI does not match this datatype
 	 */
 	protected static String getLexicalForm(final ATermAppl input)
 	{
-		if (!ATermUtils.isLiteral(input)) throw new IllegalArgumentException();
+		if (!ATermUtils.isLiteral(input))
+			throw new IllegalArgumentException();
 
 		return ATermUtils.getLiteralValue(input);
 	}

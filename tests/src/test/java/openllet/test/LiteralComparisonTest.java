@@ -1,13 +1,14 @@
 package openllet.test;
 
+import org.junit.Assert;
+import org.junit.Test;
+
 import openllet.core.KnowledgeBase;
 import openllet.core.KnowledgeBaseImpl;
 import openllet.core.boxes.abox.ABox;
 import openllet.core.boxes.abox.ABoxImpl;
 import openllet.core.boxes.abox.Literal;
 import openllet.core.utils.TermFactory;
-import org.junit.Assert;
-import org.junit.Test;
 
 public class LiteralComparisonTest
 {

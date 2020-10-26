@@ -11,6 +11,7 @@ package openllet.core.tableau.cache;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
 import openllet.core.KnowledgeBase;
@@ -60,22 +61,28 @@ public class CacheSafetyDynamic implements CacheSafety
 
 		final ABox abox = parent.getABox();
 
-		if (!isParentSafe(abox.getKB(), r, parent)) return false;
+		if (!isParentSafe(abox.getKB(), r, parent))
+			return false;
 
 		final Iterator<CachedNode> nodes = getCachedNodes(abox, c);
 
-		if (!nodes.hasNext()) return false;
+		if (!nodes.hasNext())
+			return false;
 
-		if (interactsWithInverses(abox.getKB(), r)) while (nodes.hasNext())
-		{
-			final CachedNode node = nodes.next();
+		if (interactsWithInverses(abox.getKB(), r))
+			while (nodes.hasNext())
+			{
+				final CachedNode node = nodes.next();
 
-			if (node.isBottom())
-				return true;
-			else if (node.isTop() || !node.isComplete()) return false;
+				if (node.isBottom())
+					return true;
+				else
+					if (node.isTop() || !node.isComplete())
+						return false;
 
-			if (!isSafe(abox.getKB(), parent, r.getInverse(), node)) return false;
-		}
+				if (!isSafe(abox.getKB(), parent, r.getInverse(), node))
+					return false;
+			}
 
 		return true;
 	}
@@ -86,16 +93,18 @@ public class CacheSafetyDynamic implements CacheSafety
 		Role role = null;
 		final Individual parent = ind.getParent();
 		for (final Edge e : ind.getInEdges())
-			if (e.getFrom().equals(parent)) if (role == null)
-			{
-				role = e.getRole();
-				result = e;
-			}
-			else if (e.getRole().isSubRoleOf(role))
-			{
-				role = e.getRole();
-				result = e;
-			}
+			if (e.getFrom().equals(parent))
+				if (role == null)
+				{
+					role = e.getRole();
+					result = e;
+				}
+				else
+					if (e.getRole().isSubRoleOf(role))
+					{
+						role = e.getRole();
+						result = e;
+					}
 
 		assert result != null;
 
@@ -105,7 +114,8 @@ public class CacheSafetyDynamic implements CacheSafety
 	private static Iterator<CachedNode> getCachedNodes(final ABox abox, final ATermAppl c)
 	{
 		CachedNode node = abox.getCached(c);
-		if (node != null) return IteratorUtils.singletonIterator(node);
+		if (node != null)
+			return IteratorUtils.singletonIterator(node);
 
 		if (ATermUtils.isAnd(c))
 		{
@@ -117,7 +127,9 @@ public class CacheSafetyDynamic implements CacheSafety
 				node = abox.getCached(d);
 				if (node == null)
 					return IteratorUtils.emptyIterator();
-				else if (node.isBottom()) return IteratorUtils.singletonIterator(node);
+				else
+					if (node.isBottom())
+						return IteratorUtils.singletonIterator(node);
 
 				nodes[i++] = node;
 			}
@@ -142,7 +154,8 @@ public class CacheSafetyDynamic implements CacheSafety
 		for (final ATermAppl negatedMax : parent.getTypes(Node.MAX))
 		{
 			final ATermAppl max = (ATermAppl) negatedMax.getArgument(0);
-			if (!isParentMaxSafe(kb, role, max)) return false;
+			if (!isParentMaxSafe(kb, role, max))
+				return false;
 		}
 
 		return true;
@@ -157,18 +170,23 @@ public class CacheSafetyDynamic implements CacheSafety
 
 	private static boolean isSafe(final KnowledgeBase kb, final Individual parent, final Role role, final CachedNode node)
 	{
-		if (!isFunctionalSafe(role, node)) return false;
+		if (!isFunctionalSafe(role, node))
+			return false;
 
 		for (final ATermAppl c : node.getDepends().keySet())
 			if (ATermUtils.isAllValues(c))
 			{
-				if (!isAllValuesSafe(kb, parent, role, c)) return false;
+				if (!isAllValuesSafe(kb, parent, role, c))
+					return false;
 			}
-			else if (ATermUtils.isNot(c))
-			{
-				final ATermAppl arg = (ATermAppl) c.getArgument(0);
-				if (ATermUtils.isMin(arg)) if (!isMaxSafe(kb, role, arg)) return false;
-			}
+			else
+				if (ATermUtils.isNot(c))
+				{
+					final ATermAppl arg = (ATermAppl) c.getArgument(0);
+					if (ATermUtils.isMin(arg))
+						if (!isMaxSafe(kb, role, arg))
+							return false;
+				}
 
 		return true;
 	}
@@ -180,14 +198,16 @@ public class CacheSafetyDynamic implements CacheSafety
 		{
 			final ATermAppl c = (ATermAppl) term.getArgument(1);
 
-			if (role.isSubRoleOf(s) && !parent.hasType(c)) return false;
+			if (role.isSubRoleOf(s) && !parent.hasType(c))
+				return false;
 		}
 		else
 		{
 			final TransitionGraph<Role> tg = s.getFSM();
 
 			for (final Transition<Role> t : tg.getInitialState().getTransitions())
-				if (role.isSubRoleOf(t.getName())) return false;
+				if (role.isSubRoleOf(t.getName()))
+					return false;
 		}
 
 		return true;
@@ -212,7 +232,8 @@ public class CacheSafetyDynamic implements CacheSafety
 		for (final Edge edge : node.getOutEdges())
 		{
 			final Role r = edge.getRole();
-			if (r.isSubRoleOf(role)) neighbors.add(edge.getToName());
+			if (r.isSubRoleOf(role))
+				neighbors.add(edge.getToName());
 		}
 
 		if (role.isObjectRole())
@@ -221,7 +242,8 @@ public class CacheSafetyDynamic implements CacheSafety
 			for (final Edge edge : node.getInEdges())
 			{
 				final Role r = edge.getRole();
-				if (r.isSubRoleOf(invRole)) neighbors.add(edge.getFromName());
+				if (r.isSubRoleOf(invRole))
+					neighbors.add(edge.getFromName());
 			}
 		}
 
@@ -230,7 +252,8 @@ public class CacheSafetyDynamic implements CacheSafety
 
 	protected boolean interactsWithInverses(final KnowledgeBase kb, final Role role)
 	{
-		if (interactsWithInversesSimple(role)) return true;
+		if (interactsWithInversesSimple(role))
+			return true;
 
 		return _expressivity.hasComplexSubRoles() && interactsWithInversesComplex(kb, role);
 	}
@@ -238,7 +261,8 @@ public class CacheSafetyDynamic implements CacheSafety
 	protected boolean interactsWithInversesSimple(final Role role)
 	{
 		for (final Role superRole : role.getSuperRoles())
-			if (hasAnonInverse(superRole)) return true;
+			if (hasAnonInverse(superRole))
+				return true;
 
 		return false;
 	}
@@ -248,7 +272,8 @@ public class CacheSafetyDynamic implements CacheSafety
 		for (final ATermAppl p : _expressivity.getAnonInverses())
 		{
 			final Role anonRole = kb.getRole(p);
-			if (anonRole.hasComplexSubRole() && anonRole.getFSM().getAlpahabet().contains(role)) return true;
+			if (anonRole.hasComplexSubRole() && anonRole.getFSM().getAlpahabet().contains(role))
+				return true;
 
 		}
 

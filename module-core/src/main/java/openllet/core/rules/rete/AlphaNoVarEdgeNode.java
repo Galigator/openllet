@@ -7,6 +7,7 @@
 package openllet.core.rules.rete;
 
 import java.util.Iterator;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.boxes.abox.ABox;
 import openllet.core.boxes.abox.Edge;
@@ -27,8 +28,8 @@ import openllet.core.utils.ATermUtils;
  */
 public class AlphaNoVarEdgeNode extends AlphaFixedEdgeNode
 {
-	private final ATermAppl	_objectName;
-	private Node			_objectNode;
+	private final ATermAppl _objectName;
+	private Node _objectNode;
 
 	public AlphaNoVarEdgeNode(final ABox abox, final Role role, final ATermAppl subjectName, final ATermAppl objectName)
 	{
@@ -39,7 +40,8 @@ public class AlphaNoVarEdgeNode extends AlphaFixedEdgeNode
 
 	protected Node initObjectNode()
 	{
-		if (_objectNode == null) _objectNode = initNode(_objectName);
+		if (_objectNode == null)
+			_objectNode = initNode(_objectName);
 		assert _objectNode != null;
 		return _objectNode;
 	}
@@ -76,9 +78,7 @@ public class AlphaNoVarEdgeNode extends AlphaFixedEdgeNode
 	@Override
 	public boolean matches(final RuleAtom atom)
 	{
-		return (atom instanceof IndividualPropertyAtom || atom instanceof DatavaluedPropertyAtom) && atom.getPredicate().equals(_role.getName())
-				&& ((BinaryAtom<?, ?, ?>) atom).getArgument1() instanceof AtomIConstant && ((AtomIConstant) ((BinaryAtom<?, ?, ?>) atom).getArgument1()).getValue().equals(_name)
-				&& ((BinaryAtom<?, ?, ?>) atom).getArgument2() instanceof AtomConstant && ((AtomConstant) ((BinaryAtom<?, ?, ?>) atom).getArgument2()).getValue().equals(_objectName);
+		return (atom instanceof IndividualPropertyAtom || atom instanceof DatavaluedPropertyAtom) && atom.getPredicate().equals(_role.getName()) && ((BinaryAtom<?, ?, ?>) atom).getArgument1() instanceof AtomIConstant && ((AtomIConstant) ((BinaryAtom<?, ?, ?>) atom).getArgument1()).getValue().equals(_name) && ((BinaryAtom<?, ?, ?>) atom).getArgument2() instanceof AtomConstant && ((AtomConstant) ((BinaryAtom<?, ?, ?>) atom).getArgument2()).getValue().equals(_objectName);
 	}
 
 	@Override

@@ -6,6 +6,9 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.Collection;
+
+import org.junit.Test;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.datatypes.DatatypeReasoner;
 import openllet.core.datatypes.DatatypeReasonerImpl;
@@ -14,7 +17,6 @@ import openllet.core.datatypes.exceptions.InvalidConstrainingFacetException;
 import openllet.core.datatypes.exceptions.InvalidLiteralException;
 import openllet.core.datatypes.exceptions.UnrecognizedDatatypeException;
 import openllet.core.datatypes.types.text.RestrictedTextDatatype;
-import org.junit.Test;
 
 /**
  * <p>

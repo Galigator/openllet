@@ -18,14 +18,7 @@ import static org.junit.Assume.assumeTrue;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Properties;
-import junit.framework.JUnit4TestAdapter;
-import openllet.core.OpenlletOptions;
-import openllet.core.boxes.abox.ABox;
-import openllet.core.utils.PropertiesBuilder;
-import openllet.core.utils.Timer;
-import openllet.jena.PelletInfGraph;
-import openllet.jena.PelletReasonerFactory;
-import openllet.jena.test.AbstractJenaTests;
+
 import org.apache.jena.datatypes.TypeMapper;
 import org.apache.jena.ontology.DatatypeProperty;
 import org.apache.jena.ontology.Individual;
@@ -49,6 +42,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
+import junit.framework.JUnit4TestAdapter;
+import openllet.core.OpenlletOptions;
+import openllet.core.boxes.abox.ABox;
+import openllet.core.utils.PropertiesBuilder;
+import openllet.core.utils.Timer;
+import openllet.jena.PelletInfGraph;
+import openllet.jena.PelletReasonerFactory;
+import openllet.jena.test.AbstractJenaTests;
+
 /**
  * Unit tests for incremental consistency checking using Jena API.
  *
@@ -70,8 +72,8 @@ public class IncJenaConsistencyTests extends AbstractJenaTests
 		return cases;
 	}
 
-	private final Properties	_newOptions;
-	private Properties			_oldOptions;
+	private final Properties _newOptions;
+	private Properties _oldOptions;
 
 	public static junit.framework.Test suite()
 	{

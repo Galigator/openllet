@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
+
 import openllet.aterm.AFun;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
@@ -45,9 +46,9 @@ import openllet.core.utils.Namespaces;
  */
 public class RuleAbsorber
 {
-	private static final Logger					log		= TBoxBase._logger;
+	private static final Logger log = TBoxBase._logger;
 
-	private static final Map<ATermAppl, String>	FACETS	= new HashMap<>();
+	private static final Map<ATermAppl, String> FACETS = new HashMap<>();
 	static
 	{
 		FACETS.put(Facet.XSD.MIN_INCLUSIVE.getName(), Namespaces.SWRLB + "greaterThanOrEqual");
@@ -55,8 +56,8 @@ public class RuleAbsorber
 		FACETS.put(Facet.XSD.MAX_INCLUSIVE.getName(), Namespaces.SWRLB + "lessThanOrEqual");
 		FACETS.put(Facet.XSD.MAX_EXCLUSIVE.getName(), Namespaces.SWRLB + "lessThan");
 	}
-	private final KnowledgeBase	_kb;
-	private final TuBox			_Tu;
+	private final KnowledgeBase _kb;
+	private final TuBox _Tu;
 
 	public RuleAbsorber(final TBoxExpImpl tbox)
 	{
@@ -73,13 +74,18 @@ public class RuleAbsorber
 			if (ATermUtils.isPrimitive(term))
 			{
 				final TermDefinition td = _Tu.getTD(term);
-				if (td == null || td.getEqClassAxioms().isEmpty()) primitiveClassAtoms++;
+				if (td == null || td.getEqClassAxioms().isEmpty())
+					primitiveClassAtoms++;
 			}
-			else if (ATermUtils.isSomeValues(term))
-				propertyAtoms++;
-			else if (ATermUtils.isNot(term)) head = term;
+			else
+				if (ATermUtils.isSomeValues(term))
+					propertyAtoms++;
+				else
+					if (ATermUtils.isNot(term))
+						head = term;
 
-		if (head == null || propertyAtoms == 0 && primitiveClassAtoms < 2) return false;
+		if (head == null || propertyAtoms == 0 && primitiveClassAtoms < 2)
+			return false;
 
 		set.remove(head);
 
@@ -111,47 +117,50 @@ public class RuleAbsorber
 				final ATermAppl conjunct = (ATermAppl) list.getFirst();
 				varCount = processClass(var, conjunct, atoms, varCount);
 			}
-		else if (afun.equals(ATermUtils.SOMEFUN))
-		{
-			final ATermAppl p = (ATermAppl) c.getArgument(0);
-			final ATermAppl filler = (ATermAppl) c.getArgument(1);
-
-			if (filler.getAFun().equals(ATermUtils.VALUEFUN))
+		else
+			if (afun.equals(ATermUtils.SOMEFUN))
 			{
-				final ATermAppl nominal = (ATermAppl) filler.getArgument(0);
-				if (_kb.isDatatypeProperty(p))
+				final ATermAppl p = (ATermAppl) c.getArgument(0);
+				final ATermAppl filler = (ATermAppl) c.getArgument(1);
+
+				if (filler.getAFun().equals(ATermUtils.VALUEFUN))
 				{
-					final AtomDConstant arg = new AtomDConstant(nominal);
-					final RuleAtom atom = new DatavaluedPropertyAtom(p, var, arg);
-					atoms.add(atom);
+					final ATermAppl nominal = (ATermAppl) filler.getArgument(0);
+					if (_kb.isDatatypeProperty(p))
+					{
+						final AtomDConstant arg = new AtomDConstant(nominal);
+						final RuleAtom atom = new DatavaluedPropertyAtom(p, var, arg);
+						atoms.add(atom);
+					}
+					else
+					{
+						final AtomIConstant arg = new AtomIConstant(nominal);
+						final RuleAtom atom = new IndividualPropertyAtom(p, var, arg);
+						atoms.add(atom);
+					}
 				}
 				else
 				{
-					final AtomIConstant arg = new AtomIConstant(nominal);
-					final RuleAtom atom = new IndividualPropertyAtom(p, var, arg);
-					atoms.add(atom);
+					varCount++;
+					if (_kb.isDatatypeProperty(p))
+					{
+						final AtomDObject newVar = new AtomDVariable("var" + varCount);
+						final RuleAtom atom = new DatavaluedPropertyAtom(p, var, newVar);
+						atoms.add(atom);
+						processDatatype(newVar, filler, atoms);
+					}
+					else
+					{
+						final AtomIObject newVar = new AtomIVariable("var" + varCount);
+						final RuleAtom atom = new IndividualPropertyAtom(p, var, newVar);
+						atoms.add(atom);
+						varCount = processClass(newVar, filler, atoms, varCount);
+					}
 				}
 			}
 			else
-			{
-				varCount++;
-				if (_kb.isDatatypeProperty(p))
-				{
-					final AtomDObject newVar = new AtomDVariable("var" + varCount);
-					final RuleAtom atom = new DatavaluedPropertyAtom(p, var, newVar);
-					atoms.add(atom);
-					processDatatype(newVar, filler, atoms);
-				}
-				else
-				{
-					final AtomIObject newVar = new AtomIVariable("var" + varCount);
-					final RuleAtom atom = new IndividualPropertyAtom(p, var, newVar);
-					atoms.add(atom);
-					varCount = processClass(newVar, filler, atoms, varCount);
-				}
-			}
-		}
-		else if (!c.equals(ATermUtils.TOP)) atoms.add(new ClassAtom(c, var));
+				if (!c.equals(ATermUtils.TOP))
+					atoms.add(new ClassAtom(c, var));
 
 		return varCount;
 	}
@@ -165,31 +174,32 @@ public class RuleAbsorber
 				final ATermAppl conjunct = (ATermAppl) list.getFirst();
 				processDatatype(var, conjunct, atoms);
 			}
-		else if (afun.equals(ATermUtils.RESTRDATATYPEFUN))
-		{
-			final ATermAppl baseDatatype = (ATermAppl) c.getArgument(0);
-
-			atoms.add(new DataRangeAtom(baseDatatype, var));
-
-			for (ATermList list = (ATermList) c.getArgument(1); !list.isEmpty(); list = list.getNext())
+		else
+			if (afun.equals(ATermUtils.RESTRDATATYPEFUN))
 			{
-				final ATermAppl facetRestriction = (ATermAppl) list.getFirst();
-				final ATermAppl facet = (ATermAppl) facetRestriction.getArgument(0);
-				final String builtin = FACETS.get(facet);
-				if (builtin != null)
+				final ATermAppl baseDatatype = (ATermAppl) c.getArgument(0);
+
+				atoms.add(new DataRangeAtom(baseDatatype, var));
+
+				for (ATermList list = (ATermList) c.getArgument(1); !list.isEmpty(); list = list.getNext())
 				{
-					final ATermAppl value = (ATermAppl) facetRestriction.getArgument(1);
-					atoms.add(new BuiltInAtom(builtin, var, new AtomDConstant(value)));
-				}
-				else
-				{
-					atoms.add(new DataRangeAtom(c, var));
-					return;
+					final ATermAppl facetRestriction = (ATermAppl) list.getFirst();
+					final ATermAppl facet = (ATermAppl) facetRestriction.getArgument(0);
+					final String builtin = FACETS.get(facet);
+					if (builtin != null)
+					{
+						final ATermAppl value = (ATermAppl) facetRestriction.getArgument(1);
+						atoms.add(new BuiltInAtom(builtin, var, new AtomDConstant(value)));
+					}
+					else
+					{
+						atoms.add(new DataRangeAtom(c, var));
+						return;
+					}
 				}
 			}
-		}
-		else
-			atoms.add(new DataRangeAtom(c, var));
+			else
+				atoms.add(new DataRangeAtom(c, var));
 	}
 
 }

@@ -7,6 +7,7 @@
 package openllet.core.tableau.completion.rule;
 
 import java.util.List;
+
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermInt;
 import openllet.core.DependencySet;
@@ -40,7 +41,8 @@ public class GuessRule extends AbstractTableauRule
 	@Override
 	public void apply(final Individual x)
 	{
-		if (x.isBlockable()) return;
+		if (x.isBlockable())
+			return;
 
 		final List<ATermAppl> types = x.getTypes(Node.MAX);
 		final int size = types.size();
@@ -50,7 +52,8 @@ public class GuessRule extends AbstractTableauRule
 
 			applyGuessingRule(x, mc);
 
-			if (_strategy.getABox().isClosed()) return;
+			if (_strategy.getABox().isClosed())
+				return;
 		}
 	}
 
@@ -65,7 +68,8 @@ public class GuessRule extends AbstractTableauRule
 
 		// obviously if r is a datatype role then there can be no r-predecessor
 		// and we cannot apply the rule
-		if (r.isDatatypeRole()) return;
+		if (r.isDatatypeRole())
+			return;
 
 		// FIXME instead of doing the following check set a flag when the edge is added
 		// check that x has to have at least one r _neighbor y
@@ -82,11 +86,14 @@ public class GuessRule extends AbstractTableauRule
 				break;
 			}
 		}
-		if (!apply) return;
+		if (!apply)
+			return;
 
-		if (x.getMaxCard(r) < n) return;
+		if (x.getMaxCard(r) < n)
+			return;
 
-		if (x.hasDistinctRNeighborsForMin(r, n, ATermUtils.TOP, true)) return;
+		if (x.hasDistinctRNeighborsForMin(r, n, ATermUtils.TOP, true))
+			return;
 
 		// if( n == 1 ) {
 		// throw new InternalReasonerException(
@@ -95,7 +102,8 @@ public class GuessRule extends AbstractTableauRule
 		// }
 
 		int guessMin = x.getMinCard(r, c);
-		if (guessMin == 0) guessMin = 1;
+		if (guessMin == 0)
+			guessMin = 1;
 
 		// TODO not clear what the correct ds is so be pessimistic and include everything
 		DependencySet ds = x.getDepends(mc);

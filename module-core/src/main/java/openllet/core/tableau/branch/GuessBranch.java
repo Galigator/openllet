@@ -28,9 +28,9 @@ import openllet.core.utils.ATermUtils;
  */
 public class GuessBranch extends IndividualBranch
 {
-	private final Role		_r;
-	private final int		_minGuess;
-	private final ATermAppl	_qualification;
+	private final Role _r;
+	private final int _minGuess;
+	private final ATermAppl _qualification;
 
 	public GuessBranch(final ABox abox, final CompletionStrategy strategy, final Individual x, //
 			final Role r, final int minGuess, final int maxGuess, //
@@ -71,8 +71,7 @@ public class GuessBranch extends IndividualBranch
 			// start with max possibility and decrement at each try
 			final int n = _minGuess + getTryCount() - getTryNext() - 1;
 
-			_logger.fine(() -> "GUES: (" + (getTryNext() + 1) + "/" + getTryCount() + ") at _branch (" + getBranchIndexInABox() + ") to  " + _ind + " -> " + _r + " -> anon"
-					+ (n == 1 ? "" : _abox.getAnonCount() + 1 + " - anon") + (_abox.getAnonCount() + n));
+			_logger.fine(() -> "GUES: (" + (getTryNext() + 1) + "/" + getTryCount() + ") at _branch (" + getBranchIndexInABox() + ") to  " + _ind + " -> " + _r + " -> anon" + (n == 1 ? "" : _abox.getAnonCount() + 1 + " - anon") + (_abox.getAnonCount() + n));
 
 			ds = ds.union(new DependencySet(getBranchIndexInABox()), _abox.doExplanation());
 
@@ -125,7 +124,8 @@ public class GuessBranch extends IndividualBranch
 		ds = getCombinedClash();
 
 		//CHW - removed for rollback through deletions
-		if (!OpenlletOptions.USE_INCREMENTAL_DELETION) ds.remove(getBranchIndexInABox());
+		if (!OpenlletOptions.USE_INCREMENTAL_DELETION)
+			ds.remove(getBranchIndexInABox());
 
 		_abox.setClash(Clash.unexplained(_ind, ds));
 
@@ -135,7 +135,8 @@ public class GuessBranch extends IndividualBranch
 	@Override
 	public String toString()
 	{
-		if (getTryNext() < getTryCount()) return "Branch " + getBranchIndexInABox() + " guess rule on " + _ind + " for role  " + _r;
+		if (getTryNext() < getTryCount())
+			return "Branch " + getBranchIndexInABox() + " guess rule on " + _ind + " for role  " + _r;
 
 		return "Branch " + getBranchIndexInABox() + " guess rule on " + _ind + " for role  " + _r + " exhausted merge possibilities";
 	}

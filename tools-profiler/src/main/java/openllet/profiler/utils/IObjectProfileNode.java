@@ -6,7 +6,7 @@ import java.text.DecimalFormat;
 /**
  * The main interface for exploring an object profile tree. See _individual methods for details.
  *
- * @see    ObjectProfiler#profile(Object)
+ * @see ObjectProfiler#profile(Object)
  * @author (C) <a href="http://www.javaworld.com/columns/jw-qna-_index.shtml">Vlad Roubtsov</a>, 2003
  */
 public interface IObjectProfileNode
@@ -18,8 +18,8 @@ public interface IObjectProfileNode
 	interface INodeFilter
 	{
 		/**
-		 * @param  node about to be visited [never null]
-		 * @return      'true' if 'node' and its children should be visited
+		 * @param node about to be visited [never null]
+		 * @return 'true' if 'node' and its children should be visited
 		 */
 		boolean accept(IObjectProfileNode node);
 
@@ -96,9 +96,9 @@ public interface IObjectProfileNode
 	IObjectProfileNode[] children();
 
 	/**
-	 * Returns the shell pseudo-_node for this _node. This represents all instance _data fields that are "inlined" in the class definition represented by this _node
-	 * (including all superclasses all the way to java.lang.Object). This includes primitive _data fields, object references representing non-primitive fields,
-	 * and (for arrays) the array length field and storage required for the array slots.
+	 * Returns the shell pseudo-_node for this _node. This represents all instance _data fields that are "inlined" in the class definition represented by this
+	 * _node (including all superclasses all the way to java.lang.Object). This includes primitive _data fields, object references representing non-primitive
+	 * fields, and (for arrays) the array length field and storage required for the array slots.
 	 * <P>
 	 * Another way to describe this is that _node.shell().size() is the minimum size an instance of _node.object().getClass() can be (when all non-primitive
 	 * instance fields are set to 'null').
@@ -139,14 +139,15 @@ public interface IObjectProfileNode
 	 * A generic hook for traversing profile trees using {@link INodeFilter filters} and {@link INodeVisitor visitors}. See IObjectProfileNode.INodeFilter and
 	 * IObjectProfileNode.INodeVisitor for more details
 	 *
-	 * @param  filter  [null is equivalent to no filtering]
-	 * @param  visitor [may not be null]
-	 * @return         'true' iff either 'filter' was null or it returned 'true' for this node
+	 * @param filter [null is equivalent to no filtering]
+	 * @param visitor [may not be null]
+	 * @return 'true' iff either 'filter' was null or it returned 'true' for this node
 	 */
 	boolean traverse(INodeFilter filter, INodeVisitor visitor);
 
 	/**
-	 * Dumps this node into a flat-text format used by the {@link ObjectProfileVisitors#newDefaultNodePrinter(PrintWriter, String, DecimalFormat, boolean)} default node visitor.
+	 * Dumps this node into a flat-text format used by the {@link ObjectProfileVisitors#newDefaultNodePrinter(PrintWriter, String, DecimalFormat, boolean)}
+	 * default node visitor.
 	 *
 	 * @return indented dump string [could be very large]
 	 */

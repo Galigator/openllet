@@ -28,12 +28,13 @@
 
 package openllet.aterm.test;
 
+import org.junit.Before;
+import org.junit.Test;
+
 import openllet.aterm.ATermFactory;
 import openllet.aterm.ATermInt;
 import openllet.aterm.ATermList;
 import openllet.aterm.pure.PureFactory;
-import org.junit.Before;
-import org.junit.Test;
 
 public class TestPrimes
 {
@@ -41,7 +42,8 @@ public class TestPrimes
 
 	public static void assertTrue(final boolean condition)
 	{
-		if (!condition) throw new AssertionError("assertion failed.");
+		if (!condition)
+			throw new AssertionError("assertion failed.");
 	}
 
 	@Before
@@ -74,8 +76,8 @@ public class TestPrimes
 	/**
 	 * Compute the list of primes.
 	 *
-	 * @param  max
-	 * @return     List of primes.
+	 * @param max
+	 * @return List of primes.
 	 */
 	public ATermList getPrimes(final int max)
 	{
@@ -88,8 +90,8 @@ public class TestPrimes
 	/**
 	 * Generate a list of consecutive numbers.
 	 *
-	 * @param  max
-	 * @return     list of generated numbers.
+	 * @param max
+	 * @return list of generated numbers.
 	 */
 	private ATermList generateNumbers(final int max)
 	{
@@ -102,8 +104,8 @@ public class TestPrimes
 	/**
 	 * Filter non-primes
 	 *
-	 * @param  numbers
-	 * @return         List of primes.
+	 * @param numbers
+	 * @return List of primes.
 	 */
 	private ATermList filterNonPrimes(final ATermList listOfnumbers)
 	{
@@ -123,9 +125,9 @@ public class TestPrimes
 	/**
 	 * Filter multiples of n.
 	 *
-	 * @param  n
-	 * @param  numbers
-	 * @return         List from which the multiples of n are filtered out.
+	 * @param n
+	 * @param numbers
+	 * @return List from which the multiples of n are filtered out.
 	 */
 	private static ATermList filterMultiples(final int n, final ATermList listOfnumbers)
 	{

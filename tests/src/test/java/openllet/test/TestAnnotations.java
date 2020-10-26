@@ -10,18 +10,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
-import junit.framework.JUnit4TestAdapter;
-import openllet.aterm.ATermAppl;
-import openllet.atom.OpenError;
-import openllet.core.KnowledgeBase;
-import openllet.core.KnowledgeBaseImpl;
-import openllet.core.OpenlletOptions;
-import openllet.core.utils.ATermUtils;
-import openllet.core.utils.PropertiesBuilder;
-import openllet.jena.PelletInfGraph;
-import openllet.jena.PelletReasonerFactory;
-import openllet.owlapi.OWLAPILoader;
-import openllet.query.sparqldl.jena.SparqlDLExecutionFactory;
+
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryExecution;
@@ -37,6 +26,19 @@ import org.apache.jena.vocabulary.RDFS;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import junit.framework.JUnit4TestAdapter;
+import openllet.aterm.ATermAppl;
+import openllet.atom.OpenError;
+import openllet.core.KnowledgeBase;
+import openllet.core.KnowledgeBaseImpl;
+import openllet.core.OpenlletOptions;
+import openllet.core.utils.ATermUtils;
+import openllet.core.utils.PropertiesBuilder;
+import openllet.jena.PelletInfGraph;
+import openllet.jena.PelletReasonerFactory;
+import openllet.owlapi.OWLAPILoader;
+import openllet.query.sparqldl.jena.SparqlDLExecutionFactory;
 
 /**
  * <p>
@@ -69,9 +71,9 @@ public class TestAnnotations
 			return path;
 	}
 
-	private static final String	DATA1_RDF	= "file:" + checkPath("test/data/annotations/data1.rdf");
-	private static final String	DATA1_TTL	= "file:" + checkPath("test/data/annotations/data1.ttl");
-	private static final String	QUERY1_RQ	= "file:" + checkPath("test/data/annotations/query1.rq");
+	private static final String DATA1_RDF = "file:" + checkPath("test/data/annotations/data1.rdf");
+	private static final String DATA1_TTL = "file:" + checkPath("test/data/annotations/data1.ttl");
+	private static final String QUERY1_RQ = "file:" + checkPath("test/data/annotations/query1.rq");
 
 	public static junit.framework.Test suite()
 	{

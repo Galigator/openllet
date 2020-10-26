@@ -8,6 +8,7 @@ package openllet.core.rules.builtins;
 
 import java.util.Collection;
 import java.util.Collections;
+
 import openllet.core.boxes.abox.ABox;
 import openllet.core.boxes.abox.Literal;
 import openllet.core.rules.BindingHelper;
@@ -69,9 +70,9 @@ public class NoSuchBuiltIn implements BuiltIn
 
 	}
 
-	private final BindingHelper	empty		= new EmptyHelper();
+	private final BindingHelper empty = new EmptyHelper();
 
-	public static final BuiltIn	instance	= new NoSuchBuiltIn();
+	public static final BuiltIn instance = new NoSuchBuiltIn();
 
 	private NoSuchBuiltIn()
 	{

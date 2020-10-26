@@ -10,16 +10,17 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
 
 public class MultiListIterator implements Iterator<ATermAppl>
 {
-	private final List<ATermList>	_list	= new ArrayList<>(2);
+	private final List<ATermList> _list = new ArrayList<>(2);
 
-	private int						_index	= 0;
+	private int _index = 0;
 
-	private volatile ATermList		_curr;
+	private volatile ATermList _curr;
 
 	public MultiListIterator(final ATermList first)
 	{
@@ -38,7 +39,8 @@ public class MultiListIterator implements Iterator<ATermAppl>
 	@Override
 	public ATermAppl next()
 	{
-		if (!hasNext()) throw new NoSuchElementException();
+		if (!hasNext())
+			throw new NoSuchElementException();
 
 		final ATermAppl next = (ATermAppl) _curr.getFirst();
 

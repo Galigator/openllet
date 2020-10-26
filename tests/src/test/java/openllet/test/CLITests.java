@@ -5,6 +5,9 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.Arrays;
+
+import org.junit.Test;
+
 import junit.framework.JUnit4TestAdapter;
 import openllet.OpenlletClassify;
 import openllet.OpenlletCmdApp;
@@ -20,7 +23,6 @@ import openllet.OpenlletTransTree;
 import openllet.OpenlletUnsatisfiable;
 import openllet.Openllint;
 import openllet.owlapi.OWL;
-import org.junit.Test;
 
 public class CLITests
 {
@@ -280,8 +282,7 @@ public class CLITests
 			{
 				return new OpenlletTransTree();
 			}
-		}, "-p", "http://www.co-ode.org/ontologies/test/pellet/transitive.owl#p", "-f", "http://www.co-ode.org/ontologies/test/pellet/transitive.owl#A", "--individuals",
-				fileIRI("test/data/misc/transitiveSub.owl"));
+		}, "-p", "http://www.co-ode.org/ontologies/test/pellet/transitive.owl#p", "-f", "http://www.co-ode.org/ontologies/test/pellet/transitive.owl#A", "--individuals", fileIRI("test/data/misc/transitiveSub.owl"));
 	}
 
 	@Test

@@ -7,6 +7,7 @@
 package openllet.core.rules;
 
 import java.util.logging.Logger;
+
 import openllet.core.boxes.abox.ABoxImpl;
 import openllet.shared.tools.Log;
 

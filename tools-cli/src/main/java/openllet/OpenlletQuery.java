@@ -15,15 +15,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import openllet.core.KnowledgeBase;
-import openllet.core.OpenlletOptions;
-import openllet.core.exceptions.InconsistentOntologyException;
-import openllet.core.output.TableData;
-import openllet.jena.JenaLoader;
-import openllet.jena.NodeFormatter;
-import openllet.query.sparqldl.jena.SparqlDLExecutionFactory;
-import openllet.query.sparqldl.jena.SparqlDLExecutionFactory.QueryEngineType;
-import openllet.query.sparqlowl.parser.arq.ARQTerpParser;
+
 import org.apache.jena.query.Dataset;
 import org.apache.jena.query.DatasetFactory;
 import org.apache.jena.query.Query;
@@ -39,6 +31,16 @@ import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.shared.NotFoundException;
 import org.apache.jena.util.FileManager;
+
+import openllet.core.KnowledgeBase;
+import openllet.core.OpenlletOptions;
+import openllet.core.exceptions.InconsistentOntologyException;
+import openllet.core.output.TableData;
+import openllet.jena.JenaLoader;
+import openllet.jena.NodeFormatter;
+import openllet.query.sparqldl.jena.SparqlDLExecutionFactory;
+import openllet.query.sparqldl.jena.SparqlDLExecutionFactory.QueryEngineType;
+import openllet.query.sparqlowl.parser.arq.ARQTerpParser;
 
 /**
  * <p>
@@ -58,16 +60,16 @@ import org.apache.jena.util.FileManager;
 public class OpenlletQuery extends OpenlletCmdApp
 {
 
-	private String			queryFile;
-	private String			queryString;
-	private Query			query;
-	private JenaLoader		loader;
-	private ResultSet		queryResults;
-	private Model			constructQueryModel;
-	private boolean			askQueryResult;
-	private Syntax			queryFormat		= Syntax.syntaxSPARQL;
-	private OutputFormat	outputFormat	= OutputFormat.TABULAR;
-	private QueryEngineType	queryEngine		= null;
+	private String queryFile;
+	private String queryString;
+	private Query query;
+	private JenaLoader loader;
+	private ResultSet queryResults;
+	private Model constructQueryModel;
+	private boolean askQueryResult;
+	private Syntax queryFormat = Syntax.syntaxSPARQL;
+	private OutputFormat outputFormat = OutputFormat.TABULAR;
+	private QueryEngineType queryEngine = null;
 
 	static
 	{
@@ -130,17 +132,13 @@ public class OpenlletQuery extends OpenlletCmdApp
 		option = new OpenlletCmdOption("query-engine");
 		option.setType("Openllet | ARQ | Mixed");
 		option.setShortOption("e");
-		option.setDescription("The query engine that will be used. Default behavior " + "is to auto select the engine that can handle the given " + "query with best performance. Openllet query "
-				+ "engine is the typically fastest but cannot handle " + "FILTER, OPTIONAL, UNION, DESCRIBE or named graphs. " + "Mixed engine uses ARQ to handle SPARQL algebra and "
-				+ "uses Openllet to answer Basic Graph Patterns (BGP) " + "which can be expressed in SPARQL-DL. ARQ engine uses " + "Openllet to answer single triple patterns and can handle "
-				+ "queries that do not fit into SPARQL-DL. As a " + "consequence SPARQL-DL extensions and complex class " + "expressions encoded inside the SPARQL query are not " + "supported.");
+		option.setDescription("The query engine that will be used. Default behavior " + "is to auto select the engine that can handle the given " + "query with best performance. Openllet query " + "engine is the typically fastest but cannot handle " + "FILTER, OPTIONAL, UNION, DESCRIBE or named graphs. " + "Mixed engine uses ARQ to handle SPARQL algebra and " + "uses Openllet to answer Basic Graph Patterns (BGP) " + "which can be expressed in SPARQL-DL. ARQ engine uses " + "Openllet to answer single triple patterns and can handle " + "queries that do not fit into SPARQL-DL. As a " + "consequence SPARQL-DL extensions and complex class " + "expressions encoded inside the SPARQL query are not " + "supported.");
 		option.setIsMandatory(false);
 		option.setArg(REQUIRED);
 		options.add(option);
 
 		option = new OpenlletCmdOption("bnode");
-		option.setDescription("Treat bnodes in the query as undistinguished variables. Undistinguished " + "variables can match individuals whose existence is inferred by the "
-				+ "reasoner, e.g. due to a someValuesFrom restriction. This option has " + "no effect if ARQ engine is selected.");
+		option.setDescription("Treat bnodes in the query as undistinguished variables. Undistinguished " + "variables can match individuals whose existence is inferred by the " + "reasoner, e.g. due to a someValuesFrom restriction. This option has " + "no effect if ARQ engine is selected.");
 		option.setDefaultValue(false);
 		option.setIsMandatory(false);
 		option.setArg(NONE);
@@ -183,14 +181,17 @@ public class OpenlletQuery extends OpenlletCmdApp
 	{
 		if (s == null)
 			outputFormat = OutputFormat.TABULAR;
-		else if (s.equalsIgnoreCase("Tabular"))
-			outputFormat = OutputFormat.TABULAR;
-		else if (s.equalsIgnoreCase("XML"))
-			outputFormat = OutputFormat.XML;
-		else if (s.equalsIgnoreCase("JSON"))
-			outputFormat = OutputFormat.JSON;
 		else
-			throw new OpenlletCmdException("Invalid output format: " + outputFormat);
+			if (s.equalsIgnoreCase("Tabular"))
+				outputFormat = OutputFormat.TABULAR;
+			else
+				if (s.equalsIgnoreCase("XML"))
+					outputFormat = OutputFormat.XML;
+				else
+					if (s.equalsIgnoreCase("JSON"))
+						outputFormat = OutputFormat.JSON;
+					else
+						throw new OpenlletCmdException("Invalid output format: " + outputFormat);
 	}
 
 	public ResultSet getQueryResults()
@@ -210,18 +211,22 @@ public class OpenlletQuery extends OpenlletCmdApp
 
 	public void setQueryFormat(final String s)
 	{
-		if (s == null) throw new OpenlletCmdException("Query format is null");
+		if (s == null)
+			throw new OpenlletCmdException("Query format is null");
 
 		if (s.equalsIgnoreCase("SPARQL"))
 			queryFormat = Syntax.lookup("SPARQL");
-		else if (s.equalsIgnoreCase("ARQ"))
-			queryFormat = Syntax.lookup("ARQ");
-		else if (s.equalsIgnoreCase("TERP"))
-			queryFormat = Syntax.lookup("TERP");
 		else
-			throw new OpenlletCmdException("Unknown query format: " + s);
+			if (s.equalsIgnoreCase("ARQ"))
+				queryFormat = Syntax.lookup("ARQ");
+			else
+				if (s.equalsIgnoreCase("TERP"))
+					queryFormat = Syntax.lookup("TERP");
+				else
+					throw new OpenlletCmdException("Unknown query format: " + s);
 
-		if (queryFormat == null) throw new OpenlletCmdException("Query format is null: " + s);
+		if (queryFormat == null)
+			throw new OpenlletCmdException("Query format is null: " + s);
 	}
 
 	public void setQueryEngine(final String s)
@@ -254,7 +259,8 @@ public class OpenlletQuery extends OpenlletCmdApp
 			final boolean isConsistent = kb.isConsistent();
 			finishTask("consistency check");
 
-			if (!isConsistent) throw new OpenlletCmdException("Ontology is inconsistent, run \"openllet explain\" to get the reason");
+			if (!isConsistent)
+				throw new OpenlletCmdException("Ontology is inconsistent, run \"openllet explain\" to get the reason");
 
 		}
 		catch (final NotFoundException e)
@@ -311,12 +317,14 @@ public class OpenlletQuery extends OpenlletCmdApp
 			startTask("query execution");
 			if (query.isSelectType())
 				queryResults = ResultSetFactory.makeRewindable(qe.execSelect());
-			else if (query.isConstructType())
-				constructQueryModel = qe.execConstruct();
-			else if (query.isAskType())
-				askQueryResult = qe.execAsk();
 			else
-				throw new UnsupportedOperationException("Unsupported query type");
+				if (query.isConstructType())
+					constructQueryModel = qe.execConstruct();
+				else
+					if (query.isAskType())
+						askQueryResult = qe.execAsk();
+					else
+						throw new UnsupportedOperationException("Unsupported query type");
 			finishTask("query execution");
 		}
 	}
@@ -325,9 +333,12 @@ public class OpenlletQuery extends OpenlletCmdApp
 	{
 		if (query.isSelectType())
 			printSelectQueryResuts();
-		else if (query.isConstructType())
-			printConstructQueryResults();
-		else if (query.isAskType()) printAskQueryResult();
+		else
+			if (query.isConstructType())
+				printConstructQueryResults();
+			else
+				if (query.isAskType())
+					printAskQueryResult();
 
 	}
 
@@ -337,12 +348,14 @@ public class OpenlletQuery extends OpenlletCmdApp
 		{
 			if (outputFormat == OutputFormat.TABULAR)
 				printTabularQueryResults();
-			else if (outputFormat == OutputFormat.XML)
-				printXMLQueryResults();
-			else if (outputFormat == OutputFormat.JSON)
-				printJSONQueryResults();
 			else
-				printTabularQueryResults();
+				if (outputFormat == OutputFormat.XML)
+					printXMLQueryResults();
+				else
+					if (outputFormat == OutputFormat.JSON)
+						printJSONQueryResults();
+					else
+						printTabularQueryResults();
 		}
 		else
 		{
@@ -375,7 +388,8 @@ public class OpenlletQuery extends OpenlletCmdApp
 				formattedBinding.add(formatter.format(result));
 			}
 
-			if (data.add(formattedBinding)) count++;
+			if (data.add(formattedBinding))
+				count++;
 		}
 
 		output("Query Results (" + count + " answers): ");

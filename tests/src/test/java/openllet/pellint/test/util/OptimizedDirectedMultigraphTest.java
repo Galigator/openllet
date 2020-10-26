@@ -3,10 +3,11 @@ package openllet.pellint.test.util;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import openllet.pellint.util.OptimizedDirectedMultigraph;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.junit.Before;
 import org.junit.Test;
+
+import openllet.pellint.util.OptimizedDirectedMultigraph;
 
 /**
  * <p>
@@ -20,8 +21,8 @@ import org.junit.Test;
  */
 public class OptimizedDirectedMultigraphTest
 {
-	private static final String					V[]	= new String[] { "a", "b", "c" };
-	private OptimizedDirectedMultigraph<String>	_graph;
+	private static final String V[] = new String[] { "a", "b", "c" };
+	private OptimizedDirectedMultigraph<String> _graph;
 
 	@Before
 	public void setUp()

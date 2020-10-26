@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
+
 import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
@@ -79,9 +80,9 @@ import openllet.shared.tools.Log;
  */
 public class TBoxImpl implements TBox
 {
-	public static final Logger					_logger	= Log.getLogger(TBoxImpl.class);
+	public static final Logger _logger = Log.getLogger(TBoxImpl.class);
 
-	private static final Map<ATermAppl, String>	FACETS;
+	private static final Map<ATermAppl, String> FACETS;
 	static
 	{
 		FACETS = new HashMap<>();
@@ -91,29 +92,29 @@ public class TBoxImpl implements TBox
 		FACETS.put(Facet.XSD.MAX_EXCLUSIVE.getName(), Namespaces.SWRLB + "lessThan");
 	}
 
-	private static final Set<Set<ATermAppl>>			SINGLE_EMPTY_SET	= Collections.singleton(Collections.<ATermAppl>emptySet());
+	private static final Set<Set<ATermAppl>> SINGLE_EMPTY_SET = Collections.singleton(Collections.<ATermAppl> emptySet());
 
-	private final KnowledgeBase							_kb;
+	private final KnowledgeBase _kb;
 
-	private final Set<ATermAppl>						_classes			= CollectionUtils.makeIdentitySet();
-	private final Set<ATermAppl>						_allClasses			= SetUtils.create();
+	private final Set<ATermAppl> _classes = CollectionUtils.makeIdentitySet();
+	private final Set<ATermAppl> _allClasses = SetUtils.create();
 
 	/**
 	 * MultiValueMap where key is an axiom and the values are the explanations of the key
 	 */
-	private final Map<ATermAppl, Set<Set<ATermAppl>>>	_tboxAxioms			= CollectionUtils.makeIdentityMap();
+	private final Map<ATermAppl, Set<Set<ATermAppl>>> _tboxAxioms = CollectionUtils.makeIdentityMap();
 	/**
 	 * MultiValueMap where key is an axiom and the values are axioms for which the key is a part of an clashExplanation
 	 */
-	private final Map<ATermAppl, Set<ATermAppl>>		_reverseExplain		= CollectionUtils.makeIdentityMap();
+	private final Map<ATermAppl, Set<ATermAppl>> _reverseExplain = CollectionUtils.makeIdentityMap();
 
-	private final Set<ATermAppl>						_tboxAssertedAxioms	= CollectionUtils.makeIdentitySet();
+	private final Set<ATermAppl> _tboxAssertedAxioms = CollectionUtils.makeIdentitySet();
 
-	private final Set<ATermAppl>						_absorbedAxioms		= SetUtils.create();
+	private final Set<ATermAppl> _absorbedAxioms = SetUtils.create();
 
-	private final PrimitiveTBox							_primitiveTbox		= new PrimitiveTBox();
-	private final UnaryTBox								_unaryTbox			= new UnaryTBox();
-	private final BinaryTBox							_binaryTbox			= new BinaryTBox();
+	private final PrimitiveTBox _primitiveTbox = new PrimitiveTBox();
+	private final UnaryTBox _unaryTbox = new UnaryTBox();
+	private final BinaryTBox _binaryTbox = new BinaryTBox();
 
 	public TBoxImpl(final KnowledgeBase kb)
 	{
@@ -166,8 +167,8 @@ public class TBoxImpl implements TBox
 	/**
 	 * Add a new clashExplanation for the given axiom. If a previous clashExplanation exists this will be stored as another clashExplanation.
 	 *
-	 * @param  axiom
-	 * @param  explain
+	 * @param axiom
+	 * @param explain
 	 * @return
 	 */
 	private boolean addAxiomExplanation(final ATermAppl axiom, final Set<ATermAppl> explain)
@@ -180,8 +181,10 @@ public class TBoxImpl implements TBox
 		else
 			added = MultiMapUtils.add(_tboxAxioms, axiom, explain);
 
-		if (added) for (final ATermAppl explainAxiom : explain)
-			if (!axiom.equals(explainAxiom)) MultiMapUtils.add(_reverseExplain, explainAxiom, axiom);
+		if (added)
+			for (final ATermAppl explainAxiom : explain)
+				if (!axiom.equals(explainAxiom))
+					MultiMapUtils.add(_reverseExplain, explainAxiom, axiom);
 
 		return added;
 	}
@@ -200,7 +203,8 @@ public class TBoxImpl implements TBox
 				final ATermAppl notC2 = ATermUtils.makeNot(c2);
 
 				axioms.add(ATermUtils.makeSub(c1, notC2));
-				if (ATermUtils.isPrimitive(c2)) axioms.add(ATermUtils.makeSub(c2, notC1));
+				if (ATermUtils.isPrimitive(c2))
+					axioms.add(ATermUtils.makeSub(c2, notC1));
 			}
 		}
 
@@ -214,31 +218,34 @@ public class TBoxImpl implements TBox
 
 		List<ATermAppl> axioms = null;
 
-		final Set<ATermAppl> explain = OpenlletOptions.USE_TRACING ? Collections.singleton(axiom) : Collections.<ATermAppl>emptySet();
+		final Set<ATermAppl> explain = OpenlletOptions.USE_TRACING ? Collections.singleton(axiom) : Collections.<ATermAppl> emptySet();
 
 		if (axiom.getAFun().equals(ATermUtils.EQCLASSFUN))
 			axioms = Collections.singletonList(axiom);
-		else if (axiom.getAFun().equals(ATermUtils.SUBFUN))
-			axioms = Collections.singletonList(axiom);
-		else if (axiom.getAFun().equals(ATermUtils.DISJOINTFUN))
-		{
-			final ATermAppl c1 = (ATermAppl) axiom.getArgument(0);
-			final ATermAppl c2 = (ATermAppl) axiom.getArgument(1);
-
-			axioms = normalizeDisjointAxiom(c1, c2);
-		}
-		else if (axiom.getAFun().equals(ATermUtils.DISJOINTSFUN))
-		{
-			final ATermList list = (ATermList) axiom.getArgument(0);
-			final ATermAppl[] concepts = ATermUtils.toArray(list);
-
-			axioms = normalizeDisjointAxiom(concepts);
-		}
 		else
-		{
-			_logger.warning("Not a valid TBox axiom: " + axiom);
-			return false;
-		}
+			if (axiom.getAFun().equals(ATermUtils.SUBFUN))
+				axioms = Collections.singletonList(axiom);
+			else
+				if (axiom.getAFun().equals(ATermUtils.DISJOINTFUN))
+				{
+					final ATermAppl c1 = (ATermAppl) axiom.getArgument(0);
+					final ATermAppl c2 = (ATermAppl) axiom.getArgument(1);
+
+					axioms = normalizeDisjointAxiom(c1, c2);
+				}
+				else
+					if (axiom.getAFun().equals(ATermUtils.DISJOINTSFUN))
+					{
+						final ATermList list = (ATermList) axiom.getArgument(0);
+						final ATermAppl[] concepts = ATermUtils.toArray(list);
+
+						axioms = normalizeDisjointAxiom(concepts);
+					}
+					else
+					{
+						_logger.warning("Not a valid TBox axiom: " + axiom);
+						return false;
+					}
 
 		boolean added = false;
 		for (final ATermAppl a : axioms)
@@ -251,29 +258,33 @@ public class TBoxImpl implements TBox
 	{
 		final boolean added = addAxiomExplanation(axiom, explanation);
 
-		if (added || forceAddition) if (axiom.getAFun().equals(ATermUtils.EQCLASSFUN))
-		{
-			final ATermAppl c1 = (ATermAppl) axiom.getArgument(0);
-			final ATermAppl c2 = (ATermAppl) axiom.getArgument(1);
-
-			boolean def = false;
-			if (ATermUtils.isPrimitive(c1) && !_unaryTbox.unfold(c1).hasNext() && !_binaryTbox.unfold(c1).hasNext()) def = _primitiveTbox.add(c1, c2, explanation);
-
-			if (!def && ATermUtils.isPrimitive(c2) && !_unaryTbox.unfold(c2).hasNext() && !_binaryTbox.unfold(c2).hasNext()) def = _primitiveTbox.add(c2, c1, explanation);
-
-			if (!def)
+		if (added || forceAddition)
+			if (axiom.getAFun().equals(ATermUtils.EQCLASSFUN))
 			{
-				absorbSubClass(c1, c2, explanation);
-				absorbSubClass(c2, c1, explanation);
-			}
-		}
-		else if (axiom.getAFun().equals(ATermUtils.SUBFUN))
-		{
-			final ATermAppl sub = (ATermAppl) axiom.getArgument(0);
-			final ATermAppl sup = (ATermAppl) axiom.getArgument(1);
+				final ATermAppl c1 = (ATermAppl) axiom.getArgument(0);
+				final ATermAppl c2 = (ATermAppl) axiom.getArgument(1);
 
-			absorbSubClass(sub, sup, explanation);
-		}
+				boolean def = false;
+				if (ATermUtils.isPrimitive(c1) && !_unaryTbox.unfold(c1).hasNext() && !_binaryTbox.unfold(c1).hasNext())
+					def = _primitiveTbox.add(c1, c2, explanation);
+
+				if (!def && ATermUtils.isPrimitive(c2) && !_unaryTbox.unfold(c2).hasNext() && !_binaryTbox.unfold(c2).hasNext())
+					def = _primitiveTbox.add(c2, c1, explanation);
+
+				if (!def)
+				{
+					absorbSubClass(c1, c2, explanation);
+					absorbSubClass(c2, c1, explanation);
+				}
+			}
+			else
+				if (axiom.getAFun().equals(ATermUtils.SUBFUN))
+				{
+					final ATermAppl sub = (ATermAppl) axiom.getArgument(0);
+					final ATermAppl sup = (ATermAppl) axiom.getArgument(1);
+
+					absorbSubClass(sub, sup, explanation);
+				}
 
 		return added;
 	}
@@ -289,8 +300,7 @@ public class TBoxImpl implements TBox
 		absorbAxiom(terms, SetUtils.create(explanation));
 	}
 
-	private final Absorption[] absorptions = { new BinaryAbsorption(true), new DeterministicUnaryAbsorption(), new SimplifyAbsorption(), new OneOfAbsorption(), new HasValueAbsorption(),
-			new RuleAbsorption(), new BinaryAbsorption(false), new ExistentialAbsorption(), new UnaryAbsorption(), new UnfoldAbsorption(), new DomainAbsorption(), new GeneralAbsorption() };
+	private final Absorption[] absorptions = { new BinaryAbsorption(true), new DeterministicUnaryAbsorption(), new SimplifyAbsorption(), new OneOfAbsorption(), new HasValueAbsorption(), new RuleAbsorption(), new BinaryAbsorption(false), new ExistentialAbsorption(), new UnaryAbsorption(), new UnfoldAbsorption(), new DomainAbsorption(), new GeneralAbsorption() };
 
 	private void absorbAxiom(final Set<ATermAppl> terms, final Set<ATermAppl> explanation)
 	{
@@ -301,7 +311,8 @@ public class TBoxImpl implements TBox
 		}
 
 		for (final Absorption absorption : absorptions)
-			if (absorption.absorb(terms, explanation)) return;
+			if (absorption.absorb(terms, explanation))
+				return;
 
 		throw new InternalReasonerException("Absorption failed");
 	}
@@ -365,7 +376,8 @@ public class TBoxImpl implements TBox
 		@Override
 		public boolean absorb(final Set<ATermAppl> terms, final Set<ATermAppl> explanation)
 		{
-			if (!OpenlletOptions.USE_NOMINAL_ABSORPTION) return false;
+			if (!OpenlletOptions.USE_NOMINAL_ABSORPTION)
+				return false;
 
 			for (final ATermAppl term : terms)
 			{
@@ -392,7 +404,9 @@ public class TBoxImpl implements TBox
 				final ATermList list = (ATermList) term.getArgument(0);
 				return new MultiListIterator(list);
 			}
-			else if (isNominal(term)) return IteratorUtils.singletonIterator(term);
+			else
+				if (isNominal(term))
+					return IteratorUtils.singletonIterator(term);
 
 			return IteratorUtils.emptyIterator();
 		}
@@ -426,7 +440,8 @@ public class TBoxImpl implements TBox
 		@Override
 		public boolean absorb(final Set<ATermAppl> terms, final Set<ATermAppl> explanation)
 		{
-			if (!OpenlletOptions.USE_HASVALUE_ABSORPTION) return false;
+			if (!OpenlletOptions.USE_HASVALUE_ABSORPTION)
+				return false;
 
 			for (final Iterator<ATermAppl> i = terms.iterator(); i.hasNext();)
 			{
@@ -434,7 +449,8 @@ public class TBoxImpl implements TBox
 				if (isHasValue(term))
 				{
 					final ATermAppl p = (ATermAppl) term.getArgument(0);
-					if (!_kb.isObjectProperty(p)) continue;
+					if (!_kb.isObjectProperty(p))
+						continue;
 
 					i.remove();
 					final ATermAppl c = disjunction(terms);
@@ -465,7 +481,8 @@ public class TBoxImpl implements TBox
 		@Override
 		public boolean absorb(final Set<ATermAppl> terms, final Set<ATermAppl> explanation)
 		{
-			if (!OpenlletOptions.USE_RULE_ABSORPTION) return false;
+			if (!OpenlletOptions.USE_RULE_ABSORPTION)
+				return false;
 
 			int propertyAtoms = 0;
 			int primitiveClassAtoms = 0;
@@ -473,11 +490,15 @@ public class TBoxImpl implements TBox
 			for (final ATermAppl term : terms)
 				if (ATermUtils.isPrimitive(term) && !_primitiveTbox.contains(term))
 					primitiveClassAtoms++;
-				else if (ATermUtils.isSomeValues(term))
-					propertyAtoms++;
-				else if (ATermUtils.isNot(term)) head = term;
+				else
+					if (ATermUtils.isSomeValues(term))
+						propertyAtoms++;
+					else
+						if (ATermUtils.isNot(term))
+							head = term;
 
-			if (head == null || propertyAtoms == 0 && primitiveClassAtoms < 2) return false;
+			if (head == null || propertyAtoms == 0 && primitiveClassAtoms < 2)
+				return false;
 
 			terms.remove(head);
 
@@ -509,47 +530,50 @@ public class TBoxImpl implements TBox
 					final ATermAppl conjunct = (ATermAppl) term;
 					varCount = processClass(var, conjunct, atoms, varCount);
 				}
-			else if (afun.equals(ATermUtils.SOMEFUN))
-			{
-				final ATermAppl p = (ATermAppl) c.getArgument(0);
-				final ATermAppl filler = (ATermAppl) c.getArgument(1);
-
-				if (filler.getAFun().equals(ATermUtils.VALUEFUN))
+			else
+				if (afun.equals(ATermUtils.SOMEFUN))
 				{
-					final ATermAppl nominal = (ATermAppl) filler.getArgument(0);
-					if (_kb.isDatatypeProperty(p))
+					final ATermAppl p = (ATermAppl) c.getArgument(0);
+					final ATermAppl filler = (ATermAppl) c.getArgument(1);
+
+					if (filler.getAFun().equals(ATermUtils.VALUEFUN))
 					{
-						final AtomDConstant arg = new AtomDConstant(nominal);
-						final RuleAtom atom = new DatavaluedPropertyAtom(p, var, arg);
-						atoms.add(atom);
+						final ATermAppl nominal = (ATermAppl) filler.getArgument(0);
+						if (_kb.isDatatypeProperty(p))
+						{
+							final AtomDConstant arg = new AtomDConstant(nominal);
+							final RuleAtom atom = new DatavaluedPropertyAtom(p, var, arg);
+							atoms.add(atom);
+						}
+						else
+						{
+							final AtomIConstant arg = new AtomIConstant(nominal);
+							final RuleAtom atom = new IndividualPropertyAtom(p, var, arg);
+							atoms.add(atom);
+						}
 					}
 					else
 					{
-						final AtomIConstant arg = new AtomIConstant(nominal);
-						final RuleAtom atom = new IndividualPropertyAtom(p, var, arg);
-						atoms.add(atom);
+						varCount++;
+						if (_kb.isDatatypeProperty(p))
+						{
+							final AtomDObject newVar = new AtomDVariable("var" + varCount);
+							final RuleAtom atom = new DatavaluedPropertyAtom(p, var, newVar);
+							atoms.add(atom);
+							processDatatype(newVar, filler, atoms);
+						}
+						else
+						{
+							final AtomIObject newVar = new AtomIVariable("var" + varCount);
+							final RuleAtom atom = new IndividualPropertyAtom(p, var, newVar);
+							atoms.add(atom);
+							varCount = processClass(newVar, filler, atoms, varCount);
+						}
 					}
 				}
 				else
-				{
-					varCount++;
-					if (_kb.isDatatypeProperty(p))
-					{
-						final AtomDObject newVar = new AtomDVariable("var" + varCount);
-						final RuleAtom atom = new DatavaluedPropertyAtom(p, var, newVar);
-						atoms.add(atom);
-						processDatatype(newVar, filler, atoms);
-					}
-					else
-					{
-						final AtomIObject newVar = new AtomIVariable("var" + varCount);
-						final RuleAtom atom = new IndividualPropertyAtom(p, var, newVar);
-						atoms.add(atom);
-						varCount = processClass(newVar, filler, atoms, varCount);
-					}
-				}
-			}
-			else if (!c.equals(ATermUtils.TOP)) atoms.add(new ClassAtom(c, var));
+					if (!c.equals(ATermUtils.TOP))
+						atoms.add(new ClassAtom(c, var));
 
 			return varCount;
 		}
@@ -563,31 +587,32 @@ public class TBoxImpl implements TBox
 					final ATermAppl conjunct = (ATermAppl) list.getFirst();
 					processDatatype(var, conjunct, atoms);
 				}
-			else if (afun.equals(ATermUtils.RESTRDATATYPEFUN))
-			{
-				final ATermAppl baseDatatype = (ATermAppl) c.getArgument(0);
-
-				atoms.add(new DataRangeAtom(baseDatatype, var));
-
-				for (ATermList list = (ATermList) c.getArgument(1); !list.isEmpty(); list = list.getNext())
+			else
+				if (afun.equals(ATermUtils.RESTRDATATYPEFUN))
 				{
-					final ATermAppl facetRestriction = (ATermAppl) list.getFirst();
-					final ATermAppl facet = (ATermAppl) facetRestriction.getArgument(0);
-					final String builtin = FACETS.get(facet);
-					if (builtin != null)
+					final ATermAppl baseDatatype = (ATermAppl) c.getArgument(0);
+
+					atoms.add(new DataRangeAtom(baseDatatype, var));
+
+					for (ATermList list = (ATermList) c.getArgument(1); !list.isEmpty(); list = list.getNext())
 					{
-						final ATermAppl value = (ATermAppl) facetRestriction.getArgument(1);
-						atoms.add(new BuiltInAtom(builtin, var, new AtomDConstant(value)));
-					}
-					else
-					{
-						atoms.add(new DataRangeAtom(c, var));
-						return;
+						final ATermAppl facetRestriction = (ATermAppl) list.getFirst();
+						final ATermAppl facet = (ATermAppl) facetRestriction.getArgument(0);
+						final String builtin = FACETS.get(facet);
+						if (builtin != null)
+						{
+							final ATermAppl value = (ATermAppl) facetRestriction.getArgument(1);
+							atoms.add(new BuiltInAtom(builtin, var, new AtomDConstant(value)));
+						}
+						else
+						{
+							atoms.add(new DataRangeAtom(c, var));
+							return;
+						}
 					}
 				}
-			}
-			else
-				atoms.add(new DataRangeAtom(c, var));
+				else
+					atoms.add(new DataRangeAtom(c, var));
 		}
 	}
 
@@ -603,29 +628,35 @@ public class TBoxImpl implements TBox
 		@Override
 		public boolean absorb(final Set<ATermAppl> terms, final Set<ATermAppl> explanation)
 		{
-			if (!OpenlletOptions.USE_BINARY_ABSORPTION) return false;
+			if (!OpenlletOptions.USE_BINARY_ABSORPTION)
+				return false;
 
-			if (_deterministic && terms.size() > 3) return false;
+			if (_deterministic && terms.size() > 3)
+				return false;
 
 			final Set<ATermAppl> candidates1 = CollectionUtils.makeIdentitySet();
 			final Set<ATermAppl> candidates2 = CollectionUtils.makeIdentitySet();
 			for (final ATermAppl term : terms)
 			{
-				if (!isPrimitive(term)) continue;
+				if (!isPrimitive(term))
+					continue;
 				if (!_primitiveTbox.contains(term))
 				{
 					candidates1.add(term);
 					candidates2.add(term);
 				}
-				if (_binaryTbox.contains(term)) candidates1.add(term);
+				if (_binaryTbox.contains(term))
+					candidates1.add(term);
 			}
 
-			if (candidates1.isEmpty()) return false;
+			if (candidates1.isEmpty())
+				return false;
 
 			final ATermAppl a1 = candidates1.iterator().next();
 			candidates2.remove(a1);
 
-			if (candidates2.isEmpty()) return false;
+			if (candidates2.isEmpty())
+				return false;
 
 			final ATermAppl a2 = candidates2.iterator().next();
 
@@ -637,23 +668,24 @@ public class TBoxImpl implements TBox
 
 			if (terms.size() == 0)
 				_binaryTbox.add(set, BOTTOM, explanation);
-			else if (terms.size() == 1)
-				_binaryTbox.add(set, negate(terms.iterator().next()), explanation);
 			else
-			{
-				ATermAppl a = null;
-				if (unfolding == null)
-				{
-					a = freshConcept();
-					_binaryTbox.add(set, a, explanation);
-				}
+				if (terms.size() == 1)
+					_binaryTbox.add(set, negate(terms.iterator().next()), explanation);
 				else
-					a = unfolding.getResult();
+				{
+					ATermAppl a = null;
+					if (unfolding == null)
+					{
+						a = freshConcept();
+						_binaryTbox.add(set, a, explanation);
+					}
+					else
+						a = unfolding.getResult();
 
-				terms.add(a);
+					terms.add(a);
 
-				absorbAxiom(terms, explanation);
-			}
+					absorbAxiom(terms, explanation);
+				}
 
 			return true;
 		}
@@ -666,12 +698,14 @@ public class TBoxImpl implements TBox
 		{
 			for (final ATermAppl term : terms)
 			{
-				if (!isSomeValues(term)) continue;
+				if (!isSomeValues(term))
+					continue;
 
 				final ATermAppl p = (ATermAppl) term.getArgument(0);
 				final ATermAppl c = (ATermAppl) term.getArgument(1);
 
-				if (!_kb.isObjectProperty(p)) continue;
+				if (!_kb.isObjectProperty(p))
+					continue;
 
 				terms.remove(term);
 
@@ -746,12 +780,14 @@ public class TBoxImpl implements TBox
 		@Override
 		public boolean absorb(final Set<ATermAppl> terms, final Set<ATermAppl> explanation)
 		{
-			if (terms.size() != 2) return false;
+			if (terms.size() != 2)
+				return false;
 
 			final Iterator<ATermAppl> i = terms.iterator();
 
 			final ATermAppl first = i.next();
-			if (absorbIntoTerm(first, terms, explanation)) return true;
+			if (absorbIntoTerm(first, terms, explanation))
+				return true;
 
 			final ATermAppl second = i.next();
 			return absorbIntoTerm(second, terms, explanation);
@@ -764,7 +800,8 @@ public class TBoxImpl implements TBox
 		public boolean absorb(final Set<ATermAppl> terms, final Set<ATermAppl> explanation)
 		{
 			for (final ATermAppl term : terms)
-				if (absorbIntoTerm(term, terms, explanation)) return true;
+				if (absorbIntoTerm(term, terms, explanation))
+					return true;
 
 			return false;
 		}
@@ -777,12 +814,14 @@ public class TBoxImpl implements TBox
 		{
 			for (final ATermAppl term : terms)
 			{
-				if (!isSomeValues(term)) continue;
+				if (!isSomeValues(term))
+					continue;
 
 				final ATermAppl p = (ATermAppl) term.getArgument(0);
 
 				final Role role = _kb.getRole(p);
-				if (role == null || role.hasComplexSubRole()) continue;
+				if (role == null || role.hasComplexSubRole())
+					continue;
 
 				final ATermAppl disjunction = disjunction(terms);
 				_kb.addDomain(p, disjunction, explanation);
@@ -879,14 +918,15 @@ public class TBoxImpl implements TBox
 		final Set<Set<ATermAppl>> explains = _tboxAxioms.get(dependantAxiom);
 		final Set<Set<ATermAppl>> newExplains = new HashSet<>();
 
-		if (explains != null) for (final Set<ATermAppl> explain : explains)
-			if (!explain.contains(explanationAxiom))
-				newExplains.add(explain);
-			else
-			{
-				sideEffects.addAll(explain);
-				sideEffects.remove(explanationAxiom);
-			}
+		if (explains != null)
+			for (final Set<ATermAppl> explain : explains)
+				if (!explain.contains(explanationAxiom))
+					newExplains.add(explain);
+				else
+				{
+					sideEffects.addAll(explain);
+					sideEffects.remove(explanationAxiom);
+				}
 
 		if (!newExplains.isEmpty())
 		{
@@ -915,14 +955,16 @@ public class TBoxImpl implements TBox
 
 		// find if this axiom supports any other axiom
 		final Set<ATermAppl> otherDependants = _reverseExplain.remove(dependantAxiom);
-		if (otherDependants != null) for (final ATermAppl otherDependant : otherDependants)
-		{
-			// remove this axiom from any clashExplanation it contributes to
+		if (otherDependants != null)
+			for (final ATermAppl otherDependant : otherDependants)
+			{
+				// remove this axiom from any clashExplanation it contributes to
 
-			if (otherDependant.equals(dependantAxiom)) continue;
+				if (otherDependant.equals(dependantAxiom))
+					continue;
 
-			removed |= removeExplanation(otherDependant, dependantAxiom, sideEffects);
-		}
+				removed |= removeExplanation(otherDependant, dependantAxiom, sideEffects);
+			}
 
 		return removed;
 	}
@@ -1001,7 +1043,8 @@ public class TBoxImpl implements TBox
 	{
 		final boolean added = _classes.add(term);
 
-		if (added) _allClasses.clear();
+		if (added)
+			_allClasses.clear();
 
 		return added;
 	}
@@ -1040,10 +1083,11 @@ public class TBoxImpl implements TBox
 			result.append(_binaryTbox.unfold(c));
 			return result;
 		}
-		else if (isNot(c))
-			return _primitiveTbox.unfold(c);
 		else
-			return IteratorUtils.emptyIterator();
+			if (isNot(c))
+				return _primitiveTbox.unfold(c);
+			else
+				return IteratorUtils.emptyIterator();
 	}
 
 	@Override

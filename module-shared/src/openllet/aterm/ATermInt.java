@@ -41,7 +41,6 @@ public interface ATermInt extends ATerm
 	 * Gets the integer value from this term.
 	 *
 	 * @return the integer value from this term.
-	 *
 	 */
 	int getInt();
 }

@@ -3,12 +3,14 @@ package openllet.owlwg.owlapi.testcase.impl;
 import static java.lang.String.format;
 
 import java.util.logging.Logger;
-import openllet.owlwg.testcase.SerializationFormat;
-import openllet.shared.tools.Log;
+
 import org.semanticweb.owlapi.io.StringDocumentSource;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+
+import openllet.owlwg.testcase.SerializationFormat;
+import openllet.shared.tools.Log;
 
 /**
  * <p>

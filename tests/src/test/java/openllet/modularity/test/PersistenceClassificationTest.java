@@ -13,6 +13,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
+import org.junit.Test;
+import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+
 import openllet.modularity.AxiomBasedModuleExtractor;
 import openllet.modularity.IncrementalClassifier;
 import openllet.modularity.ModuleExtractor;
@@ -22,10 +28,6 @@ import openllet.owlapi.OntologyUtils;
 import openllet.owlapi.OpenlletReasoner;
 import openllet.owlapi.OpenlletReasonerFactory;
 import openllet.test.PelletTestSuite;
-import org.junit.Test;
-import org.semanticweb.owlapi.apibinding.OWLManager;
-import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 /**
  * <p>
@@ -39,9 +41,9 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
  */
 public class PersistenceClassificationTest
 {
-	public static final String	base		= PelletTestSuite.base + "modularity/";
+	public static final String base = PelletTestSuite.base + "modularity/";
 
-	private static final String	TEST_FILE	= "test-persistence-classification.zip";
+	private static final String TEST_FILE = "test-persistence-classification.zip";
 
 	public ModuleExtractor createModuleExtractor()
 	{

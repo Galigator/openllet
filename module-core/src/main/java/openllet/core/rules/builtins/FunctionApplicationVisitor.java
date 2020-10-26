@@ -28,8 +28,8 @@ import java.math.BigInteger;
 public class FunctionApplicationVisitor implements NumericVisitor
 {
 
-	private final NumericFunction	_function;
-	private Number					_result;
+	private final NumericFunction _function;
+	private Number _result;
 
 	public FunctionApplicationVisitor(final NumericFunction function)
 	{

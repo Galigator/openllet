@@ -23,6 +23,12 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
+
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.RDFReaderF;
+import org.apache.jena.shared.NoReaderForLangException;
+
 import openllet.core.KBLoader;
 import openllet.core.KRSSLoader;
 import openllet.core.KnowledgeBase;
@@ -33,10 +39,6 @@ import openllet.jena.JenaLoader;
 import openllet.owlapi.OWLAPILoader;
 import openllet.shared.tools.Log;
 import openllet.shared.tools.Logging;
-import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.ModelFactory;
-import org.apache.jena.rdf.model.RDFReaderF;
-import org.apache.jena.shared.NoReaderForLangException;
 
 /**
  * <p>
@@ -54,19 +56,19 @@ import org.apache.jena.shared.NoReaderForLangException;
  */
 public abstract class OpenlletCmdApp implements Logging
 {
-	public static final Logger		_logger			= Log.getLogger(OpenlletCmdApp.class);
-	private final static String		LINE_BREAK		= System.getProperty("line.separator");
-	private final static RDFReaderF	READER_FACTORY	= ModelFactory.createDefaultModel();
+	public static final Logger _logger = Log.getLogger(OpenlletCmdApp.class);
+	private final static String LINE_BREAK = System.getProperty("line.separator");
+	private final static RDFReaderF READER_FACTORY = ModelFactory.createDefaultModel();
 
-	protected String				_appId;
-	protected String				_appCmd;
-	protected String				_help;
-	protected OpenlletCmdOptions	_options;
-	private final List<String>		_inputFiles;
-	protected KBLoader				_loader;
-	protected boolean				_verbose;
-	protected Timers				_timers;
-	protected List<String>			_tasks;
+	protected String _appId;
+	protected String _appCmd;
+	protected String _help;
+	protected OpenlletCmdOptions _options;
+	private final List<String> _inputFiles;
+	protected KBLoader _loader;
+	protected boolean _verbose;
+	protected Timers _timers;
+	protected List<String> _tasks;
 
 	public OpenlletCmdApp()
 	{
@@ -92,7 +94,8 @@ public abstract class OpenlletCmdApp implements Logging
 
 	protected void verbose(final String msg)
 	{
-		if (_verbose) System.err.println(msg);
+		if (_verbose)
+			System.err.println(msg);
 	}
 
 	protected void output(final String msg)
@@ -245,7 +248,8 @@ public abstract class OpenlletCmdApp implements Logging
 
 	protected KBLoader getLoader()
 	{
-		if (_loader != null) return _loader;
+		if (_loader != null)
+			return _loader;
 
 		final String loaderName = _options.getOption("loader").getValueAsString();
 
@@ -256,37 +260,40 @@ public abstract class OpenlletCmdApp implements Logging
 	{
 		if (loaderName.equalsIgnoreCase("Jena"))
 			_loader = new JenaLoader();
-		else if (loaderName.equalsIgnoreCase("OWLAPI"))
-			_loader = new OWLAPILoader();
-		else if (loaderName.equalsIgnoreCase("KRSS"))
-			_loader = new KRSSLoader();
 		else
-			throw new OpenlletCmdException("Unknown _loader: " + loaderName);
+			if (loaderName.equalsIgnoreCase("OWLAPI"))
+				_loader = new OWLAPILoader();
+			else
+				if (loaderName.equalsIgnoreCase("KRSS"))
+					_loader = new KRSSLoader();
+				else
+					throw new OpenlletCmdException("Unknown _loader: " + loaderName);
 
 		_loader.setIgnoreImports(_options.getOption("ignore-imports").getValueAsBoolean());
 		final OpenlletCmdOption option = _options.getOption("input-format");
-		if (option != null && option.getValueAsString() != null) if (_loader instanceof JenaLoader)
-		{
-			final String inputFormat = option.getValueAsString().toUpperCase();
-
-			try
+		if (option != null && option.getValueAsString() != null)
+			if (_loader instanceof JenaLoader)
 			{
-				if (inputFormat != null)
-				{
-					READER_FACTORY.getReader(inputFormat.toUpperCase());
+				final String inputFormat = option.getValueAsString().toUpperCase();
 
-					((JenaLoader) _loader).setInputFormat(inputFormat);
+				try
+				{
+					if (inputFormat != null)
+					{
+						READER_FACTORY.getReader(inputFormat.toUpperCase());
+
+						((JenaLoader) _loader).setInputFormat(inputFormat);
+					}
+				}
+				catch (final NoReaderForLangException e)
+				{
+					throw new OpenlletCmdException("Unrecognized input format: " + inputFormat, e);
 				}
 			}
-			catch (final NoReaderForLangException e)
+			else
 			{
-				throw new OpenlletCmdException("Unrecognized input format: " + inputFormat, e);
+				// silently ignore
 			}
-		}
-		else
-		{
-			// silently ignore
-		}
 
 		return _loader;
 	}
@@ -319,7 +326,8 @@ public abstract class OpenlletCmdApp implements Logging
 		{
 			String arg = args[i];
 
-			if ("--".equals(arg)) return;
+			if ("--".equals(arg))
+				return;
 
 			if (arg.charAt(0) == '-')
 			{
@@ -336,11 +344,15 @@ public abstract class OpenlletCmdApp implements Logging
 
 			if (option == null)
 				throw new OpenlletCmdException("Unrecognized option: " + arg);
-			else if (option.getLongOption().equals("help"))
-				help();
-			else if (option.getLongOption().equals("verbose")) Openllet.exceptionFormatter.setVerbose(true);
+			else
+				if (option.getLongOption().equals("help"))
+					help();
+				else
+					if (option.getLongOption().equals("verbose"))
+						Openllet.exceptionFormatter.setVerbose(true);
 
-			if (seenOptions.contains(option.getLongOption())) throw new OpenlletCmdException("Repeated use of option: " + arg);
+			if (seenOptions.contains(option.getLongOption()))
+				throw new OpenlletCmdException("Repeated use of option: " + arg);
 
 			seenOptions.add(option.getLongOption());
 
@@ -371,7 +383,9 @@ public abstract class OpenlletCmdApp implements Logging
 
 		// Check if all mandatory options are set
 		for (final OpenlletCmdOption option : _options.getOptions())
-			if (option.isMandatory()) if (option.getValue() == null) throw new OpenlletCmdException("Option <" + option.getLongOption() + "> is mandatory");
+			if (option.isMandatory())
+				if (option.getValue() == null)
+					throw new OpenlletCmdException("Option <" + option.getLongOption() + "> is mandatory");
 
 		loadConfig();
 
@@ -379,37 +393,42 @@ public abstract class OpenlletCmdApp implements Logging
 		for (; i < args.length; i++)
 			_inputFiles.add(args[i]);
 
-		if (_options.getOption("verbose").getValueAsBoolean()) _verbose = true;
+		if (_options.getOption("verbose").getValueAsBoolean())
+			_verbose = true;
 
 		if (requiresInputFiles())
 		{
-			if (_inputFiles.isEmpty()) throw new OpenlletCmdException("No input file given");
+			if (_inputFiles.isEmpty())
+				throw new OpenlletCmdException("No input file given");
 		}
-		else if (!_inputFiles.isEmpty()) throw new OpenlletCmdException("Unexpected argument(s): " + _inputFiles);
+		else
+			if (!_inputFiles.isEmpty())
+				throw new OpenlletCmdException("Unexpected argument(s): " + _inputFiles);
 	}
 
 	private void loadConfig()
 	{
 		final String configFile = _options.getOption("config").getValueAsString();
 
-		if (configFile != null) try
-		{
-			final URL url = new URL("file:" + configFile);
+		if (configFile != null)
+			try
+			{
+				final URL url = new URL("file:" + configFile);
 
-			OpenlletOptions.load(url);
-		}
-		catch (final MalformedURLException e)
-		{
-			throw new OpenlletCmdException("Invalid URL given for the config file: " + configFile, e);
-		}
-		catch (final FileNotFoundException e)
-		{
-			throw new OpenlletCmdException("The specified configuration file cannot be found: " + configFile, e);
-		}
-		catch (final IOException e)
-		{
-			throw new OpenlletCmdException("I/O error while reading the configuration file : " + configFile, e);
-		}
+				OpenlletOptions.load(url);
+			}
+			catch (final MalformedURLException e)
+			{
+				throw new OpenlletCmdException("Invalid URL given for the config file: " + configFile, e);
+			}
+			catch (final FileNotFoundException e)
+			{
+				throw new OpenlletCmdException("The specified configuration file cannot be found: " + configFile, e);
+			}
+			catch (final IOException e)
+			{
+				throw new OpenlletCmdException("I/O error while reading the configuration file : " + configFile, e);
+			}
 	}
 
 	public void help()
@@ -420,9 +439,9 @@ public abstract class OpenlletCmdApp implements Logging
 
 	private static class HelpTable
 	{
-		private final OpenlletCmdOptions	_helpOptions;
-		private final int					_maxLineWidth	= 80;
-		private final int					_indent			= 5;
+		private final OpenlletCmdOptions _helpOptions;
+		private final int _maxLineWidth = 80;
+		private final int _indent = 5;
 
 		public HelpTable(final OpenlletCmdOptions options)
 		{
@@ -442,7 +461,8 @@ public abstract class OpenlletCmdApp implements Logging
 			{
 				i++;
 
-				if (i == _helpOptions.getOptions().size()) last = true;
+				if (i == _helpOptions.getOptions().size())
+					last = true;
 
 				final String longOption = option.getLongOption();
 				final String shortOption = option.getShortOption();
@@ -452,7 +472,8 @@ public abstract class OpenlletCmdApp implements Logging
 
 				String defaultValue = "";
 
-				if (option.getDefaultValue() != null) defaultValue = option.getDefaultValue().toString();
+				if (option.getDefaultValue() != null)
+					defaultValue = option.getDefaultValue().toString();
 
 				final String firstLine = firstLine(shortOption, longOption, type, arg);
 				final String secondLine = secondLine(description, defaultValue);
@@ -461,7 +482,8 @@ public abstract class OpenlletCmdApp implements Logging
 				ret.append(LINE_BREAK);
 				ret.append(secondLine);
 
-				if (!last) ret.append(LINE_BREAK + LINE_BREAK);
+				if (!last)
+					ret.append(LINE_BREAK + LINE_BREAK);
 			}
 
 			return ret.toString();
@@ -488,13 +510,17 @@ public abstract class OpenlletCmdApp implements Logging
 
 			ret.append("--" + longOption);
 
-			if (shortOption != null) ret.append(", -" + shortOption);
+			if (shortOption != null)
+				ret.append(", -" + shortOption);
 
 			ret.append(" ");
 
-			if (type != null) if (arg.equals(OpenlletCmdOptionArg.OPTIONAL) && !(type.startsWith("[") || type.startsWith("(")))
-				ret.append("[" + type + "] ");
-			else if (arg.equals(OpenlletCmdOptionArg.REQUIRED) && !(type.startsWith("[") || type.startsWith("("))) ret.append("(" + type + ") ");
+			if (type != null)
+				if (arg.equals(OpenlletCmdOptionArg.OPTIONAL) && !(type.startsWith("[") || type.startsWith("(")))
+					ret.append("[" + type + "] ");
+				else
+					if (arg.equals(OpenlletCmdOptionArg.REQUIRED) && !(type.startsWith("[") || type.startsWith("(")))
+						ret.append("(" + type + ") ");
 
 			return ret.toString();
 		}
@@ -506,7 +532,8 @@ public abstract class OpenlletCmdApp implements Logging
 
 			final StringBuffer ret = new StringBuffer();
 
-			if (description == null && defaultValue == null) return ret.toString();
+			if (description == null && defaultValue == null)
+				return ret.toString();
 
 			String tokens;
 

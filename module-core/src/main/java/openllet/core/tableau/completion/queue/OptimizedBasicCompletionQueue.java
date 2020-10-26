@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import openllet.aterm.ATermAppl;
 import openllet.atom.OpenError;
 import openllet.core.boxes.abox.ABox;
@@ -43,12 +44,12 @@ public final class OptimizedBasicCompletionQueue extends CompletionQueue // The 
 	/**
 	 * The queue - array - each entry is an arraylist for a particular rule type
 	 */
-	private final List<ATermAppl>[]	_queue;
+	private final List<ATermAppl>[] _queue;
 
 	/**
 	 * Set to track duplicates for new elements list for queue
 	 */
-	private final Set<ATermAppl>[]	_newQueue;
+	private final Set<ATermAppl>[] _newQueue;
 
 	//TODO: This will be refactored; however currently there are some unit tests which will not
 	//terminate due to the _order in which the completion rules are applied to individuals
@@ -59,27 +60,27 @@ public final class OptimizedBasicCompletionQueue extends CompletionQueue // The 
 	/**
 	 * List to hold new elements for the queue
 	 */
-	private final List<ATermAppl>[]	_newQueueList;
+	private final List<ATermAppl>[] _newQueueList;
 
 	/**
 	 * List of current index pointer for each queue
 	 */
-	private final int				_current[];
+	private final int _current[];
 
 	/**
 	 * List of current _index pointer for each queue
 	 */
-	private final int				_end[];
+	private final int _end[];
 
 	/**
 	 * List of current index pointer for the stopping point at each queue
 	 */
-	private final int				_cutOff[];
+	private final int _cutOff[];
 
 	/**
 	 * Flag set for when the kb is restored - in this case we do not want to flush the queue immediatly
 	 */
-	private boolean					_backtracked	= false;
+	private boolean _backtracked = false;
 
 	/**
 	 * Constructor - create _queue
@@ -124,11 +125,14 @@ public final class OptimizedBasicCompletionQueue extends CompletionQueue // The 
 			Node node = _abox.getNode(_queue[type].get(_current[type]));
 
 			//because we do not maitain the _queue during restore this _node could be non-existent
-			if (node == null) continue;
+			if (node == null)
+				continue;
 
 			node = node.getSame();
 
-			if (node != null) if ((node instanceof Literal && isAllowLiterals() || node instanceof Individual && !isAllowLiterals()) && !node.isPruned()) break;
+			if (node != null)
+				if ((node instanceof Literal && isAllowLiterals() || node instanceof Individual && !isAllowLiterals()) && !node.isPruned())
+					break;
 		}
 	}
 
@@ -281,7 +285,8 @@ public final class OptimizedBasicCompletionQueue extends CompletionQueue // The 
 	@Override
 	public void print(final int type)
 	{
-		if (type > NodeSelector.numSelectors()) return;
+		if (type > NodeSelector.numSelectors())
+			return;
 		System.out.println("Queue " + type + ": " + _queue[type]);
 	}
 
@@ -311,7 +316,10 @@ public final class OptimizedBasicCompletionQueue extends CompletionQueue // The 
 		{
 			if (!_backtracked && !_closed)
 				_queue[i].clear();
-			else if (_closed) if (!_abox.isClosed()) _closed = false;
+			else
+				if (_closed)
+					if (!_abox.isClosed())
+						_closed = false;
 
 			_queue[i].addAll(_newQueueList[i]);
 
@@ -330,7 +338,8 @@ public final class OptimizedBasicCompletionQueue extends CompletionQueue // The 
 
 		final int index = s.ordinal();
 
-		if (index == NodeSelector.UNIVERSAL.ordinal() || !_backtracked) _queue[index].clear();
+		if (index == NodeSelector.UNIVERSAL.ordinal() || !_backtracked)
+			_queue[index].clear();
 
 		_queue[index].addAll(_newQueueList[index]);
 

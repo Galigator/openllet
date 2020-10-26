@@ -6,16 +6,19 @@
 
 package openllet.owlapi.explanation.io.rdfxml;
 
-import com.clarkparsia.owlapi.explanation.io.ExplanationRenderer;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.HashSet;
 import java.util.Set;
-import openllet.owlapi.OWL;
+
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.rdf.rdfxml.renderer.RDFXMLRenderer;
+
+import com.clarkparsia.owlapi.explanation.io.ExplanationRenderer;
+
+import openllet.owlapi.OWL;
 
 /**
  * <p>
@@ -35,9 +38,9 @@ import org.semanticweb.owlapi.rdf.rdfxml.renderer.RDFXMLRenderer;
  */
 public class RDFXMLExplanationRenderer implements ExplanationRenderer
 {
-	private Set<OWLAxiom>	_axioms;
+	private Set<OWLAxiom> _axioms;
 
-	private Writer			_writer;
+	private Writer _writer;
 
 	@Override
 	public void startRendering(final Writer writer)

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
+
 import openllet.shared.tools.Log;
 
 /**
@@ -17,12 +18,12 @@ import openllet.shared.tools.Log;
  */
 public abstract class ReteNode
 {
-	public final static Logger		_logger		= Log.getLogger(ReteNode.class);
+	public final static Logger _logger = Log.getLogger(ReteNode.class);
 
-	private final List<BetaNode>	_children	= new ArrayList<>();
+	private final List<BetaNode> _children = new ArrayList<>();
 
 	@SuppressWarnings("unused")
-	private boolean					_marked		= false;
+	private boolean _marked = false;
 
 	/**
 	 * Add a directly dependent _node.

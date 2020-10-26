@@ -57,7 +57,7 @@ public class MultiMapUtils
 	public static <K, V> Set<V> get(final Map<K, Set<V>> map, final K key)
 	{
 		final Set<V> values = map.get(key);
-		return values != null ? values : Collections.<V>emptySet();
+		return values != null ? values : Collections.<V> emptySet();
 	}
 
 	public static <K, V> boolean remove(final Map<K, Set<V>> map, final K key, final V value)
@@ -69,7 +69,8 @@ public class MultiMapUtils
 		{
 			removed = values.remove(value);
 
-			if (values.isEmpty()) map.remove(key);
+			if (values.isEmpty())
+				map.remove(key);
 		}
 
 		return removed;

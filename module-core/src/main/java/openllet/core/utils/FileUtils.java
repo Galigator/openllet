@@ -44,6 +44,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+
 import openllet.atom.OpenError;
 
 public class FileUtils
@@ -104,7 +105,8 @@ public class FileUtils
 		catch (final IllegalArgumentException e1) // If the given string violates RFC 2396
 		{
 			final File localFile = new File(fileName);
-			if (!localFile.exists()) throw new OpenError(new FileNotFoundException(localFile.getAbsolutePath()));
+			if (!localFile.exists())
+				throw new OpenError(new FileNotFoundException(localFile.getAbsolutePath()));
 			try
 			{
 				return localFile.toURI().toURL().toString();
@@ -127,8 +129,8 @@ public class FileUtils
 	 * pass <code>/path/to/dir/.*</code>
 	 * </p>
 	 *
-	 * @param  fileNameRegexList list of regular expressions for fiel URIs
-	 * @return                   list of file URIs matching the given regular expressions
+	 * @param fileNameRegexList list of regular expressions for fiel URIs
+	 * @return list of file URIs matching the given regular expressions
 	 */
 	public static Collection<String> getFileURIsFromRegex(final String... fileNameRegexList)
 	{
@@ -145,19 +147,22 @@ public class FileUtils
 
 				final File[] files = dir.listFiles((FilenameFilter) (dir1, name) -> dir1 != null && name.matches(filter));
 
-				if (files.length == 0) throw new OpenError("File not found: " + fileNameRegex);
+				if (files.length == 0)
+					throw new OpenError("File not found: " + fileNameRegex);
 
 				Arrays.sort(files, AlphaNumericComparator.CASE_INSENSITIVE);
 
 				for (final File f : files)
 					uris.add(f.toURI().toString());
 			}
-			else if (file.exists())
-				uris.add(file.toURI().toString());
-			else if (URI.create(fileNameRegex) == null)
-				throw new OpenError(new FileNotFoundException(fileNameRegex));
 			else
-				uris.add(fileNameRegex);
+				if (file.exists())
+					uris.add(file.toURI().toString());
+				else
+					if (URI.create(fileNameRegex) == null)
+						throw new OpenError(new FileNotFoundException(fileNameRegex));
+					else
+						uris.add(fileNameRegex);
 		}
 
 		return uris;
@@ -166,8 +171,8 @@ public class FileUtils
 	/**
 	 * Creates a collection of URIs from a given list of files.
 	 *
-	 * @param  fileNameList the list of files
-	 * @return              a list of URIs
+	 * @param fileNameList the list of files
+	 * @return a list of URIs
 	 */
 	public static Collection<String> getFileURIs(final String... fileNameList)
 	{
@@ -182,8 +187,8 @@ public class FileUtils
 	/**
 	 * Creates a URI from a given file name.
 	 *
-	 * @param  fileName the file
-	 * @return          a string representing the file URI
+	 * @param fileName the file
+	 * @return a string representing the file URI
 	 */
 	public static String getFileURI(final String fileName)
 	{
@@ -192,11 +197,13 @@ public class FileUtils
 
 		if (file.exists())
 			return file.toURI().toString();
-		else if (dir != null && dir.exists())
-			throw new OpenError(new FileNotFoundException(fileName));
-		else if (URI.create(fileName) == null)
-			throw new OpenError(new FileNotFoundException(fileName));
 		else
-			return fileName;
+			if (dir != null && dir.exists())
+				throw new OpenError(new FileNotFoundException(fileName));
+			else
+				if (URI.create(fileName) == null)
+					throw new OpenError(new FileNotFoundException(fileName));
+				else
+					return fileName;
 	}
 }

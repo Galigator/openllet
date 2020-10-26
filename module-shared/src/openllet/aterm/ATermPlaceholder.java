@@ -41,7 +41,6 @@ public interface ATermPlaceholder extends ATerm
 	 * Gets the type of this placeholder.
 	 *
 	 * @return the type of this placeholder.
-	 *
 	 */
 	ATerm getPlaceholder();
 }

@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
+
 import openllet.shared.tools.Log;
 
 /**
@@ -23,9 +24,9 @@ import openllet.shared.tools.Log;
  * Company: Clark & Parsia, LLC. <http://www.clarkparsia.com>
  * </p>
  *
- * @author     Mike Smith
- * @param  <T> kind of numbers
- * @param  <U> kind of interval of numbers
+ * @author Mike Smith
+ * @param <T> kind of numbers
+ * @param <U> kind of interval of numbers
  */
 public abstract class DiscreteInterval<T extends Number, U extends DiscreteInterval<T, U>>
 {
@@ -42,13 +43,14 @@ public abstract class DiscreteInterval<T extends Number, U extends DiscreteInter
 
 	public class ValueIterator implements Iterator<T>
 	{
-		private final T			_last;
-		private T				_next;
-		private final boolean	_increment;
+		private final T _last;
+		private T _next;
+		private final boolean _increment;
 
 		public ValueIterator(final T lower, final T upper, final boolean increment)
 		{
-			if (lower == null) throw new NullPointerException();
+			if (lower == null)
+				throw new NullPointerException();
 
 			this._next = lower;
 			this._last = upper;
@@ -84,15 +86,15 @@ public abstract class DiscreteInterval<T extends Number, U extends DiscreteInter
 	 * These constants are setup so that reference to the NullSemantics enum
 	 * does not need qualification within this class.
 	 */
-	protected final static NullSemantics											//
-								GREATEST	= NullSemantics.GREATEST,				//
-			LEAST = NullSemantics.LEAST,											//
+	protected final static NullSemantics //
+	GREATEST = NullSemantics.GREATEST, //
+			LEAST = NullSemantics.LEAST, //
 			NA = NullSemantics.NA;
 
-	private static final Logger	_logger		= Log.getLogger(DiscreteInterval.class);
+	private static final Logger _logger = Log.getLogger(DiscreteInterval.class);
 
-	private final T				_lower;
-	private final T				_upper;
+	private final T _lower;
+	private final T _upper;
 
 	/**
 	 * Create a point interval. This is equivalent to {@link #DiscreteInterval} with arguments <code>point,point</code>
@@ -101,7 +103,8 @@ public abstract class DiscreteInterval<T extends Number, U extends DiscreteInter
 	 */
 	public DiscreteInterval(final T point)
 	{
-		if (point == null) throw new NullPointerException();
+		if (point == null)
+			throw new NullPointerException();
 
 		this._lower = point;
 		this._upper = point;
@@ -115,8 +118,10 @@ public abstract class DiscreteInterval<T extends Number, U extends DiscreteInter
 	 */
 	public DiscreteInterval(final T lower, final T upper)
 	{
-		if (!valid(lower)) throw new IllegalArgumentException();
-		if (!valid(upper)) throw new IllegalArgumentException();
+		if (!valid(lower))
+			throw new IllegalArgumentException();
+		if (!valid(upper))
+			throw new IllegalArgumentException();
 
 		final int cmp = compare(lower, LEAST, upper, GREATEST);
 		if (cmp > 0)
@@ -146,15 +151,16 @@ public abstract class DiscreteInterval<T extends Number, U extends DiscreteInter
 			else
 				return true;
 		}
-		else if (uu > 0)
-		{
-			if (compare(this.getLower(), LEAST, other.getUpper(), GREATEST) > 0)
-				return equal(increment(other.getUpper()), this.getLower());
+		else
+			if (uu > 0)
+			{
+				if (compare(this.getLower(), LEAST, other.getUpper(), GREATEST) > 0)
+					return equal(increment(other.getUpper()), this.getLower());
+				else
+					return true;
+			}
 			else
 				return true;
-		}
-		else
-			return true;
 	}
 
 	protected abstract U cast(DiscreteInterval<T, U> i);
@@ -163,11 +169,14 @@ public abstract class DiscreteInterval<T extends Number, U extends DiscreteInter
 
 	public boolean contains(final T n)
 	{
-		if (!valid(n)) throw new IllegalArgumentException();
+		if (!valid(n))
+			throw new IllegalArgumentException();
 
 		final int lcmp = compare(getLower(), LEAST, n, NA);
-		if (lcmp > 0) return false;
-		if (lcmp == 0) return true;
+		if (lcmp > 0)
+			return false;
+		if (lcmp == 0)
+			return true;
 
 		final int ucmp = compare(getUpper(), GREATEST, n, NA);
 		return ucmp >= 0;
@@ -195,20 +204,23 @@ public abstract class DiscreteInterval<T extends Number, U extends DiscreteInter
 	/**
 	 * Get the subinterval greater than n
 	 *
-	 * @param  n
-	 * @return   a new interval, formed by intersecting this interval with (n,+inf) or <code>null</code> if that intersection is empty
+	 * @param n
+	 * @return a new interval, formed by intersecting this interval with (n,+inf) or <code>null</code> if that intersection is empty
 	 */
 	public U greater(final T n)
 	{
-		if (n == null) throw new NullPointerException();
-		if (!valid(n)) throw new IllegalArgumentException();
+		if (n == null)
+			throw new NullPointerException();
+		if (!valid(n))
+			throw new IllegalArgumentException();
 
 		if (compare(getLower(), LEAST, n, NA) > 0)
 			return cast(this);
-		else if (compare(getUpper(), GREATEST, n, NA) <= 0)
-			return null;
 		else
-			return create(increment(n), getUpper());
+			if (compare(getUpper(), GREATEST, n, NA) <= 0)
+				return null;
+			else
+				return create(increment(n), getUpper());
 	}
 
 	@Override
@@ -240,15 +252,16 @@ public abstract class DiscreteInterval<T extends Number, U extends DiscreteInter
 			else
 				return that;
 		}
-		else if (uu > 0)
-		{
-			if (compare(this.getLower(), LEAST, that.getUpper(), GREATEST) > 0)
-				return null;
-			else
-				return create(this.getLower(), that.getUpper());
-		}
 		else
-			return cast(this);
+			if (uu > 0)
+			{
+				if (compare(this.getLower(), LEAST, that.getUpper(), GREATEST) > 0)
+					return null;
+				else
+					return create(this.getLower(), that.getUpper());
+			}
+			else
+				return cast(this);
 	}
 
 	public boolean isFinite()
@@ -259,20 +272,23 @@ public abstract class DiscreteInterval<T extends Number, U extends DiscreteInter
 	/**
 	 * Get the subinterval less than n
 	 *
-	 * @param  n
-	 * @return   a new interval, formed by intersecting this interval with (-inf,n) or <code>null</code> if that intersection is empty
+	 * @param n
+	 * @return a new interval, formed by intersecting this interval with (-inf,n) or <code>null</code> if that intersection is empty
 	 */
 	public U less(final T n)
 	{
-		if (n == null) throw new NullPointerException();
-		if (!valid(n)) throw new IllegalArgumentException();
+		if (n == null)
+			throw new NullPointerException();
+		if (!valid(n))
+			throw new IllegalArgumentException();
 
 		if (compare(getUpper(), GREATEST, n, NA) < 0)
 			return cast(this);
-		else if (compare(getLower(), LEAST, n, NA) >= 0)
-			return null;
 		else
-			return create(getLower(), decrement(n));
+			if (compare(getLower(), LEAST, n, NA) >= 0)
+				return null;
+			else
+				return create(getLower(), decrement(n));
 	}
 
 	public List<U> remove(final U other)
@@ -301,31 +317,34 @@ public abstract class DiscreteInterval<T extends Number, U extends DiscreteInter
 					after = create(increment(other.getUpper()), this.getUpper());
 			}
 		}
-		else if (lu > 0)
-		{
-			before = null;
-			after = cast(this);
-		}
-		else if (uu <= 0)
-		{
-			before = null;
-			after = null;
-		}
 		else
-		{
-			before = null;
-			after = create(increment(other.getUpper()), this.getUpper());
-		}
+			if (lu > 0)
+			{
+				before = null;
+				after = cast(this);
+			}
+			else
+				if (uu <= 0)
+				{
+					before = null;
+					after = null;
+				}
+				else
+				{
+					before = null;
+					after = create(increment(other.getUpper()), this.getUpper());
+				}
 
 		if (before == null)
 			if (after == null)
 				return Collections.emptyList();
 			else
 				return Collections.singletonList(after);
-		else if (after == null)
-			return Collections.singletonList(before);
 		else
-			return Arrays.asList(before, after);
+			if (after == null)
+				return Collections.singletonList(before);
+			else
+				return Arrays.asList(before, after);
 	}
 
 	public abstract Number size();
@@ -355,29 +374,31 @@ public abstract class DiscreteInterval<T extends Number, U extends DiscreteInter
 					first = cast(this);
 			}
 		}
-		else if (lu > 0)
-		{
-			first = other;
-			second = cast(this);
-		}
 		else
-		{
-			second = null;
-			if (uu <= 0)
+			if (lu > 0)
+			{
 				first = other;
+				second = cast(this);
+			}
 			else
-				first = create(other.getLower(), this.getUpper());
-		}
+			{
+				second = null;
+				if (uu <= 0)
+					first = other;
+				else
+					first = create(other.getLower(), this.getUpper());
+			}
 
 		if (first == null)
 			if (second == null)
 				return Collections.emptyList();
 			else
 				return Collections.singletonList(second);
-		else if (second == null)
-			return Collections.singletonList(first);
 		else
-			return Arrays.asList(first, second);
+			if (second == null)
+				return Collections.singletonList(first);
+			else
+				return Arrays.asList(first, second);
 	}
 
 	protected abstract boolean valid(T t);

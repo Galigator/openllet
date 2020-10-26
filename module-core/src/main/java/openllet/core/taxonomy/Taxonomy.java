@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Stream;
+
 import openllet.atom.OpenError;
 import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.taxonomy.TaxonomyUtils.TaxonomyKey;
@@ -22,7 +23,7 @@ import openllet.shared.tools.Logging;
  * Definition of taxonomies
  *
  * @param <T> type of taxon
- * @since     2.6.0
+ * @since 2.6.0
  */
 public interface Taxonomy<T> extends Logging
 {
@@ -75,11 +76,11 @@ public interface Taxonomy<T> extends Logging
 	/**
 	 * Add a node with known supers and subs. Any direct relations between subs and supers are removed.
 	 *
-	 * @param  equivalents a non-empty set of equivalent elements defining the node (one of which becomes the label)
-	 * @param  sups        collection of supers, all of which must already exist in the taxonomy
-	 * @param  subs        collection of subs, all of which must already exist in the taxonomy
-	 * @param  hidden      indicates hidden or not
-	 * @return             the new node
+	 * @param equivalents a non-empty set of equivalent elements defining the node (one of which becomes the label)
+	 * @param sups collection of supers, all of which must already exist in the taxonomy
+	 * @param subs collection of subs, all of which must already exist in the taxonomy
+	 * @param hidden indicates hidden or not
+	 * @return the new node
 	 */
 	default TaxonomyNode<T> addNode(final Collection<T> equivalents, final Collection<T> sups, final Collection<T> subs, final boolean hidden)
 	{
@@ -105,7 +106,8 @@ public interface Taxonomy<T> extends Logging
 				if (getTopNode().isHidden())
 				{
 					getTopNode().addSub(node);
-					if (getTopNode().getSubs().size() == 2) getTopNode().removeSub(getBottomNode());
+					if (getTopNode().getSubs().size() == 2)
+						getTopNode().removeSub(getBottomNode());
 				}
 				else
 					node.addSupers(Collections.singleton(getTopNode()));
@@ -118,11 +120,13 @@ public interface Taxonomy<T> extends Logging
 				for (final T sup : sups)
 				{
 					final TaxonomyNode<T> supNode = getNodes().get(sup);
-					if (supNode._depth >= depth) depth = (short) (supNode._depth + 1);
+					if (supNode._depth >= depth)
+						depth = (short) (supNode._depth + 1);
 					supNodes.add(supNode);
 				}
 				node._depth = depth;
-				if (depth > getDepth()) setDepth(depth);
+				if (depth > getDepth())
+					setDepth(depth);
 				node.addSupers(supNodes);
 
 				setTotalBranching(getTotalBranching() + supNodes.size());
@@ -183,11 +187,14 @@ public interface Taxonomy<T> extends Logging
 
 		final TaxonomyNode<T> subNode = getNodes().get(sub);
 		final TaxonomyNode<T> supNode = getNodes().get(sup);
-		if (subNode.equals(supNode)) throw new InternalReasonerException("Equivalent elements cannot have sub/super relationship");
+		if (subNode.equals(supNode))
+			throw new InternalReasonerException("Equivalent elements cannot have sub/super relationship");
 
-		if (subNode.getSupers().size() == 1 && subNode.getSupers().iterator().next() == getTopNode()) getTopNode().removeSub(subNode);
+		if (subNode.getSupers().size() == 1 && subNode.getSupers().iterator().next() == getTopNode())
+			getTopNode().removeSub(subNode);
 
-		if (supNode.getSubs().size() == 1 && supNode.getSubs().iterator().next() == getBottomNode()) supNode.removeSub(getBottomNode());
+		if (supNode.getSubs().size() == 1 && supNode.getSubs().iterator().next() == getBottomNode())
+			supNode.removeSub(getBottomNode());
 
 		supNode.addSub(subNode);
 	}
@@ -209,10 +216,12 @@ public interface Taxonomy<T> extends Logging
 		for (final T sup : sups)
 			supNodes.add(getNodes().get(sup));
 
-		if (subNode.getSupers().size() == 1 && subNode.getSupers().contains(getTopNode())) getTopNode().removeSub(subNode);
+		if (subNode.getSupers().size() == 1 && subNode.getSupers().contains(getTopNode()))
+			getTopNode().removeSub(subNode);
 
 		for (final TaxonomyNode<T> supNode : supNodes)
-			if (supNode.getSubs().size() == 1 && supNode.getSubs().contains(getBottomNode())) supNode.removeSub(getBottomNode());
+			if (supNode.getSubs().size() == 1 && supNode.getSubs().contains(getBottomNode()))
+				supNode.removeSub(getBottomNode());
 
 		subNode.addSupers(supNodes);
 	}
@@ -236,13 +245,14 @@ public interface Taxonomy<T> extends Logging
 	 * TODO : <code>improve efficiency</code>
 	 * </p>
 	 *
-	 * @param  list
-	 * @return      the Least Common Ancestors
+	 * @param list
+	 * @return the Least Common Ancestors
 	 */
 	default List<T> computeLCA(final List<T> list)
 	{
 
-		if (list.isEmpty()) return null;
+		if (list.isEmpty())
+			return null;
 
 		// get the first concept
 		T t = list.get(0);
@@ -266,7 +276,8 @@ public interface Taxonomy<T> extends Logging
 		for (final T a : ancestors)
 		{
 
-			if (toBeRemoved.contains(a)) continue;
+			if (toBeRemoved.contains(a))
+				continue;
 
 			final Set<T> supers = getFlattenedSupers(a, /* direct = */false);
 			toBeRemoved.addAll(supers);
@@ -286,8 +297,8 @@ public interface Taxonomy<T> extends Logging
 	 * Iterate over getNodes() in taxonomy (no specific order)returning pair of equivalence set and datum associated with {@code key} for each. Useful, e.g., to
 	 * collect equivalence sets matching some condition on the datum (as in all classes which have a particular instances)
 	 *
-	 * @param  key key associated with datum returned
-	 * @return     iterator over equivalence set, datum pairs
+	 * @param key key associated with datum returned
+	 * @return iterator over equivalence set, datum pairs
 	 */
 	Iterator<Map.Entry<Set<T>, Object>> datumEquivalentsPair(final TaxonomyKey key);
 
@@ -295,23 +306,24 @@ public interface Taxonomy<T> extends Logging
 	 * Iterate down taxonomy in a _depth first traversal, beginning with class {@code c}, returning only datum associated with {@code _key} for each. Useful,
 	 * e.g., to collect datum values in a transitive closure (as in all instances of a class).
 	 *
-	 * @param  t   starting location in taxonomy
-	 * @param  key _key associated with datum returned
-	 * @return     datum iterator
+	 * @param t starting location in taxonomy
+	 * @param key _key associated with datum returned
+	 * @return datum iterator
 	 */
 	Iterator<Object> depthFirstDatumOnly(final T t, final TaxonomyKey key);
 
 	/**
 	 * Returns all the classes that are equivalent to class c. Class c itself is included in the result.
 	 *
-	 * @param  t class whose equivalent classes are found
-	 * @return   A set of ATerm objects
+	 * @param t class whose equivalent classes are found
+	 * @return A set of ATerm objects
 	 */
 	default Set<T> getAllEquivalents(final T t)
 	{
 		final TaxonomyNode<T> node = getNodes().get(t);
 
-		if (node == null) return new HashSet<>();
+		if (node == null)
+			return new HashSet<>();
 
 		return new HashSet<>(node.getEquivalents());
 	}
@@ -324,9 +336,9 @@ public interface Taxonomy<T> extends Logging
 	/**
 	 * Get datum on taxonomy elements associated with {@code _key}
 	 *
-	 * @param  t   identifies the taxonomy element
-	 * @param  key identifies the specific datum
-	 * @return     the datum (or {@code null} if none is associated with {@code _key})
+	 * @param t identifies the taxonomy element
+	 * @param key identifies the specific datum
+	 * @return the datum (or {@code null} if none is associated with {@code _key})
 	 */
 	default Object getDatum(final T t, final TaxonomyKey key)
 	{
@@ -337,8 +349,8 @@ public interface Taxonomy<T> extends Logging
 	/**
 	 * Returns all the classes that are equivalent to class c. Class c itself is NOT included in the result.
 	 *
-	 * @param  t class whose equivalent classes are found
-	 * @return   A set of ATerm objects
+	 * @param t class whose equivalent classes are found
+	 * @return A set of ATerm objects
 	 */
 	default Set<T> getEquivalents(final T t)
 	{
@@ -351,18 +363,18 @@ public interface Taxonomy<T> extends Logging
 	/**
 	 * As in {@link #getSubs(Object, boolean)} except the return value is the union of nested sets
 	 *
-	 * @param  t
-	 * @param  direct
-	 * @return        a union of subs
+	 * @param t
+	 * @param direct
+	 * @return a union of subs
 	 */
 	Set<T> getFlattenedSubs(final T t, final boolean direct);
 
 	/**
 	 * As in {@link #getSupers(Object, boolean)} except the return value is the union of nested sets
 	 *
-	 * @param  t
-	 * @param  direct
-	 * @return        a union of supers
+	 * @param t
+	 * @param direct
+	 * @return a union of supers
 	 */
 	Set<T> getFlattenedSupers(final T t, final boolean direct);
 
@@ -376,8 +388,8 @@ public interface Taxonomy<T> extends Logging
 	 * into the list. Also note that the returned list will always have at least one element, that is the BOTTOM concept. By definition BOTTOM concept is
 	 * subclass of every concept. This function is equivalent to calling getSubClasses(c, true).
 	 *
-	 * @param  t class whose subclasses are returned
-	 * @return   A set of sets, where each set in the collection represents an equivalence class. The elements of the inner class are ATermAppl objects.
+	 * @param t class whose subclasses are returned
+	 * @return A set of sets, where each set in the collection represents an equivalence class. The elements of the inner class are ATermAppl objects.
 	 */
 	default Set<Set<T>> getSubs(final T t)
 	{
@@ -395,9 +407,9 @@ public interface Taxonomy<T> extends Logging
 	 * always have at least one element. The list will either include one other concept from the hierarchy or the BOTTOM concept if no other class is subsumed
 	 * by c. By definition BOTTOM concept is subclass of every concept.
 	 *
-	 * @param  t      Class whose subclasses are found
-	 * @param  direct If true return only direct subclasses elese return all the subclasses
-	 * @return        A set of sets, where each set in the collection represents an equivalence class. The elements of the inner class are ATermAppl objects.
+	 * @param t Class whose subclasses are found
+	 * @param direct If true return only direct subclasses elese return all the subclasses
+	 * @return A set of sets, where each set in the collection represents an equivalence class. The elements of the inner class are ATermAppl objects.
 	 */
 	Set<Set<T>> getSubs(final T t, final boolean direct);
 
@@ -406,8 +418,8 @@ public interface Taxonomy<T> extends Logging
 	 * that are sameAs c are put into the list. Also note that the returned list will always have at least one element, that is TOP concept. By definition TOP
 	 * concept is superclass of every concept. This function is equivalent to calling getSuperClasses(c, true).
 	 *
-	 * @param  t class whose superclasses are returned
-	 * @return   A set of sets, where each set in the collection represents an equivalence class. The elements of the inner class are ATermAppl objects.
+	 * @param t class whose superclasses are returned
+	 * @return A set of sets, where each set in the collection represents an equivalence class. The elements of the inner class are ATermAppl objects.
 	 */
 	default Set<Set<T>> getSupers(final T t)
 	{
@@ -425,9 +437,9 @@ public interface Taxonomy<T> extends Logging
 	 * always have at least one element. The list will either include one other concept from the hierarchy or the TOP concept if no other class subsumes c. By
 	 * definition TOP concept is superclass of every concept.
 	 *
-	 * @param  t      Class whose subclasses are found
-	 * @param  direct If true return all the superclasses else return only direct superclasses
-	 * @return        A set of sets, where each set in the collection represents an equivalence class. The elements of the inner class are ATermAppl objects.
+	 * @param t Class whose subclasses are found
+	 * @param direct If true return all the superclasses else return only direct superclasses
+	 * @return A set of sets, where each set in the collection represents an equivalence class. The elements of the inner class are ATermAppl objects.
 	 */
 	Set<Set<T>> getSupers(final T t, final boolean direct);
 
@@ -441,9 +453,9 @@ public interface Taxonomy<T> extends Logging
 	/**
 	 * Checks if x is equivalent to y
 	 *
-	 * @param  x Name of the first class
-	 * @param  y Name of the second class
-	 * @return   true if x is equivalent to y
+	 * @param x Name of the first class
+	 * @param y Name of the second class
+	 * @return true if x is equivalent to y
 	 */
 	default Bool isEquivalent(final T x, final T y)
 	{
@@ -452,18 +464,19 @@ public interface Taxonomy<T> extends Logging
 
 		if (nodeX == null || nodeY == null)
 			return Bool.UNKNOWN;
-		else if (nodeX.equals(nodeY))
-			return Bool.TRUE;
 		else
-			return Bool.FALSE;
+			if (nodeX.equals(nodeY))
+				return Bool.TRUE;
+			else
+				return Bool.FALSE;
 	}
 
 	/**
 	 * Checks if x has an ancestor y.
 	 *
-	 * @param  x Name of the _node
-	 * @param  y Name of the ancestor ode
-	 * @return   true if x has an ancestor y
+	 * @param x Name of the _node
+	 * @param y Name of the ancestor ode
+	 * @return true if x has an ancestor y
 	 */
 	default Bool isSubNodeOf(final T x, final T y)
 	{
@@ -472,7 +485,9 @@ public interface Taxonomy<T> extends Logging
 
 		if (nodeX == null || nodeY == null)
 			return Bool.UNKNOWN;
-		else if (nodeX.equals(nodeY)) return Bool.TRUE;
+		else
+			if (nodeX.equals(nodeY))
+				return Bool.TRUE;
 
 		if (nodeX.isHidden())
 		{
@@ -490,15 +505,16 @@ public interface Taxonomy<T> extends Logging
 	/**
 	 * Set a datum value associated with {@code key} on a taxonomy element
 	 *
-	 * @param  t     identifies the taxonomy element
-	 * @param  key   identifies the datum
-	 * @param  value the datum
-	 * @return       previous _value of datum or {@code null} if not set
+	 * @param t identifies the taxonomy element
+	 * @param key identifies the datum
+	 * @param value the datum
+	 * @return previous _value of datum or {@code null} if not set
 	 */
 	default Object putDatum(final T t, final TaxonomyKey key, final Object value)
 	{
 		final TaxonomyNode<T> node = getNodes().get(t);
-		if (node == null) throw new OpenError(t + " is an unknown class!");
+		if (node == null)
+			throw new OpenError(t + " is an unknown class!");
 
 		return node.putDatum(key, value);
 	}
@@ -563,7 +579,8 @@ public interface Taxonomy<T> extends Logging
 			for (final T sup : supers)
 			{
 				final TaxonomyNode<T> n = getNodes().get(sup);
-				if (added.add(n)) n.addSub(node);
+				if (added.add(n))
+					n.addSub(node);
 			}
 		}
 	}
@@ -571,8 +588,8 @@ public interface Taxonomy<T> extends Logging
 	/**
 	 * Sort the getNodes() in the taxonomy using topological ordering starting from top to bottom.
 	 *
-	 * @param  includeEquivalents If false the equivalents in a _node will be ignored and only the name of the _node will be added to the result
-	 * @return                    List of _node names sorted in topological ordering
+	 * @param includeEquivalents If false the equivalents in a _node will be ignored and only the name of the _node will be added to the result
+	 * @return List of _node names sorted in topological ordering
 	 */
 	default List<T> topologocialSort(final boolean includeEquivalents)
 	{
@@ -582,9 +599,9 @@ public interface Taxonomy<T> extends Logging
 	/**
 	 * Sort the getNodes() in the taxonomy using topological ordering starting from top to bottom.
 	 *
-	 * @param  includeEquivalents If false the equivalents in a node will be ignored and only the name of the _node will be added to the result
-	 * @param  comparator         comparator to use sort the getNodes() at same level, <code>null</code> if no special ordering is needed
-	 * @return                    List of node names sorted in topological ordering
+	 * @param includeEquivalents If false the equivalents in a node will be ignored and only the name of the _node will be added to the result
+	 * @param comparator comparator to use sort the getNodes() at same level, <code>null</code> if no special ordering is needed
+	 * @return List of node names sorted in topological ordering
 	 */
 	default List<T> topologocialSort(final boolean includeEquivalents, final Comparator<? super T> comparator)
 	{
@@ -597,7 +614,8 @@ public interface Taxonomy<T> extends Logging
 
 		for (final TaxonomyNode<T> node : getNodes().values())
 		{
-			if (node.isHidden()) continue;
+			if (node.isHidden())
+				continue;
 
 			nodesLeft.add(node);
 			final int degree = node.getSupers().size();
@@ -612,12 +630,14 @@ public interface Taxonomy<T> extends Logging
 
 		for (int i = 0, size = nodesLeft.size(); i < size; i++)
 		{
-			if (nodesPending.isEmpty()) throw new InternalReasonerException("Cycle detected in the taxonomy!");
+			if (nodesPending.isEmpty())
+				throw new InternalReasonerException("Cycle detected in the taxonomy!");
 
 			final TaxonomyNode<T> node = nodesPending.values().iterator().next();
 
 			final int deg = degrees.get(node);
-			if (deg != 0) throw new InternalReasonerException("Cycle detected in the taxonomy " + node + " " + deg + " " + nodesSorted.size() + " " + getNodes().size());
+			if (deg != 0)
+				throw new InternalReasonerException("Cycle detected in the taxonomy " + node + " " + deg + " " + nodesSorted.size() + " " + getNodes().size());
 
 			nodesPending.remove(node.getName());
 			nodesLeft.remove(node);
@@ -639,7 +659,8 @@ public interface Taxonomy<T> extends Logging
 			}
 		}
 
-		if (!nodesLeft.isEmpty()) throw new InternalReasonerException("Failed to sort elements: " + nodesLeft);
+		if (!nodesLeft.isEmpty())
+			throw new InternalReasonerException("Failed to sort elements: " + nodesLeft);
 
 		getLogger().fine("done");
 

@@ -9,6 +9,7 @@ package openllet.query.sparqldl.model;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
 

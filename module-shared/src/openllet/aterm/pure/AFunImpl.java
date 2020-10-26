@@ -37,11 +37,11 @@ import openllet.shared.hash.SharedObject;
 
 public class AFunImpl extends AFunOwl
 {
-	private final String	_name;
+	private final String _name;
 
-	private final int		_arity;
+	private final int _arity;
 
-	private final boolean	_isQuoted;
+	private final boolean _isQuoted;
 
 	protected AFunImpl(final PureFactory factory, final String name, final int arity, final boolean isQuoted)
 	{

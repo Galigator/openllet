@@ -4,36 +4,23 @@ import java.lang.reflect.Method;
 import java.util.logging.Logger;
 
 /**
- * Utility class: Getting the name of the current executing method
- * http://stackoverflow.com/questions/442747/getting-the-name-of-the-current-executing-method
- *
- * Provides:
- *
- * getCurrentClassName()
- * getCurrentMethodName()
- * getCurrentFileName()
- *
- * getInvokingClassName()
- * getInvokingMethodName()
- * getInvokingFileName()
- *
- * Nb. Using StackTrace's to get this info is expensive. There are more optimised ways to obtain
- * method names. See other stackoverflow posts eg. http://stackoverflow.com/questions/421280/in-java-how-do-i-find-the-caller-of-a-method-using-stacktrace-or-reflection/2924426#2924426
- *
- * 29/09/2012 (lem) - added methods to return (1) fully qualified names and (2) invoking class/method names
+ * Utility class: Getting the name of the current executing method http://stackoverflow.com/questions/442747/getting-the-name-of-the-current-executing-method
+ * Provides: getCurrentClassName() getCurrentMethodName() getCurrentFileName() getInvokingClassName() getInvokingMethodName() getInvokingFileName() Nb. Using
+ * StackTrace's to get this info is expensive. There are more optimised ways to obtain method names. See other stackoverflow posts eg.
+ * http://stackoverflow.com/questions/421280/in-java-how-do-i-find-the-caller-of-a-method-using-stacktrace-or-reflection/2924426#2924426 29/09/2012 (lem) -
+ * added methods to return (1) fully qualified names and (2) invoking class/method names
  */
 public class StackTraceInfo
 {
-	private static final Logger	_logger	= Log.getLogger(StackTraceInfo.class);
+	private static final Logger _logger = Log.getLogger(StackTraceInfo.class);
 
 	/** (Lifted from virgo47's stackoverflow answer) */
-	private static final int	CLIENT_CODE_STACK_INDEX;
+	private static final int CLIENT_CODE_STACK_INDEX;
 
 	/**
-	 * Accesses the native method getStackTraceElement(int depth) directly.
-	 * And stores the accessible Method in a static variable.
+	 * Accesses the native method getStackTraceElement(int depth) directly. And stores the accessible Method in a static variable.
 	 */
-	private static Method		_m;
+	private static Method _m;
 
 	static
 	{
@@ -43,7 +30,8 @@ public class StackTraceInfo
 		for (final StackTraceElement ste : Thread.currentThread().getStackTrace())
 		{
 			i++;
-			if (ste.getClassName().equals(StackTraceInfo.class.getName())) break;
+			if (ste.getClassName().equals(StackTraceInfo.class.getName()))
+				break;
 		}
 		CLIENT_CODE_STACK_INDEX = i;
 

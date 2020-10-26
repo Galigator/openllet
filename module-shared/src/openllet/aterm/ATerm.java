@@ -31,74 +31,71 @@ package openllet.aterm;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
+
 import openllet.shared.hash.HashFunctions;
 
 /**
- * This is the base interface for all ATerm interfaces,
- * which will ultimately be implemented by two separate
- * ATerm Factories (a native and a pure one).
+ * This is the base interface for all ATerm interfaces, which will ultimately be implemented by two separate ATerm Factories (a native and a pure one).
  *
  * @author Hayco de Jong (jong@cwi.nl)
  * @author Pieter Olivier (olivierp@cwi.nl)
  */
 public interface ATerm extends Visitable, Identifiable
 {
-	int	GOLDEN_RATIO	= HashFunctions.GOLDEN_RATIO;
+	int GOLDEN_RATIO = HashFunctions.GOLDEN_RATIO;
 
 	/**
 	 * A term of type INT
 	 */
-	int	INT				= 2;
+	int INT = 2;
 
 	/**
 	 * A term of type REAL
 	 */
-	int	REAL			= 3;
+	int REAL = 3;
 
 	/**
 	 * A term of type APPL (function application)
 	 */
-	int	APPL			= 1;
+	int APPL = 1;
 
 	/**
 	 * A term of type LIST
 	 */
-	int	LIST			= 4;
+	int LIST = 4;
 
 	/**
 	 * A term of type PLACEHOLDER
 	 */
-	int	PLACEHOLDER		= 5;
+	int PLACEHOLDER = 5;
 
 	/**
 	 * A term of type BLOB (Binary Large OBject)
 	 */
-	int	BLOB			= 6;
+	int BLOB = 6;
 
 	/**
 	 * A term of type AFUN (function symbol)
 	 */
-	int	AFUN			= 7;
+	int AFUN = 7;
 
 	/**
 	 * A term of type LONG
 	 */
-	int	LONG			= 8;
+	int LONG = 8;
 
 	/**
 	 * Gets the type of this term.
 	 *
-	 *
 	 * @return the type of this ATerm.
-	 *
-	 * @see    #INT
-	 * @see    #REAL
-	 * @see    #APPL
-	 * @see    #LIST
-	 * @see    #PLACEHOLDER
-	 * @see    #BLOB
-	 * @see    #AFUN
-	 * @see    #LONG
+	 * @see #INT
+	 * @see #REAL
+	 * @see #APPL
+	 * @see #LIST
+	 * @see #PLACEHOLDER
+	 * @see #BLOB
+	 * @see #AFUN
+	 * @see #LONG
 	 */
 	int getType();
 
@@ -106,66 +103,45 @@ public interface ATerm extends Visitable, Identifiable
 	 * Gets a hashcode value of this term.
 	 *
 	 * @return the hashcode of this term.
-	 *
 	 */
 	@Override
 	int hashCode();
 
 	/**
-	 * Matches this term against a String pattern. The pattern is
-	 * parsed into a term, which this term is then matched against.
+	 * Matches this term against a String pattern. The pattern is parsed into a term, which this term is then matched against.
 	 *
-	 * @param  pattern    the string pattern to match this term against.
-	 *
-	 * @return            a list containing the subterms matching the placeholders
-	 *                    if the match succeeds, or null if the match fails.
-	 *
+	 * @param pattern the string pattern to match this term against.
+	 * @return a list containing the subterms matching the placeholders if the match succeeds, or null if the match fails.
 	 * @throws ParseError if pattern cannot be parsed into a term.
-	 *
-	 * @see               #match(ATerm)
+	 * @see #match(ATerm)
 	 */
 	List<Object> match(final String pattern);
 
 	/**
-	 * Matches this term against a term pattern. A list containing
-	 * the subterms matching the placeholders in the pattern is
-	 * built as this term is matched against the pattern.
+	 * Matches this term against a term pattern. A list containing the subterms matching the placeholders in the pattern is built as this term is matched
+	 * against the pattern.
 	 *
-	 * @param  pattern The term pattern to match this term against.
-	 *
-	 * @return         a list containing the subterms matching the placeholders
-	 *                 if the match succeeds, or null if the match fails.
-	 *
+	 * @param pattern The term pattern to match this term against.
+	 * @return a list containing the subterms matching the placeholders if the match succeeds, or null if the match fails.
 	 */
 	List<Object> match(final ATerm pattern);
 
 	/**
-	 * Checks equality of this term against another term.
-	 * This method exists to keep a tight relation to the C-library.
-	 * Experienced Java programmers might feel more comfortable using
-	 * the {@link #equals} method.
+	 * Checks equality of this term against another term. This method exists to keep a tight relation to the C-library. Experienced Java programmers might feel
+	 * more comfortable using the {@link #equals} method.
 	 *
-	 *
-	 * @param  term the term to check for equality.
-	 *
-	 * @return      true iff terms are equal (including
-	 *              any annotations they might have!), false otherwise.
-	 *
-	 * @see         #equals(Object)
-	 *
+	 * @param term the term to check for equality.
+	 * @return true iff terms are equal (including any annotations they might have!), false otherwise.
+	 * @see #equals(Object)
 	 */
 	boolean isEqual(final ATerm term);
 
 	/**
-	 * Checks equality of this term against any java object.
-	 * Note that for two terms to be equal, any annotations they
-	 * might have must be equal as well.
+	 * Checks equality of this term against any java object. Note that for two terms to be equal, any annotations they might have must be equal as well.
 	 *
-	 * @param  obj the object to check for equality.
-	 *
-	 * @return     true iff term equals obj (including annotations).
-	 *
-	 * @see        #isEqual
+	 * @param obj the object to check for equality.
+	 * @return true iff term equals obj (including annotations).
+	 * @see #isEqual
 	 */
 	@Override
 	boolean equals(final Object obj);
@@ -173,17 +149,15 @@ public interface ATerm extends Visitable, Identifiable
 	/**
 	 * Write a term to a text file/stream.
 	 *
-	 * @param  stream      the stream to write to
+	 * @param stream the stream to write to
 	 * @throws IOException ex
 	 */
 	void writeToTextFile(final OutputStream stream) throws IOException;
 
 	/**
-	 * Write a term to a openllet.shared.hash text file/stream.
-	 * An efficient openllet.shared.hash ASCII representation of this term is written to
-	 * the stream.
+	 * Write a term to a openllet.shared.hash text file/stream. An efficient openllet.shared.hash ASCII representation of this term is written to the stream.
 	 *
-	 * @param  stream      the stream to write this term to
+	 * @param stream the stream to write this term to
 	 * @throws IOException ex
 	 */
 	void writeToSharedTextFile(final OutputStream stream) throws IOException;
@@ -191,9 +165,8 @@ public interface ATerm extends Visitable, Identifiable
 	/**
 	 * Create a new term based on this term as a pattern and a list of arguments.
 	 *
-	 * @param  args the list of arguments used to fill up holes in the pattern
-	 *
-	 * @return      the constructed openllet.aterm
+	 * @param args the list of arguments used to fill up holes in the pattern
+	 * @return the constructed openllet.aterm
 	 */
 	ATerm make(final List<Object> args);
 
@@ -208,9 +181,7 @@ public interface ATerm extends Visitable, Identifiable
 	/**
 	 * Gets a string representation of this term.
 	 *
-	 *
 	 * @return a string representation of this term.
-	 *
 	 */
 	@Override
 	String toString();

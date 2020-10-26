@@ -8,6 +8,7 @@ package openllet.core.taxonomy;
 
 import java.util.Map;
 import java.util.Set;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
 import openllet.core.utils.ATermUtils;
@@ -21,9 +22,9 @@ import openllet.core.utils.progress.ProgressMonitor;
 public class PartialOrderTaxonomyBuilder implements TaxonomyBuilder
 {
 
-	private final PartialOrderBuilder<ATermAppl>	_builder;
-	private final KnowledgeBase						_kb;
-	private final TaxonomyImpl<ATermAppl>			_tax;
+	private final PartialOrderBuilder<ATermAppl> _builder;
+	private final KnowledgeBase _kb;
+	private final TaxonomyImpl<ATermAppl> _tax;
 
 	public PartialOrderTaxonomyBuilder(final KnowledgeBase kb)
 	{

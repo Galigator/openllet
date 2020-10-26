@@ -35,6 +35,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
+
 import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
@@ -46,8 +50,6 @@ import openllet.aterm.ATermReal;
 import openllet.aterm.ParseError;
 import openllet.aterm.pure.PureFactory;
 import openllet.atom.OpenError;
-import org.junit.Before;
-import org.junit.Test;
 
 public class Test1
 {
@@ -73,7 +75,8 @@ public class Test1
 
 	public static void assertTrue(final boolean condition) // TODO : change to junit.
 	{
-		if (!condition) throw new AssertionError("assertion failed.");
+		if (!condition)
+			throw new AssertionError("assertion failed.");
 	}
 
 	private static void test(final boolean cond, final String id)
@@ -215,7 +218,8 @@ public class Test1
 		}
 		catch (final ParseError e)
 		{
-			if (!e.getMessage().startsWith("Unterminated quoted function symbol")) throw e;
+			if (!e.getMessage().startsWith("Unterminated quoted function symbol"))
+				throw e;
 		}
 	}
 
@@ -226,7 +230,8 @@ public class Test1
 		{
 			final File file = new File("testAtermFileParser.txt");
 
-			if (file.exists()) file.delete();
+			if (file.exists())
+				file.delete();
 
 			try (FileOutputStream output = new FileOutputStream(file))
 			{
@@ -239,7 +244,8 @@ public class Test1
 				System.out.println("result = " + result);
 			}
 
-			if (file.exists()) file.delete();
+			if (file.exists())
+				file.delete();
 		}
 		catch (final FileNotFoundException e1)
 		{
@@ -417,7 +423,7 @@ public class Test1
 		System.out.println("result = " + result);
 		test(result != null && result.size()==1 &&
 		   result.get(0).equals(T[0]), "match-8");
-
+		
 		result = T[0].match("<f(1,2,<int>)>");
 		System.out.println("result = " + result);
 		test(result != null && result.size() == 2, "match-9a");
@@ -499,31 +505,31 @@ public class Test1
 		/*
 		list.add(new Integer(1));
 		test(_factory.make("<int>", list).equals(T[0]), "make-1");
-
+		
 		list.clear(); list.add(T[3]);
 		test(_factory.make("<term>", list).equals(T[3]), "make-2");
-
+		
 		list.clear(); list.add( "b");
 		test(_factory.make("<appl>", list).equals(T[4]), "make-3");
-
+		
 		list.clear(); list.add(new Double(3.14));
 		test(_factory.make("<real>", list).equals(
 		_factory.makeReal(3.14)), "make-4");
-
+		
 		list.clear(); list.add(_factory.makeAppl(
 		_factory.makeAFun("real",0,false)));
 		test(_factory.make("<placeholder>", list).equals(
 		_factory.parse("<real>")), "make-5");
-
+		
 		list.clear(); list.add(T[7]);
 		test(_factory.make("[<list>]", list).equals(T[7]), "make-6");
-
+		
 		list.clear();
 		list.add(T[3]);
 		list.add("b");
 		list.add(_factory.makeList(T[5], _factory.makeList()));
 		test(_factory.make("f(<term>,<appl>,<list>)", list).equals(T[6]), "make-7");
-
+		
 		list.clear();
 		list.add("f");
 		list.add(new Integer(2));
@@ -547,7 +553,8 @@ public class Test1
 		//		System.out.println("array1");
 		for (int i = 0; i < size; i++)
 		{
-			if (i % 100 == 0) System.out.print(i + "  ");
+			if (i % 100 == 0)
+				System.out.print(i + "  ");
 
 			final int idx = i % 10;
 			array1[idx] = _factory.makeAppl(a);
@@ -558,7 +565,8 @@ public class Test1
 		//		System.out.println("\narray2");
 		for (int i = 0; i < size; i++)
 		{
-			if (i % 100 == 0) System.out.print(i + "  ");
+			if (i % 100 == 0)
+				System.out.print(i + "  ");
 
 			final int idx = i % 10;
 			array2[idx] = _factory.makeAppl(a);
@@ -569,7 +577,8 @@ public class Test1
 		//		System.out.println("\ntest");
 		for (int i = 0; i < size; i++)
 		{
-			if (i % 500 == 0) System.out.print(i + "  ");
+			if (i % 500 == 0)
+				System.out.print(i + "  ");
 
 			final int idx = i % 10;
 			if (array1[idx] != array2[idx])

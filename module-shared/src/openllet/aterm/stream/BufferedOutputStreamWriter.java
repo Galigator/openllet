@@ -32,29 +32,28 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
 import java.util.logging.Logger;
+
 import openllet.shared.tools.Log;
 
 /**
- * This is an unsynchronized buffered outputstream writer. By using this you can
- * bypass most of the (unnecessary) synchronization and method calls that occur
- * in its standard library equivalent. Data will be written into the underlaying
- * _stream using the system's default character encoding.
+ * This is an unsynchronized buffered outputstream writer. By using this you can bypass most of the (unnecessary) synchronization and method calls that occur in
+ * its standard library equivalent. Data will be written into the underlaying _stream using the system's default character encoding.
  *
  * @author Arnold Lankamp
  */
 public class BufferedOutputStreamWriter extends Writer
 {
-	public final static Logger	_logger				= Log.getLogger(BufferedOutputStreamWriter.class);
+	public final static Logger _logger = Log.getLogger(BufferedOutputStreamWriter.class);
 
-	private final static int	DEFAULTBUFFERSIZE	= 8192;
+	private final static int DEFAULTBUFFERSIZE = 8192;
 
-	private final OutputStream	_stream;
+	private final OutputStream _stream;
 
-	private byte[]				_buffer				= null;
-	private int					_bufferPos			= 0;
-	private int					_limit				= 0;
+	private byte[] _buffer = null;
+	private int _bufferPos = 0;
+	private int _limit = 0;
 
-	private boolean				_failures			= false;
+	private boolean _failures = false;
 
 	/**
 	 * Contructor.
@@ -69,7 +68,7 @@ public class BufferedOutputStreamWriter extends Writer
 	/**
 	 * Constructor.
 	 *
-	 * @param stream     The stream to write too.
+	 * @param stream The stream to write too.
 	 * @param bufferSize The size of the interal _buffer.
 	 */
 	public BufferedOutputStreamWriter(final OutputStream stream, final int bufferSize)
@@ -83,14 +82,14 @@ public class BufferedOutputStreamWriter extends Writer
 	/**
 	 * Writes a single character.
 	 *
-	 * @param c
-	 *          The character to write.
+	 * @param c The character to write.
 	 */
 	public void write(final char c)
 	{
 		_buffer[_bufferPos++] = (byte) c;
 
-		if (_bufferPos == _limit) flush();
+		if (_bufferPos == _limit)
+			flush();
 	}
 
 	/**
@@ -120,12 +119,14 @@ public class BufferedOutputStreamWriter extends Writer
 		{
 			int bytesToWrite = bytesLeft;
 			final int freeSpace = _limit - _bufferPos;
-			if (freeSpace < bytesToWrite) bytesToWrite = freeSpace;
+			if (freeSpace < bytesToWrite)
+				bytesToWrite = freeSpace;
 
 			System.arraycopy(bytes, startPos, _buffer, _bufferPos, bytesToWrite);
 			_bufferPos += bytesToWrite;
 
-			if (_bufferPos == _limit) flush();
+			if (_bufferPos == _limit)
+				flush();
 
 			bytesLeft -= bytesToWrite;
 			startPos += bytesToWrite;

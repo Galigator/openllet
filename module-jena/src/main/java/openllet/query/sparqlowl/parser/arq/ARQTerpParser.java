@@ -9,9 +9,6 @@ package openllet.query.sparqlowl.parser.arq;
 
 import static java.lang.String.format;
 
-import openllet.query.sparqlowl.parser.antlr.SparqlOwlLexer;
-import openllet.query.sparqlowl.parser.antlr.SparqlOwlParser;
-import openllet.query.sparqlowl.parser.antlr.SparqlOwlTreeARQ;
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
@@ -23,6 +20,10 @@ import org.apache.jena.query.Syntax;
 import org.apache.jena.sparql.lang.SPARQLParser;
 import org.apache.jena.sparql.lang.SPARQLParserFactory;
 import org.apache.jena.sparql.lang.SPARQLParserRegistry;
+
+import openllet.query.sparqlowl.parser.antlr.SparqlOwlLexer;
+import openllet.query.sparqlowl.parser.antlr.SparqlOwlParser;
+import openllet.query.sparqlowl.parser.antlr.SparqlOwlTreeARQ;
 
 /**
  * <p>
@@ -93,7 +94,8 @@ public class ARQTerpParser extends SPARQLParser
 	protected Query parse$(final Query query, final String queryString) throws QueryParseException
 	{
 
-		if (query == null) throw new NullPointerException();
+		if (query == null)
+			throw new NullPointerException();
 
 		query.setSyntax(TerpSyntax.getInstance());
 

@@ -2,6 +2,7 @@ package openllet.owlwg.testcase.filter;
 
 import java.util.Arrays;
 import java.util.Collection;
+
 import openllet.owlwg.testcase.TestCase;
 
 /**
@@ -37,7 +38,8 @@ public class ConjunctionFilter implements FilterCondition
 
 	public ConjunctionFilter(final Collection<? extends FilterCondition> conditions)
 	{
-		if (conditions == null) throw new NullPointerException();
+		if (conditions == null)
+			throw new NullPointerException();
 
 		_conditions = conditions.toArray(new FilterCondition[0]);
 	}
@@ -54,7 +56,8 @@ public class ConjunctionFilter implements FilterCondition
 	public boolean accepts(final TestCase<?> testcase)
 	{
 		for (final FilterCondition c : _conditions)
-			if (!c.accepts(testcase)) return false;
+			if (!c.accepts(testcase))
+				return false;
 
 		return true;
 	}

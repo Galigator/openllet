@@ -2,6 +2,7 @@ package openllet.core.boxes.rbox;
 
 import java.util.Map;
 import java.util.Set;
+
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermList;
@@ -47,7 +48,7 @@ public interface Role
 	/**
 	 * Add sub role with depedency set.
 	 *
-	 * @param r  subrole of this role
+	 * @param r subrole of this role
 	 * @param ds
 	 */
 	void addSubRole(final Role r, final DependencySet ds);
@@ -171,7 +172,7 @@ public interface Role
 	/**
 	 * @param subRoles
 	 * @param subRoleChains
-	 * @param dependencies  map from role names (or lists) to dependencies A map from role names (or role lists) to dependency sets.
+	 * @param dependencies map from role names (or lists) to dependencies A map from role names (or role lists) to dependency sets.
 	 */
 	void setSubRolesAndChains(final Set<Role> subRoles, final Set<ATermList> subRoleChains, final Map<ATerm, DependencySet> dependencies);
 

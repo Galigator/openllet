@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
+
 import openllet.shared.tools.Log;
 
 /**
@@ -23,21 +24,23 @@ import openllet.shared.tools.Log;
  * Company: Clark & Parsia, LLC. <http://www.clarkparsia.com>
  * </p>
  *
- * @author     Mike Smith
- * @param  <T> specific type of number
+ * @author Mike Smith
+ * @param <T> specific type of number
  */
 public class FloatingPointInterval<T extends Number & Comparable<T>>
 {
 
 	public class ValueIterator implements Iterator<T>
 	{
-		private final T	_last;
-		private T		_next;
+		private final T _last;
+		private T _next;
 
 		public ValueIterator(final T lower, final T upper)
 		{
-			if (lower == null) throw new NullPointerException();
-			if (upper == null) throw new NullPointerException();
+			if (lower == null)
+				throw new NullPointerException();
+			if (upper == null)
+				throw new NullPointerException();
 
 			_next = lower;
 			_last = upper;
@@ -75,9 +78,9 @@ public class FloatingPointInterval<T extends Number & Comparable<T>>
 		return new FloatingPointInterval<>(type, type.getNegativeInfinity(), type.getPositiveInfinity());
 	}
 
-	private final T						_lower;
-	private final FloatingPointType<T>	_type;
-	private final T						_upper;
+	private final T _lower;
+	private final FloatingPointType<T> _type;
+	private final T _upper;
 
 	/**
 	 * Create a point interval. This is equivalent to IEEEFloatInterval(Float, Float) with arguments <code>point,point,true,true</code>
@@ -87,10 +90,13 @@ public class FloatingPointInterval<T extends Number & Comparable<T>>
 	 */
 	public FloatingPointInterval(final FloatingPointType<T> type, final T point)
 	{
-		if (type == null) throw new NullPointerException();
+		if (type == null)
+			throw new NullPointerException();
 
-		if (point == null) throw new NullPointerException();
-		if (type.isNaN(point)) throw new IllegalArgumentException();
+		if (point == null)
+			throw new NullPointerException();
+		if (type.isNaN(point))
+			throw new IllegalArgumentException();
 
 		_type = type;
 		_lower = point;
@@ -106,12 +112,17 @@ public class FloatingPointInterval<T extends Number & Comparable<T>>
 	 */
 	public FloatingPointInterval(final FloatingPointType<T> type, final T lower, final T upper)
 	{
-		if (type == null) throw new NullPointerException();
+		if (type == null)
+			throw new NullPointerException();
 
-		if (lower == null) throw new NullPointerException();
-		if (upper == null) throw new NullPointerException();
-		if (type.isNaN(lower)) throw new IllegalArgumentException();
-		if (type.isNaN(upper)) throw new IllegalArgumentException();
+		if (lower == null)
+			throw new NullPointerException();
+		if (upper == null)
+			throw new NullPointerException();
+		if (type.isNaN(lower))
+			throw new IllegalArgumentException();
+		if (type.isNaN(upper))
+			throw new IllegalArgumentException();
 
 		final int cmp = lower.compareTo(upper);
 		if (cmp > 0)
@@ -142,24 +153,28 @@ public class FloatingPointInterval<T extends Number & Comparable<T>>
 			else
 				return true;
 		}
-		else if (uu > 0)
-		{
-			if (_lower.compareTo(other._upper) > 0)
-				return _type.increment(other._upper).equals(_lower);
+		else
+			if (uu > 0)
+			{
+				if (_lower.compareTo(other._upper) > 0)
+					return _type.increment(other._upper).equals(_lower);
+				else
+					return true;
+			}
 			else
 				return true;
-		}
-		else
-			return true;
 	}
 
 	public boolean contains(final T n)
 	{
-		if (_type.isNaN(n)) return false;
+		if (_type.isNaN(n))
+			return false;
 
 		final int lcmp = getLower().compareTo(n);
-		if (lcmp > 0) return false;
-		if (lcmp == 0) return true;
+		if (lcmp > 0)
+			return false;
+		if (lcmp == 0)
+			return true;
 
 		final int ucmp = getUpper().compareTo(n);
 		return ucmp >= 0;
@@ -173,11 +188,15 @@ public class FloatingPointInterval<T extends Number & Comparable<T>>
 	@Override
 	public boolean equals(final Object obj)
 	{
-		if (this == obj) return true;
-		if (obj == null) return false;
-		if (getClass() != obj.getClass()) return false;
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
 		final FloatingPointInterval<?> other = (FloatingPointInterval<?>) obj;
-		if (!_lower.equals(other._lower)) return false;
+		if (!_lower.equals(other._lower))
+			return false;
 
 		return _upper.equals(other._upper);
 	}
@@ -195,21 +214,24 @@ public class FloatingPointInterval<T extends Number & Comparable<T>>
 	/**
 	 * Get the subinterval greater than n
 	 *
-	 * @param  n
-	 * @return   a new interval, formed by intersecting this interval with (n,+inf) or <code>null</code> if that intersection is empty
+	 * @param n
+	 * @return a new interval, formed by intersecting this interval with (n,+inf) or <code>null</code> if that intersection is empty
 	 */
 	public FloatingPointInterval<T> greater(final T n)
 	{
-		if (n == null) throw new NullPointerException();
+		if (n == null)
+			throw new NullPointerException();
 
-		if (_type.isNaN(n)) throw new IllegalArgumentException();
+		if (_type.isNaN(n))
+			throw new IllegalArgumentException();
 
 		if (getLower().compareTo(n) >= 0)
 			return this;
-		else if (getUpper().compareTo(n) <= 0)
-			return null;
 		else
-			return create(_type.increment(n), getUpper());
+			if (getUpper().compareTo(n) <= 0)
+				return null;
+			else
+				return create(_type.increment(n), getUpper());
 	}
 
 	@Override
@@ -240,35 +262,39 @@ public class FloatingPointInterval<T extends Number & Comparable<T>>
 			else
 				return that;
 		}
-		else if (uu > 0)
-		{
-			if (_lower.compareTo(that._upper) > 0)
-				return null;
-			else
-				return create(_lower, that._upper);
-		}
 		else
-			return this;
+			if (uu > 0)
+			{
+				if (_lower.compareTo(that._upper) > 0)
+					return null;
+				else
+					return create(_lower, that._upper);
+			}
+			else
+				return this;
 	}
 
 	/**
 	 * Get the subinterval less than n
 	 *
-	 * @param  n
-	 * @return   a new interval, formed by intersecting this interval with (-inf,n) or <code>null</code> if that intersection is empty
+	 * @param n
+	 * @return a new interval, formed by intersecting this interval with (-inf,n) or <code>null</code> if that intersection is empty
 	 */
 	public FloatingPointInterval<T> less(final T n)
 	{
-		if (n == null) throw new NullPointerException();
+		if (n == null)
+			throw new NullPointerException();
 
-		if (_type.isNaN(n)) throw new IllegalArgumentException();
+		if (_type.isNaN(n))
+			throw new IllegalArgumentException();
 
 		if (getUpper().compareTo(n) <= 0)
 			return this;
-		else if (getLower().compareTo(n) >= 0)
-			return null;
 		else
-			return create(getLower(), _type.decrement(n));
+			if (getLower().compareTo(n) >= 0)
+				return null;
+			else
+				return create(getLower(), _type.decrement(n));
 	}
 
 	public List<FloatingPointInterval<T>> remove(final FloatingPointInterval<T> other)
@@ -309,35 +335,38 @@ public class FloatingPointInterval<T extends Number & Comparable<T>>
 				}
 			}
 		}
-		else if (lu > 0)
-		{
-			before = null;
-			after = this;
-		}
-		else if (uu <= 0)
-		{
-			before = null;
-			after = null;
-		}
 		else
-		{
-			before = null;
-			final T f = _type.increment(other._upper);
-			if (f.equals(_type.getPositiveInfinity()))
-				after = create(_type.increment(other._upper), _upper);
+			if (lu > 0)
+			{
+				before = null;
+				after = this;
+			}
 			else
-				after = null;
-		}
+				if (uu <= 0)
+				{
+					before = null;
+					after = null;
+				}
+				else
+				{
+					before = null;
+					final T f = _type.increment(other._upper);
+					if (f.equals(_type.getPositiveInfinity()))
+						after = create(_type.increment(other._upper), _upper);
+					else
+						after = null;
+				}
 
 		if (before == null)
 			if (after == null)
 				return Collections.emptyList();
 			else
 				return Collections.singletonList(after);
-		else if (after == null)
-			return Collections.singletonList(before);
 		else
-			return Arrays.asList(before, after);
+			if (after == null)
+				return Collections.singletonList(before);
+			else
+				return Arrays.asList(before, after);
 	}
 
 	public Number size()
@@ -370,29 +399,31 @@ public class FloatingPointInterval<T extends Number & Comparable<T>>
 					first = this;
 			}
 		}
-		else if (lu > 0)
-		{
-			first = other;
-			second = this;
-		}
 		else
-		{
-			second = null;
-			if (uu <= 0)
+			if (lu > 0)
+			{
 				first = other;
+				second = this;
+			}
 			else
-				first = create(other._lower, _upper);
-		}
+			{
+				second = null;
+				if (uu <= 0)
+					first = other;
+				else
+					first = create(other._lower, _upper);
+			}
 
 		if (first == null)
 			if (second == null)
 				return Collections.emptyList();
 			else
 				return Collections.singletonList(second);
-		else if (second == null)
-			return Collections.singletonList(first);
 		else
-			return Arrays.asList(first, second);
+			if (second == null)
+				return Collections.singletonList(first);
+			else
+				return Arrays.asList(first, second);
 	}
 
 	public Iterator<T> valueIterator()

@@ -10,11 +10,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeTrue;
 
-import com.clarkparsia.owlapi.explanation.BlackBoxExplanation;
-import com.clarkparsia.owlapi.explanation.HSTExplanationGenerator;
-import com.clarkparsia.owlapi.explanation.SatisfiabilityConverter;
-import com.clarkparsia.owlapi.explanation.TransactionAwareSingleExpGen;
-import com.clarkparsia.owlapi.explanation.io.ConciseExplanationRenderer;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,13 +22,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import openllet.core.KnowledgeBase;
-import openllet.core.OpenlletOptions;
-import openllet.owlapi.OWL;
-import openllet.owlapi.OpenlletReasoner;
-import openllet.owlapi.OpenlletReasonerFactory;
-import openllet.owlapi.explanation.GlassBoxExplanation;
-import openllet.shared.tools.Log;
+
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
@@ -44,6 +33,20 @@ import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.SWRLAtom;
 import org.semanticweb.owlapi.model.SWRLRule;
+
+import com.clarkparsia.owlapi.explanation.BlackBoxExplanation;
+import com.clarkparsia.owlapi.explanation.HSTExplanationGenerator;
+import com.clarkparsia.owlapi.explanation.SatisfiabilityConverter;
+import com.clarkparsia.owlapi.explanation.TransactionAwareSingleExpGen;
+import com.clarkparsia.owlapi.explanation.io.ConciseExplanationRenderer;
+
+import openllet.core.KnowledgeBase;
+import openllet.core.OpenlletOptions;
+import openllet.owlapi.OWL;
+import openllet.owlapi.OpenlletReasoner;
+import openllet.owlapi.OpenlletReasonerFactory;
+import openllet.owlapi.explanation.GlassBoxExplanation;
+import openllet.shared.tools.Log;
 
 /**
  * <p>
@@ -58,16 +61,16 @@ import org.semanticweb.owlapi.model.SWRLRule;
 @RunWith(Parameterized.class)
 public class OWLAPIExplanationTest extends AbstractExplanationTest
 {
-	private static final Logger			_logger		= Log.getLogger(JenaExplanationTest.class);
+	private static final Logger _logger = Log.getLogger(JenaExplanationTest.class);
 
-	private OpenlletReasoner			_reasoner;
-	private final boolean				_useGlassBox;
+	private OpenlletReasoner _reasoner;
+	private final boolean _useGlassBox;
 
-	private SatisfiabilityConverter		_converter;
-	private ConciseExplanationRenderer	_renderer;
-	private HSTExplanationGenerator		_expGen;
+	private SatisfiabilityConverter _converter;
+	private ConciseExplanationRenderer _renderer;
+	private HSTExplanationGenerator _expGen;
 
-	private int							axiomCount	= 0;
+	private int axiomCount = 0;
 
 	@Parameters
 	public static Collection<Object[]> getParameters()
@@ -99,18 +102,19 @@ public class OWLAPIExplanationTest extends AbstractExplanationTest
 	{
 		super.after();
 
-		if (_expGen != null) if (_useGlassBox)
-		{
-			final GlassBoxExplanation gbe = (GlassBoxExplanation) _expGen.getSingleExplanationGenerator();
-			gbe.dispose();
-			_reasoner.dispose();
-		}
-		else
-		{
-			final BlackBoxExplanation bbe = (BlackBoxExplanation) _expGen.getSingleExplanationGenerator();
-			_reasoner.getManager().removeOntologyChangeListener(bbe.getDefinitionTracker());
-			bbe.dispose();
-		}
+		if (_expGen != null)
+			if (_useGlassBox)
+			{
+				final GlassBoxExplanation gbe = (GlassBoxExplanation) _expGen.getSingleExplanationGenerator();
+				gbe.dispose();
+				_reasoner.dispose();
+			}
+			else
+			{
+				final BlackBoxExplanation bbe = (BlackBoxExplanation) _expGen.getSingleExplanationGenerator();
+				_reasoner.getManager().removeOntologyChangeListener(bbe.getDefinitionTracker());
+				bbe.dispose();
+			}
 	}
 
 	@Override
@@ -169,8 +173,8 @@ public class OWLAPIExplanationTest extends AbstractExplanationTest
 
 	final class Explanation implements Comparable<Explanation> // TODO : expose this class in interface.
 	{
-		private final Set<OWLAxiom>	_base;
-		private transient String	_representation	= null;	// java.util.Optional ?
+		private final Set<OWLAxiom> _base;
+		private transient String _representation = null; // java.util.Optional ?
 
 		public String getRepresentation()
 		{
@@ -237,7 +241,8 @@ public class OWLAPIExplanationTest extends AbstractExplanationTest
 	{
 		final OWLClassExpression unsatClass = _converter.convert(axiom);
 
-		if (_logger.isLoggable(Level.FINE)) _logger.fine("Axiom " + (++axiomCount) + ": " + axiom + " Expecting " + expectedExplanationsUnordered.size() + " explanations");
+		if (_logger.isLoggable(Level.FINE))
+			_logger.fine("Axiom " + (++axiomCount) + ": " + axiom + " Expecting " + expectedExplanationsUnordered.size() + " explanations");
 
 		final Set<Set<OWLAxiom>> generatedExplanationsUnordered = _expGen.getExplanations(unsatClass, max);
 

@@ -9,6 +9,7 @@ package openllet.test.utils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBaseImpl;
 import openllet.core.boxes.abox.Individual;
@@ -27,11 +28,12 @@ public class TestUtils
 		ATermAppl clazz = null;
 		final int MAX = 20;
 		int count = 0;
-		if (types.length > 0) do
-		{
-			count++;
-			clazz = types[_rand.nextInt(types.length)];
-		} while (count < MAX);
+		if (types.length > 0)
+			do
+			{
+				count++;
+				clazz = types[_rand.nextInt(types.length)];
+			} while (count < MAX);
 
 		return clazz;
 	}

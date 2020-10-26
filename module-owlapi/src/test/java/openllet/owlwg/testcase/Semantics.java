@@ -1,7 +1,8 @@
 package openllet.owlwg.testcase;
 
-import openllet.owlwg.testcase.TestVocabulary.Individual;
 import org.semanticweb.owlapi.model.OWLIndividual;
+
+import openllet.owlwg.testcase.TestVocabulary.Individual;
 
 /**
  * <p>
@@ -34,7 +35,8 @@ public enum Semantics
 	public static Semantics get(final OWLIndividual i)
 	{
 		for (final Semantics s : values())
-			if (s.getOWLIndividual().equals(i)) return s;
+			if (s.getOWLIndividual().equals(i))
+				return s;
 		return null;
 	}
 

@@ -1,9 +1,7 @@
 package openllet.owlwg.owlapi.testcase.impl;
 
 import java.util.EnumMap;
-import openllet.owlwg.testcase.AbstractPremisedTest;
-import openllet.owlwg.testcase.OntologyParseException;
-import openllet.owlwg.testcase.SerializationFormat;
+
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.StringDocumentSource;
 import org.semanticweb.owlapi.model.MissingImportHandlingStrategy;
@@ -11,6 +9,10 @@ import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+
+import openllet.owlwg.testcase.AbstractPremisedTest;
+import openllet.owlwg.testcase.OntologyParseException;
+import openllet.owlwg.testcase.SerializationFormat;
 
 /**
  * <p>
@@ -61,7 +63,8 @@ public abstract class OwlApixCTImpl extends AbstractPremisedTest<OWLOntology> im
 			if (o == null)
 			{
 				final String l = getPremiseOntology(format);
-				if (l == null) return null;
+				if (l == null)
+					return null;
 
 				final StringDocumentSource source = new StringDocumentSource(l);
 				o = manager.loadOntologyFromOntologyDocument(source);

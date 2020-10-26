@@ -1,6 +1,7 @@
 package openllet.owlwg.testcase;
 
 import java.util.Set;
+
 import org.semanticweb.owlapi.model.IRI;
 
 /**
@@ -8,16 +9,13 @@ import org.semanticweb.owlapi.model.IRI;
  * Title: Imported Ontology
  * </p>
  * <p>
- * Description: See <a
- * href="http://www.w3.org/TR/owl2-test/#Imported_Ontologies">OWL 2
- * Conformance: Imported Ontologies</a>.
+ * Description: See <a href="http://www.w3.org/TR/owl2-test/#Imported_Ontologies">OWL 2 Conformance: Imported Ontologies</a>.
  * </p>
  * <p>
  * Copyright: Copyright &copy; 2009
  * </p>
  * <p>
- * Company: Clark & Parsia, LLC. <a
- * href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
+ * Company: Clark & Parsia, LLC. <a href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
  * </p>
  *
  * @author Mike Smith &lt;msmith@clarkparsia.com&gt;

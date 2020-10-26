@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermList;
@@ -36,21 +37,20 @@ import openllet.shared.tools.Log;
  * Reader for the binary openllet.aterm format (BAF).
  *
  * @author Karl Trygve Kalleberg
- *
  */
 public class BAFReader
 {
-	public static final Logger	_logger				= Log.getLogger(BAFReader.class);
+	public static final Logger _logger = Log.getLogger(BAFReader.class);
 
-	private static final int	BAF_MAGIC			= 0xBAF;
-	private static final int	BAF_VERSION			= 0x300;
-	private static final int	HEADER_BITS			= 32;
-	private final BitStream		_reader;
-	private int					_nrUniqueSymbols	= -1;
-	private SymEntry[]			_symbols;
-	private final PureFactory	_factory;
-	public static boolean		_isDebugging		= false;
-	private int					_level				= 0;
+	private static final int BAF_MAGIC = 0xBAF;
+	private static final int BAF_VERSION = 0x300;
+	private static final int HEADER_BITS = 32;
+	private final BitStream _reader;
+	private int _nrUniqueSymbols = -1;
+	private SymEntry[] _symbols;
+	private final PureFactory _factory;
+	public static boolean _isDebugging = false;
+	private int _level = 0;
 
 	public BAFReader(final PureFactory factory, final InputStream inputStream)
 	{
@@ -61,11 +61,13 @@ public class BAFReader
 	public ATerm readFromBinaryFile(final boolean headerAlreadyRead) throws ParseError, IOException
 	{
 
-		if (!headerAlreadyRead && !isBinaryATerm(_reader)) throw new ParseError("Input is not a BAF file");
+		if (!headerAlreadyRead && !isBinaryATerm(_reader))
+			throw new ParseError("Input is not a BAF file");
 
 		final int val = _reader.readInt();
 
-		if (val != BAF_VERSION) throw new ParseError("Wrong BAF version (wanted " + BAF_VERSION + ", got " + val + "), giving up");
+		if (val != BAF_VERSION)
+			throw new ParseError("Wrong BAF version (wanted " + BAF_VERSION + ", got " + val + "), giving up");
 
 		_nrUniqueSymbols = _reader.readInt();
 		final int nrUniqueTerms = _reader.readInt();
@@ -123,7 +125,8 @@ public class BAFReader
 
 		_level++;
 
-		if (isDebugging()) debug("readTerm()/" + _level + " - " + e.fun.getName() + "[" + arity + "]");
+		if (isDebugging())
+			debug("readTerm()/" + _level + " - " + e.fun.getName() + "[" + arity + "]");
 
 		for (int i = 0; i < arity; i++)
 		{
@@ -138,11 +141,13 @@ public class BAFReader
 			val = _reader.readBits(argSym.termWidth);
 			if (argSym.terms[val] == null)
 			{
-				if (isDebugging()) debug(" [" + i + "] - recurse");
+				if (isDebugging())
+					debug(" [" + i + "] - recurse");
 				argSym.terms[val] = readTerm(argSym);
 			}
 
-			if (argSym.terms[val] == null) throw new ParseError("Cannot be null");
+			if (argSym.terms[val] == null)
+				throw new ParseError("Cannot be null");
 
 			args[i] = argSym.terms[val];
 		}
@@ -254,7 +259,8 @@ public class BAFReader
 		int v = vBit;
 		int nrBits = 0;
 
-		if (v <= 1) return 0;
+		if (v <= 1)
+			return 0;
 
 		while (v != 0)
 		{
@@ -271,16 +277,17 @@ public class BAFReader
 		final int arity = _reader.readInt();
 		final int quoted = _reader.readInt();
 
-		if (isDebugging()) debug(s + " / " + arity + " / " + quoted);
+		if (isDebugging())
+			debug(s + " / " + arity + " / " + quoted);
 
 		return _factory.makeAFun(s, arity, quoted != 0);
 	}
 
 	public static class BitStream
 	{
-		private final InputStream	_stream;
-		private int					_bitsInBuffer;
-		private int					_bitBuffer;
+		private final InputStream _stream;
+		private int _bitsInBuffer;
+		private int _bitBuffer;
 
 		public BitStream(final InputStream inputStream)
 		{
@@ -294,22 +301,26 @@ public class BAFReader
 			buf[0] = readByte();
 
 			// Check if 1st character is enough
-			if ((buf[0] & 0x80) == 0) return buf[0];
+			if ((buf[0] & 0x80) == 0)
+				return buf[0];
 
 			buf[1] = readByte();
 
 			// Check if 2nd character is enough
-			if ((buf[0] & 0x40) == 0) return buf[1] + ((buf[0] & ~0xc0) << 8);
+			if ((buf[0] & 0x40) == 0)
+				return buf[1] + ((buf[0] & ~0xc0) << 8);
 
 			buf[2] = readByte();
 
 			// Check if 3rd character is enough
-			if ((buf[0] & 0x20) == 0) return buf[2] + (buf[1] << 8) + ((buf[0] & ~0xe0) << 16);
+			if ((buf[0] & 0x20) == 0)
+				return buf[2] + (buf[1] << 8) + ((buf[0] & ~0xe0) << 16);
 
 			buf[3] = readByte();
 
 			// Check if 4th character is enough
-			if ((buf[0] & 0x10) == 0) return buf[3] + (buf[2] << 8) + (buf[1] << 16) + ((buf[0] & ~0xf0) << 24);
+			if ((buf[0] & 0x10) == 0)
+				return buf[3] + (buf[2] << 8) + (buf[1] << 16) + ((buf[0] & ~0xf0) << 24);
 
 			buf[4] = readByte();
 
@@ -319,7 +330,8 @@ public class BAFReader
 		private int readByte() throws IOException
 		{
 			final int c = _stream.read();
-			if (c == -1) throw new EOFException();
+			if (c == -1)
+				throw new EOFException();
 			return c;
 		}
 
@@ -343,7 +355,8 @@ public class BAFReader
 				if (_bitsInBuffer == 0)
 				{
 					final int v = readByte();
-					if (v == -1) return -1;
+					if (v == -1)
+						return -1;
 					_bitBuffer = v;
 					_bitsInBuffer = 8;
 				}

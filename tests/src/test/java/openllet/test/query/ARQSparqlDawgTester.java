@@ -17,10 +17,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import openllet.atom.OpenError;
-import openllet.core.utils.URIUtils;
-import openllet.query.sparqldl.jena.JenaIOUtils;
-import openllet.shared.tools.Log;
+
 import org.apache.jena.query.Dataset;
 import org.apache.jena.query.DatasetFactory;
 import org.apache.jena.query.Query;
@@ -33,6 +30,11 @@ import org.apache.jena.query.ResultSetFormatter;
 import org.apache.jena.query.ResultSetRewindable;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.util.FileManager;
+
+import openllet.atom.OpenError;
+import openllet.core.utils.URIUtils;
+import openllet.query.sparqldl.jena.JenaIOUtils;
+import openllet.shared.tools.Log;
 
 /**
  * <p>
@@ -50,20 +52,19 @@ import org.apache.jena.util.FileManager;
 public class ARQSparqlDawgTester implements SparqlDawgTester
 {
 
-	private static final Logger	_logger			= Log.getLogger(ARQSparqlDawgTester.class);
+	private static final Logger _logger = Log.getLogger(ARQSparqlDawgTester.class);
 
-	private final List<String>	_avoidList		= Arrays.asList("open-eq-07", "open-eq-08", "open-eq-09", "open-eq-10", "open-eq-11", "open-eq-12", "dawg-optional-filter-005-not-simplified", "date-2",
-			"date-3", "unplus-1", "open-eq-03", "eq-1", "eq-2");
+	private final List<String> _avoidList = Arrays.asList("open-eq-07", "open-eq-08", "open-eq-09", "open-eq-10", "open-eq-11", "open-eq-12", "dawg-optional-filter-005-not-simplified", "date-2", "date-3", "unplus-1", "open-eq-03", "eq-1", "eq-2");
 
-	private String				_queryURI		= "";
+	private String _queryURI = "";
 
-	protected Set<String>		_graphURIs		= new HashSet<>();
+	protected Set<String> _graphURIs = new HashSet<>();
 
-	protected Set<String>		_namedGraphURIs	= new HashSet<>();
+	protected Set<String> _namedGraphURIs = new HashSet<>();
 
-	protected Query				_query			= null;
+	protected Query _query = null;
 
-	private String				_resultURI		= null;
+	private String _resultURI = null;
 
 	public ARQSparqlDawgTester()
 	{
@@ -103,7 +104,8 @@ public class ARQSparqlDawgTester implements SparqlDawgTester
 	@Override
 	public void setQueryURI(final String queryURI)
 	{
-		if (_queryURI.equals(queryURI)) return;
+		if (_queryURI.equals(queryURI))
+			return;
 
 		_queryURI = queryURI;
 		_query = QueryFactory.read(queryURI);
@@ -165,38 +167,41 @@ public class ARQSparqlDawgTester implements SparqlDawgTester
 				return correct;
 
 			}
-			else if (_query.isAskType())
-			{
-				final boolean askReal = exec.execAsk();
-				final boolean askExpected = JenaIOUtils.parseAskResult(_resultURI);
-
-				_logger.fine("Expected=" + askExpected);
-				_logger.fine("Real=" + askReal);
-
-				return askReal == askExpected;
-			}
-			else if (_query.isConstructType())
-			{
-				final Model real = exec.execConstruct();
-				final Model expected = FileManager.get().loadModel(_resultURI);
-
-				_logger.fine("Expected=" + real);
-				_logger.fine("Real=" + expected);
-
-				return real.isIsomorphicWith(expected);
-			}
-			else if (_query.isDescribeType())
-			{
-				final Model real = exec.execDescribe();
-				final Model expected = FileManager.get().loadModel(_resultURI);
-
-				_logger.fine("Expected=" + real);
-				_logger.fine("Real=" + expected);
-
-				return real.isIsomorphicWith(expected);
-			}
 			else
-				throw new OpenError("The query has invalid type.");
+				if (_query.isAskType())
+				{
+					final boolean askReal = exec.execAsk();
+					final boolean askExpected = JenaIOUtils.parseAskResult(_resultURI);
+
+					_logger.fine("Expected=" + askExpected);
+					_logger.fine("Real=" + askReal);
+
+					return askReal == askExpected;
+				}
+				else
+					if (_query.isConstructType())
+					{
+						final Model real = exec.execConstruct();
+						final Model expected = FileManager.get().loadModel(_resultURI);
+
+						_logger.fine("Expected=" + real);
+						_logger.fine("Real=" + expected);
+
+						return real.isIsomorphicWith(expected);
+					}
+					else
+						if (_query.isDescribeType())
+						{
+							final Model real = exec.execDescribe();
+							final Model expected = FileManager.get().loadModel(_resultURI);
+
+							_logger.fine("Expected=" + real);
+							_logger.fine("Real=" + expected);
+
+							return real.isIsomorphicWith(expected);
+						}
+						else
+							throw new OpenError("The query has invalid type.");
 		}
 		catch (final IOException e)
 		{

@@ -11,6 +11,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
@@ -24,11 +25,11 @@ import openllet.core.utils.CollectionUtils;
  */
 public abstract class AbstractDefinitionOrder implements DefinitionOrder
 {
-	protected KnowledgeBase		_kb;
-	protected Comparator<ATerm>	_comparator;
+	protected KnowledgeBase _kb;
+	protected Comparator<ATerm> _comparator;
 
-	private Set<ATermAppl>		_cyclicConcepts;
-	private List<ATermAppl>		_definitionOrder;
+	private Set<ATermAppl> _cyclicConcepts;
+	private List<ATermAppl> _definitionOrder;
 
 	public AbstractDefinitionOrder(final KnowledgeBase kb, final Comparator<ATerm> comparator)
 	{
@@ -66,7 +67,8 @@ public abstract class AbstractDefinitionOrder implements DefinitionOrder
 				final Set<ATermAppl> usedByC = ATermUtils.findPrimitives(unf.getResult(), !hasInverses, true);
 				for (final ATermAppl used : usedByC)
 				{
-					if (!_kb.getClasses().contains(used)) continue;
+					if (!_kb.getClasses().contains(used))
+						continue;
 
 					addUses(c, used);
 				}

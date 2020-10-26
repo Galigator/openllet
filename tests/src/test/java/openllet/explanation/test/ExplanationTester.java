@@ -8,18 +8,21 @@ package openllet.explanation.test;
 
 import static org.junit.Assert.assertNotNull;
 
-import com.clarkparsia.owlapi.explanation.ExplanationGenerator;
-import com.clarkparsia.owlapi.explanation.SatisfiabilityConverter;
-import com.clarkparsia.owlapi.explanation.io.ConciseExplanationRenderer;
 import java.io.StringWriter;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import openllet.owlapi.OWL;
-import openllet.shared.tools.Log;
+
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClassExpression;
+
+import com.clarkparsia.owlapi.explanation.ExplanationGenerator;
+import com.clarkparsia.owlapi.explanation.SatisfiabilityConverter;
+import com.clarkparsia.owlapi.explanation.io.ConciseExplanationRenderer;
+
+import openllet.owlapi.OWL;
+import openllet.shared.tools.Log;
 
 /**
  * <p>
@@ -33,13 +36,13 @@ import org.semanticweb.owlapi.model.OWLClassExpression;
  */
 public class ExplanationTester
 {
-	private static final Logger					_logger		= Log.getLogger(ExplanationTester.class);
+	private static final Logger _logger = Log.getLogger(ExplanationTester.class);
 
-	private final SatisfiabilityConverter		_converter;
-	private final ConciseExplanationRenderer	_renderer;
-	private final ExplanationGenerator			_expGen;
+	private final SatisfiabilityConverter _converter;
+	private final ConciseExplanationRenderer _renderer;
+	private final ExplanationGenerator _expGen;
 
-	private int									_axiomCount	= 0;
+	private int _axiomCount = 0;
 
 	public ExplanationTester(final ExplanationGenerator expGen)
 	{
@@ -53,7 +56,8 @@ public class ExplanationTester
 	{
 		final OWLClassExpression unsatClass = _converter.convert(axiom);
 
-		if (_logger.isLoggable(Level.FINE)) _logger.fine("Axiom " + (++_axiomCount) + ": " + axiom + " Expecting " + expectedExplanations.size() + " explanations");
+		if (_logger.isLoggable(Level.FINE))
+			_logger.fine("Axiom " + (++_axiomCount) + ": " + axiom + " Expecting " + expectedExplanations.size() + " explanations");
 
 		final Set<Set<OWLAxiom>> generatedExplanations = _expGen.getExplanations(unsatClass, max);
 		final Set<Set<OWLAxiom>> notFoundExplanations = new HashSet<>(expectedExplanations);
@@ -71,7 +75,8 @@ public class ExplanationTester
 
 		final Set<Set<OWLAxiom>> unexpectedExplanations = new HashSet<>();
 		for (final Set<OWLAxiom> explanation : generatedExplanations)
-			if (!notFoundExplanations.remove(explanation)) unexpectedExplanations.add(explanation);
+			if (!notFoundExplanations.remove(explanation))
+				unexpectedExplanations.add(explanation);
 
 		if (!notFoundExplanations.isEmpty() || !unexpectedExplanations.isEmpty())
 		{

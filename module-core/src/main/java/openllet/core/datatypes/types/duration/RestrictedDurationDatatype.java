@@ -6,7 +6,9 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
+
 import javax.xml.datatype.Duration;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.datatypes.Datatype;
 import openllet.core.datatypes.Facet;
@@ -32,10 +34,10 @@ import openllet.shared.tools.Log;
  */
 public class RestrictedDurationDatatype implements RestrictedDatatype<Duration>
 {
-	private final static Logger			_logger	= Log.getLogger(RestrictedDurationDatatype.class);
+	private final static Logger _logger = Log.getLogger(RestrictedDurationDatatype.class);
 
-	private final Datatype<Duration>	_dt;
-	protected final Predicate<Duration>	_check;
+	private final Datatype<Duration> _dt;
+	protected final Predicate<Duration> _check;
 
 	public RestrictedDurationDatatype(final Datatype<Duration> dt, final Predicate<Duration> check)
 	{
@@ -94,7 +96,8 @@ public class RestrictedDurationDatatype implements RestrictedDatatype<Duration>
 	@Override
 	public boolean contains(final Object duration)
 	{
-		if (!(duration instanceof Duration)) return false;
+		if (!(duration instanceof Duration))
+			return false;
 
 		return _check.test((Duration) duration);
 	}

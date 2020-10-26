@@ -17,8 +17,8 @@ import java.util.NoSuchElementException;
  * Company: Clark & Parsia, LLC. <http://www.clarkparsia.com>
  * </p>
  *
- * @author     Mike Smith
- * @param  <T> kind of classes
+ * @author Mike Smith
+ * @param <T> kind of classes
  */
 public class EmptyDataRange<T> implements DataRange<T>
 {

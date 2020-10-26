@@ -9,6 +9,7 @@ package openllet.query.sparqldl.model;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
 import openllet.aterm.ATermAppl;
 
 /**

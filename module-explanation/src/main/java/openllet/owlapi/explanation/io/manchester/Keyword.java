@@ -64,11 +64,11 @@ public enum Keyword
 	FUNCTIONAL("Functional", "green", 3), //
 	HAS_KEY("hasKey", "green", 3);//
 
-	private int		_mSize;
-	private String	_mColor;
-	private String	_mLabel;
-	private String	_mFace;
-	private String	_mStyleClass;
+	private int _mSize;
+	private String _mColor;
+	private String _mLabel;
+	private String _mFace;
+	private String _mStyleClass;
 
 	Keyword(final String theLabel, final String theStyleClass)
 	{

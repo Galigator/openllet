@@ -1,7 +1,8 @@
 package openllet.owlwg.owlapi.testcase.impl;
 
-import openllet.owlwg.testcase.TestCase;
 import org.semanticweb.owlapi.model.OWLOntology;
+
+import openllet.owlwg.testcase.TestCase;
 
 /**
  * <p>

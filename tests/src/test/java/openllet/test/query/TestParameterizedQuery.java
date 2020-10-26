@@ -14,9 +14,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
-import openllet.jena.PelletReasonerFactory;
-import openllet.query.sparqldl.jena.SparqlDLExecutionFactory;
-import openllet.query.sparqldl.jena.SparqlDLExecutionFactory.QueryEngineType;
+
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.query.Dataset;
 import org.apache.jena.query.DatasetFactory;
@@ -36,6 +34,10 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
+import openllet.jena.PelletReasonerFactory;
+import openllet.query.sparqldl.jena.SparqlDLExecutionFactory;
+import openllet.query.sparqldl.jena.SparqlDLExecutionFactory.QueryEngineType;
+
 /**
  * <p>
  * Copyright: Copyright (c) 2008
@@ -50,10 +52,10 @@ import org.junit.runners.Parameterized.Parameters;
 @RunWith(Parameterized.class)
 public class TestParameterizedQuery
 {
-	private static final String	NS		= "http://example.org#";
-	private static final String	PREFIX	= "PREFIX : <" + NS + ">";
+	private static final String NS = "http://example.org#";
+	private static final String PREFIX = "PREFIX : <" + NS + ">";
 
-	private static Dataset		dataset;
+	private static Dataset dataset;
 
 	private static QuerySolutionMap binding(final String var, final RDFNode value)
 	{
@@ -110,10 +112,10 @@ public class TestParameterizedQuery
 		return params;
 	}
 
-	private final QueryEngineType	_queryEngine;
-	private final Query				_query;
-	private final QuerySolution		_initialBinding;
-	private final QuerySolution		_expected;
+	private final QueryEngineType _queryEngine;
+	private final Query _query;
+	private final QuerySolution _initialBinding;
+	private final QuerySolution _expected;
 
 	public TestParameterizedQuery(final QueryEngineType queryEngine, final Query query, final QuerySolutionMap initialBinding, final QuerySolutionMap expectedResults)
 	{
@@ -130,7 +132,8 @@ public class TestParameterizedQuery
 		{
 			final ResultSet rs = qe.execSelect();
 
-			if (!rs.hasNext()) assertTrue("No results found", rs.hasNext());
+			if (!rs.hasNext())
+				assertTrue("No results found", rs.hasNext());
 
 			final QuerySolution computed = rs.nextSolution();
 

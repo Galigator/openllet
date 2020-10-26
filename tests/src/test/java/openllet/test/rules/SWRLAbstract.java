@@ -8,9 +8,6 @@ package openllet.test.rules;
 
 import static org.junit.Assert.assertTrue;
 
-import openllet.atom.OpenError;
-import openllet.jena.PelletReasonerFactory;
-import openllet.owlapi.OpenlletReasoner;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
@@ -20,6 +17,10 @@ import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+
+import openllet.atom.OpenError;
+import openllet.jena.PelletReasonerFactory;
+import openllet.owlapi.OpenlletReasoner;
 
 /**
  * <p>

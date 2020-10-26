@@ -1,9 +1,10 @@
 package openllet.datatypes.test;
 
-import junit.framework.JUnit4TestAdapter;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
+
+import junit.framework.JUnit4TestAdapter;
 
 /**
  * <p>
@@ -22,8 +23,7 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author Mike Smith
  */
 @RunWith(Suite.class)
-@SuiteClasses({ DatatypeReasonerTests.class, FloatingPointUtilsTests.class, ContinuousRealIntervalTests.class, IntegerIntervalTests.class, RationalTests.class, RestrictedRealDatatypeTests.class,
-		RestrictedTimelineDatatypeTests.class, DatatypeRestrictionTests.class })
+@SuiteClasses({ DatatypeReasonerTests.class, FloatingPointUtilsTests.class, ContinuousRealIntervalTests.class, IntegerIntervalTests.class, RationalTests.class, RestrictedRealDatatypeTests.class, RestrictedTimelineDatatypeTests.class, DatatypeRestrictionTests.class })
 public class DatatypesSuite
 {
 	public static junit.framework.Test suite()

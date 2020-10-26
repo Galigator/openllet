@@ -31,10 +31,10 @@ public interface Function
 	 * Apply the function against a set of arguments. Test the _expected argument against the result. Return null if the arguments were invalid. If '_expected'
 	 * was not null and matched the result, return '_expected'. If '_expected' was not null and did not match, return null; Otherwise, return the result.
 	 *
-	 * @param  abox
-	 * @param  expected
-	 * @param  args
-	 * @return          the literal that result of the application of the function again the Abox
+	 * @param abox
+	 * @param expected
+	 * @param args
+	 * @return the literal that result of the application of the function again the Abox
 	 */
 	Literal apply(final ABox abox, final Literal expected, final Literal... args);
 }

@@ -1,13 +1,5 @@
 package openllet.jena.graph.converter;
 
-import openllet.aterm.ATerm;
-import openllet.aterm.ATermAppl;
-import openllet.aterm.ATermInt;
-import openllet.aterm.ATermList;
-import openllet.core.output.ATermBaseVisitor;
-import openllet.core.utils.ATermUtils;
-import openllet.jena.JenaUtils;
-import openllet.jena.vocabulary.OWL2;
 import org.apache.jena.datatypes.xsd.XSDDatatype;
 import org.apache.jena.graph.Graph;
 import org.apache.jena.graph.Node;
@@ -16,6 +8,15 @@ import org.apache.jena.rdf.model.Property;
 import org.apache.jena.vocabulary.OWL;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
+
+import openllet.aterm.ATerm;
+import openllet.aterm.ATermAppl;
+import openllet.aterm.ATermInt;
+import openllet.aterm.ATermList;
+import openllet.core.output.ATermBaseVisitor;
+import openllet.core.utils.ATermUtils;
+import openllet.jena.JenaUtils;
+import openllet.jena.vocabulary.OWL2;
 
 /**
  * <p>
@@ -32,9 +33,9 @@ import org.apache.jena.vocabulary.RDFS;
  */
 public class ConceptConverter extends ATermBaseVisitor
 {
-	private final Graph	_graph;
-	private Node		_subj;
-	private Node		_obj;
+	private final Graph _graph;
+	private Node _subj;
+	private Node _obj;
 
 	public ConceptConverter(final Graph g)
 	{
@@ -54,12 +55,14 @@ public class ConceptConverter extends ATermBaseVisitor
 
 		if (term instanceof ATermAppl)
 			visit((ATermAppl) term);
-		else if (term instanceof ATermInt)
-			_obj = NodeFactory.createLiteral(term.toString(), null, XSDDatatype.XSDnonNegativeInteger);
-		else if (term instanceof ATermList)
-			visitList((ATermList) term);
 		else
-			throw new IllegalArgumentException(term.toString());
+			if (term instanceof ATermInt)
+				_obj = NodeFactory.createLiteral(term.toString(), null, XSDDatatype.XSDnonNegativeInteger);
+			else
+				if (term instanceof ATermList)
+					visitList((ATermList) term);
+				else
+					throw new IllegalArgumentException(term.toString());
 
 		_subj = prevSubj;
 
@@ -131,7 +134,8 @@ public class ConceptConverter extends ATermBaseVisitor
 		final Node restr = createRestriction(term, restrType);
 
 		final Node qual = convert(term.getArgument(2));
-		if (!ATermUtils.isTop((ATermAppl) term.getArgument(2))) TripleAdder.add(_graph, restr, OWL2.onClass, qual);
+		if (!ATermUtils.isTop((ATermAppl) term.getArgument(2)))
+			TripleAdder.add(_graph, restr, OWL2.onClass, qual);
 
 		_obj = restr;
 

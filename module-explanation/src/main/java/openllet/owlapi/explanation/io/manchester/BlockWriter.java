@@ -33,8 +33,8 @@ import java.io.Writer;
  */
 public abstract class BlockWriter extends PrintWriter
 {
-	protected String	_pad		= null;
-	protected boolean	_newLine	= true;
+	protected String _pad = null;
+	protected boolean _newLine = true;
 
 	public BlockWriter(final Writer outWriter, final String pad)
 	{

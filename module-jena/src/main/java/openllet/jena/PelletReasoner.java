@@ -31,9 +31,7 @@
 package openllet.jena;
 
 import java.util.logging.Logger;
-import openllet.core.KnowledgeBase;
-import openllet.jena.graph.loader.DefaultGraphLoader;
-import openllet.shared.tools.Log;
+
 import org.apache.jena.graph.Capabilities;
 import org.apache.jena.graph.Graph;
 import org.apache.jena.rdf.model.InfModel;
@@ -46,20 +44,24 @@ import org.apache.jena.reasoner.Reasoner;
 import org.apache.jena.reasoner.ReasonerException;
 import org.apache.jena.vocabulary.ReasonerVocabulary;
 
+import openllet.core.KnowledgeBase;
+import openllet.jena.graph.loader.DefaultGraphLoader;
+import openllet.shared.tools.Log;
+
 /**
  * @author Evren Sirin
  */
 public class PelletReasoner implements Reasoner
 {
-	protected static Logger		_logger	= Log.getLogger(PelletReasoner.class);
+	protected static Logger _logger = Log.getLogger(PelletReasoner.class);
 
-	private final Model			_reasonerCapabilities;
+	private final Model _reasonerCapabilities;
 
-	private final Capabilities	_graphCapabilities;
+	private final Capabilities _graphCapabilities;
 
-	private final Graph			_schema;
+	private final Graph _schema;
 
-	private boolean				_fixedSchema;
+	private boolean _fixedSchema;
 
 	public PelletReasoner()
 	{
@@ -177,7 +179,8 @@ public class PelletReasoner implements Reasoner
 	public boolean supportsProperty(final Property property)
 	{
 		final Model caps = getReasonerCapabilities();
-		if (caps == null) return false;
+		if (caps == null)
+			return false;
 		return caps.contains(null, ReasonerVocabulary.supportsP, property);
 	}
 

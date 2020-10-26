@@ -12,6 +12,12 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Logger;
+
+import org.semanticweb.owlapi.model.AsOWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLEntity;
+
 import openllet.core.utils.Timer;
 import openllet.core.utils.progress.ProgressMonitor;
 import openllet.reachability.EntityNode;
@@ -19,10 +25,6 @@ import openllet.reachability.Node;
 import openllet.reachability.PairSet;
 import openllet.reachability.Reachability;
 import openllet.shared.tools.Log;
-import org.semanticweb.owlapi.model.AsOWLNamedIndividual;
-import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.model.OWLClass;
-import org.semanticweb.owlapi.model.OWLEntity;
 
 /**
  * @author Evren Sirin
@@ -102,7 +104,8 @@ public class GraphBasedModuleExtractor extends AbstractModuleExtractor
 		for (final Object n : node.getEntities())
 		{
 			module = _modules.get(n);
-			if (module != null) break;
+			if (module != null)
+				break;
 		}
 
 		// if we don't have a module and the initial _node has a single output
@@ -142,11 +145,13 @@ public class GraphBasedModuleExtractor extends AbstractModuleExtractor
 
 			if (prevModule != null)
 			{
-				if (!prevModule.equals(module)) _logger.warning(format("Possible discrepancy for the module of %s ( Previous %s , Current %s )", n, prevModule, module));
+				if (!prevModule.equals(module))
+					_logger.warning(format("Possible discrepancy for the module of %s ( Previous %s , Current %s )", n, prevModule, module));
 			}
 			else
-			// update the monitor only for entities in the initial set
-			if (entities.contains(n)) monitor.incrementProgress();
+				// update the monitor only for entities in the initial set
+				if (entities.contains(n))
+					monitor.incrementProgress();
 		}
 
 		return module;

@@ -9,12 +9,14 @@ import java.util.EnumSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
-import openllet.shared.tools.Log;
+
 import org.semanticweb.owlapi.model.OWLDataPropertyExpression;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.search.EntitySearcher;
+
+import openllet.shared.tools.Log;
 
 /**
  * <p>
@@ -30,15 +32,15 @@ import org.semanticweb.owlapi.search.EntitySearcher;
  * Company: Clark & Parsia, LLC. <a href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
  * </p>
  *
- * @author     Mike Smith &lt;msmith@clarkparsia.com&gt;
- * @param  <O>
+ * @author Mike Smith &lt;msmith@clarkparsia.com&gt;
+ * @param <O>
  */
 public abstract class AbstractEntailmentTest<O> extends AbstractPremisedTest<O> implements EntailmentTest<O>
 {
-	private static final Logger							_logger	= Log.getLogger(AbstractEntailmentTest.class);
+	private static final Logger _logger = Log.getLogger(AbstractEntailmentTest.class);
 
-	private final EnumSet<SerializationFormat>			conclusionFormats;
-	private final EnumMap<SerializationFormat, String>	conclusionOntologyLiteral;
+	private final EnumSet<SerializationFormat> conclusionFormats;
+	private final EnumMap<SerializationFormat, String> conclusionOntologyLiteral;
 
 	public AbstractEntailmentTest(final OWLOntology ontology, final OWLNamedIndividual i, final boolean positive)
 	{

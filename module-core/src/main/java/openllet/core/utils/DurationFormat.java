@@ -40,8 +40,8 @@ public enum DurationFormat
 	 */
 	SHORT("%2$02d:%3$02d", false);
 
-	private String	_formatString;
-	private boolean	_hoursVisible;
+	private String _formatString;
+	private boolean _hoursVisible;
 
 	DurationFormat(final String formatString, final boolean hoursVisible)
 	{
@@ -52,8 +52,8 @@ public enum DurationFormat
 	/**
 	 * Format the given duration in milliseconds according to the style defined by this DurationFormat class.
 	 *
-	 * @param  durationInMilliseconds duration represented in milliseconds
-	 * @return                        duration formatted as a string
+	 * @param durationInMilliseconds duration represented in milliseconds
+	 * @return duration formatted as a string
 	 */
 	public String format(final long durationInMilliseconds)
 	{

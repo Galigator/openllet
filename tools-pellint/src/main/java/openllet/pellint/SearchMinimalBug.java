@@ -14,11 +14,7 @@ import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
-import openllet.core.KnowledgeBase;
-import openllet.owlapi.OWLGenericTools;
-import openllet.owlapi.OWLHelper;
-import openllet.owlapi.OWLManagerGroup;
-import openllet.owlapi.OpenlletReasoner;
+
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;
@@ -27,13 +23,19 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.OWLEntityRenamer;
 
+import openllet.core.KnowledgeBase;
+import openllet.owlapi.OWLGenericTools;
+import openllet.owlapi.OWLHelper;
+import openllet.owlapi.OWLManagerGroup;
+import openllet.owlapi.OpenlletReasoner;
+
 public class SearchMinimalBug
 {
-	private static String			minimalOntologyFile	= "minimalOntologyFile.owl";
-	private static final int		nCPU				= Runtime.getRuntime().availableProcessors();
-	private static ExecutorService	_executor			= Executors.newFixedThreadPool(nCPU);
-	private final Random			_random				= new Random();
-	private int						_minimalAxiomsCount	= -1;
+	private static String minimalOntologyFile = "minimalOntologyFile.owl";
+	private static final int nCPU = Runtime.getRuntime().availableProcessors();
+	private static ExecutorService _executor = Executors.newFixedThreadPool(nCPU);
+	private final Random _random = new Random();
+	private int _minimalAxiomsCount = -1;
 
 	private List<OWLAxiom> randomizeAxioms(final OWLAxiom[] axioms)
 	{
@@ -67,10 +69,10 @@ public class SearchMinimalBug
 
 	class Worker implements Runnable
 	{
-		private final List<OWLAxiom>	_allAxioms;
-		private final List<OWLAxiom>	_removedAxioms;
-		private final String			NS			= OWLHelper._protocol + Thread.currentThread().getName();
-		private final int				_tryCount	= 0;
+		private final List<OWLAxiom> _allAxioms;
+		private final List<OWLAxiom> _removedAxioms;
+		private final String NS = OWLHelper._protocol + Thread.currentThread().getName();
+		private final int _tryCount = 0;
 
 		public Worker(final OWLAxiom[] axioms)
 		{

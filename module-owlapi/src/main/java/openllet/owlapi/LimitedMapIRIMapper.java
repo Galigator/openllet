@@ -2,6 +2,7 @@ package openllet.owlapi;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyIRIMapper;
 
@@ -23,8 +24,8 @@ import org.semanticweb.owlapi.model.OWLOntologyIRIMapper;
  */
 public class LimitedMapIRIMapper implements OWLOntologyIRIMapper
 {
-	private static final long	serialVersionUID	= 6168686462330770641L;
-	private final Map<IRI, IRI>	_allowed			= new ConcurrentHashMap<>();
+	private static final long serialVersionUID = 6168686462330770641L;
+	private final Map<IRI, IRI> _allowed = new ConcurrentHashMap<>();
 
 	public void addAllowedIRI(final IRI ontologyIRI)
 	{

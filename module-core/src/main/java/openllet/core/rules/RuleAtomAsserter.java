@@ -41,14 +41,14 @@ import openllet.core.utils.ATermUtils;
  */
 public class RuleAtomAsserter implements RuleAtomVisitor
 {
-	private volatile ABox				_abox;
-	private volatile CompletionStrategy	_strategy;
+	private volatile ABox _abox;
+	private volatile CompletionStrategy _strategy;
 
-	private volatile VariableBinding	_binding;
-	private volatile DependencySet		_ds;
-	private boolean						_negated;
+	private volatile VariableBinding _binding;
+	private volatile DependencySet _ds;
+	private boolean _negated;
 
-	private boolean						_asserted;
+	private boolean _asserted;
 
 	public RuleAtomAsserter()
 	{

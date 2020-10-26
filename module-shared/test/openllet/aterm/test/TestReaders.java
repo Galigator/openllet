@@ -31,28 +31,28 @@ package openllet.aterm.test;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import openllet.aterm.ATerm;
-import openllet.aterm.ATermFactory;
-import openllet.aterm.pure.PureFactory;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import openllet.aterm.ATerm;
+import openllet.aterm.ATermFactory;
+import openllet.aterm.pure.PureFactory;
+
 /**
- * Exercise the various readers. Supply the test/ directory as the
- * first command line argument. It will read the various test.* files
- * there and apply the appropriate reader.
+ * Exercise the various readers. Supply the test/ directory as the first command line argument. It will read the various test.* files there and apply the
+ * appropriate reader.
  *
  * @author Karl Trygve Kalleberg
- *
  */
 public class TestReaders
 {
-	private ATermFactory	_factory;
+	private ATermFactory _factory;
 	@SuppressWarnings("unused")
-	private String			_srcdir;
-	private ATerm			_baseline;
+	private String _srcdir;
+	private ATerm _baseline;
 
 	public final static void main(final String[] args) throws IOException
 	{

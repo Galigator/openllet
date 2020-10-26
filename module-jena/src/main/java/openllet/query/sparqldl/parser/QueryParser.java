@@ -7,6 +7,7 @@
 package openllet.query.sparqldl.parser;
 
 import java.io.InputStream;
+
 import openllet.core.KnowledgeBase;
 import openllet.query.sparqldl.model.Query;
 

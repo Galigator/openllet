@@ -14,9 +14,10 @@ import static openllet.core.utils.TermFactory.self;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Test;
+
 import junit.framework.JUnit4TestAdapter;
 import openllet.test.AbstractKBTests;
-import org.junit.Test;
 
 /**
  * <p>

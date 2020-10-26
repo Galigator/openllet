@@ -6,10 +6,11 @@
 
 package openllet.test.rules;
 
-import junit.framework.JUnit4TestAdapter;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
+
+import junit.framework.JUnit4TestAdapter;
 
 @RunWith(Suite.class)
 @SuiteClasses({ BindingGeneratorsTest.class, BuiltInTests.class, MiscRuleTests.class, SWRLTestSuite.class, SWRLBuiltIns.class })

@@ -9,6 +9,7 @@ package openllet.core.rules;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
+
 import openllet.core.boxes.abox.ABox;
 import openllet.core.boxes.abox.Individual;
 import openllet.core.rules.model.AtomIVariable;
@@ -33,10 +34,10 @@ import openllet.core.rules.model.AtomVariable;
 
 public class ObjectVariableBindingHelper implements BindingHelper
 {
-	private final ABox						_abox;
-	private final AtomIVariable				_var;
-	private volatile Individual				_currentIndividual;
-	private volatile Iterator<Individual>	_individualIterator;
+	private final ABox _abox;
+	private final AtomIVariable _var;
+	private volatile Individual _currentIndividual;
+	private volatile Iterator<Individual> _individualIterator;
 
 	public ObjectVariableBindingHelper(final ABox abox, final AtomIVariable var)
 	{
@@ -68,7 +69,8 @@ public class ObjectVariableBindingHelper implements BindingHelper
 	@Override
 	public boolean selectNextBinding()
 	{
-		if (_individualIterator == null || !_individualIterator.hasNext()) return false;
+		if (_individualIterator == null || !_individualIterator.hasNext())
+			return false;
 
 		_currentIndividual = _individualIterator.next();
 

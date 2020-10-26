@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBase;
 import openllet.core.utils.ATermUtils;
@@ -40,11 +41,11 @@ import openllet.shared.tools.Log;
 public class OptimizedQueryEngine2 extends AbstractABoxEngineWrapper
 {
 	@SuppressWarnings("hiding")
-	public static final Logger	_logger	= Log.getLogger(QueryEngine.class);
+	public static final Logger _logger = Log.getLogger(QueryEngine.class);
 
-	private QueryResult			_results;
+	private QueryResult _results;
 
-	private KnowledgeBase		_kb;
+	private KnowledgeBase _kb;
 
 	/**
 	 * {@inheritDoc}

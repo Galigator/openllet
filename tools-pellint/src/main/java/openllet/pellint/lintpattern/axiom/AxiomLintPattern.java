@@ -6,19 +6,20 @@
 
 package openllet.pellint.lintpattern.axiom;
 
-import openllet.pellint.lintpattern.LintPattern;
-import openllet.pellint.model.Lint;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLAxiomVisitor;
 import org.semanticweb.owlapi.model.OWLOntology;
+
+import openllet.pellint.lintpattern.LintPattern;
+import openllet.pellint.model.Lint;
 
 /**
  * <p>
  * Title: Axiom-based Lint Pattern Abstract Class
  * </p>
  * <p>
- * Description: Provides convenience (protected) methods to create and set {@link openllet.pellint.model.Lint}, and methods to traverse an OWLAxiom
- * (through OWLAxiomVisitorAdapter).
+ * Description: Provides convenience (protected) methods to create and set {@link openllet.pellint.model.Lint}, and methods to traverse an OWLAxiom (through
+ * OWLAxiomVisitorAdapter).
  * </p>
  * <p>
  * Copyright: Copyright (c) 2008
@@ -31,8 +32,8 @@ import org.semanticweb.owlapi.model.OWLOntology;
  */
 public abstract class AxiomLintPattern implements LintPattern, OWLAxiomVisitor
 {
-	private Lint		_Lint;
-	private OWLOntology	_Ontology;
+	private Lint _Lint;
+	private OWLOntology _Ontology;
 
 	protected Lint makeLint()
 	{
@@ -49,11 +50,10 @@ public abstract class AxiomLintPattern implements LintPattern, OWLAxiomVisitor
 	 * {@link openllet.pellint.model.Lint}, implementers of this class should call {@link #makeLint()} first, set any necessary information on the
 	 * {@link openllet.pellint.model.Lint}, and lastly call {@link #setLint(Lint)}.
 	 * 
-	 * @param  ontology
-	 * @param  axiom
-	 *
-	 * @return          {@link openllet.pellint.model.Lint} for the OWLAxiom, otherwise <code>null</code>.
-	 * @see             openllet.pellint.model.Lint
+	 * @param ontology
+	 * @param axiom
+	 * @return {@link openllet.pellint.model.Lint} for the OWLAxiom, otherwise <code>null</code>.
+	 * @see openllet.pellint.model.Lint
 	 */
 	public final Lint match(final OWLOntology ontology, final OWLAxiom axiom)
 	{

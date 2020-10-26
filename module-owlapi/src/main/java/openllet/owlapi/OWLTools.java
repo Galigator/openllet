@@ -5,12 +5,14 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
-import openllet.shared.tools.Log;
+
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+
+import openllet.shared.tools.Log;
 
 /**
  * The main difference between OWLTools and OWLGenericTools is the usage of static resources by OWLTools from OWLUtils. Statics resources have many usage for
@@ -31,9 +33,9 @@ public class OWLTools extends OWLGenericTools
 	/**
 	 * Load the ontology ontologyId into the good manager or create it if it doesn't previously exist.
 	 *
-	 * @param  ontologyID                   is the reference to the ontology
+	 * @param ontologyID is the reference to the ontology
 	 * @throws OWLOntologyCreationException is raise when things goes baddly wrong.
-	 * @since                               2.5.1
+	 * @since 2.5.1
 	 */
 	public OWLTools(final OWLOntologyID ontologyID) throws OWLOntologyCreationException
 	{

@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
 import openllet.core.OpenlletOptions;
@@ -45,7 +46,8 @@ public class UnfoldingRule extends AbstractTableauRule
 	@Override
 	public void apply(final Individual node)
 	{
-		if (!node.canApply(Node.ATOM)) return;
+		if (!node.canApply(Node.ATOM))
+			return;
 
 		final List<ATermAppl> types = node.getTypes(Node.ATOM);
 		int size = types.size();
@@ -53,11 +55,13 @@ public class UnfoldingRule extends AbstractTableauRule
 		{
 			final ATermAppl c = types.get(j);
 
-			if (!OpenlletOptions.MAINTAIN_COMPLETION_QUEUE && node.getDepends(c) == null) continue;
+			if (!OpenlletOptions.MAINTAIN_COMPLETION_QUEUE && node.getDepends(c) == null)
+				continue;
 
 			applyUnfoldingRule(node, c);
 
-			if (_strategy.getABox().isClosed()) return;
+			if (_strategy.getABox().isClosed())
+				return;
 
 			// it is possible that unfolding added new atomic
 			// concepts that we need to further unfold
@@ -70,7 +74,8 @@ public class UnfoldingRule extends AbstractTableauRule
 	{
 		final DependencySet ds = node.getDepends(c);
 
-		if (!OpenlletOptions.MAINTAIN_COMPLETION_QUEUE && ds == null) return;
+		if (!OpenlletOptions.MAINTAIN_COMPLETION_QUEUE && ds == null)
+			return;
 
 		final Iterator<Unfolding> unfoldingList = _strategy.getTBox().unfold(c);
 
@@ -80,7 +85,8 @@ public class UnfoldingRule extends AbstractTableauRule
 			final ATermAppl unfoldingCondition = unfolding.getCondition();
 			DependencySet finalDS = node.getDepends(unfoldingCondition);
 
-			if (finalDS == null) continue;
+			if (finalDS == null)
+				continue;
 
 			final Set<ATermAppl> unfoldingDS = unfolding.getExplanation();
 			finalDS = finalDS.union(ds, _strategy.getABox().doExplanation());

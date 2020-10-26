@@ -1,9 +1,11 @@
 package openllet.owlwg.runner;
 
 import java.util.Collection;
+
+import org.semanticweb.owlapi.model.IRI;
+
 import openllet.owlwg.testcase.TestCase;
 import openllet.owlwg.testrun.TestRunResult;
-import org.semanticweb.owlapi.model.IRI;
 
 /**
  * <p>
@@ -20,8 +22,8 @@ import org.semanticweb.owlapi.model.IRI;
  * Company: Clark & Parsia, LLC. <a href="http://clarkparsia.com/"/>http://clarkparsia.com/</a>
  * </p>
  *
- * @author     Mike Smith &lt;msmith@clarkparsia.com&gt;
- * @param  <T>
+ * @author Mike Smith &lt;msmith@clarkparsia.com&gt;
+ * @param <T>
  */
 public class ReadOnlyTestRunner<T> implements TestRunner<T>
 {
@@ -31,8 +33,8 @@ public class ReadOnlyTestRunner<T> implements TestRunner<T>
 		return new ReadOnlyTestRunner<>(iri, name);
 	}
 
-	final private IRI		_iri;
-	final private String	_name;
+	final private IRI _iri;
+	final private String _name;
 
 	public ReadOnlyTestRunner(final IRI iri, final String name)
 	{
@@ -43,7 +45,8 @@ public class ReadOnlyTestRunner<T> implements TestRunner<T>
 	@Override
 	public boolean equals(final Object obj)
 	{
-		if (this == obj) return true;
+		if (this == obj)
+			return true;
 
 		if (obj instanceof ReadOnlyTestRunner)
 		{

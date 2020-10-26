@@ -7,6 +7,7 @@
 package openllet.core.tableau.cache;
 
 import java.util.Map;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
 import openllet.core.boxes.abox.EdgeList;
@@ -77,8 +78,8 @@ public interface CachedNode
 	 * Checks if this node is connected to another _node with the given role (or one of its subproperties). The _node may have an incoming edge with the inverse
 	 * of this role which would count as an r-neighbor.
 	 *
-	 * @param  role
-	 * @return      Outgoing edges of this node
+	 * @param role
+	 * @return Outgoing edges of this node
 	 */
 	boolean hasRNeighbor(Role role);
 

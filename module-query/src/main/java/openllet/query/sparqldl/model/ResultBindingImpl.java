@@ -9,6 +9,7 @@ package openllet.query.sparqldl.model;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
 import openllet.aterm.ATermAppl;
 
 /**
@@ -126,15 +127,21 @@ public class ResultBindingImpl implements ResultBinding
 	@Override
 	public boolean equals(final Object obj)
 	{
-		if (this == obj) return true;
-		if (obj == null) return false;
-		if (getClass() != obj.getClass()) return false;
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
 		final ResultBindingImpl other = (ResultBindingImpl) obj;
 		if (_bindings == null)
 		{
-			if (other._bindings != null) return false;
+			if (other._bindings != null)
+				return false;
 		}
-		else if (!_bindings.equals(other._bindings)) return false;
+		else
+			if (!_bindings.equals(other._bindings))
+				return false;
 		return true;
 	}
 }

@@ -13,11 +13,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
+
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.datatypes.Datatype;
 import openllet.core.datatypes.EmptyRestrictedDatatype;
@@ -56,11 +58,11 @@ public class RestrictedTimelineDatatype implements RestrictedDatatype<XMLGregori
 	 * #contains calls
 	 */
 
-	private static final DatatypeFactory	dtFactory;
-	private static final Logger				_logger			= Log.getLogger(RestrictedTimelineDatatype.class);
-	private static final BigInteger			SEC_PER_DAY		= BigInteger.valueOf(86400);
-	private static final BigInteger			SEC_PER_YEAR	= BigInteger.valueOf(31536000);
-	private static final int				TZ_SHIFT		= 14 * 60 * 60;
+	private static final DatatypeFactory dtFactory;
+	private static final Logger _logger = Log.getLogger(RestrictedTimelineDatatype.class);
+	private static final BigInteger SEC_PER_DAY = BigInteger.valueOf(86400);
+	private static final BigInteger SEC_PER_YEAR = BigInteger.valueOf(31536000);
+	private static final int TZ_SHIFT = 14 * 60 * 60;
 
 	static
 	{
@@ -81,7 +83,8 @@ public class RestrictedTimelineDatatype implements RestrictedDatatype<XMLGregori
 
 		BigInteger yrPlusOne = c.getEonAndYear();
 		final BigInteger y = yrPlusOne == null ? BigInteger.valueOf(1971) : yrPlusOne.subtract(BigInteger.ONE);
-		if (yrPlusOne == null) yrPlusOne = BigInteger.valueOf(1972);
+		if (yrPlusOne == null)
+			yrPlusOne = BigInteger.valueOf(1972);
 
 		final int month = c.getMonth() == DatatypeConstants.FIELD_UNDEFINED ? 12 : c.getMonth();
 
@@ -96,7 +99,8 @@ public class RestrictedTimelineDatatype implements RestrictedDatatype<XMLGregori
 		final BigDecimal fractionalSecond = c.getFractionalSecond();
 
 		final int tz = c.getTimezone();
-		if (tz != DatatypeConstants.FIELD_UNDEFINED) minute = minute - tz;
+		if (tz != DatatypeConstants.FIELD_UNDEFINED)
+			minute = minute - tz;
 
 		BigInteger toTi;
 
@@ -184,22 +188,24 @@ public class RestrictedTimelineDatatype implements RestrictedDatatype<XMLGregori
 			final int cmp = OWLRealUtils.compare(lower, upper);
 			if (cmp > 0)
 				return null;
-			else if (cmp == 0) if (!i.inclusiveLower() && !i.inclusiveUpper())
-				return null;
 			else
-				return new ContinuousRealInterval(lower);
+				if (cmp == 0)
+					if (!i.inclusiveLower() && !i.inclusiveUpper())
+						return null;
+					else
+						return new ContinuousRealInterval(lower);
 		}
 		return new ContinuousRealInterval(lower, upper, i.inclusiveLower(), i.inclusiveUpper());
 	}
 
-	protected final Datatype<? extends XMLGregorianCalendar>	_datatype;
+	protected final Datatype<? extends XMLGregorianCalendar> _datatype;
 
-	protected final RestrictedDatatype<XMLGregorianCalendar>	_empty;
-	protected final boolean										_enumerable;
-	protected final boolean										_finite;
-	protected final List<ContinuousRealInterval>				_nzIntervals;
-	protected final QName										_schemaType;
-	protected final List<ContinuousRealInterval>				_wzIntervals;
+	protected final RestrictedDatatype<XMLGregorianCalendar> _empty;
+	protected final boolean _enumerable;
+	protected final boolean _finite;
+	protected final List<ContinuousRealInterval> _nzIntervals;
+	protected final QName _schemaType;
+	protected final List<ContinuousRealInterval> _wzIntervals;
 
 	public RestrictedTimelineDatatype(final Datatype<? extends XMLGregorianCalendar> datatype, final QName schemaType, final boolean requireTz)
 	{
@@ -207,7 +213,7 @@ public class RestrictedTimelineDatatype implements RestrictedDatatype<XMLGregori
 		_schemaType = schemaType;
 		_empty = new EmptyRestrictedDatatype<>(datatype);
 		_wzIntervals = Collections.singletonList(ContinuousRealInterval.allReals());
-		_nzIntervals = requireTz ? Collections.<ContinuousRealInterval>emptyList() : Collections.singletonList(ContinuousRealInterval.allReals());
+		_nzIntervals = requireTz ? Collections.<ContinuousRealInterval> emptyList() : Collections.singletonList(ContinuousRealInterval.allReals());
 		_finite = false;
 		_enumerable = false;
 	}
@@ -230,12 +236,13 @@ public class RestrictedTimelineDatatype implements RestrictedDatatype<XMLGregori
 					allFinite = false;
 					break;
 				}
-			if (allFinite) for (final ContinuousRealInterval i : wzIntervals)
-				if (!i.isPoint())
-				{
-					allFinite = false;
-					break;
-				}
+			if (allFinite)
+				for (final ContinuousRealInterval i : wzIntervals)
+					if (!i.isPoint())
+					{
+						allFinite = false;
+						break;
+					}
 			_finite = allFinite;
 		}
 		if (other._enumerable)
@@ -243,12 +250,13 @@ public class RestrictedTimelineDatatype implements RestrictedDatatype<XMLGregori
 		else
 		{
 			boolean allEnumerable = nzIntervals.isEmpty();
-			if (allEnumerable) for (final ContinuousRealInterval i : wzIntervals)
-				if (!i.isPoint())
-				{
-					allEnumerable = false;
-					break;
-				}
+			if (allEnumerable)
+				for (final ContinuousRealInterval i : wzIntervals)
+					if (!i.isPoint())
+					{
+						allEnumerable = false;
+						break;
+					}
 			_enumerable = allEnumerable;
 		}
 	}
@@ -272,7 +280,8 @@ public class RestrictedTimelineDatatype implements RestrictedDatatype<XMLGregori
 		 * Check the value
 		 */
 		XMLGregorianCalendar c = null;
-		if (value instanceof XMLGregorianCalendar) c = (XMLGregorianCalendar) value;
+		if (value instanceof XMLGregorianCalendar)
+			c = (XMLGregorianCalendar) value;
 		if (c == null || !isValidValue(c))
 		{
 			final String msg = format("Attempt to constrain datatype (%s) using constraining facet ('%s') with an unsupported value ('%s')", getDatatype(), f, value);
@@ -289,29 +298,32 @@ public class RestrictedTimelineDatatype implements RestrictedDatatype<XMLGregori
 			upper = calendarToReal(c);
 			inclusiveUpper = false;
 		}
-		else if (XSD.MAX_INCLUSIVE.equals(f))
-		{
-			lower = null;
-			inclusiveLower = false;
-			upper = calendarToReal(c);
-			inclusiveUpper = true;
-		}
-		else if (XSD.MIN_EXCLUSIVE.equals(f))
-		{
-			lower = calendarToReal(c);
-			inclusiveLower = false;
-			upper = null;
-			inclusiveUpper = false;
-		}
-		else if (XSD.MIN_INCLUSIVE.equals(f))
-		{
-			lower = calendarToReal(c);
-			inclusiveLower = true;
-			upper = null;
-			inclusiveUpper = false;
-		}
 		else
-			throw new IllegalStateException();
+			if (XSD.MAX_INCLUSIVE.equals(f))
+			{
+				lower = null;
+				inclusiveLower = false;
+				upper = calendarToReal(c);
+				inclusiveUpper = true;
+			}
+			else
+				if (XSD.MIN_EXCLUSIVE.equals(f))
+				{
+					lower = calendarToReal(c);
+					inclusiveLower = false;
+					upper = null;
+					inclusiveUpper = false;
+				}
+				else
+					if (XSD.MIN_INCLUSIVE.equals(f))
+					{
+						lower = calendarToReal(c);
+						inclusiveLower = true;
+						upper = null;
+						inclusiveUpper = false;
+					}
+					else
+						throw new IllegalStateException();
 
 		ContinuousRealInterval wzRestriction, nzRestriction;
 		{
@@ -340,7 +352,8 @@ public class RestrictedTimelineDatatype implements RestrictedDatatype<XMLGregori
 				if (j != null)
 				{
 					revisedWz.add(j);
-					if (i != j) changes = true;
+					if (i != j)
+						changes = true;
 				}
 				else
 					changes = true;
@@ -356,7 +369,8 @@ public class RestrictedTimelineDatatype implements RestrictedDatatype<XMLGregori
 				if (j != null)
 				{
 					revisedNz.add(j);
-					if (i != j) changes = true;
+					if (i != j)
+						changes = true;
 				}
 				else
 					changes = true;
@@ -389,7 +403,8 @@ public class RestrictedTimelineDatatype implements RestrictedDatatype<XMLGregori
 				 * is no need to look further).
 				 */
 				for (final ContinuousRealInterval i : c.getTimezone() == DatatypeConstants.FIELD_UNDEFINED ? _nzIntervals : _wzIntervals)
-					if (i.contains(n)) return true;
+					if (i.contains(n))
+						return true;
 				return false;
 			}
 			else
@@ -403,7 +418,8 @@ public class RestrictedTimelineDatatype implements RestrictedDatatype<XMLGregori
 	@SuppressWarnings("unused") // because of wzInterval
 	public boolean containsAtLeast(final int n)
 	{
-		if (!_finite || n <= 0) return true;
+		if (!_finite || n <= 0)
+			return true;
 
 		Number sum = 0;
 		/*
@@ -412,7 +428,8 @@ public class RestrictedTimelineDatatype implements RestrictedDatatype<XMLGregori
 		for (final ContinuousRealInterval wzInterval : _wzIntervals)
 		{
 			sum = OWLRealUtils.integerSum(sum, 28 * 60 + 1);
-			if (OWLRealUtils.compare(n, sum) <= 0) return true;
+			if (OWLRealUtils.compare(n, sum) <= 0)
+				return true;
 		}
 
 		return false;
@@ -446,10 +463,12 @@ public class RestrictedTimelineDatatype implements RestrictedDatatype<XMLGregori
 							it.remove();
 
 							final ContinuousRealInterval less = i.less(n);
-							if (less != null) revisedNz.add(less);
+							if (less != null)
+								revisedNz.add(less);
 
 							final ContinuousRealInterval greater = i.greater(n);
-							if (greater != null) revisedNz.add(greater);
+							if (greater != null)
+								revisedNz.add(greater);
 
 							break;
 						}
@@ -512,7 +531,8 @@ public class RestrictedTimelineDatatype implements RestrictedDatatype<XMLGregori
 				for (final ContinuousRealInterval j : intersectWithWz)
 				{
 					final ContinuousRealInterval k = i.intersection(j);
-					if (k != null) revisedWz.add(k);
+					if (k != null)
+						revisedWz.add(k);
 				}
 
 			/*
@@ -539,7 +559,8 @@ public class RestrictedTimelineDatatype implements RestrictedDatatype<XMLGregori
 				for (final ContinuousRealInterval j : intersectWithNz)
 				{
 					final ContinuousRealInterval k = i.intersection(j);
-					if (k != null) revisedNz.add(k);
+					if (k != null)
+						revisedNz.add(k);
 				}
 
 			/*
@@ -548,10 +569,11 @@ public class RestrictedTimelineDatatype implements RestrictedDatatype<XMLGregori
 
 			if (revisedWz.equals(_wzIntervals) && revisedNz.equals(_nzIntervals))
 				return this;
-			else if (revisedWz.isEmpty() && revisedNz.isEmpty())
-				return _empty;
 			else
-				return create(this, revisedWz, revisedNz);
+				if (revisedWz.isEmpty() && revisedNz.isEmpty())
+					return _empty;
+				else
+					return create(this, revisedWz, revisedNz);
 
 		}
 		else
@@ -586,13 +608,15 @@ public class RestrictedTimelineDatatype implements RestrictedDatatype<XMLGregori
 	@SuppressWarnings("unused") // because of wzInterval
 	public int size()
 	{
-		if (!_finite) throw new IllegalStateException();
+		if (!_finite)
+			throw new IllegalStateException();
 
 		Number sum = 0;
 		for (final ContinuousRealInterval wzInterval : _wzIntervals)
 		{
 			sum = OWLRealUtils.integerSum(sum, 28 * 60 + 1);
-			if (OWLRealUtils.compare(Integer.MAX_VALUE, sum) <= 0) return Integer.MAX_VALUE;
+			if (OWLRealUtils.compare(Integer.MAX_VALUE, sum) <= 0)
+				return Integer.MAX_VALUE;
 		}
 		return sum.intValue();
 	}

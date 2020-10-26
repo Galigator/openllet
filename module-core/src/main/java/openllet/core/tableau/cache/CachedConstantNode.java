@@ -7,6 +7,7 @@
 package openllet.core.tableau.cache;
 
 import java.util.Map;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
 import openllet.core.boxes.abox.EdgeList;
@@ -32,11 +33,11 @@ public class CachedConstantNode implements CachedNode
 		TOP, BOTTOM, INCOMPLETE
 	}
 
-	public static final CachedNode	_TOP		= new CachedConstantNode(CachedNodeType.TOP);
-	public static final CachedNode	_BOTTOM		= new CachedConstantNode(CachedNodeType.BOTTOM);
-	public static final CachedNode	_INCOMPLETE	= new CachedConstantNode(CachedNodeType.INCOMPLETE);
+	public static final CachedNode _TOP = new CachedConstantNode(CachedNodeType.TOP);
+	public static final CachedNode _BOTTOM = new CachedConstantNode(CachedNodeType.BOTTOM);
+	public static final CachedNode _INCOMPLETE = new CachedConstantNode(CachedNodeType.INCOMPLETE);
 
-	private final CachedNodeType	_type;
+	private final CachedNodeType _type;
 
 	private CachedConstantNode(final CachedNodeType type)
 	{

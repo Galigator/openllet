@@ -11,9 +11,9 @@ import openllet.core.rules.model.Rule;
 
 public class PartialBinding
 {
-	private final Rule				_rule;
-	private final VariableBinding	_binding;
-	private final DependencySet		_ds;
+	private final Rule _rule;
+	private final VariableBinding _binding;
+	private final DependencySet _ds;
 
 	public PartialBinding(final Rule rule, final VariableBinding binding, final DependencySet ds)
 	{

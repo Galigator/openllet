@@ -1,13 +1,13 @@
 package openllet.profiler.statistical;
 
-import junit.framework.JUnit4TestAdapter;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import junit.framework.JUnit4TestAdapter;
+
 /**
  * @author Pedro Oliveira <pedro@clarkparsia.com>
- *
  */
 @RunWith(Suite.class)
 @SuiteClasses({ ReleasePerformanceTest.class })

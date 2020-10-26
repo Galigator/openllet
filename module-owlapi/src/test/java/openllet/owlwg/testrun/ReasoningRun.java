@@ -6,6 +6,7 @@ import static openllet.owlwg.testrun.RunTestType.NEGATIVE_ENTAILMENT;
 import static openllet.owlwg.testrun.RunTestType.POSITIVE_ENTAILMENT;
 
 import java.util.EnumSet;
+
 import openllet.owlwg.runner.TestRunner;
 import openllet.owlwg.testcase.TestCase;
 
@@ -41,7 +42,8 @@ public class ReasoningRun extends AbstractRun
 	public ReasoningRun(final TestCase<?> testcase, final RunResultType resultType, final RunTestType testType, final TestRunner<?> runner, final String details, final Throwable cause)
 	{
 		super(testcase, resultType, testType, runner, details, cause);
-		if (!EnumSet.of(CONSISTENCY, INCONSISTENCY, NEGATIVE_ENTAILMENT, POSITIVE_ENTAILMENT).contains(testType)) throw new IllegalArgumentException();
+		if (!EnumSet.of(CONSISTENCY, INCONSISTENCY, NEGATIVE_ENTAILMENT, POSITIVE_ENTAILMENT).contains(testType))
+			throw new IllegalArgumentException();
 	}
 
 	@Override

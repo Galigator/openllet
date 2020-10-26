@@ -19,12 +19,12 @@ public class MergeDependency implements Dependency
 	/**
 	 * The _individual that _ind is merged to
 	 */
-	private final ATermAppl	_mergedIntoInd;
+	private final ATermAppl _mergedIntoInd;
 
 	/**
 	 * The _individual that is merged into _mergedIntoInd
 	 */
-	private final ATermAppl	_ind;
+	private final ATermAppl _ind;
 
 	/**
 	 * Constructor

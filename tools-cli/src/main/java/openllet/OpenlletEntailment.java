@@ -14,16 +14,18 @@ import static openllet.OpenlletCmdOptionArg.REQUIRED;
 import java.io.PrintWriter;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLLogicalAxiom;
+import org.semanticweb.owlapi.model.OWLOntology;
+
 import openllet.core.utils.FileUtils;
 import openllet.owlapi.EntailmentChecker;
 import openllet.owlapi.OWLAPILoader;
 import openllet.owlapi.OpenlletReasoner;
 import openllet.owlapi.explanation.io.manchester.ManchesterSyntaxObjectRenderer;
 import openllet.owlapi.explanation.io.manchester.TextBlockWriter;
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.model.OWLLogicalAxiom;
-import org.semanticweb.owlapi.model.OWLOntology;
 
 /**
  * <p>
@@ -42,8 +44,8 @@ import org.semanticweb.owlapi.model.OWLOntology;
 public class OpenlletEntailment extends OpenlletCmdApp
 {
 
-	private String	entailmentFile;
-	private boolean	findAll;
+	private String entailmentFile;
+	private boolean findAll;
 
 	public OpenlletEntailment()
 	{

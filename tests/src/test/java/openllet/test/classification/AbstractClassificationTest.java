@@ -8,8 +8,9 @@
 
 package openllet.test.classification;
 
-import openllet.test.PelletTestSuite;
 import org.junit.Test;
+
+import openllet.test.PelletTestSuite;
 
 /**
  * @author Evren Sirin
@@ -17,9 +18,9 @@ import org.junit.Test;
 public abstract class AbstractClassificationTest
 {
 
-	public static final String	base				= PelletTestSuite.base + "modularity/";
+	public static final String base = PelletTestSuite.base + "modularity/";
 
-	protected static boolean	FAIL_AT_FIRST_ERROR	= false;
+	protected static boolean FAIL_AT_FIRST_ERROR = false;
 
 	public void testFile(final String fileName) throws Exception
 	{

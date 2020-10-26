@@ -17,10 +17,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import openllet.atom.OpenError;
-import openllet.core.exceptions.UnsupportedFeatureException;
-import openllet.core.utils.VersionInfo;
-import openllet.shared.tools.Log;
+
 import org.apache.jena.query.ARQ;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
@@ -32,6 +29,11 @@ import org.apache.jena.sparql.vocabulary.FOAF;
 import org.apache.jena.util.FileManager;
 import org.apache.jena.util.LocatorFile;
 import org.apache.jena.vocabulary.RDF;
+
+import openllet.atom.OpenError;
+import openllet.core.exceptions.UnsupportedFeatureException;
+import openllet.core.utils.VersionInfo;
+import openllet.shared.tools.Log;
 
 /**
  * <p>
@@ -49,18 +51,18 @@ import org.apache.jena.vocabulary.RDF;
 
 public class ManifestEngine
 {
-	private static final Logger				_logger			= Log.getLogger(ManifestEngine.class);
+	private static final Logger _logger = Log.getLogger(ManifestEngine.class);
 
 	// MANIFESTS
-	private final String					_manifest;
+	private final String _manifest;
 
 	// SINGLE TEST EXECUTOR
-	private ManifestEngineProcessor			_singleTestExecutor;
+	private ManifestEngineProcessor _singleTestExecutor;
 
 	// RESULTS
-	private final List<SingleTestResult>	_results		= new ArrayList<>();
+	private final List<SingleTestResult> _results = new ArrayList<>();
 
-	private boolean							_writeResults	= false;
+	private boolean _writeResults = false;
 
 	public ManifestEngine(final SparqlDawgTester tester, final String manifest)
 	{
@@ -117,7 +119,8 @@ public class ManifestEngine
 
 	private void writeEarlResults()
 	{
-		if (!_writeResults) return;
+		if (!_writeResults)
+			return;
 
 		final Model model = ModelFactory.createDefaultModel();
 
@@ -349,10 +352,11 @@ public class ManifestEngine
 			// QUERY
 			final Statement qfCandidate = actionNode.getProperty(SparqlDawgTestVocabulary.query);
 
-			if (qfCandidate != null) if (queryFile == null)
-				queryFile = qfCandidate.getResource().getURI();
-			else
-				throw new IllegalArgumentException("More than 1 query has been set : " + queryFile + " vs. " + qfCandidate);
+			if (qfCandidate != null)
+				if (queryFile == null)
+					queryFile = qfCandidate.getResource().getURI();
+				else
+					throw new IllegalArgumentException("More than 1 query has been set : " + queryFile + " vs. " + qfCandidate);
 
 			// GRAPH
 			final StmtIterator dataI = actionNode.listProperties(SparqlDawgTestVocabulary.data);
@@ -369,7 +373,8 @@ public class ManifestEngine
 
 		String resultFile = null;
 
-		if (resultFileStmt != null) resultFile = resultFileStmt.getResource().getURI();
+		if (resultFileStmt != null)
+			resultFile = resultFileStmt.getResource().getURI();
 
 		if (tester.isApplicable(testCase.getURI()))
 		{
@@ -412,9 +417,12 @@ public class ManifestEngine
 	{
 		if (testType.equals(SparqlDawgTestVocabulary.PositiveSyntaxTest))
 			return doSyntaxTest(tester, testCase, true);
-		else if (testType.equals(SparqlDawgTestVocabulary.NegativeSyntaxTest))
-			return doSyntaxTest(tester, testCase, false);
-		else if (testType.equals(SparqlDawgTestVocabulary.QueryEvaluationTest)) return doEvaluationTest(tester, testCase);
+		else
+			if (testType.equals(SparqlDawgTestVocabulary.NegativeSyntaxTest))
+				return doSyntaxTest(tester, testCase, false);
+			else
+				if (testType.equals(SparqlDawgTestVocabulary.QueryEvaluationTest))
+					return doEvaluationTest(tester, testCase);
 
 		throw new OpenError("Unknown test type " + testType.getLocalName() + " for " + testCase);
 	}

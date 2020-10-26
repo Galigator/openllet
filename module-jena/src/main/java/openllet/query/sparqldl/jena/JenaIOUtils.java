@@ -9,13 +9,15 @@ package openllet.query.sparqldl.jena;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URI;
-import openllet.atom.OpenError;
+
 import org.apache.jena.query.ResultSet;
 import org.apache.jena.query.ResultSetFactory;
 import org.apache.jena.rdf.model.ResourceFactory;
 import org.apache.jena.riot.resultset.rw.ResultsStAX;
 import org.apache.jena.sparql.resultset.ResultsFormat;
 import org.apache.jena.util.FileManager;
+
+import openllet.atom.OpenError;
 
 /**
  * <p>
@@ -58,12 +60,14 @@ public class JenaIOUtils
 			{
 				return ResultSetFactory.fromXML(os);
 			}
-		else if (resultURI.endsWith("ttl"))
-			return ResultSetFactory.load(resultURI, ResultsFormat.FMT_RDF_TTL);
-		else if (resultURI.endsWith("rdf"))
-			return ResultSetFactory.load(resultURI, ResultsFormat.FMT_RDF_XML);
 		else
-			throw new OpenError("Unknown format.");
+			if (resultURI.endsWith("ttl"))
+				return ResultSetFactory.load(resultURI, ResultsFormat.FMT_RDF_TTL);
+			else
+				if (resultURI.endsWith("rdf"))
+					return ResultSetFactory.load(resultURI, ResultsFormat.FMT_RDF_XML);
+				else
+					throw new OpenError("Unknown format.");
 	}
 
 	// TODO meanwhile just for files
@@ -74,19 +78,21 @@ public class JenaIOUtils
 			{
 				return ResultsStAX.read(in, null, null).getBooleanResult();
 			}
-		else if (resultURI.endsWith("ttl") || resultURI.endsWith("rdf"))
-			return FileManager.get().loadModel(resultURI.substring(5)).getProperty(null, ResourceFactory.createProperty("http://www.w3.org/2001/sw/DataAccess/tests/result-set#boolean")).getBoolean();
 		else
-			throw new OpenError("Unknown format.");
+			if (resultURI.endsWith("ttl") || resultURI.endsWith("rdf"))
+				return FileManager.get().loadModel(resultURI.substring(5)).getProperty(null, ResourceFactory.createProperty("http://www.w3.org/2001/sw/DataAccess/tests/result-set#boolean")).getBoolean();
+			else
+				throw new OpenError("Unknown format.");
 	}
 
 	public static RDFFormatType fileType(final String fileURI)
 	{
 		if (fileURI.endsWith(".n3"))
 			return RDFFormatType.N3;
-		else if (fileURI.endsWith(".ttl"))
-			return RDFFormatType.TURTLE;
 		else
-			return RDFFormatType.RDFXML;
+			if (fileURI.endsWith(".ttl"))
+				return RDFFormatType.TURTLE;
+			else
+				return RDFFormatType.RDFXML;
 	}
 }

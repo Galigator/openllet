@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import openllet.aterm.AFun;
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
@@ -49,10 +50,8 @@ import openllet.aterm.ATermPlaceholder;
 import openllet.aterm.ATermReal;
 
 /**
- * Writes the given ATerm to a (streamable) binary format. Supply the constructor of this class with
- * a ATerm and keep calling the serialize method until the finished() method returns true.
- *
- * For example (yes I know this code is crappy, but it's simple):<blockquote>
+ * Writes the given ATerm to a (streamable) binary format. Supply the constructor of this class with a ATerm and keep calling the serialize method until the
+ * finished() method returns true. For example (yes I know this code is crappy, but it's simple):<blockquote>
  *
  * <pre>
  * ByteBuffer buffer = ByteBuffer.allocate(8192);
@@ -72,26 +71,26 @@ import openllet.aterm.ATermReal;
  */
 public class BinaryWriter extends ATermFwdVoid
 {
-	private final static int			ISSHAREDFLAG		= 0x00000080;
-	private final static int			ISFUNSHARED			= 0x00000040;
-	private final static int			APPLQUOTED			= 0x00000020;
+	private final static int ISSHAREDFLAG = 0x00000080;
+	private final static int ISFUNSHARED = 0x00000040;
+	private final static int APPLQUOTED = 0x00000020;
 
-	private final static int			STACKSIZE			= 256;
+	private final static int STACKSIZE = 256;
 
-	private final static int			MINIMUMFREESPACE	= 10;
+	private final static int MINIMUMFREESPACE = 10;
 
-	private final Map<ATerm, Integer>	_sharedTerms;
-	private int							_currentKey;
-	private final Map<AFun, Integer>	_applSignatures;
-	private int							_sigKey;
+	private final Map<ATerm, Integer> _sharedTerms;
+	private int _currentKey;
+	private final Map<AFun, Integer> _applSignatures;
+	private int _sigKey;
 
-	private ATermMapping[]				_stack;
-	private int							_stackPosition;
-	private ATerm						_currentTerm;
-	private int							_indexInTerm;
-	private byte[]						_tempNameWriteBuffer;
+	private ATermMapping[] _stack;
+	private int _stackPosition;
+	private ATerm _currentTerm;
+	private int _indexInTerm;
+	private byte[] _tempNameWriteBuffer;
 
-	private ByteBuffer					_currentBuffer;
+	private ByteBuffer _currentBuffer;
 
 	/**
 	 * Constructor.
@@ -120,8 +119,7 @@ public class BinaryWriter extends ATermFwdVoid
 	}
 
 	/**
-	 * Serializes the term from the position where it left of the last time this method was called.
-	 * Note that the buffer will be flipped before returned.
+	 * Serializes the term from the position where it left of the last time this method was called. Note that the buffer will be flipped before returned.
 	 *
 	 * @param buffer that will be filled with data.
 	 */
@@ -131,7 +129,8 @@ public class BinaryWriter extends ATermFwdVoid
 
 		while (_currentTerm != null)
 		{
-			if (buffer.remaining() < MINIMUMFREESPACE) break;
+			if (buffer.remaining() < MINIMUMFREESPACE)
+				break;
 
 			final Integer id = _sharedTerms.get(_currentTerm);
 			if (id != null)
@@ -145,7 +144,8 @@ public class BinaryWriter extends ATermFwdVoid
 			{
 				visit(_currentTerm);
 
-				if (_currentTerm.getType() == ATerm.LIST) _stack[_stackPosition].nextPartOfList = (ATermList) _currentTerm; // <- for ATermList->next optimizaton.
+				if (_currentTerm.getType() == ATerm.LIST)
+					_stack[_stackPosition].nextPartOfList = (ATermList) _currentTerm; // <- for ATermList->next optimizaton.
 
 				// Don't add the term to the openllet.shared.hash list until we are completely done with it.
 				if (_indexInTerm == 0)
@@ -211,8 +211,7 @@ public class BinaryWriter extends ATermFwdVoid
 	}
 
 	/**
-	 * Resizes the _stack when needed. When we're running low on _stack space the capacity will be
-	 * doubled.
+	 * Resizes the _stack when needed. When we're running low on _stack space the capacity will be doubled.
 	 */
 	private void ensureStackCapacity()
 	{
@@ -228,9 +227,8 @@ public class BinaryWriter extends ATermFwdVoid
 	/**
 	 * Returns a header for the given term.
 	 *
-	 * @param  term
-	 *              The term we are requesting a header for.
-	 * @return      The constructed header.
+	 * @param term The term we are requesting a header for.
+	 * @return The constructed header.
 	 */
 	private static byte getHeader(final ATerm term)
 	{
@@ -253,7 +251,8 @@ public class BinaryWriter extends ATermFwdVoid
 			final Integer key = _applSignatures.get(fun);
 			if (key == null)
 			{
-				if (arg.isQuoted()) header = (byte) (header | APPLQUOTED);
+				if (arg.isQuoted())
+					header = (byte) (header | APPLQUOTED);
 				_currentBuffer.put(header);
 
 				writeInt(arg.getArity());
@@ -265,7 +264,8 @@ public class BinaryWriter extends ATermFwdVoid
 
 				int endIndex = length;
 				final int remaining = _currentBuffer.remaining();
-				if (remaining < endIndex) endIndex = remaining;
+				if (remaining < endIndex)
+					endIndex = remaining;
 
 				_currentBuffer.put(nameBytes, 0, endIndex);
 
@@ -291,7 +291,8 @@ public class BinaryWriter extends ATermFwdVoid
 
 			int endIndex = length;
 			final int remaining = _currentBuffer.remaining();
-			if (_indexInTerm + remaining < endIndex) endIndex = _indexInTerm + remaining;
+			if (_indexInTerm + remaining < endIndex)
+				endIndex = _indexInTerm + remaining;
 
 			_currentBuffer.put(_tempNameWriteBuffer, _indexInTerm, endIndex - _indexInTerm);
 			_indexInTerm = endIndex;
@@ -324,12 +325,14 @@ public class BinaryWriter extends ATermFwdVoid
 
 		int bytesToWrite = size - _indexInTerm;
 		final int remaining = _currentBuffer.remaining();
-		if (remaining < bytesToWrite) bytesToWrite = remaining;
+		if (remaining < bytesToWrite)
+			bytesToWrite = remaining;
 
 		_currentBuffer.put(blobBytes, _indexInTerm, bytesToWrite);
 		_indexInTerm += bytesToWrite;
 
-		if (_indexInTerm == size) _indexInTerm = 0;
+		if (_indexInTerm == size)
+			_indexInTerm = 0;
 	}
 
 	/**
@@ -398,19 +401,16 @@ public class BinaryWriter extends ATermFwdVoid
 		writeDouble(arg.getReal());
 	}
 
-	private final static int	SEVENBITS	= 0x0000007f;
-	private final static int	SIGNBIT		= 0x00000080;
-	private final static int	LONGBITS	= 8;
+	private final static int SEVENBITS = 0x0000007f;
+	private final static int SIGNBIT = 0x00000080;
+	private final static int LONGBITS = 8;
 
 	/**
-	 * Splits the given integer in separate bytes and writes it to the buffer. It will occupy the
-	 * smallest amount of bytes possible. This is done in the following way: the sign bit will be
-	 * used to indicate that more bytes coming, if this is set to 0 we know we are done. Since we
-	 * are mostly writing small values, this will save a considerable amount of space. On the other
-	 * hand a large number will occupy 5 bytes instead of the regular 4.
+	 * Splits the given integer in separate bytes and writes it to the buffer. It will occupy the smallest amount of bytes possible. This is done in the
+	 * following way: the sign bit will be used to indicate that more bytes coming, if this is set to 0 we know we are done. Since we are mostly writing small
+	 * values, this will save a considerable amount of space. On the other hand a large number will occupy 5 bytes instead of the regular 4.
 	 *
-	 * @param value
-	 *              The integer that needs to be split and written.
+	 * @param value The integer that needs to be split and written.
 	 */
 	private void writeInt(final int value)
 	{
@@ -448,12 +448,10 @@ public class BinaryWriter extends ATermFwdVoid
 	}
 
 	/**
-	 * Splits the given double in separate bytes and writes it to the buffer. Doubles will always
-	 * occupy 8 bytes, since the convertion of a floating point number to a long will always cause
-	 * the high order bits to be occupied.
+	 * Splits the given double in separate bytes and writes it to the buffer. Doubles will always occupy 8 bytes, since the convertion of a floating point
+	 * number to a long will always cause the high order bits to be occupied.
 	 *
-	 * @param value
-	 *              The integer that needs to be split and written.
+	 * @param value The integer that needs to be split and written.
 	 */
 	private void writeDouble(final double value)
 	{
@@ -470,12 +468,9 @@ public class BinaryWriter extends ATermFwdVoid
 	/**
 	 * Writes the given openllet.aterm to the given file. Blocks of 65536 bytes will be used.
 	 *
-	 * @param  aTerm
-	 *                     The ATerm that needs to be writen to file.
-	 * @param  file
-	 *                     The file to write to.
-	 * @throws IOException
-	 *                     Thrown when an error occurs while writing to the given file.
+	 * @param aTerm The ATerm that needs to be writen to file.
+	 * @param file The file to write to.
+	 * @throws IOException Thrown when an error occurs while writing to the given file.
 	 */
 	public static void writeTermToSAFFile(final ATerm aTerm, final File file) throws IOException
 	{
@@ -513,14 +508,12 @@ public class BinaryWriter extends ATermFwdVoid
 	}
 
 	/**
-	 * Writes the given openllet.aterm to a byte array. The reason this method returns a byte array instead
-	 * of a Java String is because otherwise the binary data would be corrupted, since it would be
-	 * automatically encoded in UTF-16 format (which would completely mess everything up). Blocks
-	 * of 65536 bytes will be used.
+	 * Writes the given openllet.aterm to a byte array. The reason this method returns a byte array instead of a Java String is because otherwise the binary
+	 * data would be corrupted, since it would be automatically encoded in UTF-16 format (which would completely mess everything up). Blocks of 65536 bytes will
+	 * be used.
 	 *
-	 * @param  aTerm
-	 *               The ATerm that needs to be written to a byte array.
-	 * @return       The serialized representation of the given ATerm contained in a byte array.
+	 * @param aTerm The ATerm that needs to be written to a byte array.
+	 * @return The serialized representation of the given ATerm contained in a byte array.
 	 */
 	public static byte[] writeTermToSAFString(final ATerm aTerm)
 	{

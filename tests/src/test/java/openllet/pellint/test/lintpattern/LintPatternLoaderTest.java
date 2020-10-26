@@ -4,10 +4,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import java.util.Properties;
+
+import org.junit.Test;
+
 import openllet.pellint.lintpattern.LintPatternLoader;
 import openllet.pellint.test.lintpattern.axiom.MockAxiomLintPattern;
 import openllet.pellint.test.lintpattern.ontology.MockOntologyLintPattern;
-import org.junit.Test;
 
 /**
  * <p>
@@ -21,10 +23,10 @@ import org.junit.Test;
  */
 public class LintPatternLoaderTest
 {
-	private static final String	MOCK_AXIOM_LINT_PATTERN_NAME	= MockAxiomLintPattern.class.getName();
-	private static final String	MOCK_ONTOLOGY_LINT_PATTERN_NAME	= MockOntologyLintPattern.class.getName();
-	private static final String	INT_PARAM						= "IntParam";
-	private static final String	STRING_PARAM					= "StringParam";
+	private static final String MOCK_AXIOM_LINT_PATTERN_NAME = MockAxiomLintPattern.class.getName();
+	private static final String MOCK_ONTOLOGY_LINT_PATTERN_NAME = MockOntologyLintPattern.class.getName();
+	private static final String INT_PARAM = "IntParam";
+	private static final String STRING_PARAM = "StringParam";
 
 	@Test
 	public void testAxiomLintPatternSuccess()

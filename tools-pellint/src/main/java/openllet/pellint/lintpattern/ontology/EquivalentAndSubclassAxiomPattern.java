@@ -11,18 +11,20 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import openllet.owlapi.OWL;
-import openllet.pellint.format.CompactClassLintFormat;
-import openllet.pellint.format.LintFormat;
-import openllet.pellint.model.Lint;
-import openllet.pellint.model.LintFixer;
-import openllet.pellint.util.OWLUtil;
+
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassAxiom;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
+
+import openllet.owlapi.OWL;
+import openllet.pellint.format.CompactClassLintFormat;
+import openllet.pellint.format.LintFormat;
+import openllet.pellint.model.Lint;
+import openllet.pellint.model.LintFixer;
+import openllet.pellint.util.OWLUtil;
 
 /**
  * <p>
@@ -84,8 +86,10 @@ public class EquivalentAndSubclassAxiomPattern implements OntologyLintPattern
 					}
 			}
 
-			if (badEquivalents.isEmpty()) continue;
-			if (badEquivalents.size() == 1 && subclasses.isEmpty()) continue;
+			if (badEquivalents.isEmpty())
+				continue;
+			if (badEquivalents.size() == 1 && subclasses.isEmpty())
+				continue;
 
 			final Lint lint = new Lint(this, ontology);
 			lint.addParticipatingClass(owlClass);

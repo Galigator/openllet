@@ -6,10 +6,12 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Collections;
 import java.util.Set;
-import openllet.pellint.rdfxml.DoubtfulSet;
-import openllet.pellint.util.CollectionUtil;
+
 import org.junit.Before;
 import org.junit.Test;
+
+import openllet.pellint.rdfxml.DoubtfulSet;
+import openllet.pellint.util.CollectionUtil;
 
 /**
  * <p>
@@ -23,8 +25,8 @@ import org.junit.Test;
  */
 public class DoubtfulSetTest
 {
-	private DoubtfulSet<String>	_set;
-	private String[]			_str;
+	private DoubtfulSet<String> _set;
+	private String[] _str;
 
 	@Before
 	public void setUp()

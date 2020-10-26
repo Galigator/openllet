@@ -9,6 +9,7 @@ package openllet.core.rules;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
+
 import openllet.core.boxes.abox.ABox;
 import openllet.core.boxes.abox.Individual;
 import openllet.core.boxes.abox.Literal;
@@ -34,14 +35,14 @@ import openllet.core.rules.model.DatavaluedPropertyAtom;
  */
 public class DatavaluePropertyBindingHelper implements BindingHelper
 {
-	private final ABox						_abox;
-	private VariableBinding					_binding;
-	private Literal							_object;
-	private Iterator<Literal>				_objectIterator;
-	private final DatavaluedPropertyAtom	_pattern;
-	private Role							_role;
-	private Individual						_subject;
-	private Iterator<Individual>			_subjectIterator;
+	private final ABox _abox;
+	private VariableBinding _binding;
+	private Literal _object;
+	private Iterator<Literal> _objectIterator;
+	private final DatavaluedPropertyAtom _pattern;
+	private Role _role;
+	private Individual _subject;
+	private Iterator<Individual> _subjectIterator;
 
 	public DatavaluePropertyBindingHelper(final ABox abox, final DatavaluedPropertyAtom pattern)
 	{
@@ -68,7 +69,8 @@ public class DatavaluePropertyBindingHelper implements BindingHelper
 
 	private Role getRole()
 	{
-		if (_role == null) _role = _abox.getRole(_pattern.getPredicate());
+		if (_role == null)
+			_role = _abox.getRole(_pattern.getPredicate());
 		return _role;
 	}
 
@@ -112,35 +114,39 @@ public class DatavaluePropertyBindingHelper implements BindingHelper
 	@Override
 	public boolean selectNextBinding()
 	{
-		if (_binding == null) return false;
+		if (_binding == null)
+			return false;
 
 		while (true)
 		{
 			if (_subject == null || isObjectSet())
 			{
 				// Check to see if there are any more subjects to try
-				if (!_subjectIterator.hasNext()) return false;
+				if (!_subjectIterator.hasNext())
+					return false;
 				_subject = _subjectIterator.next();
 
-				if (!isObjectSet()) _objectIterator = new LiteralFilter(_subject.getRNeighbors(getRole()).iterator());
+				if (!isObjectSet())
+					_objectIterator = new LiteralFilter(_subject.getRNeighbors(getRole()).iterator());
 			}
 
 			if (isObjectSet())
 			{
 				// Object of _pattern is already set; just test the _pattern
 				final boolean result = _subject.getRNeighbors(getRole()).contains(getObject());
-				if (result) return true;
+				if (result)
+					return true;
 			}
 			else
-			// Cycle through possible object bindings
-			if (_objectIterator.hasNext())
-			{
-				_object = _objectIterator.next();
-				return true;
-			}
-			else
-				// no more bindings - need a new subject
-				_subject = null;
+				// Cycle through possible object bindings
+				if (_objectIterator.hasNext())
+				{
+					_object = _objectIterator.next();
+					return true;
+				}
+				else
+					// no more bindings - need a new subject
+					_subject = null;
 		}
 	}
 

@@ -9,21 +9,22 @@ package openllet.test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import openllet.atom.OpenError;
-import openllet.owlapi.OpenlletReasoner;
-import openllet.owlapi.OpenlletReasonerFactory;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+
+import openllet.atom.OpenError;
+import openllet.owlapi.OpenlletReasoner;
+import openllet.owlapi.OpenlletReasonerFactory;
 import uk.ac.manchester.cs.owl.owlapi.OWLOntologyIRIMapperImpl;
 
 public class OWLAPIWebOntTester implements WebOntTester
 {
-	private final OWLOntologyManager		_manager	= OWLManager.createOWLOntologyManager();
-	private final OWLOntologyIRIMapperImpl	_mapper		= new OWLOntologyIRIMapperImpl();
-	private OpenlletReasoner				_reasoner;
+	private final OWLOntologyManager _manager = OWLManager.createOWLOntologyManager();
+	private final OWLOntologyIRIMapperImpl _mapper = new OWLOntologyIRIMapperImpl();
+	private OpenlletReasoner _reasoner;
 
 	@Override
 	public void classify()
@@ -69,7 +70,8 @@ public class OWLAPIWebOntTester implements WebOntTester
 		}
 		finally
 		{
-			if (ont != null) _manager.removeOntology(ont);
+			if (ont != null)
+				_manager.removeOntology(ont);
 		}
 	}
 

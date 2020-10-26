@@ -9,6 +9,7 @@
 package openllet.core.boxes.tbox.impl;
 
 import java.util.Set;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.utils.ATermUtils;
 
@@ -48,9 +49,9 @@ public abstract class Unfolding
 
 	private static class Unconditional extends Unfolding
 	{
-		private final ATermAppl			_result;
+		private final ATermAppl _result;
 
-		private final Set<ATermAppl>	_explanation;
+		private final Set<ATermAppl> _explanation;
 
 		private Unconditional(final ATermAppl result, final Set<ATermAppl> explanation)
 		{
@@ -61,8 +62,10 @@ public abstract class Unfolding
 		@Override
 		public boolean equals(final Object obj)
 		{
-			if (this == obj) return true;
-			if (!(obj instanceof Unfolding)) return false;
+			if (this == obj)
+				return true;
+			if (!(obj instanceof Unfolding))
+				return false;
 			final Unconditional other = (Unconditional) obj;
 
 			return getCondition().equals(other.getCondition()) && _explanation.equals(other._explanation) && _result.equals(other._result);

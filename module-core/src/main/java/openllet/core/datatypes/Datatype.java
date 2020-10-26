@@ -17,8 +17,8 @@ import openllet.core.datatypes.exceptions.InvalidLiteralException;
  * Company: Clark & Parsia, LLC. <http://www.clarkparsia.com>
  * </p>
  *
- * @author     Mike Smith
- * @param  <T> type of literal
+ * @author Mike Smith
+ * @param <T> type of literal
  */
 public interface Datatype<T>
 {
@@ -33,8 +33,8 @@ public interface Datatype<T>
 	/**
 	 * Get the canonical representation of a lexical form
 	 *
-	 * @param  input                   a lexical form of the literal
-	 * @return                         the canonical representation of the lexical form
+	 * @param input a lexical form of the literal
+	 * @return the canonical representation of the lexical form
 	 * @throws InvalidLiteralException if input is invalid
 	 */
 	ATermAppl getCanonicalRepresentation(ATermAppl input) throws InvalidLiteralException;
@@ -43,8 +43,8 @@ public interface Datatype<T>
 	 * Get the canonical {@link ATermAppl} literal representation for a value space object. This may be unsupported by datatypes for which
 	 * {@link #isPrimitive()} returns <code>false</code>.
 	 *
-	 * @param  value                    Element of the value space for some datatype
-	 * @return                          The {@link ATermAppl} representation of <code>value</code>
+	 * @param value Element of the value space for some datatype
+	 * @return The {@link ATermAppl} representation of <code>value</code>
 	 * @throws IllegalArgumentException if <code>value</code> is not contained in the value space of the datatype
 	 */
 	ATermAppl getLiteral(Object value);
@@ -66,8 +66,8 @@ public interface Datatype<T>
 	/**
 	 * Get the Java object representation of a _data value
 	 *
-	 * @param  literal                 the literal
-	 * @return                         the Java object representation of the lexical form
+	 * @param literal the literal
+	 * @return the Java object representation of the lexical form
 	 * @throws InvalidLiteralException if literal is invalid
 	 */
 	T getValue(ATermAppl literal) throws InvalidLiteralException;

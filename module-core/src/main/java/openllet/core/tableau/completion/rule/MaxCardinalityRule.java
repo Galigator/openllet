@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
+
 import openllet.aterm.ATermAppl;
 import openllet.aterm.ATermInt;
 import openllet.core.DependencySet;
@@ -49,16 +50,19 @@ public class MaxCardinalityRule extends AbstractTableauRule
 	@Override
 	public void apply(final Individual ind)
 	{
-		if (!ind.canApply(Node.MAX)) return;
+		if (!ind.canApply(Node.MAX))
+			return;
 
 		final List<ATermAppl> maxCardinality = ind.getTypes(Node.MAX);
 		for (final ATermAppl mc : maxCardinality)
 		{
 			applyMaxRule(ind, mc);
 
-			if (_strategy.getABox().isClosed()) return;
+			if (_strategy.getABox().isClosed())
+				return;
 
-			if (ind.isMerged()) return;
+			if (ind.isMerged())
+				return;
 		}
 		ind._applyNext[Node.MAX] = maxCardinality.size();
 	}
@@ -75,12 +79,14 @@ public class MaxCardinalityRule extends AbstractTableauRule
 
 		DependencySet ds = x.getDepends(mc);
 
-		if (!OpenlletOptions.MAINTAIN_COMPLETION_QUEUE && ds == null) return;
+		if (!OpenlletOptions.MAINTAIN_COMPLETION_QUEUE && ds == null)
+			return;
 
 		if (n == 1)
 		{
 			applyFunctionalMaxRule(x, r, c, ds);
-			if (_strategy.getABox().isClosed()) return;
+			if (_strategy.getABox().isClosed())
+				return;
 		}
 		else
 		{
@@ -90,9 +96,11 @@ public class MaxCardinalityRule extends AbstractTableauRule
 			{
 				hasMore = applyMaxRule(x, r, c, n, ds);
 
-				if (_strategy.getABox().isClosed()) return;
+				if (_strategy.getABox().isClosed())
+					return;
 
-				if (x.isMerged()) return;
+				if (x.isMerged())
+					return;
 
 				if (hasMore)
 					// subsequent merges depend on the previous merge
@@ -104,11 +112,11 @@ public class MaxCardinalityRule extends AbstractTableauRule
 	/**
 	 * applyMaxRule
 	 *
-	 * @param  x
-	 * @param  r
-	 * @param  k
-	 * @param  dsParam
-	 * @return         true if more merges are required for this maxCardinality
+	 * @param x
+	 * @param r
+	 * @param k
+	 * @param dsParam
+	 * @return true if more merges are required for this maxCardinality
 	 */
 	protected boolean applyMaxRule(final Individual x, final Role r, final ATermAppl c, final int k, final DependencySet dsParam)
 	{
@@ -149,7 +157,8 @@ public class MaxCardinalityRule extends AbstractTableauRule
 
 		// if there are less than n neighbors than max rule won't be triggered
 		// return false because no more merge required for this role
-		if (n <= k) return false;
+		if (n <= k)
+			return false;
 
 		// create the pairs to be merged
 		final List<NodeMerge> mergePairs = new ArrayList<>();
@@ -171,8 +180,8 @@ public class MaxCardinalityRule extends AbstractTableauRule
 			}
 			else
 			{
-				if (_logger.isLoggable(Level.FINE)) _logger.fine("Early clash detection for max rule worked " + x + " has more than " + k + " " + r + " edges "
-						+ ds.union(dsEdges, _strategy.getABox().doExplanation()) + " " + x.getRNeighborEdges(r).getNeighbors(x));
+				if (_logger.isLoggable(Level.FINE))
+					_logger.fine("Early clash detection for max rule worked " + x + " has more than " + k + " " + r + " edges " + ds.union(dsEdges, _strategy.getABox().doExplanation()) + " " + x.getRNeighborEdges(r).getNeighbors(x));
 
 				if (_strategy.getABox().doExplanation())
 					_strategy.getABox().setClash(Clash.maxCardinality(x, ds.union(dsEdges, _strategy.getABox().doExplanation()), r.getName(), k));
@@ -188,7 +197,8 @@ public class MaxCardinalityRule extends AbstractTableauRule
 		_strategy.addBranch(newBranch);
 
 		// try a merge that does not trivially fail
-		if (!newBranch.tryNext()) return false;
+		if (!newBranch.tryNext())
+			return false;
 
 		_logger.fine(() -> "hasMore: " + (n > k + 1));
 
@@ -222,17 +232,19 @@ public class MaxCardinalityRule extends AbstractTableauRule
 				if (x.getNominalLevel() < y.getNominalLevel())
 					pairs.add(new NodeMerge(y, x));
 				// 2. if y is a nominal _node or an ancestor of x, then Merge(x, y)
-				else if (y.isNominal())
-					pairs.add(new NodeMerge(x, y));
-				// 3. if y is an ancestor of x, then Merge(x, y)
-				// Note: y is an ancestor of x iff the max cardinality
-				// on _node merges the "node"'s parent y with "node"'s
-				// child x
-				else if (y.hasSuccessor(node))
-					pairs.add(new NodeMerge(x, y));
-				// 4. else Merge(y, x)
 				else
-					pairs.add(new NodeMerge(y, x));
+					if (y.isNominal())
+						pairs.add(new NodeMerge(x, y));
+					// 3. if y is an ancestor of x, then Merge(x, y)
+					// Note: y is an ancestor of x iff the max cardinality
+					// on _node merges the "node"'s parent y with "node"'s
+					// child x
+					else
+						if (y.hasSuccessor(node))
+							pairs.add(new NodeMerge(x, y));
+						// 4. else Merge(y, x)
+						else
+							pairs.add(new NodeMerge(y, x));
 			}
 		}
 
@@ -244,21 +256,25 @@ public class MaxCardinalityRule extends AbstractTableauRule
 		DependencySet ds = dsParam;
 
 		Set<Role> functionalSupers = s.getFunctionalSupers();
-		if (functionalSupers.isEmpty()) functionalSupers = SetUtils.singleton(s);
+		if (functionalSupers.isEmpty())
+			functionalSupers = SetUtils.singleton(s);
 		LOOP: for (final Role r : functionalSupers)
 		{
-			if (OpenlletOptions.USE_TRACING) ds = ds.union(s.getExplainSuper(r.getName()), _strategy.getABox().doExplanation()).union(r.getExplainFunctional(), _strategy.getABox().doExplanation());
+			if (OpenlletOptions.USE_TRACING)
+				ds = ds.union(s.getExplainSuper(r.getName()), _strategy.getABox().doExplanation()).union(r.getExplainFunctional(), _strategy.getABox().doExplanation());
 
 			final EdgeList edges = x.getRNeighborEdges(r);
 
 			// if there is not more than one edge then func max rule won't be triggered
-			if (edges.size() <= 1) continue;
+			if (edges.size() <= 1)
+				continue;
 
 			// find all distinct R-neighbors of x
 			final Set<Node> neighbors = edges.getFilteredNeighbors(x, c);
 
 			// if there is not more than one _neighbor then func max rule won't be triggered
-			if (neighbors.size() <= 1) continue;
+			if (neighbors.size() <= 1)
+				continue;
 
 			Node head = null;
 
@@ -273,7 +289,8 @@ public class MaxCardinalityRule extends AbstractTableauRule
 				final Edge edge = edges.get(edgeIndex);
 				head = edge.getNeighbor(x);
 
-				if (head.isPruned() || !neighbors.contains(head)) continue;
+				if (head.isPruned() || !neighbors.contains(head))
+					continue;
 
 				// this _node is included in the merge list because the edge
 				// exists and the _node has the qualification in its types
@@ -292,12 +309,14 @@ public class MaxCardinalityRule extends AbstractTableauRule
 				final Edge edge = edges.get(edgeIndex);
 				Node next = edge.getNeighbor(x);
 
-				if (next.isPruned() || !neighbors.contains(next)) continue;
+				if (next.isPruned() || !neighbors.contains(next))
+					continue;
 
 				// it is possible that there are multiple edges to the same
 				// _node, e.g. property p and its super property, so check if
 				// we already merged this one
-				if (head == null || head.isSame(next)) continue;
+				if (head == null || head.isSame(next))
+					continue;
 
 				// this _node is included in the merge list because the edge
 				// exists and the _node has the qualification in its types
@@ -327,18 +346,21 @@ public class MaxCardinalityRule extends AbstractTableauRule
 					continue LOOP;
 				}
 				// always merge to a nominal (of lowest level) or an ancestor
-				else if (next.getNominalLevel() < head.getNominalLevel() || !head.isNominal() && next.hasSuccessor(x))
-				{
-					final Node temp = head;
-					head = next;
-					next = temp;
-				}
+				else
+					if (next.getNominalLevel() < head.getNominalLevel() || !head.isNominal() && next.hasSuccessor(x))
+					{
+						final Node temp = head;
+						head = next;
+						next = temp;
+					}
 
-				if (_logger.isLoggable(Level.FINE)) _logger.fine("FUNC: " + x + " for prop " + r + " merge " + next + " -> " + head + " " + ds);
+				if (_logger.isLoggable(Level.FINE))
+					_logger.fine("FUNC: " + x + " for prop " + r + " merge " + next + " -> " + head + " " + ds);
 
 				_strategy.mergeTo(next, head, ds);
 
-				if (_strategy.getABox().isClosed()) return;
+				if (_strategy.getABox().isClosed())
+					return;
 
 				if (head.isPruned())
 				{

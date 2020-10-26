@@ -10,12 +10,14 @@ package openllet.modularity;
 
 import java.io.IOException;
 import java.io.InputStream;
-import openllet.modularity.io.IncrementalClassifierPersistence;
-import openllet.owlapi.PelletReasoner;
+
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.reasoner.IllegalConfigurationException;
 import org.semanticweb.owlapi.reasoner.OWLReasonerConfiguration;
 import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
+
+import openllet.modularity.io.IncrementalClassifierPersistence;
+import openllet.owlapi.PelletReasoner;
 
 /**
  * <p>

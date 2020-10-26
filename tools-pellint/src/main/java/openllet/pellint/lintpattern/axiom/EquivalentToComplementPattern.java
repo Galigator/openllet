@@ -8,16 +8,18 @@ package openllet.pellint.lintpattern.axiom;
 
 import java.util.Set;
 import java.util.stream.Collectors;
-import openllet.owlapi.OWL;
-import openllet.pellint.format.CompactClassLintFormat;
-import openllet.pellint.format.LintFormat;
-import openllet.pellint.model.Lint;
-import openllet.pellint.model.LintFixer;
+
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
 import org.semanticweb.owlapi.model.OWLObjectComplementOf;
+
+import openllet.owlapi.OWL;
+import openllet.pellint.format.CompactClassLintFormat;
+import openllet.pellint.format.LintFormat;
+import openllet.pellint.model.Lint;
+import openllet.pellint.model.LintFixer;
 
 /**
  * <p>
@@ -61,14 +63,17 @@ public class EquivalentToComplementPattern extends AxiomLintPattern
 	public void visit(final OWLEquivalentClassesAxiom axiom)
 	{
 		final Set<OWLClassExpression> owlDescs = axiom.classExpressions().collect(Collectors.toSet());
-		if (owlDescs.size() != 2) return;
+		if (owlDescs.size() != 2)
+			return;
 
 		OWLClass namedClass = null;
 		OWLClassExpression complementOf = null;
 		for (final OWLClassExpression owlDesc : owlDescs)
 			if (!owlDesc.isAnonymous())
 				namedClass = owlDesc.asOWLClass();
-			else if (owlDesc instanceof OWLObjectComplementOf) complementOf = owlDesc;
+			else
+				if (owlDesc instanceof OWLObjectComplementOf)
+					complementOf = owlDesc;
 
 		if (namedClass != null && complementOf != null)
 		{

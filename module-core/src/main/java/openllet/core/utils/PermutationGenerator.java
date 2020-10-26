@@ -22,9 +22,9 @@ import java.math.BigInteger;
 public class PermutationGenerator
 {
 
-	private final int[]			a;
-	private BigInteger			numLeft;
-	private final BigInteger	total;
+	private final int[] a;
+	private BigInteger numLeft;
+	private final BigInteger total;
 
 	//-----------------------------------------------------------
 	// Constructor. WARNING: Don't make n too large.
@@ -37,7 +37,8 @@ public class PermutationGenerator
 
 	public PermutationGenerator(final int n)
 	{
-		if (n < 1) throw new IllegalArgumentException("Min 1");
+		if (n < 1)
+			throw new IllegalArgumentException("Min 1");
 		a = new int[n];
 		total = getFactorial(n);
 		reset();

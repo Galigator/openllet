@@ -34,19 +34,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
-import openllet.aterm.ATerm;
-import openllet.aterm.ATermAppl;
-import openllet.core.KnowledgeBase;
-import openllet.core.KnowledgeBaseImpl;
-import openllet.core.OpenlletOptions;
-import openllet.core.utils.ATermUtils;
-import openllet.core.utils.OntBuilder;
-import openllet.jena.ModelExtractor.StatementType;
-import openllet.jena.graph.converter.AxiomConverter;
-import openllet.jena.graph.loader.DefaultGraphLoader;
-import openllet.jena.graph.loader.GraphLoader;
-import openllet.jena.graph.query.GraphQueryHandler;
-import openllet.shared.tools.Log;
+
 import org.apache.jena.graph.Factory;
 import org.apache.jena.graph.Graph;
 import org.apache.jena.graph.Node;
@@ -68,6 +56,20 @@ import org.apache.jena.vocabulary.OWL;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
 
+import openllet.aterm.ATerm;
+import openllet.aterm.ATermAppl;
+import openllet.core.KnowledgeBase;
+import openllet.core.KnowledgeBaseImpl;
+import openllet.core.OpenlletOptions;
+import openllet.core.utils.ATermUtils;
+import openllet.core.utils.OntBuilder;
+import openllet.jena.ModelExtractor.StatementType;
+import openllet.jena.graph.converter.AxiomConverter;
+import openllet.jena.graph.loader.DefaultGraphLoader;
+import openllet.jena.graph.loader.GraphLoader;
+import openllet.jena.graph.query.GraphQueryHandler;
+import openllet.shared.tools.Log;
+
 /**
  * Implementation of Jena InfGraph interface which is backed by Pellet reasoner.
  *
@@ -75,18 +77,18 @@ import org.apache.jena.vocabulary.RDFS;
  */
 public class PelletInfGraph extends BaseInfGraph
 {
-	public final static Logger			_logger					= Log.getLogger(PelletInfGraph.class);
+	public final static Logger _logger = Log.getLogger(PelletInfGraph.class);
 
-	private static final Triple			INCONCISTENCY_TRIPLE	= Triple.create(OWL.Thing.asNode(), RDFS.subClassOf.asNode(), OWL.Nothing.asNode());
+	private static final Triple INCONCISTENCY_TRIPLE = Triple.create(OWL.Thing.asNode(), RDFS.subClassOf.asNode(), OWL.Nothing.asNode());
 
-	private final KnowledgeBase			_kb;
-	private final ModelExtractor		_extractor;
-	private final PelletGraphListener	_graphListener;
+	private final KnowledgeBase _kb;
+	private final ModelExtractor _extractor;
+	private final PelletGraphListener _graphListener;
 
-	private volatile GraphLoader		_loader;
-	private volatile Graph				_deductionsGraph;
-	private boolean						_autoDetectChanges;
-	private boolean						_skipBuiltinPredicates;
+	private volatile GraphLoader _loader;
+	private volatile Graph _deductionsGraph;
+	private boolean _autoDetectChanges;
+	private boolean _skipBuiltinPredicates;
 
 	public PelletInfGraph(final KnowledgeBase kb, final PelletReasoner pellet, final GraphLoader loader)
 	{
@@ -247,7 +249,8 @@ public class PelletInfGraph extends BaseInfGraph
 
 	public void prepare(final boolean doConsistencyCheck)
 	{
-		if (isPrepared()) return;
+		if (isPrepared())
+			return;
 
 		_logger.fine("Preparing PelletInfGraph...");
 
@@ -255,7 +258,8 @@ public class PelletInfGraph extends BaseInfGraph
 
 		_kb.prepare();
 
-		if (doConsistencyCheck) _kb.isConsistent();
+		if (doConsistencyCheck)
+			_kb.isConsistent();
 
 		_logger.fine("done.");
 
@@ -295,7 +299,8 @@ public class PelletInfGraph extends BaseInfGraph
 	@SuppressWarnings("deprecation")
 	public Graph getDeductionsGraph()
 	{
-		if (!OpenlletOptions.RETURN_DEDUCTIONS_GRAPH) return null;
+		if (!OpenlletOptions.RETURN_DEDUCTIONS_GRAPH)
+			return null;
 
 		classify();
 
@@ -318,7 +323,8 @@ public class PelletInfGraph extends BaseInfGraph
 	@Override
 	protected boolean graphBaseContains(final Triple pattern)
 	{
-		if (getRawGraph().contains(pattern)) return true;
+		if (getRawGraph().contains(pattern))
+			return true;
 
 		return containsTriple(pattern);
 	}
@@ -327,7 +333,8 @@ public class PelletInfGraph extends BaseInfGraph
 	{
 		prepare();
 
-		if (isSyntaxTriple(pattern)) return true;
+		if (isSyntaxTriple(pattern))
+			return true;
 
 		if (isBnodeTypeQuery(pattern))
 			return !containsTriple(Triple.create(pattern.getObject(), RDFS.subClassOf.asNode(), OWL.Nothing.asNode()));
@@ -473,9 +480,11 @@ public class PelletInfGraph extends BaseInfGraph
 
 		if (builtin != null)
 		{
-			if (builtin.isSyntax()) return true;
+			if (builtin.isSyntax())
+				return true;
 
-			if (BuiltinTerm.isExpression(builtin) && (t.getSubject().isBlank() || t.getObject().isBlank())) return true;
+			if (BuiltinTerm.isExpression(builtin) && (t.getSubject().isBlank() || t.getObject().isBlank()))
+				return true;
 
 			if (builtin.equals(BuiltinTerm.RDF_type))
 			{
@@ -489,8 +498,7 @@ public class PelletInfGraph extends BaseInfGraph
 
 	private static boolean isBnodeTypeQuery(final Triple t)
 	{
-		return t.getSubject().isBlank() && t.getPredicate().equals(RDF.type.asNode())
-				&& (BuiltinTerm.find(t.getObject()) == null || t.getObject().equals(OWL.Thing.asNode()) || t.getObject().equals(OWL.Nothing.asNode()));
+		return t.getSubject().isBlank() && t.getPredicate().equals(RDF.type.asNode()) && (BuiltinTerm.find(t.getObject()) == null || t.getObject().equals(OWL.Thing.asNode()) || t.getObject().equals(OWL.Nothing.asNode()));
 	}
 
 	/**
@@ -587,7 +595,8 @@ public class PelletInfGraph extends BaseInfGraph
 
 	public void close(final boolean recursive)
 	{
-		if (closed) return;
+		if (closed)
+			return;
 
 		if (recursive)
 			super.close();

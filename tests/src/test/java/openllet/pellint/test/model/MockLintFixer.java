@@ -1,11 +1,12 @@
 package openllet.pellint.test.model;
 
-import openllet.pellint.model.LintFixer;
-import openllet.pellint.util.CollectionUtil;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChangeException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+
+import openllet.pellint.model.LintFixer;
+import openllet.pellint.util.CollectionUtil;
 
 /**
  * <p>
@@ -23,7 +24,7 @@ public class MockLintFixer extends LintFixer
 
 	public MockLintFixer()
 	{
-		super(CollectionUtil.<OWLAxiom>makeSet(), CollectionUtil.<OWLAxiom>makeSet());
+		super(CollectionUtil.<OWLAxiom> makeSet(), CollectionUtil.<OWLAxiom> makeSet());
 	}
 
 	@Override
