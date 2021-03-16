@@ -155,7 +155,7 @@
       <dependency>
         <groupId>org.eclipse.jetty</groupId> <!-- Used for the examples. -->
         <artifactId>jetty-server</artifactId>
-        <version>9.4.35.v20201120</version>
+        <version>9.4.38.v20210224</version>
       </dependency>
 
       <!-- Dependencies of dependencies -->
