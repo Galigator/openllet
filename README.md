@@ -29,6 +29,7 @@ Openllet 2.6.X:
 * Refactor modules dependencies.
 * Enforce interface usage in the core system.
 * Lighter hash functions and less conflict when use in multi-thread environnement.
+* since 2.6.5 : full java 11 support, java 11 is a requirement.
 
 ### Migration :
 
