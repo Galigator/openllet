@@ -116,7 +116,7 @@ public class GraphBuilder
 			final Node subNode = _graph.createEntityNode(axiom.getSubProperty().asOWLDataProperty());
 			final Node supNode = _graph.createEntityNode(axiom.getSuperProperty().asOWLDataProperty());
 
-			subNode.getOutputs().add(supNode);
+			_graph.createAndNode(Set.of(subNode, supNode)); // subNode.getOutputs().add(supNode);
 		}
 
 		@Override
