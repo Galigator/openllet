@@ -9,6 +9,8 @@ package openllet.core.rules.rete;
 import openllet.core.rules.rete.NodeProvider.TokenNodeProvider;
 import openllet.core.rules.rete.NodeProvider.WMENodeProvider;
 
+import java.util.Objects;
+
 public class JoinCondition implements FilterCondition
 {
 	private final WMENodeProvider _wmeProvider;
@@ -23,7 +25,7 @@ public class JoinCondition implements FilterCondition
 	@Override
 	public boolean test(final WME wme, final Token token)
 	{
-		return _wmeProvider.getNode(wme, token).getTerm().equals(_tokenProvider.getNode(wme, token).getTerm());
+		return Objects.equals(_wmeProvider.getNode(wme, token).getTerm(), _tokenProvider.getNode(wme, token).getTerm());
 	}
 
 	public WMENodeProvider getWME()
