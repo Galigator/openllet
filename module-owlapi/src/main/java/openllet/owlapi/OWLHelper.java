@@ -3,8 +3,10 @@ package openllet.owlapi;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,6 +16,7 @@ import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.dlsyntax.renderer.DLSyntaxObjectRenderer;
 import org.semanticweb.owlapi.formats.FunctionalSyntaxDocumentFormatFactory;
 import org.semanticweb.owlapi.formats.PrefixDocumentFormat;
+import org.semanticweb.owlapi.formats.RDFXMLDocumentFormatFactory;
 import org.semanticweb.owlapi.io.XMLUtils;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnonymousIndividual;
@@ -448,6 +451,31 @@ public interface OWLHelper extends Logging, OWLManagementObject
 		final StringBuffer buff = new StringBuffer();
 		ontologyToString(buff, msg);
 		return buff.toString();
+	}
+
+	default void ontologyToFile(final String filename)
+	{
+		try (OutputStream outputStream = new FileOutputStream(filename))
+		{
+			getManager().saveOntology(getOntology(), outputStream);
+		}
+		catch (final Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	default void ontologyToFormatFile(final OWLDocumentFormat format, final String filename)
+	{
+		final var previousFormat = getManager().getOntologyFormat(getOntology());
+		getManager().setOntologyFormat(getOntology(), format);
+		ontologyToFile(filename);
+		getManager().setOntologyFormat(getOntology(), previousFormat);
+	}
+
+	default void ontologyToRdfXmlFile(final String filename)
+	{
+		ontologyToFormatFile(new RDFXMLDocumentFormatFactory().get(), filename);
 	}
 
 	/**

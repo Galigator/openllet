@@ -362,6 +362,7 @@ public class RestrictedFloatingPointDatatype<T extends Number & Comparable<T>> i
 		return true;
 	}
 
+	@Deprecated
 	@Override
 	public int size()
 	{

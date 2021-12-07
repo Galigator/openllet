@@ -134,13 +134,14 @@ public class SearchMinimalBug
 		o.applyChanges(renamer.changeIRI(entity2IRIMap));
 	}
 
-	public void process(final File file)
+	public void process(final File file, final boolean rename)
 	{
 		try
 		{
 			final OWLOntology o = OWLManager.createConcurrentOWLOntologyManager().loadOntologyFromOntologyDocument(file);
 
-			renameObjects(o);
+			if (rename)
+				renameObjects(o);
 			// o.add(OWL.classAssertion(OWL.Individual("y:impossible"), OWL.and(OWL.Class("y:cls/a"), OWL.not(OWL.Class("y:cls/a")))));
 
 			final OWLAxiom[] axioms = o.axioms().toArray(OWLAxiom[]::new);
@@ -158,6 +159,6 @@ public class SearchMinimalBug
 
 	public static void main(final String[] args)
 	{
-		new SearchMinimalBug().process(new File(args[0]));
+		new SearchMinimalBug().process(new File(args[0]), args.length > 1 ? Boolean.parseBoolean(args[1]) : false);
 	}
 }

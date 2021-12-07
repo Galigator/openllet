@@ -67,6 +67,7 @@ public class OWLWGTestCase
 	public static List<String> _failingTests = //
 			Stream.of( //
 					// G1
+					// "WebOnt-description-logic-905", //
 					"WebOnt-description-logic-906", //
 					"WebOnt-description-logic-907", //
 					"WebOnt-description-logic-903", //

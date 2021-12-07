@@ -29,7 +29,6 @@ import org.apache.jena.query.Syntax;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.sparql.engine.binding.Binding;
-import org.apache.jena.sparql.engine.binding.BindingBase;
 
 import openllet.aterm.ATermAppl;
 import openllet.core.KnowledgeBaseImpl;
@@ -389,7 +388,7 @@ public class SparqlDLDawgTester implements SparqlDawgTester
 				while (expected.hasNext())
 				{
 					final Binding b2 = expected.nextBinding();
-					if (BindingBase.equals(b1, b2))
+					if (b1.equals(b2))
 					{
 						toAdd = false;
 						break;

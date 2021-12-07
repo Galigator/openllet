@@ -796,7 +796,7 @@ public class PelletReasoner implements OpenlletReasoner
 		refreshCheck();
 		try
 		{
-			return individualStream(_kb.getObjectPropertyValues(term(pe), term(ind)).stream());
+			return individualStream(_kb.objectPropertyValues(term(pe), term(ind)));
 		}
 		catch (final PelletRuntimeException e)
 		{

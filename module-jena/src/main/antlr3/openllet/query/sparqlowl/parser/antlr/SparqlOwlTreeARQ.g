@@ -70,12 +70,14 @@ import org.apache.jena.sparql.syntax.ElementUnion;
 import org.apache.jena.sparql.syntax.Template;
 import org.apache.jena.sparql.syntax.TripleCollector;
 import org.apache.jena.sparql.syntax.TripleCollectorBGP;
-import org.apache.jena.sparql.util.LabelToNodeMap;
+//import org.apache.jena.sparql.util.LabelToNodeMap;
+import org.apache.jena.riot.lang.LabelToNode;
 import org.apache.jena.vocabulary.OWL;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
 import org.apache.jena.vocabulary.XSD;
 import openllet.jena.vocabulary.OWL2;
+
 
 import static openllet.query.sparqlowl.parser.ParserUtilities.dropFirstAndLast;
 import static openllet.query.sparqlowl.parser.ParserUtilities.dropFirstAndLast3;
@@ -98,21 +100,23 @@ import static org.apache.jena.sparql.util.ExprUtils.nodeToExpr;
 	/**
 	 * Used for tracking bnodes in where clauses (which are variables)
 	 */
-	final private LabelToNodeMap labelToNDV = LabelToNodeMap.createVarMap();
+	//final private LabelToNodeMap labelToNDV = LabelToNodeMap.createVarMap();
+	final private LabelToNode labelToNDV = LabelToNode.createUseLabelAsGiven();
 
 	/**
 	 * Used for tracking bnodes in construct templates (which aren't variables)
 	 */
-	final private LabelToNodeMap labelToBNode = LabelToNodeMap.createBNodeMap();
+	//final private LabelToNodeMap labelToBNode = LabelToNodeMap.createBNodeMap();
+	final private LabelToNode labelToBNode = LabelToNode.createUseLabelAsGiven();
 
 	private boolean inConstructTemplate;
 
 	private Node getAnon() {
-		return this.inConstructTemplate ? labelToBNode.allocNode( ) : labelToNDV.allocNode( );
+		return this.inConstructTemplate ? labelToBNode.create( ) : labelToNDV.create( );
 	}
 
 	private Node getAnon(String label) {
-		return this.inConstructTemplate ? labelToBNode.asNode( label ) : labelToNDV.asNode( label );
+		return this.inConstructTemplate ? labelToBNode.get( null, label ) : labelToNDV.get( null, label );
 	}
 
 	protected void mismatch(IntStream input, int ttype, BitSet follow)
