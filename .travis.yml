@@ -1,7 +1,7 @@
 dist: trusty
 os: linux
 language: java
-jdk: openjdk14
+jdk: openjdk17
 
 #addons:
 #  apt:
