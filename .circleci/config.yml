@@ -8,5 +8,5 @@ jobs:
       FOO: True
     steps:
       - checkout
-      - run: echo "Test OK"
+      - run: mvn package
       
