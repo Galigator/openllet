@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: maven/3.8.4-eclipse-temurin-17
+      - image: maven:3.8.4-eclipse-temurin-17
     environment:
       FOO: True
     steps:
