@@ -1,8 +1,12 @@
-machine:
-    java:
-        version: openjdk10
+version: 2.1
 
-dependencies:
-  override:
-    - bundle install: # note the colon here
-        timeout: 1200
+jobs:
+  build:
+    docker:
+      - image: maven/3.8.4-eclipse-temurin-17
+    environment:
+      FOO: True
+    steps:
+      - checkout
+      - run: echo "Test OK"
+      
