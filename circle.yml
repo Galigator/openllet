@@ -1,8 +1,0 @@
-machine:
-    java:
-        version: openjdk10
-
-dependencies:
-  override:
-    - bundle install: # note the colon here
-        timeout: 1200
