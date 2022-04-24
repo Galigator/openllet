@@ -164,7 +164,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
-					<forkCount>1</forkCount>
+					<forkCount>1.5C</forkCount>
 					<reuseForks>true</reuseForks>
                                         <!-- Manage memory to set a more agressive GC, Openllet create a large number of small objets, so it is good. -->
 					<argLine>-XX:+UseG1GC -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=25 -XX:GCTimeRatio=18 -XX:+UseStringDeduplication</argLine>
