@@ -21,6 +21,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -109,9 +110,17 @@ public class ParserTest
 		_parser = null;
 	}
 
+	// https://www.slideshare.net/candp/owled-2010-terp
 	@Test
+	@Ignore
 	public void compareQuery() throws FileNotFoundException, IOException
 	{
+		System.out.println(_kb.getIndividuals()); //  ./tests/src/test/resources/test/data/sparqldl-tests/simple/parent.ttl
+		System.out.println(_kb.getObjectProperties());
+		System.out.println(_kb.getAllClasses());
+		System.out.println(_sparqlFile + "\t" + _sparqlOWLFile);
+		//  ./tests/src/test/resources/test/data/sparqldl-tests/simple/parent1.rq
+		//  ./tests/src/test/resources/test/data/sparqldl-tests/simple/parent1.terp
 		final Query sparql = QueryFactory.create(FileUtils.readFile(base + _sparqlFile), Syntax.syntaxSPARQL);
 		final openllet.query.sparqldl.model.Query expected = _parser.parse(sparql, _kb);
 

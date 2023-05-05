@@ -13,7 +13,7 @@
 	<packaging>bundle</packaging>
    
 	<properties>
-		<protege.version>[4.3.0, 5)</protege.version>
+		<protege.version>4.2.1</protege.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -67,7 +67,7 @@
             <plugin>
               <groupId>org.apache.felix</groupId>
               <artifactId>maven-bundle-plugin</artifactId>
-              <version>4.1.0</version>
+              <version>5.1.8</version>
               <extensions>true</extensions>
               <configuration>
                 <instructions>
@@ -76,12 +76,13 @@
                     <Bundle-Vendor>Galigator</Bundle-Vendor>
                     <Bundle-Name>${project.artifactId}</Bundle-Name>
                     <Bundle-Activator>org.protege.editor.core.plugin.DefaultPluginActivator</Bundle-Activator>
-<!--
                     <Import-Package>
+                      org.protege.editor.core.plugin.*;version="${protege.version}",
                       org.protege.editor.core.*;version="${protege.version}",
                       org.protege.editor.owl.*;version="${protege.version}",
                       *
                     </Import-Package>
+<!--
                     <Include-Resource>
                           plugin.xml,
                           {maven-resources},

@@ -15,6 +15,7 @@ import openllet.query.sparqldl.engine.QuerySubsumption;
 import openllet.query.sparqldl.model.Query;
 import openllet.query.sparqldl.parser.QueryEngineBuilder;
 import openllet.query.sparqldl.parser.QueryParser;
+import openllet.test.PelletTestSuite;
 
 /**
  * Test cases for the class QuerySubsumption
@@ -24,7 +25,7 @@ import openllet.query.sparqldl.parser.QueryParser;
 
 public class TestQuerySubsumption
 {
-	private final String _ont = "file:test/data/misc/family.owl";
+	private final String _ont = "file:" + PelletTestSuite.base + "misc/family.owl";
 	private final String _family = "http://www.example.org/family#";
 	private final String _prefix = "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n" //
 			+ "PREFIX family: <" + _family + ">\r\n" + "SELECT * { ";
@@ -137,7 +138,7 @@ public class TestQuerySubsumption
 
 	/**
 	 * The subsumption in this example holds because of the subproperty relation between hasBrother and hasSibling.
-	 * 
+	 *
 	 * @return examples queries
 	 */
 	public Query[] example4()

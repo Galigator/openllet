@@ -22,6 +22,7 @@ import openllet.core.taxonomy.printer.ClassTreePrinter;
 import openllet.core.utils.ATermUtils;
 import openllet.owlapi.OWLAPILoader;
 import openllet.owlapi.OntologyUtils;
+import openllet.test.PelletTestSuite;
 
 public class TransTreeTest
 {
@@ -29,7 +30,7 @@ public class TransTreeTest
 	@Test
 	public void testDiscoveryOntology()
 	{
-		testProperty("test/data/trans-tree-tests/discovery.owl", //
+		testProperty(PelletTestSuite.base + "trans-tree-tests/discovery.owl", //
 				"http://purl.org/vocab/relationship/ancestorOf");
 	}
 
@@ -108,7 +109,7 @@ public class TransTreeTest
 	{
 		final OpenlletTransTree cli = new OpenlletTransTree();
 
-		cli.parseArgs(new String[] { "trans-tree", "-p", "http://clarkparsia.com/pellet/tutorial/pops#subProjectOf", "-f", "http://clarkparsia.com/pellet/tutorial/pops#Employee", "test/data/trans-tree-tests/ontology-010.ttl" });
+		cli.parseArgs(new String[] { "trans-tree", "-p", "http://clarkparsia.com/pellet/tutorial/pops#subProjectOf", "-f", "http://clarkparsia.com/pellet/tutorial/pops#Employee", PelletTestSuite.base + "trans-tree-tests/ontology-010.ttl" });
 		cli.run();
 
 		final Taxonomy<ATermAppl> taxonomy = cli._publicTaxonomy;
@@ -142,7 +143,7 @@ public class TransTreeTest
 	{
 		final OpenlletTransTree cli = new OpenlletTransTree();
 
-		cli.parseArgs(new String[] { "trans-tree", "-p", "http://clarkparsia.com/pellet/tutorial/pops#subProjectOf", "-f", "http://clarkparsia.com/pellet/tutorial/pops#Employee", "--individuals", "test/data/trans-tree-tests/ontology-010.ttl" });
+		cli.parseArgs(new String[] { "trans-tree", "-p", "http://clarkparsia.com/pellet/tutorial/pops#subProjectOf", "-f", "http://clarkparsia.com/pellet/tutorial/pops#Employee", "--individuals", PelletTestSuite.base + "trans-tree-tests/ontology-010.ttl" });
 		cli.run();
 
 		final Taxonomy<ATermAppl> taxonomy = cli._publicTaxonomy;
@@ -157,7 +158,7 @@ public class TransTreeTest
 	{
 		final OpenlletTransTree cli = new OpenlletTransTree();
 
-		cli.parseArgs(new String[] { "trans-tree", "-p", "http://clarkparsia.com/pellet/tutorial/pops#subProjectOf", "-f", "http://clarkparsia.com/pellet/tutorial/pops#Contractor", "--individuals", "test/data/trans-tree-tests/ontology-010.ttl" });
+		cli.parseArgs(new String[] { "trans-tree", "-p", "http://clarkparsia.com/pellet/tutorial/pops#subProjectOf", "-f", "http://clarkparsia.com/pellet/tutorial/pops#Contractor", "--individuals", PelletTestSuite.base + "trans-tree-tests/ontology-010.ttl" });
 		cli.run();
 
 		final Taxonomy<ATermAppl> taxonomy = cli._publicTaxonomy;

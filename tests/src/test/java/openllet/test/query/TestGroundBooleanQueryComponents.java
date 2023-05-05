@@ -29,6 +29,7 @@ import org.junit.runners.Parameterized.Parameters;
 import openllet.jena.PelletReasonerFactory;
 import openllet.query.sparqldl.jena.SparqlDLExecutionFactory;
 import openllet.query.sparqldl.jena.SparqlDLExecutionFactory.QueryEngineType;
+import openllet.test.PelletTestSuite;
 
 /**
  * <p>
@@ -51,7 +52,7 @@ import openllet.query.sparqldl.jena.SparqlDLExecutionFactory.QueryEngineType;
 public class TestGroundBooleanQueryComponents
 {
 
-	private static String _sourceDir = "test/data/";
+	private static String _sourceDir = PelletTestSuite.base;
 	private static String _sourceURL = _sourceDir + "misc/food.owl";
 	private static String _queryPrefix = _sourceDir + "/query/ground-boolean-query-components-";
 

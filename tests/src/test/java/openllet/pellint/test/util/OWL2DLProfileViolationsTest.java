@@ -14,6 +14,7 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.profiles.OWL2DLProfile;
 
 import openllet.owlapi.OWL;
+import openllet.test.PelletTestSuite;
 
 /**
  * Tests for OWL2 Detection. The tests below call directly the OWL2 DL profile detection from OWLAPI, since this is what Pellint uses to display the violations.
@@ -26,7 +27,7 @@ public class OWL2DLProfileViolationsTest
 	@Test
 	public void testCorrectOntology() throws OWLOntologyCreationException
 	{
-		final OWLOntology ontology = OWL._manager.loadOntologyFromOntologyDocument(new File("test/data/misc/agencies.owl"));
+		final OWLOntology ontology = OWL._manager.loadOntologyFromOntologyDocument(new File(PelletTestSuite.base + "misc/agencies.owl"));
 
 		try
 		{
@@ -66,7 +67,7 @@ public class OWL2DLProfileViolationsTest
 	@Test
 	public void testInvalidTransitivity() throws OWLOntologyCreationException
 	{
-		final OWLOntology ontology = OWL._manager.loadOntologyFromOntologyDocument(new File("test/data/misc/invalidTransitivity.owl"));
+		final OWLOntology ontology = OWL._manager.loadOntologyFromOntologyDocument(new File(PelletTestSuite.base + "misc/invalidTransitivity.owl"));
 
 		try
 		{

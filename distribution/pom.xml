@@ -59,7 +59,7 @@
 			<plugin> <!--  Allow the packaging as bundle (osgi) -->
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
-				<version>4.1.0</version>
+				<version>5.1.8</version>
 				<extensions>true</extensions>
 				<configuration>
 					<instructions>

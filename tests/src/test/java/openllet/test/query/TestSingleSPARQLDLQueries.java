@@ -34,6 +34,7 @@ import openllet.core.OpenlletOptions;
 import openllet.jena.PelletReasonerFactory;
 import openllet.query.sparqldl.jena.SparqlDLExecutionFactory;
 import openllet.query.sparqldl.jena.SparqlDLExecutionFactory.QueryEngineType;
+import openllet.test.PelletTestSuite;
 
 /**
  * <p>
@@ -149,9 +150,9 @@ public class TestSingleSPARQLDLQueries
 	public void testDAWG1()
 	{
 		final OntModel model = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
-		model.read("file:test/data/sparql-dawg-tests/data-r2/basic/data-1.ttl", "N3");
+		model.read("file:" + PelletTestSuite.base + "sparql-dawg-tests/data-r2/basic/data-1.ttl", "N3");
 
-		final Query query = QueryFactory.read("file:test/data/sparql-dawg-tests/data-r2/basic/base-prefix-1.rq");
+		final Query query = QueryFactory.read("file:" + PelletTestSuite.base + "sparql-dawg-tests/data-r2/basic/base-prefix-1.rq");
 
 		try (final QueryExecution qe = SparqlDLExecutionFactory.create(query, model))
 		{
@@ -173,9 +174,9 @@ public class TestSingleSPARQLDLQueries
 		// PelletInfGraph contains all inferred triples.
 
 		final OntModel model = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
-		model.read("file:test/data/sparql-dawg-tests/data-r2/graph/data-g1.ttl", "N3");
+		model.read("file:" + PelletTestSuite.base + "sparql-dawg-tests/data-r2/graph/data-g1.ttl", "N3");
 
-		final Query query = QueryFactory.read("file:test/data/sparql-dawg-tests/data-r2/graph/graph-01.rq");
+		final Query query = QueryFactory.read("file:" + PelletTestSuite.base + "sparql-dawg-tests/data-r2/graph/graph-01.rq");
 
 		try (final QueryExecution qe = SparqlDLExecutionFactory.create(query, model))
 		{
@@ -193,9 +194,9 @@ public class TestSingleSPARQLDLQueries
 		// pattern, i.e. we handle the pattern as a property value
 
 		final OntModel model = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
-		model.read("file:test/data/sparql-dawg-tests/data-r2/graph/data-g1.ttl", "N3");
+		model.read("file:" + PelletTestSuite.base + "sparql-dawg-tests/data-r2/graph/data-g1.ttl", "N3");
 
-		final Query query = QueryFactory.read("file:test/data/sparql-dawg-tests/data-r2/graph/graph-01.rq");
+		final Query query = QueryFactory.read("file:" + PelletTestSuite.base + "sparql-dawg-tests/data-r2/graph/graph-01.rq");
 
 		try (final QueryExecution qe = SparqlDLExecutionFactory.create(query, DatasetFactory.create(model), null, QueryEngineType.MIXED, false))
 		{
@@ -209,9 +210,9 @@ public class TestSingleSPARQLDLQueries
 	public void testDAWG4()
 	{
 		final Model model = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
-		model.read("file:test/data/sparql-dawg-tests/data-r2/optional-filter/data-1.ttl", "N3");
+		model.read("file:" + PelletTestSuite.base + "sparql-dawg-tests/data-r2/optional-filter/data-1.ttl", "N3");
 
-		final Query query = QueryFactory.read("file:test/data/sparql-dawg-tests/data-r2/optional-filter/expr-5.rq");
+		final Query query = QueryFactory.read("file:" + PelletTestSuite.base + "sparql-dawg-tests/data-r2/optional-filter/expr-5.rq");
 
 		try (final QueryExecution qe = SparqlDLExecutionFactory.create(query, model))
 		{
