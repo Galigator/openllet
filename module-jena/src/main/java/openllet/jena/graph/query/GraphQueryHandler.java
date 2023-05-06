@@ -40,7 +40,6 @@ import openllet.core.utils.iterator.IteratorUtils;
 import openllet.core.utils.iterator.NestedIterator;
 import openllet.jena.JenaUtils;
 import openllet.jena.ModelExtractor;
-import openllet.jena.ModelExtractor.StatementType;
 import openllet.jena.PelletInfGraph;
 import openllet.jena.graph.loader.GraphLoader;
 import openllet.jena.vocabulary.OWL2;
@@ -138,7 +137,6 @@ public class GraphQueryHandler
 			public ExtendedIterator<Triple> find(final KnowledgeBase kb, final PelletInfGraph openllet, final Node s, final Node p, final Node o)
 			{
 				final ModelExtractor me = new ModelExtractor(kb);
-				me.setSelector(StatementType.ALL_STATEMENTS);
 				final Graph graph = me.extractModel().getGraph();
 				return graph.find(Triple.ANY);
 			}
