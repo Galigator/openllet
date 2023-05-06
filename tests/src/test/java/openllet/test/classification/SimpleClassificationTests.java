@@ -10,12 +10,18 @@ import static openllet.core.utils.TermFactory.all;
 import static openllet.core.utils.TermFactory.inv;
 import static openllet.core.utils.TermFactory.list;
 import static openllet.core.utils.TermFactory.some;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.Statement;
 import org.junit.Test;
 
 import junit.framework.JUnit4TestAdapter;
+import openllet.core.OpenlletOptions;
+import openllet.jena.PelletReasonerFactory;
 import openllet.test.AbstractKBTests;
+import openllet.test.PelletTestSuite;
 
 /**
  * <p>
@@ -93,5 +99,31 @@ public class SimpleClassificationTests extends AbstractKBTests
 		_kb.printClassTree();
 
 		assertTrue(_kb.isSubClassOf(_C, _E));
+	}
+
+	@Test
+	public void unique_name_assumption()
+	{
+		try
+		{
+			final var data = ModelFactory.createDefaultModel();
+			OpenlletOptions.USE_UNIQUE_NAME_ASSUMPTION = true;
+			data.read(PelletTestSuite.base + "misc/two_individuals.ttl", "TTL");
+
+			final var reasoner = PelletReasonerFactory.theInstance().create();
+			final var infModel = ModelFactory.createInfModel(reasoner, data);
+
+			final var l = infModel.listStatements().toList();
+			for (final Statement s : l)
+			{
+				System.out.println(s);
+				if ("differentFrom".equals(s.getPredicate().getLocalName()))
+					assertFalse(s.toString(), s.getObject().equals(s.getSubject()));
+			}
+		}
+		finally
+		{
+			OpenlletOptions.USE_UNIQUE_NAME_ASSUMPTION = false;
+		}
 	}
 }

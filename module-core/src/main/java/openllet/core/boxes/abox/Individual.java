@@ -216,7 +216,7 @@ public class Individual extends Node implements CachedNode
 	public boolean isDifferent(final Node node)
 	{
 		if (OpenlletOptions.USE_UNIQUE_NAME_ASSUMPTION)
-			if (isNamedIndividual() && node.isNamedIndividual())
+			if (isNamedIndividual() && node.isNamedIndividual() && this != node)
 				return !_name.equals(node._name);
 
 		return _differents.containsKey(node);
@@ -232,7 +232,7 @@ public class Individual extends Node implements CachedNode
 	public DependencySet getDifferenceDependency(final Node node)
 	{
 		if (OpenlletOptions.USE_UNIQUE_NAME_ASSUMPTION)
-			if (isNamedIndividual() && node.isNamedIndividual())
+			if (isNamedIndividual() && node.isNamedIndividual() && this != node)
 				return DependencySet.INDEPENDENT;
 
 		return _differents.get(node);
