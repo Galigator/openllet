@@ -81,24 +81,28 @@ public class SROIQStrategy extends CompletionStrategy
 				}
 			}
 
-			final List<Branch> branches = _abox.getBranches();
-			_abox.getStats()._backjumps += branches.size() - lastBranch;
-			// CHW - added for incremental deletion support
-			if (OpenlletOptions.USE_TRACING && OpenlletOptions.USE_INCREMENTAL_CONSISTENCY)
+			final Branch newBranch;
+			synchronized (_abox)
 			{
-				// we must clean up the KB dependecny _index
-				final List<Branch> brList = branches.subList(lastBranch, branches.size());
-				for (final Branch branch : brList)
-					// remove from the dependency _index
-					_abox.getKB().getDependencyIndex().removeBranchDependencies(branch);
-				brList.clear();
+				final List<Branch> branches = _abox.getBranches(false);
+				_abox.getStats()._backjumps += branches.size() - lastBranch;
+				// CHW - added for incremental deletion support
+				if (OpenlletOptions.USE_TRACING && OpenlletOptions.USE_INCREMENTAL_CONSISTENCY)
+				{
+					// we must clean up the KB dependecny _index
+					final List<Branch> brList = branches.subList(lastBranch, branches.size());
+					for (final Branch branch : brList)
+						// remove from the dependency _index
+						_abox.getKB().getDependencyIndex().removeBranchDependencies(branch);
+					brList.clear();
+				}
+				else
+					branches.subList(lastBranch, branches.size()).clear(); // old approach
+
+				newBranch = branches.get(lastBranch - 1); // get the _branch to try
+
+				_logger.fine(() -> "JUMP: Branch " + lastBranch + "\tbranchCount=" + _abox.getBranches().size());
 			}
-			else
-				branches.subList(lastBranch, branches.size()).clear(); // old approach
-
-			final Branch newBranch = branches.get(lastBranch - 1); // get the _branch to try
-
-			_logger.fine(() -> "JUMP: Branch " + lastBranch + "\tbranchCount=" + _abox.getBranches().size());
 
 			if (lastBranch != newBranch.getBranchIndexInABox())
 				throw new InternalReasonerException("Backtrack: Trying to backtrack to _branch " + lastBranch + " but got " + newBranch.getBranchIndexInABox());

@@ -426,7 +426,7 @@ public class OpenlletOptions
 	 */
 	public static boolean IGNORE_ANNOTATION_CLASSES = true;
 
-	public static boolean USE_THREADED_KERNEL = false;
+	public static boolean USE_THREADED_KERNEL = true;
 
 	static
 	{
@@ -454,7 +454,7 @@ public class OpenlletOptions
 			}
 
 			if (url == null)
-				_logger.severe("Cannot file Openllet configuration file " + configFile);
+				_logger.severe("Cannot open file Openllet configuration file " + configFile);
 		}
 
 		if (url != null)

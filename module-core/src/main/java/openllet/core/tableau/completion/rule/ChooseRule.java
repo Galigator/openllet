@@ -16,6 +16,7 @@ import openllet.core.boxes.abox.EdgeList;
 import openllet.core.boxes.abox.Individual;
 import openllet.core.boxes.abox.Node;
 import openllet.core.boxes.rbox.Role;
+import openllet.core.tableau.branch.Branch;
 import openllet.core.tableau.branch.ChooseBranch;
 import openllet.core.tableau.completion.CompletionStrategy;
 import openllet.core.tableau.completion.queue.NodeSelector;
@@ -75,8 +76,11 @@ public class ChooseRule extends AbstractTableauRule
 
 			if (!neighbor.hasType(c) && !neighbor.hasType(ATermUtils.negate(c)))
 			{
-				final ChooseBranch newBranch = new ChooseBranch(_strategy.getABox(), _strategy, neighbor, c, x.getDepends(maxCard));
-				_strategy.addBranch(newBranch);
+				final Branch newBranch;
+				synchronized (_strategy.getABox())
+				{
+					_strategy.addBranch(newBranch = new ChooseBranch(_strategy.getABox(), _strategy, neighbor, c, x.getDepends(maxCard)));
+				}
 
 				newBranch.tryNext();
 

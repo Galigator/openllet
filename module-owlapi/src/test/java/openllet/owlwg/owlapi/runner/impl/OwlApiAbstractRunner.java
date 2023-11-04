@@ -309,7 +309,7 @@ public abstract class OwlApiAbstractRunner implements TestRunner<OWLOntology>
 
 	protected abstract boolean isEntailed(OWLOntology premise, OWLOntology conclusion);
 
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings("removal")
 	protected TestRunResult run(final TestAsRunnable runnable)
 	{
 		final Thread t = new Thread(runnable);

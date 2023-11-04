@@ -47,7 +47,6 @@ public class MemUtils
 		long usedMem1 = usedMemory(), usedMem2 = Long.MAX_VALUE;
 		for (int i = 0; usedMem1 < usedMem2 && i < 500; ++i)
 		{
-			runtime.runFinalization();
 			runtime.gc();
 			Thread.yield();
 

@@ -22,6 +22,7 @@ import openllet.core.boxes.abox.Individual;
 import openllet.core.boxes.abox.Node;
 import openllet.core.boxes.abox.NodeMerge;
 import openllet.core.boxes.rbox.Role;
+import openllet.core.tableau.branch.Branch;
 import openllet.core.tableau.branch.MaxBranch;
 import openllet.core.tableau.completion.CompletionStrategy;
 import openllet.core.tableau.completion.queue.NodeSelector;
@@ -192,9 +193,11 @@ public class MaxCardinalityRule extends AbstractTableauRule
 			}
 		}
 
-		// add the list of possible pairs to be merged in the _branch list
-		final MaxBranch newBranch = new MaxBranch(_strategy.getABox(), _strategy, x, r, k, c, mergePairs, ds);
-		_strategy.addBranch(newBranch);
+		final Branch newBranch;
+		synchronized (_strategy.getABox())
+		{ // add the list of possible pairs to be merged in the _branch list
+			_strategy.addBranch(newBranch = new MaxBranch(_strategy.getABox(), _strategy, x, r, k, c, mergePairs, ds));
+		}
 
 		// try a merge that does not trivially fail
 		if (!newBranch.tryNext())
@@ -202,11 +205,9 @@ public class MaxCardinalityRule extends AbstractTableauRule
 
 		_logger.fine(() -> "hasMore: " + (n > k + 1));
 
-		// if there were exactly k + 1 neighbors the previous step would
-		// eliminate one _node and only n neighbors would be left. This means
-		// restriction is satisfied. If there were more than k + 1 neighbors
-		// merging one pair would not be enough and more merges are required,
-		// thus false is returned
+		// If there were exactly k + 1 neighbors the previous step would eliminate one node and only n neighbors would be left.
+		// This means restriction is satisfied.
+		// If there were more than k + 1 neighbors merging one pair would not be enough and more merges are required, thus false is returned
 		return n > k + 1;
 	}
 

@@ -172,66 +172,72 @@ public abstract class CompletionStrategy
 
 	protected void configureTableauRules(final Expressivity expr)
 	{
+		_tableauRules.clear();
+
+		List<TableauRule> rules;
+		AllValuesRule allValuesRule;
 		if (!OpenlletOptions.USE_COMPLETION_STRATEGY)
 		{
-			addAllRules();
-			return;
+			rules = addAllRules();
+			allValuesRule = new AllValuesRule(this);
+		}
+		else
+		{
+			rules = useCompletionStrategyRules(expr);
+			// no need to add _allValuesRule to the list since it is applied on-the-fly
+			allValuesRule = expr.hasComplexSubRoles() ? new AllValuesRule(this) : new SimpleAllValuesRule(this);
 		}
 
+		_allValuesRule = allValuesRule;
+		_tableauRules.addAll(rules);
+	}
+
+	protected List<TableauRule> useCompletionStrategyRules(final Expressivity expr)
+	{
 		final boolean fullDatatypeReasoning = OpenlletOptions.USE_FULL_DATATYPE_REASONING && (expr.hasUserDefinedDatatype() || expr.hasCardinalityD() || expr.hasKeys());
 
-		_tableauRules.clear();
+		final List<TableauRule> rules = new ArrayList<>();
 
 		if (!OpenlletOptions.USE_PSEUDO_NOMINALS && expr.hasNominal() || implicitNominals())
 		{
-			_tableauRules.add(_nominalRule);
-
+			rules.add(_nominalRule);
 			if (expr.hasCardinalityQ())
-				_tableauRules.add(_guessRule);
+				rules.add(_guessRule);
 		}
 
 		if (expr.hasCardinalityQ() || expr.hasCardinalityD())
-			_tableauRules.add(_chooseRule);
+			rules.add(_chooseRule);
 
-		_tableauRules.add(_maxRule);
+		rules.add(_maxRule);
 
 		if (fullDatatypeReasoning)
-			_tableauRules.add(_dataCardRule);
+			rules.add(_dataCardRule);
 
-		_tableauRules.add(_dataSatRule);
+		rules.add(_dataSatRule);
+		rules.add(_unfoldingRule);
+		rules.add(_disjunctionRule);
+		rules.add(_someValuesRule);
+		rules.add(_minRule);
 
-		_tableauRules.add(_unfoldingRule);
-
-		_tableauRules.add(_disjunctionRule);
-
-		_tableauRules.add(_someValuesRule);
-
-		_tableauRules.add(_minRule);
-
-		// no need to add _allValuesRule to the list since it is applied on-the-fly
-		if (expr.hasComplexSubRoles())
-			_allValuesRule = new AllValuesRule(this);
-		else
-			_allValuesRule = new SimpleAllValuesRule(this);
-
+		return rules;
 	}
 
-	protected void addAllRules()
+	protected List<TableauRule> addAllRules()
 	{
-		_tableauRules.clear();
+		final List<TableauRule> rules = new ArrayList<>();
 
-		_tableauRules.add(_nominalRule);
-		_tableauRules.add(_guessRule);
-		_tableauRules.add(_chooseRule);
-		_tableauRules.add(_maxRule);
-		_tableauRules.add(_dataCardRule);
-		_tableauRules.add(_dataSatRule);
-		_tableauRules.add(_unfoldingRule);
-		_tableauRules.add(_disjunctionRule);
-		_tableauRules.add(_someValuesRule);
-		_tableauRules.add(_minRule);
+		rules.add(_nominalRule);
+		rules.add(_guessRule);
+		rules.add(_chooseRule);
+		rules.add(_maxRule);
+		rules.add(_dataCardRule);
+		rules.add(_dataSatRule);
+		rules.add(_unfoldingRule);
+		rules.add(_disjunctionRule);
+		rules.add(_someValuesRule);
+		rules.add(_minRule);
 
-		_allValuesRule = new AllValuesRule(this);
+		return rules;
 	}
 
 	protected boolean implicitNominals()
@@ -545,8 +551,11 @@ public abstract class CompletionStrategy
 					if (guessMin > max)
 						return edge;
 
-					final GuessBranch newBranch = new GuessBranch(_abox, this, o, pred.getInverse(), guessMin, max, ATermUtils.TOP, ds);
-					addBranch(newBranch);
+					final Branch newBranch;
+					synchronized (_abox)
+					{
+						addBranch(newBranch = new GuessBranch(_abox, this, o, pred.getInverse(), guessMin, max, ATermUtils.TOP, ds));
+					}
 
 					// try a merge that does not trivially fail
 					if (!newBranch.tryNext())
@@ -1158,7 +1167,7 @@ public abstract class CompletionStrategy
 
 	public void addBranch(final Branch newBranch)
 	{
-		_abox.getBranches().add(newBranch);
+		_abox.getBranches(false).add(newBranch);
 
 		if (newBranch.getBranchIndexInABox() != _abox.getBranches().size())
 			throw new OpenError("Invalid branch created: " + newBranch.getBranchIndexInABox() + " != " + _abox.getBranches().size());

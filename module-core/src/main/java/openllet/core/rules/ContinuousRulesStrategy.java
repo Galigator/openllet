@@ -343,9 +343,7 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 				atoms.add(atom);
 		}
 
-		// all no head atoms are added to the list they are all true (unless
-		// there were no head atoms to begin with) which means there is nothing
-		// to be done
+		// all no head atoms are added to the list they are all true (unless there were no head atoms to begin with) which means there is nothing to be done
 		if (atoms.size() == bodyAtomCount && !rule.getHead().isEmpty())
 			return -1;
 		else
@@ -356,8 +354,11 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 			}
 			else
 			{
-				final RuleBranch r = new RuleBranch(_abox, this, _ruleAtomAsserter, atoms, binding, bodyAtomCount, ds);
-				addBranch(r);
+				final Branch r;
+				synchronized (_abox)
+				{
+					addBranch(r = new RuleBranch(_abox, this, _ruleAtomAsserter, atoms, binding, bodyAtomCount, ds));
+				}
 				r.tryNext();
 				return r.getBranchIndexInABox();
 			}

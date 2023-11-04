@@ -16,6 +16,7 @@ import openllet.core.boxes.abox.EdgeList;
 import openllet.core.boxes.abox.Individual;
 import openllet.core.boxes.abox.Node;
 import openllet.core.boxes.rbox.Role;
+import openllet.core.tableau.branch.Branch;
 import openllet.core.tableau.branch.GuessBranch;
 import openllet.core.tableau.completion.CompletionStrategy;
 import openllet.core.tableau.completion.queue.NodeSelector;
@@ -111,8 +112,11 @@ public class GuessRule extends AbstractTableauRule
 		for (final Edge edge : edges)
 			ds = ds.union(edge.getDepends(), _strategy.getABox().doExplanation());
 
-		final GuessBranch newBranch = new GuessBranch(_strategy.getABox(), _strategy, x, r, guessMin, n, c, ds);
-		_strategy.addBranch(newBranch);
+		final Branch newBranch;
+		synchronized (_strategy.getABox())
+		{
+			_strategy.addBranch(newBranch = new GuessBranch(_strategy.getABox(), _strategy, x, r, guessMin, n, c, ds));
+		}
 
 		newBranch.tryNext();
 	}

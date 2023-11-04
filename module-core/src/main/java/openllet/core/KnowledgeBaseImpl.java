@@ -676,13 +676,13 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		if (node != null)
 		{
 			if (node instanceof Literal)
-				throw new UnsupportedFeatureException("Trying to use a literal as an _individual: " + ATermUtils.toString(i));
+				throw new UnsupportedFeatureException("(1) Trying to use a literal as an individual: " + ATermUtils.toString(i));
 
 			return (Individual) node;
 		}
 		else
 			if (ATermUtils.isLiteral(i))
-				throw new UnsupportedFeatureException("Trying to use a literal as an _individual: " + ATermUtils.toString(i));
+				throw new UnsupportedFeatureException("(2) Trying to use a literal as an individual: " + ATermUtils.toString(i));
 
 		final int remember = _abox.getBranchIndex();
 		_abox.setBranchIndex(DependencySet.NO_BRANCH);
@@ -697,9 +697,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 
 		if (!OpenlletOptions.USE_PSEUDO_NOMINALS)
 		{
-			// add value(x) for nominal _node but do not apply UC yet
-			// because it might not be complete. it will be added
-			// by CompletionStrategy.initialize()
+			// add value(x) for nominal _node but do not apply UC yet because it might not be complete. it will be added by CompletionStrategy.initialize()
 			final ATermAppl nominal = ATermUtils.makeValue(i);
 			_abox.addType(i, nominal, DependencySet.INDEPENDENT);
 		}
@@ -707,8 +705,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 		// set addition flag
 		_changes.add(ChangeType.ABOX_ADD);
 
-		// if we can use inc reasoning then update incremental completion
-		// structures
+		// if we can use inc reasoning then update incremental completion structures
 		if (canUseIncConsistency())
 		{
 			_abox.setSyntacticUpdate(true);
@@ -718,8 +715,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 			for (final Branch branch : _abox.getBranches())
 				branch.setNodeCount(branch.getNodeCount() + 1);
 
-			// track updated and new _individuals; this is needed for the
-			// incremental completion _strategy
+			// track updated and new _individuals; this is needed for the incremental completion _strategy
 			_abox.getIncrementalChangeTracker().addUpdatedIndividual(_abox.getIndividual(i));
 			_abox.getIncrementalChangeTracker().addNewIndividual(_abox.getIndividual(i));
 			_abox.setSyntacticUpdate(false);

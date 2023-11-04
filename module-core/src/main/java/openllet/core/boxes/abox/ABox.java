@@ -335,7 +335,12 @@ public interface ABox extends Logging
 	/**
 	 * @return the branches.
 	 */
-	List<Branch> getBranches();
+	List<Branch> getBranches(boolean unmodifiable);
+
+	default List<Branch> getBranches()
+	{
+		return getBranches(true);
+	}
 
 	IncrementalChangeTracker getIncrementalChangeTracker();
 

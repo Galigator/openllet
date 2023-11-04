@@ -44,6 +44,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -94,10 +96,10 @@ import openllet.shared.tools.Log;
 
 /**
  * <p>
- * Copyright: Copyright (c) 2008
- * </p>
+ * http://tinman.cs.gsu.edu/~raj/8711/sp11/presentations/pelletReport.pdf
  * <p>
- * Company: Clark & Parsia, LLC. <http://www.clarkparsia.com>
+ * </p>
+ * https://ceur-ws.org/Vol-1068/paper-l02.pdf
  * </p>
  *
  * @author Evren Sirin
@@ -119,6 +121,7 @@ public class ABoxImpl implements ABox
 	private final CompletionQueue _completionQueue;
 	private final IncrementalChangeTracker _incChangeTracker;
 
+	protected final Lock _branchesLock = new ReentrantLock();
 	private final List<Branch> _branches;
 
 	/**
@@ -141,7 +144,7 @@ public class ABoxImpl implements ABox
 	 */
 	private final Map<ATermAppl, Node> _nodes;
 
-	/** the current branch number */
+	/** the current branch number TODO : replace with an AtomicInteger */
 	private volatile int _branchIndex;
 
 	/** the last clash recorded */
@@ -1328,7 +1331,7 @@ public class ABoxImpl implements ABox
 	 * <code>c_</code> to each of the individuals in the collection and check the consistency.
 	 * <p>
 	 * The consistency checks will be done either on a copy of the ABox or its pseudo model depending on the situation. In either case this ABox will not be
-	 * modified at all. After the consistency check lastCompletion points to the modified ABox.
+	 * modified at all. After the consistency check lastCompletion points to the modified ABox. TODO mark this function as synchronized.
 	 *
 	 * @param individuals
 	 * @param c_
@@ -2173,9 +2176,12 @@ public class ABoxImpl implements ABox
 	 * Returns the branches.
 	 */
 	@Override
-	public List<Branch> getBranches()
+	public List<Branch> getBranches(final boolean unmodifiable)
 	{
-		return _branches;
+		if (unmodifiable)
+			return Collections.unmodifiableList(_branches);
+		else
+			return _branches;
 	}
 
 	@Override

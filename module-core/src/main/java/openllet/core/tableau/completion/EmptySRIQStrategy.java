@@ -562,29 +562,32 @@ public class EmptySRIQStrategy extends CompletionStrategy
 			if (lastBranch <= 0)
 				return false;
 
-			final List<Branch> branches = _abox.getBranches();
-			_abox.getStats()._backjumps += branches.size() - lastBranch;
 			Branch newBranch = null;
-			if (lastBranch <= branches.size())
+			synchronized (_abox)
 			{
-				branches.subList(lastBranch, branches.size()).clear();
-				newBranch = branches.get(lastBranch - 1);
-
-				if (_logger.isLoggable(Level.FINE))
-					_logger.fine("JUMP: " + lastBranch);
-				if (newBranch == null || lastBranch != newBranch.getBranchIndexInABox())
-					throw new OpenError("Internal error in reasoner: Trying to backtrack _branch " + lastBranch + " but got " + newBranch);
-
-				if (newBranch.getTryNext() < newBranch.getTryCount())
-					newBranch.setLastClash(_abox.getClash().getDepends());
-
-				newBranch.setTryNext(newBranch.getTryNext() + 1);
-
-				if (newBranch.getTryNext() < newBranch.getTryCount())
+				final List<Branch> branches = _abox.getBranches(false);
+				_abox.getStats()._backjumps += branches.size() - lastBranch;
+				if (lastBranch <= branches.size())
 				{
-					restore(newBranch);
+					branches.subList(lastBranch, branches.size()).clear();
+					newBranch = branches.get(lastBranch - 1);
 
-					branchFound = newBranch.tryNext();
+					if (_logger.isLoggable(Level.FINE))
+						_logger.fine("JUMP: " + lastBranch);
+					if (newBranch == null || lastBranch != newBranch.getBranchIndexInABox())
+						throw new OpenError("Internal error in reasoner: Trying to backtrack _branch " + lastBranch + " but got " + newBranch);
+
+					if (newBranch.getTryNext() < newBranch.getTryCount())
+						newBranch.setLastClash(_abox.getClash().getDepends());
+
+					newBranch.setTryNext(newBranch.getTryNext() + 1);
+
+					if (newBranch.getTryNext() < newBranch.getTryCount())
+					{
+						restore(newBranch);
+
+						branchFound = newBranch.tryNext();
+					}
 				}
 			}
 

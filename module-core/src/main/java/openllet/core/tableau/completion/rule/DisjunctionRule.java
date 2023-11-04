@@ -18,6 +18,7 @@ import openllet.core.OpenlletOptions;
 import openllet.core.boxes.abox.Individual;
 import openllet.core.boxes.abox.Node;
 import openllet.core.exceptions.InternalReasonerException;
+import openllet.core.tableau.branch.Branch;
 import openllet.core.tableau.branch.DisjunctionBranch;
 import openllet.core.tableau.completion.CompletionStrategy;
 import openllet.core.tableau.completion.queue.NodeSelector;
@@ -96,10 +97,12 @@ public class DisjunctionRule extends AbstractTableauRule
 				return;
 		}
 
-		final DisjunctionBranch newBranch = new DisjunctionBranch(_strategy.getABox(), _strategy, node, disjunction, node.getDepends(disjunction), disj);
-		_strategy.addBranch(newBranch);
+		final Branch newBranch;
+		synchronized (_strategy.getABox())
+		{
+			_strategy.addBranch(newBranch = new DisjunctionBranch(_strategy.getABox(), _strategy, node, disjunction, node.getDepends(disjunction), disj));
+		}
 
 		newBranch.tryNext();
 	}
-
 }
