@@ -6,7 +6,7 @@
 
 package openllet.core.rules.builtins;
 
-import openllet.core.boxes.abox.ABox;
+import openllet.core.boxes.abox.ABoxForRule;
 import openllet.core.boxes.abox.Literal;
 
 /**
@@ -36,5 +36,5 @@ public interface Function
 	 * @param args
 	 * @return the literal that result of the application of the function again the Abox
 	 */
-	Literal apply(final ABox abox, final Literal expected, final Literal... args);
+	Literal apply(final ABoxForRule abox, final Literal expected, final Literal... args);
 }

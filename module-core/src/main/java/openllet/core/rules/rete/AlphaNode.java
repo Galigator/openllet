@@ -9,7 +9,7 @@ package openllet.core.rules.rete;
 import java.util.Iterator;
 
 import openllet.aterm.ATermAppl;
-import openllet.core.boxes.abox.ABox;
+import openllet.core.boxes.abox.ABoxForStrategy;
 import openllet.core.boxes.abox.Node;
 import openllet.core.rules.model.RuleAtom;
 import openllet.core.utils.ATermUtils;
@@ -20,9 +20,9 @@ public abstract class AlphaNode extends ReteNode
 {
 	protected boolean _doExplanation;
 
-	protected final ABox _abox;
+	protected final ABoxForStrategy _abox;
 
-	public AlphaNode(final ABox abox)
+	public AlphaNode(final ABoxForStrategy abox)
 	{
 		_abox = abox;
 	}

@@ -31,6 +31,7 @@ import java.util.Set;
 import openllet.aterm.ATermAppl;
 import openllet.atom.OpenError;
 import openllet.core.boxes.abox.ABox;
+import openllet.core.boxes.abox.ABoxForIndividual;
 import openllet.core.boxes.abox.Individual;
 import openllet.core.boxes.abox.Node;
 
@@ -85,7 +86,7 @@ public final class BasicCompletionQueue extends CompletionQueue // Class is set 
 	 *
 	 * @param abox
 	 */
-	public BasicCompletionQueue(final ABox abox)
+	public BasicCompletionQueue(final ABoxForIndividual abox)
 	{
 		super(abox);
 	}

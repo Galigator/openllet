@@ -35,6 +35,7 @@ import java.util.logging.Logger;
 import openllet.core.DependencySet;
 import openllet.core.OpenlletOptions;
 import openllet.core.boxes.abox.ABox;
+import openllet.core.boxes.abox.ABoxForBranch;
 import openllet.core.boxes.abox.Clash;
 import openllet.core.boxes.abox.Node;
 import openllet.core.tableau.completion.CompletionStrategy;
@@ -54,7 +55,7 @@ public abstract class Branch implements Comparable<Branch>
 {
 	public static final Logger _logger = Log.getLogger(Branch.class);
 
-	protected final ABox _abox;
+	protected final ABoxForBranch _abox;
 
 	private final int _branchIndexInABox;
 	private final int _anonCount;
@@ -66,7 +67,7 @@ public abstract class Branch implements Comparable<Branch>
 	protected volatile int _tryNext;
 	protected volatile int _nodeCount;
 
-	protected Branch(final ABox abox, final CompletionStrategy strategy, final DependencySet ds, final int n)
+	protected Branch(final ABoxForBranch abox, final CompletionStrategy strategy, final DependencySet ds, final int n)
 	{
 		_abox = abox;
 		_strategy = strategy;
@@ -81,7 +82,7 @@ public abstract class Branch implements Comparable<Branch>
 		_nodeCount = abox.size();
 	}
 
-	protected Branch(final ABox abox, final int n, final Branch br)
+	protected Branch(final ABoxForBranch abox, final int n, final Branch br)
 	{
 		_abox = abox; // Changing Abox ? seriously ?
 		_strategy = br._strategy;

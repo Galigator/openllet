@@ -25,7 +25,7 @@ public class IndividualIterator implements Iterator<Individual>
 	/**
 	 * ABox where the individuals are stored
 	 */
-	protected volatile ABox _abox; // Can change in tableau.completion.queue.CompletionQueue
+	protected volatile ABoxForIndividual _abox; // Can change in tableau.completion.queue.CompletionQueue
 
 	/**
 	 * List of node names
@@ -47,7 +47,7 @@ public class IndividualIterator implements Iterator<Individual>
 	 *
 	 * @param abox
 	 */
-	public IndividualIterator(final ABox abox)
+	public IndividualIterator(final ABoxForIndividual abox)
 	{
 		_abox = abox;
 		_nodeList = abox.getNodeNames();

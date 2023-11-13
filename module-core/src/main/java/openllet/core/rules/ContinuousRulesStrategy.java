@@ -25,6 +25,7 @@ import openllet.atom.OpenError;
 import openllet.core.DependencySet;
 import openllet.core.OpenlletOptions;
 import openllet.core.boxes.abox.ABox;
+import openllet.core.boxes.abox.ABoxForIndividual;
 import openllet.core.boxes.abox.Clash;
 import openllet.core.boxes.abox.Edge;
 import openllet.core.boxes.abox.Individual;
@@ -70,7 +71,7 @@ public class ContinuousRulesStrategy extends SROIQStrategy
 
 	public void addUnsafeRule(final Rule rule, final Set<ATermAppl> explain)
 	{
-		_unsafeRules.add(new PartialBinding(rule, new VariableBinding(_abox), new DependencySet(explain)));
+		_unsafeRules.add(new PartialBinding(rule, new VariableBinding((ABoxForIndividual) _abox), new DependencySet(explain)));
 	}
 
 	public void addPartialBinding(final PartialBinding binding)

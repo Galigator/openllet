@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import openllet.aterm.ATermAppl;
-import openllet.core.boxes.abox.ABox;
+import openllet.core.boxes.abox.ABoxForRule;
 import openllet.core.boxes.abox.Literal;
 import openllet.core.rules.BindingHelper;
 import openllet.core.rules.VariableBinding;
@@ -214,7 +214,7 @@ public class StringOperators
 	{
 
 		@Override
-		public Literal apply(final ABox abox, final Literal expected, final Literal... args)
+		public Literal apply(final ABoxForRule abox, final Literal expected, final Literal... args)
 		{
 			if (args.length != 1)
 				return null;
@@ -428,7 +428,7 @@ public class StringOperators
 		}
 
 		@Override
-		public boolean apply(final ABox abox, final Literal[] args)
+		public boolean apply(final ABoxForRule abox, final Literal[] args)
 		{
 			return false;
 		}

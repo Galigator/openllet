@@ -9,7 +9,7 @@ package openllet.core.rules.builtins;
 import java.util.Collection;
 import java.util.Collections;
 
-import openllet.core.boxes.abox.ABox;
+import openllet.core.boxes.abox.ABoxForRule;
 import openllet.core.boxes.abox.Literal;
 import openllet.core.rules.BindingHelper;
 import openllet.core.rules.VariableBinding;
@@ -86,7 +86,7 @@ public class NoSuchBuiltIn implements BuiltIn
 	}
 
 	@Override
-	public boolean apply(final ABox abox, final Literal[] args)
+	public boolean apply(final ABoxForRule abox, final Literal[] args)
 	{
 		return false;
 	}

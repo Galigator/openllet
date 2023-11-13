@@ -10,6 +10,7 @@ import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
 import openllet.core.OpenlletOptions;
 import openllet.core.boxes.abox.ABox;
+import openllet.core.boxes.abox.ABoxForBranch;
 import openllet.core.boxes.abox.Clash;
 import openllet.core.boxes.abox.Individual;
 import openllet.core.boxes.rbox.Role;
@@ -32,7 +33,7 @@ public class GuessBranch extends IndividualBranch
 	private final int _minGuess;
 	private final ATermAppl _qualification;
 
-	public GuessBranch(final ABox abox, final CompletionStrategy strategy, final Individual x, //
+	public GuessBranch(final ABoxForBranch abox, final CompletionStrategy strategy, final Individual x, //
 			final Role r, final int minGuess, final int maxGuess, //
 			final ATermAppl q, final DependencySet ds)
 	{

@@ -15,6 +15,7 @@ import java.util.ListIterator;
 import java.util.Set;
 
 import openllet.core.boxes.abox.ABox;
+import openllet.core.boxes.abox.ABoxForIndividual;
 import openllet.core.rules.builtins.BuiltIn;
 import openllet.core.rules.builtins.BuiltInRegistry;
 import openllet.core.rules.model.AtomDVariable;
@@ -87,7 +88,7 @@ public class BindingGeneratorStrategyImpl implements BindingGeneratorStrategy
 	@Override
 	public BindingGenerator createGenerator(final Rule rule)
 	{
-		return createGenerator(rule, new VariableBinding(_abox));
+		return createGenerator(rule, new VariableBinding((ABoxForIndividual) _abox));
 	}
 
 	@Override

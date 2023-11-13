@@ -26,6 +26,7 @@ import openllet.atom.OpenError;
 import openllet.core.DependencySet;
 import openllet.core.OpenlletOptions;
 import openllet.core.boxes.abox.ABox;
+import openllet.core.boxes.abox.ABoxForStrategy;
 import openllet.core.boxes.abox.Clash;
 import openllet.core.boxes.abox.Edge;
 import openllet.core.boxes.abox.EdgeList;
@@ -80,7 +81,7 @@ public abstract class CompletionStrategy
 	/**
 	 * ABox being completed
 	 */
-	protected final ABox _abox;
+	protected final ABoxForStrategy _abox;
 
 	/**
 	 * TBox associated with the _abox
@@ -142,7 +143,7 @@ public abstract class CompletionStrategy
 		_completionTimer = _timers.getTimer("complete");
 	}
 
-	public ABox getABox()
+	public ABoxForStrategy getABox()
 	{
 		return _abox;
 	}

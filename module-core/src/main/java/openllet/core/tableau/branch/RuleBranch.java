@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import openllet.core.DependencySet;
 import openllet.core.OpenlletOptions;
 import openllet.core.boxes.abox.ABox;
+import openllet.core.boxes.abox.ABoxForBranch;
 import openllet.core.boxes.abox.Clash;
 import openllet.core.boxes.abox.Individual;
 import openllet.core.boxes.abox.Node;
@@ -36,7 +37,7 @@ public class RuleBranch extends Branch
 	private final int[] _order;
 	private final DependencySet[] _prevDS;
 
-	public RuleBranch(final ABox abox, final CompletionStrategy completion, final RuleAtomAsserter ruleAtomAsserter, //
+	public RuleBranch(final ABoxForBranch abox, final CompletionStrategy completion, final RuleAtomAsserter ruleAtomAsserter, //
 			final List<RuleAtom> atoms, final VariableBinding binding, final int bodyAtomCount, //
 			final DependencySet ds)
 	{

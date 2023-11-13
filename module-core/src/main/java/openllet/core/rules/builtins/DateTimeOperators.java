@@ -16,7 +16,7 @@ import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import openllet.aterm.ATermAppl;
-import openllet.core.boxes.abox.ABox;
+import openllet.core.boxes.abox.ABoxForRule;
 import openllet.core.boxes.abox.Literal;
 import openllet.core.datatypes.Datatype;
 import openllet.core.datatypes.exceptions.InvalidLiteralException;
@@ -61,7 +61,7 @@ public class DateTimeOperators
 		public final StringFunctionAdapter allBound = new StringFunctionAdapter(this, XSD + "date");
 
 		@Override
-		public boolean apply(final ABox abox, final Literal[] args)
+		public boolean apply(final ABoxForRule abox, final Literal[] args)
 		{
 			// Assume applicability check means we have the right number of arguments.
 			if (args[0] != null && args[0].getValue() instanceof XMLGregorianCalendar)
@@ -126,7 +126,7 @@ public class DateTimeOperators
 		public final StringFunctionAdapter allBound = new StringFunctionAdapter(this, XSD + "dateTime");
 
 		@Override
-		public boolean apply(final ABox abox, final Literal[] args)
+		public boolean apply(final ABoxForRule abox, final Literal[] args)
 		{
 			// Assume applicability check means we have the right number of arguments.
 			if (restBound(args))
@@ -222,7 +222,7 @@ public class DateTimeOperators
 		}
 
 		@Override
-		public boolean apply(final ABox abox, final Literal[] args)
+		public boolean apply(final ABoxForRule abox, final Literal[] args)
 		{
 			if (restBound(args))
 			{
@@ -292,7 +292,7 @@ public class DateTimeOperators
 		public final StringFunctionAdapter allBound = new StringFunctionAdapter(this, XSD + "time");
 
 		@Override
-		public boolean apply(final ABox abox, final Literal[] args)
+		public boolean apply(final ABoxForRule abox, final Literal[] args)
 		{
 			if (restBound(args))
 			{
@@ -389,13 +389,13 @@ public class DateTimeOperators
 		}
 	}
 
-	private static Literal createDecimal(final ABox abox, final Number val)
+	private static Literal createDecimal(final ABoxForRule abox, final Number val)
 	{
 		final ATermAppl term = ATermUtils.makeTypedLiteral(val.toString(), XSD + "decimal");
 		return abox.addLiteral(term);
 	}
 
-	private static Literal createInteger(final ABox abox, final Number val)
+	private static Literal createInteger(final ABoxForRule abox, final Number val)
 	{
 		final ATermAppl term = ATermUtils.makeTypedLiteral(val.toString(), XSD + "integer");
 		return abox.addLiteral(term);

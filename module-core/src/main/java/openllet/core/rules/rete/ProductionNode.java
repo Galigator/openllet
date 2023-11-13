@@ -12,6 +12,7 @@ import java.util.Set;
 
 import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
+import openllet.core.boxes.abox.ABoxForIndividual;
 import openllet.core.boxes.abox.Clash;
 import openllet.core.boxes.abox.Individual;
 import openllet.core.boxes.abox.Literal;
@@ -229,7 +230,7 @@ public abstract class ProductionNode extends BetaNode
 		public void activate(final Token token)
 		{
 			resetDependencySet(token);
-			final VariableBinding binding = new VariableBinding(_strategy.getABox());
+			final VariableBinding binding = new VariableBinding((ABoxForIndividual) _strategy.getABox());
 			for (final Entry<AtomVariable, NodeProvider> entry : _args.entrySet())
 			{
 				final AtomObject arg = entry.getKey();

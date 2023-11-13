@@ -9,7 +9,7 @@ package openllet.core.rules.rete;
 import java.util.Arrays;
 
 import openllet.core.DependencySet;
-import openllet.core.boxes.abox.ABox;
+import openllet.core.boxes.abox.ABoxForStrategy;
 import openllet.core.boxes.abox.Literal;
 import openllet.core.rules.builtins.BuiltIn;
 import openllet.core.utils.ATermUtils;
@@ -18,12 +18,12 @@ import openllet.core.utils.ATermUtils;
  */
 public class BetaBuiltinNode extends BetaNode
 {
-	private final ABox _abox;
+	private final ABoxForStrategy _abox;
 	private final String _name;
 	private final BuiltIn _builtin;
 	private final NodeProvider[] _args;
 
-	public BetaBuiltinNode(final ABox abox, final String name, final BuiltIn builtin, final NodeProvider[] args)
+	public BetaBuiltinNode(final ABoxForStrategy abox, final String name, final BuiltIn builtin, final NodeProvider[] args)
 	{
 		_abox = abox;
 		_name = name;

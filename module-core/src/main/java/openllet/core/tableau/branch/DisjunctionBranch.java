@@ -38,6 +38,7 @@ import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
 import openllet.core.OpenlletOptions;
 import openllet.core.boxes.abox.ABox;
+import openllet.core.boxes.abox.ABoxForBranch;
 import openllet.core.boxes.abox.Clash;
 import openllet.core.boxes.abox.Individual;
 import openllet.core.boxes.abox.Node;
@@ -53,7 +54,7 @@ public class DisjunctionBranch extends Branch
 	protected volatile DependencySet[] _prevDS;
 	protected volatile int[] _order;
 
-	public DisjunctionBranch(final ABox abox, final CompletionStrategy completion, final Node node, //
+	public DisjunctionBranch(final ABoxForBranch abox, final CompletionStrategy completion, final Node node, //
 			final ATermAppl disjunction, final DependencySet ds, final ATermAppl[] disj)
 	{
 		super(abox, completion, ds, disj.length);

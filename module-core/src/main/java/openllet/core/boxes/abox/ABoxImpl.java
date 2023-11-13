@@ -314,8 +314,7 @@ public class ABoxImpl implements ABox
 		else
 			_branchEffects = null;
 
-		// copy the _queue - this must be done early so that the effects of
-		// adding the extra _individual do not get removed
+		// copy the _queue - this must be done early so that the effects of adding the extra _individual do not get removed
 		if (OpenlletOptions.USE_COMPLETION_QUEUE)
 		{
 			if (copyIndividuals)
@@ -2035,11 +2034,13 @@ public class ABoxImpl implements ABox
 			}
 		}
 
-		_clash = clash;
-		// CHW - added for incremental deletions
-		if (OpenlletOptions.USE_INCREMENTAL_DELETION)
-			_kb.getDependencyIndex().setClashDependencies(_clash);
-
+		synchronized (this)
+		{
+			_clash = clash;
+			// CHW - added for incremental deletions
+			if (OpenlletOptions.USE_INCREMENTAL_DELETION)
+				_kb.getDependencyIndex().setClashDependencies(_clash);
+		}
 	}
 
 	/**

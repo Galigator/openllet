@@ -37,6 +37,7 @@ import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
 import openllet.core.OpenlletOptions;
 import openllet.core.boxes.abox.ABox;
+import openllet.core.boxes.abox.ABoxForBranch;
 import openllet.core.boxes.abox.Clash;
 import openllet.core.boxes.abox.Edge;
 import openllet.core.boxes.abox.EdgeList;
@@ -58,7 +59,7 @@ public class MaxBranch extends IndividualBranch
 	private final ATermAppl _qualification;
 	private final DependencySet[] _prevDS;
 
-	public MaxBranch(final ABox abox, final CompletionStrategy strategy, //
+	public MaxBranch(final ABoxForBranch abox, final CompletionStrategy strategy, //
 			final Individual x, final Role r, final int n, //
 			final ATermAppl qualification, final List<NodeMerge> mergePairs, final DependencySet ds)
 	{
@@ -100,7 +101,7 @@ public class MaxBranch extends IndividualBranch
 				b.setTryNext(_tryNext);
 				b._prevDS = new DependencySet[_prevDS.length];
 				System.arraycopy(_prevDS, 0, b._prevDS, 0, getTryNext());
-		
+
 				return b;
 		*/
 	}

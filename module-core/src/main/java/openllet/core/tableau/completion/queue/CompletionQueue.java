@@ -34,6 +34,7 @@ import java.util.logging.Logger;
 
 import openllet.aterm.ATermAppl;
 import openllet.core.boxes.abox.ABox;
+import openllet.core.boxes.abox.ABoxForIndividual;
 import openllet.core.boxes.abox.IndividualIterator;
 import openllet.core.boxes.abox.Node;
 import openllet.shared.tools.Log;
@@ -61,7 +62,7 @@ public abstract class CompletionQueue extends IndividualIterator
 
 	private boolean _allowLiterals = false;
 
-	protected int _currentType; // Access fom OptimizedBasicCompletionQueue only
+	protected int _currentType; // Access from OptimizedBasicCompletionQueue only
 
 	protected boolean _closed = false;
 
@@ -70,7 +71,7 @@ public abstract class CompletionQueue extends IndividualIterator
 	 *
 	 * @param _abox
 	 */
-	protected CompletionQueue(final ABox abox)
+	protected CompletionQueue(final ABoxForIndividual abox)
 	{
 		super(abox);
 	}

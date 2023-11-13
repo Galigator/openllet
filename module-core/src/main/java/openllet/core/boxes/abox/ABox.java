@@ -33,7 +33,7 @@ import openllet.shared.tools.Logging;
  *
  * @since 2.6.0
  */
-public interface ABox extends Logging
+public interface ABox extends Logging, ABoxForStrategy
 {
 	String IS_INC_CONSISTENT = "isIncConsistent";
 	String IS_CONSISTENT = "isConsistent";
@@ -61,6 +61,7 @@ public interface ABox extends Logging
 	 */
 	ABox copy(final ATermAppl extraIndividual, final boolean copyIndividuals);
 
+	@Override
 	void copyOnWrite();
 
 	/**
@@ -70,8 +71,10 @@ public interface ABox extends Logging
 	 */
 	void clearCaches(final boolean clearSatCache);
 
+	@Override
 	Bool getCachedSat(final ATermAppl c);
 
+	@Override
 	ConceptCache getCache();
 
 	CachedNode getCached(final ATermAppl c);
@@ -160,10 +163,13 @@ public interface ABox extends Logging
 
 	EdgeList getOutEdges(final ATerm x);
 
+	@Override
 	Individual getIndividual(final ATerm x);
 
+	@Override
 	Literal getLiteral(final ATerm x);
 
+	@Override
 	Node getNode(final ATerm x);
 
 	void addType(final ATermAppl x, final ATermAppl c);
@@ -178,6 +184,7 @@ public interface ABox extends Logging
 	 * @param x
 	 * @return true if the removal occur
 	 */
+	@Override
 	boolean removeNode(final ATermAppl x);
 
 	void removeType(final ATermAppl x, ATermAppl c);
@@ -189,6 +196,7 @@ public interface ABox extends Logging
 	 * @param ds
 	 * @return the literal added.
 	 */
+	@Override
 	Literal addLiteral(final DependencySet ds);
 
 	/**
@@ -197,12 +205,15 @@ public interface ABox extends Logging
 	 * @param dataValue A literal ATerm which should be constructed with one of ATermUtils.makeXXXLiteral functions
 	 * @return Literal object that has been created
 	 */
+	@Override
 	Literal addLiteral(final ATermAppl dataValue);
 
 	Literal addLiteral(final ATermAppl dataValue, final DependencySet ds);
 
+	@Override
 	Individual addIndividual(final ATermAppl x, final DependencySet ds);
 
+	@Override
 	Individual addFreshIndividual(final Individual parent, final DependencySet ds);
 
 	void addSame(final ATermAppl x, final ATermAppl y);
@@ -221,37 +232,46 @@ public interface ABox extends Logging
 
 	ATermAppl createUniqueName(final boolean isNominal);
 
+	@Override
 	Map<ATermAppl, Node> getNodes();
 
+	@Override
 	List<ATermAppl> getNodeNames();
 
 	/**
 	 * @return Returns the datatype reasoner.
 	 */
+	@Override
 	DatatypeReasoner getDatatypeReasoner();
 
 	/**
 	 * @return Returns the isComplete.
 	 */
+	@Override
 	boolean isComplete();
 
 	/**
 	 * @param isComplete The isComplete to set.
 	 */
+	@Override
 	void setComplete(final boolean isComplete);
 
 	/**
 	 * @return true if Abox is closed.
 	 */
+	@Override
 	boolean isClosed();
 
+	@Override
 	Clash getClash();
 
+	@Override
 	void setClash(final Clash clash);
 
 	/**
 	 * @return Returns the _kb.
 	 */
+	@Override
 	KnowledgeBase getKB();
 
 	/**
@@ -260,6 +280,7 @@ public interface ABox extends Logging
 	 * @param r is the name of the role
 	 * @return the named role.
 	 */
+	@Override
 	Role getRole(final ATerm r);
 
 	/**
@@ -279,6 +300,7 @@ public interface ABox extends Logging
 	 *
 	 * @return Returns the branch.
 	 */
+	@Override
 	int getBranchIndex();
 
 	/**
@@ -286,6 +308,7 @@ public interface ABox extends Logging
 	 *
 	 * @param branchIndex
 	 */
+	@Override
 	void setBranchIndex(final int branchIndex);
 
 	ABox getSourceABox();
@@ -294,11 +317,13 @@ public interface ABox extends Logging
 
 	boolean isRulesNotApplied();
 
+	@Override
 	void setRulesNotApplied(final boolean rulesNotApplied);
 
 	/**
 	 * Increment the branch number (should only be called when a non-deterministic rule, e.g. disjunction or max rule, is being applied)
 	 */
+	@Override
 	void incrementBranch();
 
 	/**
@@ -306,8 +331,10 @@ public interface ABox extends Logging
 	 *
 	 * @return Returns the initialized.
 	 */
+	@Override
 	boolean isInitialized();
 
+	@Override
 	void setInitialized(final boolean initialized);
 
 	/**
@@ -315,6 +342,7 @@ public interface ABox extends Logging
 	 *
 	 * @return Returns the _doExplanation.
 	 */
+	@Override
 	boolean doExplanation();
 
 	/**
@@ -330,28 +358,34 @@ public interface ABox extends Logging
 
 	Set<ATermAppl> getExplanationSet();
 
+	@Override
 	BranchEffectTracker getBranchEffectTracker();
 
 	/**
 	 * @return the branches.
 	 */
+	@Override
 	List<Branch> getBranches(boolean unmodifiable);
 
+	@Override
 	default List<Branch> getBranches()
 	{
 		return getBranches(true);
 	}
 
+	@Override
 	IncrementalChangeTracker getIncrementalChangeTracker();
 
 	/**
 	 * @return the individuals to which we need to apply the tableau rules
 	 */
+	@Override
 	IndividualIterator getIndIterator();
 
 	/**
 	 * Validate all the edges in the ABox _nodes. Used to find bugs in the copy and detach/attach functions.
 	 */
+	@Override
 	void validate();
 
 	void validateTypes(final Individual node, final List<ATermAppl> negatedTypes);
@@ -365,6 +399,7 @@ public interface ABox extends Logging
 	 */
 	void printTree(PrintStream stream);
 
+	@Override
 	default void printTree()
 	{
 		printTree(System.err);
@@ -381,6 +416,7 @@ public interface ABox extends Logging
 	/**
 	 * @return the number of nodes in the ABox. This number includes both the individuals and the literals.
 	 */
+	@Override
 	int size();
 
 	/**
@@ -406,6 +442,7 @@ public interface ABox extends Logging
 	 */
 	boolean isSyntacticUpdate();
 
+	@Override
 	CompletionQueue getCompletionQueue();
 
 	/**
@@ -424,27 +461,33 @@ public interface ABox extends Logging
 	/**
 	 * @return the anonCount
 	 */
+	@Override
 	int getAnonCount();
 
 	/**
 	 * @return the disjBranchStats
 	 */
+	@Override
 	Map<ATermAppl, int[]> getDisjBranchStats();
 
 	/**
 	 * @param changed the changed to set
 	 */
+	@Override
 	void setChanged(final boolean changed);
 
 	/**
 	 * @return the changed
 	 */
+	@Override
 	boolean isChanged();
 
 	/**
 	 * @return the toBeMerged
 	 */
+	@Override
 	List<NodeMerge> getToBeMerged();
 
+	@Override
 	ABoxStats getStats();
 }

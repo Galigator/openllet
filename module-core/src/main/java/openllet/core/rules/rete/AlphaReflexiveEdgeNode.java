@@ -8,7 +8,7 @@ package openllet.core.rules.rete;
 
 import java.util.Iterator;
 
-import openllet.core.boxes.abox.ABox;
+import openllet.core.boxes.abox.ABoxForStrategy;
 import openllet.core.boxes.abox.Edge;
 import openllet.core.boxes.abox.EdgeList;
 import openllet.core.boxes.abox.Individual;
@@ -27,7 +27,7 @@ import openllet.core.utils.iterator.NestedIterator;
  */
 public class AlphaReflexiveEdgeNode extends AlphaEdgeNode
 {
-	public AlphaReflexiveEdgeNode(final ABox abox, final Role role)
+	public AlphaReflexiveEdgeNode(final ABoxForStrategy abox, final Role role)
 	{
 		super(abox, role);
 	}

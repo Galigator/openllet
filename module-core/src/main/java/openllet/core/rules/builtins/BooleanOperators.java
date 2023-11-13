@@ -11,7 +11,7 @@ package openllet.core.rules.builtins;
 import java.util.Arrays;
 
 import openllet.aterm.ATermAppl;
-import openllet.core.boxes.abox.ABox;
+import openllet.core.boxes.abox.ABoxForRule;
 import openllet.core.boxes.abox.Literal;
 import openllet.core.utils.TermFactory;
 
@@ -38,7 +38,7 @@ public class BooleanOperators
 	{
 
 		@Override
-		public boolean apply(final ABox abox, final Literal[] args)
+		public boolean apply(final ABoxForRule abox, final Literal[] args)
 		{
 			if (args.length != 2)
 				return false;

@@ -14,7 +14,7 @@ import static openllet.core.utils.TermFactory.value;
 
 import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
-import openllet.core.boxes.abox.ABox;
+import openllet.core.boxes.abox.ABoxForBranch;
 import openllet.core.boxes.abox.Individual;
 import openllet.core.boxes.abox.Node;
 import openllet.core.rules.model.BuiltInAtom;
@@ -41,7 +41,7 @@ import openllet.core.utils.ATermUtils;
  */
 public class RuleAtomAsserter implements RuleAtomVisitor
 {
-	private volatile ABox _abox;
+	private volatile ABoxForBranch _abox;
 	private volatile CompletionStrategy _strategy;
 
 	private volatile VariableBinding _binding;
@@ -55,7 +55,7 @@ public class RuleAtomAsserter implements RuleAtomVisitor
 		// empty
 	}
 
-	public boolean assertAtom(final RuleAtom atom, final VariableBinding binding, final DependencySet ds, final boolean negated, final ABox abox, final CompletionStrategy strategy)
+	public boolean assertAtom(final RuleAtom atom, final VariableBinding binding, final DependencySet ds, final boolean negated, final ABoxForBranch abox, final CompletionStrategy strategy)
 	{
 		_asserted = true;
 

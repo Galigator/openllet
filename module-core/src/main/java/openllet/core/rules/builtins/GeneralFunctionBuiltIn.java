@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
-import openllet.core.boxes.abox.ABox;
+import openllet.core.boxes.abox.ABoxForRule;
 import openllet.core.boxes.abox.Literal;
 import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.rules.BindingHelper;
@@ -157,7 +157,7 @@ public class GeneralFunctionBuiltIn implements BuiltIn
 	}
 
 	@Override
-	public boolean apply(final ABox abox, final Literal[] args)
+	public boolean apply(final ABoxForRule abox, final Literal[] args)
 	{
 		return _function.apply(abox, args);
 	}

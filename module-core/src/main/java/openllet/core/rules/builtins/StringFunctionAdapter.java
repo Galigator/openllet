@@ -9,7 +9,7 @@ package openllet.core.rules.builtins;
 import static openllet.core.rules.builtins.ComparisonTesters.expectedIfEquals;
 
 import openllet.aterm.ATermAppl;
-import openllet.core.boxes.abox.ABox;
+import openllet.core.boxes.abox.ABoxForRule;
 import openllet.core.boxes.abox.Literal;
 import openllet.core.utils.ATermUtils;
 
@@ -46,7 +46,7 @@ public class StringFunctionAdapter implements Function
 	}
 
 	@Override
-	public Literal apply(final ABox abox, final Literal expected, final Literal... litArgs)
+	public Literal apply(final ABoxForRule abox, final Literal expected, final Literal... litArgs)
 	{
 		final String[] args = new String[litArgs.length];
 		for (int i = 0; i < litArgs.length; i++)
