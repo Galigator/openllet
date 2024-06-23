@@ -16,6 +16,7 @@ import java.util.logging.Logger;
 
 import openllet.aterm.ATermAppl;
 import openllet.core.OpenlletOptions;
+import openllet.core.boxes.abox.ABox;
 import openllet.core.boxes.abox.ABoxForIndividual;
 import openllet.core.boxes.abox.ABoxForRule;
 import openllet.core.boxes.abox.Individual;
@@ -193,6 +194,12 @@ public class VariableBinding
 	private final Map<AtomDVariable, Literal> _dataVars = new HashMap<>();
 
 	private final Map<AtomIVariable, Individual> _instanceVars = new HashMap<>();
+
+	@Deprecated
+	public VariableBinding(final ABox abox)
+	{
+		_abox = abox.getABoxForRule();
+	}
 
 	public VariableBinding(final ABoxForIndividual abox)
 	{

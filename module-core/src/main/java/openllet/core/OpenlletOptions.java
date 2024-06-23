@@ -426,7 +426,7 @@ public class OpenlletOptions
 	 */
 	public static boolean IGNORE_ANNOTATION_CLASSES = true;
 
-	public static boolean USE_THREADED_KERNEL = true;
+	public static boolean USE_THREADED_KERNEL = false;
 
 	static
 	{
