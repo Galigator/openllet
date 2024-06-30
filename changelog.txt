@@ -1,0 +1,14 @@
+Removing deprecated methods and objects
+
+- openllet.query.sparqldl.jena.SparqlDLStage
+StageGeneratorGenericStar was deprecated and has been replaced by StageGeneratorGeneric.
+
+- openllet.query.sparqldl.jena.SparqlDLResultSet
+org.apache.jena.sparql.engine.binding.BindingHashMap and BindingMap are deprecated in jena 4.2, Use {@link BindingBuilder}; avoid mutable bindings.
+
+- openllet.query.sparqldl.jena.JenaIOUtils
+import org.apache.jena.riot.resultset.rw.ResultsStAX no more exists. It is a parser
+for query results in XML format. Using ResultSetMgr.readBoolean instead.
+
+- openllet.test.query.TableResult2XML
+org.apache.jena.sparql.engine.binding.BindingUtils no more exists. It was already deprecated, Use BindingLib instead
