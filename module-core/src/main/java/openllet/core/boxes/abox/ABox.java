@@ -77,6 +77,7 @@ public interface ABox extends Logging, ABoxForStrategy
 	@Override
 	ConceptCache getCache();
 
+	@Override
 	CachedNode getCached(final ATermAppl c);
 
 	Bool isKnownSubClassOf(final ATermAppl c1, final ATermAppl c2);

@@ -269,7 +269,7 @@ public class DependencySet
 	{
 		if (getExplain().contains(assertion))
 		{
-			setExplain(new HashSet<ATermAppl>());
+			setExplain(new HashSet<>());
 			DependencyIndex._logger.fine("             Explain: removed ");
 		}
 

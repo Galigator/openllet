@@ -1110,11 +1110,11 @@ public class ABoxImpl implements ABox
 			getSimpleObjectPropertyValues(subj, role, knowns, unknowns, getSames);
 		else
 			if (!role.hasComplexSubRole())
-				getTransitivePropertyValues(subj, role, knowns, unknowns, getSames, new HashMap<Individual, Set<Role>>(), true);
+				getTransitivePropertyValues(subj, role, knowns, unknowns, getSames, new HashMap<>(), true);
 			else
 			{
 				final TransitionGraph<Role> tg = role.getFSM();
-				getComplexObjectPropertyValues(subj, tg.getInitialState(), tg, knowns, unknowns, getSames, new HashMap<Individual, Set<State<Role>>>(), true);
+				getComplexObjectPropertyValues(subj, tg.getInitialState(), tg, knowns, unknowns, getSames, new HashMap<>(), true);
 			}
 
 		if (!isIndependent)
@@ -2318,7 +2318,7 @@ public class ABoxImpl implements ABox
 			final Node node = n.next();
 			if (!node.isRoot() || node instanceof Literal)
 				continue;
-			printNode(stream, (Individual) node, new HashSet<Individual>(), "   ");
+			printNode(stream, (Individual) node, new HashSet<>(), "   ");
 		}
 	}
 

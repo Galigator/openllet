@@ -38,7 +38,7 @@ public class FSMBuilder
 
 	public boolean build(final Role s)
 	{
-		return build(s, new HashSet<Role>()) != null;
+		return build(s, new HashSet<>()) != null;
 	}
 
 	private TransitionGraph<Role> build(final Role s, final Set<Role> visited)

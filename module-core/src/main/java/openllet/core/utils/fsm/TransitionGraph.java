@@ -398,7 +398,7 @@ public class TransitionGraph<T>
 
 		// start state of DFA is epsilon closure of start state in NFA
 		State<T> s = new State<>();
-		Set<State<T>> ss = epsilonClosure(_initialState, new HashSet<State<T>>());
+		Set<State<T>> ss = epsilonClosure(_initialState, new HashSet<>());
 
 		_initialState = s;
 

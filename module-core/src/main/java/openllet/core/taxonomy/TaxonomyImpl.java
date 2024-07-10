@@ -537,7 +537,7 @@ public class TaxonomyImpl<T> implements Taxonomy<T>
 	{
 		if (!_nodes.get(node.getName()).equals(node))
 			throw new InternalReasonerException("This _node does not exist in the taxonomy: " + node.getName());
-		removeCycles(node, new ArrayList<TaxonomyNode<T>>());
+		removeCycles(node, new ArrayList<>());
 	}
 
 	/**

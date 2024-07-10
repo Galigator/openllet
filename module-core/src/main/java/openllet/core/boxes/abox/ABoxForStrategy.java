@@ -40,6 +40,7 @@ public interface ABoxForStrategy extends ABoxForRule, ABoxForIndividual, ABoxFor
 
 	Individual addFreshIndividual(Individual parent, DependencySet ds);
 
+	@Override
 	Literal getLiteral(ATerm target);
 
 	/**

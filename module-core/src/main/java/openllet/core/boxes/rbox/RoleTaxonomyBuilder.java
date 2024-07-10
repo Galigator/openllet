@@ -157,7 +157,7 @@ public class RoleTaxonomyBuilder
 		mark(_taxonomyImpl.getTop(), marked, Boolean.TRUE, Propagate.NONE);
 		mark(_taxonomyImpl.getBottomNode(), marked, Boolean.FALSE, Propagate.NONE);
 
-		final Collection<TaxonomyNode<ATermAppl>> superNodes = search(true, c, _taxonomyImpl.getTop(), new HashSet<TaxonomyNode<ATermAppl>>(), new ArrayList<TaxonomyNode<ATermAppl>>(), marked);
+		final Collection<TaxonomyNode<ATermAppl>> superNodes = search(true, c, _taxonomyImpl.getTop(), new HashSet<>(), new ArrayList<>(), marked);
 
 		marked = new HashMap<>();
 		mark(_taxonomyImpl.getTop(), marked, Boolean.FALSE, Propagate.NONE);
@@ -179,7 +179,7 @@ public class RoleTaxonomyBuilder
 			}
 		}
 
-		final Collection<TaxonomyNode<ATermAppl>> subNodes = search(false, c, _taxonomyImpl.getBottomNode(), new HashSet<TaxonomyNode<ATermAppl>>(), new ArrayList<TaxonomyNode<ATermAppl>>(), marked);
+		final Collection<TaxonomyNode<ATermAppl>> subNodes = search(false, c, _taxonomyImpl.getBottomNode(), new HashSet<>(), new ArrayList<>(), marked);
 
 		final List<ATermAppl> supers = new ArrayList<>();
 		for (final TaxonomyNode<ATermAppl> n : superNodes)

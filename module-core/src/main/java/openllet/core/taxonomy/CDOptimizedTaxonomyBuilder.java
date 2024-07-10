@@ -962,7 +962,7 @@ public class CDOptimizedTaxonomyBuilder implements TaxonomyBuilder
 
 		_logger.finer("Top search...");
 		final List<TaxonomyNode<ATermAppl>> supers = new ArrayList<>();
-		search(true, c, _taxonomyImpl.getTop(), new HashSet<TaxonomyNode<ATermAppl>>(), supers);
+		search(true, c, _taxonomyImpl.getTop(), new HashSet<>(), supers);
 		return supers;
 	}
 
