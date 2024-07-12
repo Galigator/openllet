@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import openllet.aterm.ATerm;
@@ -264,7 +265,7 @@ public interface ABox extends Logging, ABoxForStrategy
 	boolean isClosed();
 
 	@Override
-	Clash getClash();
+	Optional<Clash> getClash();
 
 	@Override
 	void setClash(final Clash clash);
@@ -311,10 +312,6 @@ public interface ABox extends Logging, ABoxForStrategy
 	 */
 	@Override
 	void setBranchIndex(final int branchIndex);
-
-	ABox getSourceABox();
-
-	void setSourceABox(final ABox sourceABox);
 
 	boolean isRulesNotApplied();
 
@@ -406,9 +403,9 @@ public interface ABox extends Logging, ABoxForStrategy
 		printTree(System.err);
 	}
 
-	Clash getLastClash();
+	Optional<Clash> getLastClash();
 
-	ABox getLastCompletion();
+	Optional<ABox> getLastCompletion();
 
 	boolean isKeepLastCompletion();
 
@@ -491,4 +488,6 @@ public interface ABox extends Logging, ABoxForStrategy
 
 	@Override
 	ABoxStats getStats();
+
+	void removeBranch(Branch branch);
 }

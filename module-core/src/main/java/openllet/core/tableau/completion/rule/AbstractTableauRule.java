@@ -74,7 +74,8 @@ public abstract class AbstractTableauRule implements TableauRule
 						}
 						return false;
 
-					}).findAny()//
+					})//
+					.findAny()//
 					.isPresent();
 		}
 		else

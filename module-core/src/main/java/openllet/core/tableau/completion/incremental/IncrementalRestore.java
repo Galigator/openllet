@@ -127,23 +127,25 @@ public class IncrementalRestore
 		}
 	}
 
-	private void updateBranchesOfABox(final AddBranchDependency branch, final ABox abox)
+	private void updateBranchesOfABox(final AddBranchDependency addBranchDep, final ABox abox)
 	{
 		final List<Branch> branches = abox.getBranches();
+		var branch = addBranchDep.getBranch();
+		
 
 		// decrease branch id for each branch after the branch we're removing
 		// also need to change the dependency set for each label
-		for (int i = branch.getBranch().getBranchIndexInABox(); i < branches.size(); i++)
+		for (int i = branch.getBranchIndexInABox(); i < branches.size(); i++)
 		{
 			final Branch br = branches.get(i); // cast for ease
 
 			DependencySet termDepends = br.getTermDepends();
 
 			// update the term depends in the branch
-			if (termDepends.getBranch() > branch.getBranch().getBranchIndexInABox())
+			if (termDepends.getBranch() > branch.getBranchIndexInABox())
 				termDepends = termDepends.copy(termDepends.getBranch() - 1);
 
-			for (int j = branch.getBranch().getBranchIndexInABox(); j < _kb.getABox().getBranches().size(); j++)
+			for (int j = branch.getBranchIndexInABox(), s = _kb.getABox().getBranches().size(); j < s; j++)
 				if (termDepends.contains(j))
 				{
 					termDepends.remove(j);
@@ -153,7 +155,7 @@ public class IncrementalRestore
 			br.setTermDepends(termDepends);
 		}
 
-		branches.remove(branch.getBranch()); // remove the actual branch
+		abox.removeBranch(branch);
 	}
 
 	/**
@@ -228,19 +230,21 @@ public class IncrementalRestore
 	 */
 	private void restoreDependencies()
 	{
-		for (final ATermAppl next : _kb.getDeletedAssertions()) // iterate over all removed assertions
+		synchronized (_kb)
 		{
-			final DependencyEntry entry = _kb.getDependencyIndex().getDependencies(next); // get the dependency entry (from map, so it can be null)
-
-			if (entry != null)
+			for (final ATermAppl next : _kb.getDeletedAssertions()) // iterate over all removed assertions
 			{
-				DependencyIndex._logger.fine(() -> "Restoring dependencies for " + next);
-				restoreDependency(next, entry); // restore the entry
+				final DependencyEntry entry = _kb.getDependencyIndex().getDependencies(next); // get the dependency entry (from map, so it can be null)
+	
+				if (entry != null)
+				{
+					DependencyIndex._logger.fine(() -> "Restoring dependencies for " + next);
+					restoreDependency(next, entry); // restore the entry
+				}
+	
+				_kb.getDependencyIndex().removeDependencies(next); // remove the entry in the _index for this assertion
 			}
-
-			_kb.getDependencyIndex().removeDependencies(next); // remove the entry in the _index for this assertion
 		}
-
 	}
 
 	/**

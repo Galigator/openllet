@@ -6,13 +6,13 @@
 
 package openllet.core.utils;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Vector;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * <p>
@@ -62,32 +62,32 @@ public class CollectionUtils
 
 	public static <T> List<T> makeList()
 	{
-		return new ArrayList<>();
+		return new Vector<>();
 	}
 
 	public static <T> List<T> makeList(final int size)
 	{
-		return new ArrayList<>(size);
+		return new Vector<>(size);
 	}
 
 	public static <T> List<T> makeList(final Collection<? extends T> a)
 	{
-		return new ArrayList<>(a);
+		return new Vector<>(a);
 	}
 
 	public static <K, V> Map<K, V> makeMap()
 	{
-		return new HashMap<>();
+		return new ConcurrentHashMap<>();
 	}
 
 	public static <K, V> Map<K, V> makeMap(final int size)
 	{
-		return new HashMap<>(size);
+		return new ConcurrentHashMap<>(size);
 	}
 
 	public static <K, V> Map<K, V> makeMap(final Map<? extends K, ? extends V> map)
 	{
-		return new HashMap<>(map);
+		return new ConcurrentHashMap<>(map);
 	}
 
 	@Deprecated

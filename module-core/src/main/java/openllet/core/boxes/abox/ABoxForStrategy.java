@@ -28,6 +28,8 @@ public interface ABoxForStrategy extends ABoxForRule, ABoxForIndividual, ABoxFor
 		return getBranches(true);
 	}
 
+	void addBranch(final Branch branch);
+		
 	Collection<? extends NodeMerge> getToBeMerged();
 
 	ABoxStats getStats();

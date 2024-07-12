@@ -1828,8 +1828,7 @@ public class KnowledgeBaseImpl implements KnowledgeBase
 				_abox.setDoExplanation(false);
 			}
 
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine("Inconsistent ontology. Reason: " + getExplanation());
+			_logger.fine(() -> "Inconsistent ontology. Reason: " + getExplanation());
 
 			if (OpenlletOptions.USE_TRACING && _logger.isLoggable(Level.FINE))
 				_logger.fine(renderExplanationSet());

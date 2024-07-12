@@ -6,6 +6,8 @@
 
 package openllet.core.tableau.branch;
 
+import java.util.Optional;
+
 import openllet.aterm.ATermAppl;
 import openllet.core.DependencySet;
 import openllet.core.OpenlletOptions;
@@ -101,19 +103,23 @@ public class GuessBranch extends IndividualBranch
 			{
 				_logger.fine(() -> "CLASH: Branch " + getBranchIndexInABox() + " " + _abox.getClash() + "!");
 
-				final DependencySet clashDepends = _abox.getClash().getDepends();
-
-				if (clashDepends.contains(getBranchIndexInABox()))
+				Optional<DependencySet> optDeps = _abox.getClash().map(clash -> clash.getDepends());
+				if (optDeps.isPresent())
 				{
-					// we need a global restore here because the merge operation modified three
-					// different _nodes and possibly other global variables
-					_strategy.restore(this);
-
-					// global restore sets the _branch number to previous value so we need to
-					// increment it again
-					_abox.incrementBranch();
-
-					setLastClash(clashDepends);
+					final DependencySet clashDepends = optDeps.get();
+	
+					if (clashDepends.contains(getBranchIndexInABox()))
+					{
+						// we need a global restore here because the merge operation modified three different _nodes and possibly other global variables
+						_strategy.restore(this);
+	
+						// global restore sets the _branch number to previous value so we need to increment it again
+						_abox.incrementBranch();
+	
+						setLastClash(clashDepends);
+					}
+					else
+						return;
 				}
 				else
 					return;

@@ -44,6 +44,7 @@ import openllet.owlapi.OWL;
 import openllet.owlapi.OWLGenericTools;
 import openllet.owlapi.OWLHelper;
 import openllet.owlapi.OWLManagerGroup;
+import openllet.owlapi.PelletReasoner;
 import openllet.owlapi.SWRL;
 import openllet.owlapi.XSD;
 import openllet.shared.tools.Log;
@@ -441,6 +442,13 @@ public class TestBasic
 			final OWLOntology ontology = group.getVolatileManager().loadOntologyFromOntologyDocument(new File("src/test/resources/test_data/restriction_conjonction.owl"));
 			final OWLHelper owl = new OWLGenericTools(group, ontology, true);
 			final OWLReasoner r = owl.getReasoner();
+			if (!r.isConsistent())
+			{
+				var kb = ((PelletReasoner) r).getKB();
+				System.out.println(kb.doExplanation());
+			}	
+				
+			
 			assertTrue(r.isConsistent());
 			ontology.individualsInSignature().forEach(r::getTypes);
 			ontology.classesInSignature().forEach(r::getInstances);

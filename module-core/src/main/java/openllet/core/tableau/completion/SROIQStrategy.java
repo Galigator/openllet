@@ -9,10 +9,12 @@
 package openllet.core.tableau.completion;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 
 import openllet.core.OpenlletOptions;
 import openllet.core.boxes.abox.ABox;
+import openllet.core.boxes.abox.Clash;
 import openllet.core.boxes.abox.IndividualIterator;
 import openllet.core.exceptions.InternalReasonerException;
 import openllet.core.expressivity.Expressivity;
@@ -40,6 +42,10 @@ public class SROIQStrategy extends CompletionStrategy
 
 	protected boolean backtrack()
 	{
+		Optional<Clash> clash = _abox.getClash();
+		if (clash.isEmpty())
+			return false;
+		
 		boolean branchFound = false;
 		_abox.getStats()._backtracks++;
 		while (!branchFound)
@@ -49,13 +55,13 @@ public class SROIQStrategy extends CompletionStrategy
 			final int branchCount = _abox.getBranches().size();
 			final int lastBranch;
 			{
-				int candidatLastBranch = _abox.getClash().getDepends().max();
+				int candidatLastBranch = clash.get().getDepends().max();
 				while (candidatLastBranch <= 0 || candidatLastBranch > branchCount)
 				{
 					if (candidatLastBranch <= 0) // not more branches to try
 						return false;
-					_abox.getClash().getDepends().remove(candidatLastBranch);
-					candidatLastBranch = _abox.getClash().getDepends().max();
+					clash.get().getDepends().remove(candidatLastBranch);
+					candidatLastBranch = clash.get().getDepends().max();
 					_logger.severe("Used the improved backupjump.");
 				}
 				lastBranch = candidatLastBranch;
@@ -74,9 +80,9 @@ public class SROIQStrategy extends CompletionStrategy
 				// if this is the last _disjunction, merge pair, etc. for the _branch (i.e, br.tryNext == br.tryCount-1)
 				// and there are no other branches to test (ie. _abox.getClash().depends.size()==2),
 				// then update dependency _index and return false
-				if (br.getTryNext() == br.getTryCount() - 1 && _abox.getClash().getDepends().size() == 2)
+				if (br.getTryNext() == br.getTryCount() - 1 && clash.get().getDepends().size() == 2)
 				{
-					_abox.getKB().getDependencyIndex().addCloseBranchDependency(br, _abox.getClash().getDepends());
+					_abox.getKB().getDependencyIndex().addCloseBranchDependency(br, clash.get().getDepends());
 					return false;
 				}
 			}
@@ -84,12 +90,12 @@ public class SROIQStrategy extends CompletionStrategy
 			final Branch newBranch;
 			synchronized (_abox)
 			{
-				final List<Branch> branches = _abox.getBranches(false);
+				final List<Branch> branches = _abox.getBranches(false); /// TODO XXX Why do we allow here the branches to be modify  ? 
 				_abox.getStats()._backjumps += branches.size() - lastBranch;
 				// CHW - added for incremental deletion support
 				if (OpenlletOptions.USE_TRACING && OpenlletOptions.USE_INCREMENTAL_CONSISTENCY)
 				{
-					// we must clean up the KB dependecny _index
+					// we must clean up the KB dependency _index
 					final List<Branch> brList = branches.subList(lastBranch, branches.size());
 					for (final Branch branch : brList)
 						// remove from the dependency _index
@@ -101,14 +107,14 @@ public class SROIQStrategy extends CompletionStrategy
 
 				newBranch = branches.get(lastBranch - 1); // get the _branch to try
 
-				_logger.fine(() -> "JUMP: Branch " + lastBranch + "\tbranchCount=" + _abox.getBranches().size());
+				_logger.fine(() -> "JUMP: Branch " + lastBranch + "\tbranchCount=" + _abox.getBranchesSize());
 			}
 
 			if (lastBranch != newBranch.getBranchIndexInABox())
 				throw new InternalReasonerException("Backtrack: Trying to backtrack to _branch " + lastBranch + " but got " + newBranch.getBranchIndexInABox());
 
 			if (newBranch.getTryNext() < newBranch.getTryCount()) // set the last clash before restore
-				newBranch.setLastClash(_abox.getClash().getDepends());
+				newBranch.setLastClash(clash.get().getDepends());
 
 			newBranch.setTryNext(newBranch.getTryNext() + 1); // increment the counter
 

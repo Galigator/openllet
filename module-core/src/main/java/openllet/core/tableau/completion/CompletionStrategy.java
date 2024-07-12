@@ -1056,128 +1056,135 @@ public abstract class CompletionStrategy
 
 	public void restore(final Branch br)
 	{
-		_abox.setBranchIndex(br.getBranchIndexInABox());
-		_abox.setClash(null);
-		// Setting the anonCount to the value at the time of _branch creation is incorrect
-		// when SMART_RESTORE option is turned on. If we create an anon node after branch
-		// creation but node depends on an earlier branch restore operation will not remove
-		// the _node. But setting _anonCount to a smaller number may mean the anonCount will
-		// be incremented to that value and creating a fresh anon node will actually reuse
-		// the not-removed node. The only advantage of setting anonCount to a smaller value
-		// is to keep the name of anon nodes smaller to make debugging easier. For this reason,
-		// the above line is not removed and under special circumstances may be uncommented
-		// to help debugging only with the intent that it will be commented again after
-		// debugging is complete
-		// _abox.setAnonCount( br.getAnonCount() );
-		_abox.setRulesNotApplied(true);
-		_mergeList.clear();
-
-		final List<ATermAppl> nodeList = _abox.getNodeNames();
-
-		_logger.fine(() -> "RESTORE: Branch " + br.getBranchIndexInABox());
-
-		if (OpenlletOptions.USE_COMPLETION_QUEUE)
+		synchronized(_abox)
 		{
-			// clear the all values list as they must have already fired and blocking never prevents the all values rule
-			// from firing
-			_abox.getCompletionQueue().clearQueue(NodeSelector.UNIVERSAL);
-
-			// reset the queues
-			_abox.getCompletionQueue().restore(br.getBranchIndexInABox());
-		}
-
-		// the restore may cause changes which require using the _allValuesRule -
-		// incremental change tracker will track those
-		if (OpenlletOptions.USE_INCREMENTAL_CONSISTENCY)
-			_abox.getIncrementalChangeTracker().clear();
-
-		// for each node we either need to restore the node to the status it
-		// had at the time branch was created or remove the node completely if
-		// it was created after the branch. To optimize removing elements from
-		// the ArrayList we compute the block to be deleted and then remove all
-		// at once to utilize the underlying System.arraycopy operation.
-
-		int nodeCount = nodeList.size(); // number of _nodes in the nodeList
-		int deleteBlock = 0; // number of nodes
-		for (int i = 0; i < nodeCount; i++)
-		{
-			final ATermAppl a = nodeList.get(i); // get the node name
-			final Node node = _abox.getNode(a); // and the corresponding node
-
-			// node dependency tells us if the node was created after the _branch
-			// and if that is the case we remove it completely
-			// NOTE: for literals, _node.getNodeDepends() may be null when a literal value _branch is
-			// restored, in that case we can remove the literal since there is no other reference
-			// left for that literal
-			if (node.getNodeDepends() == null || node.getNodeDepends().getBranch() > br.getBranchIndexInABox())
+			_abox.setBranchIndex(br.getBranchIndexInABox());
+			_abox.setClash(null);
+			// Setting the anonCount to the value at the time of _branch creation is incorrect
+			// when SMART_RESTORE option is turned on. If we create an anon node after branch
+			// creation but node depends on an earlier branch restore operation will not remove
+			// the _node. But setting _anonCount to a smaller number may mean the anonCount will
+			// be incremented to that value and creating a fresh anon node will actually reuse
+			// the not-removed node. The only advantage of setting anonCount to a smaller value
+			// is to keep the name of anon nodes smaller to make debugging easier. For this reason,
+			// the above line is not removed and under special circumstances may be uncommented
+			// to help debugging only with the intent that it will be commented again after
+			// debugging is complete
+			// _abox.setAnonCount( br.getAnonCount() );
+			_abox.setRulesNotApplied(true);
+			_mergeList.clear();
+	
+			final List<ATermAppl> nodeList = _abox.getNodeNames();
+	
+			_logger.fine(() -> "RESTORE: Branch " + br.getBranchIndexInABox());
+	
+			if (OpenlletOptions.USE_COMPLETION_QUEUE)
 			{
-				_abox.removeNode(a); // remove the node from the node map
-
-				if (node.isMerged()) // if the node is merged to another one we should remove it from
-					node.undoSetSame(); // the other node's merged list
-
-				deleteBlock++; // increment the size of block that will be deleted
+				// clear the all values list as they must have already fired and blocking never prevents the all values rule
+				// from firing
+				_abox.getCompletionQueue().clearQueue(NodeSelector.UNIVERSAL);
+	
+				// reset the queues
+				_abox.getCompletionQueue().restore(br.getBranchIndexInABox());
 			}
-			else
+	
+			// the restore may cause changes which require using the _allValuesRule -
+			// incremental change tracker will track those
+			if (OpenlletOptions.USE_INCREMENTAL_CONSISTENCY)
+				_abox.getIncrementalChangeTracker().clear();
+	
+			// for each node we either need to restore the node to the status it
+			// had at the time branch was created or remove the node completely if
+			// it was created after the branch. To optimize removing elements from
+			// the ArrayList we compute the block to be deleted and then remove all
+			// at once to utilize the underlying System.arraycopy operation.
+	
+			int nodeCount = nodeList.size(); // number of _nodes in the nodeList
+			int deleteBlock = 0; // number of nodes
+			for (int i = 0; i < nodeCount; i++)
 			{
-				// this _node will be restored to previous state not removed
-				// first if there are any _nodes collected earlier delete them
-				if (deleteBlock > 0)
+				final ATermAppl a = nodeList.get(i); // get the node name
+				final Node node = _abox.getNode(a); // and the corresponding node
+	
+				// node dependency tells us if the node was created after the _branch
+				// and if that is the case we remove it completely
+				// NOTE: for literals, _node.getNodeDepends() may be null when a literal value _branch is
+				// restored, in that case we can remove the literal since there is no other reference
+				// left for that literal
+				if (null != node)
+				if (node.getNodeDepends() == null || node.getNodeDepends().getBranch() > br.getBranchIndexInABox())
 				{
-					// create the sub list for _nodes to be removed
-					final List<ATermAppl> subList = nodeList.subList(i - deleteBlock, i);
-					_logger.fine(() -> "Remove nodes " + subList);
-					// clear the sublist causing all elements to removed from _nodeList
-					subList.clear();
-					// update counters
-					nodeCount -= deleteBlock;
-					i -= deleteBlock;
-					deleteBlock = 0;
+					_abox.removeNode(a); // remove the node from the node map
+	
+					if (node.isMerged()) // if the node is merged to another one we should remove it from
+						node.undoSetSame(); // the other node's merged list
+	
+					deleteBlock++; // increment the size of block that will be deleted
 				}
-
-				// restore only if not tracking _branch effects
-				if (!OpenlletOptions.TRACK_BRANCH_EFFECTS)
-					node.restore(br.getBranchIndexInABox());
+				else
+				{
+					// this _node will be restored to previous state not removed
+					// first if there are any _nodes collected earlier delete them
+					if (deleteBlock > 0)
+					{
+						// create the sub list for _nodes to be removed
+						final List<ATermAppl> subList = nodeList.subList(i - deleteBlock, i);
+						_logger.fine(() -> "Remove nodes " + subList);
+						// clear the sublist causing all elements to removed from _nodeList
+						subList.clear();
+						// update counters
+						nodeCount -= deleteBlock;
+						i -= deleteBlock;
+						deleteBlock = 0;
+					}
+	
+					// restore only if not tracking _branch effects
+					if (!OpenlletOptions.TRACK_BRANCH_EFFECTS)
+						node.restore(br.getBranchIndexInABox());
+				}
 			}
-		}
-
-		// if there were _nodes to be removed at the _end of the list do it now
-		if (deleteBlock > 0)
-			nodeList.subList(nodeCount - deleteBlock, nodeCount).clear();
-
-		if (OpenlletOptions.TRACK_BRANCH_EFFECTS)
-		{
-			// when tracking _branch effects only restore _nodes explicitly stored in the effected list
-			final Set<ATermAppl> effected = _abox.getBranchEffectTracker().removeAll(br.getBranchIndexInABox() + 1);
-			for (final ATermAppl a : effected)
+	
+			// if there were _nodes to be removed at the _end of the list do it now
+			if (deleteBlock > 0)
+				nodeList.subList(nodeCount - deleteBlock, nodeCount).clear();
+	
+			if (OpenlletOptions.TRACK_BRANCH_EFFECTS)
 			{
-				final Node n = _abox.getNode(a);
-				if (n != null)
-					n.restore(br.getBranchIndexInABox());
+				// when tracking _branch effects only restore _nodes explicitly stored in the effected list
+				final Set<ATermAppl> effected = _abox.getBranchEffectTracker().removeAll(br.getBranchIndexInABox() + 1);
+				for (final ATermAppl a : effected)
+				{
+					final Node n = _abox.getNode(a);
+					if (n != null)
+						n.restore(br.getBranchIndexInABox());
+				}
 			}
+	
+			restoreAllValues();
+	
+			if (_logger.isLoggable(Level.FINE))
+				_abox.printTree();
+	
+			if (!_abox.isClosed())
+				_abox.validate();
 		}
-
-		restoreAllValues();
-
-		if (_logger.isLoggable(Level.FINE))
-			_abox.printTree();
-
-		if (!_abox.isClosed())
-			_abox.validate();
 	}
 
 	public void addBranch(final Branch newBranch)
 	{
-		_abox.getBranches(false).add(newBranch);
-
-		if (newBranch.getBranchIndexInABox() != _abox.getBranches().size())
-			throw new OpenError("Invalid branch created: " + newBranch.getBranchIndexInABox() + " != " + _abox.getBranches().size());
-
-		_completionTimer.ifPresent(Timer::check);
-
-		// CHW - added for incremental deletion support
-		if (OpenlletOptions.USE_INCREMENTAL_DELETION)
-			_abox.getKB().getDependencyIndex().addBranchAddDependency(newBranch);
+		synchronized(_abox)
+		{
+			_abox.addBranch(newBranch);
+	
+			if (newBranch.getBranchIndexInABox() != _abox.getBranchesSize())
+				throw new OpenError("Invalid branch created: " + newBranch.getBranchIndexInABox() + " != " + _abox.getBranchesSize());
+	
+			_completionTimer.ifPresent(Timer::check);
+	
+			// CHW - added for incremental deletion support
+			if (OpenlletOptions.USE_INCREMENTAL_DELETION)
+				_abox.getKB().getDependencyIndex().addBranchAddDependency(newBranch);
+		}
 	}
 
 	public void printBlocked()

@@ -109,12 +109,6 @@ public class Timers
 
 	public void execute(final String name, final Consumer<Timers> consumer)
 	{
-		if (OpenlletOptions.USE_THREADED_KERNEL)
-		{
-			consumer.accept(this);
-			return;
-		}
-
 		final Optional<Timer> timer = startTimer(name);
 		consumer.accept(this);
 		timer.ifPresent(Timer::stop);
@@ -122,9 +116,6 @@ public class Timers
 
 	public <RESULT> RESULT execute(final String name, final Supplier<RESULT> producer)
 	{
-		if (OpenlletOptions.USE_THREADED_KERNEL)
-			return producer.get();
-
 		final Optional<Timer> timer = startTimer(name);
 		try
 		{

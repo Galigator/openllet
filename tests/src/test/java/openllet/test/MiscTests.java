@@ -2266,7 +2266,7 @@ public class MiscTests extends AbstractKBTests
 
 		assertFalse(_kb.isConsistent());
 
-		assertEquals(Clash.ClashType.EMPTY_DATATYPE, _kb.getABox().getLastClash().getType());
+		assertEquals(Clash.ClashType.EMPTY_DATATYPE, _kb.getABox().getLastClash().get().getType());
 	}
 
 	@Test

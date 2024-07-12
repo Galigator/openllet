@@ -30,6 +30,7 @@
 
 package openllet.core.tableau.branch;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
 import openllet.core.DependencySet;
@@ -57,8 +58,8 @@ public abstract class Branch implements Comparable<Branch>
 
 	protected final ABoxForBranch _abox;
 
-	private final int _branchIndexInABox;
 	private final int _anonCount;
+	private final AtomicInteger _branchIndexInABox = new AtomicInteger(Integer.MIN_VALUE);
 	private volatile DependencySet _termDepends;
 	private volatile DependencySet _combinedClash;
 
@@ -77,9 +78,10 @@ public abstract class Branch implements Comparable<Branch>
 		_combinedClash = DependencySet.EMPTY;
 		_tryNext = 0;
 
-		_branchIndexInABox = abox.getBranchIndex();
 		_anonCount = abox.getAnonCount();
 		_nodeCount = abox.size();
+		
+		_logger.fine(() -> Thread.currentThread().threadId() + "\tnew Branch()" + this + "\t" + getBranchIndexInABox() + "\t" + hashCode() + "\t" + abox.hashCode() +"\t" + System.identityHashCode(abox) );
 	}
 
 	protected Branch(final ABoxForBranch abox, final int n, final Branch br)
@@ -92,7 +94,7 @@ public abstract class Branch implements Comparable<Branch>
 		_combinedClash = DependencySet.EMPTY;
 		_tryNext = br._tryNext;
 
-		_branchIndexInABox = br._branchIndexInABox;
+		_branchIndexInABox.set(br._branchIndexInABox.get());
 		_anonCount = br._anonCount;
 		_nodeCount = br._nodeCount;
 	}
@@ -125,7 +127,7 @@ public abstract class Branch implements Comparable<Branch>
 			if (!_abox.isClosed())
 				_abox.setClash(Clash.unexplained(getNode(), _termDepends));
 			else
-				_abox.getClash().setDepends(getCombinedClash());
+				_abox.getClash().ifPresent(clash -> clash.setDepends(getCombinedClash()));
 
 		// if there is no clash try next possibility
 		if (!_abox.isClosed())
@@ -135,7 +137,7 @@ public abstract class Branch implements Comparable<Branch>
 		// _branch again. remove this _branch from clash dependency
 		if (_abox.isClosed())
 			if (!OpenlletOptions.USE_INCREMENTAL_DELETION)
-				_abox.getClash().getDepends().remove(getBranchIndexInABox());
+				_abox.getClash().ifPresent(clash -> clash.getDepends().remove(getBranchIndexInABox()));
 
 		return !_abox.isClosed();
 	}
@@ -149,7 +151,7 @@ public abstract class Branch implements Comparable<Branch>
 	@Override
 	public String toString()
 	{
-		return "{Branch [" + getNode() + "]  n°: " + getBranchIndexInABox() + " tryNext:" + getTryNext() + " tryCount:" + getTryCount() + "}";
+		return "{"+this.getClass().getSimpleName()+" [" + getNode() + "]  n°: " + getBranchIndexInABox() + " tryNext:" + getTryNext() + " tryCount:" + getTryCount() + "}";
 	}
 
 	/**
@@ -179,6 +181,11 @@ public abstract class Branch implements Comparable<Branch>
 	 * @return the _branch
 	 */
 	public int getBranchIndexInABox()
+	{
+		return _branchIndexInABox.get();
+	}
+	
+	public AtomicInteger getBranchIndexInABoxIKnowWhatIAmFuckingDo()
 	{
 		return _branchIndexInABox;
 	}
@@ -242,6 +249,6 @@ public abstract class Branch implements Comparable<Branch>
 	@Override
 	public int compareTo(final Branch that)
 	{
-		return this == that ? 0 : _branchIndexInABox - that._branchIndexInABox;
+		return this == that ? 0 : _branchIndexInABox.get() - that._branchIndexInABox.get();
 	}
 }

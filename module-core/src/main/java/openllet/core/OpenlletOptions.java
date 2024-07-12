@@ -426,7 +426,10 @@ public class OpenlletOptions
 	 */
 	public static boolean IGNORE_ANNOTATION_CLASSES = true;
 
-	public static boolean USE_THREADED_KERNEL = false;
+	/**
+	 * Can do harmfull things if the ontology isn't compatible.
+	 */
+	public static boolean USE_THREADED_KERNEL = true;
 
 	static
 	{

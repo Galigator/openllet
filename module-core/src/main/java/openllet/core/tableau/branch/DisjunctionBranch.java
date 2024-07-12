@@ -130,7 +130,7 @@ public class DisjunctionBranch extends Branch
 	}
 
 	@Override
-	protected void tryBranch()
+	protected synchronized void tryBranch()
 	{
 		_abox.incrementBranch();
 
@@ -207,18 +207,20 @@ public class DisjunctionBranch extends Branch
 					ds.setExplain(explain);
 				}
 
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine(getDebugMsg());
+			_logger.fine(this::getDebugMsg);
 
 			final ATermAppl notD = ATermUtils.negate(d);
 			DependencySet clashDepends = OpenlletOptions.SATURATE_TABLEAU ? null : node.getDepends(notD);
 			if (clashDepends == null)
 			{
 				_strategy.addType(node, d, ds);
-				// we may still find a clash if concept is allValuesFrom
-				// and there are some conflicting edges
+				// we may still find a clash if concept is allValuesFrom and there are some conflicting edges
 				if (_abox.isClosed())
-					clashDepends = _abox.getClash().getDepends();
+				{
+					var deps = _abox.getClash().map(cl -> cl.getDepends());
+					if (deps.isPresent())
+						clashDepends = deps.get();
+				}
 			}
 			else
 				clashDepends = clashDepends.union(ds, _abox.doExplanation());
@@ -228,8 +230,11 @@ public class DisjunctionBranch extends Branch
 			{
 				if (_logger.isLoggable(Level.FINE))
 				{
-					final Clash clash = _abox.isClosed() ? _abox.getClash() : Clash.atomic(node, clashDepends, d);
-					_logger.fine("CLASH: Branch " + getBranchIndexInABox() + " " + clash + "!" + " " + clashDepends.getExplain());
+					final var deps = clashDepends;
+					final Clash clash = _abox.isClosed() ?//
+							_abox.getClash().orElseGet(() -> Clash.atomic(node, deps, d)) ://
+								Clash.atomic(node, deps, d);
+					_logger.fine("CLASH: Branch " + getBranchIndexInABox() + " " + clash + "!" + " " + deps.getExplain());
 				}
 
 				if (OpenlletOptions.USE_DISJUNCT_SORTING)
@@ -283,9 +288,10 @@ public class DisjunctionBranch extends Branch
 
 					//CHW - added for inc reasoning
 					if (OpenlletOptions.USE_INCREMENTAL_DELETION)
-						_abox.getKB().getDependencyIndex().addCloseBranchDependency(this, _abox.getClash().getDepends());
-
-					return;
+						_abox.getClash().ifPresent(clash -> {
+							_abox.getKB().getDependencyIndex().addCloseBranchDependency(this, clash.getDepends());
+						});
+											return;
 				}
 			}
 			else

@@ -472,79 +472,82 @@ public class EmptySRIQStrategy extends CompletionStrategy
 	@Override
 	public void restore(final Branch br)
 	{
-		final Optional<Timer> timer = _timers.startTimer("restore");
-
-		_abox.getStats()._globalRestores++;
-
-		final Node clashNode = _abox.getClash().getNode();
-		final List<ATermAppl> clashPath = clashNode.getPath();
-		clashPath.add(clashNode.getName());
-
-		_abox.setBranchIndex(br.getBranchIndexInABox());
-		_abox.setClash(null);
-		// Setting the _anonCount to the value at the time of _branch creation is incorrect
-		// when SMART_RESTORE option is turned on. If we create an anon _node after _branch
-		// creation but _node depends on an earlier _branch restore operation will not remove
-		// the _node. But setting _anonCount to a smaller number may mean the _anonCount will
-		// be incremented to that value and creating a fresh anon _node will actually reuse
-		// the not-removed _node. The only advantage of setting _anonCount to a smaller value
-		// is to keep the name of anon _nodes smaller to make debugging easier. For this reason,
-		// the above line is not removed and under special circumstances may be uncommented
-		// to help debugging only with the intent that it will be commented again after
-		// debugging is complete
-		// _abox.setAnonCount( br.getAnonCount() );
-
-		_mergeList.clear();
-
-		final List<ATermAppl> nodeList = _abox.getNodeNames();
-
-		if (_logger.isLoggable(Level.FINE))
-		{
-			_logger.fine("RESTORE: Branch " + br.getBranchIndexInABox());
-			if (br.getNodeCount() < nodeList.size())
-				_logger.fine("Remove _nodes " + nodeList.subList(br.getNodeCount(), nodeList.size()));
-		}
-		for (int i = 0; i < nodeList.size(); i++)
-		{
-			final ATermAppl x = nodeList.get(i);
-
-			final Node node = _abox.getNode(x);
-			if (i >= br.getNodeCount())
+		_abox.getClash().ifPresent(clash -> {
+			
+			final Optional<Timer> timer = _timers.startTimer("restore");
+	
+			_abox.getStats()._globalRestores++;
+			
+			final Node clashNode = clash.getNode();
+			final List<ATermAppl> clashPath = clashNode.getPath();
+			clashPath.add(clashNode.getName());
+	
+			_abox.setBranchIndex(br.getBranchIndexInABox());
+			_abox.setClash(null);// TODO find a better way rather than using null.
+			// Setting the _anonCount to the value at the time of _branch creation is incorrect
+			// when SMART_RESTORE option is turned on. If we create an anon _node after _branch
+			// creation but _node depends on an earlier _branch restore operation will not remove
+			// the _node. But setting _anonCount to a smaller number may mean the _anonCount will
+			// be incremented to that value and creating a fresh anon _node will actually reuse
+			// the not-removed _node. The only advantage of setting _anonCount to a smaller value
+			// is to keep the name of anon _nodes smaller to make debugging easier. For this reason,
+			// the above line is not removed and under special circumstances may be uncommented
+			// to help debugging only with the intent that it will be commented again after
+			// debugging is complete
+			// _abox.setAnonCount( br.getAnonCount() );
+	
+			_mergeList.clear();
+	
+			final List<ATermAppl> nodeList = _abox.getNodeNames();
+	
+			if (_logger.isLoggable(Level.FINE))
 			{
-				_abox.removeNode(x);
-				final ATermAppl c = _cachedNodes.remove(node);
-				if (c != null && OpenlletOptions.USE_ADVANCED_CACHING)
-					if (clashPath.contains(x))
-					{
-						if (_logger.isLoggable(Level.FINEST))
-							_logger.finest("+++ Cache unsat concept " + c);
-						_abox.getCache().putSat(c, false);
-					}
-					else
-						if (_logger.isLoggable(Level.FINEST))
-							_logger.finest("--- Do not _cache concept " + c + " " + x + " " + clashNode + " " + clashPath);
+				_logger.fine("RESTORE: Branch " + br.getBranchIndexInABox());
+				if (br.getNodeCount() < nodeList.size())
+					_logger.fine("Remove _nodes " + nodeList.subList(br.getNodeCount(), nodeList.size()));
 			}
-			else
+			for (int i = 0; i < nodeList.size(); i++)
 			{
-				node.restore(br.getBranchIndexInABox());
-
-				// FIXME should we look at the clash path or clash _node
-				if (node.equals(clashNode))
-					_cachedNodes.remove(node);
+				final ATermAppl x = nodeList.get(i);
+	
+				final Node node = _abox.getNode(x);
+				if (i >= br.getNodeCount())
+				{
+					_abox.removeNode(x);
+					final ATermAppl c = _cachedNodes.remove(node);
+					if (c != null && OpenlletOptions.USE_ADVANCED_CACHING)
+						if (clashPath.contains(x))
+						{
+							if (_logger.isLoggable(Level.FINEST))
+								_logger.finest("+++ Cache unsat concept " + c);
+							_abox.getCache().putSat(c, false);
+						}
+						else
+							if (_logger.isLoggable(Level.FINEST))
+								_logger.finest("--- Do not _cache concept " + c + " " + x + " " + clashNode + " " + clashPath);
+				}
+				else
+				{
+					node.restore(br.getBranchIndexInABox());
+	
+					// FIXME should we look at the clash path or clash _node
+					if (node.equals(clashNode))
+						_cachedNodes.remove(node);
+				}
 			}
-		}
-		nodeList.subList(br.getNodeCount(), nodeList.size()).clear();
-
-		for (final Iterator<Individual> i = _abox.getIndIterator(); i.hasNext();)
-		{
-			final Individual ind = i.next();
-			_allValuesRule.apply(ind);
-		}
-
-		if (_logger.isLoggable(Level.FINE))
-			_abox.printTree();
-
-		timer.ifPresent(Timer::stop);
+			nodeList.subList(br.getNodeCount(), nodeList.size()).clear();
+	
+			for (final Iterator<Individual> i = _abox.getIndIterator(); i.hasNext();)
+			{
+				final Individual ind = i.next();
+				_allValuesRule.apply(ind);
+			}
+	
+			if (_logger.isLoggable(Level.FINE))
+				_abox.printTree();
+	
+			timer.ifPresent(Timer::stop);
+		});
 	}
 
 	protected boolean backtrack()
@@ -555,58 +558,61 @@ public class EmptySRIQStrategy extends CompletionStrategy
 
 		while (!branchFound)
 		{
-			_completionTimer.ifPresent(Timer::check);
-
-			final int lastBranch = _abox.getClash().getDepends().max();
-
-			if (lastBranch <= 0)
-				return false;
-
-			Branch newBranch = null;
-			synchronized (_abox)
+			Optional<Clash> clash = _abox.getClash();
+			if (clash.isPresent())
 			{
-				final List<Branch> branches = _abox.getBranches(false);
-				_abox.getStats()._backjumps += branches.size() - lastBranch;
-				if (lastBranch <= branches.size())
+				_completionTimer.ifPresent(Timer::check);
+	
+				final int lastBranch = clash.get().getDepends().max();
+	
+				if (lastBranch <= 0)
+					return false;
+	
+				Branch newBranch = null;
+				synchronized (_abox)
 				{
-					branches.subList(lastBranch, branches.size()).clear();
-					newBranch = branches.get(lastBranch - 1);
-
-					if (_logger.isLoggable(Level.FINE))
-						_logger.fine("JUMP: " + lastBranch);
-					if (newBranch == null || lastBranch != newBranch.getBranchIndexInABox())
-						throw new OpenError("Internal error in reasoner: Trying to backtrack _branch " + lastBranch + " but got " + newBranch);
-
-					if (newBranch.getTryNext() < newBranch.getTryCount())
-						newBranch.setLastClash(_abox.getClash().getDepends());
-
-					newBranch.setTryNext(newBranch.getTryNext() + 1);
-
-					if (newBranch.getTryNext() < newBranch.getTryCount())
+					final List<Branch> branches = _abox.getBranches(false);
+					_abox.getStats()._backjumps += branches.size() - lastBranch;
+					if (lastBranch <= branches.size())
 					{
-						restore(newBranch);
-
-						branchFound = newBranch.tryNext();
+						branches.subList(lastBranch, branches.size()).clear();
+						newBranch = branches.get(lastBranch - 1);
+	
+						_logger.fine(() -> "JUMP: " + lastBranch);
+						if (newBranch == null || lastBranch != newBranch.getBranchIndexInABox())
+							throw new OpenError("Internal error in reasoner: Trying to backtrack _branch " + lastBranch + " but got " + newBranch);
+	
+						if (newBranch.getTryNext() < newBranch.getTryCount())
+							newBranch.setLastClash(clash.get().getDepends());
+	
+						newBranch.setTryNext(newBranch.getTryNext() + 1);
+	
+						if (newBranch.getTryNext() < newBranch.getTryCount())
+						{
+							restore(newBranch);
+	
+							branchFound = newBranch.tryNext();
+						}
 					}
 				}
-			}
-
-			if (!branchFound || newBranch == null)
-			{
-				_abox.getClash().getDepends().remove(lastBranch);
-				if (_logger.isLoggable(Level.FINE))
-					_logger.fine("FAIL: " + lastBranch);
+	
+				if (!branchFound || newBranch == null)
+				{
+					clash.get().getDepends().remove(lastBranch);
+					_logger.fine(() -> "FAIL: " + lastBranch);
+				}
+				else
+				{
+					// create another copy of the _mnx list here because we may backtrack to the same
+					// _branch multiple times and we want the same copy to be available every time
+					_mayNeedExpanding = new LinkedList<>(_mnx.get(newBranch.getBranchIndexInABox()));
+					_mnx.subList(newBranch.getBranchIndexInABox() + 1, _mnx.size()).clear();
+					if (_logger.isLoggable(Level.FINE))
+						_logger.fine("MNX : " + _mayNeedExpanding);
+				}
 			}
 			else
-			{
-				// create another copy of the _mnx list here because we may backtrack to the same
-				// _branch multiple times and we want the same copy to be available every time
-				_mayNeedExpanding = new LinkedList<>(_mnx.get(newBranch.getBranchIndexInABox()));
-				_mnx.subList(newBranch.getBranchIndexInABox() + 1, _mnx.size()).clear();
-				if (_logger.isLoggable(Level.FINE))
-					_logger.fine("MNX : " + _mayNeedExpanding);
-			}
-
+				break;
 		}
 
 		_abox.validate();

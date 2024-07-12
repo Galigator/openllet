@@ -41,6 +41,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
@@ -360,9 +361,7 @@ public abstract class Node
 			}
 			else
 			{
-				if (_logger.isLoggable(Level.FINE))
-					_logger.fine("DO NOT RESTORE: pruned _node " + this + " = " + _mergedTo + " " + _mergeDepends);
-
+				_logger.fine(() -> "DO NOT RESTORE: pruned _node " + this + " = " + _mergedTo + " " + _mergeDepends);
 				return Boolean.FALSE;
 			}
 
@@ -375,43 +374,42 @@ public abstract class Node
 		if (OpenlletOptions.TRACK_BRANCH_EFFECTS)
 			_abox.getBranchEffectTracker().add(_abox.getBranchIndex(), _name);
 
-		boolean restored = false;
+		var restored = new AtomicBoolean(false);
 
 		final List<ATermAppl> conjunctions = new ArrayList<>();
 
-		boolean removed = false;
+		var removed = new AtomicBoolean(false);
 
-		for (final Iterator<ATermAppl> i = getTypes().iterator(); i.hasNext();)
 		{
-			final ATermAppl c = i.next();
-			final DependencySet d = getDepends(c);
-
-			final boolean removeType = OpenlletOptions.USE_SMART_RESTORE
-					//                ? ( !d.contains( _branch ) )
-					? d.max() >= branch
-					: d.getBranch() > branch;
-
-			if (removeType)
-			{
-				removed = true;
-
-				_logger.fine(() -> "RESTORE: " + this + " remove type " + c + " " + d + " " + branch);
-
-				//track that this _node is affected
-				if (OpenlletOptions.USE_INCREMENTAL_CONSISTENCY && this instanceof Individual)
-					_abox.getIncrementalChangeTracker().addDeletedType(this, c);
-
-				i.remove();
-				removeType(c);
-				restored = true;
-			}
-			else
-				if (OpenlletOptions.USE_SMART_RESTORE && ATermUtils.isAnd(c))
-					conjunctions.add(c);
+			final List<ATermAppl> toRemove = new ArrayList<>(1);
+			getDepends().forEach( (c,d) -> {
+				final boolean removeType = OpenlletOptions.USE_SMART_RESTORE
+						? d.max() >= branch
+						: d.getBranch() > branch;
+	
+				if (removeType)
+				{
+					removed.set(true);
+	
+					_logger.fine(() -> "RESTORE: " + this + " remove type " + c + " " + d + " " + branch);
+	
+					//track that this _node is affected
+					if (OpenlletOptions.USE_INCREMENTAL_CONSISTENCY && this instanceof Individual)
+						_abox.getIncrementalChangeTracker().addDeletedType(this, c);
+	
+					toRemove.add(c);
+					restored.set(true);
+				}
+				else
+					if (OpenlletOptions.USE_SMART_RESTORE && ATermUtils.isAnd(c))
+						conjunctions.add(c);
+			} );
+			toRemove.forEach(c -> removeType(c)); // don't use this::removeType because Individual overload it.
 		}
 
+
 		//update the _queue with things that could readd this type
-		if (removed && OpenlletOptions.USE_COMPLETION_QUEUE && this instanceof Individual)
+		if (removed.get() && OpenlletOptions.USE_COMPLETION_QUEUE && this instanceof Individual)
 		{
 			final Individual ind = (Individual) this;
 			ind._applyNext[Node.ATOM] = 0;
@@ -448,11 +446,11 @@ public abstract class Node
 			{
 				_logger.fine(() -> "RESTORE: " + _name + " delete difference " + node);
 				i.remove();
-				restored = true;
+				restored.set(true);
 			}
 		}
 
-		removed = false;
+		removed.set(false);
 		for (final Iterator<Edge> i = _inEdges.iterator(); i.hasNext();)
 		{
 			final Edge e = i.next();
@@ -466,19 +464,19 @@ public abstract class Node
 					_abox.getIncrementalChangeTracker().addDeletedEdge(e);
 
 				i.remove();
-				restored = true;
-				removed = true;
+				restored.set(true);
+				removed.set(true);
 			}
 		}
 
-		if (removed && OpenlletOptions.USE_COMPLETION_QUEUE)
+		if (removed.get() && OpenlletOptions.USE_COMPLETION_QUEUE)
 		{
 			final QueueElement qe = new QueueElement(this);
 			_abox.getCompletionQueue().add(qe, NodeSelector.EXISTENTIAL);
 			_abox.getCompletionQueue().add(qe, NodeSelector.MIN_NUMBER);
 		}
 
-		return restored;
+		return restored.get();
 	}
 
 	protected DependencySet forceAddType(final ATermAppl c, final DependencySet ds)
@@ -518,7 +516,10 @@ public abstract class Node
 
 	public boolean removeType(final ATermAppl c)
 	{
-		return _depends.remove(c) != null;
+		synchronized (_depends)
+		{
+			return _depends.remove(c) != null;
+		}
 	}
 
 	public boolean hasType(final ATerm c)

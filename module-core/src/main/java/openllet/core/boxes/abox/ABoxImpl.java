@@ -44,6 +44,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
@@ -100,6 +101,7 @@ import openllet.shared.tools.Log;
  * <p>
  * </p>
  * https://ceur-ws.org/Vol-1068/paper-l02.pdf
+ * https://ceur-ws.org/Vol-189/submission_27.pdf
  * </p>
  *
  * @author Evren Sirin
@@ -117,12 +119,12 @@ public class ABoxImpl implements ABox
 
 	/** The KB to which this ABox belongs */
 	private final KnowledgeBase _kb;
-	private final BranchEffectTracker _branchEffects;
+	private final BranchEffectTracker _branchEffects; // TODO : Use Optional or specialise ABox to not having this attribute at all.
 	private final CompletionQueue _completionQueue;
 	private final IncrementalChangeTracker _incChangeTracker;
 
 	protected final Lock _branchesLock = new ReentrantLock();
-	private final List<Branch> _branches;
+	private final List<Branch> _branches; 
 
 	/**
 	 * This is a list of node names. This list stores the individuals in the order they are created
@@ -145,21 +147,21 @@ public class ABoxImpl implements ABox
 	private final Map<ATermAppl, Node> _nodes;
 
 	/** the current branch number TODO : replace with an AtomicInteger */
-	private volatile int _branchIndex;
+	private final AtomicInteger _branchIndex = new AtomicInteger(Integer.MIN_VALUE);
 
 	/** the last clash recorded */
-	private volatile Clash _clash;
+	private volatile Optional<Clash> _clash = Optional.empty();
 
 	/** if we are using copy on write, this is where to copy from */
-	private volatile ABox _sourceABox; // FIXME : sourceBox actively use null.
+	private volatile Optional<ABox> _sourceABox = Optional.empty();
 
 	/**
 	 * cache of the last completion. it may be different from the pseudo model, e.g. type checking for individual adds one extra assertion last completion is
 	 * stored for caching the root nodes that was the result of
 	 */
-	private volatile ABox _lastCompletion;
+	private volatile Optional<ABox> _lastCompletion = Optional.empty();
 
-	private volatile Clash _lastClash;
+	private volatile Optional<Clash> _lastClash = Optional.empty();
 
 	/**
 	 * following two variables are used to generate names for newly generated individuals. so during rules are applied anon1, anon2, etc. will be generated.
@@ -214,18 +216,6 @@ public class ABoxImpl implements ABox
 	}
 
 	@Override
-	public ABox getSourceABox()
-	{
-		return _sourceABox;
-	}
-
-	@Override
-	public void setSourceABox(final ABox sourceABox)
-	{
-		_sourceABox = sourceABox;
-	}
-
-	@Override
 	public boolean isRulesNotApplied()
 	{
 		return _rulesNotApplied;
@@ -239,10 +229,10 @@ public class ABoxImpl implements ABox
 
 	public ABoxImpl(final KnowledgeBase kb)
 	{
+		_logger.fine(() -> Thread.currentThread().threadId() + "new ABoxImpl(1) : " + this.hashCode());
 		_kb = kb;
 		_nodes = Collections.synchronizedMap(new IdentityHashMap<>());
 		_nodeList = new ArrayList<>();
-		_clash = null;
 		_assertedClashes = SetUtils.create();
 		_doExplanation = false;
 		_dtReasoner = new DatatypeReasonerImpl();
@@ -279,12 +269,14 @@ public class ABoxImpl implements ABox
 	public ABoxImpl(final KnowledgeBase kb, final boolean copyCache)
 	{
 		this(kb);
+		_logger.fine(() -> Thread.currentThread().threadId() + "new ABoxImpl(2) : " + this.hashCode());
 		if (copyCache)
 			_cache = kb.getABox().getCache();
 	}
 
 	public ABoxImpl(final KnowledgeBase kb, final ABoxImpl abox, final ATermAppl extraIndividual, final boolean copyIndividuals)
 	{
+		_logger.fine(() -> Thread.currentThread().threadId() + "new ABoxImpl(3) : " + this.hashCode());
 		_kb = kb;
 		final Optional<Timer> timer = kb.getTimers().startTimer("cloneABox");
 
@@ -341,13 +333,13 @@ public class ABoxImpl implements ABox
 			_nodeList.add(extraIndividual);
 
 			if (OpenlletOptions.COPY_ON_WRITE)
-				_sourceABox = abox;
+				_sourceABox = Optional.of(abox);
 		}
 
 		if (copyIndividuals)
 		{
 			_toBeMerged = abox.getToBeMerged();
-			if (_sourceABox == null)
+			if (_sourceABox.isEmpty())
 			{
 				for (int i = 0; i < nodeCount - extra; i++)
 				{
@@ -366,7 +358,7 @@ public class ABoxImpl implements ABox
 		else
 		{
 			_toBeMerged = Collections.emptyList();
-			_sourceABox = null;
+			_sourceABox = Optional.empty();
 			_initialized = false;
 		}
 
@@ -388,14 +380,14 @@ public class ABoxImpl implements ABox
 
 		if (extraIndividual == null || copyIndividuals)
 		{
-			setBranchIndex(abox._branchIndex);
+			setBranchIndex(abox.getBranchIndex());
 			_branches = new ArrayList<>(abox._branches.size());
 			for (int i = 0, n = abox._branches.size(); i < n; i++)
 			{
 				final Branch branch = abox._branches.get(i);
 				Branch copy;
 
-				if (_sourceABox == null)
+				if (_sourceABox.isEmpty())
 				{
 					copy = branch.copyTo(this);
 					copy.setNodeCount(branch.getNodeCount() + extra);
@@ -435,49 +427,49 @@ public class ABoxImpl implements ABox
 	@Override
 	public void copyOnWrite()
 	{
-		if (_sourceABox == null)
-			return;
-
-		final Optional<Timer> timer = _kb.getTimers().startTimer("copyOnWrite");
-
-		final List<ATermAppl> currentNodeList = new ArrayList<>(_nodeList);
-		final int currentSize = currentNodeList.size();
-		final int nodeCount = getSourceABox().getNodes().size();
-
-		_nodeList.clear();// reset cost less than reallocate a new array.
-		_nodeList.add(currentNodeList.get(0));
-
-		for (int i = 0; i < nodeCount; i++)
+		_sourceABox.ifPresent(sourceABox ->
 		{
-			final ATermAppl x = getSourceABox().getNodeList().get(i);
-			final Node node = _sourceABox.getNode(x);
-			final Node copyNode = node.copyTo(this);
-			_nodes.put(x, copyNode);
-			_nodeList.add(x);
-		}
-
-		if (currentSize > 1)
-			_nodeList.addAll(currentNodeList.subList(1, currentSize));
-
-		for (final Node node : _nodes.values())
-			if (getSourceABox().getNodes().containsKey(node.getName()))
-				node.updateNodeReferences();
-
-		for (int i = 0, n = _branches.size(); i < n; i++)
-		{
-			final Branch branch = _branches.get(i);
-			final Branch copy = branch.copyTo(this);
-			_branches.set(i, copy);
-
-			if (i >= _sourceABox.getBranches().size())
-				copy.setNodeCount(copy.getNodeCount() + nodeCount);
-			else
-				copy.setNodeCount(copy.getNodeCount() + 1);
-		}
-
-		timer.ifPresent(Timer::stop);
-
-		_sourceABox = null;
+			final Optional<Timer> timer = _kb.getTimers().startTimer("copyOnWrite");
+	
+			final List<ATermAppl> currentNodeList = new ArrayList<>(_nodeList);
+			final int currentSize = currentNodeList.size();
+			final int nodeCount = sourceABox.getNodes().size();
+	
+			_nodeList.clear();// reset cost less than reallocate a new array.
+			_nodeList.add(currentNodeList.get(0));
+	
+			for (int i = 0; i < nodeCount; i++)
+			{
+				final ATermAppl x = sourceABox.getNodeList().get(i);
+				final Node node = sourceABox.getNode(x);
+				final Node copyNode = node.copyTo(this);
+				_nodes.put(x, copyNode);
+				_nodeList.add(x);
+			}
+	
+			if (currentSize > 1)
+				_nodeList.addAll(currentNodeList.subList(1, currentSize));
+	
+			for (final Node node : _nodes.values())
+				if (sourceABox.getNodes().containsKey(node.getName()))
+					node.updateNodeReferences();
+	
+			for (int i = 0, n = _branches.size(); i < n; i++) // Branches have lot of time to change here !
+			{
+				final Branch branch = _branches.get(i);
+				final Branch copy = branch.copyTo(this);
+				_branches.set(i, copy);
+	
+				if (i >= sourceABox.getBranches().size())
+					copy.setNodeCount(copy.getNodeCount() + nodeCount);
+				else
+					copy.setNodeCount(copy.getNodeCount() + 1);
+			}
+	
+			timer.ifPresent(Timer::stop);
+	
+			_sourceABox = Optional.empty();
+		} );
 	}
 
 	/**
@@ -591,7 +583,7 @@ public class ABoxImpl implements ABox
 		// immediately
 		if (c.equals(ATermUtils.BOTTOM))
 		{
-			_lastClash = Clash.unexplained(null, DependencySet.INDEPENDENT, "Obvious contradiction in class expression: " + ATermUtils.toString(c));
+			_lastClash = Optional.of(Clash.unexplained(null, DependencySet.INDEPENDENT, "Obvious contradiction in class expression: " + ATermUtils.toString(c)));
 			return false;
 		}
 
@@ -1011,7 +1003,7 @@ public class ABoxImpl implements ABox
 			if (hasObviousValue.isFalse() || !doExplanation())
 				return hasObviousValue.isTrue();
 
-		ATermAppl c = null;
+		ATermAppl c;
 		if (o == null)
 		{
 			if (_kb.isDatatypeProperty(p))
@@ -1266,8 +1258,7 @@ public class ABoxImpl implements ABox
 
 		if (isConsistent)
 		{
-			// put the BOTTOM concept into the _cache which will
-			// also put TOP in there
+			// put the BOTTOM concept into the _cache which will also put TOP in there
 			_cache.putSat(ATermUtils.BOTTOM, false);
 
 			assert isComplete() : "ABox not marked complete!";
@@ -1365,22 +1356,18 @@ public class ABoxImpl implements ABox
 
 		final Expressivity expr = _kb.getExpressivityChecker().getExpressivityWith(c);
 
-		// if c is null we are checking the consistency of this ABox as
-		// it is and we will not add anything extra
+		// if c is null we are checking the consistency of this ABox as it is and we will not add anything extra
 		final boolean initialConsistencyCheck = c == null;
 
 		final boolean emptyConsistencyCheck = initialConsistencyCheck && isEmpty();
 
-		// if individuals is empty and we are not building the pseudo
-		// model then this is concept satisfiability
+		// if individuals is empty and we are not building the pseudo model then this is concept satisfiability
 		final boolean conceptSatisfiability = individuals.isEmpty() && (!initialConsistencyCheck || emptyConsistencyCheck);
 
-		// Check if there are any nominals in the KB or nominal
-		// reasoning is disabled
+		// Check if there are any nominals in the KB or nominal reasoning is disabled
 		final boolean hasNominal = expr.hasNominal() && !OpenlletOptions.USE_PSEUDO_NOMINALS;
 
-		// Use empty model only if this is concept satisfiability for a KB
-		// where there are no nominals
+		// Use empty model only if this is concept satisfiability for a KB where there are no nominals
 		final boolean canUseEmptyABox = conceptSatisfiability && !hasNominal;
 
 		ATermAppl x = null;
@@ -1402,14 +1389,12 @@ public class ABoxImpl implements ABox
 			abox.setSyntacticUpdate(false);
 		}
 
-		// synchronized (this) // We should not try to completion in the same time. -> only if parallel core is enable.
+		// synchronized (this) // We should not try two completion in the same time. -> only if parallel core is enable.
 		{
 			_logger.fine(() -> "Consistency check starts");
-
 			final CompletionStrategy strategy = _kb.chooseStrategy(abox, expr);
 
 			_logger.fine(() -> "Strategy: " + strategy.getClass().getName());
-
 			_kb.getTimers().execute("complete", timers -> strategy.complete(expr));
 		}
 
@@ -1418,17 +1403,18 @@ public class ABoxImpl implements ABox
 		if (x != null && c != null && cacheModel)
 			cache(abox.getIndividual(x), c, consistent);
 
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Consistent: " + consistent //
-					+ " Time: " + timer.map(Timer::getElapsed).orElse(0L)//
-					+ " Branches " + abox.getBranches().size()//
-					+ " Tree depth: " + abox.getStats()._treeDepth//
-					+ " Tree size: " + abox.getNodes().size()//
-					+ " Restores " + abox.getStats()._globalRestores//
-					+ " global " + abox.getStats()._localRestores//
-					+ " local"// FIXME something missing here ?
-					+ " Backtracks " + abox.getStats()._backtracks//
-					+ " avg backjump " + abox.getStats()._backjumps / (double) abox.getStats()._backtracks);
+		_logger.fine(() -> "Consistent: " + consistent //
+				+ " Time: " + timer.map(Timer::getElapsed).orElse(0L)//
+				+ " Branches " + abox.getBranches().size()//
+				+ " Tree depth: " + abox.getStats()._treeDepth//
+				+ " Tree size: " + abox.getNodes().size()//
+				+ " Restores " + abox.getStats()._globalRestores//
+				+ " global " + abox.getStats()._localRestores//
+//				+ " local"// FIXME something missing here ?
+				+ " Backtracks " + abox.getStats()._backtracks//
+				+ " avg backjump " + abox.getStats()._backjumps / (double) abox.getStats()._backtracks//
+				+ " Clash" + abox.getClash()//
+		);
 
 		if (consistent)
 		{
@@ -1438,7 +1424,7 @@ public class ABoxImpl implements ABox
 		else
 		{
 			_lastClash = abox.getClash();
-			_logger.fine(() -> "Clash: " + abox.getClash().detailedString());
+			_logger.fine(() -> "Clash: " + abox.getClash().map(cl -> cl.detailedString()).orElse("None") );
 			if (_doExplanation && OpenlletOptions.USE_TRACING)
 			{
 				if (individuals.size() == 1)
@@ -1449,8 +1435,7 @@ public class ABoxImpl implements ABox
 					final Set<ATermAppl> explanationSet = getExplanationSet();
 					final boolean removed = explanationSet.remove(tempAxiom);
 					if (!removed)
-						if (_logger.isLoggable(Level.FINE))
-							_logger.fine("Explanation set is missing an axiom.\n\tAxiom: " + tempAxiom + "\n\tExplantionSet: " + explanationSet);
+						_logger.fine(() -> "Explanation set is missing an axiom.\n\tAxiom: " + tempAxiom + "\n\tExplantionSet: " + explanationSet);
 				}
 				if (_logger.isLoggable(Level.FINE))
 				{
@@ -1466,11 +1451,7 @@ public class ABoxImpl implements ABox
 		}
 
 		_stats._consistencyCount++;
-
-		if (_keepLastCompletion)
-			_lastCompletion = abox;
-		else
-			_lastCompletion = null;
+		_lastCompletion = _keepLastCompletion ?Optional.of(abox) : Optional.empty();   
 
 		timer.ifPresent(Timer::stop);
 
@@ -1505,19 +1486,17 @@ public class ABoxImpl implements ABox
 
 		final boolean consistent = !isClosed();
 
-		if (_logger.isLoggable(Level.FINE))
-			_logger.fine("Consistent: " + consistent + " Tree depth: " + _stats._treeDepth + " Tree size: " + getNodes().size());
+		_logger.fine(() -> "Consistent: " + consistent + " Tree depth: " + _stats._treeDepth + " Tree size: " + getNodes().size());
 
 		if (!consistent)
 		{
 			_lastClash = getClash();
-			if (_logger.isLoggable(Level.FINE))
-				_logger.fine(getClash().detailedString());
+			_logger.fine(() -> getClash().map(cl -> cl.detailedString()).orElse("None"));
 		}
 
 		_stats._consistencyCount++;
 
-		_lastCompletion = this;
+		_lastCompletion = Optional.of(this);
 
 		timer.ifPresent(Timer::stop);
 		incT.ifPresent(Timer::stop);
@@ -1588,20 +1567,23 @@ public class ABoxImpl implements ABox
 		// the _current _branch. We need to set it to the initial
 		// _branch number to make sure that this type assertion
 		// will not be removed during backtracking
-		final int remember = _branchIndex;
-		setBranchIndex(DependencySet.NO_BRANCH);
-
-		Individual node = getIndividual(x);
-		node.addType(c, ds, false);
-
-		while (node.isMerged())
+		synchronized(this)
 		{
-			ds = ds.union(node.getMergeDependency(false), _doExplanation);
-			node = (Individual) node.getMergedTo();
-			node.addType(c, ds, !node.isMerged());
+			final int remember = getBranchIndex();
+			setBranchIndex(DependencySet.NO_BRANCH);
+	
+			Individual node = getIndividual(x);
+			node.addType(c, ds, false);
+	
+			while (node.isMerged())
+			{
+				ds = ds.union(node.getMergeDependency(false), _doExplanation);
+				node = (Individual) node.getMergedTo();
+				node.addType(c, ds, !node.isMerged());
+			}
+	
+			setBranchIndex(remember);
 		}
-
-		setBranchIndex(remember);
 	}
 
 	@Override
@@ -1774,20 +1756,24 @@ public class ABoxImpl implements ABox
 			else
 				throw new InternalReasonerException("Same term refers to both a literal and an _individual: " + name);
 
-		final int remember = _branchIndex;
-		setBranchIndex(DependencySet.NO_BRANCH);
-
-		/*
-		 * TODO Investigate the effects of storing asserted value
-		 * The input version of the literal is not discarded, only the canonical
-		 * versions are stored in the literal. This may cause problems in cases
-		 * where the same value space object is presented in the _data in multiple
-		 * forms.
-		 */
-		final Literal lit = new Literal(name, dataValue, this, ds);
-		lit.addType(ATermUtils.TOP_LIT, ds);
-
-		setBranchIndex(remember);
+		final Literal lit;
+		synchronized (this)
+		{
+			final int remember = getBranchIndex();
+			setBranchIndex(DependencySet.NO_BRANCH);
+	
+			/*
+			 * TODO Investigate the effects of storing asserted value
+			 * The input version of the literal is not discarded, only the canonical
+			 * versions are stored in the literal. This may cause problems in cases
+			 * where the same value space object is presented in the _data in multiple
+			 * forms.
+			 */
+			lit = new Literal(name, dataValue, this, ds);
+			lit.addType(ATermUtils.TOP_LIT, ds);
+	
+			setBranchIndex(remember);
+		}
 
 		_nodes.put(name, lit);
 		_nodeList.add(name);
@@ -1899,12 +1885,13 @@ public class ABoxImpl implements ABox
 		final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(diffAxiom) : DependencySet.INDEPENDENT;
 
 		// Temporarily reset the _branch so that this assertion survives resets
-		final int remember = _branchIndex;
-		setBranchIndex(DependencySet.NO_BRANCH);
-
-		ind1.setDifferent(ind2, ds);
-
-		setBranchIndex(remember);
+		synchronized(this)
+		{
+			final int remember = getBranchIndex();
+			setBranchIndex(DependencySet.NO_BRANCH);
+			ind1.setDifferent(ind2, ds);
+			setBranchIndex(remember);
+		}
 	}
 
 	@Override
@@ -1927,12 +1914,13 @@ public class ABoxImpl implements ABox
 
 				final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(allDifferent) : DependencySet.INDEPENDENT;
 
-				final int remember = _branchIndex;
-				setBranchIndex(DependencySet.NO_BRANCH);
-
-				ind1.setDifferent(ind2, ds);
-
-				setBranchIndex(remember);
+				synchronized(this)
+				{
+					final int remember = getBranchIndex();
+					setBranchIndex(DependencySet.NO_BRANCH);
+					ind1.setDifferent(ind2, ds);
+					setBranchIndex(remember);
+				}
 
 				inner = inner.getNext();
 			}
@@ -2001,11 +1989,11 @@ public class ABoxImpl implements ABox
 	@Override
 	public boolean isClosed()
 	{
-		return !OpenlletOptions.SATURATE_TABLEAU && _initialized && _clash != null;
+		return !OpenlletOptions.SATURATE_TABLEAU && _initialized && _clash.isPresent();
 	}
 
 	@Override
-	public Clash getClash()
+	public Optional<Clash> getClash()
 	{
 		return _clash;
 	}
@@ -2013,33 +2001,35 @@ public class ABoxImpl implements ABox
 	@Override
 	public void setClash(final Clash clash)
 	{
-		if (clash != null)
+		if (null == clash)
 		{
-			if (_logger.isLoggable(Level.FINER))
-			{
-				_logger.finer("CLSH: " + clash);
-				if (clash.getDepends().max() > _branchIndex && _branchIndex != -1)
-					_logger.severe("Invalid _clash dependency " + clash + " > " + _branchIndex);
-			}
-
-			if (_branchIndex == DependencySet.NO_BRANCH && clash.getDepends().getBranch() == DependencySet.NO_BRANCH)
-				_assertedClashes.add(clash);
-
-			if (_clash != null)
-			{
-				_logger.finer(() -> "Clash was already set \nExisting: " + _clash + "\nNew     : " + clash);
-
-				if (_clash.getDepends().max() < clash.getDepends().max())
-					return;
-			}
+			_clash = Optional.empty();
+			return;
+		}			
+		
+		if (_logger.isLoggable(Level.FINER))
+		{
+			_logger.finer("CLSH: " + clash);
+			if (clash.getDepends().max() > getBranchIndex() && getBranchIndex() != -1)
+				_logger.severe("Invalid _clash dependency " + clash + " > " + getBranchIndex());
 		}
+
+		if (getBranchIndex() == DependencySet.NO_BRANCH && clash.getDepends().getBranch() == DependencySet.NO_BRANCH)
+			_assertedClashes.add(clash);
+
+		_clash.ifPresent(theClash -> 
+			{
+				_logger.finer(() -> "Clash was already set \nExisting: " + theClash + "\nNew     : " + clash);	
+				if (theClash.getDepends().max() < clash.getDepends().max())
+					return;
+			});
 
 		synchronized (this)
 		{
-			_clash = clash;
+			_clash = Optional.of(clash);
 			// CHW - added for incremental deletions
 			if (OpenlletOptions.USE_INCREMENTAL_DELETION)
-				_kb.getDependencyIndex().setClashDependencies(_clash);
+				_kb.getDependencyIndex().setClashDependencies(clash);		
 		}
 	}
 
@@ -2087,23 +2077,23 @@ public class ABoxImpl implements ABox
 	@Override
 	public int getBranchIndex()
 	{
-		return _branchIndex;
+		return _branchIndex.get();
 	}
 
 	@Override
+	@Deprecated
 	public void setBranchIndex(final int branch)
 	{
-		_branchIndex = branch;
+		_branchIndex.set(branch);
 	}
 
 	@Override
 	public void incrementBranch()
 	{
-
 		if (OpenlletOptions.USE_COMPLETION_QUEUE)
-			_completionQueue.incrementBranch(_branchIndex);
+			_completionQueue.incrementBranch(getBranchIndex());
 
-		_branchIndex++;
+		_branchIndex.incrementAndGet();
 	}
 
 	/**
@@ -2143,25 +2133,24 @@ public class ABoxImpl implements ABox
 	@Override
 	public void setExplanation(final DependencySet ds)
 	{
-		_lastClash = Clash.unexplained(null, ds);
+		_lastClash = Optional.of( Clash.unexplained(null, ds) );
 	}
 
 	@Override
 	public String getExplanation()
 	{
-		if (_lastClash == null)
-			return "No inconsistency was found! There is no clashExplanation generated.";
-		else
-			return _lastClash.detailedString();
+		return _lastClash//
+				.map(Clash::detailedString)//
+				.orElse("No inconsistency was found! There is no clashExplanation generated.");
 	}
 
 	@Override
 	public Set<ATermAppl> getExplanationSet()
 	{
-		if (_lastClash == null)
-			throw new OpenError("No clashExplanation was generated!");
-
-		return _lastClash.getDepends().getExplain();
+		return _lastClash//
+			.orElseThrow(() -> new OpenError("No clashExplanation was generated!"))//
+			.getDepends()//
+			.getExplain();
 	}
 
 	@Override
@@ -2183,6 +2172,56 @@ public class ABoxImpl implements ABox
 			return Collections.unmodifiableList(_branches);
 		else
 			return _branches;
+	}
+	
+	@Override
+	public synchronized void removeBranch(final Branch branch)
+	{
+		// In multi-threads environment this is wrong...
+		// While slower, we don't use index to avoid unsynchronized index.
+		// Because it is "slower / not atomic" removeBranch is synchronized
+		// Because we don't use index but object if "branch" was already remove there is no error.
+		_branches.remove(branch); 
+		
+		if (_logger.isLoggable(Level.FINE))
+		{
+			_logger.fine("\\/ Should be good \\/ there is now " + _branches.size() + " branches");
+			_logger.fine("Removed : " + branch + "\t" + branch.getBranchIndexInABox() + "\t" + branch.hashCode());
+			int i = 0;
+			for(var b : _branches)
+			{
+				_logger.fine(Thread.currentThread().threadId() + "\t" + i + "\t" + b + "\t" + b.getBranchIndexInABox() + "\t" + b.hashCode());
+				i++;
+			}
+			_logger.fine("/\\ Should be good /\\");
+		}
+	}
+	
+	@Override
+	public synchronized void addBranch(final Branch branch)
+	{
+//		removeBranch(branch);
+		_branches.add(branch);
+		branch.getBranchIndexInABoxIKnowWhatIAmFuckingDo().set(_branches.size());
+		if (branch.getBranchIndexInABox() != _branches.size())
+		{
+			_logger.severe(Thread.currentThread().threadId() + "Branch massive error.");
+			_logger.severe(Thread.currentThread().threadId() + "\taddBranch" + "\t" + branch + "\t" + branch.getBranchIndexInABox() + "\t" + branch.hashCode());
+			int i = 0;
+			for(var b : _branches)
+			{
+				_logger.severe(Thread.currentThread().threadId() + "\t" + i + "\t" + b + "\t" + b.getBranchIndexInABox() + "\t" + b.hashCode());
+				i++;
+			}
+			_logger.severe("\n\n\n\n");
+			throw new OpenError("Invalid branch added: " + branch.getBranchIndexInABox() + " != " + _branches.size());
+		}
+	}
+	
+	@Override
+	public int getBranchesSize()
+	{
+		return _branches.size();
 	}
 
 	@Override
@@ -2264,13 +2303,13 @@ public class ABoxImpl implements ABox
 		for (final ATermAppl c : node.getDepends().keySet())
 		{
 			final DependencySet ds = node.getDepends(c);
-			if (ds.max() > _branchIndex || !OpenlletOptions.USE_SMART_RESTORE && ds.getBranch() > _branchIndex)
+			if (ds.max() > getBranchIndex() || !OpenlletOptions.USE_SMART_RESTORE && ds.getBranch() > getBranchIndex())
 				throw new InternalReasonerException("Invalid ds found: " + node + " " + c + " " + ds + " " + _branchIndex);
 		}
 		for (final Node ind : node.getDifferents())
 		{
 			final DependencySet ds = node.getDifferenceDependency(ind);
-			if (ds.max() > _branchIndex || ds.getBranch() > _branchIndex)
+			if (ds.max() > getBranchIndex() || ds.getBranch() > getBranchIndex())
 				throw new InternalReasonerException("Invalid ds: " + node + " != " + ind + " " + ds);
 			if (ind.getDifferenceDependency(node) == null)
 				throw new InternalReasonerException("Invalid difference: " + node + " != " + ind + " " + ds);
@@ -2286,7 +2325,7 @@ public class ABoxImpl implements ABox
 			if (succ.isMerged())
 				throw new InternalReasonerException("Invalid edge to a removed node: " + edge + " " + succ.isMerged());
 			final DependencySet ds = edge.getDepends();
-			if (ds.max() > _branchIndex || ds.getBranch() > _branchIndex)
+			if (ds.max() > getBranchIndex() || ds.getBranch() > getBranchIndex())
 				throw new InternalReasonerException("Invalid ds: " + edge + " " + ds);
 			final EdgeList allEdges = node.getEdgesTo(succ);
 			if (allEdges.getRoles().size() != allEdges.size())
@@ -2296,7 +2335,7 @@ public class ABoxImpl implements ABox
 		for (final Edge edge : edges)
 		{
 			final DependencySet ds = edge.getDepends();
-			if (ds.max() > _branchIndex || ds.getBranch() > _branchIndex)
+			if (ds.max() > getBranchIndex() || ds.getBranch() > getBranchIndex())
 				throw new InternalReasonerException("Invalid ds: " + edge + " " + ds);
 		}
 	}
@@ -2385,13 +2424,13 @@ public class ABoxImpl implements ABox
 	}
 
 	@Override
-	public Clash getLastClash()
+	public Optional<Clash> getLastClash()
 	{
 		return _lastClash;
 	}
 
 	@Override
-	public ABox getLastCompletion()
+	public Optional<ABox> getLastCompletion()
 	{
 		return _lastCompletion;
 	}
@@ -2423,7 +2462,7 @@ public class ABoxImpl implements ABox
 	@Override
 	public void setLastCompletion(final ABox comp)
 	{
-		_lastCompletion = comp;
+		_lastCompletion = Optional.of(comp);
 	}
 
 	@Override

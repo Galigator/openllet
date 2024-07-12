@@ -10,7 +10,6 @@ import openllet.core.KnowledgeBaseImpl;
 import openllet.core.boxes.abox.ABox;
 import openllet.core.boxes.abox.ABoxImpl;
 import openllet.core.boxes.abox.Literal;
-import openllet.core.utils.TermFactory;
 
 public class LiteralComparisonTest
 {

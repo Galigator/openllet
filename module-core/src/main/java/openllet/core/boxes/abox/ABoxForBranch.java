@@ -2,6 +2,7 @@ package openllet.core.boxes.abox;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import openllet.aterm.ATerm;
 import openllet.aterm.ATermAppl;
@@ -14,6 +15,8 @@ public interface ABoxForBranch extends ABoxStatus
 {
 	int getBranchIndex();
 
+	int getBranchesSize();
+	
 	int getAnonCount();
 
 	int size();
@@ -22,7 +25,7 @@ public interface ABoxForBranch extends ABoxStatus
 
 	void setClash(Clash unexplained);
 
-	Clash getClash();
+	Optional<Clash> getClash();
 
 	KnowledgeBase getKB();
 

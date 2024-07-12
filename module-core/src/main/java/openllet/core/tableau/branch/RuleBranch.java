@@ -143,10 +143,9 @@ public class RuleBranch extends Branch
 			// if there is a clash
 			if (_abox.isClosed())
 			{
-				final DependencySet clashDepends = _abox.getClash().getDepends();
-
-				if (_logger.isLoggable(Level.FINE))
-					_logger.fine("CLASH: Branch " + getBranchIndexInABox() + " " + Clash.unexplained(null, clashDepends) + "!");
+				final DependencySet clashDepends = _abox.getClash().map(Clash::getDepends).orElse(DependencySet.EMPTY);
+				
+				_logger.fine(() -> "CLASH: Branch " + getBranchIndexInABox() + " " + Clash.unexplained(null, clashDepends) + "!");
 
 				// do not restore if we do not have any more branches to try.
 				// after backtrack the correct _branch will restore it anyway. more
@@ -158,21 +157,19 @@ public class RuleBranch extends Branch
 
 					_strategy.restoreLocal(ind, this);
 
-					// global restore sets the _branch number to previous
-					// value so we need to
-					// increment it again
+					// global restore sets the _branch number to previous value so we need to increment it again
 					_abox.incrementBranch();
 
 					setLastClash(clashDepends);
 				}
 				else
 				{
-
-					_abox.setClash(Clash.unexplained(null, clashDepends.union(ds, _abox.doExplanation())));
+					var unexplainedClash =  Clash.unexplained(null, clashDepends.union(ds, _abox.doExplanation()));
+					_abox.setClash(unexplainedClash);
 
 					// CHW - added for inc reasoning
 					if (OpenlletOptions.USE_INCREMENTAL_DELETION)
-						_abox.getKB().getDependencyIndex().addCloseBranchDependency(this, _abox.getClash().getDepends());
+						_abox.getKB().getDependencyIndex().addCloseBranchDependency(this, unexplainedClash.getDepends());
 
 					return;
 				}

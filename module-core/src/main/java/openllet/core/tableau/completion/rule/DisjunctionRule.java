@@ -70,8 +70,10 @@ public class DisjunctionRule extends AbstractTableauRule
 		if (OpenlletOptions.USE_DISJUNCTION_SORTING == OpenlletOptions.OLDEST_FIRST)
 		{
 			final Comparator<ATermAppl> comparator = (d1, d2) -> node.getDepends(d1).max() - node.getDepends(d2).max();
-
-			Arrays.sort(disjunctions, comparator);
+			synchronized(node.getDepends())
+			{
+				Arrays.sort(disjunctions, comparator);
+			}
 		}
 		else
 			throw new InternalReasonerException("Unknown _disjunction sorting option " + OpenlletOptions.USE_DISJUNCTION_SORTING);
@@ -98,9 +100,10 @@ public class DisjunctionRule extends AbstractTableauRule
 		}
 
 		final Branch newBranch;
-		synchronized (_strategy.getABox())
+		var abox = _strategy.getABox();
+		synchronized (abox)
 		{
-			_strategy.addBranch(newBranch = new DisjunctionBranch(_strategy.getABox(), _strategy, node, disjunction, node.getDepends(disjunction), disj));
+			_strategy.addBranch(newBranch = new DisjunctionBranch(abox, _strategy, node, disjunction, node.getDepends(disjunction), disj));
 		}
 
 		newBranch.tryNext();

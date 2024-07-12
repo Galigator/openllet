@@ -31,6 +31,7 @@
 package openllet.core.tableau.branch;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 
 import openllet.aterm.ATermAppl;
@@ -210,22 +211,21 @@ public class MaxBranch extends IndividualBranch
 			final boolean earlyClash = _abox.isClosed();
 			if (earlyClash)
 			{
-				if (_logger.isLoggable(Level.FINE))
-					_logger.fine("CLASH: Branch " + getBranchIndexInABox() + " " + _abox.getClash() + "!");
-
-				final DependencySet clashDepends = _abox.getClash().getDepends();
-
-				if (clashDepends.contains(getBranchIndexInABox()))
+				_logger.fine(() -> "CLASH: Branch " + getBranchIndexInABox() + " " + _abox.getClash() + "!");
+				Optional<DependencySet> optDeps = _abox.getClash().map(clash -> clash.getDepends());
+				if (optDeps.isPresent())
 				{
-					// we need a global restore here because the merge operation modified three
-					// different _nodes and possibly other global variables
-					_strategy.restore(this);
-
-					// global restore sets the _branch number to previous value so we need to
-					// increment it again
-					_abox.incrementBranch();
-
-					setLastClash(clashDepends);
+					final DependencySet clashDepends = optDeps.get();
+					if (clashDepends.contains(getBranchIndexInABox()))
+					{
+						// we need a global restore here because the merge operation modified three different _nodes and possibly other global variables
+						_strategy.restore(this);
+						// global restore sets the _branch number to previous value so we need to increment it again
+						_abox.incrementBranch();
+						setLastClash(clashDepends);
+					}
+					else
+						return;
 				}
 				else
 					return;

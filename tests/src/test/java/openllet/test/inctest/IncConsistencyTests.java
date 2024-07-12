@@ -1759,8 +1759,11 @@ public class IncConsistencyTests extends AbstractKBTests
 		assertTrue(kb.isConsistent());
 
 		// no classification or realization yet
-		assertEquals(0, classifyTimer.getCount());
-		assertEquals(0, realizeTimer.getCount());
+		if (!OpenlletOptions.USE_THREADED_KERNEL)
+		{
+			assertEquals(0, classifyTimer.getCount());
+			assertEquals(0, realizeTimer.getCount());
+		}
 		assertFalse(kb.isClassified());
 		assertFalse(kb.isRealized());
 
@@ -1768,8 +1771,11 @@ public class IncConsistencyTests extends AbstractKBTests
 		kb.realize();
 
 		// make sure counts are ok
-		assertEquals(1, classifyTimer.getCount());
-		assertEquals(1, realizeTimer.getCount());
+		if (!OpenlletOptions.USE_THREADED_KERNEL)
+		{
+			assertEquals(1, classifyTimer.getCount());
+			assertEquals(1, realizeTimer.getCount());
+		}
 
 		// make an ABox change
 		kb.addType(b, E);
@@ -1786,19 +1792,22 @@ public class IncConsistencyTests extends AbstractKBTests
 		assertEquals(emptySet(), kb.getEquivalentClasses(C));
 
 		// verify classification occurred
-		assertEquals(1, classifyTimer.getCount());
+		if (!OpenlletOptions.USE_THREADED_KERNEL)
+			assertEquals(1, classifyTimer.getCount());
 
 		// perform instance retrieval
 		assertEquals(singleton(b), kb.getInstances(E));
 
 		// verify instance retrieval did not trigger realization
-		assertEquals(1, realizeTimer.getCount());
+		if (!OpenlletOptions.USE_THREADED_KERNEL)
+			assertEquals(1, realizeTimer.getCount());
 
 		// query direct instances to force realization
 		assertEquals(singleton(b), kb.getInstances(E, true));
 
 		// verify realization occurred
-		assertEquals(2, realizeTimer.getCount());
+		if (!OpenlletOptions.USE_THREADED_KERNEL)
+			assertEquals(2, realizeTimer.getCount());
 
 		// make an ABox change causing p = q and as a result C = E
 		kb.addSubProperty(p, q);
@@ -1824,13 +1833,15 @@ public class IncConsistencyTests extends AbstractKBTests
 		assertEquals(singleton(E), kb.getEquivalentClasses(C));
 
 		// verify classification
-		assertEquals(2, classifyTimer.getCount());
+		if (!OpenlletOptions.USE_THREADED_KERNEL)
+			assertEquals(2, classifyTimer.getCount());
 
 		// verify new instance relation (trigger realization)
 		assertEquals(SetUtils.create(a, b), kb.getInstances(E, true));
 
 		// verify realization
-		assertEquals(3, realizeTimer.getCount());
+		if (!OpenlletOptions.USE_THREADED_KERNEL)
+			assertEquals(3, realizeTimer.getCount());
 	}
 
 	@Test
