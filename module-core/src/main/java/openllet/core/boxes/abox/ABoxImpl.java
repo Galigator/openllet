@@ -100,8 +100,7 @@ import openllet.shared.tools.Log;
  * http://tinman.cs.gsu.edu/~raj/8711/sp11/presentations/pelletReport.pdf
  * <p>
  * </p>
- * https://ceur-ws.org/Vol-1068/paper-l02.pdf
- * https://ceur-ws.org/Vol-189/submission_27.pdf
+ * https://ceur-ws.org/Vol-1068/paper-l02.pdf https://ceur-ws.org/Vol-189/submission_27.pdf
  * </p>
  *
  * @author Evren Sirin
@@ -124,7 +123,7 @@ public class ABoxImpl implements ABox
 	private final IncrementalChangeTracker _incChangeTracker;
 
 	protected final Lock _branchesLock = new ReentrantLock();
-	private final List<Branch> _branches; 
+	private final List<Branch> _branches;
 
 	/**
 	 * This is a list of node names. This list stores the individuals in the order they are created
@@ -229,7 +228,7 @@ public class ABoxImpl implements ABox
 
 	public ABoxImpl(final KnowledgeBase kb)
 	{
-		_logger.fine(() -> Thread.currentThread().threadId() + "new ABoxImpl(1) : " + this.hashCode());
+		_logger.fine(() -> Thread.currentThread().getId() + "new ABoxImpl(1) : " + hashCode());
 		_kb = kb;
 		_nodes = Collections.synchronizedMap(new IdentityHashMap<>());
 		_nodeList = new ArrayList<>();
@@ -269,14 +268,14 @@ public class ABoxImpl implements ABox
 	public ABoxImpl(final KnowledgeBase kb, final boolean copyCache)
 	{
 		this(kb);
-		_logger.fine(() -> Thread.currentThread().threadId() + "new ABoxImpl(2) : " + this.hashCode());
+		_logger.fine(() -> Thread.currentThread().getId() + "new ABoxImpl(2) : " + hashCode());
 		if (copyCache)
 			_cache = kb.getABox().getCache();
 	}
 
 	public ABoxImpl(final KnowledgeBase kb, final ABoxImpl abox, final ATermAppl extraIndividual, final boolean copyIndividuals)
 	{
-		_logger.fine(() -> Thread.currentThread().threadId() + "new ABoxImpl(3) : " + this.hashCode());
+		_logger.fine(() -> Thread.currentThread().getId() + "new ABoxImpl(3) : " + hashCode());
 		_kb = kb;
 		final Optional<Timer> timer = kb.getTimers().startTimer("cloneABox");
 
@@ -430,14 +429,14 @@ public class ABoxImpl implements ABox
 		_sourceABox.ifPresent(sourceABox ->
 		{
 			final Optional<Timer> timer = _kb.getTimers().startTimer("copyOnWrite");
-	
+
 			final List<ATermAppl> currentNodeList = new ArrayList<>(_nodeList);
 			final int currentSize = currentNodeList.size();
 			final int nodeCount = sourceABox.getNodes().size();
-	
+
 			_nodeList.clear();// reset cost less than reallocate a new array.
 			_nodeList.add(currentNodeList.get(0));
-	
+
 			for (int i = 0; i < nodeCount; i++)
 			{
 				final ATermAppl x = sourceABox.getNodeList().get(i);
@@ -446,30 +445,30 @@ public class ABoxImpl implements ABox
 				_nodes.put(x, copyNode);
 				_nodeList.add(x);
 			}
-	
+
 			if (currentSize > 1)
 				_nodeList.addAll(currentNodeList.subList(1, currentSize));
-	
+
 			for (final Node node : _nodes.values())
 				if (sourceABox.getNodes().containsKey(node.getName()))
 					node.updateNodeReferences();
-	
+
 			for (int i = 0, n = _branches.size(); i < n; i++) // Branches have lot of time to change here !
 			{
 				final Branch branch = _branches.get(i);
 				final Branch copy = branch.copyTo(this);
 				_branches.set(i, copy);
-	
+
 				if (i >= sourceABox.getBranches().size())
 					copy.setNodeCount(copy.getNodeCount() + nodeCount);
 				else
 					copy.setNodeCount(copy.getNodeCount() + 1);
 			}
-	
+
 			timer.ifPresent(Timer::stop);
-	
+
 			_sourceABox = Optional.empty();
-		} );
+		});
 	}
 
 	/**
@@ -1410,7 +1409,7 @@ public class ABoxImpl implements ABox
 				+ " Tree size: " + abox.getNodes().size()//
 				+ " Restores " + abox.getStats()._globalRestores//
 				+ " global " + abox.getStats()._localRestores//
-//				+ " local"// FIXME something missing here ?
+				//				+ " local"// FIXME something missing here ?
 				+ " Backtracks " + abox.getStats()._backtracks//
 				+ " avg backjump " + abox.getStats()._backjumps / (double) abox.getStats()._backtracks//
 				+ " Clash" + abox.getClash()//
@@ -1424,7 +1423,7 @@ public class ABoxImpl implements ABox
 		else
 		{
 			_lastClash = abox.getClash();
-			_logger.fine(() -> "Clash: " + abox.getClash().map(cl -> cl.detailedString()).orElse("None") );
+			_logger.fine(() -> "Clash: " + abox.getClash().map(cl -> cl.detailedString()).orElse("None"));
 			if (_doExplanation && OpenlletOptions.USE_TRACING)
 			{
 				if (individuals.size() == 1)
@@ -1451,7 +1450,7 @@ public class ABoxImpl implements ABox
 		}
 
 		_stats._consistencyCount++;
-		_lastCompletion = _keepLastCompletion ?Optional.of(abox) : Optional.empty();   
+		_lastCompletion = _keepLastCompletion ? Optional.of(abox) : Optional.empty();
 
 		timer.ifPresent(Timer::stop);
 
@@ -1567,21 +1566,21 @@ public class ABoxImpl implements ABox
 		// the _current _branch. We need to set it to the initial
 		// _branch number to make sure that this type assertion
 		// will not be removed during backtracking
-		synchronized(this)
+		synchronized (this)
 		{
 			final int remember = getBranchIndex();
 			setBranchIndex(DependencySet.NO_BRANCH);
-	
+
 			Individual node = getIndividual(x);
 			node.addType(c, ds, false);
-	
+
 			while (node.isMerged())
 			{
 				ds = ds.union(node.getMergeDependency(false), _doExplanation);
 				node = (Individual) node.getMergedTo();
 				node.addType(c, ds, !node.isMerged());
 			}
-	
+
 			setBranchIndex(remember);
 		}
 	}
@@ -1761,7 +1760,7 @@ public class ABoxImpl implements ABox
 		{
 			final int remember = getBranchIndex();
 			setBranchIndex(DependencySet.NO_BRANCH);
-	
+
 			/*
 			 * TODO Investigate the effects of storing asserted value
 			 * The input version of the literal is not discarded, only the canonical
@@ -1771,7 +1770,7 @@ public class ABoxImpl implements ABox
 			 */
 			lit = new Literal(name, dataValue, this, ds);
 			lit.addType(ATermUtils.TOP_LIT, ds);
-	
+
 			setBranchIndex(remember);
 		}
 
@@ -1885,7 +1884,7 @@ public class ABoxImpl implements ABox
 		final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(diffAxiom) : DependencySet.INDEPENDENT;
 
 		// Temporarily reset the _branch so that this assertion survives resets
-		synchronized(this)
+		synchronized (this)
 		{
 			final int remember = getBranchIndex();
 			setBranchIndex(DependencySet.NO_BRANCH);
@@ -1914,7 +1913,7 @@ public class ABoxImpl implements ABox
 
 				final DependencySet ds = OpenlletOptions.USE_TRACING ? new DependencySet(allDifferent) : DependencySet.INDEPENDENT;
 
-				synchronized(this)
+				synchronized (this)
 				{
 					final int remember = getBranchIndex();
 					setBranchIndex(DependencySet.NO_BRANCH);
@@ -2005,8 +2004,8 @@ public class ABoxImpl implements ABox
 		{
 			_clash = Optional.empty();
 			return;
-		}			
-		
+		}
+
 		if (_logger.isLoggable(Level.FINER))
 		{
 			_logger.finer("CLSH: " + clash);
@@ -2017,19 +2016,19 @@ public class ABoxImpl implements ABox
 		if (getBranchIndex() == DependencySet.NO_BRANCH && clash.getDepends().getBranch() == DependencySet.NO_BRANCH)
 			_assertedClashes.add(clash);
 
-		_clash.ifPresent(theClash -> 
-			{
-				_logger.finer(() -> "Clash was already set \nExisting: " + theClash + "\nNew     : " + clash);	
-				if (theClash.getDepends().max() < clash.getDepends().max())
-					return;
-			});
+		_clash.ifPresent(theClash ->
+		{
+			_logger.finer(() -> "Clash was already set \nExisting: " + theClash + "\nNew     : " + clash);
+			if (theClash.getDepends().max() < clash.getDepends().max())
+				return;
+		});
 
 		synchronized (this)
 		{
 			_clash = Optional.of(clash);
 			// CHW - added for incremental deletions
 			if (OpenlletOptions.USE_INCREMENTAL_DELETION)
-				_kb.getDependencyIndex().setClashDependencies(clash);		
+				_kb.getDependencyIndex().setClashDependencies(clash);
 		}
 	}
 
@@ -2133,7 +2132,7 @@ public class ABoxImpl implements ABox
 	@Override
 	public void setExplanation(final DependencySet ds)
 	{
-		_lastClash = Optional.of( Clash.unexplained(null, ds) );
+		_lastClash = Optional.of(Clash.unexplained(null, ds));
 	}
 
 	@Override
@@ -2148,9 +2147,9 @@ public class ABoxImpl implements ABox
 	public Set<ATermAppl> getExplanationSet()
 	{
 		return _lastClash//
-			.orElseThrow(() -> new OpenError("No clashExplanation was generated!"))//
-			.getDepends()//
-			.getExplain();
+				.orElseThrow(() -> new OpenError("No clashExplanation was generated!"))//
+				.getDepends()//
+				.getExplain();
 	}
 
 	@Override
@@ -2173,7 +2172,7 @@ public class ABoxImpl implements ABox
 		else
 			return _branches;
 	}
-	
+
 	@Override
 	public synchronized void removeBranch(final Branch branch)
 	{
@@ -2181,43 +2180,43 @@ public class ABoxImpl implements ABox
 		// While slower, we don't use index to avoid unsynchronized index.
 		// Because it is "slower / not atomic" removeBranch is synchronized
 		// Because we don't use index but object if "branch" was already remove there is no error.
-		_branches.remove(branch); 
-		
+		_branches.remove(branch);
+
 		if (_logger.isLoggable(Level.FINE))
 		{
 			_logger.fine("\\/ Should be good \\/ there is now " + _branches.size() + " branches");
 			_logger.fine("Removed : " + branch + "\t" + branch.getBranchIndexInABox() + "\t" + branch.hashCode());
 			int i = 0;
-			for(var b : _branches)
+			for (final var b : _branches)
 			{
-				_logger.fine(Thread.currentThread().threadId() + "\t" + i + "\t" + b + "\t" + b.getBranchIndexInABox() + "\t" + b.hashCode());
+				_logger.fine(Thread.currentThread().getId() + "\t" + i + "\t" + b + "\t" + b.getBranchIndexInABox() + "\t" + b.hashCode());
 				i++;
 			}
 			_logger.fine("/\\ Should be good /\\");
 		}
 	}
-	
+
 	@Override
 	public synchronized void addBranch(final Branch branch)
 	{
-//		removeBranch(branch);
+		//		removeBranch(branch);
 		_branches.add(branch);
 		branch.getBranchIndexInABoxIKnowWhatIAmFuckingDo().set(_branches.size());
 		if (branch.getBranchIndexInABox() != _branches.size())
 		{
-			_logger.severe(Thread.currentThread().threadId() + "Branch massive error.");
-			_logger.severe(Thread.currentThread().threadId() + "\taddBranch" + "\t" + branch + "\t" + branch.getBranchIndexInABox() + "\t" + branch.hashCode());
+			_logger.severe(Thread.currentThread().getId() + "Branch massive error.");
+			_logger.severe(Thread.currentThread().getId() + "\taddBranch" + "\t" + branch + "\t" + branch.getBranchIndexInABox() + "\t" + branch.hashCode());
 			int i = 0;
-			for(var b : _branches)
+			for (final var b : _branches)
 			{
-				_logger.severe(Thread.currentThread().threadId() + "\t" + i + "\t" + b + "\t" + b.getBranchIndexInABox() + "\t" + b.hashCode());
+				_logger.severe(Thread.currentThread().getId() + "\t" + i + "\t" + b + "\t" + b.getBranchIndexInABox() + "\t" + b.hashCode());
 				i++;
 			}
 			_logger.severe("\n\n\n\n");
 			throw new OpenError("Invalid branch added: " + branch.getBranchIndexInABox() + " != " + _branches.size());
 		}
 	}
-	
+
 	@Override
 	public int getBranchesSize()
 	{

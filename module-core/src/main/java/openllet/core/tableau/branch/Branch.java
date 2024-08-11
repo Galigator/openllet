@@ -80,8 +80,8 @@ public abstract class Branch implements Comparable<Branch>
 
 		_anonCount = abox.getAnonCount();
 		_nodeCount = abox.size();
-		
-		_logger.fine(() -> Thread.currentThread().threadId() + "\tnew Branch()" + this + "\t" + getBranchIndexInABox() + "\t" + hashCode() + "\t" + abox.hashCode() +"\t" + System.identityHashCode(abox) );
+
+		_logger.fine(() -> Thread.currentThread().getId() + "\tnew Branch()" + this + "\t" + getBranchIndexInABox() + "\t" + hashCode() + "\t" + abox.hashCode() + "\t" + System.identityHashCode(abox));
 	}
 
 	protected Branch(final ABoxForBranch abox, final int n, final Branch br)
@@ -151,7 +151,7 @@ public abstract class Branch implements Comparable<Branch>
 	@Override
 	public String toString()
 	{
-		return "{"+this.getClass().getSimpleName()+" [" + getNode() + "]  n°: " + getBranchIndexInABox() + " tryNext:" + getTryNext() + " tryCount:" + getTryCount() + "}";
+		return "{" + this.getClass().getSimpleName() + " [" + getNode() + "]  n°: " + getBranchIndexInABox() + " tryNext:" + getTryNext() + " tryCount:" + getTryCount() + "}";
 	}
 
 	/**
@@ -184,7 +184,7 @@ public abstract class Branch implements Comparable<Branch>
 	{
 		return _branchIndexInABox.get();
 	}
-	
+
 	public AtomicInteger getBranchIndexInABoxIKnowWhatIAmFuckingDo()
 	{
 		return _branchIndexInABox;

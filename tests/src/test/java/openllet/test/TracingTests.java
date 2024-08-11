@@ -194,7 +194,7 @@ public class TracingTests extends AbstractKBTests
 	}
 
 	@Test
-	public void testDisjunction()
+	public void testDisjunction() // Possible race condition ?
 	{
 		classes(_A, _B);
 		objectProperties(_p);
