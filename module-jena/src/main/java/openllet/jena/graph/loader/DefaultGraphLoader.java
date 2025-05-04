@@ -52,11 +52,11 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.jena.graph.Factory;
 import org.apache.jena.graph.Graph;
 import org.apache.jena.graph.Node;
 import org.apache.jena.graph.Triple;
 import org.apache.jena.rdf.model.Property;
+import org.apache.jena.sparql.graph.GraphFactory;
 import org.apache.jena.util.iterator.ClosableIterator;
 import org.apache.jena.vocabulary.OWL;
 import org.apache.jena.vocabulary.RDF;
@@ -142,7 +142,7 @@ public class DefaultGraphLoader implements GraphLoader
 
 	private static final EnumSet<BuiltinTerm> OWL_MEMBERS_TYPES = EnumSet.of(BuiltinTerm.OWL_AllDifferent, BuiltinTerm.OWL2_AllDisjointClasses, BuiltinTerm.OWL2_AllDisjointProperties);
 
-	private static final Graph EMPTY_GRAPH = Factory.createGraphMem();
+	private static final Graph EMPTY_GRAPH = GraphFactory.createGraphMem();
 
 	public static QNameProvider _qnames = new QNameProvider();
 
