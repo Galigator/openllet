@@ -29,7 +29,7 @@ import org.apache.jena.sparql.engine.binding.BindingComparator;
  *
  * @author Evren Sirin
  */
-public class SortedResultSet implements ResultSet
+public class SortedResultSet extends ResultSetImpl
 {
 	private final List<Binding> sortedRows;
 	private final Iterator<Binding> iterator;

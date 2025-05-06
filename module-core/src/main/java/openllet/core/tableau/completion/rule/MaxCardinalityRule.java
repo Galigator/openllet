@@ -53,7 +53,8 @@ public class MaxCardinalityRule extends AbstractTableauRule
 		if (!ind.canApply(Node.MAX))
 			return;
 
-		final List<ATermAppl> maxCardinality = ind.getTypes(Node.MAX);
+		//use a copy of maxCardinality in order to avoid concurrent modification exception
+        final List<ATermAppl> maxCardinality = new ArrayList<>(ind.getTypes(Node.MAX));
 		for (final ATermAppl mc : maxCardinality)
 		{
 			applyMaxRule(ind, mc);

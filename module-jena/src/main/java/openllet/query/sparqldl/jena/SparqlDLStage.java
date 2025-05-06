@@ -24,7 +24,7 @@ import org.apache.jena.sparql.engine.QueryIterator;
 import org.apache.jena.sparql.engine.binding.Binding;
 import org.apache.jena.sparql.engine.iterator.QueryIterRepeatApply;
 import org.apache.jena.sparql.engine.iterator.QueryIteratorResultSet;
-import org.apache.jena.sparql.engine.main.StageGeneratorGenericStar;
+import org.apache.jena.sparql.engine.main.StageGeneratorGeneric;
 
 import openllet.aterm.ATermAppl;
 import openllet.core.exceptions.UnsupportedQueryException;
@@ -107,7 +107,7 @@ class SparqlDLStage
 		if (query != null)
 			return new PelletQueryIterator(pellet, query, input, execCxt);
 		else
-			return new StageGeneratorGenericStar().execute(_pattern, input, execCxt);
+			return new StageGeneratorGeneric().execute(_pattern, input, execCxt);
 	}
 
 	private Query parsePattern(final PelletInfGraph pellet)

@@ -25,6 +25,7 @@ import org.apache.jena.vocabulary.RDFS;
 import org.apache.jena.vocabulary.ReasonerVocabulary;
 
 import openllet.jena.PelletReasonerFactory;
+import org.junit.Test;
 
 public class JenaClassificationTest extends AbstractClassificationTest
 {
@@ -33,7 +34,6 @@ public class JenaClassificationTest extends AbstractClassificationTest
 	{
 		final OntModel premise = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
 		premise.read(inputOnt);
-		premise.prepare();
 
 		final Model conclusion = ModelFactory.createDefaultModel();
 		conclusion.read(classifiedOnt);
@@ -90,6 +90,12 @@ public class JenaClassificationTest extends AbstractClassificationTest
 
 			return stmt.toString();
 		}
+	}
+
+	@Test
+	public void simpleMechanicalEngineeringMinimalTest() throws Exception
+	{
+		testFile("ME_minimal");
 	}
 
 }

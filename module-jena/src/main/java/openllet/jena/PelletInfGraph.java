@@ -35,7 +35,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import org.apache.jena.graph.Factory;
 import org.apache.jena.graph.Graph;
 import org.apache.jena.graph.Node;
 import org.apache.jena.graph.Triple;
@@ -50,6 +49,7 @@ import org.apache.jena.reasoner.Finder;
 import org.apache.jena.reasoner.StandardValidityReport;
 import org.apache.jena.reasoner.TriplePattern;
 import org.apache.jena.reasoner.ValidityReport;
+import org.apache.jena.sparql.graph.GraphFactory;
 import org.apache.jena.util.iterator.ExtendedIterator;
 import org.apache.jena.util.iterator.UniqueFilter;
 import org.apache.jena.vocabulary.OWL;
@@ -92,7 +92,7 @@ public class PelletInfGraph extends BaseInfGraph
 
 	public PelletInfGraph(final KnowledgeBase kb, final PelletReasoner pellet, final GraphLoader loader)
 	{
-		this(kb, Factory.createDefaultGraph(), pellet, loader);
+		this(kb, GraphFactory.createDefaultGraph(), pellet, loader);
 	}
 
 	public PelletInfGraph(final Graph graph, final PelletReasoner pellet, final GraphLoader loader)
@@ -382,7 +382,7 @@ public class PelletInfGraph extends BaseInfGraph
 
 		prepare();
 
-		final Graph explanationGraph = Factory.createDefaultGraph();
+		final Graph explanationGraph = GraphFactory.createDefaultGraph();
 
 		_logger.fine(() -> "Explain " + pattern);
 

@@ -17,8 +17,7 @@ import org.apache.jena.query.ResultSetRewindable;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.sparql.core.Var;
 import org.apache.jena.sparql.engine.binding.Binding;
-import org.apache.jena.sparql.engine.binding.BindingHashMap;
-import org.apache.jena.sparql.engine.binding.BindingMap;
+import org.apache.jena.sparql.engine.binding.BindingBuilder;
 
 import openllet.aterm.ATermAppl;
 import openllet.jena.JenaUtils;
@@ -40,7 +39,7 @@ import openllet.query.sparqldl.model.ResultBinding;
  * @author Petr Kremen
  * @author Evren Sirin
  */
-public class SparqlDLResultSet implements ResultSetRewindable
+public class SparqlDLResultSet extends ResultSetImpl implements ResultSetRewindable
 {
 	private final Model _model;
 	private final List<ATermAppl> _resultVars;
@@ -120,7 +119,7 @@ public class SparqlDLResultSet implements ResultSetRewindable
 		_index++;
 		final ResultBinding binding = _bindings.next();
 
-		final BindingMap result = _parent == null ? new BindingHashMap() : new BindingHashMap(_parent);
+		final BindingBuilder result = _parent == null ? BindingBuilder.create() : BindingBuilder.create(_parent);
 
 		for (final ATermAppl var : _resultVars)
 			if (binding.isBound(var))
@@ -133,7 +132,7 @@ public class SparqlDLResultSet implements ResultSetRewindable
 					continue;
 
 				JenaUtils.makeGraphNode(value)//
-						.ifPresent(node -> result.add(Var.alloc(varName), node));
+						.ifPresent(node -> result.set(Var.alloc(varName), node));
 			}
 
 		if (_resultVars.size() == 0)
@@ -146,10 +145,10 @@ public class SparqlDLResultSet implements ResultSetRewindable
 
 				if (!result.contains(var))
 					JenaUtils.makeGraphNode(entry.getValue())//
-							.ifPresent(node -> result.add(var, node));
+							.ifPresent(node -> result.set(var, node));
 			}
 
-		return result;
+		return result.build();
 	}
 
 	/**

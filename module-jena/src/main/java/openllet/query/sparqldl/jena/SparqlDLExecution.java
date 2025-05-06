@@ -40,6 +40,7 @@ import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.sparql.core.Quad;
 import org.apache.jena.sparql.engine.binding.Binding;
+import org.apache.jena.sparql.modify.TemplateLib;
 import org.apache.jena.sparql.syntax.Template;
 import org.apache.jena.sparql.util.Context;
 import org.apache.jena.sparql.util.ModelUtils;
@@ -164,7 +165,7 @@ class SparqlDLExecution implements QueryExecution
 			{
 				final Map<Node, Node> bNodeMap = new HashMap<>();
 				final Binding binding = results.nextBinding();
-				template.subst(set, bNodeMap, binding);
+				subst(template, set, bNodeMap, binding);
 			}
 
 			for (final Triple t : set)
@@ -179,6 +180,27 @@ class SparqlDLExecution implements QueryExecution
 
 		return model;
 	}
+
+	/**
+	 * Copy paste from Template in jena 4.2
+	 *
+	 * TODO use {@link TemplateLib}.subst
+	 *
+	 * @param template
+	 * @param acc
+	 * @param bNodeMap
+	 * @param b
+	 */
+	void subst(Template template, Set<Triple> acc, Map<Node, Node> bNodeMap, Binding b)
+	{
+		final Iterator<Triple> it = template.getTriples().iterator();
+		while(it.hasNext()) {
+			Triple t = (Triple)it.next();
+			t = TemplateLib.subst(t, b, bNodeMap);
+			acc.add(t);
+		}
+	}
+
 
 	/**
 	 * {@inheritDoc}
@@ -380,6 +402,11 @@ class SparqlDLExecution implements QueryExecution
 	public Query getQuery()
 	{
 		return _query;
+	}
+
+	@Override
+	public String getQueryString() {
+		return _query.toString();
 	}
 
 	/**

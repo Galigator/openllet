@@ -18,6 +18,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import openllet.query.sparqldl.jena.ResultSetImpl;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.query.QueryFactory;
 import org.apache.jena.query.QuerySolution;
@@ -361,7 +362,7 @@ public class SparqlDLDawgTester implements SparqlDawgTester
 		return !uri.startsWith("http://www.w3.org/2001/sw/DataAccess/tests/data-r2/syntax-sparql1/manifest#") && !uri.startsWith("http://www.w3.org/2001/sw/DataAccess/tests/data-r2/syntax-sparql2/manifest#") && !uri.startsWith("http://www.w3.org/2001/sw/DataAccess/tests/data-r2/syntax-sparql3/manifest#") && !uri.startsWith("http://www.w3.org/2001/sw/DataAccess/tests/data-r2/syntax-sparql4/manifest#");
 	}
 
-	private static class DifferenceResultSet implements ResultSet
+	private static class DifferenceResultSet extends ResultSetImpl
 	{
 
 		private final List<Binding> solutions = new ArrayList<>();

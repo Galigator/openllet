@@ -13,7 +13,8 @@ import java.net.URI;
 import org.apache.jena.query.ResultSet;
 import org.apache.jena.query.ResultSetFactory;
 import org.apache.jena.rdf.model.ResourceFactory;
-import org.apache.jena.riot.resultset.rw.ResultsStAX;
+import org.apache.jena.riot.ResultSetMgr;
+import org.apache.jena.riot.resultset.ResultSetLang;
 import org.apache.jena.sparql.resultset.ResultsFormat;
 import org.apache.jena.util.FileManager;
 
@@ -76,7 +77,7 @@ public class JenaIOUtils
 		if (resultURI.endsWith("srx"))
 			try (var in = new FileInputStream(resultURI.substring(5)))
 			{
-				return ResultsStAX.read(in, null, null).getBooleanResult();
+				return ResultSetMgr.readBoolean(in, ResultSetLang.RS_XML);
 			}
 		else
 			if (resultURI.endsWith("ttl") || resultURI.endsWith("rdf"))

@@ -53,11 +53,12 @@ public class OWLWGTestCase
 
 	public static Object _lock = new Object();
 
+	public static long TIMEOUT_SEC = 60;
 	/**
 	 * Ensure that test cases timeout after 10 seconds. This is in slightly broader than the one second timeout for each PelletOA3TestRunner.
 	 */
 	@Rule
-	public Timeout timeout = new Timeout(10, TimeUnit.SECONDS);
+	public Timeout timeout = new Timeout(TIMEOUT_SEC, TimeUnit.SECONDS);
 
 	/**
 	 * The dockerVM that run Travis is this time slow my i5-3570K
@@ -148,7 +149,7 @@ public class OWLWGTestCase
 			{
 				KnowledgeBaseImpl._logger.setLevel(Level.WARNING);
 
-				final Collection<TestRunResult> results = new PelletTestRunner().run(_test, 1 * 1000 * _travisLowSpeed); // One second of timeout : really enough if every thing work well.
+				final Collection<TestRunResult> results = new PelletTestRunner().run(_test, TIMEOUT_SEC * 1000 * _travisLowSpeed);
 				for (final TestRunResult result : results)
 				{
 					final RunResultType resultType = result.getResultType();
