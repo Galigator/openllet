@@ -160,7 +160,6 @@ public class PropertyChainTests extends AbstractKBTests
 		_kb.addSubClass(_C, all(_r, not(_D)));
 
 		assertTrue(_kb.isSatisfiable(_C));
-		System.out.println("AHAIAHAHAH");
 	}
 
 	@Test
