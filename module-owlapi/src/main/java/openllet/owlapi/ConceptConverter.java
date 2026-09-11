@@ -396,7 +396,7 @@ public class ConceptConverter extends ATermBaseVisitor implements FacetFactoryOW
 	{
 		// literal(lexicalValue, language, datatypeURI)
 
-		final String lexValue = ((ATermAppl) term.getArgument(0)).toString();
+		final String lexValue = ((ATermAppl) term.getArgument(0)).getName();
 		final ATermAppl lang = (ATermAppl) term.getArgument(1);
 		final ATermAppl dtype = (ATermAppl) term.getArgument(2);
 

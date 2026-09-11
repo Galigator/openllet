@@ -599,4 +599,13 @@ public abstract class AbstractExplanationTest
 
 		testInconsistencyExplanations(0, new OWLAxiom[] { axioms[0], axioms[1], axioms[2], axioms[4] }, new OWLAxiom[] { axioms[0], axioms[2], axioms[3], axioms[5] });
 	}
+
+	@Test
+	public void emptyStringLiteral() throws Exception
+	{
+		final OWLAxiom[] axioms = { OWL.domain(dp, _A), OWL.propertyAssertion(_a, dp, OWL.constant("")) };
+
+		setupGenerators(Stream.of(axioms));
+		testExplanations(OWL.classAssertion(_a, _A), 0, axioms);
+	}
 }
